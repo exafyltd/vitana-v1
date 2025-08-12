@@ -7,19 +7,142 @@ import { useEffect, useRef, useState } from "react";
 import { Bot, CalendarClock, MessageSquare, Search, Settings, Shield, Stethoscope, Activity, LayoutDashboard, Play, Square, Video } from "lucide-react";
 import SEO from "@/components/SEO";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 
-const items = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Discover", url: "/dashboard/discover", icon: Search },
-  { title: "Health & Biomarkers", url: "/dashboard/biomarkers", icon: Stethoscope },
-  { title: "My Health Tracker", url: "/dashboard/tracker", icon: Activity },
-  { title: "Appointments & Diary", url: "/dashboard/appointments", icon: CalendarClock },
-  { title: "AI Intelligence", url: "/dashboard/ai", icon: Bot },
-  { title: "Messages & Notifications", url: "/dashboard/messages", icon: MessageSquare },
-  { title: "Admin & Staff Tools", url: "/dashboard/admin", icon: Shield },
-  { title: "Settings", url: "/dashboard/settings", icon: Settings },
-];
+const sidebarData = [
+  {
+    title: "Dashboard",
+    items: [
+      { id: 1, name: "Community Member" },
+      { id: 5, name: "Dual-Role Toggle Variant" },
+      { id: 6, name: "AI Companion Daily Summary" },
+    ],
+  },
+  {
+    title: "Discover (Shop & Services)",
+    items: [
+      { id: 7, name: "Landing (intent-aware)" },
+      { id: 8, name: "Doctors & Coaches Directory" },
+      { id: 9, name: "Wellness Services Catalog" },
+      { id: 10, name: "Event Booking (public)" },
+      { id: 11, name: "Matchmaking Suggestions for Services" },
+      { id: 12, name: "Contextual Search Results" },
+      { id: 13, name: "Shop Landing" },
+      { id: 14, name: "Product/Service Detail + Checkout + Order History" },
+    ],
+  },
+  {
+    title: "My Health Tracker",
+    items: [
+      { id: 22, name: "Tracker Overview + Weekly Score" },
+      { id: 23, name: "Nutrition Tracker" },
+      { id: 24, name: "Hydration Tracker" },
+      { id: 25, name: "Sleep Tracker" },
+      { id: 26, name: "Exercise Tracker" },
+      { id: 27, name: "Mental Health Check-in" },
+      { id: 28, name: "Weekly Balance Summary" },
+      { id: 29, name: "VITANA Index Overview" },
+      { id: 30, name: "VITANA Index Breakdown" },
+      { id: 31, name: "VITANA Index Social Impact" },
+      { id: 32, name: "AI Tips & Nudges" },
+    ],
+  },
+  {
+    title: "Appointments & Diary",
+    items: [
+      { id: 33, name: "Calendar View" },
+      { id: 34, name: "Appointment/Diary Detail" },
+      { id: 35, name: "Quick Add (role-adaptive)" },
+    ],
+  },
+  {
+    title: "Community & Social",
+    items: [
+      { id: 38, name: "My Groups" },
+      { id: 39, name: "Group Detail & Chat" },
+      { id: 40, name: "Community Feed" },
+      { id: 41, name: "Events Calendar" },
+      { id: 42, name: "Create/Join Group" },
+      { id: 43, name: "Meetup Recommendations" },
+      { id: 44, name: "Video Feed (shorts)" },
+      { id: 45, name: "Music & Podcast Hub" },
+      { id: 46, name: "Live Rooms Directory" },
+      { id: 47, name: "Live Room – Viewer Mode" },
+      { id: 48, name: "Live Room – Host Mode" },
+      { id: 49, name: "Live Room – Settings & Privacy" },
+      { id: 50, name: "Live Room – Chat & Reactions Overlay" },
+      { id: 51, name: "Live Room – Replay Library" },
+      { id: 52, name: "Live Room – Scheduling" },
+    ],
+  },
+  {
+    title: "AI Intelligence",
+    items: [
+      { id: 53, name: "Personal AI Timeline" },
+      { id: 54, name: "Agent Prompt Center" },
+      { id: 55, name: "Automation Rules/Triggers" },
+    ],
+  },
+  {
+    title: "Messages & Notifications",
+    items: [
+      { id: 59, name: "Inbox Overview" },
+      { id: 60, name: "Conversation Thread (AI/Human)" },
+      { id: 61, name: "Notification Center" },
+    ],
+  },
+  {
+    title: "Settings",
+    items: [
+      { id: 68, name: "Personal Preferences" },
+      { id: 69, name: "Privacy & Consent" },
+      { id: 70, name: "Connected Apps & Integrations" },
+      { id: 71, name: "Tenant & Role Switcher" },
+    ],
+  },
+  {
+    title: "Start Stream",
+    items: [
+      { id: 72, name: "Mode Selection (Text / Audio / Video)" },
+      { id: 73, name: "Floating Mini-Stream" },
+      { id: 74, name: "Role-Based Context Presets" },
+    ],
+  },
+  {
+    title: "Data Sharing",
+    items: [
+      { id: 75, name: "Consent Management Dashboard" },
+      { id: 76, name: "Share Data Package" },
+      { id: 79, name: "Sharing Logs & Revocation" },
+    ],
+  },
+  {
+    title: "Access Availability",
+    items: [
+      { id: 80, name: "Glasses / AR Minimal UI" },
+      { id: 81, name: "Kiosk Mode" },
+      { id: 82, name: "WhatsApp Mini-Agent" },
+      { id: 83, name: "Phone fallback / Low-bandwidth view" },
+    ],
+  },
+  {
+    title: "Infinite Memory",
+    items: [
+      { id: 84, name: "Life Timeline" },
+      { id: 85, name: "Recall & Search" },
+      { id: 86, name: "Memory Permissions" },
+    ],
+  },
+  {
+    title: "Contextual Intelligence Extras",
+    items: [
+      { id: 87, name: "Taste Preferences" },
+      { id: 88, name: "Routine Planner" },
+    ],
+  },
+]
+
 
 export default function Dashboard() {
   const streamingChatRef = useRef<StreamingChatRef>(null);
@@ -49,7 +172,7 @@ export default function Dashboard() {
   const buttonIcon = isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />;
 
   return (
-    <div className="dark">{/* Apply dark theme only to the dashboard */}
+    <div>
       <SEO title="Dashboard | VITANA" description="VITANA Dashboard" canonical={window.location.href} />
       <SidebarProvider>
         <header className="h-12 flex items-center border-b bg-background px-2">
@@ -57,69 +180,60 @@ export default function Dashboard() {
           <Link to="/" className="ml-2 text-sm font-semibold">VITANA</Link>
         </header>
         <div className="flex min-h-screen w-full">
-          <Sidebar collapsible="icon" className="bg-sidebar">
-            <SidebarHeader>
-              <div className="px-2 py-1 text-lg font-bold tracking-wide">VITANA</div>
-            </SidebarHeader>
-            <SidebarContent>
-              <SidebarGroup>
-                <SidebarGroupLabel>Main</SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {items.slice(0, items.length - 1).map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild>
-                          <NavLink to={item.url} end className={({ isActive }) => isActive ? "bg-muted text-primary font-medium" : "hover:bg-muted/50"}>
-                            <item.icon className="mr-2 h-4 w-4" />
-                            <span>{item.title}</span>
-                          </NavLink>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
+          <div className="dark">
+            <Sidebar collapsible="icon" className="bg-sidebar">
+              <SidebarHeader>
+                <div className="px-2 py-1 text-lg font-bold tracking-wide"><Link to="/">VITANA</Link></div>
+              </SidebarHeader>
+              <SidebarContent>
+                {/* Accordion categories */}
+                <Accordion type="multiple" className="px-2">
+                  {sidebarData.map((cat, idx) => (
+                    <AccordionItem key={cat.title} value={`cat-${idx}`}>
+                      <AccordionTrigger className="text-sm">{cat.title}</AccordionTrigger>
+                      <AccordionContent>
+                        <SidebarMenu>
+                          {cat.items.map((sub) => (
+                            <SidebarMenuItem key={`${cat.title}-${sub.id}`}>
+                              <SidebarMenuButton asChild>
+                                <NavLink to="/dashboard" end className={({ isActive }) => isActive ? "bg-muted text-primary font-medium" : "hover:bg-muted/50"}>
+                                  <span>{sub.name}</span>
+                                </NavLink>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          ))}
+                        </SidebarMenu>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
 
-                  {/* Space before Settings */}
-                  <div className="mt-4" />
-                  <SidebarMenu>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton asChild>
-                        <NavLink to={items[items.length - 1].url} end className={({ isActive }) => isActive ? "bg-muted text-primary font-medium" : "hover:bg-muted/50"}>
-                          <Settings className="mr-2 h-4 w-4" />
-                          <span>Settings</span>
-                        </NavLink>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </SidebarMenu>
-
-                  {/* Start/End Stream button below menu */}
-                  <div className="mt-6 px-2">
-                    <Button onClick={handleStreamToggle} variant={isStreaming ? "destructive" : "default"} className="w-full justify-center">
-                      {buttonIcon}
-                      <span>{buttonLabel}</span>
-                    </Button>
-                  </div>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            </SidebarContent>
-
-            <SidebarSeparator />
-            <SidebarFooter>
-              <div className="flex items-center gap-2 px-2 py-1">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback>VA</AvatarFallback>
-                </Avatar>
-                <div className="leading-tight">
-                  <div className="text-sm font-medium">Vitana User</div>
-                  <div className="text-xs text-muted-foreground">user@vitana.app</div>
+                {/* Start/End Stream button */}
+                <div className="mt-6 px-2">
+                  <Button onClick={handleStreamToggle} variant={isStreaming ? "destructive" : "default"} className="w-full justify-center">
+                    {buttonIcon}
+                    <span>{buttonLabel}</span>
+                  </Button>
                 </div>
-              </div>
-            </SidebarFooter>
-          </Sidebar>
+
+                {/* User Profile below Start/End button */}
+                <div className="mt-4 flex items-center gap-2 px-2 py-1">
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback>VA</AvatarFallback>
+                  </Avatar>
+                  <div className="leading-tight">
+                    <div className="text-sm font-medium">Vitana User</div>
+                    <div className="text-xs text-muted-foreground">user@vitana.app</div>
+                  </div>
+                </div>
+              </SidebarContent>
+            </Sidebar>
+          </div>
 
           <SidebarInset>
-            <div className="p-6">
+            <div className="p-6 bg-background min-h-screen w-full">
               {/* Empty content for now */}
-              <div className="rounded-lg border bg-card p-6 text-muted-foreground">
+              <div className="rounded-lg border bg-card p-6 text-foreground">
                 Content area will be built after sidebar logic is finalized.
               </div>
             </div>
