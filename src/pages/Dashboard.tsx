@@ -188,7 +188,7 @@ export default function Dashboard() {
                     {buttonIcon}
                     <span>{buttonLabel}</span>
                   </Button>
-                  <div className="flex items-center gap-2 py-1">
+                  <Link to="/profile" className="flex items-center gap-2 py-1 rounded-md p-1 hover:bg-muted/50 transition-colors">
                     <Avatar className="h-8 w-8">
                       <AvatarFallback>VA</AvatarFallback>
                     </Avatar>
@@ -196,7 +196,7 @@ export default function Dashboard() {
                       <div className="text-sm font-medium">Vitana User</div>
                       <div className="text-xs text-muted-foreground">user@vitana.app</div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </SidebarFooter>
             </Sidebar>
