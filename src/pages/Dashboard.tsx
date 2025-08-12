@@ -3,22 +3,11 @@ import { SidebarProvider, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { NavLink } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Bot, CalendarClock, MessageSquare, Search, Settings, Shield, Stethoscope, Activity, LayoutDashboard, Play, Square, Video } from "lucide-react";
 import SEO from "@/components/SEO";
+import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 
-// Streaming toggle persisted in localStorage to mirror the referenced logic
-const useStreaming = () => {
-  const [streaming, setStreaming] = useState<boolean>(() => {
-    const stored = localStorage.getItem("vitana:streaming");
-    return stored === "true";
-  });
-  useEffect(() => {
-    localStorage.setItem("vitana:streaming", String(streaming));
-  }, [streaming]);
-  const toggle = () => setStreaming((s) => !s);
-  return { streaming, toggle };
-};
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -33,9 +22,31 @@ const items = [
 ];
 
 export default function Dashboard() {
-  const { streaming, toggle } = useStreaming();
-  const buttonLabel = streaming ? "End Stream" : "Start Stream";
-  const buttonIcon = streaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />;
+  const streamingChatRef = useRef<StreamingChatRef>(null);
+  const [isStreaming, setIsStreaming] = useState(false);
+
+  const handleStreamToggle = () => {
+    if (isStreaming) {
+      streamingChatRef.current?.deactivateVideo();
+      setIsStreaming(false);
+    } else {
+      streamingChatRef.current?.activateVideo();
+      setIsStreaming(true);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const active = streamingChatRef.current?.isStreamingActive?.();
+      if (typeof active === "boolean" && active !== isStreaming) {
+        setIsStreaming(active);
+      }
+    }, 150);
+    return () => clearInterval(interval);
+  }, [isStreaming]);
+
+  const buttonLabel = isStreaming ? "End Stream" : "Start Stream";
+  const buttonIcon = isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />;
 
   return (
     <div className="dark">{/* Apply dark theme only to the dashboard */}
@@ -82,7 +93,7 @@ export default function Dashboard() {
 
                   {/* Start/End Stream button below menu */}
                   <div className="mt-6 px-2">
-                    <Button onClick={toggle} variant={streaming ? "destructive" : "default"} className="w-full justify-center">
+                    <Button onClick={handleStreamToggle} variant={isStreaming ? "destructive" : "default"} className="w-full justify-center">
                       {buttonIcon}
                       <span>{buttonLabel}</span>
                     </Button>
@@ -115,6 +126,7 @@ export default function Dashboard() {
           </SidebarInset>
         </div>
       </SidebarProvider>
+      <StreamingChat ref={streamingChatRef} />
     </div>
   );
 }
