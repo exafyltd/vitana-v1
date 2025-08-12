@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { NavLink } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Shield, Stethoscope, Activity, LayoutDashboard, Play, Square, Video } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Shield, Stethoscope, Activity, LayoutDashboard, Play, Square, Video, Bell } from "lucide-react";
 import SEO from "@/components/SEO";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
@@ -151,7 +151,19 @@ export default function Dashboard() {
                   <Accordion type="multiple" className="px-2">
                     {sidebarData.map((cat, idx) => (
                       <AccordionItem key={cat.title} value={`cat-${idx}`}>
-                        <AccordionTrigger className="text-sm">{cat.title}</AccordionTrigger>
+<AccordionTrigger className="text-sm">
+                          <span className="flex items-center gap-2">
+                            {cat.title === "Dashboard" && <LayoutDashboard className="h-4 w-4" />}
+                            {cat.title === "Discover (Shop & Services)" && <Search className="h-4 w-4" />}
+                            {cat.title === "My Health Tracker" && <Activity className="h-4 w-4" />}
+                            {cat.title === "Appointments & Diary" && <CalendarClock className="h-4 w-4" />}
+                            {cat.title === "Community & Social" && <MessageSquare className="h-4 w-4" />}
+                            {cat.title === "AI Intelligence" && <Bot className="h-4 w-4" />}
+                            {cat.title === "Messages & Notifications" && <Bell className="h-4 w-4" />}
+                            {cat.title === "Settings" && <Settings className="h-4 w-4" />}
+                            <span>{cat.title}</span>
+                          </span>
+                        </AccordionTrigger>
                         <AccordionContent>
                           <SidebarMenu>
                             {cat.items.map((sub) => (
