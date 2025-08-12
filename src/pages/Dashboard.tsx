@@ -101,46 +101,6 @@ const sidebarData = [
       { id: 71, name: "Tenant & Role Switcher" },
     ],
   },
-  {
-    title: "Start Stream",
-    items: [
-      { id: 72, name: "Mode Selection (Text / Audio / Video)" },
-      { id: 73, name: "Floating Mini-Stream" },
-      { id: 74, name: "Role-Based Context Presets" },
-    ],
-  },
-  {
-    title: "Data Sharing",
-    items: [
-      { id: 75, name: "Consent Management Dashboard" },
-      { id: 76, name: "Share Data Package" },
-      { id: 79, name: "Sharing Logs & Revocation" },
-    ],
-  },
-  {
-    title: "Access Availability",
-    items: [
-      { id: 80, name: "Glasses / AR Minimal UI" },
-      { id: 81, name: "Kiosk Mode" },
-      { id: 82, name: "WhatsApp Mini-Agent" },
-      { id: 83, name: "Phone fallback / Low-bandwidth view" },
-    ],
-  },
-  {
-    title: "Infinite Memory",
-    items: [
-      { id: 84, name: "Life Timeline" },
-      { id: 85, name: "Recall & Search" },
-      { id: 86, name: "Memory Permissions" },
-    ],
-  },
-  {
-    title: "Contextual Intelligence Extras",
-    items: [
-      { id: 87, name: "Taste Preferences" },
-      { id: 88, name: "Routine Planner" },
-    ],
-  },
 ]
 
 
@@ -185,48 +145,48 @@ export default function Dashboard() {
               <SidebarHeader>
                 <div className="px-2 py-1 text-lg font-bold tracking-wide"><Link to="/">VITANA</Link></div>
               </SidebarHeader>
-              <SidebarContent>
-                {/* Accordion categories */}
-                <Accordion type="multiple" className="px-2">
-                  {sidebarData.map((cat, idx) => (
-                    <AccordionItem key={cat.title} value={`cat-${idx}`}>
-                      <AccordionTrigger className="text-sm">{cat.title}</AccordionTrigger>
-                      <AccordionContent>
-                        <SidebarMenu>
-                          {cat.items.map((sub) => (
-                            <SidebarMenuItem key={`${cat.title}-${sub.id}`}>
-                              <SidebarMenuButton asChild>
-                                <NavLink to="/dashboard" end className={({ isActive }) => isActive ? "bg-muted text-primary font-medium" : "hover:bg-muted/50"}>
-                                  <span>{sub.name}</span>
-                                </NavLink>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          ))}
-                        </SidebarMenu>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-
-                {/* Start/End Stream button */}
-                <div className="mt-6 px-2">
+              <SidebarContent className="flex flex-col">
+                <div className="flex-1 overflow-y-auto pr-2 pb-32">
+                  {/* Accordion categories */}
+                  <Accordion type="multiple" className="px-2">
+                    {sidebarData.map((cat, idx) => (
+                      <AccordionItem key={cat.title} value={`cat-${idx}`}>
+                        <AccordionTrigger className="text-sm">{cat.title}</AccordionTrigger>
+                        <AccordionContent>
+                          <SidebarMenu>
+                            {cat.items.map((sub) => (
+                              <SidebarMenuItem key={`${cat.title}-${sub.id}`}>
+                                <SidebarMenuButton asChild>
+                                  <NavLink to="/dashboard" end className={({ isActive }) => isActive ? "bg-muted text-primary font-medium" : "hover:bg-muted/50"}>
+                                    <span>{sub.name}</span>
+                                  </NavLink>
+                                </SidebarMenuButton>
+                              </SidebarMenuItem>
+                            ))}
+                          </SidebarMenu>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+              </SidebarContent>
+              <SidebarFooter className="sticky bottom-24 bg-sidebar border-t">
+                <div className="px-2 py-3 space-y-3">
                   <Button onClick={handleStreamToggle} variant={isStreaming ? "destructive" : "default"} className="w-full justify-center">
                     {buttonIcon}
                     <span>{buttonLabel}</span>
                   </Button>
-                </div>
-
-                {/* User Profile below Start/End button */}
-                <div className="mt-4 flex items-center gap-2 px-2 py-1">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback>VA</AvatarFallback>
-                  </Avatar>
-                  <div className="leading-tight">
-                    <div className="text-sm font-medium">Vitana User</div>
-                    <div className="text-xs text-muted-foreground">user@vitana.app</div>
+                  <div className="flex items-center gap-2 py-1">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>VA</AvatarFallback>
+                    </Avatar>
+                    <div className="leading-tight">
+                      <div className="text-sm font-medium">Vitana User</div>
+                      <div className="text-xs text-muted-foreground">user@vitana.app</div>
+                    </div>
                   </div>
                 </div>
-              </SidebarContent>
+              </SidebarFooter>
             </Sidebar>
           </div>
 
