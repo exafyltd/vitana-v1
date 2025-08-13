@@ -30,11 +30,14 @@ function AppSidebar() {
   const handleStreamToggle = () => {
     if (isStreaming) {
       streamingChatRef.current?.deactivateVideo();
-      setIsStreaming(false);
     } else {
       streamingChatRef.current?.activateVideo();
-      setIsStreaming(true);
     }
+    // Force immediate sync
+    setTimeout(() => {
+      const active = streamingChatRef.current?.isStreamingActive?.();
+      setIsStreaming(!!active);
+    }, 10);
   };
 
   useEffect(() => {
