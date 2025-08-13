@@ -29,7 +29,8 @@ export default function Profile() {
   return (
     <AppLayout>
       <SEO title={title} description={description} canonical={typeof window !== 'undefined' ? window.location.href : undefined} />
-      <section className="mx-auto max-w-6xl px-4 py-6">
+      <section className="mx-auto max-w-6xl px-4 py-6 flex justify-center">
+        <div className="w-full max-w-6xl">
         <h1 className="sr-only">VITANA User Profile</h1>
 
         <Tabs defaultValue="overview" className="w-full">
@@ -302,7 +303,8 @@ export default function Profile() {
               </Card>
             </TabsContent>
           </Tabs>
-        </section>
+        </div>
+      </section>
 
         {/* Structured Data */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />

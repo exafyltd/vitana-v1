@@ -55,7 +55,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       {/* Bottom communication bar */}
       <div
         className={
-          `fixed inset-x-0 bottom-0 p-4 z-40 transition-colors ` +
+          `fixed inset-x-0 bottom-0 p-4 z-40 transition-colors rounded-t-xl ` +
           (isVideoActive ? "bg-destructive text-destructive-foreground" : "bg-muted text-foreground")
         }
         role="region"
