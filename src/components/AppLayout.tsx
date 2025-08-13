@@ -21,13 +21,13 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-function AppSidebar() {
-  const streamingChatRef = useRef<StreamingChatRef>(null);
+function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<StreamingChatRef> }) {
   const [isStreaming, setIsStreaming] = useState(false);
   const location = useLocation();
   const { open } = useSidebar();
 
   const handleStreamToggle = () => {
+    console.log('Stream toggle clicked, current isStreaming:', isStreaming);
     if (isStreaming) {
       streamingChatRef.current?.deactivateVideo();
     } else {
@@ -36,14 +36,17 @@ function AppSidebar() {
     // Force immediate sync
     setTimeout(() => {
       const active = streamingChatRef.current?.isStreamingActive?.();
+      console.log('After timeout, active state:', active);
       setIsStreaming(!!active);
     }, 10);
   };
 
   useEffect(() => {
+    console.log('isStreaming state changed to:', isStreaming);
     const interval = setInterval(() => {
       const active = streamingChatRef.current?.isStreamingActive?.();
       if (typeof active === "boolean" && active !== isStreaming) {
+        console.log('Syncing state: active =', active, 'isStreaming =', isStreaming);
         setIsStreaming(active);
       }
     }, 150);
@@ -142,12 +145,14 @@ function AppSidebar() {
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
+  const streamingChatRef = useRef<StreamingChatRef>(null);
+
   return (
     <div>
       <SidebarProvider>
         <div className="flex min-h-screen w-full">
           <div className="dark">
-            <AppSidebar />
+            <AppSidebar streamingChatRef={streamingChatRef} />
           </div>
 
           <SidebarInset>
@@ -157,7 +162,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </SidebarInset>
         </div>
       </SidebarProvider>
-      <StreamingChat />
+      <StreamingChat ref={streamingChatRef} />
     </div>
   );
 }

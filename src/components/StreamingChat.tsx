@@ -30,14 +30,19 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     activateVideo: () => {
+      console.log('StreamingChat: activateVideo called');
       setIsVideoActive(true);
       setIsAudioActive(false);
     },
     deactivateVideo: () => {
+      console.log('StreamingChat: deactivateVideo called');
       setIsVideoActive(false);
       setIsAudioActive(false);
     },
-    isStreamingActive: () => isVideoActive,
+    isStreamingActive: () => {
+      console.log('StreamingChat: isStreamingActive called, returning:', isVideoActive);
+      return isVideoActive;
+    },
   }))
 
   return (
