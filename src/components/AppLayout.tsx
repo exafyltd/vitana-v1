@@ -93,7 +93,9 @@ function AppSidebar() {
             <Button 
               onClick={handleStreamToggle} 
               variant={isStreaming ? "destructive" : "default"} 
-              className="w-full justify-center rounded-xl shadow-sm hover:shadow-md transition-all"
+              className={`w-full justify-center rounded-xl shadow-sm hover:shadow-md transition-all ${
+                isStreaming ? "bg-ruby text-white hover:bg-ruby/90" : ""
+              }`}
             >
               {buttonIcon}
               <span>{buttonLabel}</span>
@@ -104,7 +106,7 @@ function AppSidebar() {
               variant={isStreaming ? "destructive" : "default"}
               size="icon"
               className={`w-10 h-10 rounded-full shadow-sm hover:shadow-md transition-all mx-auto ${
-                isStreaming ? "bg-red-600 text-white hover:bg-red-700" : "bg-black text-white hover:bg-black/80"
+                isStreaming ? "bg-ruby text-white hover:bg-ruby/90" : "bg-black text-white hover:bg-black/80"
               }`}
             >
               {buttonIcon}

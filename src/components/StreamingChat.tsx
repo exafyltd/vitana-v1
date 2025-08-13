@@ -56,7 +56,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       <div
         className={
           `fixed inset-x-0 bottom-0 p-4 z-40 transition-colors rounded-t-xl ` +
-          (isVideoActive ? "bg-destructive text-destructive-foreground" : "bg-muted text-foreground")
+          (isVideoActive ? "bg-ruby text-white" : "bg-muted text-foreground")
         }
         role="region"
         aria-label="Communication controls"
@@ -66,7 +66,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             variant="ghost"
             size="icon"
             onClick={handleMicToggle}
-            className={(isAudioActive && !isVideoActive) ? "bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full" : "hover:bg-accent rounded-full"}
+            className={(isAudioActive && !isVideoActive) ? "bg-ruby text-white hover:bg-ruby/90 rounded-full" : "hover:bg-accent rounded-full"}
             aria-pressed={isAudioActive}
             aria-label="Toggle microphone"
           >
@@ -77,14 +77,14 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             variant="ghost"
             size="icon"
             onClick={handleVideoToggle}
-            className={isVideoActive ? "bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full" : "hover:bg-accent rounded-full"}
+            className={isVideoActive ? "bg-ruby text-white hover:bg-ruby/90 rounded-full" : "hover:bg-accent rounded-full"}
             aria-pressed={isVideoActive}
             aria-label="Toggle camera"
           >
             <VideoIcon className="h-5 w-5" />
           </Button>
 
-          <div className={`flex-1 ${isAudioActive && !isVideoActive ? "bg-destructive/20 rounded-lg px-3 py-2" : ""}`}>
+          <div className={`flex-1 ${isAudioActive && !isVideoActive ? "bg-ruby/20 rounded-lg px-3 py-2" : ""}`}>
             <input
               type="text"
               placeholder="Type something"
