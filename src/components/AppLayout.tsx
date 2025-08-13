@@ -104,7 +104,7 @@ function AppSidebar() {
               variant={isStreaming ? "destructive" : "default"}
               size="icon"
               className={`w-10 h-10 rounded-full shadow-sm hover:shadow-md transition-all mx-auto ${
-                isStreaming ? "bg-destructive text-destructive-foreground hover:bg-destructive/80" : "bg-black text-white hover:bg-black/80"
+                isStreaming ? "bg-red-600 text-white hover:bg-red-700" : "bg-black text-white hover:bg-black/80"
               }`}
             >
               {buttonIcon}
