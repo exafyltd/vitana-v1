@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
 import React from "react";
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
@@ -26,37 +27,26 @@ export default function Profile() {
   };
 
   return (
-    <>
+    <AppLayout>
       <SEO title={title} description={description} canonical={typeof window !== 'undefined' ? window.location.href : undefined} />
-      <main className="min-h-screen bg-background">
-        <header className="w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="mx-auto max-w-6xl h-14 px-4 flex items-center justify-between">
-            <Link to="/" className="text-sm font-semibold tracking-wide">VITANA</Link>
-            <nav className="flex items-center gap-2">
-              <Button asChild variant="outline"><Link to="/dashboard">Dashboard</Link></Button>
-              <Button asChild><Link to="/settings">Settings</Link></Button>
-            </nav>
-          </div>
-        </header>
+      <section className="mx-auto max-w-6xl px-4 py-6">
+        <h1 className="sr-only">VITANA User Profile</h1>
 
-        <section className="mx-auto max-w-6xl px-4 py-6">
-          <h1 className="sr-only">VITANA User Profile</h1>
-
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="mb-6">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="highlights">Highlights</TabsTrigger>
-              <TabsTrigger value="connections">Connections</TabsTrigger>
-              <TabsTrigger value="activity">Activity</TabsTrigger>
-              <TabsTrigger value="health">Health Snapshot</TabsTrigger>
-              <TabsTrigger value="privacy">Privacy View</TabsTrigger>
-            </TabsList>
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="mb-6 rounded-xl shadow-sm">
+            <TabsTrigger value="overview" className="rounded-lg">Overview</TabsTrigger>
+            <TabsTrigger value="highlights" className="rounded-lg">Highlights</TabsTrigger>
+            <TabsTrigger value="connections" className="rounded-lg">Connections</TabsTrigger>
+            <TabsTrigger value="activity" className="rounded-lg">Activity</TabsTrigger>
+            <TabsTrigger value="health" className="rounded-lg">Health Snapshot</TabsTrigger>
+            <TabsTrigger value="privacy" className="rounded-lg">Privacy View</TabsTrigger>
+          </TabsList>
 
             <TabsContent value="overview">
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left column: Core identity */}
                 <div className="space-y-6 lg:col-span-1">
-                  <Card>
+                  <Card className="rounded-xl shadow-sm">
                     <CardContent className="p-6">
                       <div className="flex flex-col items-center text-center">
                         <div className="relative mb-4">
@@ -71,17 +61,17 @@ export default function Profile() {
                           <p className="text-sm text-muted-foreground max-w-xs mx-auto">Building a balanced life through connection, health, and purpose.</p>
                         </div>
                         <div className="mt-4 flex items-center gap-2">
-                          <Button size="sm" asChild>
+                          <Button size="sm" asChild className="rounded-lg shadow-sm">
                             <Link to="/dashboard">Message</Link>
                           </Button>
-                          <Button size="sm" variant="outline" asChild>
+                          <Button size="sm" variant="outline" asChild className="rounded-lg shadow-sm">
                             <Link to="/dashboard">Edit Profile</Link>
                           </Button>
                         </div>
                       </div>
 
                       <div className="mt-6 grid grid-cols-1 gap-4">
-                        <div className="rounded-lg border bg-muted/20 p-4">
+                        <div className="rounded-xl border bg-muted/20 p-4 shadow-sm">
                           <dl className="grid grid-cols-2 gap-3 text-sm">
                             <div>
                               <dt className="text-muted-foreground">Age</dt>
@@ -122,7 +112,7 @@ export default function Profile() {
                 {/* Right column: Cards */}
                 <div className="lg:col-span-2 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card>
+                    <Card className="rounded-xl shadow-sm">
                       <CardHeader>
                         <CardTitle>Bio</CardTitle>
                         <CardDescription>Short story and context</CardDescription>
@@ -135,23 +125,23 @@ export default function Profile() {
                       </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card className="rounded-xl shadow-sm">
                       <CardHeader>
                         <CardTitle>Public Engagement</CardTitle>
                         <CardDescription>Read-only summary</CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div className="rounded-lg border p-3">
-                            <div className="text-xs text-muted-foreground">VITANA Index</div>
-                            <div className="mt-1 text-2xl font-semibold">78 <span className="text-sm text-muted-foreground align-middle">(↑ steady)</span></div>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div className="rounded-xl border p-3 shadow-sm">
+                              <div className="text-xs text-muted-foreground">VITANA Index</div>
+                              <div className="mt-1 text-2xl font-semibold">78 <span className="text-sm text-muted-foreground align-middle">(↑ steady)</span></div>
+                            </div>
+                            <div className="rounded-xl border p-3 shadow-sm">
+                              <div className="text-xs text-muted-foreground">Community</div>
+                              <div className="mt-1 text-2xl font-semibold">42</div>
+                              <div className="text-xs text-muted-foreground">posts • events • groups</div>
+                            </div>
                           </div>
-                          <div className="rounded-lg border p-3">
-                            <div className="text-xs text-muted-foreground">Community</div>
-                            <div className="mt-1 text-2xl font-semibold">42</div>
-                            <div className="text-xs text-muted-foreground">posts • events • groups</div>
-                          </div>
-                        </div>
                         <div className="mt-4 flex flex-wrap gap-2">
                           <Badge>Badges: 5</Badge>
                           <Badge variant="secondary">Streak: 12 days</Badge>
@@ -159,7 +149,7 @@ export default function Profile() {
                       </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card className="rounded-xl shadow-sm">
                       <CardHeader>
                         <CardTitle>Motivations</CardTitle>
                       </CardHeader>
@@ -182,7 +172,7 @@ export default function Profile() {
                       </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card className="rounded-xl shadow-sm">
                       <CardHeader>
                         <CardTitle>Personality</CardTitle>
                       </CardHeader>
@@ -204,7 +194,7 @@ export default function Profile() {
                       </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card className="rounded-xl shadow-sm">
                       <CardHeader>
                         <CardTitle>Frustrations</CardTitle>
                       </CardHeader>
@@ -217,7 +207,7 @@ export default function Profile() {
                       </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card className="rounded-xl shadow-sm">
                       <CardHeader>
                         <CardTitle>Goals</CardTitle>
                       </CardHeader>
@@ -229,7 +219,7 @@ export default function Profile() {
                       </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card className="rounded-xl shadow-sm">
                       <CardHeader>
                         <CardTitle>Favourite Brands</CardTitle>
                         <CardDescription>Sample interests</CardDescription>
@@ -246,7 +236,7 @@ export default function Profile() {
             </TabsContent>
 
             <TabsContent value="highlights">
-              <Card>
+              <Card className="rounded-xl shadow-sm">
                 <CardHeader>
                   <CardTitle>Highlights</CardTitle>
                   <CardDescription>Achievements, featured content, spotlight stories</CardDescription>
@@ -258,7 +248,7 @@ export default function Profile() {
             </TabsContent>
 
             <TabsContent value="connections">
-              <Card>
+              <Card className="rounded-xl shadow-sm">
                 <CardHeader>
                   <CardTitle>Connections</CardTitle>
                   <CardDescription>Friends, followers, and requests</CardDescription>
@@ -270,7 +260,7 @@ export default function Profile() {
             </TabsContent>
 
             <TabsContent value="activity">
-              <Card>
+              <Card className="rounded-xl shadow-sm">
                 <CardHeader>
                   <CardTitle>Recent Activity</CardTitle>
                   <CardDescription>Posts, comments, events</CardDescription>
@@ -282,7 +272,7 @@ export default function Profile() {
             </TabsContent>
 
             <TabsContent value="health">
-              <Card>
+              <Card className="rounded-xl shadow-sm">
                 <CardHeader>
                   <CardTitle>Health Snapshot</CardTitle>
                   <CardDescription>Mini dashboard of VITANA Index + pillars</CardDescription>
@@ -290,7 +280,7 @@ export default function Profile() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {['Nutrition','Hydration','Sleep','Exercise','Mental Health'].map((p) => (
-                      <div key={p} className="rounded-lg border p-4">
+                      <div key={p} className="rounded-xl border p-4 shadow-sm">
                         <div className="text-sm font-medium">{p}</div>
                         <Progress value={Math.floor(50 + Math.random() * 40)} className="mt-2" />
                       </div>
@@ -301,7 +291,7 @@ export default function Profile() {
             </TabsContent>
 
             <TabsContent value="privacy">
-              <Card>
+              <Card className="rounded-xl shadow-sm">
                 <CardHeader>
                   <CardTitle>Privacy View</CardTitle>
                   <CardDescription>See how others view your profile</CardDescription>
@@ -313,10 +303,9 @@ export default function Profile() {
             </TabsContent>
           </Tabs>
         </section>
-      </main>
 
-      {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
-    </>
-  );
+        {/* Structured Data */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
+      </AppLayout>
+    );
 }
