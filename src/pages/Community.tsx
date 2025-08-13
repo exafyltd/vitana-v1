@@ -14,7 +14,7 @@ const communitySubItems = [
 export default function Community() {
   return (
     <AppLayout>
-      <SEO title="Community | VITANA" description="Connect with the VITANA community through groups, events, and matchmaking" canonical={window.location.href} />
+      <SEO title="Community" description="Connect with the community through groups, events, and matchmaking" canonical={window.location.href} />
       <SubNavigation items={communitySubItems} />
       <div className="p-6">
         <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">

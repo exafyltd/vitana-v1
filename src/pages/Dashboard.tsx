@@ -19,7 +19,7 @@ export default function Dashboard() {
       <div className="p-6">
         <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
           <h1 className="text-2xl font-semibold mb-4">Dashboard Overview</h1>
-          <p className="text-muted-foreground">Welcome to your VITANA dashboard. Navigate using the tabs above to access different sections.</p>
+          <p className="text-muted-foreground">Welcome to your dashboard. Navigate using the tabs above to access different sections.</p>
         </div>
       </div>
     </AppLayout>

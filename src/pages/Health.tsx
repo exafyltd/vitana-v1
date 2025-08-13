@@ -4,7 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 
 const healthSubItems = [
   { id: "overview", name: "Overview", path: "/health" },
-  { id: "vitana-index", name: "VITANA Index", path: "/health/vitana-index" },
+  { id: "vitana-index", name: "Health Index", path: "/health/vitana-index" },
   { id: "nutrition", name: "Nutrition", path: "/health/nutrition" },
   { id: "hydration", name: "Hydration", path: "/health/hydration" },
   { id: "sleep", name: "Sleep", path: "/health/sleep" },
@@ -16,7 +16,7 @@ const healthSubItems = [
 export default function Health() {
   return (
     <AppLayout>
-      <SEO title="Health Tracker | VITANA" description="Track your health and wellness with VITANA's comprehensive health tracker" canonical={window.location.href} />
+      <SEO title="Health Tracker" description="Track your health and wellness with our comprehensive health tracker" canonical={window.location.href} />
       <SubNavigation items={healthSubItems} />
       <div className="p-6">
         <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">

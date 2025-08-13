@@ -14,7 +14,7 @@ const calendarSubItems = [
 export default function Calendar() {
   return (
     <AppLayout>
-      <SEO title="Calendar | VITANA" description="Manage your schedule, appointments, and events with VITANA Calendar" canonical={window.location.href} />
+      <SEO title="Calendar" description="Manage your schedule, appointments, and events" canonical={window.location.href} />
       <SubNavigation items={calendarSubItems} />
       <div className="p-6">
         <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">

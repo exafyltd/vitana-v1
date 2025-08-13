@@ -13,7 +13,7 @@ const aiSubItems = [
 export default function AI() {
   return (
     <AppLayout>
-      <SEO title="AI Intelligence | VITANA" description="Access AI-powered insights, recommendations, and personalized assistance" canonical={window.location.href} />
+      <SEO title="AI Intelligence" description="Access AI-powered insights, recommendations, and personalized assistance" canonical={window.location.href} />
       <SubNavigation items={aiSubItems} />
       <div className="p-6">
         <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">

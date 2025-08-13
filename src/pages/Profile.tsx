@@ -14,8 +14,8 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function Profile() {
-  const title = "Profile | VITANA";
-  const description = "Public profile, preferences, and highlights for the VITANA community.";
+  const title = "Profile";
+  const description = "Public profile, preferences, and highlights for the community.";
 
   const personLd = {
     '@context': 'https://schema.org',
@@ -31,7 +31,7 @@ export default function Profile() {
       <SEO title={title} description={description} canonical={typeof window !== 'undefined' ? window.location.href : undefined} />
       <section className="mx-auto max-w-6xl px-4 py-6 flex justify-center">
         <div className="w-full max-w-6xl">
-        <h1 className="sr-only">VITANA User Profile</h1>
+        <h1 className="sr-only">User Profile</h1>
 
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="mb-6 rounded-xl shadow-sm">
@@ -120,8 +120,8 @@ export default function Profile() {
                       </CardHeader>
                       <CardContent className="space-y-2 text-sm text-muted-foreground">
                         <p>
-                          I travel often for work and love optimizing every day for energy and focus. I use VITANA to
-                          keep my routines simple and my social life meaningful.
+                          I travel often for work and love optimizing every day for energy and focus. I keep
+                          my routines simple and my social life meaningful.
                         </p>
                       </CardContent>
                     </Card>
@@ -134,7 +134,7 @@ export default function Profile() {
                       <CardContent>
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div className="rounded-xl border p-3 shadow-sm">
-                              <div className="text-xs text-muted-foreground">VITANA Index</div>
+                              <div className="text-xs text-muted-foreground">Health Index</div>
                               <div className="mt-1 text-2xl font-semibold">78 <span className="text-sm text-muted-foreground align-middle">(↑ steady)</span></div>
                             </div>
                             <div className="rounded-xl border p-3 shadow-sm">
@@ -276,7 +276,7 @@ export default function Profile() {
               <Card className="rounded-xl shadow-sm">
                 <CardHeader>
                   <CardTitle>Health Snapshot</CardTitle>
-                  <CardDescription>Mini dashboard of VITANA Index + pillars</CardDescription>
+                  <CardDescription>Mini dashboard of Health Index + pillars</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

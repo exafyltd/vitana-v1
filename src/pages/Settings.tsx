@@ -15,12 +15,12 @@ const settingsSubItems = [
 export default function Settings() {
   return (
     <AppLayout>
-      <SEO title="Settings | VITANA" description="Manage your account settings, privacy, and preferences on VITANA" canonical={window.location.href} />
+      <SEO title="Settings" description="Manage your account settings, privacy, and preferences" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6">
         <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
           <h1 className="text-2xl font-semibold mb-4">Settings</h1>
-          <p className="text-muted-foreground">Customize your VITANA experience with account settings, privacy controls, and personal preferences. Navigate using the tabs above to access different settings categories.</p>
+          <p className="text-muted-foreground">Customize your experience with account settings, privacy controls, and personal preferences. Navigate using the tabs above to access different settings categories.</p>
         </div>
       </div>
     </AppLayout>

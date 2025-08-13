@@ -13,7 +13,7 @@ const messagesSubItems = [
 export default function Messages() {
   return (
     <AppLayout>
-      <SEO title="Messages | VITANA" description="Manage your conversations, notifications, and communications on VITANA" canonical={window.location.href} />
+      <SEO title="Messages" description="Manage your conversations, notifications, and communications" canonical={window.location.href} />
       <SubNavigation items={messagesSubItems} />
       <div className="p-6">
         <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
