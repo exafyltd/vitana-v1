@@ -95,9 +95,8 @@ function AppSidebar() {
           {open ? (
             <Button 
               onClick={handleStreamToggle} 
-              variant={isStreaming ? "destructive" : "default"} 
               className={`w-full justify-center rounded-xl shadow-sm hover:shadow-md transition-all ${
-                isStreaming ? "bg-ruby text-white hover:bg-ruby/90" : ""
+                isStreaming ? "bg-ruby text-white hover:bg-ruby/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
               }`}
             >
               {buttonIcon}
@@ -106,10 +105,9 @@ function AppSidebar() {
           ) : (
             <Button 
               onClick={handleStreamToggle} 
-              variant={isStreaming ? "destructive" : "default"}
               size="icon"
               className={`w-10 h-10 rounded-full shadow-sm hover:shadow-md transition-all mx-auto ${
-                isStreaming ? "bg-ruby text-white hover:bg-ruby/90" : "bg-black text-white hover:bg-black/80"
+                isStreaming ? "bg-ruby text-white hover:bg-ruby/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
               }`}
             >
               {buttonIcon}
