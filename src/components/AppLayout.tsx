@@ -58,7 +58,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         </header>
         <div className="flex min-h-screen w-full">
           <div className="dark">
-            <Sidebar collapsible="icon" className="bg-sidebar rounded-r-xl border-r">
+            <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
               <SidebarHeader>
                 <div className="px-2 py-1 text-lg font-bold tracking-wide">
                   <Link to="/" className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors">VITANA</Link>
