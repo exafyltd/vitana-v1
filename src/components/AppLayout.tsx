@@ -52,16 +52,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <div>
       <SidebarProvider>
-        <header className="h-12 flex items-center border-b bg-background px-2">
-          <SidebarTrigger className="ml-1 rounded-lg" />
-          <Link to="/" className="ml-2 text-sm font-semibold">VITANA</Link>
-        </header>
         <div className="flex min-h-screen w-full">
           <div className="dark">
             <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
-              <SidebarHeader>
-                <div className="px-2 py-1 text-lg font-bold tracking-wide">
+              <SidebarHeader className="border-b border-sidebar-border rounded-tr-2xl">
+                <div className="px-2 py-1 text-lg font-bold tracking-wide flex items-center justify-between">
                   <Link to="/" className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors">VITANA</Link>
+                  <SidebarTrigger className="rounded-lg hover:bg-sidebar-accent" />
                 </div>
               </SidebarHeader>
               <SidebarContent className="flex flex-col">
@@ -91,7 +88,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                   </SidebarGroup>
                 </div>
               </SidebarContent>
-              <SidebarFooter className="sticky bottom-24 bg-sidebar border-t rounded-tr-xl">
+              <SidebarFooter className="sticky bottom-24 bg-sidebar border-t rounded-tr-2xl">
                 <div className="px-2 py-3 space-y-3">
                   <Button 
                     onClick={handleStreamToggle} 
@@ -119,7 +116,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </div>
 
           <SidebarInset>
-            <div className="bg-background min-h-screen w-full rounded-l-xl">
+            <header className="h-12 flex items-center border-b bg-background px-4 rounded-tl-2xl">
+              <Link to="/" className="text-sm font-semibold">VITANA</Link>
+            </header>
+            <div className="bg-background min-h-screen w-full rounded-tl-2xl">
               {children}
             </div>
           </SidebarInset>
