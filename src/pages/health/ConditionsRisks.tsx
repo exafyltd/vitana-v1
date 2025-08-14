@@ -1,0 +1,63 @@
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertTriangle, FileText } from "lucide-react";
+
+const healthSubItems = [
+  { id: "overview", name: "Overview", path: "/health" },
+  { id: "pillars", name: "Pillars of Health", path: "/health/pillars" },
+  { id: "services", name: "Wellness Services", path: "/health/services" },
+  { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
+  { id: "education", name: "Education & Resources", path: "/health/education" },
+];
+
+const conditionsItems = [
+  {
+    title: "Risk Assessments",
+    description: "Interactive tools to assess your health risks",
+    icon: AlertTriangle,
+    color: "from-orange-500/20 to-amber-500/20",
+  },
+  {
+    title: "Preventive Action Plans",
+    description: "Personalized plans to prevent health conditions",
+    icon: FileText,
+    color: "from-green-500/20 to-emerald-500/20",
+  },
+];
+
+export default function ConditionsRisks() {
+  return (
+    <AppLayout>
+      <SEO title="Conditions & Risks | Health" description="Assess health risks and create preventive action plans" canonical={window.location.href} />
+      <SubNavigation items={healthSubItems} />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
+            <h1 className="text-2xl font-semibold mb-4">Conditions & Risks</h1>
+            <p className="text-muted-foreground">Assess your health risks and create preventive action plans to maintain optimal wellness.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {conditionsItems.map((item) => (
+              <Card key={item.title} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20 hover:scale-105">
+                <CardHeader className="pb-4">
+                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center mb-4`}>
+                    <item.icon className="w-6 h-6 text-foreground" />
+                  </div>
+                  <CardTitle className="text-lg">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-sm">
+                    {item.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}

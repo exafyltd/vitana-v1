@@ -3,13 +3,14 @@ import { SidebarProvider, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 
 const sidebarCategories = [
   { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
   { title: "Discover", path: "/discover", icon: Search },
-  { title: "Health Tracker", path: "/health", icon: Activity },
+  { title: "Health", path: "/health", icon: Heart },
+  { title: "Health Tracker", path: "/health-tracker", icon: Activity },
   { title: "Calendar", path: "/calendar", icon: CalendarClock },
   { title: "Community", path: "/community", icon: MessageSquare },
   { title: "AI Intelligence", path: "/ai", icon: Bot },

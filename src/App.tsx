@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import Health from "./pages/Health";
+import HealthTracker from "./pages/HealthTracker";
 import Calendar from "./pages/Calendar";
 import Community from "./pages/Community";
 import AI from "./pages/AI";
@@ -28,13 +29,16 @@ import Recommendations from "./pages/discover/Recommendations";
 import Saved from "./pages/discover/Saved";
 
 // Health sub-pages
-import VitanaIndex from "./pages/health/VitanaIndex";
-import Nutrition from "./pages/health/Nutrition";
-import Hydration from "./pages/health/Hydration";
-import Sleep from "./pages/health/Sleep";
-import Exercise from "./pages/health/Exercise";
-import MentalHealth from "./pages/health/MentalHealth";
-import Trends from "./pages/health/Trends";
+import PillarsOfHealth from "./pages/health/PillarsOfHealth";
+import WellnessServices from "./pages/health/WellnessServices";
+import ConditionsRisks from "./pages/health/ConditionsRisks";
+import EducationResources from "./pages/health/EducationResources";
+
+// Health Tracker sub-pages
+import MyVitanaIndex from "./pages/healthtracker/MyVitanaIndex";
+import ConnectedDevices from "./pages/healthtracker/ConnectedDevices";
+import DailyWeeklyTracking from "./pages/healthtracker/DailyWeeklyTracking";
+import ProgressGoals from "./pages/healthtracker/ProgressGoals";
 
 // Calendar sub-pages
 import Week from "./pages/calendar/Week";
@@ -93,14 +97,19 @@ const App = () => (
           <Route path="/discover/recommendations" element={<Recommendations />} />
           <Route path="/discover/saved" element={<Saved />} />
           
+          {/* Health routes */}
           <Route path="/health" element={<Health />} />
-          <Route path="/health/vitana-index" element={<VitanaIndex />} />
-          <Route path="/health/nutrition" element={<Nutrition />} />
-          <Route path="/health/hydration" element={<Hydration />} />
-          <Route path="/health/sleep" element={<Sleep />} />
-          <Route path="/health/exercise" element={<Exercise />} />
-          <Route path="/health/mental-health" element={<MentalHealth />} />
-          <Route path="/health/trends" element={<Trends />} />
+          <Route path="/health/pillars" element={<PillarsOfHealth />} />
+          <Route path="/health/services" element={<WellnessServices />} />
+          <Route path="/health/conditions" element={<ConditionsRisks />} />
+          <Route path="/health/education" element={<EducationResources />} />
+          
+          {/* Health Tracker routes */}
+          <Route path="/health-tracker" element={<HealthTracker />} />
+          <Route path="/health-tracker/vitana-index" element={<MyVitanaIndex />} />
+          <Route path="/health-tracker/devices" element={<ConnectedDevices />} />
+          <Route path="/health-tracker/tracking" element={<DailyWeeklyTracking />} />
+          <Route path="/health-tracker/progress" element={<ProgressGoals />} />
           
           {/* Calendar routes */}
           <Route path="/calendar" element={<Calendar />} />
