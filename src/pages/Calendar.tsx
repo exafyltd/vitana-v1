@@ -91,9 +91,9 @@ export default function Calendar() {
     <AppLayout>
       <SEO title="Calendar" description="Manage your schedule, appointments, and events" canonical={window.location.href} />
       <SubNavigation items={calendarSubItems} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-calendar-background via-calendar-primary-light/10 to-calendar-secondary/10 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
+          <div className="bg-calendar-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-calendar-primary/20 mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-2">Plan your perfect wellness day! 📅</h1>
             <p className="text-muted-foreground">Organize your wellness schedule, track important appointments, and never miss a wellness opportunity.</p>
           </div>
@@ -102,12 +102,12 @@ export default function Calendar() {
             {categoryCards.map((card) => (
               <Card 
                 key={card.id}
-                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white/80 backdrop-blur-sm border border-white/20"
+                className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 bg-calendar-card/90 backdrop-blur-sm border border-calendar-primary/10 hover:border-calendar-primary/30"
                 onClick={() => navigate(card.path)}
               >
                 <CardContent className="p-6">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-4`}>
-                    <card.icon className="w-6 h-6 text-gray-700" />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-calendar-primary to-calendar-secondary flex items-center justify-center mb-4">
+                    <card.icon className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground mb-2">{card.title}</h3>
                   <p className="text-muted-foreground text-sm">{card.description}</p>

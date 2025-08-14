@@ -38,6 +38,17 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
+    /* Calendar-specific colors inspired by reference designs */
+    --calendar-primary: 280 100% 70%;
+    --calendar-primary-light: 280 100% 85%;
+    --calendar-secondary: 320 100% 75%;
+    --calendar-accent: 45 100% 60%;
+    --calendar-success: 150 100% 45%;
+    --calendar-background: 280 50% 98%;
+    --calendar-card: 0 0% 100%;
+    --calendar-gradient-start: 280 100% 70%;
+    --calendar-gradient-end: 320 100% 75%;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -94,6 +105,17 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Calendar dark mode colors */
+    --calendar-primary: 280 100% 60%;
+    --calendar-primary-light: 280 100% 75%;
+    --calendar-secondary: 320 100% 65%;
+    --calendar-accent: 45 100% 50%;
+    --calendar-success: 150 100% 35%;
+    --calendar-background: 280 30% 8%;
+    --calendar-card: 280 20% 12%;
+    --calendar-gradient-start: 280 100% 60%;
+    --calendar-gradient-end: 320 100% 65%;
     
     /* Ruby red for streaming */
     --ruby: 339 89% 49%;

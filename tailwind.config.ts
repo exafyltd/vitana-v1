@@ -62,7 +62,16 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				ruby: 'hsl(var(--ruby))'
+				ruby: 'hsl(var(--ruby))',
+				calendar: {
+					primary: 'hsl(var(--calendar-primary))',
+					'primary-light': 'hsl(var(--calendar-primary-light))',
+					secondary: 'hsl(var(--calendar-secondary))',
+					accent: 'hsl(var(--calendar-accent))',
+					success: 'hsl(var(--calendar-success))',
+					background: 'hsl(var(--calendar-background))',
+					card: 'hsl(var(--calendar-card))'
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

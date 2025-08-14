@@ -134,19 +134,19 @@ export default function Month() {
           className={`
             cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-105 min-h-24
             ${isToday ? 'ring-2 ring-primary' : ''}
-            ${status === 'goal-fit' ? 'bg-green-50 border-green-200' : ''}
-            ${status === 'overload' ? 'bg-red-50 border-red-200' : ''}
-            ${selectedDay === day ? 'bg-primary/10 border-primary' : ''}
+            ${status === 'goal-fit' ? 'bg-calendar-success/10 border-calendar-success' : ''}
+            ${status === 'overload' ? 'bg-red-50 border-red-300' : ''}
+            ${selectedDay === day ? 'bg-calendar-primary/10 border-calendar-primary' : ''}
           `}
           onClick={() => setSelectedDay(selectedDay === day ? null : day)}
         >
           <CardContent className="p-2">
             <div className="flex justify-between items-start mb-1">
-              <span className={`text-sm font-medium ${isToday ? 'text-primary' : ''}`}>
+              <span className={`text-sm font-medium ${isToday ? 'text-calendar-primary' : ''}`}>
                 {day}
               </span>
               {eventCount > 0 && (
-                <Badge variant="secondary" className="text-xs h-5 w-5 p-0 flex items-center justify-center">
+                <Badge variant="secondary" className="text-xs h-5 w-5 p-0 flex items-center justify-center bg-calendar-primary text-white">
                   {eventCount > 3 ? '3+' : eventCount}
                 </Badge>
               )}
@@ -156,7 +156,7 @@ export default function Month() {
             <div className="space-y-1">
               {eventCount > 0 && mockEvents.slice(0, Math.min(3, eventCount)).map((event, idx) => (
                 <div key={idx} className="flex items-center gap-1 text-xs">
-                  <div className="w-2 h-2 rounded-full bg-primary/60"></div>
+                  <div className="w-2 h-2 rounded-full bg-calendar-primary"></div>
                   <span className="truncate">{event.title}</span>
                 </div>
               ))}
@@ -186,10 +186,10 @@ export default function Month() {
       />
       <SubNavigation items={calendarSubItems} />
       
-      <div className="p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-calendar-background via-calendar-primary/5 to-calendar-secondary/5 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 mb-6">
+          <div className="bg-calendar-card/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-calendar-primary/20 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -223,22 +223,22 @@ export default function Month() {
             {/* AI Insights */}
             <div className="mt-4 flex gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-green-200"></div>
+                <div className="w-3 h-3 rounded-full bg-calendar-success"></div>
                 <span>Goal Fit Days</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-200"></div>
+                <div className="w-3 h-3 rounded-full bg-red-400"></div>
                 <span>Overload Days</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-gray-200"></div>
+                <div className="w-3 h-3 rounded-full bg-gray-300"></div>
                 <span>Free Days</span>
               </div>
             </div>
           </div>
 
           {/* Calendar Grid */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+          <div className="bg-calendar-card/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-calendar-primary/20">
             <div className="grid grid-cols-7 gap-2">
               {renderCalendarGrid()}
             </div>
@@ -246,7 +246,7 @@ export default function Month() {
 
           {/* Day Drawer - appears when day is selected */}
           {selectedDay && (
-            <Card className="mt-6 bg-white/90 backdrop-blur-sm border border-white/20">
+            <Card className="mt-6 bg-calendar-card/90 backdrop-blur-sm border border-calendar-primary/20">
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4">
                   {monthNames[currentDate.getMonth()]} {selectedDay}, {currentDate.getFullYear()}
