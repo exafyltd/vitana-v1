@@ -3,7 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 
 const discoverSubItems = [
-  { id: "explore", name: "Explore", path: "/discover" },
+  { id: "overview", name: "Overview", path: "/discover" },
   { id: "trending", name: "Trending", path: "/discover/trending" },
   { id: "recommendations", name: "Recommendations", path: "/discover/recommendations" },
   { id: "saved", name: "Saved", path: "/discover/saved" },

@@ -3,7 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 
 const communitySubItems = [
-  { id: "feed", name: "Feed", path: "/community" },
+  { id: "overview", name: "Overview", path: "/community" },
   { id: "matchmaking", name: "Matchmaking", path: "/community/matchmaking" },
   { id: "groups", name: "Groups", path: "/community/groups" },
   { id: "meetups", name: "Meetups", path: "/community/meetups" },

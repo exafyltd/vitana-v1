@@ -3,7 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 
 const messagesSubItems = [
-  { id: "inbox", name: "Inbox", path: "/messages" },
+  { id: "overview", name: "Overview", path: "/messages" },
   { id: "direct", name: "Direct Messages", path: "/messages/direct" },
   { id: "group", name: "Group Chats", path: "/messages/group" },
   { id: "notifications", name: "Notifications", path: "/messages/notifications" },

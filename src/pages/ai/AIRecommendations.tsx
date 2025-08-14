@@ -3,7 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 
 const aiSubItems = [
-  { id: "chat", name: "AI Chat", path: "/ai" },
+  { id: "overview", name: "Overview", path: "/ai" },
   { id: "insights", name: "Insights", path: "/ai/insights" },
   { id: "recommendations", name: "Recommendations", path: "/ai/recommendations" },
   { id: "daily-summary", name: "Daily Summary", path: "/ai/daily-summary" },

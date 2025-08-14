@@ -3,7 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 
 const calendarSubItems = [
-  { id: "month", name: "Month View", path: "/calendar" },
+  { id: "overview", name: "Overview", path: "/calendar" },
   { id: "week", name: "Week View", path: "/calendar/week" },
   { id: "day", name: "Day View", path: "/calendar/day" },
   { id: "appointments", name: "Appointments", path: "/calendar/appointments" },

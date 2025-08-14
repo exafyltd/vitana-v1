@@ -3,7 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 
 const settingsSubItems = [
-  { id: "account", name: "Account", path: "/settings" },
+  { id: "overview", name: "Overview", path: "/settings" },
   { id: "privacy", name: "Privacy", path: "/settings/privacy" },
   { id: "notifications", name: "Notifications", path: "/settings/notifications" },
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },
