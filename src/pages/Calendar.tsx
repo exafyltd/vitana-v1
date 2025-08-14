@@ -7,11 +7,14 @@ import { Calendar as CalendarIcon, Clock, Users, Bell } from "lucide-react";
 
 const calendarSubItems = [
   { id: "overview", name: "Overview", path: "/calendar" },
+  { id: "month", name: "Month View", path: "/calendar/month" },
   { id: "week", name: "Week View", path: "/calendar/week" },
   { id: "day", name: "Day View", path: "/calendar/day" },
   { id: "appointments", name: "Appointments", path: "/calendar/appointments" },
-  { id: "events", name: "Events", path: "/calendar/events" },
   { id: "reminders", name: "Reminders", path: "/calendar/reminders" },
+  { id: "motivation", name: "Motivation", path: "/calendar/motivation" },
+  { id: "progress", name: "Goal Progress", path: "/calendar/progress" },
+  { id: "recommendations", name: "Recommendations", path: "/calendar/recommendations" },
 ];
 
 export default function Calendar() {
@@ -19,44 +22,68 @@ export default function Calendar() {
 
   const categoryCards = [
     {
+      id: "month",
+      title: "Month View",
+      description: "Macro overview with goal alignment insights",
+      icon: CalendarIcon,
+      path: "/calendar/month",
+      color: "from-blue-100 to-indigo-100"
+    },
+    {
       id: "week",
       title: "Week View",
-      description: "See your weekly schedule at a glance",
-      icon: CalendarIcon,
+      description: "Workload control with time slots",
+      icon: Clock,
       path: "/calendar/week",
-      color: "from-blue-100 to-indigo-100"
+      color: "from-green-100 to-emerald-100"
     },
     {
       id: "day",
       title: "Day View", 
-      description: "Focus on today's agenda",
-      icon: Clock,
-      path: "/calendar/day",
-      color: "from-green-100 to-emerald-100"
-    },
-    {
-      id: "appointments",
-      title: "Appointments",
-      description: "Manage your wellness appointments",
+      description: "Focus mode for executing daily plans",
       icon: Users,
-      path: "/calendar/appointments",
+      path: "/calendar/day",
       color: "from-purple-100 to-violet-100"
     },
     {
-      id: "events",
-      title: "Events",
-      description: "Track wellness events and activities",
+      id: "appointments",
+      title: "Appointment View",
+      description: "Deep dive into meeting details",
       icon: CalendarIcon,
-      path: "/calendar/events",
+      path: "/calendar/appointments",
       color: "from-orange-100 to-amber-100"
     },
     {
       id: "reminders",
-      title: "Reminders",
-      description: "Never miss important wellness tasks",
+      title: "Reminder View",
+      description: "Task anchor for goal alignment",
       icon: Bell,
       path: "/calendar/reminders",
       color: "from-pink-100 to-rose-100"
+    },
+    {
+      id: "motivation",
+      title: "Motivation & Inspiration",
+      description: "Mindset boost with curated content",
+      icon: Users,
+      path: "/calendar/motivation",
+      color: "from-yellow-100 to-amber-100"
+    },
+    {
+      id: "progress",
+      title: "Goal Progress",
+      description: "Milestone tracker and alignment meter",
+      icon: CalendarIcon,
+      path: "/calendar/progress",
+      color: "from-emerald-100 to-green-100"
+    },
+    {
+      id: "recommendations",
+      title: "Recommendations",
+      description: "AI-curated events for growth & networking",
+      icon: Bell,
+      path: "/calendar/recommendations",
+      color: "from-violet-100 to-purple-100"
     }
   ];
 

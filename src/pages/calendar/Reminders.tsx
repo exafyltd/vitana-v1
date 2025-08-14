@@ -4,11 +4,14 @@ import SubNavigation from "@/components/SubNavigation";
 
 const calendarSubItems = [
   { id: "overview", name: "Overview", path: "/calendar" },
+  { id: "month", name: "Month View", path: "/calendar/month" },
   { id: "week", name: "Week View", path: "/calendar/week" },
   { id: "day", name: "Day View", path: "/calendar/day" },
   { id: "appointments", name: "Appointments", path: "/calendar/appointments" },
-  { id: "events", name: "Events", path: "/calendar/events" },
   { id: "reminders", name: "Reminders", path: "/calendar/reminders" },
+  { id: "motivation", name: "Motivation", path: "/calendar/motivation" },
+  { id: "progress", name: "Goal Progress", path: "/calendar/progress" },
+  { id: "recommendations", name: "Recommendations", path: "/calendar/recommendations" },
 ];
 
 export default function Reminders() {
