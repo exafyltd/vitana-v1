@@ -48,8 +48,8 @@ import Appointments from "./pages/calendar/Appointments";
 import Events from "./pages/calendar/Events";
 import Reminders from "./pages/calendar/Reminders";
 import Motivation from "./pages/calendar/Motivation";
-import Progress from "./pages/calendar/Progress";
-import Recommendations from "./pages/calendar/Recommendations";
+import CalendarProgress from "./pages/calendar/Progress";
+import CalendarRecommendations from "./pages/calendar/Recommendations";
 
 // Community sub-pages
 import Matchmaking from "./pages/community/Matchmaking";
@@ -124,8 +124,8 @@ const App = () => (
           <Route path="/calendar/events" element={<Events />} />
           <Route path="/calendar/reminders" element={<Reminders />} />
           <Route path="/calendar/motivation" element={<Motivation />} />
-          <Route path="/calendar/progress" element={<Progress />} />
-          <Route path="/calendar/recommendations" element={<Recommendations />} />
+          <Route path="/calendar/progress" element={<CalendarProgress />} />
+          <Route path="/calendar/recommendations" element={<CalendarRecommendations />} />
           
           <Route path="/community" element={<Community />} />
           <Route path="/community/matchmaking" element={<Matchmaking />} />
