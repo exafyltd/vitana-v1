@@ -45,18 +45,18 @@ import Month from "./pages/calendar/Month";
 import Week from "./pages/calendar/Week";
 import Day from "./pages/calendar/Day";
 import Appointments from "./pages/calendar/Appointments";
-import Events from "./pages/calendar/Events";
+import CalendarEvents from "./pages/calendar/Events";
 import Reminders from "./pages/calendar/Reminders";
 import Motivation from "./pages/calendar/Motivation";
 import CalendarProgress from "./pages/calendar/Progress";
 import CalendarRecommendations from "./pages/calendar/Recommendations";
 
 // Community sub-pages
-import Matchmaking from "./pages/community/Matchmaking";
-import Groups from "./pages/community/Groups";
-import Meetups from "./pages/community/Meetups";
-import LiveRooms from "./pages/community/LiveRooms";
-import Challenges from "./pages/community/Challenges";
+import MyGroups from "./pages/community/MyGroups";
+import CommunityEvents from "./pages/community/Events";
+import MediaHub from "./pages/community/MediaHub";
+import LiveInteraction from "./pages/community/LiveInteraction";
+import AIInsights from "./pages/community/AIInsights";
 
 // AI sub-pages
 import Insights from "./pages/ai/Insights";
@@ -121,18 +121,18 @@ const App = () => (
           <Route path="/calendar/week" element={<Week />} />
           <Route path="/calendar/day" element={<Day />} />
           <Route path="/calendar/appointments" element={<Appointments />} />
-          <Route path="/calendar/events" element={<Events />} />
+          <Route path="/calendar/events" element={<CalendarEvents />} />
           <Route path="/calendar/reminders" element={<Reminders />} />
           <Route path="/calendar/motivation" element={<Motivation />} />
           <Route path="/calendar/progress" element={<CalendarProgress />} />
           <Route path="/calendar/recommendations" element={<CalendarRecommendations />} />
           
           <Route path="/community" element={<Community />} />
-          <Route path="/community/matchmaking" element={<Matchmaking />} />
-          <Route path="/community/groups" element={<Groups />} />
-          <Route path="/community/meetups" element={<Meetups />} />
-          <Route path="/community/live-rooms" element={<LiveRooms />} />
-          <Route path="/community/challenges" element={<Challenges />} />
+          <Route path="/community/my-groups" element={<MyGroups />} />
+          <Route path="/community/events" element={<CommunityEvents />} />
+          <Route path="/community/media-hub" element={<MediaHub />} />
+          <Route path="/community/live-interaction" element={<LiveInteraction />} />
+          <Route path="/community/ai-insights" element={<AIInsights />} />
           
           <Route path="/ai" element={<AI />} />
           <Route path="/ai/insights" element={<Insights />} />
