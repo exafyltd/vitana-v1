@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TrendingUp, Star, Bookmark, MapPin, Clock, Users, Zap, Calendar, ShoppingCart, Heart, Filter, Stethoscope, Dumbbell, Music } from "lucide-react";
+import { TrendingUp, Star, Bookmark, MapPin, Clock, Users, Zap, Calendar, ShoppingCart, Heart, Filter, Stethoscope, Dumbbell, Music, Sparkles } from "lucide-react";
 
 const discoverSubItems = [
   { id: "overview", name: "Overview", path: "/discover" },
@@ -81,27 +81,83 @@ export default function Discover() {
     }
   ];
 
+  const aiRecommendations = [
+    {
+      id: 1,
+      title: "Sleep Optimization Program",
+      description: "AI-detected poor sleep patterns. 4-week program",
+      price: "$199",
+      match: 95,
+      provider: "Dr. Emily Chen",
+      image: "/public/placeholder.svg",
+      badge: "Perfect Match"
+    },
+    {
+      id: 2,
+      title: "Stress Management Coaching",
+      description: "1-on-1 sessions to reduce cortisol levels",
+      price: "$89",
+      match: 92,
+      provider: "Marcus Rodriguez",
+      image: "/public/placeholder.svg",
+      badge: "High Priority"
+    },
+    {
+      id: 3,
+      title: "Nutrition Reset Plan",
+      description: "Custom meal planning based on your goals",
+      price: "$149",
+      match: 88,
+      provider: "Luna Wellness",
+      image: "/public/placeholder.svg",
+      badge: "Great Match"
+    },
+    {
+      id: 4,
+      title: "Flexibility Training Kit",
+      description: "Equipment & guide to improve mobility scores",
+      price: "$79",
+      match: 85,
+      provider: "FlexFit Studio",
+      image: "/public/placeholder.svg",
+      badge: "Good Match"
+    },
+    {
+      id: 5,
+      title: "Mindfulness Course",
+      description: "8-week course to boost mental wellness",
+      price: "$129",
+      match: 83,
+      provider: "Zen Center",
+      image: "/public/placeholder.svg",
+      badge: "Recommended"
+    }
+  ];
+
   const quickActions = [
     {
-      title: "Book Blood Panel",
-      subtitle: "Annual longevity check: Today 2PM",
-      icon: Stethoscope,
-      action: "Book Now",
-      color: "bg-blue-500"
+      title: "Trending",
+      subtitle: "Most popular longevity services this week",
+      icon: TrendingUp,
+      action: "Explore",
+      color: "bg-orange-500",
+      path: "/discover/trending"
     },
     {
-      title: "Reorder Supplements",
-      subtitle: "Your NAD+ precursors are running low",
-      icon: ShoppingCart,
-      action: "Reorder",
-      color: "bg-green-500"
+      title: "AI Recommendations",
+      subtitle: "Personalized suggestions based on your data",
+      icon: Sparkles,
+      action: "View",
+      color: "bg-purple-500",
+      path: "/discover/recommendations"
     },
     {
-      title: "Join Longevity Challenge",
-      subtitle: "30-day healthy aging protocol starts Monday",
-      icon: Users,
-      action: "Join",
-      color: "bg-purple-500"
+      title: "Saved Items",
+      subtitle: "Your bookmarked favorites and wishlist",
+      icon: Heart,
+      action: "Browse",
+      color: "bg-pink-500",
+      path: "/discover/saved"
     }
   ];
 
@@ -135,6 +191,26 @@ export default function Discover() {
       nextAvailable: "Today 4PM",
       image: "/public/placeholder.svg",
       badge: "Near You"
+    },
+    {
+      id: 4,
+      name: "Peak Performance Lab",
+      specialty: "Biohacking & Optimization",
+      rating: 4.7,
+      reviews: 67,
+      nextAvailable: "Friday 10AM",
+      image: "/public/placeholder.svg",
+      badge: "New"
+    },
+    {
+      id: 5,
+      name: "Maya Wellness",
+      specialty: "Holistic Health Coaching",
+      rating: 4.9,
+      reviews: 123,
+      nextAvailable: "Monday 1PM",
+      image: "/public/placeholder.svg",
+      badge: "Popular"
     }
   ];
 
@@ -198,65 +274,114 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {featuredOffers.map((offer) => (
-                <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
                     <img 
                       src={offer.image} 
                       alt={offer.title}
-                      className="w-full h-32 object-cover rounded-t-lg"
+                      className="w-full h-40 object-cover rounded-t-lg"
                     />
-                    <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-8 w-8">
+                    <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7">
                       <Heart className="h-3 w-3" />
                     </Button>
-                  </div>
-                  <CardContent className="p-3 space-y-2">
                     {offer.originalPrice && (
-                      <Badge className="bg-red-500 text-white text-xs">
-                        Save {Math.round((1 - parseInt(offer.price.slice(1)) / parseInt(offer.originalPrice.slice(1))) * 100)}%
+                      <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1">
+                        -{Math.round((1 - parseInt(offer.price.slice(1)) / parseInt(offer.originalPrice.slice(1))) * 100)}%
                       </Badge>
                     )}
-                    <div className="flex items-start justify-between">
-                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">{offer.title}</h3>
-                      <div className="flex items-center gap-1 ml-2">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs text-muted-foreground">{offer.rating}</span>
+                  </div>
+                  <CardContent className="p-3 h-fit">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                          {offer.title}
+                        </h3>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs text-muted-foreground">{offer.rating}</span>
+                        </div>
                       </div>
-                    </div>
-                    <p className="text-xs text-muted-foreground line-clamp-2">{offer.description}</p>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-3 w-3 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground truncate">{offer.location}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
+                      <p className="text-xs text-muted-foreground line-clamp-2">{offer.description}</p>
                       <div className="flex items-center gap-1">
-                        <span className="text-sm font-bold text-foreground">{offer.price}</span>
-                        {offer.period && <span className="text-xs text-muted-foreground">{offer.period}</span>}
-                        {offer.originalPrice && (
-                          <span className="text-xs text-muted-foreground line-through">{offer.originalPrice}</span>
-                        )}
+                        <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                        <span className="text-xs text-muted-foreground truncate">{offer.location}</span>
                       </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-sm font-bold text-foreground">{offer.price}</span>
+                          {offer.period && <span className="text-xs text-muted-foreground">{offer.period}</span>}
+                          {offer.originalPrice && (
+                            <span className="text-xs text-muted-foreground line-through">{offer.originalPrice}</span>
+                          )}
+                        </div>
+                      </div>
+                      {offer.available && (
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3 w-3 text-green-500 flex-shrink-0" />
+                          <span className="text-xs text-green-600 truncate">{offer.available}</span>
+                        </div>
+                      )}
+                      <Button size="sm" className="w-full text-xs h-7 mt-2">Book Now</Button>
                     </div>
-                    {offer.available && (
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-3 w-3 text-green-500" />
-                        <span className="text-xs text-green-600">{offer.available}</span>
-                      </div>
-                    )}
-                    <Button size="sm" className="w-full text-xs h-7">Book Now</Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </section>
 
-          {/* Quick Actions */}
+          {/* AI Recommendations */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-6">Quick Actions</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-semibold text-foreground flex items-center gap-2">
+                <Sparkles className="h-6 w-6 text-purple-500" />
+                AI Recommendations for You
+              </h2>
+              <Button variant="outline" size="sm" onClick={() => navigate('/discover/recommendations')}>
+                View All
+              </Button>
+            </div>
+            <div className="grid grid-cols-5 gap-4">
+              {aiRecommendations.map((rec) => (
+                <Card key={rec.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit border-purple-200">
+                  <div className="relative">
+                    <img 
+                      src={rec.image} 
+                      alt={rec.title}
+                      className="w-full h-40 object-cover rounded-t-lg"
+                    />
+                    <Badge className="absolute top-2 left-2 bg-purple-500 text-white text-xs px-2 py-1">
+                      {rec.badge}
+                    </Badge>
+                    <div className="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1">
+                      <span className="text-xs font-bold text-purple-600">{rec.match}%</span>
+                    </div>
+                  </div>
+                  <CardContent className="p-3 h-fit">
+                    <div className="space-y-2">
+                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {rec.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{rec.description}</p>
+                      <div className="text-xs text-muted-foreground">{rec.provider}</div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-foreground">{rec.price}</span>
+                        <Button size="sm" className="text-xs h-7">Book Now</Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          {/* Quick Navigation */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-6">Quick Navigation</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {quickActions.map((action, index) => (
-                <Card key={index} className="hover:shadow-md transition-all cursor-pointer">
+                <Card key={index} className="hover:shadow-md transition-all cursor-pointer" onClick={() => navigate(action.path)}>
                   <CardContent className="p-4">
                     <div className="flex items-center gap-4">
                       <div className={`${action.color} p-3 rounded-lg`}>
@@ -282,22 +407,26 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {topProviders.map((provider) => (
-                <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <CardContent className="p-3">
-                    <div className="flex flex-col items-center text-center mb-3">
-                      <img 
-                        src={provider.image} 
-                        alt={provider.name}
-                        className="w-12 h-12 rounded-full object-cover mb-2"
-                      />
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-center gap-1">
-                          <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{provider.name}</h3>
-                          <Badge variant="secondary" className="text-xs">{provider.badge}</Badge>
-                        </div>
-                        <p className="text-xs text-muted-foreground">{provider.specialty}</p>
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <div className="relative">
+                        <img 
+                          src={provider.image} 
+                          alt={provider.name}
+                          className="w-16 h-16 rounded-full object-cover"
+                        />
+                        <Badge variant="secondary" className="absolute -top-1 -right-1 text-xs px-1 py-0">
+                          {provider.badge}
+                        </Badge>
+                      </div>
+                      <div className="space-y-1 w-full">
+                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                          {provider.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground line-clamp-1">{provider.specialty}</p>
                         <div className="flex items-center justify-center gap-2">
                           <div className="flex items-center gap-1">
                             <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
@@ -305,14 +434,12 @@ export default function Discover() {
                           </div>
                           <span className="text-xs text-muted-foreground">({provider.reviews})</span>
                         </div>
+                        <div className="flex items-center justify-center gap-1">
+                          <Clock className="h-3 w-3 text-green-500" />
+                          <span className="text-xs text-green-600 line-clamp-1">{provider.nextAvailable}</span>
+                        </div>
+                        <Button size="sm" className="w-full text-xs h-7 mt-2">Book Session</Button>
                       </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-center gap-1">
-                        <Clock className="h-3 w-3 text-green-500" />
-                        <span className="text-xs text-green-600">{provider.nextAvailable}</span>
-                      </div>
-                      <Button size="sm" className="w-full text-xs h-7">Book Session</Button>
                     </div>
                   </CardContent>
                 </Card>

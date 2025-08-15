@@ -161,45 +161,49 @@ export default function Recommendations() {
                 AI Powered
               </Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {personalizedMatches.map((match) => (
-                <Card key={match.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200">
+                <Card key={match.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200 h-fit">
                   <div className="relative">
                     <img 
                       src={match.image} 
                       alt={match.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-40 object-cover rounded-t-lg"
                     />
-                    <Badge className={`absolute top-3 left-3 ${
+                    <Badge className={`absolute top-2 left-2 text-xs px-2 py-1 ${
                       match.match >= 95 ? 'bg-green-500' : 
                       match.match >= 90 ? 'bg-blue-500' : 'bg-purple-500'
                     } text-white`}>
                       {match.badge}
                     </Badge>
-                    <div className="absolute top-3 right-3 bg-white/90 rounded-full px-2 py-1">
-                      <span className="text-sm font-bold text-purple-600">{match.match}% match</span>
+                    <div className="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1">
+                      <span className="text-xs font-bold text-purple-600">{match.match}%</span>
                     </div>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{match.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">{match.description}</p>
-                    <div className="bg-purple-50 p-3 rounded-lg mb-4">
-                      <div className="flex items-center gap-2">
-                        <Brain className="h-4 w-4 text-purple-500" />
-                        <span className="text-sm text-purple-700 font-medium">{match.reason}</span>
+                  <CardContent className="p-3 h-fit">
+                    <div className="space-y-2">
+                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {match.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{match.description}</p>
+                      <div className="bg-purple-50 p-2 rounded-lg">
+                        <div className="flex items-center gap-1">
+                          <Brain className="h-3 w-3 text-purple-500 flex-shrink-0" />
+                          <span className="text-xs text-purple-700 font-medium truncate">{match.reason}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="text-sm text-muted-foreground mb-3">{match.provider}</div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <Clock className="h-4 w-4 text-green-500" />
-                      <span className="text-sm text-green-600">{match.availableTime}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
+                      <div className="text-xs text-muted-foreground truncate">{match.provider}</div>
                       <div className="flex items-center gap-1">
-                        <span className="text-lg font-bold text-foreground">{match.price}</span>
-                        {match.period && <span className="text-sm text-muted-foreground">{match.period}</span>}
+                        <Clock className="h-3 w-3 text-green-500 flex-shrink-0" />
+                        <span className="text-xs text-green-600 truncate">{match.availableTime}</span>
                       </div>
-                      <Button size="sm">Book Now</Button>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-sm font-bold text-foreground">{match.price}</span>
+                          {match.period && <span className="text-xs text-muted-foreground">{match.period}</span>}
+                        </div>
+                        <Button size="sm" className="text-xs h-7">Book</Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -218,31 +222,35 @@ export default function Recommendations() {
                 Based on Vitana Index
               </Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {healthGoalBoosters.map((booster) => (
-                <Card key={booster.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <Card key={booster.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
                     <img 
                       src={booster.image} 
                       alt={booster.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-40 object-cover rounded-t-lg"
                     />
-                    <Badge className="absolute top-3 left-3 bg-blue-500 text-white">
+                    <Badge className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1">
                       {booster.goalType}
                     </Badge>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{booster.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">{booster.description}</p>
-                    <div className="bg-blue-50 p-3 rounded-lg mb-4">
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-blue-500" />
-                        <span className="text-sm text-blue-700 font-medium">Expected: {booster.improvement}</span>
+                  <CardContent className="p-3 h-fit">
+                    <div className="space-y-2">
+                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {booster.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{booster.description}</p>
+                      <div className="bg-blue-50 p-2 rounded-lg">
+                        <div className="flex items-center gap-1">
+                          <TrendingUp className="h-3 w-3 text-blue-500 flex-shrink-0" />
+                          <span className="text-xs text-blue-700 font-medium truncate">{booster.improvement}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-foreground">{booster.price}</span>
-                      <Button size="sm">Get Started</Button>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-foreground">{booster.price}</span>
+                        <Button size="sm" className="text-xs h-7">Start</Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

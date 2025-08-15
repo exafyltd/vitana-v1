@@ -280,80 +280,84 @@ export default function Saved() {
               <h2 className="text-2xl font-semibold text-foreground">Saved Products</h2>
               <Badge variant="outline">{savedProducts.length} items</Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {savedProducts.map((product) => (
-                <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
                     <img 
                       src={product.image} 
                       alt={product.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-40 object-cover rounded-t-lg"
                     />
                     {product.priceChange === "down" && (
-                      <Badge className="absolute top-3 left-3 bg-green-500 text-white">
+                      <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1">
                         <TrendingDown className="h-3 w-3 mr-1" />
-                        Price Drop!
+                        Drop!
                       </Badge>
                     )}
                     {product.priceChange === "up" && (
-                      <Badge className="absolute top-3 left-3 bg-red-500 text-white">
+                      <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1">
                         <TrendingUp className="h-3 w-3 mr-1" />
-                        Price Increase
+                        Up
                       </Badge>
                     )}
                     {!product.inStock && (
-                      <Badge className="absolute top-3 left-3 bg-gray-500 text-white">
-                        Out of Stock
+                      <Badge className="absolute top-2 left-2 bg-gray-500 text-white text-xs px-2 py-1">
+                        Out
                       </Badge>
                     )}
-                    <Button size="icon" variant="ghost" className="absolute top-3 right-3 bg-white/80 hover:bg-white">
-                      <Heart className="h-4 w-4 fill-pink-500 text-pink-500" />
+                    <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7">
+                      <Heart className="h-3 w-3 fill-pink-500 text-pink-500" />
                     </Button>
                   </div>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{product.title}</h3>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm text-muted-foreground">{product.rating}</span>
+                  <CardContent className="p-3 h-fit">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                          {product.title}
+                        </h3>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs text-muted-foreground">{product.rating}</span>
+                        </div>
                       </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">{product.description}</p>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className={`text-lg font-bold ${
-                          product.priceChange === "down" ? "text-green-600" : 
-                          product.priceChange === "up" ? "text-red-600" : "text-foreground"
-                        }`}>
-                          {product.price}
-                        </span>
-                        {product.priceChange === "down" && (
-                          <span className="text-sm text-muted-foreground line-through">{product.originalPrice}</span>
-                        )}
+                      <p className="text-xs text-muted-foreground line-clamp-2">{product.description}</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-baseline gap-1">
+                          <span className={`text-sm font-bold ${
+                            product.priceChange === "down" ? "text-green-600" : 
+                            product.priceChange === "up" ? "text-red-600" : "text-foreground"
+                          }`}>
+                            {product.price}
+                          </span>
+                          {product.priceChange === "down" && (
+                            <span className="text-xs text-muted-foreground line-through">{product.originalPrice}</span>
+                          )}
+                        </div>
                         {product.savings && (
                           <Badge variant="outline" className="text-green-600 border-green-200 text-xs">
-                            Save {product.savings}
+                            -{product.savings}
                           </Badge>
                         )}
                       </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground mb-3">Saved {product.savedDate}</div>
-                    {product.inStock ? (
-                      <Button className="w-full" size="sm">
-                        <ShoppingCart className="h-4 w-4 mr-2" />
-                        Add to Cart
-                      </Button>
-                    ) : (
-                      <div>
-                        <Button className="w-full mb-2" size="sm" variant="outline" disabled>
-                          <AlertCircle className="h-4 w-4 mr-2" />
-                          Out of Stock
+                      <div className="text-xs text-muted-foreground">Saved {product.savedDate}</div>
+                      {product.inStock ? (
+                        <Button size="sm" className="w-full text-xs h-7 mt-2">
+                          <ShoppingCart className="h-3 w-3 mr-1" />
+                          Add to Cart
                         </Button>
-                        <div className="text-xs text-center text-muted-foreground">
-                          Restocking {product.restockDate}
+                      ) : (
+                        <div className="space-y-1">
+                          <Button size="sm" className="w-full text-xs h-7" variant="outline" disabled>
+                            <AlertCircle className="h-3 w-3 mr-1" />
+                            Out of Stock
+                          </Button>
+                          <div className="text-xs text-center text-muted-foreground">
+                            Restocking {product.restockDate}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -366,44 +370,48 @@ export default function Saved() {
               <h2 className="text-2xl font-semibold text-foreground">Saved Services</h2>
               <Badge variant="outline">{savedServices.length} services</Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {savedServices.map((service) => (
-                <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
                     <img 
                       src={service.image} 
                       alt={service.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-40 object-cover rounded-t-lg"
                     />
-                    <Button size="icon" variant="ghost" className="absolute top-3 right-3 bg-white/80 hover:bg-white">
-                      <Heart className="h-4 w-4 fill-pink-500 text-pink-500" />
+                    <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7">
+                      <Heart className="h-3 w-3 fill-pink-500 text-pink-500" />
                     </Button>
                   </div>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{service.title}</h3>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm text-muted-foreground">{service.rating}</span>
+                  <CardContent className="p-3 h-fit">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                          {service.title}
+                        </h3>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs text-muted-foreground">{service.rating}</span>
+                        </div>
                       </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">{service.description}</p>
-                    <div className="flex items-center gap-2 mb-3">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{service.provider}</span>
-                    </div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Clock className="h-4 w-4 text-green-500" />
-                      <span className="text-sm text-green-600">{service.nextAvailable}</span>
-                    </div>
-                    <div className="text-xs text-muted-foreground mb-3">Saved {service.savedDate}</div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-foreground">{service.price}</span>
-                      <Button size="sm">
-                        <Calendar className="h-4 w-4 mr-2" />
-                        Book Now
-                      </Button>
-                    </div>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{service.description}</p>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                        <span className="text-xs text-muted-foreground truncate">{service.provider}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-green-500 flex-shrink-0" />
+                        <span className="text-xs text-green-600 truncate">{service.nextAvailable}</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground">Saved {service.savedDate}</div>
+                       <div className="flex items-center justify-between">
+                         <span className="text-sm font-bold text-foreground">{service.price}</span>
+                         <Button size="sm" className="text-xs h-7">
+                           <Calendar className="h-3 w-3 mr-1" />
+                           Book
+                         </Button>
+                       </div>
+                     </div>
                   </CardContent>
                 </Card>
               ))}

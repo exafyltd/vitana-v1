@@ -163,49 +163,53 @@ export default function Trending() {
                 Hot This Week
               </Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {trendingServices.map((service) => (
-                <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
                     <img 
                       src={service.image} 
                       alt={service.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-40 object-cover rounded-t-lg"
                     />
-                    <Badge className="absolute top-3 left-3 bg-orange-500 text-white">
+                    <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1">
                       <TrendingUp className="h-3 w-3 mr-1" />
                       {service.trend}
                     </Badge>
-                    <Button size="icon" variant="ghost" className="absolute top-3 right-3 bg-white/80 hover:bg-white">
-                      <Heart className="h-4 w-4" />
+                    <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7">
+                      <Heart className="h-3 w-3" />
                     </Button>
                   </div>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{service.title}</h3>
+                  <CardContent className="p-3 h-fit">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                          {service.title}
+                        </h3>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs text-muted-foreground">{service.rating}</span>
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{service.description}</p>
                       <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm text-muted-foreground">{service.rating}</span>
+                        <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                        <span className="text-xs text-muted-foreground truncate">{service.location}</span>
                       </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">{service.description}</p>
-                    <div className="flex items-center gap-2 mb-3">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{service.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <Users className="h-4 w-4 text-green-500" />
-                      <span className="text-sm text-green-600">{service.bookings} bookings this week</span>
-                    </div>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-lg font-bold text-foreground">{service.price}</span>
-                      <div className="flex gap-1">
-                        {service.timeSlots.map((time) => (
-                          <Badge key={time} variant="outline" className="text-xs">{time}</Badge>
-                        ))}
+                      <div className="flex items-center gap-1">
+                        <Users className="h-3 w-3 text-green-500 flex-shrink-0" />
+                        <span className="text-xs text-green-600 truncate">{service.bookings} bookings</span>
                       </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-foreground">{service.price}</span>
+                        <div className="flex gap-1">
+                          {service.timeSlots.slice(0, 2).map((time) => (
+                            <Badge key={time} variant="outline" className="text-xs px-1">{time}</Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <Button size="sm" className="w-full text-xs h-7 mt-2">Book Now</Button>
                     </div>
-                    <Button className="w-full">Book Now</Button>
                   </CardContent>
                 </Card>
               ))}
@@ -274,36 +278,40 @@ export default function Trending() {
               <h2 className="text-2xl font-semibold text-foreground">Top-Selling Products</h2>
               <Button variant="outline" size="sm">View All Products</Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {trendingProducts.map((product) => (
-                <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
                     <img 
                       src={product.image} 
                       alt={product.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-40 object-cover rounded-t-lg"
                     />
-                    <Badge className="absolute top-3 left-3 bg-green-500 text-white">
+                    <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1">
                       <TrendingUp className="h-3 w-3 mr-1" />
                       {product.trend}
                     </Badge>
                   </div>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{product.title}</h3>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm text-muted-foreground">{product.rating}</span>
+                  <CardContent className="p-3 h-fit">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                          {product.title}
+                        </h3>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs text-muted-foreground">{product.rating}</span>
+                        </div>
                       </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">{product.description}</p>
-                    <div className="flex items-center gap-2 mb-4">
-                      <Users className="h-4 w-4 text-blue-500" />
-                      <span className="text-sm text-blue-600">{product.orders} orders this month</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-foreground">{product.price}</span>
-                      <Button size="sm">Add to Cart</Button>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{product.description}</p>
+                      <div className="flex items-center gap-1">
+                        <Users className="h-3 w-3 text-blue-500 flex-shrink-0" />
+                        <span className="text-xs text-blue-600 truncate">{product.orders} orders</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-foreground">{product.price}</span>
+                        <Button size="sm" className="text-xs h-7">Add to Cart</Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
