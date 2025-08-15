@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Star, Bookmark, MapPin, Clock, Users, Zap, Calendar, ShoppingCart, Heart } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { TrendingUp, Star, Bookmark, MapPin, Clock, Users, Zap, Calendar, ShoppingCart, Heart, Filter, Stethoscope, Dumbbell, Music } from "lucide-react";
 
 const discoverSubItems = [
   { id: "overview", name: "Overview", path: "/discover" },
@@ -20,57 +21,84 @@ export default function Discover() {
   const featuredOffers = [
     {
       id: 1,
-      title: "Summer Wellness Retreat",
-      description: "7-day mindfulness and yoga retreat in Bali",
-      price: "$1,299",
-      originalPrice: "$1,599",
+      title: "Longevity Health Assessment",
+      description: "Complete biomarker analysis & optimization plan",
+      price: "$299",
+      originalPrice: "$399",
       image: "/public/placeholder.svg",
       rating: 4.9,
-      location: "Bali, Indonesia",
-      available: "Starting July 15"
+      location: "NYC Longevity Center",
+      available: "Next week",
+      category: "doctor"
     },
     {
       id: 2,
-      title: "Personal Health Coach",
-      description: "1-on-1 wellness coaching with certified expert",
-      price: "$89",
+      title: "NAD+ IV Therapy",
+      description: "Cellular regeneration therapy session",
+      price: "$189",
       period: "/session",
       image: "/public/placeholder.svg",
       rating: 4.8,
-      location: "Online/Local",
-      available: "Available today"
+      location: "Wellness Clinic",
+      available: "Available today",
+      category: "therapy"
     },
     {
       id: 3,
-      title: "Meditation Starter Kit",
-      description: "Complete package with cushion, crystals & guide",
-      price: "$149",
-      originalPrice: "$199",
+      title: "Red Light Therapy Device",
+      description: "Professional-grade home photobiomodulation",
+      price: "$599",
+      originalPrice: "$799",
       image: "/public/placeholder.svg",
       rating: 4.7,
       inStock: true,
-      shipping: "Free shipping"
+      shipping: "Free shipping",
+      category: "product"
+    },
+    {
+      id: 4,
+      title: "Functional Fitness Training",
+      description: "Movement patterns for longevity & vitality",
+      price: "$75",
+      period: "/session",
+      image: "/public/placeholder.svg",
+      rating: 4.6,
+      location: "Online/Local",
+      available: "Tomorrow 9AM",
+      category: "fitness"
+    },
+    {
+      id: 5,
+      title: "Mindfulness for Longevity",
+      description: "Stress reduction techniques for healthy aging",
+      price: "$55",
+      period: "/session",
+      image: "/public/placeholder.svg",
+      rating: 4.8,
+      location: "Zen Wellness Center",
+      available: "Today 3PM",
+      category: "mental"
     }
   ];
 
   const quickActions = [
     {
-      title: "Book Massage",
-      subtitle: "Next available: Today 3PM",
-      icon: Calendar,
+      title: "Book Blood Panel",
+      subtitle: "Annual longevity check: Today 2PM",
+      icon: Stethoscope,
       action: "Book Now",
       color: "bg-blue-500"
     },
     {
-      title: "Order Supplements",
-      subtitle: "Your usual vitamin D is low",
+      title: "Reorder Supplements",
+      subtitle: "Your NAD+ precursors are running low",
       icon: ShoppingCart,
       action: "Reorder",
       color: "bg-green-500"
     },
     {
-      title: "Join Challenge",
-      subtitle: "30-day mindfulness starts Monday",
+      title: "Join Longevity Challenge",
+      subtitle: "30-day healthy aging protocol starts Monday",
       icon: Users,
       action: "Join",
       color: "bg-purple-500"
@@ -81,7 +109,7 @@ export default function Discover() {
     {
       id: 1,
       name: "Dr. Sarah Chen",
-      specialty: "Holistic Medicine",
+      specialty: "Longevity Medicine",
       rating: 4.9,
       reviews: 156,
       nextAvailable: "Today 2PM",
@@ -91,7 +119,7 @@ export default function Discover() {
     {
       id: 2,
       name: "Marcus Rodriguez",
-      specialty: "Fitness Coach",
+      specialty: "Functional Fitness",
       rating: 4.8,
       reviews: 89,
       nextAvailable: "Tomorrow 9AM",
@@ -101,7 +129,7 @@ export default function Discover() {
     {
       id: 3,
       name: "Luna Wellness Spa",
-      specialty: "Massage Therapy",
+      specialty: "Recovery Therapy",
       rating: 4.9,
       reviews: 234,
       nextAvailable: "Today 4PM",
@@ -118,8 +146,48 @@ export default function Discover() {
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
           <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Your Wellness Marketplace</h1>
-            <p className="text-muted-foreground">Discover services, products, and providers perfectly matched to your wellness journey.</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Your Longevity Marketplace</h1>
+            <p className="text-muted-foreground">Discover longevity services, products, and providers perfectly matched to your healthy aging journey.</p>
+            
+            {/* Quick Filters */}
+            <div className="flex flex-wrap gap-3 mt-4">
+              <Select>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="doctor">Doctors</SelectItem>
+                  <SelectItem value="therapy">Therapies</SelectItem>
+                  <SelectItem value="fitness">Fitness</SelectItem>
+                  <SelectItem value="mental">Mental Health</SelectItem>
+                  <SelectItem value="products">Products</SelectItem>
+                  <SelectItem value="hospitality">Hospitality</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger className="w-[120px]">
+                  <SelectValue placeholder="Location" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Locations</SelectItem>
+                  <SelectItem value="online">Online</SelectItem>
+                  <SelectItem value="local">Local</SelectItem>
+                  <SelectItem value="travel">Travel Required</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue placeholder="Price" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Prices</SelectItem>
+                  <SelectItem value="0-50">$0 - $50</SelectItem>
+                  <SelectItem value="50-150">$50 - $150</SelectItem>
+                  <SelectItem value="150+">$150+</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Featured Offers */}
@@ -130,53 +198,53 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {featuredOffers.map((offer) => (
                 <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                   <div className="relative">
                     <img 
                       src={offer.image} 
                       alt={offer.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-32 object-cover rounded-t-lg"
                     />
+                    <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-8 w-8">
+                      <Heart className="h-3 w-3" />
+                    </Button>
+                  </div>
+                  <CardContent className="p-3 space-y-2">
                     {offer.originalPrice && (
-                      <Badge className="absolute top-3 left-3 bg-red-500 text-white">
+                      <Badge className="bg-red-500 text-white text-xs">
                         Save {Math.round((1 - parseInt(offer.price.slice(1)) / parseInt(offer.originalPrice.slice(1))) * 100)}%
                       </Badge>
                     )}
-                    <Button size="icon" variant="ghost" className="absolute top-3 right-3 bg-white/80 hover:bg-white">
-                      <Heart className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{offer.title}</h3>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm text-muted-foreground">{offer.rating}</span>
+                    <div className="flex items-start justify-between">
+                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">{offer.title}</h3>
+                      <div className="flex items-center gap-1 ml-2">
+                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs text-muted-foreground">{offer.rating}</span>
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-3">{offer.description}</p>
-                    <div className="flex items-center gap-2 mb-3">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{offer.location}</span>
+                    <p className="text-xs text-muted-foreground line-clamp-2">{offer.description}</p>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground truncate">{offer.location}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg font-bold text-foreground">{offer.price}</span>
-                        {offer.period && <span className="text-sm text-muted-foreground">{offer.period}</span>}
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm font-bold text-foreground">{offer.price}</span>
+                        {offer.period && <span className="text-xs text-muted-foreground">{offer.period}</span>}
                         {offer.originalPrice && (
-                          <span className="text-sm text-muted-foreground line-through">{offer.originalPrice}</span>
+                          <span className="text-xs text-muted-foreground line-through">{offer.originalPrice}</span>
                         )}
                       </div>
-                      <Button size="sm">Book Now</Button>
                     </div>
                     {offer.available && (
-                      <div className="flex items-center gap-1 mt-2">
-                        <Clock className="h-4 w-4 text-green-500" />
-                        <span className="text-sm text-green-600">{offer.available}</span>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-green-500" />
+                        <span className="text-xs text-green-600">{offer.available}</span>
                       </div>
                     )}
+                    <Button size="sm" className="w-full text-xs h-7">Book Now</Button>
                   </CardContent>
                 </Card>
               ))}
@@ -214,37 +282,37 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {topProviders.map((provider) => (
                 <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-4 mb-4">
+                  <CardContent className="p-3">
+                    <div className="flex flex-col items-center text-center mb-3">
                       <img 
                         src={provider.image} 
                         alt={provider.name}
-                        className="w-16 h-16 rounded-full object-cover"
+                        className="w-12 h-12 rounded-full object-cover mb-2"
                       />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{provider.name}</h3>
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-center gap-1">
+                          <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{provider.name}</h3>
                           <Badge variant="secondary" className="text-xs">{provider.badge}</Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">{provider.specialty}</p>
-                        <div className="flex items-center gap-2">
+                        <p className="text-xs text-muted-foreground">{provider.specialty}</p>
+                        <div className="flex items-center justify-center gap-2">
                           <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm font-medium">{provider.rating}</span>
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            <span className="text-xs font-medium">{provider.rating}</span>
                           </div>
-                          <span className="text-sm text-muted-foreground">({provider.reviews} reviews)</span>
+                          <span className="text-xs text-muted-foreground">({provider.reviews})</span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4 text-green-500" />
-                        <span className="text-sm text-green-600">{provider.nextAvailable}</span>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-center gap-1">
+                        <Clock className="h-3 w-3 text-green-500" />
+                        <span className="text-xs text-green-600">{provider.nextAvailable}</span>
                       </div>
-                      <Button size="sm">Book Session</Button>
+                      <Button size="sm" className="w-full text-xs h-7">Book Session</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -257,8 +325,8 @@ export default function Discover() {
             <h2 className="text-2xl font-semibold text-foreground mb-6">Explore Categories</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { title: "Trending Now", description: "Most popular services this week", icon: TrendingUp, path: "/discover/trending", count: "42 new" },
-                { title: "For You", description: "AI-powered recommendations", icon: Star, path: "/discover/recommendations", count: "12 matches" },
+                { title: "Trending Now", description: "Most popular longevity services this week", icon: TrendingUp, path: "/discover/trending", count: "42 new" },
+                { title: "For You", description: "AI-powered longevity recommendations", icon: Star, path: "/discover/recommendations", count: "12 matches" },
                 { title: "Saved Items", description: "Your bookmarked favorites", icon: Bookmark, path: "/discover/saved", count: "8 items" }
               ].map((category) => (
                 <Card 

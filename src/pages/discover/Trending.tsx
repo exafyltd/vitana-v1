@@ -136,7 +136,7 @@ export default function Trending() {
 
   return (
     <AppLayout>
-      <SEO title="Trending | Discover" description="See what's trending now in wellness" canonical={window.location.href} />
+      <SEO title="Trending | Discover" description="See what's trending now in longevity" canonical={window.location.href} />
       <SubNavigation items={discoverSubItems} />
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
@@ -147,7 +147,7 @@ export default function Trending() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-foreground">Trending Now</h1>
-              <p className="text-muted-foreground">Most popular wellness services and products this week</p>
+              <p className="text-muted-foreground">Most popular longevity services and products this week</p>
             </div>
           </div>
 
@@ -163,7 +163,7 @@ export default function Trending() {
                 Hot This Week
               </Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {trendingServices.map((service) => (
                 <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                   <div className="relative">
@@ -274,7 +274,7 @@ export default function Trending() {
               <h2 className="text-2xl font-semibold text-foreground">Top-Selling Products</h2>
               <Button variant="outline" size="sm">View All Products</Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {trendingProducts.map((product) => (
                 <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                   <div className="relative">

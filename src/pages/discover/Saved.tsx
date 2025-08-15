@@ -146,7 +146,7 @@ export default function Saved() {
 
   return (
     <AppLayout>
-      <SEO title="Saved Items | Discover" description="Your saved wellness products and services" canonical={window.location.href} />
+      <SEO title="Saved Items | Discover" description="Your saved longevity products and services" canonical={window.location.href} />
       <SubNavigation items={discoverSubItems} />
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
@@ -157,7 +157,7 @@ export default function Saved() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-foreground">Saved Items</h1>
-              <p className="text-muted-foreground">Your bookmarked wellness products, services, and providers</p>
+              <p className="text-muted-foreground">Your bookmarked longevity products, services, and providers</p>
             </div>
           </div>
 
@@ -280,7 +280,7 @@ export default function Saved() {
               <h2 className="text-2xl font-semibold text-foreground">Saved Products</h2>
               <Badge variant="outline">{savedProducts.length} items</Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {savedProducts.map((product) => (
                 <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                   <div className="relative">
@@ -366,7 +366,7 @@ export default function Saved() {
               <h2 className="text-2xl font-semibold text-foreground">Saved Services</h2>
               <Badge variant="outline">{savedServices.length} services</Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {savedServices.map((service) => (
                 <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                   <div className="relative">

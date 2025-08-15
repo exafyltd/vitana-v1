@@ -134,7 +134,7 @@ export default function Recommendations() {
 
   return (
     <AppLayout>
-      <SEO title="Recommendations | Discover" description="AI-powered personalized wellness recommendations" canonical={window.location.href} />
+      <SEO title="Recommendations | Discover" description="AI-powered personalized longevity recommendations" canonical={window.location.href} />
       <SubNavigation items={discoverSubItems} />
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
@@ -145,7 +145,7 @@ export default function Recommendations() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-foreground">AI Recommendations</h1>
-              <p className="text-muted-foreground">Personalized wellness suggestions based on your data and goals</p>
+              <p className="text-muted-foreground">Personalized longevity suggestions based on your data and goals</p>
             </div>
           </div>
 
@@ -161,7 +161,7 @@ export default function Recommendations() {
                 AI Powered
               </Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {personalizedMatches.map((match) => (
                 <Card key={match.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200">
                   <div className="relative">
@@ -218,7 +218,7 @@ export default function Recommendations() {
                 Based on Vitana Index
               </Badge>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {healthGoalBoosters.map((booster) => (
                 <Card key={booster.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                   <div className="relative">
