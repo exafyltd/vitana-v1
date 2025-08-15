@@ -41,11 +41,15 @@ import DailyWeeklyTracking from "./pages/healthtracker/DailyWeeklyTracking";
 import ProgressGoals from "./pages/healthtracker/ProgressGoals";
 
 // Calendar sub-pages
+import Month from "./pages/calendar/Month";
 import Week from "./pages/calendar/Week";
 import Day from "./pages/calendar/Day";
 import Appointments from "./pages/calendar/Appointments";
 import Events from "./pages/calendar/Events";
 import Reminders from "./pages/calendar/Reminders";
+import Motivation from "./pages/calendar/Motivation";
+import Progress from "./pages/calendar/Progress";
+import Recommendations from "./pages/calendar/Recommendations";
 
 // Community sub-pages
 import Matchmaking from "./pages/community/Matchmaking";
@@ -113,11 +117,15 @@ const App = () => (
           
           {/* Calendar routes */}
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/calendar/month" element={<Month />} />
           <Route path="/calendar/week" element={<Week />} />
           <Route path="/calendar/day" element={<Day />} />
           <Route path="/calendar/appointments" element={<Appointments />} />
           <Route path="/calendar/events" element={<Events />} />
           <Route path="/calendar/reminders" element={<Reminders />} />
+          <Route path="/calendar/motivation" element={<Motivation />} />
+          <Route path="/calendar/progress" element={<Progress />} />
+          <Route path="/calendar/recommendations" element={<Recommendations />} />
           
           <Route path="/community" element={<Community />} />
           <Route path="/community/matchmaking" element={<Matchmaking />} />
