@@ -221,11 +221,9 @@ export default function Discover() {
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              Ready to discover something new today, Jovana? ✨
-            </h1>
-            <p className="text-muted-foreground">Your longevity marketplace awaits with services, products, and providers perfectly matched to your healthy aging journey</p>
+          <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm mb-6">
+            <h1 className="text-2xl font-semibold mb-4">Discover Overview</h1>
+            <p className="text-muted-foreground">Explore longevity products, services, and opportunities in our marketplace</p>
             
             {/* Quick Filters */}
             <div className="flex flex-wrap gap-3 mt-4">

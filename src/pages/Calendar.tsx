@@ -54,11 +54,9 @@ export default function Calendar() {
       <SubNavigation items={calendarSubItems} />
       <div className="p-6 space-y-6">
         {/* Header Summary */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Let's set you up for success today, Jovana! 📅
-          </h1>
-          <p className="text-muted-foreground">Your wellness schedule and progress overview for {todayFormatted}</p>
+        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm mb-6">
+          <h1 className="text-2xl font-semibold mb-4">Calendar Overview</h1>
+          <p className="text-muted-foreground">Manage appointments, events, and wellness activities all in one place</p>
         </div>
         
         <div className="rounded-xl border bg-card p-6 shadow-sm">
