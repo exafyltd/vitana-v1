@@ -47,12 +47,7 @@ export default function Messages() {
       <SubNavigation items={messagesSubItems} />
       
       <div className="p-6">
-        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm mb-6">
-          <h1 className="text-2xl font-semibold mb-4">Messages Overview</h1>
-          <p className="text-muted-foreground">Manage all your conversations, notifications, and community interactions</p>
-        </div>
-        
-        <div className="flex h-[calc(100vh-200px)]" style={{ gap: '24px' }}>
+        <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>
           {/* Left Panel - Activity Feed */}
           <Card className="w-80 flex flex-col">
             <CardHeader className="border-b">
