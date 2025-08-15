@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { MessageSquare, Users, Bell, Archive, Search, Phone, Video, MoreHorizontal, Send } from "lucide-react";
+import { MessageSquare, Users, Bell, Archive, Search, Phone, Video, MoreHorizontal, Send, TrendingUp, Clock, Settings, Shield, CheckCircle, AlertCircle, UserPlus } from "lucide-react";
 
 const messagesSubItems = [
   { id: "overview", name: "Overview", path: "/messages" },
@@ -17,13 +17,22 @@ const messagesSubItems = [
   { id: "archived", name: "Archived", path: "/messages/archived" },
 ];
 
-const recentChats = [
-  { id: 1, name: "Jennifer Ardy", message: "This new dashboard design, what do you think?", time: "9:12 am", avatar: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png", unread: 0, online: true },
-  { id: 2, name: "Tae Min", message: "Seems to be waiting for a reply to your message since 1 month ago", time: "1h", avatar: "", unread: 0, online: false },
-  { id: 3, name: "Se Hun oh", message: "Just Stop, I'm already late!!", time: "8m", avatar: "", unread: 0, online: true },
-  { id: 4, name: "Jong Dae", message: "Typing...", time: "6m", avatar: "", unread: 0, online: true },
-  { id: 5, name: "Murphy", message: "Time is running!", time: "1m", avatar: "", unread: 2, online: true },
+const recentActivity = [
+  { id: 1, type: "message", name: "Jennifer Ardy", content: "sent you a message", time: "2m ago", avatar: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png", urgent: false },
+  { id: 2, type: "call", name: "Tae Min", content: "missed call", time: "15m ago", avatar: "", urgent: true },
+  { id: 3, type: "group", name: "Design Team", content: "new message in group", time: "1h ago", avatar: "", urgent: false },
+  { id: 4, type: "invite", name: "Se Hun oh", content: "invited you to a meeting", time: "2h ago", avatar: "", urgent: false },
+  { id: 5, type: "message", name: "Murphy", content: "replied to your message", time: "3h ago", avatar: "", urgent: false },
 ];
+
+const stats = {
+  unreadDirect: 12,
+  unreadGroups: 8,
+  unreadNotifications: 24,
+  activeConversations: 7,
+  averageResponseTime: "2.5h",
+  dailyMessages: 43
+};
 
 export default function Messages() {
   const navigate = useNavigate();
@@ -39,45 +48,46 @@ export default function Messages() {
       
       <div className="p-6">
         <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>
-          {/* Left Sidebar - Chat List */}
+          {/* Left Panel - Activity Feed */}
           <Card className="w-80 flex flex-col">
             <CardHeader className="border-b">
               <div className="flex items-center gap-2 mb-4">
                 <Badge variant="default" className="gap-1">
-                  <MessageSquare className="h-3 w-3" />
-                  Chats
+                  <Clock className="h-3 w-3" />
+                  Recent Activity
                 </Badge>
               </div>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Search" className="pl-10" />
+                <Input placeholder="Search activity..." className="pl-10" />
               </div>
             </CardHeader>
             
             <CardContent className="flex-1 overflow-y-auto p-0">
-              {recentChats.map((chat) => (
-                <div key={chat.id} className="p-4 border-b hover:bg-muted/50 cursor-pointer transition-colors">
+              {recentActivity.map((activity) => (
+                <div key={activity.id} className="p-4 border-b hover:bg-muted/50 cursor-pointer transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="relative">
                       <Avatar className="h-10 w-10">
-                        <AvatarImage src={chat.avatar} />
-                        <AvatarFallback>{chat.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                        <AvatarImage src={activity.avatar} />
+                        <AvatarFallback>{activity.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                       </Avatar>
-                      {chat.online && (
-                        <div className="absolute -bottom-1 -right-1 h-3 w-3 bg-green-500 border-2 border-background rounded-full"></div>
-                      )}
+                      <div className={`absolute -bottom-1 -right-1 h-3 w-3 border-2 border-background rounded-full ${
+                        activity.type === 'message' ? 'bg-blue-500' :
+                        activity.type === 'call' ? 'bg-green-500' :
+                        activity.type === 'group' ? 'bg-purple-500' :
+                        'bg-orange-500'
+                      }`}></div>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <p className="font-medium truncate">{chat.name}</p>
-                        <span className="text-xs text-muted-foreground">{chat.time}</span>
+                        <p className="font-medium truncate">{activity.name}</p>
+                        <span className="text-xs text-muted-foreground">{activity.time}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground truncate">{chat.message}</p>
+                      <p className="text-sm text-muted-foreground truncate">{activity.content}</p>
                     </div>
-                    {chat.unread > 0 && (
-                      <Badge variant="default" className="h-5 w-5 p-0 text-xs rounded-full">
-                        {chat.unread}
-                      </Badge>
+                    {activity.urgent && (
+                      <AlertCircle className="h-4 w-4 text-orange-500" />
                     )}
                   </div>
                 </div>
@@ -85,118 +95,181 @@ export default function Messages() {
             </CardContent>
           </Card>
 
-          {/* Center - Chat Interface */}
+          {/* Center Panel - Dashboard */}
           <Card className="flex-1 flex flex-col">
             <CardHeader className="border-b">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src="/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png" />
-                    <AvatarFallback>JA</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium">Jennifer Ardy</p>
-                    <p className="text-sm text-muted-foreground">Time is running!</p>
-                  </div>
+                <div>
+                  <h2 className="text-lg font-semibold">Messages Dashboard</h2>
+                  <p className="text-sm text-muted-foreground">Overview of your communication activity</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon">
-                    <Phone className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon">
-                    <Video className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon">
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Button variant="outline" size="sm">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  New Chat
+                </Button>
               </div>
             </CardHeader>
             
-            <CardContent className="flex-1 overflow-y-auto bg-muted/20">
-              <div className="max-w-4xl mx-auto space-y-4">
-                <div className="text-center">
-                  <span className="text-xs text-muted-foreground bg-background px-3 py-1 rounded-full">TODAY</span>
-                </div>
-                
-                <div className="flex gap-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png" />
-                    <AvatarFallback>JA</AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-2">
-                    <div className="bg-card p-3 rounded-lg shadow-sm max-w-md">
-                      <p className="text-sm">Hey Jhon Lever!</p>
-                      <span className="text-xs text-muted-foreground">9:12 am</span>
+            <CardContent className="flex-1 overflow-y-auto p-6">
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <Card className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                      <MessageSquare className="h-5 w-5 text-blue-600" />
                     </div>
-                    <div className="bg-card p-3 rounded-lg shadow-sm max-w-md">
-                      <p className="text-sm">I am sending the dashboard design</p>
-                      <span className="text-xs text-muted-foreground">9:16 am</span>
+                    <div>
+                      <p className="text-2xl font-bold">{stats.unreadDirect}</p>
+                      <p className="text-sm text-muted-foreground">Unread Direct</p>
                     </div>
                   </div>
-                </div>
+                </Card>
                 
-                <div className="flex justify-end">
-                  <div className="bg-primary text-primary-foreground p-3 rounded-lg shadow-sm max-w-md">
-                    <p className="text-sm">I'm just looking around.</p>
-                    <span className="text-xs opacity-80">9:25 am</span>
+                <Card className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
+                      <Users className="h-5 w-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">{stats.unreadGroups}</p>
+                      <p className="text-sm text-muted-foreground">Unread Groups</p>
+                    </div>
+                  </div>
+                </Card>
+                
+                <Card className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+                      <TrendingUp className="h-5 w-5 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">{stats.activeConversations}</p>
+                      <p className="text-sm text-muted-foreground">Active Chats</p>
+                    </div>
+                  </div>
+                </Card>
+                
+                <Card className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-orange-100 dark:bg-orange-900 rounded-lg">
+                      <Clock className="h-5 w-5 text-orange-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">{stats.averageResponseTime}</p>
+                      <p className="text-sm text-muted-foreground">Avg Response</p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="space-y-4">
+                <h3 className="font-medium">Quick Actions</h3>
+                <div className="grid grid-cols-3 gap-3">
+                  <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => navigate('/messages/direct')}>
+                    <MessageSquare className="h-5 w-5" />
+                    <span className="text-xs">Direct Messages</span>
+                  </Button>
+                  <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => navigate('/messages/group')}>
+                    <Users className="h-5 w-5" />
+                    <span className="text-xs">Group Chats</span>
+                  </Button>
+                  <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => navigate('/messages/notifications')}>
+                    <Bell className="h-5 w-5" />
+                    <span className="text-xs">Notifications</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Daily Summary */}
+              <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+                <h4 className="font-medium mb-2">Today's Summary</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Messages sent</span>
+                    <span>{stats.dailyMessages}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Active conversations</span>
+                    <span>{stats.activeConversations}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Response rate</span>
+                    <span>89%</span>
                   </div>
                 </div>
               </div>
             </CardContent>
-            
-            <div className="p-4 border-t">
-              <div className="flex items-center gap-2">
-                <Input placeholder="Your messages..." className="flex-1" />
-                <Button size="icon">
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
           </Card>
 
-          {/* Right Sidebar - Profile */}
+          {/* Right Panel - Status Center */}
           <Card className="w-80">
             <CardContent className="p-6">
               <div className="text-center mb-6">
-                <Avatar className="h-20 w-20 mx-auto mb-4">
+                <Avatar className="h-16 w-16 mx-auto mb-3">
                   <AvatarImage src="/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png" />
                   <AvatarFallback>JL</AvatarFallback>
                 </Avatar>
                 <h3 className="font-semibold">Jhon Lever</h3>
-                <p className="text-sm text-muted-foreground">+1 (234) 567-890</p>
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-muted-foreground">Available</span>
+                </div>
               </div>
               
+              {/* Status Controls */}
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm font-medium mb-2">UI/UX designer are responsible for the overall design of a product, from its conception to its launch.</p>
-                  <Button variant="link" className="p-0 h-auto text-primary">Read more</Button>
+                  <h4 className="font-medium mb-3">Status Settings</h4>
+                  <div className="space-y-2">
+                    <Button variant="outline" size="sm" className="w-full justify-start">
+                      <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                      Available
+                    </Button>
+                    <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground">
+                      <Clock className="h-4 w-4 mr-2" />
+                      Away
+                    </Button>
+                    <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground">
+                      <AlertCircle className="h-4 w-4 mr-2" />
+                      Do Not Disturb
+                    </Button>
+                  </div>
                 </div>
-                
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Location</span>
-                    <span className="text-sm">United State</span>
+
+                <div>
+                  <h4 className="font-medium mb-3">Quick Access</h4>
+                  <div className="space-y-2">
+                    <Button variant="ghost" size="sm" className="w-full justify-start" onClick={() => navigate('/settings/preferences')}>
+                      <Settings className="h-4 w-4 mr-2" />
+                      Message Settings
+                    </Button>
+                    <Button variant="ghost" size="sm" className="w-full justify-start" onClick={() => navigate('/settings/privacy')}>
+                      <Shield className="h-4 w-4 mr-2" />
+                      Privacy Settings
+                    </Button>
+                    <Button variant="ghost" size="sm" className="w-full justify-start" onClick={() => navigate('/messages/archived')}>
+                      <Archive className="h-4 w-4 mr-2" />
+                      Archived Messages
+                    </Button>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Experience</span>
-                    <span className="text-sm">4+ years</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Applied as a</span>
-                    <span className="text-sm">CEO</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Company</span>
-                    <span className="text-sm">HR Management</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Work from</span>
-                    <span className="text-sm">Office</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Joining date</span>
-                    <span className="text-sm">Nov 01, 2023</span>
+                </div>
+
+                <div>
+                  <h4 className="font-medium mb-3">Communication Stats</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Total unread</span>
+                      <Badge variant="secondary">{stats.unreadDirect + stats.unreadGroups + stats.unreadNotifications}</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Active chats</span>
+                      <span>{stats.activeConversations}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Avg response</span>
+                      <span>{stats.averageResponseTime}</span>
+                    </div>
                   </div>
                 </div>
               </div>
