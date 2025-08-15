@@ -7,11 +7,11 @@ import { Heart, Users, MapPin, Radio, Trophy } from "lucide-react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
-  { id: "matchmaking", name: "Matchmaking", path: "/community/matchmaking" },
-  { id: "groups", name: "Groups", path: "/community/groups" },
-  { id: "meetups", name: "Meetups", path: "/community/meetups" },
-  { id: "live-rooms", name: "Live Rooms", path: "/community/live-rooms" },
-  { id: "challenges", name: "Challenges", path: "/community/challenges" },
+  { id: "my-groups", name: "My Groups & Feed", path: "/community/my-groups" },
+  { id: "events", name: "Events & Meetups", path: "/community/events" },
+  { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
+  { id: "live-interaction", name: "Live Interaction", path: "/community/live-interaction" },
+  { id: "ai-insights", name: "AI Insights", path: "/community/ai-insights" },
 ];
 
 export default function Community() {
@@ -19,44 +19,44 @@ export default function Community() {
 
   const categoryCards = [
     {
-      id: "matchmaking",
-      title: "Matchmaking",
-      description: "Find your perfect wellness partner",
-      icon: Heart,
-      path: "/community/matchmaking",
-      color: "from-pink-100 to-rose-100"
-    },
-    {
-      id: "groups",
-      title: "Groups",
-      description: "Join wellness communities that inspire you",
+      id: "my-groups",
+      title: "My Groups & Feed",
+      description: "Personal social feed and group updates",
       icon: Users,
-      path: "/community/groups",
+      path: "/community/my-groups",
       color: "from-blue-100 to-cyan-100"
     },
     {
-      id: "meetups",
-      title: "Meetups",
-      description: "Attend local wellness events and gatherings",
+      id: "events",
+      title: "Events & Meetups",
+      description: "Discover and join local wellness events",
       icon: MapPin,
-      path: "/community/meetups",
+      path: "/community/events",
       color: "from-green-100 to-teal-100"
     },
     {
-      id: "live-rooms",
-      title: "Live Rooms",
-      description: "Join live wellness sessions and discussions",
+      id: "media-hub",
+      title: "Media Hub",
+      description: "Shorts, podcasts, and community content",
       icon: Radio,
-      path: "/community/live-rooms",
+      path: "/community/media-hub",
       color: "from-purple-100 to-violet-100"
     },
     {
-      id: "challenges",
-      title: "Challenges",
-      description: "Participate in community wellness challenges",
+      id: "live-interaction",
+      title: "Live Interaction",
+      description: "Real-time workshops and social sessions",
       icon: Trophy,
-      path: "/community/challenges",
+      path: "/community/live-interaction",
       color: "from-orange-100 to-amber-100"
+    },
+    {
+      id: "ai-insights",
+      title: "AI Insights",
+      description: "Personalized recommendations and connections",
+      icon: Heart,
+      path: "/community/ai-insights",
+      color: "from-pink-100 to-rose-100"
     }
   ];
 
