@@ -75,9 +75,11 @@ export default function Settings() {
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-card rounded-xl p-8 shadow-sm border mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Settings Overview</h1>
-            <p className="text-muted-foreground">Manage your account settings and preferences</p>
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Let's fine-tune your Vitana experience! ⚙️
+            </h1>
+            <p className="text-muted-foreground">Manage your account settings, privacy, and preferences to personalize your wellness journey</p>
           </div>
 
           {/* Summary Cards */}

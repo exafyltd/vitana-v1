@@ -69,9 +69,11 @@ export default function Community() {
       <div className="p-6 space-y-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Community Overview 🤝</h1>
-            <p className="text-muted-foreground">Your personalized community dashboard with live activity and recommendations.</p>
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Let's connect and inspire each other, Jovana! 🤝
+            </h1>
+            <p className="text-muted-foreground">Your personalized community dashboard with live activity and recommendations</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

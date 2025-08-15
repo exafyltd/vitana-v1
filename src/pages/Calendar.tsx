@@ -54,12 +54,15 @@ export default function Calendar() {
       <SubNavigation items={calendarSubItems} />
       <div className="p-6 space-y-6">
         {/* Header Summary */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Let's set you up for success today, Jovana! 📅
+          </h1>
+          <p className="text-muted-foreground">Your wellness schedule and progress overview for {todayFormatted}</p>
+        </div>
+        
         <div className="rounded-xl border bg-card p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Calendar Overview</h1>
-              <p className="text-muted-foreground">{todayFormatted}</p>
-            </div>
             <div className="flex gap-2">
               <Button onClick={() => navigate('/calendar/day')} size="sm">
                 <Plus className="w-4 h-4 mr-2" />
