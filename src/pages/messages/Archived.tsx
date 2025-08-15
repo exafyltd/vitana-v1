@@ -33,7 +33,7 @@ export default function Archived() {
       <SubNavigation items={messagesSubItems} />
       
       <div className="p-6">
-        <div className="flex gap-6 h-[calc(100vh-140px)]">
+        <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>
           {/* Left Sidebar - Archive Categories */}
           <Card className="w-80 flex flex-col">
             <CardHeader className="border-b">
