@@ -27,6 +27,11 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
   const location = useLocation();
   const { open } = useSidebar();
 
+  // Check if current path matches category (including subpages)
+  const isActivePath = (categoryPath: string) => {
+    return location.pathname === categoryPath || location.pathname.startsWith(categoryPath + "/");
+  };
+
   const handleStreamToggle = () => {
     console.log('Stream toggle clicked, current isStreaming:', isStreaming);
     if (isStreaming) {
@@ -72,23 +77,38 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
-                {sidebarCategories.map((cat) => (
-                  <SidebarMenuItem key={cat.title}>
-                    <SidebarMenuButton asChild>
-                      <NavLink 
-                        to={cat.path} 
-                        className={({ isActive }) => 
-                          `flex items-center gap-3 rounded-xl px-3 py-2 transition-all hover:bg-sidebar-accent/80 ${
-                            isActive ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm" : "hover:bg-sidebar-accent/50"
-                          }`
-                        }
-                      >
-                        <cat.icon className="h-4 w-4" />
-                        {open && <span>{cat.title}</span>}
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {sidebarCategories.map((cat) => {
+                  const isActive = isActivePath(cat.path);
+                  return (
+                    <SidebarMenuItem key={cat.title}>
+                      <SidebarMenuButton asChild>
+                        <Link 
+                          to={cat.path} 
+                          className={`relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group ${
+                            isActive 
+                              ? "bg-primary/15 text-primary shadow-sm border border-primary/20" 
+                              : "hover:bg-sidebar-accent/50 text-sidebar-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {/* Active indicator bar */}
+                          {isActive && (
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
+                          )}
+                          <cat.icon className={`h-4 w-4 transition-colors ${
+                            isActive ? "text-primary" : "text-sidebar-foreground/70 group-hover:text-foreground"
+                          }`} />
+                          {open && (
+                            <span className={`font-medium transition-colors ${
+                              isActive ? "text-primary" : "text-sidebar-foreground group-hover:text-foreground"
+                            }`}>
+                              {cat.title}
+                            </span>
+                          )}
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
