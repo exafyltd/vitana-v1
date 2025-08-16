@@ -102,18 +102,14 @@ export default function HealthTracker() {
                 <h1 className="text-3xl font-bold text-foreground mb-2">Let's track your progress together! 📊</h1>
                 <p className="text-muted-foreground">Monitor your personal health data, track progress, and gain insights from your wellness journey.</p>
               </div>
-              {/* Vitana Index - Same styling as Dashboard */}
+              {/* Vitana Index Circle - Compact */}
               <div 
-                className="cursor-pointer group flex flex-col items-center"
+                className="cursor-pointer group"
                 onClick={() => navigate('/health-tracker/vitana-index')}
               >
-                <div className="relative mb-2">
-                  <div className="w-28 h-28 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                    <span className="text-4xl font-bold text-green-600">742</span>
-                  </div>
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-2xl font-bold text-green-600">742</span>
                 </div>
-                <p className="text-base text-muted-foreground mb-1">Vitana Index</p>
-                <span className="text-sm text-green-600 font-medium">+11% vs last week</span>
               </div>
             </div>
           </div>

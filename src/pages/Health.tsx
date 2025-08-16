@@ -101,8 +101,14 @@ export default function Health() {
                 <h1 className="text-3xl font-bold text-foreground mb-2">Let's improve quality of life! 🌱</h1>
                 <p className="text-muted-foreground">Discover health services, programs, and educational resources to enhance your wellness journey.</p>
               </div>
-              <div className="lg:w-80">
-                <VitanaIndexMini score={75} trend="up" variant="compact" />
+              {/* Vitana Index Circle - Compact */}
+              <div 
+                className="cursor-pointer group"
+                onClick={() => navigate('/health-tracker/vitana-index')}
+              >
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-2xl font-bold text-green-600">742</span>
+                </div>
               </div>
             </div>
           </div>
