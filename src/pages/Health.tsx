@@ -124,7 +124,7 @@ export default function Health() {
             </div>
             <div>
               <AutopilotWidget 
-                title="Health Autopilot ⚡"
+                sectionName="Health"
                 suggestions={autopilotSuggestions}
                 isEnabled={true}
                 variant="card"

@@ -3,6 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Zap, Brain, CheckSquare, Calendar, Users, Pause, RotateCcw, Settings, Plus } from "lucide-react";
+import AutopilotWidget from "@/components/health/AutopilotWidget";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -32,34 +33,24 @@ export default function Dashboard() {
 
           {/* Top Row - Autopilot and Vitana Index */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {/* Autopilot Card - Main Feature */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-3 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-xl">
-                      <Zap className="w-8 h-8 text-yellow-600 animate-pulse" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-xl">Autopilot ⚡</CardTitle>
-                      <CardDescription>AI is handling your day • 3 done, 2 pending</CardDescription>
-                    </div>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button variant="outline" size="sm"><Pause className="w-4 h-4 mr-1" />Pause All</Button>
-                    <Button variant="outline" size="sm"><RotateCcw className="w-4 h-4 mr-1" />Undo</Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex space-x-4 mb-4">
-                  <Button variant="secondary" size="sm">Off</Button>
-                  <Button variant="default" size="sm">Assist</Button>
-                  <Button variant="outline" size="sm">Auto</Button>
-                </div>
-                <Button className="w-full">Open AI Feed</Button>
-              </CardContent>
-            </Card>
+            {/* Autopilot Card - Using Consistent Widget */}
+            <div>
+              <AutopilotWidget 
+                sectionName="Dashboard"
+                suggestions={[
+                  "Auto-schedule today's optimal wellness breaks",
+                  "Book overdue health appointments automatically",
+                  "Sync today's plan with your energy levels"
+                ]}
+                isEnabled={true}
+                variant="card"
+              />
+              <div className="mt-4 flex gap-2">
+                <Button variant="outline" size="sm"><Pause className="w-4 h-4 mr-1" />Pause All</Button>
+                <Button variant="outline" size="sm"><RotateCcw className="w-4 h-4 mr-1" />Undo</Button>
+                <Button className="flex-1">Open AI Feed</Button>
+              </div>
+            </div>
 
             {/* Vitana Index Card */}
             <Card 

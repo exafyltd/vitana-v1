@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Users, MapPin, Radio, Trophy, TrendingUp, Calendar } from "lucide-react";
+import AutopilotWidget from "@/components/health/AutopilotWidget";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
@@ -72,6 +73,20 @@ export default function Community() {
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-2">Let's connect and inspire each other! 🤝</h1>
             <p className="text-muted-foreground">Your personalized community dashboard with live activity and recommendations.</p>
+          </div>
+
+          {/* Autopilot Integration */}
+          <div className="mb-6">
+            <AutopilotWidget 
+              sectionName="Community"
+              suggestions={[
+                "Auto-join matching groups based on your interests",
+                "Schedule group meetups that fit your calendar",
+                "Connect with nearby members for wellness activities"
+              ]}
+              isEnabled={true}
+              variant="inline"
+            />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

@@ -151,7 +151,7 @@ export default function HealthTracker() {
             </div>
             <div>
               <AutopilotWidget 
-                title="Tracking Autopilot ⚡"
+                sectionName="Health Tracker"
                 suggestions={autopilotSuggestions}
                 isEnabled={true}
                 variant="card"

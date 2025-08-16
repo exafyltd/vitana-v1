@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 
 interface AutopilotWidgetProps {
   title?: string;
+  sectionName?: string;
   suggestions: string[];
   isEnabled?: boolean;
   onToggle?: (enabled: boolean) => void;
@@ -15,6 +16,7 @@ interface AutopilotWidgetProps {
 
 export default function AutopilotWidget({ 
   title = "Autopilot ⚡", 
+  sectionName,
   suggestions, 
   isEnabled = false, 
   onToggle,
@@ -39,7 +41,8 @@ export default function AutopilotWidget({
             <Zap className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">{title}</h3>
+            <h3 className="font-semibold text-foreground">Autopilot ⚡</h3>
+            {sectionName && <p className="text-xs text-muted-foreground">{sectionName}</p>}
             <p className="text-sm text-muted-foreground">
               {suggestions[0] || "AI optimization enabled"}
             </p>
@@ -63,7 +66,10 @@ export default function AutopilotWidget({
             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
               <Zap className="w-4 h-4 text-white" />
             </div>
-            <CardTitle className="text-lg">{title}</CardTitle>
+            <div>
+              <CardTitle className="text-lg">Autopilot ⚡</CardTitle>
+              {sectionName && <p className="text-sm text-muted-foreground mt-1">{sectionName}</p>}
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant={isEnabled ? "default" : "secondary"} className="text-xs">
