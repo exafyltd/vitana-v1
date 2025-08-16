@@ -18,12 +18,9 @@ export default function Dashboard() {
       <SubNavigation items={dashboardSubItems} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              Dear Jovana, let's make today a special day! ✨
-            </h1>
-            <p className="text-muted-foreground">Your wellness journey starts with today's opportunities</p>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
+            <h1 className="text-3xl font-bold text-foreground mb-2">Hi Jovana, let´s make today a very special day! ✨</h1>
+            <p className="text-muted-foreground">Your wellness journey starts with today's opportunities and endless possibilities.</p>
           </div>
 
           {/* Quick Actions Cards */}

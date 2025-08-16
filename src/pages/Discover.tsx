@@ -221,7 +221,7 @@ export default function Discover() {
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
-          <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-2">Your Longevity Marketplace</h1>
             <p className="text-muted-foreground">Discover longevity services, products, and providers perfectly matched to your healthy aging journey.</p>
             
