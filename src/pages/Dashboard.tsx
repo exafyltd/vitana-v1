@@ -56,8 +56,42 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Dashboard Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Main Dashboard Grid - Vitana Index Prominent */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            {/* Vitana Index - Prominent Position */}
+            <Card 
+              className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer group lg:col-span-1"
+              onClick={() => window.location.href = '/health-tracker/vitana-index'}
+            >
+              <CardHeader className="text-center">
+                <CardTitle className="text-xl">Vitana Index ⚖️</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col items-center">
+                  {/* Large Vitana Index Number with Dynamic Glow */}
+                  <div className="relative mb-4">
+                    <div className="w-28 h-28 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                      <span className="text-4xl font-bold text-green-600">742</span>
+                    </div>
+                  </div>
+                  
+                  {/* Subtitle */}
+                  <p className="text-base text-muted-foreground mb-3">Your Balance Score</p>
+                  
+                  {/* Progress Line */}
+                  <div className="flex items-center space-x-2 mb-3">
+                    <span className="text-sm text-green-600 font-medium">+11% vs last week</span>
+                  </div>
+                  
+                  {/* Motivational Sentence */}
+                  <p className="text-sm text-muted-foreground text-center">Good progress this week ✨</p>
+                  
+                  {/* Call to Action */}
+                  <Button variant="outline" size="sm" className="mt-4 w-full">View Details</Button>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* How I'm Doing Now */}
             <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-4">
@@ -96,7 +130,10 @@ export default function Dashboard() {
                 </div>
               </CardContent>
             </Card>
+          </div>
 
+          {/* Secondary Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Today's Plan */}
             <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-4">
@@ -190,37 +227,6 @@ export default function Dashboard() {
 
             {/* Quick Stats */}
             <div className="space-y-6">
-              {/* Vitana Index */}
-              <Card 
-                className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                onClick={() => window.location.href = '/health-tracker/vitana-index'}
-              >
-                <CardHeader>
-                  <CardTitle className="text-lg">Vitana Index ⚖️</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col items-center mb-4">
-                    {/* Large Vitana Index Number with Dynamic Glow */}
-                    <div className="relative mb-3">
-                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                        <span className="text-3xl font-bold text-green-600">742</span>
-                      </div>
-                    </div>
-                    
-                    {/* Subtitle */}
-                    <p className="text-sm text-muted-foreground mb-2">Your Balance Score</p>
-                    
-                    {/* Progress Line */}
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-xs text-green-600 font-medium">+11% vs last week</span>
-                    </div>
-                    
-                    {/* Motivational Sentence */}
-                    <p className="text-sm text-muted-foreground text-center">Good progress this week ✨</p>
-                  </div>
-                </CardContent>
-              </Card>
-
               {/* Upcoming Events */}
               <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
                 <CardHeader>
