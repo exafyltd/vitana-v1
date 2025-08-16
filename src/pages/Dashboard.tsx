@@ -27,40 +27,40 @@ export default function Dashboard() {
             <p className="text-muted-foreground">Your wellness journey starts with today's opportunities and endless possibilities.</p>
           </div>
 
-          {/* Autopilot Card - Main Feature */}
-          <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 mb-8">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="p-3 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-xl">
-                    <Zap className="w-8 h-8 text-yellow-600 animate-pulse" />
+          {/* Top Row - Autopilot and Vitana Index */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Autopilot Card - Main Feature */}
+            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-3 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-xl">
+                      <Zap className="w-8 h-8 text-yellow-600 animate-pulse" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl">Autopilot ⚡</CardTitle>
+                      <CardDescription>AI is handling your day • 3 done, 2 pending</CardDescription>
+                    </div>
                   </div>
-                  <div>
-                    <CardTitle className="text-xl">Autopilot ⚡</CardTitle>
-                    <CardDescription>AI is handling your day • 3 done, 2 pending</CardDescription>
+                  <div className="flex space-x-2">
+                    <Button variant="outline" size="sm"><Pause className="w-4 h-4 mr-1" />Pause All</Button>
+                    <Button variant="outline" size="sm"><RotateCcw className="w-4 h-4 mr-1" />Undo</Button>
                   </div>
                 </div>
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="sm"><Pause className="w-4 h-4 mr-1" />Pause All</Button>
-                  <Button variant="outline" size="sm"><RotateCcw className="w-4 h-4 mr-1" />Undo</Button>
+              </CardHeader>
+              <CardContent>
+                <div className="flex space-x-4 mb-4">
+                  <Button variant="secondary" size="sm">Off</Button>
+                  <Button variant="default" size="sm">Assist</Button>
+                  <Button variant="outline" size="sm">Auto</Button>
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex space-x-4 mb-4">
-                <Button variant="secondary" size="sm">Off</Button>
-                <Button variant="default" size="sm">Assist</Button>
-                <Button variant="outline" size="sm">Auto</Button>
-              </div>
-              <Button className="w-full">Open AI Feed</Button>
-            </CardContent>
-          </Card>
+                <Button className="w-full">Open AI Feed</Button>
+              </CardContent>
+            </Card>
 
-          {/* Main Dashboard Grid - Vitana Index Prominent */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            {/* Vitana Index - Prominent Position */}
+            {/* Vitana Index Card */}
             <Card 
-              className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer group lg:col-span-1"
+              className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer group"
               onClick={() => window.location.href = '/health-tracker/vitana-index'}
             >
               <CardHeader className="text-center">
@@ -85,13 +85,13 @@ export default function Dashboard() {
                   
                   {/* Motivational Sentence */}
                   <p className="text-sm text-muted-foreground text-center">Good progress this week ✨</p>
-                  
-                  {/* Call to Action */}
-                  <Button variant="outline" size="sm" className="mt-4 w-full">View Details</Button>
                 </div>
               </CardContent>
             </Card>
+          </div>
 
+          {/* Dashboard Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* How I'm Doing Now */}
             <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-4">
@@ -130,10 +130,7 @@ export default function Dashboard() {
                 </div>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Secondary Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Today's Plan */}
             <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-4">
