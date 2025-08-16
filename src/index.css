@@ -67,6 +67,12 @@ All colors MUST be HSL.
     
     /* Ruby red for streaming */
     --ruby: 339 89% 49%;
+    
+    /* Health-specific colors */
+    --health-primary: 280 100% 70%;
+    --health-success: 150 100% 45%;
+    --health-warning: 45 100% 60%;
+    --health-danger: 0 84% 60%;
   }
 
   .dark {
