@@ -104,11 +104,11 @@ export default function HealthTracker() {
               </div>
               {/* Vitana Index Circle - Compact */}
               <div 
-                className="cursor-pointer group flex-shrink-0 mr-10"
+                className="cursor-pointer group flex-shrink-0 mr-16"
                 onClick={() => navigate('/health-tracker/vitana-index')}
               >
-                <div className="w-18 h-18 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600">742</span>
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-2xl font-bold text-green-600">742</span>
                 </div>
               </div>
             </div>
