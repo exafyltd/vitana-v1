@@ -190,24 +190,34 @@ export default function Dashboard() {
 
             {/* Quick Stats */}
             <div className="space-y-6">
-              {/* Wellness Score */}
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
+              {/* Vitana Index */}
+              <Card 
+                className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                onClick={() => window.location.href = '/health-tracker/vitana-index'}
+              >
                 <CardHeader>
-                  <CardTitle className="text-lg">Wellness Score</CardTitle>
+                  <CardTitle className="text-lg">Vitana Index ⚖️</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="relative w-20 h-20">
-                      <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 32 32">
-                        <circle cx="16" cy="16" r="14" fill="none" stroke="#e5e7eb" strokeWidth="2"/>
-                        <circle cx="16" cy="16" r="14" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeDasharray="87.96" strokeDashoffset="22"/>
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-xl font-bold text-purple-600">75%</span>
+                  <div className="flex flex-col items-center mb-4">
+                    {/* Large Vitana Index Number with Dynamic Glow */}
+                    <div className="relative mb-3">
+                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                        <span className="text-3xl font-bold text-green-600">742</span>
                       </div>
                     </div>
+                    
+                    {/* Subtitle */}
+                    <p className="text-sm text-muted-foreground mb-2">Your Balance Score</p>
+                    
+                    {/* Progress Line */}
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="text-xs text-green-600 font-medium">+11% vs last week</span>
+                    </div>
+                    
+                    {/* Motivational Sentence */}
+                    <p className="text-sm text-muted-foreground text-center">Good progress this week ✨</p>
                   </div>
-                  <p className="text-sm text-muted-foreground text-center">Great progress this week!</p>
                 </CardContent>
               </Card>
 
