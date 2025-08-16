@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Zap, Brain, CheckSquare, Calendar, Users, Pause, RotateCcw, Settings, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 
 const dashboardSubItems = [
@@ -16,6 +17,8 @@ const dashboardSubItems = [
 
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
   return (
     <AppLayout>
       <SEO title="Dashboard | VITANA" description="VITANA Dashboard" canonical={window.location.href} />
@@ -61,7 +64,7 @@ export default function Dashboard() {
             {/* Vitana Index Card */}
             <Card 
               className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              onClick={() => window.location.href = '/health-tracker/vitana-index'}
+              onClick={() => navigate('/health-tracker/vitana-index')}
             >
               <CardHeader className="text-center">
                 <CardTitle className="text-xl">Vitana Index ⚖️</CardTitle>
