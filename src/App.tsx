@@ -19,9 +19,10 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 // Dashboard sub-pages
-import Member from "./pages/dashboard/Member";
-import Toggle from "./pages/dashboard/Toggle";
-import Summary from "./pages/dashboard/Summary";
+import Context from "./pages/dashboard/Context";
+import Actions from "./pages/dashboard/Actions";
+import Matches from "./pages/dashboard/Matches";
+import AIFeed from "./pages/dashboard/AIFeed";
 
 // Discover sub-pages
 import Trending from "./pages/discover/Trending";
@@ -91,9 +92,10 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/member" element={<Member />} />
-          <Route path="/dashboard/toggle" element={<Toggle />} />
-          <Route path="/dashboard/summary" element={<Summary />} />
+          <Route path="/dashboard/context" element={<Context />} />
+          <Route path="/dashboard/actions" element={<Actions />} />
+          <Route path="/dashboard/matches" element={<Matches />} />
+          <Route path="/dashboard/aifeed" element={<AIFeed />} />
           
           {/* Discover routes */}
           <Route path="/discover" element={<Discover />} />
