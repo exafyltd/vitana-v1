@@ -95,15 +95,22 @@ export default function HealthTracker() {
       <SubNavigation items={healthTrackerSubItems} />
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header with Vitana Index as Central Anchor */}
-          <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/20">
-            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Let's track your progress together! 📊</h1>
-                <p className="text-muted-foreground">Monitor your personal health data, track progress, and gain insights from your wellness journey.</p>
+          {/* Header with Index Circle */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Let's track your progress together! 📊</h1>
+              <p className="text-muted-foreground">Monitor your personal health data, track progress, and gain insights from your wellness journey.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div 
+                className="w-16 h-16 rounded-full bg-gradient-to-br from-calendar-success to-calendar-accent flex items-center justify-center cursor-pointer hover:scale-105 transition-transform shadow-lg"
+                onClick={() => navigate('/health-tracker/vitana-index')}
+              >
+                <span className="text-white text-lg font-bold">742</span>
               </div>
-              <div className="lg:w-96">
-                <VitanaIndexMini score={75} trend="up" showDetails={true} />
+              <div className="text-left">
+                <p className="font-semibold text-foreground">Index</p>
+                <p className="text-sm text-calendar-success">Excellent</p>
               </div>
             </div>
           </div>
