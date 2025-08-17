@@ -52,7 +52,7 @@ export function ProgressStreaksCard({
   return (
     <CrossoverCard
       icon={TrendingUp}
-      iconVariant="success"
+      category="vitana"
       title="Progress Tracking"
       subtitle="Monitor your wellness streaks and achievement momentum"
       content={content}

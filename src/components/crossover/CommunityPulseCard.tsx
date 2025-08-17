@@ -46,7 +46,7 @@ export function CommunityPulseCard({
   return (
     <CrossoverCard
       icon={Users}
-      iconVariant="info"
+      category="community"
       title="Community Activity"
       subtitle="Connect with friends and join wellness activities"
       content={content}

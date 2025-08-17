@@ -62,7 +62,7 @@ export function DataWalletCard({
   return (
     <CrossoverCard
       icon={Shield}
-      iconVariant="primary"
+      category="data"
       title="Health Data Wallet"
       subtitle="Secure access to your health reports and analytics"
       content={content}

@@ -60,7 +60,7 @@ export function DiscoverPicksCard({
   return (
     <CrossoverCard
       icon={Sparkles}
-      iconVariant="warning"
+      category="vitana"
       title="Personalized Discoveries"
       subtitle="AI-curated recommendations perfect for your wellness journey"
       content={content}

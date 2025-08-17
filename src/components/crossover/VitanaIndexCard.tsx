@@ -90,7 +90,7 @@ export function VitanaIndexCard({
   return (
     <CrossoverCard
       icon={Activity}
-      iconVariant={scoreStatus.variant}
+      category="vitana"
       title="Vitana Health Index"
       subtitle="Overall wellness balance across all health pillars"
       content={content}
@@ -98,6 +98,7 @@ export function VitanaIndexCard({
       onButtonClick={() => navigate('/health-tracker/vitana-index')}
       secondaryButtonText="Track Today"
       onSecondaryButtonClick={() => navigate('/health-tracker')}
+      size="lg"
       className={className}
     />
   );

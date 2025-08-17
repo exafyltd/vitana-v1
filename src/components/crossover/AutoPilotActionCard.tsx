@@ -55,7 +55,7 @@ export function AutoPilotActionCard({
   return (
     <CrossoverCard
       icon={Zap}
-      iconVariant={priority === "high" ? "danger" : priority === "medium" ? "warning" : "info"}
+      category="autopilot"
       title="AutoPilot Recommendation"
       subtitle="AI-powered next best action based on your patterns"
       content={content}
@@ -64,6 +64,7 @@ export function AutoPilotActionCard({
       secondaryButtonText="View All Suggestions"
       onSecondaryButtonClick={() => navigate('/dashboard/actions')}
       urgent={priority === "high"}
+      size="sm"
       className={className}
     />
   );

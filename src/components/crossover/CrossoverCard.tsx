@@ -3,10 +3,11 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
+import { HEALTH_CATEGORY_COLORS, type HealthCategoryColor } from "@/lib/colors";
 
 interface CrossoverCardProps {
   icon: LucideIcon;
-  iconVariant?: "primary" | "success" | "warning" | "danger" | "info";
+  category: HealthCategoryColor;
   title: string;
   subtitle: string;
   content?: React.ReactNode;
@@ -16,12 +17,13 @@ interface CrossoverCardProps {
   onSecondaryButtonClick?: () => void;
   className?: string;
   urgent?: boolean;
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
 const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
   ({ 
     icon: Icon, 
-    iconVariant = "primary",
+    category,
     title, 
     subtitle, 
     content,
@@ -31,44 +33,25 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
     onSecondaryButtonClick,
     className,
     urgent = false,
+    size = "md",
     ...props 
   }, ref) => {
     
-    const iconVariants = {
-      primary: {
-        bg: "bg-gradient-to-br from-primary to-primary/80",
-        icon: "text-white",
-        ring: "ring-primary/30"
-      },
-      success: {
-        bg: "bg-gradient-to-br from-green-500 to-green-600",
-        icon: "text-white",
-        ring: "ring-green-500/30"
-      },
-      warning: {
-        bg: "bg-gradient-to-br from-purple-500 to-purple-600",
-        icon: "text-white",
-        ring: "ring-purple-500/30"
-      },
-      danger: {
-        bg: "bg-gradient-to-br from-pink-500 to-pink-600",
-        icon: "text-white",
-        ring: "ring-pink-500/30"
-      },
-      info: {
-        bg: "bg-gradient-to-br from-blue-500 to-blue-600",
-        icon: "text-white",
-        ring: "ring-blue-500/30"
-      }
+    const categoryColors = HEALTH_CATEGORY_COLORS[category];
+    
+    const sizeVariants = {
+      sm: "h-56",
+      md: "h-72", 
+      lg: "h-80",
+      xl: "h-96"
     };
-
-    const variant = iconVariants[iconVariant];
 
     return (
       <Card 
         ref={ref}
         className={cn(
-          "bg-card border-border/50 hover:border-border transition-all duration-300 group flex flex-col h-72 relative overflow-hidden",
+          "bg-card border-border/50 hover:border-border transition-all duration-300 group flex flex-col relative overflow-hidden",
+          sizeVariants[size],
           urgent && "ring-2 ring-health-warning/50 shadow-lg shadow-health-warning/10",
           "hover:shadow-xl hover:shadow-primary/5",
           className
@@ -78,11 +61,11 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
         <CardHeader className="pb-3 space-y-3">
           <div className={cn(
             "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
-            variant.bg,
+            categoryColors.bg,
             "ring-1",
-            variant.ring
+            categoryColors.ring
           )}>
-            <Icon className={cn("w-7 h-7 transition-colors duration-300", variant.icon)} />
+            <Icon className={cn("w-7 h-7 transition-colors duration-300", categoryColors.icon)} />
           </div>
           
           <div className="space-y-1 text-left">

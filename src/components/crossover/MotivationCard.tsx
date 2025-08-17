@@ -41,7 +41,7 @@ export function MotivationCard({
   return (
     <CrossoverCard
       icon={Heart}
-      iconVariant="danger"
+      category="mental"
       title="Daily Motivation"
       subtitle="Inspirational content to fuel your wellness journey"
       content={content}
