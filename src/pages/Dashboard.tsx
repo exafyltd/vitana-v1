@@ -31,23 +31,40 @@ export default function Dashboard() {
             <p className="text-muted-foreground">Your wellness journey starts with today's opportunities and endless possibilities.</p>
           </div>
 
-          {/* Top Row - Vitana Index and AutoPilot */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <VitanaIndexCard />
-            <AutoPilotActionCard />
+          {/* TETRIS-Style Dynamic Layout */}
+          <div className="grid grid-cols-12 gap-4 mb-8">
+            {/* Row 1: Large Vitana Index + Medium AutoPilot */}
+            <div className="col-span-12 md:col-span-8">
+              <VitanaIndexCard className="h-80" />
+            </div>
+            <div className="col-span-12 md:col-span-4">
+              <AutoPilotActionCard className="h-80" />
+            </div>
+            
+            {/* Row 2: 5 Lifestyle Cards - Different Arrangements */}
+            <div className="col-span-6 md:col-span-3">
+              <LifestylePlanCard type="nutrition" />
+            </div>
+            <div className="col-span-6 md:col-span-3">
+              <LifestylePlanCard type="hydration" />
+            </div>
+            <div className="col-span-12 md:col-span-6">
+              <LifestylePlanCard type="exercise" className="h-72" />
+            </div>
+            
+            {/* Row 3: Sleep and Mental Health */}
+            <div className="col-span-6 md:col-span-4">
+              <LifestylePlanCard type="sleep" />
+            </div>
+            <div className="col-span-6 md:col-span-4">
+              <LifestylePlanCard type="mental" />
+            </div>
+            
+            {/* Row 4: Quick Log Strip - Full Width */}
+            <div className="col-span-12">
+              <QuickLogStrip className="h-auto" />
+            </div>
           </div>
-
-          {/* Lifestyle Plans Grid - 5 Plan Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-            <LifestylePlanCard type="nutrition" />
-            <LifestylePlanCard type="hydration" />
-            <LifestylePlanCard type="exercise" />
-            <LifestylePlanCard type="sleep" />
-            <LifestylePlanCard type="screen" />
-          </div>
-
-          {/* Quick Log Strip */}
-          <QuickLogStrip className="mb-8" />
 
         </div>
       </div>

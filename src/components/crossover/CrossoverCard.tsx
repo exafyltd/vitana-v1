@@ -36,29 +36,29 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
     
     const iconVariants = {
       primary: {
-        bg: "bg-gradient-to-br from-primary/10 to-primary/20",
-        icon: "text-primary",
-        ring: "ring-primary/20"
+        bg: "bg-gradient-to-br from-primary to-primary/80",
+        icon: "text-white",
+        ring: "ring-primary/30"
       },
       success: {
-        bg: "bg-gradient-to-br from-health-success/10 to-health-success/20",
-        icon: "text-health-success",
-        ring: "ring-health-success/20"
+        bg: "bg-gradient-to-br from-green-500 to-green-600",
+        icon: "text-white",
+        ring: "ring-green-500/30"
       },
       warning: {
-        bg: "bg-gradient-to-br from-health-warning/10 to-health-warning/20",
-        icon: "text-health-warning",
-        ring: "ring-health-warning/20"
+        bg: "bg-gradient-to-br from-purple-500 to-purple-600",
+        icon: "text-white",
+        ring: "ring-purple-500/30"
       },
       danger: {
-        bg: "bg-gradient-to-br from-health-danger/10 to-health-danger/20",
-        icon: "text-health-danger",
-        ring: "ring-health-danger/20"
+        bg: "bg-gradient-to-br from-pink-500 to-pink-600",
+        icon: "text-white",
+        ring: "ring-pink-500/30"
       },
       info: {
-        bg: "bg-gradient-to-br from-health-primary/10 to-health-primary/20",
-        icon: "text-health-primary",
-        ring: "ring-health-primary/20"
+        bg: "bg-gradient-to-br from-blue-500 to-blue-600",
+        icon: "text-white",
+        ring: "ring-blue-500/30"
       }
     };
 

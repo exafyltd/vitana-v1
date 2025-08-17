@@ -1,9 +1,9 @@
 import { CrossoverCard } from "./CrossoverCard";
-import { Apple, Droplets, Dumbbell, Moon, Smartphone } from "lucide-react";
+import { Apple, Droplets, Dumbbell, Moon, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-type LifestylePlanType = "nutrition" | "hydration" | "exercise" | "sleep" | "screen";
+type LifestylePlanType = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
 
 interface LifestylePlanCardProps {
   type: LifestylePlanType;
@@ -55,16 +55,16 @@ const planConfigs = {
     iconVariant: "success" as const,
     nextAction: "Set bedtime reminder"
   },
-  screen: {
-    icon: Smartphone,
-    title: "Screen Wellness",
-    subtitle: "Balance digital consumption for mental health",
-    goal: "Under 4 hours daily",
-    progress: 3.2,
-    total: 4,
-    unit: "hours",
-    iconVariant: "success" as const,
-    nextAction: "Take 10min break"
+  mental: {
+    icon: Heart,
+    title: "Mental Wellness",
+    subtitle: "Nurture mental health and emotional balance",
+    goal: "3 mindful moments daily",
+    progress: 2,
+    total: 3,
+    unit: "moments",
+    iconVariant: "info" as const,
+    nextAction: "5min meditation"
   }
 };
 
@@ -100,7 +100,7 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
       </div>
       
       <div className="p-2 bg-muted/20 rounded-md">
-        <p className="text-xs text-muted-foreground">Next: {config.nextAction}</p>
+        <p className="text-xs text-muted-foreground line-clamp-1">Next: {config.nextAction}</p>
       </div>
     </div>
   );
@@ -115,7 +115,7 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
       hydration: '/health-tracker/hydration', 
       exercise: '/health-tracker/exercise',
       sleep: '/health-tracker/sleep',
-      screen: '/health-tracker/trends'
+      mental: '/health-tracker/mental-health'
     };
     navigate(routes[type]);
   };
