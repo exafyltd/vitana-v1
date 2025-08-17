@@ -53,77 +53,78 @@ export default function Dashboard() {
             </div>
           </div>
 
-        {/* TETRIS-style Dynamic Grid Layout with Media Cards Mixed In */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {/* Row 1: Large Vitana Index + AutoPilot + Smart Calendar */}
-          <div className="lg:col-span-2">
+        {/* Pinterest-style Masonry Grid Layout with Media Cards Mixed In */}
+        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+          {/* Large cards */}
+          <div className="break-inside-avoid mb-4">
             <VitanaIndexCard />
           </div>
           
-          <div className="lg:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <AutoPilotActionCard />
           </div>
           
-          <div className="lg:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <SmartCalendarCard />
           </div>
           
-          {/* Row 2: Health Pillars mixed with Media Cards */}
-          <div className="md:col-span-1">
+          {/* Health Pillars mixed with Media Cards */}
+          <div className="break-inside-avoid mb-4">
             <LifestylePlanCard type="nutrition" />
           </div>
           
-          <div className="md:col-span-1">
+          {/* Podcast Card - Medium size */}
+          <div className="break-inside-avoid mb-4" style={{ height: 'auto' }}>
             <PodcastCard />
           </div>
           
-          <div className="md:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <LifestylePlanCard type="hydration" />
           </div>
           
-          <div className="md:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <LifestylePlanCard type="exercise" />
           </div>
 
-          <div className="md:col-span-1">
+          {/* Music Card - Small size */}
+          <div className="break-inside-avoid mb-4" style={{ height: 'auto', minHeight: '200px' }}>
             <MusicCard />
           </div>
           
-          <div className="md:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <LifestylePlanCard type="sleep" />
           </div>
           
-          <div className="md:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <LifestylePlanCard type="mental" />
           </div>
           
-          <div className="md:col-span-1">
+          {/* Video Card - Large size */}
+          <div className="break-inside-avoid mb-4" style={{ height: 'auto', minHeight: '350px' }}>
             <VideoFeedCard />
           </div>
           
-          {/* Row 3: Community + Progress + Data Wallet */}
-          <div className="lg:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <CommunityPulseCard />
           </div>
           
-          <div className="lg:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <ProgressStreaksCard />
           </div>
           
-          <div className="lg:col-span-2">
+          <div className="break-inside-avoid mb-4">
             <DataWalletCard />
           </div>
           
-          {/* Row 4: Quick Log Strip + Discover + Motivation */}
-          <div className="lg:col-span-2">
+          <div className="break-inside-avoid mb-4">
             <QuickLogStrip />
           </div>
           
-          <div className="lg:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <DiscoverPicksCard />
           </div>
           
-          <div className="lg:col-span-1">
+          <div className="break-inside-avoid mb-4">
             <MotivationCard />
           </div>
         </div>
