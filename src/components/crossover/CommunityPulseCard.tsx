@@ -46,9 +46,9 @@ export function CommunityPulseCard({
   return (
     <CrossoverCard
       icon={Users}
-      iconColor="text-pink-600"
-      title="Community Pulse 🤝"
-      subtitle="What's happening now"
+      iconVariant="info"
+      title="Community Activity"
+      subtitle="Connect with friends and join wellness activities"
       content={content}
       buttonText="Join Activity"
       onButtonClick={handleJoinActivity}

@@ -54,9 +54,9 @@ export function SmartCalendarCard({
   return (
     <CrossoverCard
       icon={Calendar}
-      iconColor="text-purple-600"
-      title="Smart Calendar 📅"
-      subtitle="Today's highlights"
+      iconVariant="info"
+      title="Smart Calendar"
+      subtitle="AI-optimized schedule with health and wellness integration"
       content={content}
       buttonText="Open Calendar"
       onButtonClick={() => navigate('/calendar')}

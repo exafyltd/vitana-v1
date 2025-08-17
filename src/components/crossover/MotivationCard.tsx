@@ -41,9 +41,9 @@ export function MotivationCard({
   return (
     <CrossoverCard
       icon={Heart}
-      iconColor="text-red-500"
-      title="Motivation & Inspiration 💫"
-      subtitle="Daily boost"
+      iconVariant="danger"
+      title="Daily Motivation"
+      subtitle="Inspirational content to fuel your wellness journey"
       content={content}
       buttonText="Try Now"
       onButtonClick={handleTryNow}

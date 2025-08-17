@@ -52,9 +52,9 @@ export function ProgressStreaksCard({
   return (
     <CrossoverCard
       icon={TrendingUp}
-      iconColor="text-green-600"
-      title="Progress & Streaks 🔥"
-      subtitle="Your momentum"
+      iconVariant="success"
+      title="Progress Tracking"
+      subtitle="Monitor your wellness streaks and achievement momentum"
       content={content}
       buttonText="See Progress"
       onButtonClick={() => navigate('/health-tracker/progress-goals')}

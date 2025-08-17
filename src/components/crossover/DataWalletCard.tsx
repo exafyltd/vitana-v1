@@ -62,9 +62,9 @@ export function DataWalletCard({
   return (
     <CrossoverCard
       icon={Shield}
-      iconColor="text-blue-600"
-      title="Data Wallet 🔒"
-      subtitle="Your health reports"
+      iconVariant="primary"
+      title="Health Data Wallet"
+      subtitle="Secure access to your health reports and analytics"
       content={content}
       buttonText="View Reports"
       onButtonClick={() => navigate('/health-tracker/connected-devices')}

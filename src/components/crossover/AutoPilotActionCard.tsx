@@ -1,48 +1,69 @@
 import { CrossoverCard } from "./CrossoverCard";
-import { Zap, Clock } from "lucide-react";
+import { Zap, Clock, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface AutoPilotActionCardProps {
   action?: string;
   timeEstimate?: string;
+  reason?: string;
+  priority?: "low" | "medium" | "high";
   className?: string;
 }
 
 export function AutoPilotActionCard({ 
   action = "Drink 1 glass of water now",
   timeEstimate = "30 seconds",
+  reason = "You're 2 glasses behind your daily goal",
+  priority = "medium",
   className 
 }: AutoPilotActionCardProps) {
   const navigate = useNavigate();
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "high": return "text-health-danger";
+      case "medium": return "text-health-warning";
+      case "low": return "text-health-success";
+      default: return "text-muted-foreground";
+    }
+  };
+
   const content = (
     <div className="space-y-3">
-      <div className="text-center">
-        <p className="text-sm font-medium text-foreground mb-1">{action}</p>
-        <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
-          <Clock className="w-3 h-3" />
-          <span>{timeEstimate}</span>
+      <div className="p-3 bg-muted/30 rounded-lg">
+        <p className="text-sm font-semibold text-foreground leading-tight">{action}</p>
+        <p className="text-xs text-muted-foreground mt-1">{reason}</p>
+      </div>
+      
+      <div className="flex items-center justify-between text-xs">
+        <div className="flex items-center gap-1">
+          <Clock className="w-3 h-3 text-muted-foreground" />
+          <span className="text-muted-foreground">{timeEstimate}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <Target className="w-3 h-3" />
+          <span className={getPriorityColor(priority)}>{priority} priority</span>
         </div>
       </div>
     </div>
   );
 
   const handleDoItNow = () => {
-    // In real implementation, this would trigger the action
     console.log("Executing action:", action);
   };
 
   return (
     <CrossoverCard
       icon={Zap}
-      iconColor="text-blue-600"
-      title="AutoPilot Next ⚡"
-      subtitle="AI's top suggestion"
+      iconVariant={priority === "high" ? "danger" : priority === "medium" ? "warning" : "info"}
+      title="AutoPilot Recommendation"
+      subtitle="AI-powered next best action based on your patterns"
       content={content}
-      buttonText="Do It Now"
+      buttonText="Complete Action"
       onButtonClick={handleDoItNow}
-      secondaryButtonText="See All Actions"
+      secondaryButtonText="View All Suggestions"
       onSecondaryButtonClick={() => navigate('/dashboard/actions')}
+      urgent={priority === "high"}
       className={className}
     />
   );

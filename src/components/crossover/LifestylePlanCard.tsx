@@ -1,111 +1,137 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { Apple, Droplets, Dumbbell, Moon, Smartphone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-type PlanType = "nutrition" | "hydration" | "exercise" | "sleep" | "screen";
+type LifestylePlanType = "nutrition" | "hydration" | "exercise" | "sleep" | "screen";
 
 interface LifestylePlanCardProps {
-  type: PlanType;
-  goal?: string;
-  progress?: string;
+  type: LifestylePlanType;
   className?: string;
 }
 
-const planConfig: Record<PlanType, {
-  icon: LucideIcon;
-  title: string;
-  emoji: string;
-  color: string;
-  defaultGoal: string;
-  defaultProgress: string;
-  route: string;
-}> = {
+const planConfigs = {
   nutrition: {
     icon: Apple,
-    title: "Nutrition Plan",
-    emoji: "🍎",
-    color: "text-green-600",
-    defaultGoal: "5 servings fruits/veggies",
-    defaultProgress: "3/5 today",
-    route: "/health-tracker/nutrition"
+    title: "Daily Nutrition",
+    subtitle: "Track meals and nutrient intake for optimal health",
+    goal: "5 servings fruits & vegetables",
+    progress: 3,
+    total: 5,
+    unit: "servings",
+    iconVariant: "success" as const,
+    nextAction: "Log lunch meal"
   },
   hydration: {
     icon: Droplets,
-    title: "Hydration Plan", 
-    emoji: "💧",
-    color: "text-blue-600",
-    defaultGoal: "8 glasses water",
-    defaultProgress: "5/8 today",
-    route: "/health-tracker/hydration"
+    title: "Hydration Goals",
+    subtitle: "Maintain optimal water intake throughout the day",
+    goal: "8 glasses of water daily",
+    progress: 6,
+    total: 8,
+    unit: "glasses",
+    iconVariant: "info" as const,
+    nextAction: "Drink 16oz water"
   },
   exercise: {
     icon: Dumbbell,
     title: "Exercise Plan",
-    emoji: "🏃",
-    color: "text-purple-600",
-    defaultGoal: "30 min movement",
-    defaultProgress: "15 min done",
-    route: "/health-tracker/exercise"
+    subtitle: "Stay active with daily movement and workouts",
+    goal: "30 minutes active time",
+    progress: 15,
+    total: 30,
+    unit: "minutes",
+    iconVariant: "warning" as const,
+    nextAction: "15min walk"
   },
   sleep: {
     icon: Moon,
-    title: "Sleep Plan",
-    emoji: "🌙",
-    color: "text-indigo-600",
-    defaultGoal: "8 hours sleep",
-    defaultProgress: "7.5h last night",
-    route: "/health-tracker/sleep"
+    title: "Sleep Quality",
+    subtitle: "Optimize rest and recovery patterns",
+    goal: "8 hours quality sleep",
+    progress: 7.5,
+    total: 8,
+    unit: "hours",
+    iconVariant: "success" as const,
+    nextAction: "Set bedtime reminder"
   },
   screen: {
     icon: Smartphone,
-    title: "Screen Time",
-    emoji: "📱",
-    color: "text-orange-600",
-    defaultGoal: "< 4 hours daily",
-    defaultProgress: "2.5h today",
-    route: "/health-tracker/trends"
+    title: "Screen Wellness",
+    subtitle: "Balance digital consumption for mental health",
+    goal: "Under 4 hours daily",
+    progress: 3.2,
+    total: 4,
+    unit: "hours",
+    iconVariant: "success" as const,
+    nextAction: "Take 10min break"
   }
 };
 
-export function LifestylePlanCard({ 
-  type,
-  goal,
-  progress,
-  className 
-}: LifestylePlanCardProps) {
+export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
   const navigate = useNavigate();
-  const config = planConfig[type];
+  const config = planConfigs[type];
+  
+  const progressPercent = Math.round((config.progress / config.total) * 100);
+  const isOnTrack = progressPercent >= 80;
 
   const content = (
-    <div className="space-y-2 text-center">
-      <p className="text-sm font-medium text-foreground">
-        {goal || config.defaultGoal}
-      </p>
-      <p className="text-xs text-muted-foreground">
-        {progress || config.defaultProgress}
-      </p>
+    <div className="space-y-3">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-sm">
+          <span className="font-semibold text-foreground">{config.progress} / {config.total}</span>
+          <span className={cn(
+            "text-xs font-medium",
+            isOnTrack ? "text-health-success" : "text-health-warning"
+          )}>
+            {progressPercent}%
+          </span>
+        </div>
+        
+        <div className="w-full bg-muted/30 rounded-full h-1.5">
+          <div 
+            className={cn(
+              "h-1.5 rounded-full transition-all duration-300",
+              isOnTrack ? "bg-health-success" : "bg-health-warning"
+            )}
+            style={{ width: `${Math.min(progressPercent, 100)}%` }}
+          />
+        </div>
+      </div>
+      
+      <div className="p-2 bg-muted/20 rounded-md">
+        <p className="text-xs text-muted-foreground">Next: {config.nextAction}</p>
+      </div>
     </div>
   );
 
   const handleQuickLog = () => {
-    // In real implementation, this would open a quick logging modal
     console.log("Quick log for:", type);
+  };
+
+  const navigateToTracker = () => {
+    const routes = {
+      nutrition: '/health-tracker/nutrition',
+      hydration: '/health-tracker/hydration', 
+      exercise: '/health-tracker/exercise',
+      sleep: '/health-tracker/sleep',
+      screen: '/health-tracker/trends'
+    };
+    navigate(routes[type]);
   };
 
   return (
     <CrossoverCard
       icon={config.icon}
-      iconColor={config.color}
-      title={`${config.title} ${config.emoji}`}
-      subtitle="Today's target"
+      iconVariant={config.iconVariant}
+      title={config.title}
+      subtitle={config.subtitle}
       content={content}
-      buttonText="Quick Log"
+      buttonText="Log Progress"
       onButtonClick={handleQuickLog}
-      secondaryButtonText="View Plan"
-      onSecondaryButtonClick={() => navigate(config.route)}
+      secondaryButtonText="View Details"
+      onSecondaryButtonClick={navigateToTracker}
       className={className}
-      size="sm"
     />
   );
 }

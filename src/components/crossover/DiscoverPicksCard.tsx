@@ -60,9 +60,9 @@ export function DiscoverPicksCard({
   return (
     <CrossoverCard
       icon={Sparkles}
-      iconColor="text-yellow-600"
-      title="Discover Picks ✨"
-      subtitle="Perfect for you"
+      iconVariant="warning"
+      title="Personalized Discoveries"
+      subtitle="AI-curated recommendations perfect for your wellness journey"
       content={content}
       buttonText="Explore"
       onButtonClick={() => navigate('/discover')}

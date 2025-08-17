@@ -1,6 +1,7 @@
 import { CrossoverCard } from "./CrossoverCard";
-import { Scale } from "lucide-react";
+import { Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 interface VitanaIndexCardProps {
   score?: number;
@@ -15,37 +16,57 @@ export function VitanaIndexCard({
 }: VitanaIndexCardProps) {
   const navigate = useNavigate();
 
-  const getScoreColor = (score: number) => {
-    if (score >= 700) return "text-green-600";
-    if (score >= 500) return "text-yellow-600";
-    return "text-red-600";
+  const getScoreStatus = (score: number) => {
+    if (score >= 750) return { color: "text-health-success", status: "Excellent", variant: "success" as const };
+    if (score >= 650) return { color: "text-health-warning", status: "Good", variant: "warning" as const };
+    if (score >= 500) return { color: "text-health-warning", status: "Fair", variant: "warning" as const };
+    return { color: "text-health-danger", status: "Needs Attention", variant: "danger" as const };
   };
 
+  const scoreStatus = getScoreStatus(score);
+
   const content = (
-    <div className="flex flex-col items-center">
-      <div className="relative mb-3">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20">
-          <span className={cn("text-3xl font-bold", getScoreColor(score))}>{score}</span>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div className="text-center">
+          <div className="text-2xl font-bold text-foreground">{score}</div>
+          <div className="text-xs text-muted-foreground">Current Score</div>
+        </div>
+        <div className="text-right">
+          <div className={cn("text-sm font-semibold", scoreStatus.color)}>{scoreStatus.status}</div>
+          <div className="text-xs text-muted-foreground">{trend}</div>
         </div>
       </div>
-      <p className="text-xs text-green-600 font-medium">{trend}</p>
+      
+      <div className="grid grid-cols-3 gap-2 text-center">
+        <div>
+          <div className="text-sm font-medium text-health-success">85%</div>
+          <div className="text-xs text-muted-foreground">Sleep</div>
+        </div>
+        <div>
+          <div className="text-sm font-medium text-health-warning">67%</div>
+          <div className="text-xs text-muted-foreground">Exercise</div>
+        </div>
+        <div>
+          <div className="text-sm font-medium text-health-success">92%</div>
+          <div className="text-xs text-muted-foreground">Nutrition</div>
+        </div>
+      </div>
     </div>
   );
 
   return (
     <CrossoverCard
-      icon={Scale}
-      iconColor="text-primary"
-      title="Vitana Index ⚖️"
-      subtitle="Your Balance Score"
+      icon={Activity}
+      iconVariant={scoreStatus.variant}
+      title="Vitana Health Index"
+      subtitle="Overall wellness balance across all health pillars"
       content={content}
-      buttonText="View Details"
+      buttonText="View Full Report"
       onButtonClick={() => navigate('/health-tracker/vitana-index')}
+      secondaryButtonText="Track Today"
+      onSecondaryButtonClick={() => navigate('/health-tracker')}
       className={className}
     />
   );
-}
-
-function cn(...classes: (string | undefined)[]): string {
-  return classes.filter(Boolean).join(' ');
 }
