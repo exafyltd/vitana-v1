@@ -2,8 +2,10 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, Brain, CheckSquare, Calendar, Users, Pause, RotateCcw, Settings, Plus } from "lucide-react";
+import { Zap, Brain, CheckSquare, Calendar, Users, Pause, RotateCcw } from "lucide-react";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
+import PlanCard from "@/components/dashboard/PlanCard";
+import QuickActionsDock from "@/components/dashboard/QuickActionsDock";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +21,33 @@ const dashboardSubItems = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
+
+  const handleLogWater = () => {
+    // TODO: Implement water logging
+    console.log("Log water");
+  };
+
+  const handleStartWorkout = () => {
+    navigate('/health-tracker/exercise');
+  };
+
+  const handlePhoneBreak = () => {
+    // TODO: Implement phone break timer
+    console.log("Start phone break");
+  };
+
+  const handleSetBedtime = () => {
+    navigate('/health-tracker/sleep');
+  };
+
+  const handlePlayMusic = () => {
+    // TODO: Implement music player
+    console.log("Play music");
+  };
+
+  const handleMessageFriend = () => {
+    navigate('/messages');
+  };
 
   return (
     <AppLayout>
@@ -84,86 +113,71 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* Dashboard Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* How I'm Doing Now */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center mb-4">
-                  <Brain className="w-6 h-6 text-blue-600" />
-                </div>
-                <CardTitle className="text-lg">How I'm Doing Now 💡</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  Mood: 😊 | Energy: ⚡⚡⚡ | Sleep: 💤 | Stress: 📉
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Change Mood</Button>
-                  <Button variant="outline" size="sm" className="w-full">Focus Mode</Button>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Enhanced Plan Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Nutrition Plan */}
+            <PlanCard
+              emoji="🍎"
+              title="Nutrition Plan"
+              description="Eat smarter today"
+              primaryAction="View Plan"
+              secondaryAction="Swap Meal"
+              onPrimaryClick={() => navigate('/health-tracker/nutrition')}
+              onSecondaryClick={() => console.log("Swap meal")}
+            />
 
-            {/* 3 Things To Do Next */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center mb-4">
-                  <CheckSquare className="w-6 h-6 text-green-600" />
-                </div>
-                <CardTitle className="text-lg">3 Things To Do Next ✅</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  Top 3 AI-picked priorities for optimal wellness
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Do It</Button>
-                  <Button variant="outline" size="sm" className="w-full">Later</Button>
-                  <Button variant="default" size="sm" className="w-full">Let AI Handle</Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Hydration Plan */}
+            <PlanCard
+              emoji="💧"
+              title="Hydration Plan"
+              description="Drink now"
+              primaryAction="Log Water"
+              onPrimaryClick={handleLogWater}
+            />
 
-            {/* Today's Plan */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center mb-4">
-                  <Calendar className="w-6 h-6 text-purple-600" />
-                </div>
-                <CardTitle className="text-lg">Today's Plan 📅</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  Timeline blocks: work, fun, friends, rest
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Okay</Button>
-                  <Button variant="outline" size="sm" className="w-full">Shift</Button>
-                  <Button variant="outline" size="sm" className="w-full"><Plus className="w-4 h-4 mr-1" />Add Break</Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Exercise Plan */}
+            <PlanCard
+              emoji="🏃"
+              title="Exercise Plan"
+              description="Move a little"
+              primaryAction="Start Workout"
+              secondaryAction="View Schedule"
+              onPrimaryClick={handleStartWorkout}
+              onSecondaryClick={() => navigate('/health-tracker/exercise')}
+            />
 
-            {/* People to Meet */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-pink-600" />
-                </div>
-                <CardTitle className="text-lg">People to Meet 🤝</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  3 suggested matches with high compatibility
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Say Hi</Button>
-                  <Button variant="outline" size="sm" className="w-full">Meet Up</Button>
-                  <Button variant="outline" size="sm" className="w-full">Save</Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Sleep Plan */}
+            <PlanCard
+              emoji="🌙"
+              title="Sleep Plan"
+              description="Recharge tonight"
+              primaryAction="Set Bedtime"
+              secondaryAction="Sleep Tips"
+              onPrimaryClick={handleSetBedtime}
+              onSecondaryClick={() => navigate('/health-tracker/sleep')}
+            />
+
+            {/* Screen Time */}
+            <PlanCard
+              emoji="📱"
+              title="Screen Time"
+              description="Take a break"
+              primaryAction="Start Break"
+              secondaryAction="Set Timer"
+              onPrimaryClick={handlePhoneBreak}
+              onSecondaryClick={() => console.log("Set phone timer")}
+            />
+
+            {/* Mood Boost */}
+            <PlanCard
+              emoji="🎵"
+              title="Mood Boost"
+              description="Play something good"
+              primaryAction="Play Music"
+              secondaryAction="Podcast"
+              onPrimaryClick={handlePlayMusic}
+              onSecondaryClick={() => console.log("Play podcast")}
+            />
           </div>
 
           {/* Today's Goals and Wellness Section */}
@@ -251,6 +265,16 @@ export default function Dashboard() {
               </Card>
             </div>
           </div>
+
+          {/* Quick Actions Dock */}
+          <QuickActionsDock
+            onLogWater={handleLogWater}
+            onStartWorkout={handleStartWorkout}
+            onPhoneBreak={handlePhoneBreak}
+            onSetBedtime={handleSetBedtime}
+            onPlayMusic={handlePlayMusic}
+            onMessageFriend={handleMessageFriend}
+          />
         </div>
       </div>
     </AppLayout>
