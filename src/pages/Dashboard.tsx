@@ -1,10 +1,10 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, Brain, CheckSquare, Calendar, Users, Pause, RotateCcw, Settings, Plus } from "lucide-react";
-import AutopilotWidget from "@/components/health/AutopilotWidget";
-import { Button } from "@/components/ui/button";
+import { VitanaIndexCard } from "@/components/crossover/VitanaIndexCard";
+import { AutoPilotActionCard } from "@/components/crossover/AutoPilotActionCard";
+import { LifestylePlanCard } from "@/components/crossover/LifestylePlanCard";
+import { QuickLogStrip } from "@/components/crossover/QuickLogStrip";
 import { useNavigate } from "react-router-dom";
 
 
@@ -31,226 +31,24 @@ export default function Dashboard() {
             <p className="text-muted-foreground">Your wellness journey starts with today's opportunities and endless possibilities.</p>
           </div>
 
-          {/* Top Row - Autopilot and Vitana Index */}
+          {/* Top Row - Vitana Index and AutoPilot */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {/* Autopilot Card - Using Consistent Widget */}
-            <div>
-              <AutopilotWidget 
-                sectionName="Dashboard"
-                suggestions={[
-                  "Auto-schedule today's optimal wellness breaks",
-                  "Book overdue health appointments automatically",
-                  "Sync today's plan with your energy levels"
-                ]}
-                isEnabled={true}
-                variant="card"
-              />
-              <div className="mt-4 flex gap-2">
-                <Button variant="outline" size="sm"><Pause className="w-4 h-4 mr-1" />Pause All</Button>
-                <Button variant="outline" size="sm"><RotateCcw className="w-4 h-4 mr-1" />Undo</Button>
-                <Button className="flex-1">Open AI Feed</Button>
-              </div>
-            </div>
-
-            {/* Vitana Index Card */}
-            <Card 
-              className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              onClick={() => navigate('/health-tracker/vitana-index')}
-            >
-              <CardHeader className="text-center">
-                <CardTitle className="text-xl">Vitana Index ⚖️</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col items-center">
-                  {/* Large Vitana Index Number with Dynamic Glow */}
-                  <div className="relative mb-4">
-                    <div className="w-28 h-28 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                      <span className="text-4xl font-bold text-green-600">742</span>
-                    </div>
-                  </div>
-                  
-                  {/* Subtitle */}
-                  <p className="text-base text-muted-foreground mb-3">Your Balance Score</p>
-                  
-                  {/* Progress Line */}
-                  <div className="flex items-center space-x-2 mb-3">
-                    <span className="text-sm text-green-600 font-medium">+11% vs last week</span>
-                  </div>
-                  
-                  {/* Motivational Sentence */}
-                  <p className="text-sm text-muted-foreground text-center">Good progress this week ✨</p>
-                </div>
-              </CardContent>
-            </Card>
+            <VitanaIndexCard />
+            <AutoPilotActionCard />
           </div>
 
-          {/* Dashboard Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* How I'm Doing Now */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center mb-4">
-                  <Brain className="w-6 h-6 text-blue-600" />
-                </div>
-                <CardTitle className="text-lg">How I'm Doing Now 💡</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  Mood: 😊 | Energy: ⚡⚡⚡ | Sleep: 💤 | Stress: 📉
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Change Mood</Button>
-                  <Button variant="outline" size="sm" className="w-full">Focus Mode</Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* 3 Things To Do Next */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center mb-4">
-                  <CheckSquare className="w-6 h-6 text-green-600" />
-                </div>
-                <CardTitle className="text-lg">3 Things To Do Next ✅</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  Top 3 AI-picked priorities for optimal wellness
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Do It</Button>
-                  <Button variant="outline" size="sm" className="w-full">Later</Button>
-                  <Button variant="default" size="sm" className="w-full">Let AI Handle</Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Today's Plan */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center mb-4">
-                  <Calendar className="w-6 h-6 text-purple-600" />
-                </div>
-                <CardTitle className="text-lg">Today's Plan 📅</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  Timeline blocks: work, fun, friends, rest
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Okay</Button>
-                  <Button variant="outline" size="sm" className="w-full">Shift</Button>
-                  <Button variant="outline" size="sm" className="w-full"><Plus className="w-4 h-4 mr-1" />Add Break</Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* People to Meet */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-pink-600" />
-                </div>
-                <CardTitle className="text-lg">People to Meet 🤝</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  3 suggested matches with high compatibility
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Say Hi</Button>
-                  <Button variant="outline" size="sm" className="w-full">Meet Up</Button>
-                  <Button variant="outline" size="sm" className="w-full">Save</Button>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Lifestyle Plans Grid - 5 Plan Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <LifestylePlanCard type="nutrition" />
+            <LifestylePlanCard type="hydration" />
+            <LifestylePlanCard type="exercise" />
+            <LifestylePlanCard type="sleep" />
+            <LifestylePlanCard type="screen" />
           </div>
 
-          {/* Today's Goals and Wellness Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-            {/* Today's Goals */}
-            <div className="lg:col-span-2">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl">Today's Goals</CardTitle>
-                    <Button variant="outline" size="sm">View all</Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-4 p-4 bg-blue-50 rounded-xl">
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <CheckSquare className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium">Morning Hydration</h3>
-                        <p className="text-sm text-muted-foreground">Drink 2 glasses of water</p>
-                      </div>
-                      <div className="text-sm font-medium text-blue-600">8/10</div>
-                    </div>
+          {/* Quick Log Strip */}
+          <QuickLogStrip className="mb-8" />
 
-                    <div className="flex items-center space-x-4 p-4 bg-green-50 rounded-xl">
-                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                        <Zap className="w-5 h-5 text-green-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium">Cardio Exercise</h3>
-                        <p className="text-sm text-muted-foreground">30 minutes running</p>
-                      </div>
-                      <div className="text-sm font-medium text-green-600">Completed</div>
-                    </div>
-
-                    <div className="flex items-center space-x-4 p-4 bg-purple-50 rounded-xl">
-                      <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                        <Brain className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium">Mindfulness Session</h3>
-                        <p className="text-sm text-muted-foreground">15 minutes meditation</p>
-                      </div>
-                      <div className="text-sm font-medium text-purple-600">Pending</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="space-y-6">
-              {/* Upcoming Events */}
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="text-lg">Upcoming</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <div>
-                        <p className="text-sm font-medium">Yoga Class</p>
-                        <p className="text-xs text-muted-foreground">Today, 6:00 PM</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <div>
-                        <p className="text-sm font-medium">Health Checkup</p>
-                        <p className="text-xs text-muted-foreground">Tomorrow, 10:00 AM</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <div>
-                        <p className="text-sm font-medium">Group Meditation</p>
-                        <p className="text-xs text-muted-foreground">Friday, 7:00 AM</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
         </div>
       </div>
     </AppLayout>
