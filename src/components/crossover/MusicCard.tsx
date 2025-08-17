@@ -58,21 +58,10 @@ export function MusicCard() {
         </div>
 
         <div className="flex items-center justify-center gap-2 mt-4 group-hover:opacity-50 transition-opacity duration-300">
-          <Button size="sm" variant="ghost" onClick={toggleLike} className="hover:bg-pink-200">
-            <Heart className={`w-4 h-4 ${isLiked ? 'fill-pink-500 text-pink-500' : 'text-pink-600'}`} />
+          <Button size="sm" variant="ghost" onClick={toggleLike} className="hover:bg-pink-100">
+            <Heart className={`w-4 h-4 ${isLiked ? 'fill-pink-400 text-pink-400' : 'text-pink-500'}`} />
           </Button>
-          <Button 
-            size="sm" 
-            className="rounded-full w-10 h-10 bg-pink-500 hover:bg-pink-600"
-            onClick={togglePlay}
-          >
-            {isPlaying ? (
-              <Pause className="w-5 h-5" />
-            ) : (
-              <Play className="w-5 h-5" />
-            )}
-          </Button>
-          <Button size="sm" variant="ghost" className="hover:bg-pink-200 text-pink-600">
+          <Button size="sm" variant="ghost" className="hover:bg-pink-100 text-pink-500">
             <SkipForward className="w-4 h-4" />
           </Button>
         </div>

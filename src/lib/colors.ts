@@ -33,9 +33,9 @@ export const HEALTH_CATEGORY_COLORS = {
     ring: "ring-purple-200/50"
   },
   mental: {
-    bg: "bg-gradient-to-br from-pink-100 to-pink-200",
-    icon: "text-pink-700",
-    ring: "ring-pink-200/50"
+    bg: "bg-gradient-to-br from-pink-50 to-pink-100",
+    icon: "text-pink-600",
+    ring: "ring-pink-100/50"
   },
   community: {
     bg: "bg-gradient-to-br from-indigo-100 to-indigo-200",
