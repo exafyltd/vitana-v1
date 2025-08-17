@@ -29,9 +29,9 @@ export function VitanaIndexCard({
 
   const content = (
     <div className="flex items-center justify-center space-x-6">
-      {/* Prominent Circular Progress */}
+      {/* Prominent Circular Progress - Same styling as Health pages */}
       <div className="relative flex items-center justify-center">
-        <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
+        <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 100 100">
           <circle
             cx="50"
             cy="50"
@@ -57,7 +57,7 @@ export function VitanaIndexCard({
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <div className="text-2xl font-bold text-foreground">{score}</div>
+          <div className="text-xl font-bold text-green-600">{score}</div>
           <div className="text-xs text-muted-foreground">Index</div>
         </div>
       </div>

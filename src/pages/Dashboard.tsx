@@ -29,11 +29,26 @@ export default function Dashboard() {
       <SEO title="Dashboard | VITANA" description="VITANA Dashboard" canonical={window.location.href} />
       <SubNavigation items={dashboardSubItems} />
       
-      <main className="flex-1 p-6 space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">Welcome back!</h1>
-          <p className="text-muted-foreground">Your personalized wellness overview and actionable insights</p>
-        </div>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          {/* Header Bar - Consistent with Health & Health Tracker */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Hi Jovana, let´s make today a very special day! ✨</h1>
+                <p className="text-muted-foreground">Your wellness journey starts with today's opportunities and endless possibilities.</p>
+              </div>
+              {/* Vitana Index Circle - Same as Health & Health Tracker */}
+              <div 
+                className="cursor-pointer group flex-shrink-0 mr-16"
+                onClick={() => navigate('/health-tracker/vitana-index')}
+              >
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-xl font-bold text-green-600">742</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
         {/* TETRIS-style Dynamic Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -97,7 +112,9 @@ export default function Dashboard() {
             <MotivationCard />
           </div>
         </div>
-      </main>
+
+        </div>
+      </div>
     </AppLayout>
   );
 }
