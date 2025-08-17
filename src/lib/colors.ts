@@ -51,6 +51,21 @@ export const HEALTH_CATEGORY_COLORS = {
     bg: "bg-gradient-to-br from-slate-100 to-slate-200",
     icon: "text-slate-700",
     ring: "ring-slate-200/50"
+  },
+  podcast: {
+    bg: "bg-gradient-to-br from-yellow-100 to-yellow-200",
+    icon: "text-yellow-700",
+    ring: "ring-yellow-200/50"
+  },
+  music: {
+    bg: "bg-gradient-to-br from-rose-100 to-rose-200",
+    icon: "text-rose-700",
+    ring: "ring-rose-200/50"
+  },
+  video: {
+    bg: "bg-gradient-to-br from-cyan-100 to-cyan-200",
+    icon: "text-cyan-700",
+    ring: "ring-cyan-200/50"
   }
 } as const;
 

@@ -11,6 +11,9 @@ import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard"
 import { DataWalletCard } from "@/components/crossover/DataWalletCard";
 import { DiscoverPicksCard } from "@/components/crossover/DiscoverPicksCard";
 import { MotivationCard } from "@/components/crossover/MotivationCard";
+import { PodcastCard } from "@/components/crossover/PodcastCard";
+import { MusicCard } from "@/components/crossover/MusicCard";
+import { VideoFeedCard } from "@/components/crossover/VideoFeedCard";
 import { useNavigate } from "react-router-dom";
 
 const dashboardSubItems = [
@@ -50,7 +53,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-        {/* TETRIS-style Dynamic Grid Layout */}
+        {/* TETRIS-style Dynamic Grid Layout with Media Cards Mixed In */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {/* Row 1: Large Vitana Index + AutoPilot + Smart Calendar */}
           <div className="lg:col-span-2">
@@ -65,9 +68,13 @@ export default function Dashboard() {
             <SmartCalendarCard />
           </div>
           
-          {/* Row 2: 5 Health Pillar Cards - varying sizes */}
+          {/* Row 2: Health Pillars mixed with Media Cards */}
           <div className="md:col-span-1">
             <LifestylePlanCard type="nutrition" />
+          </div>
+          
+          <div className="md:col-span-1">
+            <PodcastCard />
           </div>
           
           <div className="md:col-span-1">
@@ -77,16 +84,24 @@ export default function Dashboard() {
           <div className="md:col-span-1">
             <LifestylePlanCard type="exercise" />
           </div>
+
+          <div className="md:col-span-1">
+            <MusicCard />
+          </div>
           
           <div className="md:col-span-1">
             <LifestylePlanCard type="sleep" />
           </div>
-
+          
           <div className="md:col-span-1">
             <LifestylePlanCard type="mental" />
           </div>
           
-          {/* Row 3: Community Pulse + Progress Streaks + Data Wallet */}
+          <div className="md:col-span-1">
+            <VideoFeedCard />
+          </div>
+          
+          {/* Row 3: Community + Progress + Data Wallet */}
           <div className="lg:col-span-1">
             <CommunityPulseCard />
           </div>
@@ -99,7 +114,7 @@ export default function Dashboard() {
             <DataWalletCard />
           </div>
           
-          {/* Row 4: Quick Log Strip + Discover Picks + Motivation */}
+          {/* Row 4: Quick Log Strip + Discover + Motivation */}
           <div className="lg:col-span-2">
             <QuickLogStrip />
           </div>
