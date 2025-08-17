@@ -12,8 +12,8 @@ export function VideoFeedCard() {
       </div>
       <CardContent className="p-4">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 bg-[#FFF4F2] rounded-lg flex items-center justify-center flex-shrink-0">
-            <Video className="w-7 h-7 text-pink-500" />
+          <div className="w-12 h-12 bg-[#FFF4F2] rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
+            <Video className="w-8 h-8 text-pink-500" />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-sm truncate text-pink-800">Morning Yoga Flow</h3>

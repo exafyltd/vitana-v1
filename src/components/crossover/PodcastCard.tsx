@@ -51,20 +51,7 @@ export function PodcastCard() {
           </div>
         </div>
         
-        <div className="flex gap-2 group-hover:opacity-50 transition-opacity duration-300">
-          <Button 
-            size="sm" 
-            variant="outline" 
-            className="flex-1 border-pink-300 text-pink-700 hover:bg-pink-200"
-            onClick={togglePlay}
-          >
-            {isPlaying ? (
-              <Pause className="w-4 h-4 mr-1" />
-            ) : (
-              <Play className="w-4 h-4 mr-1" />
-            )}
-            {isPlaying ? 'Pause' : 'Play'}
-          </Button>
+        <div className="flex justify-center group-hover:opacity-50 transition-opacity duration-300">
           <Button size="sm" variant="ghost" className="hover:bg-pink-200 text-pink-600">
             <Bookmark className="w-4 h-4" />
           </Button>
