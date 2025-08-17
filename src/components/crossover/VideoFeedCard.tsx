@@ -11,13 +11,18 @@ export function VideoFeedCard() {
         <Badge variant="secondary" className="bg-pink-200/80 text-pink-700 text-xs">Video</Badge>
       </div>
       <CardContent className="p-4">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg flex items-center justify-center flex-shrink-0">
+            <Video className="w-6 h-6 text-pink-600" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-sm truncate text-pink-800">Morning Yoga Flow</h3>
+            <p className="text-xs text-pink-600 truncate">Wellness Studio</p>
+          </div>
+        </div>
+        
         <div className="relative group cursor-pointer">
           <div className="relative aspect-[9/16] bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg overflow-hidden mb-3">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg flex items-center justify-center">
-                <Video className="w-6 h-6 text-pink-600" />
-              </div>
-            </div>
             <div className="absolute bottom-2 right-2">
               <Badge variant="secondary" className="text-xs bg-pink-200/80 text-pink-700">
                 5:42
@@ -31,8 +36,6 @@ export function VideoFeedCard() {
           </div>
           
           <div>
-            <h3 className="font-semibold text-sm mb-1 text-pink-800">Morning Yoga Flow</h3>
-            <p className="text-xs text-pink-600 mb-2">Wellness Studio</p>
             <div className="flex items-center gap-3 mb-2 text-xs text-pink-600">
               <span className="flex items-center gap-1">
                 <Eye className="w-3 h-3" />
