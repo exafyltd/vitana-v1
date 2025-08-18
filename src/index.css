@@ -137,6 +137,49 @@ All colors MUST be HSL.
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    /* Vitana Pillar-First Color System - Dark Mode */
+    /* 5 Health Pillars */
+    --pill-nutrition-accent: 150 60% 55%;
+    --pill-nutrition-tint: 150 60% 8%;
+    --pill-hydration-accent: 210 90% 65%;
+    --pill-hydration-tint: 210 100% 8%;
+    --pill-mental-accent: 330 80% 65%;
+    --pill-mental-tint: 330 100% 8%;
+    --pill-exercise-accent: 210 20% 55%;
+    --pill-exercise-tint: 210 25% 8%;
+    --pill-sleep-accent: 50 95% 65%;
+    --pill-sleep-tint: 50 100% 8%;
+
+    /* System / Utility */
+    --sys-vitana-accent: 173 70% 55%;
+    --sys-vitana-tint: 173 70% 8%;
+    --sys-autopilot-accent: 8 85% 66%;
+    --sys-autopilot-tint: 8 100% 8%;
+    --sys-ai-accent: 14 88% 64%;
+    --sys-ai-tint: 14 100% 8%;
+    --util-calendar-accent: 215 16% 70%;
+    --util-calendar-tint: 215 25% 10%;
+    --util-settings-accent: 215 16% 70%;
+    --util-settings-tint: 215 25% 10%;
+    --util-profile-accent: 173 70% 55%;
+    --util-profile-tint: 173 70% 8%;
+
+    /* Domain specifics */
+    --domain-discover-accent: 265 85% 70%;
+    --domain-discover-tint: 265 100% 8%;
+    --domain-health-accent: 42 35% 88%;
+    --domain-health-tint: 42 65% 10%;
+    --domain-tracker-accent: 42 30% 85%;
+    --domain-tracker-tint: 42 60% 10%;
+
+    /* Messaging & Community (Mental Health family) */
+    --domain-messages-accent: 330 75% 55%;
+    --domain-messages-tint: 330 85% 8%;
+    --domain-community-accent: 330 90% 70%;
+    --domain-community-tint: 330 100% 8%;
+
+    /* Legacy colors */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -263,6 +306,11 @@ All colors MUST be HSL.
   .card-community {
     background: hsl(var(--domain-community-tint));
     border-color: hsl(var(--domain-community-accent));
+  }
+
+  .card-data {
+    background: hsl(var(--util-settings-tint));
+    border-color: hsl(var(--util-settings-accent));
   }
 
   /* Pillar Chips */
