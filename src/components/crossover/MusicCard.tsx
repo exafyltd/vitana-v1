@@ -19,14 +19,15 @@ export function MusicCard() {
   return (
     <Card className="h-full card-mental group cursor-pointer relative overflow-hidden hover:shadow-lg transition-all duration-300">
       <div className="absolute top-2 right-2 z-10">
-        <Badge variant="secondary" className="bg-pill-mental-accent/20 text-pill-mental-accent text-xs">Music</Badge>
+        <Badge variant="secondary" className="text-xs" style={{ backgroundColor: 'hsl(var(--pill-mental-accent) / 0.2)', color: 'hsl(var(--pill-mental-accent))' }}>Music</Badge>
       </div>
       <CardContent className="p-4 relative">
         {/* Hover overlay with large play button */}
-        <div className="absolute inset-0 bg-pill-mental-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center" style={{ backgroundColor: 'hsl(var(--pill-mental-accent) / 0.2)' }}>
           <Button 
             size="lg" 
-            className="rounded-full w-16 h-16 bg-white/90 hover:bg-white text-pill-mental-accent shadow-lg"
+            className="rounded-full w-16 h-16 bg-white/90 hover:bg-white shadow-lg"
+            style={{ color: 'hsl(var(--pill-mental-accent))' }}
             onClick={togglePlay}
           >
             {isPlaying ? (
@@ -38,8 +39,8 @@ export function MusicCard() {
         </div>
         
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-pill-mental-accent/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
-            <Music className="w-5 h-5 text-pill-mental-accent" />
+          <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200" style={{ backgroundColor: 'hsl(var(--pill-mental-accent) / 0.1)' }}>
+            <Music className="w-5 h-5" style={{ color: 'hsl(var(--pill-mental-accent))' }} />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-sm truncate text-foreground">Peaceful Morning</h3>
@@ -53,15 +54,15 @@ export function MusicCard() {
             <span>4:20</span>
           </div>
           <div className="w-full bg-muted rounded-full h-1.5">
-            <div className="bg-pill-mental-accent h-1.5 rounded-full transition-all duration-300" style={{ width: "60%" }}></div>
+            <div className="h-1.5 rounded-full transition-all duration-300" style={{ width: "60%", backgroundColor: 'hsl(var(--pill-mental-accent))' }}></div>
           </div>
         </div>
 
         <div className="flex items-center justify-center gap-2 mt-4 group-hover:opacity-50 transition-opacity duration-300">
-          <Button size="sm" variant="ghost" onClick={toggleLike} className="hover:bg-pill-mental-accent/10">
-            <Heart className={`w-4 h-4 ${isLiked ? 'fill-pill-mental-accent text-pill-mental-accent' : 'text-pill-mental-accent'}`} />
+          <Button size="sm" variant="ghost" onClick={toggleLike} className="hover:bg-muted">
+            <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} style={{ color: 'hsl(var(--pill-mental-accent))' }} />
           </Button>
-          <Button size="sm" variant="ghost" className="hover:bg-pill-mental-accent/10 text-pill-mental-accent">
+          <Button size="sm" variant="ghost" className="hover:bg-muted" style={{ color: 'hsl(var(--pill-mental-accent))' }}>
             <SkipForward className="w-4 h-4" />
           </Button>
         </div>
