@@ -17,9 +17,9 @@ export function MusicCard() {
   };
 
   return (
-    <Card className="h-full card-mental group cursor-pointer relative overflow-hidden hover:shadow-lg transition-all duration-300">
+    <Card className="h-full bg-pink-50 border-pink-200 group cursor-pointer relative overflow-hidden hover:shadow-lg transition-all duration-300">
       <div className="absolute top-2 right-2 z-10">
-        <Badge variant="secondary" className="text-xs" style={{ backgroundColor: 'hsl(var(--pill-mental-accent) / 0.2)', color: 'hsl(var(--pill-mental-accent))' }}>Music</Badge>
+        <Badge variant="secondary" className="bg-pink-200 text-pink-700 text-xs">Music</Badge>
       </div>
       <CardContent className="p-4 relative">
         {/* Hover overlay with large play button */}
