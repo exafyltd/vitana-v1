@@ -71,6 +71,79 @@ export default {
 					success: 'hsl(var(--calendar-success))',
 					background: 'hsl(var(--calendar-background))',
 					card: 'hsl(var(--calendar-card))'
+				},
+				/* Vitana Pillar-First Color System */
+				pill: {
+					nutrition: {
+						accent: 'hsl(var(--pill-nutrition-accent))',
+						tint: 'hsl(var(--pill-nutrition-tint))'
+					},
+					hydration: {
+						accent: 'hsl(var(--pill-hydration-accent))',
+						tint: 'hsl(var(--pill-hydration-tint))'
+					},
+					mental: {
+						accent: 'hsl(var(--pill-mental-accent))',
+						tint: 'hsl(var(--pill-mental-tint))'
+					},
+					exercise: {
+						accent: 'hsl(var(--pill-exercise-accent))',
+						tint: 'hsl(var(--pill-exercise-tint))'
+					},
+					sleep: {
+						accent: 'hsl(var(--pill-sleep-accent))',
+						tint: 'hsl(var(--pill-sleep-tint))'
+					}
+				},
+				sys: {
+					vitana: {
+						accent: 'hsl(var(--sys-vitana-accent))',
+						tint: 'hsl(var(--sys-vitana-tint))'
+					},
+					autopilot: {
+						accent: 'hsl(var(--sys-autopilot-accent))',
+						tint: 'hsl(var(--sys-autopilot-tint))'
+					},
+					ai: {
+						accent: 'hsl(var(--sys-ai-accent))',
+						tint: 'hsl(var(--sys-ai-tint))'
+					}
+				},
+				util: {
+					calendar: {
+						accent: 'hsl(var(--util-calendar-accent))',
+						tint: 'hsl(var(--util-calendar-tint))'
+					},
+					settings: {
+						accent: 'hsl(var(--util-settings-accent))',
+						tint: 'hsl(var(--util-settings-tint))'
+					},
+					profile: {
+						accent: 'hsl(var(--util-profile-accent))',
+						tint: 'hsl(var(--util-profile-tint))'
+					}
+				},
+				domain: {
+					discover: {
+						accent: 'hsl(var(--domain-discover-accent))',
+						tint: 'hsl(var(--domain-discover-tint))'
+					},
+					health: {
+						accent: 'hsl(var(--domain-health-accent))',
+						tint: 'hsl(var(--domain-health-tint))'
+					},
+					tracker: {
+						accent: 'hsl(var(--domain-tracker-accent))',
+						tint: 'hsl(var(--domain-tracker-tint))'
+					},
+					messages: {
+						accent: 'hsl(var(--domain-messages-accent))',
+						tint: 'hsl(var(--domain-messages-tint))'
+					},
+					community: {
+						accent: 'hsl(var(--domain-community-accent))',
+						tint: 'hsl(var(--domain-community-tint))'
+					}
 				}
 			},
 			borderRadius: {

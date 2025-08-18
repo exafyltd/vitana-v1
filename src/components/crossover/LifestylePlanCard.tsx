@@ -2,7 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Apple, Droplets, Dumbbell, Moon, Brain } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { type HealthCategoryColor } from "@/lib/colors";
+import { type HealthCategoryColor } from "./CrossoverCard";
 
 export type LifestylePlanType = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
 

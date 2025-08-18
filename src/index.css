@@ -38,7 +38,48 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    /* Calendar-specific colors inspired by reference designs */
+    /* Vitana Pillar-First Color System */
+    /* 5 Health Pillars */
+    --pill-nutrition-accent: 150 60% 45%;
+    --pill-nutrition-tint: 150 60% 96%;
+    --pill-hydration-accent: 210 90% 55%;
+    --pill-hydration-tint: 210 100% 96%;
+    --pill-mental-accent: 330 80% 55%;
+    --pill-mental-tint: 330 100% 97%;
+    --pill-exercise-accent: 210 20% 45%;
+    --pill-exercise-tint: 210 25% 96%;
+    --pill-sleep-accent: 50 95% 55%;
+    --pill-sleep-tint: 50 100% 96%;
+
+    /* System / Utility */
+    --sys-vitana-accent: 173 70% 45%;
+    --sys-vitana-tint: 173 70% 96%;
+    --sys-autopilot-accent: 8 85% 56%;
+    --sys-autopilot-tint: 8 100% 96%;
+    --sys-ai-accent: 14 88% 54%;
+    --sys-ai-tint: 14 100% 96%;
+    --util-calendar-accent: 215 16% 60%;
+    --util-calendar-tint: 215 25% 97%;
+    --util-settings-accent: 215 16% 60%;
+    --util-settings-tint: 215 25% 97%;
+    --util-profile-accent: 173 70% 45%;
+    --util-profile-tint: 173 70% 96%;
+
+    /* Domain specifics */
+    --domain-discover-accent: 265 85% 60%;
+    --domain-discover-tint: 265 100% 96%;
+    --domain-health-accent: 42 35% 78%;
+    --domain-health-tint: 42 65% 97%;
+    --domain-tracker-accent: 42 30% 75%;
+    --domain-tracker-tint: 42 60% 98%;
+
+    /* Messaging & Community (Mental Health family) */
+    --domain-messages-accent: 330 75% 45%;
+    --domain-messages-tint: 330 85% 95%;
+    --domain-community-accent: 330 90% 60%;
+    --domain-community-tint: 330 100% 98%;
+
+    /* Legacy colors for backward compatibility */
     --calendar-primary: 280 100% 70%;
     --calendar-primary-light: 280 100% 85%;
     --calendar-secondary: 320 100% 75%;
@@ -50,19 +91,12 @@ All colors MUST be HSL.
     --calendar-gradient-end: 320 100% 75%;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
     
     /* Ruby red for streaming */
@@ -135,5 +169,135 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Vitana Pillar-First Card System */
+  .card {
+    @apply rounded-2xl border shadow-sm hover:shadow-md transition-all p-4;
+  }
+
+  .card-accent-left {
+    border-left-width: 4px;
+  }
+
+  /* Health Pillar Cards */
+  .card-mental {
+    background: hsl(var(--pill-mental-tint));
+    border-color: hsl(var(--pill-mental-accent));
+  }
+
+  .card-exercise {
+    background: hsl(var(--pill-exercise-tint));
+    border-color: hsl(var(--pill-exercise-accent));
+  }
+
+  .card-nutrition {
+    background: hsl(var(--pill-nutrition-tint));
+    border-color: hsl(var(--pill-nutrition-accent));
+  }
+
+  .card-hydration {
+    background: hsl(var(--pill-hydration-tint));
+    border-color: hsl(var(--pill-hydration-accent));
+  }
+
+  .card-sleep {
+    background: hsl(var(--pill-sleep-tint));
+    border-color: hsl(var(--pill-sleep-accent));
+  }
+
+  /* System & Utility Cards */
+  .card-vitana {
+    background: hsl(var(--sys-vitana-tint));
+    border-color: hsl(var(--sys-vitana-accent));
+  }
+
+  .card-autopilot {
+    background: hsl(var(--sys-autopilot-tint));
+    border-color: hsl(var(--sys-autopilot-accent));
+  }
+
+  .card-ai {
+    background: hsl(var(--sys-ai-tint));
+    border-color: hsl(var(--sys-ai-accent));
+  }
+
+  .card-calendar {
+    background: hsl(var(--util-calendar-tint));
+    border-color: hsl(var(--util-calendar-accent));
+  }
+
+  .card-settings {
+    background: hsl(var(--util-settings-tint));
+    border-color: hsl(var(--util-settings-accent));
+  }
+
+  .card-profile {
+    background: hsl(var(--util-profile-tint));
+    border-color: hsl(var(--util-profile-accent));
+  }
+
+  /* Domain Cards */
+  .card-discover {
+    background: hsl(var(--domain-discover-tint));
+    border-color: hsl(var(--domain-discover-accent));
+  }
+
+  .card-health {
+    background: hsl(var(--domain-health-tint));
+    border-color: hsl(var(--domain-health-accent));
+  }
+
+  .card-tracker {
+    background: hsl(var(--domain-tracker-tint));
+    border-color: hsl(var(--domain-tracker-accent));
+  }
+
+  .card-messages {
+    background: hsl(var(--domain-messages-tint));
+    border-color: hsl(var(--domain-messages-accent));
+  }
+
+  .card-community {
+    background: hsl(var(--domain-community-tint));
+    border-color: hsl(var(--domain-community-accent));
+  }
+
+  /* Pillar Chips */
+  .pillar-chip {
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid hsl(215 14% 86%);
+  }
+
+  .pillar-chip-mental {
+    background: hsl(var(--pill-mental-accent));
+    color: white;
+  }
+
+  .pillar-chip-exercise {
+    background: hsl(var(--pill-exercise-accent));
+    color: white;
+  }
+
+  .pillar-chip-nutrition {
+    background: hsl(var(--pill-nutrition-accent));
+    color: white;
+  }
+
+  .pillar-chip-hydration {
+    background: hsl(var(--pill-hydration-accent));
+    color: white;
+  }
+
+  .pillar-chip-sleep {
+    background: hsl(var(--pill-sleep-accent));
+    color: white;
   }
 }

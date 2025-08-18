@@ -3,7 +3,9 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
-import { HEALTH_CATEGORY_COLORS, type HealthCategoryColor } from "@/lib/colors";
+// Remove the import and update the interface
+
+export type HealthCategoryColor = "mental" | "exercise" | "nutrition" | "hydration" | "sleep" | "vitana" | "autopilot" | "ai" | "calendar" | "settings" | "profile" | "discover" | "health" | "tracker" | "messages" | "community" | "data";
 
 interface CrossoverCardProps {
   icon: LucideIcon;
@@ -37,8 +39,6 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
     ...props 
   }, ref) => {
     
-    const categoryColors = HEALTH_CATEGORY_COLORS[category];
-    
     const sizeVariants = {
       sm: "h-56",
       md: "h-72", 
@@ -50,10 +50,11 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
       <Card 
         ref={ref}
         className={cn(
-          "bg-card border-border/50 hover:border-border transition-all duration-300 group flex flex-col relative overflow-hidden",
+          "border-border/50 hover:border-border transition-all duration-300 group flex flex-col relative overflow-hidden",
           sizeVariants[size],
-          urgent && "ring-2 ring-health-warning/50 shadow-lg shadow-health-warning/10",
+          urgent && "ring-2 ring-destructive/50 shadow-lg shadow-destructive/10",
           "hover:shadow-xl hover:shadow-primary/5",
+          `card-${category}`,
           className
         )}
         {...props}
@@ -61,11 +62,9 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
         <CardHeader className="pb-3 space-y-3">
           <div className={cn(
             "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
-            categoryColors.bg,
-            "ring-1",
-            categoryColors.ring
+            "bg-white/50 ring-1 ring-white/20"
           )}>
-            <Icon className={cn("w-7 h-7 transition-colors duration-300", categoryColors.icon)} />
+            <Icon className="w-5 h-5 transition-colors duration-300" />
           </div>
           
           <div className="space-y-1 text-left">
