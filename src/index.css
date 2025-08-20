@@ -225,93 +225,11 @@ All colors MUST be HSL.
     border-left-width: 4px;
   }
 
-  /* Health Pillar Cards */
-  .card-mental {
-    background: hsl(var(--pill-mental-tint));
-    border-color: hsl(var(--pill-mental-accent));
-  }
+  /* Removed duplicate card definitions - using gradient approach below */
 
-  .card-exercise {
-    background: hsl(var(--pill-exercise-tint));
-    border-color: hsl(var(--pill-exercise-accent));
-  }
+  /* System & Utility Cards - removed duplicate definitions, using gradient approach below */
 
-  .card-nutrition {
-    background: hsl(var(--pill-nutrition-tint));
-    border-color: hsl(var(--pill-nutrition-accent));
-  }
-
-  .card-hydration {
-    background: hsl(var(--pill-hydration-tint));
-    border-color: hsl(var(--pill-hydration-accent));
-  }
-
-  .card-sleep {
-    background: hsl(var(--pill-sleep-tint));
-    border-color: hsl(var(--pill-sleep-accent));
-  }
-
-  /* System & Utility Cards */
-  .card-vitana {
-    background: hsl(var(--sys-vitana-tint));
-    border-color: hsl(var(--sys-vitana-accent));
-  }
-
-  .card-autopilot {
-    background: hsl(var(--sys-autopilot-tint));
-    border-color: hsl(var(--sys-autopilot-accent));
-  }
-
-  .card-ai {
-    background: hsl(var(--sys-ai-tint));
-    border-color: hsl(var(--sys-ai-accent));
-  }
-
-  .card-calendar {
-    background: hsl(var(--util-calendar-tint));
-    border-color: hsl(var(--util-calendar-accent));
-  }
-
-  .card-settings {
-    background: hsl(var(--util-settings-tint));
-    border-color: hsl(var(--util-settings-accent));
-  }
-
-  .card-profile {
-    background: hsl(var(--util-profile-tint));
-    border-color: hsl(var(--util-profile-accent));
-  }
-
-  /* Domain Cards */
-  .card-discover {
-    background: hsl(var(--domain-discover-tint));
-    border-color: hsl(var(--domain-discover-accent));
-  }
-
-  .card-health {
-    background: hsl(var(--domain-health-tint));
-    border-color: hsl(var(--domain-health-accent));
-  }
-
-  .card-tracker {
-    background: hsl(var(--domain-tracker-tint));
-    border-color: hsl(var(--domain-tracker-accent));
-  }
-
-  .card-messages {
-    background: hsl(var(--domain-messages-tint));
-    border-color: hsl(var(--domain-messages-accent));
-  }
-
-  .card-community {
-    background: hsl(var(--domain-community-tint));
-    border-color: hsl(var(--domain-community-accent));
-  }
-
-  .card-data {
-    background: hsl(var(--util-settings-tint));
-    border-color: hsl(var(--util-settings-accent));
-  }
+  /* All card styles now use consistent gradient approach below */
 
   /* Pillar Chips */
   .pillar-chip {
