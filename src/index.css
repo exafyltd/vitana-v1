@@ -348,4 +348,141 @@ All colors MUST be HSL.
     background: hsl(var(--pill-sleep-accent));
     color: white;
   }
+
+  /* Icon Backgrounds */
+  .icon-mental {
+    background: hsl(var(--pill-mental-accent) / 0.1);
+    border: 1px solid hsl(var(--pill-mental-accent) / 0.2);
+  }
+  .icon-mental * {
+    color: hsl(var(--pill-mental-accent));
+  }
+
+  .icon-exercise {
+    background: hsl(var(--pill-exercise-accent) / 0.1);
+    border: 1px solid hsl(var(--pill-exercise-accent) / 0.2);
+  }
+  .icon-exercise * {
+    color: hsl(var(--pill-exercise-accent));
+  }
+
+  .icon-nutrition {
+    background: hsl(var(--pill-nutrition-accent) / 0.1);
+    border: 1px solid hsl(var(--pill-nutrition-accent) / 0.2);
+  }
+  .icon-nutrition * {
+    color: hsl(var(--pill-nutrition-accent));
+  }
+
+  .icon-hydration {
+    background: hsl(var(--pill-hydration-accent) / 0.1);
+    border: 1px solid hsl(var(--pill-hydration-accent) / 0.2);
+  }
+  .icon-hydration * {
+    color: hsl(var(--pill-hydration-accent));
+  }
+
+  .icon-sleep {
+    background: hsl(var(--pill-sleep-accent) / 0.1);
+    border: 1px solid hsl(var(--pill-sleep-accent) / 0.2);
+  }
+  .icon-sleep * {
+    color: hsl(var(--pill-sleep-accent));
+  }
+
+  .icon-vitana {
+    background: hsl(var(--sys-vitana-accent) / 0.1);
+    border: 1px solid hsl(var(--sys-vitana-accent) / 0.2);
+  }
+  .icon-vitana * {
+    color: hsl(var(--sys-vitana-accent));
+  }
+
+  .icon-autopilot {
+    background: hsl(var(--sys-autopilot-accent) / 0.1);
+    border: 1px solid hsl(var(--sys-autopilot-accent) / 0.2);
+  }
+  .icon-autopilot * {
+    color: hsl(var(--sys-autopilot-accent));
+  }
+
+  .icon-ai {
+    background: hsl(var(--sys-ai-accent) / 0.1);
+    border: 1px solid hsl(var(--sys-ai-accent) / 0.2);
+  }
+  .icon-ai * {
+    color: hsl(var(--sys-ai-accent));
+  }
+
+  .icon-calendar {
+    background: hsl(var(--util-calendar-accent) / 0.1);
+    border: 1px solid hsl(var(--util-calendar-accent) / 0.2);
+  }
+  .icon-calendar * {
+    color: hsl(var(--util-calendar-accent));
+  }
+
+  .icon-settings {
+    background: hsl(var(--util-settings-accent) / 0.1);
+    border: 1px solid hsl(var(--util-settings-accent) / 0.2);
+  }
+  .icon-settings * {
+    color: hsl(var(--util-settings-accent));
+  }
+
+  .icon-profile {
+    background: hsl(var(--util-profile-accent) / 0.1);
+    border: 1px solid hsl(var(--util-profile-accent) / 0.2);
+  }
+  .icon-profile * {
+    color: hsl(var(--util-profile-accent));
+  }
+
+  .icon-discover {
+    background: hsl(var(--domain-discover-accent) / 0.1);
+    border: 1px solid hsl(var(--domain-discover-accent) / 0.2);
+  }
+  .icon-discover * {
+    color: hsl(var(--domain-discover-accent));
+  }
+
+  .icon-health {
+    background: hsl(var(--domain-health-accent) / 0.1);
+    border: 1px solid hsl(var(--domain-health-accent) / 0.2);
+  }
+  .icon-health * {
+    color: hsl(var(--domain-health-accent));
+  }
+
+  .icon-tracker {
+    background: hsl(var(--domain-tracker-accent) / 0.1);
+    border: 1px solid hsl(var(--domain-tracker-accent) / 0.2);
+  }
+  .icon-tracker * {
+    color: hsl(var(--domain-tracker-accent));
+  }
+
+  .icon-messages {
+    background: hsl(var(--domain-messages-accent) / 0.1);
+    border: 1px solid hsl(var(--domain-messages-accent) / 0.2);
+  }
+  .icon-messages * {
+    color: hsl(var(--domain-messages-accent));
+  }
+
+  .icon-community {
+    background: hsl(var(--domain-community-accent) / 0.1);
+    border: 1px solid hsl(var(--domain-community-accent) / 0.2);
+  }
+  .icon-community * {
+    color: hsl(var(--domain-community-accent));
+  }
+
+  .icon-data {
+    background: hsl(var(--util-settings-accent) / 0.1);
+    border: 1px solid hsl(var(--util-settings-accent) / 0.2);
+  }
+  .icon-data * {
+    color: hsl(var(--util-settings-accent));
+  }
 }

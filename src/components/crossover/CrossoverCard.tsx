@@ -61,8 +61,8 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
       >
         <CardHeader className="pb-3 space-y-3">
           <div className={cn(
-            "w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
-            "bg-white/50 ring-1 ring-white/20"
+            "w-14 h-14 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110",
+            `icon-${category}`
           )}>
             <Icon className="w-5 h-5 transition-colors duration-300" />
           </div>
