@@ -77,21 +77,22 @@ export function QuickLogStrip({ className }: QuickLogStripProps) {
         
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {quickLogButtons.map((button) => (
-            <Button
-              key={button.label}
-              variant="outline"
-              onClick={() => handleQuickLog(button.path)}
-              className={cn(
-                "h-auto p-5 flex flex-col items-center justify-center gap-4 text-center transition-all duration-200 border min-h-[110px]",
-                button.color
-              )}
-            >
-              <button.icon className={cn("w-6 h-6 flex-shrink-0", button.iconColor)} />
-              <div className="space-y-1 flex-shrink-0">
+            <div key={button.label} className="flex flex-col items-center gap-3">
+              <Button
+                variant="outline"
+                onClick={() => handleQuickLog(button.path)}
+                className={cn(
+                  "h-16 w-16 p-3 flex items-center justify-center transition-all duration-200 border rounded-lg",
+                  button.color
+                )}
+              >
+                <button.icon className={cn("w-6 h-6", button.iconColor)} />
+              </Button>
+              <div className="text-center space-y-1">
                 <div className="text-sm font-semibold leading-tight">{button.label}</div>
                 <div className="text-xs opacity-70 leading-tight">{button.sublabel}</div>
               </div>
-            </Button>
+            </div>
           ))}
         </div>
       </div>
