@@ -1,6 +1,8 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
+import { TrendingUp } from "lucide-react";
 
 const healthSubItems = [
   { id: "overview", name: "Overview", path: "/health" },
@@ -18,10 +20,13 @@ export default function Trends() {
     <AppLayout>
       <SEO title="Trends | Health" description="View health trends and patterns over time" canonical={window.location.href} />
       <SubNavigation items={healthSubItems} />
-      <div className="p-6">
-        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
-          <h1 className="text-2xl font-semibold mb-4">Health Trends</h1>
-          <p className="text-muted-foreground">Analyze your health data trends and patterns over time to identify improvements.</p>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <PageHeader 
+            title="Your journey mapped over time! 📊"
+            description="Analyze your health data trends and patterns over time to identify improvements."
+            icon={TrendingUp}
+          />
         </div>
       </div>
     </AppLayout>

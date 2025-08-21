@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,12 @@ export default function Support() {
       <SEO title="Support | Settings" description="Get help and support for your account" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
+        <PageHeader 
+          title="We're here to help you succeed! 🆘"
+          description="Get help and support for your account"
+          icon={MessageCircle}
+        />
+        
         {/* Contact Options */}
         <Card>
           <CardHeader>

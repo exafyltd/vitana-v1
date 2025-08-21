@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -22,6 +23,12 @@ export default function SettingsNotifications() {
       <SEO title="Notifications | Settings" description="Configure your notification preferences" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
+        <PageHeader 
+          title="Customize your alerts! 🔕"
+          description="Configure your notification preferences"
+          icon={Bell}
+        />
+        
         {/* Email Notifications */}
         <Card>
           <CardHeader>

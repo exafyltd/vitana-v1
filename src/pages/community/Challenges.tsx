@@ -1,6 +1,8 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
+import { Trophy } from "lucide-react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
@@ -16,10 +18,13 @@ export default function Challenges() {
     <AppLayout>
       <SEO title="Challenges | Community" description="Participate in wellness challenges" canonical={window.location.href} />
       <SubNavigation items={communitySubItems} />
-      <div className="p-6">
-        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
-          <h1 className="text-2xl font-semibold mb-4">Challenges</h1>
-          <p className="text-muted-foreground">Join community wellness challenges and compete with others to achieve your goals.</p>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <PageHeader 
+            title="Challenge yourself, achieve greatness! 🏆"
+            description="Join community wellness challenges and compete with others to achieve your goals."
+            icon={Trophy}
+          />
         </div>
       </div>
     </AppLayout>

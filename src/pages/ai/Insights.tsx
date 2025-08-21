@@ -1,6 +1,8 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
+import { Microscope } from "lucide-react";
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -15,10 +17,13 @@ export default function Insights() {
     <AppLayout>
       <SEO title="Insights | AI Intelligence" description="AI-powered health and wellness insights" canonical={window.location.href} />
       <SubNavigation items={aiSubItems} />
-      <div className="p-6">
-        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
-          <h1 className="text-2xl font-semibold mb-4">AI Insights</h1>
-          <p className="text-muted-foreground">Get personalized insights from AI analysis of your health and wellness data.</p>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <PageHeader 
+            title="AI-powered health discoveries! 🔬"
+            description="Get personalized insights from AI analysis of your health and wellness data."
+            icon={Microscope}
+          />
         </div>
       </div>
     </AppLayout>

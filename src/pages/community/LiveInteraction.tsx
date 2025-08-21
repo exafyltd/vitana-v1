@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -104,8 +105,14 @@ export default function LiveInteraction() {
       <SEO title="Live Interaction | Community" description="Join real-time workshops, discussions, and social sessions" canonical={window.location.href} />
       <SubNavigation items={communitySubItems} />
       <div className="p-6 space-y-6">
+        <PageHeader 
+          title="Real connections, real time! 📲"
+          description="Join real-time workshops, discussions, and social sessions"
+          icon={Radio}
+        />
+        
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Live Interaction</h1>
+          <div className="text-lg font-bold">Live Interaction</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
               <Settings className="w-4 h-4 mr-2" />

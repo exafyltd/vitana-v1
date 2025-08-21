@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,12 @@ export default function Privacy() {
       <SEO title="Privacy | Settings" description="Manage your privacy settings and data control" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
+        <PageHeader 
+          title="Your data, your control! 🔒"
+          description="Manage your privacy settings and data control"
+          icon={Shield}
+        />
+        
         {/* Privacy Controls */}
         <Card>
           <CardHeader>

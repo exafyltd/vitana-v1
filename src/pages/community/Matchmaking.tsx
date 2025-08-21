@@ -1,6 +1,8 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
+import { Heart } from "lucide-react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
@@ -16,10 +18,13 @@ export default function Matchmaking() {
     <AppLayout>
       <SEO title="Matchmaking | Community" description="Find compatible community members" canonical={window.location.href} />
       <SubNavigation items={communitySubItems} />
-      <div className="p-6">
-        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
-          <h1 className="text-2xl font-semibold mb-4">Matchmaking</h1>
-          <p className="text-muted-foreground">Discover compatible community members based on your interests and wellness goals.</p>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <PageHeader 
+            title="Perfect matches for your journey! 💫"
+            description="Discover compatible community members based on your interests and wellness goals."
+            icon={Heart}
+          />
         </div>
       </div>
     </AppLayout>

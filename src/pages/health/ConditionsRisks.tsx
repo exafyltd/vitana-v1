@@ -1,8 +1,9 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, FileText } from "lucide-react";
+import { AlertTriangle, FileText, Shield } from "lucide-react";
 
 const healthSubItems = [
   { id: "overview", name: "Overview", path: "/health" },
@@ -34,10 +35,11 @@ export default function ConditionsRisks() {
       <SubNavigation items={healthSubItems} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
-            <h1 className="text-2xl font-semibold mb-4">Conditions & Risks</h1>
-            <p className="text-muted-foreground">Assess your health risks and create preventive action plans to maintain optimal wellness.</p>
-          </div>
+          <PageHeader 
+            title="Take control of your health risks! ⚠️"
+            description="Assess your health risks and create preventive action plans to maintain optimal wellness."
+            icon={Shield}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {conditionsItems.map((item) => (

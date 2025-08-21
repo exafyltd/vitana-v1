@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -123,11 +124,16 @@ export default function AIInsights() {
       <SEO title="AI Insights | Community" description="Personalized recommendations and intelligent community connections" canonical={window.location.href} />
       <SubNavigation items={communitySubItems} />
       <div className="p-6 space-y-6">
+        <PageHeader 
+          title="AI-powered community wisdom! 🤖"
+          description="Personalized recommendations and intelligent community connections"
+          icon={Brain}
+        />
+        
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Brain className="w-6 h-6 text-purple-600" />
-            AI Insights
-          </h1>
+          <div className="text-lg font-bold flex items-center gap-2">
+            Powered by AI
+          </div>
           <Badge variant="secondary" className="flex items-center gap-1">
             <Star className="w-3 h-3" />
             Powered by AI

@@ -1,6 +1,8 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
+import { Mic } from "lucide-react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
@@ -16,10 +18,13 @@ export default function LiveRooms() {
     <AppLayout>
       <SEO title="Live Rooms | Community" description="Join live conversations and discussions" canonical={window.location.href} />
       <SubNavigation items={communitySubItems} />
-      <div className="p-6">
-        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
-          <h1 className="text-2xl font-semibold mb-4">Live Rooms</h1>
-          <p className="text-muted-foreground">Join live audio and video discussions with community members.</p>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <PageHeader 
+            title="Join the conversation live! 🎙️"
+            description="Join live audio and video discussions with community members."
+            icon={Mic}
+          />
         </div>
       </div>
     </AppLayout>

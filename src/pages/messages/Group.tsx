@@ -1,11 +1,12 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Phone, Video, MoreHorizontal, Send } from "lucide-react";
+import { Search, Phone, Video, MoreHorizontal, Send, MessageSquare } from "lucide-react";
 
 const messagesSubItems = [
   { id: "overview", name: "Overview", path: "/messages" },
@@ -29,6 +30,12 @@ export default function Group() {
       <SubNavigation items={messagesSubItems} />
       
       <div className="p-6">
+        <PageHeader 
+          title="Collaborate and communicate! 💬"
+          description="Group conversations and discussions"
+          icon={MessageSquare}
+        />
+        
         <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>
           {/* Left Sidebar - Group Chats */}
           <Card className="w-80 flex flex-col">

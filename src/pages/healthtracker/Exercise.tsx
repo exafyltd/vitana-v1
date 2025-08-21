@@ -1,6 +1,8 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
+import { Dumbbell } from "lucide-react";
 
 const healthSubItems = [
   { id: "overview", name: "Overview", path: "/health" },
@@ -18,10 +20,13 @@ export default function Exercise() {
     <AppLayout>
       <SEO title="Exercise | Health" description="Track your workouts and physical activity" canonical={window.location.href} />
       <SubNavigation items={healthSubItems} />
-      <div className="p-6">
-        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
-          <h1 className="text-2xl font-semibold mb-4">Exercise</h1>
-          <p className="text-muted-foreground">Log your workouts, track progress, and monitor your fitness goals.</p>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <PageHeader 
+            title="Move your body, energize your life! 💪"
+            description="Log your workouts, track progress, and monitor your fitness goals."
+            icon={Dumbbell}
+          />
         </div>
       </div>
     </AppLayout>

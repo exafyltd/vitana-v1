@@ -1,12 +1,13 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, MoreHorizontal, Archive } from "lucide-react";
+import { Search, MoreHorizontal, Archive, FolderOpen } from "lucide-react";
 
 const messagesSubItems = [
   { id: "overview", name: "Overview", path: "/messages" },
@@ -33,6 +34,12 @@ export default function Archived() {
       <SubNavigation items={messagesSubItems} />
       
       <div className="p-6">
+        <PageHeader 
+          title="Never lose important conversations! 📦"
+          description="View archived conversations and messages"
+          icon={FolderOpen}
+        />
+        
         <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>
           {/* Left Sidebar - Archive Categories */}
           <Card className="w-80 flex flex-col">

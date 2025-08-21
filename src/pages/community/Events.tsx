@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -71,8 +72,14 @@ export default function Events() {
       <SEO title="Events & Meetups | Community" description="Discover and join local wellness events and gatherings" canonical={window.location.href} />
       <SubNavigation items={communitySubItems} />
       <div className="p-6 space-y-6">
+        <PageHeader 
+          title="Connect, engage, grow together! 🎉"
+          description="Discover and join local wellness events and gatherings"
+          icon={Calendar}
+        />
+        
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Events & Meetups</h1>
+          <div className="text-lg font-bold">Events & Meetups</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
               <Filter className="w-4 h-4 mr-2" />

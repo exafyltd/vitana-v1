@@ -1,8 +1,9 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Video, Headphones } from "lucide-react";
+import { BookOpen, Video, Headphones, GraduationCap } from "lucide-react";
 
 const healthSubItems = [
   { id: "overview", name: "Overview", path: "/health" },
@@ -40,10 +41,11 @@ export default function EducationResources() {
       <SubNavigation items={healthSubItems} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
-            <h1 className="text-2xl font-semibold mb-4">Education & Resources</h1>
-            <p className="text-muted-foreground">Access curated health education materials linked to your interests and demographic profile.</p>
-          </div>
+          <PageHeader 
+            title="Knowledge is your superpower! 📚"
+            description="Access curated health education materials linked to your interests and demographic profile."
+            icon={GraduationCap}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {resources.map((resource) => (
