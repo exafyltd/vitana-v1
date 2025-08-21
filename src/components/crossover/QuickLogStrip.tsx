@@ -60,40 +60,58 @@ export function QuickLogStrip({ className }: QuickLogStripProps) {
 
   return (
     <Card className={cn(
-      "bg-card border-border/50 p-8",
+      "bg-card border-border/50 p-6",
       className
     )}>
       <div className="space-y-6">
+        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-bold text-foreground">Quick Health Logging</h3>
-            <p className="text-sm text-muted-foreground">Capture your daily health activities in seconds</p>
+            <p className="text-sm text-muted-foreground">Track your daily activities with one tap</p>
           </div>
-          <Button variant="outline" size="sm" className="text-xs">
+          <Button variant="outline" size="sm" className="text-xs h-8">
             <Plus className="w-3 h-3 mr-1" />
-            Custom Log
+            Custom
           </Button>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        {/* Logging Buttons Grid */}
+        <div className="grid grid-cols-5 gap-4">
           {quickLogButtons.map((button) => (
-            <div key={button.label} className="flex flex-col items-center gap-3">
+            <div key={button.label} className="flex flex-col items-center space-y-3">
+              {/* Icon Button */}
               <Button
                 variant="outline"
+                size="lg"
                 onClick={() => handleQuickLog(button.path)}
                 className={cn(
-                  "h-16 w-16 p-3 flex items-center justify-center transition-all duration-200 border rounded-lg",
+                  "w-16 h-16 rounded-xl border-2 transition-all duration-300 hover:scale-105 active:scale-95",
+                  "flex items-center justify-center shadow-sm hover:shadow-md",
                   button.color
                 )}
               >
-                <button.icon className={cn("w-6 h-6", button.iconColor)} />
+                <button.icon className={cn("w-7 h-7", button.iconColor)} />
               </Button>
+              
+              {/* Label Text */}
               <div className="text-center space-y-1">
-                <div className="text-sm font-semibold leading-tight">{button.label}</div>
-                <div className="text-xs opacity-70 leading-tight">{button.sublabel}</div>
+                <div className="text-xs font-semibold text-foreground leading-tight">
+                  {button.label.replace('Log ', '')}
+                </div>
+                <div className="text-xs text-muted-foreground leading-tight">
+                  {button.sublabel}
+                </div>
               </div>
             </div>
           ))}
+        </div>
+        
+        {/* Bottom Info */}
+        <div className="pt-2 border-t border-border/50">
+          <p className="text-xs text-muted-foreground text-center">
+            Your data is automatically synced and contributes to your Vitana Index
+          </p>
         </div>
       </div>
     </Card>
