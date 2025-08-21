@@ -42,7 +42,7 @@ export default function Matches() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3 p-3 bg-pink-50 rounded-lg">
                     <Avatar>
-                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarImage src="/lovable-uploads/sarah-miller-avatar.jpg" />
                       <AvatarFallback>SM</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
@@ -53,7 +53,7 @@ export default function Matches() {
                   </div>
                   <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
                     <Avatar>
-                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarImage src="/lovable-uploads/james-davis-avatar.jpg" />
                       <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
@@ -64,7 +64,7 @@ export default function Matches() {
                   </div>
                   <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
                     <Avatar>
-                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarImage src="/lovable-uploads/emma-wilson-avatar.jpg" />
                       <AvatarFallback>EW</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
@@ -158,7 +158,7 @@ export default function Matches() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
                     <Avatar>
-                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarImage src="/lovable-uploads/dr-roberts-avatar.jpg" />
                       <AvatarFallback>DR</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
@@ -169,7 +169,7 @@ export default function Matches() {
                   </div>
                   <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
                     <Avatar>
-                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarImage src="/lovable-uploads/mike-thompson-avatar.jpg" />
                       <AvatarFallback>MT</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
@@ -180,7 +180,7 @@ export default function Matches() {
                   </div>
                   <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
                     <Avatar>
-                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarImage src="/lovable-uploads/lisa-chen-avatar.jpg" />
                       <AvatarFallback>LC</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">

@@ -19,10 +19,10 @@ const messagesSubItems = [
 
 const recentActivity = [
   { id: 1, type: "message", name: "Jennifer Ardy", content: "sent you a message", time: "2m ago", avatar: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png", urgent: false },
-  { id: 2, type: "call", name: "Tae Min", content: "missed call", time: "15m ago", avatar: "", urgent: true },
-  { id: 3, type: "group", name: "Design Team", content: "new message in group", time: "1h ago", avatar: "", urgent: false },
-  { id: 4, type: "invite", name: "Se Hun oh", content: "invited you to a meeting", time: "2h ago", avatar: "", urgent: false },
-  { id: 5, type: "message", name: "Murphy", content: "replied to your message", time: "3h ago", avatar: "", urgent: false },
+  { id: 2, type: "call", name: "Tae Min", content: "missed call", time: "15m ago", avatar: "/lovable-uploads/tae-min-avatar.jpg", urgent: true },
+  { id: 3, type: "group", name: "Design Team", content: "new message in group", time: "1h ago", avatar: "/lovable-uploads/design-team-avatar.jpg", urgent: false },
+  { id: 4, type: "invite", name: "Se Hun oh", content: "invited you to a meeting", time: "2h ago", avatar: "/lovable-uploads/se-hun-oh-avatar.jpg", urgent: false },
+  { id: 5, type: "message", name: "Murphy", content: "replied to your message", time: "3h ago", avatar: "/lovable-uploads/murphy-avatar.jpg", urgent: false },
 ];
 
 const stats = {
