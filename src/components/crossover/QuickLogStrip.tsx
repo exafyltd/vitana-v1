@@ -74,14 +74,14 @@ export function QuickLogStrip({ className }: QuickLogStripProps) {
               variant="outline"
               onClick={() => handleQuickLog(button.label)}
               className={cn(
-                "h-auto p-3 flex flex-col items-center gap-2 text-center transition-all duration-200 border",
+                "h-auto p-4 flex flex-col items-center justify-center gap-3 text-center transition-all duration-200 border min-h-[90px]",
                 button.color
               )}
             >
-              <button.icon className={cn("w-5 h-5", button.iconColor)} />
-              <div>
-                <div className="text-xs font-semibold">{button.label}</div>
-                <div className="text-xs opacity-70">{button.sublabel}</div>
+              <button.icon className={cn("w-5 h-5 flex-shrink-0", button.iconColor)} />
+              <div className="space-y-1 flex-shrink-0">
+                <div className="text-xs font-semibold leading-tight">{button.label}</div>
+                <div className="text-xs opacity-70 leading-tight">{button.sublabel}</div>
               </div>
             </Button>
           ))}
