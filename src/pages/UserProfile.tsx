@@ -16,13 +16,52 @@ import {
   Star,
   Users,
   Activity,
-  Target
+  Target,
+  Play,
+  Music,
+  Headphones,
+  Video,
+  Camera,
+  Bookmark,
+  Share,
+  MoreHorizontal
 } from "lucide-react";
+
+interface MediaContent {
+  id: string;
+  type: 'video' | 'podcast' | 'music';
+  title: string;
+  thumbnail: string;
+  duration: string;
+  views?: number;
+  plays?: number;
+  date: string;
+}
+
+interface Community {
+  id: string;
+  name: string;
+  members: number;
+  type: 'group' | 'event';
+  role?: 'member' | 'admin' | 'moderator';
+}
+
+interface SocialPost {
+  id: string;
+  content: string;
+  image?: string;
+  likes: number;
+  comments: number;
+  shares: number;
+  date: string;
+  type: 'text' | 'image' | 'video';
+}
 
 interface UserProfile {
   id: string;
   name: string;
-  title: string;
+  handle: string;
+  tagline: string;
   bio: string;
   location: string;
   joinDate: string;
@@ -34,22 +73,24 @@ interface UserProfile {
     followers: number;
     following: number;
     vitanaScore: number;
+    mediaUploads: number;
+    groupsJoined: number;
   };
   badges: string[];
   interests: string[];
-  recentActivity: {
-    type: 'post' | 'achievement' | 'group_join';
-    title: string;
-    description: string;
-    date: string;
-  }[];
+  longevityArchetype: string;
+  communities: Community[];
+  mediaContent: MediaContent[];
+  socialPosts: SocialPost[];
+  engagementBadges: string[];
 }
 
 const mockUsers: Record<string, UserProfile> = {
   '1': {
     id: '1',
     name: 'Sarah Miller',
-    title: 'Yoga Enthusiast & Meditation Teacher',
+    handle: '@sarahwellness',
+    tagline: 'Yoga Enthusiast & Meditation Teacher ✨',
     bio: 'Passionate about helping others find inner peace through mindful movement and breathing techniques. Certified yoga instructor with 8+ years of experience in holistic wellness.',
     location: 'San Francisco, CA',
     joinDate: 'March 2023',
@@ -59,35 +100,66 @@ const mockUsers: Record<string, UserProfile> = {
       posts: 142,
       followers: 1250,
       following: 380,
-      vitanaScore: 92
+      vitanaScore: 92,
+      mediaUploads: 24,
+      groupsJoined: 8
     },
     badges: ['Mindfulness Master', 'Community Helper', 'Wellness Warrior'],
     interests: ['Yoga', 'Meditation', 'Mental Health', 'Nutrition', 'Nature'],
-    recentActivity: [
+    longevityArchetype: 'The Mindful Mover',
+    engagementBadges: ['Posted 20+ videos', 'Joined 5+ groups', 'Daily meditation streak'],
+    communities: [
+      { id: '1', name: 'Mindful Movement', members: 1250, type: 'group', role: 'admin' },
+      { id: '2', name: 'Morning Yoga Sessions', members: 850, type: 'event', role: 'member' },
+      { id: '3', name: 'Wellness Warriors', members: 2100, type: 'group', role: 'moderator' }
+    ],
+    mediaContent: [
       {
-        type: 'post',
-        title: 'Morning Flow Routine',
-        description: 'Shared a 15-minute energizing yoga sequence perfect for mornings',
+        id: '1',
+        type: 'video',
+        title: '15-Minute Morning Flow',
+        thumbnail: '/lovable-uploads/sarah-miller-avatar.jpg',
+        duration: '15:23',
+        views: 2300,
         date: '2 days ago'
       },
       {
-        type: 'achievement',
-        title: 'Meditation Streak',
-        description: 'Completed 30 consecutive days of daily meditation',
+        id: '2',
+        type: 'podcast',
+        title: 'Finding Inner Peace',
+        thumbnail: '/lovable-uploads/sarah-miller-avatar.jpg',
+        duration: '32:15',
+        plays: 890,
         date: '1 week ago'
+      }
+    ],
+    socialPosts: [
+      {
+        id: '1',
+        content: 'Starting the day with gratitude and gentle movement. Remember, progress over perfection! 🧘‍♀️',
+        likes: 87,
+        comments: 12,
+        shares: 5,
+        date: '3 hours ago',
+        type: 'text'
       },
       {
-        type: 'group_join',
-        title: 'Joined Mindful Nutrition',
-        description: 'Connected with like-minded individuals focused on conscious eating',
-        date: '2 weeks ago'
+        id: '2',
+        content: 'Just finished teaching an amazing sunrise yoga session. The energy was incredible! 🌅',
+        image: '/lovable-uploads/sarah-miller-avatar.jpg',
+        likes: 156,
+        comments: 23,
+        shares: 11,
+        date: '1 day ago',
+        type: 'image'
       }
     ]
   },
   '2': {
     id: '2',
     name: 'Dr. Roberts',
-    title: 'Certified Health Coach',
+    handle: '@drroberts_md',
+    tagline: 'Certified Health Coach & Preventive Medicine Doctor 🩺',
     bio: 'Board-certified physician specializing in preventive medicine and holistic wellness. Passionate about empowering individuals to take control of their health journey.',
     location: 'Austin, TX',
     joinDate: 'January 2023',
@@ -97,22 +169,38 @@ const mockUsers: Record<string, UserProfile> = {
       posts: 89,
       followers: 2150,
       following: 156,
-      vitanaScore: 96
+      vitanaScore: 96,
+      mediaUploads: 15,
+      groupsJoined: 5
     },
     badges: ['Health Expert', 'Verified Professional', 'Top Contributor'],
     interests: ['Preventive Medicine', 'Nutrition Science', 'Sleep Health', 'Exercise Physiology'],
-    recentActivity: [
+    longevityArchetype: 'The Science-Based Optimizer',
+    engagementBadges: ['100+ consultations', 'Evidence-based content creator', 'Health community leader'],
+    communities: [
+      { id: '4', name: 'Evidence-Based Health', members: 3200, type: 'group', role: 'admin' },
+      { id: '5', name: 'Heart Health Workshop', members: 450, type: 'event', role: 'member' }
+    ],
+    mediaContent: [
       {
-        type: 'post',
-        title: 'Heart Health Guidelines',
-        description: 'Shared evidence-based tips for cardiovascular wellness',
+        id: '3',
+        type: 'video',
+        title: 'Heart Health Fundamentals',
+        thumbnail: '/lovable-uploads/dr-roberts-avatar.jpg',
+        duration: '18:45',
+        views: 4200,
         date: '1 day ago'
-      },
+      }
+    ],
+    socialPosts: [
       {
-        type: 'achievement',
-        title: 'Expert Status',
-        description: 'Reached 100+ helpful health consultations',
-        date: '3 days ago'
+        id: '3',
+        content: 'New research shows that even 10 minutes of daily movement can significantly impact cardiovascular health. Small steps, big results! 💪',
+        likes: 203,
+        comments: 45,
+        shares: 28,
+        date: '6 hours ago',
+        type: 'text'
       }
     ]
   }
@@ -133,12 +221,20 @@ export default function UserProfile() {
     );
   }
 
-  const getActivityIcon = (type: string) => {
+  const getMediaIcon = (type: string) => {
     switch (type) {
-      case 'post': return <MessageSquare className="h-4 w-4" />;
-      case 'achievement': return <Trophy className="h-4 w-4" />;
-      case 'group_join': return <Users className="h-4 w-4" />;
-      default: return <Activity className="h-4 w-4" />;
+      case 'video': return <Video className="h-4 w-4" />;
+      case 'podcast': return <Headphones className="h-4 w-4" />;
+      case 'music': return <Music className="h-4 w-4" />;
+      default: return <Play className="h-4 w-4" />;
+    }
+  };
+
+  const getRoleColor = (role?: string) => {
+    switch (role) {
+      case 'admin': return 'bg-primary/10 text-primary';
+      case 'moderator': return 'bg-secondary/10 text-secondary';
+      default: return 'bg-accent/10 text-accent';
     }
   };
 
@@ -150,77 +246,97 @@ export default function UserProfile() {
       />
 
       <div className="space-y-6">
-        {/* Profile Header */}
+        {/* Social Profile Header */}
         <div className="relative">
-          {/* Cover Image */}
-          <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 rounded-t-2xl" />
+          {/* Cover Image with gradient */}
+          <div className="h-64 bg-gradient-to-br from-primary/30 via-primary/20 to-primary/10 rounded-t-2xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+          </div>
           
-          {/* Profile Info */}
+          {/* Social Profile Info */}
           <div className="relative px-6 pb-6">
-            <div className="flex flex-col md:flex-row gap-6 -mt-16">
-              <Avatar className="h-32 w-32 border-4 border-background shadow-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="text-2xl">
+            <div className="flex flex-col lg:flex-row gap-6 -mt-32">
+              {/* Large Avatar - twice as big as before */}
+              <Avatar className="h-64 w-64 border-6 border-background shadow-2xl mx-auto lg:mx-0">
+                <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
+                <AvatarFallback className="text-4xl font-bold">
                   {user.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
               
-              <div className="flex-1 space-y-4 md:mt-16">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <h1 className="text-3xl font-bold text-foreground">{user.name}</h1>
-                    {user.verified && (
-                      <Badge variant="secondary" className="bg-primary/10 text-primary">
-                        <Star className="h-3 w-3 mr-1" />
-                        Verified
-                      </Badge>
-                    )}
+              {/* Profile Details */}
+              <div className="flex-1 space-y-4 lg:mt-32 text-center lg:text-left">
+                <div className="space-y-3">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3 justify-center lg:justify-start">
+                      <h1 className="text-4xl font-bold text-foreground">{user.name}</h1>
+                      {user.verified && (
+                        <Badge className="bg-primary/10 text-primary border-primary/20">
+                          <Star className="h-4 w-4 mr-1 fill-current" />
+                          Verified
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-xl text-muted-foreground font-medium">{user.handle}</p>
+                    <p className="text-lg text-foreground/80">{user.tagline}</p>
                   </div>
-                  <p className="text-lg text-muted-foreground">{user.title}</p>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
+                  
+                  <div className="flex items-center gap-6 text-sm text-muted-foreground justify-center lg:justify-start">
+                    <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4" />
                       <span>{user.location}</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       <span>Joined {user.joinDate}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex gap-3">
-                  <Button>
+                {/* Social Action Buttons */}
+                <div className="flex gap-3 justify-center lg:justify-start">
+                  <Button size="lg" className="px-8">
                     <MessageSquare className="h-4 w-4 mr-2" />
                     Message
                   </Button>
-                  <Button variant="outline">
+                  <Button variant="outline" size="lg" className="px-8">
                     <UserPlus className="h-4 w-4 mr-2" />
                     Follow
+                  </Button>
+                  <Button variant="ghost" size="lg">
+                    <MoreHorizontal className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-1 gap-4 md:mt-16">
-                <Card className="p-4">
-                  <div className="text-center space-y-1">
-                    <div className="text-2xl font-bold text-primary">{user.stats.vitanaScore}</div>
-                    <div className="text-xs text-muted-foreground">Vitana Score</div>
+              {/* Enhanced Stats */}
+              <div className="lg:mt-32 grid grid-cols-2 lg:grid-cols-1 gap-4">
+                <Card className="p-6 text-center">
+                  <div className="space-y-2">
+                    <div className="text-3xl font-bold text-primary">{user.stats.vitanaScore}</div>
+                    <div className="text-sm text-muted-foreground">Vitana Score</div>
+                    <Badge variant="outline" className="text-xs">
+                      {user.longevityArchetype}
+                    </Badge>
                   </div>
                 </Card>
-                <div className="grid grid-cols-3 gap-2 text-center">
-                  <div>
-                    <div className="font-semibold">{user.stats.posts}</div>
+                
+                <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 text-center">
+                  <div className="p-3 rounded-lg bg-accent/10">
+                    <div className="text-xl font-bold">{user.stats.posts}</div>
                     <div className="text-xs text-muted-foreground">Posts</div>
                   </div>
-                  <div>
-                    <div className="font-semibold">{user.stats.followers.toLocaleString()}</div>
+                  <div className="p-3 rounded-lg bg-accent/10">
+                    <div className="text-xl font-bold">{user.stats.followers.toLocaleString()}</div>
                     <div className="text-xs text-muted-foreground">Followers</div>
                   </div>
-                  <div>
-                    <div className="font-semibold">{user.stats.following}</div>
+                  <div className="p-3 rounded-lg bg-accent/10">
+                    <div className="text-xl font-bold">{user.stats.following}</div>
                     <div className="text-xs text-muted-foreground">Following</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-accent/10">
+                    <div className="text-xl font-bold">{user.stats.mediaUploads}</div>
+                    <div className="text-xs text-muted-foreground">Media</div>
                   </div>
                 </div>
               </div>
@@ -228,73 +344,169 @@ export default function UserProfile() {
           </div>
         </div>
 
-        {/* Profile Content */}
+        {/* Progressive Enrichment Content */}
         <div className="px-6">
-          <Tabs defaultValue="about" className="space-y-6">
-            <TabsList>
-              <TabsTrigger value="about">About</TabsTrigger>
-              <TabsTrigger value="activity">Activity</TabsTrigger>
-              <TabsTrigger value="achievements">Achievements</TabsTrigger>
+          <Tabs defaultValue="posts" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="posts">Posts</TabsTrigger>
+              <TabsTrigger value="media">Media</TabsTrigger>
+              <TabsTrigger value="groups">Groups</TabsTrigger>
+              <TabsTrigger value="health">Health Snapshot</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="about" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>About</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-foreground/80">{user.bio}</p>
-                  
-                  <div>
-                    <h4 className="font-semibold mb-2">Interests</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {user.interests.map((interest) => (
-                        <Badge key={interest} variant="outline">
-                          {interest}
-                        </Badge>
-                      ))}
+            {/* Posts Tab - Social Feed First */}
+            <TabsContent value="posts" className="space-y-4">
+              {user.socialPosts.map((post) => (
+                <Card key={post.id} className="p-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback>{user.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold">{user.name}</span>
+                          <span className="text-muted-foreground text-sm">{user.handle}</span>
+                          <span className="text-muted-foreground text-sm">•</span>
+                          <span className="text-muted-foreground text-sm">{post.date}</span>
+                        </div>
+                        <p className="mt-2 text-foreground/90">{post.content}</p>
+                        {post.image && (
+                          <div className="mt-3 rounded-lg overflow-hidden">
+                            <img src={post.image} alt="Post image" className="w-full h-48 object-cover" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-6 pt-2 border-t">
+                      <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                        <Heart className="h-4 w-4" />
+                        <span className="text-sm">{post.likes}</span>
+                      </button>
+                      <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                        <MessageSquare className="h-4 w-4" />
+                        <span className="text-sm">{post.comments}</span>
+                      </button>
+                      <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                        <Share className="h-4 w-4" />
+                        <span className="text-sm">{post.shares}</span>
+                      </button>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="activity" className="space-y-4">
-              {user.recentActivity.map((activity, index) => (
-                <Card key={index}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        {getActivityIcon(activity.type)}
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold">{activity.title}</h4>
-                        <p className="text-sm text-muted-foreground">{activity.description}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{activity.date}</p>
-                      </div>
-                    </div>
-                  </CardContent>
                 </Card>
               ))}
             </TabsContent>
 
-            <TabsContent value="achievements" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                {user.badges.map((badge) => (
-                  <Card key={badge}>
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Trophy className="h-5 w-5 text-primary" />
+            {/* Media Tab - TikTok/Instagram Style */}
+            <TabsContent value="media" className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {user.mediaContent.map((media) => (
+                  <Card key={media.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                    <div className="relative">
+                      <img src={media.thumbnail} alt={media.title} className="w-full h-48 object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <div className="flex items-center gap-2 text-white mb-1">
+                          {getMediaIcon(media.type)}
+                          <span className="text-sm font-medium">{media.duration}</span>
                         </div>
-                        <div>
-                          <h4 className="font-semibold">{badge}</h4>
-                          <p className="text-sm text-muted-foreground">Achievement unlocked</p>
-                        </div>
+                        <h4 className="font-semibold text-white text-sm">{media.title}</h4>
+                      </div>
+                      <div className="absolute top-3 right-3">
+                        <Badge variant="secondary" className="bg-black/40 text-white">
+                          {media.type}
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardContent className="p-3">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>{media.views ? `${media.views.toLocaleString()} views` : `${media.plays} plays`}</span>
+                        <span>{media.date}</span>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            </TabsContent>
+
+            {/* Groups Tab - Community Engagement */}
+            <TabsContent value="groups" className="space-y-6">
+              <div className="grid gap-4">
+                {user.communities.map((community) => (
+                  <Card key={community.id} className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Users className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">{community.name}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {community.members.toLocaleString()} members • {community.type}
+                          </p>
+                        </div>
+                      </div>                      
+                      {community.role && (
+                        <Badge className={getRoleColor(community.role)}>
+                          {community.role}
+                        </Badge>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* Health Snapshot Tab - Progressive Health Layer */}
+            <TabsContent value="health" className="space-y-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <Card className="p-6">
+                  <CardHeader className="p-0 pb-4">
+                    <CardTitle className="flex items-center gap-2">
+                      <Target className="h-5 w-5 text-primary" />
+                      Vitana Score
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <div className="text-center space-y-2">
+                      <div className="text-4xl font-bold text-primary">{user.stats.vitanaScore}</div>
+                      <div className="text-muted-foreground">{user.longevityArchetype}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="p-6">
+                  <CardHeader className="p-0 pb-4">
+                    <CardTitle>Engagement Badges</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <div className="space-y-2">
+                      {user.engagementBadges.map((badge, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <Trophy className="h-4 w-4 text-primary" />
+                          <span className="text-sm">{badge}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="p-6 md:col-span-2">
+                  <CardHeader className="p-0 pb-4">
+                    <CardTitle>Interests & Auto-Generated Tags</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <div className="flex flex-wrap gap-2">
+                      {user.interests.map((interest) => (
+                        <Badge key={interest} variant="outline" className="hover:bg-primary/10 transition-colors">
+                          {interest}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </TabsContent>
           </Tabs>
