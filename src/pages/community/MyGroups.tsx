@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -37,8 +38,14 @@ export default function MyGroups() {
     <AppLayout>
       <SEO title="My Groups & Feed | Community" description="Your personalized community feed and group updates" canonical={window.location.href} />
       <SubNavigation items={communitySubItems} />
-      <div className="p-6 space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <PageHeader 
+            title="Connect with your tribe! 👥"
+            description="Your personalized community feed and group updates to stay connected with like-minded wellness enthusiasts."
+            icon={Users}
+          />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Left Column - My Groups */}
           <div className="space-y-6">
@@ -178,6 +185,7 @@ export default function MyGroups() {
                 </div>
               </CardContent>
             </Card>
+          </div>
           </div>
         </div>
       </div>

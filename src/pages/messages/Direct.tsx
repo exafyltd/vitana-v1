@@ -1,11 +1,12 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Phone, Video, Send } from "lucide-react";
+import { Search, Phone, Video, Send, MessageSquare } from "lucide-react";
 
 const messagesSubItems = [
   { id: "overview", name: "Overview", path: "/messages" },
@@ -28,8 +29,14 @@ export default function Direct() {
       <SEO title="Direct Messages | Messages" description="Private conversations with community members" canonical={window.location.href} />
       <SubNavigation items={messagesSubItems} />
       
-      <div className="p-6">
-        <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <PageHeader 
+            title="Have meaningful conversations! 💬"
+            description="Connect directly with community members, experts, and coaches for personalized wellness support."
+            icon={MessageSquare}
+          />
+          <div className="flex h-[calc(100vh-280px)]" style={{ gap: '24px' }}>
           {/* Left Sidebar - Direct Message Contacts */}
           <Card className="w-80 flex flex-col">
             <CardHeader className="border-b">
@@ -163,6 +170,7 @@ export default function Direct() {
               </div>
             </CardContent>
           </Card>
+          </div>
         </div>
       </div>
     </AppLayout>
