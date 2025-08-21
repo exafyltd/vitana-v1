@@ -17,6 +17,8 @@ import AI from "./pages/AI";
 import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Search from "./pages/Search";
+import UserProfile from "./pages/UserProfile";
 
 // Dashboard sub-pages
 import Context from "./pages/dashboard/Context";
@@ -156,6 +158,8 @@ const App = () => (
           <Route path="/settings/billing" element={<Billing />} />
           <Route path="/settings/support" element={<Support />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/profile/:id" element={<UserProfile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

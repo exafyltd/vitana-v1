@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect, useRef, useState } from "react";
 import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
+import { GlobalSearch } from "@/components/GlobalSearch";
 
 const sidebarCategories = [
   { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
@@ -70,6 +71,10 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
             {open ? "VITANA" : "V"}
           </Link>
           <SidebarTrigger className="rounded-lg hover:bg-sidebar-accent" />
+        </div>
+        {/* Global Search Bar */}
+        <div className="px-2 pb-2">
+          <GlobalSearch open={open} />
         </div>
       </SidebarHeader>
       <SidebarContent className="flex flex-col">
