@@ -60,7 +60,7 @@ export function QuickLogStrip({ className }: QuickLogStripProps) {
 
   return (
     <Card className={cn(
-      "bg-card border-border/50 p-6",
+      "bg-card border-border/50 p-6 w-full",
       className
     )}>
       <div className="space-y-6">
@@ -76,27 +76,27 @@ export function QuickLogStrip({ className }: QuickLogStripProps) {
           </Button>
         </div>
         
-        {/* Logging Buttons Grid */}
-        <div className="grid grid-cols-5 gap-4">
+        {/* Horizontal Logging Buttons */}
+        <div className="flex items-center justify-between gap-6">
           {quickLogButtons.map((button) => (
-            <div key={button.label} className="flex flex-col items-center space-y-3">
+            <div key={button.label} className="flex flex-col items-center space-y-3 flex-1">
               {/* Icon Button */}
               <Button
                 variant="outline"
                 size="lg"
                 onClick={() => handleQuickLog(button.path)}
                 className={cn(
-                  "w-16 h-16 rounded-xl border-2 transition-all duration-300 hover:scale-105 active:scale-95",
-                  "flex items-center justify-center shadow-sm hover:shadow-md",
+                  "w-20 h-20 rounded-2xl border-2 transition-all duration-300 hover:scale-105 active:scale-95",
+                  "flex items-center justify-center shadow-sm hover:shadow-lg",
                   button.color
                 )}
               >
-                <button.icon className={cn("w-7 h-7", button.iconColor)} />
+                <button.icon className={cn("w-8 h-8", button.iconColor)} />
               </Button>
               
               {/* Label Text */}
               <div className="text-center space-y-1">
-                <div className="text-xs font-semibold text-foreground leading-tight">
+                <div className="text-sm font-semibold text-foreground leading-tight">
                   {button.label.replace('Log ', '')}
                 </div>
                 <div className="text-xs text-muted-foreground leading-tight">
