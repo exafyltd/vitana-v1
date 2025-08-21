@@ -406,87 +406,87 @@ All colors MUST be HSL.
 
   /* Card Background Tints */
   .card-mental {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-mental-accent) / 0.03));
-    border-color: hsl(var(--pill-mental-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-mental-accent) / 0.03)) !important;
+    border-color: hsl(var(--pill-mental-accent) / 0.1) !important;
   }
 
   .card-exercise {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-exercise-accent) / 0.03));
-    border-color: hsl(var(--pill-exercise-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-exercise-accent) / 0.03)) !important;
+    border-color: hsl(var(--pill-exercise-accent) / 0.1) !important;
   }
 
   .card-nutrition {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-nutrition-accent) / 0.03));
-    border-color: hsl(var(--pill-nutrition-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-nutrition-accent) / 0.03)) !important;
+    border-color: hsl(var(--pill-nutrition-accent) / 0.1) !important;
   }
 
   .card-hydration {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-hydration-accent) / 0.03));
-    border-color: hsl(var(--pill-hydration-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-hydration-accent) / 0.03)) !important;
+    border-color: hsl(var(--pill-hydration-accent) / 0.1) !important;
   }
 
   .card-sleep {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-sleep-accent) / 0.03));
-    border-color: hsl(var(--pill-sleep-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-sleep-accent) / 0.03)) !important;
+    border-color: hsl(var(--pill-sleep-accent) / 0.1) !important;
   }
 
   .card-vitana {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--sys-vitana-accent) / 0.03));
-    border-color: hsl(var(--sys-vitana-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--sys-vitana-accent) / 0.03)) !important;
+    border-color: hsl(var(--sys-vitana-accent) / 0.1) !important;
   }
 
   .card-autopilot {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--sys-autopilot-accent) / 0.03));
-    border-color: hsl(var(--sys-autopilot-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--sys-autopilot-accent) / 0.03)) !important;
+    border-color: hsl(var(--sys-autopilot-accent) / 0.1) !important;
   }
 
   .card-ai {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--sys-ai-accent) / 0.03));
-    border-color: hsl(var(--sys-ai-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--sys-ai-accent) / 0.03)) !important;
+    border-color: hsl(var(--sys-ai-accent) / 0.1) !important;
   }
 
   .card-calendar {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--util-calendar-accent) / 0.03));
-    border-color: hsl(var(--util-calendar-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--util-calendar-accent) / 0.03)) !important;
+    border-color: hsl(var(--util-calendar-accent) / 0.1) !important;
   }
 
   .card-settings {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--util-settings-accent) / 0.03));
-    border-color: hsl(var(--util-settings-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--util-settings-accent) / 0.03)) !important;
+    border-color: hsl(var(--util-settings-accent) / 0.1) !important;
   }
 
   .card-profile {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--util-profile-accent) / 0.03));
-    border-color: hsl(var(--util-profile-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--util-profile-accent) / 0.03)) !important;
+    border-color: hsl(var(--util-profile-accent) / 0.1) !important;
   }
 
   .card-discover {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-discover-accent) / 0.03));
-    border-color: hsl(var(--domain-discover-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-discover-accent) / 0.03)) !important;
+    border-color: hsl(var(--domain-discover-accent) / 0.1) !important;
   }
 
   .card-health {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-health-accent) / 0.03));
-    border-color: hsl(var(--domain-health-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-health-accent) / 0.03)) !important;
+    border-color: hsl(var(--domain-health-accent) / 0.1) !important;
   }
 
   .card-tracker {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-tracker-accent) / 0.03));
-    border-color: hsl(var(--domain-tracker-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-tracker-accent) / 0.03)) !important;
+    border-color: hsl(var(--domain-tracker-accent) / 0.1) !important;
   }
 
   .card-messages {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-messages-accent) / 0.03));
-    border-color: hsl(var(--domain-messages-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-messages-accent) / 0.03)) !important;
+    border-color: hsl(var(--domain-messages-accent) / 0.1) !important;
   }
 
   .card-community {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-community-accent) / 0.03));
-    border-color: hsl(var(--domain-community-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--domain-community-accent) / 0.03)) !important;
+    border-color: hsl(var(--domain-community-accent) / 0.1) !important;
   }
 
   .card-data {
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--util-settings-accent) / 0.03));
-    border-color: hsl(var(--util-settings-accent) / 0.1);
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--util-settings-accent) / 0.03)) !important;
+    border-color: hsl(var(--util-settings-accent) / 0.1) !important;
   }
 }
