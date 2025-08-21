@@ -65,10 +65,32 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
               "w-14 h-14 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110",
               `icon-${category}`
             )}
-            style={{
-              backgroundColor: category === 'vitana' ? 'hsl(173 70% 45% / 0.1)' : undefined,
-              border: category === 'vitana' ? '1px solid hsl(173 70% 45% / 0.2)' : undefined
-            }}
+            style={(() => {
+              const colorMap: Record<string, string> = {
+                mental: '330 80% 55%',
+                exercise: '210 20% 45%',
+                nutrition: '150 60% 45%',
+                hydration: '210 90% 55%',
+                sleep: '50 95% 55%',
+                vitana: '173 70% 45%',
+                autopilot: '8 85% 56%',
+                ai: '14 88% 54%',
+                calendar: '215 16% 60%',
+                settings: '215 16% 60%',
+                profile: '173 70% 45%',
+                discover: '265 85% 60%',
+                health: '42 35% 78%',
+                tracker: '42 30% 75%',
+                messages: '330 75% 45%',
+                community: '330 90% 60%',
+                data: '215 16% 60%'
+              };
+              const color = colorMap[category];
+              return color ? {
+                backgroundColor: `hsl(${color} / 0.1)`,
+                border: `1px solid hsl(${color} / 0.2)`
+              } : {};
+            })()}
           >
             <Icon className="w-5 h-5 transition-colors duration-300" />
           </div>
