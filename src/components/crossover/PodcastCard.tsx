@@ -17,18 +17,18 @@ export function PodcastCard() {
         <Badge variant="secondary" className="bg-violet-200 text-violet-700 text-xs">Podcast</Badge>
       </div>
       <CardContent className="p-4 relative">
-        {/* Hover overlay with large play button */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center" style={{ backgroundColor: 'hsl(var(--pill-mental-accent) / 0.2)' }}>
+        {/* Corner play button - doesn't cover content */}
+        <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Button 
-            size="lg" 
-            className="rounded-full w-16 h-16 bg-white/90 hover:bg-white shadow-lg"
+            size="sm" 
+            className="rounded-full w-8 h-8 bg-white/90 hover:bg-white shadow-lg"
             style={{ color: 'hsl(var(--pill-mental-accent))' }}
             onClick={togglePlay}
           >
             {isPlaying ? (
-              <Pause className="w-8 h-8" />
+              <Pause className="w-4 h-4" />
             ) : (
-              <Play className="w-8 h-8" />
+              <Play className="w-4 h-4" />
             )}
           </Button>
         </div>
@@ -38,11 +38,11 @@ export function PodcastCard() {
             <Volume2 className="w-5 h-5" style={{ color: 'hsl(var(--pill-mental-accent))' }} />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-semibold text-sm truncate text-foreground">The Wellness Hour</h3>
-              <Badge variant="secondary" className="text-xs bg-violet-200 text-violet-700">New</Badge>
+            <div className="mb-1">
+              <h3 className="font-semibold text-sm text-foreground leading-tight">The Wellness Hour</h3>
+              <Badge variant="secondary" className="text-xs bg-violet-200 text-violet-700 mt-1 inline-block">New</Badge>
             </div>
-            <p className="text-xs text-muted-foreground mb-2 truncate">Episode 42: Mindful Morning Routines</p>
+            <p className="text-xs text-muted-foreground mb-2 leading-relaxed">Episode 42: Mindful Morning Routines</p>
             <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
               <span>45:20</span>
               <span>•</span>
@@ -52,7 +52,7 @@ export function PodcastCard() {
           </div>
         </div>
         
-        <div className="flex justify-center group-hover:opacity-50 transition-opacity duration-300">
+        <div className="flex justify-center mt-4">
           <Button size="sm" variant="ghost" className="hover:bg-muted" style={{ color: 'hsl(var(--pill-mental-accent))' }}>
             <Bookmark className="w-4 h-4" />
           </Button>

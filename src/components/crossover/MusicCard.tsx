@@ -22,18 +22,18 @@ export function MusicCard() {
         <Badge variant="secondary" className="bg-pink-200 text-pink-700 text-xs">Music</Badge>
       </div>
       <CardContent className="p-4 relative">
-        {/* Hover overlay with large play button */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center" style={{ backgroundColor: 'hsl(var(--pill-mental-accent) / 0.2)' }}>
+        {/* Corner play button - doesn't cover content */}
+        <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Button 
-            size="lg" 
-            className="rounded-full w-16 h-16 bg-white/90 hover:bg-white shadow-lg"
+            size="sm" 
+            className="rounded-full w-8 h-8 bg-white/90 hover:bg-white shadow-lg"
             style={{ color: 'hsl(var(--pill-mental-accent))' }}
             onClick={togglePlay}
           >
             {isPlaying ? (
-              <Pause className="w-8 h-8" />
+              <Pause className="w-4 h-4" />
             ) : (
-              <Play className="w-8 h-8" />
+              <Play className="w-4 h-4" />
             )}
           </Button>
         </div>
@@ -43,8 +43,8 @@ export function MusicCard() {
             <Music className="w-5 h-5" style={{ color: 'hsl(var(--pill-mental-accent))' }} />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-sm truncate text-foreground">Peaceful Morning</h3>
-            <p className="text-xs text-muted-foreground truncate">Nature Sounds Collective</p>
+            <h3 className="font-semibold text-sm text-foreground leading-tight">Peaceful Morning</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">Nature Sounds Collective</p>
           </div>
         </div>
 
@@ -58,7 +58,7 @@ export function MusicCard() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-2 mt-4 group-hover:opacity-50 transition-opacity duration-300">
+        <div className="flex items-center justify-center gap-2 mt-4">
           <Button size="sm" variant="ghost" onClick={toggleLike} className="hover:bg-muted">
             <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} style={{ color: 'hsl(var(--pill-mental-accent))' }} />
           </Button>

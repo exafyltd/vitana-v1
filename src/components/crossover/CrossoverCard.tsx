@@ -40,10 +40,10 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
   }, ref) => {
     
     const sizeVariants = {
-      sm: "h-56",
-      md: "h-72", 
-      lg: "h-80",
-      xl: "h-96"
+      sm: "min-h-56",
+      md: "min-h-72", 
+      lg: "min-h-80",
+      xl: "min-h-96"
     };
 
     return (

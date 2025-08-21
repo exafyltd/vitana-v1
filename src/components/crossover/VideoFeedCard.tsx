@@ -16,8 +16,8 @@ export function VideoFeedCard() {
             <Video className="w-5 h-5" style={{ color: 'hsl(var(--pill-mental-accent))' }} />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-sm truncate text-foreground">Morning Yoga Flow</h3>
-            <p className="text-xs text-muted-foreground truncate">Wellness Studio</p>
+            <h3 className="font-semibold text-sm text-foreground leading-tight">Morning Yoga Flow</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">Wellness Studio</p>
           </div>
         </div>
         
@@ -28,9 +28,9 @@ export function VideoFeedCard() {
                 5:42
               </Badge>
             </div>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center" style={{ backgroundColor: 'hsl(var(--pill-mental-accent) / 0.2)' }}>
-              <Button size="lg" className="rounded-full w-16 h-16 bg-white/90 hover:bg-white shadow-lg" style={{ color: 'hsl(var(--pill-mental-accent))' }}>
-                <Play className="w-8 h-8" />
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}>
+              <Button size="sm" className="rounded-full w-12 h-12 bg-white/90 hover:bg-white shadow-lg" style={{ color: 'hsl(var(--pill-mental-accent))' }}>
+                <Play className="w-6 h-6" />
               </Button>
             </div>
           </div>

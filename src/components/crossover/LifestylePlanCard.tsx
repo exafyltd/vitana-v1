@@ -135,7 +135,7 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
       onButtonClick={handleQuickLog}
       secondaryButtonText="View Details"
       onSecondaryButtonClick={navigateToTracker}
-      size="sm"
+      size="md"
       className={className}
     />
   );
