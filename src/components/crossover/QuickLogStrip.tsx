@@ -60,58 +60,44 @@ export function QuickLogStrip({ className }: QuickLogStripProps) {
 
   return (
     <Card className={cn(
-      "bg-card border-border/50 p-6 w-full",
+      "bg-card border-border/50 p-4",
       className
     )}>
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-bold text-foreground">Quick Health Logging</h3>
-            <p className="text-sm text-muted-foreground">Track your daily activities with one tap</p>
+            <h3 className="text-base font-semibold text-foreground">Quick Logging</h3>
+            <p className="text-xs text-muted-foreground">Track daily activities</p>
           </div>
-          <Button variant="outline" size="sm" className="text-xs h-8">
-            <Plus className="w-3 h-3 mr-1" />
-            Custom
-          </Button>
         </div>
         
-        {/* Horizontal Logging Buttons */}
-        <div className="flex items-center justify-between gap-6">
+        {/* Compact Logging Buttons */}
+        <div className="grid grid-cols-5 gap-3">
           {quickLogButtons.map((button) => (
-            <div key={button.label} className="flex flex-col items-center space-y-3 flex-1">
-              {/* Icon Button */}
+            <div key={button.label} className="flex flex-col items-center space-y-2">
+              {/* Icon Button - Consistent with other dashboard cards */}
               <Button
                 variant="outline"
-                size="lg"
+                size="sm"
                 onClick={() => handleQuickLog(button.path)}
                 className={cn(
-                  "w-20 h-20 rounded-2xl border-2 transition-all duration-300 hover:scale-105 active:scale-95",
-                  "flex items-center justify-center shadow-sm hover:shadow-lg",
+                  "w-12 h-12 rounded-xl border transition-all duration-200 hover:scale-105",
+                  "flex items-center justify-center shadow-sm hover:shadow-md",
                   button.color
                 )}
               >
-                <button.icon className={cn("w-8 h-8", button.iconColor)} />
+                <button.icon className={cn("w-5 h-5", button.iconColor)} />
               </Button>
               
-              {/* Label Text */}
-              <div className="text-center space-y-1">
-                <div className="text-sm font-semibold text-foreground leading-tight">
+              {/* Compact Label */}
+              <div className="text-center">
+                <div className="text-xs font-medium text-foreground leading-tight">
                   {button.label.replace('Log ', '')}
-                </div>
-                <div className="text-xs text-muted-foreground leading-tight">
-                  {button.sublabel}
                 </div>
               </div>
             </div>
           ))}
-        </div>
-        
-        {/* Bottom Info */}
-        <div className="pt-2 border-t border-border/50">
-          <p className="text-xs text-muted-foreground text-center">
-            Your data is automatically synced and contributes to your Vitana Index
-          </p>
         </div>
       </div>
     </Card>
