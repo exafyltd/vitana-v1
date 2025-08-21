@@ -255,20 +255,20 @@ export default function UserProfile() {
           
           {/* Social Profile Info */}
           <div className="relative px-6 pb-6">
-            <div className="flex flex-col lg:flex-row gap-6 -mt-32">
+            <div className="flex flex-col items-center -mt-32">
               {/* Large Avatar - twice as big as before */}
-              <Avatar className="h-64 w-64 border-6 border-background shadow-2xl mx-auto lg:mx-0">
+              <Avatar className="h-64 w-64 border-6 border-background shadow-2xl">
                 <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
                 <AvatarFallback className="text-4xl font-bold">
                   {user.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
               
-              {/* Profile Details */}
-              <div className="flex-1 space-y-4 lg:mt-32 text-center lg:text-left">
+              {/* Profile Details - Centered under avatar */}
+              <div className="space-y-4 mt-6 text-center max-w-2xl">
                 <div className="space-y-3">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-3 justify-center lg:justify-start">
+                    <div className="flex items-center gap-3 justify-center">
                       <h1 className="text-4xl font-bold text-foreground">{user.name}</h1>
                       {user.verified && (
                         <Badge className="bg-primary/10 text-primary border-primary/20">
@@ -281,7 +281,7 @@ export default function UserProfile() {
                     <p className="text-lg text-foreground/80">{user.tagline}</p>
                   </div>
                   
-                  <div className="flex items-center gap-6 text-sm text-muted-foreground justify-center lg:justify-start">
+                  <div className="flex items-center gap-6 text-sm text-muted-foreground justify-center">
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4" />
                       <span>{user.location}</span>
@@ -293,8 +293,36 @@ export default function UserProfile() {
                   </div>
                 </div>
 
+                {/* Stats Grid - Under profile info */}
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-4 py-6">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">{user.stats.vitanaScore}</div>
+                    <div className="text-xs text-muted-foreground">Vitana Score</div>
+                  </div>
+                  <div className="text-center md:col-span-2">
+                    <div className="text-sm font-medium text-foreground">{user.longevityArchetype}</div>
+                    <div className="text-xs text-muted-foreground">Archetype</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-bold">{user.stats.posts}</div>
+                    <div className="text-xs text-muted-foreground">Posts</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-bold">{user.stats.followers.toLocaleString()}</div>
+                    <div className="text-xs text-muted-foreground">Followers</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-bold">{user.stats.following}</div>
+                    <div className="text-xs text-muted-foreground">Following</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-bold">{user.stats.mediaUploads}</div>
+                    <div className="text-xs text-muted-foreground">Media</div>
+                  </div>
+                </div>
+
                 {/* Social Action Buttons */}
-                <div className="flex gap-3 justify-center lg:justify-start">
+                <div className="flex gap-3 justify-center">
                   <Button size="lg" className="px-8">
                     <MessageSquare className="h-4 w-4 mr-2" />
                     Message
@@ -306,38 +334,6 @@ export default function UserProfile() {
                   <Button variant="ghost" size="lg">
                     <MoreHorizontal className="h-4 w-4" />
                   </Button>
-                </div>
-              </div>
-
-              {/* Enhanced Stats */}
-              <div className="lg:mt-32 grid grid-cols-2 lg:grid-cols-1 gap-4">
-                <Card className="p-6 text-center">
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-primary">{user.stats.vitanaScore}</div>
-                    <div className="text-sm text-muted-foreground">Vitana Score</div>
-                    <Badge variant="outline" className="text-xs">
-                      {user.longevityArchetype}
-                    </Badge>
-                  </div>
-                </Card>
-                
-                <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 text-center">
-                  <div className="p-3 rounded-lg bg-accent/10">
-                    <div className="text-xl font-bold">{user.stats.posts}</div>
-                    <div className="text-xs text-muted-foreground">Posts</div>
-                  </div>
-                  <div className="p-3 rounded-lg bg-accent/10">
-                    <div className="text-xl font-bold">{user.stats.followers.toLocaleString()}</div>
-                    <div className="text-xs text-muted-foreground">Followers</div>
-                  </div>
-                  <div className="p-3 rounded-lg bg-accent/10">
-                    <div className="text-xl font-bold">{user.stats.following}</div>
-                    <div className="text-xs text-muted-foreground">Following</div>
-                  </div>
-                  <div className="p-3 rounded-lg bg-accent/10">
-                    <div className="text-xl font-bold">{user.stats.mediaUploads}</div>
-                    <div className="text-xs text-muted-foreground">Media</div>
-                  </div>
                 </div>
               </div>
             </div>
