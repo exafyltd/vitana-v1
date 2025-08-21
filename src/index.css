@@ -309,11 +309,11 @@ All colors MUST be HSL.
   }
 
   .icon-vitana {
-    background: hsl(var(--sys-vitana-accent) / 0.1);
-    border: 1px solid hsl(var(--sys-vitana-accent) / 0.2);
+    background: hsl(var(--sys-vitana-accent) / 0.1) !important;
+    border: 1px solid hsl(var(--sys-vitana-accent) / 0.2) !important;
   }
   .icon-vitana * {
-    color: hsl(var(--sys-vitana-accent));
+    color: hsl(var(--sys-vitana-accent)) !important;
   }
 
   .icon-autopilot {
