@@ -34,20 +34,29 @@ export default function Dashboard() {
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          {/* Header Bar - Consistent with Health & Health Tracker */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          {/* Header Section with Perfect Symmetry */}
+          <div className="flex flex-col lg:flex-row gap-6 mb-8">
+            {/* Shortened Header Bar - Welcome Message Only */}
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">Hi Jovana, let´s make today a very special day! ✨</h1>
                 <p className="text-muted-foreground">Your wellness journey starts with today's opportunities and endless possibilities.</p>
               </div>
-              {/* Vitana Index Circle - Same as Health & Health Tracker */}
-              <div 
-                className="cursor-pointer group flex-shrink-0 mr-16"
-                onClick={() => navigate('/health-tracker/vitana-index')}
-              >
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+            </div>
+            
+            {/* Separate Vitana Index Card - Matching Style & Size */}
+            <div 
+              className="lg:w-64 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              onClick={() => navigate('/health-tracker/vitana-index')}
+            >
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300 mb-3">
                   <span className="text-xl font-bold text-green-600">742</span>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-green-600">Excellent</div>
+                  <div className="text-xs text-muted-foreground">Vitana Index</div>
+                  <div className="text-xs text-green-600 mt-1">+11% vs last week</div>
                 </div>
               </div>
             </div>
