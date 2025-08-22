@@ -100,7 +100,7 @@ const mockUsers: Record<string, UserProfile> = {
       posts: 142,
       followers: 1250,
       following: 380,
-      vitanaScore: 92,
+      vitanaScore: 784,
       mediaUploads: 24,
       groupsJoined: 8
     },
