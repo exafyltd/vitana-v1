@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Radio, Users, Mic, Video, Bell, Eye, Calendar, MessageSquare, Headphones, Settings } from "lucide-react";
+import { GoLivePopup } from "@/components/GoLivePopup";
+import { useState } from "react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
@@ -18,6 +20,7 @@ const communitySubItems = [
 ];
 
 export default function LiveInteraction() {
+  const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
   const activeLiveRooms = [
     {
       title: "Morning Motivation Chat",
@@ -118,7 +121,7 @@ export default function LiveInteraction() {
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
               <Radio className="w-4 h-4 mr-2" />
               Go Live
             </Button>
@@ -334,6 +337,12 @@ export default function LiveInteraction() {
           </div>
         </div>
       </div>
+      
+      <GoLivePopup 
+        open={isGoLiveOpen} 
+        onOpenChange={setIsGoLiveOpen}
+        defaultTitle="Live with User"
+      />
     </AppLayout>
   );
 }
