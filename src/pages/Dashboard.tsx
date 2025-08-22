@@ -44,19 +44,14 @@ export default function Dashboard() {
               </div>
             </div>
             
-            {/* Separate Vitana Index Card - Matching Style & Size */}
+            {/* Small Index Card - Only Circle with 742 */}
             <div 
-              className="lg:w-64 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
               onClick={() => navigate('/health-tracker/vitana-index')}
             >
-              <div className="flex flex-col items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300 mb-3">
+              <div className="flex items-center justify-center h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
                   <span className="text-xl font-bold text-green-600">742</span>
-                </div>
-                <div className="text-center">
-                  <div className="text-lg font-bold text-green-600">Excellent</div>
-                  <div className="text-xs text-muted-foreground">Vitana Index</div>
-                  <div className="text-xs text-green-600 mt-1">+11% vs last week</div>
                 </div>
               </div>
             </div>
