@@ -111,8 +111,34 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
           <div className="space-y-2">
             <Button 
               onClick={onButtonClick}
-              className="w-full font-semibold text-sm h-9"
+              className="w-full font-semibold text-sm h-9 text-black hover:opacity-80 transition-opacity"
               size="sm"
+              style={(() => {
+                const colorMap: Record<string, string> = {
+                  mental: '330 80% 55%',
+                  exercise: '210 20% 45%',
+                  nutrition: '150 60% 45%',
+                  hydration: '210 90% 55%',
+                  sleep: '50 95% 55%',
+                  vitana: '173 70% 45%',
+                  autopilot: '8 85% 56%',
+                  ai: '14 88% 54%',
+                  calendar: '215 16% 60%',
+                  settings: '215 16% 60%',
+                  profile: '173 70% 45%',
+                  discover: '265 85% 60%',
+                  health: '42 35% 78%',
+                  tracker: '42 30% 75%',
+                  messages: '330 75% 45%',
+                  community: '330 90% 60%',
+                  data: '215 16% 60%'
+                };
+                const color = colorMap[category];
+                return color ? {
+                  backgroundColor: `hsl(${color} / 0.1)`,
+                  border: `1px solid hsl(${color} / 0.2)`
+                } : {};
+              })()}
             >
               {buttonText}
             </Button>
