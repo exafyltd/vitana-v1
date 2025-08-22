@@ -197,8 +197,8 @@ export default function Providers() {
           {/* Provider Results */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {providers.map((provider) => (
-              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
-                <CardContent className="p-4 md:p-5 lg:p-6">
+              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
+                <CardContent className="p-4 md:p-5 lg:p-6 flex-1 flex flex-col">
                   <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                     <div className="relative">
                       <img 
@@ -246,11 +246,11 @@ export default function Providers() {
                     ))}
                   </div>
 
-                  <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4 line-clamp-2">
+                  <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4 line-clamp-2 flex-1">
                     {provider.about}
                   </p>
 
-                  <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
+                  <div className="space-y-1 md:space-y-2 mb-4">
                     <div className="flex items-center justify-between text-xs md:text-sm">
                       <span className="text-muted-foreground">Experience:</span>
                       <span className="font-medium">{provider.experience}</span>
@@ -269,7 +269,7 @@ export default function Providers() {
                     </div>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 mt-auto">
                     <Button size="sm" className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9">View Profile</Button>
                     <Button size="sm" variant="outline" className="text-xs md:text-sm h-7 md:h-8 lg:h-9">Book Now</Button>
                   </div>

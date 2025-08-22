@@ -179,7 +179,7 @@ export default function BrowseAll() {
           {/* Results Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
             {allItems.map((item) => (
-              <Card key={item.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
+              <Card key={item.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
                 <div className="relative">
                   <img 
                     src={item.image} 
@@ -195,43 +195,45 @@ export default function BrowseAll() {
                     </Badge>
                   )}
                 </div>
-                <CardContent className="p-3 md:p-4 lg:p-5 min-h-[200px] md:min-h-[240px] lg:min-h-[260px] flex flex-col justify-between">
-                  <div className="space-y-2 md:space-y-3 flex-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
-                        {item.title}
-                      </h3>
-                      <div className="flex items-center gap-1 flex-shrink-0">
-                        <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs md:text-sm text-muted-foreground">{item.rating}</span>
-                      </div>
+                <CardContent className="p-3 md:p-4 lg:p-5 flex-1 flex flex-col">
+                  <div className="flex items-start justify-between gap-2 mb-2 md:mb-3">
+                    <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                      {item.title}
+                    </h3>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="text-xs md:text-sm text-muted-foreground">{item.rating}</span>
                     </div>
-                    <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{item.description}</p>
+                  </div>
+                  <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 mb-2 md:mb-3">{item.description}</p>
+                  <div className="flex items-center gap-1 mb-2 md:mb-3 min-h-[16px] md:min-h-[20px]">
                     {item.location && (
-                      <div className="flex items-center gap-1">
+                      <>
                         <MapPin className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
                         <span className="text-xs md:text-sm text-muted-foreground truncate">{item.location}</span>
-                      </div>
+                      </>
                     )}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-sm md:text-base lg:text-lg font-bold text-foreground">{item.price}</span>
-                        {item.period && <span className="text-xs md:text-sm text-muted-foreground">{item.period}</span>}
-                        {item.originalPrice && (
-                          <span className="text-xs md:text-sm text-muted-foreground line-through">{item.originalPrice}</span>
-                        )}
-                      </div>
+                  </div>
+                  <div className="flex items-center justify-between mb-2 md:mb-3">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-sm md:text-base lg:text-lg font-bold text-foreground">{item.price}</span>
+                      {item.period && <span className="text-xs md:text-sm text-muted-foreground">{item.period}</span>}
+                      {item.originalPrice && (
+                        <span className="text-xs md:text-sm text-muted-foreground line-through">{item.originalPrice}</span>
+                      )}
                     </div>
+                  </div>
+                  <div className="flex items-center gap-1 mb-4 min-h-[16px] md:min-h-[20px]">
                     {item.available && (
-                      <div className="flex items-center gap-1">
+                      <>
                         <Clock className="h-3 w-3 md:h-4 md:w-4 text-green-500 flex-shrink-0" />
                         <span className="text-xs md:text-sm text-green-600 truncate">{item.available}</span>
-                      </div>
+                      </>
                     )}
-                    <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto">
-                      {item.type === 'product' ? 'Add to Cart' : 'Book Now'}
-                    </Button>
                   </div>
+                  <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto">
+                    {item.type === 'product' ? 'Add to Cart' : 'Book Now'}
+                  </Button>
                 </CardContent>
               </Card>
             ))}

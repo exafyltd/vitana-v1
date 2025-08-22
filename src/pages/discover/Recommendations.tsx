@@ -322,7 +322,7 @@ export default function Recommendations() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {bundleSuggestions.map((bundle) => (
-                <Card key={bundle.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-green-200">
+                <Card key={bundle.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-green-200 flex flex-col h-full">
                   <div className="relative">
                     <img 
                       src={bundle.image} 
@@ -333,10 +333,10 @@ export default function Recommendations() {
                       Save {bundle.savings}
                     </Badge>
                   </div>
-                  <CardContent className="p-3 md:p-4 lg:p-5">
+                  <CardContent className="p-3 md:p-4 lg:p-5 flex-1 flex flex-col">
                     <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground mb-2 md:mb-3 group-hover:text-primary transition-colors">{bundle.title}</h3>
                     <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">{bundle.description}</p>
-                    <div className="space-y-2 mb-4">
+                    <div className="space-y-2 mb-4 flex-1">
                       {bundle.items.map((item, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -344,7 +344,7 @@ export default function Recommendations() {
                         </div>
                       ))}
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mt-auto">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl font-bold text-green-600">{bundle.bundlePrice}</span>
                         <span className="text-lg text-muted-foreground line-through">{bundle.originalPrice}</span>

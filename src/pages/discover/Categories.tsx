@@ -149,8 +149,8 @@ export default function Categories() {
           {/* Categories Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {categories.map((category) => (
-              <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
-                <CardContent className="p-4 md:p-5 lg:p-6">
+              <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
+                <CardContent className="p-4 md:p-5 lg:p-6 flex-1 flex flex-col">
                   <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                     <div className={`${category.color} p-2 md:p-3 rounded-lg`}>
                       <category.icon className="h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 text-white" />
@@ -170,7 +170,7 @@ export default function Categories() {
                     </div>
                   </div>
                   
-                  <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
+                  <div className="space-y-1 md:space-y-2 mb-4 flex-1">
                     <div className="text-xs md:text-sm font-medium text-muted-foreground mb-1 md:mb-2">Featured Services:</div>
                     {category.featured.map((service, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -180,7 +180,7 @@ export default function Categories() {
                     ))}
                   </div>
                   
-                  <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9">
+                  <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto">
                     Explore {category.name}
                   </Button>
                 </CardContent>
