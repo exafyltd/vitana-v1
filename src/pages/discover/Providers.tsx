@@ -198,30 +198,30 @@ export default function Providers() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {providers.map((provider) => (
               <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4 mb-4">
+                <CardContent className="p-4 md:p-5 lg:p-6">
+                  <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                     <div className="relative">
                       <img 
                         src={provider.image} 
                         alt={provider.name}
-                        className="w-16 h-16 rounded-full object-cover"
+                        className="w-12 h-12 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full object-cover"
                       />
                       {provider.badges.includes("Verified") && (
                         <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1">
-                          <Verified className="h-3 w-3 text-white" />
+                          <Verified className="h-2 w-2 md:h-3 md:w-3 text-white" />
                         </div>
                       )}
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                      <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors">
                         {provider.name}
                       </h3>
-                      <p className="text-sm text-muted-foreground">{provider.title}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground">{provider.title}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="text-sm font-medium">{provider.rating}</span>
-                          <span className="text-sm text-muted-foreground">({provider.reviews})</span>
+                          <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs md:text-sm font-medium">{provider.rating}</span>
+                          <span className="text-xs md:text-sm text-muted-foreground">({provider.reviews})</span>
                         </div>
                       </div>
                     </div>
@@ -246,32 +246,32 @@ export default function Providers() {
                     ))}
                   </div>
 
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                  <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4 line-clamp-2">
                     {provider.about}
                   </p>
 
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center justify-between text-sm">
+                  <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
+                    <div className="flex items-center justify-between text-xs md:text-sm">
                       <span className="text-muted-foreground">Experience:</span>
                       <span className="font-medium">{provider.experience}</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs md:text-sm">
                       <span className="text-muted-foreground">Price Range:</span>
                       <span className="font-medium">{provider.priceRange}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{provider.location}</span>
+                      <MapPin className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
+                      <span className="text-xs md:text-sm text-muted-foreground">{provider.location}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4 text-green-500" />
-                      <span className="text-sm text-green-600">Available {provider.nextAvailable}</span>
+                      <Clock className="h-3 w-3 md:h-4 md:w-4 text-green-500" />
+                      <span className="text-xs md:text-sm text-green-600">Available {provider.nextAvailable}</span>
                     </div>
                   </div>
 
                   <div className="flex gap-2">
-                    <Button size="sm" className="flex-1">View Profile</Button>
-                    <Button size="sm" variant="outline">Book Now</Button>
+                    <Button size="sm" className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9">View Profile</Button>
+                    <Button size="sm" variant="outline" className="text-xs md:text-sm h-7 md:h-8 lg:h-9">Book Now</Button>
                   </div>
                 </CardContent>
               </Card>

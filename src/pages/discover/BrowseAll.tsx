@@ -184,10 +184,10 @@ export default function BrowseAll() {
                   <img 
                     src={item.image} 
                     alt={item.title}
-                    className="w-full h-40 object-cover rounded-t-lg"
+                    className="w-full h-32 md:h-40 lg:h-48 xl:h-52 object-cover rounded-t-lg"
                   />
-                  <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7">
-                    <Heart className="h-3 w-3" />
+                  <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7 md:h-8 md:w-8">
+                    <Heart className="h-3 w-3 md:h-4 md:w-4" />
                   </Button>
                   {item.originalPrice && (
                     <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1">
@@ -195,40 +195,40 @@ export default function BrowseAll() {
                     </Badge>
                   )}
                 </div>
-                <CardContent className="p-3 h-fit">
-                  <div className="space-y-2">
+                <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
+                  <div className="space-y-2 md:space-y-3">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                      <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
                         {item.title}
                       </h3>
                       <div className="flex items-center gap-1 flex-shrink-0">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs text-muted-foreground">{item.rating}</span>
+                        <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs md:text-sm text-muted-foreground">{item.rating}</span>
                       </div>
                     </div>
-                    <p className="text-xs text-muted-foreground line-clamp-2">{item.description}</p>
+                    <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{item.description}</p>
                     {item.location && (
                       <div className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                        <span className="text-xs text-muted-foreground truncate">{item.location}</span>
+                        <MapPin className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
+                        <span className="text-xs md:text-sm text-muted-foreground truncate">{item.location}</span>
                       </div>
                     )}
                     <div className="flex items-center justify-between">
                       <div className="flex items-baseline gap-1">
-                        <span className="text-sm font-bold text-foreground">{item.price}</span>
-                        {item.period && <span className="text-xs text-muted-foreground">{item.period}</span>}
+                        <span className="text-sm md:text-base lg:text-lg font-bold text-foreground">{item.price}</span>
+                        {item.period && <span className="text-xs md:text-sm text-muted-foreground">{item.period}</span>}
                         {item.originalPrice && (
-                          <span className="text-xs text-muted-foreground line-through">{item.originalPrice}</span>
+                          <span className="text-xs md:text-sm text-muted-foreground line-through">{item.originalPrice}</span>
                         )}
                       </div>
                     </div>
                     {item.available && (
                       <div className="flex items-center gap-1">
-                        <Clock className="h-3 w-3 text-green-500 flex-shrink-0" />
-                        <span className="text-xs text-green-600 truncate">{item.available}</span>
+                        <Clock className="h-3 w-3 md:h-4 md:w-4 text-green-500 flex-shrink-0" />
+                        <span className="text-xs md:text-sm text-green-600 truncate">{item.available}</span>
                       </div>
                     )}
-                    <Button size="sm" className="w-full text-xs h-7 mt-2">
+                    <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-2">
                       {item.type === 'product' ? 'Add to Cart' : 'Book Now'}
                     </Button>
                   </div>

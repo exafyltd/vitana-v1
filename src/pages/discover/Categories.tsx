@@ -150,37 +150,37 @@ export default function Categories() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {categories.map((category) => (
               <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className={`${category.color} p-3 rounded-lg`}>
-                      <category.icon className="h-6 w-6 text-white" />
+                <CardContent className="p-4 md:p-5 lg:p-6">
+                  <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
+                    <div className={`${category.color} p-2 md:p-3 rounded-lg`}>
+                      <category.icon className="h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 text-white" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                        <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors">
                           {category.name}
                         </h3>
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge variant="secondary" className="text-xs md:text-sm">
                           {category.count}
                         </Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-3">
+                      <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
                         {category.description}
                       </p>
                     </div>
                   </div>
                   
-                  <div className="space-y-2 mb-4">
-                    <div className="text-xs font-medium text-muted-foreground mb-2">Featured Services:</div>
+                  <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
+                    <div className="text-xs md:text-sm font-medium text-muted-foreground mb-1 md:mb-2">Featured Services:</div>
                     {category.featured.map((service, index) => (
                       <div key={index} className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <span className="text-xs text-muted-foreground">{service}</span>
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full"></div>
+                        <span className="text-xs md:text-sm text-muted-foreground">{service}</span>
                       </div>
                     ))}
                   </div>
                   
-                  <Button size="sm" className="w-full">
+                  <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9">
                     Explore {category.name}
                   </Button>
                 </CardContent>
