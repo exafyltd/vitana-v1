@@ -57,6 +57,7 @@ import CalendarRecommendations from "./pages/calendar/Recommendations";
 // Community sub-pages
 import MyGroups from "./pages/community/MyGroups";
 import CommunityEvents from "./pages/community/Events";
+import MyBusiness from "./pages/community/MyBusiness";
 import MediaHub from "./pages/community/MediaHub";
 import LiveInteraction from "./pages/community/LiveInteraction";
 import AIInsights from "./pages/community/AIInsights";
@@ -134,6 +135,7 @@ const App = () => (
           <Route path="/community" element={<Community />} />
           <Route path="/community/my-groups" element={<MyGroups />} />
           <Route path="/community/events" element={<CommunityEvents />} />
+          <Route path="/community/my-business" element={<MyBusiness />} />
           <Route path="/community/media-hub" element={<MediaHub />} />
           <Route path="/community/live-interaction" element={<LiveInteraction />} />
           <Route path="/community/ai-insights" element={<AIInsights />} />
