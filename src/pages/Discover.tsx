@@ -226,9 +226,9 @@ export default function Discover() {
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
           <PageHeader
-            title="Discover Wellness Solutions"
+            title="Discover your Longevity Marketplace"
             description="Discover longevity services, products, and providers perfectly matched to your healthy aging journey."
-            icon={Search}
+            icon={Heart}
           />
 
           {/* Enhanced Filters */}
