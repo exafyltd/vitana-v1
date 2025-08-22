@@ -329,7 +329,7 @@ export default function Discover() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
               {featuredOffers.map((offer) => (
-                 <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
+                 <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
                    <div className="relative">
                      <img 
                        src={offer.image} 
@@ -345,7 +345,7 @@ export default function Discover() {
                       </Badge>
                     )}
                   </div>
-                   <CardContent className="p-3 sm:p-4 lg:p-5 min-h-[200px] md:min-h-[240px] lg:min-h-[260px] flex flex-col justify-between">
+                   <CardContent className="p-3 sm:p-4 lg:p-5 h-[280px] md:h-[320px] lg:h-[340px] flex flex-col">
                      <div className="space-y-2 lg:space-y-3 flex-1">
                        <div className="flex items-start justify-between gap-2">
                          <h3 className="font-semibold text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
@@ -370,12 +370,20 @@ export default function Discover() {
                            )}
                          </div>
                        </div>
-                       {offer.available && (
-                         <div className="flex items-center gap-1">
-                           <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 flex-shrink-0" />
-                           <span className="text-xs lg:text-sm text-green-600 truncate">{offer.available}</span>
-                         </div>
-                       )}
+                        <div className="flex items-center gap-1 min-h-[20px] lg:min-h-[24px]">
+                          {offer.available && (
+                            <>
+                              <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 flex-shrink-0" />
+                              <span className="text-xs lg:text-sm text-green-600 truncate">{offer.available}</span>
+                            </>
+                          )}
+                          {offer.shipping && (
+                            <>
+                              <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 flex-shrink-0" />
+                              <span className="text-xs lg:text-sm text-green-600 truncate">{offer.shipping}</span>
+                            </>
+                          )}
+                        </div>
                        <Button size="sm" className="w-full text-xs lg:text-sm h-7 lg:h-9 mt-auto">Book Now</Button>
                     </div>
                   </CardContent>
