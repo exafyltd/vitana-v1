@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -208,6 +208,7 @@ const mockUsers: Record<string, UserProfile> = {
 
 export default function UserProfile() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const user = id ? mockUsers[id] : null;
 
   if (!user) {
@@ -246,95 +247,110 @@ export default function UserProfile() {
       />
 
       <div className="space-y-6">
-        {/* Social Profile Header */}
-        <div className="relative">
-          {/* Cover Image with gradient */}
-          <div className="h-64 bg-gradient-to-br from-primary/30 via-primary/20 to-primary/10 rounded-t-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+        {/* Header with Index Card */}
+        <div className="flex flex-col lg:flex-row gap-6 mb-8">
+          {/* Social Profile Header */}
+          <div className="flex-1 relative">
+            {/* Cover Image with gradient */}
+            <div className="h-64 bg-gradient-to-br from-primary/30 via-primary/20 to-primary/10 rounded-t-2xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+            </div>
+            
+            {/* Social Profile Info */}
+            <div className="relative px-6 pb-6">
+              <div className="flex flex-col items-center -mt-32">
+                {/* Large Avatar - twice as big as before */}
+                <Avatar className="h-64 w-64 border-6 border-background shadow-2xl">
+                  <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
+                  <AvatarFallback className="text-4xl font-bold">
+                    {user.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+                
+                {/* Profile Details - Centered under avatar */}
+                <div className="space-y-4 mt-6 text-center max-w-2xl">
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-3 justify-center">
+                        <h1 className="text-4xl font-bold text-foreground">{user.name}</h1>
+                        {user.verified && (
+                          <Badge className="bg-primary/10 text-primary border-primary/20">
+                            <Star className="h-4 w-4 mr-1 fill-current" />
+                            Verified
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-xl text-muted-foreground font-medium">{user.handle}</p>
+                      <p className="text-lg text-foreground/80">{user.tagline}</p>
+                    </div>
+                    
+                    <div className="flex items-center gap-6 text-sm text-muted-foreground justify-center">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4" />
+                        <span>{user.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
+                        <span>Joined {user.joinDate}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stats Grid - Under profile info */}
+                  <div className="grid grid-cols-3 md:grid-cols-6 gap-4 py-6">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-primary">{user.stats.vitanaScore}</div>
+                      <div className="text-xs text-muted-foreground">Vitana Score</div>
+                    </div>
+                    <div className="text-center md:col-span-2">
+                      <div className="text-sm font-medium text-foreground">{user.longevityArchetype}</div>
+                      <div className="text-xs text-muted-foreground">Archetype</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-bold">{user.stats.posts}</div>
+                      <div className="text-xs text-muted-foreground">Posts</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-bold">{user.stats.followers.toLocaleString()}</div>
+                      <div className="text-xs text-muted-foreground">Followers</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-bold">{user.stats.following}</div>
+                      <div className="text-xs text-muted-foreground">Following</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-bold">{user.stats.mediaUploads}</div>
+                      <div className="text-xs text-muted-foreground">Media</div>
+                    </div>
+                  </div>
+
+                  {/* Social Action Buttons */}
+                  <div className="flex gap-3 justify-center">
+                    <Button size="lg" className="px-8">
+                      <MessageSquare className="h-4 w-4 mr-2" />
+                      Message
+                    </Button>
+                    <Button variant="outline" size="lg" className="px-8">
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      Follow
+                    </Button>
+                    <Button variant="ghost" size="lg">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           
-          {/* Social Profile Info */}
-          <div className="relative px-6 pb-6">
-            <div className="flex flex-col items-center -mt-32">
-              {/* Large Avatar - twice as big as before */}
-              <Avatar className="h-64 w-64 border-6 border-background shadow-2xl">
-                <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
-                <AvatarFallback className="text-4xl font-bold">
-                  {user.name.split(' ').map(n => n[0]).join('')}
-                </AvatarFallback>
-              </Avatar>
-              
-              {/* Profile Details - Centered under avatar */}
-              <div className="space-y-4 mt-6 text-center max-w-2xl">
-                <div className="space-y-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-3 justify-center">
-                      <h1 className="text-4xl font-bold text-foreground">{user.name}</h1>
-                      {user.verified && (
-                        <Badge className="bg-primary/10 text-primary border-primary/20">
-                          <Star className="h-4 w-4 mr-1 fill-current" />
-                          Verified
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="text-xl text-muted-foreground font-medium">{user.handle}</p>
-                    <p className="text-lg text-foreground/80">{user.tagline}</p>
-                  </div>
-                  
-                  <div className="flex items-center gap-6 text-sm text-muted-foreground justify-center">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4" />
-                      <span>{user.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <span>Joined {user.joinDate}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Stats Grid - Under profile info */}
-                <div className="grid grid-cols-3 md:grid-cols-6 gap-4 py-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">{user.stats.vitanaScore}</div>
-                    <div className="text-xs text-muted-foreground">Vitana Score</div>
-                  </div>
-                  <div className="text-center md:col-span-2">
-                    <div className="text-sm font-medium text-foreground">{user.longevityArchetype}</div>
-                    <div className="text-xs text-muted-foreground">Archetype</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold">{user.stats.posts}</div>
-                    <div className="text-xs text-muted-foreground">Posts</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold">{user.stats.followers.toLocaleString()}</div>
-                    <div className="text-xs text-muted-foreground">Followers</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold">{user.stats.following}</div>
-                    <div className="text-xs text-muted-foreground">Following</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold">{user.stats.mediaUploads}</div>
-                    <div className="text-xs text-muted-foreground">Media</div>
-                  </div>
-                </div>
-
-                {/* Social Action Buttons */}
-                <div className="flex gap-3 justify-center">
-                  <Button size="lg" className="px-8">
-                    <MessageSquare className="h-4 w-4 mr-2" />
-                    Message
-                  </Button>
-                  <Button variant="outline" size="lg" className="px-8">
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Follow
-                  </Button>
-                  <Button variant="ghost" size="lg">
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </div>
+          {/* Small Index Card - Only Circle with 742 */}
+          <div 
+            className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+            onClick={() => navigate('/health-tracker/vitana-index')}
+          >
+            <div className="flex items-center justify-center h-full">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                <span className="text-xl font-bold text-green-600">742</span>
               </div>
             </div>
           </div>
