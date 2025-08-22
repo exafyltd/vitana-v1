@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Star, MapPin, Clock, Heart, ShoppingCart, Search, Filter, Grid, List } from "lucide-react";
+import { useState } from "react";
 
 const discoverSubItems = [
   { id: "overview", name: "Overview", path: "/discover" },
@@ -20,6 +21,8 @@ const discoverSubItems = [
 ];
 
 export default function BrowseAll() {
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  
   const allItems = [
     {
       id: 1,
@@ -163,10 +166,18 @@ export default function BrowseAll() {
                 </Select>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant={viewMode === 'grid' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                >
                   <Grid className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant={viewMode === 'list' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                >
                   <List className="h-4 w-4" />
                 </Button>
               </div>
@@ -176,68 +187,136 @@ export default function BrowseAll() {
             </div>
           </div>
 
-          {/* Results Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
-            {allItems.map((item) => (
-              <Card key={item.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
-                <div className="relative">
-                  <img 
-                    src={item.image} 
-                    alt={item.title}
-                    className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
-                  />
-                  <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7 md:h-8 md:w-8">
-                    <Heart className="h-3 w-3 md:h-4 md:w-4" />
-                  </Button>
-                  {item.originalPrice && (
-                    <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1">
-                      -{Math.round((1 - parseInt(item.price.slice(1)) / parseInt(item.originalPrice.slice(1))) * 100)}%
-                    </Badge>
-                  )}
-                </div>
-                <CardContent className="p-3 md:p-4 lg:p-5 flex-1 flex flex-col">
-                  <div className="flex items-start justify-between gap-2 mb-2 md:mb-3">
-                    <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
-                      {item.title}
-                    </h3>
-                    <div className="flex items-center gap-1 flex-shrink-0">
-                      <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-xs md:text-sm text-muted-foreground">{item.rating}</span>
-                    </div>
-                  </div>
-                  <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 mb-2 md:mb-3">{item.description}</p>
-                  <div className="flex items-center gap-1 mb-2 md:mb-3 min-h-[16px] md:min-h-[20px]">
-                    {item.location && (
-                      <>
-                        <MapPin className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
-                        <span className="text-xs md:text-sm text-muted-foreground truncate">{item.location}</span>
-                      </>
+          {/* Results */}
+          {viewMode === 'grid' ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+              {allItems.map((item) => (
+                <Card key={item.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
+                  <div className="relative">
+                    <img 
+                      src={item.image} 
+                      alt={item.title}
+                      className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
+                    />
+                    <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7 md:h-8 md:w-8">
+                      <Heart className="h-3 w-3 md:h-4 md:w-4" />
+                    </Button>
+                    {item.originalPrice && (
+                      <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1">
+                        -{Math.round((1 - parseInt(item.price.slice(1)) / parseInt(item.originalPrice.slice(1))) * 100)}%
+                      </Badge>
                     )}
                   </div>
-                  <div className="flex items-center justify-between mb-2 md:mb-3">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-sm md:text-base lg:text-lg font-bold text-foreground">{item.price}</span>
-                      {item.period && <span className="text-xs md:text-sm text-muted-foreground">{item.period}</span>}
-                      {item.originalPrice && (
-                        <span className="text-xs md:text-sm text-muted-foreground line-through">{item.originalPrice}</span>
+                  <CardContent className="p-3 md:p-4 lg:p-5 flex-1 flex flex-col">
+                    <div className="flex items-start justify-between gap-2 mb-2 md:mb-3">
+                      <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                        {item.title}
+                      </h3>
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs md:text-sm text-muted-foreground">{item.rating}</span>
+                      </div>
+                    </div>
+                    <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 mb-2 md:mb-3">{item.description}</p>
+                    <div className="flex items-center gap-1 mb-2 md:mb-3 min-h-[16px] md:min-h-[20px]">
+                      {item.location && (
+                        <>
+                          <MapPin className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
+                          <span className="text-xs md:text-sm text-muted-foreground truncate">{item.location}</span>
+                        </>
                       )}
                     </div>
+                    <div className="flex items-center justify-between mb-2 md:mb-3">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-sm md:text-base lg:text-lg font-bold text-foreground">{item.price}</span>
+                        {item.period && <span className="text-xs md:text-sm text-muted-foreground">{item.period}</span>}
+                        {item.originalPrice && (
+                          <span className="text-xs md:text-sm text-muted-foreground line-through">{item.originalPrice}</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 mb-4 min-h-[16px] md:min-h-[20px]">
+                      {item.available && (
+                        <>
+                          <Clock className="h-3 w-3 md:h-4 md:w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-xs md:text-sm text-green-600 truncate">{item.available}</span>
+                        </>
+                      )}
+                    </div>
+                    <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto">
+                      {item.type === 'product' ? 'Add to Cart' : 'Book Now'}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4 max-w-7xl mx-auto">
+              {allItems.map((item) => (
+                <Card key={item.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="flex gap-4 p-4">
+                    <div className="relative flex-shrink-0">
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-lg"
+                      />
+                      <Button size="icon" variant="ghost" className="absolute top-1 right-1 bg-white/80 hover:bg-white h-6 w-6">
+                        <Heart className="h-3 w-3" />
+                      </Button>
+                      {item.originalPrice && (
+                        <Badge className="absolute top-1 left-1 bg-red-500 text-white text-xs px-1.5 py-0.5">
+                          -{Math.round((1 - parseInt(item.price.slice(1)) / parseInt(item.originalPrice.slice(1))) * 100)}%
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-4 mb-2">
+                        <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
+                          {item.title}
+                        </h3>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-sm text-muted-foreground">{item.rating}</span>
+                        </div>
+                      </div>
+                      
+                      <p className="text-muted-foreground mb-3 line-clamp-2">{item.description}</p>
+                      
+                      <div className="flex flex-wrap items-center gap-4 mb-3 text-sm">
+                        {item.location && (
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-muted-foreground">{item.location}</span>
+                          </div>
+                        )}
+                        {item.available && (
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4 text-green-500" />
+                            <span className="text-green-600">{item.available}</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-xl font-bold text-foreground">{item.price}</span>
+                          {item.period && <span className="text-sm text-muted-foreground">{item.period}</span>}
+                          {item.originalPrice && (
+                            <span className="text-sm text-muted-foreground line-through">{item.originalPrice}</span>
+                          )}
+                        </div>
+                        <Button className="px-6">
+                          {item.type === 'product' ? 'Add to Cart' : 'Book Now'}
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 mb-4 min-h-[16px] md:min-h-[20px]">
-                    {item.available && (
-                      <>
-                        <Clock className="h-3 w-3 md:h-4 md:w-4 text-green-500 flex-shrink-0" />
-                        <span className="text-xs md:text-sm text-green-600 truncate">{item.available}</span>
-                      </>
-                    )}
-                  </div>
-                  <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto">
-                    {item.type === 'product' ? 'Add to Cart' : 'Book Now'}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </AppLayout>
