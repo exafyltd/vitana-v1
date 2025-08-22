@@ -329,13 +329,13 @@ export default function Discover() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
               {featuredOffers.map((offer) => (
-                <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
-                  <div className="relative">
-                    <img 
-                      src={offer.image} 
-                      alt={offer.title}
-                      className="w-full h-40 object-cover rounded-t-lg"
-                    />
+                 <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
+                   <div className="relative">
+                     <img 
+                       src={offer.image} 
+                       alt={offer.title}
+                       className="w-full h-32 sm:h-36 md:h-40 lg:h-44 object-cover rounded-t-lg"
+                     />
                     <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7">
                       <Heart className="h-3 w-3" />
                     </Button>
@@ -345,38 +345,38 @@ export default function Discover() {
                       </Badge>
                     )}
                   </div>
-                  <CardContent className="p-3 h-fit">
-                    <div className="space-y-2">
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
-                          {offer.title}
-                        </h3>
-                        <div className="flex items-center gap-1 flex-shrink-0">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span className="text-xs text-muted-foreground">{offer.rating}</span>
-                        </div>
-                      </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{offer.description}</p>
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                        <span className="text-xs text-muted-foreground truncate">{offer.location}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-sm font-bold text-foreground">{offer.price}</span>
-                          {offer.period && <span className="text-xs text-muted-foreground">{offer.period}</span>}
-                          {offer.originalPrice && (
-                            <span className="text-xs text-muted-foreground line-through">{offer.originalPrice}</span>
-                          )}
-                        </div>
-                      </div>
-                      {offer.available && (
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3 text-green-500 flex-shrink-0" />
-                          <span className="text-xs text-green-600 truncate">{offer.available}</span>
-                        </div>
-                      )}
-                      <Button size="sm" className="w-full text-xs h-7 mt-2">Book Now</Button>
+                   <CardContent className="p-3 sm:p-4 lg:p-5 h-fit">
+                     <div className="space-y-2 lg:space-y-3">
+                       <div className="flex items-start justify-between gap-2">
+                         <h3 className="font-semibold text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                           {offer.title}
+                         </h3>
+                         <div className="flex items-center gap-1 flex-shrink-0">
+                           <Star className="h-3 w-3 lg:h-4 lg:w-4 fill-yellow-400 text-yellow-400" />
+                           <span className="text-xs lg:text-sm text-muted-foreground">{offer.rating}</span>
+                         </div>
+                       </div>
+                       <p className="text-xs lg:text-sm text-muted-foreground line-clamp-2">{offer.description}</p>
+                       <div className="flex items-center gap-1">
+                         <MapPin className="h-3 w-3 lg:h-4 lg:w-4 text-muted-foreground flex-shrink-0" />
+                         <span className="text-xs lg:text-sm text-muted-foreground truncate">{offer.location}</span>
+                       </div>
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-baseline gap-1">
+                           <span className="text-sm lg:text-base font-bold text-foreground">{offer.price}</span>
+                           {offer.period && <span className="text-xs lg:text-sm text-muted-foreground">{offer.period}</span>}
+                           {offer.originalPrice && (
+                             <span className="text-xs lg:text-sm text-muted-foreground line-through">{offer.originalPrice}</span>
+                           )}
+                         </div>
+                       </div>
+                       {offer.available && (
+                         <div className="flex items-center gap-1">
+                           <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 flex-shrink-0" />
+                           <span className="text-xs lg:text-sm text-green-600 truncate">{offer.available}</span>
+                         </div>
+                       )}
+                       <Button size="sm" className="w-full text-xs lg:text-sm h-7 lg:h-9 mt-2">Book Now</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -396,14 +396,14 @@ export default function Discover() {
               </Button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
-              {aiRecommendations.map((rec) => (
-                <Card key={rec.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit border-purple-200">
-                  <div className="relative">
-                    <img 
-                      src={rec.image} 
-                      alt={rec.title}
-                      className="w-full h-40 object-cover rounded-t-lg"
-                    />
+               {aiRecommendations.map((rec) => (
+                 <Card key={rec.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit border-purple-200">
+                   <div className="relative">
+                     <img 
+                       src={rec.image} 
+                       alt={rec.title}
+                       className="w-full h-32 sm:h-36 md:h-40 lg:h-44 object-cover rounded-t-lg"
+                     />
                     <Badge className="absolute top-2 left-2 bg-purple-500 text-white text-xs px-2 py-1">
                       {rec.badge}
                     </Badge>
@@ -411,17 +411,17 @@ export default function Discover() {
                       <span className="text-xs font-bold text-purple-600">{rec.match}%</span>
                     </div>
                   </div>
-                  <CardContent className="p-3 h-fit">
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                        {rec.title}
-                      </h3>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{rec.description}</p>
-                      <div className="text-xs text-muted-foreground">{rec.provider}</div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-bold text-foreground">{rec.price}</span>
-                        <Button size="sm" className="text-xs h-7">Book Now</Button>
-                      </div>
+                   <CardContent className="p-3 sm:p-4 lg:p-5 h-fit">
+                     <div className="space-y-2 lg:space-y-3">
+                       <h3 className="font-semibold text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                         {rec.title}
+                       </h3>
+                       <p className="text-xs lg:text-sm text-muted-foreground line-clamp-2">{rec.description}</p>
+                       <div className="text-xs lg:text-sm text-muted-foreground">{rec.provider}</div>
+                       <div className="flex items-center justify-between">
+                         <span className="text-sm lg:text-base font-bold text-foreground">{rec.price}</span>
+                         <Button size="sm" className="text-xs lg:text-sm h-7 lg:h-9">Book Now</Button>
+                       </div>
                     </div>
                   </CardContent>
                 </Card>
