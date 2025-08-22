@@ -311,6 +311,7 @@ export default function Discover() {
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
                   <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="lab_tests">Lab Tests</SelectItem>
                   <SelectItem value="doctor">Doctors</SelectItem>
                   <SelectItem value="therapy">Therapies</SelectItem>
                   <SelectItem value="fitness">Fitness</SelectItem>
@@ -465,6 +466,88 @@ export default function Discover() {
             </div>
           </section>
 
+          {/* Lab Tests */}
+          <section className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-semibold text-foreground flex items-center gap-2">
+                <TestTube2 className="h-6 w-6 text-blue-500" />
+                Lab Tests & Biomarker Analysis
+              </h2>
+              <Button variant="outline" size="sm" onClick={() => navigate('/health/biomarker-results')}>
+                View Results
+              </Button>
+            </div>
+            
+            {/* Lab Test Category Filters */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search lab tests..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 bg-background"
+                />
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {categories.map((category) => (
+                  <Button
+                    key={category.id}
+                    variant={activeCategory === category.id ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveCategory(category.id)}
+                    className="flex items-center gap-2"
+                  >
+                    <category.icon className="h-4 w-4" />
+                    {category.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {filteredLabTests.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredLabTests.slice(0, 6).map((labTest) => (
+                  <LabTestCard
+                    key={labTest.id}
+                    labTest={labTest}
+                    onOrder={handleOrderLabTest}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Card className="p-8 text-center">
+                <TestTube2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No Lab Tests Found</h3>
+                <p className="text-muted-foreground mb-4">
+                  {searchQuery || activeCategory !== 'all' 
+                    ? "Try adjusting your search or filter criteria."
+                    : "Lab tests are being loaded. Please check back soon."
+                  }
+                </p>
+                {(searchQuery || activeCategory !== 'all') && (
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      setSearchQuery('');
+                      setActiveCategory('all');
+                    }}
+                  >
+                    Clear Filters
+                  </Button>
+                )}
+              </Card>
+            )}
+
+            {filteredLabTests.length > 6 && (
+              <div className="text-center mt-6">
+                <Button variant="outline" onClick={() => navigate('/discover/browse')}>
+                  View All Lab Tests ({filteredLabTests.length})
+                </Button>
+              </div>
+            )}
+          </section>
+
           {/* AI Recommendations */}
           <section className="mb-8">
             <div className="flex items-center justify-between mb-6">
@@ -611,6 +694,13 @@ export default function Discover() {
           </section>
         </div>
       </div>
+
+      {/* Lab Test Order Popup */}
+      <LabTestOrderPopup
+        isOpen={isOrderPopupOpen}
+        onClose={() => setIsOrderPopupOpen(false)}
+        labTest={selectedLabTest}
+      />
     </AppLayout>
   );
 }
