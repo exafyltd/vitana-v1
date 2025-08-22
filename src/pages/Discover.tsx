@@ -1,13 +1,39 @@
-import SEO from "@/components/SEO";
-import AppLayout from "@/components/AppLayout";
-import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
-import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TrendingUp, Star, Bookmark, MapPin, Clock, Users, Zap, Calendar, ShoppingCart, Heart, Filter, Stethoscope, Dumbbell, Music, Sparkles, Search } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Search, 
+  Filter, 
+  Star, 
+  Clock, 
+  Users,   
+  MapPin,
+  TestTube2,
+  Activity,
+  Heart,
+  Zap,
+  TrendingUp,
+  Bookmark,
+  Sparkles
+} from 'lucide-react';
+import AppLayout from '@/components/AppLayout';
+import SEO from '@/components/SEO';
+import SubNavigation from '@/components/SubNavigation';
+import PageHeader from '@/components/PageHeader';
+import LabTestCard from '@/components/LabTestCard';
+import LabTestOrderPopup from '@/components/LabTestOrderPopup';
+import { supabase } from '@/integrations/supabase/client';
 
 const discoverSubItems = [
   { id: "overview", name: "Overview", path: "/discover" },
@@ -22,6 +48,51 @@ const discoverSubItems = [
 
 export default function Discover() {
   const navigate = useNavigate();
+  const [labTests, setLabTests] = useState([]);
+  const [selectedLabTest, setSelectedLabTest] = useState(null);
+  const [isOrderPopupOpen, setIsOrderPopupOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    fetchLabTests();
+  }, []);
+
+  const fetchLabTests = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('lab_tests')
+        .select('*')
+        .eq('is_active', true)
+        .order('name');
+
+      if (error) throw error;
+      setLabTests(data || []);
+    } catch (error) {
+      console.error('Error fetching lab tests:', error);
+    }
+  };
+
+  const handleOrderLabTest = (labTest) => {
+    setSelectedLabTest(labTest);
+    setIsOrderPopupOpen(true);
+  };
+
+  const filteredLabTests = labTests.filter(test => {
+    const matchesCategory = activeCategory === 'all' || test.category === activeCategory;
+    const matchesSearch = test.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         test.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const categories = [
+    { id: 'all', name: 'All Tests', icon: TestTube2 },
+    { id: 'blood_markers', name: 'Blood Markers', icon: Activity },
+    { id: 'genomics', name: 'Genomics', icon: Zap },
+    { id: 'microbiome', name: 'Microbiome', icon: Heart },
+    { id: 'allergy', name: 'Allergy', icon: Activity },
+    { id: 'cancer', name: 'Cancer Screening', icon: Heart },
+  ];
 
   const featuredOffers = [
     {
