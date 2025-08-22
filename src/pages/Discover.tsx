@@ -90,8 +90,10 @@ export default function Discover() {
     { id: 'blood_markers', name: 'Blood Markers', icon: Activity },
     { id: 'genomics', name: 'Genomics', icon: Zap },
     { id: 'microbiome', name: 'Microbiome', icon: Heart },
+    { id: 'metabolomics', name: 'Metabolomics', icon: TrendingUp },
     { id: 'allergy', name: 'Allergy', icon: Activity },
     { id: 'cancer', name: 'Cancer Screening', icon: Heart },
+    { id: 'specialized', name: 'Pregnancy & Specialized', icon: Sparkles },
   ];
 
   const featuredOffers = [
