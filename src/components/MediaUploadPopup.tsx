@@ -1,0 +1,394 @@
+import React, { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
+import { CalendarIcon, Upload as UploadIcon, X, Plus } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+
+interface MediaUploadPopupProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const predefinedTags = [
+  "Nutrition", "Sleep", "Longevity", "Motivation", "Mindfulness", 
+  "Fitness", "Mental Health", "Wellness", "Education", "Lifestyle"
+];
+
+const languages = [
+  "English", "Spanish", "French", "German", "Portuguese", 
+  "Italian", "Dutch", "Russian", "Chinese", "Japanese"
+];
+
+const musicGenres = [
+  "Ambient", "Classical", "Pop", "Instrumental", "Nature Sounds", 
+  "Binaural Beats", "Electronic", "Jazz", "Folk"
+];
+
+const musicMoods = [
+  "Calming", "Energetic", "Relaxing", "Inspiring", 
+  "Focus", "Sleep", "Meditation", "Workout"
+];
+
+const videoTopics = [
+  "Fitness", "Nutrition", "Mental Health", "Wellness", 
+  "Education", "Lifestyle", "Motivation", "Meditation"
+];
+
+export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [mediaType, setMediaType] = useState<"Podcast" | "Music" | "Video" | "">("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [releaseDate, setReleaseDate] = useState<Date>();
+  const [language, setLanguage] = useState("");
+  const [hostGuest, setHostGuest] = useState("");
+  const [duration, setDuration] = useState("");
+  const [genre, setGenre] = useState("");
+  const [mood, setMood] = useState("");
+  const [topic, setTopic] = useState("");
+  const [visibility, setVisibility] = useState("Public");
+  const [credits, setCredits] = useState("");
+  const [externalLink, setExternalLink] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleTagToggle = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    // Simulate upload process
+    setTimeout(() => {
+      setIsLoading(false);
+      onOpenChange(false);
+      // Reset form
+      setTitle("");
+      setDescription("");
+      setMediaType("");
+      setSelectedTags([]);
+      setReleaseDate(undefined);
+      setLanguage("");
+      setHostGuest("");
+      setDuration("");
+      setGenre("");
+      setMood("");
+      setTopic("");
+      setVisibility("Public");
+      setCredits("");
+      setExternalLink("");
+    }, 2000);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Upload Media</DialogTitle>
+        </DialogHeader>
+        
+        <div className="space-y-6">
+          {/* Step 1: Basic Info */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Basic Information</h3>
+            
+            {/* Title */}
+            <div>
+              <Label htmlFor="title">Title</Label>
+              <div className="relative">
+                <Input
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value.slice(0, 25))}
+                  placeholder="Enter media title"
+                  maxLength={25}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                  {title.length}/25
+                </span>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div>
+              <Label htmlFor="description">Description</Label>
+              <div className="relative">
+                <Textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value.slice(0, 250))}
+                  placeholder="Describe your content"
+                  rows={3}
+                  maxLength={250}
+                />
+                <span className="absolute right-3 bottom-2 text-xs text-muted-foreground">
+                  {description.length}/250
+                </span>
+              </div>
+            </div>
+
+            {/* Type Selection */}
+            <div>
+              <Label htmlFor="type">Media Type</Label>
+              <Select value={mediaType} onValueChange={(value: "Podcast" | "Music" | "Video") => setMediaType(value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select media type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Podcast">Podcast</SelectItem>
+                  <SelectItem value="Music">Music</SelectItem>
+                  <SelectItem value="Video">Video</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* File Upload */}
+            <div>
+              <Label htmlFor="file">Upload File</Label>
+              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer">
+                <UploadIcon className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  Drag & drop your file here, or click to browse
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Supported formats: MP4, MP3, WAV, MOV
+                </p>
+              </div>
+            </div>
+
+            {/* Tags */}
+            <div>
+              <Label>Tags</Label>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {predefinedTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant={selectedTags.includes(tag) ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => handleTagToggle(tag)}
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Release Date and Language */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Release Date</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !releaseDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {releaseDate ? format(releaseDate, "PPP") : "Pick a date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={releaseDate}
+                      onSelect={setReleaseDate}
+                      initialFocus
+                      className="p-3 pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div>
+                <Label htmlFor="language">Language</Label>
+                <Select value={language} onValueChange={setLanguage}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select language" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {languages.map((lang) => (
+                      <SelectItem key={lang} value={lang}>{lang}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 2: Conditional Fields */}
+          {mediaType && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">
+                {mediaType} Details
+              </h3>
+
+              {mediaType === "Podcast" && (
+                <>
+                  <div>
+                    <Label htmlFor="host-guest">Host / Guest Names (Optional)</Label>
+                    <Input
+                      id="host-guest"
+                      value={hostGuest}
+                      onChange={(e) => setHostGuest(e.target.value)}
+                      placeholder="Enter host and guest names"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="duration">Duration</Label>
+                    <Input
+                      id="duration"
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      placeholder="e.g., 45:30"
+                    />
+                  </div>
+                </>
+              )}
+
+              {mediaType === "Music" && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="genre">Genre</Label>
+                    <Select value={genre} onValueChange={setGenre}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select genre" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {musicGenres.map((g) => (
+                          <SelectItem key={g} value={g}>{g}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="mood">Mood</Label>
+                    <Select value={mood} onValueChange={setMood}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select mood" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {musicMoods.map((m) => (
+                          <SelectItem key={m} value={m}>{m}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
+
+              {mediaType === "Video" && (
+                <>
+                  <div>
+                    <Label htmlFor="topic">Video Topic</Label>
+                    <Select value={topic} onValueChange={setTopic}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select topic" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {videoTopics.map((t) => (
+                          <SelectItem key={t} value={t}>{t}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="thumbnail">Thumbnail Upload (Optional)</Label>
+                    <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer">
+                      <UploadIcon className="w-6 h-6 mx-auto mb-1 text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">
+                        Upload thumbnail image
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="video-duration">Duration</Label>
+                    <Input
+                      id="video-duration"
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      placeholder="e.g., 2:15"
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Step 3: Visibility & Attribution */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Visibility & Attribution</h3>
+            
+            <div>
+              <Label>Visibility</Label>
+              <div className="flex gap-2 mt-2">
+                {["Public", "Followers", "Group-only"].map((option) => (
+                  <Button
+                    key={option}
+                    variant={visibility === option ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setVisibility(option)}
+                  >
+                    {option}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="credits">Credits (Optional)</Label>
+              <Input
+                id="credits"
+                value={credits}
+                onChange={(e) => setCredits(e.target.value)}
+                placeholder="Credit different creator if applicable"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="external-link">External Link (Optional)</Label>
+              <Input
+                id="external-link"
+                value={externalLink}
+                onChange={(e) => setExternalLink(e.target.value)}
+                placeholder="Spotify, Apple Music, YouTube link"
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4">
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => onOpenChange(false)}
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={handleSubmit}
+              disabled={!title || !description || !mediaType || isLoading}
+            >
+              {isLoading ? "Publishing..." : "Publish Media"}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

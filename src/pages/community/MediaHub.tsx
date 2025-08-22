@@ -6,7 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search } from "lucide-react";
+import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload } from "lucide-react";
+import { MediaUploadPopup } from "@/components/MediaUploadPopup";
+import { useState } from "react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
@@ -18,6 +20,7 @@ const communitySubItems = [
 ];
 
 export default function MediaHub() {
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
   const videoShorts = [
     {
       title: "5 Min Morning Stretch",
@@ -134,8 +137,8 @@ export default function MediaHub() {
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
-            <Button size="sm">
-              <Play className="w-4 h-4 mr-2" />
+            <Button size="sm" onClick={() => setIsUploadOpen(true)}>
+              <Upload className="w-4 h-4 mr-2" />
               Upload
             </Button>
           </div>
@@ -346,6 +349,11 @@ export default function MediaHub() {
             </Card>
           </div>
         </div>
+        
+        <MediaUploadPopup 
+          open={isUploadOpen} 
+          onOpenChange={setIsUploadOpen}
+        />
       </div>
     </AppLayout>
   );
