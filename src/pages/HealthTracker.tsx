@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Smartphone, Calendar, TrendingUp, Droplets, Apple, Dumbbell, Moon, Brain } from "lucide-react";
+import { Activity, Smartphone, Calendar, TrendingUp, Droplets, Apple, Dumbbell, Moon, Brain, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
@@ -15,6 +15,7 @@ const healthTrackerSubItems = [
   { id: "devices", name: "Connected Devices & Apps", path: "/health-tracker/devices" },
   { id: "tracking", name: "Daily & Weekly Tracking", path: "/health-tracker/tracking" },
   { id: "progress", name: "Progress & Goals", path: "/health-tracker/progress" },
+  { id: "biomarker-results", name: "Lab Results", path: "/health-tracker/biomarker-results" },
 ];
 
 const overviewCards = [
@@ -45,6 +46,13 @@ const overviewCards = [
     icon: TrendingUp,
     path: "/health-tracker/progress",
     color: "from-purple-500/20 to-violet-500/20",
+  },
+  {
+    title: "Biomarker Analysis",
+    description: "Review lab test results and track biomarker trends",
+    icon: FileText,
+    path: "/health-tracker/biomarker-results",
+    color: "from-emerald-500/20 to-teal-500/20",
   },
 ];
 

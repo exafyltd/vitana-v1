@@ -129,6 +129,12 @@ export default function BrowseAll() {
                     <SelectItem value="fitness">Fitness</SelectItem>
                     <SelectItem value="mental">Mental Health</SelectItem>
                     <SelectItem value="product">Products</SelectItem>
+                    <SelectItem value="lab-tests">Lab Tests</SelectItem>
+                    <SelectItem value="blood-markers">Blood Markers</SelectItem>
+                    <SelectItem value="genomics">Genomics</SelectItem>
+                    <SelectItem value="microbiome">Microbiome</SelectItem>
+                    <SelectItem value="metabolomics">Metabolomics</SelectItem>
+                    <SelectItem value="specialized">Pregnancy & Specialized</SelectItem>
                   </SelectContent>
                 </Select>
                 <Select>

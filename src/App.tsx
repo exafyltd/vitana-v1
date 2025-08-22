@@ -40,6 +40,7 @@ import PillarsOfHealth from "./pages/health/PillarsOfHealth";
 import WellnessServices from "./pages/health/WellnessServices";
 import ConditionsRisks from "./pages/health/ConditionsRisks";
 import EducationResources from "./pages/health/EducationResources";
+import BiomarkerResults from "./pages/health/BiomarkerResults";
 
 // Health Tracker sub-pages
 import MyVitanaIndex from "./pages/healthtracker/MyVitanaIndex";
@@ -120,6 +121,7 @@ const App = () => (
           <Route path="/health/services" element={<WellnessServices />} />
           <Route path="/health/conditions" element={<ConditionsRisks />} />
           <Route path="/health/education" element={<EducationResources />} />
+          <Route path="/health/biomarker-results" element={<BiomarkerResults />} />
           
           {/* Health Tracker routes */}
           <Route path="/health-tracker" element={<HealthTracker />} />
@@ -127,6 +129,7 @@ const App = () => (
           <Route path="/health-tracker/devices" element={<ConnectedDevices />} />
           <Route path="/health-tracker/tracking" element={<DailyWeeklyTracking />} />
           <Route path="/health-tracker/progress" element={<ProgressGoals />} />
+          <Route path="/health-tracker/biomarker-results" element={<BiomarkerResults />} />
           
           {/* Calendar routes */}
           <Route path="/calendar" element={<Calendar />} />

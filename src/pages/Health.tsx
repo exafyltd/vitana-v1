@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag } from "lucide-react";
+import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
@@ -15,6 +15,7 @@ const healthSubItems = [
   { id: "services", name: "Wellness Services", path: "/health/services" },
   { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
   { id: "education", name: "Education & Resources", path: "/health/education" },
+  { id: "biomarker-results", name: "Biomarker Results", path: "/health/biomarker-results" },
 ];
 
 const overviewCards = [
@@ -38,6 +39,13 @@ const overviewCards = [
     icon: Stethoscope,
     path: "/health/services",
     color: "from-green-500/20 to-emerald-500/20",
+  },
+  {
+    title: "Lab Results",
+    description: "View your biomarker analysis and lab test results",
+    icon: FileText,
+    path: "/health/biomarker-results",
+    color: "from-emerald-500/20 to-teal-500/20",
   },
   {
     title: "Conditions & Risks",
