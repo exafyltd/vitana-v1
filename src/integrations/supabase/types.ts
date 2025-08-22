@@ -14,7 +14,229 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      lab_test_orders: {
+        Row: {
+          collection_method: Database["public"]["Enums"]["collection_method"]
+          created_at: string
+          facility_address: string | null
+          id: string
+          lab_test_id: string
+          payment_intent_id: string | null
+          scheduled_date: string | null
+          shipping_address: Json | null
+          special_instructions: string | null
+          status: Database["public"]["Enums"]["order_status"]
+          total_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          collection_method: Database["public"]["Enums"]["collection_method"]
+          created_at?: string
+          facility_address?: string | null
+          id?: string
+          lab_test_id: string
+          payment_intent_id?: string | null
+          scheduled_date?: string | null
+          shipping_address?: Json | null
+          special_instructions?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          total_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          collection_method?: Database["public"]["Enums"]["collection_method"]
+          created_at?: string
+          facility_address?: string | null
+          id?: string
+          lab_test_id?: string
+          payment_intent_id?: string | null
+          scheduled_date?: string | null
+          shipping_address?: Json | null
+          special_instructions?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lab_test_orders_lab_test_id_fkey"
+            columns: ["lab_test_id"]
+            isOneToOne: false
+            referencedRelation: "lab_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lab_test_results: {
+        Row: {
+          ai_insights: string | null
+          biomarker_data: Json
+          completed_at: string
+          created_at: string
+          id: string
+          order_id: string
+          result_pdf_url: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_insights?: string | null
+          biomarker_data: Json
+          completed_at?: string
+          created_at?: string
+          id?: string
+          order_id: string
+          result_pdf_url?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_insights?: string | null
+          biomarker_data?: Json
+          completed_at?: string
+          created_at?: string
+          id?: string
+          order_id?: string
+          result_pdf_url?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lab_test_results_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "lab_test_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lab_tests: {
+        Row: {
+          biomarkers: string[]
+          category: Database["public"]["Enums"]["lab_test_category"]
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          price: number
+          provider_logo_url: string | null
+          provider_name: string
+          sample_type: string
+          turnaround_days: number
+          updated_at: string
+        }
+        Insert: {
+          biomarkers: string[]
+          category: Database["public"]["Enums"]["lab_test_category"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          price: number
+          provider_logo_url?: string | null
+          provider_name: string
+          sample_type: string
+          turnaround_days: number
+          updated_at?: string
+        }
+        Update: {
+          biomarkers?: string[]
+          category?: Database["public"]["Enums"]["lab_test_category"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          price?: number
+          provider_logo_url?: string | null
+          provider_name?: string
+          sample_type?: string
+          turnaround_days?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          is_read: boolean
+          message: string
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean
+          message: string
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean
+          message?: string
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          date_of_birth: string | null
+          email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          full_name: string | null
+          id: string
+          medical_conditions: string[] | null
+          medications: string[] | null
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          full_name?: string | null
+          id?: string
+          medical_conditions?: string[] | null
+          medications?: string[] | null
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          full_name?: string | null
+          id?: string
+          medical_conditions?: string[] | null
+          medications?: string[] | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +245,27 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      collection_method: "home_kit" | "lab_facility"
+      lab_test_category:
+        | "blood_markers"
+        | "genomics"
+        | "microbiome"
+        | "metabolomics"
+        | "allergy"
+        | "cancer"
+        | "specialized"
+      notification_type:
+        | "test_results"
+        | "appointment_reminder"
+        | "test_reminder"
+        | "critical_alert"
+      order_status:
+        | "pending"
+        | "confirmed"
+        | "sample_collected"
+        | "processing"
+        | "completed"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +392,31 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      collection_method: ["home_kit", "lab_facility"],
+      lab_test_category: [
+        "blood_markers",
+        "genomics",
+        "microbiome",
+        "metabolomics",
+        "allergy",
+        "cancer",
+        "specialized",
+      ],
+      notification_type: [
+        "test_results",
+        "appointment_reminder",
+        "test_reminder",
+        "critical_alert",
+      ],
+      order_status: [
+        "pending",
+        "confirmed",
+        "sample_collected",
+        "processing",
+        "completed",
+        "cancelled",
+      ],
+    },
   },
 } as const
