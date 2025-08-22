@@ -328,7 +328,7 @@ export default function Discover() {
               </Button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
-              {featuredOffers.map((offer) => (
+               {featuredOffers.map((offer) => (
                  <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
                    <div className="relative">
                      <img 
@@ -345,47 +345,49 @@ export default function Discover() {
                       </Badge>
                     )}
                   </div>
-                   <CardContent className="p-3 sm:p-4 lg:p-5 h-[280px] md:h-[320px] lg:h-[340px] flex flex-col">
-                     <div className="space-y-2 lg:space-y-3 flex-1">
-                       <div className="flex items-start justify-between gap-2">
-                         <h3 className="font-semibold text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
-                           {offer.title}
-                         </h3>
-                         <div className="flex items-center gap-1 flex-shrink-0">
-                           <Star className="h-3 w-3 lg:h-4 lg:w-4 fill-yellow-400 text-yellow-400" />
-                           <span className="text-xs lg:text-sm text-muted-foreground">{offer.rating}</span>
-                         </div>
+                   <CardContent className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col">
+                     <div className="flex items-start justify-between gap-2 mb-2 lg:mb-3">
+                       <h3 className="font-semibold text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                         {offer.title}
+                       </h3>
+                       <div className="flex items-center gap-1 flex-shrink-0">
+                         <Star className="h-3 w-3 lg:h-4 lg:w-4 fill-yellow-400 text-yellow-400" />
+                         <span className="text-xs lg:text-sm text-muted-foreground">{offer.rating}</span>
                        </div>
-                       <p className="text-xs lg:text-sm text-muted-foreground line-clamp-2">{offer.description}</p>
-                       <div className="flex items-center gap-1">
-                         <MapPin className="h-3 w-3 lg:h-4 lg:w-4 text-muted-foreground flex-shrink-0" />
-                         <span className="text-xs lg:text-sm text-muted-foreground truncate">{offer.location}</span>
+                     </div>
+                     <p className="text-xs lg:text-sm text-muted-foreground line-clamp-2 mb-2 lg:mb-3">{offer.description}</p>
+                     <div className="flex items-center gap-1 mb-2 lg:mb-3 min-h-[16px] lg:min-h-[20px]">
+                       {offer.location && (
+                         <>
+                           <MapPin className="h-3 w-3 lg:h-4 lg:w-4 text-muted-foreground flex-shrink-0" />
+                           <span className="text-xs lg:text-sm text-muted-foreground truncate">{offer.location}</span>
+                         </>
+                       )}
+                     </div>
+                     <div className="flex items-center justify-between mb-2 lg:mb-3">
+                       <div className="flex items-baseline gap-1">
+                         <span className="text-sm lg:text-base font-bold text-foreground">{offer.price}</span>
+                         {offer.period && <span className="text-xs lg:text-sm text-muted-foreground">{offer.period}</span>}
+                         {offer.originalPrice && (
+                           <span className="text-xs lg:text-sm text-muted-foreground line-through">{offer.originalPrice}</span>
+                         )}
                        </div>
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-baseline gap-1">
-                           <span className="text-sm lg:text-base font-bold text-foreground">{offer.price}</span>
-                           {offer.period && <span className="text-xs lg:text-sm text-muted-foreground">{offer.period}</span>}
-                           {offer.originalPrice && (
-                             <span className="text-xs lg:text-sm text-muted-foreground line-through">{offer.originalPrice}</span>
-                           )}
-                         </div>
-                       </div>
-                        <div className="flex items-center gap-1 min-h-[20px] lg:min-h-[24px]">
-                          {offer.available && (
-                            <>
-                              <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 flex-shrink-0" />
-                              <span className="text-xs lg:text-sm text-green-600 truncate">{offer.available}</span>
-                            </>
-                          )}
-                          {offer.shipping && (
-                            <>
-                              <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 flex-shrink-0" />
-                              <span className="text-xs lg:text-sm text-green-600 truncate">{offer.shipping}</span>
-                            </>
-                          )}
-                        </div>
-                       <Button size="sm" className="w-full text-xs lg:text-sm h-7 lg:h-9 mt-auto">Book Now</Button>
-                    </div>
+                     </div>
+                     <div className="flex items-center gap-1 mb-4 min-h-[16px] lg:min-h-[20px]">
+                       {offer.available && (
+                         <>
+                           <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 flex-shrink-0" />
+                           <span className="text-xs lg:text-sm text-green-600 truncate">{offer.available}</span>
+                         </>
+                       )}
+                       {offer.shipping && (
+                         <>
+                           <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 flex-shrink-0" />
+                           <span className="text-xs lg:text-sm text-green-600 truncate">{offer.shipping}</span>
+                         </>
+                       )}
+                     </div>
+                     <Button size="sm" className="w-full text-xs lg:text-sm h-7 lg:h-9 mt-auto">Book Now</Button>
                   </CardContent>
                 </Card>
               ))}
