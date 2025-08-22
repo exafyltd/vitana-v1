@@ -30,6 +30,10 @@ import AIFeed from "./pages/dashboard/AIFeed";
 import Trending from "./pages/discover/Trending";
 import Recommendations from "./pages/discover/Recommendations";
 import Saved from "./pages/discover/Saved";
+import BrowseAll from "./pages/discover/BrowseAll";
+import Categories from "./pages/discover/Categories";
+import Providers from "./pages/discover/Providers";
+import Deals from "./pages/discover/Deals";
 
 // Health sub-pages
 import PillarsOfHealth from "./pages/health/PillarsOfHealth";
@@ -102,6 +106,10 @@ const App = () => (
           
           {/* Discover routes */}
           <Route path="/discover" element={<Discover />} />
+          <Route path="/discover/browse" element={<BrowseAll />} />
+          <Route path="/discover/categories" element={<Categories />} />
+          <Route path="/discover/providers" element={<Providers />} />
+          <Route path="/discover/deals" element={<Deals />} />
           <Route path="/discover/trending" element={<Trending />} />
           <Route path="/discover/recommendations" element={<Recommendations />} />
           <Route path="/discover/saved" element={<Saved />} />

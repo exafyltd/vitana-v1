@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,10 @@ import { Star, MapPin, Clock, TrendingUp, Flame, Users, Heart, Timer } from "luc
 
 const discoverSubItems = [
   { id: "overview", name: "Overview", path: "/discover" },
+  { id: "browse", name: "Browse All", path: "/discover/browse" },
+  { id: "categories", name: "Categories", path: "/discover/categories" },
+  { id: "providers", name: "Providers", path: "/discover/providers" },
+  { id: "deals", name: "Deals & Offers", path: "/discover/deals" },
   { id: "trending", name: "Trending", path: "/discover/trending" },
   { id: "recommendations", name: "Recommendations", path: "/discover/recommendations" },
   { id: "saved", name: "Saved", path: "/discover/saved" },
@@ -140,16 +145,11 @@ export default function Trending() {
       <SubNavigation items={discoverSubItems} />
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-8">
-            <div className="bg-orange-500 p-3 rounded-lg">
-              <Flame className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Trending Now</h1>
-              <p className="text-muted-foreground">Most popular longevity services and products this week</p>
-            </div>
-          </div>
+          <PageHeader
+            title="Trending Now"
+            description="Most popular longevity services and products this week"
+            icon={Flame}
+          />
 
           {/* Most Booked Services */}
           <section className="mb-8">
@@ -163,7 +163,7 @@ export default function Trending() {
                 Hot This Week
               </Badge>
             </div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {trendingServices.map((service) => (
                 <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
@@ -278,7 +278,7 @@ export default function Trending() {
               <h2 className="text-2xl font-semibold text-foreground">Top-Selling Products</h2>
               <Button variant="outline" size="sm">View All Products</Button>
             </div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {trendingProducts.map((product) => (
                 <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">

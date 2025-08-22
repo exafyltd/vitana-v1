@@ -1,15 +1,20 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TrendingUp, Star, Bookmark, MapPin, Clock, Users, Zap, Calendar, ShoppingCart, Heart, Filter, Stethoscope, Dumbbell, Music, Sparkles } from "lucide-react";
+import { TrendingUp, Star, Bookmark, MapPin, Clock, Users, Zap, Calendar, ShoppingCart, Heart, Filter, Stethoscope, Dumbbell, Music, Sparkles, Search } from "lucide-react";
 
 const discoverSubItems = [
   { id: "overview", name: "Overview", path: "/discover" },
+  { id: "browse", name: "Browse All", path: "/discover/browse" },
+  { id: "categories", name: "Categories", path: "/discover/categories" },
+  { id: "providers", name: "Providers", path: "/discover/providers" },
+  { id: "deals", name: "Deals & Offers", path: "/discover/deals" },
   { id: "trending", name: "Trending", path: "/discover/trending" },
   { id: "recommendations", name: "Recommendations", path: "/discover/recommendations" },
   { id: "saved", name: "Saved", path: "/discover/saved" },
@@ -220,18 +225,20 @@ export default function Discover() {
       <SubNavigation items={discoverSubItems} />
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
-          {/* Hero Section */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Your Longevity Marketplace</h1>
-            <p className="text-muted-foreground">Discover longevity services, products, and providers perfectly matched to your healthy aging journey.</p>
-            
-            {/* Quick Filters */}
-            <div className="flex flex-wrap gap-3 mt-4">
+          <PageHeader
+            title="Discover Wellness Solutions"
+            description="Discover longevity services, products, and providers perfectly matched to your healthy aging journey."
+            icon={Search}
+          />
+
+          {/* Enhanced Filters */}
+          <div className="bg-background/95 backdrop-blur-sm rounded-xl p-6 shadow-sm border mb-8">
+            <div className="flex flex-wrap gap-3">
               <Select>
-                <SelectTrigger className="w-[140px]">
+                <SelectTrigger className="w-[140px] bg-background">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border shadow-lg z-50">
                   <SelectItem value="all">All Categories</SelectItem>
                   <SelectItem value="doctor">Doctors</SelectItem>
                   <SelectItem value="therapy">Therapies</SelectItem>
@@ -242,10 +249,10 @@ export default function Discover() {
                 </SelectContent>
               </Select>
               <Select>
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-[120px] bg-background">
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border shadow-lg z-50">
                   <SelectItem value="all">All Locations</SelectItem>
                   <SelectItem value="online">Online</SelectItem>
                   <SelectItem value="local">Local</SelectItem>
@@ -253,14 +260,60 @@ export default function Discover() {
                 </SelectContent>
               </Select>
               <Select>
-                <SelectTrigger className="w-[100px]">
+                <SelectTrigger className="w-[100px] bg-background">
                   <SelectValue placeholder="Price" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border shadow-lg z-50">
                   <SelectItem value="all">All Prices</SelectItem>
                   <SelectItem value="0-50">$0 - $50</SelectItem>
                   <SelectItem value="50-150">$50 - $150</SelectItem>
                   <SelectItem value="150+">$150+</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger className="w-[120px] bg-background">
+                  <SelectValue placeholder="Availability" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  <SelectItem value="all">Any Time</SelectItem>
+                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="week">This Week</SelectItem>
+                  <SelectItem value="month">This Month</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger className="w-[130px] bg-background">
+                  <SelectValue placeholder="Service Type" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="consultation">Consultation</SelectItem>
+                  <SelectItem value="therapy">Therapy</SelectItem>
+                  <SelectItem value="workshop">Workshop</SelectItem>
+                  <SelectItem value="product">Product</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger className="w-[110px] bg-background">
+                  <SelectValue placeholder="Duration" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  <SelectItem value="all">Any Duration</SelectItem>
+                  <SelectItem value="30">30 mins</SelectItem>
+                  <SelectItem value="60">1 hour</SelectItem>
+                  <SelectItem value="90">90 mins</SelectItem>
+                  <SelectItem value="120">2+ hours</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger className="w-[100px] bg-background">
+                  <SelectValue placeholder="Rating" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border shadow-lg z-50">
+                  <SelectItem value="all">Any Rating</SelectItem>
+                  <SelectItem value="4.5">4.5+ Stars</SelectItem>
+                  <SelectItem value="4.0">4.0+ Stars</SelectItem>
+                  <SelectItem value="3.5">3.5+ Stars</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -274,7 +327,7 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {featuredOffers.map((offer) => (
                 <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
@@ -342,7 +395,7 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {aiRecommendations.map((rec) => (
                 <Card key={rec.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit border-purple-200">
                   <div className="relative">
@@ -407,7 +460,7 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {topProviders.map((provider) => (
                 <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <CardContent className="p-3">

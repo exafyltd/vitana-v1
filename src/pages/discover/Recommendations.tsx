@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,10 @@ import { Star, Brain, Target, Calendar, Activity, Heart, MapPin, Clock, Zap, Spa
 
 const discoverSubItems = [
   { id: "overview", name: "Overview", path: "/discover" },
+  { id: "browse", name: "Browse All", path: "/discover/browse" },
+  { id: "categories", name: "Categories", path: "/discover/categories" },
+  { id: "providers", name: "Providers", path: "/discover/providers" },
+  { id: "deals", name: "Deals & Offers", path: "/discover/deals" },
   { id: "trending", name: "Trending", path: "/discover/trending" },
   { id: "recommendations", name: "Recommendations", path: "/discover/recommendations" },
   { id: "saved", name: "Saved", path: "/discover/saved" },
@@ -138,16 +143,11 @@ export default function Recommendations() {
       <SubNavigation items={discoverSubItems} />
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-8">
-            <div className="bg-purple-500 p-3 rounded-lg">
-              <Brain className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">AI Recommendations</h1>
-              <p className="text-muted-foreground">Personalized longevity suggestions based on your data and goals</p>
-            </div>
-          </div>
+          <PageHeader
+            title="AI Recommendations"
+            description="Personalized longevity suggestions based on your data and goals"
+            icon={Brain}
+          />
 
           {/* Perfect Matches */}
           <section className="mb-8">
@@ -161,7 +161,7 @@ export default function Recommendations() {
                 AI Powered
               </Badge>
             </div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {personalizedMatches.map((match) => (
                 <Card key={match.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200 h-fit">
                   <div className="relative">
@@ -222,7 +222,7 @@ export default function Recommendations() {
                 Based on Vitana Index
               </Badge>
             </div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {healthGoalBoosters.map((booster) => (
                 <Card key={booster.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
