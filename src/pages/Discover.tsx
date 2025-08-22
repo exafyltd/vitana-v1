@@ -30,7 +30,7 @@ export default function Discover() {
       description: "Complete biomarker analysis & optimization plan",
       price: "$299",
       originalPrice: "$399",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/dr-roberts-avatar.jpg",
       rating: 4.9,
       location: "NYC Longevity Center",
       available: "Next week",
@@ -42,7 +42,7 @@ export default function Discover() {
       description: "Cellular regeneration therapy session",
       price: "$189",
       period: "/session",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/emma-wilson-avatar.jpg",
       rating: 4.8,
       location: "Wellness Clinic",
       available: "Available today",
@@ -54,7 +54,7 @@ export default function Discover() {
       description: "Professional-grade home photobiomodulation",
       price: "$599",
       originalPrice: "$799",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png",
       rating: 4.7,
       inStock: true,
       shipping: "Free shipping",
@@ -66,7 +66,7 @@ export default function Discover() {
       description: "Movement patterns for longevity & vitality",
       price: "$75",
       period: "/session",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/mike-thompson-avatar.jpg",
       rating: 4.6,
       location: "Online/Local",
       available: "Tomorrow 9AM",
@@ -78,7 +78,7 @@ export default function Discover() {
       description: "Stress reduction techniques for healthy aging",
       price: "$55",
       period: "/session",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/lisa-chen-avatar.jpg",
       rating: 4.8,
       location: "Zen Wellness Center",
       available: "Today 3PM",
@@ -94,7 +94,7 @@ export default function Discover() {
       price: "$199",
       match: 95,
       provider: "Dr. Emily Chen",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/sarah-miller-avatar.jpg",
       badge: "Perfect Match"
     },
     {
@@ -104,7 +104,7 @@ export default function Discover() {
       price: "$89",
       match: 92,
       provider: "Marcus Rodriguez",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/james-davis-avatar.jpg",
       badge: "High Priority"
     },
     {
@@ -114,7 +114,7 @@ export default function Discover() {
       price: "$149",
       match: 88,
       provider: "Luna Wellness",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/se-hun-oh-avatar.jpg",
       badge: "Great Match"
     },
     {
@@ -124,7 +124,7 @@ export default function Discover() {
       price: "$79",
       match: 85,
       provider: "FlexFit Studio",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/tae-min-avatar.jpg",
       badge: "Good Match"
     },
     {
@@ -134,7 +134,7 @@ export default function Discover() {
       price: "$129",
       match: 83,
       provider: "Zen Center",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/murphy-avatar.jpg",
       badge: "Recommended"
     }
   ];
@@ -174,7 +174,7 @@ export default function Discover() {
       rating: 4.9,
       reviews: 156,
       nextAvailable: "Today 2PM",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/sarah-miller-avatar.jpg",
       badge: "Top Rated"
     },
     {
@@ -184,7 +184,7 @@ export default function Discover() {
       rating: 4.8,
       reviews: 89,
       nextAvailable: "Tomorrow 9AM",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/mike-thompson-avatar.jpg",
       badge: "Trending"
     },
     {
@@ -194,7 +194,7 @@ export default function Discover() {
       rating: 4.9,
       reviews: 234,
       nextAvailable: "Today 4PM",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/design-team-avatar.jpg",
       badge: "Near You"
     },
     {
@@ -204,7 +204,7 @@ export default function Discover() {
       rating: 4.7,
       reviews: 67,
       nextAvailable: "Friday 10AM",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/james-davis-avatar.jpg",
       badge: "New"
     },
     {
@@ -214,7 +214,7 @@ export default function Discover() {
       rating: 4.9,
       reviews: 123,
       nextAvailable: "Monday 1PM",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/emma-wilson-avatar.jpg",
       badge: "Popular"
     }
   ];
