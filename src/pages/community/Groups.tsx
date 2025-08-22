@@ -6,11 +6,12 @@ import { Users } from "lucide-react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
-  { id: "matchmaking", name: "Matchmaking", path: "/community/matchmaking" },
-  { id: "groups", name: "Groups", path: "/community/groups" },
-  { id: "meetups", name: "Meetups", path: "/community/meetups" },
-  { id: "live-rooms", name: "LIVE Hub", path: "/community/live-rooms" },
-  { id: "challenges", name: "Challenges", path: "/community/challenges" },
+  { id: "my-groups", name: "My Groups & Feed", path: "/community/my-groups" },
+  { id: "events", name: "Events & Meetups", path: "/community/events" },
+  { id: "my-business", name: "My Business", path: "/community/my-business" },
+  { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
+  { id: "live-interaction", name: "LIVE Hub", path: "/community/live-interaction" },
+  { id: "ai-insights", name: "AI Insights", path: "/community/ai-insights" },
 ];
 
 export default function Groups() {
