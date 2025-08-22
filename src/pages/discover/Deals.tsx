@@ -30,7 +30,7 @@ export default function Deals() {
       savings: "$151",
       discount: 34,
       timeLeft: "2 hours 45 minutes",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/emma-wilson-avatar.jpg",
       provider: "Luna Wellness Spa",
       rating: 4.9,
       sold: 67,
@@ -46,7 +46,7 @@ export default function Deals() {
       savings: "$101",
       discount: 40,
       timeLeft: "6 hours 12 minutes",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/dr-roberts-avatar.jpg",
       provider: "Recovery Lab",
       rating: 4.8,
       sold: 23,
@@ -65,7 +65,7 @@ export default function Deals() {
       savings: "$61",
       discount: 41,
       timeLeft: "5 days",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/mike-thompson-avatar.jpg",
       provider: "Zen Studio",
       rating: 4.7,
       category: "Weekly Deal"
@@ -79,7 +79,7 @@ export default function Deals() {
       savings: "$100",
       discount: 33,
       timeLeft: "3 days",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/sarah-miller-avatar.jpg",
       provider: "Dr. Sleep Clinic",
       rating: 4.9,
       category: "Weekly Deal"
@@ -93,7 +93,7 @@ export default function Deals() {
       savings: "$120",
       discount: 30,
       timeLeft: "6 days",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/lisa-chen-avatar.jpg",
       provider: "Wellness Nutrition Co.",
       rating: 4.6,
       category: "Bundle Deal"
@@ -109,7 +109,7 @@ export default function Deals() {
       bundlePrice: "$299",
       savings: "$80",
       items: ["Vitana Tracker Pro", "Nutrition Consultation", "30-Day Yoga Pass"],
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/design-team-avatar.jpg",
       rating: 4.8
     },
     {
@@ -120,7 +120,7 @@ export default function Deals() {
       bundlePrice: "$199",
       savings: "$50",
       items: ["Premium Meditation App", "3 Therapy Sessions", "Stress Relief Kit"],
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/james-davis-avatar.jpg",
       rating: 4.7
     },
     {
@@ -131,7 +131,7 @@ export default function Deals() {
       bundlePrice: "$349",
       savings: "$101",
       items: ["90-min Massage", "Cold Plunge Session", "Red Light Therapy"],
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/murphy-avatar.jpg",
       rating: 4.9
     }
   ];
@@ -206,7 +206,7 @@ export default function Deals() {
                     <img 
                       src={deal.image} 
                       alt={deal.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-40 lg:h-44 xl:h-48 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-3 left-3 bg-red-500 text-white">
                       <Timer className="h-3 w-3 mr-1" />
@@ -216,17 +216,17 @@ export default function Deals() {
                       -{deal.discount}%
                     </Badge>
                   </div>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors flex-1">
+                  <CardContent className="p-3 md:p-4 lg:p-5">
+                    <div className="flex items-start justify-between mb-2 md:mb-3">
+                      <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors flex-1">
                         {deal.title}
                       </h3>
                       <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">{deal.rating}</span>
+                        <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs md:text-sm font-medium">{deal.rating}</span>
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-3">{deal.description}</p>
+                    <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">{deal.description}</p>
                     <div className="flex items-center gap-1 mb-4">
                       <MapPin className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm text-muted-foreground">{deal.provider}</span>
@@ -254,7 +254,7 @@ export default function Deals() {
                         </div>
                       </div>
                     )}
-                    <Button className="w-full bg-red-500 hover:bg-red-600">Claim Deal</Button>
+                    <Button className="w-full bg-red-500 hover:bg-red-600 h-7 md:h-8 lg:h-9 text-xs md:text-sm">Claim Deal</Button>
                   </CardContent>
                 </Card>
               ))}
@@ -277,24 +277,24 @@ export default function Deals() {
                     <img 
                       src={deal.image} 
                       alt={deal.title}
-                      className="w-full h-40 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1">
                       -{deal.discount}%
                     </Badge>
                   </div>
-                  <CardContent className="p-3 h-fit">
-                    <div className="space-y-2">
+                  <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
+                    <div className="space-y-2 md:space-y-3">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                        <h3 className="font-semibold text-xs md:text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
                           {deal.title}
                         </h3>
                         <div className="flex items-center gap-1 flex-shrink-0">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span className="text-xs text-muted-foreground">{deal.rating}</span>
+                          <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs md:text-sm text-muted-foreground">{deal.rating}</span>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{deal.description}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{deal.description}</p>
                       <div className="flex items-center gap-1">
                         <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
                         <span className="text-xs text-muted-foreground truncate">{deal.provider}</span>
@@ -309,7 +309,7 @@ export default function Deals() {
                         <Clock className="h-3 w-3 text-orange-500 flex-shrink-0" />
                         <span className="text-xs text-orange-600 truncate">{deal.timeLeft} left</span>
                       </div>
-                      <Button size="sm" className="w-full text-xs h-7 mt-2 bg-green-500 hover:bg-green-600">
+                      <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-2 bg-green-500 hover:bg-green-600">
                         Get Deal
                       </Button>
                     </div>
@@ -335,29 +335,29 @@ export default function Deals() {
                     <img 
                       src={bundle.image} 
                       alt={bundle.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-40 lg:h-44 xl:h-48 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-3 left-3 bg-purple-500 text-white">
                       Bundle Deal
                     </Badge>
                   </div>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors flex-1">
+                  <CardContent className="p-3 md:p-4 lg:p-5">
+                    <div className="flex items-start justify-between mb-2 md:mb-3">
+                      <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors flex-1">
                         {bundle.title}
                       </h3>
                       <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">{bundle.rating}</span>
+                        <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs md:text-sm font-medium">{bundle.rating}</span>
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-4">{bundle.description}</p>
+                    <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">{bundle.description}</p>
                     <div className="space-y-2 mb-4">
                       <div className="text-xs font-medium text-muted-foreground">Includes:</div>
                       {bundle.items.map((item, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                          <span className="text-xs text-muted-foreground">{item}</span>
+                          <span className="text-xs md:text-sm text-muted-foreground">{item}</span>
                         </div>
                       ))}
                     </div>
@@ -370,7 +370,7 @@ export default function Deals() {
                         Save {bundle.savings}
                       </Badge>
                     </div>
-                    <Button className="w-full bg-purple-500 hover:bg-purple-600">Get Bundle</Button>
+                    <Button className="w-full bg-purple-500 hover:bg-purple-600 h-7 md:h-8 lg:h-9 text-xs md:text-sm">Get Bundle</Button>
                   </CardContent>
                 </Card>
               ))}

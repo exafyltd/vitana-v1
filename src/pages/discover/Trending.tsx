@@ -25,7 +25,7 @@ export default function Trending() {
       title: "Cold Plunge Therapy",
       description: "30-minute cold water immersion session",
       price: "$75",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/james-davis-avatar.jpg",
       rating: 4.9,
       bookings: 234,
       trend: "+45%",
@@ -37,7 +37,7 @@ export default function Trending() {
       title: "Sound Healing Bowl Session",
       description: "Tibetan singing bowl meditation experience",
       price: "$95",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/emma-wilson-avatar.jpg",
       rating: 4.8,
       bookings: 189,
       trend: "+38%",
@@ -49,7 +49,7 @@ export default function Trending() {
       title: "Breathwork Intensive",
       description: "90-minute guided breathing workshop",
       price: "$120",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/mike-thompson-avatar.jpg",
       rating: 4.9,
       bookings: 156,
       trend: "+52%",
@@ -66,7 +66,7 @@ export default function Trending() {
       price: "$299",
       originalPrice: "$450",
       timeLeft: "2 days",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/lisa-chen-avatar.jpg",
       sold: 67,
       limit: 100
     },
@@ -77,7 +77,7 @@ export default function Trending() {
       price: "$89",
       originalPrice: "$150",
       timeLeft: "5 hours",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/sarah-miller-avatar.jpg",
       sold: 43,
       limit: 50
     }
@@ -89,7 +89,7 @@ export default function Trending() {
       title: "Adaptogenic Stress Relief Blend",
       description: "Ashwagandha & rhodiola supplement",
       price: "$49",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png",
       rating: 4.7,
       orders: 1234,
       trend: "+67%"
@@ -99,7 +99,7 @@ export default function Trending() {
       title: "Infrared Therapy Mat",
       description: "Full-body healing mat with gemstones",
       price: "$399",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/murphy-avatar.jpg",
       rating: 4.8,
       orders: 456,
       trend: "+89%"
@@ -109,7 +109,7 @@ export default function Trending() {
       title: "Meditation Cushion Set",
       description: "Organic cotton with buckwheat fill",
       price: "$89",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/tae-min-avatar.jpg",
       rating: 4.6,
       orders: 789,
       trend: "+34%"
@@ -124,7 +124,7 @@ export default function Trending() {
       bookings: 89,
       trend: "+156%",
       rating: 4.9,
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/design-team-avatar.jpg",
       location: "Virtual & NYC"
     },
     {
@@ -134,7 +134,7 @@ export default function Trending() {
       bookings: 67,
       trend: "+123%",
       rating: 4.8,
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/se-hun-oh-avatar.jpg",
       location: "San Francisco"
     }
   ];
@@ -170,7 +170,7 @@ export default function Trending() {
                     <img 
                       src={service.image} 
                       alt={service.title}
-                      className="w-full h-40 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1">
                       <TrendingUp className="h-3 w-3 mr-1" />
@@ -180,18 +180,18 @@ export default function Trending() {
                       <Heart className="h-3 w-3" />
                     </Button>
                   </div>
-                  <CardContent className="p-3 h-fit">
-                    <div className="space-y-2">
+                  <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
+                    <div className="space-y-2 md:space-y-3">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                        <h3 className="font-semibold text-xs md:text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
                           {service.title}
                         </h3>
                         <div className="flex items-center gap-1 flex-shrink-0">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span className="text-xs text-muted-foreground">{service.rating}</span>
+                          <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs md:text-sm text-muted-foreground">{service.rating}</span>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{service.description}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{service.description}</p>
                       <div className="flex items-center gap-1">
                         <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
                         <span className="text-xs text-muted-foreground truncate">{service.location}</span>
@@ -208,7 +208,7 @@ export default function Trending() {
                           ))}
                         </div>
                       </div>
-                      <Button size="sm" className="w-full text-xs h-7 mt-2">Book Now</Button>
+                      <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-2">Book Now</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -234,16 +234,16 @@ export default function Trending() {
                     <img 
                       src={deal.image} 
                       alt={deal.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-40 lg:h-44 xl:h-48 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-3 left-3 bg-red-500 text-white">
                       <Timer className="h-3 w-3 mr-1" />
                       {deal.timeLeft} left
                     </Badge>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{deal.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{deal.description}</p>
+                  <CardContent className="p-3 md:p-4 lg:p-5">
+                    <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground mb-2 md:mb-3 group-hover:text-primary transition-colors">{deal.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">{deal.description}</p>
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl font-bold text-red-600">{deal.price}</span>
@@ -265,7 +265,7 @@ export default function Trending() {
                         />
                       </div>
                     </div>
-                    <Button className="w-full bg-red-500 hover:bg-red-600">Claim Deal</Button>
+                    <Button className="w-full bg-red-500 hover:bg-red-600 h-7 md:h-8 lg:h-9 text-xs md:text-sm">Claim Deal</Button>
                   </CardContent>
                 </Card>
               ))}
@@ -285,32 +285,32 @@ export default function Trending() {
                     <img 
                       src={product.image} 
                       alt={product.title}
-                      className="w-full h-40 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1">
                       <TrendingUp className="h-3 w-3 mr-1" />
                       {product.trend}
                     </Badge>
                   </div>
-                  <CardContent className="p-3 h-fit">
-                    <div className="space-y-2">
+                  <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
+                    <div className="space-y-2 md:space-y-3">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
+                        <h3 className="font-semibold text-xs md:text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
                           {product.title}
                         </h3>
                         <div className="flex items-center gap-1 flex-shrink-0">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span className="text-xs text-muted-foreground">{product.rating}</span>
+                          <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs md:text-sm text-muted-foreground">{product.rating}</span>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{product.description}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{product.description}</p>
                       <div className="flex items-center gap-1">
                         <Users className="h-3 w-3 text-blue-500 flex-shrink-0" />
                         <span className="text-xs text-blue-600 truncate">{product.orders} orders</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-bold text-foreground">{product.price}</span>
-                        <Button size="sm" className="text-xs h-7">Add to Cart</Button>
+                        <Button size="sm" className="text-xs md:text-sm h-7 md:h-8 lg:h-9">Add to Cart</Button>
                       </div>
                     </div>
                   </CardContent>

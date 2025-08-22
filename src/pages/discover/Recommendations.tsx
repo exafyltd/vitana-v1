@@ -28,7 +28,7 @@ export default function Recommendations() {
       match: 95,
       reason: "Based on your low sleep scores",
       provider: "Dr. Emily Chen, Sleep Specialist",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/dr-roberts-avatar.jpg",
       badge: "Perfect Match",
       availableTime: "Next week"
     },
@@ -41,7 +41,7 @@ export default function Recommendations() {
       match: 92,
       reason: "High stress indicators detected",
       provider: "Marcus Rodriguez, Wellness Coach",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/mike-thompson-avatar.jpg",
       badge: "High Priority",
       availableTime: "Today 3PM"
     },
@@ -53,7 +53,7 @@ export default function Recommendations() {
       match: 88,
       reason: "Your nutrition pillar needs boost",
       provider: "Luna Wellness Collective",
-      image: "/public/placeholder.svg",
+      image: "/lovable-uploads/lisa-chen-avatar.jpg",
       badge: "Great Match",
       availableTime: "Tomorrow"
     }
@@ -67,7 +67,7 @@ export default function Recommendations() {
       price: "$79",
       goalType: "Mobility",
       improvement: "+23% flexibility",
-      image: "/public/placeholder.svg"
+      image: "/lovable-uploads/james-davis-avatar.jpg"
     },
     {
       id: 2,
@@ -76,7 +76,7 @@ export default function Recommendations() {
       price: "$49",
       goalType: "Cardio",
       improvement: "+15% endurance",
-      image: "/public/placeholder.svg"
+      image: "/lovable-uploads/se-hun-oh-avatar.jpg"
     },
     {
       id: 3,
@@ -85,7 +85,7 @@ export default function Recommendations() {
       price: "$129",
       goalType: "Mental Health",
       improvement: "+30% calm",
-      image: "/public/placeholder.svg"
+      image: "/lovable-uploads/emma-wilson-avatar.jpg"
     }
   ];
 
@@ -99,7 +99,7 @@ export default function Recommendations() {
       duration: "60 min",
       provider: "Sunrise Yoga Studio",
       nextSlot: "6PM today",
-      image: "/public/placeholder.svg"
+      image: "/lovable-uploads/murphy-avatar.jpg"
     },
     {
       id: 2,
@@ -110,7 +110,7 @@ export default function Recommendations() {
       duration: "90 min",
       provider: "Zen Wellness Spa",
       nextSlot: "4PM today",
-      image: "/public/placeholder.svg"
+      image: "/lovable-uploads/tae-min-avatar.jpg"
     }
   ];
 
@@ -123,7 +123,7 @@ export default function Recommendations() {
       bundlePrice: "$299",
       savings: "$80",
       items: ["Vitana Tracker Pro", "Nutrition Consultation", "30-Day Yoga Pass"],
-      image: "/public/placeholder.svg"
+      image: "/lovable-uploads/design-team-avatar.jpg"
     },
     {
       id: 2,
@@ -133,7 +133,7 @@ export default function Recommendations() {
       bundlePrice: "$199",
       savings: "$50",
       items: ["Premium Meditation App", "3 Therapy Sessions", "Stress Relief Kit"],
-      image: "/public/placeholder.svg"
+      image: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png"
     }
   ];
 
@@ -168,7 +168,7 @@ export default function Recommendations() {
                     <img 
                       src={match.image} 
                       alt={match.title}
-                      className="w-full h-40 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
                     />
                     <Badge className={`absolute top-2 left-2 text-xs px-2 py-1 ${
                       match.match >= 95 ? 'bg-green-500' : 
@@ -180,19 +180,19 @@ export default function Recommendations() {
                       <span className="text-xs font-bold text-purple-600">{match.match}%</span>
                     </div>
                   </div>
-                  <CardContent className="p-3 h-fit">
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                  <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
+                    <div className="space-y-2 md:space-y-3">
+                      <h3 className="font-semibold text-xs md:text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2">
                         {match.title}
                       </h3>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{match.description}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{match.description}</p>
                       <div className="bg-purple-50 p-2 rounded-lg">
                         <div className="flex items-center gap-1">
                           <Brain className="h-3 w-3 text-purple-500 flex-shrink-0" />
                           <span className="text-xs text-purple-700 font-medium truncate">{match.reason}</span>
                         </div>
                       </div>
-                      <div className="text-xs text-muted-foreground truncate">{match.provider}</div>
+                      <div className="text-xs md:text-sm text-muted-foreground truncate">{match.provider}</div>
                       <div className="flex items-center gap-1">
                         <Clock className="h-3 w-3 text-green-500 flex-shrink-0" />
                         <span className="text-xs text-green-600 truncate">{match.availableTime}</span>
@@ -202,7 +202,7 @@ export default function Recommendations() {
                           <span className="text-sm font-bold text-foreground">{match.price}</span>
                           {match.period && <span className="text-xs text-muted-foreground">{match.period}</span>}
                         </div>
-                        <Button size="sm" className="text-xs h-7">Book</Button>
+                        <Button size="sm" className="text-xs md:text-sm h-7 md:h-8 lg:h-9">Book</Button>
                       </div>
                     </div>
                   </CardContent>
@@ -229,18 +229,18 @@ export default function Recommendations() {
                     <img 
                       src={booster.image} 
                       alt={booster.title}
-                      className="w-full h-40 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1">
                       {booster.goalType}
                     </Badge>
                   </div>
-                  <CardContent className="p-3 h-fit">
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                  <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
+                    <div className="space-y-2 md:space-y-3">
+                      <h3 className="font-semibold text-xs md:text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2">
                         {booster.title}
                       </h3>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{booster.description}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{booster.description}</p>
                       <div className="bg-blue-50 p-2 rounded-lg">
                         <div className="flex items-center gap-1">
                           <TrendingUp className="h-3 w-3 text-blue-500 flex-shrink-0" />
@@ -249,7 +249,7 @@ export default function Recommendations() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-bold text-foreground">{booster.price}</span>
-                        <Button size="sm" className="text-xs h-7">Start</Button>
+                        <Button size="sm" className="text-xs md:text-sm h-7 md:h-8 lg:h-9">Start</Button>
                       </div>
                     </div>
                   </CardContent>
@@ -276,15 +276,15 @@ export default function Recommendations() {
                     <img 
                       src={offer.image} 
                       alt={offer.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-40 lg:h-44 xl:h-48 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-3 left-3 bg-pink-500 text-white">
                       For {offer.mood}
                     </Badge>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{offer.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">{offer.description}</p>
+                  <CardContent className="p-3 md:p-4 lg:p-5">
+                    <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground mb-2 md:mb-3 group-hover:text-primary transition-colors">{offer.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">{offer.description}</p>
                     <div className="flex items-center gap-4 mb-4">
                       <div className="flex items-center gap-1">
                         <Clock className="h-4 w-4 text-muted-foreground" />
@@ -301,7 +301,7 @@ export default function Recommendations() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-foreground">{offer.price}</span>
-                      <Button size="sm">Book Session</Button>
+                      <Button size="sm" className="h-7 md:h-8 lg:h-9 text-xs md:text-sm">Book Session</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -327,20 +327,20 @@ export default function Recommendations() {
                     <img 
                       src={bundle.image} 
                       alt={bundle.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-40 lg:h-44 xl:h-48 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-3 left-3 bg-green-500 text-white">
                       Save {bundle.savings}
                     </Badge>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{bundle.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{bundle.description}</p>
+                  <CardContent className="p-3 md:p-4 lg:p-5">
+                    <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground mb-2 md:mb-3 group-hover:text-primary transition-colors">{bundle.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">{bundle.description}</p>
                     <div className="space-y-2 mb-4">
                       {bundle.items.map((item, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span className="text-sm text-muted-foreground">{item}</span>
+                          <span className="text-xs md:text-sm text-muted-foreground">{item}</span>
                         </div>
                       ))}
                     </div>
@@ -349,7 +349,7 @@ export default function Recommendations() {
                         <span className="text-2xl font-bold text-green-600">{bundle.bundlePrice}</span>
                         <span className="text-lg text-muted-foreground line-through">{bundle.originalPrice}</span>
                       </div>
-                      <Button size="sm" className="bg-green-500 hover:bg-green-600">Get Bundle</Button>
+                      <Button size="sm" className="bg-green-500 hover:bg-green-600 h-7 md:h-8 lg:h-9 text-xs md:text-sm">Get Bundle</Button>
                     </div>
                   </CardContent>
                 </Card>
