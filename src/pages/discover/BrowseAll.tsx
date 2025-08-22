@@ -184,7 +184,7 @@ export default function BrowseAll() {
                   <img 
                     src={item.image} 
                     alt={item.title}
-                    className="w-full h-32 md:h-40 lg:h-48 xl:h-52 object-cover rounded-t-lg"
+                    className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
                   />
                   <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7 md:h-8 md:w-8">
                     <Heart className="h-3 w-3 md:h-4 md:w-4" />
@@ -195,8 +195,8 @@ export default function BrowseAll() {
                     </Badge>
                   )}
                 </div>
-                <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
-                  <div className="space-y-2 md:space-y-3">
+                <CardContent className="p-3 md:p-4 lg:p-5 min-h-[200px] md:min-h-[240px] lg:min-h-[260px] flex flex-col justify-between">
+                  <div className="space-y-2 md:space-y-3 flex-1">
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="font-semibold text-sm md:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 flex-1">
                         {item.title}
@@ -228,7 +228,7 @@ export default function BrowseAll() {
                         <span className="text-xs md:text-sm text-green-600 truncate">{item.available}</span>
                       </div>
                     )}
-                    <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-2">
+                    <Button size="sm" className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto">
                       {item.type === 'product' ? 'Add to Cart' : 'Book Now'}
                     </Button>
                   </div>

@@ -180,8 +180,8 @@ export default function Recommendations() {
                       <span className="text-xs font-bold text-purple-600">{match.match}%</span>
                     </div>
                   </div>
-                  <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
-                    <div className="space-y-2 md:space-y-3">
+                  <CardContent className="p-3 md:p-4 lg:p-5 min-h-[200px] md:min-h-[240px] lg:min-h-[260px] flex flex-col justify-between">
+                    <div className="space-y-2 md:space-y-3 flex-1">
                       <h3 className="font-semibold text-xs md:text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2">
                         {match.title}
                       </h3>
@@ -202,7 +202,7 @@ export default function Recommendations() {
                           <span className="text-sm font-bold text-foreground">{match.price}</span>
                           {match.period && <span className="text-xs text-muted-foreground">{match.period}</span>}
                         </div>
-                        <Button size="sm" className="text-xs md:text-sm h-7 md:h-8 lg:h-9">Book</Button>
+                        <Button size="sm" className="text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto">Book</Button>
                       </div>
                     </div>
                   </CardContent>
@@ -235,8 +235,8 @@ export default function Recommendations() {
                       {booster.goalType}
                     </Badge>
                   </div>
-                  <CardContent className="p-3 md:p-4 lg:p-5 h-fit">
-                    <div className="space-y-2 md:space-y-3">
+                  <CardContent className="p-3 md:p-4 lg:p-5 min-h-[200px] md:min-h-[240px] lg:min-h-[260px] flex flex-col justify-between">
+                    <div className="space-y-2 md:space-y-3 flex-1">
                       <h3 className="font-semibold text-xs md:text-sm lg:text-base text-foreground group-hover:text-primary transition-colors line-clamp-2">
                         {booster.title}
                       </h3>
@@ -249,7 +249,7 @@ export default function Recommendations() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-bold text-foreground">{booster.price}</span>
-                        <Button size="sm" className="text-xs md:text-sm h-7 md:h-8 lg:h-9">Start</Button>
+                        <Button size="sm" className="text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto">Start</Button>
                       </div>
                     </div>
                   </CardContent>
@@ -276,7 +276,7 @@ export default function Recommendations() {
                     <img 
                       src={offer.image} 
                       alt={offer.title}
-                      className="w-full h-32 md:h-40 lg:h-44 xl:h-48 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-3 left-3 bg-pink-500 text-white">
                       For {offer.mood}
@@ -327,7 +327,7 @@ export default function Recommendations() {
                     <img 
                       src={bundle.image} 
                       alt={bundle.title}
-                      className="w-full h-32 md:h-40 lg:h-44 xl:h-48 object-cover rounded-t-lg"
+                      className="w-full h-32 md:h-36 lg:h-40 xl:h-44 object-cover rounded-t-lg"
                     />
                     <Badge className="absolute top-3 left-3 bg-green-500 text-white">
                       Save {bundle.savings}
