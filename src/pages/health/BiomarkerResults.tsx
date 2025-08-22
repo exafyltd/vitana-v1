@@ -1,23 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import PageHeader from "@/components/PageHeader";
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
 import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  BarChart,
-  Bar
-} from 'recharts';
-import { TrendingUp, TrendingDown, Minus, Download, Calendar, AlertTriangle } from 'lucide-react';
+  FileText, 
+  ChevronDown, 
+  ChevronUp, 
+  Download, 
+  Share2, 
+  Calendar,
+  Building2,
+  CheckCircle,
+  AlertTriangle,
+  TrendingDown,
+  Clock
+} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
+
+const healthSubItems = [
+  { id: "overview", name: "Overview", path: "/health" },
+  { id: "pillars", name: "Pillars of Health", path: "/health/pillars" },
+  { id: "services", name: "Wellness Services", path: "/health/services" },
+  { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
+  { id: "education", name: "Education & Resources", path: "/health/education" },
+  { id: "biomarker-results", name: "Biomarker Results", path: "/health/biomarker-results" },
+];
 
 interface TestResult {
   id: string;
@@ -32,9 +45,18 @@ interface TestResult {
   };
 }
 
+interface BiomarkerItem {
+  name: string;
+  value: number;
+  unit: string;
+  referenceMin: number;
+  referenceMax: number;
+  status: 'normal' | 'high' | 'low' | 'critical';
+}
+
 export default function BiomarkerResults() {
   const [results, setResults] = useState<TestResult[]>([]);
-  const [selectedResult, setSelectedResult] = useState<TestResult | null>(null);
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -65,9 +87,6 @@ export default function BiomarkerResults() {
       })) as TestResult[];
 
       setResults(formattedResults);
-      if (formattedResults.length > 0) {
-        setSelectedResult(formattedResults[0]);
-      }
     } catch (error) {
       console.error('Error fetching results:', error);
     } finally {
@@ -75,273 +94,259 @@ export default function BiomarkerResults() {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'normal': return 'text-green-600 bg-green-100';
-      case 'high': return 'text-orange-600 bg-orange-100';
-      case 'low': return 'text-blue-600 bg-blue-100';
-      case 'critical': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+  const toggleExpandRow = (resultId: string) => {
+    const newExpanded = new Set(expandedRows);
+    if (newExpanded.has(resultId)) {
+      newExpanded.delete(resultId);
+    } else {
+      newExpanded.add(resultId);
     }
+    setExpandedRows(newExpanded);
+  };
+
+  const getOverallStatus = (biomarkers: BiomarkerItem[]) => {
+    const hasCritical = biomarkers.some(b => b.status === 'critical');
+    const hasHigh = biomarkers.some(b => b.status === 'high');
+    const hasLow = biomarkers.some(b => b.status === 'low');
+    
+    if (hasCritical) return { status: 'Critical', color: 'bg-destructive text-destructive-foreground' };
+    if (hasHigh || hasLow) return { status: 'Needs Attention', color: 'bg-warning text-warning-foreground' };
+    return { status: 'Normal', color: 'bg-success text-success-foreground' };
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'high': return <TrendingUp className="h-4 w-4" />;
-      case 'low': return <TrendingDown className="h-4 w-4" />;
-      case 'critical': return <AlertTriangle className="h-4 w-4" />;
-      default: return <Minus className="h-4 w-4" />;
+      case 'normal': return <CheckCircle className="h-4 w-4 text-success" />;
+      case 'high': return <AlertTriangle className="h-4 w-4 text-warning" />;
+      case 'low': return <TrendingDown className="h-4 w-4 text-warning" />;
+      case 'critical': return <AlertTriangle className="h-4 w-4 text-destructive" />;
+      default: return <CheckCircle className="h-4 w-4 text-muted-foreground" />;
     }
+  };
+
+  // Mock biomarker data for demonstration
+  const getMockBiomarkers = (testName: string): BiomarkerItem[] => {
+    const baseMarkers = [
+      { name: 'Cholesterol', value: 190, unit: 'mg/dL', referenceMin: 125, referenceMax: 200, status: 'normal' as const },
+      { name: 'Glucose', value: 95, unit: 'mg/dL', referenceMin: 70, referenceMax: 100, status: 'normal' as const },
+      { name: 'Hemoglobin', value: 14.2, unit: 'g/dL', referenceMin: 12, referenceMax: 16, status: 'normal' as const },
+      { name: 'Vitamin D', value: 25, unit: 'ng/mL', referenceMin: 30, referenceMax: 100, status: 'low' as const },
+    ];
+
+    if (testName.toLowerCase().includes('genomics')) {
+      return [
+        { name: 'APOE4 Variant', value: 1, unit: 'copies', referenceMin: 0, referenceMax: 2, status: 'normal' as const },
+        { name: 'MTHFR C677T', value: 0, unit: 'mutations', referenceMin: 0, referenceMax: 0, status: 'normal' as const },
+        { name: 'COMT Val158Met', value: 1, unit: 'variants', referenceMin: 0, referenceMax: 2, status: 'normal' as const },
+      ];
+    }
+
+    if (testName.toLowerCase().includes('microbiome')) {
+      return [
+        { name: 'Lactobacillus', value: 8.2, unit: '% abundance', referenceMin: 5, referenceMax: 15, status: 'normal' as const },
+        { name: 'Bifidobacterium', value: 3.1, unit: '% abundance', referenceMin: 3, referenceMax: 10, status: 'normal' as const },
+        { name: 'Diversity Index', value: 4.2, unit: 'Shannon', referenceMin: 3.5, referenceMax: 5.0, status: 'normal' as const },
+      ];
+    }
+
+    return baseMarkers;
   };
 
   if (isLoading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[1, 2, 3].map(i => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader>
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-20 bg-gray-200 rounded"></div>
-              </CardContent>
-            </Card>
-          ))}
+      <AppLayout>
+        <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
+        <SubNavigation items={healthSubItems} />
+        <div className="p-6">
+          <div className="max-w-7xl mx-auto space-y-6">
+            <PageHeader
+              title="Lab Results"
+              description="View your biomarker analysis and lab test results"
+              icon={FileText}
+            />
+            <div className="space-y-4">
+              {[1, 2, 3].map(i => (
+                <Card key={i} className="animate-pulse">
+                  <CardContent className="p-6">
+                    <div className="h-6 bg-muted rounded w-1/3 mb-2"></div>
+                    <div className="h-4 bg-muted rounded w-1/4"></div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     );
   }
 
   if (results.length === 0) {
     return (
-      <div className="container mx-auto p-6">
-        <Card className="text-center py-12">
-          <CardContent>
-            <div className="text-6xl mb-4">🧪</div>
-            <CardTitle className="mb-2">No Lab Results Yet</CardTitle>
-            <CardDescription className="mb-4">
-              Your lab test results will appear here once they're ready.
-            </CardDescription>
-            <Button onClick={() => window.location.href = '/discover'}>
-              Order Lab Tests
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <AppLayout>
+        <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
+        <SubNavigation items={healthSubItems} />
+        <div className="p-6">
+          <div className="max-w-7xl mx-auto space-y-6">
+            <PageHeader
+              title="Lab Results"
+              description="View your biomarker analysis and lab test results"
+              icon={FileText}
+            />
+            <Card className="text-center py-12">
+              <CardContent>
+                <div className="text-6xl mb-4">🧪</div>
+                <h3 className="text-xl font-semibold mb-2">No Lab Results Yet</h3>
+                <p className="text-muted-foreground mb-6">
+                  Your lab test results will appear here once they're ready.
+                </p>
+                <Button onClick={() => window.location.href = '/discover'}>
+                  Order Lab Tests
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </AppLayout>
     );
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Biomarker Results</h1>
-          <p className="text-muted-foreground">View and track your lab test results over time</p>
-        </div>
-        <Button variant="outline" className="gap-2">
-          <Download className="h-4 w-4" />
-          Export Results
-        </Button>
-      </div>
+    <AppLayout>
+      <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
+      <SubNavigation items={healthSubItems} />
+      <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="flex items-center justify-between">
+            <PageHeader
+              title="Lab Results"
+              description="View your biomarker analysis and lab test results"
+              icon={FileText}
+            />
+            <div className="text-sm text-muted-foreground bg-card/50 px-3 py-1 rounded-md">
+              {results.length} test{results.length !== 1 ? 's' : ''} available
+            </div>
+          </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Test History Sidebar */}
-        <div className="lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Test History</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="space-y-2">
-                {results.map((result) => (
-                  <button
-                    key={result.id}
-                    onClick={() => setSelectedResult(result)}
-                    className={`w-full text-left p-3 hover:bg-muted/50 transition-colors ${
-                      selectedResult?.id === result.id ? 'bg-muted' : ''
-                    }`}
-                  >
-                    <div className="font-medium text-sm">{result.lab_test.name}</div>
-                    <div className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                      <Calendar className="h-3 w-3" />
-                      {format(new Date(result.completed_at), 'MMM dd, yyyy')}
-                    </div>
-                    <Badge variant="outline" className="mt-1 text-xs">
-                      {result.lab_test.provider_name}
-                    </Badge>
-                  </button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          <div className="space-y-3">
+            {results.map((result) => {
+              const mockBiomarkers = getMockBiomarkers(result.lab_test.name);
+              const overallStatus = getOverallStatus(mockBiomarkers);
+              const isExpanded = expandedRows.has(result.id);
 
-        {/* Main Results View */}
-        <div className="lg:col-span-3">
-          {selectedResult && (
-            <div className="space-y-6">
-              {/* Test Header */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle>{selectedResult.lab_test.name}</CardTitle>
-                      <CardDescription>
-                        Completed on {format(new Date(selectedResult.completed_at), 'MMMM dd, yyyy')}
-                      </CardDescription>
-                    </div>
-                    <Badge variant="secondary">
-                      {selectedResult.lab_test.provider_name}
-                    </Badge>
-                  </div>
-                </CardHeader>
-              </Card>
-
-              <Tabs defaultValue="overview" className="w-full">
-                <TabsList>
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="detailed">Detailed Results</TabsTrigger>
-                  <TabsTrigger value="trends">Trends</TabsTrigger>
-                  <TabsTrigger value="insights">AI Insights</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="overview" className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {/* Mock biomarker data for demonstration */}
-                    {[
-                      { name: 'Cholesterol', value: 190, unit: 'mg/dL', status: 'normal', min: 125, max: 200 },
-                      { name: 'Glucose', value: 95, unit: 'mg/dL', status: 'normal', min: 70, max: 100 },
-                      { name: 'Hemoglobin', value: 14.2, unit: 'g/dL', status: 'normal', min: 12, max: 16 },
-                      { name: 'Vitamin D', value: 25, unit: 'ng/mL', status: 'low', min: 30, max: 100 },
-                    ].map((biomarker) => (
-                      <Card key={biomarker.name}>
-                        <CardHeader className="pb-3">
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="text-base">{biomarker.name}</CardTitle>
-                            <Badge className={getStatusColor(biomarker.status)}>
-                              {getStatusIcon(biomarker.status)}
-                              {biomarker.status.toUpperCase()}
-                            </Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-2xl font-bold mb-2">
-                            {biomarker.value} {biomarker.unit}
-                          </div>
-                          <div className="text-sm text-muted-foreground mb-3">
-                            Normal: {biomarker.min} - {biomarker.max} {biomarker.unit}
-                          </div>
-                          <Progress 
-                            value={
-                              Math.min(100, Math.max(0, 
-                                ((biomarker.value - biomarker.min) / 
-                                (biomarker.max - biomarker.min)) * 100
-                              ))
-                            }
-                            className="h-2"
-                          />
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="detailed" className="space-y-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Detailed Biomarker Analysis</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-6">
-                        {[
-                          { name: 'Cholesterol', value: 190, unit: 'mg/dL', status: 'normal', min: 125, max: 200 },
-                          { name: 'Glucose', value: 95, unit: 'mg/dL', status: 'normal', min: 70, max: 100 },
-                          { name: 'Hemoglobin', value: 14.2, unit: 'g/dL', status: 'normal', min: 12, max: 16 },
-                          { name: 'Vitamin D', value: 25, unit: 'ng/mL', status: 'low', min: 30, max: 100 },
-                        ].map((biomarker) => (
-                          <div key={biomarker.name} className="border-b pb-4 last:border-b-0">
-                            <div className="flex items-center justify-between mb-3">
-                              <h4 className="font-semibold">{biomarker.name}</h4>
-                              <Badge className={getStatusColor(biomarker.status)}>
-                                {biomarker.status.toUpperCase()}
-                              </Badge>
-                            </div>
-                            <div className="grid grid-cols-3 gap-4 text-sm">
-                              <div>
-                                <div className="text-muted-foreground">Your Result</div>
-                                <div className="font-semibold">{biomarker.value} {biomarker.unit}</div>
-                              </div>
-                              <div>
-                                <div className="text-muted-foreground">Reference Range</div>
-                                <div>{biomarker.min} - {biomarker.max} {biomarker.unit}</div>
-                              </div>
-                              <div>
-                                <div className="text-muted-foreground">Status</div>
-                                <div className="flex items-center gap-1">
-                                  {getStatusIcon(biomarker.status)}
-                                  {biomarker.status === 'normal' ? 'Within normal range' : 
-                                   biomarker.status === 'high' ? 'Above normal range' :
-                                   biomarker.status === 'low' ? 'Below normal range' : 'Critical - consult doctor'}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="trends">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Biomarker Trends</CardTitle>
-                      <CardDescription>Track changes in your biomarkers over time</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-80">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <LineChart data={[
-                            { date: '2024-01', cholesterol: 180, glucose: 95 },
-                            { date: '2024-02', cholesterol: 175, glucose: 92 },
-                            { date: '2024-03', cholesterol: 170, glucose: 88 },
-                          ]}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="date" />
-                            <YAxis />
-                            <Tooltip />
-                            <Line type="monotone" dataKey="cholesterol" stroke="#8884d8" strokeWidth={2} />
-                            <Line type="monotone" dataKey="glucose" stroke="#82ca9d" strokeWidth={2} />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="insights">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>AI-Powered Health Insights</CardTitle>
-                      <CardDescription>Personalized recommendations based on your results</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="prose max-w-none">
-                        <p className="text-sm leading-relaxed">
-                          {selectedResult.ai_insights || 
-                            "AI insights are being generated for your results. This analysis will provide personalized recommendations based on your biomarker values, lifestyle factors, and health goals."}
+              return (
+                <Card key={result.id} className="overflow-hidden bg-card/80 backdrop-blur-sm border-border/50">
+                  {/* Main Row */}
+                  <CardContent className="p-0">
+                    <div className="flex items-center gap-4 p-6 hover:bg-muted/30 transition-colors">
+                      {/* Lab Test Name */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-lg text-foreground truncate">
+                          {result.lab_test.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground capitalize">
+                          {result.lab_test.category.replace('_', ' ')}
                         </p>
                       </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </div>
-          )}
+
+                      {/* Date */}
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[120px]">
+                        <Calendar className="h-4 w-4" />
+                        <span>{format(new Date(result.completed_at), 'MMM dd, yyyy')}</span>
+                      </div>
+
+                      {/* Provider */}
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[150px]">
+                        <Building2 className="h-4 w-4" />
+                        <span className="truncate">{result.lab_test.provider_name}</span>
+                      </div>
+
+                      {/* Status Badge */}
+                      <Badge className={`${overallStatus.color} min-w-[120px] justify-center`}>
+                        {overallStatus.status}
+                      </Badge>
+
+                      {/* View More Button */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleExpandRow(result.id)}
+                        className="flex items-center gap-2 min-w-[100px]"
+                      >
+                        {isExpanded ? (
+                          <>
+                            Hide <ChevronUp className="h-4 w-4" />
+                          </>
+                        ) : (
+                          <>
+                            View More <ChevronDown className="h-4 w-4" />
+                          </>
+                        )}
+                      </Button>
+                    </div>
+
+                    {/* Expanded Details */}
+                    {isExpanded && (
+                      <>
+                        <Separator />
+                        <div className="p-6 bg-muted/20">
+                          {/* Biomarker Table */}
+                          <div className="mb-6">
+                            <h4 className="font-semibold mb-4 text-foreground">Biomarker Details</h4>
+                            <div className="grid gap-3">
+                              {mockBiomarkers.map((biomarker) => (
+                                <div
+                                  key={biomarker.name}
+                                  className="flex items-center justify-between p-4 bg-background/50 rounded-lg border border-border/30"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    {getStatusIcon(biomarker.status)}
+                                    <div>
+                                      <div className="font-medium text-foreground">{biomarker.name}</div>
+                                      <div className="text-sm text-muted-foreground">
+                                        {biomarker.referenceMin} - {biomarker.referenceMax} {biomarker.unit}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="text-right">
+                                    <div className="font-semibold text-foreground">
+                                      {biomarker.value} {biomarker.unit}
+                                    </div>
+                                    <div className="text-sm text-muted-foreground capitalize">
+                                      {biomarker.status === 'normal' ? '✓ Normal' : 
+                                       biomarker.status === 'high' ? '⚠ High' :
+                                       biomarker.status === 'low' ? '⬇ Low' : '🚨 Critical'}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex items-center gap-3">
+                            <Button variant="outline" className="flex items-center gap-2">
+                              <Download className="h-4 w-4" />
+                              Download PDF
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2">
+                              <Share2 className="h-4 w-4" />
+                              Share with Doctor
+                            </Button>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
+                              <Clock className="h-4 w-4" />
+                              <span>Processed {format(new Date(result.completed_at), 'MMM dd, h:mm a')}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </AppLayout>
   );
 }
