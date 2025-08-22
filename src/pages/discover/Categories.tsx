@@ -147,7 +147,7 @@ export default function Categories() {
           />
 
           {/* Categories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {categories.map((category) => (
               <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                 <CardContent className="p-6">

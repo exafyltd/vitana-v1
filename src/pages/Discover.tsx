@@ -327,7 +327,7 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
               {featuredOffers.map((offer) => (
                 <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                   <div className="relative">
@@ -395,7 +395,7 @@ export default function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
               {aiRecommendations.map((rec) => (
                 <Card key={rec.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit border-purple-200">
                   <div className="relative">

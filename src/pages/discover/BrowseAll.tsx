@@ -177,7 +177,7 @@ export default function BrowseAll() {
           </div>
 
           {/* Results Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
             {allItems.map((item) => (
               <Card key={item.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-fit">
                 <div className="relative">

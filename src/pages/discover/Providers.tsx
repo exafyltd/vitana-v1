@@ -195,7 +195,7 @@ export default function Providers() {
           </div>
 
           {/* Provider Results */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {providers.map((provider) => (
               <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardContent className="p-6">
