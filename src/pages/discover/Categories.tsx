@@ -25,7 +25,7 @@ export default function Categories() {
       name: "Longevity Medicine",
       description: "Advanced medical assessments and interventions for healthy aging",
       icon: Stethoscope,
-      color: "bg-blue-500",
+      color: "bg-primary",
       count: 234,
       featured: [
         "Health Assessments",
@@ -39,7 +39,7 @@ export default function Categories() {
       name: "Fitness & Movement",
       description: "Exercise programs designed for longevity and vitality",
       icon: Dumbbell,
-      color: "bg-orange-500",
+      color: "bg-secondary",
       count: 156,
       featured: [
         "Functional Fitness",
@@ -53,7 +53,7 @@ export default function Categories() {
       name: "Mental Wellness",
       description: "Mindfulness, therapy, and cognitive health services",
       icon: Brain,
-      color: "bg-purple-500",
+      color: "bg-accent",
       count: 189,
       featured: [
         "Meditation",
@@ -67,7 +67,7 @@ export default function Categories() {
       name: "Recovery & Therapy",
       description: "Healing modalities and recovery treatments",
       icon: Sparkles,
-      color: "bg-pink-500",
+      color: "bg-muted",
       count: 123,
       featured: [
         "Massage Therapy",
@@ -81,7 +81,7 @@ export default function Categories() {
       name: "Nutrition & Supplements",
       description: "Personalized nutrition plans and premium supplements",
       icon: Leaf,
-      color: "bg-green-500",
+      color: "bg-primary/80",
       count: 267,
       featured: [
         "Meal Planning",
@@ -95,7 +95,7 @@ export default function Categories() {
       name: "Sleep Optimization",
       description: "Services and products to improve sleep quality",
       icon: Coffee,
-      color: "bg-indigo-500",
+      color: "bg-secondary/80",
       count: 89,
       featured: [
         "Sleep Studies",
@@ -109,7 +109,7 @@ export default function Categories() {
       name: "Biohacking",
       description: "Advanced technologies and optimization protocols",
       icon: Zap,
-      color: "bg-yellow-500",
+      color: "bg-accent/80",
       count: 145,
       featured: [
         "Wearable Tech",
@@ -123,7 +123,7 @@ export default function Categories() {
       name: "Wellness Hospitality",
       description: "Retreats, spas, and immersive wellness experiences",
       icon: Heart,
-      color: "bg-rose-500",
+      color: "bg-muted/80",
       count: 67,
       featured: [
         "Wellness Retreats",
