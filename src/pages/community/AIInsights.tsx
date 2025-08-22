@@ -13,7 +13,7 @@ const communitySubItems = [
   { id: "my-groups", name: "My Groups & Feed", path: "/community/my-groups" },
   { id: "events", name: "Events & Meetups", path: "/community/events" },
   { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
-  { id: "live-interaction", name: "Live Interaction", path: "/community/live-interaction" },
+  { id: "live-interaction", name: "LIVE Hub", path: "/community/live-interaction" },
   { id: "ai-insights", name: "AI Insights", path: "/community/ai-insights" },
 ];
 

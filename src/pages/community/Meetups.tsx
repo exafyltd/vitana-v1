@@ -7,7 +7,7 @@ const communitySubItems = [
   { id: "matchmaking", name: "Matchmaking", path: "/community/matchmaking" },
   { id: "groups", name: "Groups", path: "/community/groups" },
   { id: "meetups", name: "Meetups", path: "/community/meetups" },
-  { id: "live-rooms", name: "Live Rooms", path: "/community/live-rooms" },
+  { id: "live-rooms", name: "LIVE Hub", path: "/community/live-rooms" },
   { id: "challenges", name: "Challenges", path: "/community/challenges" },
 ];
 
