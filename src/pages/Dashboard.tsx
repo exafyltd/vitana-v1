@@ -51,7 +51,7 @@ export default function Dashboard() {
               onClick={() => navigate('/dashboard/actions')}
             >
               <div className="flex flex-col items-center justify-center h-full space-y-3">
-                <Plane className="w-10 h-10 text-red-400 transform -rotate-45" />
+                <Plane className="w-10 h-10 text-red-400 transform rotate-45" />
                 <span className="text-sm font-medium text-red-400">Autopilot</span>
               </div>
             </div>
