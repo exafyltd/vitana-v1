@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
-// Remove the import and update the interface
+import { withCardId } from "@/lib/withCardId";
 
 export type HealthCategoryColor = "mental" | "exercise" | "nutrition" | "hydration" | "sleep" | "vitana" | "autopilot" | "ai" | "calendar" | "settings" | "profile" | "discover" | "health" | "tracker" | "messages" | "community" | "data";
 
@@ -22,7 +22,7 @@ interface CrossoverCardProps {
   size?: "sm" | "md" | "lg" | "xl";
 }
 
-const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
+const CrossoverCardBase = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
   ({ 
     icon: Icon, 
     category,
@@ -155,12 +155,13 @@ const CrossoverCard = React.forwardRef<HTMLDivElement, CrossoverCardProps>(
             )}
           </div>
         </CardContent>
-      </Card>
-    );
-  }
-);
+    </Card>
+  );
+});
 
-CrossoverCard.displayName = "CrossoverCard";
+CrossoverCardBase.displayName = "CrossoverCard";
 
-export { CrossoverCard };
+export const CrossoverCard = withCardId(CrossoverCardBase, "CT-CX-001");
+
+export { CrossoverCardBase };
 export type { CrossoverCardProps };

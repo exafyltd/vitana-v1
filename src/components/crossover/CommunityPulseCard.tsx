@@ -1,6 +1,7 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { Users, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { withCardId } from "@/lib/withCardId";
 
 interface CommunityPulseCardProps {
   activeUsers?: number;
@@ -9,7 +10,7 @@ interface CommunityPulseCardProps {
   className?: string;
 }
 
-export function CommunityPulseCard({ 
+function CommunityPulseCardBase({ 
   activeUsers = 12,
   newInvites = 2,
   upcomingEvents = 1,
@@ -58,3 +59,5 @@ export function CommunityPulseCard({
     />
   );
 }
+
+export const CommunityPulseCard = withCardId(CommunityPulseCardBase, "CT-CX-003", "C-006");

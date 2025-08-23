@@ -1,0 +1,54 @@
+{
+  "screen": "/dashboard",
+  "title": "Dashboard",
+  "slots": {
+    "hero": {
+      "name": "Hero Section",
+      "allowedTemplates": ["CT-CX-010", "CT-HS-003"],
+      "allowedSystemCards": ["C-001"],
+      "maxCards": 1
+    },
+    "autopilot": {
+      "name": "Autopilot Actions", 
+      "allowedTemplates": ["CT-CX-002", "CT-HS-004"],
+      "allowedSystemCards": ["C-002"],
+      "maxCards": 1
+    },
+    "quick-actions": {
+      "name": "Quick Actions",
+      "allowedTemplates": ["CT-UT-001"],
+      "allowedSystemCards": ["C-005"],
+      "maxCards": 1
+    },
+    "community": {
+      "name": "Community Pulse",
+      "allowedTemplates": ["CT-CX-003"],
+      "allowedSystemCards": ["C-006"],
+      "maxCards": 1
+    },
+    "progress": {
+      "name": "Progress & Streaks",
+      "allowedTemplates": ["CT-CX-008"],
+      "allowedSystemCards": ["C-007"],
+      "maxCards": 2
+    },
+    "calendar": {
+      "name": "Smart Calendar",
+      "allowedTemplates": ["CT-CX-009"],
+      "allowedSystemCards": ["C-008"],
+      "maxCards": 1
+    },
+    "recommendations": {
+      "name": "AI Recommendations",
+      "allowedTemplates": ["CT-CX-005", "CT-HS-001"],
+      "allowedSystemCards": ["C-004"],
+      "maxCards": 3
+    },
+    "wellness": {
+      "name": "Wellness Plans",
+      "allowedTemplates": ["CT-CX-006"],
+      "allowedSystemCards": ["C-010"],
+      "maxCards": 2
+    }
+  }
+}

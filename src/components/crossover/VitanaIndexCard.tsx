@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { withCardId } from "@/lib/withCardId";
 
 interface VitanaIndexCardProps {
   score?: number;
@@ -9,7 +10,7 @@ interface VitanaIndexCardProps {
   className?: string;
 }
 
-export function VitanaIndexCard({ 
+function VitanaIndexCardBase({ 
   score = 742, 
   trend = "+11% vs last week",
   className 
@@ -105,3 +106,5 @@ export function VitanaIndexCard({
     />
   );
 }
+
+export const VitanaIndexCard = withCardId(VitanaIndexCardBase, "CT-CX-010", "C-001");

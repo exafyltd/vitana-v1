@@ -1,6 +1,7 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { Heart, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { withCardId } from "@/lib/withCardId";
 
 interface MotivationCardProps {
   quote?: string;
@@ -9,7 +10,7 @@ interface MotivationCardProps {
   className?: string;
 }
 
-export function MotivationCard({ 
+function MotivationCardBase({ 
   quote = "Every small step towards wellness is a victory worth celebrating.",
   author = "Today's Inspiration",
   hasVideo = false,
@@ -53,3 +54,5 @@ export function MotivationCard({
     />
   );
 }
+
+export const MotivationCard = withCardId(MotivationCardBase, "CT-CX-007", "C-007");

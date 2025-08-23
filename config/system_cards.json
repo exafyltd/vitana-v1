@@ -1,0 +1,86 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-08-23",
+  "systemCards": {
+    "C-001": {
+      "name": "Main Vitana Index Display",
+      "purpose": "Primary health score visualization with trend analysis",
+      "templateId": "CT-CX-010",
+      "singleton": true,
+      "screens": ["/health-tracker/vitana-index", "/dashboard"],
+      "slots": ["hero", "primary"]
+    },
+    "C-002": {
+      "name": "Autopilot Status & Controls",
+      "purpose": "AI-driven health recommendations and automation toggle",
+      "templateId": "CT-CX-002",
+      "singleton": true,
+      "screens": ["/ai", "/dashboard"],
+      "slots": ["autopilot", "ai-actions"]
+    },
+    "C-003": {
+      "name": "Health Coach Chat Interface",
+      "purpose": "Interactive AI health coaching conversation",
+      "templateId": "CT-HS-002",
+      "singleton": true,
+      "screens": ["/ai/companion", "/health"],
+      "slots": ["chat", "companion"]
+    },
+    "C-004": {
+      "name": "Smart Suggestions Engine",
+      "purpose": "Personalized health insights and recommendations",
+      "templateId": "CT-HS-001",
+      "singleton": true,
+      "screens": ["/ai/insights", "/dashboard"],
+      "slots": ["suggestions", "insights"]
+    },
+    "C-005": {
+      "name": "Quick Health Logging",
+      "purpose": "Rapid input for health metrics and activities",
+      "templateId": "CT-UT-001",
+      "singleton": true,
+      "screens": ["/health-tracker", "/dashboard"],
+      "slots": ["quick-log", "actions"]
+    },
+    "C-006": {
+      "name": "Community Activity Pulse",
+      "purpose": "Real-time social engagement and group activity",
+      "templateId": "CT-CX-003",
+      "singleton": true,
+      "screens": ["/community", "/dashboard"],
+      "slots": ["community-pulse", "social"]
+    },
+    "C-007": {
+      "name": "Progress Streaks Tracker",
+      "purpose": "Gamified habit tracking and streak visualization",
+      "templateId": "CT-CX-008",
+      "singleton": true,
+      "screens": ["/health-tracker/progress-goals", "/dashboard"],
+      "slots": ["streaks", "progress"]
+    },
+    "C-008": {
+      "name": "Smart Calendar Integration",
+      "purpose": "AI-optimized scheduling with health integration",
+      "templateId": "CT-CX-009",
+      "singleton": true,
+      "screens": ["/calendar", "/dashboard"],
+      "slots": ["calendar", "schedule"]
+    },
+    "C-009": {
+      "name": "Health Data Wallet",
+      "purpose": "Comprehensive health report and data management",
+      "templateId": "CT-CX-004",
+      "singleton": true,
+      "screens": ["/health/biomarker-results", "/dashboard"],
+      "slots": ["data-wallet", "reports"]
+    },
+    "C-010": {
+      "name": "Lifestyle Plan Manager",
+      "purpose": "Personalized wellness plan tracking and optimization",
+      "templateId": "CT-CX-006",
+      "singleton": true,
+      "screens": ["/health-tracker/nutrition", "/health-tracker/exercise", "/dashboard"],
+      "slots": ["lifestyle-plan", "wellness"]
+    }
+  }
+}

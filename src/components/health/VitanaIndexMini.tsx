@@ -3,6 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { TrendingUp, TrendingDown, Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { withCardId } from "@/lib/withCardId";
 
 interface VitanaIndexMiniProps {
   score?: number;
@@ -12,7 +13,7 @@ interface VitanaIndexMiniProps {
   onClick?: () => void;
 }
 
-export default function VitanaIndexMini({ 
+function VitanaIndexMiniBase({ 
   score = 75, 
   trend = "up", 
   variant = "card",
@@ -134,3 +135,6 @@ export default function VitanaIndexMini({
     </Card>
   );
 }
+
+const VitanaIndexMini = withCardId(VitanaIndexMiniBase, "CT-HS-003");
+export default VitanaIndexMini;

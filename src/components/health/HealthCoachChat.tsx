@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle, Send, Mic, Video, Phone, Brain } from "lucide-react";
 import { useState } from "react";
+import { withCardId } from "@/lib/withCardId";
 
 interface HealthCoachChatProps {
   context?: string;
@@ -13,7 +14,7 @@ interface HealthCoachChatProps {
   onStartVideoCall?: () => void;
 }
 
-export default function HealthCoachChat({ 
+function HealthCoachChatBase({ 
   context = "general", 
   variant = "card",
   onSendMessage,
@@ -201,3 +202,6 @@ export default function HealthCoachChat({
     </Card>
   );
 }
+
+const HealthCoachChat = withCardId(HealthCoachChatBase, "CT-HS-002", "C-003");
+export default HealthCoachChat;

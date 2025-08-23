@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Zap, Brain, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { withCardId } from "@/lib/withCardId";
 
 interface AutopilotWidgetProps {
   title?: string;
@@ -14,7 +15,7 @@ interface AutopilotWidgetProps {
   variant?: "card" | "inline" | "mini";
 }
 
-export default function AutopilotWidget({ 
+function AutopilotWidgetBase({ 
   title = "Autopilot ⚡", 
   sectionName,
   suggestions, 
@@ -108,3 +109,6 @@ export default function AutopilotWidget({
     </Card>
   );
 }
+
+const AutopilotWidget = withCardId(AutopilotWidgetBase, "CT-HS-004", "C-002");
+export default AutopilotWidget;

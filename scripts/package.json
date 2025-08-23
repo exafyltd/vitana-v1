@@ -1,0 +1,12 @@
+{
+  "name": "vitana-card-inventory-scripts",
+  "version": "1.0.0",
+  "scripts": {
+    "generate-inventory": "ts-node generateCardInventory.ts",
+    "validate-cards": "ts-node validateCardSystem.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  }
+}

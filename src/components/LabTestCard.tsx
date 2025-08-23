@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Droplets, Building2, Star } from 'lucide-react';
+import { withCardId } from '@/lib/withCardId';
 
 interface LabTest {
   id: string;
@@ -40,7 +41,7 @@ const formatCategoryName = (category: string) => {
   ).join(' ');
 };
 
-export default function LabTestCard({ labTest, onOrder }: LabTestCardProps) {
+function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
   return (
     <Card className="h-full hover:shadow-lg transition-shadow duration-200">
       <CardHeader className="pb-3">
@@ -115,3 +116,6 @@ export default function LabTestCard({ labTest, onOrder }: LabTestCardProps) {
     </Card>
   );
 }
+
+const LabTestCard = withCardId(LabTestCardBase, "CT-UT-002");
+export default LabTestCard;

@@ -1,6 +1,7 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { Calendar, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { withCardId } from "@/lib/withCardId";
 
 interface CalendarEvent {
   title: string;
@@ -13,7 +14,7 @@ interface SmartCalendarCardProps {
   className?: string;
 }
 
-export function SmartCalendarCard({ 
+function SmartCalendarCardBase({ 
   events,
   className 
 }: SmartCalendarCardProps) {
@@ -64,3 +65,5 @@ export function SmartCalendarCard({
     />
   );
 }
+
+export const SmartCalendarCard = withCardId(SmartCalendarCardBase, "CT-CX-009", "C-008");

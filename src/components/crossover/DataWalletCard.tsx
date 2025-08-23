@@ -1,6 +1,7 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { Shield, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { withCardId } from "@/lib/withCardId";
 
 interface HealthReport {
   type: string;
@@ -13,7 +14,7 @@ interface DataWalletCardProps {
   className?: string;
 }
 
-export function DataWalletCard({ 
+function DataWalletCardBase({ 
   reports,
   className 
 }: DataWalletCardProps) {
@@ -74,3 +75,5 @@ export function DataWalletCard({
     />
   );
 }
+
+export const DataWalletCard = withCardId(DataWalletCardBase, "CT-CX-004", "C-009");

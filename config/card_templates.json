@@ -1,0 +1,221 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-08-23",
+  "templates": {
+    "CT-CX-001": {
+      "name": "CrossoverCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/CrossoverCard.tsx",
+      "version": "1.0.0",
+      "description": "Base crossover card template with configurable content and actions",
+      "propsSchema": {
+        "icon": "LucideIcon",
+        "category": "HealthCategoryColor",
+        "title": "string",
+        "subtitle": "string",
+        "content": "ReactNode",
+        "buttonText": "string (optional)",
+        "onButtonClick": "function (optional)",
+        "secondaryButtonText": "string (optional)",
+        "onSecondaryButtonClick": "function (optional)",
+        "urgent": "boolean (optional)",
+        "size": "'default' | 'compact' (optional)"
+      }
+    },
+    "CT-CX-002": {
+      "name": "AutoPilotActionCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/AutoPilotActionCard.tsx",
+      "version": "1.0.0",
+      "description": "AI-driven action recommendation card",
+      "propsSchema": {
+        "action": "string (optional)",
+        "timeEstimate": "string (optional)",
+        "reason": "string (optional)",
+        "priority": "'low' | 'medium' | 'high' (optional)"
+      }
+    },
+    "CT-CX-003": {
+      "name": "CommunityPulseCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/CommunityPulseCard.tsx",
+      "version": "1.0.0",
+      "description": "Community activity and social engagement display",
+      "propsSchema": {
+        "activeUsers": "number (optional)",
+        "newInvites": "number (optional)",
+        "upcomingEvents": "number (optional)"
+      }
+    },
+    "CT-CX-004": {
+      "name": "DataWalletCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/DataWalletCard.tsx",
+      "version": "1.0.0",
+      "description": "Health data reports and wallet summary",
+      "propsSchema": {
+        "reports": "HealthReport[] (optional)"
+      }
+    },
+    "CT-CX-005": {
+      "name": "DiscoverPicksCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/DiscoverPicksCard.tsx",
+      "version": "1.0.0",
+      "description": "Personalized content discovery recommendations",
+      "propsSchema": {
+        "picks": "DiscoverPick[] (optional)"
+      }
+    },
+    "CT-CX-006": {
+      "name": "LifestylePlanCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/LifestylePlanCard.tsx",
+      "version": "1.0.0",
+      "description": "Lifestyle plan tracking and management",
+      "propsSchema": {
+        "type": "LifestylePlanType",
+        "className": "string (optional)"
+      }
+    },
+    "CT-CX-007": {
+      "name": "MotivationCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/MotivationCard.tsx",
+      "version": "1.0.0",
+      "description": "Daily motivation and inspirational content",
+      "propsSchema": {
+        "quote": "string (optional)",
+        "author": "string (optional)",
+        "hasVideo": "boolean (optional)"
+      }
+    },
+    "CT-CX-008": {
+      "name": "ProgressStreaksCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/ProgressStreaksCard.tsx",
+      "version": "1.0.0",
+      "description": "Progress tracking and streak visualization",
+      "propsSchema": {
+        "streaks": "StreakData[] (optional)"
+      }
+    },
+    "CT-CX-009": {
+      "name": "SmartCalendarCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/SmartCalendarCard.tsx",
+      "version": "1.0.0",
+      "description": "AI-optimized calendar integration",
+      "propsSchema": {
+        "events": "CalendarEvent[] (optional)"
+      }
+    },
+    "CT-CX-010": {
+      "name": "VitanaIndexCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/VitanaIndexCard.tsx",
+      "version": "1.0.0",
+      "description": "Vitana health index score display with trends",
+      "propsSchema": {
+        "score": "number (optional)",
+        "trend": "'up' | 'down' | 'stable' (optional)"
+      }
+    },
+    "CT-HS-001": {
+      "name": "SmartSuggestions",
+      "category": "health",
+      "componentPath": "src/components/health/SmartSuggestions.tsx",
+      "version": "1.0.0",
+      "description": "AI-driven health insights and suggestions",
+      "propsSchema": {
+        "suggestions": "Suggestion[]",
+        "title": "string (optional)",
+        "variant": "'card' | 'list' | 'minimal' (optional)",
+        "maxItems": "number (optional)"
+      }
+    },
+    "CT-HS-002": {
+      "name": "HealthCoachChat",
+      "category": "health",
+      "componentPath": "src/components/health/HealthCoachChat.tsx",
+      "version": "1.0.0",
+      "description": "Interactive AI health coaching interface",
+      "propsSchema": {
+        "context": "string (optional)",
+        "variant": "'card' | 'embedded' | 'floating' (optional)",
+        "onSendMessage": "function (optional)",
+        "onStartCall": "function (optional)"
+      }
+    },
+    "CT-HS-003": {
+      "name": "VitanaIndexMini",
+      "category": "health",
+      "componentPath": "src/components/health/VitanaIndexMini.tsx",
+      "version": "1.0.0",
+      "description": "Compact Vitana index display",
+      "propsSchema": {
+        "score": "number (optional)",
+        "trend": "'up' | 'down' | 'stable' (optional)",
+        "variant": "'card' | 'compact' | 'badge' (optional)",
+        "showDetails": "boolean (optional)",
+        "onClick": "function (optional)"
+      }
+    },
+    "CT-HS-004": {
+      "name": "AutopilotWidget",
+      "category": "health",
+      "componentPath": "src/components/health/AutopilotWidget.tsx",
+      "version": "1.0.0",
+      "description": "Autopilot feature controls and suggestions",
+      "propsSchema": {
+        "title": "string (optional)",
+        "section": "string (optional)",
+        "suggestions": "string[] (optional)",
+        "enabled": "boolean (optional)",
+        "onToggle": "function (optional)",
+        "onActionClick": "function (optional)",
+        "variant": "'card' | 'inline' | 'mini'"
+      }
+    },
+    "CT-MD-001": {
+      "name": "MusicCard",
+      "category": "media",
+      "componentPath": "src/components/crossover/MusicCard.tsx",
+      "version": "1.0.0",
+      "description": "Music playback and control interface",
+      "propsSchema": {}
+    },
+    "CT-MD-002": {
+      "name": "PodcastCard",
+      "category": "media",
+      "componentPath": "src/components/crossover/PodcastCard.tsx",
+      "version": "1.0.0",
+      "description": "Podcast episode display and playback",
+      "propsSchema": {}
+    },
+    "CT-MD-003": {
+      "name": "VideoFeedCard",
+      "category": "media",
+      "componentPath": "src/components/crossover/VideoFeedCard.tsx",
+      "version": "1.0.0",
+      "description": "Video content feed item",
+      "propsSchema": {}
+    },
+    "CT-UT-001": {
+      "name": "QuickLogStrip",
+      "category": "utility",
+      "componentPath": "src/components/crossover/QuickLogStrip.tsx",
+      "version": "1.0.0",
+      "description": "Quick health metric logging interface",
+      "propsSchema": {}
+    },
+    "CT-UT-002": {
+      "name": "LabTestCard",
+      "category": "utility",
+      "componentPath": "src/components/LabTestCard.tsx",
+      "version": "1.0.0",
+      "description": "Lab test result display card",
+      "propsSchema": {}
+    }
+  }
+}

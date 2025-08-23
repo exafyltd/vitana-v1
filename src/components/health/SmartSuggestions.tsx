@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, ArrowRight, Sparkles, Target } from "lucide-react";
+import { withCardId } from "@/lib/withCardId";
 
 interface Suggestion {
   title: string;
@@ -19,7 +20,7 @@ interface SmartSuggestionsProps {
   maxItems?: number;
 }
 
-export default function SmartSuggestions({ 
+function SmartSuggestionsBase({ 
   suggestions, 
   title = "AI Insights & Suggestions",
   variant = "card",
@@ -162,3 +163,6 @@ export default function SmartSuggestions({
     </Card>
   );
 }
+
+const SmartSuggestions = withCardId(SmartSuggestionsBase, "CT-HS-001", "C-004");
+export default SmartSuggestions;

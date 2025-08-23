@@ -1,6 +1,7 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { TrendingUp, Flame } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { withCardId } from "@/lib/withCardId";
 
 interface StreakData {
   type: string;
@@ -13,7 +14,7 @@ interface ProgressStreaksCardProps {
   className?: string;
 }
 
-export function ProgressStreaksCard({ 
+function ProgressStreaksCardBase({ 
   streaks,
   className 
 }: ProgressStreaksCardProps) {
@@ -62,3 +63,5 @@ export function ProgressStreaksCard({
     />
   );
 }
+
+export const ProgressStreaksCard = withCardId(ProgressStreaksCardBase, "CT-CX-008", "C-007");

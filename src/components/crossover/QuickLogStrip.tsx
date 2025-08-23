@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Droplets, Apple, Dumbbell, Moon, Heart, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { withCardId } from "@/lib/withCardId";
 
 interface QuickLogStripProps {
   className?: string;
@@ -51,7 +52,7 @@ const quickLogButtons = [
   },
 ];
 
-export function QuickLogStrip({ className }: QuickLogStripProps) {
+function QuickLogStripBase({ className }: QuickLogStripProps) {
   const navigate = useNavigate();
 
   const handleQuickLog = (path: string) => {
@@ -103,3 +104,5 @@ export function QuickLogStrip({ className }: QuickLogStripProps) {
     </Card>
   );
 }
+
+export const QuickLogStrip = withCardId(QuickLogStripBase, "CT-UT-001", "C-005");
