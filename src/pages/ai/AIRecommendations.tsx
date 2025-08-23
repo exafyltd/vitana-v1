@@ -128,10 +128,7 @@ export default function AIRecommendations() {
               <RecommendationCard
                 title="Health Recommendations"
                 items={healthRecommendations}
-                type="health"
-                priority="high"
                 onItemClick={(item) => handleRecommendationClick(item, "C-010")}
-                showPriority={true}
                 maxItems={3}
               />
             </div>
@@ -141,9 +138,7 @@ export default function AIRecommendations() {
               <RecommendationCard
                 title="Lifestyle"
                 items={lifestyleSuggestions}
-                type="lifestyle"
-                priority="medium"
-                onItemClick={handleRecommendationClick}
+                onItemClick={(item) => handleRecommendationClick(item, "C-011")}
                 maxItems={3}
               />
             </div>
@@ -161,12 +156,9 @@ export default function AIRecommendations() {
                   id: "wellness-001",
                   title: "Comprehensive Wellness Assessment", 
                   provider: "VITANA Partners",
-                  originalPrice: 299,
-                  discountPrice: 199,
-                  discount: "33% OFF",
+                  price: 199,
                   description: "Personalized nutrition and fitness plan",
                   category: "wellness",
-                  validUntil: "2024-03-15",
                   type: "service" as const
                 }]}
                 variant="grid"
@@ -199,9 +191,7 @@ export default function AIRecommendations() {
               <RecommendationCard
                 title="Personalization Insights"
                 items={personalizationInsights}
-                type="insight"
-                priority="medium"
-                onItemClick={handleRecommendationClick}
+                onItemClick={(item) => handleRecommendationClick(item, "C-015")}
                 maxItems={2}
               />
             </div>
