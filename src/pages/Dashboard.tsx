@@ -50,11 +50,9 @@ export default function Dashboard() {
               className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
               onClick={() => navigate('/dashboard/actions')}
             >
-              <div className="flex flex-col items-center justify-center h-full space-y-2">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-200/50 to-pink-200/50 flex items-center justify-center shadow-md">
-                  <Plane className="w-6 h-6 text-red-400 transform rotate-45" />
-                </div>
-                <span className="text-sm font-medium text-foreground">Autopilot</span>
+              <div className="flex flex-col items-center justify-center h-full space-y-3">
+                <Plane className="w-10 h-10 text-red-400 transform -rotate-45" />
+                <span className="text-sm font-medium text-red-400">Autopilot</span>
               </div>
             </div>
             
