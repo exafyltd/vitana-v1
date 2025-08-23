@@ -15,6 +15,7 @@ import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MusicCard } from "@/components/crossover/MusicCard";
 import { VideoFeedCard } from "@/components/crossover/VideoFeedCard";
 import { useNavigate } from "react-router-dom";
+import { Plane } from "lucide-react";
 
 const dashboardSubItems = [
   { id: "overview", name: "Overview", path: "/dashboard" },
@@ -34,19 +35,32 @@ export default function Dashboard() {
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          {/* Header Section with Perfect Symmetry */}
-          <div className="flex flex-col lg:flex-row gap-6 mb-8">
-            {/* Shortened Header Bar - Welcome Message Only */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+          {/* Header Section with Perfect Symmetry - Three Cards Layout */}
+          <div className="flex flex-col lg:flex-row gap-4 mb-8">
+            {/* Shortened Header Bar - Welcome Message */}
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Hi Jovana, let´s make today a very special day! ✨</h1>
-                <p className="text-muted-foreground">Your wellness journey starts with today's opportunities and endless possibilities.</p>
+                <h1 className="text-2xl font-bold text-foreground mb-1">Hi Jovana, let´s make today a very special day! ✨</h1>
+                <p className="text-sm text-muted-foreground">Your wellness journey starts with today's opportunities.</p>
               </div>
             </div>
             
-            {/* Small Index Card - Only Circle with 742 */}
+            {/* Autopilot Card */}
             <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              onClick={() => navigate('/dashboard/actions')}
+            >
+              <div className="flex flex-col items-center justify-center h-full space-y-2">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-200/50 to-pink-200/50 flex items-center justify-center shadow-md">
+                  <Plane className="w-6 h-6 text-red-400 transform rotate-45" />
+                </div>
+                <span className="text-sm font-medium text-foreground">Autopilot</span>
+              </div>
+            </div>
+            
+            {/* Vitana Index Card - Circle with 742 */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
               onClick={() => navigate('/health-tracker/vitana-index')}
             >
               <div className="flex items-center justify-center h-full">
