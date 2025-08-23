@@ -125,9 +125,9 @@ export default function Companion() {
           </div>
 
           {/* 2-Column Layout with Chat + Sidebar */}
-          <div className="grid lg:grid-cols-3 gap-6 mb-6">
+          <div className="flex flex-col lg:flex-row gap-6 mb-6">
             {/* Chat Interface - Takes up 2/3 */}
-            <div className="lg:col-span-2">
+            <div className="flex-1 lg:flex-[2]">
               <HealthCoachChat
                 context="general"
                 variant="card"
@@ -138,7 +138,7 @@ export default function Companion() {
             </div>
 
             {/* Sidebar - Takes up 1/3 */}
-            <div className="lg:col-span-1 space-y-4">
+            <div className="lg:flex-1 space-y-4">
               {/* Vitana Index Mini Widget - C-022 */}
               <div data-template-id="CT-HS-002" data-system-card-id="C-022">
                 <VitanaIndexMini
@@ -167,8 +167,8 @@ export default function Companion() {
             </div>
           </div>
 
-          {/* Pinterest-style Masonry Grid for Additional Cards */}
-          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+        {/* Pinterest-style Masonry Grid for Additional Cards */}
+        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
             {/* AI Autopilot Log - C-022 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-022">
               <CrossoverCard
