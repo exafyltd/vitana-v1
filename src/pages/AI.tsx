@@ -9,7 +9,8 @@ import SmartSuggestions from "@/components/health/SmartSuggestions";
 import { MotivationCard } from "@/components/crossover/MotivationCard";
 import { LifestylePlanCard } from "@/components/crossover/LifestylePlanCard";
 import { CheckCircle, Play, Zap, Clock, MapPin, Thermometer } from "lucide-react";
-import { todayActions, memoryHighlights, contextPulse, inspiration } from "@/mocks/ai";
+import { todayActions, memoryHighlights, contextPulse, inspiration, indexMovement } from "@/mocks/ai";
+import { useNavigate } from "react-router-dom";
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -20,6 +21,8 @@ const aiSubItems = [
 ];
 
 export default function AI() {
+  const navigate = useNavigate();
+  
   const handleConfirmAll = () => {
     console.log("Analytics: cta_execute", {
       template_id: "CT-UI-001",
@@ -51,51 +54,35 @@ export default function AI() {
       <SEO title="AI Intelligence" description="Access AI-powered insights, recommendations, and personalized assistance" canonical={window.location.href} />
       <SubNavigation items={aiSubItems} />
       
-      <div className="max-w-7xl mx-auto px-4 lg:px-6 py-6">
-        {/* Sticky Header */}
-        <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 -mx-4 lg:-mx-6 px-4 lg:px-6 py-4 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div 
-                data-template-id="CT-VI-001" 
-                data-system-card-id="C-018"
-              >
-                <VitanaIndexMini 
-                  score={72} 
-                  trend="up" 
-                  variant="compact" 
-                  showDetails={false} 
-                />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          {/* Header Section with Perfect Symmetry */}
+          <div className="flex flex-col lg:flex-row gap-6 mb-8">
+            {/* Header Bar - Welcome Message */}
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">AI Intelligence Overview ✨</h1>
+                <p className="text-muted-foreground">Your personalized AI insights and recommendations for optimal wellness.</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
-              {/* Context chips */}
-              <div className="hidden md:flex items-center gap-2">
-                {contextChips.map((chip, index) => (
-                  <Badge key={index} variant="outline" className={`rounded-2xl ${chip.color} border-0 text-xs`}>
-                    <chip.icon className="w-3 h-3 mr-1" />
-                    {chip.label}
-                  </Badge>
-                ))}
+            {/* Small Index Card - Only Circle with Score */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              onClick={() => navigate('/health-tracker/vitana-index')}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-xl font-bold text-green-600">{indexMovement.vitanaIndex}</span>
+                </div>
               </div>
-              
-              <Button 
-                onClick={handleConfirmAll}
-                className="bg-calendar-primary hover:bg-calendar-primary/90 text-white rounded-2xl px-6"
-                size="sm"
-              >
-                <CheckCircle className="w-4 h-4 mr-2" />
-                Confirm All
-              </Button>
             </div>
           </div>
-        </div>
 
-        {/* Masonry Layout */}
-        <div className="grid lg:grid-cols-12 gap-4">
-          {/* Today's Priority Actions - C-001 */}
-          <div className="lg:col-span-4" data-template-id="CT-CX-003" data-system-card-id="C-001">
+          {/* Masonry Grid Layout */}
+          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            {/* Priority Actions - C-001 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-001">
             <CrossoverCard
               icon={CheckCircle}
               category="ai"
@@ -122,8 +109,8 @@ export default function AI() {
             />
           </div>
 
-          {/* Autopilot Status - C-002 */}
-          <div className="lg:col-span-4" data-template-id="CT-CX-003" data-system-card-id="C-002">
+            {/* Autopilot Status - C-002 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-002">
             <CrossoverCard
               icon={Zap}
               category="autopilot"
@@ -153,8 +140,8 @@ export default function AI() {
             />
           </div>
 
-          {/* Memory Highlights - C-003 */}
-          <div className="lg:col-span-4" data-template-id="CT-HS-001" data-system-card-id="C-003">
+            {/* Memory Highlights - C-003 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-003">
             <SmartSuggestions
               title="Memory Highlights"
               suggestions={memoryHighlights.map(highlight => ({
@@ -169,21 +156,23 @@ export default function AI() {
             />
           </div>
 
-          {/* Context Pulse - C-004 */}
-          <div className="lg:col-span-6" data-template-id="CT-CX-006" data-system-card-id="C-004">
+            {/* Context Pulse - C-004 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-006" data-system-card-id="C-004">
             <LifestylePlanCard
               type="mental"
             />
           </div>
 
-          {/* Inspiration Spark - C-005 */}
-          <div className="lg:col-span-6" data-template-id="CT-CX-011" data-system-card-id="C-005">
+            {/* Inspiration Spark - C-005 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-011" data-system-card-id="C-005">
             <MotivationCard
               quote={inspiration.title}
               author={inspiration.category}
               hasVideo={true}
             />
           </div>
+          </div>
+
         </div>
       </div>
     </AppLayout>

@@ -6,6 +6,7 @@ import { EventCard } from "@/components/templates/EventCard";
 import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
 import { Heart, Users, Activity, Calendar } from "lucide-react";
 import { summary } from "@/mocks/ai";
+import { useNavigate } from "react-router-dom";
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -16,6 +17,8 @@ const aiSubItems = [
 ];
 
 export default function DailySummary() {
+  const navigate = useNavigate();
+  
   const handleSummaryClick = (cardId: string) => {
     console.log("Analytics: card_click", {
       template_id: "CT-CAL-001",
@@ -48,17 +51,41 @@ export default function DailySummary() {
       <SEO title="Daily Summary | AI Intelligence" description="AI-generated daily wellness summary" canonical={window.location.href} />
       <SubNavigation items={aiSubItems} />
       
-      <div className="max-w-7xl mx-auto px-4 lg:px-6 py-6">
-        {/* Recap Timeline - C-016 */}
-        <div className="mb-8" data-template-id="CT-CX-005" data-system-card-id="C-016">
-          <SmartCalendarCard
-            events={summary.recap.map((item, index) => ({
-              title: item,
-              time: `${9 + index * 2}:00 AM`,
-              type: "ai-suggestion" as const
-            }))}
-          />
-        </div>
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          {/* Header Section with Perfect Symmetry */}
+          <div className="flex flex-col lg:flex-row gap-6 mb-8">
+            {/* Header Bar - Welcome Message */}
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Daily Summary ✨</h1>
+                <p className="text-muted-foreground">Your comprehensive daily wellness recap and tomorrow's plan.</p>
+              </div>
+            </div>
+            
+            {/* Small Index Card - Only Circle with Score */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              onClick={() => navigate('/health-tracker/vitana-index')}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-xl font-bold text-green-600">{summary.vitanaScore.today}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recap Timeline - C-016 */}
+          <div className="mb-8" data-template-id="CT-CX-005" data-system-card-id="C-016">
+            <SmartCalendarCard
+              events={summary.recap.map((item, index) => ({
+                title: item,
+                time: `${9 + index * 2}:00 AM`,
+                type: "ai-suggestion" as const
+              }))}
+            />
+          </div>
 
         {/* Metrics Row - 3 Equal Tiles */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -168,6 +195,8 @@ export default function DailySummary() {
             onSendPlan={handleSendPlan}
             maxItems={3}
           />
+          </div>
+
         </div>
       </div>
     </AppLayout>
