@@ -5,6 +5,8 @@ import { RecommendationCard } from "@/components/templates/RecommendationCard";
 import { OfferCard } from "@/components/templates/OfferCard";
 import LabTestCard from "@/components/LabTestCard";
 import { recommendations } from "@/mocks/ai";
+import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard";
+import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
 import { useNavigate } from "react-router-dom";
 
 const aiSubItems = [
@@ -28,14 +30,61 @@ export default function AIRecommendations() {
     });
   };
 
-  const handleViewAll = (type: string) => {
+  const handleOfferClaim = (cardId: string) => {
     console.log("Analytics: cta_execute", {
-      template_id: "CT-DO-002", 
-      system_card_id: type,
+      template_id: "CT-WS-001",
+      system_card_id: cardId,
       screen_route: "/ai/recommendations",
-      action: "view_all"
+      action: "claim_offer"
     });
   };
+
+  const handleLabTest = (cardId: string) => {
+    console.log("Analytics: cta_execute", {
+      template_id: "CT-LT-001",
+      system_card_id: cardId,
+      screen_route: "/ai/recommendations",
+      action: "order_lab_test"
+    });
+  };
+
+  // Organize recommendations by category
+  const healthRecommendations = recommendations.healthTodos.map((item, index) => ({
+    id: `health-${index}`,
+    title: item.title,
+    description: `ETA: ${item.etaMins} minutes`,
+    priority: item.priority as "low" | "medium" | "high",
+    category: "health",
+    action: "Complete Task"
+  }));
+
+  const lifestyleSuggestions = recommendations.content.slice(0, 3).map((item, index) => ({
+    id: `lifestyle-${index}`,
+    title: item.title,
+    description: `${item.type} content - ${item.duration}`,
+    priority: "medium" as const,
+    category: "lifestyle",
+    action: "Watch Now"
+  }));
+
+  const personalizationInsights = [
+    {
+      id: "insight-1",
+      title: "Sleep Pattern Optimization",
+      description: "Your optimal bedtime is 10:30 PM based on energy patterns",
+      priority: "high" as const,
+      category: "insight",
+      action: "Apply Insight"
+    },
+    {
+      id: "insight-2",
+      title: "Nutrition Timing",
+      description: "Post-workout nutrition window analysis shows 20% improvement potential",
+      priority: "medium" as const,
+      category: "insight", 
+      action: "Learn More"
+    }
+  ];
 
   return (
     <AppLayout>
@@ -67,136 +116,94 @@ export default function AIRecommendations() {
             </div>
           </div>
 
-          {/* Hero Strip - Health To-Do */}
-          <div className="mb-8" data-template-id="CT-DO-002" data-system-card-id="C-011">
-            <RecommendationCard
-              title="Health To-Do List"
-              items={recommendations.healthTodos}
-              variant="horizontal"
-              onItemClick={(item) => handleRecommendationClick(item, "C-011")}
-              onViewAll={() => handleViewAll("C-011")}
-            />
-          </div>
-
-          {/* Grid Layout - 12 Column Responsive */}
-          <div className="grid lg:grid-cols-12 gap-6">
-            {/* Meetup Recommendations - C-012 */}
-            <div className="lg:col-span-6" data-template-id="CT-DO-003" data-system-card-id="C-012">
-              <div className="bg-gradient-to-br from-calendar-primary/5 to-calendar-accent/5 border border-calendar-primary/20 rounded-2xl p-6">
-                <h3 className="text-sm font-semibold tracking-wide text-foreground mb-4">Social Meetups</h3>
-                <div className="space-y-4">
-                  {recommendations.meetups.map((meetup) => (
-                    <div 
-                      key={meetup.id}
-                      className="p-4 bg-background/80 backdrop-blur-sm rounded-lg border cursor-pointer hover:shadow-md hover:border-calendar-primary/30 transition-all group"
-                      onClick={() => handleRecommendationClick(meetup, "C-012")}
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-sm text-foreground group-hover:text-calendar-primary transition-colors">
-                          {meetup.title}
-                        </h4>
-                        <span className="text-xs text-calendar-primary font-medium">{meetup.when}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground mb-2">{meetup.with}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground">{meetup.location}</span>
-                        <span className="text-xs text-calendar-success">{meetup.spots} spots left</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          {/* Pinterest-style Masonry Grid Layout */}
+          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            {/* Progress Tracking - C-012 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-012">
+              <ProgressStreaksCard />
             </div>
 
-            {/* Content Recommendations - C-013 */}
-            <div className="lg:col-span-6" data-template-id="CT-VC-001" data-system-card-id="C-013">
-              <OfferCard
-                title="Content Feed Picks"
-                offers={recommendations.content.map(item => ({
-                  id: item.id,
-                  title: item.title,
-                  duration: item.duration,
-                  category: item.type,
-                  imageUrl: item.mediaThumbUrl,
-                  rating: item.rating,
-                  type: "content" as const
-                }))}
-                variant="list"
-                showPricing={false}
-                onOfferClick={(offer) => handleRecommendationClick(offer, "C-013")}
+            {/* Health Recommendations - C-010 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-010">
+              <RecommendationCard
+                title="Health Recommendations"
+                items={healthRecommendations}
+                type="health"
+                priority="high"
+                onItemClick={(item) => handleRecommendationClick(item, "C-010")}
+                showPriority={true}
                 maxItems={3}
               />
             </div>
 
-            {/* Service Recommendations - C-014 */}
-            <div className="lg:col-span-6" data-template-id="CT-DO-001" data-system-card-id="C-014">
-              <OfferCard
-                title="Service Recommendations"
-                offers={recommendations.services.map(service => ({
-                  id: service.item_id,
-                  title: service.title,
-                  provider: service.provider,
-                  price: service.price,
-                  rating: service.rating,
-                  availability: service.availability,
-                  type: "service" as const
-                }))}
-                variant="list"
-                showPricing={true}
-                onOfferClick={(offer) => handleRecommendationClick(offer, "C-014")}
-                maxItems={2}
+            {/* Lifestyle Suggestions - C-011 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-011">
+              <RecommendationCard
+                title="Lifestyle"
+                items={lifestyleSuggestions}
+                type="lifestyle"
+                priority="medium"
+                onItemClick={handleRecommendationClick}
+                maxItems={3}
               />
             </div>
 
-            {/* Lab Test Recommendations */}
-            <div className="lg:col-span-6" data-template-id="CT-LT-001" data-system-card-id="C-014">
-              <div className="bg-gradient-to-br from-calendar-primary/5 to-calendar-accent/5 border border-calendar-primary/20 rounded-2xl p-6">
-                <h3 className="text-sm font-semibold tracking-wide text-foreground mb-4">Lab Test Recommendations</h3>
-                <div className="space-y-3">
-                  {recommendations.labs.map((lab) => (
-                    <LabTestCard
-                      key={lab.item_id}
-                      labTest={{
-                        id: lab.item_id,
-                        name: lab.title,
-                        description: `Professional ${lab.title.toLowerCase()} testing`,
-                        category: "blood_markers",
-                        biomarkers: ["Primary Markers", "Secondary Indicators"],
-                        price: lab.price,
-                        turnaround_days: parseInt(lab.turnaround.split('-')[0]) || 2,
-                        sample_type: "Blood",
-                        provider_name: lab.provider
-                      }}
-                      onOrder={() => handleRecommendationClick(lab, "C-014")}
-                    />
-                  ))}
-                </div>
-              </div>
+            {/* Smart Calendar - matching Dashboard sizing */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-016">
+              <SmartCalendarCard />
             </div>
 
-            {/* AI Challenge - C-015 */}
-            <div className="lg:col-span-12 mb-6" data-template-id="CT-DO-002" data-system-card-id="C-015">
-              <div className="bg-gradient-to-r from-calendar-primary/10 to-calendar-accent/10 border border-calendar-primary/30 rounded-2xl p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground mb-2">Weekly AI Challenge: Hydration Mastery</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Join 2,847 others in optimizing hydration patterns this week. AI will track your progress and adjust goals dynamically.
-                    </p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <span>🎯 Goal: 8 glasses daily</span>
-                      <span>⏱️ Duration: 7 days</span>
-                      <span>🏆 Reward: Wellness insights unlock</span>
-                    </div>
-                  </div>
-                  <button 
-                    className="bg-calendar-primary hover:bg-calendar-primary/90 text-white px-6 py-3 rounded-2xl font-medium transition-colors"
-                    onClick={() => handleRecommendationClick({ id: "challenge-hydration" }, "C-015")}
-                  >
-                    Join Challenge
-                  </button>
-                </div>
-              </div>
+            {/* Wellness Services - C-013 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-WS-001" data-system-card-id="C-013">
+              <OfferCard
+                title="Wellness Services"
+                offers={[{
+                  id: "wellness-001",
+                  title: "Comprehensive Wellness Assessment", 
+                  provider: "VITANA Partners",
+                  originalPrice: 299,
+                  discountPrice: 199,
+                  discount: "33% OFF",
+                  description: "Personalized nutrition and fitness plan",
+                  category: "wellness",
+                  validUntil: "2024-03-15",
+                  type: "service" as const
+                }]}
+                variant="grid"
+                showPricing={true}
+                onOfferClick={() => handleOfferClaim("C-013")}
+                maxItems={1}
+              />
+            </div>
+
+            {/* Lab Test Recommendations - C-014 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-LT-001" data-system-card-id="C-014">
+              <LabTestCard
+                labTest={{
+                  id: "lab-001",
+                  name: "Comprehensive Health Panel",
+                  description: "Complete biomarker analysis",
+                  category: "blood_markers",
+                  biomarkers: ["Cholesterol", "Glucose", "Vitamins"],
+                  price: 89,
+                  turnaround_days: 2,
+                  sample_type: "Blood",
+                  provider_name: "LabCorp"
+                }}
+                onOrder={() => handleLabTest("C-014")}
+              />
+            </div>
+
+            {/* Personalization Insights - C-015 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-015">
+              <RecommendationCard
+                title="Personalization Insights"
+                items={personalizationInsights}
+                type="insight"
+                priority="medium"
+                onItemClick={handleRecommendationClick}
+                maxItems={2}
+              />
             </div>
           </div>
 

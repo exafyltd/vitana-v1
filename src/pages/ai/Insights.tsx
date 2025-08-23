@@ -2,6 +2,8 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard";
+import { StandardCard } from "@/components/templates/StandardCard";
+import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
 import { TrendingUp, Users, Target, Brain, BarChart3 } from "lucide-react";
 import { lifestylePatterns, indexMovement, socialEngagement, productivity, correlations } from "@/mocks/ai";
@@ -56,158 +58,145 @@ export default function Insights() {
             </div>
           </div>
 
-          {/* Hero Strip - Progress Streaks with Index Movement */}
-          <div className="mb-8" data-template-id="CT-CX-008" data-system-card-id="C-007">
-            <ProgressStreaksCard
-              streaks={[
-                { type: "Meditation", count: 8, emoji: "🧘" },
-                { type: "Hydration", count: 12, emoji: "💧" },
-                { type: "Exercise", count: 5, emoji: "🏃" }
-              ]}
-            />
-          </div>
+          {/* Pinterest-style Masonry Grid Layout */}
+          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            {/* Progress Tracking - C-010 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-010">
+              <ProgressStreaksCard
+                streaks={[
+                  { type: "Exercise", count: 12, emoji: "🏃" },
+                  { type: "Meditation", count: 8, emoji: "🧘" },
+                  { type: "Hydration", count: 15, emoji: "💧" }
+                ]}
+              />
+            </div>
 
-          {/* Insights Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Lifestyle Patterns - C-006 */}
-            <div data-template-id="CT-HS-001" data-system-card-id="C-006">
+            {/* Pattern Recognition - C-006 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-006">
+              <StandardCard
+                title="Pattern Recognition"
+                subtitle="AI identifies patterns in your wellness data"
+                content="Your energy levels peak at 10 AM and 3 PM consistently. Consider scheduling important tasks during these windows for optimal performance."
+                variant="default"
+                onClick={() => handleInsightClick("C-006")}
+              />
+            </div>
+
+            {/* Behavioral Trends - C-007 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-007">
+              <StandardCard
+                title="Behavioral Trends"
+                subtitle="Weekly trends in your wellness habits"
+                content="Your hydration improves 40% on weekdays vs weekends. Weekend reminder system could help maintain consistency."
+                variant="default"
+                onClick={() => handleInsightClick("C-007")}
+              />
+            </div>
+
+            {/* Correlation Analysis - C-008 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-008">
+              <StandardCard
+                title="Correlation Analysis"
+                subtitle="How different factors affect your wellbeing"
+                content="Sleep quality directly correlates with next-day mood (85% accuracy). Earlier bedtime might improve overall wellness."
+                variant="default"
+                onClick={() => handleInsightClick("C-008")}
+              />
+            </div>
+
+            {/* Prediction Models - C-009 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-009">
+              <StandardCard
+                title="Prediction Models"
+                subtitle="AI forecasts based on your patterns"
+                content="Based on current trends, you're 78% likely to reach your monthly fitness goal. Increase by 2 sessions to guarantee success."
+                variant="default"
+                onClick={() => handleInsightClick("C-009")}
+              />
+            </div>
+
+            {/* Smart Calendar - matching Dashboard sizing */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-011">
+              <SmartCalendarCard />
+            </div>
+
+            {/* Lifestyle Patterns - C-012 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-012">
               <SmartSuggestions
-                title="Lifestyle Patterns"
                 suggestions={lifestylePatterns.map(pattern => ({
                   title: pattern,
                   description: "Detected improvement pattern",
                   type: "insight" as const,
                   priority: "medium" as const,
-                  action: "See Details",
-                  onAction: () => handleInsightClick("C-006")
+                  action: "See Details"
                 }))}
                 variant="card"
                 maxItems={3}
               />
             </div>
 
-            {/* Health Index Movement - C-007 */}
-            <div data-template-id="CT-HS-001" data-system-card-id="C-007">
+            {/* Health Index Movement - C-013 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-013">
               <SmartSuggestions
-                title="Health Index Movement"
                 suggestions={[
                   {
                     title: `Vitana Index: ${indexMovement.vitanaIndex} (+${indexMovement.delta})`,
                     description: "Significant improvement this week",
                     type: "insight" as const,
                     priority: "high" as const,
-                    action: "View Breakdown",
-                    onAction: () => handleInsightClick("C-007")
+                    action: "View Breakdown"
                   },
                   {
                     title: `Sleep Quality: ${indexMovement.pillars.sleep.score} (+${indexMovement.pillars.sleep.delta})`,
                     description: "Best improvement driver",
                     type: "insight" as const,
                     priority: "medium" as const,
-                    action: "Optimize",
-                    onAction: () => handleInsightClick("C-007")
-                  },
-                  {
-                    title: `Exercise Consistency: ${indexMovement.pillars.exercise.score} (+${indexMovement.pillars.exercise.delta})`,
-                    description: "Strong momentum building",
-                    type: "insight" as const,
-                    priority: "medium" as const,
-                    action: "Keep Going",
-                    onAction: () => handleInsightClick("C-007")
+                    action: "Optimize"
                   }
                 ]}
                 variant="card"
-                maxItems={3}
+                maxItems={2}
               />
             </div>
 
-            {/* Social Engagement - C-008 */}
-            <div data-template-id="CT-HS-001" data-system-card-id="C-008">
+            {/* Social Engagement - C-014 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-014">
               <SmartSuggestions
-                title="Social Engagement"
                 suggestions={[
                   {
                     title: `${socialEngagement.newFollowers} new followers this week`,
                     description: "Growing community connection",
                     type: "insight" as const,
                     priority: "low" as const,
-                    action: "Connect",
-                    onAction: () => handleInsightClick("C-008")
+                    action: "Connect"
                   },
                   {
                     title: `Joined ${socialEngagement.groupsJoined} new wellness groups`,
                     description: "Expanding support network",
                     type: "insight" as const,
                     priority: "medium" as const,
-                    action: "Explore Groups",
-                    onAction: () => handleInsightClick("C-008")
-                  },
-                  {
-                    title: `${socialEngagement.messagesReceived} messages received`,
-                    description: "Active community participation",
-                    type: "insight" as const,
-                    priority: "low" as const,
-                    action: "Reply",
-                    onAction: () => handleInsightClick("C-008")
+                    action: "Explore Groups"
                   }
                 ]}
                 variant="card"
-                maxItems={3}
+                maxItems={2}
               />
             </div>
 
-            {/* Productivity Trends - C-009 */}
-            <div data-template-id="CT-HS-001" data-system-card-id="C-009">
+            {/* Smart Correlations - C-015 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-015">
               <SmartSuggestions
-                title="Productivity Trends"
-                suggestions={[
-                  {
-                    title: `${productivity.tasksDone}/${productivity.tasksPlanned} wellness tasks completed`,
-                    description: "Strong completion rate this week",
-                    type: "insight" as const,
-                    priority: "high" as const,
-                    action: "Review Tasks",
-                    onAction: () => handleInsightClick("C-009")
-                  },
-                  {
-                    title: `${productivity.focusMinutes} minutes in deep focus`,
-                    description: "Excellent concentration sessions",
-                    type: "insight" as const,
-                    priority: "medium" as const,
-                    action: "Schedule More",
-                    onAction: () => handleInsightClick("C-009")
-                  },
-                  {
-                    title: `${productivity.skipped} tasks postponed`,
-                    description: "Consider optimizing schedule",
-                    type: "recommendation" as const,
-                    priority: "medium" as const,
-                    action: "Optimize",
-                    onAction: () => handleInsightClick("C-009")
-                  }
-                ]}
-                variant="card"
-                maxItems={3}
-              />
-            </div>
-
-            {/* Smart Correlations - C-010 */}
-            <div className="md:col-span-2 lg:col-span-1" data-template-id="CT-HS-001" data-system-card-id="C-010">
-              <SmartSuggestions
-                title="Smart Correlations"
                 suggestions={correlations.map(correlation => ({
                   title: correlation,
                   description: "AI-discovered behavioral pattern",
                   type: "insight" as const,
                   priority: "high" as const,
-                  action: "Learn More",
-                  onAction: () => handleInsightClick("C-010")
+                  action: "Learn More"
                 }))}
                 variant="card"
-                maxItems={5}
+                maxItems={3}
               />
             </div>
-
           </div>
 
         </div>

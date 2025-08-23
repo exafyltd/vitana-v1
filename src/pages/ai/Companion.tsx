@@ -7,6 +7,12 @@ import { CrossoverCard } from "@/components/crossover/CrossoverCard";
 import { Badge } from "@/components/ui/badge";
 import { Bot, Clock, Zap, Brain, Lightbulb } from "lucide-react";
 import { chat } from "@/mocks/ai";
+import VitanaIndexMini from "@/components/health/VitanaIndexMini";
+import AutopilotWidget from "@/components/health/AutopilotWidget";
+import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard";
+import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
+import { LifestylePlanCard } from "@/components/crossover/LifestylePlanCard";
+import { MotivationCard } from "@/components/crossover/MotivationCard";
 import { useNavigate } from "react-router-dom";
 
 const aiSubItems = [
@@ -38,12 +44,43 @@ export default function Companion() {
     });
   };
 
-  const handleMemoryClick = (memoryType: string) => {
-    console.log("Analytics: card_click", {
-      template_id: "CT-HS-001", 
-      system_card_id: "C-023",
+  // Mock companion data
+  const companionData = {
+    vitanaIndex: 742,
+    suggestions: [
+      "Take a 5-minute breathing break",
+      "Drink a glass of water",
+      "Check your posture",
+      "Plan tomorrow's workout"
+    ]
+  };
+
+  const chatMessages = chat.messages;
+  const suggestions = chat.suggestionChips;
+  
+  const smartSuggestions = companionData.suggestions.map((suggestion, index) => ({
+    title: suggestion,
+    description: "AI-generated wellness suggestion",
+    type: "action" as const,
+    priority: "medium" as const,
+    action: "Do Now"
+  }));
+
+  const handleSendMessage = (message: string) => {
+    console.log("Analytics: message_sent", {
+      template_id: "CT-HS-003",
+      system_card_id: "C-021",
       screen_route: "/ai/companion",
-      action: memoryType
+      message_length: message.length
+    });
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    console.log("Analytics: suggestion_clicked", {
+      template_id: "CT-HS-003", 
+      system_card_id: "C-021",
+      screen_route: "/ai/companion",
+      suggestion
     });
   };
 

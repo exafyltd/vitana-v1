@@ -76,125 +76,125 @@ export default function DailySummary() {
             </div>
           </div>
 
-          {/* Recap Timeline - C-016 */}
-          <div className="mb-8" data-template-id="CT-CX-005" data-system-card-id="C-016">
-            <SmartCalendarCard
-              events={summary.recap.map((item, index) => ({
-                title: item,
-                time: `${9 + index * 2}:00 AM`,
-                type: "ai-suggestion" as const
-              }))}
-            />
-          </div>
+          {/* Pinterest-style Masonry Grid Layout */}
+          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            {/* Smart Calendar - Recap Timeline - C-016 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-016">
+              <SmartCalendarCard
+                events={summary.recap.map((item, index) => ({
+                  title: item,
+                  time: `${9 + index * 2}:00 AM`,
+                  type: "ai-suggestion" as const
+                }))}
+              />
+            </div>
 
-        {/* Metrics Row - 3 Equal Tiles */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {/* Mood & Energy - C-017 */}
-          <div data-template-id="CT-CAL-001" data-system-card-id="C-017">
-            <StatCard
-              title="Mood & Energy"
-              icon={Heart}
-              stats={[
-                {
-                  label: "Current Mood",
-                  value: summary.moodEnergy.mood,
-                  trend: "stable"
-                },
-                {
-                  label: "Energy Level", 
-                  value: summary.moodEnergy.energy,
-                  trend: "up",
-                  delta: "+15%"
-                },
-                {
-                  label: "Stress Level",
-                  value: summary.moodEnergy.stress, 
-                  trend: "down",
-                  delta: "-23%"
-                }
-              ]}
-              variant="detailed"
-              onClick={() => handleSummaryClick("C-017")}
-            />
-          </div>
+            {/* Mood & Energy - C-017 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CAL-001" data-system-card-id="C-017">
+              <StatCard
+                title="Mood & Energy"
+                icon={Heart}
+                stats={[
+                  {
+                    label: "Current Mood",
+                    value: summary.moodEnergy.mood,
+                    trend: "stable"
+                  },
+                  {
+                    label: "Energy Level", 
+                    value: summary.moodEnergy.energy,
+                    trend: "up",
+                    delta: "+15%"
+                  },
+                  {
+                    label: "Stress Level",
+                    value: summary.moodEnergy.stress, 
+                    trend: "down",
+                    delta: "-23%"
+                  }
+                ]}
+                variant="detailed"
+                onClick={() => handleSummaryClick("C-017")}
+              />
+            </div>
 
-          {/* Health Score Snapshot - C-018 */}
-          <div data-template-id="CT-CAL-001" data-system-card-id="C-018">
-            <StatCard
-              title="Health Score Snapshot"
-              icon={Activity}
-              stats={[
-                {
-                  label: "Vitana Index",
-                  value: summary.vitanaScore.today,
-                  unit: "/100",
-                  trend: "up",
-                  delta: `+${summary.vitanaScore.today - summary.vitanaScore.yesterday}`,
-                  progress: summary.vitanaScore.today
-                },
-                {
-                  label: "Top Pillar",
-                  value: "Hydration",
-                  unit: `${summary.vitanaScore.pillars.hydration}/100`
-                },
-                {
-                  label: "Focus Area", 
-                  value: "Exercise",
-                  unit: `${summary.vitanaScore.pillars.exercise}/100`
-                }
-              ]}
-              variant="detailed"
-              onClick={() => handleSummaryClick("C-018")}
-            />
-          </div>
+            {/* Health Score Snapshot - C-018 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CAL-001" data-system-card-id="C-018">
+              <StatCard
+                title="Health Score Snapshot"
+                icon={Activity}
+                stats={[
+                  {
+                    label: "Vitana Index",
+                    value: summary.vitanaScore.today,
+                    unit: "/100",
+                    trend: "up",
+                    delta: `+${summary.vitanaScore.today - summary.vitanaScore.yesterday}`,
+                    progress: summary.vitanaScore.today
+                  },
+                  {
+                    label: "Top Pillar",
+                    value: "Hydration",
+                    unit: `${summary.vitanaScore.pillars.hydration}/100`
+                  },
+                  {
+                    label: "Focus Area", 
+                    value: "Exercise",
+                    unit: `${summary.vitanaScore.pillars.exercise}/100`
+                  }
+                ]}
+                variant="detailed"
+                onClick={() => handleSummaryClick("C-018")}
+              />
+            </div>
 
-          {/* Social Pulse - C-019 */}
-          <div data-template-id="CT-CAL-001" data-system-card-id="C-019">
-            <StatCard
-              title="Social Pulse"
-              icon={Users}
-              stats={[
-                {
-                  label: "Messages",
-                  value: summary.socialPulse.messages,
-                  trend: "up"
-                },
-                {
-                  label: "Mentions",
-                  value: summary.socialPulse.mentions,
-                  trend: "stable"
-                },
-                {
-                  label: "New Connections", 
-                  value: summary.socialPulse.newConnections,
-                  trend: "up",
-                  delta: "+2"
-                }
-              ]}
-              variant="compact"
-              onClick={() => handleSummaryClick("C-019")}
-            />
-          </div>
-        </div>
+            {/* Social Pulse - C-019 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CAL-001" data-system-card-id="C-019">
+              <StatCard
+                title="Social Pulse"
+                icon={Users}
+                stats={[
+                  {
+                    label: "Messages",
+                    value: summary.socialPulse.messages,
+                    trend: "up"
+                  },
+                  {
+                    label: "Mentions",
+                    value: summary.socialPulse.mentions,
+                    trend: "stable"
+                  },
+                  {
+                    label: "New Connections", 
+                    value: summary.socialPulse.newConnections,
+                    trend: "up",
+                    delta: "+2"
+                  }
+                ]}
+                variant="compact"
+                onClick={() => handleSummaryClick("C-019")}
+              />
+            </div>
 
-        {/* Tomorrow Section - C-020 */}
-        <div data-template-id="CT-CAL-002" data-system-card-id="C-020">
-          <EventCard
-            title="Tomorrow's Wellness Plan"
-            events={summary.tomorrow.map((task) => ({
-              id: `tomorrow-${task.time}`,
-              title: task.title,
-              time: task.time,
-              type: task.type,
-              status: "upcoming" as const,
-              description: `AI-scheduled ${task.type} optimization task`
-            }))}
-            variant="timeline"
-            showActions={true}
-            onEventClick={handleEventClick}
-            onSendPlan={handleSendPlan}
-            maxItems={3}
-          />
+            {/* Tomorrow Section - C-020 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CAL-002" data-system-card-id="C-020">
+              <EventCard
+                title="Tomorrow's Wellness Plan"
+                events={summary.tomorrow.map((task) => ({
+                  id: `tomorrow-${task.time}`,
+                  title: task.title,
+                  time: task.time,
+                  type: task.type,
+                  status: "upcoming" as const,
+                  description: `AI-scheduled ${task.type} optimization task`
+                }))}
+                variant="timeline"
+                showActions={true}
+                onEventClick={handleEventClick}
+                onSendPlan={handleSendPlan}
+                maxItems={3}
+              />
+            </div>
           </div>
 
         </div>

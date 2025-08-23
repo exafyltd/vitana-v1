@@ -8,6 +8,8 @@ import { CrossoverCard } from "@/components/crossover/CrossoverCard";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
 import { MotivationCard } from "@/components/crossover/MotivationCard";
 import { LifestylePlanCard } from "@/components/crossover/LifestylePlanCard";
+import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
+import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard";
 import { CheckCircle, Play, Zap, Clock, MapPin, Thermometer } from "lucide-react";
 import { todayActions, memoryHighlights, contextPulse, inspiration, indexMovement } from "@/mocks/ai";
 import { useNavigate } from "react-router-dom";
@@ -79,98 +81,103 @@ export default function AI() {
             </div>
           </div>
 
-          {/* Masonry Grid Layout */}
+          {/* Pinterest-style Masonry Grid Layout */}
           <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
             {/* Priority Actions - C-001 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-001">
-            <CrossoverCard
-              icon={CheckCircle}
-              category="ai"
-              title="Today's Priority Actions"
-              subtitle="AI-curated tasks for maximum wellness impact"
-              size="md"
-              buttonText="View All Tasks"
-              onButtonClick={() => handleActionClick('view-all')}
-              content={
-                <div className="space-y-3">
-                  {todayActions.slice(0, 3).map((action) => (
-                    <div key={action.id} className="p-3 bg-background/50 rounded-lg border">
-                      <div className="flex items-start justify-between mb-2">
-                        <h4 className="text-sm font-medium text-foreground">{action.label}</h4>
-                        <Badge variant={action.priority === 'high' ? 'destructive' : 'default'} className="text-xs">
-                          {action.etaMins}m
-                        </Badge>
+              <CrossoverCard
+                icon={CheckCircle}
+                category="ai"
+                title="Today's Priority Actions"
+                subtitle="AI-curated tasks for maximum wellness impact"
+                buttonText="View All Tasks"
+                onButtonClick={() => handleActionClick('view-all')}
+                content={
+                  <div className="space-y-2">
+                    {todayActions.slice(0, 3).map((action) => (
+                      <div key={action.id} className="p-2 bg-background/50 rounded-lg border">
+                        <div className="flex items-start justify-between mb-1">
+                          <h4 className="text-xs font-medium text-foreground">{action.label}</h4>
+                          <Badge variant={action.priority === 'high' ? 'destructive' : 'default'} className="text-xs">
+                            {action.etaMins}m
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{action.reason}</p>
                       </div>
-                      <p className="text-xs text-muted-foreground">{action.reason}</p>
-                    </div>
-                  ))}
-                </div>
-              }
-            />
-          </div>
+                    ))}
+                  </div>
+                }
+              />
+            </div>
 
             {/* Autopilot Status - C-002 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-003" data-system-card-id="C-002">
-            <CrossoverCard
-              icon={Zap}
-              category="autopilot"
-              title="Autopilot Status"
-              subtitle="AI is actively managing your wellness"
-              size="md"
-              buttonText="View Autopilot Log"
-              onButtonClick={() => handleActionClick('autopilot-log')}
-              content={
-                <div className="space-y-3">
-                  <div className="p-3 bg-background/50 rounded-lg border">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-foreground">Rescheduled meeting</span>
-                      <span className="text-xs text-muted-foreground">2h ago</span>
+              <CrossoverCard
+                icon={Zap}
+                category="autopilot"
+                title="Autopilot Status"
+                subtitle="AI is actively managing your wellness"
+                buttonText="View Autopilot Log"
+                onButtonClick={() => handleActionClick('autopilot-log')}
+                content={
+                  <div className="space-y-2">
+                    <div className="p-2 bg-background/50 rounded-lg border">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-medium text-foreground">Rescheduled meeting</span>
+                        <span className="text-xs text-muted-foreground">2h ago</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Protected focus time for wellness tasks</p>
                     </div>
-                    <p className="text-xs text-muted-foreground">Protected focus time for wellness tasks</p>
-                  </div>
-                  <div className="p-3 bg-background/50 rounded-lg border">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-foreground">Hydration reminder sent</span>
-                      <span className="text-xs text-muted-foreground">45m ago</span>
+                    <div className="p-2 bg-background/50 rounded-lg border">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-medium text-foreground">Hydration reminder sent</span>
+                        <span className="text-xs text-muted-foreground">45m ago</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Behind on daily water intake goal</p>
                     </div>
-                    <p className="text-xs text-muted-foreground">Behind on daily water intake goal</p>
                   </div>
-                </div>
-              }
-            />
-          </div>
+                }
+              />
+            </div>
 
             {/* Memory Highlights - C-003 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-HS-001" data-system-card-id="C-003">
-            <SmartSuggestions
-              title="Memory Highlights"
-              suggestions={memoryHighlights.map(highlight => ({
-                title: highlight.title,
-                description: highlight.body,
-                type: "insight" as const,
-                priority: "medium" as const,
-                action: "See Details"
-              }))}
-              variant="card"
-              maxItems={3}
-            />
-          </div>
+              <SmartSuggestions
+                suggestions={memoryHighlights.map(highlight => ({
+                  title: highlight.title,
+                  description: highlight.body,
+                  type: "insight" as const,
+                  priority: "medium" as const,
+                  action: "See Details"
+                }))}
+                variant="card"
+                maxItems={3}
+              />
+            </div>
+
+            {/* Smart Calendar - C-006 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-006">
+              <SmartCalendarCard />
+            </div>
+
+            {/* Progress Tracking - C-007 */}
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-007">
+              <ProgressStreaksCard />
+            </div>
 
             {/* Context Pulse - C-004 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-006" data-system-card-id="C-004">
-            <LifestylePlanCard
-              type="mental"
-            />
-          </div>
+              <LifestylePlanCard type="mental" />
+            </div>
 
             {/* Inspiration Spark - C-005 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-011" data-system-card-id="C-005">
-            <MotivationCard
-              quote={inspiration.title}
-              author={inspiration.category}
-              hasVideo={true}
-            />
-          </div>
+              <MotivationCard
+                quote={inspiration.title}
+                author={inspiration.category}
+                hasVideo={true}
+              />
+            </div>
           </div>
 
         </div>
