@@ -1,0 +1,767 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-08-23",
+  "templates": {
+    "CT-CX-001": {
+      "name": "CrossoverCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/CrossoverCard.tsx",
+      "version": "v1",
+      "description": "Base crossover card template with configurable content and actions",
+      "propsSchema": {
+        "icon": { "type": "LucideIcon", "required": true },
+        "category": { "type": "HealthCategoryColor", "required": true },
+        "title": { "type": "string", "required": true },
+        "subtitle": { "type": "string", "required": true },
+        "content": { "type": "ReactNode", "required": true },
+        "buttonText": { "type": "string", "required": false },
+        "onButtonClick": { "type": "function", "required": false },
+        "secondaryButtonText": { "type": "string", "required": false },
+        "onSecondaryButtonClick": { "type": "function", "required": false },
+        "urgent": { "type": "boolean", "required": false },
+        "size": { "type": "enum", "values": ["default", "compact"], "required": false }
+      },
+      "actions": ["primary_click", "secondary_click", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-UI-001": {
+      "name": "StandardCard",
+      "category": "ui",
+      "componentPath": "src/components/ui/StandardCard.tsx",
+      "version": "v1",
+      "description": "Standard card component with header, content, and footer",
+      "propsSchema": {
+        "title": { "type": "string", "required": false },
+        "children": { "type": "ReactNode", "required": true },
+        "className": { "type": "string", "required": false }
+      },
+      "actions": ["impression"],
+      "supportsSystemCards": false
+    },
+    "CT-VI-001": {
+      "name": "VitanaIndex.Mini",
+      "category": "vitana",
+      "componentPath": "src/components/health/VitanaIndexMini.tsx",
+      "version": "v1",
+      "description": "Compact Vitana index display with trend indicators",
+      "propsSchema": {
+        "score": { "type": "number", "required": false, "default": 75 },
+        "trend": { "type": "enum", "values": ["up", "down", "stable"], "required": false, "default": "up" },
+        "variant": { "type": "enum", "values": ["card", "compact", "badge"], "required": false, "default": "card" },
+        "showDetails": { "type": "boolean", "required": false, "default": true },
+        "onClick": { "type": "function", "required": false }
+      },
+      "actions": ["click", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-002": {
+      "name": "VitanaIndex.Large",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/VitanaIndexCard.tsx",
+      "version": "v1",
+      "description": "Full-featured Vitana index display with comprehensive metrics",
+      "propsSchema": {
+        "score": { "type": "number", "required": false, "default": 75 },
+        "trend": { "type": "enum", "values": ["up", "down", "stable"], "required": false, "default": "up" },
+        "className": { "type": "string", "required": false }
+      },
+      "actions": ["view_details", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-003": {
+      "name": "AutoPilotActionCard",
+      "category": "crossover", 
+      "componentPath": "src/components/crossover/AutoPilotActionCard.tsx",
+      "version": "v1",
+      "description": "AI-driven action recommendation with priority and timing",
+      "propsSchema": {
+        "action": { "type": "string", "required": false },
+        "timeEstimate": { "type": "string", "required": false },
+        "reason": { "type": "string", "required": false },
+        "priority": { "type": "enum", "values": ["low", "medium", "high"], "required": false }
+      },
+      "actions": ["do_now", "postpone", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-004": {
+      "name": "QuickLogStrip",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/QuickLogStrip.tsx",
+      "version": "v1",
+      "description": "Quick health metric logging interface strip",
+      "propsSchema": {
+        "className": { "type": "string", "required": false }
+      },
+      "actions": ["log_metric", "navigate_tracker", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-005": {
+      "name": "SmartCalendarCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/SmartCalendarCard.tsx",
+      "version": "v1",
+      "description": "AI-optimized calendar with health integration",
+      "propsSchema": {
+        "events": { "type": "CalendarEvent[]", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "actions": ["open_calendar", "view_event", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-006": {
+      "name": "LifestylePlanCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/LifestylePlanCard.tsx",
+      "version": "v1",
+      "description": "Lifestyle plan tracking with progress visualization",
+      "propsSchema": {
+        "type": { "type": "LifestylePlanType", "required": true },
+        "className": { "type": "string", "required": false }
+      },
+      "actions": ["quick_log", "view_tracker", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-007": {
+      "name": "CommunityPulseCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/CommunityPulseCard.tsx", 
+      "version": "v1",
+      "description": "Community activity and social engagement display",
+      "propsSchema": {
+        "activeUsers": { "type": "number", "required": false, "default": 12 },
+        "newInvites": { "type": "number", "required": false, "default": 2 },
+        "upcomingEvents": { "type": "number", "required": false, "default": 1 }
+      },
+      "actions": ["join_activity", "view_community", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-008": {
+      "name": "ProgressStreaksCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/ProgressStreaksCard.tsx",
+      "version": "v1",
+      "description": "Progress tracking and streak visualization with gamification",
+      "propsSchema": {
+        "streaks": { "type": "StreakData[]", "required": false },
+        "className": { "type": "string", "required": false }
+      },
+      "actions": ["see_progress", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-009": {
+      "name": "DataWalletCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/DataWalletCard.tsx",
+      "version": "v1", 
+      "description": "Health data wallet with reports and sharing capabilities",
+      "propsSchema": {
+        "reports": { "type": "HealthReport[]", "required": false }
+      },
+      "actions": ["view_reports", "share_data", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-010": {
+      "name": "DiscoverPicksCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/DiscoverPicksCard.tsx",
+      "version": "v1",
+      "description": "Personalized content discovery with ratings and recommendations",
+      "propsSchema": {
+        "picks": { "type": "DiscoverPick[]", "required": false }
+      },
+      "actions": ["explore", "save_for_later", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CX-011": {
+      "name": "MotivationCard",
+      "category": "crossover",
+      "componentPath": "src/components/crossover/MotivationCard.tsx",
+      "version": "v1",
+      "description": "Daily motivation and inspirational content with video support",
+      "propsSchema": {
+        "quote": { "type": "string", "required": false },
+        "author": { "type": "string", "required": false },
+        "hasVideo": { "type": "boolean", "required": false }
+      },
+      "actions": ["try_now", "more_inspiration", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-UI-002": {
+      "name": "FilterCard",
+      "category": "ui",
+      "componentPath": "src/components/ui/FilterCard.tsx",
+      "version": "v1",
+      "description": "Filter interface for data selection and refinement",
+      "propsSchema": {
+        "filters": { "type": "Filter[]", "required": true },
+        "onFilterChange": { "type": "function", "required": true }
+      },
+      "actions": ["apply_filter", "clear_filters", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-DO-001": {
+      "name": "OfferCard",
+      "category": "discover",
+      "componentPath": "src/components/discover/OfferCard.tsx",
+      "version": "v1",
+      "description": "Special offer display with pricing and promotional content",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "description": { "type": "string", "required": true },
+        "price": { "type": "number", "required": true },
+        "originalPrice": { "type": "number", "required": false },
+        "validUntil": { "type": "Date", "required": false }
+      },
+      "actions": ["claim_offer", "view_details", "share", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-DO-002": {
+      "name": "RecommendationCard",
+      "category": "discover",
+      "componentPath": "src/components/discover/RecommendationCard.tsx", 
+      "version": "v1",
+      "description": "AI-driven recommendation with reasoning and CTA",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "description": { "type": "string", "required": true },
+        "confidence": { "type": "number", "required": false },
+        "reasoning": { "type": "string", "required": false },
+        "ctaText": { "type": "string", "required": false }
+      },
+      "actions": ["accept_recommendation", "dismiss", "learn_more", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-DO-003": {
+      "name": "ProviderCard",
+      "category": "discover",
+      "componentPath": "src/components/discover/ProviderCard.tsx",
+      "version": "v1",
+      "description": "Healthcare provider display with ratings and booking",
+      "propsSchema": {
+        "name": { "type": "string", "required": true },
+        "specialty": { "type": "string", "required": true },
+        "rating": { "type": "number", "required": false },
+        "availability": { "type": "string", "required": false },
+        "distance": { "type": "string", "required": false }
+      },
+      "actions": ["book_appointment", "view_profile", "save_provider", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-DO-004": {
+      "name": "DealCard",
+      "category": "discover", 
+      "componentPath": "src/components/discover/DealCard.tsx",
+      "version": "v1",
+      "description": "Wellness deal with discount and expiration tracking",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "originalPrice": { "type": "number", "required": true },
+        "salePrice": { "type": "number", "required": true },
+        "discount": { "type": "number", "required": true },
+        "expiresAt": { "type": "Date", "required": false }
+      },
+      "actions": ["claim_deal", "view_terms", "share", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-LT-001": {
+      "name": "LabTestCard",
+      "category": "lab",
+      "componentPath": "src/components/LabTestCard.tsx",
+      "version": "v1",
+      "description": "Lab test result display with status and ordering",
+      "propsSchema": {
+        "testName": { "type": "string", "required": true },
+        "status": { "type": "TestStatus", "required": true },
+        "lastResult": { "type": "string", "required": false },
+        "nextDue": { "type": "Date", "required": false }
+      },
+      "actions": ["order_test", "view_results", "schedule", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-MC-001": {
+      "name": "MusicCard",
+      "category": "media",
+      "componentPath": "src/components/crossover/MusicCard.tsx",
+      "version": "v1",
+      "description": "Music playback with wellness-focused curation",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "artist": { "type": "string", "required": true },
+        "duration": { "type": "number", "required": false },
+        "category": { "type": "string", "required": false }
+      },
+      "actions": ["play", "pause", "save", "share", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-PC-001": {
+      "name": "PodcastCard", 
+      "category": "media",
+      "componentPath": "src/components/crossover/PodcastCard.tsx",
+      "version": "v1",
+      "description": "Podcast episode with health and wellness focus",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "host": { "type": "string", "required": true },
+        "duration": { "type": "number", "required": false },
+        "description": { "type": "string", "required": false }
+      },
+      "actions": ["play", "subscribe", "save", "share", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-VC-001": {
+      "name": "VideoFeedCard",
+      "category": "media",
+      "componentPath": "src/components/crossover/VideoFeedCard.tsx",
+      "version": "v1",
+      "description": "Video content with wellness education and entertainment",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "creator": { "type": "string", "required": true },
+        "duration": { "type": "number", "required": false },
+        "thumbnail": { "type": "string", "required": false }
+      },
+      "actions": ["play", "like", "save", "share", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-HS-001": {
+      "name": "SmartSuggestions",
+      "category": "health",
+      "componentPath": "src/components/health/SmartSuggestions.tsx",
+      "version": "v1",
+      "description": "AI-driven health insights and personalized suggestions",
+      "propsSchema": {
+        "suggestions": { "type": "Suggestion[]", "required": true },
+        "title": { "type": "string", "required": false },
+        "variant": { "type": "enum", "values": ["card", "list", "minimal"], "required": false },
+        "maxItems": { "type": "number", "required": false }
+      },
+      "actions": ["accept_suggestion", "dismiss", "learn_more", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-HS-002": {
+      "name": "AutopilotWidget",
+      "category": "health",
+      "componentPath": "src/components/health/AutopilotWidget.tsx", 
+      "version": "v1",
+      "description": "Autopilot control interface with suggestion management",
+      "propsSchema": {
+        "title": { "type": "string", "required": false },
+        "section": { "type": "string", "required": false },
+        "suggestions": { "type": "string[]", "required": false },
+        "enabled": { "type": "boolean", "required": false },
+        "onToggle": { "type": "function", "required": false },
+        "onActionClick": { "type": "function", "required": false },
+        "variant": { "type": "enum", "values": ["card", "inline", "mini"], "required": true }
+      },
+      "actions": ["toggle_autopilot", "execute_action", "view_settings", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-HS-003": {
+      "name": "HealthCoachChat",
+      "category": "health",
+      "componentPath": "src/components/health/HealthCoachChat.tsx",
+      "version": "v1",
+      "description": "Interactive AI health coaching conversation interface",
+      "propsSchema": {
+        "context": { "type": "string", "required": false },
+        "variant": { "type": "enum", "values": ["card", "embedded", "floating"], "required": false },
+        "onSendMessage": { "type": "function", "required": false },
+        "onStartCall": { "type": "function", "required": false }
+      },
+      "actions": ["send_message", "start_call", "view_history", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-HT-001": {
+      "name": "PillarProgressCard",
+      "category": "health-tracker",
+      "componentPath": "src/components/health-tracker/PillarProgressCard.tsx",
+      "version": "v1",
+      "description": "Health pillar progress tracking with trend analysis",
+      "propsSchema": {
+        "pillar": { "type": "HealthPillar", "required": true },
+        "score": { "type": "number", "required": true },
+        "trend": { "type": "enum", "values": ["up", "down", "stable"], "required": false },
+        "target": { "type": "number", "required": false }
+      },
+      "actions": ["view_details", "set_goal", "log_activity", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-HT-002": {
+      "name": "QuickLogCard",
+      "category": "health-tracker",
+      "componentPath": "src/components/health-tracker/QuickLogCard.tsx",
+      "version": "v1",
+      "description": "Quick metric logging with intelligent defaults",
+      "propsSchema": {
+        "metric": { "type": "HealthMetric", "required": true },
+        "lastValue": { "type": "number", "required": false },
+        "unit": { "type": "string", "required": false }
+      },
+      "actions": ["log_value", "view_history", "set_reminder", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-HT-003": {
+      "name": "StreakCard", 
+      "category": "health-tracker",
+      "componentPath": "src/components/health-tracker/StreakCard.tsx",
+      "version": "v1",
+      "description": "Habit streak tracking with motivational elements",
+      "propsSchema": {
+        "habit": { "type": "string", "required": true },
+        "currentStreak": { "type": "number", "required": true },
+        "longestStreak": { "type": "number", "required": false },
+        "target": { "type": "number", "required": false }
+      },
+      "actions": ["mark_complete", "view_history", "share_achievement", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-HT-004": {
+      "name": "SmartGoalsCard",
+      "category": "health-tracker",
+      "componentPath": "src/components/health-tracker/SmartGoalsCard.tsx",
+      "version": "v1",
+      "description": "AI-assisted goal setting with progress tracking",
+      "propsSchema": {
+        "goals": { "type": "SmartGoal[]", "required": true },
+        "variant": { "type": "enum", "values": ["compact", "detailed"], "required": false }
+      },
+      "actions": ["update_progress", "adjust_goal", "celebrate", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-CAL-001": {
+      "name": "Calendar.StatCard",
+      "category": "calendar",
+      "componentPath": "src/components/calendar/StatCard.tsx",
+      "version": "v1",
+      "description": "Calendar statistics and utilization metrics",
+      "propsSchema": {
+        "totalEvents": { "type": "number", "required": true },
+        "healthEvents": { "type": "number", "required": true },
+        "efficiency": { "type": "number", "required": false }
+      },
+      "actions": ["view_calendar", "optimize_schedule", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-CAL-002": {
+      "name": "Calendar.EventCard",
+      "category": "calendar",
+      "componentPath": "src/components/calendar/EventCard.tsx",
+      "version": "v1",
+      "description": "Individual calendar event with health integration",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "startTime": { "type": "Date", "required": true },
+        "duration": { "type": "number", "required": false },
+        "healthImpact": { "type": "string", "required": false }
+      },
+      "actions": ["join_event", "reschedule", "add_notes", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-CAL-003": {
+      "name": "Calendar.ReminderCard",
+      "category": "calendar",
+      "componentPath": "src/components/calendar/ReminderCard.tsx",
+      "version": "v1", 
+      "description": "Health and wellness reminder management",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "frequency": { "type": "string", "required": true },
+        "nextDue": { "type": "Date", "required": true },
+        "category": { "type": "string", "required": false }
+      },
+      "actions": ["mark_done", "snooze", "edit_reminder", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-CAL-004": {
+      "name": "Calendar.ProgressCard",
+      "category": "calendar",
+      "componentPath": "src/components/calendar/ProgressCard.tsx",
+      "version": "v1",
+      "description": "Calendar-based progress tracking and planning",
+      "propsSchema": {
+        "completedToday": { "type": "number", "required": true },
+        "plannedToday": { "type": "number", "required": true },
+        "upcomingTomorrow": { "type": "number", "required": false }
+      },
+      "actions": ["plan_tomorrow", "review_today", "adjust_schedule", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-COM-001": {
+      "name": "CommunityStatsCard",
+      "category": "community",
+      "componentPath": "src/components/community/CommunityStatsCard.tsx",
+      "version": "v1",
+      "description": "Community engagement statistics and metrics",
+      "propsSchema": {
+        "totalMembers": { "type": "number", "required": true },
+        "activeToday": { "type": "number", "required": true },
+        "engagementRate": { "type": "number", "required": false }
+      },
+      "actions": ["view_community", "invite_friends", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-COM-002": {
+      "name": "LiveSessionCard",
+      "category": "community",
+      "componentPath": "src/components/community/LiveSessionCard.tsx",
+      "version": "v1",
+      "description": "Live wellness session with participation controls",
+      "propsSchema": {
+        "title": { "type": "string", "required": true },
+        "host": { "type": "string", "required": true },
+        "participants": { "type": "number", "required": false },
+        "startTime": { "type": "Date", "required": true }
+      },
+      "actions": ["join_session", "set_reminder", "invite_friend", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-COM-003": {
+      "name": "ActivityCard",
+      "category": "community",
+      "componentPath": "src/components/community/ActivityCard.tsx",
+      "version": "v1",
+      "description": "Community activity feed item with interactions",
+      "propsSchema": {
+        "user": { "type": "string", "required": true },
+        "activity": { "type": "string", "required": true },
+        "timestamp": { "type": "Date", "required": true },
+        "likes": { "type": "number", "required": false }
+      },
+      "actions": ["like", "comment", "share", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-COM-004": {
+      "name": "Community.RecommendationCard", 
+      "category": "community",
+      "componentPath": "src/components/community/RecommendationCard.tsx",
+      "version": "v1",
+      "description": "AI-curated community activity and connection recommendations",
+      "propsSchema": {
+        "type": { "type": "enum", "values": ["event", "group", "person"], "required": true },
+        "title": { "type": "string", "required": true },
+        "description": { "type": "string", "required": true },
+        "matchScore": { "type": "number", "required": false }
+      },
+      "actions": ["join", "learn_more", "dismiss", "impression"],
+      "supportsSystemCards": true
+    },
+    "CT-COM-005": {
+      "name": "Community.TrendingCard",
+      "category": "community",
+      "componentPath": "src/components/community/TrendingCard.tsx",
+      "version": "v1",
+      "description": "Trending topics and popular community content",
+      "propsSchema": {
+        "topic": { "type": "string", "required": true },
+        "engagementCount": { "type": "number", "required": true },
+        "trendDirection": { "type": "enum", "values": ["up", "down", "stable"], "required": false }
+      },
+      "actions": ["explore_topic", "join_discussion", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-MSG-001": {
+      "name": "Messages.ActivityCard",
+      "category": "messages",
+      "componentPath": "src/components/messages/ActivityCard.tsx",
+      "version": "v1",
+      "description": "Message activity summary and notifications",
+      "propsSchema": {
+        "unreadCount": { "type": "number", "required": true },
+        "recentSenders": { "type": "string[]", "required": false },
+        "lastActivity": { "type": "Date", "required": false }
+      },
+      "actions": ["view_messages", "mark_read", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-MSG-002": {
+      "name": "Messages.StatCard",
+      "category": "messages",
+      "componentPath": "src/components/messages/StatCard.tsx",
+      "version": "v1",
+      "description": "Messaging statistics and engagement metrics",
+      "propsSchema": {
+        "totalConversations": { "type": "number", "required": true },
+        "responseRate": { "type": "number", "required": false },
+        "avgResponseTime": { "type": "string", "required": false }
+      },
+      "actions": ["view_analytics", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-MSG-003": {
+      "name": "Messages.StatusCard",
+      "category": "messages", 
+      "componentPath": "src/components/messages/StatusCard.tsx",
+      "version": "v1",
+      "description": "User status and availability for messaging",
+      "propsSchema": {
+        "status": { "type": "enum", "values": ["online", "away", "busy", "offline"], "required": true },
+        "customMessage": { "type": "string", "required": false },
+        "autoReply": { "type": "boolean", "required": false }
+      },
+      "actions": ["change_status", "set_auto_reply", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-SET-001": {
+      "name": "Settings.SummaryCard",
+      "category": "settings",
+      "componentPath": "src/components/settings/SummaryCard.tsx",
+      "version": "v1",
+      "description": "Settings overview with quick access to key configurations",
+      "propsSchema": {
+        "categories": { "type": "SettingsCategory[]", "required": true },
+        "recentChanges": { "type": "number", "required": false }
+      },
+      "actions": ["view_category", "recent_changes", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-SET-002": {
+      "name": "Settings.QuickActionCard",
+      "category": "settings",
+      "componentPath": "src/components/settings/QuickActionCard.tsx",
+      "version": "v1",
+      "description": "Quick settings actions and toggles",
+      "propsSchema": {
+        "actions": { "type": "QuickAction[]", "required": true },
+        "variant": { "type": "enum", "values": ["grid", "list"], "required": false }
+      },
+      "actions": ["toggle_setting", "view_details", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-PRO-001": {
+      "name": "IdentityCard",
+      "category": "profile",
+      "componentPath": "src/components/profile/IdentityCard.tsx",
+      "version": "v1",
+      "description": "User identity and basic profile information display",
+      "propsSchema": {
+        "name": { "type": "string", "required": true },
+        "avatar": { "type": "string", "required": false },
+        "title": { "type": "string", "required": false },
+        "bio": { "type": "string", "required": false }
+      },
+      "actions": ["edit_profile", "change_avatar", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-PRO-002": {
+      "name": "EngagementCard",
+      "category": "profile",
+      "componentPath": "src/components/profile/EngagementCard.tsx",
+      "version": "v1",
+      "description": "User engagement metrics and activity summary",
+      "propsSchema": {
+        "totalActions": { "type": "number", "required": true },
+        "weeklyStreak": { "type": "number", "required": false },
+        "lastActive": { "type": "Date", "required": false }
+      },
+      "actions": ["view_activity", "share_achievements", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-PRO-003": {
+      "name": "MotivationsCard",
+      "category": "profile", 
+      "componentPath": "src/components/profile/MotivationsCard.tsx",
+      "version": "v1",
+      "description": "Personal wellness motivations and goals display",
+      "propsSchema": {
+        "motivations": { "type": "string[]", "required": true },
+        "primaryGoal": { "type": "string", "required": false }
+      },
+      "actions": ["edit_motivations", "set_goal", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-PRO-004": {
+      "name": "PersonalityCard",
+      "category": "profile",
+      "componentPath": "src/components/profile/PersonalityCard.tsx",
+      "version": "v1",
+      "description": "Personality insights and wellness preferences",
+      "propsSchema": {
+        "traits": { "type": "PersonalityTrait[]", "required": true },
+        "preferences": { "type": "WellnessPreference[]", "required": false }
+      },
+      "actions": ["retake_assessment", "update_preferences", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-PRO-005": {
+      "name": "BrandsCard",
+      "category": "profile",
+      "componentPath": "src/components/profile/BrandsCard.tsx",
+      "version": "v1",
+      "description": "Preferred wellness brands and partnerships",
+      "propsSchema": {
+        "brands": { "type": "Brand[]", "required": true },
+        "partnerships": { "type": "Partnership[]", "required": false }
+      },
+      "actions": ["manage_brands", "explore_partnerships", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-UPR-001": {
+      "name": "ProfileHeroCard",
+      "category": "user-profile",
+      "componentPath": "src/components/user-profile/ProfileHeroCard.tsx",
+      "version": "v1",
+      "description": "Hero profile display for public user profiles",
+      "propsSchema": {
+        "user": { "type": "PublicUser", "required": true },
+        "isConnected": { "type": "boolean", "required": false },
+        "mutualConnections": { "type": "number", "required": false }
+      },
+      "actions": ["connect", "message", "share_profile", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-UPR-002": {
+      "name": "ProfileStatCard",
+      "category": "user-profile",
+      "componentPath": "src/components/user-profile/ProfileStatCard.tsx",
+      "version": "v1",
+      "description": "User profile statistics and achievements display",
+      "propsSchema": {
+        "stats": { "type": "ProfileStat[]", "required": true },
+        "publicView": { "type": "boolean", "required": false }
+      },
+      "actions": ["view_details", "compare", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-UPR-003": {
+      "name": "AchievementCard",
+      "category": "user-profile",
+      "componentPath": "src/components/user-profile/AchievementCard.tsx",
+      "version": "v1",
+      "description": "User achievements and milestone celebration",
+      "propsSchema": {
+        "achievement": { "type": "Achievement", "required": true },
+        "isRecent": { "type": "boolean", "required": false },
+        "shareEnabled": { "type": "boolean", "required": false }
+      },
+      "actions": ["share_achievement", "view_progress", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-UPR-004": {
+      "name": "TimelineCard",
+      "category": "user-profile",
+      "componentPath": "src/components/user-profile/TimelineCard.tsx",
+      "version": "v1",
+      "description": "User wellness journey timeline and milestones",
+      "propsSchema": {
+        "events": { "type": "TimelineEvent[]", "required": true },
+        "timeframe": { "type": "enum", "values": ["week", "month", "year"], "required": false }
+      },
+      "actions": ["view_event", "add_milestone", "impression"],
+      "supportsSystemCards": false
+    },
+    "CT-UPR-005": {
+      "name": "ConnectionCard",
+      "category": "user-profile", 
+      "componentPath": "src/components/user-profile/ConnectionCard.tsx",
+      "version": "v1",
+      "description": "User connections and social wellness network",
+      "propsSchema": {
+        "connections": { "type": "Connection[]", "required": true },
+        "totalCount": { "type": "number", "required": true },
+        "recentActivity": { "type": "boolean", "required": false }
+      },
+      "actions": ["view_connections", "invite_friend", "impression"],
+      "supportsSystemCards": false
+    }
+  }
+}

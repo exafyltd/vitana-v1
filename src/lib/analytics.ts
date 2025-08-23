@@ -1,0 +1,196 @@
+/**
+ * Analytics service for Card ID system
+ * Handles impression and interaction tracking for card components
+ */
+
+export interface AnalyticsPayload {
+  template_id: string;
+  version: string;
+  system_card_id?: string;
+  screen_route: string;
+  slot_id?: string;
+  tenant_id?: string;
+  user_role?: string;
+  experiment_id?: string;
+  item_id?: string;
+  sku?: string;
+  impression_id?: string;
+  click_id?: string;
+  session_id?: string;
+  timestamp: number;
+}
+
+export interface AnalyticsEvent {
+  event_name: string;
+  payload: AnalyticsPayload;
+}
+
+class AnalyticsService {
+  private sessionId: string;
+  private userId?: string;
+  private tenantId?: string;
+  private userRole?: string;
+
+  constructor() {
+    this.sessionId = this.generateSessionId();
+    this.initializeUserContext();
+  }
+
+  private generateSessionId(): string {
+    return `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private generateImpressionId(): string {
+    return `imp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private generateClickId(): string {
+    return `click-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private initializeUserContext(): void {
+    // Initialize from localStorage, auth context, or environment
+    this.tenantId = 'vitana-main'; // Default tenant
+    this.userRole = 'user'; // Default role
+  }
+
+  private getScreenRoute(): string {
+    return window.location.pathname;
+  }
+
+  private createBasePayload(
+    templateId: string,
+    version: string,
+    systemCardId?: string,
+    experimentId?: string
+  ): AnalyticsPayload {
+    return {
+      template_id: templateId,
+      version,
+      system_card_id: systemCardId,
+      screen_route: this.getScreenRoute(),
+      tenant_id: this.tenantId,
+      user_role: this.userRole,
+      experiment_id: experimentId,
+      session_id: this.sessionId,
+      timestamp: Date.now(),
+    };
+  }
+
+  trackImpression(
+    templateId: string,
+    version: string,
+    systemCardId?: string,
+    experimentId?: string,
+    slotId?: string
+  ): string {
+    const impressionId = this.generateImpressionId();
+    
+    const payload: AnalyticsPayload = {
+      ...this.createBasePayload(templateId, version, systemCardId, experimentId),
+      slot_id: slotId,
+      impression_id: impressionId,
+    };
+
+    const event: AnalyticsEvent = {
+      event_name: 'card_impression',
+      payload,
+    };
+
+    this.dispatch(event);
+    return impressionId;
+  }
+
+  trackClick(
+    templateId: string,
+    version: string,
+    action: string,
+    systemCardId?: string,
+    experimentId?: string,
+    itemId?: string,
+    sku?: string
+  ): string {
+    const clickId = this.generateClickId();
+    
+    const payload: AnalyticsPayload = {
+      ...this.createBasePayload(templateId, version, systemCardId, experimentId),
+      item_id: itemId,
+      sku,
+      click_id: clickId,
+    };
+
+    const event: AnalyticsEvent = {
+      event_name: 'card_click',
+      payload,
+    };
+
+    this.dispatch(event);
+    return clickId;
+  }
+
+  trackCTAExecute(
+    templateId: string,
+    version: string,
+    action: string,
+    systemCardId?: string,
+    experimentId?: string,
+    itemId?: string,
+    sku?: string
+  ): string {
+    const clickId = this.generateClickId();
+    
+    const payload: AnalyticsPayload = {
+      ...this.createBasePayload(templateId, version, systemCardId, experimentId),
+      item_id: itemId,
+      sku,
+      click_id: clickId,
+    };
+
+    const event: AnalyticsEvent = {
+      event_name: 'cta_execute',
+      payload,
+    };
+
+    this.dispatch(event);
+    return clickId;
+  }
+
+  private dispatch(event: AnalyticsEvent): void {
+    // Console logging for development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[Analytics]', event.event_name, event.payload);
+    }
+
+    // Send to analytics service (implement based on your analytics provider)
+    this.sendToAnalyticsProvider(event);
+  }
+
+  private sendToAnalyticsProvider(event: AnalyticsEvent): void {
+    // Implement your analytics provider integration here
+    // Examples: Google Analytics, Mixpanel, Amplitude, etc.
+    
+    // For now, we'll store in localStorage for development
+    const events = JSON.parse(localStorage.getItem('vitana_analytics_events') || '[]');
+    events.push(event);
+    
+    // Keep only last 1000 events
+    if (events.length > 1000) {
+      events.splice(0, events.length - 1000);
+    }
+    
+    localStorage.setItem('vitana_analytics_events', JSON.stringify(events));
+  }
+
+  // Method to retrieve stored events for debugging/testing
+  getStoredEvents(): AnalyticsEvent[] {
+    return JSON.parse(localStorage.getItem('vitana_analytics_events') || '[]');
+  }
+
+  // Clear stored events
+  clearStoredEvents(): void {
+    localStorage.removeItem('vitana_analytics_events');
+  }
+}
+
+export const analytics = new AnalyticsService();
+export default analytics;

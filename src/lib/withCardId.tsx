@@ -1,10 +1,12 @@
 import React from 'react';
+import { analytics } from './analytics';
 
 export interface CardIdProps {
   templateId?: string;
   systemCardId?: string;
   instanceId?: string;
   experimentId?: string;
+  slotId?: string;
 }
 
 export function withCardId<P extends object>(
@@ -18,6 +20,7 @@ export function withCardId<P extends object>(
       systemCardId = defaultSystemCardId,
       instanceId,
       experimentId,
+      slotId,
       ...wrappedProps
     } = props;
 
@@ -25,6 +28,20 @@ export function withCardId<P extends object>(
     const finalInstanceId = instanceId || React.useMemo(() => 
       `card-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, []
     );
+
+    // Track impression on mount
+    const impressionId = React.useRef<string>();
+    React.useEffect(() => {
+      if (templateId) {
+        impressionId.current = analytics.trackImpression(
+          templateId,
+          'v1',
+          systemCardId,
+          experimentId,
+          slotId
+        );
+      }
+    }, [templateId, systemCardId, experimentId, slotId]);
 
     const dataAttributes: Record<string, string> = {};
     
@@ -44,9 +61,49 @@ export function withCardId<P extends object>(
       dataAttributes['data-experiment-id'] = experimentId;
     }
 
+    // Create analytics-enhanced props
+    const enhancedProps = React.useMemo(() => {
+      const props = wrappedProps as any;
+      
+      // Wrap onClick handlers to track clicks
+      const wrapClickHandler = (originalHandler?: Function, action?: string) => {
+        return (...args: any[]) => {
+          if (templateId) {
+            analytics.trackClick(
+              templateId,
+              'v1',
+              action || 'click',
+              systemCardId,
+              experimentId
+            );
+          }
+          if (originalHandler) {
+            originalHandler(...args);
+          }
+        };
+      };
+
+      // Enhanced props with analytics
+      const enhanced = { ...props };
+      
+      if (props.onClick) {
+        enhanced.onClick = wrapClickHandler(props.onClick, 'primary_click');
+      }
+      
+      if (props.onButtonClick) {
+        enhanced.onButtonClick = wrapClickHandler(props.onButtonClick, 'cta_execute');
+      }
+      
+      if (props.onSecondaryButtonClick) {
+        enhanced.onSecondaryButtonClick = wrapClickHandler(props.onSecondaryButtonClick, 'secondary_click');
+      }
+
+      return enhanced;
+    }, [wrappedProps, templateId, systemCardId, experimentId]);
+
     return (
       <div {...dataAttributes} style={{ display: 'contents' }}>
-        <WrappedComponent {...(wrappedProps as P)} ref={ref} />
+        <WrappedComponent {...(enhancedProps as P)} ref={ref} />
       </div>
     );
   });

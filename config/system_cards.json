@@ -81,6 +81,126 @@
       "singleton": true,
       "screens": ["/health-tracker/nutrition", "/health-tracker/exercise", "/dashboard"],
       "slots": ["lifestyle-plan", "wellness"]
+    },
+    "C-011": {
+      "name": "Health To-Do",
+      "purpose": "Priority health tasks and actionable recommendations",
+      "templateId": "CT-DO-002",
+      "singleton": false,
+      "screens": ["/health-tracker", "/dashboard", "/ai"],
+      "slots": ["tasks", "recommendations", "priority-actions"]
+    },
+    "C-012": {
+      "name": "Social Meetup Suggestion",
+      "purpose": "AI-curated social wellness activities and meetup recommendations",
+      "templateId": "CT-COM-004",
+      "singleton": false,
+      "screens": ["/community", "/dashboard"],
+      "slots": ["social", "recommendations", "community-events"]
+    },
+    "C-013": {
+      "name": "Content Feed Pick",
+      "purpose": "Personalized wellness content discovery and curation",
+      "templateId": "CT-CX-005",
+      "singleton": false,
+      "screens": ["/discover", "/community/media-hub", "/dashboard"],
+      "slots": ["discover", "content-feed", "recommendations"]
+    },
+    "C-014": {
+      "name": "Service Recommendation", 
+      "purpose": "Curated health service and provider suggestions",
+      "templateId": "CT-DO-003",
+      "singleton": false,
+      "screens": ["/discover/providers", "/health", "/dashboard"],
+      "slots": ["providers", "services", "recommendations"]
+    },
+    "C-015": {
+      "name": "AI Challenge",
+      "purpose": "Gamified wellness challenges and AI-driven goal setting",
+      "templateId": "CT-CX-002",
+      "singleton": false,
+      "screens": ["/ai", "/community/challenges", "/dashboard"],
+      "slots": ["challenges", "ai-actions", "gamification"]
+    },
+    "C-016": {
+      "name": "Day Recap",
+      "purpose": "Daily wellness summary and reflection insights",
+      "templateId": "CT-CX-001",
+      "singleton": true,
+      "screens": ["/dashboard", "/ai/daily-summary"],
+      "slots": ["summary", "reflection", "daily-recap"]
+    },
+    "C-017": {
+      "name": "Mood & Energy Summary",
+      "purpose": "Mental wellness tracking and mood pattern analysis",
+      "templateId": "CT-HT-001",
+      "singleton": true,
+      "screens": ["/health-tracker/mental-health", "/dashboard"],
+      "slots": ["mental-health", "mood-tracking", "energy-levels"]
+    },
+    "C-018": {
+      "name": "Health Score Snapshot", 
+      "purpose": "Quick health index overview with key metrics",
+      "templateId": "CT-VI-001",
+      "singleton": true,
+      "screens": ["/dashboard", "/health-tracker/vitana-index"],
+      "slots": ["hero", "score-snapshot", "health-overview"]
+    },
+    "C-019": {
+      "name": "Social Pulse",
+      "purpose": "Community engagement metrics and social wellness trends",
+      "templateId": "CT-COM-001",
+      "singleton": true,
+      "screens": ["/community", "/dashboard"],
+      "slots": ["social-stats", "community-pulse", "engagement"]
+    },
+    "C-020": {
+      "name": "Tomorrow Prep",
+      "purpose": "Next-day planning and proactive wellness preparation",
+      "templateId": "CT-CAL-004",
+      "singleton": true,
+      "screens": ["/calendar", "/dashboard"],
+      "slots": ["planning", "tomorrow-prep", "proactive-wellness"]
+    },
+    "C-021": {
+      "name": "Chat With AI",
+      "purpose": "Direct AI health coach conversation interface",
+      "templateId": "CT-HS-003",
+      "singleton": true,
+      "screens": ["/ai/companion", "/health", "/dashboard"],
+      "slots": ["chat", "ai-companion", "coaching"]
+    },
+    "C-022": {
+      "name": "AI Autopilot Log",
+      "purpose": "Autopilot activity history and automated action tracking",
+      "templateId": "CT-HS-002",
+      "singleton": true,
+      "screens": ["/ai", "/dashboard"],
+      "slots": ["autopilot", "activity-log", "automation"]
+    },
+    "C-023": {
+      "name": "Memory Recall Request",
+      "purpose": "AI-assisted health data recall and context suggestions",
+      "templateId": "CT-HS-001",
+      "singleton": false,
+      "screens": ["/ai/insights", "/health", "/dashboard"],
+      "slots": ["memory-recall", "context-help", "data-insights"]
+    },
+    "C-024": {
+      "name": "Personalized Storytelling",
+      "purpose": "Motivational wellness narratives and progress storytelling",
+      "templateId": "CT-CX-007",
+      "singleton": false,
+      "screens": ["/community/media-hub", "/dashboard", "/ai"],
+      "slots": ["storytelling", "motivation", "progress-narrative"]
+    },
+    "C-025": {
+      "name": "Smart Suggestions Live",
+      "purpose": "Real-time adaptive wellness suggestions and live coaching",
+      "templateId": "CT-HS-001",
+      "singleton": false,
+      "screens": ["/ai/insights", "/dashboard", "/health-tracker"],
+      "slots": ["live-suggestions", "real-time-coaching", "adaptive-guidance"]
     }
   }
 }
