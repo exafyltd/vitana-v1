@@ -129,12 +129,18 @@ export default function AIRecommendations() {
                 {recommendations.labs.map((lab) => (
                   <LabTestCard
                     key={lab.item_id}
-                    testName={lab.title}
-                    price={lab.price}
-                    provider={lab.provider}
-                    turnaroundTime={lab.turnaround}
-                    onOrderClick={() => handleRecommendationClick(lab, "C-014")}
-                    compact={true}
+                    labTest={{
+                      id: lab.item_id,
+                      name: lab.title,
+                      description: `Professional ${lab.title.toLowerCase()} testing`,
+                      category: "blood_markers",
+                      biomarkers: ["Primary Markers", "Secondary Indicators"],
+                      price: lab.price,
+                      turnaround_days: parseInt(lab.turnaround.split('-')[0]) || 2,
+                      sample_type: "Blood",
+                      provider_name: lab.provider
+                    }}
+                    onOrder={() => handleRecommendationClick(lab, "C-014")}
                   />
                 ))}
               </div>

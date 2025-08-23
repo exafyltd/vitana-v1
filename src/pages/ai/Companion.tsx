@@ -56,10 +56,11 @@ export default function Companion() {
             {/* Chat with AI + Smart Suggestions Live - C-021 & C-025 */}
             <div data-template-id="CT-HS-003" data-system-card-id="C-021">
               <HealthCoachChat
-                title="AI Wellness Companion"
-                subtitle="Your personalized wellness assistant"
-                suggestions={chat.suggestionChips}
-                onSuggestionClick={handleChatAction}
+                context="general"
+                variant="card"
+                onSendMessage={(message) => handleChatAction(message)}
+                onStartVoiceCall={() => handleChatAction("voice_call")}
+                onStartVideoCall={() => handleChatAction("video_call")}
               />
             </div>
 

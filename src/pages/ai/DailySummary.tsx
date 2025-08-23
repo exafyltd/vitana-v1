@@ -52,14 +52,11 @@ export default function DailySummary() {
         {/* Recap Timeline - C-016 */}
         <div className="mb-8" data-template-id="CT-CX-005" data-system-card-id="C-016">
           <SmartCalendarCard
-            title="Today's Recap"
             events={summary.recap.map((item, index) => ({
-              id: `recap-${index}`,
               title: item,
               time: `${9 + index * 2}:00 AM`,
               type: "ai-suggestion" as const
             }))}
-            variant="timeline"
           />
         </div>
 

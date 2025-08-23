@@ -33,15 +33,10 @@ export default function Insights() {
         <div className="mb-8" data-template-id="CT-CX-008" data-system-card-id="C-007">
           <ProgressStreaksCard
             streaks={[
-              { title: "Meditation", current: 8, target: 10, category: "mental" },
-              { title: "Hydration", current: 12, target: 14, category: "hydration" },
-              { title: "Exercise", current: 5, target: 7, category: "exercise" }
+              { type: "Meditation", count: 8, emoji: "🧘" },
+              { type: "Hydration", count: 12, emoji: "💧" },
+              { type: "Exercise", count: 5, emoji: "🏃" }
             ]}
-            vitanaIndex={{
-              current: indexMovement.vitanaIndex,
-              delta: indexMovement.delta,
-              trend: indexMovement.trend
-            }}
           />
         </div>
 
