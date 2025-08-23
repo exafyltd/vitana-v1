@@ -38,10 +38,10 @@ export default function Dashboard() {
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
           <div className="flex flex-col lg:flex-row gap-4 mb-8">
             {/* Shortened Header Bar - Welcome Message */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-2xl font-bold text-foreground mb-1">Hi Jovana, let´s make today a very special day! ✨</h1>
-                <p className="text-sm text-muted-foreground">Your wellness journey starts with today's opportunities.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Hi Jovana, let´s make today a very special day! ✨</h1>
+                <p className="text-muted-foreground">Your wellness journey starts with today's opportunities.</p>
               </div>
             </div>
             
