@@ -4,7 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { StatCard } from "@/components/templates/StatCard";
 import { EventCard } from "@/components/templates/EventCard";
 import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
-import { Heart, Users, Activity, Calendar } from "lucide-react";
+import { Heart, Users, Activity } from "lucide-react";
 import { summary } from "@/mocks/ai";
 import { useNavigate } from "react-router-dom";
 
@@ -77,11 +77,10 @@ export default function DailySummary() {
           </div>
 
           {/* Pinterest-style Masonry Grid Layout */}
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
             {/* Smart Calendar - Recap Timeline - C-016 */}
-            <div className="break-inside-avoid mb-4 w-full" data-template-id="CT-CX-009" data-system-card-id="C-016">
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CX-009" data-system-card-id="C-016">
               <SmartCalendarCard
-                className="w-full max-w-full"
                 events={summary.recap.map((item, index) => ({
                   title: item,
                   time: `${9 + index * 2}:00 AM`,
@@ -91,9 +90,8 @@ export default function DailySummary() {
             </div>
 
             {/* Mood & Energy - C-017 */}
-            <div className="break-inside-avoid mb-4 w-full" data-template-id="CT-CAL-001" data-system-card-id="C-017">
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CAL-001" data-system-card-id="C-017">
               <StatCard
-                className="w-full max-w-full"
                 title="Mood & Energy"
                 icon={Heart}
                 stats={[
@@ -121,9 +119,8 @@ export default function DailySummary() {
             </div>
 
             {/* Health Score Snapshot - C-018 */}
-            <div className="break-inside-avoid mb-4 w-full" data-template-id="CT-CAL-001" data-system-card-id="C-018">
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CAL-001" data-system-card-id="C-018">
               <StatCard
-                className="w-full max-w-full"
                 title="Health Score Snapshot"
                 icon={Activity}
                 stats={[
@@ -152,9 +149,8 @@ export default function DailySummary() {
             </div>
 
             {/* Social Pulse - C-019 */}
-            <div className="break-inside-avoid mb-4 w-full" data-template-id="CT-CAL-001" data-system-card-id="C-019">
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CAL-001" data-system-card-id="C-019">
               <StatCard
-                className="w-full max-w-full"
                 title="Social Pulse"
                 icon={Users}
                 stats={[
@@ -181,9 +177,8 @@ export default function DailySummary() {
             </div>
 
             {/* Tomorrow Section - C-020 */}
-            <div className="break-inside-avoid mb-4 w-full" data-template-id="CT-CAL-002" data-system-card-id="C-020">
+            <div className="break-inside-avoid mb-4" data-template-id="CT-CAL-002" data-system-card-id="C-020">
               <EventCard
-                className="w-full max-w-full"
                 title="Tomorrow's Wellness Plan"
                 events={summary.tomorrow.map((task) => ({
                   id: `tomorrow-${task.time}`,
@@ -199,7 +194,7 @@ export default function DailySummary() {
                 onSendPlan={handleSendPlan}
                 maxItems={3}
               />
-             </div>
+            </div>
           </div>
         </div>
       </div>
