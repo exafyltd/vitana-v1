@@ -58,8 +58,8 @@ export default function Insights() {
             </div>
           </div>
 
-        {/* Pinterest-style Masonry Grid Layout */}
-        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+          {/* Pinterest-style Masonry Grid Layout */}
+          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
             {/* Progress Tracking - C-010 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-008" data-system-card-id="C-010">
               <ProgressStreaksCard
