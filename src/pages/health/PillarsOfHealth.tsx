@@ -1,9 +1,9 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Droplets, Apple, Dumbbell, Moon, Brain, Target } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const healthSubItems = [
   { id: "overview", name: "Overview", path: "/health" },
@@ -47,17 +47,36 @@ const pillars = [
 ];
 
 export default function PillarsOfHealth() {
+  const navigate = useNavigate();
+
   return (
     <AppLayout>
       <SEO title="Pillars of Health | Health" description="Explore the five pillars of health and wellness" canonical={window.location.href} />
       <SubNavigation items={healthSubItems} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <PageHeader 
-            title="Build your foundation for wellness! 🏗️"
-            description="Explore the five fundamental pillars of health and discover resources to enhance each area of your wellness."
-            icon={Target}
-          />
+          {/* Header Section with Perfect Symmetry */}
+          <div className="flex flex-col lg:flex-row gap-6 mb-8">
+            {/* Shortened Header Bar - Welcome Message Only */}
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Build your foundation for wellness! 🏗️</h1>
+                <p className="text-muted-foreground">Explore the five fundamental pillars of health and discover resources to enhance each area of your wellness.</p>
+              </div>
+            </div>
+            
+            {/* Small Index Card - Only Circle with 742 */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              onClick={() => navigate('/health-tracker/vitana-index')}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-xl font-bold text-green-600">742</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pillars.map((pillar) => (
