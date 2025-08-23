@@ -195,7 +195,7 @@ export default function DailySummary() {
                 onSendPlan={handleSendPlan}
                 maxItems={3}
               />
-            </div>
+             </div>
           </div>
 
       </div>
