@@ -19,6 +19,12 @@ const communitySubItems = [
 ];
 
 export default function Events() {
+  const navigate = useNavigate();
+  const { pendingCount, getLatestActions } = useAutopilot();
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  
+  const latestActions = getLatestActions(2);
   const upcomingEvents = [
     {
       title: "Morning Yoga Flow",
@@ -271,6 +277,12 @@ export default function Events() {
           </div>
         </div>
       </div>
+      
+      {/* Autopilot Popup */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
+      />
     </AppLayout>
   );
 }
