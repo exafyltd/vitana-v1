@@ -2,13 +2,14 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, RotateCcw, Repeat, Lightbulb, CheckCircle, Play, Pause, Settings, Clock, AlertTriangle } from "lucide-react";
+import { Zap, RotateCcw, Repeat, Lightbulb, CheckCircle, Play, Pause, Settings, Clock, AlertTriangle, Filter, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
+import { useState } from "react";
 
 const dashboardSubItems = [
   { id: "overview", name: "Overview", path: "/dashboard" },
@@ -21,6 +22,7 @@ const dashboardSubItems = [
 export default function AIFeed() {
   const navigate = useNavigate();
   const { state, executeActions } = useAutopilot();
+  const [selectedFilter, setSelectedFilter] = useState<string>("all");
   
   // Mock activity feed data including completed/failed actions
   const activityFeed = [
@@ -57,6 +59,10 @@ export default function AIFeed() {
       category: "health" as const
     }
   ].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
+  const filteredFeed = selectedFilter === "autopilot-history" 
+    ? activityFeed.filter(item => item.type === "action" && item.status === "completed")
+    : activityFeed;
 
   return (
     <AppLayout>
@@ -95,13 +101,23 @@ export default function AIFeed() {
                     </div>
                     <CardTitle className="text-lg">Activity Feed 🏃</CardTitle>
                   </div>
-                  <Badge variant="outline">Live</Badge>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant={selectedFilter === "autopilot-history" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedFilter(selectedFilter === "autopilot-history" ? "all" : "autopilot-history")}
+                    >
+                      <History className="w-4 h-4 mr-1" />
+                      Autopilot History
+                    </Button>
+                    <Badge variant="outline">Live</Badge>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <ScrollArea className="h-96">
                   <div className="space-y-3">
-                    {activityFeed.slice(0, 20).map((item) => (
+                    {filteredFeed.slice(0, 20).map((item) => (
                       <div key={item.id} className="flex items-start space-x-3 p-3 rounded-lg border bg-card">
                         <div className="text-lg">{item.icon}</div>
                         <div className="flex-1 min-w-0">

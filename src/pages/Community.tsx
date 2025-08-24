@@ -5,8 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Users, MapPin, Radio, Trophy, TrendingUp, Calendar } from "lucide-react";
+import { Heart, Users, MapPin, Radio, Trophy, TrendingUp, Calendar, Crown, Award, Target, Globe, Filter } from "lucide-react";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Progress } from "@/components/ui/progress";
+import { useState } from "react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
@@ -20,6 +24,26 @@ const communitySubItems = [
 
 export default function Community() {
   const navigate = useNavigate();
+  const [timeframe, setTimeframe] = useState("7d");
+  const [scope, setScope] = useState("global");
+
+  // Mock leaderboard data
+  const leaderboardData = {
+    "Live & Events": [
+      { rank: 1, name: "Sarah Miller", score: 2847, avatar: "👩‍💼", isCurrentUser: false },
+      { rank: 2, name: "Mike Thompson", score: 2531, avatar: "👨‍💻", isCurrentUser: false },
+      { rank: 3, name: "You", score: 2245, avatar: "🧑", isCurrentUser: true },
+      { rank: 4, name: "Lisa Chen", score: 2156, avatar: "👩‍🔬", isCurrentUser: false },
+      { rank: 5, name: "James Davis", score: 2089, avatar: "👨‍⚕️", isCurrentUser: false }
+    ],
+    "Social Graph": [
+      { rank: 1, name: "Emma Wilson", score: 1856, avatar: "👩‍🎨", isCurrentUser: false },
+      { rank: 2, name: "You", score: 1743, avatar: "🧑", isCurrentUser: true },
+      { rank: 3, name: "Dr. Roberts", score: 1592, avatar: "👨‍⚕️", isCurrentUser: false },
+      { rank: 4, name: "Tae Min", score: 1456, avatar: "🧑‍💼", isCurrentUser: false },
+      { rank: 5, name: "Se Hun Oh", score: 1389, avatar: "👨‍💻", isCurrentUser: false }
+    ]
+  };
 
   const categoryCards = [
     {
@@ -90,6 +114,13 @@ export default function Community() {
             />
           </div>
 
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="overview">Community Overview</TabsTrigger>
+              <TabsTrigger value="rankings">Rankings</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             
             {/* Left Column - Quick Stats */}
@@ -254,6 +285,209 @@ export default function Community() {
               </Card>
             </div>
           </div>
+            </TabsContent>
+
+            <TabsContent value="rankings">
+              {/* Rankings Controls */}
+              <div className="flex flex-wrap gap-4 mb-6 p-4 bg-white/50 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">Timeframe:</span>
+                  <Select value={timeframe} onValueChange={setTimeframe}>
+                    <SelectTrigger className="w-24">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="today">Today</SelectItem>
+                      <SelectItem value="7d">7 Days</SelectItem>
+                      <SelectItem value="30d">30 Days</SelectItem>
+                      <SelectItem value="all">All-time</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">Scope:</span>
+                  <Select value={scope} onValueChange={setScope}>
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="global">Global</SelectItem>
+                      <SelectItem value="region">Region</SelectItem>
+                      <SelectItem value="group">My Groups</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Your Position Band */}
+              <Card className="mb-6 bg-gradient-to-r from-purple-50 to-blue-50">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        🧑
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold">Your Overall Rank</h3>
+                        <p className="text-muted-foreground">Based on combined activity across all categories</p>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-purple-600">#7</div>
+                      <div className="text-sm text-muted-foreground">of 2,347 users</div>
+                      <div className="text-xs text-green-600 mt-1">↑ +3 this week</div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 p-3 bg-white/70 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium">Boost Your Ranking</span>
+                      <Button size="sm" variant="outline">
+                        <Target className="w-4 h-4 mr-1" />
+                        Boost Me
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+                      <div className="p-2 bg-white/50 rounded">• Join 2 more events (+50 pts)</div>
+                      <div className="p-2 bg-white/50 rounded">• Share wellness tip (+25 pts)</div>
+                      <div className="p-2 bg-white/50 rounded">• Complete weekly goal (+75 pts)</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Leaderboards */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {Object.entries(leaderboardData).map(([category, users]) => (
+                  <Card key={category}>
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Crown className="w-5 h-5 text-yellow-500" />
+                        <h3 className="text-lg font-semibold">{category}</h3>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        {users.map((user) => (
+                          <div 
+                            key={user.rank}
+                            className={`flex items-center justify-between p-3 rounded-lg ${
+                              user.isCurrentUser 
+                                ? 'bg-primary/10 border-2 border-primary/30' 
+                                : 'bg-muted/30'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                                user.rank === 1 ? 'bg-yellow-100 text-yellow-700' :
+                                user.rank === 2 ? 'bg-gray-100 text-gray-700' :
+                                user.rank === 3 ? 'bg-orange-100 text-orange-700' :
+                                'bg-muted text-muted-foreground'
+                              }`}>
+                                {user.rank === 1 ? '🥇' : user.rank === 2 ? '🥈' : user.rank === 3 ? '🥉' : `#${user.rank}`}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-lg">{user.avatar}</span>
+                                <span className={`font-medium ${user.isCurrentUser ? 'text-primary' : ''}`}>
+                                  {user.name}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-bold">{user.score.toLocaleString()}</div>
+                              <div className="text-xs text-muted-foreground">points</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="mt-4 pt-4 border-t text-center">
+                        <Button variant="outline" size="sm">View Full Leaderboard</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+
+                {/* Additional Categories */}
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Award className="w-5 h-5 text-green-500" />
+                      <h3 className="text-lg font-semibold">Content Impact</h3>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-yellow-100 text-yellow-700">🥇</div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">👩‍🎓</span>
+                            <span className="font-medium">Dr. Sarah K.</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-bold">3,245</div>
+                          <div className="text-xs text-muted-foreground">impact</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-primary/10 border-2 border-primary/30">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-700">#4</div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">🧑</span>
+                            <span className="font-medium text-primary">You</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-bold">1,856</div>
+                          <div className="text-xs text-muted-foreground">impact</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <TrendingUp className="w-5 h-5 text-blue-500" />
+                      <h3 className="text-lg font-semibold">Growth Drivers</h3>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-primary/10 border-2 border-primary/30">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-yellow-100 text-yellow-700">🥇</div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">🧑</span>
+                            <span className="font-medium text-primary">You</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-bold">+847</div>
+                          <div className="text-xs text-muted-foreground">this week</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-700">🥈</div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">👨‍💼</span>
+                            <span className="font-medium">Mike J.</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-bold">+723</div>
+                          <div className="text-xs text-muted-foreground">this week</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </AppLayout>
