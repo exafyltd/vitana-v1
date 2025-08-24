@@ -6,7 +6,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, MessageSquare, TrendingUp, Lightbulb, Plus, Heart, Share2, Clock } from "lucide-react";
+import { Users, MessageSquare, TrendingUp, Lightbulb, Plus, Heart, Share2, Clock, Plane } from "lucide-react";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const communitySubItems = [
   { id: "overview", name: "Overview", path: "/community" },
