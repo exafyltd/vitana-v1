@@ -12,7 +12,7 @@ import HealthCoachChat from "@/components/health/HealthCoachChat";
 const healthSubItems = [
   { id: "overview", name: "Overview", path: "/health" },
   { id: "pillars", name: "Pillars of Health", path: "/health/pillars" },
-  { id: "services", name: "Wellness Services", path: "/health/services" },
+  { id: "services", name: "Services HUB", path: "/health/services" },
   { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
   { id: "education", name: "Education & Resources", path: "/health/education" },
   { id: "biomarker-results", name: "Biomarker Results", path: "/health/biomarker-results" },
@@ -34,7 +34,7 @@ const overviewCards = [
     color: "from-blue-500/20 to-cyan-500/20",
   },
   {
-    title: "Wellness Services",
+    title: "Services HUB",
     description: "Book doctors, coaching, programs & screenings",
     icon: Stethoscope,
     path: "/health/services",
