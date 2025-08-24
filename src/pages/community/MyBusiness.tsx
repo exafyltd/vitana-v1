@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane } from "lucide-react";
+import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2 } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
@@ -170,14 +170,22 @@ export default function MyBusiness() {
             </Button>
           </div>
 
-          {/* Main Content Tabs */}
-          <Tabs defaultValue="active" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="active">Active Services</TabsTrigger>
-              <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
-              <TabsTrigger value="clients">Clients</TabsTrigger>
+          {/* Two-Panel Layout */}
+          <Tabs defaultValue="business" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="business">Business Management</TabsTrigger>
+              <TabsTrigger value="referrals">Referral Revenue</TabsTrigger>
             </TabsList>
+
+            <TabsContent value="business" className="space-y-6">
+              {/* Business Management - Nested Tabs */}
+              <Tabs defaultValue="active" className="w-full">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="active">Active Services</TabsTrigger>
+                  <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
+                  <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                  <TabsTrigger value="clients">Clients</TabsTrigger>
+                </TabsList>
 
             <TabsContent value="active" className="space-y-4">
               <div className="grid gap-4">
@@ -276,6 +284,166 @@ export default function MyBusiness() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">Client list and communication tools</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+              </Tabs>
+            </TabsContent>
+
+            <TabsContent value="referrals" className="space-y-6">
+              {/* Referral Revenue Summary */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-green-100 rounded-lg">
+                        <DollarSign className="w-4 h-4 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">$1,250</p>
+                        <p className="text-sm text-muted-foreground">Total Earnings</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-100 rounded-lg">
+                        <Calendar className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">$320</p>
+                        <p className="text-sm text-muted-foreground">This Month</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <Users className="w-4 h-4 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">16</p>
+                        <p className="text-sm text-muted-foreground">Active Referrals</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Referral Code */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Share2 className="w-5 h-5" />
+                    Your Referral Code
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-2 border-dashed border-blue-200">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-2xl font-bold text-blue-600">WELLNESS2024</p>
+                        <p className="text-sm text-muted-foreground">Earn 20% commission on each successful referral</p>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy Code
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Share this code with friends and earn 20% of their subscription fee as monthly recurring commission.
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Time Filters */}
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle>Referral Earnings History</CardTitle>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm">
+                        <Filter className="w-4 h-4 mr-1" />
+                        This Month
+                      </Button>
+                      <Button variant="ghost" size="sm">All Time</Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Client List */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-green-600">SM</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">Sarah Miller</p>
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            Subscribed Dec 15, 2024
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-medium text-green-600">+$3.99/month</p>
+                        <p className="text-xs text-muted-foreground">Premium Plan</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-blue-600">JD</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">James Davis</p>
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            Subscribed Nov 28, 2024
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-medium text-green-600">+$9.99/month</p>
+                        <p className="text-xs text-muted-foreground">Enterprise Plan</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-purple-600">LC</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">Lisa Chen</p>
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            Subscribed Oct 12, 2024
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-medium text-green-600">+$3.99/month</p>
+                        <p className="text-xs text-muted-foreground">Premium Plan</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Monthly Recurring Commission</span>
+                      <span className="font-semibold text-green-600">$17.97/month</span>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
