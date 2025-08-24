@@ -61,17 +61,17 @@ export default function Dashboard() {
               onMouseEnter={() => setShowPreview(true)}
               onMouseLeave={() => setShowPreview(false)}
             >
+              {pendingCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
+                >
+                  {pendingCount}
+                </Badge>
+              )}
               <div className="flex flex-col items-center justify-center h-full space-y-3">
-                <div className="relative">
+                <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-45" />
-                  {pendingCount > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
-                    >
-                      {pendingCount}
-                    </Badge>
-                  )}
                 </div>
                 <span className="text-sm font-medium text-red-400">Autopilot</span>
               </div>
