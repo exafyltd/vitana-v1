@@ -71,7 +71,7 @@ export default function Dashboard() {
               )}
               <div className="flex flex-col items-center justify-center h-full space-y-3">
                 <div>
-                  <Plane className="w-10 h-10 text-red-400 transform rotate-45" />
+                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                 </div>
                 <span className="text-sm font-medium text-red-400">Autopilot</span>
               </div>
