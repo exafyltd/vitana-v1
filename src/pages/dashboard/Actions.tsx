@@ -1,11 +1,15 @@
+import React from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Star, Clock, FileText, CheckCircle, Zap, Lock } from "lucide-react";
+import { Star, Clock, FileText, CheckCircle, Zap, Lock, Calendar, Users, Headphones, Heart, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { AutopilotCategory, AutopilotPriority } from "@/types/autopilot";
 
 const dashboardSubItems = [
   { id: "overview", name: "Overview", path: "/dashboard" },
@@ -17,6 +21,51 @@ const dashboardSubItems = [
 
 export default function Actions() {
   const navigate = useNavigate();
+  const { pendingActions, executeActions, toggleActionSelection, dismissActions } = useAutopilot();
+
+  const getCategoryIcon = (category: AutopilotCategory) => {
+    switch (category) {
+      case "health": return Heart;
+      case "community": return Users;
+      case "media": return Headphones;
+      case "discover": return ShoppingCart;
+      case "calendar": return Calendar;
+      default: return Star;
+    }
+  };
+
+  const getCategoryColor = (category: AutopilotCategory) => {
+    switch (category) {
+      case "health": return "text-green-600 bg-green-50 border-green-200";
+      case "community": return "text-purple-600 bg-purple-50 border-purple-200";
+      case "media": return "text-blue-600 bg-blue-50 border-blue-200"; 
+      case "discover": return "text-orange-600 bg-orange-50 border-orange-200";
+      case "calendar": return "text-indigo-600 bg-indigo-50 border-indigo-200";
+      default: return "text-gray-600 bg-gray-50 border-gray-200";
+    }
+  };
+
+  const getPriorityColor = (priority: AutopilotPriority) => {
+    switch (priority) {
+      case "high": return "text-red-500 bg-red-50";
+      case "medium": return "text-amber-600 bg-amber-50";
+      case "low": return "text-green-600 bg-green-50";
+    }
+  };
+
+  const actionsByCategory = pendingActions.reduce((acc, action) => {
+    if (!acc[action.category]) acc[action.category] = [];
+    acc[action.category].push(action);
+    return acc;
+  }, {} as Record<AutopilotCategory, typeof pendingActions>);
+
+  const categories: { key: AutopilotCategory; label: string; count: number }[] = [
+    { key: "health", label: "Health & Biomarkers", count: actionsByCategory.health?.length || 0 },
+    { key: "community", label: "Community & Social", count: actionsByCategory.community?.length || 0 },
+    { key: "media", label: "Media & Learning", count: actionsByCategory.media?.length || 0 },
+    { key: "discover", label: "Discover Shop & Services", count: actionsByCategory.discover?.length || 0 },
+    { key: "calendar", label: "Calendar & Productivity", count: actionsByCategory.calendar?.length || 0 }
+  ];
 
   return (
     <AppLayout>
@@ -44,143 +93,135 @@ export default function Actions() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            {/* Top 5 To-Do's */}
+          <div className="grid grid-cols-1 gap-6">
+            {/* Categorized Actions Management */}
             <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
               <CardHeader>
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center">
-                    <Star className="w-6 h-6 text-yellow-600" />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
+                      <Zap className="w-6 h-6 text-red-500" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Action Management</CardTitle>
+                      <CardDescription>Organize and prioritize your AI-suggested actions</CardDescription>
+                    </div>
                   </div>
-                  <CardTitle className="text-lg">Top 5 To-Do's ⭐</CardTitle>
+                  <Badge variant="outline">
+                    {pendingActions.length} pending
+                  </Badge>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                    <span className="font-medium">Morning workout</span>
-                    <div className="flex space-x-1">
-                      <Badge variant="outline"><CheckCircle className="w-3 h-3 mr-1" />✔</Badge>
-                      <Button size="sm" variant="outline">Do Now</Button>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <span className="font-medium">Call nutritionist</span>
-                    <div className="flex space-x-1">
-                      <Button size="sm" variant="default">AI Do It</Button>
-                      <Button size="sm" variant="outline">Later</Button>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                    <span className="font-medium">Plan weekend activities</span>
-                    <div className="flex space-x-1">
-                      <Badge variant="outline"><CheckCircle className="w-3 h-3 mr-1" />✔</Badge>
-                      <Button size="sm" variant="outline">Do Now</Button>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-4 pt-4 border-t">
-                  <Button className="w-full">
-                    <Zap className="w-4 h-4 mr-2" />
-                    Approve All to Autopilot
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                <Tabs defaultValue="health" className="w-full">
+                  <TabsList className="grid grid-cols-5 w-full mb-4">
+                    {categories.map(category => {
+                      const IconComponent = getCategoryIcon(category.key);
+                      return (
+                        <TabsTrigger 
+                          key={category.key} 
+                          value={category.key}
+                          className="text-xs"
+                        >
+                          <IconComponent className="w-4 h-4 mr-1" />
+                          {category.label.split(' ')[0]} ({category.count})
+                        </TabsTrigger>
+                      );
+                    })}
+                  </TabsList>
 
-            {/* Daily Timeline */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
-                    <Clock className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <CardTitle className="text-lg">Daily Timeline 🕒</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                    <div>
-                      <span className="font-medium">Morning Focus</span>
-                      <p className="text-sm text-muted-foreground">9:00 - 11:00 AM</p>
-                    </div>
-                    <div className="flex space-x-1">
-                      <Button size="sm" variant="outline">Okay</Button>
-                      <Lock className="w-4 h-4 text-blue-600" />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <div>
-                      <span className="font-medium">Lunch & Social</span>
-                      <p className="text-sm text-muted-foreground">12:00 - 1:30 PM</p>
-                    </div>
-                    <div className="flex space-x-1">
-                      <Button size="sm" variant="outline">Move Block</Button>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                    <div>
-                      <span className="font-medium">Evening Wind Down</span>
-                      <p className="text-sm text-muted-foreground">8:00 - 10:00 PM</p>
-                    </div>
-                    <div className="flex space-x-1">
-                      <Button size="sm" variant="outline">Lock It</Button>
-                    </div>
-                  </div>
-                </div>
+                  {categories.map(category => (
+                    <TabsContent key={category.key} value={category.key} className="space-y-3">
+                      {actionsByCategory[category.key]?.length > 0 ? (
+                        <>
+                          {actionsByCategory[category.key]
+                            .sort((a, b) => {
+                              const priorityOrder = { high: 3, medium: 2, low: 1 };
+                              return priorityOrder[b.priority] - priorityOrder[a.priority];
+                            })
+                            .map(action => (
+                              <div 
+                                key={action.id} 
+                                className={`p-4 rounded-lg border transition-colors ${getCategoryColor(category.key)}`}
+                              >
+                                <div className="flex items-start justify-between">
+                                  <div className="flex items-start space-x-3">
+                                    <div className="text-2xl">{action.icon}</div>
+                                    <div className="flex-1">
+                                      <div className="flex items-center space-x-2 mb-1">
+                                        <h4 className="font-medium">{action.title}</h4>
+                                        <Badge 
+                                          variant="outline" 
+                                          className={`text-xs ${getPriorityColor(action.priority)}`}
+                                        >
+                                          {action.priority}
+                                        </Badge>
+                                        {action.timeEstimate && (
+                                          <Badge variant="outline" className="text-xs">
+                                            <Clock className="w-3 h-3 mr-1" />
+                                            {action.timeEstimate}
+                                          </Badge>
+                                        )}
+                                      </div>
+                                      <p className="text-sm text-muted-foreground mb-3">{action.reason}</p>
+                                      <div className="flex space-x-2">
+                                        <Button 
+                                          size="sm"
+                                          onClick={() => executeActions([action.id])}
+                                          className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
+                                        >
+                                          <CheckCircle className="w-3 h-3 mr-1" />
+                                          Do Now
+                                        </Button>
+                                        <Button 
+                                          variant="outline" 
+                                          size="sm"
+                                          onClick={() => dismissActions([action.id])}
+                                        >
+                                          Later
+                                        </Button>
+                                        <Button variant="ghost" size="sm">
+                                          Edit
+                                        </Button>
+                                        <Button variant="ghost" size="sm">
+                                          Details
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {new Date(action.timestamp).toLocaleTimeString()}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          <div className="flex justify-between pt-4">
+                            <Button 
+                              variant="outline"
+                              onClick={() => executeActions(actionsByCategory[category.key].map(a => a.id))}
+                            >
+                              <Zap className="w-4 h-4 mr-2" />
+                              Execute All {category.label.split(' ')[0]}
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              Configure Category
+                            </Button>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center py-8 text-muted-foreground">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                            {React.createElement(getCategoryIcon(category.key), { className: "w-8 h-8 text-gray-400" })}
+                          </div>
+                          <p>No {category.label.toLowerCase()} actions available</p>
+                        </div>
+                      )}
+                    </TabsContent>
+                  ))}
+                </Tabs>
               </CardContent>
             </Card>
           </div>
-
-          {/* Quick Prep */}
-          <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-green-600" />
-                </div>
-                <CardTitle className="text-lg">Quick Prep 📑</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="mb-4">
-                Short notes for next 3 calls/meetings
-              </CardDescription>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <h4 className="font-medium mb-2">Dr. Smith - 2:00 PM</h4>
-                  <p className="text-sm text-muted-foreground mb-3">Annual checkup, discuss sleep patterns</p>
-                  <div className="space-y-1">
-                    <Button size="sm" variant="outline" className="w-full">Read Now</Button>
-                    <Button size="sm" variant="outline" className="w-full">Send Agenda</Button>
-                  </div>
-                </div>
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <h4 className="font-medium mb-2">Yoga Class - 6:00 PM</h4>
-                  <p className="text-sm text-muted-foreground mb-3">Beginner session, bring water</p>
-                  <div className="space-y-1">
-                    <Button size="sm" variant="outline" className="w-full">Read Now</Button>
-                    <Button size="sm" variant="outline" className="w-full">Skip</Button>
-                  </div>
-                </div>
-                <div className="p-4 bg-purple-50 rounded-lg">
-                  <h4 className="font-medium mb-2">Friend Meetup - 7:30 PM</h4>
-                  <p className="text-sm text-muted-foreground mb-3">Coffee chat, catch up on life</p>
-                  <div className="space-y-1">
-                    <Button size="sm" variant="outline" className="w-full">Read Now</Button>
-                    <Button size="sm" variant="outline" className="w-full">Send Agenda</Button>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 pt-4 border-t">
-                <p className="text-sm text-muted-foreground">
-                  <Zap className="inline w-4 h-4 mr-1 text-yellow-600" />
-                  AI can already handle tasks with ✔ if you want to stay hands-off.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </AppLayout>

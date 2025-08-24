@@ -16,6 +16,10 @@ import { MusicCard } from "@/components/crossover/MusicCard";
 import { VideoFeedCard } from "@/components/crossover/VideoFeedCard";
 import { useNavigate } from "react-router-dom";
 import { Plane } from "lucide-react";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 const dashboardSubItems = [
   { id: "overview", name: "Overview", path: "/dashboard" },
@@ -27,6 +31,11 @@ const dashboardSubItems = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { pendingCount, getLatestActions } = useAutopilot();
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  
+  const latestActions = getLatestActions(2);
 
   return (
     <AppLayout>
@@ -45,15 +54,45 @@ export default function Dashboard() {
               </div>
             </div>
             
-            {/* Autopilot Card */}
+            {/* Autopilot Card with Live Badge Counter */}
             <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-              onClick={() => navigate('/dashboard/actions')}
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
+              onClick={() => setAutopilotOpen(true)}
+              onMouseEnter={() => setShowPreview(true)}
+              onMouseLeave={() => setShowPreview(false)}
             >
               <div className="flex flex-col items-center justify-center h-full space-y-3">
-                <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                <div className="relative">
+                  <Plane className="w-10 h-10 text-red-400 transform rotate-45" />
+                  {pendingCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
+                    >
+                      {pendingCount}
+                    </Badge>
+                  )}
+                </div>
                 <span className="text-sm font-medium text-red-400">Autopilot</span>
               </div>
+              
+              {/* Hover Preview */}
+              {showPreview && pendingCount > 0 && (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  {latestActions.map((action, index) => (
+                    <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                      <span>{action.icon}</span>
+                      <span className="truncate">{action.title}</span>
+                    </div>
+                  ))}
+                  {pendingCount > 2 && (
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                      +{pendingCount - 2} more actions
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             
             {/* Vitana Index Card - Circle with 742 */}
@@ -148,6 +187,12 @@ export default function Dashboard() {
 
         </div>
       </div>
+      
+      {/* Autopilot Popup */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
+      />
     </AppLayout>
   );
 }

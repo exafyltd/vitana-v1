@@ -2,10 +2,11 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe, Search, Clock, Settings, Heart, MessageSquare } from "lucide-react";
+import { Globe, Search, Clock, Settings, Heart, MessageSquare, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useNavigate } from "react-router-dom";
+import { useAutopilot } from "@/hooks/use-autopilot";
 
 const dashboardSubItems = [
   { id: "overview", name: "Overview", path: "/dashboard" },
@@ -17,6 +18,7 @@ const dashboardSubItems = [
 
 export default function Context() {
   const navigate = useNavigate();
+  const { pendingCount } = useAutopilot();
 
   return (
     <AppLayout>
@@ -65,9 +67,21 @@ export default function Context() {
                   <Button variant="outline" size="sm" className="w-full">Edit Mood</Button>
                   <Button variant="outline" size="sm" className="w-full">Update</Button>
                 </div>
-                <p className="text-xs text-muted-foreground mt-3">
-                  <Switch className="inline w-4 h-4 mr-1" /> Let AI Handle
-                </p>
+                <div className="mt-4 pt-4 border-t">
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs text-muted-foreground">Current status shapes AI recommendations</p>
+                    {pendingCount > 0 && (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => navigate("/dashboard/actions")}
+                      >
+                        <Zap className="w-4 h-4 mr-1" />
+                        See {pendingCount} Actions →
+                      </Button>
+                    )}
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -91,9 +105,21 @@ export default function Context() {
                   <Button variant="outline" size="sm" className="w-full">No Thanks</Button>
                   <Button variant="outline" size="sm" className="w-full">Change Rule</Button>
                 </div>
-                <p className="text-xs text-muted-foreground mt-3">
-                  <Switch className="inline w-4 h-4 mr-1" /> Let AI Handle
-                </p>
+                <div className="mt-4 pt-4 border-t">
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs text-muted-foreground">Your decisions guide AI priorities</p>
+                    {pendingCount > 0 && (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => navigate("/dashboard/actions")}
+                      >
+                        <Zap className="w-4 h-4 mr-1" />
+                        Review Actions →
+                      </Button>
+                    )}
+                  </div>
+                </div>
               </CardContent>
             </Card>
 

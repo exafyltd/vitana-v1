@@ -2,11 +2,13 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, RotateCcw, Repeat, Lightbulb, CheckCircle, Play, Pause, Settings } from "lucide-react";
+import { Zap, RotateCcw, Repeat, Lightbulb, CheckCircle, Play, Pause, Settings, Clock, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
+import { useAutopilot } from "@/hooks/use-autopilot";
 
 const dashboardSubItems = [
   { id: "overview", name: "Overview", path: "/dashboard" },
@@ -18,6 +20,43 @@ const dashboardSubItems = [
 
 export default function AIFeed() {
   const navigate = useNavigate();
+  const { state, executeActions } = useAutopilot();
+  
+  // Mock activity feed data including completed/failed actions
+  const activityFeed = [
+    ...state.actions
+      .filter(action => action.status !== "pending")
+      .map(action => ({
+        id: action.id,
+        type: "action" as const,
+        title: action.title,
+        reason: action.reason,
+        timestamp: action.timestamp,
+        status: action.status,
+        icon: action.icon,
+        category: action.category
+      })),
+    {
+      id: "routine-1",
+      type: "routine" as const,
+      title: "Hydration reminder triggered",
+      reason: "2 hours since last water intake",
+      timestamp: new Date(Date.now() - 45 * 60 * 1000),
+      status: "completed" as const,
+      icon: "💧",
+      category: "health" as const
+    },
+    {
+      id: "suggestion-1", 
+      type: "suggestion" as const,
+      title: "Morning routine optimization suggested",
+      reason: "Detected 8 AM energy peak pattern",
+      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      status: "pending" as const,
+      icon: "🌅",
+      category: "health" as const
+    }
+  ].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
   return (
     <AppLayout>
@@ -46,7 +85,7 @@ export default function AIFeed() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Live Actions */}
+            {/* Updated Activity Feed */}
             <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -54,52 +93,63 @@ export default function AIFeed() {
                     <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center">
                       <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
                     </div>
-                    <CardTitle className="text-lg">Live Actions 🏃</CardTitle>
+                    <CardTitle className="text-lg">Activity Feed 🏃</CardTitle>
                   </div>
                   <Badge variant="outline">Live</Badge>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3 max-h-64 overflow-y-auto">
-                  <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Booked gym session</p>
-                      <p className="text-xs text-muted-foreground">2 minutes ago</p>
-                    </div>
+                <ScrollArea className="h-96">
+                  <div className="space-y-3">
+                    {activityFeed.slice(0, 20).map((item) => (
+                      <div key={item.id} className="flex items-start space-x-3 p-3 rounded-lg border bg-card">
+                        <div className="text-lg">{item.icon}</div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <h4 className="text-sm font-medium">{item.title}</h4>
+                            <div className="flex items-center space-x-2">
+                              <Badge 
+                                variant={
+                                  item.status === "completed" ? "default" : 
+                                  item.status === "failed" ? "destructive" :
+                                  item.status === "executing" ? "secondary" :
+                                  "outline"
+                                }
+                                className="text-xs"
+                              >
+                                {item.status === "completed" && <CheckCircle className="w-3 h-3 mr-1" />}
+                                {item.status === "failed" && <AlertTriangle className="w-3 h-3 mr-1" />}
+                                {item.status === "executing" && <Zap className="w-3 h-3 mr-1" />}
+                                {item.status}
+                              </Badge>
+                              <span className="text-xs text-muted-foreground">
+                                <Clock className="w-3 h-3 mr-1 inline" />
+                                {new Date(item.timestamp).toLocaleTimeString()}
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-muted-foreground">{item.reason}</p>
+                          {item.status === "failed" && (
+                            <div className="mt-2">
+                              <Button size="sm" variant="outline">
+                                Retry
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                    <CheckCircle className="w-4 h-4 text-blue-600" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Sent reply to Sarah</p>
-                      <p className="text-xs text-muted-foreground">5 minutes ago</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-                    <CheckCircle className="w-4 h-4 text-purple-600" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Added sleep reminder</p>
-                      <p className="text-xs text-muted-foreground">8 minutes ago</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
-                    <Zap className="w-4 h-4 text-yellow-600" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Optimizing evening routine</p>
-                      <p className="text-xs text-muted-foreground">Now</p>
-                    </div>
-                  </div>
-                </div>
+                </ScrollArea>
                 <div className="mt-4 space-y-2">
                   <Button variant="outline" size="sm" className="w-full">
-                    <RotateCcw className="w-4 h-4 mr-1" />Undo Last
+                    <RotateCcw className="w-4 h-4 mr-1" />
+                    Undo Last Action
                   </Button>
-                  <Button variant="outline" size="sm" className="w-full">Always Okay</Button>
-                  <Button variant="outline" size="sm" className="w-full">More Info</Button>
+                  <Button variant="outline" size="sm" className="w-full">
+                    Export Activity Log
+                  </Button>
                 </div>
-                <p className="text-xs text-muted-foreground mt-3">
-                  Actions scroll in real time with status updates
-                </p>
               </CardContent>
             </Card>
 
