@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -114,11 +114,6 @@ export default function MyGroups() {
               </div>
             </div>
           </div>
-          <PageHeader 
-            title="Connect with your tribe! 👥"
-            description="Your personalized community feed and group updates to stay connected with like-minded wellness enthusiasts."
-            icon={Users}
-          />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Left Column - My Groups */}
