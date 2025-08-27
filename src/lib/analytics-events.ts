@@ -24,8 +24,8 @@ export interface G1AnalyticsEvent {
 class G1AnalyticsService {
   private basePayload(): Omit<G1AnalyticsPayload, 'screenId'> {
     return {
-      tenant: 'vitana-main',
-      role: 'user', 
+      tenant: 'maxina',
+      role: 'community', 
       userId: 'mariia_demo',
       timestamp: Date.now()
     };
