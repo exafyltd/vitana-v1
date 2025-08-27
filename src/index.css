@@ -107,6 +107,11 @@ All colors MUST be HSL.
     --health-success: 150 100% 45%;
     --health-warning: 45 100% 60%;
     --health-danger: 0 84% 60%;
+    
+    /* Tenant brand variables - default to Maxina */
+    --brand-accent: 339 89% 49%;
+    --brand-bg: 0 0% 100%;
+    --brand-fg: 222.2 84% 4.9%;
   }
 
   .dark {
@@ -202,6 +207,11 @@ All colors MUST be HSL.
     
     /* Ruby red for streaming */
     --ruby: 339 89% 49%;
+    
+    /* Tenant brand variables - dark mode defaults */
+    --brand-accent: 339 89% 49%;
+    --brand-bg: 222.2 84% 4.9%;
+    --brand-fg: 210 40% 98%;
   }
 }
 

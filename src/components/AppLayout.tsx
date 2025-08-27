@@ -1,17 +1,21 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SidebarProvider, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
+import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
+import { useRole } from "@/hooks/useRole";
+import { useTenant } from "@/hooks/useTenant";
+import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 
 const sidebarCategories = [
-  { title: "Home", path: "/dashboard", icon: LayoutDashboard },
+  { title: "Home", path: "/", icon: LayoutDashboard },
   { title: "Community", path: "/community", icon: MessageSquare },
   { title: "Discover", path: "/discover", icon: Search },
-  { title: "Inbox", path: "/messages", icon: Bell },
+  { title: "Inbox", path: "/messages", icon: MessageSquare },
   { title: "Health", path: "/health", icon: Heart },
   { title: "Wallet", path: "/wallet", icon: Wallet },
   { title: "Sharing", path: "/sharing", icon: Share2 },
@@ -27,7 +31,24 @@ interface AppLayoutProps {
 function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<StreamingChatRef> }) {
   const [isStreaming, setIsStreaming] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { open } = useSidebar();
+  const { role, hasPermission } = useRole();
+  const { tenant } = useTenant();
+
+  // Filter sidebar items based on role permissions
+  const visibleSidebarCategories = sidebarCategories.filter(cat => {
+    if (cat.title === "Admin") {
+      return hasPermission("staff");
+    }
+    return true;
+  });
+
+  // Mariia Maxina persona data
+  const VITANA_INDEX_SCORE = 742;
+  const USER_NAME = "Mariia Maxina";
+  const USER_ROLE_DISPLAY = "Community";
+  const tier = getVitanaIndexTier(VITANA_INDEX_SCORE);
 
   // Check if current path matches category (including subpages)
   const isActivePath = (categoryPath: string) => {
@@ -83,7 +104,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
-                {sidebarCategories.map((cat) => {
+                {visibleSidebarCategories.map((cat) => {
                   const isActive = isActivePath(cat.path);
                   return (
                     <SidebarMenuItem key={cat.title}>
@@ -145,29 +166,51 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           )}
           
           {open ? (
-            <Link 
-              to="/profile" 
-              className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm"
-            >
-              <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
-                <AvatarFallback>VA</AvatarFallback>
-              </Avatar>
-              <div className="leading-tight flex-1">
-                <div className="flex items-center gap-2">
-                  <div className="text-sm font-medium">Vitana User</div>
-                  <div className="w-4 h-4 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center">
-                    <span className="text-[8px] font-bold text-green-600">742</span>
+            <div className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group">
+              <Link to="/profile" className="flex items-center gap-2 flex-1">
+                <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+                  <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">MM</AvatarFallback>
+                </Avatar>
+                <div className="leading-tight flex-1">
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm font-medium">{USER_NAME}</div>
+                    <div 
+                      className="w-4 h-4 rounded-full flex items-center justify-center border border-white/20"
+                      style={{ backgroundColor: tier.color }}
+                      title={`Vitana Index: ${VITANA_INDEX_SCORE} (${tier.label})`}
+                    >
+                      <span className="text-[8px] font-bold text-gray-700">{VITANA_INDEX_SCORE}</span>
+                    </div>
                   </div>
+                  <div className="text-xs text-sidebar-foreground/70">{USER_ROLE_DISPLAY}</div>
                 </div>
-                <div className="text-xs text-sidebar-foreground/70">Premium Member</div>
-              </div>
-            </Link>
+              </Link>
+              <KebabMenu>
+                <DropdownMenuItem onClick={() => navigate("/profile")}>
+                  <User className="mr-2 h-4 w-4" />
+                  View Profile
+                </DropdownMenuItem>
+                {process.env.NODE_ENV === "development" && (
+                  <DropdownMenuItem onClick={() => console.log("Switch role - dev only")}>
+                    <Shield className="mr-2 h-4 w-4" />
+                    Switch Role [Dev]
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => console.log("Sign out")}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </DropdownMenuItem>
+              </KebabMenu>
+            </div>
           ) : (
             <Link 
               to="/profile" 
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white hover:bg-black/80 transition-all mx-auto"
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto"
             >
-              <User className="h-4 w-4" />
+              <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+                <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">MM</AvatarFallback>
+              </Avatar>
             </Link>
           )}
         </div>

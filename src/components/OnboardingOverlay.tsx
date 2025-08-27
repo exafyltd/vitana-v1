@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
+import { useTenant } from "@/hooks/useTenant";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +31,7 @@ const onboardingSteps: OnboardingStep[] = [
     title: "Connect Your Apps",
     description: "VITANA works best when connected to your favorite health and social apps.",
     icon: <Apple className="w-8 h-8 text-green-600" />,
-    items: ["Apple Health", "Instagram", "TikTok", "Google Fit", "Strava"]
+    items: ["YouTube", "LinkedIn", "Strava", "Apple Health (Coming Soon)", "Google Fit (Coming Soon)"]
   },
   {
     id: "goals",
@@ -52,12 +54,15 @@ export default function OnboardingOverlay({ open, onOpenChange }: OnboardingOver
   const [selectedConnections, setSelectedConnections] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [selectedCommunities, setSelectedCommunities] = useState<string[]>([]);
+  const { tenant } = useTenant();
 
   const step = onboardingSteps[currentStep];
   const isLastStep = currentStep === onboardingSteps.length - 1;
 
   const handleNext = () => {
     if (isLastStep) {
+      // Mark onboarding as completed using namespaced localStorage
+      setLocalStorageItem(tenant.id, "onboarding", "completed", "true");
       onOpenChange(false);
     } else {
       setCurrentStep(currentStep + 1);
@@ -140,8 +145,11 @@ export default function OnboardingOverlay({ open, onOpenChange }: OnboardingOver
                   <Button
                     key={item}
                     variant={isSelected ? "default" : "outline"}
-                    className="w-full justify-start gap-3 h-auto py-3"
-                    onClick={() => handleItemToggle(item)}
+                    className={`w-full justify-start gap-3 h-auto py-3 ${
+                      item.includes("Coming Soon") ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    onClick={() => !item.includes("Coming Soon") && handleItemToggle(item)}
+                    disabled={item.includes("Coming Soon")}
                   >
                     {getItemIcon(item)}
                     <span className="flex-1 text-left">{item}</span>

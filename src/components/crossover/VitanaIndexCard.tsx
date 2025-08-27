@@ -1,8 +1,9 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { getVitanaIndexTier, getVitanaIndexPercentage } from "@/lib/vitanaIndex";
 import { withCardId } from "@/lib/withCardId";
+import { cn } from "@/lib/utils";
 
 interface VitanaIndexCardProps {
   score?: number;
@@ -17,16 +18,14 @@ function VitanaIndexCardBase({
 }: VitanaIndexCardProps) {
   const navigate = useNavigate();
 
-  const getScoreStatus = (score: number) => {
-    if (score >= 750) return { color: "text-health-success", status: "Excellent", variant: "success" as const };
-    if (score >= 650) return { color: "text-health-warning", status: "Good", variant: "warning" as const };
-    if (score >= 500) return { color: "text-health-warning", status: "Fair", variant: "warning" as const };
-    return { color: "text-health-danger", status: "Needs Attention", variant: "danger" as const };
+  const tier = getVitanaIndexTier(score);
+  const progressPercent = getVitanaIndexPercentage(score);
+
+  const scoreStatus = {
+    color: tier.color,
+    status: tier.label,
+    variant: "success" as const
   };
-
-  const scoreStatus = getScoreStatus(score);
-
-  const progressPercent = Math.round((score / 1000) * 100);
 
   const content = (
     <div className="space-y-4">
@@ -51,15 +50,13 @@ function VitanaIndexCardBase({
               strokeWidth="8"
               fill="none"
               strokeDasharray={`${progressPercent * 2.51} 251`}
-              className={cn(
-                "transition-all duration-700 ease-out",
-                scoreStatus.color
-              )}
+              className="transition-all duration-700 ease-out"
               strokeLinecap="round"
+              style={{ stroke: scoreStatus.color }}
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="text-xl font-bold text-green-600">{score}</div>
+            <div className="text-xl font-bold" style={{ color: scoreStatus.color }}>{score}</div>
             <div className="text-xs text-muted-foreground">Index</div>
           </div>
         </div>
@@ -68,7 +65,7 @@ function VitanaIndexCardBase({
       {/* Status & Breakdown */}
       <div className="space-y-3 text-center">
         <div>
-          <div className={cn("text-lg font-bold", scoreStatus.color)}>{scoreStatus.status}</div>
+          <div className="text-lg font-bold" style={{ color: scoreStatus.color }}>{scoreStatus.status}</div>
           <div className="text-sm text-muted-foreground">{trend}</div>
         </div>
         
