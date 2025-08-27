@@ -70,7 +70,7 @@ import MyGroups from "./pages/community/MyGroups";
 import CommunityEvents from "./pages/community/Events";
 import MyBusiness from "./pages/community/MyBusiness";
 import MediaHub from "./pages/community/MediaHub";
-import LiveInteraction from "./pages/community/LiveInteraction";
+import LiveRooms from "./pages/community/LiveRooms";
 import AIInsights from "./pages/community/AIInsights";
 
 // AI sub-pages
@@ -155,7 +155,7 @@ const App = () => (
           <Route path="/community/events" element={<CommunityEvents />} />
           <Route path="/community/my-business" element={<MyBusiness />} />
           <Route path="/community/media-hub" element={<MediaHub />} />
-          <Route path="/community/live-interaction" element={<LiveInteraction />} />
+          <Route path="/community/live-rooms" element={<LiveRooms />} />
           <Route path="/community/ai-insights" element={<AIInsights />} />
           
           <Route path="/ai" element={<AI />} />

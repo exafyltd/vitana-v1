@@ -20,7 +20,7 @@ const communitySubItems = [
   { id: "events", name: "Events & Meetups", path: "/community/events" },
   { id: "my-business", name: "My Business", path: "/community/my-business" },
   { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
-  { id: "live-interaction", name: "LIVE Hub", path: "/community/live-interaction" },
+  { id: "live-rooms", name: "LIVE Hub", path: "/community/live-rooms" },
   { id: "ai-insights", name: "AI Insights", path: "/community/ai-insights" },
 ];
 
@@ -78,11 +78,11 @@ export default function Community() {
       color: "from-purple-100 to-violet-100"
     },
     {
-      id: "live-interaction",
+      id: "live-rooms",
       title: "LIVE Hub",
       description: "Real-time workshops and social sessions",
       icon: Trophy,
-      path: "/community/live-interaction",
+      path: "/community/live-rooms",
       color: "from-orange-100 to-amber-100"
     },
     {
