@@ -1,13 +1,10 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { useNavigate } from "react-router-dom";
-import { MessageSquare, Users, Bell, Archive, Search, Phone, Video, MoreHorizontal, Send, TrendingUp, Clock, Settings, Shield, CheckCircle, AlertCircle, UserPlus } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import MessageComposer from "@/components/messages/MessageComposer";
+import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle } from "lucide-react";
 
 const messagesSubItems = [
   { id: "overview", name: "Overview", path: "/messages" },
@@ -36,6 +33,100 @@ const stats = {
 
 export default function Messages() {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const EmptyState = ({ icon: Icon, title, description }: any) => (
+    <div className="flex flex-col items-center justify-center h-64 text-center">
+      <Icon className="w-12 h-12 text-muted-foreground mb-4" />
+      <h3 className="text-lg font-medium mb-2">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title="Inbox | Communication Hub" 
+        description="Manage your conversations, notifications, and stay connected with your community"
+        canonical={window.location.href}
+      />
+      <SubNavigation items={messagesSubItems} />
+      
+      <div className="p-6 bg-gradient-to-br from-domain-messages-tint via-background to-domain-messages-tint/50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Header */}
+          <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+            <CardHeader>
+              <CardTitle className="text-3xl">Stay connected with your community! 💬</CardTitle>
+              <p className="text-muted-foreground">Manage your conversations, notifications, and stay connected with your wellness community.</p>
+            </CardHeader>
+          </Card>
+
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="direct">Direct Messages</TabsTrigger>
+              <TabsTrigger value="group">Group Chats</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+              <TabsTrigger value="archived">Archived</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview" className="mt-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Activity</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <EmptyState 
+                      icon={Clock}
+                      title="No recent activity"
+                      description="Your recent messages and notifications will appear here"
+                    />
+                  </CardContent>
+                </Card>
+                <MessageComposer />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="direct" className="mt-6">
+              <EmptyState 
+                icon={MessageSquare}
+                title="No direct messages"
+                description="Start a conversation with community members"
+              />
+            </TabsContent>
+
+            <TabsContent value="group" className="mt-6">
+              <EmptyState 
+                icon={Users}
+                title="No group chats"
+                description="Join or create group conversations"
+              />
+            </TabsContent>
+
+            <TabsContent value="notifications" className="mt-6">
+              <EmptyState 
+                icon={Bell}
+                title="No notifications"
+                description="Your notifications will appear here"
+              />
+            </TabsContent>
+
+            <TabsContent value="archived" className="mt-6">
+              <EmptyState 
+                icon={Archive}
+                title="No archived messages"
+                description="Archived conversations will appear here"
+              />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}
 
   return (
     <AppLayout>

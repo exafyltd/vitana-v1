@@ -11,6 +11,87 @@
     "settings": "Settings",
     "admin": "Admin"
   },
+  "services": {
+    "title": "Services HUB",
+    "subtitle": "Access comprehensive healthcare and wellness services",
+    "categories": {
+      "preventive": "Preventive Screenings",
+      "labTests": "Lab Tests", 
+      "coaching": "Coaching & Personal Training",
+      "groupPrograms": "Group Programs & Challenges"
+    },
+    "actions": {
+      "book": "Book",
+      "addToPlan": "Add to Plan",
+      "askAI": "Ask AI",
+      "joinRoom": "Join Room",
+      "setReminder": "Set Reminder"
+    },
+    "details": {
+      "duration": "Duration",
+      "price": "Price",
+      "location": "Location",
+      "nextAvailable": "Next available",
+      "whatsIncluded": "What's Included",
+      "healthBenefits": "Health Benefits",
+      "availableProviders": "Available Providers",
+      "requirements": "Requirements & Preparation",
+      "tags": "Tags"
+    }
+  },
+  "inbox": {
+    "title": "Stay connected with your community!",
+    "subtitle": "Manage your conversations, notifications, and stay connected with your wellness community",
+    "tabs": {
+      "overview": "Overview",
+      "direct": "Direct Messages", 
+      "group": "Group Chats",
+      "notifications": "Notifications",
+      "archived": "Archived"
+    },
+    "composer": {
+      "placeholder": "Type your message...",
+      "send": "Send",
+      "attachments": "Attachments",
+      "recipients": "To:",
+      "add": "Add"
+    },
+    "states": {
+      "empty": "No messages yet",
+      "loading": "Loading messages...",
+      "error": "Failed to load messages"
+    }
+  },
+  "liveRooms": {
+    "title": "Join the conversation live!",
+    "subtitle": "Join live audio and video discussions with community members",
+    "tabs": {
+      "live": "Live Now",
+      "scheduled": "Scheduled", 
+      "all": "All Rooms"
+    },
+    "search": {
+      "placeholder": "Search rooms, topics, or hosts...",
+      "category": "Category",
+      "allCategories": "All Categories"
+    },
+    "room": {
+      "join": "Join Room",
+      "participants": "Participants",
+      "duration": "Duration",
+      "host": "Host",
+      "premium": "Premium",
+      "live": "LIVE"
+    },
+    "viewer": {
+      "leave": "Leave",
+      "mute": "Mute",
+      "video": "Video",
+      "raiseHand": "Raise Hand",
+      "chat": "Chat",
+      "reactions": "Reactions"
+    }
+  },
   "autopilot": {
     "title": "Autopilot",
     "suggestions": "AI suggestions",

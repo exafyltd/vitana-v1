@@ -10,6 +10,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
+import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
 import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane } from "lucide-react";
 
 const healthSubItems = [
@@ -47,92 +48,58 @@ const servicesData = {
       vitanaImpact: "+40 points"
     }
   ],
-  medical: [
+  labTests: [
     {
       id: "CT-304",
-      title: "Doctor",
-      description: "Book appointments with specialists",
-      icon: Stethoscope,
-      color: "from-red-500/20 to-pink-500/20"
+      title: "Biomarker Panel",
+      description: "Advanced biomarker testing for longevity optimization",
+      icon: TestTube2,
+      color: "from-green-500/20 to-emerald-500/20",
+      vitanaImpact: "+30 points"
     },
     {
-      id: "CT-305",
-      title: "Telemed",
-      description: "Virtual consultations available",
-      icon: Phone,
-      color: "from-indigo-500/20 to-purple-500/20"
+      id: "CT-305", 
+      title: "Genetic Testing",
+      description: "Comprehensive genetic analysis for personalized health",
+      icon: Microscope,
+      color: "from-blue-500/20 to-indigo-500/20",
+      vitanaImpact: "+35 points"
     }
   ],
-  wellness: [
+  coaching: [
     {
       id: "CT-306",
-      title: "Coaching",
-      description: "Personal health coaching sessions",
-      icon: UserCheck,
-      color: "from-green-500/20 to-emerald-500/20",
-      vitanaImpact: "+20 points"
-    },
-    {
-      id: "CT-307",
-      title: "Training",
-      description: "Fitness and movement training",
+      title: "Personal Training",
+      description: "One-on-one fitness coaching sessions",
       icon: Target,
       color: "from-orange-500/20 to-amber-500/20",
       vitanaImpact: "+30 points"
     },
     {
+      id: "CT-307",
+      title: "Health Coaching",
+      description: "Personalized lifestyle and wellness coaching",
+      icon: UserCheck,
+      color: "from-green-500/20 to-emerald-500/20",
+      vitanaImpact: "+25 points"
+    }
+  ],
+  groupPrograms: [
+    {
       id: "CT-308",
-      title: "Group Program",
-      description: "Community wellness challenges",
+      title: "Group Fitness",
+      description: "Community fitness classes and challenges",
       icon: Users,
       color: "from-cyan-500/20 to-blue-500/20",
       suggestion: "3 people from your Longevity group joined this"
-    }
-  ],
-  insurance: [
+    },
     {
       id: "CT-309",
-      title: "Coverage",
-      description: "View your insurance coverage",
-      icon: Shield,
-      color: "from-teal-500/20 to-green-500/20"
-    },
-    {
-      id: "CT-310",
-      title: "Claim Log",
-      description: "Track your insurance claims",
-      icon: FileText,
-      color: "from-slate-500/20 to-gray-500/20"
-    },
-    {
-      id: "CT-311",
-      title: "Submit Claim",
-      description: "File new insurance claims",
-      icon: CreditCard,
-      color: "from-violet-500/20 to-purple-500/20"
-    }
-  ],
-  myServices: [
-    {
-      id: "CT-312",
-      title: "Booking History",
-      description: "View past appointments and bookings",
-      icon: Clock,
-      color: "from-amber-500/20 to-orange-500/20"
-    },
-    {
-      id: "CT-313",
-      title: "Saved",
-      description: "Your saved services and providers",
-      icon: Star,
-      color: "from-pink-500/20 to-rose-500/20"
-    },
-    {
-      id: "CT-314",
-      title: "Feedback",
-      description: "Rate and review services",
-      icon: MessageSquare,
-      color: "from-indigo-500/20 to-blue-500/20"
+      title: "Wellness Challenges", 
+      description: "Monthly community wellness challenges",
+      icon: Target,
+      color: "from-purple-500/20 to-violet-500/20",
+      vitanaImpact: "+20 points"
     }
   ]
 };
@@ -143,14 +110,25 @@ export default function WellnessServices() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeTab, setActiveTab] = useState("preventive");
+  const [selectedService, setSelectedService] = useState<any>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const latestActions = getLatestActions(2);
+
+  const handleServiceClick = (service: any) => {
+    setSelectedService(service);
+    setDrawerOpen(true);
+  };
 
   const renderServiceCards = (services: any[]) => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {services.map((service) => (
-          <Card key={service.id} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20 hover:scale-105">
+          <Card 
+            key={service.id} 
+            className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20 hover:scale-105"
+            onClick={() => handleServiceClick(service)}
+          >
             <CardHeader className="pb-4">
               <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${service.color} flex items-center justify-center mb-4`}>
                 <service.icon className="w-6 h-6 text-foreground" />
@@ -173,6 +151,17 @@ export default function WellnessServices() {
                   <p className="text-xs text-blue-700">{service.suggestion}</p>
                 </div>
               )}
+              <div className="flex gap-2 pt-3">
+                <Button size="sm" className="flex-1" onClick={(e) => e.stopPropagation()}>
+                  Book
+                </Button>
+                <Button size="sm" variant="outline" className="flex-1" onClick={(e) => e.stopPropagation()}>
+                  Add to Plan
+                </Button>
+                <Button size="sm" variant="outline" onClick={(e) => e.stopPropagation()}>
+                  Ask AI
+                </Button>
+              </div>
             </CardHeader>
           </Card>
         ))}
@@ -260,48 +249,42 @@ export default function WellnessServices() {
                   <CardTitle className="text-lg">Services</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <Tabs value={activeTab} onValueChange={setActiveTab} orientation="vertical" className="w-full">
-                    <TabsList className="grid w-full grid-cols-1 gap-1 bg-transparent">
-                      <TabsTrigger value="preventive" className="justify-start data-[state=active]:bg-primary/10">
-                        Preventive
-                      </TabsTrigger>
-                      <TabsTrigger value="medical" className="justify-start data-[state=active]:bg-primary/10">
-                        Medical
-                      </TabsTrigger>
-                      <TabsTrigger value="wellness" className="justify-start data-[state=active]:bg-primary/10">
-                        Wellness
-                      </TabsTrigger>
-                      <TabsTrigger value="insurance" className="justify-start data-[state=active]:bg-primary/10">
-                        Insurance
-                      </TabsTrigger>
-                      <TabsTrigger value="myServices" className="justify-start data-[state=active]:bg-primary/10">
-                        My Services
-                      </TabsTrigger>
-                    </TabsList>
-                  </Tabs>
+                <Tabs value={activeTab} onValueChange={setActiveTab} orientation="vertical" className="w-full">
+                  <TabsList className="grid w-full grid-cols-1 gap-1 bg-transparent">
+                    <TabsTrigger value="preventive" className="justify-start data-[state=active]:bg-primary/10">
+                      Preventive Screenings
+                    </TabsTrigger>
+                    <TabsTrigger value="labTests" className="justify-start data-[state=active]:bg-primary/10">
+                      Lab Tests
+                    </TabsTrigger>
+                    <TabsTrigger value="coaching" className="justify-start data-[state=active]:bg-primary/10">
+                      Coaching & Personal Training
+                    </TabsTrigger>
+                    <TabsTrigger value="groupPrograms" className="justify-start data-[state=active]:bg-primary/10">
+                      Group Programs & Challenges
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
                 </CardContent>
               </Card>
             </div>
 
             {/* Content Area */}
             <div className="col-span-12 md:col-span-9">
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsContent value="preventive" className="mt-0">
-                  {renderServiceCards(servicesData.preventive)}
-                </TabsContent>
-                <TabsContent value="medical" className="mt-0">
-                  {renderServiceCards(servicesData.medical)}
-                </TabsContent>
-                <TabsContent value="wellness" className="mt-0">
-                  {renderServiceCards(servicesData.wellness)}
-                </TabsContent>
-                <TabsContent value="insurance" className="mt-0">
-                  {renderServiceCards(servicesData.insurance)}
-                </TabsContent>
-                <TabsContent value="myServices" className="mt-0">
-                  {renderServiceCards(servicesData.myServices)}
-                </TabsContent>
-              </Tabs>
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsContent value="preventive" className="mt-0">
+                {renderServiceCards(servicesData.preventive)}
+              </TabsContent>
+              <TabsContent value="labTests" className="mt-0">
+                {renderServiceCards(servicesData.labTests)}
+              </TabsContent>
+              <TabsContent value="coaching" className="mt-0">
+                {renderServiceCards(servicesData.coaching)}
+              </TabsContent>
+              <TabsContent value="groupPrograms" className="mt-0">
+                {renderServiceCards(servicesData.groupPrograms)}
+              </TabsContent>
+            </Tabs>
             </div>
           </div>
         </div>
@@ -310,6 +293,12 @@ export default function WellnessServices() {
       <AutopilotPopup 
         open={autopilotOpen}
         onOpenChange={setAutopilotOpen}
+      />
+
+      <ServiceDetailDrawer
+        service={selectedService}
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
       />
     </AppLayout>
   );
