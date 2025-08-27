@@ -19,6 +19,10 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
 import UserProfile from "./pages/UserProfile";
+import Wallet from "./pages/Wallet";
+import Sharing from "./pages/Sharing";
+import Memory from "./pages/Memory";
+import Admin from "./pages/Admin";
 
 // Dashboard sub-pages
 import Context from "./pages/dashboard/Context";
@@ -173,6 +177,13 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/search" element={<Search />} />
           <Route path="/profile/:id" element={<UserProfile />} />
+          
+          {/* New module routes */}
+          <Route path="/wallet" element={<Wallet />} />
+          <Route path="/sharing" element={<Sharing />} />
+          <Route path="/memory" element={<Memory />} />
+          <Route path="/admin" element={<Admin />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

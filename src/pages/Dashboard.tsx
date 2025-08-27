@@ -18,7 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { Plane } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { Badge } from "@/components/ui/badge";
 
 const dashboardSubItems = [
@@ -34,6 +35,22 @@ export default function Dashboard() {
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+
+  // Show onboarding for new users (check localStorage for demo)
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem('vitana-onboarding-completed');
+    if (!hasSeenOnboarding) {
+      setOnboardingOpen(true);
+    }
+  }, []);
+
+  const handleOnboardingComplete = (open: boolean) => {
+    if (!open) {
+      localStorage.setItem('vitana-onboarding-completed', 'true');
+    }
+    setOnboardingOpen(open);
+  };
   
   const latestActions = getLatestActions(2);
 
@@ -192,6 +209,12 @@ export default function Dashboard() {
       <AutopilotPopup 
         open={autopilotOpen} 
         onOpenChange={setAutopilotOpen}
+      />
+      
+      {/* Onboarding Overlay */}
+      <OnboardingOverlay 
+        open={onboardingOpen}
+        onOpenChange={handleOnboardingComplete}
       />
     </AppLayout>
   );

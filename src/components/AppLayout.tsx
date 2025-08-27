@@ -3,20 +3,21 @@ import { SidebarProvider, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 
 const sidebarCategories = [
-  { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-  { title: "Discover", path: "/discover", icon: Search },
-  { title: "Health", path: "/health", icon: Heart },
-  { title: "Health Tracker", path: "/health-tracker", icon: Activity },
-  { title: "Calendar", path: "/calendar", icon: CalendarClock },
+  { title: "Home", path: "/dashboard", icon: LayoutDashboard },
   { title: "Community", path: "/community", icon: MessageSquare },
-  { title: "AI Intelligence", path: "/ai", icon: Bot },
-  { title: "Messages", path: "/messages", icon: Bell },
+  { title: "Discover", path: "/discover", icon: Search },
+  { title: "Inbox", path: "/messages", icon: Bell },
+  { title: "Health", path: "/health", icon: Heart },
+  { title: "Wallet", path: "/wallet", icon: Wallet },
+  { title: "Sharing", path: "/sharing", icon: Share2 },
+  { title: "Memory", path: "/memory", icon: Database },
   { title: "Settings", path: "/settings", icon: Settings },
+  { title: "Admin", path: "/admin", icon: Shield },
 ];
 
 interface AppLayoutProps {
@@ -151,9 +152,14 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
                 <AvatarFallback>VA</AvatarFallback>
               </Avatar>
-              <div className="leading-tight">
-                <div className="text-sm font-medium">Vitana User</div>
-                <div className="text-xs text-sidebar-foreground/70">user@vitana.app</div>
+              <div className="leading-tight flex-1">
+                <div className="flex items-center gap-2">
+                  <div className="text-sm font-medium">Vitana User</div>
+                  <div className="w-4 h-4 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center">
+                    <span className="text-[8px] font-bold text-green-600">742</span>
+                  </div>
+                </div>
+                <div className="text-xs text-sidebar-foreground/70">Premium Member</div>
               </div>
             </Link>
           ) : (
