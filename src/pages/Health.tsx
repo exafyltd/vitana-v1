@@ -2,7 +2,11 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane } from "lucide-react";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
@@ -65,6 +69,11 @@ const overviewCards = [
 
 export default function Health() {
   const navigate = useNavigate();
+  const { pendingCount, getLatestActions } = useAutopilot();
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  
+  const latestActions = getLatestActions(2);
 
   const smartSuggestions = [
     {
@@ -102,9 +111,9 @@ export default function Health() {
       <SubNavigation items={healthSubItems} />
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header Section with Perfect Symmetry */}
-          <div className="flex flex-col lg:flex-row gap-6 mb-8">
-            {/* Shortened Header Bar - Welcome Message Only */}
+          {/* Header Section with Perfect Symmetry - Three Cards Layout */}
+          <div className="flex flex-col lg:flex-row gap-4 mb-8">
+            {/* Welcome Message */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">Let's improve quality of life! 🌱</h1>
@@ -112,9 +121,50 @@ export default function Health() {
               </div>
             </div>
             
-            {/* Small Index Card - Only Circle with 742 */}
+            {/* Autopilot Card with Live Badge Counter */}
             <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
+              onClick={() => setAutopilotOpen(true)}
+              onMouseEnter={() => setShowPreview(true)}
+              onMouseLeave={() => setShowPreview(false)}
+            >
+              {pendingCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
+                >
+                  {pendingCount}
+                </Badge>
+              )}
+              <div className="flex flex-col items-center justify-center h-full space-y-3">
+                <div>
+                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                </div>
+                <span className="text-sm font-medium text-red-400">Autopilot</span>
+              </div>
+              
+              {/* Hover Preview */}
+              {showPreview && pendingCount > 0 && (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  {latestActions.map((action, index) => (
+                    <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                      <span>{action.icon}</span>
+                      <span className="truncate">{action.title}</span>
+                    </div>
+                  ))}
+                  {pendingCount > 2 && (
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                      +{pendingCount - 2} more actions
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
+            {/* Vitana Index Card - Circle with 742 */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
               onClick={() => navigate('/health-tracker/vitana-index')}
             >
               <div className="flex items-center justify-center h-full">
@@ -201,6 +251,11 @@ export default function Health() {
           </div>
         </div>
       </div>
+      
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
+      />
     </AppLayout>
   );
 }
