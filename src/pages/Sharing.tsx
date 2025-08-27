@@ -13,8 +13,9 @@ import { Badge } from "@/components/ui/badge";
 
 const sharingSubItems = [
   { id: "overview", name: "Overview", path: "/sharing" },
-  { id: "content", name: "My Content", path: "/sharing/content" },
-  { id: "connections", name: "Connections", path: "/sharing/connections" },
+  { id: "consent", name: "Consent Dashboard", path: "/sharing/consent" },
+  { id: "packages", name: "Data Packages", path: "/sharing/packages" },
+  { id: "logs", name: "Logs & Revocation", path: "/sharing/logs" },
 ];
 
 export default function Sharing() {

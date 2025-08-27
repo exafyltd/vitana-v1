@@ -14,7 +14,8 @@ import { Badge } from "@/components/ui/badge";
 const memorySubItems = [
   { id: "overview", name: "Overview", path: "/memory" },
   { id: "timeline", name: "Timeline", path: "/memory/timeline" },
-  { id: "insights", name: "AI Insights", path: "/memory/insights" },
+  { id: "recall", name: "Recall & Search", path: "/memory/recall" },
+  { id: "permissions", name: "Permissions", path: "/memory/permissions" },
 ];
 
 export default function Memory() {

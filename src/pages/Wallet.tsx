@@ -13,8 +13,9 @@ import { Badge } from "@/components/ui/badge";
 
 const walletSubItems = [
   { id: "overview", name: "Overview", path: "/wallet" },
-  { id: "transactions", name: "Transactions", path: "/wallet/transactions" },
-  { id: "rewards", name: "Rewards", path: "/wallet/rewards" },
+  { id: "balance", name: "Balance & Benefits", path: "/wallet/balance" },
+  { id: "subscriptions", name: "Subscriptions", path: "/wallet/subscriptions" },
+  { id: "rewards", name: "Rewards & Commissions", path: "/wallet/rewards" },
 ];
 
 export default function Wallet() {

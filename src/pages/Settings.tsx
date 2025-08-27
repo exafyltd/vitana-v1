@@ -3,7 +3,8 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Bell, Settings as SettingsIcon, Smartphone, CreditCard, HelpCircle } from "lucide-react";
+import { useRTL } from "@/components/RTLProvider";
+import { Languages, RotateCcw, Shield, Bell, Settings as SettingsIcon, Smartphone, CreditCard, HelpCircle } from "lucide-react";
 
 const settingsSubItems = [
   { id: "overview", name: "Overview", path: "/settings" },
@@ -17,6 +18,7 @@ const settingsSubItems = [
 
 export default function Settings() {
   const navigate = useNavigate();
+  const { isRTL, toggleRTL } = useRTL();
 
   const categoryCards = [
     {
@@ -153,14 +155,14 @@ export default function Settings() {
                   <Smartphone className="w-6 h-6 text-primary mb-2" />
                   <span className="text-sm font-medium">Add App</span>
                 </button>
-                <button 
-                  onClick={() => navigate('/settings/billing')}
-                  className="flex flex-col items-center p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
-                >
-                  <CreditCard className="w-6 h-6 text-primary mb-2" />
-                  <span className="text-sm font-medium">View Billing</span>
-                </button>
-              </div>
+                 <button 
+                   onClick={toggleRTL}
+                   className="flex flex-col items-center p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
+                 >
+                   <Languages className="w-6 h-6 text-primary mb-2" />
+                   <span className="text-sm font-medium">{isRTL ? 'LTR Mode' : 'RTL Mode'}</span>
+                 </button>
+               </div>
             </CardContent>
           </Card>
           
