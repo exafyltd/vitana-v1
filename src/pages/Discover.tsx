@@ -33,6 +33,7 @@ import SubNavigation from '@/components/SubNavigation';
 import PageHeader from '@/components/PageHeader';
 import LabTestCard from '@/components/LabTestCard';
 import LabTestOrderPopup from '@/components/LabTestOrderPopup';
+import { IntentRouter } from '@/pages/discover/IntentRouter';
 import { supabase } from '@/integrations/supabase/client';
 
 const discoverSubItems = [
@@ -300,11 +301,14 @@ export default function Discover() {
         <div className="max-w-7xl mx-auto">
           <PageHeader
             title="Discover your Longevity Marketplace"
-            description="Discover longevity services, products, and providers perfectly matched to your healthy aging journey."
-            icon={Heart}
+            description="Find doctors, wellness services, and community groups perfectly matched to your healthy aging journey."
+            icon={Search}
           />
 
-          {/* Enhanced Filters */}
+          {/* Intent Router */}
+          <IntentRouter />
+
+          {/* Enhanced Filters - moved to separate sections */}
           <div className="bg-background/95 backdrop-blur-sm rounded-xl p-6 shadow-sm border mb-8">
             <div className="flex flex-wrap gap-3">
               <Select>

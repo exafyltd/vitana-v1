@@ -2,14 +2,18 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SidebarProvider, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Zap } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
 
 const sidebarCategories = [
   { title: "Home", path: "/", icon: LayoutDashboard },
@@ -30,11 +34,13 @@ interface AppLayoutProps {
 
 function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<StreamingChatRef> }) {
   const [isStreaming, setIsStreaming] = useState(false);
+  const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { open } = useSidebar();
   const { role, hasPermission } = useRole();
   const { tenant } = useTenant();
+  const { pendingCount, getLatestActions } = useAutopilot();
 
   // Filter sidebar items based on role permissions
   const visibleSidebarCategories = sidebarCategories.filter(cat => {
@@ -92,7 +98,53 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <Link to="/" className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors">
             {open ? "VITANA" : "V"}
           </Link>
-          <SidebarTrigger className="rounded-lg hover:bg-sidebar-accent" />
+          <div className="flex items-center gap-2">
+            {/* Autopilot Badge Counter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="relative h-8 w-8 rounded-lg hover:bg-sidebar-accent transition-colors"
+                  title={`${pendingCount} Autopilot suggestions`}
+                >
+                  <Zap className="h-4 w-4 text-calendar-primary" />
+                  {pendingCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs flex items-center justify-center min-w-[20px] rounded-full"
+                    >
+                      {pendingCount > 9 ? '9+' : pendingCount}
+                    </Badge>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-4" align="end">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Zap className="h-4 w-4 text-calendar-primary" />
+                    <h3 className="font-medium">Autopilot Preview</h3>
+                  </div>
+                  <div className="space-y-2">
+                    {getLatestActions(2).map((action) => (
+                      <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
+                        <div className="font-medium">{action.title}</div>
+                        <div className="text-xs text-muted-foreground">{action.reason}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <Button 
+                    onClick={() => setAutopilotPopupOpen(true)} 
+                    className="w-full" 
+                    size="sm"
+                  >
+                    View All ({pendingCount})
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <SidebarTrigger className="rounded-lg hover:bg-sidebar-accent" />
+          </div>
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
@@ -221,6 +273,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
 
 export default function AppLayout({ children }: AppLayoutProps) {
   const streamingChatRef = useRef<StreamingChatRef>(null);
+  const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
 
   return (
     <div>
@@ -237,6 +290,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </SidebarInset>
         </div>
       </SidebarProvider>
+      <AutopilotPopup 
+        open={autopilotPopupOpen} 
+        onOpenChange={setAutopilotPopupOpen} 
+      />
       <StreamingChat ref={streamingChatRef} />
     </div>
   );

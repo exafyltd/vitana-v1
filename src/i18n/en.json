@@ -1,0 +1,73 @@
+{
+  "sidebar": {
+    "home": "Home",
+    "community": "Community", 
+    "discover": "Discover",
+    "inbox": "Inbox",
+    "health": "Health",
+    "wallet": "Wallet",
+    "sharing": "Sharing",
+    "memory": "Memory",
+    "settings": "Settings",
+    "admin": "Admin"
+  },
+  "autopilot": {
+    "title": "Autopilot",
+    "suggestions": "AI suggestions",
+    "preview": "Autopilot Preview",
+    "viewAll": "View All",
+    "noSuggestions": "All optimized! 🎯",
+    "execute": "Run Selected",
+    "dismiss": "Dismiss",
+    "executing": "Executing...",
+    "success": "Completed successfully",
+    "failed": "Failed - will retry later"
+  },
+  "discover": {
+    "title": "Discover your Longevity Marketplace",
+    "description": "Find doctors, wellness services, and community groups perfectly matched to your healthy aging journey.",
+    "searchPlaceholder": "What are you looking for? (e.g., yoga classes, longevity doctor, meetups)",
+    "doctorsCoaches": "Doctors & Coaches",
+    "doctorsCoachesDesc": "Find longevity specialists, health coaches, and medical experts",
+    "wellnessServices": "Wellness Services", 
+    "wellnessServicesDesc": "Discover yoga, massage, dance, therapy, and recovery services",
+    "communityGroups": "Community Groups",
+    "communityGroupsDesc": "Join meetups, groups, and connect with like-minded people",
+    "explore": "Explore"
+  },
+  "vitanaIndex": {
+    "title": "Vitana Health Index",
+    "subtitle": "Overall wellness balance across all health pillars",
+    "veryPoor": "Very Poor",
+    "poor": "Poor",
+    "fair": "Fair", 
+    "improving": "Improving",
+    "good": "Good",
+    "excellent": "Excellent",
+    "sleep": "Sleep",
+    "exercise": "Exercise",
+    "nutrition": "Nutrition",
+    "hydration": "Hydration",
+    "mental": "Mental",
+    "viewFullReport": "View Full Report",
+    "trackToday": "Track Today"
+  },
+  "auth": {
+    "notAuthorized": "Not Authorized",
+    "noPermission": "You don't have permission to access this page",
+    "contactAdmin": "Please contact your administrator for access",
+    "backHome": "Back to Home"
+  },
+  "onboarding": {
+    "welcome": "Welcome to VITANA",
+    "subtitle": "Your personalized longevity platform",
+    "connectApps": "Connect Your Apps",
+    "connectAppsDesc": "Link your health and wellness apps for better insights",
+    "setGoals": "Set Your Goals", 
+    "setGoalsDesc": "Define your health and longevity objectives",
+    "joinCommunity": "Join Community",
+    "joinCommunityDesc": "Connect with like-minded people on similar journeys",
+    "getStarted": "Get Started",
+    "skip": "Skip for now"
+  }
+}

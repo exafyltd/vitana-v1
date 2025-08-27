@@ -1,0 +1,73 @@
+{
+  "sidebar": {
+    "home": "Startseite",
+    "community": "Gemeinschaft",
+    "discover": "Entdecken", 
+    "inbox": "Posteingang",
+    "health": "Gesundheit",
+    "wallet": "Wallet",
+    "sharing": "Teilen",
+    "memory": "Speicher",
+    "settings": "Einstellungen",
+    "admin": "Admin"
+  },
+  "autopilot": {
+    "title": "Autopilot",
+    "suggestions": "KI-Vorschläge",
+    "preview": "Autopilot-Vorschau",
+    "viewAll": "Alle anzeigen",
+    "noSuggestions": "Alles optimiert! 🎯",
+    "execute": "Ausgewählte ausführen",
+    "dismiss": "Verwerfen",
+    "executing": "Wird ausgeführt...",
+    "success": "Erfolgreich abgeschlossen",
+    "failed": "Fehlgeschlagen - wird später wiederholt"
+  },
+  "discover": {
+    "title": "Entdecken Sie Ihren Langlebigkeits-Marktplatz",
+    "description": "Finden Sie Ärzte, Wellness-Services und Community-Gruppen, die perfekt zu Ihrer gesunden Altersreise passen.",
+    "searchPlaceholder": "Wonach suchen Sie? (z.B. Yoga-Kurse, Langlebigkeitsarzt, Meetups)",
+    "doctorsCoaches": "Ärzte & Coaches",
+    "doctorsCoachesDesc": "Finden Sie Langlebigkeitsspezialisten, Gesundheitscoaches und medizinische Experten",
+    "wellnessServices": "Wellness-Services",
+    "wellnessServicesDesc": "Entdecken Sie Yoga, Massage, Tanz, Therapie und Erholungsservices",
+    "communityGroups": "Community-Gruppen",
+    "communityGroupsDesc": "Treten Sie Meetups und Gruppen bei und vernetzen Sie sich mit Gleichgesinnten",
+    "explore": "Erkunden"
+  },
+  "vitanaIndex": {
+    "title": "Vitana Gesundheitsindex",
+    "subtitle": "Allgemeine Wellness-Balance über alle Gesundheitssäulen",
+    "veryPoor": "Sehr schlecht",
+    "poor": "Schlecht", 
+    "fair": "Ausreichend",
+    "improving": "Verbessernd",
+    "good": "Gut",
+    "excellent": "Ausgezeichnet",
+    "sleep": "Schlaf",
+    "exercise": "Bewegung",
+    "nutrition": "Ernährung",
+    "hydration": "Hydration",
+    "mental": "Mental",
+    "viewFullReport": "Vollständigen Bericht anzeigen",
+    "trackToday": "Heute verfolgen"
+  },
+  "auth": {
+    "notAuthorized": "Nicht autorisiert",
+    "noPermission": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen",
+    "contactAdmin": "Bitte wenden Sie sich für den Zugang an Ihren Administrator",
+    "backHome": "Zurück zur Startseite"
+  },
+  "onboarding": {
+    "welcome": "Willkommen bei VITANA",
+    "subtitle": "Ihre personalisierte Langlebigkeitsplattform",
+    "connectApps": "Apps verbinden",
+    "connectAppsDesc": "Verknüpfen Sie Ihre Gesundheits- und Wellness-Apps für bessere Einblicke",
+    "setGoals": "Ziele setzen",
+    "setGoalsDesc": "Definieren Sie Ihre Gesundheits- und Langlebigkeitsziele",
+    "joinCommunity": "Community beitreten",
+    "joinCommunityDesc": "Vernetzen Sie sich mit Gleichgesinnten auf ähnlichen Reisen",
+    "getStarted": "Loslegen",
+    "skip": "Überspringen"
+  }
+}
