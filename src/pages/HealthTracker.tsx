@@ -55,6 +55,7 @@ export default function HealthTracker() {
 
   useEffect(() => {
     console.log("HealthTracker page using healthTrackerNavigation:", healthTrackerNavigation);
+    console.log("Current path:", window.location.pathname);
   }, []);
 
   const pillarData = [

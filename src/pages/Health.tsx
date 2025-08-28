@@ -7,7 +7,7 @@ import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, Ale
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
@@ -58,6 +58,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 export default withScreenId(function Health() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -89,13 +90,14 @@ export default withScreenId(function Health() {
   ];
 
   const autopilotSuggestions = [
-    "Book your overdue screening appointments",
+    "Book your overdue screening appointments", 
     "Join nutrition group based on your weak pillar",
     "Schedule stress management consultation"
   ];
 
   useEffect(() => {
     console.log("Health page using healthNavigation:", healthNavigation);
+    console.log("Current path:", location.pathname);
   }, []);
 
   return (
