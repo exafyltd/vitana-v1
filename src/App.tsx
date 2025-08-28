@@ -44,6 +44,7 @@ import HealthWellnessServices from "./pages/health/WellnessServices";
 import ConditionsRisks from "./pages/health/ConditionsRisks";
 import EducationResources from "./pages/health/EducationResources";
 import BiomarkerResults from "./pages/health/BiomarkerResults";
+import MyHealthTracker from "./pages/health/MyHealthTracker";
 
 // Health Tracker sub-pages
 import MyVitanaIndex from "./pages/healthtracker/MyVitanaIndex";
@@ -133,6 +134,7 @@ const App = () => (
           <Route path="/health/conditions" element={<ConditionsRisks />} />
           <Route path="/health/education" element={<EducationResources />} />
           <Route path="/health/biomarker-results" element={<BiomarkerResults />} />
+          <Route path="/health/my-health-tracker" element={<MyHealthTracker />} />
           <Route path="/health/nutrition" element={<Nutrition />} />
           <Route path="/health/hydration" element={<Hydration />} />
           <Route path="/health/sleep" element={<Sleep />} />
