@@ -1,15 +1,24 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { ServiceDetailSplitScreen } from "@/components/ui/split-screen";
 import { discoverNavigation } from "@/config/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Timer, Flame, Percent, Package, Star, MapPin, Clock, TrendingDown, TrendingUp, Heart, Brain, Target, Activity, Sparkles, Users } from "lucide-react";
+import { Timer, Flame, Percent, Package, Star, MapPin, Clock, TrendingDown, TrendingUp, Heart, Brain, Target, Activity, Sparkles, Users, Plane } from "lucide-react";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { useState } from "react";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { useNavigate } from "react-router-dom";
 
 export default function DealsOffers() {
+  const navigate = useNavigate();
+  const { pendingCount, getLatestActions } = useAutopilot();
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+
+  const latestActions = getLatestActions(2);
+
   // Flash Deals Data
   const flashDeals = [
     {
@@ -132,226 +141,259 @@ export default function DealsOffers() {
     }
   ];
 
-  // Left Panel Content
-  const LeftPanelContent = (
-    <div className="space-y-6">
-      <Tabs defaultValue="flash-deals" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="flash-deals">Flash Deals</TabsTrigger>
-          <TabsTrigger value="trending">Trending</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="flash-deals" className="space-y-4 mt-4">
-          <div className="flex items-center gap-2 mb-4">
-            <Flame className="h-5 w-5 text-red-500" />
-            <h3 className="text-lg font-semibold">Flash Deals</h3>
-            <Badge className="bg-red-500 text-white">
-              <Timer className="h-3 w-3 mr-1" />
-              Limited Time
-            </Badge>
-          </div>
-          <div className="grid gap-4">
-            {flashDeals.map((deal) => (
-              <Card key={deal.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-red-200">
-                <div className="relative">
-                  <img 
-                    src={deal.image} 
-                    alt={deal.title}
-                    className="w-full h-32 object-cover rounded-t-lg"
-                  />
-                  <Badge className="absolute top-3 left-3 bg-red-500 text-white">
-                    <Timer className="h-3 w-3 mr-1" />
-                    {deal.timeLeft} left
-                  </Badge>
-                  <Badge className="absolute top-3 right-3 bg-red-500 text-white text-lg px-3 py-1">
-                    -{deal.discount}%
-                  </Badge>
-                </div>
-                <CardContent className="p-4">
-                  <h4 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {deal.title}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mb-3">{deal.description}</p>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl font-bold text-red-600">{deal.price}</span>
-                      <span className="text-lg text-muted-foreground line-through">{deal.originalPrice}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">{deal.rating}</span>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-red-500 hover:bg-red-600">Claim Deal</Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="trending" className="space-y-4 mt-4">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="h-5 w-5 text-orange-500" />
-            <h3 className="text-lg font-semibold">Trending Services</h3>
-          </div>
-          <div className="grid gap-4">
-            {trendingServices.map((service) => (
-              <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
-                <div className="relative">
-                  <img 
-                    src={service.image} 
-                    alt={service.title}
-                    className="w-full h-32 object-cover rounded-t-lg"
-                  />
-                  <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1">
-                    <TrendingUp className="h-3 w-3 mr-1" />
-                    {service.trend}
-                  </Badge>
-                </div>
-                <CardContent className="p-4">
-                  <h4 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {service.title}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mb-2">{service.description}</p>
-                  <div className="flex items-center gap-1 mb-3">
-                    <MapPin className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">{service.location}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-foreground">{service.price}</span>
-                    <Button size="sm">Book Now</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-
-  // Right Panel Content
-  const RightPanelContent = (
-    <div className="space-y-6">
-      <Tabs defaultValue="ai-recommendations" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="ai-recommendations">AI Picks</TabsTrigger>
-          <TabsTrigger value="saved">Saved Items</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="ai-recommendations" className="space-y-4 mt-4">
-          <div className="flex items-center gap-2 mb-4">
-            <Brain className="h-5 w-5 text-purple-500" />
-            <h3 className="text-lg font-semibold">AI Recommendations</h3>
-            <Badge variant="outline" className="text-purple-600 border-purple-200">
-              Personalized
-            </Badge>
-          </div>
-          <div className="grid gap-4">
-            {personalizedMatches.map((match) => (
-              <Card key={match.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200">
-                <div className="relative">
-                  <img 
-                    src={match.image} 
-                    alt={match.title}
-                    className="w-full h-32 object-cover rounded-t-lg"
-                  />
-                  <Badge className={`absolute top-2 left-2 text-xs px-2 py-1 ${
-                    match.match >= 95 ? 'bg-green-500' : 
-                    match.match >= 90 ? 'bg-blue-500' : 'bg-purple-500'
-                  } text-white`}>
-                    {match.badge}
-                  </Badge>
-                  <div className="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1">
-                    <span className="text-xs font-bold text-purple-600">{match.match}%</span>
-                  </div>
-                </div>
-                <CardContent className="p-4">
-                  <h4 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {match.title}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mb-3">{match.description}</p>
-                  <div className="bg-purple-50 p-2 rounded-lg mb-3">
-                    <div className="flex items-center gap-1">
-                      <Brain className="h-3 w-3 text-purple-500" />
-                      <span className="text-xs text-purple-700 font-medium">{match.reason}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-lg font-bold text-foreground">{match.price}</span>
-                      {match.period && <span className="text-xs text-muted-foreground">{match.period}</span>}
-                    </div>
-                    <Button size="sm">Book</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="saved" className="space-y-4 mt-4">
-          <div className="flex items-center gap-2 mb-4">
-            <Heart className="h-5 w-5 text-pink-500" />
-            <h3 className="text-lg font-semibold">Saved Items</h3>
-          </div>
-          <div className="grid gap-4">
-            {savedProducts.map((product) => (
-              <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
-                <div className="relative">
-                  <img 
-                    src={product.image} 
-                    alt={product.title}
-                    className="w-full h-32 object-cover rounded-t-lg"
-                  />
-                  {product.priceChange === "down" && (
-                    <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1">
-                      <TrendingDown className="h-3 w-3 mr-1" />
-                      Price Drop!
-                    </Badge>
-                  )}
-                  <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7">
-                    <Heart className="h-3 w-3 fill-pink-500 text-pink-500" />
-                  </Button>
-                </div>
-                <CardContent className="p-4">
-                  <h4 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {product.title}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mb-3">{product.description}</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-baseline gap-1">
-                      <span className={`text-lg font-bold ${
-                        product.priceChange === "down" ? "text-green-600" : "text-foreground"
-                      }`}>
-                        {product.price}
-                      </span>
-                      {product.priceChange === "down" && (
-                        <span className="text-sm text-muted-foreground line-through">{product.originalPrice}</span>
-                      )}
-                    </div>
-                    <Button size="sm">Add to Cart</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-
   return (
     <AppLayout>
       <SEO title="Deals & Offers | Discover" description="Limited-time deals, trending services, AI recommendations, and saved items" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      
-      <ServiceDetailSplitScreen
-        leftTitle="Flash Deals & Trending"
-        leftContent={LeftPanelContent}
-        rightTitle="AI Picks & Saved Items"
-        rightContent={RightPanelContent}
-        screenId="deals-offers-split"
+      <div className="p-6 bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Header Section with Perfect Symmetry - Three Cards Layout */}
+          <div className="flex flex-col lg:flex-row gap-4 mb-8">
+            {/* Welcome Message */}
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Deals & Offers 🔥</h1>
+                <p className="text-muted-foreground">Limited-time deals, trending services, AI recommendations, and saved items.</p>
+              </div>
+            </div>
+            
+            {/* Autopilot Card with Live Badge Counter */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
+              onClick={() => setAutopilotOpen(true)}
+              onMouseEnter={() => setShowPreview(true)}
+              onMouseLeave={() => setShowPreview(false)}
+            >
+              {pendingCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
+                >
+                  {pendingCount}
+                </Badge>
+              )}
+              <div className="flex flex-col items-center justify-center h-full space-y-3">
+                <div>
+                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                </div>
+                <span className="text-sm font-medium text-red-400">Autopilot</span>
+              </div>
+              
+              {/* Hover Preview */}
+              {showPreview && pendingCount > 0 && (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  {latestActions.map((action, index) => (
+                    <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                      <span>{action.icon}</span>
+                      <span className="truncate">{action.title}</span>
+                    </div>
+                  ))}
+                  {pendingCount > 2 && (
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                      +{pendingCount - 2} more actions
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
+            {/* Vitana Index Card - Circle with 742 */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              onClick={() => navigate('/health-tracker/vitana-index')}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-xl font-bold text-green-600">742</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 4-Panel Horizontal Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-[600px]">
+            
+            {/* Flash Deals Panel */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+              <div className="flex items-center gap-2 mb-4">
+                <Flame className="h-5 w-5 text-red-500" />
+                <h3 className="text-lg font-semibold">Flash Deals</h3>
+                <Badge className="bg-red-500 text-white">
+                  <Timer className="h-3 w-3 mr-1" />
+                  Limited
+                </Badge>
+              </div>
+              <div className="space-y-4 max-h-[500px] overflow-y-auto">
+                {flashDeals.map((deal) => (
+                  <Card key={deal.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-red-200">
+                    <div className="relative">
+                      <img 
+                        src={deal.image} 
+                        alt={deal.title}
+                        className="w-full h-24 object-cover rounded-t-lg"
+                      />
+                      <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs">
+                        -{deal.discount}%
+                      </Badge>
+                    </div>
+                    <CardContent className="p-3">
+                      <h4 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {deal.title}
+                      </h4>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-1">
+                          <span className="text-lg font-bold text-red-600">{deal.price}</span>
+                          <span className="text-sm text-muted-foreground line-through">{deal.originalPrice}</span>
+                        </div>
+                      </div>
+                      <p className="text-xs text-red-600 mb-2">{deal.timeLeft} left</p>
+                      <Button size="sm" className="w-full bg-red-500 hover:bg-red-600 text-xs">Claim Deal</Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Trending Panel */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+              <div className="flex items-center gap-2 mb-4">
+                <TrendingUp className="h-5 w-5 text-orange-500" />
+                <h3 className="text-lg font-semibold">Trending</h3>
+                <Badge className="bg-orange-100 text-orange-700">Hot</Badge>
+              </div>
+              <div className="space-y-4 max-h-[500px] overflow-y-auto">
+                {trendingServices.map((service) => (
+                  <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                    <div className="relative">
+                      <img 
+                        src={service.image} 
+                        alt={service.title}
+                        className="w-full h-24 object-cover rounded-t-lg"
+                      />
+                      <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs">
+                        {service.trend}
+                      </Badge>
+                    </div>
+                    <CardContent className="p-3">
+                      <h4 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {service.title}
+                      </h4>
+                      <div className="flex items-center gap-1 mb-2">
+                        <MapPin className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs text-muted-foreground">{service.location}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-foreground">{service.price}</span>
+                        <Button size="sm" className="text-xs">Book Now</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* AI Picks Panel */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+              <div className="flex items-center gap-2 mb-4">
+                <Brain className="h-5 w-5 text-purple-500" />
+                <h3 className="text-lg font-semibold">AI Picks</h3>
+                <Badge className="bg-purple-100 text-purple-700">
+                  <Sparkles className="h-3 w-3 mr-1" />
+                  For You
+                </Badge>
+              </div>
+              <div className="space-y-4 max-h-[500px] overflow-y-auto">
+                {personalizedMatches.map((match) => (
+                  <Card key={match.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200">
+                    <div className="relative">
+                      <img 
+                        src={match.image} 
+                        alt={match.title}
+                        className="w-full h-24 object-cover rounded-t-lg"
+                      />
+                      <div className="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1">
+                        <span className="text-xs font-bold text-purple-600">{match.match}%</span>
+                      </div>
+                    </div>
+                    <CardContent className="p-3">
+                      <h4 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {match.title}
+                      </h4>
+                      <div className="bg-purple-50 p-2 rounded-lg mb-2">
+                        <div className="flex items-center gap-1">
+                          <Brain className="h-3 w-3 text-purple-500" />
+                          <span className="text-xs text-purple-700 font-medium">{match.reason}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-sm font-bold text-foreground">{match.price}</span>
+                          {match.period && <span className="text-xs text-muted-foreground">{match.period}</span>}
+                        </div>
+                        <Button size="sm" className="text-xs">Book</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Saved Items Panel */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+              <div className="flex items-center gap-2 mb-4">
+                <Heart className="h-5 w-5 text-pink-500" />
+                <h3 className="text-lg font-semibold">Saved Items</h3>
+                <Badge className="bg-pink-100 text-pink-700">{savedProducts.length}</Badge>
+              </div>
+              <div className="space-y-4 max-h-[500px] overflow-y-auto">
+                {savedProducts.map((product) => (
+                  <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                    <div className="relative">
+                      <img 
+                        src={product.image} 
+                        alt={product.title}
+                        className="w-full h-24 object-cover rounded-t-lg"
+                      />
+                      {product.priceChange === "down" && (
+                        <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs">
+                          <TrendingDown className="h-3 w-3 mr-1" />
+                          Drop!
+                        </Badge>
+                      )}
+                      <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white h-6 w-6">
+                        <Heart className="h-3 w-3 fill-pink-500 text-pink-500" />
+                      </Button>
+                    </div>
+                    <CardContent className="p-3">
+                      <h4 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {product.title}
+                      </h4>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-baseline gap-1">
+                          <span className={`text-sm font-bold ${
+                            product.priceChange === "down" ? "text-green-600" : "text-foreground"
+                          }`}>
+                            {product.price}
+                          </span>
+                          {product.priceChange === "down" && (
+                            <span className="text-xs text-muted-foreground line-through">{product.originalPrice}</span>
+                          )}
+                        </div>
+                        <Button size="sm" className="text-xs">Add to Cart</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <AutopilotPopup 
+        open={autopilotOpen}
+        onOpenChange={setAutopilotOpen}
       />
     </AppLayout>
   );
