@@ -22,6 +22,10 @@ export default function SubNavigation({ items, className }: SubNavigationProps) 
               key={item.id}
               to={item.path}
               end
+              onClick={() => {
+                console.log(`Navigating to: ${item.path} (${item.name})`);
+                console.log("Current pathname:", window.location.pathname);
+              }}
               className={({ isActive }) =>
                 cn(
                   "inline-flex items-center justify-center whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-all shadow-sm",
