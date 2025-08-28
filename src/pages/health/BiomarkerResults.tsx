@@ -22,15 +22,8 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
+import { healthNavigation } from '@/config/navigation';
 
-const healthSubItems = [
-  { id: "overview", name: "Overview", path: "/health" },
-  { id: "pillars", name: "Pillars of Health", path: "/health/pillars" },
-  { id: "services", name: "Wellness Services", path: "/health/services" },
-  { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
-  { id: "education", name: "Education & Resources", path: "/health/education" },
-  { id: "biomarker-results", name: "Biomarker Results", path: "/health/biomarker-results" },
-];
 
 interface TestResult {
   id: string;
@@ -208,7 +201,7 @@ export default function BiomarkerResults() {
     return (
       <AppLayout>
         <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
-        <SubNavigation items={healthSubItems} />
+        <SubNavigation items={healthNavigation} />
         <div className="p-6">
           <div className="max-w-7xl mx-auto space-y-6">
             <PageHeader
@@ -236,7 +229,7 @@ export default function BiomarkerResults() {
     return (
       <AppLayout>
         <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
-        <SubNavigation items={healthSubItems} />
+        <SubNavigation items={healthNavigation} />
         <div className="p-6">
           <div className="max-w-7xl mx-auto space-y-6">
             <PageHeader
@@ -265,7 +258,7 @@ export default function BiomarkerResults() {
   return (
     <AppLayout>
       <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
-      <SubNavigation items={healthSubItems} />
+      <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex items-center justify-between">
