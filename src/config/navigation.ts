@@ -29,7 +29,6 @@ export const healthNavigation = [
   { id: "overview", name: "Overview", path: "/health" },
   { id: "services-hub", name: "Services Hub", path: "/health/services-hub" },
   { id: "biomarkers", name: "Biomarkers", path: "/health/biomarker-results" },
-  { id: "my-health-tracker", name: "My Health Tracker", path: "/health-tracker" },
   { id: "education-science", name: "Education & Science", path: "/health/education" },
 ];
 
