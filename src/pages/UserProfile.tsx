@@ -267,9 +267,9 @@ export default function UserProfile() {
               <div className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br from-primary via-accent to-secondary animate-pulse blur-sm group-hover:blur-md transition-all duration-300" />
               
               {/* Main badge */}
-              <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary/90 via-accent/90 to-secondary/90 flex flex-col items-center justify-center text-white shadow-2xl border-2 border-white/30 group-hover:scale-110 transition-transform duration-300">
-                <div className="text-2xl font-black tracking-tight leading-none">{user.stats.vitanaScore}</div>
-                <div className="text-[8px] font-semibold tracking-wide uppercase opacity-90 leading-tight">VITANA Index</div>
+              <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary/90 via-accent/90 to-secondary/90 flex flex-col items-center justify-center shadow-2xl border-2 border-white/30 group-hover:scale-110 transition-transform duration-300">
+                <div className="text-2xl font-black tracking-tight leading-none text-slate-900">{user.stats.vitanaScore}</div>
+                <div className="text-[8px] font-medium tracking-wide leading-tight text-slate-700/80">VITANA Index</div>
               </div>
               
               {/* Top % indicator */}
