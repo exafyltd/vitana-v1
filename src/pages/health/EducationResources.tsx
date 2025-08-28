@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Video, Headphones, GraduationCap } from "lucide-react";
 import { healthNavigation } from "@/config/navigation";
@@ -35,10 +35,10 @@ export default function EducationResources() {
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <PageHeader 
-            title="Knowledge is your superpower! 📚"
+          <StandardHeader 
+            title="Education & Science"
             description="Access curated health education materials linked to your interests and demographic profile."
-            icon={GraduationCap}
+            emoji="📚"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
