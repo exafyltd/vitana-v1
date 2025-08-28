@@ -105,12 +105,16 @@ export default withScreenId(function Messages() {
     </div>
   );
 
-  // Split-screen content for Overview tab
-  const OverviewLeftPanel = (
-    <div className="space-y-6">
+  // 4-section grid content for Overview tab
+  const OverviewContent = (
+    <div className="grid grid-cols-2 gap-6 min-h-[600px]">
       <Card>
         <CardHeader>
-          <CardTitle>Direct Messages</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="w-5 h-5" />
+            Direct Messages
+            <Badge variant="secondary">{stats.unreadDirect}</Badge>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <EmptyState 
@@ -120,14 +124,14 @@ export default withScreenId(function Messages() {
           />
         </CardContent>
       </Card>
-    </div>
-  );
 
-  const OverviewRightPanel = (
-    <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Group Chats</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="w-5 h-5" />
+            Group Chats
+            <Badge variant="secondary">{stats.unreadGroups}</Badge>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <EmptyState 
@@ -140,7 +144,11 @@ export default withScreenId(function Messages() {
       
       <Card>
         <CardHeader>
-          <CardTitle>Notifications</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Bell className="w-5 h-5" />
+            Notifications
+            <Badge variant="secondary">{stats.unreadNotifications}</Badge>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <EmptyState 
@@ -153,7 +161,10 @@ export default withScreenId(function Messages() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Archived</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Archive className="w-5 h-5" />
+            Archived
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <EmptyState 
@@ -192,13 +203,7 @@ export default withScreenId(function Messages() {
             </TabsList>
 
             <TabsContent value="overview" className="mt-6">
-              <SplitScreen
-                leftPanel={OverviewLeftPanel}
-                rightPanel={OverviewRightPanel}
-                defaultLeftSize={40}
-                screenId={SCREEN_IDS.INBOX_OVERVIEW}
-                className="min-h-[600px]"
-              />
+              {OverviewContent}
             </TabsContent>
 
             <TabsContent value="reminder" className="mt-6">
