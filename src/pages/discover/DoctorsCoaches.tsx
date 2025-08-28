@@ -1,25 +1,25 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, MapPin, Clock, Users, Verified, Award, TrendingUp } from "lucide-react";
+import { discoverNavigation } from "@/config/navigation";
+import { Star, MapPin, Clock, Users, Verified, Award, TrendingUp, Plane } from "lucide-react";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { useState } from "react";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { useNavigate } from "react-router-dom";
 
-const discoverSubItems = [
-  { id: "overview", name: "Overview", path: "/discover" },
-  { id: "browse", name: "Browse All", path: "/discover/browse" },
-  { id: "categories", name: "Categories", path: "/discover/categories" },
-  { id: "providers", name: "Providers", path: "/discover/providers" },
-  { id: "deals", name: "Deals & Offers", path: "/discover/deals" },
-  { id: "trending", name: "Trending", path: "/discover/trending" },
-  { id: "recommendations", name: "Recommendations", path: "/discover/recommendations" },
-  { id: "saved", name: "Saved", path: "/discover/saved" },
-];
+export default function DoctorsCoaches() {
+  const navigate = useNavigate();
+  const { pendingCount, getLatestActions } = useAutopilot();
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
-export default function Providers() {
+  const latestActions = getLatestActions(2);
+
   const providers = [
     {
       id: 1,
@@ -121,18 +121,76 @@ export default function Providers() {
 
   return (
     <AppLayout>
-      <SEO title="Providers | Discover" description="Find verified wellness providers and longevity specialists" canonical={window.location.href} />
-      <SubNavigation items={discoverSubItems} />
-      <div className="p-6 space-y-8">
-        <div className="max-w-7xl mx-auto">
-          <PageHeader
-            title="Find Wellness Providers"
-            description="Connect with verified longevity specialists, wellness coaches, and health practitioners."
-            icon={Users}
-          />
+      <SEO title="Doctors & Coaches | Discover" description="Find verified wellness providers and longevity specialists" canonical={window.location.href} />
+      <SubNavigation items={discoverNavigation} />
+      <div className="p-6 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Header Section with Perfect Symmetry - Three Cards Layout */}
+          <div className="flex flex-col lg:flex-row gap-4 mb-8">
+            {/* Welcome Message */}
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Doctors & Coaches 👨‍⚕️</h1>
+                <p className="text-muted-foreground">Connect with verified longevity specialists, wellness coaches, and health practitioners.</p>
+              </div>
+            </div>
+            
+            {/* Autopilot Card with Live Badge Counter */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
+              onClick={() => setAutopilotOpen(true)}
+              onMouseEnter={() => setShowPreview(true)}
+              onMouseLeave={() => setShowPreview(false)}
+            >
+              {pendingCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
+                >
+                  {pendingCount}
+                </Badge>
+              )}
+              <div className="flex flex-col items-center justify-center h-full space-y-3">
+                <div>
+                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                </div>
+                <span className="text-sm font-medium text-red-400">Autopilot</span>
+              </div>
+              
+              {/* Hover Preview */}
+              {showPreview && pendingCount > 0 && (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  {latestActions.map((action, index) => (
+                    <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                      <span>{action.icon}</span>
+                      <span className="truncate">{action.title}</span>
+                    </div>
+                  ))}
+                  {pendingCount > 2 && (
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                      +{pendingCount - 2} more actions
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
+            {/* Vitana Index Card - Circle with 742 */}
+            <div 
+              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+              onClick={() => navigate('/health-tracker/vitana-index')}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                  <span className="text-xl font-bold text-green-600">742</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Filters */}
-          <div className="bg-background/95 backdrop-blur-sm rounded-xl p-6 shadow-sm border mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-white/20 mb-8">
             <div className="flex flex-wrap gap-3">
               <Select>
                 <SelectTrigger className="w-[160px] bg-background">
@@ -197,7 +255,7 @@ export default function Providers() {
           {/* Provider Results */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {providers.map((provider) => (
-              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
+              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-white/20">
                 <CardContent className="p-4 md:p-5 lg:p-6 flex-1 flex flex-col">
                   <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                     <div className="relative">
@@ -279,6 +337,11 @@ export default function Providers() {
           </div>
         </div>
       </div>
+
+      <AutopilotPopup 
+        open={autopilotOpen}
+        onOpenChange={setAutopilotOpen}
+      />
     </AppLayout>
   );
 }

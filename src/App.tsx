@@ -33,17 +33,14 @@ import Matches from "./pages/dashboard/Matches";
 import AIFeed from "./pages/dashboard/AIFeed";
 
 // Discover sub-pages
-import Trending from "./pages/discover/Trending";
-import Recommendations from "./pages/discover/Recommendations";
-import Saved from "./pages/discover/Saved";
-import BrowseAll from "./pages/discover/BrowseAll";
-import Categories from "./pages/discover/Categories";
-import Providers from "./pages/discover/Providers";
-import Deals from "./pages/discover/Deals";
+import WellnessServices from "./pages/discover/WellnessServices";
+import DoctorsCoaches from "./pages/discover/DoctorsCoaches";
+import DealsOffers from "./pages/discover/DealsOffers";
+import Orders from "./pages/discover/Orders";
 
 // Health sub-pages
 import PillarsOfHealth from "./pages/health/PillarsOfHealth";
-import WellnessServices from "./pages/health/WellnessServices";
+import HealthWellnessServices from "./pages/health/WellnessServices";
 import ConditionsRisks from "./pages/health/ConditionsRisks";
 import EducationResources from "./pages/health/EducationResources";
 import BiomarkerResults from "./pages/health/BiomarkerResults";
@@ -116,18 +113,15 @@ const App = () => (
           
           {/* Discover routes */}
           <Route path="/discover" element={<Discover />} />
-          <Route path="/discover/browse" element={<BrowseAll />} />
-          <Route path="/discover/categories" element={<Categories />} />
-          <Route path="/discover/providers" element={<Providers />} />
-          <Route path="/discover/deals" element={<Deals />} />
-          <Route path="/discover/trending" element={<Trending />} />
-          <Route path="/discover/recommendations" element={<Recommendations />} />
-          <Route path="/discover/saved" element={<Saved />} />
+          <Route path="/discover/wellness-services" element={<WellnessServices />} />
+          <Route path="/discover/doctors-coaches" element={<DoctorsCoaches />} />
+          <Route path="/discover/deals-offers" element={<DealsOffers />} />
+          <Route path="/discover/orders" element={<Orders />} />
           
           {/* Health routes */}
           <Route path="/health" element={<Health />} />
           <Route path="/health/pillars" element={<PillarsOfHealth />} />
-          <Route path="/health/services" element={<WellnessServices />} />
+          <Route path="/health/services" element={<HealthWellnessServices />} />
           <Route path="/health/conditions" element={<ConditionsRisks />} />
           <Route path="/health/education" element={<EducationResources />} />
           <Route path="/health/biomarker-results" element={<BiomarkerResults />} />
