@@ -266,8 +266,20 @@ export default function UserProfile() {
               {/* Glowing ring effect */}
               <div className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br from-primary via-accent to-secondary animate-pulse blur-sm group-hover:blur-md transition-all duration-300" />
               
-              {/* Main badge */}
-              <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary/90 via-accent/90 to-secondary/90 flex flex-col items-center justify-center shadow-2xl border-2 border-white/30 group-hover:scale-110 transition-transform duration-300">
+              {/* Main badge - Perfect circle with masking */}
+              <div 
+                className="relative w-24 h-24 flex flex-col items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                style={{
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  aspectRatio: '1/1',
+                  background: `
+                    radial-gradient(120% 120% at 50% 35%, rgba(255,255,255,.85) 0%, rgba(255,255,255,.35) 35%, rgba(0,0,0,.08) 85%, rgba(0,0,0,0) 100%),
+                    linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--secondary)) 100%)
+                  `,
+                  boxShadow: 'inset 0 8px 16px rgba(0,0,0,.08), inset 0 -4px 8px rgba(0,0,0,.05)'
+                }}
+              >
                 <div className="text-2xl font-black tracking-tight leading-none" style={{color: '#006D5B'}}>{user.stats.vitanaScore}</div>
                 <div className="text-[8px] font-medium tracking-wide leading-tight" style={{color: '#2C2C2C'}}>VITANA Index</div>
               </div>
