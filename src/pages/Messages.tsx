@@ -96,6 +96,7 @@ const stats = {
 
 export default withScreenId(function Messages() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [activeOverviewTab, setActiveOverviewTab] = useState("direct");
 
   const EmptyState = ({ icon: Icon, title, description }: any) => (
     <div className="flex flex-col items-center justify-center h-64 text-center">
@@ -105,75 +106,125 @@ export default withScreenId(function Messages() {
     </div>
   );
 
-  // 4-section grid content for Overview tab
-  const OverviewContent = (
-    <div className="grid grid-cols-2 gap-6 min-h-[600px]">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="w-5 h-5" />
-            Direct Messages
-            <Badge variant="secondary">{stats.unreadDirect}</Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <EmptyState 
-            icon={MessageSquare}
-            title="No direct messages"
-            description="Start a conversation with community members"
-          />
-        </CardContent>
-      </Card>
+  // Overview sub-navigation items
+  const overviewNavItems = [
+    { id: "direct", name: "Direct Messages", path: "#direct" },
+    { id: "groups", name: "Group Chats", path: "#groups" },
+    { id: "notifications", name: "Notifications", path: "#notifications" },
+    { id: "archived", name: "Archived", path: "#archived" }
+  ];
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="w-5 h-5" />
-            Group Chats
-            <Badge variant="secondary">{stats.unreadGroups}</Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <EmptyState 
-            icon={Users}
-            title="No group chats"
-            description="Join or create group conversations"
-          />
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Bell className="w-5 h-5" />
-            Notifications
-            <Badge variant="secondary">{stats.unreadNotifications}</Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <EmptyState 
-            icon={Bell}
-            title="No notifications"
-            description="Your notifications will appear here"
-          />
-        </CardContent>
-      </Card>
+  // Content for each overview sub-section
+  const renderOverviewContent = () => {
+    switch (activeOverviewTab) {
+      case "direct":
+        return (
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="w-5 h-5" />
+                Direct Messages
+                <Badge variant="secondary">{stats.unreadDirect}</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EmptyState 
+                icon={MessageSquare}
+                title="No direct messages"
+                description="Start a conversation with community members"
+              />
+            </CardContent>
+          </Card>
+        );
+      case "groups":
+        return (
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Group Chats
+                <Badge variant="secondary">{stats.unreadGroups}</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EmptyState 
+                icon={Users}
+                title="No group chats"
+                description="Join or create group conversations"
+              />
+            </CardContent>
+          </Card>
+        );
+      case "notifications":
+        return (
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Bell className="w-5 h-5" />
+                Notifications
+                <Badge variant="secondary">{stats.unreadNotifications}</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EmptyState 
+                icon={Bell}
+                title="No notifications"
+                description="Your notifications will appear here"
+              />
+            </CardContent>
+          </Card>
+        );
+      case "archived":
+        return (
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Archive className="w-5 h-5" />
+                Archived Messages
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EmptyState 
+                icon={Archive}
+                title="No archived messages"
+                description="Archived conversations will appear here"
+              />
+            </CardContent>
+          </Card>
+        );
+      default:
+        return null;
+    }
+  };
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Archive className="w-5 h-5" />
-            Archived
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <EmptyState 
-            icon={Archive}
-            title="No archived messages"
-            description="Archived conversations will appear here"
-          />
-        </CardContent>
-      </Card>
+  // Split-screen left panel with sub-navigation
+  const OverviewLeftPanel = (
+    <div className="space-y-4">
+      <div className="flex flex-col gap-2">
+        {overviewNavItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => setActiveOverviewTab(item.id)}
+            className={`p-3 text-left rounded-lg transition-all ${
+              activeOverviewTab === item.id
+                ? "bg-muted text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            }`}
+          >
+            {item.name}
+            {item.id === "direct" && <Badge variant="secondary" className="ml-2">{stats.unreadDirect}</Badge>}
+            {item.id === "groups" && <Badge variant="secondary" className="ml-2">{stats.unreadGroups}</Badge>}
+            {item.id === "notifications" && <Badge variant="secondary" className="ml-2">{stats.unreadNotifications}</Badge>}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Split-screen right panel with content
+  const OverviewRightPanel = (
+    <div className="h-full">
+      {renderOverviewContent()}
     </div>
   );
 
@@ -203,7 +254,13 @@ export default withScreenId(function Messages() {
             </TabsList>
 
             <TabsContent value="overview" className="mt-6">
-              {OverviewContent}
+              <SplitScreen
+                leftPanel={OverviewLeftPanel}
+                rightPanel={OverviewRightPanel}
+                defaultLeftSize={30}
+                screenId={SCREEN_IDS.INBOX_OVERVIEW}
+                className="min-h-[600px]"
+              />
             </TabsContent>
 
             <TabsContent value="reminder" className="mt-6">
