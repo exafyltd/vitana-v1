@@ -233,10 +233,19 @@ export default function UserProfile() {
 
   const getRoleColor = (role?: string) => {
     switch (role) {
-      case 'admin': return 'bg-primary/10 text-primary';
-      case 'moderator': return 'bg-secondary/10 text-secondary';
-      default: return 'bg-accent/10 text-accent';
+      case 'admin': return 'bg-primary text-primary-foreground';
+      case 'moderator': return 'bg-secondary text-secondary-foreground';
+      case 'professional': return 'bg-accent text-accent-foreground';
+      default: return 'bg-muted text-muted-foreground';
     }
+  };
+
+  const getUserRoles = () => {
+    const roles = [];
+    if (user.verified) roles.push('Professional');
+    if (user.stats.vitanaScore > 700) roles.push('VIP');
+    roles.push('Community');
+    return roles;
   };
 
   return (
@@ -246,306 +255,416 @@ export default function UserProfile() {
         description={`${user.name}: ${user.bio}`}
       />
 
-      <div className="space-y-8">
-        {/* Hero Section with Vitana Index as Star */}
-        <div className="relative bg-gradient-to-br from-green-400/10 via-blue-500/10 to-purple-500/10 rounded-3xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
-          
-          <div className="relative p-8">
-            <div className="flex flex-col lg:flex-row items-center gap-12">
-              {/* Left: Avatar & Basic Info */}
-              <div className="flex flex-col items-center text-center">
-                <Avatar className="h-32 w-32 border-4 border-background shadow-2xl mb-4">
-                  <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
-                  <AvatarFallback className="text-2xl font-bold">
-                    {user.name.split(' ').map(n => n[0]).join('')}
-                  </AvatarFallback>
-                </Avatar>
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+        <div className="relative">
+          {/* Vitana Index Badge - Top Right Corner */}
+          <div className="absolute top-6 right-6 z-20">
+            <div 
+              className="relative cursor-pointer group"
+              onClick={() => navigate('/health-tracker/vitana-index')}
+            >
+              {/* Glowing ring effect */}
+              <div className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br from-primary via-accent to-secondary animate-pulse blur-sm group-hover:blur-md transition-all duration-300" />
+              
+              {/* Main badge */}
+              <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary/90 via-accent/90 to-secondary/90 flex flex-col items-center justify-center text-white shadow-2xl border-2 border-white/30 group-hover:scale-110 transition-transform duration-300">
+                <div className="text-lg font-bold">{user.stats.vitanaScore}</div>
+                <div className="text-[10px] font-medium">INDEX</div>
+              </div>
+              
+              {/* Top % indicator */}
+              <div className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">
+                TOP 10%
+              </div>
+            </div>
+            
+            {/* Archetype below badge */}
+            <div className="mt-2 text-center">
+              <div className="text-xs font-medium text-muted-foreground">{user.longevityArchetype}</div>
+            </div>
+          </div>
+
+          {/* Hero Section - Human-Centered Layout */}
+          <div className="px-6 pt-20 pb-8">
+            <div className="max-w-4xl mx-auto text-center space-y-6">
+              {/* Profile Picture - Centered at Top */}
+              <Avatar className="h-32 w-32 mx-auto border-4 border-white/50 shadow-2xl">
+                <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
+                <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+                  {user.name.split(' ').map(n => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
+
+              {/* Name, Handle, and Role Badges */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-center gap-2 flex-wrap">
+                  <h1 className="text-3xl md:text-4xl font-bold text-foreground">{user.name}</h1>
+                  {user.verified && (
+                    <Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />
+                  )}
+                </div>
                 
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 justify-center">
-                    <h1 className="text-3xl font-bold text-foreground">{user.name}</h1>
-                    {user.verified && (
-                      <Badge className="bg-primary/10 text-primary border-primary/20">
-                        <Star className="h-4 w-4 mr-1 fill-current" />
-                        Verified
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-lg text-muted-foreground font-medium">{user.handle}</p>
-                  <p className="text-foreground/80">{user.tagline}</p>
+                <p className="text-lg text-muted-foreground font-medium">{user.handle}</p>
+                
+                {/* Role Badges */}
+                <div className="flex items-center justify-center gap-2 flex-wrap">
+                  {getUserRoles().map((role, index) => (
+                    <Badge key={index} variant="secondary" className="px-3 py-1">
+                      {role}
+                    </Badge>
+                  ))}
                 </div>
               </div>
 
-              {/* Center: Giant Vitana Index - The Star of the Show */}
-              <div 
-                className="flex-1 flex flex-col items-center cursor-pointer group transition-all duration-500 hover:scale-105"
-                onClick={() => navigate('/health-tracker/vitana-index')}
-              >
-                <div className="relative">
-                  {/* Glowing background circle */}
-                  <div className="absolute inset-0 w-48 h-48 rounded-full bg-gradient-to-br from-green-400/20 to-blue-500/20 blur-xl group-hover:blur-2xl transition-all duration-500" />
-                  
-                  {/* Main circle */}
-                  <div className="relative w-48 h-48 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-2xl shadow-green-500/30 group-hover:shadow-green-500/50 transition-all duration-500 border-4 border-white/20">
-                    <div className="text-center">
-                      <div className="text-6xl font-bold text-green-600 mb-2 group-hover:scale-110 transition-transform duration-300">
-                        {user.stats.vitanaScore}
+              {/* Action Buttons - Centered Row */}
+              <div className="flex items-center justify-center gap-4 flex-wrap">
+                <Button className="px-6 rounded-full bg-primary hover:bg-primary/90">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Follow
+                </Button>
+                <Button variant="outline" className="px-6 rounded-full">
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Message
+                </Button>
+                <Button variant="ghost" className="px-6 rounded-full">
+                  <Share className="h-4 w-4 mr-2" />
+                  Share
+                </Button>
+              </div>
+
+              {/* Stats Row - Instagram Style */}
+              <div className="flex items-center justify-center gap-8 md:gap-12 py-6 border-y border-border/50">
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-foreground">{user.stats.followers.toLocaleString()}</div>
+                  <div className="text-sm text-muted-foreground">Followers</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-foreground">{user.stats.posts}</div>
+                  <div className="text-sm text-muted-foreground">Posts</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-foreground">{user.stats.mediaUploads}</div>
+                  <div className="text-sm text-muted-foreground">Media</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-foreground">{user.stats.groupsJoined}</div>
+                  <div className="text-sm text-muted-foreground">Groups</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Achievements & Badges Strip */}
+        <div className="px-6">
+          <div className="max-w-6xl mx-auto">
+            <Card className="bg-gradient-to-r from-yellow-50/50 via-orange-50/50 to-red-50/50 border-yellow-200/30">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-bold mb-6 text-center flex items-center justify-center gap-2">
+                  <Trophy className="h-5 w-5 text-yellow-600" />
+                  Achievements & Streaks
+                </h3>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  {user.badges.map((badge, index) => (
+                    <div key={index} className="group cursor-pointer">
+                      <Badge className="bg-gradient-to-r from-yellow-400/20 to-orange-500/20 text-yellow-700 border-yellow-300/50 px-4 py-2 hover:from-yellow-400/30 hover:to-orange-500/30 transition-all duration-200 hover:scale-105">
+                        <Trophy className="h-3 w-3 mr-1.5" />
+                        {badge}
+                      </Badge>
+                    </div>
+                  ))}
+                  {user.engagementBadges.map((badge, index) => (
+                    <div key={index} className="group cursor-pointer">
+                      <Badge className="bg-gradient-to-r from-green-400/20 to-blue-500/20 text-green-700 border-green-300/50 px-4 py-2 hover:from-green-400/30 hover:to-blue-500/30 transition-all duration-200 hover:scale-105">
+                        <Target className="h-3 w-3 mr-1.5" />
+                        {badge}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Tabbed Content Area */}
+        <div className="px-6">
+          <div className="max-w-6xl mx-auto">
+            <Tabs defaultValue="posts" className="space-y-6">
+              <div className="flex justify-center">
+                <TabsList className="grid grid-cols-4 w-full max-w-md bg-muted/30">
+                  <TabsTrigger value="posts" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Posts</TabsTrigger>
+                  <TabsTrigger value="media" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Media</TabsTrigger>
+                  <TabsTrigger value="groups" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Groups</TabsTrigger>
+                  <TabsTrigger value="health" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Health Snapshot</TabsTrigger>
+                </TabsList>
+              </div>
+
+              {/* Posts Tab - Social Feed First */}
+              <TabsContent value="posts" className="space-y-4">
+                {user.socialPosts.map((post) => (
+                  <Card key={post.id} className="p-6">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={user.avatar} alt={user.name} />
+                          <AvatarFallback>{user.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold">{user.name}</span>
+                            <span className="text-muted-foreground text-sm">{user.handle}</span>
+                            <span className="text-muted-foreground text-sm">•</span>
+                            <span className="text-muted-foreground text-sm">{post.date}</span>
+                          </div>
+                          <p className="mt-2 text-foreground/90">{post.content}</p>
+                          {post.image && (
+                            <div className="mt-3 rounded-lg overflow-hidden">
+                              <img src={post.image} alt="Post image" className="w-full h-48 object-cover" />
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
-                        Vitana Index
+                      
+                      <div className="flex items-center gap-6 pt-2 border-t">
+                        <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                          <Heart className="h-4 w-4" />
+                          <span className="text-sm">{post.likes}</span>
+                        </button>
+                        <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                          <MessageSquare className="h-4 w-4" />
+                          <span className="text-sm">{post.comments}</span>
+                        </button>
+                        <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                          <Share className="h-4 w-4" />
+                          <span className="text-sm">{post.shares}</span>
+                        </button>
                       </div>
                     </div>
-                  </div>
-                  
-                  {/* Floating achievement badge */}
-                  <div className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                    Top 10%
-                  </div>
-                </div>
-                
-                <div className="mt-6 text-center">
-                  <h3 className="text-xl font-bold text-foreground mb-1">{user.longevityArchetype}</h3>
-                  <p className="text-sm text-muted-foreground">Longevity Archetype</p>
-                </div>
-              </div>
+                  </Card>
+                ))}
+              </TabsContent>
 
-              {/* Right: Quick Stats */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-white/50 rounded-xl">
-                  <div className="text-2xl font-bold text-primary">{user.stats.followers.toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground">Followers</div>
-                </div>
-                <div className="text-center p-4 bg-white/50 rounded-xl">
-                  <div className="text-2xl font-bold text-primary">{user.stats.posts}</div>
-                  <div className="text-xs text-muted-foreground">Posts</div>
-                </div>
-                <div className="text-center p-4 bg-white/50 rounded-xl">
-                  <div className="text-2xl font-bold text-primary">{user.stats.mediaUploads}</div>
-                  <div className="text-xs text-muted-foreground">Media</div>
-                </div>
-                <div className="text-center p-4 bg-white/50 rounded-xl">
-                  <div className="text-2xl font-bold text-primary">{user.stats.groupsJoined}</div>
-                  <div className="text-xs text-muted-foreground">Groups</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-3 justify-center mt-8">
-              <Button size="lg" className="px-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Message
-              </Button>
-              <Button variant="outline" size="lg" className="px-8">
-                <UserPlus className="h-4 w-4 mr-2" />
-                Follow
-              </Button>
-              <Button variant="ghost" size="lg">
-                <Share className="h-4 w-4 mr-2" />
-                Share Profile
-              </Button>
-            </div>
-
-            {/* Location & Join Date */}
-            <div className="flex items-center gap-6 text-sm text-muted-foreground justify-center mt-6">
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4" />
-                <span>{user.location}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                <span>Joined {user.joinDate}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Achievements & Badges Strip */}
-        <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-6">
-          <h3 className="text-lg font-bold mb-4 text-center">🏆 Achievements & Badges</h3>
-          <div className="flex flex-wrap gap-3 justify-center">
-            {user.badges.map((badge, index) => (
-              <Badge key={index} className="bg-gradient-to-r from-yellow-400/20 to-orange-500/20 text-orange-700 border-orange-200 px-4 py-2">
-                <Trophy className="h-4 w-4 mr-1" />
-                {badge}
-              </Badge>
-            ))}
-            {user.engagementBadges.map((badge, index) => (
-              <Badge key={index} className="bg-gradient-to-r from-green-400/20 to-blue-500/20 text-blue-700 border-blue-200 px-4 py-2">
-                <Target className="h-4 w-4 mr-1" />
-                {badge}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        {/* Progressive Enrichment Content */}
-        <div className="px-6">
-          <Tabs defaultValue="posts" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="posts">Posts</TabsTrigger>
-              <TabsTrigger value="media">Media</TabsTrigger>
-              <TabsTrigger value="groups">Groups</TabsTrigger>
-              <TabsTrigger value="health">Health Snapshot</TabsTrigger>
-            </TabsList>
-
-            {/* Posts Tab - Social Feed First */}
-            <TabsContent value="posts" className="space-y-4">
-              {user.socialPosts.map((post) => (
-                <Card key={post.id} className="p-6">
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src={user.avatar} alt={user.name} />
-                        <AvatarFallback>{user.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold">{user.name}</span>
-                          <span className="text-muted-foreground text-sm">{user.handle}</span>
-                          <span className="text-muted-foreground text-sm">•</span>
-                          <span className="text-muted-foreground text-sm">{post.date}</span>
-                        </div>
-                        <p className="mt-2 text-foreground/90">{post.content}</p>
-                        {post.image && (
-                          <div className="mt-3 rounded-lg overflow-hidden">
-                            <img src={post.image} alt="Post image" className="w-full h-48 object-cover" />
+              {/* Media Tab - TikTok/Instagram Style */}
+              <TabsContent value="media" className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {user.mediaContent.map((media) => (
+                    <Card key={media.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                      <div className="relative">
+                        <img src={media.thumbnail} alt={media.title} className="w-full h-48 object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <div className="flex items-center gap-2 text-white mb-1">
+                            {getMediaIcon(media.type)}
+                            <span className="text-sm font-medium">{media.duration}</span>
                           </div>
+                          <h4 className="font-semibold text-white text-sm">{media.title}</h4>
+                        </div>
+                        <div className="absolute top-3 right-3">
+                          <Badge variant="secondary" className="bg-black/40 text-white">
+                            {media.type}
+                          </Badge>
+                        </div>
+                      </div>
+                      <CardContent className="p-3">
+                        <div className="flex items-center justify-between text-sm text-muted-foreground">
+                          <span>{media.views ? `${media.views.toLocaleString()} views` : `${media.plays} plays`}</span>
+                          <span>{media.date}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* Groups Tab - Community Engagement */}
+              <TabsContent value="groups" className="space-y-6">
+                <div className="grid gap-4">
+                  {user.communities.map((community) => (
+                    <Card key={community.id} className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Users className="h-6 w-6 text-primary" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold">{community.name}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {community.members.toLocaleString()} members • {community.type}
+                            </p>
+                          </div>
+                        </div>                      
+                        {community.role && (
+                          <Badge className={getRoleColor(community.role)}>
+                            {community.role}
+                          </Badge>
                         )}
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-6 pt-2 border-t">
-                      <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-                        <Heart className="h-4 w-4" />
-                        <span className="text-sm">{post.likes}</span>
-                      </button>
-                      <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-                        <MessageSquare className="h-4 w-4" />
-                        <span className="text-sm">{post.comments}</span>
-                      </button>
-                      <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-                        <Share className="h-4 w-4" />
-                        <span className="text-sm">{post.shares}</span>
-                      </button>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </TabsContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
 
-            {/* Media Tab - TikTok/Instagram Style */}
-            <TabsContent value="media" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {user.mediaContent.map((media) => (
-                  <Card key={media.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="relative">
-                      <img src={media.thumbnail} alt={media.title} className="w-full h-48 object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <div className="absolute bottom-3 left-3 right-3">
-                        <div className="flex items-center gap-2 text-white mb-1">
-                          {getMediaIcon(media.type)}
-                          <span className="text-sm font-medium">{media.duration}</span>
-                        </div>
-                        <h4 className="font-semibold text-white text-sm">{media.title}</h4>
-                      </div>
-                      <div className="absolute top-3 right-3">
-                        <Badge variant="secondary" className="bg-black/40 text-white">
-                          {media.type}
-                        </Badge>
-                      </div>
-                    </div>
-                    <CardContent className="p-3">
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <span>{media.views ? `${media.views.toLocaleString()} views` : `${media.plays} plays`}</span>
-                        <span>{media.date}</span>
+              {/* Health Snapshot Tab */}
+              <TabsContent value="health" className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* Five Pillar Contributors to Vitana Index */}
+                  <Card className="p-4">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm flex items-center gap-2">
+                        <Activity className="h-4 w-4 text-green-500" />
+                        Exercise
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-green-600">85%</div>
+                      <div className="w-full bg-muted rounded-full h-2 mt-2">
+                        <div className="bg-green-500 h-2 rounded-full w-[85%]"></div>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
-              </div>
-            </TabsContent>
 
-            {/* Groups Tab - Community Engagement */}
-            <TabsContent value="groups" className="space-y-6">
-              <div className="grid gap-4">
-                {user.communities.map((community) => (
-                  <Card key={community.id} className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Users className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold">{community.name}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {community.members.toLocaleString()} members • {community.type}
-                          </p>
-                        </div>
-                      </div>                      
-                      {community.role && (
-                        <Badge className={getRoleColor(community.role)}>
-                          {community.role}
-                        </Badge>
-                      )}
-                    </div>
+                  <Card className="p-4">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm flex items-center gap-2">
+                        <span className="text-blue-500">😴</span>
+                        Sleep
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-blue-600">78%</div>
+                      <div className="w-full bg-muted rounded-full h-2 mt-2">
+                        <div className="bg-blue-500 h-2 rounded-full w-[78%]"></div>
+                      </div>
+                    </CardContent>
                   </Card>
-                ))}
-              </div>
-            </TabsContent>
 
-            {/* Health Snapshot Tab - Progressive Health Layer */}
-            <TabsContent value="health" className="space-y-6">
-              <div className="grid gap-6 md:grid-cols-2">
-                <Card className="p-6">
-                  <CardHeader className="p-0 pb-4">
-                    <CardTitle className="flex items-center gap-2">
-                      <Target className="h-5 w-5 text-primary" />
-                      Vitana Score
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="text-center space-y-2">
-                      <div className="text-4xl font-bold text-primary">{user.stats.vitanaScore}</div>
-                      <div className="text-muted-foreground">{user.longevityArchetype}</div>
-                    </div>
-                  </CardContent>
-                </Card>
+                  <Card className="p-4">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm flex items-center gap-2">
+                        <span className="text-orange-500">🥗</span>
+                        Nutrition
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-orange-600">92%</div>
+                      <div className="w-full bg-muted rounded-full h-2 mt-2">
+                        <div className="bg-orange-500 h-2 rounded-full w-[92%]"></div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                <Card className="p-6">
-                  <CardHeader className="p-0 pb-4">
-                    <CardTitle>Engagement Badges</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="space-y-2">
-                      {user.engagementBadges.map((badge, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <Trophy className="h-4 w-4 text-primary" />
-                          <span className="text-sm">{badge}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                  <Card className="p-4">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm flex items-center gap-2">
+                        <span className="text-cyan-500">💧</span>
+                        Hydration
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-cyan-600">73%</div>
+                      <div className="w-full bg-muted rounded-full h-2 mt-2">
+                        <div className="bg-cyan-500 h-2 rounded-full w-[73%]"></div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                <Card className="p-6 md:col-span-2">
-                  <CardHeader className="p-0 pb-4">
-                    <CardTitle>Interests & Auto-Generated Tags</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="flex flex-wrap gap-2">
-                      {user.interests.map((interest) => (
-                        <Badge key={interest} variant="outline" className="hover:bg-primary/10 transition-colors">
-                          {interest}
-                        </Badge>
-                      ))}
+                  <Card className="p-4">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm flex items-center gap-2">
+                        <span className="text-purple-500">🧠</span>
+                        Mental Health
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-purple-600">89%</div>
+                      <div className="w-full bg-muted rounded-full h-2 mt-2">
+                        <div className="bg-purple-500 h-2 rounded-full w-[89%]"></div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="p-4">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm flex items-center gap-2">
+                        <span className="text-red-500">🩺</span>
+                        Biomarkers
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-red-600">81%</div>
+                      <div className="w-full bg-muted rounded-full h-2 mt-2">
+                        <div className="bg-red-500 h-2 rounded-full w-[81%]"></div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+
+        {/* Longevity Timeline & Impact Cards */}
+        <div className="px-6 pb-8">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Timeline Card */}
+            <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-primary" />
+                  Longevity Timeline
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Member since</span>
+                  <span className="font-semibold">{user.joinDate}</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="text-sm text-muted-foreground">Vitana Index Progress</div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-full" style={{width: `${(user.stats.vitanaScore / 1000) * 100}%`}}></div>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-          </Tabs>
+                    <span className="text-sm font-medium">{user.stats.vitanaScore}/1000</span>
+                  </div>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  📈 +47 points this month
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* My Impact Card */}
+            <Card className="bg-gradient-to-br from-accent/5 to-primary/5 border-accent/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Star className="h-5 w-5 text-accent" />
+                  My Impact
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-foreground">12</div>
+                    <div className="text-xs text-muted-foreground">Friends Invited</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-foreground">5</div>
+                    <div className="text-xs text-muted-foreground">Services Hosted</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-foreground">28</div>
+                    <div className="text-xs text-muted-foreground">Referrals Generated</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-foreground">$340</div>
+                    <div className="text-xs text-muted-foreground">Rewards Earned</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </AppLayout>
