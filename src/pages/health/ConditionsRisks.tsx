@@ -2,16 +2,9 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import PageHeader from "@/components/PageHeader";
+import { healthNavigation } from "@/config/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, FileText, Shield } from "lucide-react";
-
-const healthSubItems = [
-  { id: "overview", name: "Overview", path: "/health" },
-  { id: "pillars", name: "Pillars of Health", path: "/health/pillars" },
-  { id: "services", name: "Wellness Services", path: "/health/services" },
-  { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
-  { id: "education", name: "Education & Resources", path: "/health/education" },
-];
 
 const conditionsItems = [
   {
@@ -32,7 +25,7 @@ export default function ConditionsRisks() {
   return (
     <AppLayout>
       <SEO title="Conditions & Risks | Health" description="Assess health risks and create preventive action plans" canonical={window.location.href} />
-      <SubNavigation items={healthSubItems} />
+      <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <PageHeader 

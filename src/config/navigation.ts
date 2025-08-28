@@ -27,8 +27,21 @@ export const messagesNavigation = [
 
 export const healthNavigation = [
   { id: "overview", name: "Overview", path: "/health" },
+  { id: "pillars", name: "Pillars of Health", path: "/health/pillars" },
   { id: "services-hub", name: "Services Hub", path: "/health/services-hub" },
+  { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
   { id: "biomarkers", name: "Biomarkers", path: "/health/biomarker-results" },
   { id: "my-health-tracker", name: "My Health Tracker", path: "/health-tracker" },
   { id: "education-science", name: "Education & Science", path: "/health/education" },
+];
+
+export const healthTrackerNavigation = [
+  { id: "overview", name: "Overview", path: "/health" },
+  { id: "vitana-index", name: "Health Index", path: "/health/vitana-index" },
+  { id: "nutrition", name: "Nutrition", path: "/health/nutrition" },
+  { id: "hydration", name: "Hydration", path: "/health/hydration" },
+  { id: "sleep", name: "Sleep", path: "/health/sleep" },
+  { id: "exercise", name: "Exercise", path: "/health/exercise" },
+  { id: "mental-health", name: "Mental Health", path: "/health/mental-health" },
+  { id: "trends", name: "Trends", path: "/health/trends" },
 ];
