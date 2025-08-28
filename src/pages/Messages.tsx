@@ -1,18 +1,19 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SplitScreen } from "@/components/ui/split-screen";
 import MessageComposer from "@/components/messages/MessageComposer";
-import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle } from "lucide-react";
+import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle, Lightbulb, Mail, Zap } from "lucide-react";
 import { useState } from "react";
+import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 const messagesSubItems = [
   { id: "overview", name: "Overview", path: "/messages" },
-  { id: "direct", name: "Direct Messages", path: "/messages/direct" },
-  { id: "group", name: "Group Chats", path: "/messages/group" },
-  { id: "notifications", name: "Notifications", path: "/messages/notifications" },
-  { id: "archived", name: "Archived", path: "/messages/archived" },
+  { id: "reminder", name: "Reminder", path: "/messages/reminder" },
+  { id: "inspiration", name: "Inspiration", path: "/messages/inspiration" },
 ];
 
 const recentActivity = [
@@ -32,7 +33,7 @@ const stats = {
   dailyMessages: 43
 };
 
-export default function Messages() {
+export default withScreenId(function Messages() {
   const [activeTab, setActiveTab] = useState("overview");
 
   const EmptyState = ({ icon: Icon, title, description }: any) => (
@@ -40,6 +41,67 @@ export default function Messages() {
       <Icon className="w-12 h-12 text-muted-foreground mb-4" />
       <h3 className="text-lg font-medium mb-2">{title}</h3>
       <p className="text-muted-foreground">{description}</p>
+    </div>
+  );
+
+  // Split-screen content for Overview tab
+  const OverviewLeftPanel = (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Direct Messages</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EmptyState 
+            icon={MessageSquare}
+            title="No direct messages"
+            description="Start a conversation with community members"
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const OverviewRightPanel = (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Group Chats</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EmptyState 
+            icon={Users}
+            title="No group chats"
+            description="Join or create group conversations"
+          />
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Notifications</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EmptyState 
+            icon={Bell}
+            title="No notifications"
+            description="Your notifications will appear here"
+          />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Archived</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EmptyState 
+            icon={Archive}
+            title="No archived messages"
+            description="Archived conversations will appear here"
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 
@@ -54,76 +116,68 @@ export default function Messages() {
       
       <div className="p-6 bg-gradient-to-br from-domain-messages-tint via-background to-domain-messages-tint/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header */}
-          <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-            <CardHeader>
-              <CardTitle className="text-3xl">Stay connected with your community! 💬</CardTitle>
-              <p className="text-muted-foreground">Manage your conversations, notifications, and stay connected with your wellness community.</p>
-            </CardHeader>
-          </Card>
+          <StandardHeader
+            title="Stay connected with your community!"
+            description="Manage your conversations, notifications, and stay connected with your wellness community."
+            emoji="💬"
+          />
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="direct">Direct Messages</TabsTrigger>
-              <TabsTrigger value="group">Group Chats</TabsTrigger>
-              <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="archived">Archived</TabsTrigger>
+              <TabsTrigger value="reminder">Reminder</TabsTrigger>
+              <TabsTrigger value="inspiration">Inspiration</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="mt-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recent Activity</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <EmptyState 
-                      icon={Clock}
-                      title="No recent activity"
-                      description="Your recent messages and notifications will appear here"
-                    />
-                  </CardContent>
-                </Card>
-                <MessageComposer />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="direct" className="mt-6">
-              <EmptyState 
-                icon={MessageSquare}
-                title="No direct messages"
-                description="Start a conversation with community members"
+              <SplitScreen
+                leftPanel={OverviewLeftPanel}
+                rightPanel={OverviewRightPanel}
+                defaultLeftSize={40}
+                screenId={SCREEN_IDS.INBOX_OVERVIEW}
+                className="min-h-[600px]"
               />
             </TabsContent>
 
-            <TabsContent value="group" className="mt-6">
-              <EmptyState 
-                icon={Users}
-                title="No group chats"
-                description="Join or create group conversations"
-              />
+            <TabsContent value="reminder" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Bell className="w-5 h-5 text-blue-500" />
+                    Smart Reminders
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <EmptyState 
+                    icon={Clock}
+                    title="No reminders set"
+                    description="Set up intelligent reminders for follow-ups and important conversations"
+                  />
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="notifications" className="mt-6">
-              <EmptyState 
-                icon={Bell}
-                title="No notifications"
-                description="Your notifications will appear here"
-              />
-            </TabsContent>
-
-            <TabsContent value="archived" className="mt-6">
-              <EmptyState 
-                icon={Archive}
-                title="No archived messages"
-                description="Archived conversations will appear here"
-              />
+            <TabsContent value="inspiration" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Lightbulb className="w-5 h-5 text-yellow-500" />
+                    Communication Inspiration
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <EmptyState 
+                    icon={Zap}
+                    title="No suggestions available"
+                    description="AI-powered suggestions for initiating conversations and responding to messages will appear here"
+                  />
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
       </div>
     </AppLayout>
   );
-}
+}, SCREEN_IDS.INBOX_OVERVIEW);

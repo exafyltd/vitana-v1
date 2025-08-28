@@ -38,16 +38,16 @@ import { supabase } from '@/integrations/supabase/client';
 
 const discoverSubItems = [
   { id: "overview", name: "Overview", path: "/discover" },
-  { id: "browse", name: "Browse All", path: "/discover/browse" },
-  { id: "categories", name: "Categories", path: "/discover/categories" },
-  { id: "providers", name: "Providers", path: "/discover/providers" },
-  { id: "deals", name: "Deals & Offers", path: "/discover/deals" },
-  { id: "trending", name: "Trending", path: "/discover/trending" },
-  { id: "recommendations", name: "Recommendations", path: "/discover/recommendations" },
-  { id: "saved", name: "Saved", path: "/discover/saved" },
+  { id: "wellness-services", name: "Wellness Services", path: "/discover/wellness-services" },
+  { id: "doctors-coaches", name: "Doctors/Coaches", path: "/discover/doctors-coaches" },
+  { id: "deals-offers", name: "Deals & Offers", path: "/discover/deals-offers" },
+  { id: "orders", name: "Orders", path: "/discover/orders" },
 ];
 
-export default function Discover() {
+import StandardHeader from "@/components/StandardHeader";
+import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+
+export default withScreenId(function Discover() {
   const navigate = useNavigate();
   const [labTests, setLabTests] = useState([]);
   const [selectedLabTest, setSelectedLabTest] = useState(null);
@@ -299,10 +299,10 @@ export default function Discover() {
       <SubNavigation items={discoverSubItems} />
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
-          <PageHeader
+          <StandardHeader
             title="Discover your Longevity Marketplace"
             description="Find doctors, wellness services, and community groups perfectly matched to your healthy aging journey."
-            icon={Search}
+            emoji="🔍"
           />
 
           {/* Intent Router */}
@@ -709,4 +709,4 @@ export default function Discover() {
       />
     </AppLayout>
   );
-}
+}, SCREEN_IDS.DISCOVER_OVERVIEW);

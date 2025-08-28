@@ -15,16 +15,19 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 
 const communitySubItems = [
-  { id: "overview", name: "Overview", path: "/community" },
-  { id: "my-groups", name: "My Groups & Feed", path: "/community/my-groups" },
-  { id: "events", name: "Events & Meetups", path: "/community/events" },
-  { id: "my-business", name: "My Business", path: "/community/my-business" },
+  { id: "my-groups", name: "My Groups", path: "/community/my-groups" },
+  { id: "feed", name: "Feed", path: "/community/feed" },
+  { id: "events", name: "Events", path: "/community/events" },
+  { id: "live-rooms", name: "Live Rooms", path: "/community/live-rooms" },
   { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
-  { id: "live-rooms", name: "LIVE Hub", path: "/community/live-rooms" },
-  { id: "ai-insights", name: "AI Insights", path: "/community/ai-insights" },
+  { id: "business", name: "Business", path: "/community/business" },
+  { id: "meetups", name: "Meetups", path: "/community/meetups" },
 ];
 
-export default function Community() {
+import StandardHeader from "@/components/StandardHeader";
+import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+
+export default withScreenId(function Community() {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [timeframe, setTimeframe] = useState("7d");
@@ -101,69 +104,11 @@ export default function Community() {
       <SubNavigation items={communitySubItems} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          {/* Header Section with Perfect Symmetry - Three Cards Layout */}
-          <div className="flex flex-col lg:flex-row gap-4 mb-8">
-            {/* Shortened Header Bar - Welcome Message */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Your Community Hub ✨</h1>
-                <p className="text-muted-foreground">Connect, share, and grow together with your wellness community.</p>
-              </div>
-            </div>
-            
-            {/* Autopilot Card with Live Badge Counter */}
-            <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
-              onClick={() => setAutopilotOpen(true)}
-              onMouseEnter={() => setShowPreview(true)}
-              onMouseLeave={() => setShowPreview(false)}
-            >
-              {pendingCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
-                >
-                  {pendingCount}
-                </Badge>
-              )}
-              <div className="flex flex-col items-center justify-center h-full space-y-3">
-                <div>
-                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
-                </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
-              </div>
-              
-              {/* Hover Preview */}
-              {showPreview && pendingCount > 0 && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
-                  {latestActions.map((action, index) => (
-                    <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
-                      <span>{action.icon}</span>
-                      <span className="truncate">{action.title}</span>
-                    </div>
-                  ))}
-                  {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-            
-            {/* Vitana Index Card - Circle with 742 */}
-            <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-              onClick={() => navigate('/health-tracker/vitana-index')}
-            >
-              <div className="flex items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600">742</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <StandardHeader
+            title="Your Community Hub"
+            description="Connect, share, and grow together with your wellness community."
+            emoji="✨"
+          />
 
           {/* Autopilot Integration */}
           <div className="mb-6">
@@ -563,4 +508,4 @@ export default function Community() {
       />
     </AppLayout>
   );
-}
+}, SCREEN_IDS.COMMUNITY_OVERVIEW);
