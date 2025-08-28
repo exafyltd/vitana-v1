@@ -36,6 +36,9 @@ export const healthNavigation = [
 export const healthTrackerNavigation = [
   { id: "overview", name: "Overview", path: "/health-tracker" },
   { id: "vitana-index", name: "Health Index", path: "/health-tracker/vitana-index" },
+  { id: "devices", name: "Connected Devices", path: "/health-tracker/devices" },
+  { id: "tracking", name: "Daily Tracking", path: "/health-tracker/tracking" },
+  { id: "progress", name: "Progress & Goals", path: "/health-tracker/progress" },
   { id: "nutrition", name: "Nutrition", path: "/health-tracker/nutrition" },
   { id: "hydration", name: "Hydration", path: "/health-tracker/hydration" },
   { id: "sleep", name: "Sleep", path: "/health-tracker/sleep" },
