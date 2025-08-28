@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Activity, Smartphone, Calendar, TrendingUp, Droplets, Apple, Dumbbell, Moon, Brain, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
@@ -51,6 +52,10 @@ const overviewCards = [
 
 export default function HealthTracker() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("HealthTracker page using healthTrackerNavigation:", healthTrackerNavigation);
+  }, []);
 
   const pillarData = [
     { name: "Hydration", score: 85, icon: Droplets, color: "text-blue-500", progress: 85 },

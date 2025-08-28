@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
@@ -93,6 +93,10 @@ export default withScreenId(function Health() {
     "Join nutrition group based on your weak pillar",
     "Schedule stress management consultation"
   ];
+
+  useEffect(() => {
+    console.log("Health page using healthNavigation:", healthNavigation);
+  }, []);
 
   return (
     <AppLayout>
