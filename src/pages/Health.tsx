@@ -15,14 +15,6 @@ import HealthCoachChat from "@/components/health/HealthCoachChat";
 
 import { healthNavigation } from "@/config/navigation";
 
-const healthSubItems = [
-  { id: "overview", name: "Overview", path: "/health" },
-  { id: "services-hub", name: "Services Hub", path: "/health/services-hub" },
-  { id: "biomarkers", name: "Biomarkers", path: "/health/biomarkers" },
-  { id: "tracker", name: "My Health Tracker", path: "/health/tracker" },
-  { id: "education", name: "Education & Science", path: "/health/education" },
-];
-
 const overviewCards = [
   {
     title: "Vitana Index Summary",
@@ -32,17 +24,10 @@ const overviewCards = [
     color: "from-pink-500/20 to-rose-500/20",
   },
   {
-    title: "Pillars of Health",
-    description: "Explore hydration, nutrition, exercise, sleep & mental wellbeing",
-    icon: Target,
-    path: "/health/pillars",
-    color: "from-blue-500/20 to-cyan-500/20",
-  },
-  {
     title: "Services HUB",
     description: "Book doctors, coaching, programs & screenings",
     icon: Stethoscope,
-    path: "/health/services",
+    path: "/health/services-hub",
     color: "from-green-500/20 to-emerald-500/20",
   },
   {
@@ -53,11 +38,11 @@ const overviewCards = [
     color: "from-emerald-500/20 to-teal-500/20",
   },
   {
-    title: "Conditions & Risks",
-    description: "Risk assessments & preventive action plans",
-    icon: AlertTriangle,
-    path: "/health/conditions",
-    color: "from-orange-500/20 to-amber-500/20",
+    title: "My Health Tracker",
+    description: "Track your daily nutrition, sleep, exercise and wellness metrics",
+    icon: Activity,
+    path: "/health-tracker",
+    color: "from-blue-500/20 to-cyan-500/20",
   },
   {
     title: "Education & Resources",
