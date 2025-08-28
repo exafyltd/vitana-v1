@@ -219,44 +219,24 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           
           {open ? (
             <div className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group">
-              <Link to="/profile" className="flex items-center gap-2 flex-1">
+              <Link to="/profile" className="flex items-center gap-3 flex-1">
                 <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
                   <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">MM</AvatarFallback>
                 </Avatar>
                 <div className="leading-tight flex-1">
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5">
                     <div className="text-sm font-medium">{USER_NAME}</div>
                     
-                    {/* Role Pill */}
-                    <Badge 
-                      variant="secondary" 
-                      className="text-[10px] px-1.5 py-0.5 h-4 bg-blue-100 text-blue-700 border-blue-200"
-                    >
-                      {role}
-                    </Badge>
-                    
-                    {/* VIP Chip - conditional */}
+                    {/* Simple VIP indicator */}
                     {VITANA_INDEX_SCORE > 700 && (
-                      <Badge 
-                        variant="outline" 
-                        className="text-[10px] px-1.5 py-0.5 h-4 bg-gradient-to-r from-yellow-100 to-orange-100 text-orange-700 border-orange-200"
-                      >
-                        VIP
-                      </Badge>
+                      <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center">
+                        <span className="text-[10px]">⭐</span>
+                      </div>
                     )}
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <div className="text-xs text-sidebar-foreground/70">{USER_ROLE_DISPLAY}</div>
-                    
-                    {/* Vitana Index Mini-Badge */}
-                    <div 
-                      className="w-4 h-4 rounded-full flex items-center justify-center border border-white/20"
-                      style={{ backgroundColor: tier.color }}
-                      title={`Vitana Index: ${VITANA_INDEX_SCORE} (${tier.label})`}
-                    >
-                      <span className="text-[8px] font-bold text-gray-700">{VITANA_INDEX_SCORE}</span>
-                    </div>
+                  <div className="text-xs text-sidebar-foreground/50">
+                    {role} • {USER_ROLE_DISPLAY}
                   </div>
                 </div>
               </Link>
