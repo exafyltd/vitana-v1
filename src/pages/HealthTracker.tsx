@@ -8,15 +8,8 @@ import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
 import { Progress } from "@/components/ui/progress";
+import { healthTrackerNavigation } from "@/config/navigation";
 
-const healthTrackerSubItems = [
-  { id: "overview", name: "Overview", path: "/health-tracker" },
-  { id: "vitana-index", name: "My Vitana Index", path: "/health-tracker/vitana-index" },
-  { id: "devices", name: "Connected Devices & Apps", path: "/health-tracker/devices" },
-  { id: "tracking", name: "Daily & Weekly Tracking", path: "/health-tracker/tracking" },
-  { id: "progress", name: "Progress & Goals", path: "/health-tracker/progress" },
-  { id: "biomarker-results", name: "Lab Results", path: "/health-tracker/biomarker-results" },
-];
 
 const overviewCards = [
   {
@@ -100,7 +93,7 @@ export default function HealthTracker() {
   return (
     <AppLayout>
       <SEO title="Health Tracker" description="Track your personal health data and monitor wellness progress" canonical={window.location.href} />
-      <SubNavigation items={healthTrackerSubItems} />
+      <SubNavigation items={healthTrackerNavigation} />
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header Section with Perfect Symmetry */}
