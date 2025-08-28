@@ -398,13 +398,89 @@ export default withScreenId(function Messages() {
             </TabsList>
 
             <TabsContent value="overview" className="mt-6">
-              <SplitScreen
-                leftPanel={OverviewLeftPanel}
-                rightPanel={OverviewRightPanel}
-                defaultLeftSize={30}
-                screenId={SCREEN_IDS.INBOX_OVERVIEW}
-                className="min-h-[600px]"
-              />
+              <Tabs value={activeOverviewTab} onValueChange={setActiveOverviewTab}>
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="direct">Direct Messages</TabsTrigger>
+                  <TabsTrigger value="groups">Group Chats</TabsTrigger>
+                  <TabsTrigger value="notifications">Notifications</TabsTrigger>
+                  <TabsTrigger value="archived">Archived</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="direct" className="mt-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <MessageSquare className="w-5 h-5" />
+                        Direct Messages
+                        <Badge variant="secondary">{stats.unreadDirect}</Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <EmptyState 
+                        icon={MessageSquare}
+                        title="No direct messages"
+                        description="Start a conversation with community members"
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="groups" className="mt-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Users className="w-5 h-5" />
+                        Group Chats
+                        <Badge variant="secondary">{stats.unreadGroups}</Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <EmptyState 
+                        icon={Users}
+                        title="No group chats"
+                        description="Join or create group conversations"
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="notifications" className="mt-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Bell className="w-5 h-5" />
+                        Notifications
+                        <Badge variant="secondary">{stats.unreadNotifications}</Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <EmptyState 
+                        icon={Bell}
+                        title="No notifications"
+                        description="Your notifications will appear here"
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="archived" className="mt-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Archive className="w-5 h-5" />
+                        Archived Messages
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <EmptyState 
+                        icon={Archive}
+                        title="No archived messages"
+                        description="Archived conversations will appear here"
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </TabsContent>
 
             <TabsContent value="reminder" className="mt-6">
