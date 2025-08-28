@@ -83,6 +83,8 @@ import Direct from "./pages/messages/Direct";
 import Group from "./pages/messages/Group";
 import MessagesNotifications from "./pages/messages/Notifications";
 import Archived from "./pages/messages/Archived";
+import Reminder from "./pages/messages/Reminder";
+import Inspiration from "./pages/messages/Inspiration";
 
 // Settings sub-pages
 import Privacy from "./pages/settings/Privacy";
@@ -166,6 +168,8 @@ const App = () => (
           <Route path="/messages/group" element={<Group />} />
           <Route path="/messages/notifications" element={<MessagesNotifications />} />
           <Route path="/messages/archived" element={<Archived />} />
+          <Route path="/messages/reminder" element={<Reminder />} />
+          <Route path="/messages/inspiration" element={<Inspiration />} />
           
           <Route path="/settings" element={<Settings />} />
           <Route path="/settings/privacy" element={<Privacy />} />
