@@ -227,16 +227,14 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
                   <div className="flex items-center gap-1.5">
                     <div className="text-sm font-medium">{USER_NAME}</div>
                     
-                    {/* Simple VIP indicator */}
+                    {/* VIP Crown indicator */}
                     {VITANA_INDEX_SCORE > 700 && (
-                      <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center">
-                        <span className="text-[10px]">⭐</span>
-                      </div>
+                      <span className="text-sm">👑</span>
                     )}
                   </div>
                   
                   <div className="text-xs text-sidebar-foreground/50">
-                    {role} • {USER_ROLE_DISPLAY}
+                    Community Member
                   </div>
                 </div>
               </Link>
