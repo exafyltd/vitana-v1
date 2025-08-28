@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -55,11 +55,11 @@ export default function Reminder() {
       <SubNavigation items={messagesNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-domain-messages-tint via-background to-domain-messages-tint/50 min-h-screen">
-        <div className="max-w-4xl mx-auto">
-          <PageHeader
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
             title="Smart Reminders"
             description="Catch up with unanswered messages and respond quickly"
-            icon={Clock}
+            emoji="⏰"
           />
 
           <Card className="mt-6">
