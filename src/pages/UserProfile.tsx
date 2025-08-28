@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
+import SubNavigation from "@/components/SubNavigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -211,6 +212,14 @@ export default function UserProfile() {
   const navigate = useNavigate();
   const user = id ? mockUsers[id] : null;
 
+  const profileNavigation = [
+    { id: "profile", name: "Profile", path: `/profile/${id || '1'}` },
+    { id: "posts", name: "Posts", path: `/profile/${id || '1'}/posts` },
+    { id: "media", name: "Media", path: `/profile/${id || '1'}/media` },
+    { id: "groups", name: "Groups", path: `/profile/${id || '1'}/groups` },
+    { id: "health", name: "Health", path: `/profile/${id || '1'}/health` },
+  ];
+
   if (!user) {
     return (
       <AppLayout>
@@ -254,6 +263,7 @@ export default function UserProfile() {
         title={`${user.name} - VITANA`}
         description={`${user.name}: ${user.bio}`}
       />
+      <SubNavigation items={profileNavigation} />
 
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
         <div className="relative">
@@ -391,14 +401,6 @@ export default function UserProfile() {
         <div className="px-6">
           <div className="max-w-6xl mx-auto">
             <Tabs defaultValue="posts" className="space-y-6">
-              <div className="flex justify-center">
-                <TabsList className="grid grid-cols-4 w-full max-w-md bg-muted/30">
-                  <TabsTrigger value="posts" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Posts</TabsTrigger>
-                  <TabsTrigger value="media" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Media</TabsTrigger>
-                  <TabsTrigger value="groups" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Groups</TabsTrigger>
-                  <TabsTrigger value="health" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Health Snapshot</TabsTrigger>
-                </TabsList>
-              </div>
 
               {/* Posts Tab - Social Feed First */}
               <TabsContent value="posts" className="space-y-4">
