@@ -143,6 +143,12 @@ const App = () => (
           {/* Health Tracker routes */}
           <Route path="/health-tracker" element={<HealthTracker />} />
           <Route path="/health-tracker/vitana-index" element={<MyVitanaIndex />} />
+          <Route path="/health-tracker/nutrition" element={<Nutrition />} />
+          <Route path="/health-tracker/hydration" element={<Hydration />} />
+          <Route path="/health-tracker/sleep" element={<Sleep />} />
+          <Route path="/health-tracker/exercise" element={<Exercise />} />
+          <Route path="/health-tracker/mental-health" element={<MentalHealth />} />
+          <Route path="/health-tracker/trends" element={<Trends />} />
           <Route path="/health-tracker/devices" element={<ConnectedDevices />} />
           <Route path="/health-tracker/tracking" element={<DailyWeeklyTracking />} />
           <Route path="/health-tracker/progress" element={<ProgressGoals />} />

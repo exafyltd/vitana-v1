@@ -17,22 +17,22 @@ import { healthNavigation } from "@/config/navigation";
 
 const overviewCards = [
   {
-    title: "Vitana Index Summary",
-    description: "View your high-level health score",
-    icon: Heart,
-    path: "/health-tracker/vitana-index",
+    title: "Overview",
+    description: "Your comprehensive health dashboard and wellness overview",
+    icon: Target,
+    path: "/health",
     color: "from-pink-500/20 to-rose-500/20",
   },
   {
-    title: "Services HUB",
+    title: "Services Hub",
     description: "Book doctors, coaching, programs & screenings",
     icon: Stethoscope,
     path: "/health/services-hub",
     color: "from-green-500/20 to-emerald-500/20",
   },
   {
-    title: "Lab Results",
-    description: "View your biomarker analysis and lab test results",
+    title: "Biomarkers",
+    description: "View your latest test results and biomarkers",
     icon: FileText,
     path: "/health/biomarker-results",
     color: "from-emerald-500/20 to-teal-500/20",
@@ -45,11 +45,11 @@ const overviewCards = [
     color: "from-blue-500/20 to-cyan-500/20",
   },
   {
-    title: "Education & Resources",
-    description: "Articles, videos, podcasts & learning materials",
+    title: "Education & Science",
+    description: "Learn about health topics and access wellness resources",
     icon: BookOpen,
     path: "/health/education",
-    color: "from-purple-500/20 to-violet-500/20",
+    color: "from-purple-500/20 to-indigo-500/20",
   },
 ];
 

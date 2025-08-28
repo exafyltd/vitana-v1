@@ -34,12 +34,12 @@ export const healthNavigation = [
 ];
 
 export const healthTrackerNavigation = [
-  { id: "overview", name: "Overview", path: "/health" },
-  { id: "vitana-index", name: "Health Index", path: "/health/vitana-index" },
-  { id: "nutrition", name: "Nutrition", path: "/health/nutrition" },
-  { id: "hydration", name: "Hydration", path: "/health/hydration" },
-  { id: "sleep", name: "Sleep", path: "/health/sleep" },
-  { id: "exercise", name: "Exercise", path: "/health/exercise" },
-  { id: "mental-health", name: "Mental Health", path: "/health/mental-health" },
-  { id: "trends", name: "Trends", path: "/health/trends" },
+  { id: "overview", name: "Overview", path: "/health-tracker" },
+  { id: "vitana-index", name: "Health Index", path: "/health-tracker/vitana-index" },
+  { id: "nutrition", name: "Nutrition", path: "/health-tracker/nutrition" },
+  { id: "hydration", name: "Hydration", path: "/health-tracker/hydration" },
+  { id: "sleep", name: "Sleep", path: "/health-tracker/sleep" },
+  { id: "exercise", name: "Exercise", path: "/health-tracker/exercise" },
+  { id: "mental-health", name: "Mental Health", path: "/health-tracker/mental-health" },
+  { id: "trends", name: "Trends", path: "/health-tracker/trends" },
 ];

@@ -5,17 +5,6 @@ import PageHeader from "@/components/PageHeader";
 import { Apple } from "lucide-react";
 import { healthTrackerNavigation } from "@/config/navigation";
 
-const healthSubItems = [
-  { id: "overview", name: "Overview", path: "/health" },
-  { id: "vitana-index", name: "Health Index", path: "/health/vitana-index" },
-  { id: "nutrition", name: "Nutrition", path: "/health/nutrition" },
-  { id: "hydration", name: "Hydration", path: "/health/hydration" },
-  { id: "sleep", name: "Sleep", path: "/health/sleep" },
-  { id: "exercise", name: "Exercise", path: "/health/exercise" },
-  { id: "mental-health", name: "Mental Health", path: "/health/mental-health" },
-  { id: "trends", name: "Trends", path: "/health/trends" },
-];
-
 export default function Nutrition() {
   return (
     <AppLayout>

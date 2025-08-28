@@ -16,15 +16,6 @@ import { useState } from "react";
 
 import { communityNavigation } from "@/config/navigation";
 
-const communitySubItems = [
-  { id: "my-groups", name: "My Groups", path: "/community/my-groups" },
-  { id: "feed", name: "Feed", path: "/community/feed" },
-  { id: "events", name: "Events", path: "/community/events" },
-  { id: "live-rooms", name: "Live Rooms", path: "/community/live-rooms" },
-  { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
-  { id: "business", name: "Business", path: "/community/business" },
-  { id: "meetups", name: "Meetups", path: "/community/meetups" },
-];
 
 import StandardHeader from "@/components/StandardHeader";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
