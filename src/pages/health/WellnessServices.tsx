@@ -8,15 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
+import { healthNavigation } from "@/config/navigation";
 import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane } from "lucide-react";
-
-const healthSubItems = [
-  { id: "overview", name: "Overview", path: "/health" },
-  { id: "pillars", name: "Pillars of Health", path: "/health/pillars" },
-  { id: "services", name: "Services HUB", path: "/health/services" },
-  { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
-  { id: "education", name: "Education & Resources", path: "/health/education" },
-];
 
 const servicesData = {
   preventive: [
@@ -218,7 +211,7 @@ export default function WellnessServices() {
   return (
     <AppLayout>
       <SEO title="Services HUB | Health" description="Access comprehensive healthcare and wellness services" canonical={window.location.href} />
-      <SubNavigation items={healthSubItems} />
+      <SubNavigation items={healthNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-domain-health-tint via-background to-domain-health-tint/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
