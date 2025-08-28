@@ -6,18 +6,83 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SplitScreen } from "@/components/ui/split-screen";
 import MessageComposer from "@/components/messages/MessageComposer";
-import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle, Lightbulb, Mail, Zap } from "lucide-react";
+import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle, Lightbulb, Mail, Zap, Copy, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 import { messagesNavigation } from "@/config/navigation";
 
-const recentActivity = [
-  { id: 1, type: "message", name: "Jennifer Ardy", content: "sent you a message", time: "2m ago", avatar: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png", urgent: false },
-  { id: 2, type: "call", name: "Tae Min", content: "missed call", time: "15m ago", avatar: "/lovable-uploads/tae-min-avatar.jpg", urgent: true },
-  { id: 3, type: "group", name: "Design Team", content: "new message in group", time: "1h ago", avatar: "/lovable-uploads/design-team-avatar.jpg", urgent: false },
-  { id: 4, type: "invite", name: "Se Hun oh", content: "invited you to a meeting", time: "2h ago", avatar: "/lovable-uploads/se-hun-oh-avatar.jpg", urgent: false },
-  { id: 5, type: "message", name: "Murphy", content: "replied to your message", time: "3h ago", avatar: "/lovable-uploads/murphy-avatar.jpg", urgent: false },
+const unansweredMessages = [
+  { 
+    id: 1, 
+    name: "Dr. Roberts", 
+    message: "How are you feeling after the treatment?", 
+    time: "2h ago", 
+    avatar: "/lovable-uploads/dr-roberts-avatar.jpg",
+    quickReplies: ["Much better, thanks!", "Still recovering", "Could be better"]
+  },
+  { 
+    id: 2, 
+    name: "Emma Wilson", 
+    message: "Are you joining the wellness group session tomorrow?", 
+    time: "4h ago", 
+    avatar: "/lovable-uploads/emma-wilson-avatar.jpg",
+    quickReplies: ["Yes, I'll be there", "Can't make it", "What time?"]
+  },
+  { 
+    id: 3, 
+    name: "Wellness Group", 
+    message: "Don't forget about your workout goal this week!", 
+    time: "1d ago", 
+    avatar: "/lovable-uploads/design-team-avatar.jpg",
+    quickReplies: ["Thanks for reminder!", "Already done ✓", "Will do today"]
+  },
+  { 
+    id: 4, 
+    name: "James Davis", 
+    message: "How's your meditation practice going?", 
+    time: "2d ago", 
+    avatar: "/lovable-uploads/james-davis-avatar.jpg",
+    quickReplies: ["Great progress!", "Still learning", "Need tips"]
+  }
+];
+
+const inspirationTemplates = [
+  {
+    category: "Morning Motivation",
+    templates: [
+      { text: "Good morning! Ready to crush your wellness goals today? 💪", icon: "☀️" },
+      { text: "New day, new opportunities to prioritize your health! 🌟", icon: "🌅" },
+      { text: "Starting the day with gratitude and positive energy! ✨", icon: "🙏" }
+    ]
+  },
+  {
+    category: "Goal Support",
+    templates: [
+      { text: "You've got this! Every small step counts toward your bigger goals 🎯", icon: "🎯" },
+      { text: "Believing in your journey and celebrating your progress! 🌈", icon: "📈" },
+      { text: "Your commitment to wellness inspires everyone around you! 💫", icon: "⭐" }
+    ]
+  },
+  {
+    category: "Health Check-ins",
+    templates: [
+      { text: "How are you feeling today? Remember, it's okay to have ups and downs 💙", icon: "💙" },
+      { text: "Checking in on your wellness journey - you're doing amazing! 🌸", icon: "🌸" },
+      { text: "Hope you're taking time for self-care today. You deserve it! 🌿", icon: "🌿" }
+    ]
+  },
+  {
+    category: "Celebrations",
+    templates: [
+      { text: "Celebrating your wellness wins, big and small! 🎉", icon: "🎉" },
+      { text: "So proud of your dedication to your health goals! 👏", icon: "👏" },
+      { text: "Your progress is inspiring - keep up the fantastic work! 🌟", icon: "🌟" }
+    ]
+  }
 ];
 
 const stats = {
@@ -140,36 +205,88 @@ export default withScreenId(function Messages() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Bell className="w-5 h-5 text-blue-500" />
-                    Smart Reminders
+                    <Clock className="w-5 h-5 text-blue-500" />
+                    Unanswered Messages
+                    <Badge variant="secondary">{unansweredMessages.length}</Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <EmptyState 
-                    icon={Clock}
-                    title="No reminders set"
-                    description="Set up intelligent reminders for follow-ups and important conversations"
-                  />
+                <CardContent className="space-y-4">
+                  {unansweredMessages.map((message) => (
+                    <div key={message.id} className="border rounded-lg p-4 space-y-3">
+                      <div className="flex items-start gap-3">
+                        <Avatar className="w-10 h-10">
+                          <AvatarImage src={message.avatar} alt={message.name} />
+                          <AvatarFallback>{message.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-medium text-sm">{message.name}</h4>
+                            <span className="text-xs text-muted-foreground">{message.time}</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-1">{message.message}</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-2 ml-13">
+                        {message.quickReplies.map((reply, idx) => (
+                          <Button
+                            key={idx}
+                            variant="outline"
+                            size="sm"
+                            className="text-xs"
+                            onClick={() => console.log(`Sending: ${reply}`)}
+                          >
+                            <Send className="w-3 h-3 mr-1" />
+                            {reply}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </CardContent>
               </Card>
             </TabsContent>
 
             <TabsContent value="inspiration" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Lightbulb className="w-5 h-5 text-yellow-500" />
-                    Communication Inspiration
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <EmptyState 
-                    icon={Zap}
-                    title="No suggestions available"
-                    description="AI-powered suggestions for initiating conversations and responding to messages will appear here"
-                  />
-                </CardContent>
-              </Card>
+              <div className="space-y-6">
+                {inspirationTemplates.map((category, categoryIdx) => (
+                  <Card key={categoryIdx}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Lightbulb className="w-5 h-5 text-yellow-500" />
+                        {category.category}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {category.templates.map((template, templateIdx) => (
+                        <div key={templateIdx} className="border rounded-lg p-4 flex items-center justify-between">
+                          <div className="flex items-center gap-3 flex-1">
+                            <span className="text-xl">{template.icon}</span>
+                            <p className="text-sm">{template.text}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => navigator.clipboard.writeText(template.text)}
+                            >
+                              <Copy className="w-3 h-3 mr-1" />
+                              Copy
+                            </Button>
+                            <Button
+                              variant="default"
+                              size="sm"
+                              onClick={() => console.log(`Forwarding: ${template.text}`)}
+                            >
+                              <Send className="w-3 h-3 mr-1" />
+                              Send
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
