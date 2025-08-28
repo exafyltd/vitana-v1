@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Search, Users, MessageSquare, Video, Calendar, Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 interface SearchSuggestion {
@@ -29,6 +31,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<SearchSuggestion[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -40,10 +43,53 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
       );
       setFilteredSuggestions(filtered);
       setShowSuggestions(true);
+      setSelectedIndex(-1); // Reset selection on new results
     } else {
       setShowSuggestions(false);
+      setSelectedIndex(-1);
     }
   }, [query]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!showSuggestions || filteredSuggestions.length === 0) {
+      if (e.key === 'Enter') {
+        handleSearch();
+      }
+      if (e.key === 'Escape') {
+        setShowSuggestions(false);
+        inputRef.current?.blur();
+      }
+      return;
+    }
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedIndex(prev => 
+          prev < filteredSuggestions.length - 1 ? prev + 1 : 0
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedIndex(prev => 
+          prev > 0 ? prev - 1 : filteredSuggestions.length - 1
+        );
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (selectedIndex >= 0) {
+          handleSuggestionClick(filteredSuggestions[selectedIndex]);
+        } else {
+          handleSearch();
+        }
+        break;
+      case 'Escape':
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+        inputRef.current?.blur();
+        break;
+    }
+  };
 
   const handleSearch = (searchQuery: string = query) => {
     if (searchQuery.trim()) {
@@ -84,86 +130,97 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   };
 
   return (
-    <div className="relative w-full">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
-        <Input
-          ref={inputRef}
-          type="text"
-          placeholder="Search members, groups, content…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              handleSearch();
-            }
-            if (e.key === 'Escape') {
-              setShowSuggestions(false);
-              inputRef.current?.blur();
-            }
-          }}
-          className={cn(
-            "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
-            "bg-sidebar-accent/50 border border-sidebar-border/50",
-            "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
-            "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
-            "hover:bg-sidebar-accent/70 transition-colors"
-          )}
-        />
-        {!open && query && (
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => handleSearch()}
-            className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
-          >
-            <Search className="h-3 w-3" />
-          </Button>
-        )}
-      </div>
-
-      {/* Search Suggestions Dropdown */}
-      {showSuggestions && filteredSuggestions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-sidebar-background border border-sidebar-border rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
-          {filteredSuggestions.map((suggestion) => (
-            <Button
-              key={suggestion.id}
-              variant="ghost"
-              onClick={() => handleSuggestionClick(suggestion)}
-              className="w-full justify-start p-3 h-auto rounded-none hover:bg-sidebar-accent/50 border-b border-sidebar-border/30 last:border-b-0"
-            >
-              <div className="flex items-center gap-3 w-full">
-                <div className="flex-shrink-0">
-                  {suggestion.avatar ? (
-                    <img 
-                      src={suggestion.avatar} 
-                      alt={suggestion.title}
-                      className="h-8 w-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="h-8 w-8 rounded-full bg-sidebar-accent flex items-center justify-center">
-                      {getTypeIcon(suggestion.type)}
-                    </div>
-                  )}
-                </div>
-                <div className="flex-1 text-left">
-                  <div className="font-medium text-sidebar-foreground text-sm">
-                    {suggestion.title}
-                  </div>
-                  {suggestion.subtitle && (
-                    <div className="text-xs text-sidebar-foreground/60">
-                      {suggestion.subtitle}
-                    </div>
-                  )}
-                </div>
-                <div className="flex-shrink-0 text-sidebar-foreground/40">
-                  {getTypeIcon(suggestion.type)}
-                </div>
-              </div>
-            </Button>
-          ))}
+    <Popover open={showSuggestions && filteredSuggestions.length > 0} onOpenChange={setShowSuggestions}>
+      <PopoverTrigger asChild>
+        <div className="relative w-full">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
+            <Input
+              ref={inputRef}
+              type="text"
+              placeholder="Search members, groups, content…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className={cn(
+                "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
+                "bg-sidebar-accent/50 border border-sidebar-border/50",
+                "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
+                "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
+                "hover:bg-sidebar-accent/70 transition-colors"
+              )}
+            />
+            {!open && query && (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => handleSearch()}
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
+              >
+                <Search className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
         </div>
-      )}
-    </div>
+      </PopoverTrigger>
+
+      <PopoverContent 
+        className={cn(
+          "w-[var(--radix-popover-trigger-width)] p-0 mt-2",
+          "bg-popover border border-border shadow-lg rounded-lg",
+          "z-50"
+        )}
+        align="start"
+        side="bottom"
+        sideOffset={8}
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
+        <ScrollArea className="max-h-80">
+          <div className="py-1">
+            {filteredSuggestions.map((suggestion, index) => (
+              <Button
+                key={suggestion.id}
+                variant="ghost"
+                onClick={() => handleSuggestionClick(suggestion)}
+                className={cn(
+                  "w-full justify-start p-3 h-auto rounded-none",
+                  "hover:bg-accent/50 border-b border-border/30 last:border-b-0",
+                  selectedIndex === index && "bg-accent/70"
+                )}
+              >
+                <div className="flex items-center gap-3 w-full">
+                  <div className="flex-shrink-0">
+                    {suggestion.avatar ? (
+                      <img 
+                        src={suggestion.avatar} 
+                        alt={suggestion.title}
+                        className="h-8 w-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                        {getTypeIcon(suggestion.type)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 text-left">
+                    <div className="font-medium text-foreground text-sm">
+                      {suggestion.title}
+                    </div>
+                    {suggestion.subtitle && (
+                      <div className="text-xs text-muted-foreground">
+                        {suggestion.subtitle}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-shrink-0 text-muted-foreground">
+                    {getTypeIcon(suggestion.type)}
+                  </div>
+                </div>
+              </Button>
+            ))}
+          </div>
+        </ScrollArea>
+      </PopoverContent>
+    </Popover>
   );
 }
