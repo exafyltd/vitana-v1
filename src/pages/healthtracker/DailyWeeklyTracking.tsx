@@ -4,14 +4,8 @@ import SubNavigation from "@/components/SubNavigation";
 import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Droplets, Apple, Dumbbell, Moon, Brain, Calendar } from "lucide-react";
+import { healthTrackerNavigation } from "@/config/navigation";
 
-const healthTrackerSubItems = [
-  { id: "overview", name: "Overview", path: "/health-tracker" },
-  { id: "vitana-index", name: "My Vitana Index", path: "/health-tracker/vitana-index" },
-  { id: "devices", name: "Connected Devices & Apps", path: "/health-tracker/devices" },
-  { id: "tracking", name: "Daily & Weekly Tracking", path: "/health-tracker/tracking" },
-  { id: "progress", name: "Progress & Goals", path: "/health-tracker/progress" },
-];
 
 const trackingCategories = [
   {
@@ -50,7 +44,7 @@ export default function DailyWeeklyTracking() {
   return (
     <AppLayout>
       <SEO title="Daily & Weekly Tracking | Health Tracker" description="Log your daily health activities and monitor progress" canonical={window.location.href} />
-      <SubNavigation items={healthTrackerSubItems} />
+      <SubNavigation items={healthTrackerNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <PageHeader 

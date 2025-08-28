@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -202,12 +202,12 @@ export default function BiomarkerResults() {
       <AppLayout>
         <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
         <SubNavigation items={healthNavigation} />
-        <div className="p-6">
+        <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
-            <PageHeader
-              title="Lab Results"
-              description="View your biomarker analysis and lab test results"
-              icon={FileText}
+            <StandardHeader
+              title="Loading lab results..."
+              description="Please wait while we fetch your biomarker analysis."
+              emoji="⏳"
             />
             <div className="space-y-4">
               {[1, 2, 3].map(i => (
@@ -230,12 +230,12 @@ export default function BiomarkerResults() {
       <AppLayout>
         <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
         <SubNavigation items={healthNavigation} />
-        <div className="p-6">
+        <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
-            <PageHeader
-              title="Lab Results"
-              description="View your biomarker analysis and lab test results"
-              icon={FileText}
+            <StandardHeader
+              title="No lab results yet"
+              description="Order your first lab test to get started."
+              emoji="🧪"
             />
             <Card className="text-center py-12">
               <CardContent>
@@ -261,12 +261,13 @@ export default function BiomarkerResults() {
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
+          <StandardHeader
+            title="Your lab results are in!"
+            description="View your biomarker analysis and lab test results."
+            emoji="🧪"
+          />
+          
           <div className="flex items-center justify-between">
-            <PageHeader
-              title="Lab Results"
-              description="View your biomarker analysis and lab test results"
-              icon={FileText}
-            />
             <div className="text-sm text-muted-foreground bg-card/50 px-3 py-1 rounded-md">
               {results.length} test{results.length !== 1 ? 's' : ''} available
             </div>

@@ -4,14 +4,8 @@ import SubNavigation from "@/components/SubNavigation";
 import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Smartphone, Scale, Wifi } from "lucide-react";
+import { healthTrackerNavigation } from "@/config/navigation";
 
-const healthTrackerSubItems = [
-  { id: "overview", name: "Overview", path: "/health-tracker" },
-  { id: "vitana-index", name: "My Vitana Index", path: "/health-tracker/vitana-index" },
-  { id: "devices", name: "Connected Devices & Apps", path: "/health-tracker/devices" },
-  { id: "tracking", name: "Daily & Weekly Tracking", path: "/health-tracker/tracking" },
-  { id: "progress", name: "Progress & Goals", path: "/health-tracker/progress" },
-];
 
 const deviceCategories = [
   {
@@ -32,7 +26,7 @@ export default function ConnectedDevices() {
   return (
     <AppLayout>
       <SEO title="Connected Devices & Apps | Health Tracker" description="Sync your wearables and IoT wellness devices" canonical={window.location.href} />
-      <SubNavigation items={healthTrackerSubItems} />
+      <SubNavigation items={healthTrackerNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <PageHeader 

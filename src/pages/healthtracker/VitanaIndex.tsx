@@ -3,14 +3,8 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { healthTrackerNavigation } from "@/config/navigation";
 
-const healthTrackerSubItems = [
-  { id: "overview", name: "Overview", path: "/health-tracker" },
-  { id: "vitana-index", name: "My Vitana Index", path: "/health-tracker/vitana-index" },
-  { id: "devices", name: "Connected Devices & Apps", path: "/health-tracker/devices" },
-  { id: "tracking", name: "Daily & Weekly Tracking", path: "/health-tracker/tracking" },
-  { id: "progress", name: "Progress & Goals", path: "/health-tracker/progress" },
-];
 
 export default function VitanaIndex() {
   const navigate = useNavigate();
@@ -18,7 +12,7 @@ export default function VitanaIndex() {
   return (
     <AppLayout>
       <SEO title="My Vitana Index | Health Tracker" description="Your comprehensive health index score breakdown" canonical={window.location.href} />
-      <SubNavigation items={healthTrackerSubItems} />
+      <SubNavigation items={healthTrackerNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry */}
