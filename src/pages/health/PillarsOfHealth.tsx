@@ -4,14 +4,8 @@ import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Droplets, Apple, Dumbbell, Moon, Brain, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { healthNavigation } from "@/config/navigation";
 
-const healthSubItems = [
-  { id: "overview", name: "Overview", path: "/health" },
-  { id: "pillars", name: "Pillars of Health", path: "/health/pillars" },
-  { id: "services", name: "Wellness Services", path: "/health/services" },
-  { id: "conditions", name: "Conditions & Risks", path: "/health/conditions" },
-  { id: "education", name: "Education & Resources", path: "/health/education" },
-];
 
 const pillars = [
   {
@@ -52,7 +46,7 @@ export default function PillarsOfHealth() {
   return (
     <AppLayout>
       <SEO title="Pillars of Health | Health" description="Explore the five pillars of health and wellness" canonical={window.location.href} />
-      <SubNavigation items={healthSubItems} />
+      <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry */}
