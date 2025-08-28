@@ -13,15 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
 
-const communitySubItems = [
-  { id: "overview", name: "Overview", path: "/community" },
-  { id: "my-groups", name: "My Groups & Feed", path: "/community/my-groups" },
-  { id: "events", name: "Events & Meetups", path: "/community/events" },
-  { id: "my-business", name: "My Business", path: "/community/my-business" },
-  { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
-  { id: "live-interaction", name: "LIVE Hub", path: "/community/live-interaction" },
-  { id: "ai-insights", name: "AI Insights", path: "/community/ai-insights" },
-];
+import { communityNavigation } from "@/config/navigation";
 
 export default function MyBusiness() {
   const navigate = useNavigate();
@@ -35,7 +27,7 @@ export default function MyBusiness() {
   return (
     <AppLayout>
       <SEO title="My Business | Community" description="Manage your wellness services and events" canonical={window.location.href} />
-      <SubNavigation items={communitySubItems} />
+      <SubNavigation items={communityNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
