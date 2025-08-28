@@ -95,280 +95,13 @@ const stats = {
 };
 
 export default withScreenId(function Messages() {
-  const [activeTab, setActiveTab] = useState("overview");
   const [activeOverviewTab, setActiveOverviewTab] = useState("direct");
-  const [activeReminderTab, setActiveReminderTab] = useState("unanswered");
 
   const EmptyState = ({ icon: Icon, title, description }: any) => (
     <div className="flex flex-col items-center justify-center h-64 text-center">
       <Icon className="w-12 h-12 text-muted-foreground mb-4" />
       <h3 className="text-lg font-medium mb-2">{title}</h3>
       <p className="text-muted-foreground">{description}</p>
-    </div>
-  );
-
-  // Overview sub-navigation items
-  const overviewNavItems = [
-    { id: "direct", name: "Direct Messages", path: "#direct" },
-    { id: "groups", name: "Group Chats", path: "#groups" },
-    { id: "notifications", name: "Notifications", path: "#notifications" },
-    { id: "archived", name: "Archived", path: "#archived" }
-  ];
-
-  // Content for each overview sub-section
-  const renderOverviewContent = () => {
-    switch (activeOverviewTab) {
-      case "direct":
-        return (
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5" />
-                Direct Messages
-                <Badge variant="secondary">{stats.unreadDirect}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EmptyState 
-                icon={MessageSquare}
-                title="No direct messages"
-                description="Start a conversation with community members"
-              />
-            </CardContent>
-          </Card>
-        );
-      case "groups":
-        return (
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="w-5 h-5" />
-                Group Chats
-                <Badge variant="secondary">{stats.unreadGroups}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EmptyState 
-                icon={Users}
-                title="No group chats"
-                description="Join or create group conversations"
-              />
-            </CardContent>
-          </Card>
-        );
-      case "notifications":
-        return (
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Bell className="w-5 h-5" />
-                Notifications
-                <Badge variant="secondary">{stats.unreadNotifications}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EmptyState 
-                icon={Bell}
-                title="No notifications"
-                description="Your notifications will appear here"
-              />
-            </CardContent>
-          </Card>
-        );
-      case "archived":
-        return (
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Archive className="w-5 h-5" />
-                Archived Messages
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EmptyState 
-                icon={Archive}
-                title="No archived messages"
-                description="Archived conversations will appear here"
-              />
-            </CardContent>
-          </Card>
-        );
-      default:
-        return null;
-    }
-  };
-
-  // Split-screen left panel with sub-navigation
-  const OverviewLeftPanel = (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-2">
-        {overviewNavItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveOverviewTab(item.id)}
-            className={`p-3 text-left rounded-lg transition-all ${
-              activeOverviewTab === item.id
-                ? "bg-muted text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            {item.name}
-            {item.id === "direct" && <Badge variant="secondary" className="ml-2">{stats.unreadDirect}</Badge>}
-            {item.id === "groups" && <Badge variant="secondary" className="ml-2">{stats.unreadGroups}</Badge>}
-            {item.id === "notifications" && <Badge variant="secondary" className="ml-2">{stats.unreadNotifications}</Badge>}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  // Split-screen right panel with content
-  const OverviewRightPanel = (
-    <div className="h-full">
-      {renderOverviewContent()}
-    </div>
-  );
-
-  // Reminder sub-navigation items
-  const reminderNavItems = [
-    { id: "unanswered", name: "Unanswered", path: "#unanswered" },
-    { id: "followups", name: "Follow-ups", path: "#followups" },
-    { id: "scheduled", name: "Scheduled", path: "#scheduled" },
-    { id: "urgent", name: "Urgent", path: "#urgent" }
-  ];
-
-  // Content for each reminder sub-section
-  const renderReminderContent = () => {
-    switch (activeReminderTab) {
-      case "unanswered":
-        return (
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-blue-500" />
-                Unanswered Messages
-                <Badge variant="secondary">{unansweredMessages.length}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {unansweredMessages.map((message) => (
-                <div key={message.id} className="border rounded-lg p-4 space-y-3">
-                  <div className="flex items-start gap-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src={message.avatar} alt={message.name} />
-                      <AvatarFallback>{message.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-medium text-sm">{message.name}</h4>
-                        <span className="text-xs text-muted-foreground">{message.time}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">{message.message}</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-2 ml-13">
-                    {message.quickReplies.map((reply, idx) => (
-                      <Button
-                        key={idx}
-                        variant="outline"
-                        size="sm"
-                        className="text-xs"
-                        onClick={() => console.log(`Sending: ${reply}`)}
-                      >
-                        <Send className="w-3 h-3 mr-1" />
-                        {reply}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        );
-      case "followups":
-        return (
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Mail className="w-5 h-5" />
-                Follow-up Messages
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EmptyState 
-                icon={Mail}
-                title="No follow-ups scheduled"
-                description="Messages requiring follow-up will appear here"
-              />
-            </CardContent>
-          </Card>
-        );
-      case "scheduled":
-        return (
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="w-5 h-5" />
-                Scheduled Reminders
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EmptyState 
-                icon={Clock}
-                title="No scheduled reminders"
-                description="Your scheduled message reminders will appear here"
-              />
-            </CardContent>
-          </Card>
-        );
-      case "urgent":
-        return (
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-500" />
-                Urgent Messages
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EmptyState 
-                icon={AlertTriangle}
-                title="No urgent messages"
-                description="High priority messages will appear here"
-              />
-            </CardContent>
-          </Card>
-        );
-      default:
-        return null;
-    }
-  };
-
-  // Reminder split-screen panels
-  const ReminderLeftPanel = (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-2">
-        {reminderNavItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveReminderTab(item.id)}
-            className={`p-3 text-left rounded-lg transition-all ${
-              activeReminderTab === item.id
-                ? "bg-muted text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            {item.name}
-            {item.id === "unanswered" && <Badge variant="secondary" className="ml-2">{unansweredMessages.length}</Badge>}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  const ReminderRightPanel = (
-    <div className="h-full">
-      {renderReminderContent()}
     </div>
   );
 
@@ -389,151 +122,87 @@ export default withScreenId(function Messages() {
             emoji="💬"
           />
 
-          {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="reminder">Reminder</TabsTrigger>
-              <TabsTrigger value="inspiration">Inspiration</TabsTrigger>
+          <Tabs value={activeOverviewTab} onValueChange={setActiveOverviewTab}>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="direct">Direct Messages</TabsTrigger>
+              <TabsTrigger value="groups">Group Chats</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+              <TabsTrigger value="archived">Archived</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="overview" className="mt-6">
-              <Tabs value={activeOverviewTab} onValueChange={setActiveOverviewTab}>
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="direct">Direct Messages</TabsTrigger>
-                  <TabsTrigger value="groups">Group Chats</TabsTrigger>
-                  <TabsTrigger value="notifications">Notifications</TabsTrigger>
-                  <TabsTrigger value="archived">Archived</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="direct" className="mt-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <MessageSquare className="w-5 h-5" />
-                        Direct Messages
-                        <Badge variant="secondary">{stats.unreadDirect}</Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <EmptyState 
-                        icon={MessageSquare}
-                        title="No direct messages"
-                        description="Start a conversation with community members"
-                      />
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="groups" className="mt-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Users className="w-5 h-5" />
-                        Group Chats
-                        <Badge variant="secondary">{stats.unreadGroups}</Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <EmptyState 
-                        icon={Users}
-                        title="No group chats"
-                        description="Join or create group conversations"
-                      />
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="notifications" className="mt-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Bell className="w-5 h-5" />
-                        Notifications
-                        <Badge variant="secondary">{stats.unreadNotifications}</Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <EmptyState 
-                        icon={Bell}
-                        title="No notifications"
-                        description="Your notifications will appear here"
-                      />
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="archived" className="mt-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Archive className="w-5 h-5" />
-                        Archived Messages
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <EmptyState 
-                        icon={Archive}
-                        title="No archived messages"
-                        description="Archived conversations will appear here"
-                      />
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
+            <TabsContent value="direct" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageSquare className="w-5 h-5" />
+                    Direct Messages
+                    <Badge variant="secondary">{stats.unreadDirect}</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <EmptyState 
+                    icon={MessageSquare}
+                    title="No direct messages"
+                    description="Start a conversation with community members"
+                  />
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="reminder" className="mt-6">
-              <SplitScreen
-                leftPanel={ReminderLeftPanel}
-                rightPanel={ReminderRightPanel}
-                defaultLeftSize={30}
-                screenId={SCREEN_IDS.INBOX_OVERVIEW}
-                className="min-h-[600px]"
-              />
+            <TabsContent value="groups" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5" />
+                    Group Chats
+                    <Badge variant="secondary">{stats.unreadGroups}</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <EmptyState 
+                    icon={Users}
+                    title="No group chats"
+                    description="Join or create group conversations"
+                  />
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="inspiration" className="mt-6">
-              <div className="space-y-6">
-                {inspirationTemplates.map((category, categoryIdx) => (
-                  <Card key={categoryIdx}>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Lightbulb className="w-5 h-5 text-yellow-500" />
-                        {category.category}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {category.templates.map((template, templateIdx) => (
-                        <div key={templateIdx} className="border rounded-lg p-4 flex items-center justify-between">
-                          <div className="flex items-center gap-3 flex-1">
-                            <span className="text-xl">{template.icon}</span>
-                            <p className="text-sm">{template.text}</p>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => navigator.clipboard.writeText(template.text)}
-                            >
-                              <Copy className="w-3 h-3 mr-1" />
-                              Copy
-                            </Button>
-                            <Button
-                              variant="default"
-                              size="sm"
-                              onClick={() => console.log(`Forwarding: ${template.text}`)}
-                            >
-                              <Send className="w-3 h-3 mr-1" />
-                              Send
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+            <TabsContent value="notifications" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Bell className="w-5 h-5" />
+                    Notifications
+                    <Badge variant="secondary">{stats.unreadNotifications}</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <EmptyState 
+                    icon={Bell}
+                    title="No notifications"
+                    description="Your notifications will appear here"
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="archived" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Archive className="w-5 h-5" />
+                    Archived Messages
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <EmptyState 
+                    icon={Archive}
+                    title="No archived messages"
+                    description="Archived conversations will appear here"
+                  />
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
