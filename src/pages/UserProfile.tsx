@@ -391,14 +391,12 @@ export default function UserProfile() {
         <div className="px-6">
           <div className="max-w-6xl mx-auto">
             <Tabs defaultValue="posts" className="space-y-6">
-              <div className="flex justify-center">
-                <TabsList className="grid grid-cols-4 w-full max-w-md bg-muted/30">
-                  <TabsTrigger value="posts" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Posts</TabsTrigger>
-                  <TabsTrigger value="media" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Media</TabsTrigger>
-                  <TabsTrigger value="groups" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Groups</TabsTrigger>
-                  <TabsTrigger value="health" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Health Snapshot</TabsTrigger>
-                </TabsList>
-              </div>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="posts">Posts</TabsTrigger>
+              <TabsTrigger value="media">Media</TabsTrigger>
+              <TabsTrigger value="groups">Groups</TabsTrigger>
+              <TabsTrigger value="health">Health Snapshot</TabsTrigger>
+            </TabsList>
 
               {/* Posts Tab - Social Feed First */}
               <TabsContent value="posts" className="space-y-4">
