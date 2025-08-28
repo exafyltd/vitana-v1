@@ -12,14 +12,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 
-const communitySubItems = [
-  { id: "overview", name: "Overview", path: "/community" },
-  { id: "matchmaking", name: "Matchmaking", path: "/community/matchmaking" },
-  { id: "groups", name: "Groups", path: "/community/groups" },
-  { id: "meetups", name: "Meetups", path: "/community/meetups" },
-  { id: "live-rooms", name: "LIVE Hub", path: "/community/live-rooms" },
-  { id: "challenges", name: "Challenges", path: "/community/challenges" },
-];
+import { communityNavigation } from "@/config/navigation";
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -47,7 +40,7 @@ export default function LiveRooms() {
   return (
     <AppLayout>
       <SEO title="Live Rooms | Community" description="Join live conversations and discussions" canonical={window.location.href} />
-      <SubNavigation items={communitySubItems} />
+      <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}

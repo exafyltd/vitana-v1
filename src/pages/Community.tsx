@@ -14,6 +14,8 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 
+import { communityNavigation } from "@/config/navigation";
+
 const communitySubItems = [
   { id: "my-groups", name: "My Groups", path: "/community/my-groups" },
   { id: "feed", name: "Feed", path: "/community/feed" },
@@ -101,7 +103,7 @@ export default withScreenId(function Community() {
   return (
     <AppLayout>
       <SEO title="Community" description="Connect with the community through groups, events, and matchmaking" canonical={window.location.href} />
-      <SubNavigation items={communitySubItems} />
+      <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader

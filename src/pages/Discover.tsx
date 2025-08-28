@@ -36,13 +36,7 @@ import LabTestOrderPopup from '@/components/LabTestOrderPopup';
 import { IntentRouter } from '@/pages/discover/IntentRouter';
 import { supabase } from '@/integrations/supabase/client';
 
-const discoverSubItems = [
-  { id: "overview", name: "Overview", path: "/discover" },
-  { id: "wellness-services", name: "Wellness Services", path: "/discover/wellness-services" },
-  { id: "doctors-coaches", name: "Doctors/Coaches", path: "/discover/doctors-coaches" },
-  { id: "deals-offers", name: "Deals & Offers", path: "/discover/deals-offers" },
-  { id: "orders", name: "Orders", path: "/discover/orders" },
-];
+import { discoverNavigation } from "@/config/navigation";
 
 import StandardHeader from "@/components/StandardHeader";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -296,7 +290,7 @@ export default withScreenId(function Discover() {
   return (
     <AppLayout>
       <SEO title="Discover Overview | VITANA" description="Discover wellness services, products, and providers tailored to your needs" canonical={window.location.href} />
-      <SubNavigation items={discoverSubItems} />
+      <SubNavigation items={discoverNavigation} />
       <div className="p-6 space-y-8">
         <div className="max-w-7xl mx-auto">
           <StandardHeader

@@ -10,11 +10,7 @@ import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle, Lightbulb, M
 import { useState } from "react";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
-const messagesSubItems = [
-  { id: "overview", name: "Overview", path: "/messages" },
-  { id: "reminder", name: "Reminder", path: "/messages/reminder" },
-  { id: "inspiration", name: "Inspiration", path: "/messages/inspiration" },
-];
+import { messagesNavigation } from "@/config/navigation";
 
 const recentActivity = [
   { id: 1, type: "message", name: "Jennifer Ardy", content: "sent you a message", time: "2m ago", avatar: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png", urgent: false },
@@ -112,7 +108,7 @@ export default withScreenId(function Messages() {
         description="Manage your conversations, notifications, and stay connected with your community"
         canonical={window.location.href}
       />
-      <SubNavigation items={messagesSubItems} />
+      <SubNavigation items={messagesNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-domain-messages-tint via-background to-domain-messages-tint/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">

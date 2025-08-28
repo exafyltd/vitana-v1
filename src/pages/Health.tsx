@@ -13,6 +13,8 @@ import AutopilotWidget from "@/components/health/AutopilotWidget";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
 import HealthCoachChat from "@/components/health/HealthCoachChat";
 
+import { healthNavigation } from "@/config/navigation";
+
 const healthSubItems = [
   { id: "overview", name: "Overview", path: "/health" },
   { id: "services-hub", name: "Services Hub", path: "/health/services-hub" },
@@ -110,7 +112,7 @@ export default withScreenId(function Health() {
   return (
     <AppLayout>
       <SEO title="Health" description="Discover health services, programs, and educational resources" canonical={window.location.href} />
-      <SubNavigation items={healthSubItems} />
+      <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader

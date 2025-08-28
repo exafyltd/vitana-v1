@@ -67,8 +67,10 @@ import CalendarRecommendations from "./pages/calendar/Recommendations";
 
 // Community sub-pages
 import MyGroups from "./pages/community/MyGroups";
+import Feed from "./pages/community/Feed";
 import CommunityEvents from "./pages/community/Events";
-import MyBusiness from "./pages/community/MyBusiness";
+import Meetups from "./pages/community/Meetups2";
+import MyBusiness from "./pages/community/MyBusinessRenamed";
 import MediaHub from "./pages/community/MediaHub";
 import LiveRooms from "./pages/community/LiveRooms";
 import AIInsights from "./pages/community/AIInsights";
@@ -152,11 +154,12 @@ const App = () => (
           
           <Route path="/community" element={<Community />} />
           <Route path="/community/my-groups" element={<MyGroups />} />
+          <Route path="/community/feed" element={<Feed />} />
           <Route path="/community/events" element={<CommunityEvents />} />
-          <Route path="/community/my-business" element={<MyBusiness />} />
-          <Route path="/community/media-hub" element={<MediaHub />} />
           <Route path="/community/live-rooms" element={<LiveRooms />} />
-          <Route path="/community/ai-insights" element={<AIInsights />} />
+          <Route path="/community/media-hub" element={<MediaHub />} />
+          <Route path="/community/my-business" element={<MyBusiness />} />
+          <Route path="/community/meetups" element={<Meetups />} />
           
           <Route path="/ai" element={<AI />} />
           <Route path="/ai/insights" element={<Insights />} />

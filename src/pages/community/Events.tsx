@@ -12,15 +12,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const communitySubItems = [
-  { id: "overview", name: "Overview", path: "/community" },
-  { id: "my-groups", name: "My Groups & Feed", path: "/community/my-groups" },
-  { id: "events", name: "Events & Meetups", path: "/community/events" },
-  { id: "my-business", name: "My Business", path: "/community/my-business" },
-  { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
-  { id: "live-interaction", name: "LIVE Hub", path: "/community/live-interaction" },
-  { id: "ai-insights", name: "AI Insights", path: "/community/ai-insights" },
-];
+import { communityNavigation } from "@/config/navigation";
 
 export default function Events() {
   const navigate = useNavigate();
@@ -81,7 +73,7 @@ export default function Events() {
   return (
     <AppLayout>
       <SEO title="Events & Meetups | Community" description="Discover and join local wellness events and gatherings" canonical={window.location.href} />
-      <SubNavigation items={communitySubItems} />
+      <SubNavigation items={communityNavigation} />
       <div className="p-6 space-y-6">
         <PageHeader 
           title="Connect, engage, grow together! 🎉"

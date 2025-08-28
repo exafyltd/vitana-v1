@@ -86,7 +86,7 @@ export const SCREEN_MAPPINGS: ScreenIdMapping[] = [
   { screenId: SCREEN_IDS.COMMUNITY_EVENTS, route: "/community/events", category: "community", pattern: "sub-page-header" },
   { screenId: SCREEN_IDS.COMMUNITY_LIVE_ROOMS, route: "/community/live-rooms", category: "community", pattern: "sub-page-header" },
   { screenId: SCREEN_IDS.COMMUNITY_MEDIA_HUB, route: "/community/media-hub", category: "community", pattern: "sub-page-header" },
-  { screenId: SCREEN_IDS.COMMUNITY_BUSINESS, route: "/community/business", category: "community", pattern: "split-screen" },
+  { screenId: SCREEN_IDS.COMMUNITY_BUSINESS, route: "/community/my-business", category: "community", pattern: "split-screen" },
   { screenId: SCREEN_IDS.COMMUNITY_MEETUPS, route: "/community/meetups", category: "community", pattern: "sub-page-header" },
 
   // Discover Sub-pages
