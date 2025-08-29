@@ -16,7 +16,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 
 const sidebarCategories = [
-  { title: "Home", path: "/dashboard", icon: LayoutDashboard },
+  { title: "Home", path: "/home", icon: LayoutDashboard },
   { title: "Community", path: "/community", icon: MessageSquare },
   { title: "Discover", path: "/discover", icon: Search },
   { title: "Inbox", path: "/inbox", icon: MessageSquare },
