@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { Bot, MessageSquare, Settings, Zap, Play, Save } from 'lucide-react';
+import { Bot, MessageSquare, Zap, Play, Save } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import SEO from '@/components/SEO';
-import PageHeader from '@/components/PageHeader';
+import StandardHeader from '@/components/StandardHeader';
 
 export default function AgentPromptCenter() {
   const [selectedPrompt, setSelectedPrompt] = useState('');
@@ -56,10 +56,10 @@ export default function AgentPromptCenter() {
         canonical={window.location.href}
       />
       <div className="p-6 space-y-6">
-        <PageHeader
+        <StandardHeader
           title="Agent Prompt Center"
           description="Customize how your AI agent thinks and responds to your needs"
-          icon={Settings}
+          emoji="🤖"
         />
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
