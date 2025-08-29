@@ -101,6 +101,23 @@ import ConnectedApps from "./pages/settings/ConnectedApps";
 import Billing from "./pages/settings/Billing";
 import Support from "./pages/settings/Support";
 
+// Wallet sub-pages
+import Balance from "./pages/wallet/Balance";
+import Subscriptions from "./pages/wallet/Subscriptions";
+import Rewards from "./pages/wallet/Rewards";
+
+// Sharing sub-pages
+import Consent from "./pages/sharing/Consent";
+import Packages from "./pages/sharing/Packages";
+import SmartPackage from "./pages/sharing/SmartPackage";
+import Marketplace from "./pages/sharing/Marketplace";
+import Logs from "./pages/sharing/Logs";
+
+// Memory sub-pages
+import Timeline from "./pages/memory/Timeline";
+import Recall from "./pages/memory/Recall";
+import MemoryPermissions from "./pages/memory/Permissions";
+
 const queryClient = new QueryClient();
 
 const App = () => (
