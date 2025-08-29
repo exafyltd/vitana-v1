@@ -182,7 +182,7 @@ export default function NotificationBell() {
             <DropdownMenuSeparator />
             <DropdownMenuItem 
               className="text-center text-primary cursor-pointer"
-              onClick={() => navigate('/messages/notifications')}
+              onClick={() => navigate('/inbox/notifications')}
             >
               View all notifications
             </DropdownMenuItem>

@@ -39,7 +39,7 @@ class G1AnalyticsService {
       '/health': 'health-overview',
       '/health-tracker/vitana-index': 'vitana-index-detail',
       '/community': 'community-overview',
-      '/messages': 'inbox-overview'
+      '/inbox': 'inbox-overview'
     };
     return screenMapping[path] || path.replace('/', '').replace(/\//g, '-') || 'unknown';
   }

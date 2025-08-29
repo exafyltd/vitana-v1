@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { RTLProvider } from "@/components/RTLProvider";
 import Index from "./pages/Index";
@@ -183,13 +183,16 @@ const App = () => (
           <Route path="/ai/daily-summary" element={<DailySummary />} />
           <Route path="/ai/companion" element={<Companion />} />
           
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/messages/direct" element={<Direct />} />
-          <Route path="/messages/group" element={<Group />} />
-          <Route path="/messages/notifications" element={<MessagesNotifications />} />
-          <Route path="/messages/archived" element={<Archived />} />
-          <Route path="/messages/reminder" element={<Reminder />} />
-          <Route path="/messages/inspiration" element={<Inspiration />} />
+          {/* Redirect legacy /messages routes to /inbox */}
+          <Route path="/messages/*" element={<Navigate to="/inbox" replace />} />
+          
+          <Route path="/inbox" element={<Messages />} />
+          <Route path="/inbox/direct" element={<Direct />} />
+          <Route path="/inbox/group" element={<Group />} />
+          <Route path="/inbox/notifications" element={<MessagesNotifications />} />
+          <Route path="/inbox/archived" element={<Archived />} />
+          <Route path="/inbox/reminder" element={<Reminder />} />
+          <Route path="/inbox/inspiration" element={<Inspiration />} />
           
           <Route path="/settings" element={<Settings />} />
           <Route path="/settings/privacy" element={<Privacy />} />

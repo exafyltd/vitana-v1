@@ -85,7 +85,7 @@ export class AccessibilityTester {
 // CI-specific test screens for Day 2
 export const CI_TEST_SCREENS = [
   '/dashboard',
-  '/messages', 
+  '/inbox',
   '/health',
   '/discover',
   '/autopilot-popup' // Special case for popup testing
@@ -94,7 +94,7 @@ export const CI_TEST_SCREENS = [
 // RTL test screens for regression testing
 export const RTL_TEST_SCREENS = [
   '/',         // Home/Dashboard
-  '/messages', // Inbox
+  '/inbox', // Inbox
   '/profile',  // Profile capsule  
   '/health'    // Health overview
 ];

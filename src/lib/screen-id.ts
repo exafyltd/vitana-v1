@@ -77,7 +77,7 @@ export const SCREEN_MAPPINGS: ScreenIdMapping[] = [
   { screenId: SCREEN_IDS.HOME_DASHBOARD, route: "/dashboard", category: "main", pattern: "3-card-header" },
   { screenId: SCREEN_IDS.COMMUNITY_OVERVIEW, route: "/community", category: "main", pattern: "3-card-header" },
   { screenId: SCREEN_IDS.DISCOVER_OVERVIEW, route: "/discover", category: "main", pattern: "3-card-header" },
-  { screenId: SCREEN_IDS.INBOX_OVERVIEW, route: "/messages", category: "main", pattern: "3-card-header" },
+  { screenId: SCREEN_IDS.INBOX_OVERVIEW, route: "/inbox", category: "main", pattern: "3-card-header" },
   { screenId: SCREEN_IDS.HEALTH_OVERVIEW, route: "/health", category: "main", pattern: "3-card-header" },
   
   // Community Sub-pages

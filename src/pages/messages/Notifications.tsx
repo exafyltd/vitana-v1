@@ -9,11 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { Bell } from "lucide-react";
 
 const messagesSubItems = [
-  { id: "overview", name: "Overview", path: "/messages" },
-  { id: "direct", name: "Direct Messages", path: "/messages/direct" },
-  { id: "group", name: "Group Chats", path: "/messages/group" },
-  { id: "notifications", name: "Notifications", path: "/messages/notifications" },
-  { id: "archived", name: "Archived", path: "/messages/archived" },
+  { id: "overview", name: "Overview", path: "/inbox" },
+  { id: "direct", name: "Direct Messages", path: "/inbox/direct" },
+  { id: "group", name: "Group Chats", path: "/inbox/group" },
+  { id: "notifications", name: "Notifications", path: "/inbox/notifications" },
+  { id: "archived", name: "Archived", path: "/inbox/archived" },
 ];
 
 export default function Notifications() {

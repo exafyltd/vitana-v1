@@ -19,7 +19,7 @@ const sidebarCategories = [
   { title: "Home", path: "/dashboard", icon: LayoutDashboard },
   { title: "Community", path: "/community", icon: MessageSquare },
   { title: "Discover", path: "/discover", icon: Search },
-  { title: "Inbox", path: "/messages", icon: MessageSquare },
+  { title: "Inbox", path: "/inbox", icon: MessageSquare },
   { title: "Health", path: "/health", icon: Heart },
   { title: "Wallet", path: "/wallet", icon: Wallet },
   { title: "Sharing", path: "/sharing", icon: Share2 },
