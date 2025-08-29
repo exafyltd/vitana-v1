@@ -2,6 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { ServiceDetailSplitScreen } from "@/components/ui/split-screen";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -156,7 +157,7 @@ export default function WellnessServices() {
 
   const renderServiceCards = (services: any[]) => {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {services.map((service) => (
           <Card 
             key={service.id} 
@@ -221,35 +222,88 @@ export default function WellnessServices() {
             emoji="🏥"
           />
 
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="preventive">Preventive</TabsTrigger>
-              <TabsTrigger value="medical">Medical</TabsTrigger>
-              <TabsTrigger value="wellness">Wellness</TabsTrigger>
-              <TabsTrigger value="insurance">Insurance</TabsTrigger>
-              <TabsTrigger value="myServices">My Services</TabsTrigger>
-            </TabsList>
+          {/* Split-Screen Layout */}
+          <ServiceDetailSplitScreen
+            leftTitle="Service Categories"
+            rightTitle="Service Details"
+            leftContent={
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-1">
+                  <TabsTrigger value="preventive" className="w-full justify-start text-left">
+                    <Microscope className="w-4 h-4 mr-2" />
+                    Preventive Care
+                  </TabsTrigger>
+                </TabsList>
+                <TabsList className="grid w-full grid-cols-1 mt-2">
+                  <TabsTrigger value="medical" className="w-full justify-start text-left">
+                    <Stethoscope className="w-4 h-4 mr-2" />
+                    Medical Services
+                  </TabsTrigger>
+                </TabsList>
+                <TabsList className="grid w-full grid-cols-1 mt-2">
+                  <TabsTrigger value="wellness" className="w-full justify-start text-left">
+                    <Heart className="w-4 h-4 mr-2" />
+                    Wellness Programs
+                  </TabsTrigger>
+                </TabsList>
+                <TabsList className="grid w-full grid-cols-1 mt-2">
+                  <TabsTrigger value="insurance" className="w-full justify-start text-left">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Insurance Support
+                  </TabsTrigger>
+                </TabsList>
+                <TabsList className="grid w-full grid-cols-1 mt-2">
+                  <TabsTrigger value="myServices" className="w-full justify-start text-left">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    My Services
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            }
+            rightContent={
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsContent value="preventive" className="mt-0">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold">Preventive Care Services</h3>
+                    <p className="text-sm text-muted-foreground">Stay ahead of health issues with preventive screenings and checkups</p>
+                  </div>
+                  {renderServiceCards(servicesData.preventive)}
+                </TabsContent>
 
-            <TabsContent value="preventive" className="mt-6">
-              {renderServiceCards(servicesData.preventive)}
-            </TabsContent>
+                <TabsContent value="medical" className="mt-0">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold">Medical Services</h3>
+                    <p className="text-sm text-muted-foreground">Expert medical consultations and diagnostic services</p>
+                  </div>
+                  {renderServiceCards(servicesData.medical)}
+                </TabsContent>
 
-            <TabsContent value="medical" className="mt-6">
-              {renderServiceCards(servicesData.medical)}
-            </TabsContent>
+                <TabsContent value="wellness" className="mt-0">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold">Wellness Programs</h3>
+                    <p className="text-sm text-muted-foreground">Personal training, coaching, and group wellness activities</p>
+                  </div>
+                  {renderServiceCards(servicesData.wellness)}
+                </TabsContent>
 
-            <TabsContent value="wellness" className="mt-6">
-              {renderServiceCards(servicesData.wellness)}
-            </TabsContent>
+                <TabsContent value="insurance" className="mt-0">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold">Insurance Support</h3>
+                    <p className="text-sm text-muted-foreground">Maximize your benefits and simplify insurance processes</p>
+                  </div>
+                  {renderServiceCards(servicesData.insurance)}
+                </TabsContent>
 
-            <TabsContent value="insurance" className="mt-6">
-              {renderServiceCards(servicesData.insurance)}
-            </TabsContent>
-
-            <TabsContent value="myServices" className="mt-6">
-              {renderServiceCards(servicesData.myServices)}
-            </TabsContent>
-          </Tabs>
+                <TabsContent value="myServices" className="mt-0">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold">My Services</h3>
+                    <p className="text-sm text-muted-foreground">Manage your appointments, history, and favorites</p>
+                  </div>
+                  {renderServiceCards(servicesData.myServices)}
+                </TabsContent>
+              </Tabs>
+            }
+          />
         </div>
       </div>
 

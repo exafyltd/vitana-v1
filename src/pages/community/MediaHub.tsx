@@ -5,8 +5,9 @@ import PageHeader from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane } from "lucide-react";
+import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast } from "lucide-react";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -21,6 +22,7 @@ export default function MediaHub() {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [activeMediaTab, setActiveMediaTab] = useState("shorts");
   
   const latestActions = getLatestActions(2);
   const videoShorts = [
@@ -181,7 +183,7 @@ export default function MediaHub() {
             {/* Vitana Index Card - Circle with 742 */}
             <div 
               className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-              onClick={() => navigate('/health-tracker/vitana-index')}
+              onClick={() => navigate('/health/my-health-tracker')}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
@@ -190,239 +192,248 @@ export default function MediaHub() {
               </div>
             </div>
           </div>
-        
-        <div className="flex items-center justify-between">
-          <div className="text-lg font-bold">Media Hub</div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
-            <Button size="sm" onClick={() => setIsUploadOpen(true)}>
-              <Upload className="w-4 h-4 mr-2" />
-              Upload
-            </Button>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Left Column - Video Shorts */}
-          <div className="space-y-6">
-            <Card>
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <Play className="w-5 h-5" />
-                  Trending Shorts
-                </h2>
-                <div className="space-y-4">
-                  {videoShorts.map((video, index) => (
-                    <div key={index} className="relative group cursor-pointer">
-                      <div className="relative aspect-[9/16] bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Avatar className="w-16 h-16">
-                            <AvatarFallback className="text-lg">{video.thumbnail}</AvatarFallback>
-                          </Avatar>
-                        </div>
-                        <div className="absolute top-2 left-2">
-                          {video.isLive && (
-                            <Badge variant="destructive" className="text-xs">
-                              • LIVE
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="absolute bottom-2 right-2">
-                          <Badge variant="secondary" className="text-xs">
-                            {video.duration}
-                          </Badge>
-                        </div>
-                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <Button size="sm" className="rounded-full w-12 h-12">
-                            <Play className="w-6 h-6" />
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="mt-3">
-                        <h3 className="font-semibold text-sm">{video.title}</h3>
-                        <p className="text-xs text-muted-foreground">{video.creator}</p>
-                        <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Eye className="w-3 h-3" />
-                            {video.views}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Heart className="w-3 h-3" />
-                            {video.likes}
-                          </span>
-                        </div>
-                        <div className="flex gap-1 mt-2">
-                          <Button size="sm" variant="ghost" className="h-8 px-2 flex-1">
-                            <Heart className="w-3 h-3" />
-                          </Button>
-                          <Button size="sm" variant="ghost" className="h-8 px-2 flex-1">
-                            <MessageCircle className="w-3 h-3" />
-                          </Button>
-                          <Button size="sm" variant="ghost" className="h-8 px-2 flex-1">
-                            <Share2 className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+          {/* Upload Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="text-lg font-bold">Media Hub</div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm">
+                <Search className="w-4 h-4 mr-2" />
+                Search
+              </Button>
+              <Button size="sm" onClick={() => setIsUploadOpen(true)}>
+                <Upload className="w-4 h-4 mr-2" />
+                Upload
+              </Button>
+            </div>
           </div>
 
-          {/* Center Column - Podcasts & Replays */}
-          <div className="space-y-6">
-            <Card>
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <Volume2 className="w-5 h-5" />
-                  Podcast Episodes
-                </h2>
-                <div className="space-y-4">
-                  {podcastEpisodes.map((episode, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <div className="flex items-start gap-3">
-                        <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center">
-                          <Volume2 className="w-6 h-6 text-green-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold text-sm">{episode.title}</h3>
-                            {episode.isNew && <Badge variant="secondary" className="text-xs">New</Badge>}
+          {/* Media Hub Subtabs */}
+          <Tabs value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
+              <TabsTrigger value="shorts" className="flex items-center gap-2">
+                <Video className="w-4 h-4" />
+                Shorts
+              </TabsTrigger>
+              <TabsTrigger value="music" className="flex items-center gap-2">
+                <Music className="w-4 h-4" />
+                Music
+              </TabsTrigger>
+              <TabsTrigger value="podcasts" className="flex items-center gap-2">
+                <Podcast className="w-4 h-4" />
+                Podcasts
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="shorts">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Video Shorts Content */}
+                <div className="lg:col-span-3">
+                  <Card>
+                    <CardContent className="p-6">
+                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <Play className="w-5 h-5" />
+                        Trending Shorts
+                      </h2>
+                      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {videoShorts.map((video, index) => (
+                          <div key={index} className="relative group cursor-pointer">
+                            <div className="relative aspect-[9/16] bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg overflow-hidden">
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <Avatar className="w-16 h-16">
+                                  <AvatarFallback className="text-lg">{video.thumbnail}</AvatarFallback>
+                                </Avatar>
+                              </div>
+                              <div className="absolute top-2 left-2">
+                                {video.isLive && (
+                                  <Badge variant="destructive" className="text-xs">
+                                    • LIVE
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="absolute bottom-2 right-2">
+                                <Badge variant="secondary" className="text-xs">
+                                  {video.duration}
+                                </Badge>
+                              </div>
+                              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <Button size="sm" className="rounded-full w-12 h-12">
+                                  <Play className="w-6 h-6" />
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="mt-3">
+                              <h3 className="font-semibold text-sm">{video.title}</h3>
+                              <p className="text-xs text-muted-foreground">{video.creator}</p>
+                              <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Eye className="w-3 h-3" />
+                                  {video.views}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Heart className="w-3 h-3" />
+                                  {video.likes}
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                          <p className="text-xs text-muted-foreground mb-2">{episode.creator}</p>
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <span>{episode.duration}</span>
-                            <span>•</span>
-                            <span>{episode.plays} plays</span>
-                            <Badge variant="outline" className="text-xs">{episode.category}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="music">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardContent className="p-6">
+                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                      <Music className="w-5 h-5" />
+                      Trending Music
+                    </h2>
+                    <div className="space-y-4">
+                      {[
+                        { title: "Morning Flow Beats", artist: "Wellness Sounds", duration: "3:45", genre: "Ambient" },
+                        { title: "Focus & Flow", artist: "Study Vibes", duration: "4:20", genre: "Lo-Fi" },
+                        { title: "Workout Energy", artist: "Fitness Mix", duration: "2:58", genre: "Electronic" }
+                      ].map((track, index) => (
+                        <div key={index} className="flex items-center gap-4 p-3 border rounded-lg">
+                          <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
+                            <Music className="w-6 h-6 text-purple-600" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-sm">{track.title}</h3>
+                            <p className="text-xs text-muted-foreground">{track.artist} • {track.duration}</p>
+                            <Badge variant="outline" className="text-xs mt-1">{track.genre}</Badge>
+                          </div>
+                          <Button size="sm" variant="outline">
+                            <Play className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-semibold mb-4">Music Playlists</h3>
+                    <div className="space-y-3">
+                      {playlists.map((playlist, index) => (
+                        <div key={index} className="p-4 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
+                              <Music className="w-6 h-6 text-purple-600" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">{playlist.title}</h4>
+                              <p className="text-xs text-muted-foreground">{playlist.count} tracks</p>
+                            </div>
+                          </div>
+                          <Button size="sm" variant="outline" className="w-full mt-3">
+                            Play Playlist
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="podcasts">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardContent className="p-6">
+                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                      <Volume2 className="w-5 h-5" />
+                      Latest Episodes
+                    </h2>
+                    <div className="space-y-4">
+                      {podcastEpisodes.map((episode, index) => (
+                        <div key={index} className="p-4 border rounded-lg">
+                          <div className="flex items-start gap-3">
+                            <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center">
+                              <Volume2 className="w-6 h-6 text-green-600" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <h3 className="font-semibold text-sm">{episode.title}</h3>
+                                {episode.isNew && <Badge variant="secondary" className="text-xs">New</Badge>}
+                              </div>
+                              <p className="text-xs text-muted-foreground mb-2">{episode.creator}</p>
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                <span>{episode.duration}</span>
+                                <span>•</span>
+                                <span>{episode.plays} plays</span>
+                                <Badge variant="outline" className="text-xs">{episode.category}</Badge>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 mt-3">
+                            <Button size="sm" variant="outline" className="flex-1">
+                              <Play className="w-4 h-4 mr-1" />
+                              Play
+                            </Button>
+                            <Button size="sm" variant="ghost">
+                              <Bookmark className="w-4 h-4" />
+                            </Button>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex gap-2 mt-3">
-                        <Button size="sm" variant="outline" className="flex-1">
-                          <Play className="w-4 h-4 mr-1" />
-                          Play
-                        </Button>
-                        <Button size="sm" variant="ghost">
-                          <Bookmark className="w-4 h-4" />
-                        </Button>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
 
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Live Session Replays</h3>
-                <div className="space-y-3">
-                  {liveReplays.map((replay, index) => (
-                    <div key={index} className="p-3 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-sm">{replay.title}</h4>
-                        <Badge variant="outline">{replay.date}</Badge>
-                      </div>
-                      <p className="text-xs text-muted-foreground mb-2">by {replay.host}</p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {replay.duration}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Eye className="w-3 h-3" />
-                            {replay.viewers}
-                          </span>
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-semibold mb-4">Popular Shows</h3>
+                    <div className="space-y-4">
+                      {[
+                        { title: "Wellness Today", host: "Dr. Sarah Wilson", episodes: 45, category: "Health" },
+                        { title: "Mindful Living", host: "Alex Chen", episodes: 32, category: "Lifestyle" },
+                        { title: "Fitness Forward", host: "Mike Johnson", episodes: 28, category: "Fitness" }
+                      ].map((show, index) => (
+                        <div key={index} className="p-4 border rounded-lg">
+                          <div className="flex items-center gap-3 mb-3">
+                            <Avatar className="w-10 h-10">
+                              <AvatarFallback>{show.host.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">{show.title}</h4>
+                              <p className="text-xs text-muted-foreground">by {show.host}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between mb-3">
+                            <Badge variant="outline" className="text-xs">{show.category}</Badge>
+                            <span className="text-xs text-muted-foreground">{show.episodes} episodes</span>
+                          </div>
+                          <Button size="sm" variant="outline" className="w-full">
+                            Subscribe
+                          </Button>
                         </div>
-                        <Button size="sm">Watch Again</Button>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Column - Playlists & Creators */}
-          <div className="space-y-6">
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Curated Playlists</h3>
-                <div className="space-y-3">
-                  {playlists.map((playlist, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
-                          <Avatar className="w-8 h-8">
-                            <AvatarFallback className="text-xs">{playlist.thumbnail}</AvatarFallback>
-                          </Avatar>
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-medium text-sm">{playlist.title}</h4>
-                          <p className="text-xs text-muted-foreground">{playlist.count} videos</p>
-                          <Badge variant="outline" className="text-xs mt-1">{playlist.category}</Badge>
-                        </div>
-                      </div>
-                      <Button size="sm" variant="outline" className="w-full mt-3">
-                        View Playlist
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  Creator Spotlight
-                </h3>
-                <div className="space-y-4">
-                  {creators.map((creator, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Avatar className="w-10 h-10">
-                          <AvatarFallback>{creator.avatar}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <h4 className="font-medium text-sm">{creator.name}</h4>
-                          <p className="text-xs text-muted-foreground">{creator.followers} followers</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge variant="outline" className="text-xs">{creator.category}</Badge>
-                        <span className="text-xs text-muted-foreground">{creator.videos} videos</span>
-                      </div>
-                      <Button size="sm" variant="outline" className="w-full">
-                        Follow
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-        
-        <MediaUploadPopup 
-          open={isUploadOpen} 
-          onOpenChange={setIsUploadOpen}
-        />
-        
-        {/* Autopilot Popup */}
-        <AutopilotPopup 
-          open={autopilotOpen} 
-          onOpenChange={setAutopilotOpen}
-        />
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
+
+      <MediaUploadPopup 
+        open={isUploadOpen}
+        onOpenChange={setIsUploadOpen}
+      />
+      
+      {/* Autopilot Popup */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
+      />
     </AppLayout>
   );
 }
