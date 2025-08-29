@@ -57,6 +57,7 @@ export const memoryNavigation = [
 ];
 
 export const adminNavigation = [
+  { id: "overview", name: "Overview", path: "/admin" },
   { id: "queue", name: "Queue & Check-In", path: "/admin/queue" },
   { id: "patient-records", name: "Patient Record Viewer", path: "/admin/patient-records" },
   { id: "stream-supervision", name: "Stream Supervision", path: "/admin/stream-supervision" },

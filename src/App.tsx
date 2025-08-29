@@ -108,6 +108,14 @@ import Timeline from "./pages/memory/Timeline";
 import Recall from "./pages/memory/Recall";
 import MemoryPermissions from "./pages/memory/Permissions";
 
+// Admin sub-pages
+import Queue from "./pages/admin/Queue";
+import PatientRecords from "./pages/admin/PatientRecords";
+import StreamSupervision from "./pages/admin/StreamSupervision";
+import Staff from "./pages/admin/Staff";
+import Reports from "./pages/admin/Reports";
+import Audit from "./pages/admin/Audit";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -226,6 +234,36 @@ const App = () => (
           <Route path="/admin" element={
             <ProtectedRoute requiredRole="staff">
               <Admin />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/queue" element={
+            <ProtectedRoute requiredRole="staff">
+              <Queue />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/patient-records" element={
+            <ProtectedRoute requiredRole="staff">
+              <PatientRecords />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/stream-supervision" element={
+            <ProtectedRoute requiredRole="staff">
+              <StreamSupervision />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/staff" element={
+            <ProtectedRoute requiredRole="staff">
+              <Staff />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/reports" element={
+            <ProtectedRoute requiredRole="staff">
+              <Reports />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/audit" element={
+            <ProtectedRoute requiredRole="staff">
+              <Audit />
             </ProtectedRoute>
           } />
           
