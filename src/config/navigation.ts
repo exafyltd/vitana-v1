@@ -65,3 +65,13 @@ export const adminNavigation = [
   { id: "reports", name: "Reports & KPIs", path: "/admin/reports" },
   { id: "audit", name: "Audit Logs & Compliance", path: "/admin/audit" },
 ];
+
+export const settingsNavigation = [
+  { id: "overview", name: "Overview", path: "/settings" },
+  { id: "preferences", name: "Preferences", path: "/settings/preferences" },
+  { id: "privacy", name: "Privacy", path: "/settings/privacy" },
+  { id: "connected-apps", name: "Connected Apps & Integrations", path: "/settings/connected-apps" },
+  { id: "tenant-role", name: "Tenant & Role Switcher", path: "/settings/tenant-role" },
+  { id: "billing", name: "Billing", path: "/settings/billing" },
+  { id: "support", name: "Support", path: "/settings/support" },
+];

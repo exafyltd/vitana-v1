@@ -68,6 +68,8 @@ import MyBusiness from "./pages/community/MyBusinessRenamed";
 import MediaHub from "./pages/community/MediaHub";
 import LiveRooms from "./pages/community/LiveRooms";
 import AIInsights from "./pages/community/AIInsights";
+import GroupDetail from "./pages/community/GroupDetail";
+import LiveRoomViewer from "./pages/community/LiveRoomViewer";
 
 // AI sub-pages
 import Insights from "./pages/ai/Insights";
@@ -90,6 +92,7 @@ import Preferences from "./pages/settings/Preferences";
 import ConnectedApps from "./pages/settings/ConnectedApps";
 import Billing from "./pages/settings/Billing";
 import Support from "./pages/settings/Support";
+import TenantRole from "./pages/settings/TenantRole";
 
 // Wallet sub-pages
 import Balance from "./pages/wallet/Balance";
@@ -179,9 +182,11 @@ const App = () => (
           
           <Route path="/community" element={<Community />} />
           <Route path="/community/my-groups" element={<MyGroups />} />
+          <Route path="/community/my-groups/:id" element={<GroupDetail />} />
           <Route path="/community/feed" element={<Feed />} />
           <Route path="/community/events" element={<CommunityEvents />} />
           <Route path="/community/live-rooms" element={<LiveRooms />} />
+          <Route path="/community/live-rooms/:roomId/view" element={<LiveRoomViewer />} />
           <Route path="/community/media-hub" element={<MediaHub />} />
           <Route path="/community/my-business" element={<MyBusiness />} />
           <Route path="/community/meetups" element={<Meetups />} />
@@ -208,6 +213,7 @@ const App = () => (
           <Route path="/settings/notifications" element={<SettingsNotifications />} />
           <Route path="/settings/preferences" element={<Preferences />} />
           <Route path="/settings/connected-apps" element={<ConnectedApps />} />
+          <Route path="/settings/tenant-role" element={<TenantRole />} />
           <Route path="/settings/billing" element={<Billing />} />
           <Route path="/settings/support" element={<Support />} />
           <Route path="/profile" element={<Profile />} />

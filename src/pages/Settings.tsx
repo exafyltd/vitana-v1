@@ -4,17 +4,8 @@ import SubNavigation from "@/components/SubNavigation";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRTL } from "@/components/RTLProvider";
-import { Languages, RotateCcw, Shield, Bell, Settings as SettingsIcon, Smartphone, CreditCard, HelpCircle } from "lucide-react";
-
-const settingsSubItems = [
-  { id: "overview", name: "Overview", path: "/settings" },
-  { id: "privacy", name: "Privacy", path: "/settings/privacy" },
-  { id: "notifications", name: "Notifications", path: "/settings/notifications" },
-  { id: "preferences", name: "Preferences", path: "/settings/preferences" },
-  { id: "connected-apps", name: "Connected Apps", path: "/settings/connected-apps" },
-  { id: "billing", name: "Billing", path: "/settings/billing" },
-  { id: "support", name: "Support", path: "/settings/support" },
-];
+import { settingsNavigation } from "@/config/navigation";
+import { Languages, RotateCcw, Shield, Bell, Settings as SettingsIcon, Smartphone, CreditCard, HelpCircle, Users } from "lucide-react";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -47,11 +38,19 @@ export default function Settings() {
     },
     {
       id: "connected-apps",
-      title: "Connected Apps",
+      title: "Connected Apps & Integrations",
       description: "Manage your connected applications",
       icon: Smartphone,
       path: "/settings/connected-apps",
       color: "from-purple-100 to-violet-100"
+    },
+    {
+      id: "tenant-role",
+      title: "Tenant & Role Switcher",
+      description: "Switch between roles and tenants",
+      icon: Users,
+      path: "/settings/tenant-role",
+      color: "from-indigo-100 to-blue-100"
     },
     {
       id: "billing",
@@ -74,7 +73,7 @@ export default function Settings() {
   return (
     <AppLayout>
       <SEO title="Settings" description="Manage your account settings, privacy, and preferences" canonical={window.location.href} />
-      <SubNavigation items={settingsSubItems} />
+      <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 mb-8">
