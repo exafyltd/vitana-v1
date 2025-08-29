@@ -133,9 +133,9 @@ function VitanaIndexCardBase({
       subtitle="Overall wellness balance across all health pillars"
       content={content}
       buttonText="View Full Report"
-      onButtonClick={() => navigate('/health-tracker/vitana-index')}
+      onButtonClick={() => navigate('/health/my-health-tracker')}
       secondaryButtonText="Track Today"
-      onSecondaryButtonClick={() => navigate('/health-tracker')}
+      onSecondaryButtonClick={() => navigate('/health/my-health-tracker')}
       size="lg"
       className={className}
     />

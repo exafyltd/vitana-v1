@@ -16,7 +16,7 @@ const quickLogButtons = [
     sublabel: "8oz water",
     color: "bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200",
     iconColor: "text-blue-600",
-    path: "/health-tracker/hydration"
+    path: "/health/my-health-tracker"
   },
   { 
     icon: Apple, 
@@ -24,7 +24,7 @@ const quickLogButtons = [
     sublabel: "Food intake",
     color: "bg-green-50 hover:bg-green-100 text-green-700 border-green-200",
     iconColor: "text-green-600",
-    path: "/health-tracker/nutrition"
+    path: "/health/my-health-tracker"
   },
   { 
     icon: Dumbbell, 
@@ -32,7 +32,7 @@ const quickLogButtons = [
     sublabel: "15min activity",
     color: "bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-200",
     iconColor: "text-purple-600",
-    path: "/health-tracker/exercise"
+    path: "/health/my-health-tracker"
   },
   { 
     icon: Moon, 
@@ -40,7 +40,7 @@ const quickLogButtons = [
     sublabel: "8hrs quality",
     color: "bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-indigo-200",
     iconColor: "text-indigo-600",
-    path: "/health-tracker/sleep"
+    path: "/health/my-health-tracker"
   },
   { 
     icon: Heart, 
@@ -48,7 +48,7 @@ const quickLogButtons = [
     sublabel: "How you feel",
     color: "bg-pink-50 hover:bg-pink-100 text-pink-700 border-pink-200",
     iconColor: "text-pink-600",
-    path: "/health-tracker/mental-health"
+    path: "/health/my-health-tracker"
   },
 ];
 

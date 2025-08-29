@@ -26,7 +26,7 @@ function VitanaIndexMiniBase({
     if (onClick) {
       onClick();
     } else {
-      navigate('/health-tracker/vitana-index');
+      navigate('/health/my-health-tracker');
     }
   };
 

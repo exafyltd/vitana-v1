@@ -58,7 +58,7 @@ function ProgressStreaksCardBase({
       subtitle="Monitor your wellness streaks and achievement momentum"
       content={content}
       buttonText="See Progress"
-      onButtonClick={() => navigate('/health-tracker/progress-goals')}
+      onButtonClick={() => navigate('/health/my-health-tracker')}
       className={className}
     />
   );

@@ -115,11 +115,11 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
 
   const navigateToTracker = () => {
     const routes = {
-      nutrition: '/health-tracker/nutrition',
-      hydration: '/health-tracker/hydration', 
-      exercise: '/health-tracker/exercise',
-      sleep: '/health-tracker/sleep',
-      mental: '/health-tracker/mental-health'
+      nutrition: '/health/my-health-tracker',
+      hydration: '/health/my-health-tracker', 
+      exercise: '/health/my-health-tracker',
+      sleep: '/health/my-health-tracker',
+      mental: '/health/my-health-tracker'
     };
     navigate(routes[type]);
   };

@@ -68,7 +68,7 @@ function DataWalletCardBase({
       subtitle="Secure access to your health reports and analytics"
       content={content}
       buttonText="View Reports"
-      onButtonClick={() => navigate('/health-tracker/connected-devices')}
+      onButtonClick={() => navigate('/health/my-health-tracker')}
       secondaryButtonText="Share Data"
       onSecondaryButtonClick={() => navigate('/settings/connected-apps')}
       className={className}

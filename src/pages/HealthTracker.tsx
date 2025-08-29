@@ -9,7 +9,7 @@ import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
 import { Progress } from "@/components/ui/progress";
-import { healthTrackerNavigation } from "@/config/navigation";
+import { healthNavigation } from "@/config/navigation";
 
 
 const overviewCards = [
@@ -17,35 +17,35 @@ const overviewCards = [
     title: "My Vitana Index",
     description: "Detailed health score breakdown with biomarkers & genomics",
     icon: Activity,
-    path: "/health-tracker/vitana-index",
+    path: "/health/my-health-tracker",
     color: "from-pink-500/20 to-rose-500/20",
   },
   {
     title: "Connected Devices & Apps",
     description: "Sync wearables, IoT devices & health apps",
     icon: Smartphone,
-    path: "/health-tracker/devices",
+    path: "/health/my-health-tracker",
     color: "from-blue-500/20 to-cyan-500/20",
   },
   {
     title: "Daily & Weekly Tracking",
     description: "Log hydration, nutrition, activity, sleep & mental wellbeing",
     icon: Calendar,
-    path: "/health-tracker/tracking",
+    path: "/health/my-health-tracker",
     color: "from-green-500/20 to-emerald-500/20",
   },
   {
     title: "Progress & Goals",
     description: "Track goals, AI insights, reports & historical data",
     icon: TrendingUp,
-    path: "/health-tracker/progress",
+    path: "/health/my-health-tracker",
     color: "from-purple-500/20 to-violet-500/20",
   },
   {
     title: "Biomarker Analysis",
     description: "Review lab test results and track biomarker trends",
     icon: FileText,
-    path: "/health-tracker/biomarker-results",
+    path: "/health/my-health-tracker",
     color: "from-emerald-500/20 to-teal-500/20",
   },
 ];
@@ -54,7 +54,7 @@ export default function HealthTracker() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("HealthTracker page using healthTrackerNavigation:", healthTrackerNavigation);
+    console.log("HealthTracker page using healthNavigation:", healthNavigation);
     console.log("Current path:", window.location.pathname);
   }, []);
 
@@ -99,7 +99,7 @@ export default function HealthTracker() {
   return (
     <AppLayout>
       <SEO title="Health Tracker" description="Track your personal health data and monitor wellness progress" canonical={window.location.href} />
-      <SubNavigation items={healthTrackerNavigation} />
+      <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header Section with Perfect Symmetry */}
@@ -115,7 +115,7 @@ export default function HealthTracker() {
             {/* Small Index Card - Only Circle with 742 */}
             <div 
               className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-              onClick={() => navigate('/health-tracker/vitana-index')}
+              onClick={() => navigate('/health/my-health-tracker')}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">

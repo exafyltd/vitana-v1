@@ -46,17 +46,7 @@ import EducationResources from "./pages/health/EducationResources";
 import BiomarkerResults from "./pages/health/BiomarkerResults";
 import MyHealthTracker from "./pages/health/MyHealthTracker";
 
-// Health Tracker sub-pages
-import MyVitanaIndex from "./pages/healthtracker/MyVitanaIndex";
-import ConnectedDevices from "./pages/healthtracker/ConnectedDevices";
-import DailyWeeklyTracking from "./pages/healthtracker/DailyWeeklyTracking";
-import ProgressGoals from "./pages/healthtracker/ProgressGoals";
-import Nutrition from "./pages/healthtracker/Nutrition";
-import Hydration from "./pages/healthtracker/Hydration";
-import Sleep from "./pages/healthtracker/Sleep";
-import Exercise from "./pages/healthtracker/Exercise";
-import MentalHealth from "./pages/healthtracker/MentalHealth";
-import Trends from "./pages/healthtracker/Trends";
+// Health Tracker sub-pages - REMOVED (redirected to /health/my-health-tracker)
 
 // Calendar sub-pages
 import Month from "./pages/calendar/Month";
@@ -152,26 +142,20 @@ const App = () => (
           <Route path="/health/education" element={<EducationResources />} />
           <Route path="/health/biomarker-results" element={<BiomarkerResults />} />
           <Route path="/health/my-health-tracker" element={<MyHealthTracker />} />
-          <Route path="/health/nutrition" element={<Nutrition />} />
-          <Route path="/health/hydration" element={<Hydration />} />
-          <Route path="/health/sleep" element={<Sleep />} />
-          <Route path="/health/exercise" element={<Exercise />} />
-          <Route path="/health/mental-health" element={<MentalHealth />} />
-          <Route path="/health/trends" element={<Trends />} />
           
           {/* Health Tracker routes */}
-          <Route path="/health-tracker" element={<HealthTracker />} />
-          <Route path="/health-tracker/vitana-index" element={<MyVitanaIndex />} />
-          <Route path="/health-tracker/nutrition" element={<Nutrition />} />
-          <Route path="/health-tracker/hydration" element={<Hydration />} />
-          <Route path="/health-tracker/sleep" element={<Sleep />} />
-          <Route path="/health-tracker/exercise" element={<Exercise />} />
-          <Route path="/health-tracker/mental-health" element={<MentalHealth />} />
-          <Route path="/health-tracker/trends" element={<Trends />} />
-          <Route path="/health-tracker/devices" element={<ConnectedDevices />} />
-          <Route path="/health-tracker/tracking" element={<DailyWeeklyTracking />} />
-          <Route path="/health-tracker/progress" element={<ProgressGoals />} />
-          <Route path="/health-tracker/biomarker-results" element={<BiomarkerResults />} />
+          <Route path="/health-tracker" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/vitana-index" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/nutrition" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/hydration" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/sleep" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/exercise" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/mental-health" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/trends" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/devices" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/tracking" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/progress" element={<Navigate to="/health/my-health-tracker" replace />} />
+          <Route path="/health-tracker/biomarker-results" element={<Navigate to="/health/my-health-tracker" replace />} />
           
           {/* Calendar routes */}
           <Route path="/calendar" element={<Calendar />} />
