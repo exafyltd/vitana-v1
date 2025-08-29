@@ -33,7 +33,7 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
             <h1 className="text-3xl font-bold text-foreground mb-2">
               {title} {emoji}
             </h1>
-            <p className="text-muted-foreground">{description}</p>
+            <p className="text-muted-foreground truncate">{description}</p>
           </div>
         </div>
         
