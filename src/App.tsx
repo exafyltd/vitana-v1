@@ -8,7 +8,7 @@ import { RTLProvider } from "@/components/RTLProvider";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import Health from "./pages/Health";
@@ -26,11 +26,11 @@ import Sharing from "./pages/Sharing";
 import Memory from "./pages/Memory";
 import Admin from "./pages/Admin";
 
-// Dashboard sub-pages
-import Context from "./pages/dashboard/Context";
-import Actions from "./pages/dashboard/Actions";
-import Matches from "./pages/dashboard/Matches";
-import AIFeed from "./pages/dashboard/AIFeed";
+// Home sub-pages
+import Context from "./pages/home/Context";
+import Actions from "./pages/home/Actions";
+import Matches from "./pages/home/Matches";
+import AIFeed from "./pages/home/AIFeed";
 
 // Discover sub-pages
 import WellnessServices from "./pages/discover/WellnessServices";
@@ -132,11 +132,18 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/context" element={<Context />} />
-          <Route path="/dashboard/actions" element={<Actions />} />
-          <Route path="/dashboard/matches" element={<Matches />} />
-          <Route path="/dashboard/aifeed" element={<AIFeed />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/home/context" element={<Context />} />
+          <Route path="/home/actions" element={<Actions />} />
+          <Route path="/home/matches" element={<Matches />} />
+          <Route path="/home/aifeed" element={<AIFeed />} />
+          
+          {/* Backwards compatibility redirects */}
+          <Route path="/dashboard" element={<Navigate to="/home" replace />} />
+          <Route path="/dashboard/context" element={<Navigate to="/home/context" replace />} />
+          <Route path="/dashboard/actions" element={<Navigate to="/home/actions" replace />} />
+          <Route path="/dashboard/matches" element={<Navigate to="/home/matches" replace />} />
+          <Route path="/dashboard/aifeed" element={<Navigate to="/home/aifeed" replace />} />
           
           {/* Discover routes */}
           <Route path="/discover" element={<Discover />} />

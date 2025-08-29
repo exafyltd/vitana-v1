@@ -22,9 +22,9 @@ import { useState, useEffect } from "react";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { Badge } from "@/components/ui/badge";
 
-import { dashboardNavigation } from "@/config/navigation";
+import { homeNavigation } from "@/config/navigation";
 
-export default function Dashboard() {
+export default function Home() {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -50,8 +50,8 @@ export default function Dashboard() {
 
   return (
     <AppLayout>
-      <SEO title="Dashboard | VITANA" description="VITANA Dashboard" canonical={window.location.href} />
-      <SubNavigation items={dashboardNavigation} />
+      <SEO title="Home | VITANA" description="VITANA Home" canonical={window.location.href} />
+      <SubNavigation items={homeNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">

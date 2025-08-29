@@ -6,8 +6,8 @@ const Index = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Redirect to dashboard for authenticated users, or to login for new users
-    navigate("/dashboard", { replace: true });
+    // Redirect to home for authenticated users, or to login for new users
+    navigate("/home", { replace: true });
   }, [navigate]);
 
   return (

@@ -1,6 +1,6 @@
 {
-  "screen": "/dashboard",
-  "title": "Dashboard",
+  "screen": "/home",
+  "title": "Home",
   "slots": {
     "hero": {
       "name": "Hero Section",

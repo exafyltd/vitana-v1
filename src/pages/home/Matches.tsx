@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
-import { dashboardNavigation } from "@/config/navigation";
+import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 
 export default function Matches() {
@@ -16,7 +16,7 @@ export default function Matches() {
   return (
     <AppLayout>
       <SEO title="Matches | Dashboard" description="Matchmaking & Opportunities" canonical={window.location.href} />
-      <SubNavigation items={dashboardNavigation} />
+      <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader

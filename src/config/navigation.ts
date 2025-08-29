@@ -1,11 +1,11 @@
 // Centralized navigation configuration to ensure consistency across all sections
 
-export const dashboardNavigation = [
-  { id: "overview", name: "Overview", path: "/dashboard" },
-  { id: "context", name: "Context", path: "/dashboard/context" },
-  { id: "actions", name: "Actions", path: "/dashboard/actions" },
-  { id: "matches", name: "Matches", path: "/dashboard/matches" },
-  { id: "aifeed", name: "AI Feed", path: "/dashboard/aifeed" },
+export const homeNavigation = [
+  { id: "overview", name: "Overview", path: "/home" },
+  { id: "context", name: "Context", path: "/home/context" },
+  { id: "actions", name: "Actions", path: "/home/actions" },
+  { id: "matches", name: "Matches", path: "/home/matches" },
+  { id: "aifeed", name: "AI Feed", path: "/home/aifeed" },
 ];
 
 export const aiNavigation = [

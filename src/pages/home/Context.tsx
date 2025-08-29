@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { dashboardNavigation } from "@/config/navigation";
+import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 
 export default function Context() {
@@ -17,7 +17,7 @@ export default function Context() {
   return (
     <AppLayout>
       <SEO title="Context | Dashboard" description="Now & Context Snapshot" canonical={window.location.href} />
-      <SubNavigation items={dashboardNavigation} />
+      <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
@@ -54,7 +54,7 @@ export default function Context() {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => navigate("/dashboard/actions")}
+                        onClick={() => navigate("/home/actions")}
                       >
                         <Zap className="w-4 h-4 mr-1" />
                         See {pendingCount} Actions →
@@ -92,7 +92,7 @@ export default function Context() {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => navigate("/dashboard/actions")}
+                        onClick={() => navigate("/home/actions")}
                       >
                         <Zap className="w-4 h-4 mr-1" />
                         Review Actions →

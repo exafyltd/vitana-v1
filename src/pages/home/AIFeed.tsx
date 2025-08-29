@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
-import { dashboardNavigation } from "@/config/navigation";
+import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 
 export default function AIFeed() {
@@ -61,7 +61,7 @@ export default function AIFeed() {
   return (
     <AppLayout>
       <SEO title="AI Feed | Dashboard" description="AI Feed & Automations" canonical={window.location.href} />
-      <SubNavigation items={dashboardNavigation} />
+      <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader

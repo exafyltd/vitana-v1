@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotCategory, AutopilotPriority } from "@/types/autopilot";
-import { dashboardNavigation } from "@/config/navigation";
+import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 
 export default function Actions() {
@@ -64,7 +64,7 @@ export default function Actions() {
   return (
     <AppLayout>
       <SEO title="Actions | Dashboard" description="Next Best Actions & Today's Plan" canonical={window.location.href} />
-      <SubNavigation items={dashboardNavigation} />
+      <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
