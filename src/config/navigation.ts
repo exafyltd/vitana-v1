@@ -1,5 +1,33 @@
 // Centralized navigation configuration to ensure consistency across all sections
 
+export const dashboardNavigation = [
+  { id: "overview", name: "Overview", path: "/dashboard" },
+  { id: "context", name: "Context", path: "/dashboard/context" },
+  { id: "actions", name: "Actions", path: "/dashboard/actions" },
+  { id: "matches", name: "Matches", path: "/dashboard/matches" },
+  { id: "aifeed", name: "AI Feed", path: "/dashboard/aifeed" },
+];
+
+export const aiNavigation = [
+  { id: "overview", name: "Overview", path: "/ai" },
+  { id: "insights", name: "Insights", path: "/ai/insights" },
+  { id: "recommendations", name: "Recommendations", path: "/ai/recommendations" },
+  { id: "daily-summary", name: "Daily Summary", path: "/ai/daily-summary" },
+  { id: "companion", name: "AI Companion", path: "/ai/companion" },
+];
+
+export const calendarNavigation = [
+  { id: "overview", name: "Overview", path: "/calendar" },
+  { id: "month", name: "Month View", path: "/calendar/month" },
+  { id: "week", name: "Week View", path: "/calendar/week" },
+  { id: "day", name: "Day View", path: "/calendar/day" },
+  { id: "appointments", name: "Appointments", path: "/calendar/appointments" },
+  { id: "reminders", name: "Reminders", path: "/calendar/reminders" },
+  { id: "motivation", name: "Motivation", path: "/calendar/motivation" },
+  { id: "progress", name: "Goal Progress", path: "/calendar/progress" },
+  { id: "recommendations", name: "Recommendations", path: "/calendar/recommendations" },
+];
+
 export const communityNavigation = [
   { id: "overview", name: "Overview", path: "/community" },
   { id: "my-groups", name: "My Groups", path: "/community/my-groups" },
@@ -42,6 +70,7 @@ export const walletNavigation = [
 ];
 
 export const sharingNavigation = [
+  { id: "overview", name: "Overview", path: "/sharing" },
   { id: "consent", name: "Consent Dashboard", path: "/sharing/consent" },
   { id: "packages", name: "Data Packages", path: "/sharing/packages" },
   { id: "smart-package", name: "Smart Package Creator", path: "/sharing/smart-package" },

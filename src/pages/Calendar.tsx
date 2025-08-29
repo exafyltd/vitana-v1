@@ -5,18 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar as CalendarIcon, Clock, Users, Bell, ChevronRight, AlertCircle, CheckCircle, Plus, Target, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const calendarSubItems = [
-  { id: "overview", name: "Overview", path: "/calendar" },
-  { id: "month", name: "Month View", path: "/calendar/month" },
-  { id: "week", name: "Week View", path: "/calendar/week" },
-  { id: "day", name: "Day View", path: "/calendar/day" },
-  { id: "appointments", name: "Appointments", path: "/calendar/appointments" },
-  { id: "reminders", name: "Reminders", path: "/calendar/reminders" },
-  { id: "motivation", name: "Motivation", path: "/calendar/motivation" },
-  { id: "progress", name: "Goal Progress", path: "/calendar/progress" },
-  { id: "recommendations", name: "Recommendations", path: "/calendar/recommendations" },
-];
+import { calendarNavigation } from "@/config/navigation";
+import StandardHeader from "@/components/StandardHeader";
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -51,44 +41,31 @@ export default function Calendar() {
   return (
     <AppLayout>
       <SEO title="Calendar Overview" description="Your wellness schedule overview" canonical={window.location.href} />
-      <SubNavigation items={calendarSubItems} />
-      <div className="p-6 space-y-6">
-        {/* Header Summary */}
-        <div className="rounded-xl border bg-card p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Calendar Overview</h1>
-              <p className="text-muted-foreground">{todayFormatted}</p>
-            </div>
-            <div className="flex gap-2">
-              <Button onClick={() => navigate('/calendar/day')} size="sm">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Event
-              </Button>
-              <Button onClick={() => navigate('/calendar/reminders')} variant="outline" size="sm">
-                <Bell className="w-4 h-4 mr-2" />
-                Reminders
-              </Button>
-            </div>
+      <SubNavigation items={calendarNavigation} />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <StandardHeader
+            title="Calendar Overview"
+            description="Your wellness schedule overview and progress tracking."
+            emoji="📅"
+          />
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
+            <div className="text-2xl font-bold text-foreground">{todaysEvents.length}</div>
+            <div className="text-sm text-muted-foreground">Today's Events</div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-foreground">{todaysEvents.length}</div>
-              <div className="text-sm text-muted-foreground">Today's Events</div>
-            </div>
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-foreground">{upcomingReminders.length}</div>
-              <div className="text-sm text-muted-foreground">Pending Reminders</div>
-            </div>
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-foreground">73%</div>
-              <div className="text-sm text-muted-foreground">Week Completion</div>
-            </div>
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-foreground">12</div>
-              <div className="text-sm text-muted-foreground">This Week</div>
-            </div>
+          <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
+            <div className="text-2xl font-bold text-foreground">{upcomingReminders.length}</div>
+            <div className="text-sm text-muted-foreground">Pending Reminders</div>
+          </div>
+          <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
+            <div className="text-2xl font-bold text-foreground">73%</div>
+            <div className="text-sm text-muted-foreground">Week Completion</div>
+          </div>
+          <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
+            <div className="text-2xl font-bold text-foreground">12</div>
+            <div className="text-sm text-muted-foreground">This Week</div>
           </div>
         </div>
 
@@ -233,6 +210,7 @@ export default function Calendar() {
               </Button>
             </CardContent>
           </Card>
+        </div>
         </div>
       </div>
     </AppLayout>

@@ -22,13 +22,7 @@ import { useState, useEffect } from "react";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { Badge } from "@/components/ui/badge";
 
-const dashboardSubItems = [
-  { id: "overview", name: "Overview", path: "/dashboard" },
-  { id: "context", name: "Context", path: "/dashboard/context" },
-  { id: "actions", name: "Actions", path: "/dashboard/actions" },
-  { id: "matches", name: "Matches", path: "/dashboard/matches" },
-  { id: "aifeed", name: "AI Feed", path: "/dashboard/aifeed" },
-];
+import { dashboardNavigation } from "@/config/navigation";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -57,7 +51,7 @@ export default function Dashboard() {
   return (
     <AppLayout>
       <SEO title="Dashboard | VITANA" description="VITANA Dashboard" canonical={window.location.href} />
-      <SubNavigation items={dashboardSubItems} />
+      <SubNavigation items={dashboardNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
