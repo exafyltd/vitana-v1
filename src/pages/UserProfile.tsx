@@ -207,9 +207,9 @@ const mockUsers: Record<string, UserProfile> = {
 };
 
 export default function UserProfile() {
-  const { id } = useParams<{ id: string }>();
+  const { handle } = useParams<{ handle: string }>();
   const navigate = useNavigate();
-  const user = id ? mockUsers[id] : null;
+  const user = handle ? mockUsers[handle] : null;
 
   if (!user) {
     return (

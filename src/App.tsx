@@ -26,6 +26,8 @@ import Sharing from "./pages/Sharing";
 import Memory from "./pages/Memory";
 import Admin from "./pages/Admin";
 
+import ProfileEditor from "./routes/ProfileEditor";
+
 // Home sub-pages
 import Context from "./pages/home/Context";
 import Actions from "./pages/home/Actions";
@@ -224,8 +226,9 @@ const App = () => (
           <Route path="/settings/billing" element={<Billing />} />
           <Route path="/settings/support" element={<Support />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/me/profile" element={<ProfileEditor />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/profile/:id" element={<UserProfile />} />
+          <Route path="/u/:handle" element={<UserProfile />} />
           
           {/* New module routes */}
           <Route path="/wallet" element={<Wallet />} />
