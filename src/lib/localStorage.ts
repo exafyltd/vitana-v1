@@ -13,19 +13,19 @@ function getEnvironment(): Environment {
   return "prod";
 }
 
-function createNamespacedKey(tenant: TenantType, module: string, key: string): string {
+function createNamespacedKey(tenant: string, module: string, key: string): string {
   const env = getEnvironment();
   return `vitana::${tenant}::${env}::${module}::${key}`;
 }
 
 export function getLocalStorageItem(
-  tenant: TenantType,
+  tenant: TenantType | "global",
   module: string, 
   key: string,
   defaultValue?: string
 ): string | null {
   try {
-    const namespacedKey = createNamespacedKey(tenant, module, key);
+    const namespacedKey = createNamespacedKey(tenant as any, module, key);
     return localStorage.getItem(namespacedKey) || defaultValue || null;
   } catch (error) {
     console.error("Error reading from localStorage:", error);
@@ -34,13 +34,13 @@ export function getLocalStorageItem(
 }
 
 export function setLocalStorageItem(
-  tenant: TenantType,
+  tenant: TenantType | "global",
   module: string,
   key: string, 
   value: string
 ): void {
   try {
-    const namespacedKey = createNamespacedKey(tenant, module, key);
+    const namespacedKey = createNamespacedKey(tenant as any, module, key);
     localStorage.setItem(namespacedKey, value);
   } catch (error) {
     console.error("Error writing to localStorage:", error);

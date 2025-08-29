@@ -3,6 +3,8 @@ import App from './App.tsx'
 import './index.css'
 import { TenantProvider } from './hooks/useTenant'
 import { RoleProvider } from './hooks/useRole'
+import { AuthProvider } from './context/AuthProvider'
+import { ProfileProvider } from './context/ProfileProvider'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -14,9 +16,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <TenantProvider>
-    <RoleProvider>
-      <App />
-    </RoleProvider>
-  </TenantProvider>
+  <AuthProvider>
+    <ProfileProvider>
+      <TenantProvider>
+        <RoleProvider>
+          <App />
+        </RoleProvider>
+      </TenantProvider>
+    </ProfileProvider>
+  </AuthProvider>
 );

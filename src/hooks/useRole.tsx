@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
+import { useTenant } from "./useTenant";
 
 export type UserRole = "community" | "patient" | "professional" | "staff" | "admin";
 
@@ -19,16 +21,32 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
 const RoleContext = createContext<RoleContextValue | undefined>(undefined);
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
-  // Default to Community for Mariia Maxina persona
+  const { tenant } = useTenant();
   const [currentRole, setCurrentRole] = useState<UserRole>("community");
+
+  // Load role from storage on mount
+  useEffect(() => {
+    const savedRole = getLocalStorageItem(tenant.id, "auth", "role", "community") as UserRole;
+    setCurrentRole(savedRole);
+  }, [tenant.id]);
 
   const hasPermission = (requiredRole: UserRole): boolean => {
     return ROLE_HIERARCHY[currentRole] >= ROLE_HIERARCHY[requiredRole];
   };
 
+  const setRole = (role: UserRole) => {
+    setCurrentRole(role);
+    setLocalStorageItem(tenant.id, "auth", "role", role);
+    
+    // Emit role change event
+    window.dispatchEvent(new CustomEvent("role.changed", {
+      detail: { from: currentRole, to: role }
+    }));
+  };
+
   const value: RoleContextValue = {
     role: currentRole,
-    setRole: setCurrentRole,
+    setRole,
     hasPermission,
   };
 

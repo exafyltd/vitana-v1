@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 
 export type TenantType = "maxina" | "earthlings" | "alkalma" | "salama";
 
@@ -52,20 +53,26 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   const [currentTenant, setCurrentTenant] = useState<TenantType>("maxina");
 
   useEffect(() => {
-    // Auto-detect tenant from subdomain or URL param
+    // Load tenant from storage first, then check URL/subdomain
+    const savedTenant = getLocalStorageItem("global", "app", "tenant", "maxina") as TenantType;
+    let initialTenant = savedTenant;
+
+    // Auto-detect tenant from subdomain or URL param (overrides saved)
     const urlParams = new URLSearchParams(window.location.search);
     const tenantParam = urlParams.get("tenant") as TenantType;
     
     if (tenantParam && TENANT_CONFIGS[tenantParam]) {
-      setCurrentTenant(tenantParam);
+      initialTenant = tenantParam;
     } else {
       // Could also check subdomain here
       const hostname = window.location.hostname;
-      if (hostname.includes("maxina")) setCurrentTenant("maxina");
-      else if (hostname.includes("earthlings")) setCurrentTenant("earthlings");
-      else if (hostname.includes("alkalma")) setCurrentTenant("alkalma");
-      else if (hostname.includes("salama")) setCurrentTenant("salama");
+      if (hostname.includes("maxina")) initialTenant = "maxina";
+      else if (hostname.includes("earthlings")) initialTenant = "earthlings";
+      else if (hostname.includes("alkalma")) initialTenant = "alkalma";
+      else if (hostname.includes("salama")) initialTenant = "salama";
     }
+
+    setCurrentTenant(initialTenant);
   }, []);
 
   useEffect(() => {
@@ -78,9 +85,20 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty("--brand-fg", config.brandFg);
   }, [currentTenant]);
 
+  const setTenant = (tenant: TenantType) => {
+    const oldTenant = currentTenant;
+    setCurrentTenant(tenant);
+    setLocalStorageItem("global", "app", "tenant", tenant);
+    
+    // Emit tenant change event
+    window.dispatchEvent(new CustomEvent("tenant.changed", {
+      detail: { from: oldTenant, to: tenant }
+    }));
+  };
+
   const value: TenantContextValue = {
     tenant: TENANT_CONFIGS[currentTenant],
-    setTenant: setCurrentTenant,
+    setTenant,
   };
 
   return (

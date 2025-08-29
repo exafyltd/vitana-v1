@@ -8,10 +8,10 @@ import { useEffect, useRef, useState } from "react";
 import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Zap } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
-import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
+import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
-import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { useProfile } from "@/context/ProfileProvider";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 
@@ -40,6 +40,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
   const { open } = useSidebar();
   const { role, hasPermission } = useRole();
   const { tenant } = useTenant();
+  const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
 
   // Filter sidebar items based on role permissions
@@ -49,12 +50,6 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
     }
     return true;
   });
-
-  // Mariia Maxina persona data
-  const VITANA_INDEX_SCORE = 742;
-  const USER_NAME = "Mariia Maxina";
-  const USER_ROLE_DISPLAY = "Community";
-  const tier = getVitanaIndexTier(VITANA_INDEX_SCORE);
 
   // Check if current path matches category (including subpages)
   const isActivePath = (categoryPath: string) => {
@@ -218,53 +213,35 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           )}
           
           {open ? (
-            <div className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group">
-              <Link to="/profile" className="flex items-center gap-3 flex-1">
-                <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
-                  <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">MM</AvatarFallback>
-                </Avatar>
-                <div className="leading-tight flex-1">
-                  <div className="flex items-center gap-1.5">
-                    <div className="text-sm font-medium">{USER_NAME}</div>
-                    
-                    {/* VIP Crown indicator */}
-                    {VITANA_INDEX_SCORE > 700 && (
-                      <span className="text-sm">👑</span>
-                    )}
+            <ProfileDrawer
+              trigger={
+                <button className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group w-full">
+                  <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+                    <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">
+                      {profile.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="leading-tight flex-1 text-left">
+                    <div className="text-sm font-medium">{profile.displayName}</div>
+                    <div className="text-xs text-sidebar-foreground/50 capitalize">
+                      {profile.role} Member
+                    </div>
                   </div>
-                  
-                  <div className="text-xs text-sidebar-foreground/50">
-                    Community Member
-                  </div>
-                </div>
-              </Link>
-              <KebabMenu>
-                <DropdownMenuItem onClick={() => navigate("/profile")}>
-                  <User className="mr-2 h-4 w-4" />
-                  View Profile
-                </DropdownMenuItem>
-                {process.env.NODE_ENV === "development" && (
-                  <DropdownMenuItem onClick={() => console.log("Switch role - dev only")}>
-                    <Shield className="mr-2 h-4 w-4" />
-                    Switch Role [Dev]
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => console.log("Sign out")}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign Out
-                </DropdownMenuItem>
-              </KebabMenu>
-            </div>
+                </button>
+              }
+            />
           ) : (
-            <Link 
-              to="/profile" 
-              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto"
-            >
-              <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
-                <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">MM</AvatarFallback>
-              </Avatar>
-            </Link>
+            <ProfileDrawer
+              trigger={
+                <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto">
+                  <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+                    <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">
+                      {profile.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+              }
+            />
           )}
         </div>
       </SidebarFooter>
