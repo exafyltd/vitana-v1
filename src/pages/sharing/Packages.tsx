@@ -1,0 +1,246 @@
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { sharingNavigation } from "@/config/navigation";
+import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { Package, Share2, Download, Eye, Calendar, Users } from "lucide-react";
+
+const packageData = {
+  myPackages: [
+    {
+      id: 1,
+      name: "Comprehensive Health Profile",
+      description: "Complete health overview including biomarkers, vitals, and lifestyle data",
+      dataTypes: ["Lab Results", "Vital Signs", "Activity Data", "Sleep Patterns", "Nutrition"],
+      dateRange: "Last 6 months",
+      createdDate: "2024-01-15",
+      size: "2.4 MB",
+      recipients: ["Dr. Sarah Johnson", "Mayo Clinic Research"]
+    },
+    {
+      id: 2,
+      name: "Cardiovascular Risk Assessment Package",
+      description: "Focused data package for heart health evaluation",
+      dataTypes: ["Blood Pressure", "Cholesterol", "ECG Data", "Exercise Performance"],
+      dateRange: "Last 12 months",
+      createdDate: "2024-01-10",
+      size: "1.8 MB",
+      recipients: ["Stanford Cardiology Center"]
+    },
+    {
+      id: 3,
+      name: "Diabetes Management Data",
+      description: "Glucose monitoring and related health metrics",
+      dataTypes: ["Glucose Levels", "HbA1c", "Medication Adherence", "Diet Tracking"],
+      dateRange: "Last 3 months",
+      createdDate: "2024-01-08",
+      size: "950 KB",
+      recipients: ["Endocrinology Associates"]
+    }
+  ],
+  templates: [
+    {
+      id: 1,
+      name: "Basic Health Summary",
+      description: "Essential health metrics for routine consultations",
+      dataTypes: ["Recent Lab Results", "Current Medications", "Vital Signs"],
+      useCase: "Primary care visits"
+    },
+    {
+      id: 2,
+      name: "Research Participation Package",
+      description: "Comprehensive data set for clinical research",
+      dataTypes: ["Complete Medical History", "Biomarkers", "Lifestyle Data", "Genetic Information"],
+      useCase: "Clinical studies and research"
+    },
+    {
+      id: 3,
+      name: "Specialist Consultation Package",
+      description: "Targeted data for specialist appointments",
+      dataTypes: ["Relevant Lab Results", "Imaging Data", "Previous Treatments", "Symptoms Log"],
+      useCase: "Specialist referrals"
+    }
+  ]
+};
+
+function Packages() {
+  return (
+    <AppLayout>
+      <SEO 
+        title="Share Data Package - Vitana Sharing" 
+        description="Create, manage, and share customized health data packages with healthcare providers and researchers."
+      />
+      <SubNavigation items={sharingNavigation} />
+      
+      <div className="px-6 py-8 space-y-8">
+        <StandardHeader 
+          title="Share Data Package"
+          description="Create and manage customized health data packages for sharing with healthcare providers"
+        />
+
+        {/* Quick Actions */}
+        <div className="flex flex-wrap gap-4">
+          <Button>
+            <Package className="h-4 w-4 mr-2" />
+            Create New Package
+          </Button>
+          <Button variant="outline">
+            <Download className="h-4 w-4 mr-2" />
+            Export Data
+          </Button>
+          <Button variant="outline">
+            <Share2 className="h-4 w-4 mr-2" />
+            Share Existing Package
+          </Button>
+        </div>
+
+        {/* My Data Packages */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <Package className="h-5 w-5 text-blue-600" />
+            <h2 className="text-xl font-semibold">My Data Packages</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {packageData.myPackages.map((pkg) => (
+              <Card key={pkg.id}>
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle className="text-lg">{pkg.name}</CardTitle>
+                      <CardDescription>{pkg.description}</CardDescription>
+                    </div>
+                    <Badge variant="outline">{pkg.size}</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <div className="text-sm font-medium text-muted-foreground">Data Types Included</div>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {pkg.dataTypes.map((type, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">{type}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <div className="font-medium text-muted-foreground">Date Range</div>
+                      <div>{pkg.dateRange}</div>
+                    </div>
+                    <div>
+                      <div className="font-medium text-muted-foreground">Created</div>
+                      <div>{pkg.createdDate}</div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="text-sm font-medium text-muted-foreground">Shared With</div>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {pkg.recipients.map((recipient, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">
+                          <Users className="h-3 w-3 mr-1" />
+                          {recipient}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2 pt-2">
+                    <Button variant="outline" size="sm">
+                      <Eye className="h-4 w-4 mr-2" />
+                      Preview
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Share2 className="h-4 w-4 mr-2" />
+                      Share
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Package Templates */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-green-600" />
+            <h2 className="text-xl font-semibold">Package Templates</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {packageData.templates.map((template) => (
+              <Card key={template.id}>
+                <CardHeader>
+                  <CardTitle className="text-lg">{template.name}</CardTitle>
+                  <CardDescription>{template.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <div className="text-sm font-medium text-muted-foreground">Included Data Types</div>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {template.dataTypes.map((type, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="text-sm font-medium text-muted-foreground">Best For</div>
+                    <div className="text-sm">{template.useCase}</div>
+                  </div>
+                  
+                  <Button className="w-full">
+                    <Package className="h-4 w-4 mr-2" />
+                    Use Template
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Create Custom Package Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Package className="h-5 w-5" />
+              Create Custom Package
+            </CardTitle>
+            <CardDescription>
+              Build a personalized data package with specific health information
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="text-sm text-muted-foreground">
+              Create a custom data package by selecting specific health metrics, date ranges, and data types 
+              tailored to your healthcare provider's needs or research participation requirements.
+            </div>
+            
+            <div className="flex gap-4">
+              <Button>
+                <Package className="h-4 w-4 mr-2" />
+                Start Custom Package
+              </Button>
+              <Button variant="outline">
+                <Eye className="h-4 w-4 mr-2" />
+                Preview Available Data
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </AppLayout>
+  );
+}
+
+export default withScreenId(Packages, SCREEN_IDS.SHARING_PACKAGES);

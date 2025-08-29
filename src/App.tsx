@@ -207,8 +207,21 @@ const App = () => (
           
           {/* New module routes */}
           <Route path="/wallet" element={<Wallet />} />
+          <Route path="/wallet/balance" element={<Balance />} />
+          <Route path="/wallet/subscriptions" element={<Subscriptions />} />
+          <Route path="/wallet/rewards" element={<Rewards />} />
+          
           <Route path="/sharing" element={<Sharing />} />
+          <Route path="/sharing/consent" element={<Consent />} />
+          <Route path="/sharing/packages" element={<Packages />} />
+          <Route path="/sharing/smart-package" element={<SmartPackage />} />
+          <Route path="/sharing/marketplace" element={<Marketplace />} />
+          <Route path="/sharing/logs" element={<Logs />} />
+          
           <Route path="/memory" element={<Memory />} />
+          <Route path="/memory/timeline" element={<Timeline />} />
+          <Route path="/memory/recall" element={<Recall />} />
+          <Route path="/memory/permissions" element={<MemoryPermissions />} />
           <Route path="/admin" element={
             <ProtectedRoute requiredRole="staff">
               <Admin />

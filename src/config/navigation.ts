@@ -46,3 +46,34 @@ export const healthTrackerNavigation = [
   { id: "mental-health", name: "Mental Health", path: "/health-tracker/mental-health" },
   { id: "trends", name: "Trends", path: "/health-tracker/trends" },
 ];
+
+export const walletNavigation = [
+  { id: "overview", name: "Overview", path: "/wallet" },
+  { id: "balance", name: "Balance & Benefits", path: "/wallet/balance" },
+  { id: "subscriptions", name: "Subscriptions", path: "/wallet/subscriptions" },
+  { id: "rewards", name: "Rewards & Commissions", path: "/wallet/rewards" },
+];
+
+export const sharingNavigation = [
+  { id: "consent", name: "Consent Dashboard", path: "/sharing/consent" },
+  { id: "packages", name: "Share Data Package", path: "/sharing/packages" },
+  { id: "smart-package", name: "Smart Package Creator", path: "/sharing/smart-package" },
+  { id: "marketplace", name: "Integration Marketplace", path: "/sharing/marketplace" },
+  { id: "logs", name: "Logs & Revocation", path: "/sharing/logs" },
+];
+
+export const memoryNavigation = [
+  { id: "overview", name: "Overview", path: "/memory" },
+  { id: "timeline", name: "Timeline", path: "/memory/timeline" },
+  { id: "recall", name: "Recall & Search", path: "/memory/recall" },
+  { id: "permissions", name: "Permissions", path: "/memory/permissions" },
+];
+
+export const adminNavigation = [
+  { id: "queue", name: "Queue & Check-In", path: "/admin/queue" },
+  { id: "patient-records", name: "Patient Record Viewer", path: "/admin/patient-records" },
+  { id: "stream-supervision", name: "Stream Supervision", path: "/admin/stream-supervision" },
+  { id: "staff", name: "Staff Directory & Scheduling", path: "/admin/staff" },
+  { id: "reports", name: "Reports & KPIs", path: "/admin/reports" },
+  { id: "audit", name: "Audit Logs & Compliance", path: "/admin/audit" },
+];
