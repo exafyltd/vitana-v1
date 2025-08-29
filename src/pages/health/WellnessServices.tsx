@@ -10,10 +10,10 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
 import { healthNavigation } from "@/config/navigation";
-import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane, Apple, Dumbbell, Brain } from "lucide-react";
+import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane, Apple, Dumbbell, Brain, Briefcase, BookOpen } from "lucide-react";
 
 const servicesData = {
-  preventiveScreenings: [
+  preventiveCare: [
     {
       id: "CT-301",
       title: "Annual Physical Exam",
@@ -47,25 +47,51 @@ const servicesData = {
       vitanaImpact: "+30 points"
     }
   ],
-  coachingTraining: [
+  medicalServices: [
     {
       id: "CT-305",
-      title: "Personal Health Coach",
-      description: "One-on-one lifestyle and wellness coaching",
+      title: "Specialist Consultation",
+      description: "Connect with medical specialists",
       icon: UserCheck,
-      color: "from-green-500/20 to-emerald-500/20",
-      vitanaImpact: "+25 points"
+      color: "from-blue-500/20 to-indigo-500/20",
+      vitanaImpact: "+20 points"
     },
     {
       id: "CT-306", 
-      title: "Nutrition Training",
+      title: "Telemedicine",
+      description: "Virtual consultations with healthcare providers",
+      icon: Phone,
+      color: "from-green-500/20 to-emerald-500/20",
+      vitanaImpact: "+15 points"
+    },
+    {
+      id: "CT-307",
+      title: "Lab Tests & Diagnostics",
+      description: "Comprehensive laboratory testing services",
+      icon: TestTube,
+      color: "from-purple-500/20 to-violet-500/20",
+      vitanaImpact: "+25 points"
+    },
+    {
+      id: "CT-308",
+      title: "Prescription Management",
+      description: "Medication reviews and management",
+      icon: Package,
+      color: "from-orange-500/20 to-amber-500/20",
+      vitanaImpact: "+20 points"
+    }
+  ],
+  wellnessPrograms: [
+    {
+      id: "CT-309",
+      title: "Nutrition Coaching",
       description: "Personalized nutrition education and meal planning",
       icon: Apple,
       color: "from-orange-500/20 to-amber-500/20",
       vitanaImpact: "+20 points"
     },
     {
-      id: "CT-307",
+      id: "CT-310",
       title: "Fitness Training",
       description: "Personal training and exercise program design",
       icon: Dumbbell,
@@ -73,54 +99,94 @@ const servicesData = {
       vitanaImpact: "+30 points"
     },
     {
-      id: "CT-308",
+      id: "CT-311",
       title: "Mental Wellness Coach",
       description: "Stress management and mental health support",
       icon: Brain,
       color: "from-purple-500/20 to-pink-500/20",
       vitanaImpact: "+25 points"
-    }
-  ],
-  groupPrograms: [
+    },
     {
-      id: "CT-309",
+      id: "CT-312",
       title: "30-Day Wellness Challenge",
       description: "Community-based health improvement program",
       icon: Target,
       color: "from-cyan-500/20 to-blue-500/20",
       suggestion: "3 people from your Longevity group joined this",
       vitanaImpact: "+40 points"
+    }
+  ],
+  insuranceSupport: [
+    {
+      id: "CT-313",
+      title: "Claims Processing",
+      description: "Help with insurance claims and documentation",
+      icon: FileText,
+      color: "from-blue-500/20 to-cyan-500/20",
+      vitanaImpact: "+10 points"
     },
     {
-      id: "CT-310",
-      title: "Mindfulness Group Sessions",
-      description: "Group meditation and stress reduction classes",
-      icon: Users,
-      color: "from-green-500/20 to-teal-500/20",
-      vitanaImpact: "+20 points"
+      id: "CT-314",
+      title: "Coverage Verification",
+      description: "Verify insurance coverage for services",
+      icon: Shield,
+      color: "from-green-500/20 to-emerald-500/20",
+      vitanaImpact: "+5 points"
     },
     {
-      id: "CT-311",
-      title: "Cooking Class Series",
-      description: "Healthy cooking workshops and meal prep",
-      icon: Users,
-      color: "from-yellow-500/20 to-orange-500/20",
-      vitanaImpact: "+25 points"
-    },
-    {
-      id: "CT-312",
-      title: "Walking Group",
-      description: "Local community walking and hiking group",
-      icon: Activity,
-      color: "from-emerald-500/20 to-green-500/20",
-      suggestion: "Meets 3x per week in your area",
+      id: "CT-315",
+      title: "Pre-Authorization",
+      description: "Assistance with medical pre-authorizations",
+      icon: Briefcase,
+      color: "from-purple-500/20 to-violet-500/20",
       vitanaImpact: "+15 points"
+    },
+    {
+      id: "CT-316",
+      title: "Payment Plans",
+      description: "Flexible payment options for medical services",
+      icon: CreditCard,
+      color: "from-orange-500/20 to-amber-500/20",
+      vitanaImpact: "+5 points"
+    }
+  ],
+  myServices: [
+    {
+      id: "CT-317",
+      title: "My Appointments",
+      description: "View and manage your upcoming appointments",
+      icon: Calendar,
+      color: "from-green-500/20 to-emerald-500/20",
+      count: "3 upcoming"
+    },
+    {
+      id: "CT-318",
+      title: "Service History",
+      description: "Review your past services and treatments",
+      icon: Clock,
+      color: "from-blue-500/20 to-cyan-500/20",
+      count: "12 completed"
+    },
+    {
+      id: "CT-319",
+      title: "My Providers",
+      description: "Manage your healthcare provider network",
+      icon: Users,
+      color: "from-purple-500/20 to-violet-500/20",
+      count: "5 providers"
+    },
+    {
+      id: "CT-320",
+      title: "Health Records",
+      description: "Access your complete health records",
+      icon: BookOpen,
+      color: "from-orange-500/20 to-amber-500/20"
     }
   ]
 };
 
 export default function WellnessServices() {
-  const [activeSection, setActiveSection] = useState("preventiveScreenings");
+  const [activeSection, setActiveSection] = useState("preventiveCare");
   const [selectedService, setSelectedService] = useState<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -196,70 +262,76 @@ export default function WellnessServices() {
             emoji="🏥"
           />
 
-          {/* Split-Screen Layout */}
-          <ServiceDetailSplitScreen
-            leftTitle="Service Categories"
-            rightTitle={activeSection === "preventiveScreenings" ? "Preventive Screenings" : 
-                       activeSection === "coachingTraining" ? "Coaching & Training" : "Group Programs & Challenges"}
-            leftContent={
-              <div className="space-y-2">
-                <Button
-                  variant={activeSection === "preventiveScreenings" ? "default" : "ghost"}
-                  className="w-full justify-start"
-                  onClick={() => setActiveSection("preventiveScreenings")}
-                >
-                  <Microscope className="w-4 h-4 mr-2" />
-                  Preventive Screenings
-                </Button>
-                <Button
-                  variant={activeSection === "coachingTraining" ? "default" : "ghost"}
-                  className="w-full justify-start"
-                  onClick={() => setActiveSection("coachingTraining")}
-                >
-                  <UserCheck className="w-4 h-4 mr-2" />
-                  Coaching & Training
-                </Button>
-                <Button
-                  variant={activeSection === "groupPrograms" ? "default" : "ghost"}
-                  className="w-full justify-start"
-                  onClick={() => setActiveSection("groupPrograms")}
-                >
-                  <Users className="w-4 h-4 mr-2" />
-                  Group Programs & Challenges
-                </Button>
-              </div>
-            }
-            rightContent={
+          {/* Horizontal Tabs Layout */}
+          <Tabs value={activeSection} onValueChange={setActiveSection} className="w-full">
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="preventiveCare" className="flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                Preventive Care
+              </TabsTrigger>
+              <TabsTrigger value="medicalServices" className="flex items-center gap-2">
+                <Stethoscope className="w-4 h-4" />
+                Medical Services
+              </TabsTrigger>
+              <TabsTrigger value="wellnessPrograms" className="flex items-center gap-2">
+                <Heart className="w-4 h-4" />
+                Wellness Programs
+              </TabsTrigger>
+              <TabsTrigger value="insuranceSupport" className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                Insurance Support
+              </TabsTrigger>
+              <TabsTrigger value="myServices" className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                My Services
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="preventiveCare" className="mt-6">
               <div className="space-y-4">
-                {activeSection === "preventiveScreenings" && (
-                  <div>
-                    <div className="mb-4">
-                      <p className="text-sm text-muted-foreground">Early detection and prevention services to maintain optimal health</p>
-                    </div>
-                    {renderServiceCards(servicesData.preventiveScreenings)}
-                  </div>
-                )}
-                
-                {activeSection === "coachingTraining" && (
-                  <div>
-                    <div className="mb-4">
-                      <p className="text-sm text-muted-foreground">Personalized coaching and training programs for lasting lifestyle changes</p>
-                    </div>
-                    {renderServiceCards(servicesData.coachingTraining)}
-                  </div>
-                )}
-                
-                {activeSection === "groupPrograms" && (
-                  <div>
-                    <div className="mb-4">
-                      <p className="text-sm text-muted-foreground">Community-driven programs and challenges for motivation and support</p>
-                    </div>
-                    {renderServiceCards(servicesData.groupPrograms)}
-                  </div>
-                )}
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground">Early detection and prevention services to maintain optimal health</p>
+                </div>
+                {renderServiceCards(servicesData.preventiveCare)}
               </div>
-            }
-          />
+            </TabsContent>
+
+            <TabsContent value="medicalServices" className="mt-6">
+              <div className="space-y-4">
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground">Professional medical services and consultations</p>
+                </div>
+                {renderServiceCards(servicesData.medicalServices)}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="wellnessPrograms" className="mt-6">
+              <div className="space-y-4">
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground">Personalized wellness programs for lasting lifestyle changes</p>
+                </div>
+                {renderServiceCards(servicesData.wellnessPrograms)}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="insuranceSupport" className="mt-6">
+              <div className="space-y-4">
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground">Insurance and billing support services</p>
+                </div>
+                {renderServiceCards(servicesData.insuranceSupport)}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="myServices" className="mt-6">
+              <div className="space-y-4">
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground">Manage your personal services and appointments</p>
+                </div>
+                {renderServiceCards(servicesData.myServices)}
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 
