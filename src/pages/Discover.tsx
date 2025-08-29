@@ -30,15 +30,13 @@ import {
 import AppLayout from '@/components/AppLayout';
 import SEO from '@/components/SEO';
 import SubNavigation from '@/components/SubNavigation';
-import PageHeader from '@/components/PageHeader';
+import StandardHeader from '@/components/StandardHeader';
 import LabTestCard from '@/components/LabTestCard';
 import LabTestOrderPopup from '@/components/LabTestOrderPopup';
 import { IntentRouter } from '@/pages/discover/IntentRouter';
 import { supabase } from '@/integrations/supabase/client';
 
 import { discoverNavigation } from "@/config/navigation";
-
-import StandardHeader from "@/components/StandardHeader";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 export default withScreenId(function Discover() {

@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,10 +15,10 @@ export default function TenantRole() {
       <SEO title="Tenant & Role Switcher | Settings" description="Switch between roles and tenants" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
-        <PageHeader 
-          title="Switch roles & tenants! 🔄"
+        <StandardHeader 
+          title="Switch roles & tenants!"
           description="Switch between roles and tenants"
-          icon={Users}
+          emoji="🔄"
         />
         
         {/* Current Context */}

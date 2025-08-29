@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,10 +42,10 @@ export default function Notifications() {
       <SubNavigation items={messagesSubItems} />
       
       <div className="p-6">
-        <PageHeader 
-          title="Stay informed, stay connected! 🔔"
+        <StandardHeader 
+          title="Stay informed, stay connected!"
           description="Manage your notifications and alerts"
-          icon={Bell}
+          emoji="🔔"
         />
         
         <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>

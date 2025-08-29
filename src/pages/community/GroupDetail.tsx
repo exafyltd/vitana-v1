@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,11 +19,11 @@ export default function GroupDetail() {
       <SEO title="Wellness Warriors Group | Community" description="Group discussion and activities" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6 max-w-6xl mx-auto space-y-6">
-        <PageHeader 
-          title="Wellness Warriors 💪"
-          description="Supporting each other on our fitness journey"
-          icon={Users}
-        />
+          <StandardHeader 
+            title="Wellness Warriors"
+            description="Supporting each other on our fitness journey"
+            emoji="💪"
+          />
         
         {/* Group Info */}
         <Card>

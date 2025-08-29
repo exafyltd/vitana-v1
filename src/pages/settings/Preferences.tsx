@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -23,10 +23,10 @@ export default function Preferences() {
       <SEO title="Preferences | Settings" description="Customize your app preferences and experience" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
-        <PageHeader 
-          title="Make Vitana uniquely yours! ⚙️"
+        <StandardHeader 
+          title="Make Vitana uniquely yours!"
           description="Customize your app preferences and experience"
-          icon={Palette}
+          emoji="⚙️"
         />
         
         {/* Theme Settings */}

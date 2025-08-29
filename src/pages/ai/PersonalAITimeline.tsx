@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Bot, Calendar, TrendingUp, Zap } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import SEO from '@/components/SEO';
-import PageHeader from '@/components/PageHeader';
+import StandardHeader from '@/components/StandardHeader';
 
 export default function PersonalAITimeline() {
   const timelineItems = [
@@ -60,10 +60,10 @@ export default function PersonalAITimeline() {
         canonical={window.location.href}
       />
       <div className="p-6 space-y-6">
-        <PageHeader
+        <StandardHeader
           title="Personal AI Timeline"
           description="Track your AI assistant's activities, insights, and recommendations"
-          icon={Bot}
+          emoji="🤖"
         />
 
         <div className="max-w-4xl mx-auto">

@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,10 +23,10 @@ export default function ConnectedApps() {
       <SEO title="Connected Apps | Settings" description="Manage your connected apps and integrations" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
-        <PageHeader 
-          title="Seamless integration, maximum benefit! 🔗"
+        <StandardHeader 
+          title="Seamless integration, maximum benefit!"
           description="Manage your connected apps and integrations"
-          icon={CheckCircle}
+          emoji="🔗"
         />
         
         {/* Connected Apps */}

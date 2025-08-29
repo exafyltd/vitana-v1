@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { healthNavigation } from "@/config/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, FileText, Shield } from "lucide-react";
@@ -28,10 +28,10 @@ export default function ConditionsRisks() {
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <PageHeader 
-            title="Take control of your health risks! ⚠️"
+          <StandardHeader 
+            title="Take control of your health risks!"
             description="Assess your health risks and create preventive action plans to maintain optimal wellness."
-            icon={Shield}
+            emoji="⚠️"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

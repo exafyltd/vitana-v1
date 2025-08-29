@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,10 +25,10 @@ export default function Billing() {
       <SEO title="Billing | Settings" description="Manage your subscription and billing information" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
-        <PageHeader 
-          title="Manage your investment in wellness! 💳"
+        <StandardHeader 
+          title="Manage your investment in wellness!"
           description="Manage your subscription and billing information"
-          icon={CreditCard}
+          emoji="💳"
         />
         
         <Tabs defaultValue="billing" className="w-full">

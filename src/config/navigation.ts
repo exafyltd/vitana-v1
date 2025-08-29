@@ -43,7 +43,7 @@ export const walletNavigation = [
 
 export const sharingNavigation = [
   { id: "consent", name: "Consent Dashboard", path: "/sharing/consent" },
-  { id: "packages", name: "Share Data Package", path: "/sharing/packages" },
+  { id: "packages", name: "Data Packages", path: "/sharing/packages" },
   { id: "smart-package", name: "Smart Package Creator", path: "/sharing/smart-package" },
   { id: "marketplace", name: "Integration Marketplace", path: "/sharing/marketplace" },
   { id: "logs", name: "Logs & Revocation", path: "/sharing/logs" },

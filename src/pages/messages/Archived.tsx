@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import PageHeader from "@/components/PageHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -34,10 +34,10 @@ export default function Archived() {
       <SubNavigation items={messagesSubItems} />
       
       <div className="p-6">
-        <PageHeader 
-          title="Never lose important conversations! 📦"
+        <StandardHeader 
+          title="Never lose important conversations!"
           description="View archived conversations and messages"
-          icon={FolderOpen}
+          emoji="📦"
         />
         
         <div className="flex h-[calc(100vh-140px)]" style={{ gap: '24px' }}>
