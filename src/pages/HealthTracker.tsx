@@ -1,10 +1,12 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import { TrackerInsightsSplitScreen } from "@/components/ui/split-screen";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Activity, Smartphone, Calendar, TrendingUp, Droplets, Apple, Dumbbell, Moon, Brain, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
@@ -52,6 +54,7 @@ const overviewCards = [
 
 export default function HealthTracker() {
   const navigate = useNavigate();
+  const [activePanel, setActivePanel] = useState("nutrition");
 
   useEffect(() => {
     console.log("HealthTracker page using healthNavigation:", healthNavigation);
@@ -170,94 +173,269 @@ export default function HealthTracker() {
             </div>
           </div>
 
-          {/* Main Tracking Features */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {overviewCards.map((card) => (
-              <Card 
-                key={card.title}
-                className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-card/80 backdrop-blur-sm border-border/20 hover:scale-105 group"
-                onClick={() => navigate(card.path)}
-              >
-                <CardHeader className="pb-4">
-                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <card.icon className="w-6 h-6 text-foreground" />
-                  </div>
-                  <CardTitle className="text-lg">{card.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm">
-                    {card.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Quick Actions & Memory */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="bg-gradient-to-br from-calendar-success/5 to-calendar-accent/5 border-calendar-success/20">
-              <CardHeader>
-                <CardTitle className="text-lg">Quick Log</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-center p-3 rounded-lg bg-background/50 cursor-pointer hover:bg-background/80 transition-colors">
-                    <Droplets className="w-6 h-6 mx-auto mb-1 text-blue-500" />
-                    <span className="text-xs">Water</span>
-                  </div>
-                  <div className="text-center p-3 rounded-lg bg-background/50 cursor-pointer hover:bg-background/80 transition-colors">
-                    <Apple className="w-6 h-6 mx-auto mb-1 text-green-500" />
-                    <span className="text-xs">Meal</span>
-                  </div>
-                  <div className="text-center p-3 rounded-lg bg-background/50 cursor-pointer hover:bg-background/80 transition-colors">
-                    <Dumbbell className="w-6 h-6 mx-auto mb-1 text-orange-500" />
-                    <span className="text-xs">Workout</span>
-                  </div>
-                  <div className="text-center p-3 rounded-lg bg-background/50 cursor-pointer hover:bg-background/80 transition-colors">
-                    <Brain className="w-6 h-6 mx-auto mb-1 text-pink-500" />
-                    <span className="text-xs">Mood</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-calendar-accent/5 to-calendar-primary/5 border-calendar-accent/20">
-              <CardHeader>
-                <CardTitle className="text-lg">Today's Streak</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-calendar-primary">7</div>
-                  <p className="text-sm text-muted-foreground">Days of consistent tracking</p>
-                  <div className="text-xs text-muted-foreground">🔥 Your best streak: 14 days</div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-calendar-secondary/5 to-calendar-primary/5 border-calendar-secondary/20">
-              <CardHeader>
-                <CardTitle className="text-lg">Smart Goals</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Weekly Exercise</span>
-                      <span>4/5 days</span>
+          {/* Health Tracker Split-Screen Layout */}
+          <TrackerInsightsSplitScreen
+            leftTitle="Health Tracking Categories"
+            rightTitle={activePanel === "nutrition" ? "Nutrition Tracking" :
+                        activePanel === "sleep" ? "Sleep Tracking" :
+                        activePanel === "exercise" ? "Exercise Tracking" :
+                        activePanel === "mental" ? "Mental Wellness" : "Vitana Index"}
+            leftContent={
+              <div className="space-y-2">
+                <Button
+                  variant={activePanel === "nutrition" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActivePanel("nutrition")}
+                >
+                  <Apple className="w-4 h-4 mr-2" />
+                  Nutrition
+                </Button>
+                <Button
+                  variant={activePanel === "sleep" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActivePanel("sleep")}
+                >
+                  <Moon className="w-4 h-4 mr-2" />
+                  Sleep
+                </Button>
+                <Button
+                  variant={activePanel === "exercise" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActivePanel("exercise")}
+                >
+                  <Dumbbell className="w-4 h-4 mr-2" />
+                  Exercise
+                </Button>
+                <Button
+                  variant={activePanel === "mental" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActivePanel("mental")}
+                >
+                  <Brain className="w-4 h-4 mr-2" />
+                  Mental
+                </Button>
+                <Button
+                  variant={activePanel === "index" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActivePanel("index")}
+                >
+                  <Activity className="w-4 h-4 mr-2" />
+                  Vitana Index
+                </Button>
+              </div>
+            }
+            rightContent={
+              <div className="space-y-4">
+                {activePanel === "nutrition" && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2">
+                            <Apple className="w-5 h-5 text-green-500" />
+                            Daily Nutrition
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            <div className="flex justify-between text-sm">
+                              <span>Calories</span>
+                              <span>1,847 / 2,200</span>
+                            </div>
+                            <Progress value={84} className="h-2" />
+                            <div className="grid grid-cols-3 gap-2 text-xs">
+                              <div>Protein: 127g</div>
+                              <div>Carbs: 203g</div>
+                              <div>Fat: 67g</div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-lg">Quick Log</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid grid-cols-2 gap-2">
+                            <Button size="sm" variant="outline">Breakfast</Button>
+                            <Button size="sm" variant="outline">Lunch</Button>
+                            <Button size="sm" variant="outline">Dinner</Button>
+                            <Button size="sm" variant="outline">Snack</Button>
+                          </div>
+                        </CardContent>
+                      </Card>
                     </div>
-                    <Progress value={80} className="h-2" />
                   </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Sleep Quality</span>
-                      <span>6.8/10</span>
+                )}
+
+                {activePanel === "sleep" && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2">
+                            <Moon className="w-5 h-5 text-purple-500" />
+                            Sleep Quality
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-center space-y-2">
+                            <div className="text-3xl font-bold text-purple-500">7.5h</div>
+                            <p className="text-sm text-muted-foreground">Last night</p>
+                            <Progress value={81} className="h-2" />
+                            <div className="text-xs text-muted-foreground">Sleep Score: 81/100</div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-lg">Sleep Pattern</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span>Bedtime avg:</span>
+                              <span>10:30 PM</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Wake time avg:</span>
+                              <span>6:15 AM</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Deep sleep:</span>
+                              <span>23%</span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     </div>
-                    <Progress value={68} className="h-2" />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                )}
+
+                {activePanel === "exercise" && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2">
+                            <Dumbbell className="w-5 h-5 text-orange-500" />
+                            Weekly Activity
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            <div className="flex justify-between text-sm">
+                              <span>Active Days</span>
+                              <span>4/5 goal</span>
+                            </div>
+                            <Progress value={80} className="h-2" />
+                            <div className="text-xs text-muted-foreground">68% improvement from last week</div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-lg">Today's Activity</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span>Steps:</span>
+                              <span>8,247 / 10,000</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Active minutes:</span>
+                              <span>34 / 60</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Calories burned:</span>
+                              <span>247</span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                )}
+
+                {activePanel === "mental" && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2">
+                            <Brain className="w-5 h-5 text-pink-500" />
+                            Mental Wellness
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            <div className="flex justify-between text-sm">
+                              <span>Mood Score</span>
+                              <span>7.2/10</span>
+                            </div>
+                            <Progress value={72} className="h-2" />
+                            <div className="text-xs text-muted-foreground">Stress level: Moderate</div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-lg">Mindfulness</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span>Meditation streak:</span>
+                              <span>3 days</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Today's session:</span>
+                              <span>12 min</span>
+                            </div>
+                            <Button size="sm" className="w-full mt-2">Start Session</Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                )}
+
+                {activePanel === "index" && (
+                  <div className="space-y-4">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Activity className="w-5 h-5 text-green-500" />
+                          Vitana Index Overview
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-center space-x-8 mb-6">
+                          <div className="text-center">
+                            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
+                              <span className="text-2xl font-bold text-green-600">742</span>
+                            </div>
+                            <div className="mt-2 text-sm font-medium">Your Index</div>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-5 gap-4 mt-6">
+                          {pillarData.map((pillar) => (
+                            <div key={pillar.name} className="text-center space-y-2">
+                              <pillar.icon className={`w-6 h-6 mx-auto ${pillar.color}`} />
+                              <div className="text-xs font-medium">{pillar.name}</div>
+                              <div className="text-sm font-bold">{pillar.score}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+              </div>
+            }
+            screenId="health-tracker"
+          />
         </div>
       </div>
     </AppLayout>

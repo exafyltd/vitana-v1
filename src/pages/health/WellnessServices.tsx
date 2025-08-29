@@ -10,13 +10,13 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
 import { healthNavigation } from "@/config/navigation";
-import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane } from "lucide-react";
+import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane, Apple, Dumbbell, Brain } from "lucide-react";
 
 const servicesData = {
-  preventive: [
+  preventiveScreenings: [
     {
       id: "CT-301",
-      title: "Annual Physical",
+      title: "Annual Physical Exam",
       description: "Comprehensive health checkup and screening",
       icon: Stethoscope,
       color: "from-emerald-500/20 to-green-500/20",
@@ -24,7 +24,7 @@ const servicesData = {
     },
     {
       id: "CT-302", 
-      title: "Cancer Screening",
+      title: "Cancer Screening Package",
       description: "Early detection screenings for various cancers",
       icon: Microscope,
       color: "from-blue-500/20 to-cyan-500/20",
@@ -32,121 +32,95 @@ const servicesData = {
     },
     {
       id: "CT-303",
-      title: "Wellness Package", 
-      description: "Complete preventive care bundle",
-      icon: Package,
-      color: "from-purple-500/20 to-violet-500/20",
-      vitanaImpact: "+40 points"
-    }
-  ],
-  medical: [
+      title: "Cardiovascular Assessment", 
+      description: "Heart health evaluation and risk assessment",
+      icon: Heart,
+      color: "from-red-500/20 to-pink-500/20",
+      vitanaImpact: "+35 points"
+    },
     {
       id: "CT-304",
-      title: "Specialist Consultation",
-      description: "Expert medical consultations and second opinions",
-      icon: UserCheck,
-      color: "from-red-500/20 to-pink-500/20",
-      vitanaImpact: "+20 points"
-    },
-    {
-      id: "CT-305", 
-      title: "Lab Tests",
-      description: "Comprehensive blood work and diagnostics",
-      icon: TestTube,
-      color: "from-blue-500/20 to-indigo-500/20",
-      vitanaImpact: "+25 points"
-    },
-    {
-      id: "CT-306",
-      title: "Imaging Services",
-      description: "MRI, CT, X-ray and other diagnostic imaging",
-      icon: Activity,
-      color: "from-gray-500/20 to-slate-500/20",
-      vitanaImpact: "+15 points"
+      title: "Metabolic Health Panel",
+      description: "Diabetes, cholesterol, and metabolic markers",
+      icon: TestTube2,
+      color: "from-purple-500/20 to-violet-500/20",
+      vitanaImpact: "+30 points"
     }
   ],
-  wellness: [
+  coachingTraining: [
     {
-      id: "CT-307",
-      title: "Personal Training",
-      description: "One-on-one fitness coaching sessions",
-      icon: Target,
-      color: "from-orange-500/20 to-amber-500/20",
-      vitanaImpact: "+30 points"
-    },
-    {
-      id: "CT-308",
-      title: "Health Coaching",
-      description: "Personalized lifestyle and wellness coaching",
-      icon: Heart,
+      id: "CT-305",
+      title: "Personal Health Coach",
+      description: "One-on-one lifestyle and wellness coaching",
+      icon: UserCheck,
       color: "from-green-500/20 to-emerald-500/20",
       vitanaImpact: "+25 points"
     },
     {
-      id: "CT-309",
-      title: "Group Programs",
-      description: "Community wellness classes and challenges",
-      icon: Users,
-      color: "from-cyan-500/20 to-blue-500/20",
-      suggestion: "3 people from your Longevity group joined this"
+      id: "CT-306", 
+      title: "Nutrition Training",
+      description: "Personalized nutrition education and meal planning",
+      icon: Apple,
+      color: "from-orange-500/20 to-amber-500/20",
+      vitanaImpact: "+20 points"
+    },
+    {
+      id: "CT-307",
+      title: "Fitness Training",
+      description: "Personal training and exercise program design",
+      icon: Dumbbell,
+      color: "from-blue-500/20 to-indigo-500/20",
+      vitanaImpact: "+30 points"
+    },
+    {
+      id: "CT-308",
+      title: "Mental Wellness Coach",
+      description: "Stress management and mental health support",
+      icon: Brain,
+      color: "from-purple-500/20 to-pink-500/20",
+      vitanaImpact: "+25 points"
     }
   ],
-  insurance: [
+  groupPrograms: [
+    {
+      id: "CT-309",
+      title: "30-Day Wellness Challenge",
+      description: "Community-based health improvement program",
+      icon: Target,
+      color: "from-cyan-500/20 to-blue-500/20",
+      suggestion: "3 people from your Longevity group joined this",
+      vitanaImpact: "+40 points"
+    },
     {
       id: "CT-310",
-      title: "Coverage Review",
-      description: "Review and optimize your health insurance",
-      icon: Shield,
-      color: "from-indigo-500/20 to-purple-500/20",
-      vitanaImpact: "+10 points"
+      title: "Mindfulness Group Sessions",
+      description: "Group meditation and stress reduction classes",
+      icon: Users,
+      color: "from-green-500/20 to-teal-500/20",
+      vitanaImpact: "+20 points"
     },
     {
       id: "CT-311",
-      title: "Claims Support",
-      description: "Help with insurance claims and reimbursements",
-      icon: FileText,
+      title: "Cooking Class Series",
+      description: "Healthy cooking workshops and meal prep",
+      icon: Users,
       color: "from-yellow-500/20 to-orange-500/20",
-      vitanaImpact: "+5 points"
+      vitanaImpact: "+25 points"
     },
     {
       id: "CT-312",
-      title: "HSA/FSA Planning",
-      description: "Maximize your health savings accounts",
-      icon: CreditCard,
-      color: "from-teal-500/20 to-cyan-500/20",
+      title: "Walking Group",
+      description: "Local community walking and hiking group",
+      icon: Activity,
+      color: "from-emerald-500/20 to-green-500/20",
+      suggestion: "Meets 3x per week in your area",
       vitanaImpact: "+15 points"
-    }
-  ],
-  myServices: [
-    {
-      id: "CT-313",
-      title: "Upcoming Appointments",
-      description: "View and manage your scheduled services",
-      icon: Calendar,
-      color: "from-violet-500/20 to-purple-500/20",
-      count: "3 this week"
-    },
-    {
-      id: "CT-314",
-      title: "Service History",
-      description: "Track your completed services and results",
-      icon: Clock,
-      color: "from-gray-500/20 to-slate-500/20",
-      count: "12 completed"
-    },
-    {
-      id: "CT-315",
-      title: "Favorites",
-      description: "Quick access to your preferred services",
-      icon: Star,
-      color: "from-yellow-500/20 to-amber-500/20",
-      count: "5 saved"
     }
   ]
 };
 
 export default function WellnessServices() {
-  const [activeTab, setActiveTab] = useState("preventive");
+  const [activeSection, setActiveSection] = useState("preventiveScreenings");
   const [selectedService, setSelectedService] = useState<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -225,83 +199,65 @@ export default function WellnessServices() {
           {/* Split-Screen Layout */}
           <ServiceDetailSplitScreen
             leftTitle="Service Categories"
-            rightTitle="Service Details"
+            rightTitle={activeSection === "preventiveScreenings" ? "Preventive Screenings" : 
+                       activeSection === "coachingTraining" ? "Coaching & Training" : "Group Programs & Challenges"}
             leftContent={
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-1">
-                  <TabsTrigger value="preventive" className="w-full justify-start text-left">
-                    <Microscope className="w-4 h-4 mr-2" />
-                    Preventive Care
-                  </TabsTrigger>
-                </TabsList>
-                <TabsList className="grid w-full grid-cols-1 mt-2">
-                  <TabsTrigger value="medical" className="w-full justify-start text-left">
-                    <Stethoscope className="w-4 h-4 mr-2" />
-                    Medical Services
-                  </TabsTrigger>
-                </TabsList>
-                <TabsList className="grid w-full grid-cols-1 mt-2">
-                  <TabsTrigger value="wellness" className="w-full justify-start text-left">
-                    <Heart className="w-4 h-4 mr-2" />
-                    Wellness Programs
-                  </TabsTrigger>
-                </TabsList>
-                <TabsList className="grid w-full grid-cols-1 mt-2">
-                  <TabsTrigger value="insurance" className="w-full justify-start text-left">
-                    <Shield className="w-4 h-4 mr-2" />
-                    Insurance Support
-                  </TabsTrigger>
-                </TabsList>
-                <TabsList className="grid w-full grid-cols-1 mt-2">
-                  <TabsTrigger value="myServices" className="w-full justify-start text-left">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    My Services
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+              <div className="space-y-2">
+                <Button
+                  variant={activeSection === "preventiveScreenings" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActiveSection("preventiveScreenings")}
+                >
+                  <Microscope className="w-4 h-4 mr-2" />
+                  Preventive Screenings
+                </Button>
+                <Button
+                  variant={activeSection === "coachingTraining" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActiveSection("coachingTraining")}
+                >
+                  <UserCheck className="w-4 h-4 mr-2" />
+                  Coaching & Training
+                </Button>
+                <Button
+                  variant={activeSection === "groupPrograms" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActiveSection("groupPrograms")}
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Group Programs & Challenges
+                </Button>
+              </div>
             }
             rightContent={
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsContent value="preventive" className="mt-0">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold">Preventive Care Services</h3>
-                    <p className="text-sm text-muted-foreground">Stay ahead of health issues with preventive screenings and checkups</p>
+              <div className="space-y-4">
+                {activeSection === "preventiveScreenings" && (
+                  <div>
+                    <div className="mb-4">
+                      <p className="text-sm text-muted-foreground">Early detection and prevention services to maintain optimal health</p>
+                    </div>
+                    {renderServiceCards(servicesData.preventiveScreenings)}
                   </div>
-                  {renderServiceCards(servicesData.preventive)}
-                </TabsContent>
-
-                <TabsContent value="medical" className="mt-0">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold">Medical Services</h3>
-                    <p className="text-sm text-muted-foreground">Expert medical consultations and diagnostic services</p>
+                )}
+                
+                {activeSection === "coachingTraining" && (
+                  <div>
+                    <div className="mb-4">
+                      <p className="text-sm text-muted-foreground">Personalized coaching and training programs for lasting lifestyle changes</p>
+                    </div>
+                    {renderServiceCards(servicesData.coachingTraining)}
                   </div>
-                  {renderServiceCards(servicesData.medical)}
-                </TabsContent>
-
-                <TabsContent value="wellness" className="mt-0">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold">Wellness Programs</h3>
-                    <p className="text-sm text-muted-foreground">Personal training, coaching, and group wellness activities</p>
+                )}
+                
+                {activeSection === "groupPrograms" && (
+                  <div>
+                    <div className="mb-4">
+                      <p className="text-sm text-muted-foreground">Community-driven programs and challenges for motivation and support</p>
+                    </div>
+                    {renderServiceCards(servicesData.groupPrograms)}
                   </div>
-                  {renderServiceCards(servicesData.wellness)}
-                </TabsContent>
-
-                <TabsContent value="insurance" className="mt-0">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold">Insurance Support</h3>
-                    <p className="text-sm text-muted-foreground">Maximize your benefits and simplify insurance processes</p>
-                  </div>
-                  {renderServiceCards(servicesData.insurance)}
-                </TabsContent>
-
-                <TabsContent value="myServices" className="mt-0">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold">My Services</h3>
-                    <p className="text-sm text-muted-foreground">Manage your appointments, history, and favorites</p>
-                  </div>
-                  {renderServiceCards(servicesData.myServices)}
-                </TabsContent>
-              </Tabs>
+                )}
+              </div>
             }
           />
         </div>
