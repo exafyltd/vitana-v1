@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Users, Building2, UserPlus, Settings, Shield, Mail } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/contexts/TenantProvider";
-import { useSession } from "@/contexts/SupabaseSession";
+import { useSession } from "@/contexts/SessionProvider";
 import SEO from "@/components/SEO";
 
 interface User {

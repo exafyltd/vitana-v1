@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useSession } from "@/contexts/SupabaseSession";
+import { useSession } from "@/contexts/SessionProvider";
 import { useTenant } from "@/contexts/TenantProvider";
 import SEO from "@/components/SEO";
 

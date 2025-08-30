@@ -12,7 +12,7 @@ import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
 import { useRole } from "@/hooks/useRole";
 import { useTenant as useOldTenant } from "@/hooks/useTenant";
 import { useTenant } from "@/contexts/TenantProvider";
-import { useSession } from "@/contexts/SupabaseSession";
+import { useSession } from "@/contexts/SessionProvider";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
