@@ -19,6 +19,46 @@ const AdminBootstrap = () => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
 
+  const handleExistingUserBootstrap = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      
+      if (userError || !user) {
+        throw new Error('You need to be logged in to bootstrap admin privileges');
+      }
+
+      // Call the bootstrap function
+      const { error: bootstrapError } = await supabase.functions.invoke('bootstrap-exafy-admin', {
+        body: { 
+          userId: user.id,
+          email: user.email 
+        }
+      });
+
+      if (bootstrapError) {
+        throw bootstrapError;
+      }
+
+      setSuccess('Admin privileges granted successfully! Redirecting to admin dashboard...');
+      
+      // Redirect to admin dashboard after a delay
+      setTimeout(() => {
+        navigate('/admin-dashboard');
+      }, 2000);
+
+    } catch (err: any) {
+      console.error('Bootstrap error:', err);
+      setError(err.message || "An error occurred during bootstrap");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleBootstrap = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -176,6 +216,22 @@ const AdminBootstrap = () => {
               <li>• Grants you admin access to all workspaces</li>
               <li>• Enables you to invite and manage users</li>
             </ul>
+          </div>
+
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <h4 className="font-semibold text-blue-900 mb-2">Already have an account?</h4>
+            <p className="text-sm text-blue-800 mb-3">
+              If you're already registered but don't have admin privileges, click below to grant yourself admin access.
+            </p>
+            <Button 
+              onClick={handleExistingUserBootstrap}
+              variant="outline"
+              className="w-full border-blue-300 text-blue-700 hover:bg-blue-100"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Grant Admin Privileges
+            </Button>
           </div>
         </CardContent>
       </Card>
