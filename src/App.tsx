@@ -8,6 +8,7 @@ import { RTLProvider } from "@/components/RTLProvider";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AuthWorkspace from "./pages/AuthWorkspace";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";

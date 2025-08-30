@@ -1,1 +1,2 @@
-export { Register as default } from "./AuthPages";
+import AuthWorkspace from "./AuthWorkspace";
+export default AuthWorkspace;
