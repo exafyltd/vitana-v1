@@ -77,7 +77,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
         {/* Longevity Archetype - Positioned as badge subtitle */}
         {profile.vitanaIndex && profile.longevityArchetype && (
           <div className="absolute right-4 flex justify-center w-20" style={{ top: '104px' }}>
-            <span className="text-sm font-medium leading-tight text-center" style={{ color: '#5A6B7A', fontSize: '14px' }}>
+            <span className="text-xs font-normal leading-tight text-center whitespace-nowrap" style={{ color: '#6A7A89', fontSize: '12px' }}>
               {profile.longevityArchetype}
             </span>
           </div>
