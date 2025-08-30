@@ -6,6 +6,8 @@ import { ProfileAchievementsStrip } from "./ProfileAchievementsStrip";
 import { ProfileTabs } from "./ProfileTabs";
 import PageHeader from "@/components/PageHeader";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
+import { Button } from "@/components/ui/button";
+import { Star } from "lucide-react";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -52,13 +54,20 @@ export function ProfileLayout({
             engagementBadges={mockEngagementBadges}
           />
           
-          {editMode && (
-            <AutopilotSuggestions 
-              type="profile-section"
-              onSuggestionClick={(suggestion) => {
-                console.log('Autopilot suggestion clicked:', suggestion);
-              }}
-            />
+          {/* Showcase Section - Single unified location */}
+          {editMode && onEditShowcase && (
+            <div className="bg-background rounded-lg border p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Showcase</h3>
+                <Button variant="outline" size="sm" onClick={onEditShowcase}>
+                  <Star className="h-4 w-4 mr-2" />
+                  Manage Featured Content
+                </Button>
+              </div>
+              <p className="text-muted-foreground">
+                Select posts and content to feature at the top of your profile
+              </p>
+            </div>
           )}
           
           <ProfileTabs
@@ -68,9 +77,20 @@ export function ProfileLayout({
             onEditAbout={onEditAbout}
             onEditServices={onEditServices}
             onEditCompliance={onEditCompliance}
-            onEditShowcase={onEditShowcase}
             onEditVisibility={onEditVisibility}
           />
+          
+          {/* Floating Autopilot Suggestions - Subtle placement */}
+          {editMode && (
+            <div className="mt-8">
+              <AutopilotSuggestions 
+                type="profile-section"
+                onSuggestionClick={(suggestion) => {
+                  console.log('Autopilot suggestion clicked:', suggestion);
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

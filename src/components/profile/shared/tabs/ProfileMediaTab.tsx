@@ -8,10 +8,9 @@ interface ProfileMediaTabProps {
   profile: UserProfile;
   scope: Scope;
   editMode?: boolean;
-  onEditShowcase?: () => void;
 }
 
-export function ProfileMediaTab({ profile, scope, editMode, onEditShowcase }: ProfileMediaTabProps) {
+export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabProps) {
   // Mock media content - replace with real data
   const mockMedia = [
     {

@@ -16,7 +16,6 @@ interface ProfileTabsProps {
   onEditAbout?: () => void;
   onEditServices?: () => void;
   onEditCompliance?: () => void;
-  onEditShowcase?: () => void;
   onEditVisibility?: () => void;
 }
 
@@ -27,7 +26,6 @@ export function ProfileTabs({
   onEditAbout,
   onEditServices,
   onEditCompliance,
-  onEditShowcase,
   onEditVisibility
 }: ProfileTabsProps) {
   // Determine which tabs to show
@@ -37,17 +35,16 @@ export function ProfileTabs({
   const showServicesTab = profile.offerings && 
     profile.offerings.some(offering => offering.status === 'published');
 
-  // In edit mode, show Showcase as the first tab
-  const tabs = editMode ? ['showcase', 'posts', 'media', 'groups'] : ['posts', 'media', 'groups'];
+  // In edit mode, remove showcase tab since it's now a standalone section
+  const tabs = ['posts', 'media', 'groups'];
   if (showHealthTab) tabs.push('health');
   if (showServicesTab) tabs.push('services');
 
   return (
     <div className="px-6">
       <div className="max-w-6xl mx-auto">
-        <Tabs defaultValue={editMode ? "showcase" : "posts"} className="space-y-6">
+        <Tabs defaultValue="posts" className="space-y-6">
           <TabsList className={`grid w-full grid-cols-${tabs.length}`}>
-            {editMode && <TabsTrigger value="showcase">Showcase</TabsTrigger>}
             <TabsTrigger value="posts">Posts</TabsTrigger>
             <TabsTrigger value="media">Media</TabsTrigger>
             <TabsTrigger value="groups">Groups</TabsTrigger>
@@ -55,27 +52,12 @@ export function ProfileTabs({
             {showServicesTab && <TabsTrigger value="services">Services</TabsTrigger>}
           </TabsList>
 
-          {editMode && (
-            <TabsContent value="showcase">
-              <div className="space-y-6">
-                <div className="bg-background rounded-lg border p-6">
-                  <h2 className="text-xl font-semibold mb-4">Edit Showcase</h2>
-                  <Button onClick={onEditShowcase} variant="outline" className="w-full">
-                    <Star className="h-4 w-4 mr-2" />
-                    Manage Featured Content
-                  </Button>
-                </div>
-              </div>
-            </TabsContent>
-          )}
-
           <TabsContent value="posts">
             <ProfilePostsTab 
               profile={profile} 
               scope={scope} 
               editMode={editMode}
               onEditAbout={onEditAbout}
-              onEditShowcase={onEditShowcase}
             />
           </TabsContent>
 
@@ -84,7 +66,6 @@ export function ProfileTabs({
               profile={profile} 
               scope={scope}
               editMode={editMode}
-              onEditShowcase={onEditShowcase}
             />
           </TabsContent>
 

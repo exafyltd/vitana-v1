@@ -11,10 +11,9 @@ interface ProfilePostsTabProps {
   scope: Scope;
   editMode?: boolean;
   onEditAbout?: () => void;
-  onEditShowcase?: () => void;
 }
 
-export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onEditShowcase }: ProfilePostsTabProps) {
+export function ProfilePostsTab({ profile, scope, editMode, onEditAbout }: ProfilePostsTabProps) {
   // Mock posts data - replace with real data
   const mockPosts = [
     {
@@ -84,22 +83,6 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onEditS
               ))}
             </div>
           )}
-        </Card>
-      )}
-
-      {/* Showcase Section */}
-      {editMode && onEditShowcase && (
-        <Card className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Featured Content</h3>
-            <Button variant="outline" size="sm" onClick={onEditShowcase}>
-              <Star className="h-4 w-4 mr-2" />
-              Edit Showcase
-            </Button>
-          </div>
-          <p className="text-muted-foreground">
-            Select posts and content to feature at the top of your profile
-          </p>
         </Card>
       )}
 
