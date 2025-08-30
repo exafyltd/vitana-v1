@@ -86,7 +86,7 @@ interface UserProfile {
 }
 
 const mockUsers: Record<string, UserProfile> = {
-  '1': {
+  'sarahwellness': {
     id: '1',
     name: 'Sarah Miller',
     handle: '@sarahwellness',
@@ -155,7 +155,7 @@ const mockUsers: Record<string, UserProfile> = {
       }
     ]
   },
-  '2': {
+  'dr-roberts': {
     id: '2',
     name: 'Dr. Roberts',
     handle: '@drroberts_md',
