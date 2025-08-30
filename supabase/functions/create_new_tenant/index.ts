@@ -20,19 +20,30 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Get the Authorization header
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      throw new Error('No authorization header');
-    }
+    const { name, isBootstrap } = await req.json();
 
-    // Verify the user's JWT token
-    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(
-      authHeader.replace('Bearer ', '')
-    );
+    let user;
+    
+    if (isBootstrap) {
+      // For bootstrap, create admin without authentication
+      console.log('Bootstrap mode: creating admin user and tenant');
+      user = { id: 'bootstrap-admin', email: 'admin@example.com' };
+    } else {
+      // Regular flow: verify authentication
+      const authHeader = req.headers.get('Authorization');
+      if (!authHeader) {
+        throw new Error('No authorization header');
+      }
 
-    if (authError || !user) {
-      throw new Error('Invalid authentication');
+      const { data: { user: authUser }, error: authError } = await supabaseAdmin.auth.getUser(
+        authHeader.replace('Bearer ', '')
+      );
+
+      if (authError || !authUser) {
+        throw new Error('Invalid authentication');
+      }
+      
+      user = authUser;
     }
 
     const { name } = await req.json();

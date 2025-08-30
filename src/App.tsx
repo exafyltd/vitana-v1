@@ -8,7 +8,11 @@ import { RTLProvider } from "@/components/RTLProvider";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AuthWorkspace from "./pages/AuthWorkspace";
+import AuthWorkspace from './pages/AuthWorkspace';
+import AdminBootstrap from './pages/AdminBootstrap';
+import AdminDashboard from './pages/AdminDashboard';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
@@ -133,6 +137,9 @@ const App = () => (
         <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/auth-workspace" element={<AuthWorkspace />} />
+          <Route path="/admin-bootstrap" element={<AdminBootstrap />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
