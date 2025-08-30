@@ -45,6 +45,7 @@ export interface UserProfile {
   stats: { posts: number; followers: number; following: number; mediaUploads: number; groupsJoined: number };
   vitanaIndex?: number;          // 0–999; present only if healthShareConsent=true
   vitanaPercentile?: number;     // optional for drawer
+  longevityArchetype?: string;   // e.g., "The Mindful Mover"
 
   offerings?: ServiceOffering[]; // public shows when ≥1 published
   compliance?: ProfessionalCompliance;

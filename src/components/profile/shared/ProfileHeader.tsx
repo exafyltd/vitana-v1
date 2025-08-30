@@ -59,10 +59,10 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
                 
                 {/* Content inside circle - perfectly centered */}
                 <div className="flex flex-col items-center justify-center z-10 relative text-center">
-                  {/* Large bold number */}
-                  <div className="text-2xl font-bold text-teal-600 leading-none">{profile.vitanaIndex}</div>
-                  {/* VITANA Index text below */}
-                  <div className="text-[8px] font-medium text-gray-600 leading-tight mt-0.5">
+                  {/* Large bold number in deep emerald */}
+                  <div className="text-2xl font-bold leading-none" style={{color: '#006D5B'}}>{profile.vitanaIndex}</div>
+                  {/* VITANA Index text below in charcoal gray */}
+                  <div className="text-[8px] font-medium leading-tight mt-0.5" style={{color: '#2C2C2C'}}>
                     <span className="font-semibold">VITANA</span> Index
                   </div>
                 </div>
@@ -80,6 +80,15 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
                 </div>
               )}
             </div>
+            
+            {/* Longevity Archetype */}
+            {profile.longevityArchetype && (
+              <div className="mt-2 text-center">
+                <span className="text-sm font-medium text-muted-foreground/80 italic">
+                  {profile.longevityArchetype}
+                </span>
+              </div>
+            )}
           </div>
         )}
       </div>
