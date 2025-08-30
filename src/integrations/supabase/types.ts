@@ -159,6 +159,73 @@ export type Database = {
         }
         Relationships: []
       }
+      memberships: {
+        Row: {
+          created_at: string | null
+          role: Database["public"]["Enums"]["tenant_role"]
+          status: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          role?: Database["public"]["Enums"]["tenant_role"]
+          status?: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          role?: Database["public"]["Enums"]["tenant_role"]
+          status?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memberships_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string | null
+          id: string
+          recipient_id: string | null
+          sender_id: string
+          tenant_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string | null
+          id?: string
+          recipient_id?: string | null
+          sender_id: string
+          tenant_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string | null
+          id?: string
+          recipient_id?: string | null
+          sender_id?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
@@ -204,6 +271,7 @@ export type Database = {
           medical_conditions: string[] | null
           medications: string[] | null
           phone: string | null
+          tenant_id: string | null
           updated_at: string
           user_id: string
         }
@@ -218,6 +286,7 @@ export type Database = {
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
+          tenant_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -232,10 +301,72 @@ export type Database = {
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
+          tenant_id?: string | null
           updated_at?: string
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenants: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
         Relationships: []
+      }
+      wallet_credits: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          tenant_id: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          tenant_id: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          tenant_id?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallet_credits_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -266,6 +397,13 @@ export type Database = {
         | "processing"
         | "completed"
         | "cancelled"
+      tenant_role:
+        | "community"
+        | "patient"
+        | "professional"
+        | "staff"
+        | "admin"
+        | "exafy_admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -416,6 +554,14 @@ export const Constants = {
         "processing",
         "completed",
         "cancelled",
+      ],
+      tenant_role: [
+        "community",
+        "patient",
+        "professional",
+        "staff",
+        "admin",
+        "exafy_admin",
       ],
     },
   },
