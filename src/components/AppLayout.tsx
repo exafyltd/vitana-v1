@@ -14,6 +14,7 @@ import { useTenant } from "@/hooks/useTenant";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 
 const sidebarCategories = [
   { title: "Home", path: "/home", icon: LayoutDashboard },
@@ -269,10 +270,31 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
 export default function AppLayout({ children }: AppLayoutProps) {
   const streamingChatRef = useRef<StreamingChatRef>(null);
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
+  const { tenant } = useTenant();
+  
+  // Controlled sidebar state with localStorage persistence
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
+    return stored === "true";
+  });
+
+  // Persist sidebar state changes to localStorage
+  const handleSidebarOpenChange = (open: boolean) => {
+    setSidebarOpen(open);
+    setLocalStorageItem(tenant.id, "sidebar", "open", open.toString());
+  };
+
+  // Initialize sidebar state from localStorage on mount
+  useEffect(() => {
+    const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
+    if (stored !== null) {
+      setSidebarOpen(stored === "true");
+    }
+  }, [tenant.id]);
 
   return (
     <div>
-      <SidebarProvider>
+      <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
         <div className="flex min-h-screen w-full">
           <div className="dark">
             <AppSidebar streamingChatRef={streamingChatRef} />
