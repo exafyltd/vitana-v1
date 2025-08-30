@@ -43,27 +43,41 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
       <div className="px-6 pb-6 relative">
         {/* VITANA Index Badge - Upper Right */}
         {profile.vitanaIndex && (
-          <div className="absolute -top-6 right-6">
+          <div className="absolute -top-8 right-6">
             <div className="flex flex-col items-center">
               <div className="relative">
-                {/* Circular badge with glow effect */}
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary via-primary to-accent shadow-2xl shadow-primary/50 flex flex-col items-center justify-center border-4 border-background relative overflow-hidden">
-                  {/* Shine effect */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/30 to-transparent transform rotate-45"></div>
+                {/* Outer glow/halo */}
+                <div className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br from-slate-300/40 via-slate-200/30 to-slate-400/40 blur-md"></div>
+                
+                {/* Main circular badge with metallic gradient */}
+                <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 shadow-2xl border-2 border-slate-300/60 flex items-center justify-center overflow-hidden">
+                  {/* Inner shadow for depth */}
+                  <div className="absolute inset-0 rounded-full shadow-inner shadow-slate-400/40"></div>
+                  
+                  {/* Top-left highlight for 3D effect */}
+                  <div className="absolute top-1 left-1 w-6 h-6 rounded-full bg-gradient-to-br from-white/60 via-white/30 to-transparent blur-sm"></div>
+                  
+                  {/* Bottom-right shadow for 3D effect */}
+                  <div className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-gradient-to-tl from-slate-400/40 via-slate-300/20 to-transparent blur-sm"></div>
+                  
+                  {/* Metallic shine effect */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/40 to-transparent transform rotate-45 opacity-60"></div>
                   
                   {/* Score */}
-                  <div className="text-xl font-bold text-white z-10">{profile.vitanaIndex}</div>
+                  <div className="text-2xl font-black text-[#006D5B] z-10 drop-shadow-sm">{profile.vitanaIndex}</div>
                   
-                  {/* Ring indicator */}
-                  <div className="absolute inset-1 rounded-full border-2 border-white/30"></div>
+                  {/* Inner ring for premium detail */}
+                  <div className="absolute inset-2 rounded-full border border-slate-300/50"></div>
                 </div>
               </div>
               
               {/* Label and percentile */}
-              <div className="mt-2 text-center">
-                <div className="text-xs font-semibold text-foreground">VITANA Index</div>
+              <div className="mt-3 text-center space-y-1">
+                <div className="text-xs font-bold text-slate-600 tracking-wide">VITANA Index</div>
                 {profile.vitanaPercentile && (
-                  <div className="text-xs text-muted-foreground">Top {100 - profile.vitanaPercentile}%</div>
+                  <div className="inline-block px-2 py-0.5 rounded-full bg-gradient-to-r from-emerald-50 to-emerald-100 border border-emerald-200">
+                    <span className="text-xs font-semibold text-emerald-700">Top {100 - profile.vitanaPercentile}%</span>
+                  </div>
                 )}
               </div>
             </div>
