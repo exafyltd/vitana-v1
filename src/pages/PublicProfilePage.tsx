@@ -31,6 +31,7 @@ const mockUsers: Record<string, UserProfile> = {
     },
     vitanaIndex: 784,
     vitanaPercentile: 85,
+    longevityArchetype: 'The Mindful Mover',
     offerings: [
       {
         id: '1',

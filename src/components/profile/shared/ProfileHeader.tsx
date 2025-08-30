@@ -45,8 +45,12 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
               {/* Pulsing glow effect */}
               <div className="absolute inset-0 w-20 h-20 rounded-full bg-white/40 blur-lg animate-pulse"></div>
               
-              {/* Main circular badge - Clean and simple */}
-              <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-lg border border-white/80 flex flex-col items-center justify-center animate-pulse">
+              {/* Main circular badge - Steel/Glass Metallic */}
+              <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-xl border border-gray-300/60 flex flex-col items-center justify-center animate-pulse"
+                   style={{
+                     background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)',
+                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)'
+                   }}>
                 {/* Content inside circle */}
                 <div className="flex flex-col items-center justify-center text-center">
                   {/* Large bold number in deep emerald */}
@@ -61,7 +65,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
               {/* Top % Ribbon - Small pill overlapping top-right edge */}
               {profile.vitanaPercentile && (
                 <div className="absolute -top-1 -right-2 z-20">
-                  <div className="px-1.5 py-0.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 shadow-md">
+                  <div className="h-4 px-1.5 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 shadow-md flex items-center justify-center">
                     <span className="text-[7px] font-bold text-white leading-none">TOP {100 - profile.vitanaPercentile}%</span>
                   </div>
                 </div>
