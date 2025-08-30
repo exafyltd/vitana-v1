@@ -38,27 +38,17 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
           </Button>
         )}
         
-        {/* VITANA Index Badge - Premium Medal Style */}
+        {/* VITANA Index Badge - Clean Medal Style */}
         {profile.vitanaIndex && (
           <div className="absolute top-4 right-4">
             <div className="relative">
-              {/* Subtle halo glow */}
-              <div className="absolute inset-0 w-24 h-24 rounded-full bg-white/30 blur-xl animate-pulse"></div>
-              <div className="absolute inset-0 w-20 h-20 rounded-full bg-white/50 blur-lg"></div>
+              {/* Pulsing glow effect */}
+              <div className="absolute inset-0 w-20 h-20 rounded-full bg-white/40 blur-lg animate-pulse"></div>
               
-              {/* Main circular badge - Premium metallic medal */}
-              <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-white via-gray-100 to-gray-200 shadow-2xl border border-white/60 flex flex-col items-center justify-center overflow-hidden">
-                {/* Inner highlight (top-left) for 3D depth */}
-                <div className="absolute top-1 left-1 w-6 h-6 rounded-full bg-gradient-to-br from-white/80 to-transparent blur-sm"></div>
-                
-                {/* Inner shadow (bottom-right) for 3D depth */}
-                <div className="absolute inset-1 rounded-full shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-1px_-1px_2px_rgba(255,255,255,0.8)]"></div>
-                
-                {/* Glass reflection */}
-                <div className="absolute top-0 left-0 right-0 h-6 rounded-t-full bg-gradient-to-b from-white/60 to-transparent"></div>
-                
-                {/* Content inside circle - perfectly centered */}
-                <div className="flex flex-col items-center justify-center z-10 relative text-center">
+              {/* Main circular badge - Clean and simple */}
+              <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-lg border border-white/80 flex flex-col items-center justify-center animate-pulse">
+                {/* Content inside circle */}
+                <div className="flex flex-col items-center justify-center text-center">
                   {/* Large bold number in deep emerald */}
                   <div className="text-2xl font-bold leading-none" style={{color: '#006D5B'}}>{profile.vitanaIndex}</div>
                   {/* VITANA Index text below in charcoal gray */}
@@ -66,9 +56,6 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
                     <span className="font-semibold">VITANA</span> Index
                   </div>
                 </div>
-                
-                {/* Subtle border for definition */}
-                <div className="absolute inset-0 rounded-full border border-gray-300/40"></div>
               </div>
               
               {/* Top % Ribbon - Small pill overlapping top-right edge */}
@@ -80,15 +67,17 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
                 </div>
               )}
             </div>
-            
-            {/* Longevity Archetype */}
-            {profile.longevityArchetype && (
-              <div className="mt-2 text-center">
-                <span className="text-sm font-medium text-muted-foreground/80 italic">
-                  {profile.longevityArchetype}
-                </span>
-              </div>
-            )}
+          </div>
+        )}
+        
+        {/* Longevity Archetype - Outside badge container */}
+        {profile.vitanaIndex && profile.longevityArchetype && (
+          <div className="absolute top-28 right-4">
+            <div className="text-center">
+              <span className="text-sm font-medium text-muted-foreground/80 italic">
+                {profile.longevityArchetype}
+              </span>
+            </div>
           </div>
         )}
       </div>
