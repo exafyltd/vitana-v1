@@ -94,8 +94,8 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
             {open ? "VITANA" : "V"}
           </Link>
           {/* Dedicated Autopilot Cluster */}
-          <div className={`bg-[#2A2A2A] rounded-lg p-2 flex items-center transition-all duration-200 ${
-            open ? 'gap-2' : 'justify-center'
+          <div className={`bg-[#2A2A2A] rounded-lg p-1.5 flex items-center transition-all duration-200 max-w-full ${
+            open ? 'gap-2 flex-row' : 'flex-col gap-1 w-12'
           }`}>
             {/* Autopilot Badge Counter */}
             <Popover>
@@ -104,18 +104,18 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
                   variant="ghost" 
                   size="icon" 
                   className={`relative shrink-0 transition-all duration-200 hover:bg-white/10 ${
-                    open ? 'h-8 w-8 rounded-lg' : 'h-10 w-10 rounded-full'
+                    open ? 'h-8 w-8 rounded-lg' : 'h-8 w-8 rounded-full'
                   }`}
                   title={`${pendingCount} Autopilot suggestions`}
                 >
-                  <Zap className={`text-cyan-400 drop-shadow-sm transition-all duration-200 ${
-                    open ? 'h-4 w-4' : 'h-5 w-5'
-                  }`} style={{ filter: 'drop-shadow(0 0 4px rgb(34 211 238 / 0.6))' }} />
+                  <Zap className={`text-calendar-primary drop-shadow-sm transition-all duration-200 ${
+                    open ? 'h-4 w-4' : 'h-4 w-4'
+                  }`} style={{ filter: 'drop-shadow(0 0 4px rgb(168 85 247 / 0.6))' }} />
                   {pendingCount > 0 && (
                     <Badge 
                       variant="destructive" 
                       className={`absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground transition-all duration-200 ${
-                        open ? 'h-4 w-4 text-[10px] min-w-[16px]' : 'h-5 w-5 text-xs min-w-[20px]'
+                        open ? 'h-4 w-4 text-[10px] min-w-[16px]' : 'h-4 w-4 text-[10px] min-w-[16px]'
                       }`}
                     >
                       {pendingCount > 9 ? '9+' : pendingCount}
@@ -126,7 +126,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               <PopoverContent className="w-80 p-4" align="end">
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-cyan-400" />
+                    <Zap className="h-4 w-4 text-calendar-primary" />
                     <h3 className="font-medium">Autopilot Preview</h3>
                   </div>
                   <div className="space-y-2">
@@ -150,14 +150,14 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
             
             {/* Autopilot Label (expanded only) */}
             {open && (
-              <span className="text-sm font-medium text-sidebar-foreground/90 transition-opacity duration-200">
+              <span className="text-sm font-medium text-sidebar-foreground/90 transition-opacity duration-200 truncate">
                 Autopilot
               </span>
             )}
             
             {/* Sidebar Toggle Chevron */}
             <SidebarTrigger className={`shrink-0 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-white/10 transition-all duration-200 ${
-              open ? 'rounded-lg ml-auto' : 'opacity-50 hover:opacity-100'
+              open ? 'rounded-lg ml-auto h-6 w-6' : 'rounded h-4 w-4 opacity-70 hover:opacity-100'
             }`} />
           </div>
         </div>
