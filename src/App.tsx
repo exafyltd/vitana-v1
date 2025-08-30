@@ -20,13 +20,12 @@ import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
-import UserProfile from "./pages/UserProfile";
+import PublicProfilePage from "./pages/PublicProfilePage";
+import EditProfilePage from "./pages/EditProfilePage";
 import Wallet from "./pages/Wallet";
 import Sharing from "./pages/Sharing";
 import Memory from "./pages/Memory";
 import Admin from "./pages/Admin";
-
-import ProfileEditor from "./routes/ProfileEditor";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 
 // Home sub-pages
@@ -228,9 +227,9 @@ const App = () => (
           <Route path="/settings/support" element={<Support />} />
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />
           <Route path="/profile/:id" element={<LegacyProfileRedirect />} />
-          <Route path="/me/profile" element={<ProfileEditor />} />
+          <Route path="/me/profile" element={<EditProfilePage />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/u/:handle" element={<UserProfile />} />
+          <Route path="/u/:handle" element={<PublicProfilePage />} />
           
           {/* New module routes */}
           <Route path="/wallet" element={<Wallet />} />
