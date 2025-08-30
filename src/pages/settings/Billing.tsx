@@ -15,7 +15,8 @@ export default function Billing() {
     <AppLayout>
       <SEO title="Billing | Settings" description="Manage your subscription and billing information" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
         <StandardHeader 
           title="Manage your investment in wellness!"
           description="Manage your subscription and billing information"
@@ -438,6 +439,7 @@ export default function Billing() {
             </Card>
           </TabsContent>
         </Tabs>
+        </div>
       </div>
     </AppLayout>
   );

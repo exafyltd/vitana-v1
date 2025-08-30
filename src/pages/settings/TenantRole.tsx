@@ -14,7 +14,8 @@ export default function TenantRole() {
     <AppLayout>
       <SEO title="Tenant & Role Switcher | Settings" description="Switch between roles and tenants" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
         <StandardHeader 
           title="Switch roles & tenants!"
           description="Switch between roles and tenants"
@@ -178,6 +179,7 @@ export default function TenantRole() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     </AppLayout>
   );

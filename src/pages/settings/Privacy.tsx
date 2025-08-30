@@ -13,7 +13,8 @@ export default function Privacy() {
     <AppLayout>
       <SEO title="Privacy | Settings" description="Manage your privacy settings and data control" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
         <StandardHeader 
           title="Your data, your control!"
           description="Manage your privacy settings and data control"
@@ -196,6 +197,7 @@ export default function Privacy() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     </AppLayout>
   );

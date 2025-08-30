@@ -15,7 +15,8 @@ export default function Support() {
     <AppLayout>
       <SEO title="Support | Settings" description="Get help and support for your account" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
         <StandardHeader 
           title="We're here to help you succeed!"
           description="Get help and support for your account"
@@ -183,6 +184,7 @@ export default function Support() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     </AppLayout>
   );

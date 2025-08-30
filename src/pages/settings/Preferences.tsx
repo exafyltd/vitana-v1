@@ -13,7 +13,8 @@ export default function Preferences() {
     <AppLayout>
       <SEO title="Preferences | Settings" description="Customize your app preferences and experience" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
         <StandardHeader 
           title="Make Vitana uniquely yours!"
           description="Customize your app preferences and experience"
@@ -220,6 +221,7 @@ export default function Preferences() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     </AppLayout>
   );
