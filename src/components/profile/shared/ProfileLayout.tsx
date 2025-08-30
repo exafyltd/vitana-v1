@@ -39,7 +39,7 @@ export function ProfileLayout({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-      <div className="px-6 space-y-8">
+      <div className="space-y-8">
         <div className="max-w-6xl mx-auto">
           <ProfileHeader 
             profile={profile}
@@ -47,33 +47,39 @@ export function ProfileLayout({
             editMode={editMode}
             onEdit={onEditIdentity}
           />
-          
-          <ProfileStats profile={profile} />
-          
-          <ProfileAchievementsStrip 
-            achievements={mockAchievements}
-            engagementBadges={mockEngagementBadges}
-          />
-          
-          {/* Showcase Section - Single unified location */}
-          {editMode && onEditShowcase && (
-            <div className="bg-background rounded-lg border p-6 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">Showcase</h3>
-                <Button variant="outline" size="sm" onClick={onEditShowcase}>
-                  <Star className="h-4 w-4 mr-2" />
-                  Manage Featured Content
-                </Button>
+        </div>
+        
+        <ProfileStats profile={profile} />
+        
+        <ProfileAchievementsStrip 
+          achievements={mockAchievements}
+          engagementBadges={mockEngagementBadges}
+        />
+        
+        {/* Showcase Section - Single unified location */}
+        {editMode && onEditShowcase && (
+          <div className="px-6">
+            <div className="max-w-6xl mx-auto">
+              <div className="bg-background rounded-lg border p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Showcase</h3>
+                  <Button variant="outline" size="sm" onClick={onEditShowcase}>
+                    <Star className="h-4 w-4 mr-2" />
+                    Manage Featured Content
+                  </Button>
+                </div>
+                <p className="text-muted-foreground">
+                  Select posts and content to feature at the top of your profile
+                </p>
               </div>
-              <p className="text-muted-foreground">
-                Select posts and content to feature at the top of your profile
-              </p>
             </div>
-          )}
-          
-          {/* Autopilot Suggestions - Positioned after Showcase */}
-          {editMode && (
-            <div className="mb-6">
+          </div>
+        )}
+        
+        {/* Autopilot Suggestions - Positioned after Showcase */}
+        {editMode && (
+          <div className="px-6">
+            <div className="max-w-6xl mx-auto">
               <AutopilotSuggestions 
                 type="profile-section"
                 onSuggestionClick={(suggestion) => {
@@ -81,18 +87,21 @@ export function ProfileLayout({
                 }}
               />
             </div>
-          )}
-          
-          <ProfileTabs
-            profile={profile} 
-            scope={scope} 
-            editMode={editMode}
-            onEditAbout={onEditAbout}
-            onEditServices={onEditServices}
-            onEditCompliance={onEditCompliance}
-            onEditVisibility={onEditVisibility}
-          />
-          
+          </div>
+        )}
+        
+        <div className="px-6">
+          <div className="max-w-6xl mx-auto">
+            <ProfileTabs
+              profile={profile} 
+              scope={scope} 
+              editMode={editMode}
+              onEditAbout={onEditAbout}
+              onEditServices={onEditServices}
+              onEditCompliance={onEditCompliance}
+              onEditVisibility={onEditVisibility}
+            />
+          </div>
         </div>
         
         {/* Floating Autopilot Button - Always visible during edit mode */}
