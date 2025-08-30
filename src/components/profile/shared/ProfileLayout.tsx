@@ -7,7 +7,8 @@ import { ProfileTabs } from "./ProfileTabs";
 import PageHeader from "@/components/PageHeader";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Star, Zap } from "lucide-react";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -70,6 +71,18 @@ export function ProfileLayout({
             </div>
           )}
           
+          {/* Autopilot Suggestions - Positioned after Showcase */}
+          {editMode && (
+            <div className="mb-6">
+              <AutopilotSuggestions 
+                type="profile-section"
+                onSuggestionClick={(suggestion) => {
+                  console.log('Autopilot suggestion clicked:', suggestion);
+                }}
+              />
+            </div>
+          )}
+          
           <ProfileTabs
             profile={profile} 
             scope={scope} 
@@ -80,18 +93,33 @@ export function ProfileLayout({
             onEditVisibility={onEditVisibility}
           />
           
-          {/* Floating Autopilot Suggestions - Subtle placement */}
-          {editMode && (
-            <div className="mt-8">
-              <AutopilotSuggestions 
-                type="profile-section"
-                onSuggestionClick={(suggestion) => {
-                  console.log('Autopilot suggestion clicked:', suggestion);
-                }}
-              />
-            </div>
-          )}
         </div>
+        
+        {/* Floating Autopilot Button - Always visible during edit mode */}
+        {editMode && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  className="fixed bottom-6 right-6 h-12 w-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 bg-primary hover:bg-primary/90 z-50"
+                  onClick={() => {
+                    // Trigger the autopilot popup
+                    const autopilotElement = document.querySelector('[data-autopilot-trigger]') as HTMLElement;
+                    if (autopilotElement) {
+                      autopilotElement.click();
+                    }
+                  }}
+                >
+                  <Zap className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Autopilot Assist</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
     </div>
   );

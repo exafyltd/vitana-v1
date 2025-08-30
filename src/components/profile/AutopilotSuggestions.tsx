@@ -149,6 +149,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
           <Button 
             onClick={() => setShowPopup(true)}
             className="ml-4 flex-shrink-0"
+            data-autopilot-trigger
           >
             Try Autopilot
           </Button>
