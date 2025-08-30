@@ -93,62 +93,111 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <Link to="/" className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors">
             {open ? "VITANA" : "V"}
           </Link>
-          {/* Unified Autopilot Button */}
-          <div className="flex items-center gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className={`relative bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-lg p-2 transition-all duration-200 ${
-                    open ? 'h-8 flex items-center gap-2 px-3' : 'h-8 w-8 flex items-center justify-center'
-                  }`}
-                  title={`${pendingCount} Autopilot suggestions`}
-                >
-                  <Zap className="h-4 w-4 text-calendar-primary drop-shadow-sm transition-all duration-200" 
-                       style={{ filter: 'drop-shadow(0 0 4px rgb(168 85 247 / 0.6))' }} />
-                  {open && (
+          {/* Responsive Autopilot + Chevron Layout */}
+          {open ? (
+            /* Expanded: Horizontal layout */
+            <div className="flex items-center gap-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    className="relative bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-lg p-2 h-8 flex items-center gap-2 px-3 transition-all duration-200"
+                    title={`${pendingCount} Autopilot suggestions`}
+                  >
+                    <Zap className="h-4 w-4 text-calendar-primary drop-shadow-sm transition-all duration-200" 
+                         style={{ filter: 'drop-shadow(0 0 4px rgb(168 85 247 / 0.6))' }} />
                     <span className="text-sm font-medium text-sidebar-foreground/90 truncate">
                       Autopilot
                     </span>
-                  )}
-                  {pendingCount > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-1 -right-1 p-0 text-[10px] font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 min-w-[16px]"
-                    >
-                      {pendingCount > 9 ? '9+' : pendingCount}
-                    </Badge>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 p-4" align="end">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-calendar-primary" />
-                    <h3 className="font-medium">Autopilot Preview</h3>
-                  </div>
-                  <div className="space-y-2">
-                    {getLatestActions(2).map((action) => (
-                      <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
-                        <div className="font-medium">{action.title}</div>
-                        <div className="text-xs text-muted-foreground">{action.reason}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <Button 
-                    onClick={() => setAutopilotPopupOpen(true)} 
-                    className="w-full" 
-                    size="sm"
-                  >
-                    View All ({pendingCount})
+                    {pendingCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="absolute -top-1 -right-1 p-0 text-[10px] font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 min-w-[16px]"
+                      >
+                        {pendingCount > 9 ? '9+' : pendingCount}
+                      </Badge>
+                    )}
                   </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-            
-            {/* Sidebar Toggle Chevron */}
-            <SidebarTrigger className="shrink-0 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-white/10 transition-all duration-200 rounded-lg h-6 w-6" />
-          </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 p-4" align="end">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-calendar-primary" />
+                      <h3 className="font-medium">Autopilot Preview</h3>
+                    </div>
+                    <div className="space-y-2">
+                      {getLatestActions(2).map((action) => (
+                        <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
+                          <div className="font-medium">{action.title}</div>
+                          <div className="text-xs text-muted-foreground">{action.reason}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <Button 
+                      onClick={() => setAutopilotPopupOpen(true)} 
+                      className="w-full" 
+                      size="sm"
+                    >
+                      View All ({pendingCount})
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+              
+              {/* Sidebar Toggle Chevron */}
+              <SidebarTrigger className="shrink-0 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-white/10 transition-all duration-200 rounded-lg h-6 w-6" />
+            </div>
+          ) : (
+            /* Collapsed: Vertical layout */
+            <div className="flex flex-col items-center gap-1">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    className="relative bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-lg p-2 h-8 w-8 flex items-center justify-center transition-all duration-200"
+                    title={`${pendingCount} Autopilot suggestions`}
+                  >
+                    <Zap className="h-4 w-4 text-calendar-primary drop-shadow-sm transition-all duration-200" 
+                         style={{ filter: 'drop-shadow(0 0 4px rgb(168 85 247 / 0.6))' }} />
+                    {pendingCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="absolute -top-1 -right-1 p-0 text-[10px] font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 min-w-[16px]"
+                      >
+                        {pendingCount > 9 ? '9+' : pendingCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 p-4" align="end">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-calendar-primary" />
+                      <h3 className="font-medium">Autopilot Preview</h3>
+                    </div>
+                    <div className="space-y-2">
+                      {getLatestActions(2).map((action) => (
+                        <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
+                          <div className="font-medium">{action.title}</div>
+                          <div className="text-xs text-muted-foreground">{action.reason}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <Button 
+                      onClick={() => setAutopilotPopupOpen(true)} 
+                      className="w-full" 
+                      size="sm"
+                    >
+                      View All ({pendingCount})
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+              
+              {/* Sidebar Toggle Chevron */}
+              <SidebarTrigger className="shrink-0 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-white/10 transition-all duration-200 rounded h-4 w-4 opacity-70 hover:opacity-100" />
+            </div>
+          )}
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
