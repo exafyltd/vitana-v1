@@ -129,6 +129,9 @@ const Index = () => {
                   </Button>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+
           {/* Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <div className="text-center">

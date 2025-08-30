@@ -373,7 +373,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      bootstrap_admin_user: {
+        Args: { user_email: string; user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       collection_method: "home_kit" | "lab_facility"
