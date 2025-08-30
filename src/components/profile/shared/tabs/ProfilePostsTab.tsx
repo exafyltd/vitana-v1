@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageSquare, Share } from "lucide-react";
+import { Heart, MessageSquare, Share, Edit3, MapPin, ExternalLink, Star } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 
@@ -38,6 +40,70 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onEditS
 
   return (
     <div className="space-y-4">
+      {/* About Section */}
+      {profile.bio && (
+        <Card className="p-6">
+          <div className="flex items-start justify-between mb-4">
+            <h3 className="text-lg font-semibold">About</h3>
+            {editMode && onEditAbout && (
+              <Button variant="outline" size="sm" onClick={onEditAbout}>
+                <Edit3 className="h-4 w-4 mr-2" />
+                Edit About
+              </Button>
+            )}
+          </div>
+          <p className="text-muted-foreground mb-4">{profile.bio}</p>
+          
+          {/* Location */}
+          {profile.location && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+              <MapPin className="h-4 w-4" />
+              {profile.location}
+            </div>
+          )}
+          
+          {/* Links */}
+          {profile.links && profile.links.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-2">
+              {profile.links.map((link, index) => (
+                <Button key={index} variant="link" size="sm" className="h-auto p-0">
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  {link.label}
+                </Button>
+              ))}
+            </div>
+          )}
+          
+          {/* Languages */}
+          {profile.languages && profile.languages.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {profile.languages.map((language, index) => (
+                <Badge key={index} variant="secondary" className="text-xs">
+                  {language}
+                </Badge>
+              ))}
+            </div>
+          )}
+        </Card>
+      )}
+
+      {/* Showcase Section */}
+      {editMode && onEditShowcase && (
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold">Featured Content</h3>
+            <Button variant="outline" size="sm" onClick={onEditShowcase}>
+              <Star className="h-4 w-4 mr-2" />
+              Edit Showcase
+            </Button>
+          </div>
+          <p className="text-muted-foreground">
+            Select posts and content to feature at the top of your profile
+          </p>
+        </Card>
+      )}
+
+      {/* Posts */}
       {mockPosts.map((post) => (
         <Card key={post.id} className="p-6">
           <div className="space-y-4">

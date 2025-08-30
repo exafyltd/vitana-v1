@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Heart, Moon, Apple, Droplets, Zap } from "lucide-react";
+import { Activity, Heart, Moon, Apple, Droplets, Zap, Settings } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 
@@ -67,6 +68,24 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
 
   return (
     <div className="space-y-6">
+      {/* Privacy Settings */}
+      {editMode && onEditVisibility && (
+        <Card className="p-6 border-2 border-dashed border-muted-foreground/20">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Privacy & Visibility</h3>
+              <p className="text-muted-foreground">
+                Control who can see your health data and profile information
+              </p>
+            </div>
+            <Button variant="outline" onClick={onEditVisibility}>
+              <Settings className="h-4 w-4 mr-2" />
+              Privacy Settings
+            </Button>
+          </div>
+        </Card>
+      )}
+
       {/* Vitana Index Card */}
       {profile.vitanaIndex && (
         <Card>

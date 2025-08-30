@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, DollarSign, Calendar, Star } from "lucide-react";
+import { Clock, DollarSign, Calendar, Star, Edit3 } from "lucide-react";
 import { UserProfile, ServiceOffering } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 
@@ -92,16 +92,26 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
                 </div>
               )}
 
-              {/* Action Buttons */}
-              <div className="flex gap-2 pt-2">
-                <Button className="flex-1">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Book Session
-                </Button>
-                <Button variant="outline">
-                  Learn More
-                </Button>
-              </div>
+      {/* Action Buttons */}
+      <div className="flex gap-2 pt-2">
+        {editMode && onEditServices && (
+          <Button variant="outline" onClick={onEditServices}>
+            <Edit3 className="h-4 w-4 mr-2" />
+            Manage Services
+          </Button>
+        )}
+        {!editMode && (
+          <>
+            <Button className="flex-1">
+              <Calendar className="h-4 w-4 mr-2" />
+              Book Session
+            </Button>
+            <Button variant="outline">
+              Learn More
+            </Button>
+          </>
+        )}
+      </div>
             </CardContent>
           </Card>
         ))}
@@ -111,18 +121,26 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
       {profile.compliance?.isProfessional && (
         <Card className="bg-blue-50/50 border-blue-200/50">
           <CardContent className="p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <Star className="h-5 w-5 text-blue-600" />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Star className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Verified Professional</h3>
+                  {profile.compliance.licenseVerified && (
+                    <p className="text-sm text-muted-foreground">
+                      Licensed and verified healthcare provider
+                    </p>
+                  )}
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold">Verified Professional</h3>
-                {profile.compliance.licenseVerified && (
-                  <p className="text-sm text-muted-foreground">
-                    Licensed and verified healthcare provider
-                  </p>
-                )}
-              </div>
+              {editMode && onEditCompliance && (
+                <Button variant="outline" size="sm" onClick={onEditCompliance}>
+                  <Edit3 className="h-4 w-4 mr-2" />
+                  Manage Credentials
+                </Button>
+              )}
             </div>
             
             {profile.compliance.specialties && profile.compliance.specialties.length > 0 && (
