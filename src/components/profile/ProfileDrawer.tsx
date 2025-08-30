@@ -107,9 +107,9 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
           <div className="space-y-2">
             <DrawerClose asChild>
               <Button variant="ghost" className="w-full justify-start" asChild>
-                <Link to="/profile">
+                <Link to="/me/profile">
                   <User className="mr-2 h-4 w-4" />
-                  View Profile
+                  Edit Profile
                 </Link>
               </Button>
             </DrawerClose>

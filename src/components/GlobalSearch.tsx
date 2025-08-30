@@ -15,6 +15,22 @@ interface SearchSuggestion {
   avatar?: string;
 }
 
+// People index for search resolution
+interface Person {
+  id: string;
+  name: string;
+  handle: string;
+  aliases?: string[];
+}
+
+const peopleIndex: Person[] = [
+  { id: '1', name: 'Sarah Miller', handle: 'sarahwellness', aliases: ['Sarah'] },
+  { id: '2', name: 'Dr. Roberts', handle: 'dr-roberts', aliases: ['Roberts', 'Dr Roberts'] },
+  { id: '3', name: 'Mariia Maxina', handle: 'maxina', aliases: ['Mariia', 'Maria Maksina'] },
+  { id: '4', name: 'Emma Wilson', handle: 'emmawilson', aliases: ['Emma'] },
+  { id: '5', name: 'James Davis', handle: 'jamesdavis', aliases: ['James'] },
+];
+
 const mockSuggestions: SearchSuggestion[] = [
   { id: '1', type: 'person', title: 'Sarah Miller', subtitle: 'Yoga Enthusiast', avatar: '/lovable-uploads/sarah-miller-avatar.jpg' },
   { id: '2', type: 'person', title: 'Dr. Roberts', subtitle: 'Health Coach', avatar: '/lovable-uploads/dr-roberts-avatar.jpg' },
@@ -22,6 +38,28 @@ const mockSuggestions: SearchSuggestion[] = [
   { id: '4', type: 'content', title: '10-Minute Morning Meditation', subtitle: 'Video • 2.1k views' },
   { id: '5', type: 'health', title: 'Sleep Quality Tips', subtitle: 'Health Topic' },
 ];
+
+// Find person by query with fuzzy matching
+function findPersonByQuery(query: string): Person | null {
+  const normalizedQuery = query.toLowerCase().trim();
+  
+  // Handle exact query - strip @ if present
+  const handleQuery = normalizedQuery.replace(/^@/, '');
+  const byHandle = peopleIndex.find(p => p.handle === handleQuery);
+  if (byHandle) return byHandle;
+
+  // Exact name match
+  const exactName = peopleIndex.find(p => p.name.toLowerCase() === normalizedQuery);
+  if (exactName) return exactName;
+
+  // Alias or starts with match
+  const fuzzyMatch = peopleIndex.find(p =>
+    (p.aliases ?? []).some(a => a.toLowerCase() === normalizedQuery) ||
+    p.name.toLowerCase().startsWith(normalizedQuery)
+  );
+  
+  return fuzzyMatch ?? null;
+}
 
 interface GlobalSearchProps {
   open: boolean;
@@ -93,17 +131,18 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
 
   const handleSearch = (searchQuery: string = query) => {
     if (searchQuery.trim()) {
-      // Check if it's a person's name from suggestions
-      const personMatch = mockSuggestions.find(
-        s => s.type === 'person' && 
-        s.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      
-      if (personMatch) {
-        navigate(`/profile/${personMatch.id}`);
-      } else {
-        navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      // First try to find as person
+      const person = findPersonByQuery(searchQuery);
+      if (person) {
+        navigate(`/u/${person.handle}`);
+        setQuery('');
+        setShowSuggestions(false);
+        inputRef.current?.blur();
+        return;
       }
+      
+      // Fallback to general search
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
       setQuery('');
       setShowSuggestions(false);
       inputRef.current?.blur();
@@ -112,7 +151,13 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
 
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
     if (suggestion.type === 'person') {
-      navigate(`/profile/${suggestion.id}`);
+      // Find the person's handle for routing
+      const person = peopleIndex.find(p => p.name === suggestion.title);
+      if (person) {
+        navigate(`/u/${person.handle}`);
+      } else {
+        navigate(`/search?q=${encodeURIComponent(suggestion.title)}&type=${suggestion.type}`);
+      }
     } else {
       navigate(`/search?q=${encodeURIComponent(suggestion.title)}&type=${suggestion.type}`);
     }

@@ -27,6 +27,7 @@ import Memory from "./pages/Memory";
 import Admin from "./pages/Admin";
 
 import ProfileEditor from "./routes/ProfileEditor";
+import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 
 // Home sub-pages
 import Context from "./pages/home/Context";
@@ -225,7 +226,8 @@ const App = () => (
           <Route path="/settings/tenant-role" element={<TenantRole />} />
           <Route path="/settings/billing" element={<Billing />} />
           <Route path="/settings/support" element={<Support />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Navigate to="/me/profile" replace />} />
+          <Route path="/profile/:id" element={<LegacyProfileRedirect />} />
           <Route path="/me/profile" element={<ProfileEditor />} />
           <Route path="/search" element={<Search />} />
           <Route path="/u/:handle" element={<UserProfile />} />
