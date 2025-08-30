@@ -10,9 +10,24 @@ import { ProfileServicesTab } from "./tabs/ProfileServicesTab";
 interface ProfileTabsProps {
   profile: UserProfile;
   scope: Scope;
+  editMode?: boolean;
+  onEditAbout?: () => void;
+  onEditServices?: () => void;
+  onEditCompliance?: () => void;
+  onEditShowcase?: () => void;
+  onEditVisibility?: () => void;
 }
 
-export function ProfileTabs({ profile, scope }: ProfileTabsProps) {
+export function ProfileTabs({ 
+  profile, 
+  scope, 
+  editMode,
+  onEditAbout,
+  onEditServices,
+  onEditCompliance,
+  onEditShowcase,
+  onEditVisibility
+}: ProfileTabsProps) {
   // Determine which tabs to show
   const showHealthTab = profile.visibility.healthShareConsent && 
     shouldShowField('public', scope); // Health is public when consented
@@ -37,11 +52,22 @@ export function ProfileTabs({ profile, scope }: ProfileTabsProps) {
           </TabsList>
 
           <TabsContent value="posts">
-            <ProfilePostsTab profile={profile} scope={scope} />
+            <ProfilePostsTab 
+              profile={profile} 
+              scope={scope} 
+              editMode={editMode}
+              onEditAbout={onEditAbout}
+              onEditShowcase={onEditShowcase}
+            />
           </TabsContent>
 
           <TabsContent value="media">
-            <ProfileMediaTab profile={profile} scope={scope} />
+            <ProfileMediaTab 
+              profile={profile} 
+              scope={scope}
+              editMode={editMode}
+              onEditShowcase={onEditShowcase}
+            />
           </TabsContent>
 
           <TabsContent value="groups">
@@ -50,13 +76,24 @@ export function ProfileTabs({ profile, scope }: ProfileTabsProps) {
 
           {showHealthTab && (
             <TabsContent value="health">
-              <ProfileHealthTab profile={profile} scope={scope} />
+              <ProfileHealthTab 
+                profile={profile} 
+                scope={scope}
+                editMode={editMode}
+                onEditVisibility={onEditVisibility}
+              />
             </TabsContent>
           )}
 
           {showServicesTab && (
             <TabsContent value="services">
-              <ProfileServicesTab profile={profile} scope={scope} />
+              <ProfileServicesTab 
+                profile={profile} 
+                scope={scope}
+                editMode={editMode}
+                onEditServices={onEditServices}
+                onEditCompliance={onEditCompliance}
+              />
             </TabsContent>
           )}
         </Tabs>

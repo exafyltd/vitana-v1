@@ -7,9 +7,12 @@ import { Scope } from "@/lib/profileScope";
 interface ProfilePostsTabProps {
   profile: UserProfile;
   scope: Scope;
+  editMode?: boolean;
+  onEditAbout?: () => void;
+  onEditShowcase?: () => void;
 }
 
-export function ProfilePostsTab({ profile }: ProfilePostsTabProps) {
+export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onEditShowcase }: ProfilePostsTabProps) {
   // Mock posts data - replace with real data
   const mockPosts = [
     {

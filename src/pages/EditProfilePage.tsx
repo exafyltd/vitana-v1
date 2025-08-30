@@ -6,6 +6,11 @@ import { UserProfile, ViewAsMode } from "@/types/profile";
 import { ProfileLayout } from "@/components/profile/shared/ProfileLayout";
 import { EditToolbar } from "@/components/profile/EditToolbar";
 import { IdentityDrawer } from "@/components/profile/drawers/IdentityDrawer";
+import { AboutDrawer } from "@/components/profile/drawers/AboutDrawer";
+import { ServicesDrawer } from "@/components/profile/drawers/ServicesDrawer";
+import { ComplianceDrawer } from "@/components/profile/drawers/ComplianceDrawer";
+import { ShowcaseDrawer } from "@/components/profile/drawers/ShowcaseDrawer";
+import { VisibilityDrawer } from "@/components/profile/drawers/VisibilityDrawer";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 
@@ -15,6 +20,11 @@ export default function EditProfilePage() {
   const [viewAs, setViewAs] = useState<ViewAsMode>("me");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [identityDrawerOpen, setIdentityDrawerOpen] = useState(false);
+  const [aboutDrawerOpen, setAboutDrawerOpen] = useState(false);
+  const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);
+  const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
+  const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
+  const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
 
   // Mock profile data based on context - replace with real data
   const [profile] = useState<UserProfile>({
@@ -76,6 +86,26 @@ export default function EditProfilePage() {
     setIdentityDrawerOpen(true);
   };
 
+  const handleEditAbout = () => {
+    setAboutDrawerOpen(true);
+  };
+
+  const handleEditServices = () => {
+    setServicesDrawerOpen(true);
+  };
+
+  const handleEditCompliance = () => {
+    setComplianceDrawerOpen(true);
+  };
+
+  const handleEditShowcase = () => {
+    setShowcaseDrawerOpen(true);
+  };
+
+  const handleEditVisibility = () => {
+    setVisibilityDrawerOpen(true);
+  };
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -121,11 +151,41 @@ export default function EditProfilePage() {
         scope={scope}
         editMode={true}
         onEditIdentity={handleEditIdentity}
+        onEditAbout={handleEditAbout}
+        onEditServices={handleEditServices}
+        onEditCompliance={handleEditCompliance}
+        onEditShowcase={handleEditShowcase}
+        onEditVisibility={handleEditVisibility}
       />
 
       <IdentityDrawer
         open={identityDrawerOpen}
         onOpenChange={setIdentityDrawerOpen}
+      />
+
+      <AboutDrawer
+        open={aboutDrawerOpen}
+        onOpenChange={setAboutDrawerOpen}
+      />
+
+      <ServicesDrawer
+        open={servicesDrawerOpen}
+        onOpenChange={setServicesDrawerOpen}
+      />
+
+      <ComplianceDrawer
+        open={complianceDrawerOpen}
+        onOpenChange={setComplianceDrawerOpen}
+      />
+
+      <ShowcaseDrawer
+        open={showcaseDrawerOpen}
+        onOpenChange={setShowcaseDrawerOpen}
+      />
+
+      <VisibilityDrawer
+        open={visibilityDrawerOpen}
+        onOpenChange={setVisibilityDrawerOpen}
       />
     </AppLayout>
   );

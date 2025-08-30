@@ -7,9 +7,11 @@ import { Scope } from "@/lib/profileScope";
 interface ProfileMediaTabProps {
   profile: UserProfile;
   scope: Scope;
+  editMode?: boolean;
+  onEditShowcase?: () => void;
 }
 
-export function ProfileMediaTab({ profile }: ProfileMediaTabProps) {
+export function ProfileMediaTab({ profile, scope, editMode, onEditShowcase }: ProfileMediaTabProps) {
   // Mock media content - replace with real data
   const mockMedia = [
     {

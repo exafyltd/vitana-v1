@@ -8,9 +8,11 @@ import { Scope } from "@/lib/profileScope";
 interface ProfileHealthTabProps {
   profile: UserProfile;
   scope: Scope;
+  editMode?: boolean;
+  onEditVisibility?: () => void;
 }
 
-export function ProfileHealthTab({ profile }: ProfileHealthTabProps) {
+export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }: ProfileHealthTabProps) {
   // Mock health data - replace with real data
   const healthMetrics = [
     { 

@@ -8,9 +8,12 @@ import { Scope } from "@/lib/profileScope";
 interface ProfileServicesTabProps {
   profile: UserProfile;
   scope: Scope;
+  editMode?: boolean;
+  onEditServices?: () => void;
+  onEditCompliance?: () => void;
 }
 
-export function ProfileServicesTab({ profile }: ProfileServicesTabProps) {
+export function ProfileServicesTab({ profile, scope, editMode, onEditServices, onEditCompliance }: ProfileServicesTabProps) {
   const publishedOfferings = profile.offerings?.filter(offering => offering.status === 'published') || [];
 
   const formatPrice = (priceCents?: number, currency = 'USD') => {

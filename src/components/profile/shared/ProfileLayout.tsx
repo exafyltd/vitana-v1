@@ -11,9 +11,24 @@ interface ProfileLayoutProps {
   scope: Scope;
   editMode?: boolean;
   onEditIdentity?: () => void;
+  onEditAbout?: () => void;
+  onEditServices?: () => void;
+  onEditCompliance?: () => void;
+  onEditShowcase?: () => void;
+  onEditVisibility?: () => void;
 }
 
-export function ProfileLayout({ profile, scope, editMode, onEditIdentity }: ProfileLayoutProps) {
+export function ProfileLayout({ 
+  profile, 
+  scope, 
+  editMode, 
+  onEditIdentity,
+  onEditAbout,
+  onEditServices,
+  onEditCompliance,
+  onEditShowcase,
+  onEditVisibility
+}: ProfileLayoutProps) {
   // Mock achievements data - replace with real data from profile
   const mockAchievements = ['Mindfulness Master', 'Community Helper', 'Wellness Warrior'];
   const mockEngagementBadges = ['Posted 20+ videos', 'Joined 5+ groups', 'Daily meditation streak'];
@@ -41,7 +56,16 @@ export function ProfileLayout({ profile, scope, editMode, onEditIdentity }: Prof
             engagementBadges={mockEngagementBadges}
           />
           
-          <ProfileTabs profile={profile} scope={scope} />
+          <ProfileTabs 
+            profile={profile} 
+            scope={scope} 
+            editMode={editMode}
+            onEditAbout={onEditAbout}
+            onEditServices={onEditServices}
+            onEditCompliance={onEditCompliance}
+            onEditShowcase={onEditShowcase}
+            onEditVisibility={onEditVisibility}
+          />
         </div>
       </div>
     </div>
