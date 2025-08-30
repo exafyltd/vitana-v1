@@ -1,4 +1,4 @@
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from "@/components/ui/drawer";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { IdentityForm } from "../editor/IdentityForm";
 
@@ -9,18 +9,16 @@ interface IdentityDrawerProps {
 
 export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="max-h-[90vh]">
-        <DrawerHeader>
-          <DrawerTitle>Edit Identity</DrawerTitle>
-        </DrawerHeader>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Edit Identity</DialogTitle>
+        </DialogHeader>
         
-        <div className="px-6 pb-6 overflow-y-auto flex-1">
+        <div className="space-y-6">
           <IdentityForm />
-        </div>
-        
-        <DrawerFooter>
-          <div className="flex gap-2">
+          
+          <div className="flex gap-3 pt-4">
             <Button 
               variant="outline" 
               className="flex-1"
@@ -32,8 +30,8 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
               Save Changes
             </Button>
           </div>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

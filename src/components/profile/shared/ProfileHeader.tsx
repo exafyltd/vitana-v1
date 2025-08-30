@@ -40,55 +40,75 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
       </div>
 
       {/* Profile Info */}
-      <div className="px-6 pb-6">
-        {/* Avatar */}
-        <div className="relative -mt-16 mb-4">
-          <Avatar className="h-32 w-32 border-4 border-background shadow-2xl">
-            <AvatarImage src={profile.avatarUrl} alt={profile.name} />
-            <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
-              {profile.name.split(' ').map(n => n[0]).join('')}
-            </AvatarFallback>
-          </Avatar>
-          {editMode && onEdit && (
-            <Button
-              size="sm"
-              variant="outline"
-              className="absolute bottom-2 right-2 h-8 w-8 rounded-full p-0 bg-background shadow-lg"
-              onClick={onEdit}
+      <div className="px-6 pb-6 relative">
+        {/* Vitana Index - Upper Right */}
+        {profile.vitanaIndex && (
+          <div className="absolute top-4 right-6">
+            <Button 
+              variant="outline" 
+              className="gap-2 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20"
             >
-              <Edit3 className="h-3 w-3" />
+              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                <span className="text-xs font-bold text-white">{Math.round(profile.vitanaIndex / 100)}</span>
+              </div>
+              Vitana Index: {profile.vitanaIndex}
+              {profile.vitanaPercentile && (
+                <Badge variant="secondary" className="ml-1">
+                  Top {100 - profile.vitanaPercentile}%
+                </Badge>
+              )}
             </Button>
-          )}
+          </div>
+        )}
+
+        {/* Avatar - Centered */}
+        <div className="flex justify-center -mt-16 mb-4">
+          <div className="relative">
+            <Avatar className="h-32 w-32 border-4 border-background shadow-2xl">
+              <AvatarImage src={profile.avatarUrl} alt={profile.name} />
+              <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+                {profile.name.split(' ').map(n => n[0]).join('')}
+              </AvatarFallback>
+            </Avatar>
+            {editMode && onEdit && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="absolute bottom-2 right-2 h-8 w-8 rounded-full p-0 bg-background shadow-lg"
+                onClick={onEdit}
+              >
+                <Edit3 className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
         </div>
 
-        {/* Name, Handle, and Actions */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold text-foreground">{profile.name}</h1>
-              {profile.roles.includes('professional') && (
-                <Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />
-              )}
-            </div>
-            <p className="text-lg text-muted-foreground">@{profile.handle}</p>
-            
-            {/* Role Badges */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {profile.roles.map((role) => (
-                <Badge key={role} variant="secondary" className="capitalize">
-                  {role}
-                </Badge>
-              ))}
-              {profile.membershipTier && (
-                <Badge variant="outline" className="capitalize text-primary">
-                  {profile.membershipTier}
-                </Badge>
-              )}
-            </div>
+        {/* Name, Handle, and Actions - Centered */}
+        <div className="text-center mb-4">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <h1 className="text-3xl font-bold text-foreground">{profile.name}</h1>
+            {profile.roles.includes('professional') && (
+              <Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />
+            )}
+          </div>
+          <p className="text-lg text-muted-foreground mb-3">@{profile.handle}</p>
+          
+          {/* Role Badges */}
+          <div className="flex items-center justify-center gap-2 flex-wrap mb-4">
+            {profile.roles.map((role) => (
+              <Badge key={role} variant="secondary" className="capitalize">
+                {role}
+              </Badge>
+            ))}
+            {profile.membershipTier && (
+              <Badge variant="outline" className="capitalize text-primary">
+                {profile.membershipTier}
+              </Badge>
+            )}
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          {/* Action Buttons - Centered */}
+          <div className="flex items-center justify-center gap-2">
             {!isOwner && (
               <>
                 <Button className="rounded-full">
@@ -112,26 +132,6 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
             )}
           </div>
         </div>
-
-        {/* Vitana Index */}
-        {profile.vitanaIndex && (
-          <div className="mb-4">
-            <Button 
-              variant="outline" 
-              className="gap-2 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20"
-            >
-              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <span className="text-xs font-bold text-white">{Math.round(profile.vitanaIndex / 100)}</span>
-              </div>
-              Vitana Index: {profile.vitanaIndex}
-              {profile.vitanaPercentile && (
-                <Badge variant="secondary" className="ml-1">
-                  Top {100 - profile.vitanaPercentile}%
-                </Badge>
-              )}
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );
