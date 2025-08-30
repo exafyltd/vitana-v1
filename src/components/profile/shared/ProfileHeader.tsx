@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { UserPlus, MessageSquare, Share, Star, Edit3 } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
+import { AutopilotSuggestions } from "../AutopilotSuggestions";
 
 interface ProfileHeaderProps {
   profile: UserProfile;
@@ -86,6 +87,13 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
 
       {/* Profile Info */}
       <div className="px-6 pb-6 relative">
+        {/* Autopilot Banner in Edit Mode */}
+        {editMode && (
+          <div className="mb-6">
+            <AutopilotSuggestions type="banner" />
+          </div>
+        )}
+
         {/* Avatar - Centered */}
         <div className="flex justify-center -mt-16 mb-4">
           <div className="relative">

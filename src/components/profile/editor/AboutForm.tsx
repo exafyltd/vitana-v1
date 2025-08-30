@@ -8,6 +8,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X, Globe, Users, Lock } from "lucide-react";
 import { Visibility } from "@/types/profile";
+import { AutopilotSuggestions } from "../AutopilotSuggestions";
+import { toast } from "sonner";
 
 interface LinkItem {
   id: string;
@@ -113,13 +115,33 @@ export function AboutForm() {
           id="bio"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
-          placeholder="Tell people about yourself..."
+          placeholder="Share your wellness journey, passions, and what makes you unique... 
+
+Examples:
+• 'Wellness enthusiast passionate about mindful living and community building 🌱'
+• 'Certified nutritionist helping others discover their healthiest selves'
+• 'Marathon runner, meditation teacher, and advocate for balanced living'"
           rows={4}
           maxLength={500}
         />
-        <p className="text-xs text-muted-foreground">
-          {bio.length}/500 characters
-        </p>
+        <div className="flex justify-between items-center">
+          <p className="text-xs text-muted-foreground">
+            {bio.length}/500 characters • {Math.ceil(bio.split(' ').length)} words
+          </p>
+          {bio.length > 250 && (
+            <Badge variant="outline" className="text-xs">
+              {bio.length > 400 ? 'Almost full' : 'Good length'}
+            </Badge>
+          )}
+        </div>
+        
+        <AutopilotSuggestions 
+          type="bio" 
+          onSuggestionClick={(suggestion) => {
+            toast.success(`Autopilot suggestion: ${suggestion}`);
+            // TODO: Implement actual AI suggestions
+          }} 
+        />
       </div>
 
       {/* Location */}
@@ -156,7 +178,7 @@ export function AboutForm() {
           id="location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          placeholder="City, Country"
+          placeholder="e.g., San Francisco, CA • London, UK • Remote"
         />
       </div>
 
@@ -175,7 +197,7 @@ export function AboutForm() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <Input
-                  placeholder="Label (e.g., Website)"
+                  placeholder="Label (e.g., Website, Instagram, LinkedIn, Portfolio)"
                   value={link.label}
                   onChange={(e) => updateLink(link.id, "label", e.target.value)}
                   className="flex-1 mr-2"
@@ -185,7 +207,7 @@ export function AboutForm() {
                 </Button>
               </div>
               <Input
-                placeholder="https://..."
+                placeholder="https://your-website.com or @username"
                 value={link.url}
                 onChange={(e) => updateLink(link.id, "url", e.target.value)}
               />

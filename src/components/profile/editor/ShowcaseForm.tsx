@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share, Star, X } from "lucide-react";
+import { AutopilotSuggestions } from "../AutopilotSuggestions";
+import { toast } from "sonner";
 
 interface FeaturedPost {
   id: string;
@@ -74,9 +76,17 @@ export function ShowcaseForm() {
         <h3 className="text-lg font-medium mb-4">Showcase</h3>
         <p className="text-sm text-muted-foreground mb-6">
           Choose your best posts and media to feature at the top of your profile. 
-          Featured content appears in a highlights section.
+          Featured content appears in a highlights section and attracts more followers.
         </p>
       </div>
+
+      <AutopilotSuggestions 
+        type="showcase" 
+        onSuggestionClick={(suggestion) => {
+          toast.success(`Autopilot analyzing your content for ${suggestion}...`);
+          // TODO: Implement actual AI content suggestions
+        }} 
+      />
 
       <Card className="p-4">
         <div className="flex items-center justify-between mb-4">

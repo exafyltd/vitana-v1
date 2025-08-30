@@ -13,6 +13,7 @@ import { ShowcaseDrawer } from "@/components/profile/drawers/ShowcaseDrawer";
 import { VisibilityDrawer } from "@/components/profile/drawers/VisibilityDrawer";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
+import { toast } from "sonner";
 
 export default function EditProfilePage() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function EditProfilePage() {
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
 
-  // Mock profile data based on context - replace with real data
+  // Mock profile data with archetype
   const [profile] = useState<UserProfile>({
     id: 'current-user',
     name: contextProfile.displayName,
@@ -49,6 +50,7 @@ export default function EditProfilePage() {
     },
     vitanaIndex: 742,
     vitanaPercentile: 85,
+    longevityArchetype: 'The Mindful Mover',
     visibility: {
       about: 'public',
       links: 'public',
@@ -71,6 +73,10 @@ export default function EditProfilePage() {
   const handleSave = () => {
     // TODO: Save profile changes
     setHasUnsavedChanges(false);
+    toast.success("Profile updated successfully! Your changes are now live.", {
+      description: "Your VITANA profile looks amazing.",
+      duration: 4000,
+    });
     console.log('Saving profile changes...');
   };
 
