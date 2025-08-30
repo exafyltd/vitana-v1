@@ -5,23 +5,14 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import { settingsNavigation } from "@/config/navigation";
 import { Shield, Eye, Users, Lock, Smartphone, History } from "lucide-react";
-
-const settingsSubItems = [
-  { id: "overview", name: "Overview", path: "/settings" },
-  { id: "privacy", name: "Privacy", path: "/settings/privacy" },
-  { id: "notifications", name: "Notifications", path: "/settings/notifications" },
-  { id: "preferences", name: "Preferences", path: "/settings/preferences" },
-  { id: "connected-apps", name: "Connected Apps", path: "/settings/connected-apps" },
-  { id: "billing", name: "Billing", path: "/settings/billing" },
-  { id: "support", name: "Support", path: "/settings/support" },
-];
 
 export default function Privacy() {
   return (
     <AppLayout>
       <SEO title="Privacy | Settings" description="Manage your privacy settings and data control" canonical={window.location.href} />
-      <SubNavigation items={settingsSubItems} />
+      <SubNavigation items={settingsNavigation} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
         <StandardHeader 
           title="Your data, your control!"

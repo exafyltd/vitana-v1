@@ -5,23 +5,14 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { settingsNavigation } from "@/config/navigation";
 import { Smartphone, Heart, Activity, Watch, Plus, CheckCircle, AlertCircle } from "lucide-react";
-
-const settingsSubItems = [
-  { id: "overview", name: "Overview", path: "/settings" },
-  { id: "privacy", name: "Privacy", path: "/settings/privacy" },
-  { id: "notifications", name: "Notifications", path: "/settings/notifications" },
-  { id: "preferences", name: "Preferences", path: "/settings/preferences" },
-  { id: "connected-apps", name: "Connected Apps", path: "/settings/connected-apps" },
-  { id: "billing", name: "Billing", path: "/settings/billing" },
-  { id: "support", name: "Support", path: "/settings/support" },
-];
 
 export default function ConnectedApps() {
   return (
     <AppLayout>
       <SEO title="Connected Apps | Settings" description="Manage your connected apps and integrations" canonical={window.location.href} />
-      <SubNavigation items={settingsSubItems} />
+      <SubNavigation items={settingsNavigation} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
         <StandardHeader 
           title="Seamless integration, maximum benefit!"
