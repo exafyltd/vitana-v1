@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Zap, TrendingUp, Star } from "lucide-react";
+import { AutopilotProfilePopup } from "./AutopilotProfilePopup";
 
 interface AutopilotSuggestionsProps {
   type: 'banner' | 'bio' | 'showcase' | 'archetype' | 'profile-section';
@@ -9,6 +11,7 @@ interface AutopilotSuggestionsProps {
 }
 
 export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSuggestionsProps) {
+  const [showPopup, setShowPopup] = useState(false);
   if (type === 'banner') {
     return (
       <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 p-4 mb-6">
@@ -144,12 +147,16 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             </div>
           </div>
           <Button 
-            onClick={() => onSuggestionClick?.('try-autopilot')}
+            onClick={() => setShowPopup(true)}
             className="ml-4 flex-shrink-0"
           >
             Try Autopilot
           </Button>
         </div>
+        <AutopilotProfilePopup 
+          open={showPopup} 
+          onOpenChange={setShowPopup} 
+        />
       </Card>
     );
   }
