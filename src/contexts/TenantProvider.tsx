@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useSession } from "./SupabaseSession";
+import { useSession } from "./SessionProvider";
 import { supabase } from "@/integrations/supabase/client";
 
 interface TenantData {
