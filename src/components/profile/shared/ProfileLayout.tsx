@@ -35,11 +35,6 @@ export function ProfileLayout({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-      <PageHeader
-        title={editMode ? "Edit Profile" : profile.name}
-        description={editMode ? "Customize your public presence" : profile.bio || ""}
-      />
-      
       <div className="px-6 space-y-8">
         <div className="max-w-6xl mx-auto">
           <ProfileHeader 

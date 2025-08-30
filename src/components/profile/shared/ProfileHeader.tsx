@@ -41,23 +41,32 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
 
       {/* Profile Info */}
       <div className="px-6 pb-6 relative">
-        {/* Vitana Index - Upper Right */}
+        {/* VITANA Index Badge - Upper Right */}
         {profile.vitanaIndex && (
-          <div className="absolute top-4 right-6">
-            <Button 
-              variant="outline" 
-              className="gap-2 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20"
-            >
-              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <span className="text-xs font-bold text-white">{Math.round(profile.vitanaIndex / 100)}</span>
+          <div className="absolute -top-6 right-6">
+            <div className="flex flex-col items-center">
+              <div className="relative">
+                {/* Circular badge with glow effect */}
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary via-primary to-accent shadow-2xl shadow-primary/50 flex flex-col items-center justify-center border-4 border-background relative overflow-hidden">
+                  {/* Shine effect */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/30 to-transparent transform rotate-45"></div>
+                  
+                  {/* Score */}
+                  <div className="text-xl font-bold text-white z-10">{profile.vitanaIndex}</div>
+                  
+                  {/* Ring indicator */}
+                  <div className="absolute inset-1 rounded-full border-2 border-white/30"></div>
+                </div>
               </div>
-              Vitana Index: {profile.vitanaIndex}
-              {profile.vitanaPercentile && (
-                <Badge variant="secondary" className="ml-1">
-                  Top {100 - profile.vitanaPercentile}%
-                </Badge>
-              )}
-            </Button>
+              
+              {/* Label and percentile */}
+              <div className="mt-2 text-center">
+                <div className="text-xs font-semibold text-foreground">VITANA Index</div>
+                {profile.vitanaPercentile && (
+                  <div className="text-xs text-muted-foreground">Top {100 - profile.vitanaPercentile}%</div>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
