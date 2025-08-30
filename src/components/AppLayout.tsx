@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Zap } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Zap, ChevronLeft, ChevronRight } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
@@ -89,57 +89,10 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
   return (
     <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
       <SidebarHeader className="border-b border-sidebar-border rounded-tr-2xl">
-        <div className="px-2 py-1 text-lg font-bold tracking-wide flex items-center justify-between">
+        <div className="px-2 py-1 text-lg font-bold tracking-wide flex items-center justify-center">
           <Link to="/" className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors">
             {open ? "VITANA" : "V"}
           </Link>
-          <div className="flex items-center gap-2">
-            {/* Autopilot Badge Counter */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="relative h-8 w-8 rounded-lg hover:bg-sidebar-accent transition-colors"
-                  title={`${pendingCount} Autopilot suggestions`}
-                >
-                  <Zap className="h-4 w-4 text-calendar-primary" />
-                  {pendingCount > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs flex items-center justify-center min-w-[20px] rounded-full"
-                    >
-                      {pendingCount > 9 ? '9+' : pendingCount}
-                    </Badge>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 p-4" align="end">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-calendar-primary" />
-                    <h3 className="font-medium">Autopilot Preview</h3>
-                  </div>
-                  <div className="space-y-2">
-                    {getLatestActions(2).map((action) => (
-                      <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
-                        <div className="font-medium">{action.title}</div>
-                        <div className="text-xs text-muted-foreground">{action.reason}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <Button 
-                    onClick={() => setAutopilotPopupOpen(true)} 
-                    className="w-full" 
-                    size="sm"
-                  >
-                    View All ({pendingCount})
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-            <SidebarTrigger className="rounded-lg hover:bg-sidebar-accent" />
-          </div>
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
@@ -151,44 +104,97 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
-                {visibleSidebarCategories.map((cat) => {
-                  const isActive = isActivePath(cat.path);
-                  return (
-                    <SidebarMenuItem key={cat.title}>
-                      <SidebarMenuButton asChild>
-                        <Link 
-                          to={cat.path} 
-                          className={`relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group ${
-                            isActive 
-                              ? "bg-primary/15 text-primary shadow-sm border border-primary/20" 
-                              : "hover:bg-sidebar-accent/50 text-sidebar-foreground hover:text-foreground"
-                          }`}
-                        >
-                          {/* Active indicator bar */}
-                          {isActive && (
-                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
-                          )}
-                          <cat.icon className={`h-4 w-4 transition-colors ${
-                            isActive ? "text-primary" : "text-sidebar-foreground/70 group-hover:text-foreground"
-                          }`} />
-                          {open && (
-                            <span className={`font-medium transition-colors ${
-                              isActive ? "text-primary" : "text-sidebar-foreground group-hover:text-foreground"
-                            }`}>
-                              {cat.title}
-                            </span>
-                          )}
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
+                 {/* Autopilot Button */}
+                 <SidebarMenuItem>
+                   <SidebarMenuButton asChild>
+                     <Popover>
+                       <PopoverTrigger asChild>
+                         <button 
+                           className="relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group hover:bg-primary/10 text-sidebar-foreground hover:text-primary w-full"
+                         >
+                           <div className="relative">
+                             <Zap className="h-4 w-4 text-primary transition-all group-hover:text-primary group-hover:drop-shadow-sm" />
+                             {pendingCount > 0 && (
+                               <Badge 
+                                 variant="destructive" 
+                                 className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs flex items-center justify-center min-w-[16px] rounded-full text-[10px]"
+                               >
+                                 {pendingCount > 9 ? '9+' : pendingCount}
+                               </Badge>
+                             )}
+                           </div>
+                           {open && (
+                             <span className="font-medium transition-colors group-hover:text-primary">
+                               Autopilot
+                             </span>
+                           )}
+                         </button>
+                       </PopoverTrigger>
+                       <PopoverContent className="w-80 p-4" align="start" side="right">
+                         <div className="space-y-3">
+                           <div className="flex items-center gap-2">
+                             <Zap className="h-4 w-4 text-primary" />
+                             <h3 className="font-medium">Autopilot Preview</h3>
+                           </div>
+                           <div className="space-y-2">
+                             {getLatestActions(2).map((action) => (
+                               <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
+                                 <div className="font-medium">{action.title}</div>
+                                 <div className="text-xs text-muted-foreground">{action.reason}</div>
+                               </div>
+                             ))}
+                           </div>
+                           <Button 
+                             onClick={() => setAutopilotPopupOpen(true)} 
+                             className="w-full" 
+                             size="sm"
+                           >
+                             View All ({pendingCount})
+                           </Button>
+                         </div>
+                       </PopoverContent>
+                     </Popover>
+                   </SidebarMenuButton>
+                 </SidebarMenuItem>
+
+                 {visibleSidebarCategories.map((cat) => {
+                   const isActive = isActivePath(cat.path);
+                   return (
+                     <SidebarMenuItem key={cat.title}>
+                       <SidebarMenuButton asChild>
+                         <Link 
+                           to={cat.path} 
+                           className={`relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group ${
+                             isActive 
+                               ? "bg-primary/15 text-primary shadow-sm border border-primary/20" 
+                               : "hover:bg-sidebar-accent/50 text-sidebar-foreground hover:text-foreground"
+                           }`}
+                         >
+                           {/* Active indicator bar */}
+                           {isActive && (
+                             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
+                           )}
+                           <cat.icon className={`h-4 w-4 transition-colors ${
+                             isActive ? "text-primary" : "text-sidebar-foreground/70 group-hover:text-foreground"
+                           }`} />
+                           {open && (
+                             <span className={`font-medium transition-colors ${
+                               isActive ? "text-primary" : "text-sidebar-foreground group-hover:text-foreground"
+                             }`}>
+                               {cat.title}
+                             </span>
+                           )}
+                         </Link>
+                       </SidebarMenuButton>
+                     </SidebarMenuItem>
+                   );
+                 })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         </div>
       </SidebarContent>
-      <SidebarFooter className="sticky bottom-24 bg-sidebar border-t rounded-tr-2xl">
+      <SidebarFooter className="sticky bottom-0 bg-sidebar border-t rounded-tr-2xl">
         <div className="px-2 py-3 space-y-3">
           {open ? (
             <Button 
@@ -243,6 +249,23 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               }
             />
           )}
+
+          {/* Collapse/Expand Control */}
+          <div className="flex justify-center pt-2 border-t border-sidebar-border/50">
+            <SidebarTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full hover:bg-sidebar-accent/70 transition-all hover:shadow-sm group"
+              >
+                {open ? (
+                  <ChevronLeft className="h-4 w-4 text-sidebar-foreground/70 group-hover:text-foreground transition-colors" />
+                ) : (
+                  <ChevronRight className="h-4 w-4 text-sidebar-foreground/70 group-hover:text-foreground transition-colors" />
+                )}
+              </Button>
+            </SidebarTrigger>
+          </div>
         </div>
       </SidebarFooter>
     </Sidebar>
