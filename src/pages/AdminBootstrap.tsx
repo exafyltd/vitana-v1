@@ -49,6 +49,19 @@ const AdminBootstrap = () => {
       // Wait a bit for the user to be created
       await new Promise(resolve => setTimeout(resolve, 2000));
 
+      // Now bootstrap the user as admin using the edge function
+      const { error: bootstrapError } = await supabase.functions.invoke('bootstrap-exafy-admin', {
+        body: { 
+          userId: authData.user.id,
+          email: authData.user.email 
+        }
+      });
+
+      if (bootstrapError) {
+        console.error('Bootstrap function error:', bootstrapError);
+        // Continue anyway as the user was created successfully
+      }
+
       setSuccess(`Admin account created successfully! Please check your email at ${email} to confirm your account, then sign in to access the admin dashboard.`);
       
       // Redirect to sign in after a delay

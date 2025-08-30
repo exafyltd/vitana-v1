@@ -80,8 +80,8 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <Button asChild className="w-full bg-purple-600 hover:bg-purple-700">
-                    <Link to="/auth-workspace?action=join">
-                      Access Maxina
+                    <Link to="/auth-workspace?tenant=maxina&action=join">
+                      Request Access
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -101,8 +101,8 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <Button asChild variant="outline" className="w-full border-green-200 text-green-600 hover:bg-green-50">
-                    <Link to="/auth-workspace?action=join">
-                      Access Alkalma
+                    <Link to="/auth-workspace?tenant=alkalma&action=join">
+                      Request Access
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -122,8 +122,8 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <Button asChild variant="outline" className="w-full border-blue-200 text-blue-600 hover:bg-blue-50">
-                    <Link to="/auth-workspace?action=join">
-                      Access Earthlings
+                    <Link to="/auth-workspace?tenant=earthlings&action=join">
+                      Request Access
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
