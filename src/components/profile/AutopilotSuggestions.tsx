@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Sparkles, Zap, TrendingUp, Star } from "lucide-react";
 
 interface AutopilotSuggestionsProps {
-  type: 'banner' | 'bio' | 'showcase' | 'archetype';
+  type: 'banner' | 'bio' | 'showcase' | 'archetype' | 'profile-section';
   onSuggestionClick?: (suggestion: string) => void;
 }
 
@@ -120,6 +120,36 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
           <Sparkles className="h-3 w-3 mr-1" />
           Update Archetype
         </Button>
+      </Card>
+    );
+  }
+
+  if (type === 'profile-section') {
+    return (
+      <Card className="bg-gradient-to-r from-slate-50/50 to-blue-50/30 border border-slate-200/50 shadow-sm p-6 mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                <Zap className="h-6 w-6 text-primary" />
+              </div>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-medium text-foreground mb-1">
+                Autopilot can polish your profile ✨
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Get AI-powered suggestions for your bio, archetype, and showcase.
+              </p>
+            </div>
+          </div>
+          <Button 
+            onClick={() => onSuggestionClick?.('try-autopilot')}
+            className="ml-4 flex-shrink-0"
+          >
+            Try Autopilot
+          </Button>
+        </div>
       </Card>
     );
   }

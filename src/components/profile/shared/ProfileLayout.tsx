@@ -5,6 +5,7 @@ import { ProfileStats } from "./ProfileStats";
 import { ProfileAchievementsStrip } from "./ProfileAchievementsStrip";
 import { ProfileTabs } from "./ProfileTabs";
 import PageHeader from "@/components/PageHeader";
+import { AutopilotSuggestions } from "../AutopilotSuggestions";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -51,7 +52,16 @@ export function ProfileLayout({
             engagementBadges={mockEngagementBadges}
           />
           
-          <ProfileTabs 
+          {editMode && (
+            <AutopilotSuggestions 
+              type="profile-section"
+              onSuggestionClick={(suggestion) => {
+                console.log('Autopilot suggestion clicked:', suggestion);
+              }}
+            />
+          )}
+          
+          <ProfileTabs
             profile={profile} 
             scope={scope} 
             editMode={editMode}
