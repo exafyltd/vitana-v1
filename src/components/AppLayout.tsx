@@ -97,20 +97,24 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <div className={`bg-[#2A2A2A] rounded-lg p-1.5 flex items-center transition-all duration-200 max-w-full ${
             open ? 'gap-2 flex-row' : 'flex-col gap-1 w-12'
           }`}>
-            {/* Autopilot Badge Counter */}
+            {/* Unified Autopilot Button */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button 
                   variant="ghost" 
-                  size="icon" 
-                  className={`relative shrink-0 transition-all duration-200 hover:bg-white/10 ${
-                    open ? 'h-8 w-8 rounded-lg' : 'h-8 w-8 rounded-full'
+                  className={`relative shrink-0 transition-all duration-200 hover:bg-white/10 flex items-center gap-2 ${
+                    open ? 'h-8 px-3 rounded-lg justify-start' : 'h-8 w-8 rounded-full justify-center'
                   }`}
                   title={`${pendingCount} Autopilot suggestions`}
                 >
                   <Zap className={`text-calendar-primary drop-shadow-sm transition-all duration-200 ${
                     open ? 'h-4 w-4' : 'h-4 w-4'
                   }`} style={{ filter: 'drop-shadow(0 0 4px rgb(168 85 247 / 0.6))' }} />
+                  {open && (
+                    <span className="text-sm font-medium text-sidebar-foreground/90 transition-opacity duration-200 truncate">
+                      Autopilot
+                    </span>
+                  )}
                   {pendingCount > 0 && (
                     <Badge 
                       variant="destructive" 
@@ -147,13 +151,6 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
                 </div>
               </PopoverContent>
             </Popover>
-            
-            {/* Autopilot Label (expanded only) */}
-            {open && (
-              <span className="text-sm font-medium text-sidebar-foreground/90 transition-opacity duration-200 truncate">
-                Autopilot
-              </span>
-            )}
             
             {/* Sidebar Toggle Chevron */}
             <SidebarTrigger className={`shrink-0 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-white/10 transition-all duration-200 ${
