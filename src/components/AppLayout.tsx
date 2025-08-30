@@ -252,18 +252,12 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
 
           {/* Collapse/Expand Control */}
           <div className="flex justify-center pt-2 border-t border-sidebar-border/50">
-            <SidebarTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 rounded-full hover:bg-sidebar-accent/70 transition-all hover:shadow-sm group"
-              >
-                {open ? (
-                  <ChevronLeft className="h-4 w-4 text-sidebar-foreground/70 group-hover:text-foreground transition-colors" />
-                ) : (
-                  <ChevronRight className="h-4 w-4 text-sidebar-foreground/70 group-hover:text-foreground transition-colors" />
-                )}
-              </Button>
+            <SidebarTrigger className="h-8 w-8 rounded-full hover:bg-sidebar-accent/70 transition-all hover:shadow-sm group">
+              {open ? (
+                <ChevronLeft className="h-4 w-4 text-sidebar-foreground/70 group-hover:text-foreground transition-colors" />
+              ) : (
+                <ChevronRight className="h-4 w-4 text-sidebar-foreground/70 group-hover:text-foreground transition-colors" />
+              )}
             </SidebarTrigger>
           </div>
         </div>
