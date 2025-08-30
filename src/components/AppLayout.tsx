@@ -106,55 +106,53 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               <SidebarMenu className="space-y-1">
                  {/* Autopilot Button */}
                  <SidebarMenuItem>
-                   <SidebarMenuButton asChild>
-                     <Popover>
-                       <PopoverTrigger asChild>
-                         <button 
-                           className="relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group hover:bg-primary/10 text-sidebar-foreground hover:text-primary w-full"
-                         >
-                           <div className="relative">
-                             <Zap className="h-4 w-4 text-primary transition-all group-hover:text-primary group-hover:drop-shadow-sm" />
-                             {pendingCount > 0 && (
-                               <Badge 
-                                 variant="destructive" 
-                                 className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs flex items-center justify-center min-w-[16px] rounded-full text-[10px]"
-                               >
-                                 {pendingCount > 9 ? '9+' : pendingCount}
-                               </Badge>
-                             )}
-                           </div>
-                           {open && (
-                             <span className="font-medium transition-colors group-hover:text-primary">
-                               Autopilot
-                             </span>
+                   <Popover>
+                     <PopoverTrigger asChild>
+                       <SidebarMenuButton 
+                         className="relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group hover:bg-primary/10 text-sidebar-foreground hover:text-primary"
+                       >
+                         <div className="relative">
+                           <Zap className="h-4 w-4 text-primary transition-all group-hover:text-primary group-hover:drop-shadow-sm" />
+                           {pendingCount > 0 && (
+                             <Badge 
+                               variant="destructive" 
+                               className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs flex items-center justify-center min-w-[16px] rounded-full text-[10px]"
+                             >
+                               {pendingCount > 9 ? '9+' : pendingCount}
+                             </Badge>
                            )}
-                         </button>
-                       </PopoverTrigger>
-                       <PopoverContent className="w-80 p-4" align="start" side="right">
-                         <div className="space-y-3">
-                           <div className="flex items-center gap-2">
-                             <Zap className="h-4 w-4 text-primary" />
-                             <h3 className="font-medium">Autopilot Preview</h3>
-                           </div>
-                           <div className="space-y-2">
-                             {getLatestActions(2).map((action) => (
-                               <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
-                                 <div className="font-medium">{action.title}</div>
-                                 <div className="text-xs text-muted-foreground">{action.reason}</div>
-                               </div>
-                             ))}
-                           </div>
-                           <Button 
-                             onClick={() => setAutopilotPopupOpen(true)} 
-                             className="w-full" 
-                             size="sm"
-                           >
-                             View All ({pendingCount})
-                           </Button>
                          </div>
-                       </PopoverContent>
-                     </Popover>
-                   </SidebarMenuButton>
+                         {open && (
+                           <span className="font-medium transition-colors group-hover:text-primary">
+                             Autopilot
+                           </span>
+                         )}
+                       </SidebarMenuButton>
+                     </PopoverTrigger>
+                     <PopoverContent className="w-80 p-4" align="start" side="right">
+                       <div className="space-y-3">
+                         <div className="flex items-center gap-2">
+                           <Zap className="h-4 w-4 text-primary" />
+                           <h3 className="font-medium">Autopilot Preview</h3>
+                         </div>
+                         <div className="space-y-2">
+                           {getLatestActions(2).map((action) => (
+                             <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
+                               <div className="font-medium">{action.title}</div>
+                               <div className="text-xs text-muted-foreground">{action.reason}</div>
+                             </div>
+                           ))}
+                         </div>
+                         <Button 
+                           onClick={() => setAutopilotPopupOpen(true)} 
+                           className="w-full" 
+                           size="sm"
+                         >
+                           View All ({pendingCount})
+                         </Button>
+                       </div>
+                     </PopoverContent>
+                   </Popover>
                  </SidebarMenuItem>
 
                  {visibleSidebarCategories.map((cat) => {
