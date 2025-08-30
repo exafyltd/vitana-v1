@@ -103,13 +103,11 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
                   className="relative h-8 w-8 rounded-lg hover:bg-sidebar-accent transition-colors"
                   title={`${pendingCount} Autopilot suggestions`}
                 >
-                  <Zap className="h-4 w-4 text-sys-autopilot-accent drop-shadow-sm" style={{
-                    filter: 'drop-shadow(0 0 4px hsl(var(--sys-autopilot-accent) / 0.4))'
-                  }} />
+                  <Zap className="h-4 w-4 text-calendar-primary" />
                   {pendingCount > 0 && (
                     <Badge 
                       variant="destructive" 
-                      className="absolute -top-1 -right-1 h-4 w-4 p-0 text-[10px] font-bold flex items-center justify-center min-w-[16px] rounded-full leading-none"
+                      className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs flex items-center justify-center min-w-[20px] rounded-full"
                     >
                       {pendingCount > 9 ? '9+' : pendingCount}
                     </Badge>
@@ -119,7 +117,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               <PopoverContent className="w-80 p-4" align="end">
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-sys-autopilot-accent" />
+                    <Zap className="h-4 w-4 text-calendar-primary" />
                     <h3 className="font-medium">Autopilot Preview</h3>
                   </div>
                   <div className="space-y-2">
@@ -140,7 +138,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
                 </div>
               </PopoverContent>
             </Popover>
-            <SidebarTrigger className="rounded-lg hover:bg-sidebar-accent text-sidebar-foreground/70 hover:text-sidebar-foreground transition-colors" />
+            <SidebarTrigger className="rounded-lg hover:bg-sidebar-accent" />
           </div>
         </div>
         {/* Global Search Bar */}
