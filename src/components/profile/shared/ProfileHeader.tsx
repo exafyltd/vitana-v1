@@ -74,14 +74,12 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
           </div>
         )}
         
-        {/* Longevity Archetype - Outside badge container */}
+        {/* Longevity Archetype - Positioned as badge subtitle */}
         {profile.vitanaIndex && profile.longevityArchetype && (
-          <div className="absolute top-28 right-4">
-            <div className="text-center">
-              <span className="text-sm font-medium text-muted-foreground/80 italic">
-                {profile.longevityArchetype}
-              </span>
-            </div>
+          <div className="absolute right-4 flex justify-center w-20" style={{ top: '104px' }}>
+            <span className="text-sm font-medium leading-tight text-center" style={{ color: '#5A6B7A', fontSize: '14px' }}>
+              {profile.longevityArchetype}
+            </span>
           </div>
         )}
       </div>
