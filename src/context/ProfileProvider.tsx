@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { UserRole } from "@/hooks/useRole";
 import { TenantType } from "@/hooks/useTenant";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ProfileData {
   avatar?: string;
@@ -19,12 +20,12 @@ interface ProfileContextValue {
 
 const ProfileContext = createContext<ProfileContextValue | undefined>(undefined);
 
-// Default profile for demo - replace with real data from Supabase
+// Default profile for non-authenticated users
 const getDefaultProfile = (): ProfileData => ({
-  displayName: "Mariia Maxina",
+  displayName: "Guest User",
   role: "community",
   tenantId: "maxina",
-  initials: "MM",
+  initials: "GU",
 });
 
 export function ProfileProvider({ children }: { children: React.ReactNode }) {
@@ -32,25 +33,50 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<ProfileData>(getDefaultProfile());
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (user && session) {
-      // TODO: Fetch real profile data from Supabase
-      // For now, use email-based display name if available
-      const emailName = user.email?.split('@')[0] || "User";
-      const initials = emailName.split(' ')
+  const fetchUserProfile = async (userId: string) => {
+    try {
+      setLoading(true);
+      
+      // Fetch profile data from Supabase
+      const { data: profileData, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching profile:', error);
+        return;
+      }
+
+      // Create initials from full name or email
+      const displayName = profileData?.full_name || user?.email?.split('@')[0] || "User";
+      const initials = displayName.split(' ')
         .map(name => name[0])
         .join('')
         .toUpperCase()
-        .slice(0, 2);
-      
-      setProfile(prev => ({
-        ...prev,
-        displayName: user.user_metadata?.display_name || emailName,
-        initials: initials || prev.initials,
-      }));
+        .slice(0, 2) || "U";
+
+      setProfile({
+        displayName,
+        role: "community", // Default role, will be updated by role system
+        tenantId: "maxina", // Default tenant, will be updated by tenant system
+        initials,
+      });
+    } catch (error) {
+      console.error('Error in fetchUserProfile:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user && session) {
+      fetchUserProfile(user.id);
     } else {
       // Use default profile for non-authenticated users
       setProfile(getDefaultProfile());
+      setLoading(false);
     }
   }, [user, session]);
 
