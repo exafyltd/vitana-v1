@@ -8,6 +8,7 @@ import { RTLProvider } from "@/components/RTLProvider";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
@@ -129,9 +130,14 @@ const App = () => (
         <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/login" element={<Navigate to="/auth" replace />} />
+          <Route path="/register" element={<Navigate to="/auth" replace />} />
+          <Route path="/home" element={
+            <ProtectedRoute requiredRole="community">
+              <Home />
+            </ProtectedRoute>
+          } />
           <Route path="/home/context" element={<Context />} />
           <Route path="/home/actions" element={<Actions />} />
           <Route path="/home/matches" element={<Matches />} />
@@ -214,12 +220,20 @@ const App = () => (
           <Route path="/inbox/reminder" element={<Reminder />} />
           <Route path="/inbox/inspiration" element={<Inspiration />} />
           
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/settings" element={
+            <ProtectedRoute requiredRole="community">
+              <Settings />
+            </ProtectedRoute>
+          } />
           <Route path="/settings/privacy" element={<Privacy />} />
           <Route path="/settings/notifications" element={<SettingsNotifications />} />
           <Route path="/settings/preferences" element={<Preferences />} />
           <Route path="/settings/connected-apps" element={<ConnectedApps />} />
-          <Route path="/settings/tenant-role" element={<TenantRole />} />
+          <Route path="/settings/tenant-role" element={
+            <ProtectedRoute requiredRole="community">
+              <TenantRole />
+            </ProtectedRoute>
+          } />
           <Route path="/settings/billing" element={<Billing />} />
           <Route path="/settings/support" element={<Support />} />
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />

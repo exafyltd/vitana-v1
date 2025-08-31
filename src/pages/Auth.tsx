@@ -24,7 +24,7 @@ export default function Auth() {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        navigate('/dashboard');
+        navigate('/home');
       }
     };
     checkAuth();
@@ -40,7 +40,7 @@ export default function Auth() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/home`,
           data: {
             full_name: fullName,
           },
@@ -70,7 +70,7 @@ export default function Auth() {
 
       if (signInError) throw signInError;
 
-      navigate('/dashboard');
+      navigate('/home');
     } catch (err: any) {
       setError(err.message || 'An error occurred during sign in');
     } finally {
