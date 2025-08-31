@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
+import { useAuth } from "@/context/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
-export type TenantType = "maxina" | "earthlings" | "alkalma" | "salama";
+export type TenantType = "maxina" | "earthlings" | "alkalma";
 
 interface TenantConfig {
-  id: TenantType;
+  id: string;
   name: string;
+  slug: string;
   brandAccent: string;
   brandBg: string;
   brandFg: string;
@@ -13,92 +16,130 @@ interface TenantConfig {
 
 const TENANT_CONFIGS: Record<TenantType, TenantConfig> = {
   maxina: {
-    id: "maxina",
+    id: "",
     name: "Maxina",
+    slug: "maxina",
     brandAccent: "#FF7BAC",
     brandBg: "#FFF5F8",
     brandFg: "#1A1A1A",
   },
   earthlings: {
-    id: "earthlings", 
+    id: "",
     name: "Earthlings",
+    slug: "earthlings",
     brandAccent: "#4ADE80",
     brandBg: "#F0FDF4",
     brandFg: "#1A1A1A",
   },
   alkalma: {
-    id: "alkalma",
-    name: "AlKalma", 
+    id: "",
+    name: "AlKalma",
+    slug: "alkalma",
     brandAccent: "#3B82F6",
     brandBg: "#EFF6FF",
-    brandFg: "#1A1A1A",
-  },
-  salama: {
-    id: "salama",
-    name: "Salama",
-    brandAccent: "#F59E0B",
-    brandBg: "#FFFBEB", 
     brandFg: "#1A1A1A",
   },
 };
 
 interface TenantContextValue {
-  tenant: TenantConfig;
-  setTenant: (tenant: TenantType) => void;
+  activeTenantId: string | null;
+  tenant: TenantConfig | null;
+  isExafyAdmin: boolean;
+  setActiveTenant: (tenantId: string) => Promise<void>;
 }
 
 const TenantContext = createContext<TenantContextValue | undefined>(undefined);
 
 export function TenantProvider({ children }: { children: React.ReactNode }) {
-  const [currentTenant, setCurrentTenant] = useState<TenantType>("maxina");
+  const { session, user } = useAuth();
+  const [activeTenantId, setActiveTenantIdState] = useState<string | null>(null);
 
+  // Get Exafy admin status
+  const isExafyAdmin = user?.app_metadata?.exafy_admin === true;
+
+  // Get active tenant ID from user metadata or fallback to first tenant
   useEffect(() => {
-    // Load tenant from storage first, then check URL/subdomain
-    const savedTenant = getLocalStorageItem("global", "app", "tenant", "maxina") as TenantType;
-    let initialTenant = savedTenant;
+    if (user) {
+      const userActiveTenantId = user.app_metadata?.active_tenant_id;
+      if (userActiveTenantId) {
+        setActiveTenantIdState(userActiveTenantId);
+      } else {
+        // Fallback to first available tenant
+        const fallbackTenantQuery = async () => {
+          const { data } = await supabase.from('tenants').select('id').limit(1).single();
+          if (data) {
+            setActiveTenantIdState(data.id);
+          }
+        };
+        fallbackTenantQuery();
+      }
+    }
+  }, [user]);
 
-    // Auto-detect tenant from subdomain or URL param (overrides saved)
-    const urlParams = new URLSearchParams(window.location.search);
-    const tenantParam = urlParams.get("tenant") as TenantType;
-    
-    if (tenantParam && TENANT_CONFIGS[tenantParam]) {
-      initialTenant = tenantParam;
-    } else {
-      // Could also check subdomain here
-      const hostname = window.location.hostname;
-      if (hostname.includes("maxina")) initialTenant = "maxina";
-      else if (hostname.includes("earthlings")) initialTenant = "earthlings";
-      else if (hostname.includes("alkalma")) initialTenant = "alkalma";
-      else if (hostname.includes("salama")) initialTenant = "salama";
+  // Fetch tenant details
+  const { data: tenantData } = useQuery({
+    queryKey: ["tenant", activeTenantId],
+    queryFn: async () => {
+      if (!activeTenantId) return null;
+      const { data, error } = await supabase
+        .from('tenants')
+        .select('*')
+        .eq('id', activeTenantId)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!activeTenantId,
+  });
+
+  // Map database tenant to config with styling
+  const tenant = tenantData ? {
+    ...tenantData,
+    ...(TENANT_CONFIGS[tenantData.slug as TenantType] || TENANT_CONFIGS.maxina)
+  } : null;
+
+  // Apply tenant CSS variables
+  useEffect(() => {
+    if (tenant) {
+      const root = document.documentElement;
+      root.style.setProperty("--brand-accent", tenant.brandAccent);
+      root.style.setProperty("--brand-bg", tenant.brandBg);
+      root.style.setProperty("--brand-fg", tenant.brandFg);
+    }
+  }, [tenant]);
+
+  const setActiveTenant = async (tenantId: string) => {
+    if (!isExafyAdmin) {
+      throw new Error("Only Exafy administrators can switch tenants");
     }
 
-    setCurrentTenant(initialTenant);
-  }, []);
+    try {
+      const { data, error } = await supabase.functions.invoke('set_active_tenant', {
+        body: { tenant_id: tenantId }
+      });
 
-  useEffect(() => {
-    // Apply tenant CSS variables to root
-    const root = document.documentElement;
-    const config = TENANT_CONFIGS[currentTenant];
-    
-    root.style.setProperty("--brand-accent", config.brandAccent);
-    root.style.setProperty("--brand-bg", config.brandBg);
-    root.style.setProperty("--brand-fg", config.brandFg);
-  }, [currentTenant]);
+      if (error) throw error;
 
-  const setTenant = (tenant: TenantType) => {
-    const oldTenant = currentTenant;
-    setCurrentTenant(tenant);
-    setLocalStorageItem("global", "app", "tenant", tenant);
-    
-    // Emit tenant change event
-    window.dispatchEvent(new CustomEvent("tenant.changed", {
-      detail: { from: oldTenant, to: tenant }
-    }));
+      // Refresh session to get updated metadata
+      await supabase.auth.refreshSession();
+      setActiveTenantIdState(tenantId);
+
+      // Emit tenant change event
+      window.dispatchEvent(new CustomEvent("tenant.changed", {
+        detail: { from: activeTenantId, to: tenantId }
+      }));
+    } catch (error) {
+      console.error('Error setting active tenant:', error);
+      throw error;
+    }
   };
 
   const value: TenantContextValue = {
-    tenant: TENANT_CONFIGS[currentTenant],
-    setTenant,
+    activeTenantId,
+    tenant,
+    isExafyAdmin,
+    setActiveTenant,
   };
 
   return (

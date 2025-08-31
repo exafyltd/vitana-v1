@@ -453,6 +453,22 @@ export type Database = {
         Args: { user_email: string; user_id: string }
         Returns: undefined
       }
+      get_role_preference: {
+        Args: { p_tenant_id: string }
+        Returns: {
+          role: string
+        }[]
+      }
+      list_roles_for_active_tenant: {
+        Args: { p_tenant_id: string }
+        Returns: {
+          role: string
+        }[]
+      }
+      set_role_preference: {
+        Args: { p_role: string; p_tenant_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       collection_method: "home_kit" | "lab_facility"

@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { TenantProvider } from './hooks/useTenant'
-import { RoleProvider } from './hooks/useRole'
 import { AuthProvider } from './context/AuthProvider'
 import { ProfileProvider } from './context/ProfileProvider'
 import React from 'react'
@@ -19,9 +18,7 @@ createRoot(document.getElementById("root")!).render(
   <AuthProvider>
     <ProfileProvider>
       <TenantProvider>
-        <RoleProvider>
-          <App />
-        </RoleProvider>
+        <App />
       </TenantProvider>
     </ProfileProvider>
   </AuthProvider>

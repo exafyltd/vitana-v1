@@ -19,7 +19,7 @@ function createNamespacedKey(tenant: string, module: string, key: string): strin
 }
 
 export function getLocalStorageItem(
-  tenant: TenantType | "global",
+  tenant: TenantType | "global" | string,
   module: string, 
   key: string,
   defaultValue?: string
@@ -34,7 +34,7 @@ export function getLocalStorageItem(
 }
 
 export function setLocalStorageItem(
-  tenant: TenantType | "global",
+  tenant: TenantType | "global" | string,
   module: string,
   key: string, 
   value: string

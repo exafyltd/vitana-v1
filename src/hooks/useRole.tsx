@@ -1,14 +1,8 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "./useTenant";
 
 export type UserRole = "community" | "patient" | "professional" | "staff" | "admin";
-
-interface RoleContextValue {
-  role: UserRole;
-  setRole: (role: UserRole) => void;
-  hasPermission: (requiredRole: UserRole) => boolean;
-}
 
 const ROLE_HIERARCHY: Record<UserRole, number> = {
   community: 1,
@@ -18,49 +12,55 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
   admin: 5,
 };
 
-const RoleContext = createContext<RoleContextValue | undefined>(undefined);
+export function useRole() {
+  const { activeTenantId } = useTenant();
+  const queryClient = useQueryClient();
 
-export function RoleProvider({ children }: { children: React.ReactNode }) {
-  const { tenant } = useTenant();
-  const [currentRole, setCurrentRole] = useState<UserRole>("community");
+  const query = useQuery({
+    queryKey: ["rolePref", activeTenantId],
+    queryFn: async () => {
+      if (!activeTenantId) return null;
+      const { data, error } = await supabase.rpc("get_role_preference", { 
+        p_tenant_id: activeTenantId 
+      });
+      if (error) throw error;
+      return data?.[0]?.role ?? null;
+    },
+    enabled: !!activeTenantId,
+  });
 
-  // Load role from storage on mount
-  useEffect(() => {
-    const savedRole = getLocalStorageItem(tenant.id, "auth", "role", "community") as UserRole;
-    setCurrentRole(savedRole);
-  }, [tenant.id]);
+  const setRole = async (role: UserRole) => {
+    if (!activeTenantId) return;
+    
+    try {
+      await supabase.rpc("set_role_preference", { 
+        p_tenant_id: activeTenantId, 
+        p_role: role 
+      });
+      
+      await queryClient.invalidateQueries({ 
+        queryKey: ["rolePref", activeTenantId] 
+      });
+
+      // Emit role change event
+      window.dispatchEvent(new CustomEvent("role.changed", {
+        detail: { from: query.data, to: role }
+      }));
+    } catch (error) {
+      console.error('Error setting role preference:', error);
+      throw error;
+    }
+  };
 
   const hasPermission = (requiredRole: UserRole): boolean => {
+    const currentRole = query.data as UserRole || "community";
     return ROLE_HIERARCHY[currentRole] >= ROLE_HIERARCHY[requiredRole];
   };
 
-  const setRole = (role: UserRole) => {
-    setCurrentRole(role);
-    setLocalStorageItem(tenant.id, "auth", "role", role);
-    
-    // Emit role change event
-    window.dispatchEvent(new CustomEvent("role.changed", {
-      detail: { from: currentRole, to: role }
-    }));
-  };
-
-  const value: RoleContextValue = {
-    role: currentRole,
-    setRole,
+  return { 
+    currentRole: query.data as UserRole | null, 
+    setRole, 
     hasPermission,
+    isLoading: query.isLoading 
   };
-
-  return (
-    <RoleContext.Provider value={value}>
-      {children}
-    </RoleContext.Provider>
-  );
-}
-
-export function useRole() {
-  const context = useContext(RoleContext);
-  if (context === undefined) {
-    throw new Error("useRole must be used within a RoleProvider");
-  }
-  return context;
 }

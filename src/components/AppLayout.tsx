@@ -39,7 +39,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
   const location = useLocation();
   const navigate = useNavigate();
   const { open } = useSidebar();
-  const { role, hasPermission } = useRole();
+  const { currentRole, hasPermission } = useRole();
   const { tenant } = useTenant();
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
@@ -274,23 +274,25 @@ export default function AppLayout({ children }: AppLayoutProps) {
   
   // Controlled sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
-    const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
+    const stored = getLocalStorageItem(tenant?.id || "global", "sidebar", "open");
     return stored === "true";
   });
 
   // Persist sidebar state changes to localStorage
   const handleSidebarOpenChange = (open: boolean) => {
     setSidebarOpen(open);
-    setLocalStorageItem(tenant.id, "sidebar", "open", open.toString());
+    setLocalStorageItem(tenant?.id || "global", "sidebar", "open", open.toString());
   };
 
   // Initialize sidebar state from localStorage on mount
   useEffect(() => {
-    const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
-    if (stored !== null) {
-      setSidebarOpen(stored === "true");
+    if (tenant?.id) {
+      const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
+      if (stored !== null) {
+        setSidebarOpen(stored === "true");
+      }
     }
-  }, [tenant.id]);
+  }, [tenant?.id]);
 
   return (
     <div>

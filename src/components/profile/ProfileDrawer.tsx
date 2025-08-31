@@ -18,9 +18,9 @@ import {
 import { User, LogOut, Shield, Building } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
-import { usePermissions } from "@/hooks/usePermissions";
 import { useRole, UserRole } from "@/hooks/useRole";
 import { useTenant, TenantType } from "@/hooks/useTenant";
+import { useMemberships } from "@/hooks/useMemberships";
 
 interface ProfileDrawerProps {
   trigger: React.ReactNode;
@@ -36,43 +36,39 @@ const ROLE_LABELS: Record<UserRole, string> = {
 
 const TENANT_LABELS: Record<TenantType, string> = {
   maxina: "Maxina",
-  earthlings: "Earthlings",
+  earthlings: "Earthlings", 
   alkalma: "AlKalma",
-  salama: "Salama",
 };
 
 export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const navigate = useNavigate();
   const { profile } = useProfile();
   const { signOut } = useAuth();
-  const { canSwitchRole, canSwitchTenant } = usePermissions();
-  const { role, setRole } = useRole();
-  const { tenant, setTenant } = useTenant();
+  const { tenant, activeTenantId, isExafyAdmin } = useTenant();
+  const { currentRole, setRole } = useRole();
+  const { roles } = useMemberships(activeTenantId || undefined);
 
-  const handleRoleChange = (newRole: UserRole) => {
-    setRole(newRole);
-    
-    // Navigation logic based on new role
-    switch (newRole) {
-      case "admin":
-      case "staff":
-        navigate("/admin");
-        break;
-      case "professional":
-        // Check if they have business/creator mode, otherwise go to dashboard
-        navigate("/dashboard"); // TODO: Add business mode check
-        break;
-      case "patient":
-      case "community":
-        navigate("/dashboard");
-        break;
+  const handleRoleChange = async (newRole: UserRole) => {
+    try {
+      await setRole(newRole);
+      
+      // Navigation logic based on new role
+      switch (newRole) {
+        case "admin":
+        case "staff":
+          navigate("/admin");
+          break;
+        case "professional":
+          navigate("/dashboard"); 
+          break;
+        case "patient":
+        case "community":
+          navigate("/dashboard");
+          break;
+      }
+    } catch (error) {
+      console.error('Error setting role:', error);
     }
-  };
-
-  const handleTenantChange = (newTenant: TenantType) => {
-    setTenant(newTenant);
-    // Remain on current route if tenant-agnostic, otherwise redirect to module root
-    // For simplicity, staying on current route for now
   };
 
   const handleSignOut = async () => {
@@ -115,8 +111,8 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             </DrawerClose>
           </div>
 
-          {/* Role Switcher - only if permitted */}
-          {canSwitchRole && (
+          {/* Role Switcher - show available roles from memberships */}
+          {roles && roles.length > 0 && (
             <>
               <Separator />
               <div className="space-y-2">
@@ -124,40 +120,16 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                   <Shield className="h-4 w-4" />
                   Switch Role
                 </label>
-                <Select value={role} onValueChange={handleRoleChange}>
+                <Select value={currentRole || roles[0]} onValueChange={handleRoleChange}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="community">Community</SelectItem>
-                    <SelectItem value="patient">Patient</SelectItem>
-                    <SelectItem value="professional">Professional</SelectItem>
-                    <SelectItem value="staff">Staff</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </>
-          )}
-
-          {/* Tenant Switcher - only for Exafy Admins */}
-          {canSwitchTenant && (
-            <>
-              <Separator />
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <Building className="h-4 w-4" />
-                  Switch Tenant
-                </label>
-                <Select value={tenant.id} onValueChange={handleTenantChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="maxina">Maxina</SelectItem>
-                    <SelectItem value="earthlings">Earthlings</SelectItem>
-                    <SelectItem value="alkalma">AlKalma</SelectItem>
-                    <SelectItem value="salama">Salama</SelectItem>
+                    {roles.map(role => (
+                      <SelectItem key={role} value={role}>
+                        {ROLE_LABELS[role as UserRole]}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
