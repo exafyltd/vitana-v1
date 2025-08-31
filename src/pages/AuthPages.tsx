@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import SEO from "@/components/SEO";
 import { Eye, EyeOff } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const providers = [
   {
@@ -49,14 +50,54 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
     // SEO handled by component below
   }, []);
 
-  const handleProvider = (provider: string) => {
-    // Mock navigation to dashboard
-    navigate("/dashboard");
+  const handleProvider = async (provider: string) => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: provider.toLowerCase() as any,
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+      if (error) throw error;
+    } catch (error: any) {
+      console.error('OAuth error:', error.message);
+      // TODO: Add proper error handling UI
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/dashboard");
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const name = formData.get('name') as string;
+
+    try {
+      if (isRegister) {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              full_name: name,
+            },
+            emailRedirectTo: `${window.location.origin}/dashboard`
+          }
+        });
+        if (error) throw error;
+        // TODO: Show success message for email confirmation
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+        if (error) throw error;
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.error('Auth error:', error.message);
+      // TODO: Add proper error handling UI
+    }
   };
 
   const title = isRegister ? "Register | VITANA" : "Login | VITANA";

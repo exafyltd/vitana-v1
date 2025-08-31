@@ -4,17 +4,17 @@ export type Permission =
   | "role.switch.self";
 
 export function getPermissions(session: any): Set<Permission> {
-  // TODO: Derive permissions from session claims or backend payload
-  // For now, return demo permissions based on user metadata
   const permissions = new Set<Permission>();
   
-  // Demo logic - replace with real permission system
-  if (session?.user?.email?.includes("admin")) {
+  // SECURITY FIX: Use proper metadata instead of email checking
+  const isExafyAdmin = session?.user?.app_metadata?.exafy_admin === true;
+  
+  if (isExafyAdmin) {
     permissions.add("exafy.admin");
     permissions.add("tenant.switch");
     permissions.add("role.switch.self");
   } else {
-    // All authenticated users can switch their own role for demo
+    // All authenticated users can switch their own role
     permissions.add("role.switch.self");
   }
   
