@@ -80,6 +80,19 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     }
   }, [user, session]);
 
+  // Listen for role changes and update profile
+  useEffect(() => {
+    const handleRoleChange = (event: CustomEvent) => {
+      const { to: newRole } = event.detail;
+      setProfile(prev => ({ ...prev, role: newRole }));
+    };
+
+    window.addEventListener('role.changed', handleRoleChange as EventListener);
+    return () => {
+      window.removeEventListener('role.changed', handleRoleChange as EventListener);
+    };
+  }, []);
+
   const updateProfile = (data: Partial<ProfileData>) => {
     setProfile(prev => ({ ...prev, ...data }));
   };

@@ -1,0 +1,118 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, MapPin, Plus } from "lucide-react";
+
+export default function PatientAppointments() {
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold">My Appointments</h1>
+          <p className="text-muted-foreground">
+            Manage your upcoming and past appointments
+          </p>
+        </div>
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
+          Schedule New
+        </Button>
+      </div>
+
+      <div className="space-y-4">
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5" />
+                  Dr. Sarah Miller - Annual Checkup
+                </CardTitle>
+                <CardDescription>General Medicine</CardDescription>
+              </div>
+              <Badge>Upcoming</Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Tomorrow, 2:00 PM - 2:30 PM</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Medical Center, Room 205</span>
+              </div>
+              <div className="flex gap-2">
+                <Button size="sm" variant="outline">Reschedule</Button>
+                <Button size="sm" variant="outline">Cancel</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5" />
+                  Dr. James Davis - Follow-up
+                </CardTitle>
+                <CardDescription>Cardiology</CardDescription>
+              </div>
+              <Badge>Upcoming</Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Next Week, Friday 10:00 AM</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Cardiology Wing, Room 301</span>
+              </div>
+              <div className="flex gap-2">
+                <Button size="sm" variant="outline">Reschedule</Button>
+                <Button size="sm" variant="outline">Cancel</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5" />
+                  Dr. Lisa Chen - Consultation
+                </CardTitle>
+                <CardDescription>Dermatology</CardDescription>
+              </div>
+              <Badge variant="secondary">Completed</Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Last Week, Monday 3:00 PM</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Dermatology Clinic</span>
+              </div>
+              <div className="flex gap-2">
+                <Button size="sm" variant="outline">View Notes</Button>
+                <Button size="sm" variant="outline">Book Follow-up</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

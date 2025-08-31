@@ -15,19 +15,9 @@ import { useProfile } from "@/context/ProfileProvider";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
+import { getRoleNavigation } from "@/config/role-navigation";
 
-const sidebarCategories = [
-  { title: "Home", path: "/home", icon: LayoutDashboard },
-  { title: "Community", path: "/community", icon: MessageSquare },
-  { title: "Discover", path: "/discover", icon: Search },
-  { title: "Inbox", path: "/inbox", icon: MessageSquare },
-  { title: "Health", path: "/health", icon: Heart },
-  { title: "Wallet", path: "/wallet", icon: Wallet },
-  { title: "Sharing", path: "/sharing", icon: Share2 },
-  { title: "Memory", path: "/memory", icon: Database },
-  { title: "Settings", path: "/settings", icon: Settings },
-  { title: "Admin", path: "/admin", icon: Shield },
-];
+// Dynamic navigation based on user role - removed static sidebar categories
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -44,13 +34,8 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
 
-  // Filter sidebar items based on role permissions
-  const visibleSidebarCategories = sidebarCategories.filter(cat => {
-    if (cat.title === "Admin") {
-      return hasPermission("staff");
-    }
-    return true;
-  });
+  // Get dynamic navigation based on current role
+  const sidebarCategories = getRoleNavigation(currentRole);
 
   // Check if current path matches category (including subpages)
   const isActivePath = (categoryPath: string) => {
@@ -169,7 +154,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
-                {visibleSidebarCategories.map((cat) => {
+                {sidebarCategories.map((cat) => {
                   const isActive = isActivePath(cat.path);
                   return (
                     <SidebarMenuItem key={cat.title}>

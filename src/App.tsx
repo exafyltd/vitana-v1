@@ -28,6 +28,15 @@ import Sharing from "./pages/Sharing";
 import Memory from "./pages/Memory";
 import Admin from "./pages/Admin";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
+// Role-specific dashboards
+import PatientDashboard from "./pages/patient/Dashboard";
+import PatientHealth from "./pages/patient/Health";
+import PatientAppointments from "./pages/patient/Appointments";
+import ProfessionalDashboard from "./pages/professional/Dashboard";
+import ProfessionalPatients from "./pages/professional/Patients";
+import StaffDashboard from "./pages/staff/Dashboard";
+import StaffQueue from "./pages/staff/Queue";
+import AdminDashboard from "./pages/admin/Dashboard";
 
 // Home sub-pages
 import Context from "./pages/home/Context";
@@ -260,46 +269,47 @@ const App = () => (
           <Route path="/memory/timeline" element={<Timeline />} />
           <Route path="/memory/recall" element={<Recall />} />
           <Route path="/memory/permissions" element={<MemoryPermissions />} />
-          <Route path="/admin" element={
-            <ProtectedRoute requiredRole="staff">
-              <Admin />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/queue" element={
-            <ProtectedRoute requiredRole="staff">
-              <Queue />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/patient-records" element={
-            <ProtectedRoute requiredRole="staff">
-              <PatientRecords />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/stream-supervision" element={
-            <ProtectedRoute requiredRole="staff">
-              <StreamSupervision />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/staff" element={
-            <ProtectedRoute requiredRole="staff">
-              <Staff />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/reports" element={
-            <ProtectedRoute requiredRole="staff">
-              <Reports />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/tenant-management" element={
-            <ProtectedRoute requiredRole="staff">
-              <TenantManagement />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/audit" element={
-            <ProtectedRoute requiredRole="staff">
-              <Audit />
-            </ProtectedRoute>
-          } />
+          {/* Patient Role Routes */}
+          <Route path="/patient/dashboard" element={<PatientDashboard />} />
+          <Route path="/patient/health" element={<PatientHealth />} />
+          <Route path="/patient/appointments" element={<PatientAppointments />} />
+          <Route path="/patient/results" element={<div className="p-6"><h1 className="text-3xl font-bold">Test Results</h1><p className="text-muted-foreground">Patient test results and lab reports</p></div>} />
+          <Route path="/patient/care-team" element={<div className="p-6"><h1 className="text-3xl font-bold">Care Team</h1><p className="text-muted-foreground">Your healthcare providers and specialists</p></div>} />
+          <Route path="/patient/goals" element={<div className="p-6"><h1 className="text-3xl font-bold">Health Goals</h1><p className="text-muted-foreground">Track and manage your health objectives</p></div>} />
+          <Route path="/patient/insurance" element={<div className="p-6"><h1 className="text-3xl font-bold">Insurance</h1><p className="text-muted-foreground">Insurance information and coverage details</p></div>} />
+          <Route path="/patient/notifications" element={<div className="p-6"><h1 className="text-3xl font-bold">Notifications</h1><p className="text-muted-foreground">Health reminders and alerts</p></div>} />
+
+          {/* Professional Role Routes */}
+          <Route path="/professional/dashboard" element={<ProfessionalDashboard />} />
+          <Route path="/professional/patients" element={<ProfessionalPatients />} />
+          <Route path="/professional/schedule" element={<div className="p-6"><h1 className="text-3xl font-bold">Schedule</h1><p className="text-muted-foreground">Manage your appointment calendar</p></div>} />
+          <Route path="/professional/tools" element={<div className="p-6"><h1 className="text-3xl font-bold">Clinical Tools</h1><p className="text-muted-foreground">Medical calculators and reference tools</p></div>} />
+          <Route path="/professional/referrals" element={<div className="p-6"><h1 className="text-3xl font-bold">Referrals</h1><p className="text-muted-foreground">Patient referrals and specialist networks</p></div>} />
+          <Route path="/professional/billing" element={<div className="p-6"><h1 className="text-3xl font-bold">Billing</h1><p className="text-muted-foreground">Practice billing and revenue management</p></div>} />
+          <Route path="/professional/profile" element={<div className="p-6"><h1 className="text-3xl font-bold">Professional Profile</h1><p className="text-muted-foreground">Manage your professional credentials and bio</p></div>} />
+          <Route path="/professional/education" element={<div className="p-6"><h1 className="text-3xl font-bold">Continuing Education</h1><p className="text-muted-foreground">CME courses and professional development</p></div>} />
+
+          {/* Staff Role Routes */}
+          <Route path="/staff/dashboard" element={<StaffDashboard />} />
+          <Route path="/staff/queue" element={<StaffQueue />} />
+          <Route path="/staff/tasks" element={<div className="p-6"><h1 className="text-3xl font-bold">Daily Tasks</h1><p className="text-muted-foreground">Your assigned tasks and responsibilities</p></div>} />
+          <Route path="/staff/schedule" element={<div className="p-6"><h1 className="text-3xl font-bold">Schedule</h1><p className="text-muted-foreground">Work schedule and shift management</p></div>} />
+          <Route path="/staff/reports" element={<div className="p-6"><h1 className="text-3xl font-bold">Reports</h1><p className="text-muted-foreground">Daily and weekly activity reports</p></div>} />
+          <Route path="/staff/communications" element={<div className="p-6"><h1 className="text-3xl font-bold">Communications</h1><p className="text-muted-foreground">Team messages and announcements</p></div>} />
+          <Route path="/staff/tools" element={<div className="p-6"><h1 className="text-3xl font-bold">Staff Tools</h1><p className="text-muted-foreground">Workflow tools and resources</p></div>} />
+          <Route path="/staff/time" element={<div className="p-6"><h1 className="text-3xl font-bold">Time Tracking</h1><p className="text-muted-foreground">Clock in/out and timesheet management</p></div>} />
+
+          {/* Admin Role Routes */}
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<div className="p-6"><h1 className="text-3xl font-bold">User Management</h1><p className="text-muted-foreground">Manage system users and permissions</p></div>} />
+          <Route path="/admin/system" element={<div className="p-6"><h1 className="text-3xl font-bold">System Health</h1><p className="text-muted-foreground">Monitor system performance and status</p></div>} />
+          <Route path="/admin/analytics" element={<div className="p-6"><h1 className="text-3xl font-bold">Analytics</h1><p className="text-muted-foreground">Usage statistics and insights</p></div>} />
+          <Route path="/admin/security" element={<div className="p-6"><h1 className="text-3xl font-bold">Security</h1><p className="text-muted-foreground">Security settings and access control</p></div>} />
+          <Route path="/admin/settings" element={<div className="p-6"><h1 className="text-3xl font-bold">System Settings</h1><p className="text-muted-foreground">Global system configuration</p></div>} />
+          
+          {/* Admin Pages - Keep existing admin routes */}
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/*" element={<Admin />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
