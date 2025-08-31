@@ -48,25 +48,14 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { currentRole, setRole } = useRole();
   const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
   
-  // Debug logging
-  console.log('ProfileDrawer state:', {
-    profileRole: profile.role,
-    currentRole,
-    activeTenantId,
-    membershipRoles,
-    isExafyAdmin
-  });
-  
   // Admin users get access to all roles for supervision purposes
   const availableRoles = isExafyAdmin 
     ? ['community', 'patient', 'professional', 'staff', 'admin'] as UserRole[]
     : membershipRoles || [];
 
   const handleRoleChange = async (newRole: UserRole) => {
-    console.log('Attempting to change role to:', newRole);
     try {
       await setRole(newRole);
-      console.log('Role change completed successfully');
       
       // Close drawer immediately after role change
       const drawerCloseButton = document.querySelector('[data-vaul-drawer-close]') as HTMLButtonElement;
