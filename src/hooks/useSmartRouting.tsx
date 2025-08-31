@@ -1,0 +1,105 @@
+import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthProvider";
+import { useTenant } from "@/hooks/useTenant";
+import { useRole } from "@/hooks/useRole";
+
+export function useSmartRouting() {
+  const { user, loading: authLoading } = useAuth();
+  const { isExafyAdmin, activeTenantId } = useTenant();
+  const { currentRole } = useRole();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Don't redirect while auth is still loading
+    if (authLoading) return;
+
+    // Don't redirect if already on a portal page
+    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlings', '/community', '/auth'];
+    if (portalPaths.some(path => location.pathname.startsWith(path))) return;
+
+    // If user is not authenticated, handle based on current path
+    if (!user) {
+      // Allow access to public pages
+      if (location.pathname === '/' || location.pathname === '/auth') return;
+      
+      // Redirect unauthenticated users trying to access protected pages
+      navigate('/auth');
+      return;
+    }
+
+    // User is authenticated - route based on their role and tenant
+    if (user && !authLoading) {
+      // Exafy super admin - route to tenant management
+      if (isExafyAdmin) {
+        // Only redirect from root path to avoid interfering with navigation
+        if (location.pathname === '/' || location.pathname === '/home') {
+          navigate('/admin/tenant-management');
+        }
+        return;
+      }
+
+      // Regular users - route to appropriate dashboard based on role
+      if (currentRole && location.pathname === '/') {
+        switch (currentRole) {
+          case "admin":
+          case "staff":
+            navigate("/admin");
+            break;
+          case "professional":
+            navigate("/professional/dashboard");
+            break;
+          case "patient":
+            navigate("/patient/dashboard");
+            break;
+          case "community":
+          default:
+            navigate("/home");
+            break;
+        }
+      }
+    }
+  }, [user, authLoading, isExafyAdmin, currentRole, location.pathname, navigate]);
+}
+
+// Hook to get appropriate redirect URL based on user type
+export function useRoleBasedRedirect() {
+  const { isExafyAdmin } = useTenant();
+  const { currentRole } = useRole();
+
+  const getRedirectUrl = () => {
+    if (isExafyAdmin) {
+      return "/admin/tenant-management";
+    }
+
+    switch (currentRole) {
+      case "admin":
+      case "staff":
+        return "/admin";
+      case "professional":
+        return "/professional/dashboard";
+      case "patient":
+        return "/patient/dashboard";
+      case "community":
+      default:
+        return "/home";
+    }
+  };
+
+  return { getRedirectUrl };
+}
+
+// Tenant detection from URL
+export function useTenantFromUrl() {
+  const location = useLocation();
+  
+  const getTenantFromPath = (): string | null => {
+    if (location.pathname.startsWith('/maxina')) return 'maxina';
+    if (location.pathname.startsWith('/alkalma')) return 'alkalma';
+    if (location.pathname.startsWith('/earthlings')) return 'earthlings';
+    return null;
+  };
+
+  return { getTenantFromPath };
+}

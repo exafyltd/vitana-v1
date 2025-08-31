@@ -9,6 +9,13 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Auth from "./pages/Auth";
+
+// Portal pages
+import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
+import MaxinaPortal from "./pages/portals/MaxinaPortal";
+import AlkalmaPortal from "./pages/portals/AlkalmaPortal";
+import EarthlingsPortal from "./pages/portals/EarthlingsPortal";
+import CommunityPortal from "./pages/portals/CommunityPortal";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
@@ -143,6 +150,13 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Navigate to="/auth" replace />} />
           <Route path="/register" element={<Navigate to="/auth" replace />} />
+          
+          {/* Portal Routes */}
+          <Route path="/exafy-admin" element={<ExafyAdminPortal />} />
+          <Route path="/maxina" element={<MaxinaPortal />} />
+          <Route path="/alkalma" element={<AlkalmaPortal />} />
+          <Route path="/earthlings" element={<EarthlingsPortal />} />
+          <Route path="/community" element={<CommunityPortal />} />
           <Route path="/home" element={
             <ProtectedRoute requiredRole="community">
               <Home />
@@ -202,16 +216,24 @@ const App = () => (
           <Route path="/calendar/progress" element={<CalendarProgress />} />
           <Route path="/calendar/recommendations" element={<CalendarRecommendations />} />
           
-          <Route path="/community" element={<Community />} />
-          <Route path="/community/my-groups" element={<MyGroups />} />
-          <Route path="/community/my-groups/:id" element={<GroupDetail />} />
-          <Route path="/community/feed" element={<Feed />} />
-          <Route path="/community/events" element={<CommunityEvents />} />
-          <Route path="/community/live-rooms" element={<LiveRooms />} />
-          <Route path="/community/live-rooms/:roomId/view" element={<LiveRoomViewer />} />
-          <Route path="/community/media-hub" element={<MediaHub />} />
-          <Route path="/community/my-business" element={<MyBusiness />} />
-          <Route path="/community/meetups" element={<Meetups />} />
+          <Route path="/comm" element={<Community />} />
+          <Route path="/comm/my-groups" element={<MyGroups />} />
+          <Route path="/comm/my-groups/:id" element={<GroupDetail />} />
+          <Route path="/comm/feed" element={<Feed />} />
+          <Route path="/comm/events" element={<CommunityEvents />} />
+          <Route path="/comm/live-rooms" element={<LiveRooms />} />
+          <Route path="/comm/live-rooms/:roomId/view" element={<LiveRoomViewer />} />
+          <Route path="/comm/media-hub" element={<MediaHub />} />
+          <Route path="/comm/my-business" element={<MyBusiness />} />
+          <Route path="/comm/meetups" element={<Meetups />} />
+          
+          {/* Redirect old community routes */}
+          <Route path="/community/my-groups" element={<Navigate to="/comm/my-groups" replace />} />
+          <Route path="/community/feed" element={<Navigate to="/comm/feed" replace />} />
+          <Route path="/community/events" element={<Navigate to="/comm/events" replace />} />
+          <Route path="/community/live-rooms" element={<Navigate to="/comm/live-rooms" replace />} />
+          <Route path="/community/media-hub" element={<Navigate to="/comm/media-hub" replace />} />
+          <Route path="/community/my-business" element={<Navigate to="/comm/my-business" replace />} />
           
           <Route path="/ai" element={<AI />} />
           <Route path="/ai/insights" element={<Insights />} />

@@ -1,11 +1,23 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthProvider";
+import { useTenant } from "@/hooks/useTenant";
+import { useSmartRouting } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Heart, BookOpen, Leaf, Shield, Users, Settings } from "lucide-react";
 
 const Index = () => {
+  const { user } = useAuth();
+  const { isExafyAdmin } = useTenant();
+  
+  // Use smart routing to redirect authenticated users
+  useSmartRouting();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-      <SEO title="VITANA – Digital Solutions" description="Welcome to VITANA. Experience innovation and excellence with our cutting-edge platform." canonical={window.location.href} />
+      <SEO title="VITANA – Digital Solutions" description="Welcome to VITANA. Choose your health platform and experience innovation in wellness." canonical={window.location.href} />
       
       <div className="flex flex-col items-center justify-center min-h-screen p-6">
         <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -14,16 +26,127 @@ const Index = () => {
             Digital Solutions for Your Wellness Journey
           </p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
-            Experience innovation and excellence with our cutting-edge platform designed to transform your health and wellness experience.
+            Choose your health platform and experience innovation and excellence with our cutting-edge wellness solutions.
           </p>
           
-          <div className="flex gap-4 justify-center">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-              <Link to="/home">Enter Platform</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link to="/auth">Sign In</Link>
-            </Button>
+          {/* Platform Selection */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Maxina Portal */}
+            <Link to="/maxina">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    <Heart className="h-12 w-12 text-[#FF7BAC] group-hover:scale-110 transition-transform" />
+                  </div>
+                  <CardTitle className="text-xl">Maxina</CardTitle>
+                  <CardDescription>Comprehensive health & wellness platform</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Complete healthcare solutions with patient-professional connections and wellness tracking.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* AlKalma Portal */}
+            <Link to="/alkalma">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    <BookOpen className="h-12 w-12 text-[#3B82F6] group-hover:scale-110 transition-transform" />
+                  </div>
+                  <CardTitle className="text-xl">AlKalma</CardTitle>
+                  <CardDescription>Culturally-aware health solutions</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Health and wellness services designed with cultural awareness and community values.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Earthlings Portal */}
+            <Link to="/earthlings">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    <Leaf className="h-12 w-12 text-[#4ADE80] group-hover:scale-110 transition-transform" />
+                  </div>
+                  <CardTitle className="text-xl">Earthlings</CardTitle>
+                  <CardDescription>Sustainable & eco-friendly wellness</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Nature-focused healthcare and sustainable wellness solutions for conscious living.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Community Portal */}
+            <Link to="/community">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    <Users className="h-12 w-12 text-primary group-hover:scale-110 transition-transform" />
+                  </div>
+                  <CardTitle className="text-xl">Community</CardTitle>
+                  <CardDescription>General wellness community</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Join our general wellness community and choose your preferred platform later.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Exafy Admin Portal */}
+            <Link to="/exafy-admin">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-slate-200">
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    <Shield className="h-12 w-12 text-slate-600 group-hover:scale-110 transition-transform" />
+                  </div>
+                  <CardTitle className="text-xl text-slate-700">Exafy Admin</CardTitle>
+                  <CardDescription>System administration portal</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Secure access for Exafy administrators to manage tenant environments.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Quick Access Card */}
+            <Card className="h-full border-dashed">
+              <CardHeader className="text-center">
+                <div className="flex justify-center mb-4">
+                  <Settings className="h-12 w-12 text-muted-foreground" />
+                </div>
+                <CardTitle className="text-xl">Already a Member?</CardTitle>
+                <CardDescription>Quick access to your account</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button asChild className="w-full" size="sm">
+                  <Link to="/auth">Sign In</Link>
+                </Button>
+                <Button asChild variant="outline" className="w-full" size="sm">
+                  <Link to="/community">Join Community</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Footer Info */}
+          <div className="mt-12 pt-8 border-t border-border/50">
+            <p className="text-sm text-muted-foreground">
+              VITANA is a comprehensive digital health platform offering multiple specialized environments 
+              for different wellness communities and professional healthcare management.
+            </p>
           </div>
         </div>
       </div>
