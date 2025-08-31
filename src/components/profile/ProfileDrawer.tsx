@@ -46,7 +46,12 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { signOut } = useAuth();
   const { tenant, activeTenantId, isExafyAdmin } = useTenant();
   const { currentRole, setRole } = useRole();
-  const { roles } = useMemberships(activeTenantId || undefined);
+  const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
+  
+  // Admin users get access to all roles for supervision purposes
+  const availableRoles = isExafyAdmin 
+    ? ['community', 'patient', 'professional', 'staff', 'admin'] as UserRole[]
+    : membershipRoles || [];
 
   const handleRoleChange = async (newRole: UserRole) => {
     try {
@@ -111,21 +116,21 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             </DrawerClose>
           </div>
 
-          {/* Role Switcher - show available roles from memberships */}
-          {roles && roles.length > 0 && (
+          {/* Role Switcher - show available roles (all roles for admin, membership roles for others) */}
+          {availableRoles && availableRoles.length > 0 && (
             <>
               <Separator />
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                   <Shield className="h-4 w-4" />
-                  Switch Role
+                  Switch Role {isExafyAdmin && <Badge variant="outline" className="text-xs">Admin Access</Badge>}
                 </label>
-                <Select value={currentRole || roles[0]} onValueChange={handleRoleChange}>
+                <Select value={currentRole || availableRoles[0]} onValueChange={handleRoleChange}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {roles.map(role => (
+                    {availableRoles.map(role => (
                       <SelectItem key={role} value={role}>
                         {ROLE_LABELS[role as UserRole]}
                       </SelectItem>
