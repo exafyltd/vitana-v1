@@ -450,7 +450,7 @@ export type Database = {
     }
     Functions: {
       bootstrap_admin_user: {
-        Args: { user_email: string; user_id: string }
+        Args: { p_user_email: string; p_user_id: string }
         Returns: undefined
       }
       get_role_preference: {
