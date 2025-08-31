@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { RTLProvider } from "@/components/RTLProvider";
@@ -121,11 +121,8 @@ import Staff from "./pages/admin/Staff";
 import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
 
-const queryClient = new QueryClient();
-
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <RTLProvider>
+  <RTLProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -290,7 +287,6 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </RTLProvider>
-  </QueryClientProvider>
 );
 
 export default App;
