@@ -87,11 +87,12 @@ export const memoryNavigation = [
 
 export const adminNavigation = [
   { id: "overview", name: "Overview", path: "/admin" },
+  { id: "tenant-management", name: "Tenant Management", path: "/admin/tenant-management" },
+  { id: "bootstrap", name: "Admin Bootstrap", path: "/admin/bootstrap" },
   { id: "queue", name: "Queue & Check-In", path: "/admin/queue" },
   { id: "patient-records", name: "Patient Record Viewer", path: "/admin/patient-records" },
   { id: "stream-supervision", name: "Stream Supervision", path: "/admin/stream-supervision" },
   { id: "staff", name: "Staff Directory & Scheduling", path: "/admin/staff" },
-  { id: "tenant-management", name: "Tenant Management", path: "/admin/tenant-management" },
   { id: "reports", name: "Reports & KPIs", path: "/admin/reports" },
   { id: "audit", name: "Audit Logs & Compliance", path: "/admin/audit" },
 ];

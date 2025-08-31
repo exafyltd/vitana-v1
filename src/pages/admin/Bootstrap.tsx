@@ -1,0 +1,393 @@
+import { useState } from "react";
+import { Plus, Trash2, Shield, Users, AlertCircle, CheckCircle, Clock, X } from "lucide-react";
+import { usePermissions } from "@/hooks/usePermissions";
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { adminNavigation } from "@/config/navigation";
+
+interface BootstrapResult {
+  email: string;
+  status: 'elevated' | 'already_admin' | 'user_not_found' | 'elevation_failed';
+  user_id?: string;
+  error?: string;
+}
+
+interface AdminUser {
+  id: string;
+  email: string;
+  full_name?: string;
+  is_admin: boolean;
+}
+
+export default function Bootstrap() {
+  const { hasPermission } = usePermissions();
+  const { toast } = useToast();
+  const [emailInput, setEmailInput] = useState("");
+  const [adminEmails, setAdminEmails] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [bootstrapResults, setBootstrapResults] = useState<BootstrapResult[]>([]);
+  const [currentAdmins, setCurrentAdmins] = useState<AdminUser[]>([]);
+  const [loadingAdmins, setLoadingAdmins] = useState(false);
+
+  // Security check - only Exafy admins can access
+  if (!hasPermission("exafy.admin")) {
+    return (
+      <AppLayout>
+        <SEO title="Admin Bootstrap - Access Denied" />
+        <div className="min-h-screen flex items-center justify-center p-4">
+          <Card className="max-w-md w-full">
+            <CardContent className="flex flex-col items-center space-y-4 p-6">
+              <AlertCircle className="h-16 w-16 text-destructive" />
+              <div className="text-center space-y-2">
+                <h2 className="text-xl font-semibold">Access Restricted</h2>
+                <p className="text-muted-foreground">
+                  You must be an Exafy administrator to access the bootstrap interface.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  const loadCurrentAdmins = async () => {
+    setLoadingAdmins(true);
+    try {
+      const { data, error } = await supabase.auth.admin.listUsers();
+      if (error) throw error;
+
+      const admins = data.users
+        .filter((user: any) => user.app_metadata?.exafy_admin === true)
+        .map((user: any) => ({
+          id: user.id,
+          email: user.email || '',
+          full_name: user.user_metadata?.full_name,
+          is_admin: true
+        }));
+
+      setCurrentAdmins(admins);
+    } catch (error) {
+      console.error('Error loading admins:', error);
+      toast({
+        title: "Error loading admins",
+        description: "Failed to load current administrators",
+        variant: "destructive"
+      });
+    } finally {
+      setLoadingAdmins(false);
+    }
+  };
+
+  const addEmail = () => {
+    if (!emailInput.trim()) return;
+    
+    const email = emailInput.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (adminEmails.includes(email)) {
+      toast({
+        title: "Email already added",
+        description: "This email is already in the list",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setAdminEmails([...adminEmails, email]);
+    setEmailInput("");
+  };
+
+  const removeEmail = (emailToRemove: string) => {
+    setAdminEmails(adminEmails.filter(email => email !== emailToRemove));
+  };
+
+  const runBootstrap = async () => {
+    if (adminEmails.length === 0) {
+      toast({
+        title: "No emails to process",
+        description: "Please add at least one email address",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setBootstrapResults([]);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('bootstrap_admin', {
+        body: { emails: adminEmails }
+      });
+
+      if (error) throw error;
+
+      setBootstrapResults(data.results || []);
+      
+      // Show success notification
+      const successful = data.results?.filter((r: BootstrapResult) => r.status === 'elevated').length || 0;
+      if (successful > 0) {
+        toast({
+          title: "Bootstrap completed",
+          description: `Successfully elevated ${successful} user(s) to admin`,
+        });
+      }
+
+      // Reload current admins
+      await loadCurrentAdmins();
+      
+      // Clear email list after successful bootstrap
+      setAdminEmails([]);
+      
+    } catch (error) {
+      console.error('Bootstrap error:', error);
+      toast({
+        title: "Bootstrap failed",
+        description: error instanceof Error ? error.message : "An unexpected error occurred",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+      setShowConfirmDialog(false);
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'elevated':
+        return <CheckCircle className="h-4 w-4 text-success" />;
+      case 'already_admin':
+        return <Shield className="h-4 w-4 text-primary" />;
+      case 'user_not_found':
+        return <AlertCircle className="h-4 w-4 text-destructive" />;
+      case 'elevation_failed':
+        return <X className="h-4 w-4 text-destructive" />;
+      default:
+        return <Clock className="h-4 w-4 text-muted-foreground" />;
+    }
+  };
+
+  const getStatusVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
+    switch (status) {
+      case 'elevated':
+        return 'default';
+      case 'already_admin':
+        return 'secondary';
+      case 'user_not_found':
+      case 'elevation_failed':
+        return 'destructive';
+      default:
+        return 'outline';
+    }
+  };
+
+  return (
+    <AppLayout>
+      <SEO title="Admin Bootstrap" description="Manage super administrator accounts" />
+      <SubNavigation items={adminNavigation} />
+      
+      <div className="p-6 space-y-6">
+        <StandardHeader
+          title="Admin Bootstrap"
+          description="Elevate users to Exafy super administrators and manage admin accounts"
+          emoji="🛡️"
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Email Management */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Plus className="h-5 w-5" />
+                Add Admin Emails
+              </CardTitle>
+              <CardDescription>
+                Add email addresses to elevate to super administrator status
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-2">
+                <Input
+                  type="email"
+                  placeholder="admin@example.com"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && addEmail()}
+                />
+                <Button onClick={addEmail}>
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+
+              {adminEmails.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium">Emails to process ({adminEmails.length})</h4>
+                  <div className="space-y-1">
+                    {adminEmails.map((email) => (
+                      <div key={email} className="flex items-center justify-between p-2 bg-muted rounded">
+                        <span className="text-sm">{email}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeEmail(email)}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {adminEmails.length > 0 && (
+                <Button 
+                  onClick={() => setShowConfirmDialog(true)}
+                  disabled={isLoading}
+                  className="w-full"
+                >
+                  {isLoading ? "Processing..." : `Bootstrap ${adminEmails.length} Admin(s)`}
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Current Admins */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Current Super Admins
+              </CardTitle>
+              <CardDescription>
+                List of current Exafy super administrators
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <Button 
+                  onClick={loadCurrentAdmins} 
+                  disabled={loadingAdmins}
+                  variant="outline"
+                  className="w-full"
+                >
+                  {loadingAdmins ? "Loading..." : "Refresh Admin List"}
+                </Button>
+                
+                {currentAdmins.length > 0 ? (
+                  <div className="space-y-2">
+                    {currentAdmins.map((admin) => (
+                      <div key={admin.id} className="flex items-center justify-between p-2 bg-muted rounded">
+                        <div>
+                          <div className="text-sm font-medium">{admin.email}</div>
+                          {admin.full_name && (
+                            <div className="text-xs text-muted-foreground">{admin.full_name}</div>
+                          )}
+                        </div>
+                        <Badge variant="secondary">
+                          <Shield className="h-3 w-3 mr-1" />
+                          Admin
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-4 text-muted-foreground">
+                    No administrators loaded. Click refresh to load current admins.
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Bootstrap Results */}
+        {bootstrapResults.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Bootstrap Results</CardTitle>
+              <CardDescription>Results from the last bootstrap operation</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {bootstrapResults.map((result, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 border rounded">
+                    <div className="flex items-center gap-3">
+                      {getStatusIcon(result.status)}
+                      <div>
+                        <div className="font-medium">{result.email}</div>
+                        {result.error && (
+                          <div className="text-sm text-destructive">{result.error}</div>
+                        )}
+                      </div>
+                    </div>
+                    <Badge variant={getStatusVariant(result.status)}>
+                      {result.status.replace('_', ' ')}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Security Notice */}
+        <Alert>
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Security Notice:</strong> Super administrators have full access to all tenant data and administrative functions. 
+            Only elevate trusted team members to this role. All bootstrap actions are logged for security auditing.
+          </AlertDescription>
+        </Alert>
+      </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Admin Bootstrap</DialogTitle>
+            <DialogDescription>
+              You are about to elevate {adminEmails.length} user(s) to Exafy super administrator status.
+              This action cannot be undone through this interface.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Emails to be processed:</p>
+            <div className="bg-muted p-2 rounded text-sm">
+              {adminEmails.map((email, index) => (
+                <div key={email}>{index + 1}. {email}</div>
+              ))}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={runBootstrap} disabled={isLoading}>
+              {isLoading ? "Processing..." : "Confirm Bootstrap"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </AppLayout>
+  );
+}

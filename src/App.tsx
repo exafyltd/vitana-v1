@@ -137,6 +137,7 @@ import PatientRecords from "./pages/admin/PatientRecords";
 import StreamSupervision from "./pages/admin/StreamSupervision";
 import Staff from "./pages/admin/Staff";
 import TenantManagement from "./pages/admin/TenantManagement";
+import Bootstrap from "./pages/admin/Bootstrap";
 import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
 
@@ -804,10 +805,10 @@ const App = () => (
               </ProtectedRoute>
             </AuthGuard>
           } />
-          <Route path="/admin/*" element={
+          <Route path="/admin/bootstrap" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <Admin />
+                <Bootstrap />
               </ProtectedRoute>
             </AuthGuard>
           } />
