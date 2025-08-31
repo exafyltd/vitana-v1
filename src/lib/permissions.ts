@@ -6,7 +6,7 @@ export type Permission =
 export function getPermissions(session: any): Set<Permission> {
   const permissions = new Set<Permission>();
   
-  // SECURITY FIX: Use proper metadata instead of email checking
+  // SECURITY FIX: Use proper metadata instead of insecure email check
   const isExafyAdmin = session?.user?.app_metadata?.exafy_admin === true;
   
   if (isExafyAdmin) {

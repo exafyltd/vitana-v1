@@ -20,13 +20,10 @@ export function useRole() {
     queryKey: ["rolePref", activeTenantId],
     queryFn: async () => {
       if (!activeTenantId) return null;
-      console.log('Fetching role preference for tenant:', activeTenantId);
       
       const { data, error } = await supabase.rpc("get_role_preference", { 
         p_tenant_id: activeTenantId 
       });
-      
-      console.log('Role preference result:', { data, error });
       
       if (error) {
         console.error('Error getting role preference:', error);
@@ -34,7 +31,6 @@ export function useRole() {
       }
       
       const role = data?.[0]?.role ?? null;
-      console.log('Current role from DB:', role);
       return role;
     },
     enabled: !!activeTenantId,
@@ -44,17 +40,12 @@ export function useRole() {
     if (!activeTenantId) return;
     
     try {
-      console.log('Setting role preference:', { activeTenantId, role });
-      
       const { data, error } = await supabase.rpc("set_role_preference", { 
         p_tenant_id: activeTenantId, 
         p_role: role 
       });
       
-      console.log('RPC result:', { data, error });
-      
       if (error) {
-        console.error('RPC error:', error);
         throw error;
       }
       
@@ -64,8 +55,6 @@ export function useRole() {
       await queryClient.invalidateQueries({ 
         queryKey: ["rolePref", activeTenantId] 
       });
-
-      console.log('Role preference set successfully:', role);
 
       // Emit role change event
       window.dispatchEvent(new CustomEvent("role.changed", {
