@@ -1,2 +1,1 @@
-import AuthWorkspace from "./AuthWorkspace";
-export default AuthWorkspace;
+export { Login as default } from "./AuthPages";

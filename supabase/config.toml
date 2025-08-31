@@ -1,16 +1,1 @@
 project_id = "inmkhvwdcuyhnxkgfvsb"
-
-[functions.bootstrap-exafy-admin]
-verify_jwt = false
-
-[functions.create_new_tenant]
-verify_jwt = true
-
-[functions.invite_user]  
-verify_jwt = true
-
-[functions.accept_invite]
-verify_jwt = true
-
-[functions.set_active_tenant]
-verify_jwt = true

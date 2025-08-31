@@ -10,14 +10,11 @@ import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
 import { useRole } from "@/hooks/useRole";
-import { useTenant as useOldTenant } from "@/hooks/useTenant";
-import { useTenant } from "@/contexts/TenantProvider";
-import { useSession } from "@/contexts/SessionProvider";
+import { useTenant } from "@/hooks/useTenant";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
-import { supabase } from "@/integrations/supabase/client";
 
 const sidebarCategories = [
   { title: "Home", path: "/home", icon: LayoutDashboard },
@@ -43,9 +40,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
   const navigate = useNavigate();
   const { open } = useSidebar();
   const { role, hasPermission } = useRole();
-  const { tenant: oldTenant } = useOldTenant();
-  const { tenant, activeTenantId } = useTenant();
-  const { user } = useSession();
+  const { tenant } = useTenant();
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
 
@@ -236,53 +231,35 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           )}
           
           {open ? (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 py-1 px-2 rounded-xl">
-                <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
-                  <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">
-                    {user ? user.email?.charAt(0).toUpperCase() : "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="leading-tight flex-1 text-left">
-                  <div className="text-sm font-medium">{user?.email}</div>
-                  <div className="text-xs text-sidebar-foreground/50">
-                    {tenant?.name || "No workspace"}
+            <ProfileDrawer
+              trigger={
+                <button className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group w-full">
+                  <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+                    <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">
+                      {profile.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="leading-tight flex-1 text-left">
+                    <div className="text-sm font-medium">{profile.displayName}</div>
+                    <div className="text-xs text-sidebar-foreground/50 capitalize">
+                      {profile.role} Member
+                    </div>
                   </div>
-                </div>
-              </div>
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => {
-                  supabase.auth.signOut();
-                  navigate("/");
-                }}
-                className="w-full justify-start text-sidebar-foreground/70 hover:text-foreground hover:bg-sidebar-accent/50"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
-              </Button>
-            </div>
+                </button>
+              }
+            />
           ) : (
-            <div className="flex flex-col items-center gap-2">
-              <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
-                <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">
-                  {user ? user.email?.charAt(0).toUpperCase() : "U"}
-                </AvatarFallback>
-              </Avatar>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                onClick={() => {
-                  supabase.auth.signOut();
-                  navigate("/");
-                }}
-                className="h-8 w-8 text-sidebar-foreground/70 hover:text-foreground hover:bg-sidebar-accent/50"
-                title="Sign Out"
-              >
-                <LogOut className="h-4 w-4" />
-              </Button>
-            </div>
+            <ProfileDrawer
+              trigger={
+                <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto">
+                  <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+                    <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">
+                      {profile.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+              }
+            />
           )}
         </div>
       </SidebarFooter>
@@ -297,23 +274,23 @@ export default function AppLayout({ children }: AppLayoutProps) {
   
   // Controlled sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
-    const stored = getLocalStorageItem("global", "sidebar", "open");
+    const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
     return stored === "true";
   });
 
   // Persist sidebar state changes to localStorage
   const handleSidebarOpenChange = (open: boolean) => {
     setSidebarOpen(open);
-    setLocalStorageItem("global", "sidebar", "open", open.toString());
+    setLocalStorageItem(tenant.id, "sidebar", "open", open.toString());
   };
 
   // Initialize sidebar state from localStorage on mount
   useEffect(() => {
-    const stored = getLocalStorageItem("global", "sidebar", "open");
+    const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
     if (stored !== null) {
       setSidebarOpen(stored === "true");
     }
-  }, []);
+  }, [tenant.id]);
 
   return (
     <div>
