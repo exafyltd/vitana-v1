@@ -49,7 +49,8 @@ export default function Auth() {
 
       if (signUpError) throw signUpError;
 
-      setError('Please check your email for a confirmation link.');
+      // Show success message for email verification
+      setError('✅ Registration successful! Please check your email for a confirmation link to activate your account.');
     } catch (err: any) {
       setError(err.message || 'An error occurred during sign up');
     } finally {
@@ -72,7 +73,13 @@ export default function Auth() {
 
       navigate('/home');
     } catch (err: any) {
-      setError(err.message || 'An error occurred during sign in');
+      if (err.message?.includes('Invalid login credentials')) {
+        setError('Invalid email or password. Please check your credentials and try again.');
+      } else if (err.message?.includes('Email not confirmed')) {
+        setError('Please verify your email address before signing in. Check your inbox for a confirmation link.');
+      } else {
+        setError(err.message || 'An error occurred during sign in');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -141,7 +148,8 @@ export default function Auth() {
                     </div>
                   </div>
                   {error && (
-                    <Alert variant={error.includes('check your email') ? 'default' : 'destructive'}>
+                    <Alert variant={error.startsWith('✅') ? 'default' : error.includes('check your email') ? 'default' : 'destructive'} 
+                           className={error.startsWith('✅') ? 'border-green-500 bg-green-50 text-green-700' : ''}>
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
@@ -204,7 +212,8 @@ export default function Auth() {
                     </div>
                   </div>
                   {error && (
-                    <Alert variant={error.includes('check your email') ? 'default' : 'destructive'}>
+                    <Alert variant={error.startsWith('✅') ? 'default' : error.includes('check your email') ? 'default' : 'destructive'}
+                           className={error.startsWith('✅') ? 'border-green-500 bg-green-50 text-green-700' : ''}>
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}

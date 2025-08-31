@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import AuthGuard from "@/components/AuthGuard";
 import { RTLProvider } from "@/components/RTLProvider";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -158,14 +159,32 @@ const App = () => (
           <Route path="/earthlings" element={<EarthlingsPortal />} />
           <Route path="/community" element={<CommunityPortal />} />
           <Route path="/home" element={
-            <ProtectedRoute requiredRole="community">
-              <Home />
-            </ProtectedRoute>
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
           } />
-          <Route path="/home/context" element={<Context />} />
-          <Route path="/home/actions" element={<Actions />} />
-          <Route path="/home/matches" element={<Matches />} />
-          <Route path="/home/aifeed" element={<AIFeed />} />
+          <Route path="/home/context" element={
+            <AuthGuard>
+              <Context />
+            </AuthGuard>
+          } />
+          <Route path="/home/actions" element={
+            <AuthGuard>
+              <Actions />
+            </AuthGuard>
+          } />
+          <Route path="/home/matches" element={
+            <AuthGuard>
+              <Matches />
+            </AuthGuard>
+          } />
+          <Route path="/home/aifeed" element={
+            <AuthGuard>
+              <AIFeed />
+            </AuthGuard>
+          } />
           
           {/* Backwards compatibility redirects */}
           <Route path="/dashboard" element={<Navigate to="/home" replace />} />
@@ -175,20 +194,68 @@ const App = () => (
           <Route path="/dashboard/aifeed" element={<Navigate to="/home/aifeed" replace />} />
           
           {/* Discover routes */}
-          <Route path="/discover" element={<Discover />} />
-          <Route path="/discover/wellness-services" element={<WellnessServices />} />
-          <Route path="/discover/doctors-coaches" element={<DoctorsCoaches />} />
-          <Route path="/discover/deals-offers" element={<DealsOffers />} />
-          <Route path="/discover/orders" element={<Orders />} />
+          <Route path="/discover" element={
+            <AuthGuard>
+              <Discover />
+            </AuthGuard>
+          } />
+          <Route path="/discover/wellness-services" element={
+            <AuthGuard>
+              <WellnessServices />
+            </AuthGuard>
+          } />
+          <Route path="/discover/doctors-coaches" element={
+            <AuthGuard>
+              <DoctorsCoaches />
+            </AuthGuard>
+          } />
+          <Route path="/discover/deals-offers" element={
+            <AuthGuard>
+              <DealsOffers />
+            </AuthGuard>
+          } />
+          <Route path="/discover/orders" element={
+            <AuthGuard>
+              <Orders />
+            </AuthGuard>
+          } />
           
           {/* Health routes */}
-          <Route path="/health" element={<Health />} />
-          <Route path="/health/pillars" element={<PillarsOfHealth />} />
-          <Route path="/health/services-hub" element={<HealthWellnessServices />} />
-          <Route path="/health/conditions" element={<ConditionsRisks />} />
-          <Route path="/health/education" element={<EducationResources />} />
-          <Route path="/health/biomarker-results" element={<BiomarkerResults />} />
-          <Route path="/health/my-health-tracker" element={<MyHealthTracker />} />
+          <Route path="/health" element={
+            <AuthGuard>
+              <Health />
+            </AuthGuard>
+          } />
+          <Route path="/health/pillars" element={
+            <AuthGuard>
+              <PillarsOfHealth />
+            </AuthGuard>
+          } />
+          <Route path="/health/services-hub" element={
+            <AuthGuard>
+              <HealthWellnessServices />
+            </AuthGuard>
+          } />
+          <Route path="/health/conditions" element={
+            <AuthGuard>
+              <ConditionsRisks />
+            </AuthGuard>
+          } />
+          <Route path="/health/education" element={
+            <AuthGuard>
+              <EducationResources />
+            </AuthGuard>
+          } />
+          <Route path="/health/biomarker-results" element={
+            <AuthGuard>
+              <BiomarkerResults />
+            </AuthGuard>
+          } />
+          <Route path="/health/my-health-tracker" element={
+            <AuthGuard>
+              <MyHealthTracker />
+            </AuthGuard>
+          } />
           
           {/* Health Tracker routes */}
           <Route path="/health-tracker" element={<Navigate to="/health/my-health-tracker" replace />} />
@@ -205,27 +272,107 @@ const App = () => (
           <Route path="/health-tracker/biomarker-results" element={<Navigate to="/health/my-health-tracker" replace />} />
           
           {/* Calendar routes */}
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/calendar/month" element={<Month />} />
-          <Route path="/calendar/week" element={<Week />} />
-          <Route path="/calendar/day" element={<Day />} />
-          <Route path="/calendar/appointments" element={<Appointments />} />
-          <Route path="/calendar/events" element={<CalendarEvents />} />
-          <Route path="/calendar/reminders" element={<Reminders />} />
-          <Route path="/calendar/motivation" element={<Motivation />} />
-          <Route path="/calendar/progress" element={<CalendarProgress />} />
-          <Route path="/calendar/recommendations" element={<CalendarRecommendations />} />
-          
-          <Route path="/comm" element={<Community />} />
-          <Route path="/comm/my-groups" element={<MyGroups />} />
-          <Route path="/comm/my-groups/:id" element={<GroupDetail />} />
-          <Route path="/comm/feed" element={<Feed />} />
-          <Route path="/comm/events" element={<CommunityEvents />} />
-          <Route path="/comm/live-rooms" element={<LiveRooms />} />
-          <Route path="/comm/live-rooms/:roomId/view" element={<LiveRoomViewer />} />
-          <Route path="/comm/media-hub" element={<MediaHub />} />
-          <Route path="/comm/my-business" element={<MyBusiness />} />
-          <Route path="/comm/meetups" element={<Meetups />} />
+          <Route path="/calendar" element={
+            <AuthGuard>
+              <Calendar />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/month" element={
+            <AuthGuard>
+              <Month />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/week" element={
+            <AuthGuard>
+              <Week />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/day" element={
+            <AuthGuard>
+              <Day />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/appointments" element={
+            <AuthGuard>
+              <Appointments />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/events" element={
+            <AuthGuard>
+              <CalendarEvents />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/reminders" element={
+            <AuthGuard>
+              <Reminders />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/motivation" element={
+            <AuthGuard>
+              <Motivation />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/progress" element={
+            <AuthGuard>
+              <CalendarProgress />
+            </AuthGuard>
+          } />
+          <Route path="/calendar/recommendations" element={
+            <AuthGuard>
+              <CalendarRecommendations />
+            </AuthGuard>
+          } />
+
+          <Route path="/comm" element={
+            <AuthGuard>
+              <Community />
+            </AuthGuard>
+          } />
+          <Route path="/comm/my-groups" element={
+            <AuthGuard>
+              <MyGroups />
+            </AuthGuard>
+          } />
+          <Route path="/comm/my-groups/:id" element={
+            <AuthGuard>
+              <GroupDetail />
+            </AuthGuard>
+          } />
+          <Route path="/comm/feed" element={
+            <AuthGuard>
+              <Feed />
+            </AuthGuard>
+          } />
+          <Route path="/comm/events" element={
+            <AuthGuard>
+              <CommunityEvents />
+            </AuthGuard>
+          } />
+          <Route path="/comm/live-rooms" element={
+            <AuthGuard>
+              <LiveRooms />
+            </AuthGuard>
+          } />
+          <Route path="/comm/live-rooms/:roomId/view" element={
+            <AuthGuard>
+              <LiveRoomViewer />
+            </AuthGuard>
+          } />
+          <Route path="/comm/media-hub" element={
+            <AuthGuard>
+              <MediaHub />
+            </AuthGuard>
+          } />
+          <Route path="/comm/my-business" element={
+            <AuthGuard>
+              <MyBusiness />
+            </AuthGuard>
+          } />
+          <Route path="/comm/meetups" element={
+            <AuthGuard>
+              <Meetups />
+            </AuthGuard>
+          } />
           
           {/* Redirect old community routes */}
           <Route path="/community/my-groups" element={<Navigate to="/comm/my-groups" replace />} />
@@ -235,103 +382,435 @@ const App = () => (
           <Route path="/community/media-hub" element={<Navigate to="/comm/media-hub" replace />} />
           <Route path="/community/my-business" element={<Navigate to="/comm/my-business" replace />} />
           
-          <Route path="/ai" element={<AI />} />
-          <Route path="/ai/insights" element={<Insights />} />
-          <Route path="/ai/recommendations" element={<AIRecommendations />} />
-          <Route path="/ai/daily-summary" element={<DailySummary />} />
-          <Route path="/ai/companion" element={<Companion />} />
-          
+          <Route path="/ai" element={
+            <AuthGuard>
+              <AI />
+            </AuthGuard>
+          } />
+          <Route path="/ai/insights" element={
+            <AuthGuard>
+              <Insights />
+            </AuthGuard>
+          } />
+          <Route path="/ai/recommendations" element={
+            <AuthGuard>
+              <AIRecommendations />
+            </AuthGuard>
+          } />
+          <Route path="/ai/daily-summary" element={
+            <AuthGuard>
+              <DailySummary />
+            </AuthGuard>
+          } />
+          <Route path="/ai/companion" element={
+            <AuthGuard>
+              <Companion />
+            </AuthGuard>
+          } />
+
           {/* Redirect legacy /messages routes to /inbox */}
           <Route path="/messages/*" element={<Navigate to="/inbox" replace />} />
-          
-          <Route path="/inbox" element={<Messages />} />
-          <Route path="/inbox/direct" element={<Direct />} />
-          <Route path="/inbox/group" element={<Group />} />
-          <Route path="/inbox/notifications" element={<MessagesNotifications />} />
-          <Route path="/inbox/archived" element={<Archived />} />
-          <Route path="/inbox/reminder" element={<Reminder />} />
-          <Route path="/inbox/inspiration" element={<Inspiration />} />
+
+          <Route path="/inbox" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/direct" element={
+            <AuthGuard>
+              <Direct />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/group" element={
+            <AuthGuard>
+              <Group />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/notifications" element={
+            <AuthGuard>
+              <MessagesNotifications />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/archived" element={
+            <AuthGuard>
+              <Archived />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/reminder" element={
+            <AuthGuard>
+              <Reminder />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/inspiration" element={
+            <AuthGuard>
+              <Inspiration />
+            </AuthGuard>
+          } />
           
           <Route path="/settings" element={
-            <ProtectedRoute requiredRole="community">
-              <Settings />
-            </ProtectedRoute>
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Settings />
+              </ProtectedRoute>
+            </AuthGuard>
           } />
-          <Route path="/settings/privacy" element={<Privacy />} />
-          <Route path="/settings/notifications" element={<SettingsNotifications />} />
-          <Route path="/settings/preferences" element={<Preferences />} />
-          <Route path="/settings/connected-apps" element={<ConnectedApps />} />
+          <Route path="/settings/privacy" element={
+            <AuthGuard>
+              <Privacy />
+            </AuthGuard>
+          } />
+          <Route path="/settings/notifications" element={
+            <AuthGuard>
+              <SettingsNotifications />
+            </AuthGuard>
+          } />
+          <Route path="/settings/preferences" element={
+            <AuthGuard>
+              <Preferences />
+            </AuthGuard>
+          } />
+          <Route path="/settings/connected-apps" element={
+            <AuthGuard>
+              <ConnectedApps />
+            </AuthGuard>
+          } />
           <Route path="/settings/tenant-role" element={
-            <ProtectedRoute requiredRole="community">
-              <TenantRole />
-            </ProtectedRoute>
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <TenantRole />
+              </ProtectedRoute>
+            </AuthGuard>
           } />
-          <Route path="/settings/billing" element={<Billing />} />
-          <Route path="/settings/support" element={<Support />} />
+          <Route path="/settings/billing" element={
+            <AuthGuard>
+              <Billing />
+            </AuthGuard>
+          } />
+          <Route path="/settings/support" element={
+            <AuthGuard>
+              <Support />
+            </AuthGuard>
+          } />
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />
           <Route path="/profile/:id" element={<LegacyProfileRedirect />} />
-          <Route path="/me/profile" element={<EditProfilePage />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/me/profile" element={
+            <AuthGuard>
+              <EditProfilePage />
+            </AuthGuard>
+          } />
+          <Route path="/search" element={
+            <AuthGuard>
+              <Search />
+            </AuthGuard>
+          } />
           <Route path="/u/:handle" element={<PublicProfilePage />} />
-          
+
           {/* New module routes */}
-          <Route path="/wallet" element={<Wallet />} />
-          <Route path="/wallet/balance" element={<Balance />} />
-          <Route path="/wallet/subscriptions" element={<Subscriptions />} />
-          <Route path="/wallet/rewards" element={<Rewards />} />
-          
-          <Route path="/sharing" element={<Sharing />} />
-          <Route path="/sharing/consent" element={<Consent />} />
-          <Route path="/sharing/packages" element={<Packages />} />
-          <Route path="/sharing/smart-package" element={<SmartPackage />} />
-          <Route path="/sharing/marketplace" element={<Marketplace />} />
-          <Route path="/sharing/logs" element={<Logs />} />
-          
-          <Route path="/memory" element={<Memory />} />
-          <Route path="/memory/timeline" element={<Timeline />} />
-          <Route path="/memory/recall" element={<Recall />} />
-          <Route path="/memory/permissions" element={<MemoryPermissions />} />
+          <Route path="/wallet" element={
+            <AuthGuard>
+              <Wallet />
+            </AuthGuard>
+          } />
+          <Route path="/wallet/balance" element={
+            <AuthGuard>
+              <Balance />
+            </AuthGuard>
+          } />
+          <Route path="/wallet/subscriptions" element={
+            <AuthGuard>
+              <Subscriptions />
+            </AuthGuard>
+          } />
+          <Route path="/wallet/rewards" element={
+            <AuthGuard>
+              <Rewards />
+            </AuthGuard>
+          } />
+
+          <Route path="/sharing" element={
+            <AuthGuard>
+              <Sharing />
+            </AuthGuard>
+          } />
+          <Route path="/sharing/consent" element={
+            <AuthGuard>
+              <Consent />
+            </AuthGuard>
+          } />
+          <Route path="/sharing/packages" element={
+            <AuthGuard>
+              <Packages />
+            </AuthGuard>
+          } />
+          <Route path="/sharing/smart-package" element={
+            <AuthGuard>
+              <SmartPackage />
+            </AuthGuard>
+          } />
+          <Route path="/sharing/marketplace" element={
+            <AuthGuard>
+              <Marketplace />
+            </AuthGuard>
+          } />
+          <Route path="/sharing/logs" element={
+            <AuthGuard>
+              <Logs />
+            </AuthGuard>
+          } />
+
+          <Route path="/memory" element={
+            <AuthGuard>
+              <Memory />
+            </AuthGuard>
+          } />
+          <Route path="/memory/timeline" element={
+            <AuthGuard>
+              <Timeline />
+            </AuthGuard>
+          } />
+          <Route path="/memory/recall" element={
+            <AuthGuard>
+              <Recall />
+            </AuthGuard>
+          } />
+          <Route path="/memory/permissions" element={
+            <AuthGuard>
+              <MemoryPermissions />
+            </AuthGuard>
+          } />
           {/* Patient Role Routes */}
-          <Route path="/patient/dashboard" element={<PatientDashboard />} />
-          <Route path="/patient/health" element={<PatientHealth />} />
-          <Route path="/patient/appointments" element={<PatientAppointments />} />
-          <Route path="/patient/results" element={<div className="p-6"><h1 className="text-3xl font-bold">Test Results</h1><p className="text-muted-foreground">Patient test results and lab reports</p></div>} />
-          <Route path="/patient/care-team" element={<div className="p-6"><h1 className="text-3xl font-bold">Care Team</h1><p className="text-muted-foreground">Your healthcare providers and specialists</p></div>} />
-          <Route path="/patient/goals" element={<div className="p-6"><h1 className="text-3xl font-bold">Health Goals</h1><p className="text-muted-foreground">Track and manage your health objectives</p></div>} />
-          <Route path="/patient/insurance" element={<div className="p-6"><h1 className="text-3xl font-bold">Insurance</h1><p className="text-muted-foreground">Insurance information and coverage details</p></div>} />
-          <Route path="/patient/notifications" element={<div className="p-6"><h1 className="text-3xl font-bold">Notifications</h1><p className="text-muted-foreground">Health reminders and alerts</p></div>} />
+          <Route path="/patient/dashboard" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="patient">
+                <PatientDashboard />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/patient/health" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="patient">
+                <PatientHealth />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/patient/appointments" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="patient">
+                <PatientAppointments />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/patient/results" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="patient">
+                <div className="p-6"><h1 className="text-3xl font-bold">Test Results</h1><p className="text-muted-foreground">Patient test results and lab reports</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/patient/care-team" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="patient">
+                <div className="p-6"><h1 className="text-3xl font-bold">Care Team</h1><p className="text-muted-foreground">Your healthcare providers and specialists</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/patient/goals" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="patient">
+                <div className="p-6"><h1 className="text-3xl font-bold">Health Goals</h1><p className="text-muted-foreground">Track and manage your health objectives</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/patient/insurance" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="patient">
+                <div className="p-6"><h1 className="text-3xl font-bold">Insurance</h1><p className="text-muted-foreground">Insurance information and coverage details</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/patient/notifications" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="patient">
+                <div className="p-6"><h1 className="text-3xl font-bold">Notifications</h1><p className="text-muted-foreground">Health reminders and alerts</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* Professional Role Routes */}
-          <Route path="/professional/dashboard" element={<ProfessionalDashboard />} />
-          <Route path="/professional/patients" element={<ProfessionalPatients />} />
-          <Route path="/professional/schedule" element={<div className="p-6"><h1 className="text-3xl font-bold">Schedule</h1><p className="text-muted-foreground">Manage your appointment calendar</p></div>} />
-          <Route path="/professional/tools" element={<div className="p-6"><h1 className="text-3xl font-bold">Clinical Tools</h1><p className="text-muted-foreground">Medical calculators and reference tools</p></div>} />
-          <Route path="/professional/referrals" element={<div className="p-6"><h1 className="text-3xl font-bold">Referrals</h1><p className="text-muted-foreground">Patient referrals and specialist networks</p></div>} />
-          <Route path="/professional/billing" element={<div className="p-6"><h1 className="text-3xl font-bold">Billing</h1><p className="text-muted-foreground">Practice billing and revenue management</p></div>} />
-          <Route path="/professional/profile" element={<div className="p-6"><h1 className="text-3xl font-bold">Professional Profile</h1><p className="text-muted-foreground">Manage your professional credentials and bio</p></div>} />
-          <Route path="/professional/education" element={<div className="p-6"><h1 className="text-3xl font-bold">Continuing Education</h1><p className="text-muted-foreground">CME courses and professional development</p></div>} />
+          <Route path="/professional/dashboard" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="professional">
+                <ProfessionalDashboard />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/professional/patients" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="professional">
+                <ProfessionalPatients />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/professional/schedule" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="professional">
+                <div className="p-6"><h1 className="text-3xl font-bold">Schedule</h1><p className="text-muted-foreground">Manage your appointment calendar</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/professional/tools" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="professional">
+                <div className="p-6"><h1 className="text-3xl font-bold">Clinical Tools</h1><p className="text-muted-foreground">Medical calculators and reference tools</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/professional/referrals" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="professional">
+                <div className="p-6"><h1 className="text-3xl font-bold">Referrals</h1><p className="text-muted-foreground">Patient referrals and specialist networks</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/professional/billing" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="professional">
+                <div className="p-6"><h1 className="text-3xl font-bold">Billing</h1><p className="text-muted-foreground">Practice billing and revenue management</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/professional/profile" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="professional">
+                <div className="p-6"><h1 className="text-3xl font-bold">Professional Profile</h1><p className="text-muted-foreground">Manage your professional credentials and bio</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/professional/education" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="professional">
+                <div className="p-6"><h1 className="text-3xl font-bold">Continuing Education</h1><p className="text-muted-foreground">CME courses and professional development</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* Staff Role Routes */}
-          <Route path="/staff/dashboard" element={<StaffDashboard />} />
-          <Route path="/staff/queue" element={<StaffQueue />} />
-          <Route path="/staff/tasks" element={<div className="p-6"><h1 className="text-3xl font-bold">Daily Tasks</h1><p className="text-muted-foreground">Your assigned tasks and responsibilities</p></div>} />
-          <Route path="/staff/schedule" element={<div className="p-6"><h1 className="text-3xl font-bold">Schedule</h1><p className="text-muted-foreground">Work schedule and shift management</p></div>} />
-          <Route path="/staff/reports" element={<div className="p-6"><h1 className="text-3xl font-bold">Reports</h1><p className="text-muted-foreground">Daily and weekly activity reports</p></div>} />
-          <Route path="/staff/communications" element={<div className="p-6"><h1 className="text-3xl font-bold">Communications</h1><p className="text-muted-foreground">Team messages and announcements</p></div>} />
-          <Route path="/staff/tools" element={<div className="p-6"><h1 className="text-3xl font-bold">Staff Tools</h1><p className="text-muted-foreground">Workflow tools and resources</p></div>} />
-          <Route path="/staff/time" element={<div className="p-6"><h1 className="text-3xl font-bold">Time Tracking</h1><p className="text-muted-foreground">Clock in/out and timesheet management</p></div>} />
+          <Route path="/staff/dashboard" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <StaffDashboard />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/staff/queue" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <StaffQueue />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/staff/tasks" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <div className="p-6"><h1 className="text-3xl font-bold">Daily Tasks</h1><p className="text-muted-foreground">Your assigned tasks and responsibilities</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/staff/schedule" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <div className="p-6"><h1 className="text-3xl font-bold">Schedule</h1><p className="text-muted-foreground">Work schedule and shift management</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/staff/reports" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <div className="p-6"><h1 className="text-3xl font-bold">Reports</h1><p className="text-muted-foreground">Daily and weekly activity reports</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/staff/communications" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <div className="p-6"><h1 className="text-3xl font-bold">Communications</h1><p className="text-muted-foreground">Team messages and announcements</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/staff/tools" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <div className="p-6"><h1 className="text-3xl font-bold">Staff Tools</h1><p className="text-muted-foreground">Workflow tools and resources</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/staff/time" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <div className="p-6"><h1 className="text-3xl font-bold">Time Tracking</h1><p className="text-muted-foreground">Clock in/out and timesheet management</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* Admin Role Routes */}
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/users" element={<div className="p-6"><h1 className="text-3xl font-bold">User Management</h1><p className="text-muted-foreground">Manage system users and permissions</p></div>} />
-          <Route path="/admin/system" element={<div className="p-6"><h1 className="text-3xl font-bold">System Health</h1><p className="text-muted-foreground">Monitor system performance and status</p></div>} />
-          <Route path="/admin/analytics" element={<div className="p-6"><h1 className="text-3xl font-bold">Analytics</h1><p className="text-muted-foreground">Usage statistics and insights</p></div>} />
-          <Route path="/admin/security" element={<div className="p-6"><h1 className="text-3xl font-bold">Security</h1><p className="text-muted-foreground">Security settings and access control</p></div>} />
-          <Route path="/admin/settings" element={<div className="p-6"><h1 className="text-3xl font-bold">System Settings</h1><p className="text-muted-foreground">Global system configuration</p></div>} />
-          
+          <Route path="/admin/dashboard" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/users" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <div className="p-6"><h1 className="text-3xl font-bold">User Management</h1><p className="text-muted-foreground">Manage system users and permissions</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/system" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <div className="p-6"><h1 className="text-3xl font-bold">System Health</h1><p className="text-muted-foreground">Monitor system performance and status</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/analytics" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <div className="p-6"><h1 className="text-3xl font-bold">Analytics</h1><p className="text-muted-foreground">Usage statistics and insights</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/security" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <div className="p-6"><h1 className="text-3xl font-bold">Security</h1><p className="text-muted-foreground">Security settings and access control</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/settings" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <div className="p-6"><h1 className="text-3xl font-bold">System Settings</h1><p className="text-muted-foreground">Global system configuration</p></div>
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+
           {/* Admin Pages - Keep existing admin routes */}
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/*" element={<Admin />} />
+          <Route path="/admin" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <Admin />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/*" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <Admin />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

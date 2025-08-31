@@ -15,7 +15,7 @@ export function useSmartRouting() {
     // Don't redirect while auth is still loading
     if (authLoading) return;
 
-    // Don't redirect if already on a portal page
+    // Don't redirect if already on a portal page or auth page
     const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlings', '/community', '/auth'];
     if (portalPaths.some(path => location.pathname.startsWith(path))) return;
 
