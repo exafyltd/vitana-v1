@@ -48,14 +48,25 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { currentRole, setRole } = useRole();
   const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
   
+  // Debug logging
+  console.log('ProfileDrawer state:', {
+    profileRole: profile.role,
+    currentRole,
+    activeTenantId,
+    membershipRoles,
+    isExafyAdmin
+  });
+  
   // Admin users get access to all roles for supervision purposes
   const availableRoles = isExafyAdmin 
     ? ['community', 'patient', 'professional', 'staff', 'admin'] as UserRole[]
     : membershipRoles || [];
 
   const handleRoleChange = async (newRole: UserRole) => {
+    console.log('Attempting to change role to:', newRole);
     try {
       await setRole(newRole);
+      console.log('Role change completed successfully');
       
       // Navigation logic based on new role
       switch (newRole) {
@@ -125,7 +136,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                   <Shield className="h-4 w-4" />
                   Switch Role {isExafyAdmin && <Badge variant="outline" className="text-xs">Admin Access</Badge>}
                 </label>
-                <Select value={currentRole || availableRoles[0]} onValueChange={handleRoleChange}>
+                <Select value={currentRole || profile.role || availableRoles[0]} onValueChange={handleRoleChange}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
