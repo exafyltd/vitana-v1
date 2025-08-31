@@ -20,11 +20,22 @@ export function useRole() {
     queryKey: ["rolePref", activeTenantId],
     queryFn: async () => {
       if (!activeTenantId) return null;
+      console.log('Fetching role preference for tenant:', activeTenantId);
+      
       const { data, error } = await supabase.rpc("get_role_preference", { 
         p_tenant_id: activeTenantId 
       });
-      if (error) throw error;
-      return data?.[0]?.role ?? null;
+      
+      console.log('Role preference result:', { data, error });
+      
+      if (error) {
+        console.error('Error getting role preference:', error);
+        throw error;
+      }
+      
+      const role = data?.[0]?.role ?? null;
+      console.log('Current role from DB:', role);
+      return role;
     },
     enabled: !!activeTenantId,
   });
@@ -33,14 +44,28 @@ export function useRole() {
     if (!activeTenantId) return;
     
     try {
-      await supabase.rpc("set_role_preference", { 
+      console.log('Setting role preference:', { activeTenantId, role });
+      
+      const { data, error } = await supabase.rpc("set_role_preference", { 
         p_tenant_id: activeTenantId, 
         p_role: role 
       });
       
+      console.log('RPC result:', { data, error });
+      
+      if (error) {
+        console.error('RPC error:', error);
+        throw error;
+      }
+      
+      // Force immediate cache update
+      queryClient.setQueryData(["rolePref", activeTenantId], role);
+      
       await queryClient.invalidateQueries({ 
         queryKey: ["rolePref", activeTenantId] 
       });
+
+      console.log('Role preference set successfully:', role);
 
       // Emit role change event
       window.dispatchEvent(new CustomEvent("role.changed", {
