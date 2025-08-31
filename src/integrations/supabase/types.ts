@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_events: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_type: string
+          id: string
+          tenant_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          tenant_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          tenant_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_events_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lab_test_orders: {
         Row: {
           collection_method: Database["public"]["Enums"]["collection_method"]
@@ -161,24 +196,30 @@ export type Database = {
       }
       memberships: {
         Row: {
-          created_at: string | null
+          created_at: string
+          id: string
           role: Database["public"]["Enums"]["tenant_role"]
           status: string
           tenant_id: string
+          updated_at: string
           user_id: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
+          id?: string
           role?: Database["public"]["Enums"]["tenant_role"]
           status?: string
           tenant_id: string
+          updated_at?: string
           user_id: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
+          id?: string
           role?: Database["public"]["Enums"]["tenant_role"]
           status?: string
           tenant_id?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -315,6 +356,38 @@ export type Database = {
           },
         ]
       }
+      role_preferences: {
+        Row: {
+          id: string
+          role: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_preferences_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenants: {
         Row: {
           created_at: string | null
@@ -403,13 +476,7 @@ export type Database = {
         | "processing"
         | "completed"
         | "cancelled"
-      tenant_role:
-        | "community"
-        | "patient"
-        | "professional"
-        | "staff"
-        | "admin"
-        | "exafy_admin"
+      tenant_role: "community" | "patient" | "professional" | "staff" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -561,14 +628,7 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
-      tenant_role: [
-        "community",
-        "patient",
-        "professional",
-        "staff",
-        "admin",
-        "exafy_admin",
-      ],
+      tenant_role: ["community", "patient", "professional", "staff", "admin"],
     },
   },
 } as const
