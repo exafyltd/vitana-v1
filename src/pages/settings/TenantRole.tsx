@@ -7,178 +7,365 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { settingsNavigation } from "@/config/navigation";
-import { Users, Building2, UserCheck, Crown, Briefcase } from "lucide-react";
+import { Users, Building2, UserCheck, Crown, Briefcase, AlertCircle, CheckCircle2, XCircle } from "lucide-react";
+import { useTenant } from "@/hooks/useTenant";
+import { useRole } from "@/hooks/useRole";
+import { useMemberships } from "@/hooks/useMemberships";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function TenantRole() {
+  const { activeTenantId, tenant, isExafyAdmin, setActiveTenant } = useTenant();
+  const { currentRole, setRole, hasPermission, isLoading: roleLoading } = useRole();
+  const { memberships, roles, isLoading: membershipsLoading } = useMemberships();
+  const { toast } = useToast();
+  
+  const [selectedRole, setSelectedRole] = useState<string>("");
+  const [selectedTenant, setSelectedTenant] = useState<string>("");
+  const [switching, setSwitching] = useState(false);
+
+  const handleRoleSwitch = async () => {
+    if (!selectedRole || !activeTenantId) return;
+    
+    setSwitching(true);
+    try {
+      await setRole(selectedRole as any);
+      toast({
+        title: "Role switched",
+        description: `Successfully switched to ${selectedRole} role`,
+      });
+      setSelectedRole("");
+    } catch (error) {
+      toast({
+        title: "Error switching role",
+        description: "Failed to switch role. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSwitching(false);
+    }
+  };
+
+  const handleTenantSwitch = async () => {
+    if (!selectedTenant || !isExafyAdmin) return;
+    
+    setSwitching(true);
+    try {
+      await setActiveTenant(selectedTenant);
+      toast({
+        title: "Organization switched",
+        description: `Successfully switched to new organization`,
+      });
+      setSelectedTenant("");
+    } catch (error) {
+      toast({
+        title: "Error switching organization",
+        description: "Failed to switch organization. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSwitching(false);
+    }
+  };
+
+  const getRoleDisplayName = (role: string) => {
+    const roleMap: Record<string, string> = {
+      community: "Community Member",
+      patient: "Patient",
+      professional: "Professional",
+      staff: "Staff",
+      admin: "Administrator"
+    };
+    return roleMap[role] || role;
+  };
+
+  const getRoleDescription = (role: string) => {
+    const descriptions: Record<string, string> = {
+      community: "Access community features and social connections",
+      patient: "Full health tracking and medical features",
+      professional: "Professional tools for doctors and coaches",
+      staff: "Staff management and operational features",
+      admin: "Full administrative access and management"
+    };
+    return descriptions[role] || "Access to role-specific features";
+  };
+
+  const getPermissionStatus = (permission: string) => {
+    switch (permission) {
+      case "Community Access":
+        return hasPermission("community") ? "granted" : "denied";
+      case "Health Data Access":
+        return hasPermission("patient") ? "granted" : "denied";
+      case "Professional Tools":
+        return hasPermission("professional") ? "granted" : "denied";
+      case "Staff Features":
+        return hasPermission("staff") ? "granted" : "denied";
+      case "Admin Features":
+        return hasPermission("admin") ? "granted" : "denied";
+      default:
+        return "denied";
+    }
+  };
+
+  const permissions = [
+    "Community Access",
+    "Health Data Access", 
+    "Professional Tools",
+    "Staff Features",
+    "Admin Features"
+  ];
+
+  if (membershipsLoading || roleLoading) {
+    return (
+      <AppLayout>
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto">
+            <div className="animate-pulse space-y-6">
+              <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-48 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO title="Tenant & Role Switcher | Settings" description="Switch between roles and tenants" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-        <StandardHeader 
-          title="Switch roles & tenants!"
-          description="Switch between roles and tenants"
-          emoji="🔄"
-        />
-        
-        {/* Current Context */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UserCheck className="w-5 h-5" />
-              Current Context
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                  <Crown className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Premium Patient</h4>
-                  <p className="text-sm text-muted-foreground">Vitana Health Network</p>
-                </div>
-              </div>
-              <Badge className="bg-green-100 text-green-700">Active</Badge>
-            </div>
-          </CardContent>
-        </Card>
+          <StandardHeader 
+            title="Switch roles & tenants!"
+            description="Manage your context and permissions"
+            emoji="🔄"
+          />
 
-        {/* Role Switcher */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Briefcase className="w-5 h-5" />
-              Switch Role
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Available Roles</label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="patient">Patient</SelectItem>
-                  <SelectItem value="community-member">Community Member</SelectItem>
-                  <SelectItem value="professional">Professional (Doctor/Coach)</SelectItem>
-                  <SelectItem value="staff">Staff/Employee</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 border rounded-lg cursor-pointer hover:bg-muted">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Users className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <h4 className="font-medium">Community Member</h4>
-                </div>
-                <p className="text-sm text-muted-foreground">Access community features and social connections</p>
-                <Badge className="mt-2 bg-blue-100 text-blue-700">Available</Badge>
-              </div>
-
-              <div className="p-4 border rounded-lg cursor-pointer hover:bg-muted">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <UserCheck className="w-4 h-4 text-green-600" />
-                  </div>
-                  <h4 className="font-medium">Patient</h4>
-                </div>
-                <p className="text-sm text-muted-foreground">Full health tracking and medical features</p>
-                <Badge className="mt-2 bg-green-100 text-green-700">Current</Badge>
-              </div>
-            </div>
-
-            <Button className="w-full">Switch Role</Button>
-          </CardContent>
-        </Card>
-
-        {/* Tenant Switcher */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Building2 className="w-5 h-5" />
-              Switch Tenant/Organization
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Available Organizations</label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select an organization" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="vitana-health">Vitana Health Network</SelectItem>
-                  <SelectItem value="wellness-clinic">City Wellness Clinic</SelectItem>
-                  <SelectItem value="fitness-center">Premier Fitness Center</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 border rounded-lg">
+          {/* Admin Notice */}
+          {isExafyAdmin && (
+            <Alert>
+              <Crown className="h-4 w-4" />
+              <AlertDescription>
+                You are an Exafy super administrator. You can switch between organizations and manage all tenants.
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          {/* Current Context */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <UserCheck className="w-5 h-5" />
+                Current Context
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                    <Building2 className="w-4 h-4 text-primary-foreground" />
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                    <Crown className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <h4 className="font-medium">Vitana Health Network</h4>
-                    <p className="text-sm text-muted-foreground">Primary healthcare network</p>
+                    <h4 className="font-medium">{currentRole ? getRoleDisplayName(currentRole) : "No Role Selected"}</h4>
+                    <p className="text-sm text-muted-foreground">{tenant?.name || "No Organization"}</p>
                   </div>
                 </div>
                 <Badge className="bg-green-100 text-green-700">Active</Badge>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Building2 className="w-4 h-4 text-blue-600" />
-                  </div>
+          {/* Role Switcher */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Briefcase className="w-5 h-5" />
+                Switch Role
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {roles && roles.length > 0 ? (
+                <>
                   <div>
-                    <h4 className="font-medium">City Wellness Clinic</h4>
-                    <p className="text-sm text-muted-foreground">Local wellness provider</p>
+                    <label className="text-sm font-medium mb-2 block">Available Roles</label>
+                    <Select value={selectedRole} onValueChange={setSelectedRole}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {roles.map((role) => (
+                          <SelectItem key={role} value={role}>
+                            {getRoleDisplayName(role)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
-                </div>
-                <Button variant="outline" size="sm">Switch</Button>
-              </div>
-            </div>
 
-            <Button className="w-full">Switch Organization</Button>
-          </CardContent>
-        </Card>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {roles.map((role) => (
+                      <div 
+                        key={role}
+                        className={`p-4 border rounded-lg cursor-pointer hover:bg-muted ${
+                          currentRole === role ? 'border-primary bg-primary/5' : ''
+                        }`}
+                        onClick={() => setSelectedRole(role)}
+                      >
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                            currentRole === role ? 'bg-primary text-primary-foreground' : 'bg-blue-100'
+                          }`}>
+                            <Users className={`w-4 h-4 ${
+                              currentRole === role ? 'text-primary-foreground' : 'text-blue-600'
+                            }`} />
+                          </div>
+                          <h4 className="font-medium">{getRoleDisplayName(role)}</h4>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{getRoleDescription(role)}</p>
+                        <Badge className={`mt-2 ${
+                          currentRole === role 
+                            ? 'bg-green-100 text-green-700' 
+                            : 'bg-blue-100 text-blue-700'
+                        }`}>
+                          {currentRole === role ? 'Current' : 'Available'}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
 
-        {/* Role Permissions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Role Permissions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                <span className="font-medium">Community Access</span>
-                <Badge className="bg-green-100 text-green-700">Granted</Badge>
+                  <Button 
+                    className="w-full" 
+                    onClick={handleRoleSwitch}
+                    disabled={!selectedRole || switching || selectedRole === currentRole}
+                  >
+                    {switching ? "Switching..." : "Switch Role"}
+                  </Button>
+                </>
+              ) : (
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    You don't have any role memberships yet. Contact an administrator to get access.
+                  </AlertDescription>
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Tenant Switcher - Only for Exafy Admins */}
+          {isExafyAdmin && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="w-5 h-5" />
+                  Switch Organization (Admin Only)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {memberships && memberships.length > 0 ? (
+                  <>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Available Organizations</label>
+                      <Select value={selectedTenant} onValueChange={setSelectedTenant}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select an organization" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {memberships.map((membership) => (
+                            <SelectItem key={membership.tenant_id} value={membership.tenant_id}>
+                              {membership.tenants.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-3">
+                      {memberships.map((membership) => (
+                        <div 
+                          key={membership.tenant_id}
+                          className={`flex items-center justify-between p-3 border rounded-lg ${
+                            activeTenantId === membership.tenant_id ? 'border-primary bg-primary/5' : ''
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              activeTenantId === membership.tenant_id ? 'bg-primary' : 'bg-blue-100'
+                            }`}>
+                              <Building2 className={`w-4 h-4 ${
+                                activeTenantId === membership.tenant_id ? 'text-primary-foreground' : 'text-blue-600'
+                              }`} />
+                            </div>
+                            <div>
+                              <h4 className="font-medium">{membership.tenants.name}</h4>
+                              <p className="text-sm text-muted-foreground">Role: {getRoleDisplayName(membership.role)}</p>
+                            </div>
+                          </div>
+                          <Badge className={
+                            activeTenantId === membership.tenant_id
+                              ? "bg-green-100 text-green-700"
+                              : "bg-gray-100 text-gray-700"
+                          }>
+                            {activeTenantId === membership.tenant_id ? 'Active' : 'Available'}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button 
+                      className="w-full" 
+                      onClick={handleTenantSwitch}
+                      disabled={!selectedTenant || switching || selectedTenant === activeTenantId}
+                    >
+                      {switching ? "Switching..." : "Switch Organization"}
+                    </Button>
+                  </>
+                ) : (
+                  <Alert>
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>
+                      No organization memberships found.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Role Permissions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Current Role Permissions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {permissions.map((permission) => {
+                  const status = getPermissionStatus(permission);
+                  return (
+                    <div key={permission} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                      <span className="font-medium">{permission}</span>
+                      <div className="flex items-center gap-2">
+                        {status === "granted" ? (
+                          <>
+                            <CheckCircle2 className="w-4 h-4 text-green-600" />
+                            <Badge className="bg-green-100 text-green-700">Granted</Badge>
+                          </>
+                        ) : (
+                          <>
+                            <XCircle className="w-4 h-4 text-gray-400" />
+                            <Badge className="bg-gray-100 text-gray-700">Not Available</Badge>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                <span className="font-medium">Health Data Access</span>
-                <Badge className="bg-green-100 text-green-700">Full Access</Badge>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                <span className="font-medium">Professional Tools</span>
-                <Badge className="bg-gray-100 text-gray-700">Not Available</Badge>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                <span className="font-medium">Admin Features</span>
-                <Badge className="bg-gray-100 text-gray-700">Not Available</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </AppLayout>
