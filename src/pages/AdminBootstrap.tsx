@@ -44,12 +44,15 @@ const AdminBootstrap = () => {
         throw bootstrapError;
       }
 
-      setSuccess('Admin privileges granted successfully! Redirecting to admin dashboard...');
+      setSuccess('Admin privileges granted successfully! Please sign out and back in to refresh your session.');
       
-      // Redirect to admin dashboard after a delay
+      // Force refresh the auth session
+      await supabase.auth.refreshSession();
+      
+      // Redirect after a delay to allow user to see the message
       setTimeout(() => {
         navigate('/admin-dashboard');
-      }, 2000);
+      }, 3000);
 
     } catch (err: any) {
       console.error('Bootstrap error:', err);

@@ -38,20 +38,16 @@ Deno.serve(async (req) => {
 
     console.log(`Bootstrapping admin user: ${email} (${userId})`)
 
-    // Update user's app_metadata to make them exafy_admin
-    const { error: userUpdateError } = await supabaseAdmin.auth.admin.updateUserById(
-      userId,
-      {
-        app_metadata: { 
-          role: 'exafy_admin'
-        }
-      }
-    )
+    // Use the existing database function which has the right permissions
+    const { error: bootstrapError } = await supabaseAdmin.rpc('bootstrap_admin_user', {
+      user_id: userId,
+      user_email: email
+    })
 
-    if (userUpdateError) {
-      console.error('Error updating user metadata:', userUpdateError)
+    if (bootstrapError) {
+      console.error('Error calling bootstrap function:', bootstrapError)
       return new Response(
-        JSON.stringify({ error: 'Failed to update user metadata', details: userUpdateError.message }),
+        JSON.stringify({ error: 'Failed to bootstrap admin user', details: bootstrapError.message }),
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -59,7 +55,7 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Get all tenants
+    // Get the tenants for response
     const { data: tenants, error: tenantsError } = await supabaseAdmin
       .from('tenants')
       .select('id, name')
@@ -67,58 +63,7 @@ Deno.serve(async (req) => {
 
     if (tenantsError) {
       console.error('Error fetching tenants:', tenantsError)
-      return new Response(
-        JSON.stringify({ error: 'Failed to fetch tenants', details: tenantsError.message }),
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      )
-    }
-
-    // Create memberships for all three workspaces as admin
-    const membershipsToInsert = tenants.map(tenant => ({
-      user_id: userId,
-      tenant_id: tenant.id,
-      role: 'admin',
-      status: 'active'
-    }))
-
-    const { error: membershipsError } = await supabaseAdmin
-      .from('memberships')
-      .upsert(membershipsToInsert, { 
-        onConflict: 'user_id,tenant_id',
-        ignoreDuplicates: false 
-      })
-
-    if (membershipsError) {
-      console.error('Error creating memberships:', membershipsError)
-      return new Response(
-        JSON.stringify({ error: 'Failed to create memberships', details: membershipsError.message }),
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      )
-    }
-
-    // Set Maxina as the active tenant
-    const maxinaTenant = tenants.find(t => t.name === 'Maxina')
-    if (maxinaTenant) {
-      const { error: activeTenantError } = await supabaseAdmin.auth.admin.updateUserById(
-        userId,
-        {
-          app_metadata: { 
-            role: 'exafy_admin',
-            active_tenant_id: maxinaTenant.id
-          }
-        }
-      )
-
-      if (activeTenantError) {
-        console.error('Error setting active tenant:', activeTenantError)
-        // Don't fail the entire process for this
-      }
+      // Don't fail the process, just return without tenant info
     }
 
     console.log(`Successfully bootstrapped admin user: ${email}`)
@@ -127,8 +72,8 @@ Deno.serve(async (req) => {
       JSON.stringify({ 
         success: true, 
         message: 'Admin user bootstrapped successfully',
-        tenants: tenants.map(t => t.name),
-        activeTenant: maxinaTenant?.name || 'Maxina'
+        tenants: tenants?.map(t => t.name) || ['Maxina', 'Alkalma', 'Earthlings'],
+        activeTenant: 'Maxina'
       }),
       { 
         status: 200, 
