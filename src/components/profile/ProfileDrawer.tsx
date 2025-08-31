@@ -68,20 +68,29 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
       await setRole(newRole);
       console.log('Role change completed successfully');
       
-      // Navigation logic based on new role
-      switch (newRole) {
-        case "admin":
-        case "staff":
-          navigate("/admin");
-          break;
-        case "professional":
-          navigate("/dashboard"); 
-          break;
-        case "patient":
-        case "community":
-          navigate("/dashboard");
-          break;
+      // Close drawer immediately after role change
+      const drawerCloseButton = document.querySelector('[data-vaul-drawer-close]') as HTMLButtonElement;
+      if (drawerCloseButton) {
+        drawerCloseButton.click();
       }
+      
+      // Small delay to ensure drawer closes before navigation
+      setTimeout(() => {
+        // Navigation logic based on new role
+        switch (newRole) {
+          case "admin":
+          case "staff":
+            navigate("/admin");
+            break;
+          case "professional":
+            navigate("/dashboard"); 
+            break;
+          case "patient":
+          case "community":
+            navigate("/dashboard");
+            break;
+        }
+      }, 100);
     } catch (error) {
       console.error('Error setting role:', error);
     }
