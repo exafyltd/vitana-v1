@@ -29,14 +29,14 @@ export const calendarNavigation = [
 ];
 
 export const communityNavigation = [
-  { id: "overview", name: "Overview", path: "/community" },
-  { id: "my-groups", name: "My Groups", path: "/community/my-groups" },
-  { id: "feed", name: "Feed", path: "/community/feed" },
-  { id: "events", name: "Events", path: "/community/events" },
-  { id: "live-rooms", name: "Live Rooms", path: "/community/live-rooms" },
-  { id: "media-hub", name: "Media Hub", path: "/community/media-hub" },
-  { id: "my-business", name: "My Business", path: "/community/my-business" },
-  { id: "meetups", name: "Meetups", path: "/community/meetups" },
+  { id: "overview", name: "Overview", path: "/comm" },
+  { id: "my-groups", name: "My Groups", path: "/comm/my-groups" },
+  { id: "feed", name: "Feed", path: "/comm/feed" },
+  { id: "events", name: "Events", path: "/comm/events" },
+  { id: "live-rooms", name: "Live Rooms", path: "/comm/live-rooms" },
+  { id: "media-hub", name: "Media Hub", path: "/comm/media-hub" },
+  { id: "my-business", name: "My Business", path: "/comm/my-business" },
+  { id: "meetups", name: "Meetups", path: "/comm/meetups" },
 ];
 
 export const discoverNavigation = [

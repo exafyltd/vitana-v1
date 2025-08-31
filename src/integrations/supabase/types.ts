@@ -469,6 +469,10 @@ export type Database = {
         Args: { p_role: string; p_tenant_id: string }
         Returns: undefined
       }
+      switch_to_tenant_by_slug: {
+        Args: { p_tenant_slug: string }
+        Returns: undefined
+      }
     }
     Enums: {
       collection_method: "home_kit" | "lab_facility"
