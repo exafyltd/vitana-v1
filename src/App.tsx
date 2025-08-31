@@ -119,6 +119,7 @@ import Queue from "./pages/admin/Queue";
 import PatientRecords from "./pages/admin/PatientRecords";
 import StreamSupervision from "./pages/admin/StreamSupervision";
 import Staff from "./pages/admin/Staff";
+import TenantManagement from "./pages/admin/TenantManagement";
 import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
 
@@ -287,6 +288,11 @@ const App = () => (
           <Route path="/admin/reports" element={
             <ProtectedRoute requiredRole="staff">
               <Reports />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/tenant-management" element={
+            <ProtectedRoute requiredRole="staff">
+              <TenantManagement />
             </ProtectedRoute>
           } />
           <Route path="/admin/audit" element={

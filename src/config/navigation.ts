@@ -91,6 +91,7 @@ export const adminNavigation = [
   { id: "patient-records", name: "Patient Record Viewer", path: "/admin/patient-records" },
   { id: "stream-supervision", name: "Stream Supervision", path: "/admin/stream-supervision" },
   { id: "staff", name: "Staff Directory & Scheduling", path: "/admin/staff" },
+  { id: "tenant-management", name: "Tenant Management", path: "/admin/tenant-management" },
   { id: "reports", name: "Reports & KPIs", path: "/admin/reports" },
   { id: "audit", name: "Audit Logs & Compliance", path: "/admin/audit" },
 ];
@@ -100,7 +101,6 @@ export const settingsNavigation = [
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },
   { id: "privacy", name: "Privacy", path: "/settings/privacy" },
   { id: "connected-apps", name: "Connected Apps & Integrations", path: "/settings/connected-apps" },
-  { id: "tenant-role", name: "Tenant & Role Switcher", path: "/settings/tenant-role" },
   { id: "billing", name: "Billing", path: "/settings/billing" },
   { id: "support", name: "Support", path: "/settings/support" },
 ];
