@@ -25,23 +25,36 @@ const AdminBootstrap = () => {
     setSuccess(null);
 
     try {
-      // Get current user
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      // Get current session and user
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
-      if (userError || !user) {
-        throw new Error('You need to be logged in to bootstrap admin privileges');
+      console.log('Session check:', { session, sessionError });
+      
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        throw new Error(`Session error: ${sessionError.message}`);
+      }
+      
+      if (!session || !session.user) {
+        throw new Error('You need to be logged in to bootstrap admin privileges. Please sign in first.');
       }
 
+      const user = session.user;
+      console.log('Bootstrap attempt for user:', { id: user.id, email: user.email });
+
       // Call the bootstrap function
-      const { error: bootstrapError } = await supabase.functions.invoke('bootstrap-exafy-admin', {
+      const { data: bootstrapData, error: bootstrapError } = await supabase.functions.invoke('bootstrap-exafy-admin', {
         body: { 
           userId: user.id,
           email: user.email 
         }
       });
 
+      console.log('Bootstrap function response:', { data: bootstrapData, error: bootstrapError });
+
       if (bootstrapError) {
-        throw bootstrapError;
+        console.error('Bootstrap function error:', bootstrapError);
+        throw new Error(`Bootstrap failed: ${bootstrapError.message}`);
       }
 
       setSuccess('Admin privileges granted successfully! Please sign out and back in to refresh your session.');
