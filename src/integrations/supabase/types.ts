@@ -302,12 +302,17 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
+          bio: string | null
+          cover_url: string | null
           created_at: string
           date_of_birth: string | null
+          display_name: string | null
           email: string | null
           emergency_contact_name: string | null
           emergency_contact_phone: string | null
           full_name: string | null
+          handle: string | null
           id: string
           medical_conditions: string[] | null
           medications: string[] | null
@@ -317,12 +322,17 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          cover_url?: string | null
           created_at?: string
           date_of_birth?: string | null
+          display_name?: string | null
           email?: string | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
           full_name?: string | null
+          handle?: string | null
           id?: string
           medical_conditions?: string[] | null
           medications?: string[] | null
@@ -332,12 +342,17 @@ export type Database = {
           user_id: string
         }
         Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          cover_url?: string | null
           created_at?: string
           date_of_birth?: string | null
+          display_name?: string | null
           email?: string | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
           full_name?: string | null
+          handle?: string | null
           id?: string
           medical_conditions?: string[] | null
           medications?: string[] | null
