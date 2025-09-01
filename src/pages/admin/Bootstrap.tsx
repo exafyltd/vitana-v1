@@ -65,19 +65,14 @@ export default function Bootstrap() {
   const loadCurrentAdmins = async () => {
     setLoadingAdmins(true);
     try {
-      const { data, error } = await supabase.auth.admin.listUsers();
+      const { data, error } = await supabase.functions.invoke('list_super_admins');
       if (error) throw error;
 
-      const admins = data.users
-        .filter((user: any) => user.app_metadata?.exafy_admin === true)
-        .map((user: any) => ({
-          id: user.id,
-          email: user.email || '',
-          full_name: user.user_metadata?.full_name,
-          is_admin: true
-        }));
-
-      setCurrentAdmins(admins);
+      setCurrentAdmins(data.admins || []);
+      toast({
+        title: "Admins loaded",
+        description: `Found ${data.admins?.length || 0} super administrators`,
+      });
     } catch (error) {
       console.error('Error loading admins:', error);
       toast({
@@ -87,6 +82,31 @@ export default function Bootstrap() {
       });
     } finally {
       setLoadingAdmins(false);
+    }
+  };
+
+  const removeAdmin = async (userId: string, email: string) => {
+    try {
+      const { data, error } = await supabase.functions.invoke('remove_super_admin', {
+        body: { user_id: userId }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Admin removed",
+        description: `${email} is no longer a super administrator`,
+      });
+
+      // Reload the admin list
+      await loadCurrentAdmins();
+    } catch (error) {
+      console.error('Error removing admin:', error);
+      toast({
+        title: "Error removing admin",
+        description: error instanceof Error ? error.message : "Failed to remove administrator",
+        variant: "destructive"
+      });
     }
   };
 
@@ -303,10 +323,20 @@ export default function Bootstrap() {
                             <div className="text-xs text-muted-foreground">{admin.full_name}</div>
                           )}
                         </div>
-                        <Badge variant="secondary">
-                          <Shield className="h-3 w-3 mr-1" />
-                          Admin
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="secondary">
+                            <Shield className="h-3 w-3 mr-1" />
+                            Admin
+                          </Badge>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeAdmin(admin.id, admin.email)}
+                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>
