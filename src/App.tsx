@@ -45,6 +45,7 @@ import ProfessionalPatients from "./pages/professional/Patients";
 import StaffDashboard from "./pages/staff/Dashboard";
 import StaffQueue from "./pages/staff/Queue";
 import AdminDashboard from "./pages/admin/Dashboard";
+import TenantManagement from "./pages/admin/TenantManagement";
 
 // Home sub-pages
 import Context from "./pages/home/Context";
@@ -136,7 +137,6 @@ import Queue from "./pages/admin/Queue";
 import PatientRecords from "./pages/admin/PatientRecords";
 import StreamSupervision from "./pages/admin/StreamSupervision";
 import Staff from "./pages/admin/Staff";
-import TenantManagement from "./pages/admin/TenantManagement";
 import Bootstrap from "./pages/admin/Bootstrap";
 import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
@@ -809,6 +809,13 @@ const App = () => (
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
                 <Bootstrap />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/tenant-management" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <TenantManagement />
               </ProtectedRoute>
             </AuthGuard>
           } />
