@@ -35,7 +35,7 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
   const navigate = useNavigate();
   const { open } = useSidebar();
   const { currentRole, hasPermission } = useRole();
-  const { tenant } = useTenant();
+  const { tenant, isExafyAdmin } = useTenant();
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { signOut } = useAuth();
@@ -83,7 +83,13 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
   };
 
   const getTenantDisplayName = () => {
-    switch (tenant?.name) {
+    // Show "Exafy" for Exafy admins
+    if (isExafyAdmin) {
+      return 'Exafy';
+    }
+    
+    // Show proper tenant names for tenant users
+    switch (tenant?.name?.toLowerCase()) {
       case 'maxina': return 'Maxina';
       case 'alkalma': return 'AlKalma';
       case 'earthlings': return 'Earthlings';
