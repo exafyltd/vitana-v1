@@ -216,12 +216,9 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           </SidebarGroup>
         </div>
       </SidebarContent>
-      <SidebarFooter className="bg-sidebar border-t rounded-tr-2xl">
+      <SidebarFooter className="bg-sidebar border-t border-sidebar-border">
         <div className="px-2 py-3 space-y-3">
-          {/* Debug: Always visible element */}
-          <div className="text-xs text-red-500 bg-red-100 p-1 rounded">
-            Footer Debug: Profile = {profile?.displayName || 'undefined'}, Open = {open ? 'true' : 'false'}
-          </div>
+          {/* Stream Toggle Button */}
           {open ? (
             <Button 
               onClick={handleStreamToggle} 
@@ -244,18 +241,19 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
             </Button>
           )}
           
+          {/* Profile Section */}
           {open ? (
             <ProfileDrawer
               trigger={
-                <button className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group w-full">
+                <button className="flex items-center gap-2 py-2 px-2 rounded-xl hover:bg-sidebar-accent/50 transition-all hover:shadow-sm w-full">
                   <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
                     <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">
-                      {profile.initials}
+                      {profile?.initials || "U"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="leading-tight flex-1 text-left">
-                    <div className="text-sm font-medium">{profile.displayName}</div>
-                    <div className="text-xs text-sidebar-foreground/50 capitalize">
+                    <div className="text-sm font-medium text-sidebar-foreground">{profile?.displayName || "User"}</div>
+                    <div className="text-xs text-sidebar-foreground/70 capitalize">
                       {currentRole === 'admin' ? 'Administrator' : 
                        currentRole === 'staff' ? 'Staff' :
                        currentRole === 'professional' ? 'Professional' :
@@ -272,7 +270,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
                 <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto">
                   <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
                     <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">
-                      {profile.initials}
+                      {profile?.initials || "U"}
                     </AvatarFallback>
                   </Avatar>
                 </button>
