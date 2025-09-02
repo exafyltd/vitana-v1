@@ -174,8 +174,8 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <GlobalSearch open={open} />
         </div>
       </SidebarHeader>
-      <SidebarContent className="flex-1">
-        <div className="px-2 py-2">
+      <SidebarContent className="flex flex-col">
+        <div className="flex-1 px-2 py-2">
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
