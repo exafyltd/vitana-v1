@@ -122,7 +122,7 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
           {/* Autopilot Button */}
           <Button 
             variant="ghost" 
-            className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+            className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg ml-[76px]"
             title={`${pendingCount} Autopilot suggestions`}
             onClick={() => setAutopilotPopupOpen(true)}
           >
