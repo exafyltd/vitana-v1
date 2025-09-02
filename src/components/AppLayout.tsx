@@ -110,63 +110,51 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               )}
             </div>
           </button>
-          {/* Dedicated Autopilot Cluster */}
-          <div className={`bg-[#2A2A2A] rounded-lg p-1.5 flex items-center transition-all duration-200 max-w-full ${
-            open ? 'gap-2 flex-row' : 'flex-col gap-1 w-12'
-          }`}>
-            {/* Unified Autopilot Button */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className={`relative shrink-0 transition-all duration-200 hover:bg-white/10 flex items-center justify-center ${
-                    open ? 'h-8 w-8 rounded-lg' : 'h-8 w-8 rounded-full'
-                  }`}
-                  title={`${pendingCount} Autopilot suggestions`}
-                >
-                  <Plane className="h-4 w-4 text-destructive drop-shadow-sm transition-all duration-200" />
-                  {pendingCount > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground transition-all duration-200 h-4 w-4 text-[10px] min-w-[16px]"
-                    >
-                      {pendingCount > 9 ? '9+' : pendingCount}
-                    </Badge>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 p-4 bg-popover border border-border shadow-lg z-50" align="end" sideOffset={8}>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Plane className="h-4 w-4 text-destructive" />
-                    <h3 className="font-medium">Autopilot Preview</h3>
-                  </div>
-                  <div className="space-y-2">
-                    {getLatestActions(2).map((action) => (
-                      <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
-                        <div className="font-medium">{action.title}</div>
-                        <div className="text-xs text-muted-foreground">{action.reason}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <Button 
-                    onClick={() => setAutopilotPopupOpen(true)} 
-                    className="w-full" 
-                    size="sm"
+          {/* Autopilot Button */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button 
+                variant="ghost" 
+                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+                title={`${pendingCount} Autopilot suggestions`}
+              >
+                <Plane className="h-4 w-4 text-destructive" />
+                {pendingCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
                   >
-                    View All ({pendingCount})
-                  </Button>
+                    {pendingCount > 9 ? '9+' : pendingCount}
+                  </Badge>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80 p-4 bg-popover border border-border shadow-lg z-50" align="end" sideOffset={8}>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Plane className="h-4 w-4 text-destructive" />
+                  <h3 className="font-medium">Autopilot Preview</h3>
                 </div>
-              </PopoverContent>
-            </Popover>
-            
-            {/* Sidebar Toggle Chevron - positioned to stay within sidebar */}
-            <div className="flex items-center">
-              <SidebarTrigger className={`shrink-0 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-white/10 transition-all duration-200 ${
-                open ? 'rounded-lg h-6 w-6' : 'rounded h-4 w-4 opacity-70 hover:opacity-100'
-              }`} />
-            </div>
-          </div>
+                <div className="space-y-2">
+                  {getLatestActions(2).map((action) => (
+                    <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
+                      <div className="font-medium">{action.title}</div>
+                      <div className="text-xs text-muted-foreground">{action.reason}</div>
+                    </div>
+                  ))}
+                </div>
+                <Button 
+                  onClick={() => setAutopilotPopupOpen(true)} 
+                  className="w-full" 
+                  size="sm"
+                >
+                  View All ({pendingCount})
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
+          
+          <SidebarTrigger />
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
