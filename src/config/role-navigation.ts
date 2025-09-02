@@ -17,7 +17,7 @@ interface NavigationItem {
 // Community Role Navigation - Social platform focused
 export const communityNavigation: NavigationItem[] = [
   { title: "Home", path: "/home", icon: LayoutDashboard },
-  { title: "Community", path: "/community", icon: MessageSquare },
+  { title: "Community", path: "/comm", icon: MessageSquare },
   { title: "Discover", path: "/discover", icon: Search },
   { title: "Inbox", path: "/inbox", icon: MessageSquare },
   { title: "Health", path: "/health", icon: Heart },
