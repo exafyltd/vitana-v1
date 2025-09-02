@@ -192,37 +192,46 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
     <Popover open={showSuggestions && filteredSuggestions.length > 0 && sidebarOpen} onOpenChange={setShowSuggestions}>
       <PopoverTrigger asChild>
         <div className="relative w-full">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
-            <Input
-              ref={inputRef}
-              type="text"
-              placeholder={sidebarOpen ? "Search members, groups, content…" : "Click to expand and search"}
-              value={sidebarOpen ? query : ""}
-              onChange={(e) => sidebarOpen && setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onClick={handleInputClick}
-              readOnly={!sidebarOpen}
-              className={cn(
-                "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
-                "bg-sidebar-accent/50 border border-sidebar-border/50",
-                "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
-                "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
-                "hover:bg-sidebar-accent/70 transition-colors",
-                !sidebarOpen && "cursor-pointer"
+          {sidebarOpen ? (
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
+              <Input
+                ref={inputRef}
+                type="text"
+                placeholder="Search members, groups, content…"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className={cn(
+                  "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
+                  "bg-sidebar-accent/50 border border-sidebar-border/50",
+                  "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
+                  "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
+                  "hover:bg-sidebar-accent/70 transition-colors"
+                )}
+              />
+              {query && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => handleSearch()}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
+                >
+                  <Search className="h-3 w-3" />
+                </Button>
               )}
-            />
-            {!open && query && sidebarOpen && (
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handleSearch()}
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
-              >
-                <Search className="h-3 w-3" />
-              </Button>
-            )}
-          </div>
+            </div>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleInputClick}
+              className="w-10 h-10 rounded-lg hover:bg-sidebar-accent/70 transition-colors"
+              title="Search"
+            >
+              <Search className="h-4 w-4 text-sidebar-foreground/70" />
+            </Button>
+          )}
         </div>
       </PopoverTrigger>
 
