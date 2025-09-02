@@ -24,8 +24,9 @@ export function useSmartRouting() {
       // Allow access to public pages
       if (location.pathname === '/' || location.pathname === '/auth') return;
       
-      // Redirect unauthenticated users trying to access protected pages
-      navigate('/auth');
+      // Redirect unauthenticated users trying to access protected pages to auth
+      // Use replace to avoid back button issues during logout
+      navigate('/auth', { replace: true });
       return;
     }
 

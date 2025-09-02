@@ -48,6 +48,8 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { currentRole, setRole } = useRole();
   const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
   
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+  
   // Admin users get access to all roles for supervision purposes
   const availableRoles = isExafyAdmin 
     ? ['community', 'patient', 'professional', 'staff', 'admin'] as UserRole[]
@@ -86,8 +88,15 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   };
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
+    try {
+      setIsLoggingOut(true);
+      await signOut();
+      // Don't navigate immediately - let the auth state change handle routing
+      // The useSmartRouting hook will redirect to /auth when user becomes null
+    } catch (error) {
+      console.error('Error during logout:', error);
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -155,13 +164,14 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
           <Button 
             variant="outline" 
             onClick={handleSignOut}
+            disabled={isLoggingOut}
             className="w-full"
           >
             <LogOut className="mr-2 h-4 w-4" />
-            Sign Out
+            {isLoggingOut ? "Signing Out..." : "Sign Out"}
           </Button>
           <DrawerClose asChild>
-            <Button variant="ghost">Cancel</Button>
+            <Button variant="ghost" disabled={isLoggingOut}>Cancel</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
