@@ -80,10 +80,11 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
   };
 
   const getTenantDisplayName = () => {
-    switch (tenant?.name) {
+    switch (tenant?.name?.toLowerCase()) {
       case 'maxina': return 'Maxina';
       case 'alkalma': return 'AlKalma';
       case 'earthlings': return 'Earthlings';
+      case 'exafy': return 'Exafy';
       default: return tenant?.name || 'Community';
     }
   };
@@ -173,8 +174,8 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           <GlobalSearch open={open} />
         </div>
       </SidebarHeader>
-      <SidebarContent className="flex flex-col">
-        <div className="flex-1 px-2 pb-32">
+      <SidebarContent className="flex-1">
+        <div className="px-2 py-2">
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
@@ -215,7 +216,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
           </SidebarGroup>
         </div>
       </SidebarContent>
-      <SidebarFooter className="sticky bottom-24 bg-sidebar border-t rounded-tr-2xl">
+      <SidebarFooter className="bg-sidebar border-t rounded-tr-2xl">
         <div className="px-2 py-3 space-y-3">
           {open ? (
             <Button 
