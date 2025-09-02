@@ -113,7 +113,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 p-4" align="end">
+              <PopoverContent className="w-80 p-4 bg-popover border border-border shadow-lg z-50" align="end" sideOffset={8}>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Zap className="h-4 w-4 text-calendar-primary" />
