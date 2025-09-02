@@ -29,18 +29,31 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
-      // Update profile
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          display_name: formData.displayName,
-          handle: formData.handle,
-          avatar_url: formData.avatarUrl,
-          cover_url: formData.coverUrl
-        })
-        .eq('user_id', user.id);
+      console.log('Saving profile data:', formData);
 
-      if (error) throw error;
+      const updates = {
+        user_id: user.id,
+        display_name: formData.displayName,
+        handle: formData.handle,
+        avatar_url: formData.avatarUrl,
+        cover_url: formData.coverUrl,
+        updated_at: new Date().toISOString(),
+      };
+
+      console.log('Upserting to profiles table:', updates);
+
+      // Use upsert to create record if it doesn't exist
+      const { error, data } = await supabase
+        .from('profiles')
+        .upsert(updates)
+        .select();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      console.log('Profile updated successfully:', data);
 
       // Refresh the profile context to show updated data
       refreshProfile();

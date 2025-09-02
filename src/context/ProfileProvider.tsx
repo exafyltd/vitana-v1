@@ -43,42 +43,61 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const fetchUserProfile = async (userId: string) => {
     try {
       setLoading(true);
+      console.log('Fetching profile for user ID:', userId);
       
       // Fetch profile data from Supabase
       const { data: profileData, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         console.error('Error fetching profile:', error);
-        return;
+        // Continue with default values even if there's an error
       }
 
-      // Create display name and initials
-      const displayName = profileData?.display_name || profileData?.full_name || user?.email?.split('@')[0] || "User";
-      const initials = displayName.split(' ')
-        .map(name => name[0])
+      console.log('Profile data from DB:', profileData);
+
+      // Create display name and initials with better fallback handling
+      const displayName = profileData?.display_name || 
+                         profileData?.full_name || 
+                         user?.email?.split('@')[0] || 
+                         "User";
+      
+      const initials = displayName
+        .split(' ')
+        .map(name => name?.[0]?.toUpperCase())
+        .filter(Boolean)
         .join('')
-        .toUpperCase()
         .slice(0, 2) || "U";
 
-      setProfile({
+      const profileState = {
         displayName,
-        role: "community", // Default role, will be updated by role system
-        tenantId: "maxina", // Default tenant, will be updated by tenant system
+        role: "community" as const,
+        tenantId: "maxina" as const,
         initials,
-        avatar: profileData?.avatar_url,
-        handle: profileData?.handle,
-        bio: profileData?.bio,
-        fullName: profileData?.full_name,
-        email: profileData?.email || user?.email,
-        phone: profileData?.phone,
-        coverUrl: profileData?.cover_url,
-      });
+        avatar: profileData?.avatar_url || undefined,
+        handle: profileData?.handle || undefined,
+        bio: profileData?.bio || undefined,
+        fullName: profileData?.full_name || undefined,
+        email: profileData?.email || user?.email || undefined,
+        phone: profileData?.phone || undefined,
+        coverUrl: profileData?.cover_url || undefined,
+      };
+
+      console.log('Setting profile state:', profileState);
+      setProfile(profileState);
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
+      // Set default profile even on error
+      setProfile({
+        displayName: user?.email?.split('@')[0] || "User",
+        role: "community",
+        tenantId: "maxina",
+        initials: user?.email?.charAt(0)?.toUpperCase() || "U",
+        email: user?.email,
+      });
     } finally {
       setLoading(false);
     }
@@ -94,6 +113,28 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (user && session) {
       fetchUserProfile(user.id);
+      
+      // Set up real-time subscription for profile changes
+      const channel = supabase
+        .channel('profile-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'profiles',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            console.log('Profile updated in real-time:', payload);
+            fetchUserProfile(user.id);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     } else {
       // Use default profile for non-authenticated users
       setProfile(getDefaultProfile());
