@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useSidebar } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
 interface SearchSuggestion {
@@ -72,9 +73,10 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { open: sidebarOpen, setOpen } = useSidebar();
 
   useEffect(() => {
-    if (query.trim()) {
+    if (query.trim() && sidebarOpen) {
       const filtered = mockSuggestions.filter(suggestion =>
         suggestion.title.toLowerCase().includes(query.toLowerCase()) ||
         suggestion.subtitle?.toLowerCase().includes(query.toLowerCase())
@@ -86,9 +88,21 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
       setShowSuggestions(false);
       setSelectedIndex(-1);
     }
-  }, [query]);
+  }, [query, sidebarOpen]);
+
+  const handleInputClick = () => {
+    if (!sidebarOpen) {
+      setOpen(true);
+    }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!sidebarOpen) {
+      e.preventDefault();
+      setOpen(true);
+      return;
+    }
+
     if (!showSuggestions || filteredSuggestions.length === 0) {
       if (e.key === 'Enter') {
         handleSearch();
@@ -183,16 +197,19 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
             <Input
               ref={inputRef}
               type="text"
-              placeholder="Search members, groups, content…"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              placeholder={sidebarOpen ? "Search members, groups, content…" : "Click to expand and search"}
+              value={sidebarOpen ? query : ""}
+              onChange={(e) => sidebarOpen && setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
+              onClick={handleInputClick}
+              readOnly={!sidebarOpen}
               className={cn(
                 "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
                 "bg-sidebar-accent/50 border border-sidebar-border/50",
                 "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
                 "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
-                "hover:bg-sidebar-accent/70 transition-colors"
+                "hover:bg-sidebar-accent/70 transition-colors",
+                !sidebarOpen && "cursor-pointer"
               )}
             />
             {!open && query && (
