@@ -27,11 +27,11 @@ export default function EditProfilePage() {
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
 
-  // Mock profile data with archetype
-  const [profile] = useState<UserProfile>({
+  // Profile data from context
+  const [profile, setProfile] = useState<UserProfile>({
     id: 'current-user',
     name: contextProfile.displayName,
-    handle: 'maxina', // TODO: Get from user data
+    handle: contextProfile.handle || 'user',
     avatarUrl: contextProfile.avatar,
     roles: ['community'],
     bio: 'Wellness enthusiast passionate about holistic health and community building. 🌱',
@@ -60,6 +60,16 @@ export default function EditProfilePage() {
       healthShareConsent: true
     }
   });
+
+  // Update profile when context changes
+  useEffect(() => {
+    setProfile(prev => ({
+      ...prev,
+      name: contextProfile.displayName,
+      handle: contextProfile.handle || 'user',
+      avatarUrl: contextProfile.avatar,
+    }));
+  }, [contextProfile]);
 
   const scopeContext = {
     isOwner: true,
