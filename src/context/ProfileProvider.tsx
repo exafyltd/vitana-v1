@@ -10,11 +10,18 @@ interface ProfileData {
   role: UserRole;
   tenantId: TenantType;
   initials: string;
+  handle?: string;
+  bio?: string;
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  coverUrl?: string;
 }
 
 interface ProfileContextValue {
   profile: ProfileData;
   updateProfile: (data: Partial<ProfileData>) => void;
+  refreshProfile: () => void;
   loading: boolean;
 }
 
@@ -49,8 +56,8 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // Create initials from full name or email
-      const displayName = profileData?.full_name || user?.email?.split('@')[0] || "User";
+      // Create display name and initials
+      const displayName = profileData?.display_name || profileData?.full_name || user?.email?.split('@')[0] || "User";
       const initials = displayName.split(' ')
         .map(name => name[0])
         .join('')
@@ -62,11 +69,25 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         role: "community", // Default role, will be updated by role system
         tenantId: "maxina", // Default tenant, will be updated by tenant system
         initials,
+        avatar: profileData?.avatar_url,
+        handle: profileData?.handle,
+        bio: profileData?.bio,
+        fullName: profileData?.full_name,
+        email: profileData?.email || user?.email,
+        phone: profileData?.phone,
+        coverUrl: profileData?.cover_url,
       });
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Function to refresh profile data
+  const refreshProfile = () => {
+    if (user && session) {
+      fetchUserProfile(user.id);
     }
   };
 
@@ -100,6 +121,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const value: ProfileContextValue = {
     profile,
     updateProfile,
+    refreshProfile,
     loading,
   };
 

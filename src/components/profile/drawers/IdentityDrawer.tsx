@@ -4,6 +4,7 @@ import { IdentityForm } from "../editor/IdentityForm";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useProfile } from "@/context/ProfileProvider";
 
 interface IdentityDrawerProps {
   open: boolean;
@@ -19,6 +20,7 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
   });
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
+  const { refreshProfile } = useProfile();
 
   const handleSave = async () => {
     try {
@@ -39,6 +41,9 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
         .eq('user_id', user.id);
 
       if (error) throw error;
+
+      // Refresh the profile context to show updated data
+      refreshProfile();
 
       toast({
         title: "Profile updated",

@@ -1,47 +1,99 @@
-import { Link } from "react-router-dom";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import React from "react";
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import SEO from "@/components/SEO";
-import AppLayout from "@/components/AppLayout";
-import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useProfile } from "@/context/ProfileProvider";
+import { ProfileStats } from "@/components/profile/shared/ProfileStats";
 
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-lg font-semibold tracking-tight">{children}</h2>
-);
+// Dummy data for the profile stats
+const dummyProfileStats = {
+  posts: 42,
+  followers: 1234,
+  following: 567,
+  mediaUploads: 89,
+  groupsJoined: 12
+};
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="text-lg font-semibold text-foreground mb-4">{children}</h3>
+  );
+}
 
 export default function Profile() {
-  const title = "Profile";
-  const description = "Public profile, preferences, and highlights for the community.";
+  const { profile, loading } = useProfile();
 
-  const personLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Vitana User',
-    alternateName: 'vitana_user',
-    description,
-    url: typeof window !== 'undefined' ? window.location.href : 'https://vitana.lovable.app/profile',
+  // Create a mock UserProfile object that matches ProfileStats component expectations
+  const mockUserProfile = {
+    id: "1",
+    name: profile.displayName,
+    handle: profile.handle || "@user",
+    avatarUrl: profile.avatar,
+    coverUrl: profile.coverUrl,
+    roles: ["community" as const],
+    membershipTier: null,
+    bio: profile.bio,
+    links: [],
+    languages: [],
+    location: "",
+    stats: dummyProfileStats,
+    vitanaIndex: 750,
+    vitanaPercentile: 85,
+    longevityArchetype: "The Mindful Mover",
+    offerings: [],
+    compliance: {
+      isProfessional: false,
+      licenseVerified: false
+    },
+    visibility: {
+      about: "public" as const,
+      links: "public" as const,
+      location: "public" as const,
+      showcase: "public" as const,
+      indexPublic: true,
+      healthShareConsent: true
+    }
   };
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <SEO
+          title="My Profile"
+          description="View and manage your personal profile"
+        />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-muted-foreground">Loading profile...</div>
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
-      <SEO title={title} description={description} canonical={typeof window !== 'undefined' ? window.location.href : undefined} />
+      <SEO
+        title="My Profile"
+        description="View and manage your personal profile"
+      />
+
       <section className="mx-auto max-w-6xl px-4 py-6 flex justify-center">
         <div className="w-full max-w-6xl">
-        <h1 className="sr-only">User Profile</h1>
+          <h1 className="sr-only">User Profile</h1>
 
-        <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="mb-6 rounded-xl shadow-sm">
-            <TabsTrigger value="overview" className="rounded-lg">Overview</TabsTrigger>
-            <TabsTrigger value="highlights" className="rounded-lg">Highlights</TabsTrigger>
-            <TabsTrigger value="connections" className="rounded-lg">Connections</TabsTrigger>
-            <TabsTrigger value="activity" className="rounded-lg">Activity</TabsTrigger>
-            <TabsTrigger value="health" className="rounded-lg">Health Snapshot</TabsTrigger>
-            <TabsTrigger value="privacy" className="rounded-lg">Privacy View</TabsTrigger>
-          </TabsList>
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="mb-6 rounded-xl shadow-sm">
+              <TabsTrigger value="overview" className="rounded-lg">Overview</TabsTrigger>
+              <TabsTrigger value="highlights" className="rounded-lg">Highlights</TabsTrigger>
+              <TabsTrigger value="connections" className="rounded-lg">Connections</TabsTrigger>
+              <TabsTrigger value="activity" className="rounded-lg">Activity</TabsTrigger>
+              <TabsTrigger value="health" className="rounded-lg">Health Snapshot</TabsTrigger>
+              <TabsTrigger value="privacy" className="rounded-lg">Privacy View</TabsTrigger>
+            </TabsList>
 
             <TabsContent value="overview">
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -52,21 +104,23 @@ export default function Profile() {
                       <div className="flex flex-col items-center text-center">
                         <div className="relative mb-4">
                           <Avatar className="h-28 w-28 ring-2 ring-border">
-                            <AvatarImage src="/placeholder.svg" alt="User avatar" loading="lazy" />
-                            <AvatarFallback>VU</AvatarFallback>
+                            <AvatarImage src={profile.avatar || "/placeholder.svg"} alt="User avatar" loading="lazy" />
+                            <AvatarFallback>{profile.initials}</AvatarFallback>
                           </Avatar>
                         </div>
                         <div className="space-y-1">
-                          <div className="text-2xl font-semibold leading-none tracking-tight">Vitana User</div>
-                          <div className="text-sm text-muted-foreground">@vitana_user • they/them</div>
-                          <p className="text-sm text-muted-foreground max-w-xs mx-auto">Building a balanced life through connection, health, and purpose.</p>
+                          <div className="text-2xl font-semibold leading-none tracking-tight">{profile.displayName}</div>
+                          <div className="text-sm text-muted-foreground">{profile.handle || `@${profile.displayName.toLowerCase().replace(/\s+/g, '_')}`}</div>
+                          <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+                            {profile.bio || "Building a balanced life through connection, health, and purpose."}
+                          </p>
                         </div>
                         <div className="mt-4 flex items-center gap-2">
-                          <Button size="sm" asChild className="rounded-lg shadow-sm">
-                            <Link to="/dashboard">Message</Link>
+                          <Button size="sm" className="rounded-lg shadow-sm">
+                            Message
                           </Button>
-                          <Button size="sm" variant="outline" asChild className="rounded-lg shadow-sm">
-                            <Link to="/dashboard">Edit Profile</Link>
+                          <Button size="sm" variant="outline" className="rounded-lg shadow-sm">
+                            Edit Profile
                           </Button>
                         </div>
                       </div>
@@ -75,12 +129,12 @@ export default function Profile() {
                         <div className="rounded-xl border bg-muted/20 p-4 shadow-sm">
                           <dl className="grid grid-cols-2 gap-3 text-sm">
                             <div>
-                              <dt className="text-muted-foreground">Age</dt>
-                              <dd className="font-medium">26</dd>
+                              <dt className="text-muted-foreground">Email</dt>
+                              <dd className="font-medium">{profile.email || "Not provided"}</dd>
                             </div>
                             <div>
-                              <dt className="text-muted-foreground">Status</dt>
-                              <dd className="font-medium">Single</dd>
+                              <dt className="text-muted-foreground">Phone</dt>
+                              <dd className="font-medium">{profile.phone || "Not provided"}</dd>
                             </div>
                             <div>
                               <dt className="text-muted-foreground">Location</dt>
@@ -120,8 +174,7 @@ export default function Profile() {
                       </CardHeader>
                       <CardContent className="space-y-2 text-sm text-muted-foreground">
                         <p>
-                          I travel often for work and love optimizing every day for energy and focus. I keep
-                          my routines simple and my social life meaningful.
+                          {profile.bio || "I travel often for work and love optimizing every day for energy and focus. I keep my routines simple and my social life meaningful."}
                         </p>
                       </CardContent>
                     </Card>
@@ -139,7 +192,7 @@ export default function Profile() {
                             </div>
                             <div className="rounded-xl border p-3 shadow-sm">
                               <div className="text-xs text-muted-foreground">Community</div>
-                              <div className="mt-1 text-2xl font-semibold">42</div>
+                              <div className="mt-1 text-2xl font-semibold">{dummyProfileStats.posts}</div>
                               <div className="text-xs text-muted-foreground">posts • events • groups</div>
                             </div>
                           </div>
@@ -305,9 +358,6 @@ export default function Profile() {
           </Tabs>
         </div>
       </section>
-
-        {/* Structured Data */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
-      </AppLayout>
-    );
+    </AppLayout>
+  );
 }
