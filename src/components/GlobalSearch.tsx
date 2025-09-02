@@ -189,7 +189,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   };
 
   return (
-    <Popover open={showSuggestions && filteredSuggestions.length > 0} onOpenChange={setShowSuggestions}>
+    <Popover open={showSuggestions && filteredSuggestions.length > 0 && sidebarOpen} onOpenChange={setShowSuggestions}>
       <PopoverTrigger asChild>
         <div className="relative w-full">
           <div className="relative">
@@ -212,7 +212,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
                 !sidebarOpen && "cursor-pointer"
               )}
             />
-            {!open && query && (
+            {!open && query && sidebarOpen && (
               <Button
                 size="sm"
                 variant="ghost"
@@ -227,11 +227,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
       </PopoverTrigger>
 
       <PopoverContent 
-        className={cn(
-          "w-[var(--radix-popover-trigger-width)] p-0 mt-2",
-          "bg-popover border border-border shadow-lg rounded-lg",
-          "z-50"
-        )}
+        className="w-[var(--radix-popover-trigger-width)] p-0 mt-2 bg-popover border border-border shadow-lg rounded-lg z-50"
         align="start"
         side="bottom"
         sideOffset={8}
