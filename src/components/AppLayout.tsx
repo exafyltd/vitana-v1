@@ -25,9 +25,12 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<StreamingChatRef> }) {
+function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpen }: { 
+  streamingChatRef: React.RefObject<StreamingChatRef>;
+  autopilotPopupOpen: boolean;
+  setAutopilotPopupOpen: (open: boolean) => void;
+}) {
   const [isStreaming, setIsStreaming] = useState(false);
-  const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { open } = useSidebar();
@@ -111,48 +114,22 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
             </div>
           </button>
           {/* Autopilot Button */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button 
-                variant="ghost" 
-                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
-                title={`${pendingCount} Autopilot suggestions`}
+          <Button 
+            variant="ghost" 
+            className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+            title={`${pendingCount} Autopilot suggestions`}
+            onClick={() => setAutopilotPopupOpen(true)}
+          >
+            <Plane className="h-4 w-4 text-white" />
+            {pendingCount > 0 && (
+              <Badge 
+                variant="destructive" 
+                className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
               >
-                <Plane className="h-4 w-4 text-destructive" />
-                {pendingCount > 0 && (
-                  <Badge 
-                    variant="destructive" 
-                    className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
-                  >
-                    {pendingCount > 9 ? '9+' : pendingCount}
-                  </Badge>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80 p-4 bg-popover border border-border shadow-lg z-50" align="end" sideOffset={8}>
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Plane className="h-4 w-4 text-destructive" />
-                  <h3 className="font-medium">Autopilot Preview</h3>
-                </div>
-                <div className="space-y-2">
-                  {getLatestActions(2).map((action) => (
-                    <div key={action.id} className="p-2 rounded-lg bg-muted/50 text-sm">
-                      <div className="font-medium">{action.title}</div>
-                      <div className="text-xs text-muted-foreground">{action.reason}</div>
-                    </div>
-                  ))}
-                </div>
-                <Button 
-                  onClick={() => setAutopilotPopupOpen(true)} 
-                  className="w-full" 
-                  size="sm"
-                >
-                  View All ({pendingCount})
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
+                {pendingCount > 9 ? '9+' : pendingCount}
+              </Badge>
+            )}
+          </Button>
           
           <SidebarTrigger />
         </div>
@@ -300,7 +277,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
         <div className="flex min-h-screen w-full">
           <div className="dark">
-            <AppSidebar streamingChatRef={streamingChatRef} />
+            <AppSidebar 
+              streamingChatRef={streamingChatRef} 
+              autopilotPopupOpen={autopilotPopupOpen}
+              setAutopilotPopupOpen={setAutopilotPopupOpen}
+            />
           </div>
 
           <SidebarInset>
