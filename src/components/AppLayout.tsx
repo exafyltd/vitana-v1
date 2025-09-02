@@ -23,10 +23,7 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-function AppSidebar({ streamingChatRef, onExpandSidebar }: { 
-  streamingChatRef: React.RefObject<StreamingChatRef>;
-  onExpandSidebar: () => void;
-}) {
+function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<StreamingChatRef> }) {
   const [isStreaming, setIsStreaming] = useState(false);
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const location = useLocation();
@@ -76,7 +73,7 @@ function AppSidebar({ streamingChatRef, onExpandSidebar }: {
   const buttonIcon = isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />;
 
   return (
-    <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg dark">
+    <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
       <SidebarHeader className="border-b border-sidebar-border rounded-tr-2xl">
         <div className="px-2 py-1 text-lg font-bold tracking-wide flex items-center justify-between">
           <Link to="/" className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors">
@@ -149,10 +146,7 @@ function AppSidebar({ streamingChatRef, onExpandSidebar }: {
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
-          <GlobalSearch 
-            open={open} 
-            onExpandSidebar={onExpandSidebar}
-          />
+          <GlobalSearch open={open} />
         </div>
       </SidebarHeader>
       <SidebarContent className="flex flex-col">
@@ -293,13 +287,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
     <div>
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
         <div className="flex min-h-screen w-full">
-          <AppSidebar 
-            streamingChatRef={streamingChatRef} 
-            onExpandSidebar={() => handleSidebarOpenChange(true)}
-          />
+          <div className="dark">
+            <AppSidebar streamingChatRef={streamingChatRef} />
+          </div>
 
-          <SidebarInset className="bg-background">
-            <div className="min-h-screen w-full rounded-tl-2xl">
+          <SidebarInset>
+            <div className="bg-background min-h-screen w-full rounded-tl-2xl">
               {children}
             </div>
           </SidebarInset>

@@ -63,24 +63,15 @@ function findPersonByQuery(query: string): Person | null {
 
 interface GlobalSearchProps {
   open: boolean;
-  onExpandSidebar?: () => void;
 }
 
-export function GlobalSearch({ open, onExpandSidebar }: GlobalSearchProps) {
+export function GlobalSearch({ open }: GlobalSearchProps) {
   const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<SearchSuggestion[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Handle click when sidebar is collapsed
-  const handleInputClick = () => {
-    if (!open && onExpandSidebar) {
-      onExpandSidebar();
-      return;
-    }
-  };
 
   useEffect(() => {
     if (query.trim()) {
@@ -192,19 +183,16 @@ export function GlobalSearch({ open, onExpandSidebar }: GlobalSearchProps) {
             <Input
               ref={inputRef}
               type="text"
-              placeholder={open ? "Search members, groups, content…" : "Search…"}
-              value={open ? query : ''}
-              onChange={open ? (e) => setQuery(e.target.value) : undefined}
-              onClick={handleInputClick}
-              onKeyDown={open ? handleKeyDown : undefined}
-              readOnly={!open}
+              placeholder="Search members, groups, content…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
               className={cn(
                 "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
                 "bg-sidebar-accent/50 border border-sidebar-border/50",
                 "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
                 "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
-                "hover:bg-sidebar-accent/70 transition-colors",
-                !open && "cursor-pointer"
+                "hover:bg-sidebar-accent/70 transition-colors"
               )}
             />
             {!open && query && (
