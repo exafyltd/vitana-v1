@@ -218,6 +218,10 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
       </SidebarContent>
       <SidebarFooter className="bg-sidebar border-t rounded-tr-2xl">
         <div className="px-2 py-3 space-y-3">
+          {/* Debug: Always visible element */}
+          <div className="text-xs text-red-500 bg-red-100 p-1 rounded">
+            Footer Debug: Profile = {profile?.displayName || 'undefined'}, Open = {open ? 'true' : 'false'}
+          </div>
           {open ? (
             <Button 
               onClick={handleStreamToggle} 
