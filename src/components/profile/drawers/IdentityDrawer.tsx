@@ -31,21 +31,19 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
 
       console.log('Saving profile data:', formData);
 
-      const updates = {
-        user_id: user.id,
-        display_name: formData.displayName,
-        handle: formData.handle,
-        avatar_url: formData.avatarUrl,
-        cover_url: formData.coverUrl,
-        updated_at: new Date().toISOString(),
-      };
-
-      console.log('Upserting to profiles table:', updates);
-
-      // Use upsert to create record if it doesn't exist
+      // Use upsert to create record if it doesn't exist, or update if it does
       const { error, data } = await supabase
         .from('profiles')
-        .upsert(updates)
+        .upsert({
+          user_id: user.id,
+          display_name: formData.displayName,
+          handle: formData.handle,
+          avatar_url: formData.avatarUrl,
+          cover_url: formData.coverUrl,
+          updated_at: new Date().toISOString(),
+        }, {
+          onConflict: 'user_id'
+        })
         .select();
 
       if (error) {
