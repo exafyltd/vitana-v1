@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Zap } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
@@ -16,6 +16,8 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
+import { useAuth } from "@/context/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -33,6 +35,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
   const { tenant } = useTenant();
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { signOut } = useAuth();
 
   // Get dynamic navigation based on current role
   const sidebarCategories = getRoleNavigation(currentRole);
@@ -69,6 +72,22 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
     return () => clearInterval(interval);
   }, [isStreaming]);
 
+  const handleLogoClick = async () => {
+    await signOut();
+    // Redirect to tenant-specific login page
+    const tenantSlug = tenant?.slug || 'vitana';
+    navigate(`/auth/login?tenant=${tenantSlug}`);
+  };
+
+  const getTenantDisplayName = () => {
+    switch (tenant?.name) {
+      case 'maxina': return 'Maxina';
+      case 'alkalma': return 'AlKalma';
+      case 'earthlings': return 'Earthlings';
+      default: return tenant?.name || 'Community';
+    }
+  };
+
   const buttonLabel = isStreaming ? "End Stream" : "Start Stream";
   const buttonIcon = isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />;
 
@@ -76,9 +95,21 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
     <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
       <SidebarHeader className="border-b border-sidebar-border rounded-tr-2xl">
         <div className="px-2 py-1 text-lg font-bold tracking-wide flex items-center justify-between">
-          <Link to="/" className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors">
-            {open ? "VITANA" : "V"}
-          </Link>
+          <button 
+            onClick={handleLogoClick}
+            className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors text-left"
+          >
+            <div className="flex flex-col">
+              <span className="text-lg font-bold tracking-wide">
+                {open ? "VITANA" : "V"}
+              </span>
+              {open && (
+                <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1">
+                  {getTenantDisplayName()}
+                </span>
+              )}
+            </div>
+          </button>
           {/* Dedicated Autopilot Cluster */}
           <div className={`bg-[#2A2A2A] rounded-lg p-1.5 flex items-center transition-all duration-200 max-w-full ${
             open ? 'gap-2 flex-row' : 'flex-col gap-1 w-12'
@@ -88,25 +119,16 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               <PopoverTrigger asChild>
                 <Button 
                   variant="ghost" 
-                  className={`relative shrink-0 transition-all duration-200 hover:bg-white/10 flex items-center gap-2 ${
-                    open ? 'h-8 px-3 rounded-lg justify-start' : 'h-8 w-8 rounded-full justify-center'
+                  className={`relative shrink-0 transition-all duration-200 hover:bg-white/10 flex items-center justify-center ${
+                    open ? 'h-8 w-8 rounded-lg' : 'h-8 w-8 rounded-full'
                   }`}
                   title={`${pendingCount} Autopilot suggestions`}
                 >
-                  <Zap className={`text-calendar-primary drop-shadow-sm transition-all duration-200 ${
-                    open ? 'h-4 w-4' : 'h-4 w-4'
-                  }`} style={{ filter: 'drop-shadow(0 0 4px rgb(168 85 247 / 0.6))' }} />
-                  {open && (
-                    <span className="text-sm font-medium text-sidebar-foreground/90 transition-opacity duration-200 truncate">
-                      Autopilot
-                    </span>
-                  )}
+                  <Plane className="h-4 w-4 text-destructive drop-shadow-sm transition-all duration-200" />
                   {pendingCount > 0 && (
                     <Badge 
                       variant="destructive" 
-                      className={`absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground transition-all duration-200 ${
-                        open ? 'h-4 w-4 text-[10px] min-w-[16px]' : 'h-4 w-4 text-[10px] min-w-[16px]'
-                      }`}
+                      className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground transition-all duration-200 h-4 w-4 text-[10px] min-w-[16px]"
                     >
                       {pendingCount > 9 ? '9+' : pendingCount}
                     </Badge>
@@ -116,7 +138,7 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               <PopoverContent className="w-80 p-4 bg-popover border border-border shadow-lg z-50" align="end" sideOffset={8}>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-calendar-primary" />
+                    <Plane className="h-4 w-4 text-destructive" />
                     <h3 className="font-medium">Autopilot Preview</h3>
                   </div>
                   <div className="space-y-2">
@@ -138,10 +160,12 @@ function AppSidebar({ streamingChatRef }: { streamingChatRef: React.RefObject<St
               </PopoverContent>
             </Popover>
             
-            {/* Sidebar Toggle Chevron */}
-            <SidebarTrigger className={`shrink-0 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-white/10 transition-all duration-200 ${
-              open ? 'rounded-lg ml-auto h-6 w-6' : 'rounded h-4 w-4 opacity-70 hover:opacity-100'
-            }`} />
+            {/* Sidebar Toggle Chevron - positioned to stay within sidebar */}
+            <div className="flex items-center">
+              <SidebarTrigger className={`shrink-0 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-white/10 transition-all duration-200 ${
+                open ? 'rounded-lg h-6 w-6' : 'rounded h-4 w-4 opacity-70 hover:opacity-100'
+              }`} />
+            </div>
           </div>
         </div>
         {/* Global Search Bar */}
