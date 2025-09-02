@@ -26,9 +26,18 @@ serve(async (req) => {
       }
     );
 
-    // Get admin emails from environment
-    const adminEmails = Deno.env.get('EXAFY_SUPERADMIN_EMAILS') || 'dstevanovic@hotmail.com';
-    const emailList = adminEmails.split(',').map(email => email.trim());
+    // Get admin emails from request body or environment
+    const { emails } = await req.json();
+    let emailList: string[] = [];
+    
+    if (emails && Array.isArray(emails) && emails.length > 0) {
+      // Use emails from UI request
+      emailList = emails.map((email: string) => email.trim()).filter(Boolean);
+    } else {
+      // Fallback to environment variable
+      const adminEmails = Deno.env.get('EXAFY_SUPERADMIN_EMAILS') || 'dstevanovic@hotmail.com';
+      emailList = adminEmails.split(',').map(email => email.trim());
+    }
 
     const results = [];
 
