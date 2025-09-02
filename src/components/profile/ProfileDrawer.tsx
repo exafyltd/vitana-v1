@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -108,6 +108,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
         <DrawerHeader className="text-center">
           <div className="flex flex-col items-center gap-3 mb-2">
             <Avatar className="h-16 w-16 ring-2 ring-border">
+              <AvatarImage src={profile.avatar} alt={profile.displayName} />
               <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-lg">
                 {profile.initials}
               </AvatarFallback>
