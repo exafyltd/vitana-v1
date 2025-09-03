@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 export type TenantType = "maxina" | "earthlings" | "alkalma";
@@ -52,29 +53,55 @@ const TenantContext = createContext<TenantContextValue | undefined>(undefined);
 
 export function TenantProvider({ children }: { children: React.ReactNode }) {
   const { session, user } = useAuth();
+  const location = useLocation();
   const [activeTenantId, setActiveTenantIdState] = useState<string | null>(null);
 
   // Get Exafy admin status
   const isExafyAdmin = user?.app_metadata?.exafy_admin === true;
 
-  // Get active tenant ID from user metadata or fallback to first tenant
+  // Get tenant slug from URL path
+  const getTenantSlugFromPath = (): string | null => {
+    if (location.pathname.startsWith('/maxina')) return 'maxina';
+    if (location.pathname.startsWith('/alkalma')) return 'alkalma';
+    if (location.pathname.startsWith('/earthlings')) return 'earthlings';
+    return null;
+  };
+
+  // Get active tenant ID from user metadata, URL, or fallback to first tenant
   useEffect(() => {
     if (user) {
       const userActiveTenantId = user.app_metadata?.active_tenant_id;
       if (userActiveTenantId) {
         setActiveTenantIdState(userActiveTenantId);
       } else {
-        // Fallback to first available tenant
-        const fallbackTenantQuery = async () => {
-          const { data } = await supabase.from('tenants').select('id').limit(1).single();
-          if (data) {
-            setActiveTenantIdState(data.id);
-          }
-        };
-        fallbackTenantQuery();
+        // Try to detect tenant from URL first
+        const urlTenantSlug = getTenantSlugFromPath();
+        if (urlTenantSlug) {
+          // Find tenant ID by slug
+          const findTenantBySlug = async () => {
+            const { data } = await supabase
+              .from('tenants')
+              .select('id')
+              .eq('slug', urlTenantSlug)
+              .single();
+            if (data) {
+              setActiveTenantIdState(data.id);
+            }
+          };
+          findTenantBySlug();
+        } else {
+          // Fallback to first available tenant
+          const fallbackTenantQuery = async () => {
+            const { data } = await supabase.from('tenants').select('id').limit(1).single();
+            if (data) {
+              setActiveTenantIdState(data.id);
+            }
+          };
+          fallbackTenantQuery();
+        }
       }
     }
-  }, [user]);
+  }, [user, location.pathname]);
 
   // Fetch tenant details
   const { data: tenantData } = useQuery({

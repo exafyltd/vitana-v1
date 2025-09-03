@@ -70,7 +70,7 @@ const MaxinaPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/`,
+          emailRedirectTo: `${window.location.origin}/maxina`,
           data: {
             full_name: fullName,
             tenant_slug: "maxina",

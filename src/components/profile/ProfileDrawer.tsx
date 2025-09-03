@@ -92,9 +92,17 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const handleSignOut = async () => {
     try {
       setIsLoggingOut(true);
+      
+      // Store tenant slug in localStorage before logout to preserve redirect context
+      if (tenant?.slug) {
+        localStorage.setItem('logout_tenant_slug', tenant.slug);
+      }
+      
+      const redirectUrl = getLogoutRedirectUrl();
       await signOut();
+      
       // Navigate to tenant-specific portal page
-      navigate(getLogoutRedirectUrl());
+      navigate(redirectUrl);
     } catch (error) {
       console.error('Error during logout:', error);
       setIsLoggingOut(false);

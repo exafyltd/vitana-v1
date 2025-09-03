@@ -101,7 +101,10 @@ export function useTenantLogoutRedirect() {
       return "/exafy-admin";
     }
     
-    switch (tenant?.slug) {
+    // Try to get tenant slug from current context or localStorage
+    const tenantSlug = tenant?.slug || localStorage.getItem('logout_tenant_slug');
+    
+    switch (tenantSlug) {
       case "maxina":
         return "/maxina";
       case "alkalma": 
