@@ -6,7 +6,7 @@ import { useRole } from "@/hooks/useRole";
 
 export function useSmartRouting() {
   const { user, loading: authLoading } = useAuth();
-  const { isExafyAdmin, activeTenantId } = useTenant();
+  const { isExafyAdmin, activeTenantId, tenant } = useTenant();
   const { currentRole } = useRole();
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,17 +57,34 @@ export function useSmartRouting() {
             break;
           case "community":
           default:
-            navigate("/home");
+            // Redirect community users to tenant-specific pages based on their active tenant
+            if (tenant?.slug) {
+              switch (tenant.slug) {
+                case 'alkalma':
+                  navigate("/alkalma");
+                  break;
+                case 'earthlings':
+                  navigate("/earthlings");
+                  break;
+                case 'maxina':
+                default:
+                  navigate("/maxina");
+                  break;
+              }
+            } else {
+              // Fallback to home if no tenant info available
+              navigate("/home");
+            }
             break;
         }
       }
     }
-  }, [user, authLoading, isExafyAdmin, currentRole, location.pathname, navigate]);
+  }, [user, authLoading, isExafyAdmin, currentRole, tenant, location.pathname, navigate]);
 }
 
 // Hook to get appropriate redirect URL based on user type
 export function useRoleBasedRedirect() {
-  const { isExafyAdmin } = useTenant();
+  const { isExafyAdmin, tenant } = useTenant();
   const { currentRole } = useRole();
 
   const getRedirectUrl = () => {
@@ -85,6 +102,18 @@ export function useRoleBasedRedirect() {
         return "/patient/dashboard";
       case "community":
       default:
+        // Redirect community users to tenant-specific pages
+        if (tenant?.slug) {
+          switch (tenant.slug) {
+            case 'alkalma':
+              return "/alkalma";
+            case 'earthlings':
+              return "/earthlings";
+            case 'maxina':
+            default:
+              return "/maxina";
+          }
+        }
         return "/home";
     }
   };
