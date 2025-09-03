@@ -21,12 +21,13 @@ export function useSmartRouting() {
 
     // If user is not authenticated, handle based on current path
     if (!user) {
-      // Allow access to public pages
-      if (location.pathname === '/' || location.pathname === '/auth') return;
+      // Allow access to public pages and portal pages
+      const publicPaths = ['/', '/maxina', '/alkalma', '/earthlings', '/exafy-admin'];
+      if (publicPaths.some(path => location.pathname === path || location.pathname.startsWith(path))) return;
       
-      // Redirect unauthenticated users trying to access protected pages to auth
+      // Redirect unauthenticated users trying to access protected pages to landing page
       // Use replace to avoid back button issues during logout
-      navigate('/auth', { replace: true });
+      navigate('/', { replace: true });
       return;
     }
 
@@ -89,6 +90,30 @@ export function useRoleBasedRedirect() {
   };
 
   return { getRedirectUrl };
+}
+
+// Hook to get tenant-specific logout redirect URL
+export function useTenantLogoutRedirect() {
+  const { isExafyAdmin, tenant } = useTenant();
+  
+  const getLogoutRedirectUrl = () => {
+    if (isExafyAdmin) {
+      return "/exafy-admin";
+    }
+    
+    switch (tenant?.slug) {
+      case "maxina":
+        return "/maxina";
+      case "alkalma": 
+        return "/alkalma";
+      case "earthlings":
+        return "/earthlings";
+      default:
+        return "/";
+    }
+  };
+  
+  return { getLogoutRedirectUrl };
 }
 
 // Tenant detection from URL

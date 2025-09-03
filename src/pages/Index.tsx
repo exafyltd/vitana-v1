@@ -30,7 +30,7 @@ const Index = () => {
           </p>
           
           {/* Platform Selection */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Maxina Portal */}
             <Link to="/maxina">
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
@@ -85,24 +85,6 @@ const Index = () => {
               </Card>
             </Link>
 
-            {/* Community Portal */}
-            <Link to="/community">
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardHeader className="text-center">
-                  <div className="flex justify-center mb-4">
-                    <Users className="h-12 w-12 text-primary group-hover:scale-110 transition-transform" />
-                  </div>
-                  <CardTitle className="text-xl">Community</CardTitle>
-                  <CardDescription>General wellness community</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Join our general wellness community and choose your preferred platform later.
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
-
             {/* Exafy Admin Portal */}
             <Link to="/exafy-admin">
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-slate-200">
@@ -120,25 +102,6 @@ const Index = () => {
                 </CardContent>
               </Card>
             </Link>
-
-            {/* Quick Access Card */}
-            <Card className="h-full border-dashed">
-              <CardHeader className="text-center">
-                <div className="flex justify-center mb-4">
-                  <Settings className="h-12 w-12 text-muted-foreground" />
-                </div>
-                <CardTitle className="text-xl">Already a Member?</CardTitle>
-                <CardDescription>Quick access to your account</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button asChild className="w-full" size="sm">
-                  <Link to="/auth">Sign In</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full" size="sm">
-                  <Link to="/community">Join Community</Link>
-                </Button>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Footer Info */}

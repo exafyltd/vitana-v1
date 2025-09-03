@@ -77,9 +77,25 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
 
   const handleLogoClick = async () => {
     await signOut();
-    // Redirect to tenant-specific login page
-    const tenantSlug = tenant?.slug || 'vitana';
-    navigate(`/auth/login?tenant=${tenantSlug}`);
+    // Redirect to tenant-specific portal page
+    if (isExafyAdmin) {
+      navigate("/exafy-admin");
+    } else {
+      switch (tenant?.slug) {
+        case "maxina":
+          navigate("/maxina");
+          break;
+        case "alkalma":
+          navigate("/alkalma");
+          break;
+        case "earthlings":
+          navigate("/earthlings");
+          break;
+        default:
+          navigate("/");
+          break;
+      }
+    }
   };
 
   const getTenantDisplayName = () => {

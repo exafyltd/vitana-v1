@@ -21,6 +21,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRole, UserRole } from "@/hooks/useRole";
 import { useTenant, TenantType } from "@/hooks/useTenant";
 import { useMemberships } from "@/hooks/useMemberships";
+import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
 
 interface ProfileDrawerProps {
   trigger: React.ReactNode;
@@ -47,6 +48,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { tenant, activeTenantId, isExafyAdmin } = useTenant();
   const { currentRole, setRole } = useRole();
   const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
+  const { getLogoutRedirectUrl } = useTenantLogoutRedirect();
   
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
   
@@ -91,8 +93,8 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
     try {
       setIsLoggingOut(true);
       await signOut();
-      // Don't navigate immediately - let the auth state change handle routing
-      // The useSmartRouting hook will redirect to /auth when user becomes null
+      // Navigate to tenant-specific portal page
+      navigate(getLogoutRedirectUrl());
     } catch (error) {
       console.error('Error during logout:', error);
       setIsLoggingOut(false);
