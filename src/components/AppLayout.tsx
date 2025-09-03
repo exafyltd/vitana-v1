@@ -25,10 +25,11 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpen }: { 
+function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpen, onSidebarOpenChange }: { 
   streamingChatRef: React.RefObject<StreamingChatRef>;
   autopilotPopupOpen: boolean;
   setAutopilotPopupOpen: (open: boolean) => void;
+  onSidebarOpenChange: (open: boolean) => void;
 }) {
   const [isStreaming, setIsStreaming] = useState(false);
   const location = useLocation();
@@ -135,25 +136,28 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
               )}
             </div>
           </button>
-          {/* Autopilot Button */}
-          <Button 
-            variant="ghost" 
-            className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg ml-[76px]"
-            title={`${pendingCount} Autopilot suggestions`}
-            onClick={() => setAutopilotPopupOpen(true)}
-          >
-            <Plane className="h-4 w-4 text-white" />
-            {pendingCount > 0 && (
-              <Badge 
-                variant="destructive" 
-                className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
-              >
-                {pendingCount > 9 ? '9+' : pendingCount}
-              </Badge>
-            )}
-          </Button>
+          {/* Autopilot Button - only show when sidebar is open */}
+          {open && (
+            <Button 
+              variant="ghost" 
+              className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg ml-[76px]"
+              title={`${pendingCount} Autopilot suggestions`}
+              onClick={() => setAutopilotPopupOpen(true)}
+            >
+              <Plane className="h-4 w-4 text-white" />
+              {pendingCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
+                >
+                  {pendingCount > 9 ? '9+' : pendingCount}
+                </Badge>
+              )}
+            </Button>
+          )}
           
-          <SidebarTrigger />
+          {/* Sidebar trigger - only show when sidebar is open */}
+          {open && <SidebarTrigger />}
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
@@ -172,6 +176,12 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
                       <SidebarMenuButton asChild>
                         <Link 
                           to={cat.path} 
+                          onClick={() => {
+                            // Open sidebar if collapsed when clicking navigation items
+                            if (!open) {
+                              onSidebarOpenChange(true);
+                            }
+                          }}
                           className={`relative flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-200 group ${
                             isActive 
                               ? "bg-primary/15 text-primary shadow-sm border border-primary/20" 
@@ -305,6 +315,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
               streamingChatRef={streamingChatRef} 
               autopilotPopupOpen={autopilotPopupOpen}
               setAutopilotPopupOpen={setAutopilotPopupOpen}
+              onSidebarOpenChange={handleSidebarOpenChange}
             />
           </div>
 
