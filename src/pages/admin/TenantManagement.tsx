@@ -7,6 +7,7 @@ import { Building, Users, Shield, AlertCircle } from "lucide-react";
 import { useTenant } from "@/hooks/useTenant";
 import { useMemberships } from "@/hooks/useMemberships";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthProvider";
 import StandardHeader from "@/components/StandardHeader";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
@@ -23,6 +24,7 @@ export default function TenantManagement() {
   const { activeTenantId, tenant, isExafyAdmin, setActiveTenant } = useTenant();
   const { memberships } = useMemberships();
   const { toast } = useToast();
+  const { user, loading: authLoading } = useAuth();
   const [selectedTenant, setSelectedTenant] = useState(activeTenantId || "");
   const [switching, setSwitching] = useState(false);
 
@@ -46,6 +48,28 @@ export default function TenantManagement() {
       setSwitching(false);
     }
   };
+
+  // Show loading while auth is still loading to prevent premature access denied
+  if (authLoading) {
+    return (
+      <AppLayout>
+        <SEO title="Tenant Management | Admin" description="Organization and tenant management" canonical={window.location.href} />
+        <SubNavigation items={adminNavigation} />
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto space-y-6">
+            <StandardHeader
+              title="Tenant Management"
+              description="Loading..."
+              emoji="🏢"
+            />
+            <div className="flex items-center justify-center py-12">
+              <div className="text-muted-foreground">Loading...</div>
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
 
   if (!isExafyAdmin) {
     return (

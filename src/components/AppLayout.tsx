@@ -259,7 +259,8 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
                   <div className="leading-tight flex-1 text-left">
                     <div className="text-sm font-medium">{profile.displayName}</div>
                     <div className="text-xs text-sidebar-foreground/50 capitalize">
-                      {currentRole === 'admin' ? 'Administrator' : 
+                      {isExafyAdmin ? 'Exafy Admin' :
+                       currentRole === 'admin' ? 'Administrator' : 
                        currentRole === 'staff' ? 'Staff' :
                        currentRole === 'professional' ? 'Professional' :
                        currentRole === 'patient' ? 'Patient' :

@@ -13,7 +13,7 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
 };
 
 export function useRole() {
-  const { activeTenantId } = useTenant();
+  const { activeTenantId, isExafyAdmin } = useTenant();
   const queryClient = useQueryClient();
 
   const query = useQuery({
@@ -67,12 +67,18 @@ export function useRole() {
   };
 
   const hasPermission = (requiredRole: UserRole): boolean => {
+    // Exafy admins have all permissions
+    if (isExafyAdmin) return true;
+    
     const currentRole = query.data as UserRole || "community";
     return ROLE_HIERARCHY[currentRole] >= ROLE_HIERARCHY[requiredRole];
   };
 
+  // Return admin role for Exafy admins, otherwise use role preference
+  const effectiveRole = isExafyAdmin ? "admin" : (query.data as UserRole | null);
+
   return { 
-    currentRole: query.data as UserRole | null, 
+    currentRole: effectiveRole, 
     setRole, 
     hasPermission,
     isLoading: query.isLoading 
