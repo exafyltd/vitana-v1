@@ -24,12 +24,13 @@ const AlkalmaPortal = () => {
   const [fullName, setFullName] = useState("");
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
 
-  // Redirect authenticated users to their appropriate dashboard
+  // Only redirect if already authenticated and on alkalma portal - but let login flow handle navigation
   useEffect(() => {
-    if (!authLoading && user) {
+    if (!authLoading && user && !loading) {
+      // Only auto-redirect if we're not in the middle of a login process
       navigate("/home");
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, loading]);
 
   // Set tenant theme
   useEffect(() => {
@@ -52,21 +53,30 @@ const AlkalmaPortal = () => {
 
       if (error) {
         setError(error.message);
-      } else {
-        // After successful sign-in, switch to the current tenant context
-        // This ensures users can access different tenants after login
-        try {
-          await supabase.rpc('switch_to_tenant_by_slug', {
-            p_tenant_slug: 'alkalma'
-          });
-          // Refresh session to get updated metadata
-          await supabase.auth.refreshSession();
-        } catch (switchError) {
-          console.error('Error switching tenant after login:', switchError);
-          // Continue with login even if tenant switch fails
-        }
+        return;
+      }
+
+      // CRITICAL: Switch tenant BEFORE allowing navigation
+      console.log('Switching to alkalma tenant after successful login...');
+      
+      try {
+        await supabase.rpc('switch_to_tenant_by_slug', {
+          p_tenant_slug: 'alkalma'
+        });
+        console.log('Successfully switched to alkalma tenant');
+        
+        // Refresh session to get updated metadata
+        await supabase.auth.refreshSession();
+        console.log('Session refreshed with updated tenant context');
+        
+        // Now navigate to home
+        navigate("/home");
+      } catch (switchError) {
+        console.error('Error switching tenant after login:', switchError);
+        setError("Login successful but failed to switch to Alkalma tenant. Please try refreshing the page.");
       }
     } catch (err) {
+      console.error('Sign in error:', err);
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

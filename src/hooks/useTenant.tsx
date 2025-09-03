@@ -137,6 +137,8 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   };
 
   const setTenantBySlug = async (slug: string) => {
+    console.log(`useTenant - Setting tenant by slug: ${slug}`);
+    
     try {
       // Use the database function to properly switch tenant context
       const { error } = await supabase.rpc('switch_to_tenant_by_slug', {
@@ -144,12 +146,15 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
-        console.error('Error switching tenant:', error);
+        console.error('useTenant - Error switching tenant:', error);
         return;
       }
 
+      console.log(`useTenant - Successfully called switch_to_tenant_by_slug for ${slug}`);
+
       // Refresh session to get updated metadata
       await supabase.auth.refreshSession();
+      console.log('useTenant - Session refreshed');
       
       // Get the updated tenant ID
       const { data } = await supabase
@@ -159,15 +164,18 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         .single();
       
       if (data) {
+        console.log(`useTenant - Setting active tenant ID to: ${data.id}`);
         setActiveTenantIdState(data.id);
         
         // Emit tenant change event
         window.dispatchEvent(new CustomEvent("tenant.changed", {
           detail: { from: activeTenantId, to: data.id }
         }));
+        
+        console.log(`useTenant - Tenant change event emitted: ${activeTenantId} -> ${data.id}`);
       }
     } catch (error) {
-      console.error('Error setting tenant by slug:', error);
+      console.error('useTenant - Error setting tenant by slug:', error);
     }
   };
 
