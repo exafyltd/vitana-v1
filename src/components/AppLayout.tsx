@@ -105,13 +105,8 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
       return 'Exafy';
     }
     
-    // Show proper tenant names for tenant users
-    switch (tenant?.name?.toLowerCase()) {
-      case 'maxina': return 'Maxina';
-      case 'alkalma': return 'AlKalma';
-      case 'earthlings': return 'Earthlings';
-      default: return tenant?.name || 'Community';
-    }
+    // Show proper tenant names for tenant users - use the name from merged config
+    return tenant?.name || 'Community';
   };
 
   const buttonLabel = isStreaming ? "End Stream" : "Start Stream";
