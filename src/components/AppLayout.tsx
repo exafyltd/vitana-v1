@@ -105,7 +105,12 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
       return 'Exafy';
     }
     
-    // Always prioritize URL-based tenant detection for consistent display
+    // Prioritize tenant context from authentication/database
+    if (tenant?.name) {
+      return tenant.name;
+    }
+    
+    // Fallback to URL-based tenant detection for portal pages
     const currentPath = window.location.pathname;
     if (currentPath.startsWith('/maxina')) {
       return 'Maxina';
@@ -115,12 +120,7 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
       return 'Earthlings';
     }
     
-    // Fallback to tenant context or default to Maxina for /home
-    if (tenant?.name) {
-      return tenant.name;
-    }
-    
-    // Default fallback for authenticated users on /home without clear tenant context
+    // Final fallback
     return 'Maxina';
   };
 
