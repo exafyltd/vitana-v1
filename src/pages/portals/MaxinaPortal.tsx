@@ -52,6 +52,19 @@ const MaxinaPortal = () => {
 
       if (error) {
         setError(error.message);
+      } else {
+        // After successful sign-in, switch to the current tenant context
+        // This ensures users can access different tenants after login
+        try {
+          await supabase.rpc('switch_to_tenant_by_slug', {
+            p_tenant_slug: 'maxina'
+          });
+          // Refresh session to get updated metadata
+          await supabase.auth.refreshSession();
+        } catch (switchError) {
+          console.error('Error switching tenant after login:', switchError);
+          // Continue with login even if tenant switch fails
+        }
       }
     } catch (err) {
       setError("An unexpected error occurred");

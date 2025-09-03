@@ -52,6 +52,19 @@ const EarthlingsPortal = () => {
 
       if (error) {
         setError(error.message);
+      } else {
+        // After successful sign-in, switch to the current tenant context
+        // This ensures users can access different tenants after login
+        try {
+          await supabase.rpc('switch_to_tenant_by_slug', {
+            p_tenant_slug: 'earthlings'
+          });
+          // Refresh session to get updated metadata
+          await supabase.auth.refreshSession();
+        } catch (switchError) {
+          console.error('Error switching tenant after login:', switchError);
+          // Continue with login even if tenant switch fails
+        }
       }
     } catch (err) {
       setError("An unexpected error occurred");
@@ -70,7 +83,7 @@ const EarthlingsPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/`,
+          emailRedirectTo: `${window.location.origin}/earthlings`,
           data: {
             full_name: fullName,
             tenant_slug: "earthlings",
@@ -80,9 +93,14 @@ const EarthlingsPortal = () => {
       });
 
       if (error) {
-        setError(error.message);
+        // Handle case where user already exists but tries to sign up again
+        if (error.message.includes('already registered')) {
+          setError("This email is already registered. Please sign in or try switching to this tenant if you're already logged in.");
+        } else {
+          setError(error.message);
+        }
       } else {
-        setError("Please check your email to confirm your account.");
+        setError("Please check your email to confirm your account. After confirmation, you'll be redirected to the Earthlings portal.");
       }
     } catch (err) {
       setError("An unexpected error occurred");

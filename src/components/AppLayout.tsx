@@ -105,10 +105,9 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
       return 'Exafy';
     }
     
-    // Determine tenant name based on current URL if tenant context is not available
+    // Always prioritize URL-based tenant detection for consistent display
     const currentPath = window.location.pathname;
-    if (currentPath.startsWith('/maxina') || (!tenant && currentPath === '/home')) {
-      // If we're on maxina portal or home without tenant, assume Maxina
+    if (currentPath.startsWith('/maxina')) {
       return 'Maxina';
     } else if (currentPath.startsWith('/alkalma')) {
       return 'AlKalma';
@@ -116,8 +115,13 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
       return 'Earthlings';
     }
     
-    // Show proper tenant names for tenant users - use the name from merged config
-    return tenant?.name || 'Community';
+    // Fallback to tenant context or default to Maxina for /home
+    if (tenant?.name) {
+      return tenant.name;
+    }
+    
+    // Default fallback for authenticated users on /home without clear tenant context
+    return 'Maxina';
   };
 
   const buttonLabel = isStreaming ? "End Stream" : "Start Stream";

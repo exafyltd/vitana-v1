@@ -20,9 +20,13 @@ export function TenantDetector() {
 
     const urlTenantSlug = getTenantSlugFromPath();
     
-    // Only update if URL suggests a different tenant than current
-    if (urlTenantSlug && tenant?.slug !== urlTenantSlug) {
-      setTenantBySlug(urlTenantSlug);
+    // Always prioritize URL-based tenant detection
+    // This allows users to switch tenants by navigating to different portal URLs
+    if (urlTenantSlug) {
+      // Check if we need to switch to a different tenant
+      if (tenant?.slug !== urlTenantSlug) {
+        setTenantBySlug(urlTenantSlug);
+      }
     }
   }, [location.pathname, setTenantBySlug, tenant?.slug]);
 
