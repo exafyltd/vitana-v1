@@ -36,10 +36,10 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
   const navigate = useNavigate();
   const { open } = useSidebar();
   const { currentRole, hasPermission } = useRole();
-  const { tenant, isExafyAdmin } = useTenant();
+  const { tenant, isExafyAdmin, activeTenantId } = useTenant();
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   // Get dynamic navigation based on current role
   const sidebarCategories = getRoleNavigation(currentRole);
@@ -103,6 +103,17 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
     // Show "Exafy" for Exafy admins
     if (isExafyAdmin) {
       return 'Exafy';
+    }
+    
+    // Determine tenant name based on current URL if tenant context is not available
+    const currentPath = window.location.pathname;
+    if (currentPath.startsWith('/maxina') || (!tenant && currentPath === '/home')) {
+      // If we're on maxina portal or home without tenant, assume Maxina
+      return 'Maxina';
+    } else if (currentPath.startsWith('/alkalma')) {
+      return 'AlKalma';
+    } else if (currentPath.startsWith('/earthlings')) {
+      return 'Earthlings';
     }
     
     // Show proper tenant names for tenant users - use the name from merged config
