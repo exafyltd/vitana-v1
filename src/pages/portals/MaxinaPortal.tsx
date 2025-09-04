@@ -308,8 +308,8 @@ const MaxinaPortal = () => {
             <Link to="/alkalma" className="text-muted-foreground hover:text-primary">
               AlKalma Portal
             </Link>
-            <Link to="/earthlings" className="text-muted-foreground hover:text-primary">
-              Earthlings Portal
+            <Link to="/earthlinks" className="text-muted-foreground hover:text-primary">
+              Earthlinks Portal
             </Link>
             <Link to="/" className="text-muted-foreground hover:text-primary">
               Public Portal

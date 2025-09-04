@@ -140,7 +140,7 @@ const ExafyAdminPortal = () => {
               <Settings className="h-5 w-5 text-primary" />
               <div>
                 <h3 className="font-medium">Tenant Management</h3>
-                <p className="text-sm text-muted-foreground">Manage Maxina, Alkalma, and Earthlings environments</p>
+                <p className="text-sm text-muted-foreground">Manage Maxina, Alkalma, and Earthlinks environments</p>
               </div>
             </div>
             <div className="flex items-center space-x-3 p-4 rounded-lg bg-white/50 border">

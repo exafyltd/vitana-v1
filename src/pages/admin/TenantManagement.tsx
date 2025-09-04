@@ -17,7 +17,7 @@ import { adminNavigation } from "@/config/navigation";
 const TENANT_CONFIGS = {
   maxina: { name: "Maxina", color: "bg-pink-100 text-pink-800" },
   alkalma: { name: "AlKalma", color: "bg-blue-100 text-blue-800" },
-  earthlings: { name: "Earthlings", color: "bg-green-100 text-green-800" },
+  earthlinks: { name: "Earthlinks", color: "bg-green-100 text-green-800" },
 };
 
 export default function TenantManagement() {

@@ -16,7 +16,7 @@ import Auth from "./pages/Auth";
 import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
 import MaxinaPortal from "./pages/portals/MaxinaPortal";
 import AlkalmaPortal from "./pages/portals/AlkalmaPortal";
-import EarthlingsPortal from "./pages/portals/EarthlingsPortal";
+import EarthlinksPortal from "./pages/portals/EarthlinksPortal";
 import CommunityPortal from "./pages/portals/CommunityPortal";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -159,7 +159,7 @@ const App = () => (
           <Route path="/exafy-admin" element={<ExafyAdminPortal />} />
           <Route path="/maxina" element={<MaxinaPortal />} />
           <Route path="/alkalma" element={<AlkalmaPortal />} />
-          <Route path="/earthlings" element={<EarthlingsPortal />} />
+          <Route path="/earthlinks" element={<EarthlinksPortal />} />
           <Route path="/community" element={<CommunityPortal />} />
           <Route path="/home" element={
             <AuthGuard>

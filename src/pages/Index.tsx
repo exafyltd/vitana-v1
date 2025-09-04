@@ -67,14 +67,14 @@ const Index = () => {
               </Card>
             </Link>
 
-            {/* Earthlings Portal */}
-            <Link to="/earthlings">
+            {/* Earthlinks Portal */}
+            <Link to="/earthlinks">
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
                 <CardHeader className="text-center">
                   <div className="flex justify-center mb-4">
                     <Leaf className="h-12 w-12 text-[#4ADE80] group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="text-xl">Earthlings</CardTitle>
+                  <CardTitle className="text-xl">Earthlinks</CardTitle>
                   <CardDescription>Sustainable & eco-friendly wellness</CardDescription>
                 </CardHeader>
                 <CardContent>

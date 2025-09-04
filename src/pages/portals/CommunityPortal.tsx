@@ -20,7 +20,7 @@ const CommunityPortal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [selectedTenant, setSelectedTenant] = useState<"maxina" | "alkalma" | "earthlings">("maxina");
+  const [selectedTenant, setSelectedTenant] = useState<"maxina" | "alkalma" | "earthlinks">("maxina");
 
   // Redirect authenticated users to their appropriate dashboard
   useEffect(() => {
@@ -94,8 +94,8 @@ const CommunityPortal = () => {
       icon: BookOpen,
       color: "#3B82F6"
     },
-    earthlings: {
-      name: "Earthlings",
+    earthlinks: {
+      name: "Earthlinks",
       description: "Sustainable & eco-friendly wellness",
       icon: Leaf,
       color: "#4ADE80"
@@ -245,7 +245,7 @@ const CommunityPortal = () => {
                     {/* Tenant Selection */}
                     <div className="space-y-3">
                       <Label>Choose your platform:</Label>
-                      <Select value={selectedTenant} onValueChange={(value: "maxina" | "alkalma" | "earthlings") => setSelectedTenant(value)}>
+                      <Select value={selectedTenant} onValueChange={(value: "maxina" | "alkalma" | "earthlinks") => setSelectedTenant(value)}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
@@ -296,9 +296,9 @@ const CommunityPortal = () => {
                 <BookOpen className="h-5 w-5 mx-auto mb-1" style={{ color: "#3B82F6" }} />
                 <div className="text-xs font-medium">AlKalma</div>
               </Link>
-              <Link to="/earthlings" className="p-3 rounded-lg border bg-white/50 hover:bg-white/80 transition-colors">
+              <Link to="/earthlinks" className="p-3 rounded-lg border bg-white/50 hover:bg-white/80 transition-colors">
                 <Leaf className="h-5 w-5 mx-auto mb-1" style={{ color: "#4ADE80" }} />
-                <div className="text-xs font-medium">Earthlings</div>
+                <div className="text-xs font-medium">Earthlinks</div>
               </Link>
             </div>
           </div>

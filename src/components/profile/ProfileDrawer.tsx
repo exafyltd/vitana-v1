@@ -37,7 +37,7 @@ const ROLE_LABELS: Record<UserRole, string> = {
 
 const TENANT_LABELS: Record<TenantType, string> = {
   maxina: "Maxina",
-  earthlings: "Earthlings", 
+  earthlinks: "Earthlinks", 
   alkalma: "AlKalma",
 };
 

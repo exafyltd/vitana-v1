@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export type TenantType = "maxina" | "earthlings" | "alkalma";
+export type TenantType = "maxina" | "earthlinks" | "alkalma";
 
 interface TenantConfig {
   id: string;
@@ -23,10 +23,10 @@ const TENANT_CONFIGS: Record<TenantType, TenantConfig> = {
     brandBg: "#FFF5F8",
     brandFg: "#1A1A1A",
   },
-  earthlings: {
+  earthlinks: {
     id: "",
-    name: "Earthlings",
-    slug: "earthlings",
+    name: "Earthlinks",
+    slug: "earthlinks",
     brandAccent: "#4ADE80",
     brandBg: "#F0FDF4",
     brandFg: "#1A1A1A",

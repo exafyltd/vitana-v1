@@ -16,13 +16,13 @@ export function useSmartRouting() {
     if (authLoading) return;
 
     // Don't redirect if already on a portal page or auth page
-    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlings', '/community', '/auth'];
+    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth'];
     if (portalPaths.some(path => location.pathname.startsWith(path))) return;
 
     // If user is not authenticated, handle based on current path
     if (!user) {
       // Allow access to public pages and portal pages
-      const publicPaths = ['/', '/maxina', '/alkalma', '/earthlings', '/exafy-admin'];
+      const publicPaths = ['/', '/maxina', '/alkalma', '/earthlinks', '/exafy-admin'];
       if (publicPaths.some(path => location.pathname === path || location.pathname.startsWith(path))) return;
       
       // Redirect unauthenticated users trying to access protected pages to landing page
@@ -63,8 +63,8 @@ export function useSmartRouting() {
                 case 'alkalma':
                   navigate("/alkalma");
                   break;
-                case 'earthlings':
-                  navigate("/earthlings");
+                case 'earthlinks':
+                  navigate("/earthlinks");
                   break;
                 case 'maxina':
                 default:
@@ -107,8 +107,8 @@ export function useRoleBasedRedirect() {
           switch (tenant.slug) {
             case 'alkalma':
               return "/alkalma";
-            case 'earthlings':
-              return "/earthlings";
+            case 'earthlinks':
+              return "/earthlinks";
             case 'maxina':
             default:
               return "/maxina";
@@ -138,8 +138,8 @@ export function useTenantLogoutRedirect() {
         return "/maxina";
       case "alkalma": 
         return "/alkalma";
-      case "earthlings":
-        return "/earthlings";
+      case "earthlinks":
+        return "/earthlinks";
       default:
         return "/";
     }

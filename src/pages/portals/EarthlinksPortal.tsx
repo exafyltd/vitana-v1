@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Leaf, Users, Stethoscope, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const EarthlingsPortal = () => {
+const EarthlinksPortal = () => {
   const { user, loading: authLoading } = useAuth();
   const { tenant } = useTenant();
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const EarthlingsPortal = () => {
   const [fullName, setFullName] = useState("");
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
 
-  // Only redirect if already authenticated and on earthlings portal - but let login flow handle navigation
+  // Only redirect if already authenticated and on earthlinks portal - but let login flow handle navigation
   useEffect(() => {
     if (!authLoading && user && !loading) {
       // Only auto-redirect if we're not in the middle of a login process
@@ -57,13 +57,13 @@ const EarthlingsPortal = () => {
       }
 
       // CRITICAL: Switch tenant BEFORE allowing navigation
-      console.log('Switching to earthlings tenant after successful login...');
+      console.log('Switching to earthlinks tenant after successful login...');
       
       try {
         await supabase.rpc('switch_to_tenant_by_slug', {
-          p_tenant_slug: 'earthlings'
+          p_tenant_slug: 'earthlinks'
         });
-        console.log('Successfully switched to earthlings tenant');
+        console.log('Successfully switched to earthlinks tenant');
         
         // Refresh session to get updated metadata
         await supabase.auth.refreshSession();
@@ -73,7 +73,7 @@ const EarthlingsPortal = () => {
         navigate("/home");
       } catch (switchError) {
         console.error('Error switching tenant after login:', switchError);
-        setError("Login successful but failed to switch to Earthlings tenant. Please try refreshing the page.");
+        setError("Login successful but failed to switch to Earthlinks tenant. Please try refreshing the page.");
       }
     } catch (err) {
       console.error('Sign in error:', err);
@@ -93,10 +93,10 @@ const EarthlingsPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/earthlings`,
+          emailRedirectTo: `${window.location.origin}/earthlinks`,
           data: {
             full_name: fullName,
-            tenant_slug: "earthlings",
+            tenant_slug: "earthlinks",
             preferred_role: selectedRole
           }
         }
@@ -110,7 +110,7 @@ const EarthlingsPortal = () => {
           setError(error.message);
         }
       } else {
-        setError("Please check your email to confirm your account. After confirmation, you'll be redirected to the Earthlings portal.");
+        setError("Please check your email to confirm your account. After confirmation, you'll be redirected to the Earthlinks portal.");
       }
     } catch (err) {
       setError("An unexpected error occurred");
@@ -130,8 +130,8 @@ const EarthlingsPortal = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50">
       <SEO 
-        title="Earthlings Health Platform - VITANA" 
-        description="Join Earthlings' sustainable health and wellness community. Connect with nature-focused healthcare and eco-friendly wellness solutions." 
+        title="Earthlinks Health Platform - VITANA" 
+        description="Join Earthlinks' sustainable health and wellness community. Connect with nature-focused healthcare and eco-friendly wellness solutions."
         canonical={window.location.href} 
       />
       
@@ -142,7 +142,7 @@ const EarthlingsPortal = () => {
             <div className="flex items-center justify-center mb-4">
               <Leaf className="h-12 w-12 text-[#4ADE80]" />
             </div>
-            <h1 className="text-4xl font-bold text-foreground">Earthlings</h1>
+            <h1 className="text-4xl font-bold text-foreground">Earthlinks</h1>
             <p className="text-muted-foreground mt-2">
               Sustainable health & eco-friendly wellness
             </p>
@@ -153,13 +153,13 @@ const EarthlingsPortal = () => {
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Join Earthlings</TabsTrigger>
+                <TabsTrigger value="signup">Join Earthlinks</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
                 <CardHeader>
                   <CardTitle>Welcome Back</CardTitle>
-                  <CardDescription>Sign in to your Earthlings account</CardDescription>
+                  <CardDescription>Sign in to your Earthlinks account</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSignIn} className="space-y-4">
@@ -210,7 +210,7 @@ const EarthlingsPortal = () => {
               
               <TabsContent value="signup">
                 <CardHeader>
-                  <CardTitle>Join Earthlings</CardTitle>
+                  <CardTitle>Join Earthlinks</CardTitle>
                   <CardDescription>Create your account and choose your role</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -336,4 +336,4 @@ const EarthlingsPortal = () => {
   );
 };
 
-export default EarthlingsPortal;
+export default EarthlinksPortal;

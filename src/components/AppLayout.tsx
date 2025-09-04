@@ -89,8 +89,8 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
         case "alkalma":
           navigate("/alkalma");
           break;
-        case "earthlings":
-          navigate("/earthlings");
+        case "earthlinks":
+          navigate("/earthlinks");
           break;
         default:
           navigate("/");
@@ -116,8 +116,8 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
       return 'Maxina';
     } else if (currentPath.startsWith('/alkalma')) {
       return 'AlKalma';
-    } else if (currentPath.startsWith('/earthlings')) {
-      return 'Earthlings';
+    } else if (currentPath.startsWith('/earthlinks')) {
+      return 'Earthlinks';
     }
     
     // Final fallback
