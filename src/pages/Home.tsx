@@ -21,15 +21,22 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState, useEffect } from "react";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { Badge } from "@/components/ui/badge";
+import { useProfile } from "@/context/ProfileProvider";
+import { useMotivationalMessage } from "@/hooks/useMotivationalMessage";
 
 import { homeNavigation } from "@/config/navigation";
 
 export default function Home() {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { profile } = useProfile();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
+  
+  // Extract first name from profile
+  const firstName = profile.fullName?.split(' ')[0] || profile.displayName?.split(' ')[0];
+  const { greeting, emoji } = useMotivationalMessage(firstName);
 
   // Show onboarding for new users (check localStorage for demo)
   useEffect(() => {
@@ -57,10 +64,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
           <div className="flex flex-col lg:flex-row gap-4 mb-8">
-            {/* Shortened Header Bar - Welcome Message */}
+            {/* Personalized Welcome Message */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Hi Jovana, let´s make today a very special day! ✨</h1>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{greeting} {emoji}</h1>
                 <p className="text-muted-foreground">Your wellness journey starts with today's opportunities.</p>
               </div>
             </div>
