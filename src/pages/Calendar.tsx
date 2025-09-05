@@ -1,6 +1,6 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar as CalendarIcon, Clock, Users, Bell, ChevronRight, AlertCircle, CheckCircle, Plus, Target, TrendingUp } from "lucide-react";
@@ -40,12 +40,10 @@ export default function Calendar() {
     <AppLayout>
       <SEO title="Calendar Overview | VITANA" description="Your comprehensive calendar and scheduling hub" canonical={window.location.href} />
       
-      <Universal3CardHeader
+      <StandardHeader
         title="Calendar Overview"
         description="Your comprehensive calendar and scheduling hub with AI-powered insights and reminders."
         emoji="📅"
-        badgeText={`${todaysEvents.length} Today`}
-        badgeVariant="outline"
       />
       
       <div className="p-6">

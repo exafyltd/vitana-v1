@@ -21,7 +21,7 @@ import { useState, useEffect } from "react";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { useProfile } from "@/context/ProfileProvider";
 import { useMotivationalMessage } from "@/hooks/useMotivationalMessage";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 
 import { homeNavigation } from "@/config/navigation";
 
@@ -57,11 +57,10 @@ export default function Home() {
       <SEO title="Home | VITANA" description="VITANA Home" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       
-      <Universal3CardHeader 
+      <StandardHeader 
         title={greeting}
         description="Your wellness journey starts with today's opportunities."
         emoji={emoji}
-        onAutopilotClick={() => setAutopilotOpen(true)}
       />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">

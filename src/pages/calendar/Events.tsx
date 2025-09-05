@@ -1,6 +1,6 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar as CalendarIcon } from "lucide-react";
 
@@ -9,12 +9,10 @@ export default function Events() {
     <AppLayout>
       <SEO title="Events | Calendar" description="Manage your events" canonical={window.location.href} />
       
-      <Universal3CardHeader
+      <StandardHeader
         title="Events"
         description="Create and manage your events and special occasions."
         emoji="🎉"
-        badgeText="Create & Manage"
-        badgeVariant="outline"
       />
       
       <div className="p-6">

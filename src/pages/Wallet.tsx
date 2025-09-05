@@ -5,7 +5,7 @@ import { DataWalletCard } from "@/components/crossover/DataWalletCard";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { walletNavigation } from "@/config/navigation";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 
 // New wallet cards
 import { BalanceSnapshotCard } from "@/components/wallet/BalanceSnapshotCard";
@@ -29,7 +29,7 @@ export default function Wallet() {
       <SEO title="Wallet | VITANA" description="VITANA Digital Wallet" canonical={window.location.href} />
       <SubNavigation items={walletNavigation} />
       
-      <Universal3CardHeader
+      <StandardHeader
         title="Your Digital Wallet"
         description="Manage your health data rewards and digital assets."
         emoji="💳"
