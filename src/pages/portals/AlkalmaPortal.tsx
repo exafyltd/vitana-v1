@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const AlkalmaPortal = () => {
   const { user, loading: authLoading } = useAuth();
-  const { tenant } = useTenant();
+  const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -24,13 +24,15 @@ const AlkalmaPortal = () => {
   const [fullName, setFullName] = useState("");
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
 
-  // Only redirect if already authenticated and on alkalma portal - but let login flow handle navigation
+  // Switch to alkalma tenant if already authenticated
   useEffect(() => {
     if (!authLoading && user && !loading) {
-      // Only auto-redirect if we're not in the middle of a login process
-      navigate("/home");
+      // If user is already authenticated, switch to alkalma tenant and redirect
+      setTenantBySlug('alkalma').then(() => {
+        navigate("/home");
+      });
     }
-  }, [user, authLoading, navigate, loading]);
+  }, [user, authLoading, navigate, loading, setTenantBySlug]);
 
   // Set tenant theme
   useEffect(() => {

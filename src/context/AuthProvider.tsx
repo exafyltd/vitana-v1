@@ -37,7 +37,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.log('Sign out completed (session may have already expired)');
+    }
   };
 
   const value: AuthContextValue = {

@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
-  const { tenant } = useTenant();
+  const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -24,12 +24,15 @@ const MaxinaPortal = () => {
   const [fullName, setFullName] = useState("");
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
 
-  // Redirect authenticated users to their appropriate dashboard
+  // Switch to maxina tenant if already authenticated
   useEffect(() => {
     if (!authLoading && user) {
-      navigate("/home");
+      // If user is already authenticated, switch to maxina tenant and redirect
+      setTenantBySlug('maxina').then(() => {
+        navigate("/home");
+      });
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, setTenantBySlug]);
 
   // Set tenant theme
   useEffect(() => {
