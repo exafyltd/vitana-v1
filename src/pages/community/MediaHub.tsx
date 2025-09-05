@@ -13,118 +13,96 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 import { communityNavigation } from "@/config/navigation";
-
 export default function MediaHub() {
   const navigate = useNavigate();
-  const { pendingCount, getLatestActions } = useAutopilot();
+  const {
+    pendingCount,
+    getLatestActions
+  } = useAutopilot();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeMediaTab, setActiveMediaTab] = useState("shorts");
-  
   const latestActions = getLatestActions(2);
-  const videoShorts = [
-    {
-      title: "5 Min Morning Stretch",
-      creator: "FitnessPro",
-      duration: "0:45",
-      views: "2.3k",
-      likes: 234,
-      thumbnail: "MS",
-      isLive: false
-    },
-    {
-      title: "Quick Healthy Breakfast",
-      creator: "NutriChef",
-      duration: "1:20",
-      views: "1.8k",
-      likes: 189,
-      thumbnail: "QH",
-      isLive: false
-    },
-    {
-      title: "Breathing Exercise",
-      creator: "MindfulMoments",
-      duration: "2:15",
-      views: "3.1k",
-      likes: 412,
-      thumbnail: "BE",
-      isLive: true
-    }
-  ];
-
-  const podcastEpisodes = [
-    {
-      title: "The Science of Sleep",
-      creator: "Dr. Sarah Wilson",
-      duration: "45:30",
-      category: "Health",
-      plays: "12k",
-      isNew: true
-    },
-    {
-      title: "Mindful Eating Habits",
-      creator: "Nutrition Network",
-      duration: "32:15",
-      category: "Nutrition",
-      plays: "8.5k",
-      isNew: false
-    }
-  ];
-
-  const liveReplays = [
-    {
-      title: "Community Yoga Session",
-      date: "Yesterday",
-      duration: "60:00",
-      viewers: "156",
-      host: "Yoga Masters"
-    },
-    {
-      title: "Q&A with Dr. Martinez",
-      date: "3 days ago",
-      duration: "45:30",
-      viewers: "203",
-      host: "Health Hub"
-    }
-  ];
-
-  const playlists = [
-    {
-      title: "Morning Motivation",
-      count: 12,
-      category: "Curated",
-      thumbnail: "MM"
-    },
-    {
-      title: "Healthy Recipes",
-      count: 8,
-      category: "User Created",
-      thumbnail: "HR"
-    }
-  ];
-
-  const creators = [
-    {
-      name: "FitnessPro",
-      followers: "12.3k",
-      videos: 45,
-      category: "Fitness",
-      avatar: "FP"
-    },
-    {
-      name: "NutriChef",
-      followers: "8.9k",
-      videos: 32,
-      category: "Nutrition",
-      avatar: "NC"
-    }
-  ];
-
-  return (
-    <AppLayout>
+  const videoShorts = [{
+    title: "5 Min Morning Stretch",
+    creator: "FitnessPro",
+    duration: "0:45",
+    views: "2.3k",
+    likes: 234,
+    thumbnail: "MS",
+    isLive: false
+  }, {
+    title: "Quick Healthy Breakfast",
+    creator: "NutriChef",
+    duration: "1:20",
+    views: "1.8k",
+    likes: 189,
+    thumbnail: "QH",
+    isLive: false
+  }, {
+    title: "Breathing Exercise",
+    creator: "MindfulMoments",
+    duration: "2:15",
+    views: "3.1k",
+    likes: 412,
+    thumbnail: "BE",
+    isLive: true
+  }];
+  const podcastEpisodes = [{
+    title: "The Science of Sleep",
+    creator: "Dr. Sarah Wilson",
+    duration: "45:30",
+    category: "Health",
+    plays: "12k",
+    isNew: true
+  }, {
+    title: "Mindful Eating Habits",
+    creator: "Nutrition Network",
+    duration: "32:15",
+    category: "Nutrition",
+    plays: "8.5k",
+    isNew: false
+  }];
+  const liveReplays = [{
+    title: "Community Yoga Session",
+    date: "Yesterday",
+    duration: "60:00",
+    viewers: "156",
+    host: "Yoga Masters"
+  }, {
+    title: "Q&A with Dr. Martinez",
+    date: "3 days ago",
+    duration: "45:30",
+    viewers: "203",
+    host: "Health Hub"
+  }];
+  const playlists = [{
+    title: "Morning Motivation",
+    count: 12,
+    category: "Curated",
+    thumbnail: "MM"
+  }, {
+    title: "Healthy Recipes",
+    count: 8,
+    category: "User Created",
+    thumbnail: "HR"
+  }];
+  const creators = [{
+    name: "FitnessPro",
+    followers: "12.3k",
+    videos: 45,
+    category: "Fitness",
+    avatar: "FP"
+  }, {
+    name: "NutriChef",
+    followers: "8.9k",
+    videos: 32,
+    category: "Nutrition",
+    avatar: "NC"
+  }];
+  return <AppLayout>
       <SEO title="Media Hub | Community" description="Discover videos, podcasts, and community content" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
@@ -140,20 +118,10 @@ export default function MediaHub() {
             </div>
             
             {/* Autopilot Card with Live Badge Counter */}
-            <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
-              onClick={() => setAutopilotOpen(true)}
-              onMouseEnter={() => setShowPreview(true)}
-              onMouseLeave={() => setShowPreview(false)}
-            >
-              {pendingCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
-                >
+            <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative" onClick={() => setAutopilotOpen(true)} onMouseEnter={() => setShowPreview(true)} onMouseLeave={() => setShowPreview(false)}>
+              {pendingCount > 0 && <Badge variant="destructive" className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10">
                   {pendingCount}
-                </Badge>
-              )}
+                </Badge>}
               <div className="flex flex-col items-center justify-center h-full space-y-3">
                 <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
@@ -162,29 +130,20 @@ export default function MediaHub() {
               </div>
               
               {/* Hover Preview */}
-              {showPreview && pendingCount > 0 && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+              {showPreview && pendingCount > 0 && <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
                   <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
-                  {latestActions.map((action, index) => (
-                    <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                  {latestActions.map((action, index) => <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                       <span>{action.icon}</span>
                       <span className="truncate">{action.title}</span>
-                    </div>
-                  ))}
-                  {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                    </div>)}
+                  {pendingCount > 2 && <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
                       +{pendingCount - 2} more actions
-                    </div>
-                  )}
-                </div>
-              )}
+                    </div>}
+                </div>}
             </div>
             
             {/* Vitana Index Card - Circle with 742 */}
-            <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-              onClick={() => navigate('/health/my-health-tracker')}
-            >
+            <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl" onClick={() => navigate('/health/my-health-tracker')}>
               <div className="flex items-center justify-center h-full">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
                   <span className="text-xl font-bold text-green-600">742</span>
@@ -195,7 +154,7 @@ export default function MediaHub() {
 
           {/* Upload Actions */}
           <div className="flex items-center justify-between mb-6">
-            <div className="text-lg font-bold">Media Hub</div>
+            
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Search className="w-4 h-4 mr-2" />
@@ -236,8 +195,7 @@ export default function MediaHub() {
                         Trending Shorts
                       </h2>
                       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {videoShorts.map((video, index) => (
-                          <div key={index} className="relative group cursor-pointer">
+                        {videoShorts.map((video, index) => <div key={index} className="relative group cursor-pointer">
                             <div className="relative aspect-[9/16] bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg overflow-hidden">
                               <div className="absolute inset-0 flex items-center justify-center">
                                 <Avatar className="w-16 h-16">
@@ -245,11 +203,9 @@ export default function MediaHub() {
                                 </Avatar>
                               </div>
                               <div className="absolute top-2 left-2">
-                                {video.isLive && (
-                                  <Badge variant="destructive" className="text-xs">
+                                {video.isLive && <Badge variant="destructive" className="text-xs">
                                     • LIVE
-                                  </Badge>
-                                )}
+                                  </Badge>}
                               </div>
                               <div className="absolute bottom-2 right-2">
                                 <Badge variant="secondary" className="text-xs">
@@ -276,8 +232,7 @@ export default function MediaHub() {
                                 </span>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          </div>)}
                       </div>
                     </CardContent>
                   </Card>
@@ -294,12 +249,22 @@ export default function MediaHub() {
                       Trending Music
                     </h2>
                     <div className="space-y-4">
-                      {[
-                        { title: "Morning Flow Beats", artist: "Wellness Sounds", duration: "3:45", genre: "Ambient" },
-                        { title: "Focus & Flow", artist: "Study Vibes", duration: "4:20", genre: "Lo-Fi" },
-                        { title: "Workout Energy", artist: "Fitness Mix", duration: "2:58", genre: "Electronic" }
-                      ].map((track, index) => (
-                        <div key={index} className="flex items-center gap-4 p-3 border rounded-lg">
+                      {[{
+                      title: "Morning Flow Beats",
+                      artist: "Wellness Sounds",
+                      duration: "3:45",
+                      genre: "Ambient"
+                    }, {
+                      title: "Focus & Flow",
+                      artist: "Study Vibes",
+                      duration: "4:20",
+                      genre: "Lo-Fi"
+                    }, {
+                      title: "Workout Energy",
+                      artist: "Fitness Mix",
+                      duration: "2:58",
+                      genre: "Electronic"
+                    }].map((track, index) => <div key={index} className="flex items-center gap-4 p-3 border rounded-lg">
                           <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
                             <Music className="w-6 h-6 text-purple-600" />
                           </div>
@@ -311,8 +276,7 @@ export default function MediaHub() {
                           <Button size="sm" variant="outline">
                             <Play className="w-4 h-4" />
                           </Button>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </CardContent>
                 </Card>
@@ -321,8 +285,7 @@ export default function MediaHub() {
                   <CardContent className="p-6">
                     <h3 className="text-lg font-semibold mb-4">Music Playlists</h3>
                     <div className="space-y-3">
-                      {playlists.map((playlist, index) => (
-                        <div key={index} className="p-4 border rounded-lg">
+                      {playlists.map((playlist, index) => <div key={index} className="p-4 border rounded-lg">
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
                               <Music className="w-6 h-6 text-purple-600" />
@@ -335,8 +298,7 @@ export default function MediaHub() {
                           <Button size="sm" variant="outline" className="w-full mt-3">
                             Play Playlist
                           </Button>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </CardContent>
                 </Card>
@@ -352,8 +314,7 @@ export default function MediaHub() {
                       Latest Episodes
                     </h2>
                     <div className="space-y-4">
-                      {podcastEpisodes.map((episode, index) => (
-                        <div key={index} className="p-4 border rounded-lg">
+                      {podcastEpisodes.map((episode, index) => <div key={index} className="p-4 border rounded-lg">
                           <div className="flex items-start gap-3">
                             <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center">
                               <Volume2 className="w-6 h-6 text-green-600" />
@@ -381,8 +342,7 @@ export default function MediaHub() {
                               <Bookmark className="w-4 h-4" />
                             </Button>
                           </div>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </CardContent>
                 </Card>
@@ -391,12 +351,22 @@ export default function MediaHub() {
                   <CardContent className="p-6">
                     <h3 className="text-lg font-semibold mb-4">Popular Shows</h3>
                     <div className="space-y-4">
-                      {[
-                        { title: "Wellness Today", host: "Dr. Sarah Wilson", episodes: 45, category: "Health" },
-                        { title: "Mindful Living", host: "Alex Chen", episodes: 32, category: "Lifestyle" },
-                        { title: "Fitness Forward", host: "Mike Johnson", episodes: 28, category: "Fitness" }
-                      ].map((show, index) => (
-                        <div key={index} className="p-4 border rounded-lg">
+                      {[{
+                      title: "Wellness Today",
+                      host: "Dr. Sarah Wilson",
+                      episodes: 45,
+                      category: "Health"
+                    }, {
+                      title: "Mindful Living",
+                      host: "Alex Chen",
+                      episodes: 32,
+                      category: "Lifestyle"
+                    }, {
+                      title: "Fitness Forward",
+                      host: "Mike Johnson",
+                      episodes: 28,
+                      category: "Fitness"
+                    }].map((show, index) => <div key={index} className="p-4 border rounded-lg">
                           <div className="flex items-center gap-3 mb-3">
                             <Avatar className="w-10 h-10">
                               <AvatarFallback>{show.host.split(' ').map(n => n[0]).join('')}</AvatarFallback>
@@ -413,8 +383,7 @@ export default function MediaHub() {
                           <Button size="sm" variant="outline" className="w-full">
                             Subscribe
                           </Button>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </CardContent>
                 </Card>
@@ -424,16 +393,9 @@ export default function MediaHub() {
         </div>
       </div>
 
-      <MediaUploadPopup 
-        open={isUploadOpen}
-        onOpenChange={setIsUploadOpen}
-      />
+      <MediaUploadPopup open={isUploadOpen} onOpenChange={setIsUploadOpen} />
       
       {/* Autopilot Popup */}
-      <AutopilotPopup 
-        open={autopilotOpen} 
-        onOpenChange={setAutopilotOpen}
-      />
-    </AppLayout>
-  );
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+    </AppLayout>;
 }
