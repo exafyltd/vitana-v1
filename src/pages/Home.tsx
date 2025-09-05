@@ -14,6 +14,7 @@ import { MotivationCard } from "@/components/crossover/MotivationCard";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MusicCard } from "@/components/crossover/MusicCard";
 import { VideoFeedCard } from "@/components/crossover/VideoFeedCard";
+import { NewsCard } from "@/components/crossover/NewsCard";
 import { useNavigate } from "react-router-dom";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -67,11 +68,29 @@ export default function Home() {
             />
           </div>
 
-        {/* Pinterest-style Masonry Grid Layout with Media Cards Mixed In */}
+        {/* Pinterest-style Masonry Grid Layout with News Cards Mixed In */}
         <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
           {/* Large cards */}
           <div className="break-inside-avoid mb-4">
             <VitanaIndexCard />
+          </div>
+          
+          {/* News Card - Community Event */}
+          <div className="break-inside-avoid mb-4">
+            <NewsCard 
+              title="Weekly Wellness Meetup Tonight"
+              description="Join Dr. Sarah Miller and 50+ community members for meditation and healthy cooking tips"
+              imageUrl="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop&crop=center"
+              category="community"
+              author={{
+                name: "Dr. Sarah Miller",
+                avatar: "/lovable-uploads/sarah-miller-avatar.jpg"
+              }}
+              location="Downtown Center"
+              attendees={52}
+              timestamp="7:00 PM"
+              onClick={() => navigate("/community/events")}
+            />
           </div>
           
           <div className="break-inside-avoid mb-4">
@@ -83,6 +102,22 @@ export default function Home() {
             <QuickLogStrip />
           </div>
           
+          {/* News Card - Achievement */}
+          <div className="break-inside-avoid mb-4">
+            <NewsCard 
+              title="Emma Wilson Completes 30-Day Challenge"
+              description="Inspiring transformation journey with consistent nutrition tracking and community support"
+              imageUrl="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center"
+              category="achievement"
+              author={{
+                name: "Emma Wilson",
+                avatar: "/lovable-uploads/emma-wilson-avatar.jpg"
+              }}
+              timestamp="2 hours ago"
+              onClick={() => navigate("/community/feed")}
+            />
+          </div>
+          
           <div className="break-inside-avoid mb-4">
             <SmartCalendarCard />
           </div>
@@ -90,6 +125,24 @@ export default function Home() {
           {/* Health Pillars mixed with Media Cards */}
           <div className="break-inside-avoid mb-4">
             <LifestylePlanCard type="nutrition" />
+          </div>
+          
+          {/* News Card - Wellness Event */}
+          <div className="break-inside-avoid mb-4">
+            <NewsCard 
+              title="Live Yoga Session with Lisa Chen"
+              description="Morning flow for energy and mindfulness - perfect for busy professionals"
+              imageUrl="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop&crop=center"
+              category="wellness"
+              author={{
+                name: "Lisa Chen",
+                avatar: "/lovable-uploads/lisa-chen-avatar.jpg"
+              }}
+              location="Virtual"
+              attendees={28}
+              timestamp="Tomorrow 8 AM"
+              onClick={() => navigate("/calendar/events")}
+            />
           </div>
           
           {/* Podcast Card - Medium size */}
@@ -101,6 +154,23 @@ export default function Home() {
             <LifestylePlanCard type="hydration" />
           </div>
           
+          {/* News Card - Community Achievement */}
+          <div className="break-inside-avoid mb-4">
+            <NewsCard 
+              title="James Davis Reaches Fitness Milestone"
+              description="Completed his first marathon and raised $5000 for mental health awareness"
+              imageUrl="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center"
+              category="achievement"
+              author={{
+                name: "James Davis",
+                avatar: "/lovable-uploads/james-davis-avatar.jpg"
+              }}
+              location="City Marathon"
+              timestamp="Yesterday"
+              onClick={() => navigate("/community/feed")}
+            />
+          </div>
+          
           <div className="break-inside-avoid mb-4">
             <LifestylePlanCard type="exercise" />
           </div>
@@ -108,6 +178,24 @@ export default function Home() {
           {/* Music Card - Small size */}
           <div className="break-inside-avoid mb-4" style={{ height: 'auto', minHeight: '200px' }}>
             <MusicCard />
+          </div>
+          
+          {/* News Card - Wellness Workshop */}
+          <div className="break-inside-avoid mb-4">
+            <NewsCard 
+              title="Nutrition Workshop: Meal Prep Mastery"
+              description="Learn from certified nutritionist Mike Thompson about sustainable meal planning"
+              imageUrl="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop&crop=center"
+              category="wellness"
+              author={{
+                name: "Mike Thompson",
+                avatar: "/lovable-uploads/mike-thompson-avatar.jpg"
+              }}
+              location="Wellness Center"
+              attendees={15}
+              timestamp="This Saturday"
+              onClick={() => navigate("/discover/wellness-services")}
+            />
           </div>
           
           <div className="break-inside-avoid mb-4">
@@ -121,6 +209,23 @@ export default function Home() {
           {/* Video Card - Large size */}
           <div className="break-inside-avoid mb-4" style={{ height: 'auto', minHeight: '350px' }}>
             <VideoFeedCard />
+          </div>
+          
+          {/* News Card - Community Event */}
+          <div className="break-inside-avoid mb-4">
+            <NewsCard 
+              title="Monthly Health & Wellness Fair"
+              description="Meet local practitioners, try new wellness services, and connect with your community"
+              imageUrl="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop&crop=center"
+              category="event"
+              author={{
+                name: "VITANA Community",
+              }}
+              location="Central Park"
+              attendees={200}
+              timestamp="Next Weekend"
+              onClick={() => navigate("/community/events")}
+            />
           </div>
           
           <div className="break-inside-avoid mb-4">
