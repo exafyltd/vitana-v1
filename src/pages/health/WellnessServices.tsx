@@ -265,24 +265,19 @@ export default function WellnessServices() {
           {/* Horizontal Tabs Layout */}
           <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="preventiveCare" className="flex items-center gap-2">
-                <Shield className="w-4 h-4" />
+              <SplitBarTrigger value="preventiveCare">
                 Preventive Care
               </SplitBarTrigger>
-              <SplitBarTrigger value="medicalServices" className="flex items-center gap-2">
-                <Stethoscope className="w-4 h-4" />
+              <SplitBarTrigger value="medicalServices">
                 Medical Services
               </SplitBarTrigger>
-              <SplitBarTrigger value="wellnessPrograms" className="flex items-center gap-2">
-                <Heart className="w-4 h-4" />
+              <SplitBarTrigger value="wellnessPrograms">
                 Wellness Programs
               </SplitBarTrigger>
-              <SplitBarTrigger value="insuranceSupport" className="flex items-center gap-2">
-                <FileText className="w-4 h-4" />
+              <SplitBarTrigger value="insuranceSupport">
                 Insurance Support
               </SplitBarTrigger>
-              <SplitBarTrigger value="myServices" className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
+              <SplitBarTrigger value="myServices">
                 My Services
               </SplitBarTrigger>
             </SplitBarList>
