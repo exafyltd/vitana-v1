@@ -100,11 +100,6 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
   };
 
   const getTenantDisplayName = () => {
-    console.log('getTenantDisplayName called');
-    console.log('isExafyAdmin:', isExafyAdmin);
-    console.log('tenant:', tenant);
-    console.log('current path:', window.location.pathname);
-    
     // Show "Exafy" for Exafy admins
     if (isExafyAdmin) {
       return 'Exafy';
@@ -112,8 +107,15 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
     
     // Prioritize tenant context from authentication/database
     if (tenant?.name) {
-      console.log('Using tenant.name:', tenant.name);
       return tenant.name;
+    }
+    
+    // Check user session for tenant information
+    if (user?.user_metadata?.tenant_slug) {
+      const tenantSlug = user.user_metadata.tenant_slug;
+      if (tenantSlug === 'earthlinks') return 'Earthlinks';
+      if (tenantSlug === 'maxina') return 'Maxina';
+      if (tenantSlug === 'alkalma') return 'AlKalma';
     }
     
     // Fallback to URL-based tenant detection for portal pages
@@ -126,8 +128,13 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
       return 'Earthlinks';
     }
     
-    // Final fallback - default to community if no specific tenant is detected
-    console.log('Falling back to Community - tenant context not loaded');
+    // Check localStorage for tenant preference
+    const storedTenant = localStorage.getItem('tenant_slug');
+    if (storedTenant === 'earthlinks') return 'Earthlinks';
+    if (storedTenant === 'maxina') return 'Maxina';
+    if (storedTenant === 'alkalma') return 'AlKalma';
+    
+    // Final fallback
     return 'Community';
   };
 
