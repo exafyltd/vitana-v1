@@ -100,6 +100,11 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
   };
 
   const getTenantDisplayName = () => {
+    console.log('getTenantDisplayName called');
+    console.log('isExafyAdmin:', isExafyAdmin);
+    console.log('tenant:', tenant);
+    console.log('current path:', window.location.pathname);
+    
     // Show "Exafy" for Exafy admins
     if (isExafyAdmin) {
       return 'Exafy';
@@ -107,6 +112,7 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
     
     // Prioritize tenant context from authentication/database
     if (tenant?.name) {
+      console.log('Using tenant.name:', tenant.name);
       return tenant.name;
     }
     
@@ -121,6 +127,7 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
     }
     
     // Final fallback - default to community if no specific tenant is detected
+    console.log('Falling back to Community - tenant context not loaded');
     return 'Community';
   };
 
