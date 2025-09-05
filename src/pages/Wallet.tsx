@@ -11,7 +11,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { walletNavigation } from "@/config/navigation";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 
 export default function Wallet() {
   const navigate = useNavigate();
@@ -25,15 +25,13 @@ export default function Wallet() {
       <SEO title="Wallet | VITANA" description="VITANA Digital Wallet" canonical={window.location.href} />
       <SubNavigation items={walletNavigation} />
       
-      
-      <Universal3CardHeader
-        title="Your Digital Wallet"
-        description="Manage your health data rewards and digital assets."
-        emoji="💳"
-      />
-
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
+          <StandardHeader
+            title="Your Digital Wallet"
+            description="Manage your health data rewards and digital assets."
+            emoji="💳"
+          />
 
           {/* Content Grid */}
           <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
