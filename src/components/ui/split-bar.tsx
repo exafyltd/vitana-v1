@@ -4,19 +4,32 @@ import { cn } from "@/lib/utils";
 
 const SplitBar = TabsPrimitive.Root;
 
+interface SplitBarListProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> {
+  children: React.ReactNode;
+}
+
 const SplitBarList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.List
-    ref={ref}
-    className={cn(
-      "inline-flex h-12 items-center justify-start rounded-none bg-transparent p-0 text-muted-foreground border-b border-border w-full",
-      className
-    )}
-    {...props}
-  />
-));
+  SplitBarListProps
+>(({ className, children, ...props }, ref) => {
+  // Auto-calculate grid columns based on number of children
+  const childCount = React.Children.count(children);
+  const gridCols = `grid-cols-${childCount}`;
+  
+  return (
+    <TabsPrimitive.List
+      ref={ref}
+      className={cn(
+        "grid w-full mb-6",
+        gridCols,
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </TabsPrimitive.List>
+  );
+});
 SplitBarList.displayName = TabsPrimitive.List.displayName;
 
 const SplitBarTrigger = React.forwardRef<
@@ -26,7 +39,7 @@ const SplitBarTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center whitespace-nowrap rounded-none border-b-2 border-transparent px-6 py-3 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:shadow-none hover:text-foreground hover:border-muted-foreground/50",
+      "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
       className
     )}
     {...props}
@@ -41,7 +54,7 @@ const SplitBarContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      "mt-6 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       className
     )}
     {...props}

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { settingsNavigation } from "@/config/navigation";
 import { CreditCard, Calendar, Download, Star, Check, Trophy, Gift, Target, Award, Coins, Sparkles } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Progress } from "@/components/ui/progress";
 
 export default function Billing() {
@@ -23,13 +23,13 @@ export default function Billing() {
           emoji="💳"
         />
         
-        <Tabs defaultValue="billing" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="billing">Billing</TabsTrigger>
-            <TabsTrigger value="rewards">Rewards & Achievements</TabsTrigger>
-          </TabsList>
+        <SplitBar defaultValue="billing" className="w-full">
+          <SplitBarList>
+            <SplitBarTrigger value="billing">Billing</SplitBarTrigger>
+            <SplitBarTrigger value="rewards">Rewards & Achievements</SplitBarTrigger>
+          </SplitBarList>
 
-          <TabsContent value="billing" className="space-y-6">
+          <SplitBarContent value="billing" className="space-y-6">
         {/* Current Subscription */}
         <Card>
           <CardHeader>
@@ -233,9 +233,9 @@ export default function Billing() {
             </div>
           </CardContent>
         </Card>
-          </TabsContent>
+          </SplitBarContent>
 
-          <TabsContent value="rewards" className="space-y-6">
+          <SplitBarContent value="rewards" className="space-y-6">
             {/* Overview */}
             <Card>
               <CardHeader>
@@ -437,8 +437,8 @@ export default function Billing() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+          </SplitBarContent>
+        </SplitBar>
         </div>
       </div>
     </AppLayout>

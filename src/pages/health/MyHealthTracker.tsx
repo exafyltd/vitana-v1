@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Activity, Apple, Droplets, Dumbbell, Moon, Brain, FileText, Plus, TrendingUp, Calendar, Target, BarChart3, Trophy, Zap, Clock, Star } from "lucide-react";
 import { healthNavigation } from "@/config/navigation";
 import { useState } from "react";
@@ -124,15 +124,15 @@ export default function MyHealthTracker() {
           />
 
           {/* Main Split Screen Navigation */}
-          <Tabs defaultValue="pillars" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
-              <TabsTrigger value="pillars" className="text-lg font-medium">5 Pillars of Health</TabsTrigger>
-              <TabsTrigger value="progress-goals" className="text-lg font-medium">Progress & Goals</TabsTrigger>
-              <TabsTrigger value="lab-results" className="text-lg font-medium">Lab Results</TabsTrigger>
-            </TabsList>
+          <SplitBar defaultValue="pillars" className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="pillars" className="text-lg font-medium">5 Pillars of Health</SplitBarTrigger>
+              <SplitBarTrigger value="progress-goals" className="text-lg font-medium">Progress & Goals</SplitBarTrigger>
+              <SplitBarTrigger value="lab-results" className="text-lg font-medium">Lab Results</SplitBarTrigger>
+            </SplitBarList>
 
             {/* 5 Pillars of Health Tab */}
-            <TabsContent value="pillars" className="space-y-6">
+            <SplitBarContent value="pillars" className="space-y-6">
               {/* Vitana Index Overview */}
               <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20">
                 <CardHeader>
@@ -268,10 +268,10 @@ export default function MyHealthTracker() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
             {/* Progress & Goals Tab */}
-            <TabsContent value="progress-goals" className="space-y-6">
+            <SplitBarContent value="progress-goals" className="space-y-6">
               {/* Goals Overview */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20">
@@ -434,10 +434,10 @@ export default function MyHealthTracker() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+            </SplitBarContent>
 
             {/* Lab Results Tab */}
-            <TabsContent value="lab-results" className="space-y-6">
+            <SplitBarContent value="lab-results" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {labResults.map((result, index) => (
                   <Card key={index} className="hover:shadow-lg transition-all">
@@ -505,8 +505,8 @@ export default function MyHealthTracker() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
     </AppLayout>

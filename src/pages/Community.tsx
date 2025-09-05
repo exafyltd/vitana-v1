@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Users, MapPin, Radio, Trophy, TrendingUp, Calendar, Crown, Award, Target, Globe, Filter, Plane } from "lucide-react";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -117,13 +117,13 @@ export default withScreenId(function Community() {
             />
           </div>
 
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="overview">Community Overview</TabsTrigger>
-              <TabsTrigger value="rankings">Rankings</TabsTrigger>
-            </TabsList>
+          <SplitBar defaultValue="overview" className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="overview">Community Overview</SplitBarTrigger>
+              <SplitBarTrigger value="rankings">Rankings</SplitBarTrigger>
+            </SplitBarList>
 
-            <TabsContent value="overview">
+            <SplitBarContent value="overview">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             
             {/* Left Column - Quick Stats */}
@@ -288,9 +288,9 @@ export default withScreenId(function Community() {
               </Card>
             </div>
           </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="rankings">
+            <SplitBarContent value="rankings">
               {/* Rankings Controls */}
               <div className="flex flex-wrap gap-4 mb-6 p-4 bg-white/50 rounded-lg">
                 <div className="flex items-center gap-2">
@@ -489,8 +489,8 @@ export default withScreenId(function Community() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
-          </Tabs>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
       

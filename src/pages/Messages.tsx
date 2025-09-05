@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SplitScreen } from "@/components/ui/split-screen";
 import MessageComposer from "@/components/messages/MessageComposer";
@@ -122,15 +122,15 @@ export default withScreenId(function Messages() {
             emoji="💬"
           />
 
-          <Tabs value={activeOverviewTab} onValueChange={setActiveOverviewTab}>
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="direct">Direct Messages</TabsTrigger>
-              <TabsTrigger value="groups">Group Chats</TabsTrigger>
-              <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="archived">Archived</TabsTrigger>
-            </TabsList>
+          <SplitBar value={activeOverviewTab} onValueChange={setActiveOverviewTab}>
+            <SplitBarList>
+              <SplitBarTrigger value="direct">Direct Messages</SplitBarTrigger>
+              <SplitBarTrigger value="groups">Group Chats</SplitBarTrigger>
+              <SplitBarTrigger value="notifications">Notifications</SplitBarTrigger>
+              <SplitBarTrigger value="archived">Archived</SplitBarTrigger>
+            </SplitBarList>
 
-            <TabsContent value="direct" className="mt-6">
+            <SplitBarContent value="direct" className="mt-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -147,9 +147,9 @@ export default withScreenId(function Messages() {
                   />
                 </CardContent>
               </Card>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="groups" className="mt-6">
+            <SplitBarContent value="groups" className="mt-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -166,9 +166,9 @@ export default withScreenId(function Messages() {
                   />
                 </CardContent>
               </Card>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="notifications" className="mt-6">
+            <SplitBarContent value="notifications" className="mt-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -185,9 +185,9 @@ export default withScreenId(function Messages() {
                   />
                 </CardContent>
               </Card>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="archived" className="mt-6">
+            <SplitBarContent value="archived" className="mt-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -203,8 +203,8 @@ export default withScreenId(function Messages() {
                   />
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
     </AppLayout>

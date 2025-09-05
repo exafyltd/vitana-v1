@@ -5,7 +5,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { ServiceDetailSplitScreen } from "@/components/ui/split-screen";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
@@ -263,75 +263,75 @@ export default function WellnessServices() {
           />
 
           {/* Horizontal Tabs Layout */}
-          <Tabs value={activeSection} onValueChange={setActiveSection} className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="preventiveCare" className="flex items-center gap-2">
+          <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="preventiveCare" className="flex items-center gap-2">
                 <Shield className="w-4 h-4" />
                 Preventive Care
-              </TabsTrigger>
-              <TabsTrigger value="medicalServices" className="flex items-center gap-2">
+              </SplitBarTrigger>
+              <SplitBarTrigger value="medicalServices" className="flex items-center gap-2">
                 <Stethoscope className="w-4 h-4" />
                 Medical Services
-              </TabsTrigger>
-              <TabsTrigger value="wellnessPrograms" className="flex items-center gap-2">
+              </SplitBarTrigger>
+              <SplitBarTrigger value="wellnessPrograms" className="flex items-center gap-2">
                 <Heart className="w-4 h-4" />
                 Wellness Programs
-              </TabsTrigger>
-              <TabsTrigger value="insuranceSupport" className="flex items-center gap-2">
+              </SplitBarTrigger>
+              <SplitBarTrigger value="insuranceSupport" className="flex items-center gap-2">
                 <FileText className="w-4 h-4" />
                 Insurance Support
-              </TabsTrigger>
-              <TabsTrigger value="myServices" className="flex items-center gap-2">
+              </SplitBarTrigger>
+              <SplitBarTrigger value="myServices" className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 My Services
-              </TabsTrigger>
-            </TabsList>
+              </SplitBarTrigger>
+            </SplitBarList>
 
-            <TabsContent value="preventiveCare" className="mt-6">
+            <SplitBarContent value="preventiveCare" className="mt-6">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Early detection and prevention services to maintain optimal health</p>
                 </div>
                 {renderServiceCards(servicesData.preventiveCare)}
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="medicalServices" className="mt-6">
+            <SplitBarContent value="medicalServices" className="mt-6">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Professional medical services and consultations</p>
                 </div>
                 {renderServiceCards(servicesData.medicalServices)}
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="wellnessPrograms" className="mt-6">
+            <SplitBarContent value="wellnessPrograms" className="mt-6">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Personalized wellness programs for lasting lifestyle changes</p>
                 </div>
                 {renderServiceCards(servicesData.wellnessPrograms)}
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="insuranceSupport" className="mt-6">
+            <SplitBarContent value="insuranceSupport" className="mt-6">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Insurance and billing support services</p>
                 </div>
                 {renderServiceCards(servicesData.insuranceSupport)}
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="myServices" className="mt-6">
+            <SplitBarContent value="myServices" className="mt-6">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Manage your personal services and appointments</p>
                 </div>
                 {renderServiceCards(servicesData.myServices)}
               </div>
-            </TabsContent>
-          </Tabs>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
 

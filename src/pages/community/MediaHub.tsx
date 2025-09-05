@@ -5,7 +5,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast } from "lucide-react";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
@@ -168,23 +168,23 @@ export default function MediaHub() {
           </div>
 
           {/* Media Hub Subtabs */}
-          <Tabs value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
-              <TabsTrigger value="shorts" className="flex items-center gap-2">
+          <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="shorts" className="flex items-center gap-2">
                 <Video className="w-4 h-4" />
                 Shorts
-              </TabsTrigger>
-              <TabsTrigger value="music" className="flex items-center gap-2">
+              </SplitBarTrigger>
+              <SplitBarTrigger value="music" className="flex items-center gap-2">
                 <Music className="w-4 h-4" />
                 Music
-              </TabsTrigger>
-              <TabsTrigger value="podcasts" className="flex items-center gap-2">
+              </SplitBarTrigger>
+              <SplitBarTrigger value="podcasts" className="flex items-center gap-2">
                 <Podcast className="w-4 h-4" />
                 Podcasts
-              </TabsTrigger>
-            </TabsList>
+              </SplitBarTrigger>
+            </SplitBarList>
 
-            <TabsContent value="shorts">
+            <SplitBarContent value="shorts">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Video Shorts Content */}
                 <div className="lg:col-span-3">
@@ -238,9 +238,9 @@ export default function MediaHub() {
                   </Card>
                 </div>
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="music">
+            <SplitBarContent value="music">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardContent className="p-6">
@@ -303,9 +303,9 @@ export default function MediaHub() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="podcasts">
+            <SplitBarContent value="podcasts">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardContent className="p-6">
@@ -388,8 +388,8 @@ export default function MediaHub() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
-          </Tabs>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
 
