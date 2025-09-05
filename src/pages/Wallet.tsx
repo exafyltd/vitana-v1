@@ -8,30 +8,26 @@ import { StandardCard } from "@/components/templates/StandardCard";
 import { Wallet as WalletIcon, Plane, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { walletNavigation } from "@/config/navigation";
-import StandardHeader from "@/components/StandardHeader";
+import { Universal3CardHeader } from "@/components/Universal3CardHeader";
 
 export default function Wallet() {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
-  const [showPreview, setShowPreview] = useState(false);
-  
-  const latestActions = getLatestActions(2);
 
   return (
     <AppLayout>
       <SEO title="Wallet | VITANA" description="VITANA Digital Wallet" canonical={window.location.href} />
       <SubNavigation items={walletNavigation} />
       
+      <Universal3CardHeader
+        title="Your Digital Wallet"
+        description="Manage your health data rewards and digital assets."
+        emoji="💳"
+      />
+      
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <StandardHeader
-            title="Your Digital Wallet"
-            description="Manage your health data rewards and digital assets."
-            emoji="💳"
-          />
 
           {/* Content Grid */}
           <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
