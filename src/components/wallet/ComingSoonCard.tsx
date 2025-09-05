@@ -1,0 +1,52 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Sparkles, Bell, Rocket } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+
+export function ComingSoonCard() {
+  return (
+    <Card className="border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+          Coming Soon
+        </CardTitle>
+        <CardDescription>Exciting new features</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+            <span className="text-sm">NFT Health Certificates</span>
+            <Badge variant="outline" className="text-xs">Q2 2024</Badge>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+            <span className="text-sm">Crypto Bridge</span>
+            <Badge variant="outline" className="text-xs">Q1 2024</Badge>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+            <span className="text-sm">AI Health Trading</span>
+            <Badge variant="outline" className="text-xs">Q3 2024</Badge>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+            <span className="text-sm">DeFi Health Pools</span>
+            <Badge variant="outline" className="text-xs">Q4 2024</Badge>
+          </div>
+        </div>
+        
+        <div className="text-center py-3 bg-primary/10 rounded-lg">
+          <Rocket className="h-8 w-8 text-primary mx-auto mb-2" />
+          <div className="text-sm font-medium">Be the first to know!</div>
+        </div>
+        
+        <Button variant="outline" className="w-full">
+          <Bell className="h-4 w-4 mr-2" />
+          Notify Me
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}

@@ -1,0 +1,44 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Shield, Settings } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+
+export function ActiveBenefitsCard() {
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg flex items-center gap-2">
+          <Shield className="h-5 w-5 text-blue-500" />
+          Active Benefits
+        </CardTitle>
+        <CardDescription>Current subscription perks</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Premium Health AI</span>
+            <Badge variant="secondary" className="bg-green-100 text-green-700">Active</Badge>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Data Vault Pro</span>
+            <Badge variant="secondary" className="bg-green-100 text-green-700">Active</Badge>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Priority Support</span>
+            <Badge variant="secondary" className="bg-green-100 text-green-700">Active</Badge>
+          </div>
+        </div>
+        
+        <div className="pt-2 border-t">
+          <div className="text-sm text-muted-foreground mb-2">Monthly Value</div>
+          <div className="text-lg font-semibold text-blue-600">$127.50/month</div>
+        </div>
+        
+        <Button variant="outline" className="w-full">
+          <Settings className="h-4 w-4 mr-2" />
+          Manage Benefits
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
