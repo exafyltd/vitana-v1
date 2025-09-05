@@ -126,9 +126,9 @@ export default function MyHealthTracker() {
           {/* Main Split Screen Navigation */}
           <SplitBar defaultValue="pillars" className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="pillars" className="text-lg font-medium">5 Pillars of Health</SplitBarTrigger>
-              <SplitBarTrigger value="progress-goals" className="text-lg font-medium">Progress & Goals</SplitBarTrigger>
-              <SplitBarTrigger value="lab-results" className="text-lg font-medium">Lab Results</SplitBarTrigger>
+              <SplitBarTrigger value="pillars">5 Pillars of Health</SplitBarTrigger>
+              <SplitBarTrigger value="progress-goals">Progress & Goals</SplitBarTrigger>
+              <SplitBarTrigger value="lab-results">Lab Results</SplitBarTrigger>
             </SplitBarList>
 
             {/* 5 Pillars of Health Tab */}
