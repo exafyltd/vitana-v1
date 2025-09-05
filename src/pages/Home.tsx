@@ -57,14 +57,15 @@ export default function Home() {
       <SEO title="Home | VITANA" description="VITANA Home" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       
-      <StandardHeader 
-        title={greeting}
-        description="Your wellness journey starts with today's opportunities."
-        emoji={emoji}
-      />
-      
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <StandardHeader 
+              title={greeting}
+              description="Your wellness journey starts with today's opportunities."
+              emoji={emoji}
+            />
+          </div>
 
         {/* Pinterest-style Masonry Grid Layout with Media Cards Mixed In */}
         <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">

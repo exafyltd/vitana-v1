@@ -29,14 +29,15 @@ export default function Wallet() {
       <SEO title="Wallet | VITANA" description="VITANA Digital Wallet" canonical={window.location.href} />
       <SubNavigation items={walletNavigation} />
       
-      <StandardHeader
-        title="Your Digital Wallet"
-        description="Manage your health data rewards and digital assets."
-        emoji="💳"
-      />
-      
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <StandardHeader
+              title="Your Digital Wallet"
+              description="Manage your health data rewards and digital assets."
+              emoji="💳"
+            />
+          </div>
 
           {/* 12-Card Pinterest Grid Layout */}
           <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
