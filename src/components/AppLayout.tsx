@@ -177,7 +177,7 @@ function AppSidebar({
           </button>
           {/* Utility Icons - only show when sidebar is open */}
           {open && (
-            <div className="flex items-center space-x-1 ml-[76px]">
+            <div className="flex items-center space-x-1 ml-4">
               {/* Calendar Button */}
               <Button 
                 variant="ghost" 
