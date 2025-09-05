@@ -120,8 +120,8 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
       return 'Earthlinks';
     }
     
-    // Final fallback
-    return 'Maxina';
+    // Final fallback - default to community if no specific tenant is detected
+    return 'Community';
   };
 
   const buttonLabel = isStreaming ? "End Stream" : "Start Stream";
