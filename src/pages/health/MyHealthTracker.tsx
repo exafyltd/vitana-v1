@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -117,7 +117,7 @@ export default function MyHealthTracker() {
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <Universal3CardHeader
+          <StandardHeader
             title="Track your Vitana Index journey!"
             description="Monitor your health pillars and lab results to optimize your wellness score."
             emoji="📊"

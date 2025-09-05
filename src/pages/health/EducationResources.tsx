@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { BookOpen, Video, Headphones, GraduationCap, Play, Clock, Star } from "lucide-react";
@@ -18,7 +18,7 @@ export default function EducationResources() {
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <Universal3CardHeader 
+          <StandardHeader
             title="Education & Science"
             description="Access curated health education materials linked to your interests and demographic profile."
             emoji="📚"
