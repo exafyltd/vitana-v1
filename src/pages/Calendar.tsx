@@ -1,12 +1,10 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
-import SubNavigation from "@/components/SubNavigation";
+import { Universal3CardHeader } from "@/components/Universal3CardHeader";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar as CalendarIcon, Clock, Users, Bell, ChevronRight, AlertCircle, CheckCircle, Plus, Target, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { calendarNavigation } from "@/config/navigation";
-import StandardHeader from "@/components/StandardHeader";
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -40,177 +38,196 @@ export default function Calendar() {
 
   return (
     <AppLayout>
-      <SEO title="Calendar Overview" description="Your wellness schedule overview" canonical={window.location.href} />
-      <SubNavigation items={calendarNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <StandardHeader
-            title="Calendar Overview"
-            description="Your wellness schedule overview and progress tracking."
-            emoji="📅"
-          />
+      <SEO title="Calendar Overview | VITANA" description="Your comprehensive calendar and scheduling hub" canonical={window.location.href} />
+      
+      <Universal3CardHeader
+        title="Calendar Overview"
+        description="Your comprehensive calendar and scheduling hub with AI-powered insights and reminders."
+        emoji="📅"
+        badgeText={`${todaysEvents.length} Today`}
+        badgeVariant="outline"
+      />
+      
+      <div className="p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Key Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Today's Events</CardTitle>
+                <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{todaysEvents.length}</div>
+                <p className="text-xs text-muted-foreground">
+                  {todaysEvents.filter(e => e.urgent).length} urgent
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Pending Reminders</CardTitle>
+                <Bell className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{upcomingReminders.length}</div>
+                <p className="text-xs text-muted-foreground">
+                  {upcomingReminders.filter(r => r.priority === 'high').length} high priority
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Week Completion</CardTitle>
+                <Target className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">68%</div>
+                <p className="text-xs text-muted-foreground">
+                  Average across all goals
+                </p>
+              </CardContent>
+            </Card>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
-            <div className="text-2xl font-bold text-foreground">{todaysEvents.length}</div>
-            <div className="text-sm text-muted-foreground">Today's Events</div>
-          </div>
-          <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
-            <div className="text-2xl font-bold text-foreground">{upcomingReminders.length}</div>
-            <div className="text-sm text-muted-foreground">Pending Reminders</div>
-          </div>
-          <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
-            <div className="text-2xl font-bold text-foreground">73%</div>
-            <div className="text-sm text-muted-foreground">Week Completion</div>
-          </div>
-          <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
-            <div className="text-2xl font-bold text-foreground">12</div>
-            <div className="text-sm text-muted-foreground">This Week</div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Today's Schedule */}
-          <Card className="lg:col-span-2">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="w-5 h-5" />
-                Today's Schedule
-              </CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/calendar/day')}>
-                View Day <ChevronRight className="w-4 h-4 ml-1" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {todaysEvents.map((event, index) => (
-                <div key={index} className={`flex items-center justify-between p-3 rounded-lg border-l-4 ${
-                  event.urgent ? 'border-l-destructive bg-destructive/5' : 'border-l-primary bg-muted/50'
-                }`}>
-                  <div className="flex items-center gap-3">
-                    {event.urgent ? 
-                      <AlertCircle className="w-4 h-4 text-destructive" /> : 
-                      <CheckCircle className="w-4 h-4 text-muted-foreground" />
-                    }
-                    <div>
-                      <div className="font-medium text-foreground">{event.title}</div>
-                      <div className="text-sm text-muted-foreground">{event.time}</div>
+          {/* Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Today's Schedule */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  Today's Schedule
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">{todayFormatted}</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {todaysEvents.map((event, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
+                    <div className="flex items-center gap-3">
+                      <div className="text-sm font-medium text-muted-foreground">{event.time}</div>
+                      <div className="h-4 w-px bg-border" />
+                      <div>
+                        <div className="font-medium">{event.title}</div>
+                        <div className="text-sm text-muted-foreground capitalize">{event.type}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {event.urgent && <AlertCircle className="h-4 w-4 text-red-500" />}
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
                     </div>
                   </div>
-                  <div className={`px-2 py-1 rounded-full text-xs ${
-                    event.type === 'health' ? 'bg-destructive/10 text-destructive' :
-                    event.type === 'wellness' ? 'bg-primary/10 text-primary' :
-                    'bg-secondary/10 text-secondary-foreground'
-                  }`}>
-                    {event.type}
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+                ))}
+              </CardContent>
+            </Card>
 
-          {/* Upcoming Reminders */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <Bell className="w-5 h-5" />
-                Active Reminders
-              </CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/calendar/reminders')}>
-                All <ChevronRight className="w-4 h-4 ml-1" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {upcomingReminders.map((reminder, index) => (
-                <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-                  <div>
-                    <div className="font-medium text-foreground text-sm">{reminder.title}</div>
-                    <div className="text-xs text-muted-foreground">{reminder.due}</div>
+            {/* Active Reminders */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bell className="h-5 w-5" />
+                  Active Reminders
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">Upcoming notifications</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {upcomingReminders.map((reminder, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
+                    <div>
+                      <div className="font-medium">{reminder.title}</div>
+                      <div className="text-sm text-muted-foreground">Due: {reminder.due}</div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-1 rounded text-xs ${
+                        reminder.priority === 'high' ? 'bg-red-100 text-red-700' :
+                        reminder.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-green-100 text-green-700'
+                      }`}>
+                        {reminder.priority}
+                      </span>
+                      <CheckCircle className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-green-500" />
+                    </div>
                   </div>
-                  <div className={`w-2 h-2 rounded-full ${
-                    reminder.priority === 'high' ? 'bg-destructive' :
-                    reminder.priority === 'medium' ? 'bg-primary' : 'bg-muted-foreground'
-                  }`} />
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
+                ))}
+              </CardContent>
+            </Card>
 
-        {/* Weekly Progress & Quick Access */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Weekly Goals Progress */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <Target className="w-5 h-5" />
-                Weekly Progress
-              </CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/calendar/progress')}>
-                Details <ChevronRight className="w-4 h-4 ml-1" />
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {weeklyProgress.map((goal, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">{goal.goal}</span>
-                    <span className="text-sm text-muted-foreground">{goal.completed}/{goal.target}</span>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2">
-                    <div 
-                      className="bg-primary h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${goal.percentage}%` }}
-                    />
-                  </div>
+            {/* Weekly Progress */}
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5" />
+                  Weekly Progress
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">Your goal achievements this week</p>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {weeklyProgress.map((goal, index) => (
+                    <div key={index} className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">{goal.goal}</span>
+                        <span className="text-muted-foreground">{goal.completed}/{goal.target}</span>
+                      </div>
+                      <div className="w-full bg-secondary rounded-full h-2">
+                        <div 
+                          className="bg-primary h-2 rounded-full transition-all duration-300" 
+                          style={{ width: `${goal.percentage}%` }}
+                        ></div>
+                      </div>
+                      <div className="text-xs text-muted-foreground">{goal.percentage}% complete</div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
 
           {/* Quick Access */}
-          <Card>
+          <Card className="mt-8">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5" />
-                Quick Access
-              </CardTitle>
+              <CardTitle>Quick Access</CardTitle>
+              <p className="text-sm text-muted-foreground">Jump to different calendar views</p>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-3">
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                onClick={() => navigate('/calendar/month')}
-              >
-                <CalendarIcon className="w-6 h-6" />
-                <span className="text-sm">Month View</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                onClick={() => navigate('/calendar/appointments')}
-              >
-                <Users className="w-6 h-6" />
-                <span className="text-sm">Appointments</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                onClick={() => navigate('/calendar/motivation')}
-              >
-                <Target className="w-6 h-6" />
-                <span className="text-sm">Motivation</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex flex-col items-center gap-2"
-                onClick={() => navigate('/calendar/recommendations')}
-              >
-                <TrendingUp className="w-6 h-6" />
-                <span className="text-sm">AI Insights</span>
-              </Button>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Button 
+                  variant="outline" 
+                  className="h-auto p-4 flex flex-col gap-2"
+                  onClick={() => navigate('/calendar/month')}
+                >
+                  <CalendarIcon className="h-6 w-6" />
+                  <span>Month</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="h-auto p-4 flex flex-col gap-2"
+                  onClick={() => navigate('/calendar/appointments')}
+                >
+                  <Users className="h-6 w-6" />
+                  <span>Appointments</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="h-auto p-4 flex flex-col gap-2"
+                  onClick={() => navigate('/calendar/motivation')}
+                >
+                  <Target className="h-6 w-6" />
+                  <span>Motivation</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="h-auto p-4 flex flex-col gap-2"
+                  onClick={() => navigate('/ai/insights')}
+                >
+                  <TrendingUp className="h-6 w-6" />
+                  <span>AI Insights</span>
+                </Button>
+              </div>
             </CardContent>
           </Card>
-        </div>
         </div>
       </div>
     </AppLayout>

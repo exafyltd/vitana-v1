@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane, Calendar } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
@@ -14,6 +14,8 @@ import { useTenant } from "@/hooks/useTenant";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { CalendarPopup } from "@/components/CalendarPopup";
+import { WalletPopup } from "@/components/WalletPopup";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
 import { useAuth } from "@/context/AuthProvider";
@@ -25,10 +27,23 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpen, onSidebarOpenChange }: { 
+function AppSidebar({ 
+  streamingChatRef, 
+  autopilotPopupOpen, 
+  setAutopilotPopupOpen, 
+  calendarPopupOpen,
+  setCalendarPopupOpen,
+  walletPopupOpen,
+  setWalletPopupOpen,
+  onSidebarOpenChange 
+}: { 
   streamingChatRef: React.RefObject<StreamingChatRef>;
   autopilotPopupOpen: boolean;
   setAutopilotPopupOpen: (open: boolean) => void;
+  calendarPopupOpen: boolean;
+  setCalendarPopupOpen: (open: boolean) => void;
+  walletPopupOpen: boolean;
+  setWalletPopupOpen: (open: boolean) => void;
   onSidebarOpenChange: (open: boolean) => void;
 }) {
   const [isStreaming, setIsStreaming] = useState(false);
@@ -160,24 +175,47 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
               )}
             </div>
           </button>
-          {/* Autopilot Button - only show when sidebar is open */}
+          {/* Utility Icons - only show when sidebar is open */}
           {open && (
-            <Button 
-              variant="ghost" 
-              className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg ml-[76px]"
-              title={`${pendingCount} Autopilot suggestions`}
-              onClick={() => setAutopilotPopupOpen(true)}
-            >
-              <Plane className="h-4 w-4 text-white" />
-              {pendingCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
-                >
-                  {pendingCount > 9 ? '9+' : pendingCount}
-                </Badge>
-              )}
-            </Button>
+            <div className="flex items-center space-x-1 ml-[76px]">
+              {/* Calendar Button */}
+              <Button 
+                variant="ghost" 
+                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+                title="Calendar & Events"
+                onClick={() => setCalendarPopupOpen(true)}
+              >
+                <Calendar className="h-4 w-4 text-white" />
+              </Button>
+              
+              {/* Wallet Button */}
+              <Button 
+                variant="ghost" 
+                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+                title="Digital Wallet"
+                onClick={() => setWalletPopupOpen(true)}
+              >
+                <Wallet className="h-4 w-4 text-white" />
+              </Button>
+              
+              {/* Autopilot Button */}
+              <Button 
+                variant="ghost" 
+                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+                title={`${pendingCount} Autopilot suggestions`}
+                onClick={() => setAutopilotPopupOpen(true)}
+              >
+                <Plane className="h-4 w-4 text-white" />
+                {pendingCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
+                  >
+                    {pendingCount > 9 ? '9+' : pendingCount}
+                  </Badge>
+                )}
+              </Button>
+            </div>
           )}
           
           {/* Sidebar trigger - only show when sidebar is open */}
@@ -307,6 +345,8 @@ function AppSidebar({ streamingChatRef, autopilotPopupOpen, setAutopilotPopupOpe
 export default function AppLayout({ children }: AppLayoutProps) {
   const streamingChatRef = useRef<StreamingChatRef>(null);
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
+  const [calendarPopupOpen, setCalendarPopupOpen] = useState(false);
+  const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const { tenant } = useTenant();
   
   // Controlled sidebar state with localStorage persistence
@@ -340,6 +380,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
               streamingChatRef={streamingChatRef} 
               autopilotPopupOpen={autopilotPopupOpen}
               setAutopilotPopupOpen={setAutopilotPopupOpen}
+              calendarPopupOpen={calendarPopupOpen}
+              setCalendarPopupOpen={setCalendarPopupOpen}
+              walletPopupOpen={walletPopupOpen}
+              setWalletPopupOpen={setWalletPopupOpen}
               onSidebarOpenChange={handleSidebarOpenChange}
             />
           </div>
@@ -354,6 +398,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <AutopilotPopup 
         open={autopilotPopupOpen} 
         onOpenChange={setAutopilotPopupOpen} 
+      />
+      <CalendarPopup 
+        open={calendarPopupOpen} 
+        onOpenChange={setCalendarPopupOpen} 
+      />
+      <WalletPopup 
+        open={walletPopupOpen} 
+        onOpenChange={setWalletPopupOpen} 
       />
       <StreamingChat ref={streamingChatRef} />
     </div>
