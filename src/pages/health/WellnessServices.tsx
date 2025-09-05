@@ -255,34 +255,23 @@ export default function WellnessServices() {
       <SubNavigation items={healthNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-domain-health-tint via-background to-domain-health-tint/50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto">
           <StandardHeader
             title="Services HUB"
             description="Book appointments, screenings, and wellness programs tailored to your needs."
             emoji="🏥"
           />
 
-          {/* Horizontal Tabs Layout */}
           <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="preventiveCare">
-                Preventive Care
-              </SplitBarTrigger>
-              <SplitBarTrigger value="medicalServices">
-                Medical Services
-              </SplitBarTrigger>
-              <SplitBarTrigger value="wellnessPrograms">
-                Wellness Programs
-              </SplitBarTrigger>
-              <SplitBarTrigger value="insuranceSupport">
-                Insurance Support
-              </SplitBarTrigger>
-              <SplitBarTrigger value="myServices">
-                My Services
-              </SplitBarTrigger>
+              <SplitBarTrigger value="preventiveCare">Preventive Care</SplitBarTrigger>
+              <SplitBarTrigger value="medicalServices">Medical Services</SplitBarTrigger>
+              <SplitBarTrigger value="wellnessPrograms">Wellness Programs</SplitBarTrigger>
+              <SplitBarTrigger value="insuranceSupport">Insurance Support</SplitBarTrigger>
+              <SplitBarTrigger value="myServices">My Services</SplitBarTrigger>
             </SplitBarList>
 
-            <SplitBarContent value="preventiveCare" className="mt-6">
+            <SplitBarContent value="preventiveCare">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Early detection and prevention services to maintain optimal health</p>
@@ -291,7 +280,7 @@ export default function WellnessServices() {
               </div>
             </SplitBarContent>
 
-            <SplitBarContent value="medicalServices" className="mt-6">
+            <SplitBarContent value="medicalServices">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Professional medical services and consultations</p>
@@ -300,7 +289,7 @@ export default function WellnessServices() {
               </div>
             </SplitBarContent>
 
-            <SplitBarContent value="wellnessPrograms" className="mt-6">
+            <SplitBarContent value="wellnessPrograms">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Personalized wellness programs for lasting lifestyle changes</p>
@@ -309,7 +298,7 @@ export default function WellnessServices() {
               </div>
             </SplitBarContent>
 
-            <SplitBarContent value="insuranceSupport" className="mt-6">
+            <SplitBarContent value="insuranceSupport">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Insurance and billing support services</p>
@@ -318,7 +307,7 @@ export default function WellnessServices() {
               </div>
             </SplitBarContent>
 
-            <SplitBarContent value="myServices" className="mt-6">
+            <SplitBarContent value="myServices">
               <div className="space-y-4">
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground">Manage your personal services and appointments</p>

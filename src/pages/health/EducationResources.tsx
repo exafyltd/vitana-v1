@@ -17,14 +17,13 @@ export default function EducationResources() {
       <SEO title="Education & Resources | Health" description="Access health education materials and resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto">
           <Universal3CardHeader 
             title="Education & Science"
             description="Access curated health education materials linked to your interests and demographic profile."
             emoji="📚"
           />
 
-          {/* Universal Split Screen Navigation */}
           <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="articles">Articles</SplitBarTrigger>
@@ -32,7 +31,6 @@ export default function EducationResources() {
               <SplitBarTrigger value="podcasts">Podcasts</SplitBarTrigger>
             </SplitBarList>
 
-            {/* Articles Section */}
             <SplitBarContent value="articles" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[
@@ -65,7 +63,6 @@ export default function EducationResources() {
               </div>
             </SplitBarContent>
 
-            {/* Videos Section */}
             <SplitBarContent value="videos" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[
@@ -98,7 +95,6 @@ export default function EducationResources() {
               </div>
             </SplitBarContent>
 
-            {/* Podcasts Section */}
             <SplitBarContent value="podcasts" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[

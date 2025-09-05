@@ -116,14 +116,13 @@ export default function MyHealthTracker() {
       <SEO title="My Health Tracker | Health" description="Track your health metrics and monitor your Vitana Index progress" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto">
           <Universal3CardHeader
             title="Track your Vitana Index journey!"
             description="Monitor your health pillars and lab results to optimize your wellness score."
             emoji="📊"
           />
 
-          {/* Main Split Screen Navigation */}
           <SplitBar defaultValue="pillars" className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="pillars">5 Pillars of Health</SplitBarTrigger>
@@ -131,7 +130,6 @@ export default function MyHealthTracker() {
               <SplitBarTrigger value="lab-results">Lab Results</SplitBarTrigger>
             </SplitBarList>
 
-            {/* 5 Pillars of Health Tab */}
             <SplitBarContent value="pillars" className="space-y-6">
               {/* Vitana Index Overview */}
               <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20">
