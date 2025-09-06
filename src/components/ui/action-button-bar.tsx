@@ -14,7 +14,7 @@ interface ActionButtonBarProps {
 export function ActionButtonBar({ children, className }: ActionButtonBarProps) {
   return (
     <div className={cn(
-      "px-6 py-4 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50",
+      "px-0 py-4 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50",
       className
     )}>
       <div className="flex gap-2">
