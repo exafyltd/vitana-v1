@@ -81,7 +81,7 @@ export default function Home() {
               title="Weekly Wellness Meetup Tonight"
               description="Join Dr. Sarah Miller and 50+ community members for meditation and healthy cooking tips"
               imageUrl="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop&crop=center"
-              category="community"
+              pillar="Mental"
               author={{
                 name: "Dr. Sarah Miller",
                 avatar: "/lovable-uploads/sarah-miller-avatar.jpg"
@@ -108,7 +108,7 @@ export default function Home() {
               title="Emma Wilson Completes 30-Day Challenge"
               description="Inspiring transformation journey with consistent nutrition tracking and community support"
               imageUrl="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center"
-              category="achievement"
+              pillar="Nutrition"
               author={{
                 name: "Emma Wilson",
                 avatar: "/lovable-uploads/emma-wilson-avatar.jpg"
@@ -133,7 +133,7 @@ export default function Home() {
               title="Live Yoga Session with Lisa Chen"
               description="Morning flow for energy and mindfulness - perfect for busy professionals"
               imageUrl="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop&crop=center"
-              category="wellness"
+              pillar="Mental"
               author={{
                 name: "Lisa Chen",
                 avatar: "/lovable-uploads/lisa-chen-avatar.jpg"
@@ -160,7 +160,7 @@ export default function Home() {
               title="James Davis Reaches Fitness Milestone"
               description="Completed his first marathon and raised $5000 for mental health awareness"
               imageUrl="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center"
-              category="achievement"
+              pillar="Exercise"
               author={{
                 name: "James Davis",
                 avatar: "/lovable-uploads/james-davis-avatar.jpg"
@@ -186,7 +186,7 @@ export default function Home() {
               title="Nutrition Workshop: Meal Prep Mastery"
               description="Learn from certified nutritionist Mike Thompson about sustainable meal planning"
               imageUrl="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop&crop=center"
-              category="wellness"
+              pillar="Nutrition"
               author={{
                 name: "Mike Thompson",
                 avatar: "/lovable-uploads/mike-thompson-avatar.jpg"
@@ -217,7 +217,7 @@ export default function Home() {
               title="Monthly Health & Wellness Fair"
               description="Meet local practitioners, try new wellness services, and connect with your community"
               imageUrl="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop&crop=center"
-              category="event"
+              pillar="Hydration"
               author={{
                 name: "VITANA Community",
               }}

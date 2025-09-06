@@ -10,7 +10,7 @@ interface NewsCardProps {
   title: string;
   description?: string;
   imageUrl: string;
-  category: "event" | "community" | "wellness" | "achievement";
+  category?: "event" | "community" | "wellness" | "achievement";
   pillar?: string;
   icon?: React.ComponentType<any>;
   author?: {
