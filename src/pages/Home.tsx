@@ -1,20 +1,8 @@
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
-import { VitanaIndexCard } from "@/components/crossover/VitanaIndexCard";
-import { AutoPilotActionCard } from "@/components/crossover/AutoPilotActionCard";
-import { LifestylePlanCard } from "@/components/crossover/LifestylePlanCard";
-import { QuickLogStrip } from "@/components/crossover/QuickLogStrip";
-import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
-import { CommunityPulseCard } from "@/components/crossover/CommunityPulseCard";
-import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard";
-import { DataWalletCard } from "@/components/crossover/DataWalletCard";
-import { DiscoverPicksCard } from "@/components/crossover/DiscoverPicksCard";
-import { MotivationCard } from "@/components/crossover/MotivationCard";
-import { PodcastCard } from "@/components/crossover/PodcastCard";
-import { MusicCard } from "@/components/crossover/MusicCard";
-import { VideoFeedCard } from "@/components/crossover/VideoFeedCard";
-import { NewsCard } from "@/components/crossover/NewsCard";
+import { UnifiedLayout } from "@/components/layout/UnifiedLayout";
+import { CardEnvelopeFactory } from "@/components/layout/CardEnvelopeFactory";
 import { useNavigate } from "react-router-dom";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -53,12 +41,95 @@ export default function Home() {
   
   const latestActions = getLatestActions(2);
 
+  // Generate unified card envelopes for the new layout system
+  const cardEnvelopes = [
+    // System cards
+    CardEnvelopeFactory.createSystemCardEnvelope('vitana-index'),
+    CardEnvelopeFactory.createActionCardEnvelope(),
+    
+    // News cards with pillar badges
+    CardEnvelopeFactory.createNewsCardEnvelope({
+      id: 'news-1',
+      title: "Weekly Wellness Meetup Tonight",
+      description: "Join Dr. Sarah Miller and 50+ community members for meditation and healthy cooking tips",
+      pillar: "Mental",
+      priority: 85
+    }),
+    
+    CardEnvelopeFactory.createLifestylePlanCardEnvelope('nutrition'),
+    CardEnvelopeFactory.createLifestylePlanCardEnvelope('hydration'),
+    
+    CardEnvelopeFactory.createNewsCardEnvelope({
+      id: 'news-2', 
+      title: "Emma Wilson Completes 30-Day Challenge",
+      description: "Inspiring transformation journey with consistent nutrition tracking and community support",
+      pillar: "Nutrition",
+      priority: 75
+    }),
+    
+    CardEnvelopeFactory.createSystemCardEnvelope('calendar'),
+    CardEnvelopeFactory.createLifestylePlanCardEnvelope('exercise'),
+    
+    CardEnvelopeFactory.createNewsCardEnvelope({
+      id: 'news-3',
+      title: "Live Yoga Session with Lisa Chen", 
+      description: "Morning flow for energy and mindfulness - perfect for busy professionals",
+      pillar: "Mental",
+      priority: 70
+    }),
+    
+    CardEnvelopeFactory.createMediaCardEnvelope('podcast'),
+    CardEnvelopeFactory.createLifestylePlanCardEnvelope('sleep'),
+    CardEnvelopeFactory.createLifestylePlanCardEnvelope('mental'),
+    
+    CardEnvelopeFactory.createNewsCardEnvelope({
+      id: 'news-4',
+      title: "James Davis Reaches Fitness Milestone",
+      description: "Completed his first marathon and raised $5000 for mental health awareness", 
+      pillar: "Exercise",
+      priority: 65
+    }),
+    
+    CardEnvelopeFactory.createMediaCardEnvelope('music'),
+    CardEnvelopeFactory.createMediaCardEnvelope('video'),
+    
+    CardEnvelopeFactory.createNewsCardEnvelope({
+      id: 'news-5',
+      title: "Nutrition Workshop: Meal Prep Mastery",
+      description: "Learn from certified nutritionist Mike Thompson about sustainable meal planning",
+      pillar: "Nutrition", 
+      priority: 60
+    }),
+    
+    CardEnvelopeFactory.createSystemCardEnvelope('community-pulse'),
+    CardEnvelopeFactory.createSystemCardEnvelope('progress-streaks'),
+    CardEnvelopeFactory.createSystemCardEnvelope('data-wallet'),
+    CardEnvelopeFactory.createSystemCardEnvelope('discover-picks'),
+    CardEnvelopeFactory.createSystemCardEnvelope('motivation'),
+    
+    CardEnvelopeFactory.createNewsCardEnvelope({
+      id: 'news-6',
+      title: "Monthly Health & Wellness Fair",
+      description: "Meet local practitioners, try new wellness services, and connect with your community",
+      pillar: "Hydration",
+      priority: 55
+    })
+  ];
+
+  // Layout configuration with CTO-approved settings
+  const layoutConfig = {
+    placement_seed: CardEnvelopeFactory.generatePlacementSeed('home', profile?.displayName || 'anonymous'),
+    max_cards_per_row: 3,
+    pillar_cycle_rows: 3, // Ensure all pillars appear every 3 rows
+    type_alternation: true // Prevent adjacent media cards
+  };
+
   return (
     <AppLayout>
       <SEO title="Home | VITANA" description="VITANA Home" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-background via-muted/5 to-secondary/5 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
             <StandardHeader 
@@ -68,187 +139,12 @@ export default function Home() {
             />
           </div>
 
-        {/* Pinterest-style Masonry Grid Layout with News Cards Mixed In */}
-        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-          {/* Large cards */}
-          <div className="break-inside-avoid mb-4">
-            <VitanaIndexCard />
-          </div>
-          
-          {/* News Card - Community Event */}
-          <div className="break-inside-avoid mb-4">
-            <NewsCard 
-              title="Weekly Wellness Meetup Tonight"
-              description="Join Dr. Sarah Miller and 50+ community members for meditation and healthy cooking tips"
-              imageUrl="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop&crop=center"
-              pillar="Mental"
-              author={{
-                name: "Dr. Sarah Miller",
-                avatar: "/lovable-uploads/sarah-miller-avatar.jpg"
-              }}
-              location="Downtown Center"
-              attendees={52}
-              timestamp="7:00 PM"
-              onClick={() => navigate("/community/events")}
-            />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <AutoPilotActionCard />
-          </div>
-          
-          {/* Quick Health Logging - Positioned after main cards */}
-          <div className="break-inside-avoid mb-4">
-            <QuickLogStrip />
-          </div>
-          
-          {/* News Card - Achievement */}
-          <div className="break-inside-avoid mb-4">
-            <NewsCard 
-              title="Emma Wilson Completes 30-Day Challenge"
-              description="Inspiring transformation journey with consistent nutrition tracking and community support"
-              imageUrl="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center"
-              pillar="Nutrition"
-              author={{
-                name: "Emma Wilson",
-                avatar: "/lovable-uploads/emma-wilson-avatar.jpg"
-              }}
-              timestamp="2 hours ago"
-              onClick={() => navigate("/community/feed")}
-            />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <SmartCalendarCard />
-          </div>
-          
-          {/* Health Pillars mixed with Media Cards */}
-          <div className="break-inside-avoid mb-4">
-            <LifestylePlanCard type="nutrition" />
-          </div>
-          
-          {/* News Card - Wellness Event */}
-          <div className="break-inside-avoid mb-4">
-            <NewsCard 
-              title="Live Yoga Session with Lisa Chen"
-              description="Morning flow for energy and mindfulness - perfect for busy professionals"
-              imageUrl="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop&crop=center"
-              pillar="Mental"
-              author={{
-                name: "Lisa Chen",
-                avatar: "/lovable-uploads/lisa-chen-avatar.jpg"
-              }}
-              location="Virtual"
-              attendees={28}
-              timestamp="Tomorrow 8 AM"
-              onClick={() => navigate("/calendar/events")}
-            />
-          </div>
-          
-          {/* Podcast Card - Medium size */}
-          <div className="break-inside-avoid mb-4" style={{ height: 'auto' }}>
-            <PodcastCard />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <LifestylePlanCard type="hydration" />
-          </div>
-          
-          {/* News Card - Community Achievement */}
-          <div className="break-inside-avoid mb-4">
-            <NewsCard 
-              title="James Davis Reaches Fitness Milestone"
-              description="Completed his first marathon and raised $5000 for mental health awareness"
-              imageUrl="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center"
-              pillar="Exercise"
-              author={{
-                name: "James Davis",
-                avatar: "/lovable-uploads/james-davis-avatar.jpg"
-              }}
-              location="City Marathon"
-              timestamp="Yesterday"
-              onClick={() => navigate("/community/feed")}
-            />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <LifestylePlanCard type="exercise" />
-          </div>
-
-          {/* Music Card - Small size */}
-          <div className="break-inside-avoid mb-4" style={{ height: 'auto', minHeight: '200px' }}>
-            <MusicCard />
-          </div>
-          
-          {/* News Card - Wellness Workshop */}
-          <div className="break-inside-avoid mb-4">
-            <NewsCard 
-              title="Nutrition Workshop: Meal Prep Mastery"
-              description="Learn from certified nutritionist Mike Thompson about sustainable meal planning"
-              imageUrl="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop&crop=center"
-              pillar="Nutrition"
-              author={{
-                name: "Mike Thompson",
-                avatar: "/lovable-uploads/mike-thompson-avatar.jpg"
-              }}
-              location="Wellness Center"
-              attendees={15}
-              timestamp="This Saturday"
-              onClick={() => navigate("/discover/wellness-services")}
-            />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <LifestylePlanCard type="sleep" />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <LifestylePlanCard type="mental" />
-          </div>
-          
-          {/* Video Card - Large size */}
-          <div className="break-inside-avoid mb-4" style={{ height: 'auto', minHeight: '350px' }}>
-            <VideoFeedCard />
-          </div>
-          
-          {/* News Card - Community Event */}
-          <div className="break-inside-avoid mb-4">
-            <NewsCard 
-              title="Monthly Health & Wellness Fair"
-              description="Meet local practitioners, try new wellness services, and connect with your community"
-              imageUrl="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop&crop=center"
-              pillar="Hydration"
-              author={{
-                name: "VITANA Community",
-              }}
-              location="Central Park"
-              attendees={200}
-              timestamp="Next Weekend"
-              onClick={() => navigate("/community/events")}
-            />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <CommunityPulseCard />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <ProgressStreaksCard />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <DataWalletCard />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <DiscoverPicksCard />
-          </div>
-          
-          <div className="break-inside-avoid mb-4">
-            <MotivationCard />
-          </div>
-        </div>
-
+          {/* Unified Layout System - CTO Approved Implementation */}
+          <UnifiedLayout 
+            cards={cardEnvelopes}
+            config={layoutConfig}
+            className="unified-home-layout"
+          />
         </div>
       </div>
       
