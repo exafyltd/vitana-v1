@@ -39,11 +39,11 @@ export function UnifiedLayout({
     <div 
       className={cn(
         "unified-layout w-full mx-auto",
-        "grid grid-cols-12 auto-rows-[70px] gap-6", // 70px base row unit
+        "grid grid-cols-12 gap-6", // Removed auto-rows constraint that was causing issues
         className
       )}
       style={{
-        '--row-base': '70px'
+        gridAutoRows: 'minmax(280px, auto)' // Allow cards to size naturally
       } as React.CSSProperties}
     >
       {visibleRows.map((pattern, index) => 
@@ -52,13 +52,13 @@ export function UnifiedLayout({
             key={`${pattern.pattern_id}-${cardIndex}`}
             className={cn(
               "unified-card-container",
-              `col-span-${cardConfig.cols}`,
-              `row-span-${cardConfig.rows}`
+              // Use responsive column classes
+              `col-span-${Math.min(cardConfig.cols, 12)}`
             )}
             style={{
-              // Explicit grid placement for complex layouts
-              gridColumn: `span ${cardConfig.cols}`,
-              gridRow: `span ${cardConfig.rows}`
+              // Ensure proper grid placement
+              gridColumn: `span ${Math.min(cardConfig.cols, 12)}`,
+              minHeight: `${cardConfig.rows * 70}px`
             }}
           >
             <CardRenderer 

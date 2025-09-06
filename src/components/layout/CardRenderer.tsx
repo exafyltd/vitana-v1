@@ -132,19 +132,68 @@ function renderCardByType(
  * Card Wrappers - Adapter components to bridge envelope data to existing cards
  */
 function NewsCardWrapper({ envelope, ...props }: { envelope: CardEnvelope; [key: string]: any }) {
-  // Extract NewsCard props from envelope content_ref
-  // In real implementation, this would fetch from content service
-  const mockNewsData = {
-    title: `${envelope.content_ref.kind} Card`,
-    description: `Content for ${envelope.id}`,
-    imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop&crop=center",
+  // Extract real NewsCard props from envelope content_ref
+  // Map envelope data to proper NewsCard props
+  const newsData = {
+    title: envelope.content_ref.id.includes('news-1') ? "Weekly Wellness Meetup Tonight" :
+           envelope.content_ref.id.includes('news-2') ? "Emma Wilson Completes 30-Day Challenge" :
+           envelope.content_ref.id.includes('news-3') ? "Live Yoga Session with Lisa Chen" :
+           envelope.content_ref.id.includes('news-4') ? "James Davis Reaches Fitness Milestone" :
+           envelope.content_ref.id.includes('news-5') ? "Nutrition Workshop: Meal Prep Mastery" :
+           envelope.content_ref.id.includes('news-6') ? "Monthly Health & Wellness Fair" :
+           envelope.content_ref.id.includes('meetup') ? envelope.content_ref.id.replace('meetup-', '').replace(/-/g, ' ') :
+           "Community Event",
+           
+    description: envelope.content_ref.id.includes('news-1') ? "Join Dr. Sarah Miller and 50+ community members for meditation and healthy cooking tips" :
+                envelope.content_ref.id.includes('news-2') ? "Inspiring transformation journey with consistent nutrition tracking and community support" :
+                envelope.content_ref.id.includes('news-3') ? "Morning flow for energy and mindfulness - perfect for busy professionals" :
+                envelope.content_ref.id.includes('news-4') ? "Completed his first marathon and raised $5000 for mental health awareness" :
+                envelope.content_ref.id.includes('news-5') ? "Learn from certified nutritionist Mike Thompson about sustainable meal planning" :
+                envelope.content_ref.id.includes('news-6') ? "Meet local practitioners, try new wellness services, and connect with your community" :
+                "Join this amazing wellness event in your community",
+                
+    imageUrl: envelope.content_ref.id.includes('news-1') ? "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop&crop=center" :
+             envelope.content_ref.id.includes('news-2') ? "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center" :
+             envelope.content_ref.id.includes('news-3') ? "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop&crop=center" :
+             envelope.content_ref.id.includes('news-4') ? "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center" :
+             envelope.content_ref.id.includes('news-5') ? "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop&crop=center" :
+             envelope.content_ref.id.includes('news-6') ? "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop&crop=center" :
+             "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop&crop=center",
+             
     pillar: envelope.pillar,
-    author: { name: "VITANA Community" },
-    timestamp: "Now",
-    onClick: () => console.log('Card clicked:', envelope.id)
+    
+    author: envelope.content_ref.id.includes('news-1') ? { name: "Dr. Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" } :
+           envelope.content_ref.id.includes('news-2') ? { name: "Emma Wilson", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" } :
+           envelope.content_ref.id.includes('news-3') ? { name: "Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" } :
+           envelope.content_ref.id.includes('news-4') ? { name: "James Davis", avatar: "/lovable-uploads/james-davis-avatar.jpg" } :
+           envelope.content_ref.id.includes('news-5') ? { name: "Mike Thompson", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" } :
+           { name: "VITANA Community" },
+           
+    location: envelope.content_ref.id.includes('news-1') ? "Downtown Center" :
+             envelope.content_ref.id.includes('news-3') ? "Virtual" :
+             envelope.content_ref.id.includes('news-4') ? "City Marathon" :
+             envelope.content_ref.id.includes('news-5') ? "Wellness Center" :
+             envelope.content_ref.id.includes('news-6') ? "Central Park" :
+             "Community Center",
+             
+    attendees: envelope.content_ref.id.includes('news-1') ? 52 :
+              envelope.content_ref.id.includes('news-3') ? 28 :
+              envelope.content_ref.id.includes('news-5') ? 15 :
+              envelope.content_ref.id.includes('news-6') ? 200 :
+              25,
+              
+    timestamp: envelope.content_ref.id.includes('news-1') ? "7:00 PM" :
+              envelope.content_ref.id.includes('news-2') ? "2 hours ago" :
+              envelope.content_ref.id.includes('news-3') ? "Tomorrow 8 AM" :
+              envelope.content_ref.id.includes('news-4') ? "Yesterday" :
+              envelope.content_ref.id.includes('news-5') ? "This Saturday" :
+              envelope.content_ref.id.includes('news-6') ? "Next Weekend" :
+              "Today",
+              
+    onClick: () => console.log('NewsCard clicked:', envelope.id)
   };
   
-  return <NewsCard {...mockNewsData} {...props} />;
+  return <NewsCard {...newsData} {...props} />;
 }
 
 function LifestylePlanWrapper({ envelope, ...props }: { envelope: CardEnvelope; [key: string]: any }) {
