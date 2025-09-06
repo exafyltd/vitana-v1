@@ -109,15 +109,17 @@ export default function LiveRooms() {
 
         {/* Action Buttons Utility Bar */}
         <div className="px-6 py-4 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50">
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
-            <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Go Live
-            </Button>
+          <div className="max-w-7xl mx-auto">
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm">
+                <Search className="w-4 h-4 mr-2" />
+                Search
+              </Button>
+              <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
+                <Plus className="w-4 h-4 mr-2" />
+                Go Live
+              </Button>
+            </div>
           </div>
         </div>
 

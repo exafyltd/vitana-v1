@@ -154,7 +154,7 @@ export default function MediaHub() {
 
           {/* Action Buttons Utility Bar */}
           <div className="px-0 py-4">
-            <div className="flex justify-between items-center">
+            <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Search className="w-4 h-4 mr-2" />
                 Search
