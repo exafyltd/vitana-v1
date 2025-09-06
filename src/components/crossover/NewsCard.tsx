@@ -20,6 +20,7 @@ interface NewsCardProps {
   location?: string;
   attendees?: number;
   timestamp?: string;
+  price?: number | "free";
   className?: string;
   onClick?: () => void;
 }
@@ -36,6 +37,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     location, 
     attendees, 
     timestamp, 
+    price,
     className, 
     onClick 
   }, ref) => {
@@ -74,12 +76,26 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           <CardContent className="absolute inset-0 p-6 flex flex-col justify-between text-white">
             {/* Top Section */}
             <div className="flex justify-between items-start">
-              {/* Pillar badge (text only, upper left) */}
-              {pillar && (
-                <div className="text-xs text-white font-medium bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap">
-                  {pillar}
-                </div>
-              )}
+              <div className="flex items-center gap-2">
+                {/* Pillar badge (text only, upper left) */}
+                {pillar && (
+                  <div className="text-xs text-white font-medium bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap">
+                    {pillar}
+                  </div>
+                )}
+                
+                {/* Price badge */}
+                {price !== undefined && (
+                  <div className={cn(
+                    "text-xs font-bold rounded-md px-2 py-1 backdrop-blur-sm border whitespace-nowrap",
+                    price === "free" 
+                      ? "bg-green-500/90 text-white border-green-400/50" 
+                      : "bg-primary/90 text-primary-foreground border-primary/50"
+                  )}>
+                    {price === "free" ? "FREE" : `$${price}`}
+                  </div>
+                )}
+              </div>
               
               {/* Timestamp (single line in upper right) */}
               {timestamp && (
