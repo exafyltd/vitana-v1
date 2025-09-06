@@ -132,6 +132,7 @@ import Logs from "./pages/sharing/Logs";
 import Timeline from "./pages/memory/Timeline";
 import Recall from "./pages/memory/Recall";
 import MemoryPermissions from "./pages/memory/Permissions";
+import Diary from "./pages/memory/Diary";
 
 // Admin sub-pages
 import Queue from "./pages/admin/Queue";
@@ -569,6 +570,11 @@ const App = () => (
           <Route path="/memory/timeline" element={
             <AuthGuard>
               <Timeline />
+            </AuthGuard>
+          } />
+          <Route path="/memory/diary" element={
+            <AuthGuard>
+              <Diary />
             </AuthGuard>
           } />
           <Route path="/memory/recall" element={
