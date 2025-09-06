@@ -2,12 +2,15 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Calendar, MapPin, Clock, Users, Bell, Share2, Star, Filter, Plane } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Bell, Share2, Star, Filter, Plane, Plus } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { CreateEventPopup } from "@/components/CreateEventPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -19,6 +22,8 @@ export default function Events() {
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [createEventOpen, setCreateEventOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("today");
   
   const latestActions = getLatestActions(2);
   const upcomingEvents = [
@@ -139,22 +144,25 @@ export default function Events() {
               </div>
             </div>
           </div>
-        
-        <div className="flex items-center justify-between mb-6">
-          <div className="text-lg font-bold">Events & Meetups</div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              <Filter className="w-4 h-4 mr-2" />
-              Filter
-            </Button>
-            <Button size="sm">
-              <Calendar className="w-4 h-4 mr-2" />
-              Create Event
-            </Button>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Utility Action Button */}
+          <UtilityActionButton>
+            <Button onClick={() => setCreateEventOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Event
+            </Button>
+          </UtilityActionButton>
+
+          {/* Split Navigation */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="today">Today</SplitBarTrigger>
+              <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
+            </SplitBarList>
+          </SplitBar>
+
+          <SplitBarContent value="today">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Left Column - Upcoming Events */}
           <div className="space-y-6">
@@ -330,7 +338,16 @@ export default function Events() {
               </CardContent>
             </Card>
           </div>
-        </div>
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="upcoming">
+            <div className="text-center py-12">
+              <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-semibold mb-2">No upcoming events</h3>
+              <p className="text-muted-foreground">Create your first event to get started!</p>
+            </div>
+          </SplitBarContent>
         </div>
       </div>
       
@@ -338,6 +355,12 @@ export default function Events() {
       <AutopilotPopup 
         open={autopilotOpen} 
         onOpenChange={setAutopilotOpen}
+      />
+      
+      {/* Create Event Popup */}
+      <CreateEventPopup 
+        isOpen={createEventOpen} 
+        onClose={() => setCreateEventOpen(false)}
       />
     </AppLayout>
   );

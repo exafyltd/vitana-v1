@@ -2,10 +2,18 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { Plus, Users } from "lucide-react";
+import { CreateMeetupPopup } from "@/components/CreateMeetupPopup";
+import { useState } from "react";
 
 export default withScreenId(function Meetups() {
+  const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
+
   return (
     <AppLayout>
       <SEO title="Meetups | Community" description="Discover and join local meetups and events" canonical={window.location.href} />
@@ -16,10 +24,27 @@ export default withScreenId(function Meetups() {
           description="Find and attend local wellness meetups and community events."
           emoji="🤝"
         />
-        <div className="rounded-xl border bg-card p-6 text-foreground shadow-sm">
-          <p className="text-muted-foreground">Local meetups and wellness events will appear here.</p>
+
+        {/* Utility Action Button */}
+        <UtilityActionButton>
+          <Button onClick={() => setCreateMeetupOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            MeetUp
+          </Button>
+        </UtilityActionButton>
+
+        <div className="text-center py-12">
+          <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg font-semibold mb-2">No meetups yet</h3>
+          <p className="text-muted-foreground">Create your first meetup to bring the community together!</p>
         </div>
       </div>
+
+      {/* Create Meetup Popup */}
+      <CreateMeetupPopup 
+        isOpen={createMeetupOpen} 
+        onClose={() => setCreateMeetupOpen(false)}
+      />
     </AppLayout>
   );
 }, SCREEN_IDS.COMMUNITY_MEETUPS);
