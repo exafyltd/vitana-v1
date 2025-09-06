@@ -40,21 +40,7 @@ export default function LiveRooms() {
   return (
     <AppLayout>
       <SEO title="Live Rooms | Community" description="Join live conversations and discussions" canonical={window.location.href} />
-      <SubNavigation 
-        items={communityNavigation} 
-        rightActions={
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
-            <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Go Live
-            </Button>
-          </div>
-        }
-      />
+      <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
@@ -118,10 +104,24 @@ export default function LiveRooms() {
                   <span className="text-xl font-bold text-green-600">742</span>
                 </div>
               </div>
-            </div>
           </div>
+        </div>
 
-          <LiveRoomDirectory onJoinRoom={handleJoinRoom} />
+        {/* Action Buttons Utility Bar */}
+        <div className="px-6 py-4 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50">
+          <div className="max-w-7xl mx-auto flex justify-between items-center">
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Go Live
+            </Button>
+          </div>
+        </div>
+
+        <LiveRoomDirectory onJoinRoom={handleJoinRoom} />
         </div>
       </div>
       
