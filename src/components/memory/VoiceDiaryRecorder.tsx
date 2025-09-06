@@ -152,8 +152,8 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
     }
 
     try {
-      // Save to diary_entries table (will be created in migration)
-      const { error } = await supabase.from('diary_entries').insert({
+      // Save to diary_entries table - using type assertion until types update
+      const { error } = await (supabase as any).from('diary_entries').insert({
         content: transcribedText,
         duration_seconds: recordingDuration,
         entry_type: 'voice',
