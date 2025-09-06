@@ -6,8 +6,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, MessageSquare, TrendingUp, Lightbulb, Plus, Heart, Share2, Clock, Plane } from "lucide-react";
+import { Users, MessageSquare, TrendingUp, Lightbulb, Plus, Heart, Share2, Clock, Plane, Search } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { CreateGroupPopup } from "@/components/CreateGroupPopup";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -18,7 +21,9 @@ export default function MyGroups() {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [createGroupOpen, setCreateGroupOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [activeTab, setActiveTab] = useState("my-groups");
   
   const latestActions = getLatestActions(2);
   const myGroups = [
@@ -106,7 +111,28 @@ export default function MyGroups() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          {/* Utility Action Button */}
+          <UtilityActionButton>
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button size="sm" onClick={() => setCreateGroupOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Group
+            </Button>
+          </UtilityActionButton>
+
+          {/* Split Navigation */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="my-groups">My Groups</SplitBarTrigger>
+              <SplitBarTrigger value="recommended">Recommended Groups</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="my-groups">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Left Column - My Groups */}
           <div className="space-y-6">
@@ -247,7 +273,17 @@ export default function MyGroups() {
               </CardContent>
             </Card>
           </div>
-          </div>
+              </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="recommended">
+              <div className="text-center py-12">
+                <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                <h3 className="text-lg font-semibold mb-2">Discover Groups</h3>
+                <p className="text-muted-foreground">Recommended groups based on your interests will appear here.</p>
+              </div>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
       
@@ -255,6 +291,12 @@ export default function MyGroups() {
       <AutopilotPopup 
         open={autopilotOpen} 
         onOpenChange={setAutopilotOpen}
+      />
+
+      {/* Create Group Popup */}
+      <CreateGroupPopup 
+        isOpen={createGroupOpen} 
+        onClose={() => setCreateGroupOpen(false)}
       />
     </AppLayout>
   );

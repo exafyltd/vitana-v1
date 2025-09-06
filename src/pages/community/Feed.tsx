@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Plus, MessageSquare } from "lucide-react";
+import { Plus, MessageSquare, Search } from "lucide-react";
 import { CreateContentPopup } from "@/components/CreateContentPopup";
 import { useState } from "react";
 
@@ -29,7 +29,11 @@ export default withScreenId(function Feed() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <Button onClick={() => setCreateContentOpen(true)}>
+          <Button variant="outline" size="sm">
+            <Search className="w-4 h-4 mr-2" />
+            Search
+          </Button>
+          <Button size="sm" onClick={() => setCreateContentOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Content
           </Button>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Plus, Users } from "lucide-react";
+import { Plus, Users, Search } from "lucide-react";
 import { CreateMeetupPopup } from "@/components/CreateMeetupPopup";
 import { useState } from "react";
 
@@ -27,7 +27,11 @@ export default withScreenId(function Meetups() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <Button onClick={() => setCreateMeetupOpen(true)}>
+          <Button variant="outline" size="sm">
+            <Search className="w-4 h-4 mr-2" />
+            Search
+          </Button>
+          <Button size="sm" onClick={() => setCreateMeetupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             MeetUp
           </Button>
