@@ -104,7 +104,21 @@ export default function MediaHub() {
   }];
   return <AppLayout>
       <SEO title="Media Hub | Community" description="Discover videos, podcasts, and community content" canonical={window.location.href} />
-      <SubNavigation items={communityNavigation} />
+      <SubNavigation 
+        items={communityNavigation} 
+        rightActions={
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button size="sm" onClick={() => setIsUploadOpen(true)}>
+              <Upload className="w-4 h-4 mr-2" />
+              Upload
+            </Button>
+          </div>
+        }
+      />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
@@ -149,21 +163,6 @@ export default function MediaHub() {
                   <span className="text-xl font-bold text-green-600">742</span>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Upload Actions */}
-          <div className="flex items-center justify-between mb-6">
-            
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
-                <Search className="w-4 h-4 mr-2" />
-                Search
-              </Button>
-              <Button size="sm" onClick={() => setIsUploadOpen(true)}>
-                <Upload className="w-4 h-4 mr-2" />
-                Upload
-              </Button>
             </div>
           </div>
 
