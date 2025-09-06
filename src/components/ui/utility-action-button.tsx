@@ -1,20 +1,20 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-interface ActionButtonBarProps {
+interface UtilityActionButtonProps {
   children: React.ReactNode;
   className?: string;
 }
 
 /**
- * Standardized action button bar component for consistent positioning
+ * Standardized utility action button container for consistent positioning
  * across community pages. Positions buttons on the left edge, aligned
  * with the header and navigation elements.
  */
-export function ActionButtonBar({ children, className }: ActionButtonBarProps) {
+export function UtilityActionButton({ children, className }: UtilityActionButtonProps) {
   return (
     <div className={cn(
-      "px-0 py-4 mb-6 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50",
+      "px-0 py-4 mb-6",
       className
     )}>
       <div className="flex gap-2">

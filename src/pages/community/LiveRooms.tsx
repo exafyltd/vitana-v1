@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Button } from "@/components/ui/button";
-import { ActionButtonBar } from "@/components/ui/action-button-bar";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { Search, Plus, Plane } from "lucide-react";
 import { useState } from "react";
 import { GoLivePopup } from "@/components/GoLivePopup";
@@ -109,7 +109,7 @@ export default function LiveRooms() {
         </div>
 
         {/* Action Buttons Utility Bar */}
-        <ActionButtonBar>
+        <UtilityActionButton>
           <Button variant="outline" size="sm">
             <Search className="w-4 h-4 mr-2" />
             Search
@@ -118,7 +118,7 @@ export default function LiveRooms() {
             <Plus className="w-4 h-4 mr-2" />
             Go Live
           </Button>
-        </ActionButtonBar>
+        </UtilityActionButton>
 
         <LiveRoomDirectory onJoinRoom={handleJoinRoom} />
         </div>
