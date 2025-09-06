@@ -8,6 +8,8 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { Button } from "@/components/ui/button";
 import { communityNavigation } from "@/config/navigation";
 import { Apple, Droplets, Dumbbell, Brain, Moon, Plus, Search } from "lucide-react";
+import { CreateMeetupPopup } from "@/components/CreateMeetupPopup";
+import { useState } from "react";
 
 // Mock data for meetup events with different pillar categories
 const todayEvents = [
@@ -475,6 +477,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
 };
 
 export default function Meetups() {
+  const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   return (
     <AppLayout>
       <SEO title="Meetups | Community" description="Discover and join local meetups and events" canonical={window.location.href} />
@@ -491,7 +494,7 @@ export default function Meetups() {
             <Search className="w-4 h-4 mr-2" />
             Search
           </Button>
-          <Button size="sm">
+          <Button size="sm" onClick={() => setCreateMeetupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Meetup
           </Button>
@@ -516,6 +519,12 @@ export default function Meetups() {
           </SplitBarContent>
         </SplitBar>
       </div>
+      
+      {/* Create Meetup Popup */}
+      <CreateMeetupPopup 
+        isOpen={createMeetupOpen} 
+        onClose={() => setCreateMeetupOpen(false)}
+      />
     </AppLayout>
   );
 }
