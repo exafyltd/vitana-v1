@@ -6,21 +6,21 @@ interface MotivationalMessage {
 }
 
 const MOTIVATIONAL_MESSAGES: MotivationalMessage[] = [
-  { text: "let's make today a very special day!", emoji: "✨" },
-  { text: "your wellness journey starts now!", emoji: "🌟" },
-  { text: "today brings new health opportunities!", emoji: "🌅" },
-  { text: "every small step counts toward your goals!", emoji: "🎯" },
-  { text: "let's create something amazing together!", emoji: "💪" },
-  { text: "your health is your greatest investment!", emoji: "💎" },
-  { text: "embrace today's wellness possibilities!", emoji: "🌱" },
-  { text: "progress happens one choice at a time!", emoji: "⚡" },
+  { text: "let's make today special!", emoji: "✨" },
+  { text: "your wellness journey starts!", emoji: "🌟" },
+  { text: "new health opportunities await!", emoji: "🌅" },
+  { text: "every step counts!", emoji: "🎯" },
+  { text: "let's create something amazing!", emoji: "💪" },
+  { text: "health is your greatest asset!", emoji: "💎" },
+  { text: "embrace wellness today!", emoji: "🌱" },
+  { text: "progress happens now!", emoji: "⚡" },
   { text: "you're stronger than you think!", emoji: "🦋" },
-  { text: "wellness is a journey, not a destination!", emoji: "🗺️" },
-  { text: "let's fuel your body and mind today!", emoji: "🔥" },
-  { text: "small actions create lasting changes!", emoji: "🌊" },
+  { text: "wellness is a journey!", emoji: "🗺️" },
+  { text: "fuel your body and mind!", emoji: "🔥" },
+  { text: "small actions create change!", emoji: "🌊" },
   { text: "your future self will thank you!", emoji: "🙏" },
   { text: "today is perfect for progress!", emoji: "☀️" },
-  { text: "wellness starts with self-compassion!", emoji: "💝" },
+  { text: "wellness starts with you!", emoji: "💝" },
 ];
 
 export function useMotivationalMessage(firstName?: string) {
@@ -34,9 +34,15 @@ export function useMotivationalMessage(firstName?: string) {
     const greeting = `Hi ${name}, ${message.text}`;
     
     // Ensure message fits in one line with emoji (max 40 characters)
-    const truncatedGreeting = greeting.length > 40 
-      ? `Hi ${name}, ${message.text.substring(0, 37 - name.length)}`
-      : greeting;
+    let truncatedGreeting = greeting;
+    if (greeting.length > 40) {
+      const maxLength = 37 - name.length;
+      const truncatedText = message.text.substring(0, maxLength);
+      // Find the last space to avoid cutting words in half
+      const lastSpaceIndex = truncatedText.lastIndexOf(' ');
+      const finalText = lastSpaceIndex > 0 ? truncatedText.substring(0, lastSpaceIndex) : truncatedText;
+      truncatedGreeting = `Hi ${name}, ${finalText}`;
+    }
     
     return {
       greeting: truncatedGreeting,
