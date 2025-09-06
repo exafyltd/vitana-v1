@@ -11,6 +11,8 @@ interface NewsCardProps {
   description?: string;
   imageUrl: string;
   category: "event" | "community" | "wellness" | "achievement";
+  pillar?: string;
+  icon?: React.ComponentType<any>;
   author?: {
     name: string;
     avatar?: string;
@@ -27,7 +29,9 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     title, 
     description, 
     imageUrl, 
-    category, 
+    category,
+    pillar,
+    icon: IconComponent, 
     author, 
     location, 
     attendees, 
@@ -37,10 +41,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
   }, ref) => {
     
     const categoryStyles = {
-      event: "bg-blue-500/20 text-blue-700 border-blue-200",
-      community: "bg-green-500/20 text-green-700 border-green-200",
-      wellness: "bg-purple-500/20 text-purple-700 border-purple-200",
-      achievement: "bg-orange-500/20 text-orange-700 border-orange-200"
+      event: "bg-primary/20 text-primary border-primary/30",
+      community: "bg-secondary/20 text-secondary-foreground border-secondary/30",
+      wellness: "bg-accent/20 text-accent-foreground border-accent/30",
+      achievement: "bg-muted/20 text-foreground border-muted/30"
     };
 
     return (
@@ -68,11 +72,19 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           
           {/* Content Overlay */}
           <CardContent className="absolute inset-0 p-6 flex flex-col justify-between text-white">
-            {/* Top Badge */}
+            {/* Top Section */}
             <div className="flex justify-between items-start">
-              <Badge className={cn("capitalize", categoryStyles[category])}>
-                {category}
-              </Badge>
+              <div className="flex items-center gap-2">
+                <Badge className={cn("capitalize", categoryStyles[category])}>
+                  {category}
+                </Badge>
+                {pillar && IconComponent && (
+                  <div className="flex items-center gap-1 bg-white/20 rounded-full px-2 py-1">
+                    <IconComponent className="w-3 h-3 text-white" />
+                    <span className="text-xs text-white font-medium">{pillar}</span>
+                  </div>
+                )}
+              </div>
               {timestamp && (
                 <div className="flex items-center gap-1 text-xs text-white/80 bg-black/30 rounded-full px-2 py-1">
                   <Clock className="w-3 h-3" />

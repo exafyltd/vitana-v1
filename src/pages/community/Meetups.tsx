@@ -287,21 +287,23 @@ const getCardSizeClass = (size: string) => {
 };
 
 const renderEventGrid = (events: typeof todayEvents) => (
-  <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-max">
     {events.map((event, index) => {
       const IconComponent = event.icon;
       return (
-        <div key={index} className="break-inside-avoid">
+        <div key={index} className={getCardSizeClass(event.size)}>
           <NewsCard
             title={event.title}
             description={event.description}
             imageUrl={event.imageUrl}
             category={event.category}
+            pillar={event.pillar}
+            icon={IconComponent}
             author={event.author}
             location={event.location}
             attendees={event.attendees}
             timestamp={event.timestamp}
-            className="w-full mb-6"
+            className="w-full h-full"
             onClick={() => console.log(`Clicked: ${event.title}`)}
           />
         </div>
