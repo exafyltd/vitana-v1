@@ -7,7 +7,7 @@ import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/comp
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { Button } from "@/components/ui/button";
 import { communityNavigation } from "@/config/navigation";
-import { Apple, Droplets, Dumbbell, Brain, Moon, Plus } from "lucide-react";
+import { Apple, Droplets, Dumbbell, Brain, Moon, Plus, Search } from "lucide-react";
 
 // Mock data for meetup events with different pillar categories
 const todayEvents = [
@@ -487,9 +487,13 @@ export default function Meetups() {
         />
         
         <UtilityActionButton>
-          <Button variant="default" size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Create Meetup
+          <Button variant="outline" size="sm">
+            <Search className="w-4 h-4 mr-2" />
+            Search
+          </Button>
+          <Button size="sm">
+            <Plus className="w-4 h-4 mr-2" />
+            Meetup
           </Button>
         </UtilityActionButton>
         
