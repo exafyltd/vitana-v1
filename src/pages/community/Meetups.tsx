@@ -4,8 +4,10 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { Button } from "@/components/ui/button";
 import { communityNavigation } from "@/config/navigation";
-import { Apple, Droplets, Dumbbell, Brain, Moon } from "lucide-react";
+import { Apple, Droplets, Dumbbell, Brain, Moon, Plus } from "lucide-react";
 
 // Mock data for meetup events with different pillar categories
 const todayEvents = [
@@ -483,6 +485,13 @@ export default function Meetups() {
           description="Join local wellness events focused on the five pillars of health"
           emoji="🤝"
         />
+        
+        <UtilityActionButton>
+          <Button variant="default" size="sm">
+            <Plus className="h-4 w-4 mr-2" />
+            Create Meetup
+          </Button>
+        </UtilityActionButton>
         
         <SplitBar defaultValue="today" className="w-full">
           <SplitBarList className="grid-cols-2 mb-6">
