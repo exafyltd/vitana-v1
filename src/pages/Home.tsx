@@ -1,7 +1,7 @@
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
-import { VitanaIndexCard } from "@/components/crossover/VitanaIndexCard";
+import { PrioritySessionCard } from "@/components/crossover/PrioritySessionCard";
 import { AutoPilotActionCard } from "@/components/crossover/AutoPilotActionCard";
 import { LifestylePlanCard } from "@/components/crossover/LifestylePlanCard";
 import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
@@ -71,7 +71,7 @@ export default function Home() {
           <div className="grid grid-cols-12 gap-6 auto-rows-[280px]">
             {/* Row 1: Large card + 2 small cards */}
             <div className="col-span-6">
-              <VitanaIndexCard />
+              <PrioritySessionCard />
             </div>
             <div className="col-span-3">
               <AutoPilotActionCard />
