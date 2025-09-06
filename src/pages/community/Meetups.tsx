@@ -353,124 +353,38 @@ const upcomingEvents = [
   }
 ];
 
-const renderEventGrid = (events: typeof todayEvents) => {
-  const rows = [];
+// Convert legacy data to unified card envelopes for consistent rendering
+const convertEventsToEnvelopes = (events: typeof todayEvents) => {
+  return events.map(event => 
+    CardEnvelopeFactory.createNewsCardEnvelope({
+      id: `meetup-${event.title.replace(/\s+/g, '-').toLowerCase()}`,
+      title: event.title,
+      description: event.description,
+      pillar: event.pillar,
+      priority: event.size === 'large' ? 80 : event.size === 'medium' ? 60 : 40
+    })
+  );
+};
+
+const renderUnifiedEventGrid = (events: typeof todayEvents) => {
+  const cardEnvelopes = convertEventsToEnvelopes(events);
   
-  // Group events into rows of 3
-  for (let i = 0; i < events.length; i += 3) {
-    const rowEvents = events.slice(i, i + 3);
-    const isEvenRow = Math.floor(i / 3) % 2 === 0;
-    
-    rows.push(
-      <div key={i} className="grid grid-cols-4 gap-6 mb-6">
-        {isEvenRow ? (
-          // Row pattern: big + small + small
-          <>
-            <NewsCard
-              key={`${i}-0`}
-              title={rowEvents[0]?.title || ""}
-              description={rowEvents[0]?.description}
-              imageUrl={rowEvents[0]?.imageUrl || ""}
-              category={rowEvents[0]?.category || "event"}
-              pillar={rowEvents[0]?.pillar}
-              icon={rowEvents[0]?.icon}
-              author={rowEvents[0]?.author}
-              location={rowEvents[0]?.location}
-              attendees={rowEvents[0]?.attendees}
-              timestamp={rowEvents[0]?.timestamp}
-              className="col-span-2 h-80"
-            />
-            {rowEvents[1] && (
-              <NewsCard
-                key={`${i}-1`}
-                title={rowEvents[1].title}
-                description={rowEvents[1].description}
-                imageUrl={rowEvents[1].imageUrl}
-                category={rowEvents[1].category}
-                pillar={rowEvents[1].pillar}
-                icon={rowEvents[1].icon}
-                author={rowEvents[1].author}
-                location={rowEvents[1].location}
-                attendees={rowEvents[1].attendees}
-                timestamp={rowEvents[1].timestamp}
-                className="col-span-1 h-80"
-              />
-            )}
-            {rowEvents[2] && (
-              <NewsCard
-                key={`${i}-2`}
-                title={rowEvents[2].title}
-                description={rowEvents[2].description}
-                imageUrl={rowEvents[2].imageUrl}
-                category={rowEvents[2].category}
-                pillar={rowEvents[2].pillar}
-                icon={rowEvents[2].icon}
-                author={rowEvents[2].author}
-                location={rowEvents[2].location}
-                attendees={rowEvents[2].attendees}
-                timestamp={rowEvents[2].timestamp}
-                className="col-span-1 h-80"
-              />
-            )}
-          </>
-        ) : (
-          // Row pattern: small + small + big
-          <>
-            {rowEvents[0] && (
-              <NewsCard
-                key={`${i}-0`}
-                title={rowEvents[0].title}
-                description={rowEvents[0].description}
-                imageUrl={rowEvents[0].imageUrl}
-                category={rowEvents[0].category}
-                pillar={rowEvents[0].pillar}
-                icon={rowEvents[0].icon}
-                author={rowEvents[0].author}
-                location={rowEvents[0].location}
-                attendees={rowEvents[0].attendees}
-                timestamp={rowEvents[0].timestamp}
-                className="col-span-1 h-80"
-              />
-            )}
-            {rowEvents[1] && (
-              <NewsCard
-                key={`${i}-1`}
-                title={rowEvents[1].title}
-                description={rowEvents[1].description}
-                imageUrl={rowEvents[1].imageUrl}
-                category={rowEvents[1].category}
-                pillar={rowEvents[1].pillar}
-                icon={rowEvents[1].icon}
-                author={rowEvents[1].author}
-                location={rowEvents[1].location}
-                attendees={rowEvents[1].attendees}
-                timestamp={rowEvents[1].timestamp}
-                className="col-span-1 h-80"
-              />
-            )}
-            {rowEvents[2] && (
-              <NewsCard
-                key={`${i}-2`}
-                title={rowEvents[2].title}
-                description={rowEvents[2].description}
-                imageUrl={rowEvents[2].imageUrl}
-                category={rowEvents[2].category}
-                pillar={rowEvents[2].pillar}
-                icon={rowEvents[2].icon}
-                author={rowEvents[2].author}
-                location={rowEvents[2].location}
-                attendees={rowEvents[2].attendees}
-                timestamp={rowEvents[2].timestamp}
-                className="col-span-2 h-80"
-              />
-            )}
-          </>
-        )}
-      </div>
-    );
-  }
-  
-  return <div className="px-6">{rows}</div>;
+  const layoutConfig = {
+    placement_seed: CardEnvelopeFactory.generatePlacementSeed('meetups', 'community'),
+    max_cards_per_row: 3,
+    pillar_cycle_rows: 2, // Tighter pillar distribution for events
+    type_alternation: false // All news cards, no need for alternation
+  };
+
+  return (
+    <div className="px-6">
+      <UnifiedLayout 
+        cards={cardEnvelopes}
+        config={layoutConfig}
+        className="unified-meetups-layout"
+      />
+    </div>
+  );
 };
 
 export default function Meetups() {
@@ -496,11 +410,11 @@ export default function Meetups() {
           </SplitBarList>
           
           <SplitBarContent value="today">
-            {renderEventGrid(todayEvents)}
+            {renderUnifiedEventGrid(todayEvents)}
           </SplitBarContent>
           
           <SplitBarContent value="upcoming">
-            {renderEventGrid(upcomingEvents)}
+            {renderUnifiedEventGrid(upcomingEvents)}
           </SplitBarContent>
         </SplitBar>
       </div>
