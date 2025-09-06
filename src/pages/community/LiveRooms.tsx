@@ -1,16 +1,17 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import { Button } from "@/components/ui/button";
+import { ActionButtonBar } from "@/components/ui/action-button-bar";
+import { Search, Plus, Plane } from "lucide-react";
+import { useState } from "react";
+import { GoLivePopup } from "@/components/GoLivePopup";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
 import LiveRoomDirectory from "@/components/community/LiveRoomDirectory";
 import LiveRoomViewer from "@/components/community/LiveRoomViewer";
-import { GoLivePopup } from "@/components/GoLivePopup";
-import { useState } from "react";
-import { Plane, Plus, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
-import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { Badge } from "@/components/ui/badge";
 
 import { communityNavigation } from "@/config/navigation";
 
@@ -108,20 +109,16 @@ export default function LiveRooms() {
         </div>
 
         {/* Action Buttons Utility Bar */}
-        <div className="px-6 py-4 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
-                <Search className="w-4 h-4 mr-2" />
-                Search
-              </Button>
-              <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
-                <Plus className="w-4 h-4 mr-2" />
-                Go Live
-              </Button>
-            </div>
-          </div>
-        </div>
+        <ActionButtonBar>
+          <Button variant="outline" size="sm">
+            <Search className="w-4 h-4 mr-2" />
+            Search
+          </Button>
+          <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Go Live
+          </Button>
+        </ActionButtonBar>
 
         <LiveRoomDirectory onJoinRoom={handleJoinRoom} />
         </div>

@@ -2,6 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { ActionButtonBar } from "@/components/ui/action-button-bar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -153,18 +154,16 @@ export default function MediaHub() {
           </div>
 
           {/* Action Buttons Utility Bar */}
-          <div className="px-0 py-4">
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
-                <Search className="w-4 h-4 mr-2" />
-                Search
-              </Button>
-              <Button size="sm" onClick={() => setIsUploadOpen(true)}>
-                <Upload className="w-4 h-4 mr-2" />
-                Upload
-              </Button>
-            </div>
-          </div>
+          <ActionButtonBar>
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button size="sm" onClick={() => setIsUploadOpen(true)}>
+              <Upload className="w-4 h-4 mr-2" />
+              Upload
+            </Button>
+          </ActionButtonBar>
 
           {/* Media Hub Subtabs */}
           <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
