@@ -33,9 +33,9 @@ export function useMotivationalMessage(firstName?: string) {
     const name = firstName || 'there';
     const greeting = `Hi ${name}, ${message.text}`;
     
-    // Ensure message fits in one line accounting for emoji space (max 47 characters + 3 for emoji)
-    const truncatedGreeting = greeting.length > 47 
-      ? `Hi ${name}, ${message.text.substring(0, 44 - name.length)}...`
+    // Ensure message fits in one line with emoji (max 40 characters)
+    const truncatedGreeting = greeting.length > 40 
+      ? `Hi ${name}, ${message.text.substring(0, 37 - name.length)}`
       : greeting;
     
     return {
