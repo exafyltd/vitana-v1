@@ -81,6 +81,7 @@ export const sharingNavigation = [
 export const memoryNavigation = [
   { id: "overview", name: "Overview", path: "/memory" },
   { id: "timeline", name: "Timeline", path: "/memory/timeline" },
+  { id: "diary", name: "Daily Diary", path: "/memory/diary" },
   { id: "recall", name: "Recall & Search", path: "/memory/recall" },
   { id: "permissions", name: "Permissions", path: "/memory/permissions" },
 ];
