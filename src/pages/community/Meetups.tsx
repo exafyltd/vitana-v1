@@ -12,7 +12,7 @@ const todayEvents = [
   {
     title: "Morning Yoga & Meditation",
     description: "Start your day with peaceful yoga and mindfulness meditation in the park",
-    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+    imageUrl: "/lovable-uploads/sarah-miller-avatar.jpg",
     category: "wellness" as const,
     pillar: "Mental",
     icon: Brain,
@@ -51,7 +51,7 @@ const todayEvents = [
   {
     title: "Evening Sleep Workshop",
     description: "Learn techniques for better sleep quality and nighttime routines",
-    imageUrl: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=800&h=600&fit=crop",
+    imageUrl: "/lovable-uploads/lisa-chen-avatar.jpg",
     category: "wellness" as const,
     pillar: "Sleep",
     icon: Moon,
@@ -86,6 +86,84 @@ const todayEvents = [
     attendees: 10,
     timestamp: "12:00 PM",
     size: "small"
+  },
+  {
+    title: "Breathwork Session",
+    description: "Deep breathing techniques for stress relief and mental clarity",
+    imageUrl: "/lovable-uploads/james-davis-avatar.jpg",
+    category: "wellness" as const,
+    pillar: "Mental",
+    icon: Brain,
+    author: { name: "James Davis", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
+    location: "Meditation Center",
+    attendees: 18,
+    timestamp: "4:00 PM",
+    size: "small"
+  },
+  {
+    title: "Water Therapy Workshop",
+    description: "Discover the healing power of water through various therapeutic techniques",
+    imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop",
+    category: "wellness" as const,
+    pillar: "Hydration",
+    icon: Droplets,
+    author: { name: "Therapist Murphy", avatar: "/lovable-uploads/murphy-avatar.jpg" },
+    location: "Spa Center",
+    attendees: 12,
+    timestamp: "3:00 PM",
+    size: "medium"
+  },
+  {
+    title: "Recovery & Restoration",
+    description: "Learn proper recovery techniques for optimal sleep and muscle repair",
+    imageUrl: "https://images.unsplash.com/photo-1540331547168-8b63109225b7?w=800&h=600&fit=crop",
+    category: "wellness" as const,
+    pillar: "Sleep",
+    icon: Moon,
+    author: { name: "Recovery Coach", avatar: "/lovable-uploads/se-hun-oh-avatar.jpg" },
+    location: "Recovery Center",
+    attendees: 14,
+    timestamp: "9:00 PM",
+    size: "large"
+  },
+  {
+    title: "Functional Movement",
+    description: "Improve your daily movement patterns and prevent injuries",
+    imageUrl: "/lovable-uploads/mike-thompson-avatar.jpg",
+    category: "event" as const,
+    pillar: "Exercise",
+    icon: Dumbbell,
+    author: { name: "Movement Coach", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
+    location: "Movement Studio",
+    attendees: 16,
+    timestamp: "5:30 PM",
+    size: "small"
+  },
+  {
+    title: "Superfood Workshop",
+    description: "Discover nutrient-dense foods and how to incorporate them into your diet",
+    imageUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800&h=600&fit=crop",
+    category: "wellness" as const,
+    pillar: "Nutrition",
+    icon: Apple,
+    author: { name: "Nutrition Expert", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Health Center",
+    attendees: 22,
+    timestamp: "1:30 PM",
+    size: "medium"
+  },
+  {
+    title: "Mental Resilience Training",
+    description: "Build psychological strength and emotional resilience through proven techniques",
+    imageUrl: "/lovable-uploads/emma-wilson-avatar.jpg",
+    category: "wellness" as const,
+    pillar: "Mental",
+    icon: Brain,
+    author: { name: "Emma Wilson", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
+    location: "Wellness Hub",
+    attendees: 20,
+    timestamp: "11:00 AM",
+    size: "large"
   }
 ];
 
@@ -274,18 +352,6 @@ const upcomingEvents = [
   }
 ];
 
-const getCardSizeClass = (size: string) => {
-  switch (size) {
-    case "large":
-      return "col-span-2 row-span-2";
-    case "medium":
-      return "col-span-1 row-span-2";
-    case "small":
-    default:
-      return "col-span-1 row-span-1";
-  }
-};
-
 const renderEventGrid = (events: typeof todayEvents) => {
   const rows = [];
   
@@ -295,7 +361,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
     const isEvenRow = Math.floor(i / 3) % 2 === 0;
     
     rows.push(
-      <div key={i} className="grid grid-cols-4 gap-4 mb-4">
+      <div key={i} className="grid grid-cols-4 gap-6 mb-6">
         {isEvenRow ? (
           // Row pattern: big + small + small
           <>
@@ -311,7 +377,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
               location={rowEvents[0]?.location}
               attendees={rowEvents[0]?.attendees}
               timestamp={rowEvents[0]?.timestamp}
-              className="col-span-2 h-64"
+              className="col-span-2 h-80"
             />
             {rowEvents[1] && (
               <NewsCard
@@ -326,7 +392,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                 location={rowEvents[1].location}
                 attendees={rowEvents[1].attendees}
                 timestamp={rowEvents[1].timestamp}
-                className="col-span-1 h-64"
+                className="col-span-1 h-80"
               />
             )}
             {rowEvents[2] && (
@@ -342,7 +408,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                 location={rowEvents[2].location}
                 attendees={rowEvents[2].attendees}
                 timestamp={rowEvents[2].timestamp}
-                className="col-span-1 h-64"
+                className="col-span-1 h-80"
               />
             )}
           </>
@@ -362,7 +428,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                 location={rowEvents[0].location}
                 attendees={rowEvents[0].attendees}
                 timestamp={rowEvents[0].timestamp}
-                className="col-span-1 h-64"
+                className="col-span-1 h-80"
               />
             )}
             {rowEvents[1] && (
@@ -378,7 +444,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                 location={rowEvents[1].location}
                 attendees={rowEvents[1].attendees}
                 timestamp={rowEvents[1].timestamp}
-                className="col-span-1 h-64"
+                className="col-span-1 h-80"
               />
             )}
             {rowEvents[2] && (
@@ -394,7 +460,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                 location={rowEvents[2].location}
                 attendees={rowEvents[2].attendees}
                 timestamp={rowEvents[2].timestamp}
-                className="col-span-2 h-64"
+                className="col-span-2 h-80"
               />
             )}
           </>
@@ -403,7 +469,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
     );
   }
   
-  return <div className="space-y-0">{rows}</div>;
+  return <div className="px-6">{rows}</div>;
 };
 
 export default function Meetups() {

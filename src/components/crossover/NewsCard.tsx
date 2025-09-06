@@ -56,7 +56,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         )}
         onClick={onClick}
       >
-        <div className="relative h-64 md:h-72">
+        <div className="relative h-full">
           {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
@@ -74,11 +74,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           <CardContent className="absolute inset-0 p-6 flex flex-col justify-between text-white">
             {/* Top Section */}
             <div className="flex justify-between items-start">
-              {/* Pillar icon only (moved to upper left) */}
-              {pillar && IconComponent && (
-                <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm border border-white/30">
-                  <IconComponent className="w-4 h-4 text-white" />
-                  <span className="text-xs text-white font-medium uppercase tracking-wide">{pillar}</span>
+              {/* Pillar badge (text only, upper left) */}
+              {pillar && (
+                <div className="text-xs text-white font-medium bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap">
+                  {pillar}
                 </div>
               )}
               
