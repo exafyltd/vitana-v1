@@ -33,9 +33,9 @@ export function useMotivationalMessage(firstName?: string) {
     const name = firstName || 'there';
     const greeting = `Hi ${name}, ${message.text}`;
     
-    // Ensure message fits in one line (max 60 characters)
-    const truncatedGreeting = greeting.length > 57 
-      ? `Hi ${name}, ${message.text.substring(0, 54 - name.length)}...`
+    // Ensure message fits in one line (max 50 characters)
+    const truncatedGreeting = greeting.length > 50 
+      ? `Hi ${name}, ${message.text.substring(0, 47 - name.length)}...`
       : greeting;
     
     return {

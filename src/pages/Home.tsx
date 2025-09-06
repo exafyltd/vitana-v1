@@ -62,7 +62,7 @@ export default function Home() {
           <div className="mb-8">
             <StandardHeader 
               title={greeting}
-              description="Your wellness journey starts with today's opportunities."
+              description="Your wellness journey starts today."
               emoji={emoji}
             />
           </div>
