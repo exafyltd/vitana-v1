@@ -7,19 +7,19 @@ interface MotivationalMessage {
 
 const MOTIVATIONAL_MESSAGES: MotivationalMessage[] = [
   { text: "let's make today special!", emoji: "✨" },
-  { text: "your wellness journey starts!", emoji: "🌟" },
-  { text: "new health opportunities await!", emoji: "🌅" },
+  { text: "your wellness starts now!", emoji: "🌟" },
+  { text: "new opportunities await!", emoji: "🌅" },
   { text: "every step counts!", emoji: "🎯" },
-  { text: "let's create something amazing!", emoji: "💪" },
-  { text: "health is your greatest asset!", emoji: "💎" },
+  { text: "let's create amazing!", emoji: "💪" },
+  { text: "health is your asset!", emoji: "💎" },
   { text: "embrace wellness today!", emoji: "🌱" },
   { text: "progress happens now!", emoji: "⚡" },
-  { text: "you're stronger than you think!", emoji: "🦋" },
+  { text: "you're stronger!", emoji: "🦋" },
   { text: "wellness is a journey!", emoji: "🗺️" },
-  { text: "fuel your body and mind!", emoji: "🔥" },
-  { text: "small actions create change!", emoji: "🌊" },
-  { text: "your future self will thank you!", emoji: "🙏" },
-  { text: "today is perfect for progress!", emoji: "☀️" },
+  { text: "fuel your energy!", emoji: "🔥" },
+  { text: "small actions matter!", emoji: "🌊" },
+  { text: "your future thanks you!", emoji: "🙏" },
+  { text: "today brings progress!", emoji: "☀️" },
   { text: "wellness starts with you!", emoji: "💝" },
 ];
 
