@@ -3,10 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mic, Video, Users, Clock, Search, Filter, Star, Heart, MessageSquare, Calendar, Play } from "lucide-react";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { Mic, Video, Users, Clock, Star, Heart, MessageSquare, Calendar, Play } from "lucide-react";
 // Remove react-i18next import - not available
 
 interface LiveRoom {
@@ -97,22 +95,14 @@ interface LiveRoomDirectoryProps {
 }
 
 export default function LiveRoomDirectory({ onJoinRoom }: LiveRoomDirectoryProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [activeTab, setActiveTab] = useState("live");
 
   const filteredRooms = mockRooms.filter(room => {
-    const matchesSearch = room.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         room.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         room.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    const matchesCategory = selectedCategory === "all" || room.category === selectedCategory;
-    
     const matchesTab = activeTab === "all" || 
                       (activeTab === "live" && room.isLive) ||
                       (activeTab === "scheduled" && !room.isLive);
     
-    return matchesSearch && matchesCategory && matchesTab;
+    return matchesTab;
   });
 
   const getRoomTypeIcon = (type: string) => {
@@ -130,71 +120,41 @@ export default function LiveRoomDirectory({ onJoinRoom }: LiveRoomDirectoryProps
 
   return (
     <div className="space-y-6">
-      {/* Header with Search and Filters */}
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="flex-1">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search rooms, topics, or hosts..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </div>
-        <div className="flex gap-3">
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-40">
-              <Filter className="w-4 h-4 mr-2" />
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              <SelectItem value="wellness">Wellness</SelectItem>
-              <SelectItem value="education">Education</SelectItem>
-              <SelectItem value="community">Community</SelectItem>
-              <SelectItem value="fitness">Fitness</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 lg:w-96">
-          <TabsTrigger value="live" className="flex items-center gap-2">
+      {/* Split Screen Navigation */}
+      <SplitBar value={activeTab} onValueChange={setActiveTab}>
+        <SplitBarList>
+          <SplitBarTrigger value="live" className="flex items-center gap-2">
             <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            Live Now
-          </TabsTrigger>
-          <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
-          <TabsTrigger value="all">All Rooms</TabsTrigger>
-        </TabsList>
+            Live now
+          </SplitBarTrigger>
+          <SplitBarTrigger value="scheduled">Scheduled</SplitBarTrigger>
+          <SplitBarTrigger value="all">All rooms</SplitBarTrigger>
+        </SplitBarList>
 
-        <TabsContent value="live" className="mt-6">
+        <SplitBarContent value="live" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRooms.filter(room => room.isLive).map(room => (
               <RoomCard key={room.id} room={room} onJoin={onJoinRoom} />
             ))}
           </div>
-        </TabsContent>
+        </SplitBarContent>
 
-        <TabsContent value="scheduled" className="mt-6">
+        <SplitBarContent value="scheduled" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRooms.filter(room => !room.isLive).map(room => (
               <RoomCard key={room.id} room={room} onJoin={onJoinRoom} />
             ))}
           </div>
-        </TabsContent>
+        </SplitBarContent>
 
-        <TabsContent value="all" className="mt-6">
+        <SplitBarContent value="all" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRooms.map(room => (
               <RoomCard key={room.id} room={room} onJoin={onJoinRoom} />
             ))}
           </div>
-        </TabsContent>
-      </Tabs>
+        </SplitBarContent>
+      </SplitBar>
 
       {filteredRooms.length === 0 && (
         <div className="text-center py-12">

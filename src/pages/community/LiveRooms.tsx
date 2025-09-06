@@ -5,7 +5,7 @@ import LiveRoomDirectory from "@/components/community/LiveRoomDirectory";
 import LiveRoomViewer from "@/components/community/LiveRoomViewer";
 import { GoLivePopup } from "@/components/GoLivePopup";
 import { useState } from "react";
-import { Plane, Plus } from "lucide-react";
+import { Plane, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -40,7 +40,21 @@ export default function LiveRooms() {
   return (
     <AppLayout>
       <SEO title="Live Rooms | Community" description="Join live conversations and discussions" canonical={window.location.href} />
-      <SubNavigation items={communityNavigation} />
+      <SubNavigation 
+        items={communityNavigation} 
+        rightActions={
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Go Live
+            </Button>
+          </div>
+        }
+      />
       <div className="p-6 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
@@ -107,17 +121,6 @@ export default function LiveRooms() {
             </div>
           </div>
 
-          {/* Go Live Button - Moved to proper content area */}
-          <div className="flex justify-center mb-6">
-            <Button 
-              onClick={() => setIsGoLiveOpen(true)}
-              size="lg"
-              className="bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 text-primary-foreground shadow-elegant"
-            >
-              <Plus className="mr-2 h-5 w-5" />
-              Go Live
-            </Button>
-          </div>
           <LiveRoomDirectory onJoinRoom={handleJoinRoom} />
         </div>
       </div>
