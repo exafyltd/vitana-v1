@@ -74,21 +74,19 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           <CardContent className="absolute inset-0 p-6 flex flex-col justify-between text-white">
             {/* Top Section */}
             <div className="flex justify-between items-start">
-              <div className="flex items-center gap-2">
-                <Badge className={cn("capitalize", categoryStyles[category])}>
-                  {category}
-                </Badge>
-                {pillar && IconComponent && (
-                  <div className="flex items-center gap-1 bg-white/20 rounded-full px-2 py-1">
-                    <IconComponent className="w-3 h-3 text-white" />
-                    <span className="text-xs text-white font-medium">{pillar}</span>
-                  </div>
-                )}
-              </div>
+              {/* Pillar icon only (moved to upper left) */}
+              {pillar && IconComponent && (
+                <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm border border-white/30">
+                  <IconComponent className="w-4 h-4 text-white" />
+                  <span className="text-xs text-white font-medium uppercase tracking-wide">{pillar}</span>
+                </div>
+              )}
+              
+              {/* Timestamp (single line in upper right) */}
               {timestamp && (
-                <div className="flex items-center gap-1 text-xs text-white/80 bg-black/30 rounded-full px-2 py-1">
+                <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
                   <Clock className="w-3 h-3" />
-                  {timestamp}
+                  <span className="font-medium">{timestamp}</span>
                 </div>
               )}
             </div>

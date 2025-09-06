@@ -286,31 +286,125 @@ const getCardSizeClass = (size: string) => {
   }
 };
 
-const renderEventGrid = (events: typeof todayEvents) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-max">
-    {events.map((event, index) => {
-      const IconComponent = event.icon;
-      return (
-        <div key={index} className={getCardSizeClass(event.size)}>
-          <NewsCard
-            title={event.title}
-            description={event.description}
-            imageUrl={event.imageUrl}
-            category={event.category}
-            pillar={event.pillar}
-            icon={IconComponent}
-            author={event.author}
-            location={event.location}
-            attendees={event.attendees}
-            timestamp={event.timestamp}
-            className="w-full h-full"
-            onClick={() => console.log(`Clicked: ${event.title}`)}
-          />
-        </div>
-      );
-    })}
-  </div>
-);
+const renderEventGrid = (events: typeof todayEvents) => {
+  const rows = [];
+  
+  // Group events into rows of 3
+  for (let i = 0; i < events.length; i += 3) {
+    const rowEvents = events.slice(i, i + 3);
+    const isEvenRow = Math.floor(i / 3) % 2 === 0;
+    
+    rows.push(
+      <div key={i} className="grid grid-cols-4 gap-4 mb-4">
+        {isEvenRow ? (
+          // Row pattern: big + small + small
+          <>
+            <NewsCard
+              key={`${i}-0`}
+              title={rowEvents[0]?.title || ""}
+              description={rowEvents[0]?.description}
+              imageUrl={rowEvents[0]?.imageUrl || ""}
+              category={rowEvents[0]?.category || "event"}
+              pillar={rowEvents[0]?.pillar}
+              icon={rowEvents[0]?.icon}
+              author={rowEvents[0]?.author}
+              location={rowEvents[0]?.location}
+              attendees={rowEvents[0]?.attendees}
+              timestamp={rowEvents[0]?.timestamp}
+              className="col-span-2 h-64"
+            />
+            {rowEvents[1] && (
+              <NewsCard
+                key={`${i}-1`}
+                title={rowEvents[1].title}
+                description={rowEvents[1].description}
+                imageUrl={rowEvents[1].imageUrl}
+                category={rowEvents[1].category}
+                pillar={rowEvents[1].pillar}
+                icon={rowEvents[1].icon}
+                author={rowEvents[1].author}
+                location={rowEvents[1].location}
+                attendees={rowEvents[1].attendees}
+                timestamp={rowEvents[1].timestamp}
+                className="col-span-1 h-64"
+              />
+            )}
+            {rowEvents[2] && (
+              <NewsCard
+                key={`${i}-2`}
+                title={rowEvents[2].title}
+                description={rowEvents[2].description}
+                imageUrl={rowEvents[2].imageUrl}
+                category={rowEvents[2].category}
+                pillar={rowEvents[2].pillar}
+                icon={rowEvents[2].icon}
+                author={rowEvents[2].author}
+                location={rowEvents[2].location}
+                attendees={rowEvents[2].attendees}
+                timestamp={rowEvents[2].timestamp}
+                className="col-span-1 h-64"
+              />
+            )}
+          </>
+        ) : (
+          // Row pattern: small + small + big
+          <>
+            {rowEvents[0] && (
+              <NewsCard
+                key={`${i}-0`}
+                title={rowEvents[0].title}
+                description={rowEvents[0].description}
+                imageUrl={rowEvents[0].imageUrl}
+                category={rowEvents[0].category}
+                pillar={rowEvents[0].pillar}
+                icon={rowEvents[0].icon}
+                author={rowEvents[0].author}
+                location={rowEvents[0].location}
+                attendees={rowEvents[0].attendees}
+                timestamp={rowEvents[0].timestamp}
+                className="col-span-1 h-64"
+              />
+            )}
+            {rowEvents[1] && (
+              <NewsCard
+                key={`${i}-1`}
+                title={rowEvents[1].title}
+                description={rowEvents[1].description}
+                imageUrl={rowEvents[1].imageUrl}
+                category={rowEvents[1].category}
+                pillar={rowEvents[1].pillar}
+                icon={rowEvents[1].icon}
+                author={rowEvents[1].author}
+                location={rowEvents[1].location}
+                attendees={rowEvents[1].attendees}
+                timestamp={rowEvents[1].timestamp}
+                className="col-span-1 h-64"
+              />
+            )}
+            {rowEvents[2] && (
+              <NewsCard
+                key={`${i}-2`}
+                title={rowEvents[2].title}
+                description={rowEvents[2].description}
+                imageUrl={rowEvents[2].imageUrl}
+                category={rowEvents[2].category}
+                pillar={rowEvents[2].pillar}
+                icon={rowEvents[2].icon}
+                author={rowEvents[2].author}
+                location={rowEvents[2].location}
+                attendees={rowEvents[2].attendees}
+                timestamp={rowEvents[2].timestamp}
+                className="col-span-2 h-64"
+              />
+            )}
+          </>
+        )}
+      </div>
+    );
+  }
+  
+  return <div className="space-y-0">{rows}</div>;
+};
 
 export default function Meetups() {
   return (
