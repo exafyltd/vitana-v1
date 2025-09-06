@@ -12,16 +12,18 @@ const SplitBarList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   SplitBarListProps
 >(({ className, children, ...props }, ref) => {
-  // Auto-calculate grid columns based on number of children
+  // Use static grid classes based on number of children
   const childCount = React.Children.count(children);
-  const gridCols = `grid-cols-${childCount}`;
+  const gridColsClass = childCount === 2 ? "grid-cols-2" : 
+                        childCount === 3 ? "grid-cols-3" : 
+                        childCount === 4 ? "grid-cols-4" : "grid-cols-2";
   
   return (
     <TabsPrimitive.List
       ref={ref}
       className={cn(
         "grid w-full mb-6",
-        gridCols,
+        gridColsClass,
         className
       )}
       {...props}
