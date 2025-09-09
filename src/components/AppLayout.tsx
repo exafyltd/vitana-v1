@@ -122,7 +122,7 @@ function AppSidebar({
       return 'Exafy';
     }
     
-    // PRIORITY FIX: Check URL-based tenant detection FIRST for portal routes
+    // For portal routes, prioritize URL-based detection
     const currentPath = window.location.pathname;
     if (currentPath.startsWith('/maxina')) {
       console.log('URL-based detection: Maxina');
@@ -135,28 +135,32 @@ function AppSidebar({
       return 'Earthlinks';
     }
     
-    // Then check tenant context from authentication/database
-    if (tenant?.name) {
-      console.log('Database tenant context:', tenant.name);
-      return tenant.name;
-    }
-    
-    // Check user session for tenant information
-    if (user?.user_metadata?.tenant_slug) {
-      const tenantSlug = user.user_metadata.tenant_slug;
-      console.log('User metadata tenant:', tenantSlug);
-      if (tenantSlug === 'earthlinks') return 'Earthlinks';
-      if (tenantSlug === 'maxina') return 'Maxina';
-      if (tenantSlug === 'alkalma') return 'AlKalma';
-    }
-    
-    // Check localStorage for tenant preference
+    // For non-portal routes, check localStorage first (most reliable after tenant switch)
     const storedTenant = localStorage.getItem('tenant_slug');
     if (storedTenant) {
       console.log('localStorage tenant:', storedTenant);
       if (storedTenant === 'earthlinks') return 'Earthlinks';
       if (storedTenant === 'maxina') return 'Maxina';
       if (storedTenant === 'alkalma') return 'AlKalma';
+    }
+    
+    // Then check tenant context from database
+    if (tenant?.name) {
+      console.log('Database tenant context:', tenant.name);
+      // Map database names to display names
+      if (tenant.name === 'Earthlinks') return 'Earthlinks';
+      if (tenant.name === 'Maxina') return 'Maxina';
+      if (tenant.name === 'Alkalma') return 'AlKalma';
+      return tenant.name;
+    }
+    
+    // Check user session metadata as last resort
+    if (user?.user_metadata?.tenant_slug) {
+      const tenantSlug = user.user_metadata.tenant_slug;
+      console.log('User metadata tenant:', tenantSlug);
+      if (tenantSlug === 'earthlinks') return 'Earthlinks';
+      if (tenantSlug === 'maxina') return 'Maxina';
+      if (tenantSlug === 'alkalma') return 'AlKalma';
     }
     
     // Final fallback

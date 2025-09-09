@@ -10,6 +10,9 @@ import ReactDOM from 'react-dom'
 
 const queryClient = new QueryClient();
 
+// Make QueryClient globally accessible for cache invalidation
+(window as any).queryClient = queryClient;
+
 // Initialize axe-core for accessibility testing in development
 if (process.env.NODE_ENV === 'development') {
   import('@axe-core/react').then(axe => {
