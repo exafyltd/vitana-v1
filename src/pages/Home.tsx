@@ -241,19 +241,20 @@ const renderCardGrid = (cards: any[], rowSize: number = 3) => {
           // Row pattern: big + small + small
           <>
             <div className="col-span-6">
-              <NewsCard
-                key={`${i}-0`}
-                title={rowCards[0]?.title || ""}
-                description={rowCards[0]?.description}
-                imageUrl={rowCards[0]?.imageUrl || ""}
-                pillar={rowCards[0]?.pillar}
-                author={rowCards[0]?.author}
-                location={rowCards[0]?.location}
-                attendees={rowCards[0]?.attendees}
-                timestamp={rowCards[0]?.timestamp}
-                price={rowCards[0]?.price}
-                className="h-full"
-              />
+                <NewsCard
+                  key={`${i}-0`}
+                  title={rowCards[0]?.title || ""}
+                  description={rowCards[0]?.description}
+                  imageUrl={rowCards[0]?.imageUrl || ""}
+                  pillar={rowCards[0]?.pillar}
+                  mediaType={rowCards[0]?.mediaType}
+                  author={rowCards[0]?.author}
+                  location={rowCards[0]?.location}
+                  attendees={rowCards[0]?.attendees}
+                  timestamp={rowCards[0]?.timestamp}
+                  price={rowCards[0]?.price}
+                  className="h-full"
+                />
             </div>
             {rowCards[1] && (
               <div className="col-span-3">
@@ -263,6 +264,7 @@ const renderCardGrid = (cards: any[], rowSize: number = 3) => {
                   description={rowCards[1].description}
                   imageUrl={rowCards[1].imageUrl}
                   pillar={rowCards[1].pillar}
+                  mediaType={rowCards[1].mediaType}
                   author={rowCards[1].author}
                   location={rowCards[1].location}
                   attendees={rowCards[1].attendees}
@@ -280,6 +282,7 @@ const renderCardGrid = (cards: any[], rowSize: number = 3) => {
                   description={rowCards[2].description}
                   imageUrl={rowCards[2].imageUrl}
                   pillar={rowCards[2].pillar}
+                  mediaType={rowCards[2].mediaType}
                   author={rowCards[2].author}
                   location={rowCards[2].location}
                   attendees={rowCards[2].attendees}
@@ -301,6 +304,7 @@ const renderCardGrid = (cards: any[], rowSize: number = 3) => {
                   description={rowCards[0].description}
                   imageUrl={rowCards[0].imageUrl}
                   pillar={rowCards[0].pillar}
+                  mediaType={rowCards[0].mediaType}
                   author={rowCards[0].author}
                   location={rowCards[0].location}
                   attendees={rowCards[0].attendees}
@@ -318,6 +322,7 @@ const renderCardGrid = (cards: any[], rowSize: number = 3) => {
                   description={rowCards[1].description}
                   imageUrl={rowCards[1].imageUrl}
                   pillar={rowCards[1].pillar}
+                  mediaType={rowCards[1].mediaType}
                   author={rowCards[1].author}
                   location={rowCards[1].location}
                   attendees={rowCards[1].attendees}
@@ -335,6 +340,7 @@ const renderCardGrid = (cards: any[], rowSize: number = 3) => {
                   description={rowCards[2].description}
                   imageUrl={rowCards[2].imageUrl}
                   pillar={rowCards[2].pillar}
+                  mediaType={rowCards[2].mediaType}
                   author={rowCards[2].author}
                   location={rowCards[2].location}
                   attendees={rowCards[2].attendees}
