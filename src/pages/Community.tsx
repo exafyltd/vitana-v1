@@ -355,9 +355,10 @@ const highlightsData = [
   }
 ];
 
-// Enhanced render grid function with interactive action buttons
-const renderEventGrid = (events: any[], section?: string) => {
+// Enhanced render grid function with interactive action buttons and global row counter
+const renderEventGrid = (events: any[], section?: string, startingRowIndex: number = 0) => {
   const rows = [];
+  let currentRowIndex = startingRowIndex;
   
   // Helper function to get category based on event data
   const getCategory = (event: any) => {
@@ -397,15 +398,15 @@ const renderEventGrid = (events: any[], section?: string) => {
     return "";
   };
   
-  // Group events into rows of 3 using CTO-approved patterns
+  // Group events into rows of 3 using CTO-approved global alternating patterns
   for (let i = 0; i < events.length; i += 3) {
     const rowEvents = events.slice(i, i + 3);
-    const isEvenRow = Math.floor(i / 3) % 2 === 0;
+    const isEvenRow = currentRowIndex % 2 === 0;
     
     rows.push(
       <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
         {isEvenRow ? (
-          // Row pattern: big + small + small
+          // Row pattern: big + small + small (1+2)
           <>
             <div className="col-span-6">
               <NewsCard
@@ -464,7 +465,7 @@ const renderEventGrid = (events: any[], section?: string) => {
             )}
           </>
         ) : (
-          // Row pattern: small + small + big
+          // Row pattern: small + small + big (2+1)
           <>
             {rowEvents[0] && (
               <div className="col-span-3">
@@ -527,9 +528,10 @@ const renderEventGrid = (events: any[], section?: string) => {
         )}
       </div>
     );
+    currentRowIndex++;
   }
   
-  return <div className="px-6">{rows}</div>;
+  return { content: <div className="px-6">{rows}</div>, nextRowIndex: currentRowIndex };
 };
 
 export default withScreenId(function Community() {
@@ -541,6 +543,9 @@ export default withScreenId(function Community() {
   const [communityFiltersOpen, setCommunityFiltersOpen] = useState(false);
   
   const latestActions = getLatestActions(2);
+
+  // Global row counter for continuous alternating pattern
+  let globalRowIndex = 0;
 
   return (
     <AppLayout>
@@ -591,7 +596,11 @@ export default withScreenId(function Community() {
               {/* Today Highlights */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Today Highlights</h3>
-                {renderEventGrid(todayHighlights, "Today Highlights")}
+                {(() => {
+                  const result = renderEventGrid(todayHighlights, "Today Highlights", globalRowIndex);
+                  globalRowIndex = result.nextRowIndex;
+                  return result.content;
+                })()}
               </div>
 
               {/* Motivational Banner */}
@@ -602,7 +611,11 @@ export default withScreenId(function Community() {
               {/* This Week in Community */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">This Week in Community</h3>
-                {renderEventGrid(weeklyEvents, "This Week in Community")}
+                {(() => {
+                  const result = renderEventGrid(weeklyEvents, "This Week in Community", globalRowIndex);
+                  globalRowIndex = result.nextRowIndex;
+                  return result.content;
+                })()}
               </div>
 
               {/* Community Power Banner */}
@@ -628,13 +641,21 @@ export default withScreenId(function Community() {
                     View All Rankings
                   </Button>
                 </div>
-                {renderEventGrid(highlightsData, "Community Highlights")}
+                {(() => {
+                  const result = renderEventGrid(highlightsData, "Community Highlights", globalRowIndex);
+                  globalRowIndex = result.nextRowIndex;
+                  return result.content;
+                })()}
               </div>
 
               {/* Discover People */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Discover People</h3>
-                {renderEventGrid(communityPeople, "Discover People")}
+                {(() => {
+                  const result = renderEventGrid(communityPeople, "Discover People", globalRowIndex);
+                  globalRowIndex = result.nextRowIndex;
+                  return result.content;
+                })()}
               </div>
 
               {/* Energetic Banner */}
@@ -645,7 +666,11 @@ export default withScreenId(function Community() {
               {/* Community Media */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Community Media</h3>
-                {renderEventGrid(communityMedia, "Community Media")}
+                {(() => {
+                  const result = renderEventGrid(communityMedia, "Community Media", globalRowIndex);
+                  globalRowIndex = result.nextRowIndex;
+                  return result.content;
+                })()}
               </div>
             </SplitBarContent>
 
@@ -684,7 +709,13 @@ export default withScreenId(function Community() {
               {/* Top 3 Groups */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Top 3 Groups</h3>
-                {renderEventGrid(topGroups, "Rankings")}
+                {(() => {
+                  // Reset row counter for Rankings tab to maintain consistent visual pattern
+                  let rankingsRowIndex = 0;
+                  const result = renderEventGrid(topGroups, "Rankings", rankingsRowIndex);
+                  rankingsRowIndex = result.nextRowIndex;
+                  return result.content;
+                })()}
               </div>
 
               {/* Motivational Banner */}
@@ -695,7 +726,12 @@ export default withScreenId(function Community() {
               {/* Top Events This Week */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Top Events (This Week)</h3>
-                {renderEventGrid(topEvents, "Rankings")}
+                {(() => {
+                  let rankingsRowIndex = Math.ceil(topGroups.length / 3);
+                  const result = renderEventGrid(topEvents, "Rankings", rankingsRowIndex);
+                  rankingsRowIndex = result.nextRowIndex;
+                  return result.content;
+                })()}
               </div>
 
               {/* Guidance Banner */}
@@ -706,7 +742,11 @@ export default withScreenId(function Community() {
               {/* Top Creators */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Top Creators</h3>
-                {renderEventGrid(topCreators, "Rankings")}
+                {(() => {
+                  let rankingsRowIndex = Math.ceil(topGroups.length / 3) + Math.ceil(topEvents.length / 3);
+                  const result = renderEventGrid(topCreators, "Rankings", rankingsRowIndex);
+                  return result.content;
+                })()}
               </div>
 
               {/* Badges Section */}
@@ -736,7 +776,12 @@ export default withScreenId(function Community() {
               {/* Featured Content */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Featured Content</h3>
-                {renderEventGrid(spotlightFeatures, "Spotlight")}
+                {(() => {
+                  // Reset row counter for Spotlight tab to maintain consistent visual pattern
+                  let spotlightRowIndex = 0;
+                  const result = renderEventGrid(spotlightFeatures, "Spotlight", spotlightRowIndex);
+                  return result.content;
+                })()}
               </div>
 
               {/* Motivational Banner */}
