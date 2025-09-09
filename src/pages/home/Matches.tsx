@@ -1,13 +1,15 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
-import { Users, Target, Calendar, UserCheck, Sparkles } from "lucide-react";
+import { MatchFiltersPopup } from "@/components/MatchFiltersPopup";
+import { Users, Target, Calendar, UserCheck, Search, Plus } from "lucide-react";
 
 // Import match-specific cards
 import { PeopleMatchCard } from "@/components/crossover/PeopleMatchCard";
@@ -18,6 +20,7 @@ import { CompatibilityCard } from "@/components/crossover/CompatibilityCard";
 
 export default function Matches() {
   const navigate = useNavigate();
+  const [matchFiltersOpen, setMatchFiltersOpen] = useState(false);
 
   return (
     <AppLayout>
@@ -34,13 +37,13 @@ export default function Matches() {
 
           {/* Action Buttons */}
           <UtilityActionButton>
-            <Button onClick={() => navigate('/community/matchmaking')}>
-              <Sparkles className="w-4 h-4 mr-2" />
-              Find Matches
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
             </Button>
-            <Button variant="outline" onClick={() => navigate('/settings/preferences')}>
-              <Target className="w-4 h-4 mr-2" />
-              Match Settings
+            <Button size="sm" onClick={() => setMatchFiltersOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Matches
             </Button>
           </UtilityActionButton>
 
@@ -111,6 +114,12 @@ export default function Matches() {
           </SplitBar>
         </div>
       </div>
+
+      {/* Match Filters Popup */}
+      <MatchFiltersPopup 
+        open={matchFiltersOpen} 
+        onOpenChange={setMatchFiltersOpen}
+      />
     </AppLayout>
   );
 }
