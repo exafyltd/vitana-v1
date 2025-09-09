@@ -9,7 +9,7 @@ import { Search, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
-import ConsentPackagePopup from "@/components/ConsentPackagePopup";
+import EnrichContextPopup from "@/components/EnrichContextPopup";
 import { Input } from "@/components/ui/input";
 import { homeNavigation } from "@/config/navigation";
 
@@ -26,7 +26,7 @@ export default function Context() {
   const { pendingCount } = useAutopilot();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [consentPopupOpen, setConsentPopupOpen] = useState(false);
+  const [contextPopupOpen, setContextPopupOpen] = useState(false);
 
   return (
     <AppLayout>
@@ -47,7 +47,7 @@ export default function Context() {
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
-            <Button variant="default" size="sm" onClick={() => setConsentPopupOpen(true)}>
+            <Button variant="default" size="sm" onClick={() => setContextPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Context
             </Button>
@@ -125,9 +125,9 @@ export default function Context() {
       </div>
 
       {/* Context Popup */}
-      <ConsentPackagePopup 
-        open={consentPopupOpen} 
-        onOpenChange={setConsentPopupOpen}
+      <EnrichContextPopup 
+        open={contextPopupOpen} 
+        onOpenChange={setContextPopupOpen}
       />
     </AppLayout>
   );
