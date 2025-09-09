@@ -7,12 +7,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2 } from "lucide-react";
+import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2, Search } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
+import BusinessFiltersPopup from "@/components/BusinessFiltersPopup";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
 
 import { communityNavigation } from "@/config/navigation";
 
@@ -22,6 +24,7 @@ export default function MyBusiness() {
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [showBusinessFilters, setShowBusinessFilters] = useState(false);
   
   const latestActions = getLatestActions(2);
 
@@ -29,6 +32,22 @@ export default function MyBusiness() {
     <AppLayout>
       <SEO title="My Business | Community" description="Manage your wellness services and events" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
+      
+      {/* Action Buttons */}
+      <UtilityActionButton>
+        <Button variant="outline" size="sm">
+          <Search className="w-4 h-4 mr-2" />
+          Search
+        </Button>
+        <Button 
+          variant="default" 
+          size="sm"
+          onClick={() => setShowBusinessFilters(true)}
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Business
+        </Button>
+      </UtilityActionButton>
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
@@ -368,6 +387,12 @@ export default function MyBusiness() {
       <AutopilotPopup 
         open={autopilotOpen} 
         onOpenChange={setAutopilotOpen}
+      />
+
+      {/* Business Filters Popup */}
+      <BusinessFiltersPopup 
+        isOpen={showBusinessFilters}
+        onClose={() => setShowBusinessFilters(false)}
       />
     </AppLayout>
   );
