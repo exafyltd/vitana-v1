@@ -1,14 +1,22 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe, Search, Clock, Settings, Heart, MessageSquare, Zap } from "lucide-react";
+import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { Settings, Zap, Brain, BarChart3, Share2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { homeNavigation } from "@/config/navigation";
-import StandardHeader from "@/components/StandardHeader";
+
+// Context Cards
+import { CurrentVibeCard } from "@/components/crossover/CurrentVibeCard";
+import { AIReasoningCard } from "@/components/crossover/AIReasoningCard";
+import { TimelineContextCard } from "@/components/crossover/TimelineContextCard";
+import { EnvironmentalContextCard } from "@/components/crossover/EnvironmentalContextCard";
+import { SocialContextCard } from "@/components/crossover/SocialContextCard";
+import { BiometricContextCard } from "@/components/crossover/BiometricContextCard";
 
 export default function Context() {
   const navigate = useNavigate();
@@ -18,7 +26,8 @@ export default function Context() {
     <AppLayout>
       <SEO title="Context | Dashboard" description="Now & Context Snapshot" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-purple-950/20 dark:via-blue-950/20 dark:to-pink-950/20 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title="Now & Context Snapshot"
@@ -26,111 +35,83 @@ export default function Context() {
             emoji="🌍"
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* My Current Vibe */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center mb-4">
-                    <Globe className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <Switch />
-                </div>
-                <CardTitle className="text-lg">My Current Vibe 🌍</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  Location: Downtown | Mood: 😊 Energetic<br/>
-                  Sleep Score: 85/100 | Stress: Low
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Edit Mood</Button>
-                  <Button variant="outline" size="sm" className="w-full">Update</Button>
-                </div>
-                <div className="mt-4 pt-4 border-t">
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-muted-foreground">Current status shapes AI recommendations</p>
-                    {pendingCount > 0 && (
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => navigate("/home/actions")}
-                      >
-                        <Zap className="w-4 h-4 mr-1" />
-                        See {pendingCount} Actions →
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Action Buttons */}
+          <UtilityActionButton className="mb-6">
+            <Button variant="outline" size="sm" onClick={() => navigate('/settings/preferences')}>
+              <Settings className="w-4 h-4 mr-2" />
+              Context Settings
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => navigate('/ai/insights')}>
+              <Brain className="w-4 h-4 mr-2" />
+              AI Insights
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => navigate('/sharing/packages')}>
+              <Share2 className="w-4 h-4 mr-2" />
+              Share Context
+            </Button>
+            {pendingCount > 0 && (
+              <Button variant="default" size="sm" onClick={() => navigate('/home/actions')}>
+                <Zap className="w-4 h-4 mr-2" />
+                {pendingCount} Actions
+              </Button>
+            )}
+          </UtilityActionButton>
 
-            {/* Why It Matters */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center mb-4">
-                    <Search className="w-6 h-6 text-green-600" />
-                  </div>
-                  <Switch />
-                </div>
-                <CardTitle className="text-lg">Why It Matters 🔍</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  "Because you slept late, I softened your workout and added a recovery session."
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Cool</Button>
-                  <Button variant="outline" size="sm" className="w-full">No Thanks</Button>
-                  <Button variant="outline" size="sm" className="w-full">Change Rule</Button>
-                </div>
-                <div className="mt-4 pt-4 border-t">
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-muted-foreground">Your decisions guide AI priorities</p>
-                    {pendingCount > 0 && (
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => navigate("/home/actions")}
-                      >
-                        <Zap className="w-4 h-4 mr-1" />
-                        Review Actions →
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Split-Screen Navigation */}
+          <SplitBar defaultValue="current" className="w-full">
+            <SplitBarList className="grid w-full grid-cols-5">
+              <SplitBarTrigger value="current">Current</SplitBarTrigger>
+              <SplitBarTrigger value="reasoning">AI Logic</SplitBarTrigger>
+              <SplitBarTrigger value="timeline">Timeline</SplitBarTrigger>
+              <SplitBarTrigger value="environment">Environment</SplitBarTrigger>
+              <SplitBarTrigger value="social">Social</SplitBarTrigger>
+            </SplitBarList>
 
-            {/* Next 12 Hours */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center mb-4">
-                    <Clock className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <Switch />
-                </div>
-                <CardTitle className="text-lg">Next 12 Hours ⏳</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">
-                  Energy peaks: 10am, 3pm<br/>
-                  Focus times: 9-11am, 2-4pm<br/>
-                  Rest windows: 12-1pm, 6-7pm
-                </CardDescription>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">Use This Plan</Button>
-                  <Button variant="outline" size="sm" className="w-full">Remind Me</Button>
-                  <Button variant="outline" size="sm" className="w-full">Share With Friend</Button>
-                </div>
-                <p className="text-xs text-muted-foreground mt-3">
-                  <Switch className="inline w-4 h-4 mr-1" /> Let AI Handle
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+            {/* Current Status Tab */}
+            <SplitBarContent value="current">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <CurrentVibeCard className="lg:col-span-2" />
+                <BiometricContextCard />
+                <AIReasoningCard className="md:col-span-2" />
+              </div>
+            </SplitBarContent>
+
+            {/* AI Reasoning Tab */}
+            <SplitBarContent value="reasoning">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <AIReasoningCard className="lg:col-span-2" />
+                <BiometricContextCard />
+                <CurrentVibeCard className="md:col-span-2" />
+              </div>
+            </SplitBarContent>
+
+            {/* Timeline Tab */}
+            <SplitBarContent value="timeline">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <TimelineContextCard className="lg:col-span-2" />
+                <SocialContextCard />
+                <AIReasoningCard className="md:col-span-2" />
+              </div>
+            </SplitBarContent>
+
+            {/* Environment Tab */}
+            <SplitBarContent value="environment">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <EnvironmentalContextCard className="lg:col-span-2" />
+                <BiometricContextCard />
+                <TimelineContextCard className="md:col-span-2" />
+              </div>
+            </SplitBarContent>
+
+            {/* Social Tab */}
+            <SplitBarContent value="social">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <SocialContextCard className="lg:col-span-2" />
+                <CurrentVibeCard />
+                <EnvironmentalContextCard className="md:col-span-2" />
+              </div>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
     </AppLayout>
