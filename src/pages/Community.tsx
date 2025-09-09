@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { CommunityFiltersPopup } from "@/components/CommunityFiltersPopup";
-import { Heart, Users, MapPin, Radio, Trophy, TrendingUp, Calendar, Crown, Award, Target, Globe, Filter, Plane, Search, Plus } from "lucide-react";
+import { Heart, Users, MapPin, Radio, Trophy, TrendingUp, Calendar, Crown, Award, Target, Globe, Filter, Plane, Search, Plus, Star, Play, Music } from "lucide-react";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -17,7 +17,6 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 
 import { communityNavigation } from "@/config/navigation";
-
 
 import StandardHeader from "@/components/StandardHeader";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -50,49 +49,6 @@ export default withScreenId(function Community() {
       { rank: 5, name: "Se Hun Oh", score: 1389, avatar: "👨‍💻", isCurrentUser: false }
     ]
   };
-
-  const categoryCards = [
-    {
-      id: "my-groups",
-      title: "My Groups & Feed",
-      description: "Personal social feed and group updates",
-      icon: Users,
-      path: "/community/my-groups",
-      color: "from-blue-100 to-cyan-100"
-    },
-    {
-      id: "events",
-      title: "Events & Meetups",
-      description: "Discover and join local wellness events",
-      icon: MapPin,
-      path: "/community/events",
-      color: "from-green-100 to-teal-100"
-    },
-    {
-      id: "media-hub",
-      title: "Media Hub",
-      description: "Shorts, podcasts, and community content",
-      icon: Radio,
-      path: "/community/media-hub",
-      color: "from-purple-100 to-violet-100"
-    },
-    {
-      id: "live-rooms",
-      title: "LIVE Hub",
-      description: "Real-time workshops and social sessions",
-      icon: Trophy,
-      path: "/community/live-rooms",
-      color: "from-orange-100 to-amber-100"
-    },
-    {
-      id: "ai-insights",
-      title: "AI Insights",
-      description: "Personalized recommendations and connections",
-      icon: Heart,
-      path: "/community/ai-insights",
-      color: "from-pink-100 to-rose-100"
-    }
-  ];
 
   return (
     <AppLayout>
@@ -134,175 +90,167 @@ export default withScreenId(function Community() {
 
           <SplitBar defaultValue="overview" className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="overview">Community Overview</SplitBarTrigger>
+              <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
               <SplitBarTrigger value="rankings">Rankings</SplitBarTrigger>
+              <SplitBarTrigger value="spotlight">Spotlight</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="overview">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            
-            {/* Left Column - Quick Stats */}
-            <div className="lg:col-span-1 space-y-6">
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-lg font-semibold mb-4">Community Stats</h2>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">My Groups</span>
-                      <Badge variant="secondary">3</Badge>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Upcoming Events</span>
-                      <Badge variant="secondary">5</Badge>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">New Messages</span>
-                      <Badge variant="destructive">12</Badge>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Live Sessions</span>
-                      <Badge variant="default" className="animate-pulse">2</Badge>
+              {/* Row 1 - Today Highlights */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-orange-200 via-amber-200 to-yellow-200 relative flex items-end">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">7:00 AM</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">Morning Run Club 🏃‍♀️</h3>
+                      <p className="text-white/90 text-sm">City Park • Sunrise energy</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </Card>
 
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">This Week</h3>
-                  <div className="space-y-3">
-                    <div className="text-sm">
-                      <p className="font-medium">Most Active</p>
-                      <p className="text-muted-foreground">Morning Movers group</p>
-                    </div>
-                    <div className="text-sm">
-                      <p className="font-medium">Next Event</p>
-                      <p className="text-muted-foreground">Yoga Flow - Tomorrow</p>
-                    </div>
-                    <div className="text-sm">
-                      <p className="font-medium">Connections</p>
-                      <p className="text-muted-foreground">+3 new matches</p>
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-purple-200 via-indigo-200 to-blue-200 relative flex items-end">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">🎧 PODCAST</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">Mindful Break</h3>
+                      <p className="text-white/90 text-sm">"Breathing for Focus"</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </Card>
 
-            {/* Center Columns - Main Content */}
-            <div className="lg:col-span-2 space-y-6">
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <Radio className="w-5 h-5 text-red-500" />
-                    Live Now
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 border rounded-lg relative">
-                      <Badge variant="destructive" className="absolute top-2 right-2 text-xs animate-pulse">• LIVE</Badge>
-                      <h3 className="font-semibold text-sm mb-1">Morning Yoga Flow</h3>
-                      <p className="text-xs text-muted-foreground mb-2">with Sarah K. • 45 viewers</p>
-                      <Button size="sm" className="w-full">Join Session</Button>
-                    </div>
-                    <div className="p-4 border rounded-lg relative">
-                      <Badge variant="destructive" className="absolute top-2 right-2 text-xs animate-pulse">• LIVE</Badge>
-                      <h3 className="font-semibold text-sm mb-1">Q&A with Dr. Wilson</h3>
-                      <p className="text-xs text-muted-foreground mb-2">Health Hub • 156 viewers</p>
-                      <Button size="sm" className="w-full">Join Session</Button>
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-cyan-200 via-teal-200 to-emerald-200 relative flex items-end">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">💪 CHALLENGE</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">Hydration Streak</h3>
+                      <p className="text-white/90 text-sm">85 participants strong!</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Heart className="w-4 h-4 mt-1 text-pink-500" />
-                      <div>
-                        <p className="text-sm"><span className="font-medium">Alex R.</span> shared a healthy recipe</p>
-                        <p className="text-xs text-muted-foreground">Morning Movers • 2h ago</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Calendar className="w-4 h-4 mt-1 text-blue-500" />
-                      <div>
-                        <p className="text-sm">New event: <span className="font-medium">Weekend Hiking Trip</span></p>
-                        <p className="text-xs text-muted-foreground">Local Hikers • 4h ago</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Users className="w-4 h-4 mt-1 text-green-500" />
-                      <div>
-                        <p className="text-sm"><span className="font-medium">Maria C.</span> joined your group</p>
-                        <p className="text-xs text-muted-foreground">Mindful Nutrition • 6h ago</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Quick Access Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {categoryCards.map((card) => (
-                  <Card 
-                    key={card.id}
-                    className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white/80 backdrop-blur-sm border border-white/20"
-                    onClick={() => navigate(card.path)}
-                  >
-                    <CardContent className="p-4">
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-3`}>
-                        <card.icon className="w-5 h-5 text-gray-700" />
-                      </div>
-                      <h3 className="text-sm font-semibold text-foreground mb-1">{card.title}</h3>
-                      <p className="text-xs text-muted-foreground">{card.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+                </Card>
               </div>
-            </div>
 
-            {/* Right Column - Recommendations */}
-            <div className="lg:col-span-1 space-y-6">
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">Recommended</h3>
-                  <div className="space-y-3">
-                    <div className="p-3 border rounded-lg">
-                      <h4 className="font-medium text-sm mb-1">Yoga Beginners</h4>
-                      <p className="text-xs text-muted-foreground mb-2">95% match • 156 members</p>
-                      <Button size="sm" variant="outline" className="w-full">Join Group</Button>
-                    </div>
-                    <div className="p-3 border rounded-lg">
-                      <h4 className="font-medium text-sm mb-1">Cooking Workshop</h4>
-                      <p className="text-xs text-muted-foreground mb-2">Tomorrow 2 PM • 15 spots left</p>
-                      <Button size="sm" variant="outline" className="w-full">Sign Up</Button>
+              {/* Motivational Banner Strip */}
+              <div className="mb-6 p-6 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-xl text-center">
+                <h2 className="text-xl font-bold text-white mb-2">Jovana, your community streak is inspiring 💥</h2>
+                <p className="text-white/90">Keep connecting and growing with your wellness tribe!</p>
+              </div>
+
+              {/* Row 2 - This Week in Community */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-pink-200 via-rose-200 to-red-200 relative flex items-end">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">Friday 8 PM</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">Longevity Dance Night 💃</h3>
+                      <p className="text-white/90 text-sm">Colorful lights & energy</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </Card>
 
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">Trending</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-3 h-3 text-green-500" />
-                      <span className="text-sm">#MorningMotivation</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-3 h-3 text-green-500" />
-                      <span className="text-sm">#HealthyMealPrep</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-3 h-3 text-green-500" />
-                      <span className="text-sm">#WeekendWorkouts</span>
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-green-200 via-lime-200 to-emerald-200 relative flex items-end">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">🍎 WORKSHOP</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">Nutrition Workshop</h3>
+                      <p className="text-white/90 text-sm">Sunday 11 AM • Fresh prep</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-indigo-200 via-purple-200 to-violet-200 relative flex items-end">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">✨ AI SPOTLIGHT</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">Sleep & Recovery Circle</h3>
+                      <p className="text-white/90 text-sm">Cozy evening vibes</p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Row 3 - Discover People */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="h-32 bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center text-2xl">👩‍💻</div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-lg mb-1">Jovana T.</h3>
+                      <p className="text-muted-foreground text-sm mb-2">12 mutual groups</p>
+                      <Button size="sm" variant="outline" className="w-full">Connect</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="h-32 bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center text-2xl">🩺</div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-lg mb-1">Dr. Roberts</h3>
+                      <p className="text-muted-foreground text-sm mb-2">Hydration Challenge Host</p>
+                      <Button size="sm" variant="outline" className="w-full">Follow</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="h-32 bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center text-2xl">🌸</div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-lg mb-1">Mariia</h3>
+                      <p className="text-muted-foreground text-sm mb-2">Wellness Influencer & Ambassador</p>
+                      <Button size="sm" variant="outline" className="w-full">Connect</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Row 4 - Community Media */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-amber-200 via-orange-200 to-red-200 relative flex items-end">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Play className="w-16 h-16 text-white/50" />
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">🎥 REPLAY</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">Evening Yoga Flow</h3>
+                      <p className="text-white/90 text-sm">Sunset relaxation session</p>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-teal-200 via-cyan-200 to-blue-200 relative flex items-end">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Radio className="w-16 h-16 text-white/50" />
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">🎬 SHORTS</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">3 Easy Morning Stretches</h3>
+                      <p className="text-white/90 text-sm">Balcony wellness routine</p>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="h-48 bg-gradient-to-br from-violet-200 via-purple-200 to-indigo-200 relative flex items-end">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Music className="w-16 h-16 text-white/50" />
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <Badge className="mb-2 bg-white/90 text-black">🎵 PLAYLIST</Badge>
+                      <h3 className="font-bold text-white text-lg mb-1">Focus Beats for Study</h3>
+                      <p className="text-white/90 text-sm">Headphones & laptop vibes</p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
             </SplitBarContent>
 
             <SplitBarContent value="rankings">
@@ -335,6 +283,42 @@ export default withScreenId(function Community() {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+
+              {/* Top 3 Groups - Big Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <Card className="overflow-hidden border-2 border-yellow-200">
+                  <div className="h-40 bg-gradient-to-br from-yellow-100 to-amber-100 relative flex items-center justify-center">
+                    <div className="text-4xl">🥇</div>
+                    <Badge className="absolute top-4 right-4 bg-yellow-500 text-white">1,240 members</Badge>
+                  </div>
+                  <CardContent className="p-4">
+                    <h3 className="font-bold text-lg mb-2">Sleep & Recovery Circle</h3>
+                    <p className="text-sm text-muted-foreground">Bedtime relaxation community</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden border-2 border-gray-200">
+                  <div className="h-40 bg-gradient-to-br from-gray-100 to-slate-100 relative flex items-center justify-center">
+                    <div className="text-4xl">🥈</div>
+                    <Badge className="absolute top-4 right-4 bg-gray-500 text-white">980 members</Badge>
+                  </div>
+                  <CardContent className="p-4">
+                    <h3 className="font-bold text-lg mb-2">Longevity Dance Club</h3>
+                    <p className="text-sm text-muted-foreground">Neon dance floor energy</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden border-2 border-orange-200">
+                  <div className="h-40 bg-gradient-to-br from-orange-100 to-red-100 relative flex items-center justify-center">
+                    <div className="text-4xl">🥉</div>
+                    <Badge className="absolute top-4 right-4 bg-orange-500 text-white">860 members</Badge>
+                  </div>
+                  <CardContent className="p-4">
+                    <h3 className="font-bold text-lg mb-2">Plant-Based Nutritionists</h3>
+                    <p className="text-sm text-muted-foreground">Fresh vegan cuisine</p>
+                  </CardContent>
+                </Card>
               </div>
 
               {/* Your Position Band */}
@@ -374,92 +358,35 @@ export default withScreenId(function Community() {
                 </CardContent>
               </Card>
 
-              {/* Leaderboards */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {Object.entries(leaderboardData).map(([category, users]) => (
-                  <Card key={category}>
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-2 mb-4">
-                        <Crown className="w-5 h-5 text-yellow-500" />
-                        <h3 className="text-lg font-semibold">{category}</h3>
-                      </div>
-                      
-                      <div className="space-y-3">
-                        {users.map((user) => (
-                          <div 
-                            key={user.rank}
-                            className={`flex items-center justify-between p-3 rounded-lg ${
-                              user.isCurrentUser 
-                                ? 'bg-primary/10 border-2 border-primary/30' 
-                                : 'bg-muted/30'
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                                user.rank === 1 ? 'bg-yellow-100 text-yellow-700' :
-                                user.rank === 2 ? 'bg-gray-100 text-gray-700' :
-                                user.rank === 3 ? 'bg-orange-100 text-orange-700' :
-                                'bg-muted text-muted-foreground'
-                              }`}>
-                                {user.rank === 1 ? '🥇' : user.rank === 2 ? '🥈' : user.rank === 3 ? '🥉' : `#${user.rank}`}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <span className="text-lg">{user.avatar}</span>
-                                <span className={`font-medium ${user.isCurrentUser ? 'text-primary' : ''}`}>
-                                  {user.name}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-bold">{user.score.toLocaleString()}</div>
-                              <div className="text-xs text-muted-foreground">points</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="mt-4 pt-4 border-t text-center">
-                        <Button variant="outline" size="sm">View Full Leaderboard</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-
-                {/* Additional Categories */}
+              {/* Top Events & Creators */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <Card>
                   <CardContent className="p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Award className="w-5 h-5 text-green-500" />
-                      <h3 className="text-lg font-semibold">Content Impact</h3>
-                    </div>
-                    
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <Calendar className="w-5 h-5 text-blue-500" />
+                      Top Events (This Week)
+                    </h3>
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-yellow-100 text-yellow-700">🥇</div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">👩‍🎓</span>
-                            <span className="font-medium">Dr. Sarah K.</span>
-                          </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-cyan-50">
+                        <div>
+                          <h4 className="font-medium">Hydration Challenge</h4>
+                          <p className="text-sm text-muted-foreground">Water & ocean theme</p>
                         </div>
-                        <div className="text-right">
-                          <div className="font-bold">3,245</div>
-                          <div className="text-xs text-muted-foreground">impact</div>
-                        </div>
+                        <Badge>45 participants</Badge>
                       </div>
-
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-primary/10 border-2 border-primary/30">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-700">#4</div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">🧑</span>
-                            <span className="font-medium text-primary">You</span>
-                          </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-green-50">
+                        <div>
+                          <h4 className="font-medium">Mindful Eating Circle</h4>
+                          <p className="text-sm text-muted-foreground">Shared food experience</p>
                         </div>
-                        <div className="text-right">
-                          <div className="font-bold">1,856</div>
-                          <div className="text-xs text-muted-foreground">impact</div>
+                        <Badge>30 participants</Badge>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-purple-50">
+                        <div>
+                          <h4 className="font-medium">Evening Sleep Workshop</h4>
+                          <p className="text-sm text-muted-foreground">Cozy dark room vibes</p>
                         </div>
+                        <Badge>25 participants</Badge>
                       </div>
                     </div>
                   </CardContent>
@@ -467,42 +394,162 @@ export default withScreenId(function Community() {
 
                 <Card>
                   <CardContent className="p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <TrendingUp className="w-5 h-5 text-blue-500" />
-                      <h3 className="text-lg font-semibold">Growth Drivers</h3>
-                    </div>
-                    
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <Star className="w-5 h-5 text-yellow-500" />
+                      Top Creators
+                    </h3>
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-primary/10 border-2 border-primary/30">
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-blue-50">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-yellow-100 text-yellow-700">🥇</div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">🧑</span>
-                            <span className="font-medium text-primary">You</span>
+                          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">🧘‍♀️</div>
+                          <div>
+                            <h4 className="font-medium">Lisa Chen</h4>
+                            <p className="text-sm text-muted-foreground">Yoga studio master</p>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="font-bold">+847</div>
-                          <div className="text-xs text-muted-foreground">this week</div>
-                        </div>
+                        <Badge variant="secondary">12 events</Badge>
                       </div>
-
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-orange-50">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-700">🥈</div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">👨‍💼</span>
-                            <span className="font-medium">Mike J.</span>
+                          <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">💪</div>
+                          <div>
+                            <h4 className="font-medium">Trainer Mike</h4>
+                            <p className="text-sm text-muted-foreground">Fitness bootcamps</p>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="font-bold">+723</div>
-                          <div className="text-xs text-muted-foreground">this week</div>
+                        <Badge variant="secondary">9 events</Badge>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-green-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">👨‍🍳</div>
+                          <div>
+                            <h4 className="font-medium">Chef Emma</h4>
+                            <p className="text-sm text-muted-foreground">Cooking workshops</p>
+                          </div>
                         </div>
+                        <Badge variant="secondary">6 events</Badge>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
+              </div>
+
+              {/* Gamification Badges */}
+              <Card>
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <Award className="w-5 h-5 text-purple-500" />
+                    Community Badges
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-lg">
+                      <div className="text-2xl">🔥</div>
+                      <div>
+                        <h4 className="font-medium">Rising Star</h4>
+                        <p className="text-sm text-muted-foreground">Dr. Roberts</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg">
+                      <div className="text-2xl">⭐</div>
+                      <div>
+                        <h4 className="font-medium">Top Host</h4>
+                        <p className="text-sm text-muted-foreground">Lisa Chen</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                      <div className="text-2xl">💡</div>
+                      <div>
+                        <h4 className="font-medium">Most Inspiring</h4>
+                        <p className="text-sm text-muted-foreground">Sarah Miller</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+
+            <SplitBarContent value="spotlight">
+              {/* Featured Group */}
+              <Card className="mb-6 overflow-hidden">
+                <div className="h-48 bg-gradient-to-br from-indigo-300 via-purple-300 to-pink-300 relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Users className="w-24 h-24 text-white/30" />
+                  </div>
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <Badge className="mb-3 bg-white/90 text-black">✨ FEATURED GROUP</Badge>
+                    <h2 className="text-2xl font-bold text-white mb-2">Sleep & Recovery Circle</h2>
+                    <p className="text-white/90">Night-time community for better rest and wellness recovery</p>
+                  </div>
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <Button className="flex-1">Join Group</Button>
+                    <Button variant="outline" className="flex-1">Learn More</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Featured Event */}
+              <Card className="mb-6 overflow-hidden">
+                <div className="h-48 bg-gradient-to-br from-green-300 via-emerald-300 to-teal-300 relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Calendar className="w-24 h-24 text-white/30" />
+                  </div>
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <Badge className="mb-3 bg-white/90 text-black">🎯 FEATURED EVENT</Badge>
+                    <h2 className="text-2xl font-bold text-white mb-2">Mindful Eating Circle</h2>
+                    <p className="text-white/90">Colorful shared meal table experience with the community</p>
+                  </div>
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <Button className="flex-1">RSVP Now</Button>
+                    <Button variant="outline" className="flex-1">Add to Calendar</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Featured Creator */}
+              <Card className="mb-6">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-6">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center text-3xl shadow-lg">
+                      🧘‍♀️
+                    </div>
+                    <div className="flex-1">
+                      <Badge className="mb-2">⭐ FEATURED CREATOR</Badge>
+                      <h2 className="text-2xl font-bold mb-2">Lisa Chen — Longevity Ambassador</h2>
+                      <p className="text-muted-foreground mb-4">Yoga studio portrait expert helping thousands find balance and wellness</p>
+                      <div className="flex gap-3">
+                        <Button size="sm">Follow</Button>
+                        <Button variant="outline" size="sm">View Profile</Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* AI Spotlight Suggestion */}
+              <Card className="mb-6 bg-gradient-to-br from-cyan-50 to-blue-50 border-2 border-cyan-200">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white font-bold">
+                      🤖
+                    </div>
+                    <div className="flex-1">
+                      <Badge className="mb-2 bg-cyan-500 text-white">🧠 AI SPOTLIGHT</Badge>
+                      <h3 className="text-lg font-bold mb-2">Based on your wellness goals, join this Hydration Challenge 💧</h3>
+                      <p className="text-muted-foreground mb-4">Refreshing water theme challenge perfectly matched to your current health journey</p>
+                      <Button>Join Challenge</Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Motivational Banner Strip */}
+              <div className="p-6 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-xl text-center">
+                <h2 className="text-xl font-bold text-white mb-2">Jovana, you inspire others by joining meetups 💡</h2>
+                <p className="text-white/90">Your active community participation lights the way for others!</p>
               </div>
             </SplitBarContent>
           </SplitBar>
