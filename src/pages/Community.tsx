@@ -316,9 +316,46 @@ const spotlightFeatures = [
   }
 ];
 
-// Render grid function for alternating layouts like in Meetups
-const renderEventGrid = (events: any[]) => {
+// Enhanced render grid function with interactive action buttons
+const renderEventGrid = (events: any[], section?: string) => {
   const rows = [];
+  
+  // Helper function to get action button for different card types
+  const getActionButton = (event: any, index: number) => {
+    if (section === "Discover People") {
+      return (
+        <Button size="sm" variant="outline" className="mt-2">
+          <UserPlus className="w-3 h-3 mr-1" />
+          Follow
+        </Button>
+      );
+    }
+    if (event.category === "group" || event.category === "event" || event.category === "challenge") {
+      return (
+        <Button size="sm" variant="default" className="mt-2">
+          <Plus className="w-3 h-3 mr-1" />
+          Join Now
+        </Button>
+      );
+    }
+    if (event.category === "video" || event.category === "music" || event.category === "shorts") {
+      return (
+        <Button size="sm" variant="outline" className="mt-2">
+          <Play className="w-3 h-3 mr-1" />
+          Play Now
+        </Button>
+      );
+    }
+    return null;
+  };
+
+  // Helper function to get AI Spotlight styling
+  const getAISpotlightStyling = (event: any) => {
+    if (event.category === "ai-spotlight" || event.category === "ai-suggestion") {
+      return "relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-500/10 before:via-purple-500/10 before:to-pink-500/10 before:pointer-events-none border border-blue-500/30 shadow-lg shadow-blue-500/20 animate-pulse";
+    }
+    return "";
+  };
   
   // Group events into rows of 3 using CTO-approved patterns
   for (let i = 0; i < events.length; i += 3) {
@@ -341,7 +378,8 @@ const renderEventGrid = (events: any[]) => {
                 location={rowEvents[0]?.location}
                 attendees={rowEvents[0]?.attendees}
                 timestamp={rowEvents[0]?.timestamp}
-                className="h-full"
+                className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
+                actionButton={getActionButton(rowEvents[0], 0)}
               />
             </div>
             {rowEvents[1] && (
@@ -356,7 +394,8 @@ const renderEventGrid = (events: any[]) => {
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
-                  className="h-full"
+                  className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
+                  actionButton={getActionButton(rowEvents[1], 1)}
                 />
               </div>
             )}
@@ -372,7 +411,8 @@ const renderEventGrid = (events: any[]) => {
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
-                  className="h-full"
+                  className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
+                  actionButton={getActionButton(rowEvents[2], 2)}
                 />
               </div>
             )}
@@ -392,7 +432,8 @@ const renderEventGrid = (events: any[]) => {
                   location={rowEvents[0].location}
                   attendees={rowEvents[0].attendees}
                   timestamp={rowEvents[0].timestamp}
-                  className="h-full"
+                  className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
+                  actionButton={getActionButton(rowEvents[0], 0)}
                 />
               </div>
             )}
@@ -408,7 +449,8 @@ const renderEventGrid = (events: any[]) => {
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
-                  className="h-full"
+                  className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
+                  actionButton={getActionButton(rowEvents[1], 1)}
                 />
               </div>
             )}
@@ -424,7 +466,8 @@ const renderEventGrid = (events: any[]) => {
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
-                  className="h-full"
+                  className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
+                  actionButton={getActionButton(rowEvents[2], 2)}
                 />
               </div>
             )}
@@ -496,7 +539,7 @@ export default withScreenId(function Community() {
               {/* Today Highlights */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Today Highlights</h3>
-                {renderEventGrid(todayHighlights)}
+                {renderEventGrid(todayHighlights, "Today Highlights")}
               </div>
 
               {/* Motivational Banner */}
@@ -507,19 +550,90 @@ export default withScreenId(function Community() {
               {/* This Week in Community */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">This Week in Community</h3>
-                {renderEventGrid(weeklyEvents)}
+                {renderEventGrid(weeklyEvents, "This Week in Community")}
+              </div>
+
+              {/* Community Power Banner */}
+              <div className="px-6 mb-8">
+                <MotivationalBanner variant="partnership" />
+              </div>
+
+              {/* Top Group Teaser */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold mb-4 px-6">🏆 Community Highlights</h3>
+                <div className="px-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <NewsCard
+                      title="🏆 Mindful Morning Warriors"
+                      description="Top community group this week with 247 active members crushing their daily meditation goals!"
+                      imageUrl="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop"
+                      pillar="Mental"
+                      author={{ name: "Community Ranking", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+                      attendees={247}
+                      location="Featured Group"
+                      timestamp="Top Performer"
+                      className="relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-yellow-500/10 before:to-orange-500/10 before:pointer-events-none border border-yellow-500/20"
+                      actionButton={
+                        <Button size="sm" variant="default" className="bg-yellow-600 hover:bg-yellow-700">
+                          <Trophy className="w-3 h-3 mr-1" />
+                          View Rankings
+                        </Button>
+                      }
+                    />
+                    <div className="md:col-span-2 grid grid-rows-2 gap-4">
+                      <NewsCard
+                        title="Featured Creator: Sarah Miller"
+                        description="This week's most inspiring community leader with 89 wellness posts"
+                        imageUrl="/lovable-uploads/sarah-miller-avatar.jpg"
+                        pillar="Exercise"
+                        author={{ name: "Community Spotlight", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+                        location="Top Creator"
+                        timestamp="Week Champion"
+                        className="border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-purple-500/5"
+                        actionButton={
+                          <Button size="sm" variant="outline" className="border-blue-500/50 text-blue-600 hover:bg-blue-50">
+                            <UserPlus className="w-3 h-3 mr-1" />
+                            Follow
+                          </Button>
+                        }
+                      />
+                      <NewsCard
+                        title="Rising Star Group"
+                        description="Urban Hiking Club - fastest growing community this month!"
+                        imageUrl="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&h=300&fit=crop"
+                        pillar="Exercise"
+                        author={{ name: "Community Growth", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" }}
+                        attendees={156}
+                        location="Trending"
+                        timestamp="2x Growth"
+                        className="border border-green-500/20 bg-gradient-to-r from-green-500/5 to-emerald-500/5"
+                        actionButton={
+                          <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700">
+                            <Plus className="w-3 h-3 mr-1" />
+                            Join Now
+                          </Button>
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Discover People */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Discover People</h3>
-                {renderEventGrid(communityPeople)}
+                {renderEventGrid(communityPeople, "Discover People")}
+              </div>
+
+              {/* Energetic Banner */}
+              <div className="px-6 mb-8">
+                <MotivationalBanner variant="achievement" />
               </div>
 
               {/* Community Media */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Community Media</h3>
-                {renderEventGrid(communityMedia)}
+                {renderEventGrid(communityMedia, "Community Media")}
               </div>
             </SplitBarContent>
 
@@ -558,7 +672,7 @@ export default withScreenId(function Community() {
               {/* Top 3 Groups */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Top 3 Groups</h3>
-                {renderEventGrid(topGroups)}
+                {renderEventGrid(topGroups, "Rankings")}
               </div>
 
               {/* Motivational Banner */}
@@ -569,13 +683,18 @@ export default withScreenId(function Community() {
               {/* Top Events This Week */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Top Events (This Week)</h3>
-                {renderEventGrid(topEvents)}
+                {renderEventGrid(topEvents, "Rankings")}
+              </div>
+
+              {/* Guidance Banner */}
+              <div className="px-6 mb-8">
+                <MotivationalBanner variant="guidance" />
               </div>
 
               {/* Top Creators */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Top Creators</h3>
-                {renderEventGrid(topCreators)}
+                {renderEventGrid(topCreators, "Rankings")}
               </div>
 
               {/* Badges Section */}
@@ -605,7 +724,7 @@ export default withScreenId(function Community() {
               {/* Featured Content */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Featured Content</h3>
-                {renderEventGrid(spotlightFeatures)}
+                {renderEventGrid(spotlightFeatures, "Spotlight")}
               </div>
 
               {/* Motivational Banner */}
@@ -615,17 +734,23 @@ export default withScreenId(function Community() {
 
               {/* AI Spotlight Suggestion */}
               <div className="px-6">
-                <Card className="p-6 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-blue-200">
+                <Card className="p-6 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-blue-200 shadow-lg shadow-blue-500/20 animate-pulse">
                   <div className="flex items-center space-x-4">
                     <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-full p-3">
                       <Sparkles className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-lg font-bold mb-2">AI Spotlight Recommendation</h4>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h4 className="text-lg font-bold">AI Spotlight Recommendation</h4>
+                        <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                          ✨ AI
+                        </div>
+                      </div>
                       <p className="text-muted-foreground mb-4">
                         Based on your wellness goals and community activity, we recommend joining the Hydration Challenge 💧
                       </p>
-                      <Button variant="default">
+                      <Button variant="default" className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
+                        <Plus className="w-4 h-4 mr-2" />
                         Join Challenge
                       </Button>
                     </div>

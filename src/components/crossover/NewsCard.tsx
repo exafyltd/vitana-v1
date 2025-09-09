@@ -24,6 +24,7 @@ interface NewsCardProps {
   price?: number | "free";
   className?: string;
   onClick?: () => void;
+  actionButton?: React.ReactNode;
 }
 
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
@@ -41,7 +42,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     timestamp, 
     price,
     className, 
-    onClick 
+    onClick,
+    actionButton
   }, ref) => {
     
     const categoryStyles = {
@@ -175,6 +177,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                   )}
                 </div>
               </div>
+
+              {/* Action Button */}
+              {actionButton && (
+                <div className="flex justify-center pt-2">
+                  {actionButton}
+                </div>
+              )}
             </div>
           </CardContent>
         </div>
