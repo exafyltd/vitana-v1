@@ -4,6 +4,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MasterActionPopup } from "@/components/MasterActionPopup";
@@ -240,6 +241,8 @@ export default function Home() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState("today");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { profile } = useProfile();
   
   const firstName = profile?.displayName?.split(' ')[0] || '';
@@ -274,7 +277,7 @@ export default function Home() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => setSearchOpen(!searchOpen)}>
             <Search className="w-4 h-4 mr-2" />
             Search
           </Button>
@@ -283,6 +286,19 @@ export default function Home() {
             Action
           </Button>
         </UtilityActionButton>
+
+        {/* Search Input */}
+        {searchOpen && (
+          <div className="mb-6">
+            <Input
+              type="text"
+              placeholder="Search today's content, events, or media..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="max-w-md"
+            />
+          </div>
+        )}
 
         {/* Split Navigation */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">

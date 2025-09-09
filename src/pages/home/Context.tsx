@@ -8,6 +8,9 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { Search, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
+import { useState } from "react";
+import ConsentPackagePopup from "@/components/ConsentPackagePopup";
+import { Input } from "@/components/ui/input";
 import { homeNavigation } from "@/config/navigation";
 
 // Context Cards
@@ -21,6 +24,9 @@ import { BiometricContextCard } from "@/components/crossover/BiometricContextCar
 export default function Context() {
   const navigate = useNavigate();
   const { pendingCount } = useAutopilot();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [consentPopupOpen, setConsentPopupOpen] = useState(false);
 
   return (
     <AppLayout>
@@ -37,15 +43,28 @@ export default function Context() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={() => setSearchOpen(!searchOpen)}>
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
-            <Button variant="default" size="sm">
+            <Button variant="default" size="sm" onClick={() => setConsentPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Context
             </Button>
           </UtilityActionButton>
+
+          {/* Search Input */}
+          {searchOpen && (
+            <div className="mb-6">
+              <Input
+                type="text"
+                placeholder="Search context data, cards, or insights..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="max-w-md"
+              />
+            </div>
+          )}
 
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="current" className="w-full">
@@ -104,6 +123,12 @@ export default function Context() {
           </SplitBar>
         </div>
       </div>
+
+      {/* Context Popup */}
+      <ConsentPackagePopup 
+        open={consentPopupOpen} 
+        onOpenChange={setConsentPopupOpen}
+      />
     </AppLayout>
   );
 }

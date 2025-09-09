@@ -16,12 +16,15 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Search, Plus } from "lucide-react";
 import { MasterActionPopup } from "@/components/MasterActionPopup";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 export default function Actions() {
   const navigate = useNavigate();
   const { pendingActions, executeActions, toggleActionSelection, dismissActions } = useAutopilot();
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const getCategoryIcon = (category: AutopilotCategory) => {
     switch (category) {
@@ -81,7 +84,7 @@ export default function Actions() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={() => setSearchOpen(!searchOpen)}>
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
@@ -90,6 +93,19 @@ export default function Actions() {
               Actions
             </Button>
           </UtilityActionButton>
+
+          {/* Search Input */}
+          {searchOpen && (
+            <div className="mb-6">
+              <Input
+                type="text"
+                placeholder="Search actions, categories, or autopilot tasks..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="max-w-md"
+              />
+            </div>
+          )}
 
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="pending" className="w-full">
