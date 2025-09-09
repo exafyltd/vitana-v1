@@ -15,7 +15,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Search, Plus } from "lucide-react";
-import { GoLivePopup } from "@/components/GoLivePopup";
+import { AddToAIFeedPopup } from "@/components/AddToAIFeedPopup";
 import { Input } from "@/components/ui/input";
 
 export default function AIFeed() {
@@ -24,7 +24,7 @@ export default function AIFeed() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [goLiveOpen, setGoLiveOpen] = useState(false);
+  const [addToFeedOpen, setAddToFeedOpen] = useState(false);
   
   // Mock activity feed data including completed/failed actions
   const activityFeed = [
@@ -84,7 +84,7 @@ export default function AIFeed() {
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
-            <Button variant="default" size="sm" onClick={() => setGoLiveOpen(true)}>
+            <Button variant="default" size="sm" onClick={() => setAddToFeedOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Feed
             </Button>
@@ -358,10 +358,10 @@ export default function AIFeed() {
         </div>
       </div>
 
-      {/* Go Live Popup */}
-      <GoLivePopup 
-        open={goLiveOpen} 
-        onOpenChange={setGoLiveOpen}
+      {/* Add to AI Feed Popup */}
+      <AddToAIFeedPopup 
+        open={addToFeedOpen} 
+        onOpenChange={setAddToFeedOpen}
       />
     </AppLayout>
   );
