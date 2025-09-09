@@ -12,6 +12,9 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { Search } from "lucide-react";
 
 export default function AIFeed() {
   const navigate = useNavigate();
@@ -70,200 +73,248 @@ export default function AIFeed() {
             emoji="⚡"
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Updated Activity Feed */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center">
-                      <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
+          {/* Action Buttons */}
+          <UtilityActionButton className="mb-6">
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button variant="default" size="sm">
+              <Zap className="w-4 h-4 mr-2" />
+              Feed
+            </Button>
+          </UtilityActionButton>
+
+          {/* Split-Screen Navigation */}
+          <SplitBar defaultValue="feed" className="w-full">
+            <SplitBarList className="grid w-full grid-cols-4">
+              <SplitBarTrigger value="feed">Feed</SplitBarTrigger>
+              <SplitBarTrigger value="routines">Routines</SplitBarTrigger>
+              <SplitBarTrigger value="ideas">Ideas</SplitBarTrigger>
+              <SplitBarTrigger value="history">History</SplitBarTrigger>
+            </SplitBarList>
+
+            {/* Activity Feed Tab */}
+            <SplitBarContent value="feed">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center">
+                        <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
+                      </div>
+                      <CardTitle className="text-lg">Activity Feed 🏃</CardTitle>
                     </div>
-                    <CardTitle className="text-lg">Activity Feed 🏃</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant={selectedFilter === "autopilot-history" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedFilter(selectedFilter === "autopilot-history" ? "all" : "autopilot-history")}
+                      >
+                        <History className="w-4 h-4 mr-1" />
+                        Autopilot History
+                      </Button>
+                      <Badge variant="outline">Live</Badge>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant={selectedFilter === "autopilot-history" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedFilter(selectedFilter === "autopilot-history" ? "all" : "autopilot-history")}
-                    >
-                      <History className="w-4 h-4 mr-1" />
-                      Autopilot History
-                    </Button>
-                    <Badge variant="outline">Live</Badge>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <ScrollArea className="h-96">
-                  <div className="space-y-3">
-                    {filteredFeed.slice(0, 20).map((item) => (
-                      <div key={item.id} className="flex items-start space-x-3 p-3 rounded-lg border bg-card">
-                        <div className="text-lg">{item.icon}</div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1">
-                            <h4 className="text-sm font-medium">{item.title}</h4>
-                            <div className="flex items-center space-x-2">
-                              <Badge 
-                                variant={
-                                  item.status === "completed" ? "default" : 
-                                  item.status === "failed" ? "destructive" :
-                                  item.status === "executing" ? "secondary" :
-                                  "outline"
-                                }
-                                className="text-xs"
-                              >
-                                {item.status === "completed" && <CheckCircle className="w-3 h-3 mr-1" />}
-                                {item.status === "failed" && <AlertTriangle className="w-3 h-3 mr-1" />}
-                                {item.status === "executing" && <Zap className="w-3 h-3 mr-1" />}
-                                {item.status}
-                              </Badge>
-                              <span className="text-xs text-muted-foreground">
-                                <Clock className="w-3 h-3 mr-1 inline" />
-                                {new Date(item.timestamp).toLocaleTimeString()}
-                              </span>
+                </CardHeader>
+                <CardContent>
+                  <ScrollArea className="h-96">
+                    <div className="space-y-3">
+                      {filteredFeed.slice(0, 20).map((item) => (
+                        <div key={item.id} className="flex items-start space-x-3 p-3 rounded-lg border bg-card">
+                          <div className="text-lg">{item.icon}</div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1">
+                              <h4 className="text-sm font-medium">{item.title}</h4>
+                              <div className="flex items-center space-x-2">
+                                <Badge 
+                                  variant={
+                                    item.status === "completed" ? "default" : 
+                                    item.status === "failed" ? "destructive" :
+                                    item.status === "executing" ? "secondary" :
+                                    "outline"
+                                  }
+                                  className="text-xs"
+                                >
+                                  {item.status === "completed" && <CheckCircle className="w-3 h-3 mr-1" />}
+                                  {item.status === "failed" && <AlertTriangle className="w-3 h-3 mr-1" />}
+                                  {item.status === "executing" && <Zap className="w-3 h-3 mr-1" />}
+                                  {item.status}
+                                </Badge>
+                                <span className="text-xs text-muted-foreground">
+                                  <Clock className="w-3 h-3 mr-1 inline" />
+                                  {new Date(item.timestamp).toLocaleTimeString()}
+                                </span>
+                              </div>
                             </div>
+                            <p className="text-xs text-muted-foreground">{item.reason}</p>
+                            {item.status === "failed" && (
+                              <div className="mt-2">
+                                <Button size="sm" variant="outline">
+                                  Retry
+                                </Button>
+                              </div>
+                            )}
                           </div>
-                          <p className="text-xs text-muted-foreground">{item.reason}</p>
-                          {item.status === "failed" && (
-                            <div className="mt-2">
-                              <Button size="sm" variant="outline">
-                                Retry
-                              </Button>
-                            </div>
-                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                  <div className="mt-4 space-y-2">
+                    <Button variant="outline" size="sm" className="w-full">
+                      <RotateCcw className="w-4 h-4 mr-1" />
+                      Undo Last Action
+                    </Button>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Export Activity Log
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+
+            {/* My Routines Tab */}
+            <SplitBarContent value="routines">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
+                      <Repeat className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <CardTitle className="text-lg">My Routines 🔁</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm">💧</span>
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Hydration Reminder</h4>
+                          <p className="text-xs text-muted-foreground">Every 2 hours</p>
                         </div>
                       </div>
-                    ))}
+                      <Switch defaultChecked />
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm">✅</span>
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Daily Check-in</h4>
+                          <p className="text-xs text-muted-foreground">Evening routine</p>
+                        </div>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm">😴</span>
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Sleep Tips</h4>
+                          <p className="text-xs text-muted-foreground">Bedtime suggestions</p>
+                        </div>
+                      </div>
+                      <Switch />
+                    </div>
                   </div>
-                </ScrollArea>
-                <div className="mt-4 space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">
-                    <RotateCcw className="w-4 h-4 mr-1" />
-                    Undo Last Action
-                  </Button>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Export Activity Log
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="mt-4 space-y-2">
+                    <Button variant="outline" size="sm" className="w-full">
+                      <Pause className="w-4 h-4 mr-1" />Pause All
+                    </Button>
+                    <Button variant="outline" size="sm" className="w-full">
+                      <Settings className="w-4 h-4 mr-1" />Edit Routines
+                    </Button>
+                    <Button variant="default" size="sm" className="w-full">
+                      <Play className="w-4 h-4 mr-1" />Run Now
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
 
-            {/* My Routines */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
-                    <Repeat className="w-6 h-6 text-blue-600" />
+            {/* AI Ideas Tab */}
+            <SplitBarContent value="ideas">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center">
+                      <Lightbulb className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <CardTitle className="text-lg">AI Ideas 💡</CardTitle>
                   </div>
-                  <CardTitle className="text-lg">My Routines 🔁</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-sm">💧</span>
-                      </div>
-                      <div>
-                        <h4 className="font-medium">Hydration Reminder</h4>
-                        <p className="text-xs text-muted-foreground">Every 2 hours</p>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
+                      <h4 className="font-medium mb-2">Morning Routine Optimization</h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        "Want me to optimize your morning routine? I noticed you're most energetic at 8 AM."
+                      </p>
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="default">Try It</Button>
+                        <Button size="sm" variant="outline">Later</Button>
                       </div>
                     </div>
-                    <Switch defaultChecked />
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <span className="text-sm">✅</span>
-                      </div>
-                      <div>
-                        <h4 className="font-medium">Daily Check-in</h4>
-                        <p className="text-xs text-muted-foreground">Evening routine</p>
+                    <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
+                      <h4 className="font-medium mb-2">Social Connection Boost</h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        "I can schedule weekly friend check-ins based on your calendar gaps."
+                      </p>
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="default">Try It</Button>
+                        <Button size="sm" variant="outline">Nope</Button>
                       </div>
                     </div>
-                    <Switch defaultChecked />
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                        <span className="text-sm">😴</span>
-                      </div>
-                      <div>
-                        <h4 className="font-medium">Sleep Tips</h4>
-                        <p className="text-xs text-muted-foreground">Bedtime suggestions</p>
+                    <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
+                      <h4 className="font-medium mb-2">Stress Pattern Detection</h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        "Let me track patterns and suggest breaks before you feel overwhelmed."
+                      </p>
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="default">Try It</Button>
+                        <Button size="sm" variant="outline">Later</Button>
                       </div>
                     </div>
-                    <Switch />
                   </div>
-                </div>
-                <div className="mt-4 space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Pause className="w-4 h-4 mr-1" />Pause All
-                  </Button>
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Settings className="w-4 h-4 mr-1" />Edit Routines
-                  </Button>
-                  <Button variant="default" size="sm" className="w-full">
-                    <Play className="w-4 h-4 mr-1" />Run Now
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="mt-4 pt-4 border-t">
+                    <p className="text-xs text-muted-foreground">
+                      <Lightbulb className="inline w-4 h-4 mr-1 text-purple-600" />
+                      Suggestions based on your patterns and goals
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
 
-            {/* AI Ideas */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center">
-                    <Lightbulb className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <CardTitle className="text-lg">AI Ideas 💡</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
-                    <h4 className="font-medium mb-2">Morning Routine Optimization</h4>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      "Want me to optimize your morning routine? I noticed you're most energetic at 8 AM."
-                    </p>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="default">Try It</Button>
-                      <Button size="sm" variant="outline">Later</Button>
+            {/* History Tab */}
+            <SplitBarContent value="history">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-gray-500/20 to-slate-500/20 flex items-center justify-center">
+                      <History className="w-6 h-6 text-gray-600" />
                     </div>
+                    <CardTitle className="text-lg">Autopilot History 📚</CardTitle>
                   </div>
-                  <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
-                    <h4 className="font-medium mb-2">Social Connection Boost</h4>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      "I can schedule weekly friend check-ins based on your calendar gaps."
-                    </p>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="default">Try It</Button>
-                      <Button size="sm" variant="outline">Nope</Button>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-8 text-muted-foreground">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                      <History className="w-8 h-8 text-gray-400" />
                     </div>
+                    <p>Historical data will appear here</p>
                   </div>
-                  <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
-                    <h4 className="font-medium mb-2">Stress Pattern Detection</h4>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      "Let me track patterns and suggest breaks before you feel overwhelmed."
-                    </p>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="default">Try It</Button>
-                      <Button size="sm" variant="outline">Later</Button>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-4 pt-4 border-t">
-                  <p className="text-xs text-muted-foreground">
-                    <Lightbulb className="inline w-4 h-4 mr-1 text-purple-600" />
-                    Suggestions based on your patterns and goals
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+          </SplitBar>
 
           {/* Autopilot Status Bar */}
           <Card className="bg-white/80 backdrop-blur-sm border-white/20 mt-6">

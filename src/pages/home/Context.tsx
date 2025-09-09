@@ -37,24 +37,14 @@ export default function Context() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
-            <Button variant="outline" size="sm" onClick={() => navigate('/settings/preferences')}>
+            <Button variant="outline" size="sm">
               <Settings className="w-4 h-4 mr-2" />
-              Context Settings
+              Search
             </Button>
-            <Button variant="outline" size="sm" onClick={() => navigate('/ai/insights')}>
+            <Button variant="default" size="sm" onClick={() => navigate('/settings/preferences')}>
               <Brain className="w-4 h-4 mr-2" />
-              AI Insights
+              Context
             </Button>
-            <Button variant="outline" size="sm" onClick={() => navigate('/sharing/packages')}>
-              <Share2 className="w-4 h-4 mr-2" />
-              Share Context
-            </Button>
-            {pendingCount > 0 && (
-              <Button variant="default" size="sm" onClick={() => navigate('/home/actions')}>
-                <Zap className="w-4 h-4 mr-2" />
-                {pendingCount} Actions
-              </Button>
-            )}
           </UtilityActionButton>
 
           {/* Split-Screen Navigation */}

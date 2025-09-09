@@ -12,6 +12,9 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotCategory, AutopilotPriority } from "@/types/autopilot";
 import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { Search } from "lucide-react";
 
 export default function Actions() {
   const navigate = useNavigate();
@@ -73,135 +76,233 @@ export default function Actions() {
             emoji="⭐"
           />
 
-          <div className="grid grid-cols-1 gap-6">
-            {/* Categorized Actions Management */}
-            <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
-                      <Zap className="w-6 h-6 text-red-500" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Action Management</CardTitle>
-                      <CardDescription>Organize and prioritize your AI-suggested actions</CardDescription>
-                    </div>
-                  </div>
-                  <Badge variant="outline">
-                    {pendingActions.length} pending
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Tabs defaultValue="health" className="w-full">
-                  <TabsList className="grid grid-cols-5 w-full mb-4">
-                    {categories.map(category => {
-                      const IconComponent = getCategoryIcon(category.key);
-                      return (
-                        <TabsTrigger 
-                          key={category.key} 
-                          value={category.key}
-                          className="text-xs"
-                        >
-                          <IconComponent className="w-4 h-4 mr-1" />
-                          {category.label.split(' ')[0]} ({category.count})
-                        </TabsTrigger>
-                      );
-                    })}
-                  </TabsList>
+          {/* Action Buttons */}
+          <UtilityActionButton className="mb-6">
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button variant="default" size="sm" onClick={() => navigate('/home/actions')}>
+              <Zap className="w-4 h-4 mr-2" />
+              Actions
+            </Button>
+          </UtilityActionButton>
 
-                  {categories.map(category => (
-                    <TabsContent key={category.key} value={category.key} className="space-y-3">
-                      {actionsByCategory[category.key]?.length > 0 ? (
-                        <>
-                          {actionsByCategory[category.key]
-                            .sort((a, b) => {
-                              const priorityOrder = { high: 3, medium: 2, low: 1 };
-                              return priorityOrder[b.priority] - priorityOrder[a.priority];
-                            })
-                            .map(action => (
-                              <div 
-                                key={action.id} 
-                                className={`p-4 rounded-lg border transition-colors ${getCategoryColor(category.key)}`}
-                              >
-                                <div className="flex items-start justify-between">
-                                  <div className="flex items-start space-x-3">
-                                    <div className="text-2xl">{action.icon}</div>
-                                    <div className="flex-1">
-                                      <div className="flex items-center space-x-2 mb-1">
-                                        <h4 className="font-medium">{action.title}</h4>
-                                        <Badge 
-                                          variant="outline" 
-                                          className={`text-xs ${getPriorityColor(action.priority)}`}
-                                        >
-                                          {action.priority}
+          {/* Split-Screen Navigation */}
+          <SplitBar defaultValue="pending" className="w-full">
+            <SplitBarList className="grid w-full grid-cols-4">
+              <SplitBarTrigger value="pending">Pending</SplitBarTrigger>
+              <SplitBarTrigger value="categories">Categories</SplitBarTrigger>
+              <SplitBarTrigger value="completed">Completed</SplitBarTrigger>
+              <SplitBarTrigger value="failed">Failed</SplitBarTrigger>
+            </SplitBarList>
+
+            {/* Pending Actions Tab */}
+            <SplitBarContent value="pending">
+              <div className="space-y-4">
+                {pendingActions.length > 0 ? (
+                  pendingActions
+                    .sort((a, b) => {
+                      const priorityOrder = { high: 3, medium: 2, low: 1 };
+                      return priorityOrder[b.priority] - priorityOrder[a.priority];
+                    })
+                    .map(action => (
+                      <div 
+                        key={action.id} 
+                        className="p-4 rounded-lg border bg-card transition-colors"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start space-x-3">
+                            <div className="text-2xl">{action.icon}</div>
+                            <div className="flex-1">
+                              <div className="flex items-center space-x-2 mb-1">
+                                <h4 className="font-medium">{action.title}</h4>
+                                <Badge 
+                                  variant="outline" 
+                                  className={`text-xs ${getPriorityColor(action.priority)}`}
+                                >
+                                  {action.priority}
+                                </Badge>
+                                {action.timeEstimate && (
+                                  <Badge variant="outline" className="text-xs">
+                                    <Clock className="w-3 h-3 mr-1" />
+                                    {action.timeEstimate}
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-sm text-muted-foreground mb-3">{action.reason}</p>
+                              <div className="flex space-x-2">
+                                <Button 
+                                  size="sm"
+                                  onClick={() => executeActions([action.id])}
+                                  className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
+                                >
+                                  <CheckCircle className="w-3 h-3 mr-1" />
+                                  Do Now
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => dismissActions([action.id])}
+                                >
+                                  Later
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  Edit
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  Details
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {new Date(action.timestamp).toLocaleTimeString()}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                      <Zap className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p>No pending actions</p>
+                  </div>
+                )}
+              </div>
+            </SplitBarContent>
+
+            {/* Categories Tab */}
+            <SplitBarContent value="categories">
+              <Tabs defaultValue="health" className="w-full">
+                <TabsList className="grid grid-cols-5 w-full mb-4">
+                  {categories.map(category => {
+                    const IconComponent = getCategoryIcon(category.key);
+                    return (
+                      <TabsTrigger 
+                        key={category.key} 
+                        value={category.key}
+                        className="text-xs"
+                      >
+                        <IconComponent className="w-4 h-4 mr-1" />
+                        {category.label.split(' ')[0]} ({category.count})
+                      </TabsTrigger>
+                    );
+                  })}
+                </TabsList>
+
+                {categories.map(category => (
+                  <TabsContent key={category.key} value={category.key} className="space-y-3">
+                    {actionsByCategory[category.key]?.length > 0 ? (
+                      <>
+                        {actionsByCategory[category.key]
+                          .sort((a, b) => {
+                            const priorityOrder = { high: 3, medium: 2, low: 1 };
+                            return priorityOrder[b.priority] - priorityOrder[a.priority];
+                          })
+                          .map(action => (
+                            <div 
+                              key={action.id} 
+                              className={`p-4 rounded-lg border transition-colors ${getCategoryColor(category.key)}`}
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex items-start space-x-3">
+                                  <div className="text-2xl">{action.icon}</div>
+                                  <div className="flex-1">
+                                    <div className="flex items-center space-x-2 mb-1">
+                                      <h4 className="font-medium">{action.title}</h4>
+                                      <Badge 
+                                        variant="outline" 
+                                        className={`text-xs ${getPriorityColor(action.priority)}`}
+                                      >
+                                        {action.priority}
+                                      </Badge>
+                                      {action.timeEstimate && (
+                                        <Badge variant="outline" className="text-xs">
+                                          <Clock className="w-3 h-3 mr-1" />
+                                          {action.timeEstimate}
                                         </Badge>
-                                        {action.timeEstimate && (
-                                          <Badge variant="outline" className="text-xs">
-                                            <Clock className="w-3 h-3 mr-1" />
-                                            {action.timeEstimate}
-                                          </Badge>
-                                        )}
-                                      </div>
-                                      <p className="text-sm text-muted-foreground mb-3">{action.reason}</p>
-                                      <div className="flex space-x-2">
-                                        <Button 
-                                          size="sm"
-                                          onClick={() => executeActions([action.id])}
-                                          className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
-                                        >
-                                          <CheckCircle className="w-3 h-3 mr-1" />
-                                          Do Now
-                                        </Button>
-                                        <Button 
-                                          variant="outline" 
-                                          size="sm"
-                                          onClick={() => dismissActions([action.id])}
-                                        >
-                                          Later
-                                        </Button>
-                                        <Button variant="ghost" size="sm">
-                                          Edit
-                                        </Button>
-                                        <Button variant="ghost" size="sm">
-                                          Details
-                                        </Button>
-                                      </div>
+                                      )}
+                                    </div>
+                                    <p className="text-sm text-muted-foreground mb-3">{action.reason}</p>
+                                    <div className="flex space-x-2">
+                                      <Button 
+                                        size="sm"
+                                        onClick={() => executeActions([action.id])}
+                                        className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
+                                      >
+                                        <CheckCircle className="w-3 h-3 mr-1" />
+                                        Do Now
+                                      </Button>
+                                      <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => dismissActions([action.id])}
+                                      >
+                                        Later
+                                      </Button>
+                                      <Button variant="ghost" size="sm">
+                                        Edit
+                                      </Button>
+                                      <Button variant="ghost" size="sm">
+                                        Details
+                                      </Button>
                                     </div>
                                   </div>
-                                  <div className="text-xs text-muted-foreground">
-                                    {new Date(action.timestamp).toLocaleTimeString()}
-                                  </div>
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {new Date(action.timestamp).toLocaleTimeString()}
                                 </div>
                               </div>
-                            ))}
-                          <div className="flex justify-between pt-4">
-                            <Button 
-                              variant="outline"
-                              onClick={() => executeActions(actionsByCategory[category.key].map(a => a.id))}
-                            >
-                              <Zap className="w-4 h-4 mr-2" />
-                              Execute All {category.label.split(' ')[0]}
-                            </Button>
-                            <Button variant="ghost" size="sm">
-                              Configure Category
-                            </Button>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-center py-8 text-muted-foreground">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                            {React.createElement(getCategoryIcon(category.key), { className: "w-8 h-8 text-gray-400" })}
-                          </div>
-                          <p>No {category.label.toLowerCase()} actions available</p>
+                            </div>
+                          ))}
+                        <div className="flex justify-between pt-4">
+                          <Button 
+                            variant="outline"
+                            onClick={() => executeActions(actionsByCategory[category.key].map(a => a.id))}
+                          >
+                            <Zap className="w-4 h-4 mr-2" />
+                            Execute All {category.label.split(' ')[0]}
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            Configure Category
+                          </Button>
                         </div>
-                      )}
-                    </TabsContent>
-                  ))}
-                </Tabs>
-              </CardContent>
-            </Card>
-          </div>
+                      </>
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                          {React.createElement(getCategoryIcon(category.key), { className: "w-8 h-8 text-gray-400" })}
+                        </div>
+                        <p>No {category.label.toLowerCase()} actions available</p>
+                      </div>
+                    )}
+                  </TabsContent>
+                ))}
+              </Tabs>
+            </SplitBarContent>
+
+            {/* Completed Actions Tab */}
+            <SplitBarContent value="completed">
+              <div className="text-center py-8 text-muted-foreground">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                  <CheckCircle className="w-8 h-8 text-gray-400" />
+                </div>
+                <p>No completed actions to show</p>
+              </div>
+            </SplitBarContent>
+
+            {/* Failed Actions Tab */}
+            <SplitBarContent value="failed">
+              <div className="text-center py-8 text-muted-foreground">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                  <FileText className="w-8 h-8 text-gray-400" />
+                </div>
+                <p>No failed actions to show</p>
+              </div>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
     </AppLayout>
