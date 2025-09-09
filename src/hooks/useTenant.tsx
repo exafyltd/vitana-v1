@@ -137,9 +137,6 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   };
 
   const setTenantBySlug = async (slug: string) => {
-    console.log(`useTenant - Setting tenant by slug: ${slug}`);
-    console.log('useTenant - Current user metadata before switch:', user?.user_metadata);
-    
     try {
       // Use the database function to properly switch tenant context
       const { error } = await supabase.rpc('switch_to_tenant_by_slug', {
@@ -147,21 +144,17 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
-        console.error('useTenant - Error switching tenant:', error);
+        console.error('Error switching tenant:', error);
         return;
       }
-
-      console.log(`useTenant - Successfully called switch_to_tenant_by_slug for ${slug}`);
 
       // Wait a moment for database to update, then refresh session
       await new Promise(resolve => setTimeout(resolve, 100));
       
       const { data: sessionData, error: refreshError } = await supabase.auth.refreshSession();
       if (refreshError) {
-        console.error('useTenant - Session refresh error:', refreshError);
-      } else {
-        console.log('useTenant - Session refreshed successfully');
-        console.log('useTenant - Updated user metadata:', sessionData.session?.user?.user_metadata);
+        console.error('Session refresh error:', refreshError);
+        return;
       }
       
       // Get the updated tenant ID and invalidate cache
@@ -172,7 +165,6 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         .single();
       
       if (data) {
-        console.log(`useTenant - Setting active tenant ID to: ${data.id} (${data.name})`);
         setActiveTenantIdState(data.id);
         
         // Force invalidate all tenant-related queries
@@ -180,7 +172,6 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         if (queryClient) {
           await queryClient.invalidateQueries({ queryKey: ["tenant"] });
           await queryClient.refetchQueries({ queryKey: ["tenant", data.id] });
-          console.log('useTenant - Query cache invalidated and refetched');
         }
         
         // Store tenant slug in localStorage for persistence
@@ -190,11 +181,9 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         window.dispatchEvent(new CustomEvent("tenant.changed", {
           detail: { from: activeTenantId, to: data.id, slug: slug }
         }));
-        
-        console.log(`useTenant - Tenant change event emitted: ${activeTenantId} -> ${data.id}`);
       }
     } catch (error) {
-      console.error('useTenant - Error setting tenant by slug:', error);
+      console.error('Error setting tenant by slug:', error);
     }
   };
 
