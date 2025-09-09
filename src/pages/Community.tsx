@@ -316,6 +316,45 @@ const spotlightFeatures = [
   }
 ];
 
+// Community Highlights
+const highlightsData = [
+  {
+    title: "🏆 Mindful Morning Warriors",
+    description: "Top community group this week with 247 active members crushing their daily meditation goals!",
+    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
+    category: "group" as const,
+    pillar: "Mental",
+    author: { name: "Community Ranking", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Featured Group",
+    attendees: 247,
+    timestamp: "Top Performer",
+    className: "relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-yellow-500/10 before:to-orange-500/10 before:pointer-events-none border border-yellow-500/20"
+  },
+  {
+    title: "Featured Creator: Sarah Miller",
+    description: "This week's most inspiring community leader with 89 wellness posts",
+    imageUrl: "/lovable-uploads/sarah-miller-avatar.jpg",
+    category: "person" as const,
+    pillar: "Exercise",
+    author: { name: "Community Spotlight", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Top Creator",
+    timestamp: "Week Champion",
+    className: "border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-purple-500/5"
+  },
+  {
+    title: "Rising Star Group",
+    description: "Urban Hiking Club - fastest growing community this month!",
+    imageUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&h=300&fit=crop",
+    category: "group" as const,
+    pillar: "Exercise",
+    author: { name: "Community Growth", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
+    location: "Trending",
+    attendees: 156,
+    timestamp: "2x Growth",
+    className: "border border-green-500/20 bg-gradient-to-r from-green-500/5 to-emerald-500/5"
+  }
+];
+
 // Enhanced render grid function with interactive action buttons
 const renderEventGrid = (events: any[], section?: string) => {
   const rows = [];
@@ -589,62 +628,7 @@ export default withScreenId(function Community() {
                     View All Rankings
                   </Button>
                 </div>
-                <div className="px-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <NewsCard
-                      title="🏆 Mindful Morning Warriors"
-                      description="Top community group this week with 247 active members crushing their daily meditation goals!"
-                      imageUrl="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop"
-                      pillar="Mental"
-                      author={{ name: "Community Ranking", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
-                      attendees={247}
-                      location="Featured Group"
-                      timestamp="Top Performer"
-                      className="relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-yellow-500/10 before:to-orange-500/10 before:pointer-events-none border border-yellow-500/20"
-                      actionButton={
-                        <Button size="sm" variant="default" className="bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl rounded-full font-bold text-white border-0 shadow-lg transition-all duration-300 hover:scale-105">
-                          <Users className="w-3 h-3 mr-1" />
-                          Join Group
-                        </Button>
-                      }
-                    />
-                    <div className="md:col-span-2 grid grid-rows-2 gap-4">
-                      <NewsCard
-                        title="Featured Creator: Sarah Miller"
-                        description="This week's most inspiring community leader with 89 wellness posts"
-                        imageUrl="/lovable-uploads/sarah-miller-avatar.jpg"
-                        pillar="Exercise"
-                        author={{ name: "Community Spotlight", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
-                        location="Top Creator"
-                        timestamp="Week Champion"
-                        className="border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-purple-500/5"
-                        actionButton={
-                          <Button size="sm" variant="outline" className="border-blue-500/50 text-blue-600 hover:bg-blue-50">
-                            <UserPlus className="w-3 h-3 mr-1" />
-                            Follow
-                          </Button>
-                        }
-                      />
-                      <NewsCard
-                        title="Rising Star Group"
-                        description="Urban Hiking Club - fastest growing community this month!"
-                        imageUrl="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&h=300&fit=crop"
-                        pillar="Exercise"
-                        author={{ name: "Community Growth", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" }}
-                        attendees={156}
-                        location="Trending"
-                        timestamp="2x Growth"
-                        className="border border-green-500/20 bg-gradient-to-r from-green-500/5 to-emerald-500/5"
-                        actionButton={
-                          <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700">
-                            <Plus className="w-3 h-3 mr-1" />
-                            Join Now
-                          </Button>
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
+                {renderEventGrid(highlightsData, "Community Highlights")}
               </div>
 
               {/* Discover People */}
