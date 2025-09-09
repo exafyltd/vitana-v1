@@ -474,6 +474,14 @@ export type Database = {
           role: string
         }[]
       }
+      get_user_admin_status: {
+        Args: { tenant_id_param: string; user_id_param: string }
+        Returns: boolean
+      }
+      is_exafy_admin: {
+        Args: { user_id_param: string }
+        Returns: boolean
+      }
       list_roles_for_active_tenant: {
         Args: { p_tenant_id: string }
         Returns: {
