@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Users, MapPin, Radio, Trophy, TrendingUp, Calendar, Crown, Award, Target, Globe, Filter, Plane } from "lucide-react";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { CommunityFiltersPopup } from "@/components/CommunityFiltersPopup";
+import { Heart, Users, MapPin, Radio, Trophy, TrendingUp, Calendar, Crown, Award, Target, Globe, Filter, Plane, Search, Plus } from "lucide-react";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -27,6 +29,7 @@ export default withScreenId(function Community() {
   const [scope, setScope] = useState("global");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [communityFiltersOpen, setCommunityFiltersOpen] = useState(false);
   
   const latestActions = getLatestActions(2);
 
@@ -102,6 +105,18 @@ export default withScreenId(function Community() {
             description="Connect, share, and grow together with your wellness community."
             emoji="✨"
           />
+
+          {/* Action Buttons */}
+          <UtilityActionButton>
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button size="sm" onClick={() => setCommunityFiltersOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Hub
+            </Button>
+          </UtilityActionButton>
 
           {/* Autopilot Integration */}
           <div className="mb-6">
@@ -498,6 +513,12 @@ export default withScreenId(function Community() {
       <AutopilotPopup 
         open={autopilotOpen} 
         onOpenChange={setAutopilotOpen}
+      />
+
+      {/* Community Filters Popup */}
+      <CommunityFiltersPopup 
+        open={communityFiltersOpen} 
+        onOpenChange={setCommunityFiltersOpen}
       />
     </AppLayout>
   );
