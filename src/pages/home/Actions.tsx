@@ -14,11 +14,14 @@ import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
+import { MasterActionPopup } from "@/components/MasterActionPopup";
+import { useState } from "react";
 
 export default function Actions() {
   const navigate = useNavigate();
   const { pendingActions, executeActions, toggleActionSelection, dismissActions } = useAutopilot();
+  const [masterActionOpen, setMasterActionOpen] = useState(false);
 
   const getCategoryIcon = (category: AutopilotCategory) => {
     switch (category) {
@@ -82,8 +85,8 @@ export default function Actions() {
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
-            <Button variant="default" size="sm" onClick={() => navigate('/home/actions')}>
-              <Zap className="w-4 h-4 mr-2" />
+            <Button variant="default" size="sm" onClick={() => setMasterActionOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
               Actions
             </Button>
           </UtilityActionButton>
@@ -305,6 +308,8 @@ export default function Actions() {
           </SplitBar>
         </div>
       </div>
+      
+      <MasterActionPopup open={masterActionOpen} onOpenChange={setMasterActionOpen} />
     </AppLayout>
   );
 }

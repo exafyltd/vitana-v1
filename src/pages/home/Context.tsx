@@ -5,7 +5,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { Settings, Zap, Brain, BarChart3, Share2 } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { homeNavigation } from "@/config/navigation";
@@ -38,11 +38,11 @@ export default function Context() {
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
             <Button variant="outline" size="sm">
-              <Settings className="w-4 h-4 mr-2" />
+              <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
-            <Button variant="default" size="sm" onClick={() => navigate('/settings/preferences')}>
-              <Brain className="w-4 h-4 mr-2" />
+            <Button variant="default" size="sm">
+              <Plus className="w-4 h-4 mr-2" />
               Context
             </Button>
           </UtilityActionButton>

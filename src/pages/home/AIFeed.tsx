@@ -14,7 +14,7 @@ import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 
 export default function AIFeed() {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ export default function AIFeed() {
               Search
             </Button>
             <Button variant="default" size="sm">
-              <Zap className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 mr-2" />
               Feed
             </Button>
           </UtilityActionButton>
