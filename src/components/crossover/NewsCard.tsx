@@ -125,7 +125,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       <Card 
         ref={ref}
         className={cn(
-          "group relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-0",
+          "group relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-0 h-full",
           className
         )}
         onClick={onClick}
@@ -154,7 +154,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           )}
           
           {/* Content Overlay */}
-          <CardContent className="absolute inset-0 p-6 flex flex-col justify-between text-white">
+          <CardContent className="absolute inset-0 p-6 h-full flex flex-col justify-between text-white">
             {/* Top Section */}
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
@@ -187,8 +187,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               )}
             </div>
 
-            {/* Bottom Content */}
-            <div className="space-y-3">
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col justify-end space-y-3">
               {/* Title */}
               <h3 className="text-lg font-bold leading-tight group-hover:text-primary-foreground transition-colors">
                 {title}
@@ -234,12 +234,12 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                   )}
                 </div>
               </div>
+            </div>
 
-              {/* Action Buttons - Fixed positioning at bottom */}
-              <div className="flex justify-end items-center gap-2 pt-2">
-                {actionButton}
-                {getSmartAction()}
-              </div>
+            {/* Action Button Zone - Always at bottom */}
+            <div className="flex justify-end items-center gap-2 pt-3 mt-2">
+              {actionButton}
+              {getSmartAction()}
             </div>
           </CardContent>
         </div>
