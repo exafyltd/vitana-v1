@@ -153,10 +153,14 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       console.log(`useTenant - Successfully called switch_to_tenant_by_slug for ${slug}`);
 
       // Refresh session to get updated metadata
-      await supabase.auth.refreshSession();
-      console.log('useTenant - Session refreshed');
+      const { error: refreshError } = await supabase.auth.refreshSession();
+      if (refreshError) {
+        console.error('useTenant - Session refresh error:', refreshError);
+      } else {
+        console.log('useTenant - Session refreshed successfully');
+      }
       
-      // Get the updated tenant ID
+      // Get the updated tenant ID and invalidate cache
       const { data } = await supabase
         .from('tenants')
         .select('id')
@@ -166,6 +170,14 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       if (data) {
         console.log(`useTenant - Setting active tenant ID to: ${data.id}`);
         setActiveTenantIdState(data.id);
+        
+        // Force invalidate the tenant query cache to refresh UI
+        const queryClient = (window as any).queryClient;
+        if (queryClient) {
+          queryClient.invalidateQueries({ queryKey: ["tenant", data.id] });
+          queryClient.invalidateQueries({ queryKey: ["tenant"] });
+          console.log('useTenant - Query cache invalidated');
+        }
         
         // Emit tenant change event
         window.dispatchEvent(new CustomEvent("tenant.changed", {

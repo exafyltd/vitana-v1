@@ -115,41 +115,52 @@ function AppSidebar({
   };
 
   const getTenantDisplayName = () => {
+    console.log('getTenantDisplayName called - isExafyAdmin:', isExafyAdmin, 'tenant:', tenant, 'path:', window.location.pathname);
+    
     // Show "Exafy" for Exafy admins
     if (isExafyAdmin) {
       return 'Exafy';
     }
     
-    // Prioritize tenant context from authentication/database
+    // PRIORITY FIX: Check URL-based tenant detection FIRST for portal routes
+    const currentPath = window.location.pathname;
+    if (currentPath.startsWith('/maxina')) {
+      console.log('URL-based detection: Maxina');
+      return 'Maxina';
+    } else if (currentPath.startsWith('/alkalma')) {
+      console.log('URL-based detection: AlKalma');
+      return 'AlKalma';
+    } else if (currentPath.startsWith('/earthlinks')) {
+      console.log('URL-based detection: Earthlinks');
+      return 'Earthlinks';
+    }
+    
+    // Then check tenant context from authentication/database
     if (tenant?.name) {
+      console.log('Database tenant context:', tenant.name);
       return tenant.name;
     }
     
     // Check user session for tenant information
     if (user?.user_metadata?.tenant_slug) {
       const tenantSlug = user.user_metadata.tenant_slug;
+      console.log('User metadata tenant:', tenantSlug);
       if (tenantSlug === 'earthlinks') return 'Earthlinks';
       if (tenantSlug === 'maxina') return 'Maxina';
       if (tenantSlug === 'alkalma') return 'AlKalma';
     }
     
-    // Fallback to URL-based tenant detection for portal pages
-    const currentPath = window.location.pathname;
-    if (currentPath.startsWith('/maxina')) {
-      return 'Maxina';
-    } else if (currentPath.startsWith('/alkalma')) {
-      return 'AlKalma';
-    } else if (currentPath.startsWith('/earthlinks')) {
-      return 'Earthlinks';
-    }
-    
     // Check localStorage for tenant preference
     const storedTenant = localStorage.getItem('tenant_slug');
-    if (storedTenant === 'earthlinks') return 'Earthlinks';
-    if (storedTenant === 'maxina') return 'Maxina';
-    if (storedTenant === 'alkalma') return 'AlKalma';
+    if (storedTenant) {
+      console.log('localStorage tenant:', storedTenant);
+      if (storedTenant === 'earthlinks') return 'Earthlinks';
+      if (storedTenant === 'maxina') return 'Maxina';
+      if (storedTenant === 'alkalma') return 'AlKalma';
+    }
     
     // Final fallback
+    console.log('Using fallback: Community');
     return 'Community';
   };
 
