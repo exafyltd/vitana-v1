@@ -65,7 +65,6 @@ function AppSidebar({
   };
 
   const handleStreamToggle = () => {
-    console.log('Stream toggle clicked, current isStreaming:', isStreaming);
     if (isStreaming) {
       streamingChatRef.current?.deactivateVideo();
     } else {
@@ -74,17 +73,14 @@ function AppSidebar({
     // Force immediate sync
     setTimeout(() => {
       const active = streamingChatRef.current?.isStreamingActive?.();
-      console.log('After timeout, active state:', active);
       setIsStreaming(!!active);
     }, 10);
   };
 
   useEffect(() => {
-    console.log('isStreaming state changed to:', isStreaming);
     const interval = setInterval(() => {
       const active = streamingChatRef.current?.isStreamingActive?.();
       if (typeof active === "boolean" && active !== isStreaming) {
-        console.log('Syncing state: active =', active, 'isStreaming =', isStreaming);
         setIsStreaming(active);
       }
     }, 150);
@@ -125,20 +121,16 @@ function AppSidebar({
     // For portal routes, prioritize URL-based detection
     const currentPath = window.location.pathname;
     if (currentPath.startsWith('/maxina')) {
-      console.log('URL-based detection: Maxina');
       return 'Maxina';
     } else if (currentPath.startsWith('/alkalma')) {
-      console.log('URL-based detection: AlKalma');
       return 'AlKalma';
     } else if (currentPath.startsWith('/earthlinks')) {
-      console.log('URL-based detection: Earthlinks');
       return 'Earthlinks';
     }
     
     // For non-portal routes, check localStorage first (most reliable after tenant switch)
     const storedTenant = localStorage.getItem('tenant_slug');
     if (storedTenant) {
-      console.log('localStorage tenant:', storedTenant);
       if (storedTenant === 'earthlinks') return 'Earthlinks';
       if (storedTenant === 'maxina') return 'Maxina';
       if (storedTenant === 'alkalma') return 'AlKalma';
@@ -146,7 +138,6 @@ function AppSidebar({
     
     // Then check tenant context from database
     if (tenant?.name) {
-      console.log('Database tenant context:', tenant.name);
       // Map database names to display names
       if (tenant.name === 'Earthlinks') return 'Earthlinks';
       if (tenant.name === 'Maxina') return 'Maxina';
@@ -157,14 +148,12 @@ function AppSidebar({
     // Check user session metadata as last resort
     if (user?.user_metadata?.tenant_slug) {
       const tenantSlug = user.user_metadata.tenant_slug;
-      console.log('User metadata tenant:', tenantSlug);
       if (tenantSlug === 'earthlinks') return 'Earthlinks';
       if (tenantSlug === 'maxina') return 'Maxina';
       if (tenantSlug === 'alkalma') return 'AlKalma';
     }
     
     // Final fallback
-    console.log('Using fallback: Community');
     return 'Community';
   };
 
