@@ -144,6 +144,25 @@ export default {
 						accent: 'hsl(var(--domain-community-accent))',
 						tint: 'hsl(var(--domain-community-tint))'
 					}
+				},
+				/* Action Button Gradients */
+				gradient: {
+					join: {
+						start: 'hsl(var(--gradient-join-start))',
+						end: 'hsl(var(--gradient-join-end))'
+					},
+					follow: {
+						start: 'hsl(var(--gradient-follow-start))',
+						end: 'hsl(var(--gradient-follow-end))'
+					},
+					play: {
+						start: 'hsl(var(--gradient-play-start))',
+						end: 'hsl(var(--gradient-play-end))'
+					},
+					disabled: {
+						start: 'hsl(var(--gradient-disabled-start))',
+						end: 'hsl(var(--gradient-disabled-end))'
+					}
 				}
 			},
 			borderRadius: {

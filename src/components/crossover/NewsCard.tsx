@@ -75,41 +75,60 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       
       let buttonText = "View";
       let buttonIcon = null;
+      let buttonType: "join" | "follow" | "play" | "secondary" = "secondary";
       
       switch (category) {
         case "event":
+        case "community":
           buttonText = "Join Now";
           buttonIcon = Calendar;
+          buttonType = "join";
           break;
         case "people":
           buttonText = "Follow";
           buttonIcon = UserPlus;
+          buttonType = "follow";
           break;
         case "media":
           buttonText = mediaType === "video" ? "Watch Now" : 
                       mediaType === "podcast" ? "Listen Now" : 
                       mediaType === "music" ? "Play Now" : "View";
           buttonIcon = PlayCircle;
+          buttonType = mediaType ? "play" : "secondary";
           break;
         case "group":
           buttonText = "Join Group";
           buttonIcon = Users;
-          break;
-        case "community":
-          buttonText = "Join Now";
-          buttonIcon = Calendar;
+          buttonType = "join";
           break;
         default:
           buttonText = "View";
+          buttonType = "secondary";
       }
       
       const ButtonIcon = buttonIcon;
       
+      // Get gradient classes based on button type
+      const getButtonClasses = () => {
+        const baseClasses = "rounded-full font-bold text-white border-0 shadow-lg transition-all duration-300 hover:scale-105";
+        
+        switch (buttonType) {
+          case "join":
+            return `${baseClasses} bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl`;
+          case "follow":
+            return `${baseClasses} bg-gradient-to-r from-gradient-follow-start to-gradient-follow-end hover:shadow-gradient-follow-start/50 hover:shadow-2xl`;
+          case "play":
+            return `${baseClasses} bg-gradient-to-r from-gradient-play-start to-gradient-play-end hover:shadow-gradient-play-start/50 hover:shadow-2xl`;
+          case "secondary":
+          default:
+            return "rounded-full bg-white/10 text-white border border-white/20 backdrop-blur-sm font-medium transition-all duration-300 hover:bg-white/20 hover:scale-105 shadow-lg";
+        }
+      };
+      
       return (
         <Button
-          variant="secondary"
           size="sm"
-          className="bg-white/90 text-foreground hover:bg-white border-0 shadow-lg backdrop-blur-sm font-medium transition-all duration-200 hover:shadow-xl hover:scale-105"
+          className={getButtonClasses()}
           onClick={(e) => {
             e.stopPropagation();
             onActionClick?.();

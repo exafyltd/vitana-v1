@@ -113,6 +113,16 @@ All colors MUST be HSL.
     --brand-bg: 0 0% 100%;
     --brand-fg: 222.2 84% 4.9%;
 
+    /* Action Button Gradients */
+    --gradient-join-start: 142 76% 36%; /* Green */
+    --gradient-join-end: 173 58% 39%; /* Teal */
+    --gradient-follow-start: 217 91% 60%; /* Blue */
+    --gradient-follow-end: 263 70% 50%; /* Indigo */
+    --gradient-play-start: 271 81% 56%; /* Purple */
+    --gradient-play-end: 328 86% 70%; /* Pink */
+    --gradient-disabled-start: 220 14% 60%; /* Grey */
+    --gradient-disabled-end: 220 13% 69%; /* Light Grey */
+
     /* Unified Layout System Variables */
     --row-base: 70px;
     --grid-gap: 1.5rem;
@@ -212,6 +222,16 @@ All colors MUST be HSL.
     /* Ruby red for streaming */
     --ruby: 339 89% 49%;
     
+    /* Action Button Gradients - Dark Mode */
+    --gradient-join-start: 142 76% 46%; /* Brighter Green */
+    --gradient-join-end: 173 58% 49%; /* Brighter Teal */
+    --gradient-follow-start: 217 91% 70%; /* Brighter Blue */
+    --gradient-follow-end: 263 70% 60%; /* Brighter Indigo */
+    --gradient-play-start: 271 81% 66%; /* Brighter Purple */
+    --gradient-play-end: 328 86% 80%; /* Brighter Pink */
+    --gradient-disabled-start: 220 14% 70%; /* Brighter Grey */
+    --gradient-disabled-end: 220 13% 79%; /* Brighter Light Grey */
+
     /* Tenant brand variables - dark mode defaults */
     --brand-accent: 339 89% 49%;
     --brand-bg: 222.2 84% 4.9%;
