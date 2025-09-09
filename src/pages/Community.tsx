@@ -571,9 +571,24 @@ export default withScreenId(function Community() {
                 <MotivationalBanner variant="partnership" />
               </div>
 
-              {/* Top Group Teaser */}
+              {/* Community Highlights */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">🏆 Community Highlights</h3>
+                <div className="flex items-center justify-between mb-4 px-6">
+                  <h3 className="text-xl font-bold">🏆 Community Highlights</h3>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="text-sm"
+                    onClick={() => {
+                      // Navigate to Rankings tab
+                      const rankingsTab = document.querySelector('[data-value="rankings"]') as HTMLElement;
+                      rankingsTab?.click();
+                    }}
+                  >
+                    <Trophy className="w-3 h-3 mr-1" />
+                    View All Rankings
+                  </Button>
+                </div>
                 <div className="px-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <NewsCard
@@ -587,9 +602,9 @@ export default withScreenId(function Community() {
                       timestamp="Top Performer"
                       className="relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-yellow-500/10 before:to-orange-500/10 before:pointer-events-none border border-yellow-500/20"
                       actionButton={
-                        <Button size="sm" variant="default" className="bg-yellow-600 hover:bg-yellow-700">
-                          <Trophy className="w-3 h-3 mr-1" />
-                          View Rankings
+                        <Button size="sm" variant="default" className="bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl rounded-full font-bold text-white border-0 shadow-lg transition-all duration-300 hover:scale-105">
+                          <Users className="w-3 h-3 mr-1" />
+                          Join Group
                         </Button>
                       }
                     />
