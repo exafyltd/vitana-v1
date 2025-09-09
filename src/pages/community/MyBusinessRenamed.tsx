@@ -1,12 +1,10 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { ManagementReferralsSplitScreen } from "@/components/ui/split-screen";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2, Search } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -174,28 +172,17 @@ export default function MyBusiness() {
             </Card>
           </div>
 
-          {/* Create New Button */}
-          <div className="mb-6">
-            <Button onClick={() => setShowCreatePopup(true)} size="lg" className="gap-2">
-              <Plus className="w-5 h-5" />
-              Create New Service/Event
-            </Button>
-          </div>
 
-          {/* Two-Panel Layout using Split Screen */}
-          <ManagementReferralsSplitScreen
-            leftTitle="Business Management"
-            rightTitle="Referral Revenue" 
-            leftContent={
-              <Tabs defaultValue="active" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="active">Active Services</TabsTrigger>
-                  <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
-                  <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                  <TabsTrigger value="clients">Clients</TabsTrigger>
-                </TabsList>
+          {/* Split Bar Navigation */}
+          <SplitBar defaultValue="management" className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="management">Management</SplitBarTrigger>
+              <SplitBarTrigger value="referrals">Referrals</SplitBarTrigger>
+              <SplitBarTrigger value="analytics">Analytics</SplitBarTrigger>
+              <SplitBarTrigger value="clients">Clients</SplitBarTrigger>
+            </SplitBarList>
 
-            <TabsContent value="active" className="space-y-4">
+            <SplitBarContent value="management" className="space-y-4">
               <div className="grid gap-4">
                 <Card>
                   <CardHeader>
@@ -240,11 +227,7 @@ export default function MyBusiness() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-            </TabsContent>
 
-            <TabsContent value="scheduled" className="space-y-4">
-              <div className="grid gap-4">
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg">Weekend Wellness Workshop</CardTitle>
@@ -262,9 +245,81 @@ export default function MyBusiness() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="analytics" className="space-y-4">
+            <SplitBarContent value="referrals" className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-green-100 rounded-lg">
+                        <DollarSign className="w-4 h-4 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">$1,250</p>
+                        <p className="text-sm text-muted-foreground">Total Earnings</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-100 rounded-lg">
+                        <Calendar className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">$320</p>
+                        <p className="text-sm text-muted-foreground">This Month</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <Users className="w-4 h-4 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">16</p>
+                        <p className="text-sm text-muted-foreground">Active Referrals</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Share2 className="w-5 h-5" />
+                    Your Referral Code
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-2 border-dashed border-blue-200">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-2xl font-bold text-blue-600">WELLNESS2024</p>
+                        <p className="text-sm text-muted-foreground">Earn 20% commission on each successful referral</p>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy Code
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Share this code with friends and earn 20% of their subscription fee as monthly recurring commission.
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+
+            <SplitBarContent value="analytics" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Card>
                   <CardHeader>
@@ -283,9 +338,9 @@ export default function MyBusiness() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </SplitBarContent>
 
-            <TabsContent value="clients" className="space-y-4">
+            <SplitBarContent value="clients" className="space-y-4">
               <Card>
                 <CardHeader>
                   <CardTitle>Client Management</CardTitle>
@@ -294,85 +349,8 @@ export default function MyBusiness() {
                   <p className="text-sm text-muted-foreground">Client list and communication tools</p>
                 </CardContent>
               </Card>
-            </TabsContent>
-              </Tabs>
-            }
-            rightContent={
-              <div className="space-y-6">
-                {/* Referral Revenue Summary */}
-                <div className="grid grid-cols-1 gap-4">
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-green-100 rounded-lg">
-                          <DollarSign className="w-4 h-4 text-green-600" />
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold">$1,250</p>
-                          <p className="text-sm text-muted-foreground">Total Earnings</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                          <Calendar className="w-4 h-4 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold">$320</p>
-                          <p className="text-sm text-muted-foreground">This Month</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-purple-100 rounded-lg">
-                          <Users className="w-4 h-4 text-purple-600" />
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold">16</p>
-                          <p className="text-sm text-muted-foreground">Active Referrals</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Referral Code */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Share2 className="w-5 h-5" />
-                      Your Referral Code
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-2 border-dashed border-blue-200">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-2xl font-bold text-blue-600">WELLNESS2024</p>
-                          <p className="text-sm text-muted-foreground">Earn 20% commission on each successful referral</p>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          <Copy className="w-4 h-4 mr-2" />
-                          Copy Code
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Share this code with friends and earn 20% of their subscription fee as monthly recurring commission.
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            }
-          />
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
 
