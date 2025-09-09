@@ -1,19 +1,18 @@
-import AppLayout from "@/components/AppLayout";
+import { useEffect, useState } from "react";
+import { Search, Plus } from "lucide-react";
 import SEO from "@/components/SEO";
-import SubNavigation from "@/components/SubNavigation";
+import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
-import { NewsCard } from "@/components/crossover/NewsCard";
+import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { Button } from "@/components/ui/button";
 import { MasterActionPopup } from "@/components/MasterActionPopup";
-import { MotivationalBanner } from "@/components/MotivationalBanner";
-import { useState, useEffect } from "react";
-import { Plus, Search } from "lucide-react";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
+import { NewsCard } from "@/components/crossover/NewsCard";
+import SubNavigation from "@/components/SubNavigation";
 import { useProfile } from "@/context/ProfileProvider";
 import { useEnhancedMotivationalMessage } from "@/hooks/useEnhancedMotivationalMessage";
-
 import { homeNavigation } from "@/config/navigation";
 
 // Mock data for Today and Guide screens
@@ -218,146 +217,24 @@ const guideDailyMatches = [
     timestamp: "Weekends"
   },
   {
-    title: "Accountability Partner: Murphy",
-    description: "Health coach for goal setting and motivation",
-    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
-    pillar: "Mental",
-    author: { name: "Murphy", avatar: "/lovable-uploads/murphy-avatar.jpg" },
-    location: "Virtual/In-Person",
-    timestamp: "Flexible"
+    title: "Sleep Support Group",
+    description: "Weekly community for better sleep habits",
+    imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
+    pillar: "Sleep",
+    author: { name: "Sleep Therapist Anna", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
+    location: "Wellness Center",
+    timestamp: "Thursdays"
+  },
+  {
+    title: "Hydration Challenge Buddy",
+    description: "Join our 30-day hydration accountability partner",
+    imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
+    pillar: "Hydration",
+    author: { name: "Health Coach Murphy", avatar: "/lovable-uploads/murphy-avatar.jpg" },
+    location: "Online",
+    timestamp: "Daily Check-ins"
   }
 ];
-
-const renderCardGrid = (cards: any[], rowSize: number = 3) => {
-  const rows = [];
-  
-  for (let i = 0; i < cards.length; i += rowSize) {
-    const rowCards = cards.slice(i, i + rowSize);
-    const isEvenRow = Math.floor(i / rowSize) % 2 === 0;
-    
-    rows.push(
-      <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
-        {isEvenRow ? (
-          // Row pattern: big + small + small
-          <>
-            <div className="col-span-6">
-                <NewsCard
-                  key={`${i}-0`}
-                  title={rowCards[0]?.title || ""}
-                  description={rowCards[0]?.description}
-                  imageUrl={rowCards[0]?.imageUrl || ""}
-                  pillar={rowCards[0]?.pillar}
-                  mediaType={rowCards[0]?.mediaType}
-                  author={rowCards[0]?.author}
-                  location={rowCards[0]?.location}
-                  attendees={rowCards[0]?.attendees}
-                  timestamp={rowCards[0]?.timestamp}
-                  price={rowCards[0]?.price}
-                  className="h-full"
-                />
-            </div>
-            {rowCards[1] && (
-              <div className="col-span-3">
-                <NewsCard
-                  key={`${i}-1`}
-                  title={rowCards[1].title}
-                  description={rowCards[1].description}
-                  imageUrl={rowCards[1].imageUrl}
-                  pillar={rowCards[1].pillar}
-                  mediaType={rowCards[1].mediaType}
-                  author={rowCards[1].author}
-                  location={rowCards[1].location}
-                  attendees={rowCards[1].attendees}
-                  timestamp={rowCards[1].timestamp}
-                  price={rowCards[1].price}
-                  className="h-full"
-                />
-              </div>
-            )}
-            {rowCards[2] && (
-              <div className="col-span-3">
-                <NewsCard
-                  key={`${i}-2`}
-                  title={rowCards[2].title}
-                  description={rowCards[2].description}
-                  imageUrl={rowCards[2].imageUrl}
-                  pillar={rowCards[2].pillar}
-                  mediaType={rowCards[2].mediaType}
-                  author={rowCards[2].author}
-                  location={rowCards[2].location}
-                  attendees={rowCards[2].attendees}
-                  timestamp={rowCards[2].timestamp}
-                  price={rowCards[2].price}
-                  className="h-full"
-                />
-              </div>
-            )}
-          </>
-        ) : (
-          // Row pattern: small + small + big
-          <>
-            {rowCards[0] && (
-              <div className="col-span-3">
-                <NewsCard
-                  key={`${i}-0`}
-                  title={rowCards[0].title}
-                  description={rowCards[0].description}
-                  imageUrl={rowCards[0].imageUrl}
-                  pillar={rowCards[0].pillar}
-                  mediaType={rowCards[0].mediaType}
-                  author={rowCards[0].author}
-                  location={rowCards[0].location}
-                  attendees={rowCards[0].attendees}
-                  timestamp={rowCards[0].timestamp}
-                  price={rowCards[0].price}
-                  className="h-full"
-                />
-              </div>
-            )}
-            {rowCards[1] && (
-              <div className="col-span-3">
-                <NewsCard
-                  key={`${i}-1`}
-                  title={rowCards[1].title}
-                  description={rowCards[1].description}
-                  imageUrl={rowCards[1].imageUrl}
-                  pillar={rowCards[1].pillar}
-                  mediaType={rowCards[1].mediaType}
-                  author={rowCards[1].author}
-                  location={rowCards[1].location}
-                  attendees={rowCards[1].attendees}
-                  timestamp={rowCards[1].timestamp}
-                  price={rowCards[1].price}
-                  className="h-full"
-                />
-              </div>
-            )}
-            {rowCards[2] && (
-              <div className="col-span-6">
-                <NewsCard
-                  key={`${i}-2`}
-                  title={rowCards[2].title}
-                  description={rowCards[2].description}
-                  imageUrl={rowCards[2].imageUrl}
-                  pillar={rowCards[2].pillar}
-                  mediaType={rowCards[2].mediaType}
-                  author={rowCards[2].author}
-                  location={rowCards[2].location}
-                  attendees={rowCards[2].attendees}
-                  timestamp={rowCards[2].timestamp}
-                  price={rowCards[2].price}
-                  className="h-full"
-                />
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    );
-  }
-  
-  return <>{rows}</>;
-};
 
 export default function Home() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -416,60 +293,359 @@ export default function Home() {
 
           <SplitBarContent value="today">
             <div className="mt-6">
-              {/* Today Scheduled Section */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-6 text-foreground">Today's Schedule</h2>
-                {renderCardGrid(todayScheduledEvents)}
+              {/* Row 1: Today Scheduled (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={todayScheduledEvents[0]?.title || ""}
+                    description={todayScheduledEvents[0]?.description}
+                    imageUrl={todayScheduledEvents[0]?.imageUrl || ""}
+                    pillar={todayScheduledEvents[0]?.pillar}
+                    author={todayScheduledEvents[0]?.author}
+                    location={todayScheduledEvents[0]?.location}
+                    attendees={todayScheduledEvents[0]?.attendees}
+                    timestamp={todayScheduledEvents[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={todayScheduledEvents[1]?.title || ""}
+                    description={todayScheduledEvents[1]?.description}
+                    imageUrl={todayScheduledEvents[1]?.imageUrl || ""}
+                    pillar={todayScheduledEvents[1]?.pillar}
+                    author={todayScheduledEvents[1]?.author}
+                    location={todayScheduledEvents[1]?.location}
+                    attendees={todayScheduledEvents[1]?.attendees}
+                    timestamp={todayScheduledEvents[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={todayScheduledEvents[2]?.title || ""}
+                    description={todayScheduledEvents[2]?.description}
+                    imageUrl={todayScheduledEvents[2]?.imageUrl || ""}
+                    pillar={todayScheduledEvents[2]?.pillar}
+                    author={todayScheduledEvents[2]?.author}
+                    location={todayScheduledEvents[2]?.location}
+                    attendees={todayScheduledEvents[2]?.attendees}
+                    timestamp={todayScheduledEvents[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
               </div>
 
               <MotivationalBanner variant="encouragement" />
 
-              {/* Media Content Section */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-6 text-foreground">Media & Content</h2>
-                {renderCardGrid(todayMediaContent)}
+              {/* Row 2: Media Content (small + small + big) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={todayMediaContent[0]?.title || ""}
+                    description={todayMediaContent[0]?.description}
+                    imageUrl={todayMediaContent[0]?.imageUrl || ""}
+                    pillar={todayMediaContent[0]?.pillar}
+                    mediaType={todayMediaContent[0]?.mediaType}
+                    author={todayMediaContent[0]?.author}
+                    timestamp={todayMediaContent[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={todayMediaContent[1]?.title || ""}
+                    description={todayMediaContent[1]?.description}
+                    imageUrl={todayMediaContent[1]?.imageUrl || ""}
+                    pillar={todayMediaContent[1]?.pillar}
+                    mediaType={todayMediaContent[1]?.mediaType}
+                    author={todayMediaContent[1]?.author}
+                    timestamp={todayMediaContent[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={todayMediaContent[2]?.title || ""}
+                    description={todayMediaContent[2]?.description}
+                    imageUrl={todayMediaContent[2]?.imageUrl || ""}
+                    pillar={todayMediaContent[2]?.pillar}
+                    mediaType={todayMediaContent[2]?.mediaType}
+                    author={todayMediaContent[2]?.author}
+                    timestamp={todayMediaContent[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
               </div>
 
               <MotivationalBanner variant="partnership" />
 
-              {/* Events & Meetups Section */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-6 text-foreground">Events & Meetups</h2>
-                {renderCardGrid(todayEventsAndMeetups)}
+              {/* Row 3: Events & Meetups (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={todayEventsAndMeetups[0]?.title || ""}
+                    description={todayEventsAndMeetups[0]?.description}
+                    imageUrl={todayEventsAndMeetups[0]?.imageUrl || ""}
+                    pillar={todayEventsAndMeetups[0]?.pillar}
+                    author={todayEventsAndMeetups[0]?.author}
+                    location={todayEventsAndMeetups[0]?.location}
+                    attendees={todayEventsAndMeetups[0]?.attendees}
+                    timestamp={todayEventsAndMeetups[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={todayEventsAndMeetups[1]?.title || ""}
+                    description={todayEventsAndMeetups[1]?.description}
+                    imageUrl={todayEventsAndMeetups[1]?.imageUrl || ""}
+                    pillar={todayEventsAndMeetups[1]?.pillar}
+                    author={todayEventsAndMeetups[1]?.author}
+                    location={todayEventsAndMeetups[1]?.location}
+                    attendees={todayEventsAndMeetups[1]?.attendees}
+                    timestamp={todayEventsAndMeetups[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={todayEventsAndMeetups[2]?.title || ""}
+                    description={todayEventsAndMeetups[2]?.description}
+                    imageUrl={todayEventsAndMeetups[2]?.imageUrl || ""}
+                    pillar={todayEventsAndMeetups[2]?.pillar}
+                    author={todayEventsAndMeetups[2]?.author}
+                    location={todayEventsAndMeetups[2]?.location}
+                    attendees={todayEventsAndMeetups[2]?.attendees}
+                    timestamp={todayEventsAndMeetups[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
               </div>
 
               <MotivationalBanner variant="guidance" />
 
-              {/* News Section */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-6 text-foreground">Community News</h2>
-                {renderCardGrid(todayNews)}
+              {/* Row 4: Community News (small + small + big) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={todayNews[0]?.title || ""}
+                    description={todayNews[0]?.description}
+                    imageUrl={todayNews[0]?.imageUrl || ""}
+                    pillar={todayNews[0]?.pillar}
+                    author={todayNews[0]?.author}
+                    timestamp={todayNews[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={todayNews[1]?.title || ""}
+                    description={todayNews[1]?.description}
+                    imageUrl={todayNews[1]?.imageUrl || ""}
+                    pillar={todayNews[1]?.pillar}
+                    author={todayNews[1]?.author}
+                    location={todayNews[1]?.location}
+                    attendees={todayNews[1]?.attendees}
+                    timestamp={todayNews[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={todayNews[2]?.title || ""}
+                    description={todayNews[2]?.description}
+                    imageUrl={todayNews[2]?.imageUrl || ""}
+                    pillar={todayNews[2]?.pillar}
+                    author={todayNews[2]?.author}
+                    timestamp={todayNews[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
               </div>
             </div>
           </SplitBarContent>
 
           <SplitBarContent value="guide">
             <div className="mt-6">
-              {/* Inspirational Events Section */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-6 text-foreground">Inspirational Events</h2>
-                {renderCardGrid(guideInspirationalEvents, 4)}
+              {/* Row 1: Inspirational Events - first 3 (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={guideInspirationalEvents[0]?.title || ""}
+                    description={guideInspirationalEvents[0]?.description}
+                    imageUrl={guideInspirationalEvents[0]?.imageUrl || ""}
+                    pillar={guideInspirationalEvents[0]?.pillar}
+                    author={guideInspirationalEvents[0]?.author}
+                    location={guideInspirationalEvents[0]?.location}
+                    attendees={guideInspirationalEvents[0]?.attendees}
+                    timestamp={guideInspirationalEvents[0]?.timestamp}
+                    price={guideInspirationalEvents[0]?.price}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={guideInspirationalEvents[1]?.title || ""}
+                    description={guideInspirationalEvents[1]?.description}
+                    imageUrl={guideInspirationalEvents[1]?.imageUrl || ""}
+                    pillar={guideInspirationalEvents[1]?.pillar}
+                    author={guideInspirationalEvents[1]?.author}
+                    location={guideInspirationalEvents[1]?.location}
+                    attendees={guideInspirationalEvents[1]?.attendees}
+                    timestamp={guideInspirationalEvents[1]?.timestamp}
+                    price={guideInspirationalEvents[1]?.price}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={guideInspirationalEvents[2]?.title || ""}
+                    description={guideInspirationalEvents[2]?.description}
+                    imageUrl={guideInspirationalEvents[2]?.imageUrl || ""}
+                    pillar={guideInspirationalEvents[2]?.pillar}
+                    author={guideInspirationalEvents[2]?.author}
+                    location={guideInspirationalEvents[2]?.location}
+                    attendees={guideInspirationalEvents[2]?.attendees}
+                    timestamp={guideInspirationalEvents[2]?.timestamp}
+                    price={guideInspirationalEvents[2]?.price}
+                    className="h-full"
+                  />
+                </div>
               </div>
 
               <MotivationalBanner variant="achievement" />
 
-              {/* Meetup Discovery Section */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-6 text-foreground">Discover Meetups</h2>
-                {renderCardGrid(guideInspirationalEvents, 4)} {/* Reusing for now */}
+              {/* Row 2: Remaining Inspirational Event + first 2 Daily Matches (small + small + big) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={guideInspirationalEvents[3]?.title || ""}
+                    description={guideInspirationalEvents[3]?.description}
+                    imageUrl={guideInspirationalEvents[3]?.imageUrl || ""}
+                    pillar={guideInspirationalEvents[3]?.pillar}
+                    author={guideInspirationalEvents[3]?.author}
+                    location={guideInspirationalEvents[3]?.location}
+                    attendees={guideInspirationalEvents[3]?.attendees}
+                    timestamp={guideInspirationalEvents[3]?.timestamp}
+                    price={guideInspirationalEvents[3]?.price}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={guideDailyMatches[0]?.title || ""}
+                    description={guideDailyMatches[0]?.description}
+                    imageUrl={guideDailyMatches[0]?.imageUrl || ""}
+                    pillar={guideDailyMatches[0]?.pillar}
+                    author={guideDailyMatches[0]?.author}
+                    location={guideDailyMatches[0]?.location}
+                    timestamp={guideDailyMatches[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={guideDailyMatches[1]?.title || ""}
+                    description={guideDailyMatches[1]?.description}
+                    imageUrl={guideDailyMatches[1]?.imageUrl || ""}
+                    pillar={guideDailyMatches[1]?.pillar}
+                    author={guideDailyMatches[1]?.author}
+                    location={guideDailyMatches[1]?.location}
+                    timestamp={guideDailyMatches[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
               </div>
 
               <MotivationalBanner variant="guidance" />
 
-              {/* Daily Matches Section */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-6 text-foreground">Daily Matches</h2>
-                {renderCardGrid(guideDailyMatches, 4)}
+              {/* Row 3: Remaining Daily Matches (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={guideDailyMatches[2]?.title || ""}
+                    description={guideDailyMatches[2]?.description}
+                    imageUrl={guideDailyMatches[2]?.imageUrl || ""}
+                    pillar={guideDailyMatches[2]?.pillar}
+                    author={guideDailyMatches[2]?.author}
+                    location={guideDailyMatches[2]?.location}
+                    timestamp={guideDailyMatches[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={guideDailyMatches[3]?.title || ""}
+                    description={guideDailyMatches[3]?.description}
+                    imageUrl={guideDailyMatches[3]?.imageUrl || ""}
+                    pillar={guideDailyMatches[3]?.pillar}
+                    author={guideDailyMatches[3]?.author}
+                    location={guideDailyMatches[3]?.location}
+                    timestamp={guideDailyMatches[3]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={guideDailyMatches[4]?.title || ""}
+                    description={guideDailyMatches[4]?.description}
+                    imageUrl={guideDailyMatches[4]?.imageUrl || ""}
+                    pillar={guideDailyMatches[4]?.pillar}
+                    author={guideDailyMatches[4]?.author}
+                    location={guideDailyMatches[4]?.location}
+                    timestamp={guideDailyMatches[4]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              <MotivationalBanner variant="partnership" />
+
+              {/* Row 4: Meetup Discovery - reusing inspirational events (small + small + big) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={guideInspirationalEvents[0]?.title || ""}
+                    description={guideInspirationalEvents[0]?.description}
+                    imageUrl={guideInspirationalEvents[0]?.imageUrl || ""}
+                    pillar={guideInspirationalEvents[0]?.pillar}
+                    author={guideInspirationalEvents[0]?.author}
+                    location={guideInspirationalEvents[0]?.location}
+                    attendees={guideInspirationalEvents[0]?.attendees}
+                    timestamp={guideInspirationalEvents[0]?.timestamp}
+                    price={guideInspirationalEvents[0]?.price}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={guideInspirationalEvents[1]?.title || ""}
+                    description={guideInspirationalEvents[1]?.description}
+                    imageUrl={guideInspirationalEvents[1]?.imageUrl || ""}
+                    pillar={guideInspirationalEvents[1]?.pillar}
+                    author={guideInspirationalEvents[1]?.author}
+                    location={guideInspirationalEvents[1]?.location}
+                    attendees={guideInspirationalEvents[1]?.attendees}
+                    timestamp={guideInspirationalEvents[1]?.timestamp}
+                    price={guideInspirationalEvents[1]?.price}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={guideInspirationalEvents[2]?.title || ""}
+                    description={guideInspirationalEvents[2]?.description}
+                    imageUrl={guideInspirationalEvents[2]?.imageUrl || ""}
+                    pillar={guideInspirationalEvents[2]?.pillar}
+                    author={guideInspirationalEvents[2]?.author}
+                    location={guideInspirationalEvents[2]?.location}
+                    attendees={guideInspirationalEvents[2]?.attendees}
+                    timestamp={guideInspirationalEvents[2]?.timestamp}
+                    price={guideInspirationalEvents[2]?.price}
+                    className="h-full"
+                  />
+                </div>
               </div>
             </div>
           </SplitBarContent>
