@@ -15,14 +15,14 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Search, Plus } from "lucide-react";
-import { MasterActionPopup } from "@/components/MasterActionPopup";
+import { ManageMyActionsPopup } from "@/components/ManageMyActionsPopup";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 export default function Actions() {
   const navigate = useNavigate();
   const { pendingActions, executeActions, toggleActionSelection, dismissActions } = useAutopilot();
-  const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [manageActionsOpen, setManageActionsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -88,7 +88,7 @@ export default function Actions() {
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
-            <Button variant="default" size="sm" onClick={() => setMasterActionOpen(true)}>
+            <Button variant="default" size="sm" onClick={() => setManageActionsOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Actions
             </Button>
@@ -325,7 +325,7 @@ export default function Actions() {
         </div>
       </div>
       
-      <MasterActionPopup open={masterActionOpen} onOpenChange={setMasterActionOpen} />
+      <ManageMyActionsPopup open={manageActionsOpen} onOpenChange={setManageActionsOpen} />
     </AppLayout>
   );
 }
