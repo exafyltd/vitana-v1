@@ -56,6 +56,7 @@ const todayMediaContent = [
     description: "A guided meditation session for stress relief",
     imageUrl: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&h=600&fit=crop",
     pillar: "Mental",
+    mediaType: "podcast" as const,
     author: { name: "Dr. Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
     timestamp: "New Episode"
   },
@@ -64,6 +65,7 @@ const todayMediaContent = [
     description: "Upbeat tracks to fuel your workout",
     imageUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
     pillar: "Exercise",
+    mediaType: "music" as const,
     author: { name: "VITANA Music", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     timestamp: "Updated"
   },
@@ -72,6 +74,7 @@ const todayMediaContent = [
     description: "5 nutritious smoothie recipes in 5 minutes",
     imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&h=600&fit=crop",
     pillar: "Nutrition",
+    mediaType: "video" as const,
     author: { name: "Chef Tae", avatar: "/lovable-uploads/tae-min-avatar.jpg" },
     timestamp: "15 min"
   }

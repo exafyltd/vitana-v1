@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Clock, MapPin, Users } from "lucide-react";
+import { Clock, MapPin, Users, Play, Headphones, Music } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
 
@@ -13,6 +13,7 @@ interface NewsCardProps {
   category?: "event" | "community" | "wellness" | "achievement";
   pillar?: string;
   icon?: React.ComponentType<any>;
+  mediaType?: "video" | "podcast" | "music";
   author?: {
     name: string;
     avatar?: string;
@@ -32,7 +33,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     imageUrl, 
     category,
     pillar,
-    icon: IconComponent, 
+    icon: IconComponent,
+    mediaType, 
     author, 
     location, 
     attendees, 
@@ -48,6 +50,17 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       wellness: "bg-accent/20 text-accent-foreground border-accent/30",
       achievement: "bg-muted/20 text-foreground border-muted/30"
     };
+
+    const getMediaIcon = () => {
+      switch (mediaType) {
+        case "video": return Play;
+        case "podcast": return Headphones;
+        case "music": return Music;
+        default: return null;
+      }
+    };
+
+    const MediaIcon = getMediaIcon();
 
     return (
       <Card 
@@ -71,6 +84,15 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+          
+          {/* Media Play Icon Overlay */}
+          {MediaIcon && (
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 border-2 border-white/30 group-hover:scale-110 transition-transform duration-300">
+                <MediaIcon className="w-8 h-8 text-white" />
+              </div>
+            </div>
+          )}
           
           {/* Content Overlay */}
           <CardContent className="absolute inset-0 p-6 flex flex-col justify-between text-white">
