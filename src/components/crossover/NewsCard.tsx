@@ -154,7 +154,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           )}
           
           {/* Content Overlay */}
-          <CardContent className="absolute inset-0 p-6 h-full flex flex-col justify-between text-white">
+          <CardContent className="absolute inset-0 p-6 h-full flex flex-col text-white">
             {/* Top Section */}
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
@@ -187,8 +187,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               )}
             </div>
 
-            {/* Main Content Area */}
-            <div className="flex-1 flex flex-col justify-end space-y-3">
+            {/* Main Content Area - takes up remaining space */}
+            <div className="flex-1 flex flex-col justify-end space-y-3 pb-14">
               {/* Title */}
               <h3 className="text-lg font-bold leading-tight group-hover:text-primary-foreground transition-colors">
                 {title}
@@ -236,8 +236,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               </div>
             </div>
 
-            {/* Action Button Zone - Always at bottom */}
-            <div className="flex justify-end items-center gap-2 pt-3 mt-2">
+            {/* Action Button Zone - Absolutely positioned at bottom */}
+            <div className="absolute bottom-6 right-6 flex items-center gap-2">
               {actionButton}
               {getSmartAction()}
             </div>
