@@ -320,33 +320,34 @@ const spotlightFeatures = [
 const renderEventGrid = (events: any[], section?: string) => {
   const rows = [];
   
-  // Helper function to get action button for different card types
-  const getActionButton = (event: any, index: number) => {
-    if (section === "Discover People") {
-      return (
-        <Button size="sm" variant="outline" className="mt-2">
-          <UserPlus className="w-3 h-3 mr-1" />
-          Follow
-        </Button>
-      );
+  // Helper function to get category based on event data
+  const getCategory = (event: any) => {
+    if (section === "Discover People" || event.category === "people") return "people";
+    if (event.category === "group" || event.members !== undefined) return "group";
+    if (event.category === "video" || event.category === "music" || event.category === "shorts" || event.mediaType) return "media";
+    if (event.category === "event" || event.category === "challenge") return "event";
+    return "community";
+  };
+
+  // Helper function to handle action clicks
+  const handleActionClick = (event: any) => {
+    const category = getCategory(event);
+    switch (category) {
+      case "event":
+        console.log(`Joining event: ${event.title}`);
+        break;
+      case "people":
+        console.log(`Following: ${event.title}`);
+        break;
+      case "media":
+        console.log(`Playing: ${event.title}`);
+        break;
+      case "group":
+        console.log(`Joining group: ${event.title}`);
+        break;
+      default:
+        console.log(`Viewing: ${event.title}`);
     }
-    if (event.category === "group" || event.category === "event" || event.category === "challenge") {
-      return (
-        <Button size="sm" variant="default" className="mt-2">
-          <Plus className="w-3 h-3 mr-1" />
-          Join Now
-        </Button>
-      );
-    }
-    if (event.category === "video" || event.category === "music" || event.category === "shorts") {
-      return (
-        <Button size="sm" variant="outline" className="mt-2">
-          <Play className="w-3 h-3 mr-1" />
-          Play Now
-        </Button>
-      );
-    }
-    return null;
   };
 
   // Helper function to get AI Spotlight styling
@@ -373,13 +374,15 @@ const renderEventGrid = (events: any[], section?: string) => {
                 title={rowEvents[0]?.title || ""}
                 description={rowEvents[0]?.description}
                 imageUrl={rowEvents[0]?.imageUrl || ""}
+                category={getCategory(rowEvents[0])}
                 pillar={rowEvents[0]?.pillar}
                 author={rowEvents[0]?.author}
                 location={rowEvents[0]?.location}
                 attendees={rowEvents[0]?.attendees}
                 timestamp={rowEvents[0]?.timestamp}
                 className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
-                actionButton={getActionButton(rowEvents[0], 0)}
+                showSmartAction={true}
+                onActionClick={() => handleActionClick(rowEvents[0])}
               />
             </div>
             {rowEvents[1] && (
@@ -389,13 +392,15 @@ const renderEventGrid = (events: any[], section?: string) => {
                   title={rowEvents[1].title}
                   description={rowEvents[1].description}
                   imageUrl={rowEvents[1].imageUrl}
+                  category={getCategory(rowEvents[1])}
                   pillar={rowEvents[1].pillar}
                   author={rowEvents[1].author}
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
                   className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
-                  actionButton={getActionButton(rowEvents[1], 1)}
+                  showSmartAction={true}
+                  onActionClick={() => handleActionClick(rowEvents[1])}
                 />
               </div>
             )}
@@ -406,13 +411,15 @@ const renderEventGrid = (events: any[], section?: string) => {
                   title={rowEvents[2].title}
                   description={rowEvents[2].description}
                   imageUrl={rowEvents[2].imageUrl}
+                  category={getCategory(rowEvents[2])}
                   pillar={rowEvents[2].pillar}
                   author={rowEvents[2].author}
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
                   className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
-                  actionButton={getActionButton(rowEvents[2], 2)}
+                  showSmartAction={true}
+                  onActionClick={() => handleActionClick(rowEvents[2])}
                 />
               </div>
             )}
@@ -427,13 +434,15 @@ const renderEventGrid = (events: any[], section?: string) => {
                   title={rowEvents[0].title}
                   description={rowEvents[0].description}
                   imageUrl={rowEvents[0].imageUrl}
+                  category={getCategory(rowEvents[0])}
                   pillar={rowEvents[0].pillar}
                   author={rowEvents[0].author}
                   location={rowEvents[0].location}
                   attendees={rowEvents[0].attendees}
                   timestamp={rowEvents[0].timestamp}
                   className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
-                  actionButton={getActionButton(rowEvents[0], 0)}
+                  showSmartAction={true}
+                  onActionClick={() => handleActionClick(rowEvents[0])}
                 />
               </div>
             )}
@@ -444,13 +453,15 @@ const renderEventGrid = (events: any[], section?: string) => {
                   title={rowEvents[1].title}
                   description={rowEvents[1].description}
                   imageUrl={rowEvents[1].imageUrl}
+                  category={getCategory(rowEvents[1])}
                   pillar={rowEvents[1].pillar}
                   author={rowEvents[1].author}
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
                   className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
-                  actionButton={getActionButton(rowEvents[1], 1)}
+                  showSmartAction={true}
+                  onActionClick={() => handleActionClick(rowEvents[1])}
                 />
               </div>
             )}
@@ -461,13 +472,15 @@ const renderEventGrid = (events: any[], section?: string) => {
                   title={rowEvents[2].title}
                   description={rowEvents[2].description}
                   imageUrl={rowEvents[2].imageUrl}
+                  category={getCategory(rowEvents[2])}
                   pillar={rowEvents[2].pillar}
                   author={rowEvents[2].author}
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
                   className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
-                  actionButton={getActionButton(rowEvents[2], 2)}
+                  showSmartAction={true}
+                  onActionClick={() => handleActionClick(rowEvents[2])}
                 />
               </div>
             )}

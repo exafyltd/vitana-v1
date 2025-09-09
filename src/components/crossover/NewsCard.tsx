@@ -2,7 +2,8 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Clock, MapPin, Users, Play, Headphones, Music } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
 
@@ -10,7 +11,7 @@ interface NewsCardProps {
   title: string;
   description?: string;
   imageUrl: string;
-  category?: "event" | "community" | "wellness" | "achievement";
+  category?: "event" | "community" | "wellness" | "achievement" | "people" | "media" | "group";
   pillar?: string;
   icon?: React.ComponentType<any>;
   mediaType?: "video" | "podcast" | "music";
@@ -25,6 +26,8 @@ interface NewsCardProps {
   className?: string;
   onClick?: () => void;
   actionButton?: React.ReactNode;
+  showSmartAction?: boolean;
+  onActionClick?: () => void;
 }
 
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
@@ -43,7 +46,9 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     price,
     className, 
     onClick,
-    actionButton
+    actionButton,
+    showSmartAction = false,
+    onActionClick
   }, ref) => {
     
     const categoryStyles = {
@@ -63,6 +68,58 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     };
 
     const MediaIcon = getMediaIcon();
+
+    // Smart action button logic based on content type
+    const getSmartAction = () => {
+      if (!showSmartAction) return null;
+      
+      let buttonText = "View";
+      let buttonIcon = null;
+      
+      switch (category) {
+        case "event":
+          buttonText = "Join Now";
+          buttonIcon = Calendar;
+          break;
+        case "people":
+          buttonText = "Follow";
+          buttonIcon = UserPlus;
+          break;
+        case "media":
+          buttonText = mediaType === "video" ? "Watch Now" : 
+                      mediaType === "podcast" ? "Listen Now" : 
+                      mediaType === "music" ? "Play Now" : "View";
+          buttonIcon = PlayCircle;
+          break;
+        case "group":
+          buttonText = "Join Group";
+          buttonIcon = Users;
+          break;
+        case "community":
+          buttonText = "Join Now";
+          buttonIcon = Calendar;
+          break;
+        default:
+          buttonText = "View";
+      }
+      
+      const ButtonIcon = buttonIcon;
+      
+      return (
+        <Button
+          variant="secondary"
+          size="sm"
+          className="bg-white/90 text-foreground hover:bg-white border-0 shadow-lg backdrop-blur-sm font-medium transition-all duration-200 hover:shadow-xl hover:scale-105"
+          onClick={(e) => {
+            e.stopPropagation();
+            onActionClick?.();
+          }}
+        >
+          {ButtonIcon && <ButtonIcon className="w-4 h-4" />}
+          {buttonText}
+        </Button>
+      );
+    };
 
     return (
       <Card 
@@ -178,12 +235,11 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 </div>
               </div>
 
-              {/* Action Button */}
-              {actionButton && (
-                <div className="flex justify-center pt-2">
-                  {actionButton}
-                </div>
-              )}
+              {/* Action Buttons - Fixed positioning at bottom */}
+              <div className="flex justify-end items-center gap-2 pt-2">
+                {actionButton}
+                {getSmartAction()}
+              </div>
             </div>
           </CardContent>
         </div>
