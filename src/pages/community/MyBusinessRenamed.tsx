@@ -31,22 +31,6 @@ export default function MyBusiness() {
       <SEO title="My Business | Community" description="Manage your wellness services and events" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       
-      {/* Action Buttons */}
-      <UtilityActionButton>
-        <Button variant="outline" size="sm">
-          <Search className="w-4 h-4 mr-2" />
-          Search
-        </Button>
-        <Button 
-          variant="default" 
-          size="sm"
-          onClick={() => setShowBusinessFilters(true)}
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Business
-        </Button>
-      </UtilityActionButton>
-      
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
@@ -112,6 +96,22 @@ export default function MyBusiness() {
               </div>
             </div>
           </div>
+
+          {/* Action Buttons */}
+          <UtilityActionButton>
+            <Button variant="outline" size="sm">
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+            <Button 
+              variant="default" 
+              size="sm"
+              onClick={() => setShowBusinessFilters(true)}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Business
+            </Button>
+          </UtilityActionButton>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
