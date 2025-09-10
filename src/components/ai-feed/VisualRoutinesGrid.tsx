@@ -79,12 +79,12 @@ export function VisualRoutinesGrid({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Large Card - Primary Routine */}
-      <Card className="md:col-span-2 bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 group overflow-hidden">
-        <div className="relative h-48">
+      <Card className="md:col-span-2 bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 group overflow-hidden min-h-[200px]">
+        <div className="relative h-full min-h-[200px]">
           <img 
             src={primaryRoutine.image}
             alt={primaryRoutine.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover absolute inset-0"
           />
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
