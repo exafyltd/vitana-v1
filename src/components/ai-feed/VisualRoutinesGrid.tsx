@@ -80,7 +80,7 @@ export function VisualRoutinesGrid({
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Large Card - Primary Routine */}
       <Card className="md:col-span-2 bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300 group overflow-hidden">
-        <div className="relative h-64">
+        <div className="relative h-48">
           <img 
             src={primaryRoutine.image}
             alt={primaryRoutine.name}
@@ -133,7 +133,7 @@ export function VisualRoutinesGrid({
       <div className="space-y-6">
         {secondaryRoutines.map((routine) => (
           <Card key={routine.id} className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-lg transition-all duration-300 overflow-hidden">
-            <div className="relative h-32">
+            <div className="relative h-20">
               <img 
                 src={routine.image}
                 alt={routine.name}
