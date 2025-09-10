@@ -5,14 +5,16 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Plus, Shield, Eye, Settings, Clock, AlertTriangle, CheckCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Shield, Eye, Settings, Clock, AlertTriangle, CheckCircle } from "lucide-react";
+import ConsentPackagePopup from "@/components/ConsentPackagePopup";
 
 const consentData = {
   activeConsents: [
@@ -67,16 +69,16 @@ const consentData = {
   ]
 };
 
-function Consent() {
+export default withScreenId(function Consent() {
   const [activeTab, setActiveTab] = useState("active");
-  const [consentPopupOpen, setConsentPopupOpen] = useState(false);
+  const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
     <AppLayout>
       <SEO 
         title="Consent Dashboard | Sharing" 
         description="Manage your data sharing consents, view active permissions, and control how your health data is used."
-        canonical={window.location.href}
+        canonical={window.location.href} 
       />
       <SubNavigation items={sharingNavigation} />
       
@@ -95,7 +97,7 @@ function Consent() {
             />
             <Button 
               size="sm" 
-              onClick={() => setConsentPopupOpen(true)}
+              onClick={() => setActionPopupOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
               Sharing Actions
@@ -111,8 +113,7 @@ function Consent() {
             
             <SplitBarContent value="active">
               <div className="grid grid-cols-12 gap-6 mt-6">
-
-                {/* Active Consents Grid */}
+                {/* Active Consents - Full Width Cards */}
                 <div className="col-span-12">
                   <div className="space-y-4">
                     {consentData.activeConsents.map((consent) => (
@@ -177,7 +178,7 @@ function Consent() {
             
             <SplitBarContent value="pending">
               <div className="grid grid-cols-12 gap-6 mt-6">
-                {/* Pending Requests Grid */}
+                {/* Pending Requests - Full Width Cards */}
                 <div className="col-span-12">
                   <div className="space-y-4">
                     {consentData.pendingRequests.map((request) => (
@@ -236,7 +237,7 @@ function Consent() {
             
             <SplitBarContent value="overview">
               <div className="grid grid-cols-12 gap-6 mt-6">
-                {/* Overview Stats - Big + Small + Small Pattern */}
+                {/* Big + Small + Small Pattern (6+3+3) */}
                 <div className="col-span-12 lg:col-span-6">
                   <Card>
                     <CardHeader>
@@ -294,7 +295,7 @@ function Consent() {
                   </Card>
                 </div>
                 
-                {/* Action Buttons Row */}
+                {/* Quick Actions - Full Width Row */}
                 <div className="col-span-12">
                   <Card>
                     <CardHeader>
@@ -322,8 +323,14 @@ function Consent() {
           
         </div>
       </div>
+      
+      {/* Action Popup Component */}
+      {actionPopupOpen && (
+        <ConsentPackagePopup
+          open={actionPopupOpen}
+          onOpenChange={(open) => setActionPopupOpen(open)}
+        />
+      )}
     </AppLayout>
   );
-}
-
-export default withScreenId(Consent, SCREEN_IDS.SHARING_CONSENT);
+}, SCREEN_IDS.SHARING_CONSENT);
