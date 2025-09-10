@@ -2,146 +2,220 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
+import { WalletBalanceCard } from "@/components/wallet/WalletBalanceCard";
+import { WalletTransactionCard } from "@/components/wallet/WalletTransactionCard";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Wallet, DollarSign, Gift, CreditCard, TrendingUp } from "lucide-react";
+import { CreditCard, Coins, Shield, Plus, TrendingUp } from "lucide-react";
+import { useState } from "react";
 
 const balanceData = {
-  currentBalance: 2450.75,
-  pendingRewards: 125.50,
-  lifetimeEarnings: 8950.25,
-  benefits: [
-    { name: "Premium Health Coaching", status: "active", value: "$299/month" },
-    { name: "Lab Test Discounts", status: "active", value: "25% off" },
-    { name: "Vitana Index Plus", status: "active", value: "Advanced Analytics" },
-    { name: "Community Access", status: "active", value: "All Groups" }
-  ],
-  recentTransactions: [
-    { date: "2024-01-15", description: "Health Coach Session Reward", amount: +25.00, type: "earned" },
-    { date: "2024-01-12", description: "Lab Test Discount Applied", amount: -75.00, type: "discount" },
-    { date: "2024-01-10", description: "Referral Bonus", amount: +50.00, type: "earned" },
-    { date: "2024-01-08", description: "Wellness Challenge Prize", amount: +100.00, type: "earned" }
-  ]
+  credits: {
+    balance: 2450,
+    pending: 125,
+    expiry: "March 15, 2024",
+    transactions: [
+      { id: "1", title: "Health Coach Session Reward", timestamp: "2024-01-15", description: "Health Coach Session Reward", amount: "25", type: "reward" as const, status: "completed" as const },
+      { id: "2", title: "Challenge Completion Bonus", timestamp: "2024-01-12", description: "Challenge Completion Bonus", amount: "50", type: "reward" as const, status: "completed" as const },
+      { id: "3", title: "Monthly Streak Reward", timestamp: "2024-01-10", description: "Monthly Streak Reward", amount: "30", type: "reward" as const, status: "completed" as const }
+    ]
+  },
+  tokens: {
+    vtn: 1250,
+    staked: 800,
+    rewards: 45.50,
+    governance: [
+      { id: "gov1", title: "Community Fund Allocation", timestamp: "Active", description: "Governance: Community Fund Allocation", amount: "800", type: "reward" as const, status: "completed" as const, votingPower: 800 },
+      { id: "gov2", title: "New Feature Roadmap", timestamp: "Completed", description: "Governance: New Feature Roadmap", amount: "600", type: "reward" as const, status: "completed" as const, votingPower: 600 }
+    ]
+  },
+  membership: {
+    tier: "Premium",
+    coverage: 75,
+    benefits: [
+      { id: "ben1", title: "Health Coaching", timestamp: "Active", description: "Health Coaching", amount: "0", type: "reward" as const, status: "completed" as const, value: "Unlimited Sessions" },
+      { id: "ben2", title: "Lab Test Coverage", timestamp: "Active", description: "Lab Test Coverage", amount: "0", type: "reward" as const, status: "completed" as const, value: "75% Coverage" },
+      { id: "ben3", title: "Advanced Analytics", timestamp: "Active", description: "Advanced Analytics", amount: "0", type: "reward" as const, status: "completed" as const, value: "Full Access" },
+      { id: "ben4", title: "Priority Support", timestamp: "Active", description: "Priority Support", amount: "0", type: "reward" as const, status: "completed" as const, value: "24/7 Available" }
+    ]
+  }
 };
 
 function Balance() {
+  const [activeTab, setActiveTab] = useState("credits");
+
+  const splitBarOptions = [
+    { value: "credits", label: "Credits Account" },
+    { value: "tokens", label: "Tokens Account" },
+    { value: "membership", label: "Membership Benefits" }
+  ];
+
+  const getContextualAction = () => {
+    switch (activeTab) {
+      case "credits":
+        return { label: "Top Up Credits", icon: Plus };
+      case "tokens":
+        return { label: "Buy/Stake Tokens", icon: Coins };
+      case "membership":
+        return { label: "Upgrade Plan", icon: TrendingUp };
+      default:
+        return { label: "Top Up Credits", icon: Plus };
+    }
+  };
+
+  const contextualAction = getContextualAction();
+
   return (
     <AppLayout>
       <SEO 
         title="Balance & Benefits - Vitana Wallet" 
-        description="Manage your Vitana wallet balance, view active benefits, and track your earnings and spending history."
+        description="Manage your credits, tokens, and membership benefits in your Vitana wallet."
       />
       <SubNavigation items={walletNavigation} />
       
       <div className="px-6 py-8 space-y-8">
         <StandardHeader 
-          title="Balance & Benefits"
-          description="Manage your wallet balance and track your active benefits"
+          title="Balance & Benefits 💳"
+          description="Manage your credits, tokens, and membership benefits"
         />
 
-        {/* Balance Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Current Balance</CardTitle>
-              <Wallet className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">${balanceData.currentBalance.toFixed(2)}</div>
-              <p className="text-xs text-muted-foreground">Available to spend</p>
-            </CardContent>
-          </Card>
+        <UtilityActionButton>
+          <ExpandableSearchButton placeholder="Search balances, transactions, or benefits..." />
+          <contextualAction.icon className="h-4 w-4 mr-2" />
+          {contextualAction.label}
+        </UtilityActionButton>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending Rewards</CardTitle>
-              <Gift className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">${balanceData.pendingRewards.toFixed(2)}</div>
-              <p className="text-xs text-muted-foreground">Processing</p>
-            </CardContent>
-          </Card>
+        <SplitBar value={activeTab} onValueChange={setActiveTab}>
+          <SplitBarList>
+            <SplitBarTrigger value="credits">Credits Account</SplitBarTrigger>
+            <SplitBarTrigger value="tokens">Tokens Account</SplitBarTrigger>
+            <SplitBarTrigger value="membership">Membership Benefits</SplitBarTrigger>
+          </SplitBarList>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Lifetime Earnings</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">${balanceData.lifetimeEarnings.toFixed(2)}</div>
-              <p className="text-xs text-muted-foreground">Total earned</p>
-            </CardContent>
-          </Card>
-        </div>
+          <WalletMotivationalBanner 
+            variant="balance" 
+            activeTab={activeTab}
+          />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Active Benefits */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Gift className="h-5 w-5" />
-                Active Benefits
-              </CardTitle>
-              <CardDescription>
-                Your current membership benefits and perks
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {balanceData.benefits.map((benefit, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                  <div>
-                    <div className="font-medium">{benefit.name}</div>
-                    <div className="text-sm text-muted-foreground">Value: {benefit.value}</div>
-                  </div>
-                  <Badge variant="secondary">Active</Badge>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+          <SplitBarContent value="credits">
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <WalletBalanceCard
+                  type="credits"
+                  title="Credits Balance"
+                  balance={`${balanceData.credits.balance.toLocaleString()} credits`}
+                  subBalance={`${balanceData.credits.pending} credits pending`}
+                  change="+125 this week"
+                  changeType="increase"
+                  status="Active"
+                  description="Use credits for health services, lab tests, and premium features"
+                />
+                <WalletBalanceCard
+                  type="credits"
+                  title="Credits Expiry"
+                  balance={balanceData.credits.expiry}
+                  description="Keep your credits active by using them regularly"
+                  status="Tracked"
+                />
+              </div>
 
-          {/* Recent Transactions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5" />
-                Recent Transactions
-              </CardTitle>
-              <CardDescription>
-                Your latest wallet activity and transactions
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {balanceData.recentTransactions.map((transaction, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div>
-                    <div className="font-medium">{transaction.description}</div>
-                    <div className="text-sm text-muted-foreground">{transaction.date}</div>
-                  </div>
-                  <div className={`font-bold ${transaction.amount > 0 ? 'text-green-600' : 'text-blue-600'}`}>
-                    {transaction.amount > 0 ? '+' : ''}${Math.abs(transaction.amount).toFixed(2)}
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
+              <WalletMotivationalBanner 
+                variant="balance" 
+                activeTab="credits"
+              />
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4">
-          <Button>
-            <DollarSign className="h-4 w-4 mr-2" />
-            Add Funds
-          </Button>
-          <Button variant="outline">
-            <CreditCard className="h-4 w-4 mr-2" />
-            Withdraw
-          </Button>
-          <Button variant="outline">View All Transactions</Button>
-        </div>
+              <div className="grid grid-cols-1 gap-4">
+                {balanceData.credits.transactions.map((transaction) => (
+                  <WalletTransactionCard
+                    key={transaction.id}
+                    {...transaction}
+                    onClick={() => console.log('Transaction clicked:', transaction.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="tokens">
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <WalletBalanceCard
+                  type="tokens"
+                  title="VTN Balance"
+                  balance={`${balanceData.tokens.vtn.toLocaleString()} VTN`}
+                  subBalance={`${balanceData.tokens.staked} staked`}
+                  change="+5.2% APY"
+                  changeType="increase"
+                  status="Staking"
+                  description="Vitana Network tokens for governance and rewards"
+                />
+                <WalletBalanceCard
+                  type="tokens"
+                  title="Staking Rewards"
+                  balance={`${balanceData.tokens.rewards} VTN`}
+                  description="Accumulated rewards from staking your VTN tokens"
+                  status="Claimable"
+                />
+              </div>
+
+              <WalletMotivationalBanner 
+                variant="balance" 
+                activeTab="tokens"
+              />
+
+              <div className="grid grid-cols-1 gap-4">
+                {balanceData.tokens.governance.map((vote) => (
+                  <WalletTransactionCard
+                    key={vote.id}
+                    {...vote}
+                    onClick={() => console.log('Governance clicked:', vote.title)}
+                  />
+                ))}
+              </div>
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="membership">
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <WalletBalanceCard
+                  type="cash"
+                  title="Membership Tier"
+                  balance={balanceData.membership.tier}
+                  subBalance={`${balanceData.membership.coverage}% coverage`}
+                  description="Your current membership level and benefits coverage"
+                  status="Active"
+                />
+                <WalletBalanceCard
+                  type="cash"
+                  title="Upgrade Benefits"
+                  balance="Platinum Tier"
+                  description="Unlock 90% coverage + exclusive perks"
+                  status="Available"
+                />
+              </div>
+
+              <WalletMotivationalBanner 
+                variant="balance" 
+                activeTab="membership"
+              />
+
+              <div className="grid grid-cols-1 gap-4">
+                {balanceData.membership.benefits.map((benefit) => (
+                  <WalletTransactionCard
+                    key={benefit.id}
+                    {...benefit}
+                    onClick={() => console.log('Benefit clicked:', benefit.title)}
+                  />
+                ))}
+              </div>
+            </div>
+          </SplitBarContent>
+        </SplitBar>
       </div>
     </AppLayout>
   );

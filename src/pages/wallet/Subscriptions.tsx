@@ -2,217 +2,165 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
+import { WalletSubscriptionCard } from "@/components/wallet/WalletSubscriptionCard";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Calendar, CreditCard, Package, Settings, CheckCircle, Clock } from "lucide-react";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 
 const subscriptionData = {
   active: [
     {
-      id: 1,
+      id: "1",
       name: "Vitana Premium",
       description: "Complete health coaching and analytics platform",
-      price: 299,
-      billing: "monthly",
-      nextBilling: "2024-02-15",
-      features: ["Personal Health Coach", "Advanced Analytics", "Lab Test Discounts", "Priority Support"]
+      price: "$299",
+      billing: "month",
+      status: "active" as const,
+      features: ["Personal Health Coach", "Advanced Analytics", "Lab Test Discounts", "Priority Support"],
+      tier: "premium" as const
     },
     {
-      id: 2,
+      id: "2", 
       name: "Community Plus",
       description: "Enhanced community features and exclusive content",
-      price: 49,
-      billing: "monthly",
-      nextBilling: "2024-02-12",
-      features: ["All Group Access", "Live Room Hosting", "Premium Content", "Expert Q&A Sessions"]
+      price: "$49",
+      billing: "month",
+      status: "active" as const,
+      features: ["All Group Access", "Live Room Hosting", "Premium Content", "Expert Q&A Sessions"],
+      tier: "basic" as const
     }
   ],
   paused: [
     {
-      id: 3,
-      name: "Wellness Tracker Pro",
+      id: "3",
+      name: "Wellness Tracker Pro", 
       description: "Advanced health tracking and insights",
-      price: 19,
-      billing: "monthly",
-      pausedDate: "2024-01-01",
-      resumeDate: "2024-03-01"
+      price: "$19",
+      billing: "month",
+      status: "paused" as const,
+      features: ["Health Metrics", "Goal Tracking", "Progress Reports"],
+      tier: "basic" as const
     }
   ],
   available: [
     {
-      id: 4,
+      id: "4",
       name: "AI Health Assistant",
-      description: "24/7 AI-powered health guidance and recommendations",
-      price: 99,
-      billing: "monthly",
-      features: ["24/7 AI Support", "Personalized Recommendations", "Health Risk Assessment", "Medication Reminders"]
+      description: "24/7 AI-powered health guidance and recommendations", 
+      price: "$99",
+      billing: "month",
+      status: "available" as const,
+      features: ["24/7 AI Support", "Personalized Recommendations", "Health Risk Assessment", "Medication Reminders"],
+      tier: "premium" as const,
+      discount: "50% OFF"
     },
     {
-      id: 5,
+      id: "5",
       name: "Family Plan",
       description: "Extend your health journey to family members",
-      price: 399,
-      billing: "monthly",
-      features: ["Up to 4 Family Members", "Shared Health Goals", "Family Health Dashboard", "Group Coaching Sessions"]
+      price: "$399", 
+      billing: "month",
+      status: "available" as const,
+      features: ["Up to 4 Family Members", "Shared Health Goals", "Family Health Dashboard", "Group Coaching Sessions"],
+      tier: "enterprise" as const
     }
   ]
 };
 
 function Subscriptions() {
+  const [activeTab, setActiveTab] = useState("active");
+
+  const splitBarOptions = [
+    { value: "active", label: "Active" },
+    { value: "paused", label: "Paused" }, 
+    { value: "available", label: "Available" }
+  ];
+
   return (
     <AppLayout>
       <SEO 
         title="Subscriptions - Vitana Wallet" 
-        description="Manage your Vitana subscriptions, view active plans, and explore new subscription options."
+        description="Manage your active subscriptions, view paused plans, and explore new subscription options."
       />
       <SubNavigation items={walletNavigation} />
       
       <div className="px-6 py-8 space-y-8">
         <StandardHeader 
-          title="Subscriptions"
-          description="Manage your active subscriptions and explore new plans"
+          title="Subscriptions 📋"
+          description="Manage your health and wellness subscription plans"
         />
 
-        {/* Active Subscriptions */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-green-600" />
-            <h2 className="text-xl font-semibold">Active Subscriptions</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {subscriptionData.active.map((subscription) => (
-              <Card key={subscription.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle>{subscription.name}</CardTitle>
-                      <CardDescription>{subscription.description}</CardDescription>
-                    </div>
-                    <Badge variant="secondary">Active</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold">${subscription.price}</span>
-                    <span className="text-muted-foreground">/{subscription.billing}</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4" />
-                    Next billing: {subscription.nextBilling}
-                  </div>
-                  
-                  <ul className="space-y-1 text-sm">
-                    {subscription.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <CheckCircle className="h-3 w-3 text-green-600" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="flex gap-2 pt-2">
-                    <Button variant="outline" size="sm">
-                      <Settings className="h-4 w-4 mr-2" />
-                      Manage
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <CreditCard className="h-4 w-4 mr-2" />
-                      Billing
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+        <UtilityActionButton>
+          <ExpandableSearchButton placeholder="Search subscriptions and plans..." />
+          <Plus className="h-4 w-4 mr-2" />
+          Add Subscription
+        </UtilityActionButton>
 
-        {/* Paused Subscriptions */}
-        {subscriptionData.paused.length > 0 && (
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <Clock className="h-5 w-5 text-orange-600" />
-              <h2 className="text-xl font-semibold">Paused Subscriptions</h2>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {subscriptionData.paused.map((subscription) => (
-                <Card key={subscription.id} className="opacity-75">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle>{subscription.name}</CardTitle>
-                        <CardDescription>{subscription.description}</CardDescription>
-                      </div>
-                      <Badge variant="outline">Paused</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold">${subscription.price}</span>
-                      <span className="text-muted-foreground">/{subscription.billing}</span>
-                    </div>
-                    
-                    <div className="text-sm text-muted-foreground">
-                      Paused since: {subscription.pausedDate}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Resume date: {subscription.resumeDate}
-                    </div>
-                    
-                    <div className="flex gap-2 pt-2">
-                      <Button size="sm">Resume Now</Button>
-                      <Button variant="outline" size="sm">Modify</Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
+        <SplitBar value={activeTab} onValueChange={setActiveTab}>
+          <SplitBarList>
+            <SplitBarTrigger value="active">Active</SplitBarTrigger>
+            <SplitBarTrigger value="paused">Paused</SplitBarTrigger>
+            <SplitBarTrigger value="available">Available</SplitBarTrigger>
+          </SplitBarList>
 
-        {/* Available Subscriptions */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-2">
-            <Package className="h-5 w-5 text-blue-600" />
-            <h2 className="text-xl font-semibold">Available Subscriptions</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {subscriptionData.available.map((subscription) => (
-              <Card key={subscription.id}>
-                <CardHeader>
-                  <CardTitle>{subscription.name}</CardTitle>
-                  <CardDescription>{subscription.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold">${subscription.price}</span>
-                    <span className="text-muted-foreground">/{subscription.billing}</span>
-                  </div>
-                  
-                  <ul className="space-y-1 text-sm">
-                    {subscription.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <CheckCircle className="h-3 w-3 text-green-600" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="flex gap-2 pt-2">
-                    <Button>Subscribe</Button>
-                    <Button variant="outline">Learn More</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+          <WalletMotivationalBanner variant="subscriptions" />
+
+          <SplitBarContent value="active">
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {subscriptionData.active.map((subscription) => (
+                  <WalletSubscriptionCard
+                    key={subscription.id}
+                    {...subscription}
+                    onAction={() => console.log('Manage subscription:', subscription.id)}
+                    onClick={() => console.log('Subscription clicked:', subscription.id)}
+                  />
+                ))}
+              </div>
+              
+              <WalletMotivationalBanner variant="subscriptions" />
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="paused">
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {subscriptionData.paused.map((subscription) => (
+                  <WalletSubscriptionCard
+                    key={subscription.id}
+                    {...subscription}
+                    onAction={() => console.log('Resume subscription:', subscription.id)}
+                    onClick={() => console.log('Paused subscription clicked:', subscription.id)}
+                  />
+                ))}
+              </div>
+              
+              <WalletMotivationalBanner variant="subscriptions" />
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="available">
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {subscriptionData.available.map((subscription) => (
+                  <WalletSubscriptionCard
+                    key={subscription.id}
+                    {...subscription}
+                    onAction={() => console.log('Subscribe to:', subscription.id)}
+                    onClick={() => console.log('Available subscription clicked:', subscription.id)}
+                  />
+                ))}
+              </div>
+              
+              <WalletMotivationalBanner variant="subscriptions" />
+            </div>
+          </SplitBarContent>
+        </SplitBar>
       </div>
     </AppLayout>
   );
