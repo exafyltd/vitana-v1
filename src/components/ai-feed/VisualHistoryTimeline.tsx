@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, RotateCcw, Star, TrendingUp, Calendar, Award, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, RotateCcw, Star, TrendingUp, Calendar, Award, Zap, Download } from "lucide-react";
 
 interface TimelineEvent {
   id: string;
@@ -103,6 +104,23 @@ const getEventColor = (type: TimelineEvent["type"]) => {
   }
 };
 
+const getCategoryBackground = (category: string) => {
+  switch (category) {
+    case "health":
+      return "bg-gradient-to-br from-blue-50/80 to-cyan-50/80 backdrop-blur-sm";
+    case "wellness": 
+      return "bg-gradient-to-br from-green-50/80 to-emerald-50/80 backdrop-blur-sm";
+    case "social":
+      return "bg-gradient-to-br from-pink-50/80 to-rose-50/80 backdrop-blur-sm";
+    case "exercise":
+      return "bg-gradient-to-br from-orange-50/80 to-amber-50/80 backdrop-blur-sm";
+    case "sleep":
+      return "bg-gradient-to-br from-indigo-50/80 to-purple-50/80 backdrop-blur-sm";
+    default:
+      return "bg-white/80 backdrop-blur-sm";
+  }
+};
+
 const getBadgeVariant = (type: TimelineEvent["type"]) => {
   switch (type) {
     case "completion": return "default" as const;
@@ -112,96 +130,163 @@ const getBadgeVariant = (type: TimelineEvent["type"]) => {
   }
 };
 
+const MotivationalBanner = ({ message, subtext }: { message: string; subtext: string }) => (
+  <Card className="mb-8 bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-50" />
+    <CardContent className="p-6 relative z-10 text-center">
+      <h3 className="text-lg font-bold text-primary mb-2">{message}</h3>
+      <p className="text-sm text-muted-foreground">{subtext}</p>
+    </CardContent>
+  </Card>
+);
+
+const MotivationalDivider = ({ message, index }: { message: string; index: number }) => (
+  <div className="my-8 flex items-center justify-center">
+    <Card className="bg-gradient-to-r from-secondary/20 to-accent/20 border-secondary/30 px-6 py-3">
+      <div className="flex items-center gap-2">
+        <span className="text-2xl">
+          {index % 3 === 0 ? "🌟" : index % 3 === 1 ? "💪" : "🚀"}
+        </span>
+        <span className="font-medium text-secondary-foreground">{message}</span>
+      </div>
+    </Card>
+  </div>
+);
+
 export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryTimelineProps) {
   const sortedEvents = events.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+  
+  const motivationalMessages = [
+    "Consistency is your superpower 💪",
+    "Progress is progress, no matter the size 🌟", 
+    "Every small step counts towards greatness 🚀"
+  ];
 
   return (
     <div className="relative">
+      {/* Motivational Banner at Top */}
+      <MotivationalBanner 
+        message="Progress is progress, no matter the size 🌟"
+        subtext="Celebrate micro-wins on your journey."
+      />
+
+      {/* Export History Button - Fixed Position */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button variant="secondary" className="shadow-lg">
+          <Download className="w-4 h-4 mr-2" />
+          Export History
+        </Button>
+      </div>
+
       {/* Timeline line */}
-      <div className="absolute left-8 top-8 bottom-8 w-0.5 bg-gradient-to-b from-primary/20 via-primary/40 to-primary/20" />
+      <div className="absolute left-8 top-24 bottom-8 w-0.5 bg-gradient-to-b from-primary/20 via-primary/40 to-primary/20" />
       
       <div className="space-y-6">
         {sortedEvents.map((event, index) => (
-          <div key={event.id} className="relative flex items-start gap-6">
-            {/* Timeline node with enhanced animations */}
-            <div className={`
-              relative z-10 flex items-center justify-center w-16 h-16 rounded-full 
-              border-4 ${getEventColor(event.type)} shadow-lg
-              ${index < 2 ? 'animate-pulse' : ''}
-            `}>
-              {getEventIcon(event.type)}
-              {/* Enhanced pulse animation for recent events */}
-              {index < 2 && (
-                <>
-                  <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping" />
-                  <div className="absolute inset-0 rounded-full border-2 border-yellow-400/40 animate-ping animation-delay-75" />
-                </>
-              )}
-              {/* Confetti effect for milestones */}
-              {event.type === "milestone" && index < 2 && (
-                <div className="absolute -top-2 -right-2 text-xs animate-bounce">✨</div>
-              )}
-            </div>
+          <div key={event.id}>
+            {/* Insert motivational divider every 3 events */}
+            {index > 0 && index % 3 === 0 && (
+              <MotivationalDivider 
+                message={motivationalMessages[Math.floor(index / 3) % motivationalMessages.length]}
+                index={Math.floor(index / 3)}
+              />
+            )}
+            
+            <div className="relative flex items-start gap-6">
+              {/* Timeline node with enhanced animations */}
+              <div className={`
+                relative z-10 flex items-center justify-center w-16 h-16 rounded-full 
+                border-4 ${getEventColor(event.type)} shadow-lg
+                ${index < 2 ? 'animate-pulse' : ''}
+              `}>
+                {getEventIcon(event.type)}
+                {/* Enhanced pulse animation for recent events */}
+                {index < 2 && (
+                  <>
+                    <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping" />
+                    <div className="absolute inset-0 rounded-full border-2 border-yellow-400/40 animate-ping animation-delay-75" />
+                  </>
+                )}
+                {/* Confetti effect for milestones */}
+                {event.type === "milestone" && index < 2 && (
+                  <div className="absolute -top-2 -right-2 text-xs animate-bounce">✨</div>
+                )}
+              </div>
 
-            {/* Event card with enhanced hover effects */}
-            <Card className={`
-              flex-1 bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl hover:scale-[1.01]
-              transition-all duration-300 group ${index < 2 ? 'ring-2 ring-primary/20 shadow-lg' : ''}
-            `}>
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{event.icon}</span>
-                    <Badge variant={getBadgeVariant(event.type)} className="text-xs">
-                      {event.type}
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {event.category}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center text-xs text-muted-foreground">
-                    <Calendar className="w-3 h-3 mr-1" />
-                    {event.timestamp.toLocaleDateString()}
-                  </div>
+              {/* Event card with enhanced hover effects and category background */}
+              <Card className={`
+                flex-1 ${getCategoryBackground(event.category)} border-white/20 hover:shadow-xl hover:scale-[1.01]
+                transition-all duration-300 group ${index < 2 ? 'ring-2 ring-primary/20 shadow-lg' : ''}
+                rounded-2xl overflow-hidden
+              `}>
+                {/* Background enrichment based on category */}
+                <div className="absolute inset-0 opacity-10">
+                  {event.category === "health" && (
+                    <div className="bg-gradient-to-br from-blue-200 to-cyan-200 h-full w-full" />
+                  )}
+                  {event.category === "wellness" && (
+                    <div className="bg-gradient-to-br from-green-200 to-emerald-200 h-full w-full" />
+                  )}
+                  {event.category === "social" && (
+                    <div className="bg-gradient-to-br from-pink-200 to-rose-200 h-full w-full" />
+                  )}
                 </div>
 
-                <h4 className="font-semibold text-sm mb-1 text-foreground">
-                  {event.title}
-                </h4>
-                <p className="text-xs text-muted-foreground mb-3">
-                  {event.description}
-                </p>
-
-                {/* Event details */}
-                {event.details && (
-                  <div className="flex items-center gap-4 text-xs">
-                    {event.details.streakCount && (
-                      <div className="flex items-center gap-1 text-orange-600">
-                        <Zap className="w-3 h-3" />
-                        <span>{event.details.streakCount} day streak</span>
-                      </div>
-                    )}
-                    {event.details.improvement && (
-                      <div className="flex items-center gap-1 text-green-600">
-                        <TrendingUp className="w-3 h-3" />
-                        <span>{event.details.improvement}</span>
-                      </div>
-                    )}
-                    {event.details.achievement && (
-                      <div className="flex items-center gap-1 text-purple-600">
-                        <Award className="w-3 h-3" />
-                        <span>{event.details.achievement}</span>
-                      </div>
-                    )}
+                <CardContent className="p-4 relative z-10">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{event.icon}</span>
+                      <Badge variant={getBadgeVariant(event.type)} className="text-xs">
+                        {event.type}
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        {event.category}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {event.timestamp.toLocaleDateString()}
+                    </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+
+                  <h4 className="font-semibold text-sm mb-1 text-foreground">
+                    {event.title}
+                  </h4>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    {event.description}
+                  </p>
+
+                  {/* Event details with badges and icons */}
+                  {event.details && (
+                    <div className="flex items-center gap-4 text-xs">
+                      {event.details.streakCount && (
+                        <div className="flex items-center gap-1 text-orange-600 bg-orange-50 px-2 py-1 rounded-full">
+                          <Zap className="w-3 h-3" />
+                          <span>{event.details.streakCount} day streak 🔥</span>
+                        </div>
+                      )}
+                      {event.details.improvement && (
+                        <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                          <TrendingUp className="w-3 h-3" />
+                          <span>{event.details.improvement}</span>
+                        </div>
+                      )}
+                      {event.details.achievement && (
+                        <div className="flex items-center gap-1 text-purple-600 bg-purple-50 px-2 py-1 rounded-full">
+                          <Award className="w-3 h-3" />
+                          <span>{event.details.achievement}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Load more placeholder */}
+      {/* Load more section */}
       <div className="mt-8 text-center">
         <Card className="bg-white/60 border-dashed border-muted-foreground/30 hover:bg-white/80 transition-colors duration-300">
           <CardContent className="p-6">
