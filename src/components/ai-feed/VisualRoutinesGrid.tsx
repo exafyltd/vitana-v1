@@ -133,7 +133,7 @@ export function VisualRoutinesGrid({
       <div className="space-y-6">
         {secondaryRoutines.map((routine) => (
           <Card key={routine.id} className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-lg transition-all duration-300 overflow-hidden">
-            <div className="relative h-24">
+            <div className="relative h-32">
               <img 
                 src={routine.image}
                 alt={routine.name}
