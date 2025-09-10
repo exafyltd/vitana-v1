@@ -131,11 +131,11 @@ const getBadgeVariant = (type: TimelineEvent["type"]) => {
   }
 };
 
-// Separate copy pools
+// Separate copy pools - unique messages to avoid duplication with main banner
 const TAGLINE_POOL = [
-  "Progress is progress, no matter the size",
-  "Small steps, big impact", 
-  "Every win counts"
+  "Your journey shapes who you become",
+  "Building momentum one day at a time",
+  "Transformation happens in the quiet moments"
 ];
 
 const QUOTE_POOL = [
