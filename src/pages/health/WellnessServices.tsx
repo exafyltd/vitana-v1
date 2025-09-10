@@ -1,7 +1,10 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { ServicesMasterActionPopup } from "@/components/ServicesMasterActionPopup";
 import { ServiceDetailSplitScreen } from "@/components/ui/split-screen";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -189,6 +192,7 @@ export default function WellnessServices() {
   const [activeSection, setActiveSection] = useState("preventiveCare");
   const [selectedService, setSelectedService] = useState<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [servicesActionsOpen, setServicesActionsOpen] = useState(false);
 
   const handleServiceClick = (service: any) => {
     setSelectedService(service);
@@ -254,13 +258,27 @@ export default function WellnessServices() {
       <SEO title="Services HUB | Health" description="Access comprehensive healthcare and wellness services" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
+      
+      <Universal3CardHeader
+        title="Services HUB"
+        description="Book appointments, screenings, and wellness programs tailored to your needs."
+        emoji="🏥"
+        onAutopilotClick={() => {}}
+      />
+
       <div className="p-6 bg-gradient-to-br from-domain-health-tint via-background to-domain-health-tint/50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          <StandardHeader
-            title="Services HUB"
-            description="Book appointments, screenings, and wellness programs tailored to your needs."
-            emoji="🏥"
-          />
+        <div className="max-w-7xl mx-auto space-y-6">
+          
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search services, providers, or programs..." />
+            <Button
+              onClick={() => setServicesActionsOpen(true)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Stethoscope className="w-4 h-4 mr-2" />
+              Service Actions
+            </Button>
+          </UtilityActionButton>
 
           <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitBarList>
@@ -323,6 +341,11 @@ export default function WellnessServices() {
         service={selectedService}
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
+      />
+      
+      <ServicesMasterActionPopup
+        open={servicesActionsOpen}
+        onOpenChange={setServicesActionsOpen}
       />
     </AppLayout>
   );

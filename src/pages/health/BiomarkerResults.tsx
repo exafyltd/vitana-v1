@@ -10,6 +10,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { SplitBar as SplitScreen, SplitBarContent as SplitScreenContent, SplitBarList as SplitScreenList, SplitBarTrigger as SplitScreenTrigger } from "@/components/ui/split-bar";
 import { 
   FileText, 
   ChevronDown, 
@@ -57,6 +59,7 @@ export default function BiomarkerResults() {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const [biomarkerActionsOpen, setBiomarkerActionsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("new");
 
   useEffect(() => {
     fetchResults();
@@ -299,124 +302,254 @@ export default function BiomarkerResults() {
             </div>
           </div>
 
-          <div className="space-y-3">
-            {results.map((result) => {
-              const mockBiomarkers = getMockBiomarkers(result.lab_test.name);
-              const overallStatus = getOverallStatus(mockBiomarkers);
-              const isExpanded = expandedRows.has(result.id);
+          <SplitScreen value={activeSection} onValueChange={setActiveSection} className="w-full">
+            <SplitScreenList>
+              <SplitScreenTrigger value="new">New Results</SplitScreenTrigger>
+              <SplitScreenTrigger value="history">History</SplitScreenTrigger>
+            </SplitScreenList>
 
-              return (
-                <Card key={result.id} className="overflow-hidden bg-card/80 backdrop-blur-sm border-border/50">
-                  {/* Main Row */}
-                  <CardContent className="p-0">
-                    <div className="flex items-center gap-4 p-6 hover:bg-muted/30 transition-colors">
-                      {/* Lab Test Name */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-lg text-foreground truncate">
-                          {result.lab_test.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground capitalize">
-                          {result.lab_test.category.replace('_', ' ')}
-                        </p>
-                      </div>
+            <SplitScreenContent value="new">
+              <div className="space-y-3">
+                {results.filter((_, index) => index < 2).map((result) => {
+                  const mockBiomarkers = getMockBiomarkers(result.lab_test.name);
+                  const overallStatus = getOverallStatus(mockBiomarkers);
+                  const isExpanded = expandedRows.has(result.id);
 
-                      {/* Date */}
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[120px]">
-                        <Calendar className="h-4 w-4" />
-                        <span>{format(new Date(result.completed_at), 'MMM dd, yyyy')}</span>
-                      </div>
+                  return (
+                    <Card key={result.id} className="overflow-hidden bg-card/80 backdrop-blur-sm border-border/50">
+                      {/* ... keep existing card content ... */}
+                      <CardContent className="p-0">
+                        <div className="flex items-center gap-4 p-6 hover:bg-muted/30 transition-colors">
+                          {/* Lab Test Name */}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-lg text-foreground truncate">
+                              {result.lab_test.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground capitalize">
+                              {result.lab_test.category.replace('_', ' ')}
+                            </p>
+                          </div>
 
-                      {/* Provider */}
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[150px]">
-                        <Building2 className="h-4 w-4" />
-                        <span className="truncate">{result.lab_test.provider_name}</span>
-                      </div>
+                          {/* Date */}
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[120px]">
+                            <Calendar className="h-4 w-4" />
+                            <span>{format(new Date(result.completed_at), 'MMM dd, yyyy')}</span>
+                          </div>
 
-                      {/* Status Badge */}
-                      <Badge className={`${overallStatus.color} min-w-[120px] justify-center`}>
-                        {overallStatus.status}
-                      </Badge>
+                          {/* Provider */}
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[150px]">
+                            <Building2 className="h-4 w-4" />
+                            <span className="truncate">{result.lab_test.provider_name}</span>
+                          </div>
 
-                      {/* View More Button */}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleExpandRow(result.id)}
-                        className="flex items-center gap-2 min-w-[100px]"
-                      >
-                        {isExpanded ? (
+                          {/* Status Badge */}
+                          <Badge className={`${overallStatus.color} min-w-[120px] justify-center`}>
+                            {overallStatus.status}
+                          </Badge>
+
+                          {/* View More Button */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleExpandRow(result.id)}
+                            className="flex items-center gap-2 min-w-[100px]"
+                          >
+                            {isExpanded ? (
+                              <>
+                                Hide <ChevronUp className="h-4 w-4" />
+                              </>
+                            ) : (
+                              <>
+                                View More <ChevronDown className="h-4 w-4" />
+                              </>
+                            )}
+                          </Button>
+                        </div>
+
+                        {/* Expanded Details */}
+                        {isExpanded && (
                           <>
-                            Hide <ChevronUp className="h-4 w-4" />
-                          </>
-                        ) : (
-                          <>
-                            View More <ChevronDown className="h-4 w-4" />
-                          </>
-                        )}
-                      </Button>
-                    </div>
-
-                    {/* Expanded Details */}
-                    {isExpanded && (
-                      <>
-                        <Separator />
-                        <div className="p-6 bg-muted/20">
-                          {/* Biomarker Table */}
-                          <div className="mb-6">
-                            <h4 className="font-semibold mb-4 text-foreground">Biomarker Details</h4>
-                            <div className="grid gap-3">
-                              {mockBiomarkers.map((biomarker) => (
-                                <div
-                                  key={biomarker.name}
-                                  className="flex items-center justify-between p-4 bg-background/50 rounded-lg border border-border/30"
-                                >
-                                  <div className="flex items-center gap-3">
-                                    {getStatusIcon(biomarker.status)}
-                                    <div>
-                                      <div className="font-medium text-foreground">{biomarker.name}</div>
-                                      <div className="text-sm text-muted-foreground">
-                                        {biomarker.referenceMin} - {biomarker.referenceMax} {biomarker.unit}
+                            <Separator />
+                            <div className="p-6 bg-muted/20">
+                              {/* Biomarker Table */}
+                              <div className="mb-6">
+                                <h4 className="font-semibold mb-4 text-foreground">Biomarker Details</h4>
+                                <div className="grid gap-3">
+                                  {mockBiomarkers.map((biomarker) => (
+                                    <div
+                                      key={biomarker.name}
+                                      className="flex items-center justify-between p-4 bg-background/50 rounded-lg border border-border/30"
+                                    >
+                                      <div className="flex items-center gap-3">
+                                        {getStatusIcon(biomarker.status)}
+                                        <div>
+                                          <div className="font-medium text-foreground">{biomarker.name}</div>
+                                          <div className="text-sm text-muted-foreground">
+                                            {biomarker.referenceMin} - {biomarker.referenceMax} {biomarker.unit}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="text-right">
+                                        <div className="font-semibold text-foreground">
+                                          {biomarker.value} {biomarker.unit}
+                                        </div>
+                                        <div className="text-sm text-muted-foreground capitalize">
+                                          {biomarker.status === 'normal' ? '✓ Normal' : 
+                                           biomarker.status === 'high' ? '⚠ High' :
+                                           biomarker.status === 'low' ? '⬇ Low' : '🚨 Critical'}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="text-right">
-                                    <div className="font-semibold text-foreground">
-                                      {biomarker.value} {biomarker.unit}
-                                    </div>
-                                    <div className="text-sm text-muted-foreground capitalize">
-                                      {biomarker.status === 'normal' ? '✓ Normal' : 
-                                       biomarker.status === 'high' ? '⚠ High' :
-                                       biomarker.status === 'low' ? '⬇ Low' : '🚨 Critical'}
-                                    </div>
-                                  </div>
+                                  ))}
                                 </div>
-                              ))}
+                              </div>
+
+                              {/* Action Buttons */}
+                              <div className="flex items-center gap-3">
+                                <Button variant="outline" className="flex items-center gap-2">
+                                  <Download className="h-4 w-4" />
+                                  Download PDF
+                                </Button>
+                                <Button variant="outline" className="flex items-center gap-2">
+                                  <Share2 className="h-4 w-4" />
+                                  Share with Doctor
+                                </Button>
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
+                                  <Clock className="h-4 w-4" />
+                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, h:mm a')}</span>
+                                </div>
+                              </div>
                             </div>
+                          </>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </SplitScreenContent>
+
+            <SplitScreenContent value="history">
+              <div className="space-y-3">
+                {results.filter((_, index) => index >= 2).map((result) => {
+                  const mockBiomarkers = getMockBiomarkers(result.lab_test.name);
+                  const overallStatus = getOverallStatus(mockBiomarkers);
+                  const isExpanded = expandedRows.has(result.id);
+
+                  return (
+                    <Card key={result.id} className="overflow-hidden bg-card/80 backdrop-blur-sm border-border/50">
+                      {/* ... keep existing card content ... */}
+                      <CardContent className="p-0">
+                        <div className="flex items-center gap-4 p-6 hover:bg-muted/30 transition-colors">
+                          {/* Lab Test Name */}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-lg text-foreground truncate">
+                              {result.lab_test.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground capitalize">
+                              {result.lab_test.category.replace('_', ' ')}
+                            </p>
                           </div>
 
-                          {/* Action Buttons */}
-                          <div className="flex items-center gap-3">
-                            <Button variant="outline" className="flex items-center gap-2">
-                              <Download className="h-4 w-4" />
-                              Download PDF
-                            </Button>
-                            <Button variant="outline" className="flex items-center gap-2">
-                              <Share2 className="h-4 w-4" />
-                              Share with Doctor
-                            </Button>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
-                              <Clock className="h-4 w-4" />
-                              <span>Processed {format(new Date(result.completed_at), 'MMM dd, h:mm a')}</span>
-                            </div>
+                          {/* Date */}
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[120px]">
+                            <Calendar className="h-4 w-4" />
+                            <span>{format(new Date(result.completed_at), 'MMM dd, yyyy')}</span>
                           </div>
+
+                          {/* Provider */}
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[150px]">
+                            <Building2 className="h-4 w-4" />
+                            <span className="truncate">{result.lab_test.provider_name}</span>
+                          </div>
+
+                          {/* Status Badge */}
+                          <Badge className={`${overallStatus.color} min-w-[120px] justify-center`}>
+                            {overallStatus.status}
+                          </Badge>
+
+                          {/* View More Button */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleExpandRow(result.id)}
+                            className="flex items-center gap-2 min-w-[100px]"
+                          >
+                            {isExpanded ? (
+                              <>
+                                Hide <ChevronUp className="h-4 w-4" />
+                              </>
+                            ) : (
+                              <>
+                                View More <ChevronDown className="h-4 w-4" />
+                              </>
+                            )}
+                          </Button>
                         </div>
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+
+                        {/* Expanded Details */}
+                        {isExpanded && (
+                          <>
+                            <Separator />
+                            <div className="p-6 bg-muted/20">
+                              {/* Biomarker Table */}
+                              <div className="mb-6">
+                                <h4 className="font-semibold mb-4 text-foreground">Biomarker Details</h4>
+                                <div className="grid gap-3">
+                                  {mockBiomarkers.map((biomarker) => (
+                                    <div
+                                      key={biomarker.name}
+                                      className="flex items-center justify-between p-4 bg-background/50 rounded-lg border border-border/30"
+                                    >
+                                      <div className="flex items-center gap-3">
+                                        {getStatusIcon(biomarker.status)}
+                                        <div>
+                                          <div className="font-medium text-foreground">{biomarker.name}</div>
+                                          <div className="text-sm text-muted-foreground">
+                                            {biomarker.referenceMin} - {biomarker.referenceMax} {biomarker.unit}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="text-right">
+                                        <div className="font-semibold text-foreground">
+                                          {biomarker.value} {biomarker.unit}
+                                        </div>
+                                        <div className="text-sm text-muted-foreground capitalize">
+                                          {biomarker.status === 'normal' ? '✓ Normal' : 
+                                           biomarker.status === 'high' ? '⚠ High' :
+                                           biomarker.status === 'low' ? '⬇ Low' : '🚨 Critical'}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Action Buttons */}
+                              <div className="flex items-center gap-3">
+                                <Button variant="outline" className="flex items-center gap-2">
+                                  <Download className="h-4 w-4" />
+                                  Download PDF
+                                </Button>
+                                <Button variant="outline" className="flex items-center gap-2">
+                                  <Share2 className="h-4 w-4" />
+                                  Share with Doctor
+                                </Button>
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
+                                  <Clock className="h-4 w-4" />
+                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, h:mm a')}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </SplitScreenContent>
+          </SplitScreen>
         </div>
       </div>
       

@@ -1,7 +1,10 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { HealthTrackerMasterActionPopup } from "@/components/HealthTrackerMasterActionPopup";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -13,6 +16,7 @@ import { useState } from "react";
 
 export default function MyHealthTracker() {
   const [selectedPillar, setSelectedPillar] = useState("nutrition");
+  const [healthTrackerActionsOpen, setHealthTrackerActionsOpen] = useState(false);
 
   const pillarData = [
     { 
@@ -115,13 +119,27 @@ export default function MyHealthTracker() {
     <AppLayout>
       <SEO title="My Health Tracker | Health" description="Track your health metrics and monitor your Vitana Index progress" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
+      
+      <Universal3CardHeader
+        title="Track your Vitana Index journey!"
+        description="Monitor your health pillars and lab results to optimize your wellness score."
+        emoji="📊"
+        onAutopilotClick={() => {}}
+      />
+
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          <StandardHeader
-            title="Track your Vitana Index journey!"
-            description="Monitor your health pillars and lab results to optimize your wellness score."
-            emoji="📊"
-          />
+        <div className="max-w-7xl mx-auto space-y-6">
+          
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search health metrics, goals, or tracking data..." />
+            <Button
+              onClick={() => setHealthTrackerActionsOpen(true)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Activity className="w-4 h-4 mr-2" />
+              Tracker Actions
+            </Button>
+          </UtilityActionButton>
 
           <SplitBar defaultValue="pillars" className="w-full">
             <SplitBarList>
@@ -507,6 +525,11 @@ export default function MyHealthTracker() {
           </SplitBar>
         </div>
       </div>
+      
+      <HealthTrackerMasterActionPopup
+        open={healthTrackerActionsOpen}
+        onOpenChange={setHealthTrackerActionsOpen}
+      />
     </AppLayout>
   );
 }

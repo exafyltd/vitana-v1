@@ -1,8 +1,12 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { EducationMasterActionPopup } from "@/components/EducationMasterActionPopup";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { BookOpen, Video, Headphones, GraduationCap, Play, Clock, Star } from "lucide-react";
 import { healthNavigation } from "@/config/navigation";
@@ -11,18 +15,33 @@ import { useState } from "react";
 
 export default function EducationResources() {
   const [activeSection, setActiveSection] = useState("articles");
+  const [educationActionsOpen, setEducationActionsOpen] = useState(false);
 
   return (
     <AppLayout>
       <SEO title="Education & Resources | Health" description="Access health education materials and resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
+      
+      <Universal3CardHeader
+        title="Education & Science"
+        description="Access curated health education materials linked to your interests and demographic profile."
+        emoji="📚"
+        onAutopilotClick={() => {}}
+      />
+
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          <StandardHeader
-            title="Education & Science"
-            description="Access curated health education materials linked to your interests and demographic profile."
-            emoji="📚"
-          />
+        <div className="max-w-7xl mx-auto space-y-6">
+          
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search articles, videos, podcasts, or topics..." />
+            <Button
+              onClick={() => setEducationActionsOpen(true)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <BookOpen className="w-4 h-4 mr-2" />
+              Education Actions
+            </Button>
+          </UtilityActionButton>
 
           <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitBarList>
@@ -126,6 +145,11 @@ export default function EducationResources() {
           </SplitBar>
         </div>
       </div>
+      
+      <EducationMasterActionPopup
+        open={educationActionsOpen}
+        onOpenChange={setEducationActionsOpen}
+      />
     </AppLayout>
   );
 }

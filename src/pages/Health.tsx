@@ -11,6 +11,7 @@ import { HealthMasterActionPopup } from "@/components/HealthMasterActionPopup";
 import { Universal3CardHeader } from "@/components/Universal3CardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -162,90 +163,97 @@ export default withScreenId(function Health() {
             </Button>
           </UtilityActionButton>
 
-          {/* Intelligent Layer - Autopilot & AI Insights */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
+          <SplitBar value="today" className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="today">Today</SplitBarTrigger>
+              <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="today" className="space-y-6">
+              {/* Today's Health Overview */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {newsItems.slice(0, 6).map((item, index) => (
+                  <NewsCard key={index} {...item} />
+                ))}
+              </div>
+              
+              {/* Today's Smart Suggestions */}
               <SmartSuggestions 
                 suggestions={smartSuggestions}
-                title="AI Health Insights"
+                title="Today's AI Health Insights"
                 variant="list"
               />
-            </div>
-            <div>
+              
+              {/* Today's Community Activity */}
+              <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-calendar-primary" />
+                    Today's Health Community
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+                      <span className="text-sm">Mediterranean Diet Challenge</span>
+                      <span className="text-xs text-muted-foreground">Starting today</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+                      <span className="text-sm">Morning Yoga Session</span>
+                      <span className="text-xs text-muted-foreground">7:00 AM</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+                      <span className="text-sm">Wellness Workshop</span>
+                      <span className="text-xs text-muted-foreground">6:00 PM</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+
+            <SplitBarContent value="upcoming" className="space-y-6">
+              {/* Upcoming Health Events */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {newsItems.slice(3, 9).map((item, index) => (
+                  <NewsCard key={index} {...item} />
+                ))}
+              </div>
+              
+              {/* Upcoming Appointments & Events */}
+              <Card className="bg-gradient-to-br from-calendar-accent/5 to-calendar-secondary/5 border-calendar-accent/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-calendar-accent" />
+                    Upcoming Health Schedule
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+                      <span className="text-sm">Annual Physical Exam</span>
+                      <span className="text-xs text-muted-foreground">Next week</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+                      <span className="text-sm">Lab Results Review</span>
+                      <span className="text-xs text-muted-foreground">March 20</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+                      <span className="text-sm">Nutrition Consultation</span>
+                      <span className="text-xs text-muted-foreground">March 25</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Upcoming Autopilot Suggestions */}
               <AutopilotWidget 
-                sectionName="Health"
-                suggestions={autopilotSuggestions}
+                sectionName="Upcoming Health"
+                suggestions={["Schedule overdue screening", "Book nutrition consult", "Join fitness challenge"]}
                 isEnabled={true}
                 variant="card"
               />
-            </div>
-          </div>
-
-          {/* Main Health Services */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {overviewCards.map((card) => (
-              <Card 
-                key={card.title}
-                className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-card/80 backdrop-blur-sm border-border/20 hover:scale-105 group"
-                onClick={() => navigate(card.path)}
-              >
-                <CardHeader className="pb-4">
-                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <card.icon className="w-6 h-6 text-foreground" />
-                  </div>
-                  <CardTitle className="text-lg">{card.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm">
-                    {card.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Health News & Updates */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-foreground">Health News & Updates</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {newsItems.map((item, index) => (
-                <NewsCard key={index} {...item} />
-              ))}
-            </div>
-          </div>
-
-          {/* Community & Communication Integration */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-calendar-primary" />
-                  Health Community
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                    <span className="text-sm">Mediterranean Diet Group</span>
-                    <span className="text-xs text-muted-foreground">3 nearby</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                    <span className="text-sm">Morning Joggers</span>
-                    <span className="text-xs text-muted-foreground">12 members</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                    <span className="text-sm">Mindfulness Circle</span>
-                    <span className="text-xs text-muted-foreground">8 members</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <HealthCoachChat 
-              context="general"
-              variant="card"
-            />
-          </div>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
       
