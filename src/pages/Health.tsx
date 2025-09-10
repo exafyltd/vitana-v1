@@ -4,7 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search } from "lucide-react";
+import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search, Plus } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { HealthMasterActionPopup } from "@/components/HealthMasterActionPopup";
@@ -153,10 +153,11 @@ export default withScreenId(function Health() {
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search health services, articles, or community..." />
             <Button
+              variant="default"
+              size="sm"
               onClick={() => setHealthActionsOpen(true)}
-              className="bg-primary hover:bg-primary/90"
             >
-              <Heart className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 mr-2" />
               Health Actions
             </Button>
           </UtilityActionButton>

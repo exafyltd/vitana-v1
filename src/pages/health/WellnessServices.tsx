@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
 import { healthNavigation } from "@/config/navigation";
-import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane, Apple, Dumbbell, Brain, Briefcase, BookOpen } from "lucide-react";
+import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane, Apple, Dumbbell, Brain, Briefcase, BookOpen, Plus } from "lucide-react";
 
 const servicesData = {
   preventiveCare: [
@@ -269,10 +269,11 @@ export default function WellnessServices() {
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search services, providers, or programs..." />
             <Button
+              variant="default"
+              size="sm"
               onClick={() => setServicesActionsOpen(true)}
-              className="bg-primary hover:bg-primary/90"
             >
-              <Stethoscope className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 mr-2" />
               Service Actions
             </Button>
           </UtilityActionButton>

@@ -8,7 +8,7 @@ import { EducationMasterActionPopup } from "@/components/EducationMasterActionPo
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { BookOpen, Video, Headphones, GraduationCap, Play, Clock, Star } from "lucide-react";
+import { BookOpen, Video, Headphones, GraduationCap, Play, Clock, Star, Plus } from "lucide-react";
 import { healthNavigation } from "@/config/navigation";
 import { useState } from "react";
 
@@ -33,10 +33,11 @@ export default function EducationResources() {
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search articles, videos, podcasts, or topics..." />
             <Button
+              variant="default"
+              size="sm"
               onClick={() => setEducationActionsOpen(true)}
-              className="bg-primary hover:bg-primary/90"
             >
-              <BookOpen className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 mr-2" />
               Education Actions
             </Button>
           </UtilityActionButton>

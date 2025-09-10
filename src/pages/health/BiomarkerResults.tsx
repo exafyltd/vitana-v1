@@ -25,7 +25,8 @@ import {
   TrendingDown,
   Clock,
   Search,
-  TestTube
+  TestTube,
+  Plus
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
@@ -285,10 +286,11 @@ export default function BiomarkerResults() {
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search lab results, biomarkers, or test types..." />
             <Button
+              variant="default"
+              size="sm"
               onClick={() => setBiomarkerActionsOpen(true)}
-              className="bg-primary hover:bg-primary/90"
             >
-              <TestTube className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 mr-2" />
               Biomarker Actions
             </Button>
           </UtilityActionButton>

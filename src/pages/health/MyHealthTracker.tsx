@@ -131,10 +131,11 @@ export default function MyHealthTracker() {
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search health metrics, goals, or tracking data..." />
             <Button
+              variant="default"
+              size="sm"
               onClick={() => setHealthTrackerActionsOpen(true)}
-              className="bg-primary hover:bg-primary/90"
             >
-              <Activity className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 mr-2" />
               Tracker Actions
             </Button>
           </UtilityActionButton>
