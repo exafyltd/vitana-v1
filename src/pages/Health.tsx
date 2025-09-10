@@ -8,7 +8,7 @@ import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, Ale
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { HealthMasterActionPopup } from "@/components/HealthMasterActionPopup";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
@@ -142,13 +142,12 @@ export default withScreenId(function Health() {
       <SEO title="Health" description="Discover health services, programs, and educational resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <div className="p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <Universal3CardHeader
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
             title="Let's improve quality of life!"
             description="Discover health services, programs, and educational resources to enhance your wellness journey."
             emoji="🌱"
-            onAutopilotClick={() => setAutopilotOpen(true)}
           />
 
           <UtilityActionButton>

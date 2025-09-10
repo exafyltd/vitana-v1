@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { BiomarkersMasterActionPopup } from "@/components/BiomarkersMasterActionPopup";
@@ -213,13 +213,12 @@ export default function BiomarkerResults() {
         <SubNavigation items={healthNavigation} />
         
       
-      <div className="p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <Universal3CardHeader
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
             title="Loading lab results..."
             description="Please wait while we fetch your biomarker analysis."
             emoji="⏳"
-            onAutopilotClick={() => {}}
           />
             <div className="space-y-4">
               {[1, 2, 3].map(i => (
@@ -244,13 +243,12 @@ export default function BiomarkerResults() {
         <SubNavigation items={healthNavigation} />
         
         
-        <div className="p-6">
-          <div className="max-w-7xl mx-auto space-y-6">
-            <Universal3CardHeader
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto">
+            <StandardHeader
               title="No lab results yet"
               description="Order your first lab test to get started."
               emoji="🧪"
-              onAutopilotClick={() => {}}
             />
             <Card className="text-center py-12">
               <CardContent>
@@ -276,13 +274,12 @@ export default function BiomarkerResults() {
       <SubNavigation items={healthNavigation} />
       
       
-      <div className="p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <Universal3CardHeader
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
             title="Your lab results are in!"
             description="View your biomarker analysis and lab test results."
             emoji="🧪"
-            onAutopilotClick={() => {}}
           />
 
           <UtilityActionButton>

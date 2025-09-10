@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { ServicesMasterActionPopup } from "@/components/ServicesMasterActionPopup";
@@ -258,13 +258,12 @@ export default function WellnessServices() {
       <SEO title="Services HUB | Health" description="Access comprehensive healthcare and wellness services" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <div className="p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <Universal3CardHeader
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
             title="Services HUB"
             description="Book appointments, screenings, and wellness programs tailored to your needs."
             emoji="🏥"
-            onAutopilotClick={() => {}}
           />
 
           <UtilityActionButton>

@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { EducationMasterActionPopup } from "@/components/EducationMasterActionPopup";
@@ -22,13 +22,12 @@ export default function EducationResources() {
       <SEO title="Education & Resources | Health" description="Access health education materials and resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <div className="p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <Universal3CardHeader
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
             title="Education & Science"
             description="Access curated health education materials linked to your interests and demographic profile."
             emoji="📚"
-            onAutopilotClick={() => {}}
           />
 
           <UtilityActionButton>
