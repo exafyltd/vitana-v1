@@ -6,7 +6,7 @@ import { Zap, RotateCcw, Repeat, Lightbulb, CheckCircle, Play, Pause, Settings, 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
