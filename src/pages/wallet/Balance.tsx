@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
 import { WalletBalanceCard } from "@/components/wallet/WalletBalanceCard";
@@ -85,8 +86,10 @@ function Balance() {
 
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search balances, transactions, or benefits..." />
-          <contextualAction.icon className="h-4 w-4 mr-2" />
-          {contextualAction.label}
+          <Button size="sm">
+            <contextualAction.icon className="h-4 w-4 mr-2" />
+            {contextualAction.label}
+          </Button>
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
