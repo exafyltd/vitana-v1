@@ -11,7 +11,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
-import BusinessFiltersPopup from "@/components/BusinessFiltersPopup";
+import CreateServicePopup from "@/components/CreateServicePopup";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 
 import { communityNavigation } from "@/config/navigation";
@@ -22,7 +22,7 @@ export default function MyBusiness() {
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [showBusinessFilters, setShowBusinessFilters] = useState(false);
+  const [showCreateService, setShowCreateService] = useState(false);
   
   const latestActions = getLatestActions(2);
 
@@ -106,10 +106,10 @@ export default function MyBusiness() {
             <Button 
               variant="default" 
               size="sm"
-              onClick={() => setShowBusinessFilters(true)}
+              onClick={() => setShowCreateService(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Business
+              New Service
             </Button>
           </UtilityActionButton>
 
@@ -367,10 +367,10 @@ export default function MyBusiness() {
         onOpenChange={setAutopilotOpen}
       />
 
-      {/* Business Filters Popup */}
-      <BusinessFiltersPopup 
-        isOpen={showBusinessFilters}
-        onClose={() => setShowBusinessFilters(false)}
+      {/* Create Service Popup */}
+      <CreateServicePopup 
+        isOpen={showCreateService}
+        onClose={() => setShowCreateService(false)}
       />
     </AppLayout>
   );
