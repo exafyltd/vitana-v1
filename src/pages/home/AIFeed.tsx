@@ -19,6 +19,13 @@ import { Search, Plus } from "lucide-react";
 import { AddToAIFeedPopup } from "@/components/AddToAIFeedPopup";
 import { Input } from "@/components/ui/input";
 
+// Import new visual components
+import { VisualActivityFeed } from "@/components/ai-feed/VisualActivityFeed";
+import { VisualRoutinesGrid } from "@/components/ai-feed/VisualRoutinesGrid";
+import { GlowingSuggestionsGrid } from "@/components/ai-feed/GlowingSuggestionsGrid";
+import { VisualHistoryTimeline } from "@/components/ai-feed/VisualHistoryTimeline";
+import { MotivationalBanner } from "@/components/ai-feed/MotivationalBanner";
+
 export default function AIFeed() {
   const navigate = useNavigate();
   const { state, executeActions } = useAutopilot();
@@ -101,224 +108,138 @@ export default function AIFeed() {
             </SplitBarList>
 
             {/* Activity Feed Tab */}
-            <SplitBarContent value="feed">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center">
-                        <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
-                      </div>
-                      <CardTitle className="text-lg">Activity Feed 🏃</CardTitle>
+            <SplitBarContent value="feed" className="space-y-6">
+              <MotivationalBanner 
+                variant="learning" 
+                userName="Jovana"
+                className="mb-4"
+              />
+              
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center">
+                      <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant={selectedFilter === "autopilot-history" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setSelectedFilter(selectedFilter === "autopilot-history" ? "all" : "autopilot-history")}
-                      >
-                        <History className="w-4 h-4 mr-1" />
-                        Autopilot History
-                      </Button>
-                      <Badge variant="outline">Live</Badge>
+                    <div>
+                      <h2 className="text-lg font-semibold">Activity Feed 🏃</h2>
+                      <p className="text-sm text-muted-foreground">Real-time AI actions and insights</p>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-96">
-                    <div className="space-y-3">
-                      {filteredFeed.slice(0, 20).map((item) => (
-                        <div key={item.id} className="flex items-start space-x-3 p-3 rounded-lg border bg-card">
-                          <div className="text-lg">{item.icon}</div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between mb-1">
-                              <h4 className="text-sm font-medium">{item.title}</h4>
-                              <div className="flex items-center space-x-2">
-                                <Badge 
-                                  variant={
-                                    item.status === "completed" ? "default" : 
-                                    item.status === "failed" ? "destructive" :
-                                    item.status === "executing" ? "secondary" :
-                                    "outline"
-                                  }
-                                  className="text-xs"
-                                >
-                                  {item.status === "completed" && <CheckCircle className="w-3 h-3 mr-1" />}
-                                  {item.status === "failed" && <AlertTriangle className="w-3 h-3 mr-1" />}
-                                  {item.status === "executing" && <Zap className="w-3 h-3 mr-1" />}
-                                  {item.status}
-                                </Badge>
-                                <span className="text-xs text-muted-foreground">
-                                  <Clock className="w-3 h-3 mr-1 inline" />
-                                  {new Date(item.timestamp).toLocaleTimeString()}
-                                </span>
-                              </div>
-                            </div>
-                            <p className="text-xs text-muted-foreground">{item.reason}</p>
-                            {item.status === "failed" && (
-                              <div className="mt-2">
-                                <Button size="sm" variant="outline">
-                                  Retry
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                  <div className="mt-4 space-y-2">
-                    <Button variant="outline" size="sm" className="w-full">
-                      <RotateCcw className="w-4 h-4 mr-1" />
-                      Undo Last Action
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant={selectedFilter === "autopilot-history" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedFilter(selectedFilter === "autopilot-history" ? "all" : "autopilot-history")}
+                    >
+                      <History className="w-4 h-4 mr-1" />
+                      Autopilot History
                     </Button>
-                    <Button variant="outline" size="sm" className="w-full">
-                      Export Activity Log
-                    </Button>
+                    <Badge variant="outline">Live</Badge>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+
+                <VisualActivityFeed activities={filteredFeed} />
+              </div>
             </SplitBarContent>
 
             {/* My Routines Tab */}
-            <SplitBarContent value="routines">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-                <CardHeader>
+            <SplitBarContent value="routines" className="space-y-6">
+              <MotivationalBanner 
+                variant="celebrating" 
+                userName="Jovana"
+                className="mb-4"
+              />
+              
+              <div>
+                <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
                       <Repeat className="w-6 h-6 text-blue-600" />
                     </div>
-                    <CardTitle className="text-lg">My Routines 🔁</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <span className="text-sm">💧</span>
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Hydration Reminder</h4>
-                          <p className="text-xs text-muted-foreground">Every 2 hours</p>
-                        </div>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                          <span className="text-sm">✅</span>
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Daily Check-in</h4>
-                          <p className="text-xs text-muted-foreground">Evening routine</p>
-                        </div>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                          <span className="text-sm">😴</span>
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Sleep Tips</h4>
-                          <p className="text-xs text-muted-foreground">Bedtime suggestions</p>
-                        </div>
-                      </div>
-                      <Switch />
+                    <div>
+                      <h2 className="text-lg font-semibold">My Routines 🔁</h2>
+                      <p className="text-sm text-muted-foreground">Automated habits building your best self</p>
                     </div>
                   </div>
-                  <div className="mt-4 space-y-2">
-                    <Button variant="outline" size="sm" className="w-full">
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm">
                       <Pause className="w-4 h-4 mr-1" />Pause All
                     </Button>
-                    <Button variant="outline" size="sm" className="w-full">
-                      <Settings className="w-4 h-4 mr-1" />Edit Routines
+                    <Button variant="outline" size="sm">
+                      <Settings className="w-4 h-4 mr-1" />Edit
                     </Button>
-                    <Button variant="default" size="sm" className="w-full">
+                    <Button variant="default" size="sm">
                       <Play className="w-4 h-4 mr-1" />Run Now
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+
+                <VisualRoutinesGrid 
+                  onToggleRoutine={(routineId) => console.log('Toggle routine:', routineId)}
+                />
+              </div>
             </SplitBarContent>
 
             {/* AI Ideas Tab */}
-            <SplitBarContent value="ideas">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-                <CardHeader>
+            <SplitBarContent value="ideas" className="space-y-6">
+              <MotivationalBanner 
+                variant="adapting" 
+                userName="Jovana"
+                className="mb-4"
+              />
+              
+              <div>
+                <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center">
                       <Lightbulb className="w-6 h-6 text-purple-600" />
                     </div>
-                    <CardTitle className="text-lg">AI Ideas 💡</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
-                      <h4 className="font-medium mb-2">Morning Routine Optimization</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        "Want me to optimize your morning routine? I noticed you're most energetic at 8 AM."
-                      </p>
-                      <div className="flex space-x-2">
-                        <Button size="sm" variant="default">Try It</Button>
-                        <Button size="sm" variant="outline">Later</Button>
-                      </div>
-                    </div>
-                    <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
-                      <h4 className="font-medium mb-2">Social Connection Boost</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        "I can schedule weekly friend check-ins based on your calendar gaps."
-                      </p>
-                      <div className="flex space-x-2">
-                        <Button size="sm" variant="default">Try It</Button>
-                        <Button size="sm" variant="outline">Nope</Button>
-                      </div>
-                    </div>
-                    <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
-                      <h4 className="font-medium mb-2">Stress Pattern Detection</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        "Let me track patterns and suggest breaks before you feel overwhelmed."
-                      </p>
-                      <div className="flex space-x-2">
-                        <Button size="sm" variant="default">Try It</Button>
-                        <Button size="sm" variant="outline">Later</Button>
-                      </div>
+                    <div>
+                      <h2 className="text-lg font-semibold">AI Ideas 💡</h2>
+                      <p className="text-sm text-muted-foreground">Experimental suggestions from your AI companion</p>
                     </div>
                   </div>
-                  <div className="mt-4 pt-4 border-t">
-                    <p className="text-xs text-muted-foreground">
-                      <Lightbulb className="inline w-4 h-4 mr-1 text-purple-600" />
-                      Suggestions based on your patterns and goals
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+                  <Badge variant="outline" className="bg-purple-50 border-purple-200 text-purple-700">
+                    <Lightbulb className="w-3 h-3 mr-1" />
+                    4 new ideas
+                  </Badge>
+                </div>
+
+                <GlowingSuggestionsGrid 
+                  onTrySuggestion={(suggestionId) => console.log('Try suggestion:', suggestionId)}
+                  onDismissSuggestion={(suggestionId) => console.log('Dismiss suggestion:', suggestionId)}
+                />
+              </div>
             </SplitBarContent>
 
             {/* History Tab */}
-            <SplitBarContent value="history">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl transition-all duration-300">
-                <CardHeader>
+            <SplitBarContent value="history" className="space-y-6">
+              <MotivationalBanner 
+                variant="encouraging" 
+                userName="Jovana"
+                className="mb-4"
+              />
+              
+              <div>
+                <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-gray-500/20 to-slate-500/20 flex items-center justify-center">
                       <History className="w-6 h-6 text-gray-600" />
                     </div>
-                    <CardTitle className="text-lg">Autopilot History 📚</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-8 text-muted-foreground">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                      <History className="w-8 h-8 text-gray-400" />
+                    <div>
+                      <h2 className="text-lg font-semibold">Your Journey 📚</h2>
+                      <p className="text-sm text-muted-foreground">Milestones, achievements, and growth over time</p>
                     </div>
-                    <p>Historical data will appear here</p>
                   </div>
-                </CardContent>
-              </Card>
+                  <Button variant="outline" size="sm">
+                    <RotateCcw className="w-4 h-4 mr-1" />
+                    Export History
+                  </Button>
+                </div>
+
+                <VisualHistoryTimeline />
+              </div>
             </SplitBarContent>
           </SplitBar>
 
