@@ -258,17 +258,15 @@ export default function WellnessServices() {
       <SEO title="Services HUB | Health" description="Access comprehensive healthcare and wellness services" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      
-      <Universal3CardHeader
-        title="Services HUB"
-        description="Book appointments, screenings, and wellness programs tailored to your needs."
-        emoji="🏥"
-        onAutopilotClick={() => {}}
-      />
-
-      <div className="p-6 bg-gradient-to-br from-domain-health-tint via-background to-domain-health-tint/50 min-h-screen">
+      <div className="p-6">
         <div className="max-w-7xl mx-auto space-y-6">
-          
+          <Universal3CardHeader
+            title="Services HUB"
+            description="Book appointments, screenings, and wellness programs tailored to your needs."
+            emoji="🏥"
+            onAutopilotClick={() => {}}
+          />
+
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search services, providers, or programs..." />
             <Button

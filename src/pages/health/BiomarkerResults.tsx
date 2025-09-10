@@ -212,15 +212,15 @@ export default function BiomarkerResults() {
         <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
         <SubNavigation items={healthNavigation} />
         
-        <Universal3CardHeader
-          title="Loading lab results..."
-          description="Please wait while we fetch your biomarker analysis."
-          emoji="⏳"
-          onAutopilotClick={() => {}}
-        />
-        
-        <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
-          <div className="max-w-7xl mx-auto space-y-6">
+      
+      <div className="p-6">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <Universal3CardHeader
+            title="Loading lab results..."
+            description="Please wait while we fetch your biomarker analysis."
+            emoji="⏳"
+            onAutopilotClick={() => {}}
+          />
             <div className="space-y-4">
               {[1, 2, 3].map(i => (
                 <Card key={i} className="animate-pulse">
@@ -243,15 +243,15 @@ export default function BiomarkerResults() {
         <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
         <SubNavigation items={healthNavigation} />
         
-        <Universal3CardHeader
-          title="No lab results yet"
-          description="Order your first lab test to get started."
-          emoji="🧪"
-          onAutopilotClick={() => {}}
-        />
         
-        <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
+        <div className="p-6">
           <div className="max-w-7xl mx-auto space-y-6">
+            <Universal3CardHeader
+              title="No lab results yet"
+              description="Order your first lab test to get started."
+              emoji="🧪"
+              onAutopilotClick={() => {}}
+            />
             <Card className="text-center py-12">
               <CardContent>
                 <div className="text-6xl mb-4">🧪</div>
@@ -275,16 +275,16 @@ export default function BiomarkerResults() {
       <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <Universal3CardHeader
-        title="Your lab results are in!"
-        description="View your biomarker analysis and lab test results."
-        emoji="🧪"
-        onAutopilotClick={() => {}}
-      />
       
-      <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
+      <div className="p-6">
         <div className="max-w-7xl mx-auto space-y-6">
-          
+          <Universal3CardHeader
+            title="Your lab results are in!"
+            description="View your biomarker analysis and lab test results."
+            emoji="🧪"
+            onAutopilotClick={() => {}}
+          />
+
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search lab results, biomarkers, or test types..." />
             <Button

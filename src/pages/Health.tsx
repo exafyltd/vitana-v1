@@ -142,16 +142,15 @@ export default withScreenId(function Health() {
       <SEO title="Health" description="Discover health services, programs, and educational resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <Universal3CardHeader
-        title="Let's improve quality of life!"
-        description="Discover health services, programs, and educational resources to enhance your wellness journey."
-        emoji="🌱"
-        onAutopilotClick={() => setAutopilotOpen(true)}
-      />
-
-      <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
+      <div className="p-6">
         <div className="max-w-7xl mx-auto space-y-6">
-          
+          <Universal3CardHeader
+            title="Let's improve quality of life!"
+            description="Discover health services, programs, and educational resources to enhance your wellness journey."
+            emoji="🌱"
+            onAutopilotClick={() => setAutopilotOpen(true)}
+          />
+
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search health services, articles, or community..." />
             <Button

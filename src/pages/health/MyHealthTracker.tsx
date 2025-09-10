@@ -120,16 +120,15 @@ export default function MyHealthTracker() {
       <SEO title="My Health Tracker | Health" description="Track your health metrics and monitor your Vitana Index progress" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <Universal3CardHeader
-        title="Track your Vitana Index journey!"
-        description="Monitor your health pillars and lab results to optimize your wellness score."
-        emoji="📊"
-        onAutopilotClick={() => {}}
-      />
-
-      <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
+      <div className="p-6">
         <div className="max-w-7xl mx-auto space-y-6">
-          
+          <Universal3CardHeader
+            title="Track your Vitana Index journey!"
+            description="Monitor your health pillars and lab results to optimize your wellness score."
+            emoji="📊"
+            onAutopilotClick={() => {}}
+          />
+
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search health metrics, goals, or tracking data..." />
             <Button

@@ -22,16 +22,15 @@ export default function EducationResources() {
       <SEO title="Education & Resources | Health" description="Access health education materials and resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
-      <Universal3CardHeader
-        title="Education & Science"
-        description="Access curated health education materials linked to your interests and demographic profile."
-        emoji="📚"
-        onAutopilotClick={() => {}}
-      />
-
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6">
         <div className="max-w-7xl mx-auto space-y-6">
-          
+          <Universal3CardHeader
+            title="Education & Science"
+            description="Access curated health education materials linked to your interests and demographic profile."
+            emoji="📚"
+            onAutopilotClick={() => {}}
+          />
+
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search articles, videos, podcasts, or topics..." />
             <Button
