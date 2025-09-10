@@ -148,7 +148,7 @@ export default function Wallet() {
       
       <div className="p-6">
         <StandardHeader
-          title="Vitana Wallet 🏦"
+          title="Vitana Wallet"
           description="Your digital bank account for health rewards and benefits"
           emoji="🏦"
         />
