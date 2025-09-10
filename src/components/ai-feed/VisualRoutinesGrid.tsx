@@ -133,16 +133,17 @@ export function VisualRoutinesGrid({
       <div className="space-y-6">
         {secondaryRoutines.map((routine) => (
           <Card key={routine.id} className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-lg transition-all duration-300 overflow-hidden">
-            <div className="relative h-20">
+            <div className="relative min-h-[100px]">
               <img 
                 src={routine.image}
                 alt={routine.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover absolute inset-0"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              {/* Enhanced gradient overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
               
-              <div className="absolute inset-0 p-4 flex flex-col justify-between text-white">
-                <div className="flex items-start justify-between">
+              <div className="relative p-4 h-full flex flex-col justify-between text-white min-h-[100px]">
+                <div className="flex items-start justify-between mb-3">
                   <span className="text-lg">{routine.icon}</span>
                   <Switch 
                     checked={routine.active}
@@ -151,14 +152,22 @@ export function VisualRoutinesGrid({
                   />
                 </div>
                 
-                <div>
-                  <h4 className="text-sm font-semibold mb-1">{routine.name}</h4>
+                <div className="flex-1 flex flex-col justify-end">
+                  {/* Title with 2-line limit and ellipsis */}
+                  <h4 className="text-sm font-semibold mb-2 leading-tight line-clamp-2 overflow-hidden text-ellipsis">
+                    {routine.name}
+                  </h4>
+                  
+                  {/* Progress info at bottom-left */}
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-white/80">{routine.successRate}% · {routine.frequency}</span>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-white/90 font-medium">{routine.successRate}% · {routine.frequency}</span>
+                      <span className="text-white/70 text-xs">Last: {routine.lastCompleted}</span>
+                    </div>
                     {routine.streak > 0 && (
-                      <div className="flex items-center gap-1">
-                        <Flame className="w-3 h-3 text-orange-400" />
-                        <span className="text-orange-200">{routine.streak}</span>
+                      <div className="flex items-center gap-1 bg-orange-500/20 backdrop-blur-sm px-2 py-1 rounded-full">
+                        <Flame className="w-3 h-3 text-orange-300" />
+                        <span className="text-orange-200 font-medium">{routine.streak}</span>
                       </div>
                     )}
                   </div>
