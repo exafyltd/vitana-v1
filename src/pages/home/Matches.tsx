@@ -9,8 +9,8 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { MatchFiltersPopup } from "@/components/MatchFiltersPopup";
-import { Users, Target, Calendar, UserCheck, Search, Plus } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Users, Target, Calendar, UserCheck, Plus } from "lucide-react";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 
 // Import match-specific cards
 import { PeopleMatchCard } from "@/components/crossover/PeopleMatchCard";
@@ -22,8 +22,6 @@ import { CompatibilityCard } from "@/components/crossover/CompatibilityCard";
 export default function Matches() {
   const navigate = useNavigate();
   const [matchFiltersOpen, setMatchFiltersOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <AppLayout>
@@ -40,28 +38,15 @@ export default function Matches() {
 
           {/* Action Buttons */}
           <UtilityActionButton>
-            <Button variant="outline" size="sm" onClick={() => setSearchOpen(!searchOpen)}>
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+            <ExpandableSearchButton 
+              placeholder="Search people, groups, coaches, events…"
+              onSearch={(query) => console.log("Search:", query)}
+            />
             <Button size="sm" onClick={() => setMatchFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Matches
             </Button>
           </UtilityActionButton>
-
-          {/* Search Input */}
-          {searchOpen && (
-            <div className="mb-6">
-              <Input
-                type="text"
-                placeholder="Search people, groups, coaches, events..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-md"
-              />
-            </div>
-          )}
 
           {/* Split Navigation */}
           <SplitBar defaultValue="people" className="w-full mb-6">
