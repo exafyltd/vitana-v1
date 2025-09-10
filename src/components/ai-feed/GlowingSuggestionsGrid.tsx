@@ -169,7 +169,7 @@ export function GlowingSuggestionsGrid({
                   <Button 
                     size="sm" 
                     onClick={() => onTrySuggestion?.(suggestion.id)}
-                    className="flex-1 h-9 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <Sparkles className="w-3 h-3 mr-1" />
                     Try It
@@ -178,7 +178,7 @@ export function GlowingSuggestionsGrid({
                     size="sm" 
                     variant="ghost"
                     onClick={() => onDismissSuggestion?.(suggestion.id)}
-                    className="h-9 hover:bg-muted/50"
+                    className="hover:bg-muted/50"
                   >
                     Later
                   </Button>
