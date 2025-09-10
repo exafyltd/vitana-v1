@@ -5,6 +5,14 @@ import { Clock, CheckCircle, Calendar, Edit, Eye } from "lucide-react";
 import { AutopilotAction, AutopilotCategory, AutopilotPriority } from "@/types/autopilot";
 import { cn } from "@/lib/utils";
 
+// Import action images
+import communityDanceImage from "@/assets/actions/community-dance-group.jpg";
+import doctorBiomarkerImage from "@/assets/actions/doctor-biomarker-review.jpg";
+import aiNeuralImage from "@/assets/actions/ai-neural-patterns.jpg";
+import friendsMeetupImage from "@/assets/actions/friends-meetup-selfie.jpg";
+import hydrationBottleImage from "@/assets/actions/hydration-water-bottle.jpg";
+import wellnessYogaImage from "@/assets/actions/wellness-yoga-nature.jpg";
+
 interface VisualActionCardProps {
   action: AutopilotAction;
   onExecute: (actionId: string) => void;
@@ -14,50 +22,36 @@ interface VisualActionCardProps {
   className?: string;
 }
 
-const getCategoryVisuals = (category: AutopilotCategory) => {
-  switch (category) {
+const getImageForAction = (action: AutopilotAction) => {
+  // Use specific image if provided
+  if (action.imageUrl) {
+    const imageMap: { [key: string]: string } = {
+      "/src/assets/actions/community-dance-group.jpg": communityDanceImage,
+      "/src/assets/actions/doctor-biomarker-review.jpg": doctorBiomarkerImage,
+      "/src/assets/actions/ai-neural-patterns.jpg": aiNeuralImage,
+      "/src/assets/actions/friends-meetup-selfie.jpg": friendsMeetupImage,
+      "/src/assets/actions/hydration-water-bottle.jpg": hydrationBottleImage,
+      "/src/assets/actions/wellness-yoga-nature.jpg": wellnessYogaImage,
+    };
+    return imageMap[action.imageUrl] || communityDanceImage;
+  }
+  
+  // Fallback to category-based image
+  switch (action.category) {
     case "community":
-      return {
-        background: "bg-gradient-to-br from-orange-400/20 via-red-400/15 to-pink-400/10",
-        iconBg: "bg-gradient-to-br from-orange-500 to-red-500",
-        textColor: "text-orange-800 dark:text-orange-200",
-        borderColor: "border-orange-200/50 dark:border-orange-800/50"
-      };
+      return communityDanceImage;
     case "health":
-      return {
-        background: "bg-gradient-to-br from-blue-400/20 via-teal-400/15 to-cyan-400/10",
-        iconBg: "bg-gradient-to-br from-blue-500 to-teal-500",
-        textColor: "text-blue-800 dark:text-blue-200",
-        borderColor: "border-blue-200/50 dark:border-blue-800/50"
-      };
+      return action.title.toLowerCase().includes("biomarker") || action.title.toLowerCase().includes("doctor") 
+        ? doctorBiomarkerImage 
+        : hydrationBottleImage;
     case "media":
-      return {
-        background: "bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-indigo-400/10",
-        iconBg: "bg-gradient-to-br from-purple-500 to-pink-500",
-        textColor: "text-purple-800 dark:text-purple-200",
-        borderColor: "border-purple-200/50 dark:border-purple-800/50"
-      };
+      return wellnessYogaImage;
     case "discover":
-      return {
-        background: "bg-gradient-to-br from-amber-400/20 via-yellow-400/15 to-orange-400/10",
-        iconBg: "bg-gradient-to-br from-amber-500 to-orange-500",
-        textColor: "text-amber-800 dark:text-amber-200",
-        borderColor: "border-amber-200/50 dark:border-amber-800/50"
-      };
+      return aiNeuralImage;
     case "calendar":
-      return {
-        background: "bg-gradient-to-br from-gray-400/20 via-slate-400/15 to-zinc-400/10",
-        iconBg: "bg-gradient-to-br from-gray-600 to-slate-600",
-        textColor: "text-gray-800 dark:text-gray-200",
-        borderColor: "border-gray-200/50 dark:border-gray-800/50"
-      };
+      return wellnessYogaImage;
     default:
-      return {
-        background: "bg-gradient-to-br from-gray-400/20 via-slate-400/15 to-zinc-400/10",
-        iconBg: "bg-gradient-to-br from-gray-500 to-slate-500",
-        textColor: "text-gray-800 dark:text-gray-200",
-        borderColor: "border-gray-200/50 dark:border-gray-800/50"
-      };
+      return communityDanceImage;
   }
 };
 
@@ -119,33 +113,33 @@ export function VisualActionCard({
   onDetails, 
   className 
 }: VisualActionCardProps) {
-  const visuals = getCategoryVisuals(action.category);
+  const actionImage = getImageForAction(action);
   const motivationalHook = getMotivationalHook(action);
   
   return (
     <div 
       className={cn(
-        "overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg",
-        visuals.background,
-        visuals.borderColor,
+        "overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg bg-white dark:bg-card",
+        "border-gray-200/50 dark:border-gray-800/50",
         className
       )}
     >
-      <div className="flex h-full">
-        {/* Left Half - Visual Identity */}
-        <div className="w-1/2 relative flex items-center justify-center p-6">
-          <div className={cn(
-            "w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg",
-            visuals.iconBg
-          )}>
-            <span className="text-3xl">{action.icon}</span>
-          </div>
+      <div className="flex h-full min-h-[200px]">
+        {/* Left Half - Real Image */}
+        <div className="w-1/2 relative overflow-hidden">
+          <img
+            src={actionImage}
+            alt={action.title}
+            className="w-full h-full object-cover"
+          />
           
-          {/* Decorative pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-white/30" />
-            <div className="absolute bottom-4 left-4 w-2 h-2 rounded-full bg-white/20" />
-            <div className="absolute top-1/2 right-1/4 w-6 h-6 rounded-full bg-white/15" />
+          {/* Image overlay with icon */}
+          <div className="absolute inset-0 bg-black/20">
+            <div className="absolute bottom-4 left-4">
+              <div className="w-12 h-12 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                <span className="text-2xl">{action.icon}</span>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -17,6 +17,7 @@ export interface AutopilotAction {
   priority: AutopilotPriority;
   timeEstimate?: string;
   icon: string;
+  imageUrl?: string;
   timestamp: Date;
   status: AutopilotActionStatus;
   selected?: boolean;
