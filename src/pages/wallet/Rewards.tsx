@@ -11,7 +11,7 @@ import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivational
 import { WalletRewardCard } from "@/components/wallet/WalletRewardCard";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Gift, Share, CreditCard } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 
 const rewardsData = {
@@ -85,27 +85,6 @@ function Rewards() {
   const [activeTab, setActiveTab] = useState("earned");
   const [actionDialogOpen, setActionDialogOpen] = useState(false);
 
-  const splitBarOptions = [
-    { value: "earned", label: "Earned Rewards" },
-    { value: "pending", label: "Pending Commissions" },
-    { value: "referral", label: "Withdrawal & Referral" }
-  ];
-
-  const getContextualAction = () => {
-    switch (activeTab) {
-      case "earned":
-        return { label: "Claim Rewards", icon: Gift };
-      case "pending":
-        return { label: "Request Payout", icon: CreditCard };
-      case "referral":
-        return { label: "Share Referral Link", icon: Share };
-      default:
-        return { label: "Claim Rewards", icon: Gift };
-    }
-  };
-
-  const contextualAction = getContextualAction();
-
   return (
     <AppLayout>
       <SEO 
@@ -124,8 +103,8 @@ function Rewards() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search rewards, commissions, or achievements..." />
           <Button size="sm" onClick={() => setActionDialogOpen(true)}>
-            <contextualAction.icon className="h-4 w-4 mr-2" />
-            {contextualAction.label}
+            <Plus className="h-4 w-4 mr-2" />
+            Quick Actions
           </Button>
         </UtilityActionButton>
 
@@ -194,7 +173,7 @@ function Rewards() {
         <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{contextualAction.label}</DialogTitle>
+              <DialogTitle>Quick Actions</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               {activeTab === "earned" && (
