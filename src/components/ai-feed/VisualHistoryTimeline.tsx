@@ -123,22 +123,30 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
       <div className="space-y-6">
         {sortedEvents.map((event, index) => (
           <div key={event.id} className="relative flex items-start gap-6">
-            {/* Timeline node */}
+            {/* Timeline node with enhanced animations */}
             <div className={`
               relative z-10 flex items-center justify-center w-16 h-16 rounded-full 
               border-4 ${getEventColor(event.type)} shadow-lg
+              ${index < 2 ? 'animate-pulse' : ''}
             `}>
               {getEventIcon(event.type)}
-              {/* Pulse animation for recent events */}
+              {/* Enhanced pulse animation for recent events */}
               {index < 2 && (
-                <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping" />
+                <>
+                  <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping" />
+                  <div className="absolute inset-0 rounded-full border-2 border-yellow-400/40 animate-ping animation-delay-75" />
+                </>
+              )}
+              {/* Confetti effect for milestones */}
+              {event.type === "milestone" && index < 2 && (
+                <div className="absolute -top-2 -right-2 text-xs animate-bounce">✨</div>
               )}
             </div>
 
-            {/* Event card */}
+            {/* Event card with enhanced hover effects */}
             <Card className={`
-              flex-1 bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-lg 
-              transition-all duration-300 group ${index < 2 ? 'ring-2 ring-primary/20' : ''}
+              flex-1 bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl hover:scale-[1.01]
+              transition-all duration-300 group ${index < 2 ? 'ring-2 ring-primary/20 shadow-lg' : ''}
             `}>
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-2">

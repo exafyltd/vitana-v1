@@ -73,22 +73,22 @@ export function VisualActivityFeed({ activities }: VisualActivityFeedProps) {
   return (
     <div className="space-y-4">
       {activities.slice(0, 8).map((activity) => (
-        <Card key={activity.id} className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-lg transition-all duration-300 group">
+        <Card key={activity.id} className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl hover:scale-[1.01] transition-all duration-300 group">
           <CardContent className="p-0">
             <div className="flex h-32">
               {/* Left: Image with overlay */}
-              <div className="relative w-48 flex-shrink-0">
+              <div className="relative w-48 flex-shrink-0 overflow-hidden rounded-l-lg">
                 <img 
                   src={getCategoryImage(activity.category, activity.title)}
                   alt={activity.title}
-                  className="w-full h-full object-cover rounded-l-lg"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                {/* Gradient overlay for better text contrast */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent rounded-l-lg" />
+                {/* Enhanced gradient overlay for better text contrast */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/10 to-transparent group-hover:from-black/20 transition-colors duration-300" />
                 
-                {/* Category badge on image */}
+                {/* Category badge on image - standardized positioning */}
                 <div className="absolute top-3 left-3">
-                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 px-2 py-1 rounded-full text-white text-xs font-medium">
+                  <div className="bg-white/20 backdrop-blur-sm border border-white/30 px-3 py-1.5 rounded-full text-white text-xs font-medium shadow-lg">
                     {activity.icon} {activity.category}
                   </div>
                 </div>

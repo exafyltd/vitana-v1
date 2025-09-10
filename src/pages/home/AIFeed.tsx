@@ -108,137 +108,146 @@ export default function AIFeed() {
             </SplitBarList>
 
             {/* Activity Feed Tab */}
-            <SplitBarContent value="feed" className="space-y-6">
-              <MotivationalBanner 
-                variant="learning" 
-                userName="Jovana"
-                className="mb-4"
-              />
-              
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center">
-                      <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
+            <SplitBarContent value="feed" className="max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="space-y-6 pb-8">
+                <MotivationalBanner 
+                  variant="learning" 
+                  userName="Jovana"
+                  className="mb-4"
+                />
+                
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center">
+                        <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-semibold">Activity Feed 🏃</h2>
+                        <p className="text-sm text-muted-foreground">Real-time AI actions and insights</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-lg font-semibold">Activity Feed 🏃</h2>
-                      <p className="text-sm text-muted-foreground">Real-time AI actions and insights</p>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant={selectedFilter === "autopilot-history" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedFilter(selectedFilter === "autopilot-history" ? "all" : "autopilot-history")}
+                        className="h-9"
+                      >
+                        <History className="w-4 h-4 mr-1" />
+                        Autopilot History
+                      </Button>
+                      <Badge variant="outline">Live</Badge>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant={selectedFilter === "autopilot-history" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedFilter(selectedFilter === "autopilot-history" ? "all" : "autopilot-history")}
-                    >
-                      <History className="w-4 h-4 mr-1" />
-                      Autopilot History
-                    </Button>
-                    <Badge variant="outline">Live</Badge>
-                  </div>
-                </div>
 
-                <VisualActivityFeed activities={filteredFeed} />
+                  <VisualActivityFeed activities={filteredFeed} />
+                </div>
               </div>
             </SplitBarContent>
 
             {/* My Routines Tab */}
-            <SplitBarContent value="routines" className="space-y-6">
-              <MotivationalBanner 
-                variant="celebrating" 
-                userName="Jovana"
-                className="mb-4"
-              />
-              
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
-                      <Repeat className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-semibold">My Routines 🔁</h2>
-                      <p className="text-sm text-muted-foreground">Automated habits building your best self</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      <Pause className="w-4 h-4 mr-1" />Pause All
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Settings className="w-4 h-4 mr-1" />Edit
-                    </Button>
-                    <Button variant="default" size="sm">
-                      <Play className="w-4 h-4 mr-1" />Run Now
-                    </Button>
-                  </div>
-                </div>
-
-                <VisualRoutinesGrid 
-                  onToggleRoutine={(routineId) => console.log('Toggle routine:', routineId)}
+            <SplitBarContent value="routines" className="max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="space-y-6 pb-8">
+                <MotivationalBanner 
+                  variant="celebrating" 
+                  userName="Jovana"
+                  className="mb-4"
                 />
+                
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
+                        <Repeat className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-semibold">My Routines 🔁</h2>
+                        <p className="text-sm text-muted-foreground">Automated habits building your best self</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
+                        <Pause className="w-4 h-4 mr-1" />Pause All
+                      </Button>
+                      <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
+                        <Settings className="w-4 h-4 mr-1" />Edit
+                      </Button>
+                      <Button size="sm" className="h-9 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
+                        <Play className="w-4 h-4 mr-1" />Run Now
+                      </Button>
+                    </div>
+                  </div>
+
+                  <VisualRoutinesGrid 
+                    onToggleRoutine={(routineId) => console.log('Toggle routine:', routineId)}
+                  />
+                </div>
               </div>
             </SplitBarContent>
 
             {/* AI Ideas Tab */}
-            <SplitBarContent value="ideas" className="space-y-6">
-              <MotivationalBanner 
-                variant="adapting" 
-                userName="Jovana"
-                className="mb-4"
-              />
-              
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center">
-                      <Lightbulb className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-semibold">AI Ideas 💡</h2>
-                      <p className="text-sm text-muted-foreground">Experimental suggestions from your AI companion</p>
-                    </div>
-                  </div>
-                  <Badge variant="outline" className="bg-purple-50 border-purple-200 text-purple-700">
-                    <Lightbulb className="w-3 h-3 mr-1" />
-                    4 new ideas
-                  </Badge>
-                </div>
-
-                <GlowingSuggestionsGrid 
-                  onTrySuggestion={(suggestionId) => console.log('Try suggestion:', suggestionId)}
-                  onDismissSuggestion={(suggestionId) => console.log('Dismiss suggestion:', suggestionId)}
+            <SplitBarContent value="ideas" className="max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="space-y-6 pb-8">
+                <MotivationalBanner 
+                  variant="adapting" 
+                  userName="Jovana"
+                  className="mb-4"
                 />
+                
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center">
+                        <Lightbulb className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-semibold">AI Ideas 💡</h2>
+                        <p className="text-sm text-muted-foreground">Experimental suggestions from your AI companion</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="bg-purple-50 border-purple-200 text-purple-700">
+                      <Lightbulb className="w-3 h-3 mr-1" />
+                      4 new ideas
+                    </Badge>
+                  </div>
+
+                  <GlowingSuggestionsGrid 
+                    onTrySuggestion={(suggestionId) => console.log('Try suggestion:', suggestionId)}
+                    onDismissSuggestion={(suggestionId) => console.log('Dismiss suggestion:', suggestionId)}
+                  />
+                </div>
               </div>
             </SplitBarContent>
 
             {/* History Tab */}
-            <SplitBarContent value="history" className="space-y-6">
-              <MotivationalBanner 
-                variant="encouraging" 
-                userName="Jovana"
-                className="mb-4"
-              />
-              
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-gray-500/20 to-slate-500/20 flex items-center justify-center">
-                      <History className="w-6 h-6 text-gray-600" />
+            <SplitBarContent value="history" className="max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="space-y-6 pb-8">
+                <MotivationalBanner 
+                  variant="encouraging" 
+                  userName="Jovana"
+                  className="mb-4"
+                />
+                
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-gray-500/20 to-slate-500/20 flex items-center justify-center">
+                        <History className="w-6 h-6 text-gray-600" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-semibold">Your Journey 📚</h2>
+                        <p className="text-sm text-muted-foreground">Milestones, achievements, and growth over time</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-lg font-semibold">Your Journey 📚</h2>
-                      <p className="text-sm text-muted-foreground">Milestones, achievements, and growth over time</p>
-                    </div>
+                    <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
+                      <RotateCcw className="w-4 h-4 mr-1" />
+                      Export History
+                    </Button>
                   </div>
-                  <Button variant="outline" size="sm">
-                    <RotateCcw className="w-4 h-4 mr-1" />
-                    Export History
-                  </Button>
-                </div>
 
-                <VisualHistoryTimeline />
+                  <VisualHistoryTimeline />
+                </div>
               </div>
             </SplitBarContent>
           </SplitBar>

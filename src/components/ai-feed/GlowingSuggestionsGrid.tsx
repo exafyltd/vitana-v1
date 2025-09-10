@@ -114,26 +114,26 @@ export function GlowingSuggestionsGrid({
           <CardContent className="relative p-0">
             <div className="flex h-48">
               {/* Left: Neural pattern image */}
-              <div className="relative w-40 flex-shrink-0">
+              <div className="relative w-40 flex-shrink-0 overflow-hidden rounded-l-lg">
                 <img 
                   src={suggestion.image || aiNeuralInsightsImg}
                   alt={suggestion.title}
-                  className="w-full h-full object-cover rounded-l-lg opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+                  className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-300"
                 />
-                {/* Animated overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent rounded-l-lg" />
+                {/* Enhanced animated overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent group-hover:from-primary/20 transition-colors duration-300" />
                 
-                {/* Floating AI indicator */}
+                {/* Standardized AI indicator - top-left */}
                 <div className="absolute top-3 left-3">
-                  <div className="bg-primary/10 backdrop-blur-sm border border-primary/20 px-2 py-1 rounded-full flex items-center gap-1">
-                    <Brain className="w-3 h-3 text-primary animate-pulse" />
-                    <span className="text-xs font-medium text-primary">AI</span>
+                  <div className="bg-white/20 backdrop-blur-sm border border-white/30 px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg">
+                    <Brain className="w-3 h-3 text-white animate-pulse" />
+                    <span className="text-xs font-medium text-white">AI</span>
                   </div>
                 </div>
 
                 {/* Confidence badge */}
                 <div className="absolute bottom-3 left-3">
-                  <Badge variant="secondary" className="text-xs bg-white/20 backdrop-blur-sm border-white/30 text-white">
+                  <Badge variant="secondary" className="text-xs bg-white/20 backdrop-blur-sm border-white/30 text-white shadow-lg">
                     {suggestion.confidence}% confident
                   </Badge>
                 </div>
@@ -169,7 +169,7 @@ export function GlowingSuggestionsGrid({
                   <Button 
                     size="sm" 
                     onClick={() => onTrySuggestion?.(suggestion.id)}
-                    className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="flex-1 h-9 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <Sparkles className="w-3 h-3 mr-1" />
                     Try It
@@ -178,7 +178,7 @@ export function GlowingSuggestionsGrid({
                     size="sm" 
                     variant="ghost"
                     onClick={() => onDismissSuggestion?.(suggestion.id)}
-                    className="hover:bg-muted/50"
+                    className="h-9 bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-300"
                   >
                     Later
                   </Button>
