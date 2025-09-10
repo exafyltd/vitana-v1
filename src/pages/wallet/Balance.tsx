@@ -13,6 +13,13 @@ import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { CreditCard, Coins, Shield, Plus, TrendingUp } from "lucide-react";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const balanceData = {
   credits: {
@@ -48,6 +55,9 @@ const balanceData = {
 
 function Balance() {
   const [activeTab, setActiveTab] = useState("credits");
+  const [isTopUpOpen, setIsTopUpOpen] = useState(false);
+  const [isTokensOpen, setIsTokensOpen] = useState(false);
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
 
   const splitBarOptions = [
     { value: "credits", label: "Credits Account" },
@@ -58,13 +68,13 @@ function Balance() {
   const getContextualAction = () => {
     switch (activeTab) {
       case "credits":
-        return { label: "Top Up Credits", icon: Plus };
+        return { label: "Top Up Credits", icon: Plus, onClick: () => setIsTopUpOpen(true) };
       case "tokens":
-        return { label: "Buy/Stake Tokens", icon: Coins };
+        return { label: "Buy/Stake Tokens", icon: Coins, onClick: () => setIsTokensOpen(true) };
       case "membership":
-        return { label: "Upgrade Plan", icon: TrendingUp };
+        return { label: "Upgrade Plan", icon: TrendingUp, onClick: () => setIsUpgradeOpen(true) };
       default:
-        return { label: "Top Up Credits", icon: Plus };
+        return { label: "Top Up Credits", icon: Plus, onClick: () => setIsTopUpOpen(true) };
     }
   };
 
@@ -86,7 +96,7 @@ function Balance() {
 
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search balances, transactions, or benefits..." />
-          <Button size="sm">
+          <Button size="sm" onClick={contextualAction.onClick}>
             <contextualAction.icon className="h-4 w-4 mr-2" />
             {contextualAction.label}
           </Button>
@@ -220,6 +230,99 @@ function Balance() {
           </SplitBarContent>
         </SplitBar>
       </div>
+
+      {/* Top Up Credits Dialog */}
+      <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Top Up Credits</DialogTitle>
+            <DialogDescription>
+              Purchase credits to unlock premium health services and features.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <Button variant="outline" className="h-20 flex-col">
+                <span className="text-lg font-bold">500</span>
+                <span className="text-sm">$25</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex-col">
+                <span className="text-lg font-bold">1,200</span>
+                <span className="text-sm">$50</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex-col">
+                <span className="text-lg font-bold">2,500</span>
+                <span className="text-sm">$100</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex-col">
+                <span className="text-lg font-bold">5,500</span>
+                <span className="text-sm">$200</span>
+              </Button>
+            </div>
+            <Button className="w-full">
+              <CreditCard className="h-4 w-4 mr-2" />
+              Purchase Credits
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Buy/Stake Tokens Dialog */}
+      <Dialog open={isTokensOpen} onOpenChange={setIsTokensOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Buy/Stake VTN Tokens</DialogTitle>
+            <DialogDescription>
+              Purchase or stake VTN tokens for governance and staking rewards.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <Button variant="outline" className="h-16">
+                <Coins className="h-4 w-4 mr-2" />
+                Buy Tokens
+              </Button>
+              <Button variant="outline" className="h-16">
+                <Shield className="h-4 w-4 mr-2" />
+                Stake Tokens
+              </Button>
+            </div>
+            <Button className="w-full">
+              Continue to Purchase
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Upgrade Plan Dialog */}
+      <Dialog open={isUpgradeOpen} onOpenChange={setIsUpgradeOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Upgrade Membership</DialogTitle>
+            <DialogDescription>
+              Upgrade to Platinum tier for 90% coverage and exclusive benefits.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="border rounded-lg p-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-semibold">Platinum Tier</span>
+                <span className="text-lg font-bold">$99/month</span>
+              </div>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• 90% lab test coverage</li>
+                <li>• Unlimited health coaching</li>
+                <li>• Priority support 24/7</li>
+                <li>• Advanced analytics</li>
+              </ul>
+            </div>
+            <Button className="w-full">
+              <TrendingUp className="h-4 w-4 mr-2" />
+              Upgrade Now
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 }
