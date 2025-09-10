@@ -4,6 +4,8 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
 import { WalletRewardCard } from "@/components/wallet/WalletRewardCard";
@@ -81,6 +83,7 @@ const rewardsData = {
 
 function Rewards() {
   const [activeTab, setActiveTab] = useState("earned");
+  const [actionDialogOpen, setActionDialogOpen] = useState(false);
 
   const splitBarOptions = [
     { value: "earned", label: "Earned Rewards" },
@@ -119,8 +122,10 @@ function Rewards() {
 
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search rewards, commissions, or achievements..." />
-          <contextualAction.icon className="h-4 w-4 mr-2" />
-          {contextualAction.label}
+          <Button size="sm" onClick={() => setActionDialogOpen(true)}>
+            <contextualAction.icon className="h-4 w-4 mr-2" />
+            {contextualAction.label}
+          </Button>
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
@@ -183,6 +188,77 @@ function Rewards() {
             </div>
           </SplitBarContent>
         </SplitBar>
+
+        {/* Action Dialog */}
+        <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{contextualAction.label}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              {activeTab === "earned" && (
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">Select rewards to claim and convert to your wallet balance.</p>
+                  <div className="space-y-2">
+                    {rewardsData.earned.filter(r => r.status === "available").map((reward) => (
+                      <div key={reward.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{reward.title}</h4>
+                          <p className="text-sm text-muted-foreground">{reward.amount}</p>
+                        </div>
+                        <Button size="sm" onClick={() => console.log('Claim:', reward.id)}>
+                          Claim
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {activeTab === "pending" && (
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">Request payout for your pending commissions.</p>
+                  <div className="space-y-2">
+                    {rewardsData.pending.map((commission) => (
+                      <div key={commission.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{commission.title}</h4>
+                          <p className="text-sm text-muted-foreground">{commission.amount}</p>
+                          <p className="text-xs text-muted-foreground">{commission.dueDate}</p>
+                        </div>
+                        <Button size="sm" disabled={commission.status === "pending"}>
+                          {commission.status === "pending" ? "Processing" : "Request"}
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "referral" && (
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">Share your referral link to earn commissions.</p>
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h4 className="font-medium mb-2">Your Referral Link</h4>
+                    <div className="flex gap-2">
+                      <input 
+                        value="https://vitana.app/join/your-referral-code" 
+                        readOnly 
+                        className="flex-1 px-3 py-2 text-sm border rounded"
+                      />
+                      <Button size="sm" onClick={() => console.log('Copy link')}>
+                        Copy
+                      </Button>
+                    </div>
+                  </div>
+                  <Button className="w-full" onClick={() => console.log('Share via social')}>
+                    Share via Social Media
+                  </Button>
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </AppLayout>
   );

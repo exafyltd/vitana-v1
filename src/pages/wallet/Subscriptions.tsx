@@ -4,6 +4,8 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
 import { WalletSubscriptionCard } from "@/components/wallet/WalletSubscriptionCard";
@@ -74,6 +76,7 @@ const subscriptionData = {
 
 function Subscriptions() {
   const [activeTab, setActiveTab] = useState("active");
+  const [addSubscriptionOpen, setAddSubscriptionOpen] = useState(false);
 
   const splitBarOptions = [
     { value: "active", label: "Active" },
@@ -97,8 +100,10 @@ function Subscriptions() {
 
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search subscriptions and plans..." />
-          <Plus className="h-4 w-4 mr-2" />
-          Add Subscription
+          <Button size="sm" onClick={() => setAddSubscriptionOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Subscription
+          </Button>
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
@@ -161,6 +166,30 @@ function Subscriptions() {
             </div>
           </SplitBarContent>
         </SplitBar>
+
+        {/* Add Subscription Dialog */}
+        <Dialog open={addSubscriptionOpen} onOpenChange={setAddSubscriptionOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add New Subscription</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-muted-foreground">Browse available subscription plans and add them to your account.</p>
+              <div className="grid grid-cols-1 gap-4">
+                {subscriptionData.available.map((sub) => (
+                  <div key={sub.id} className="p-4 border rounded-lg">
+                    <h4 className="font-semibold">{sub.name}</h4>
+                    <p className="text-sm text-muted-foreground">{sub.description}</p>
+                    <p className="text-sm font-medium mt-2">{sub.price}/{sub.billing}</p>
+                    <Button size="sm" className="mt-2" onClick={() => console.log('Subscribe to:', sub.id)}>
+                      Subscribe
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </AppLayout>
   );
