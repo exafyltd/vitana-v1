@@ -66,42 +66,65 @@ const getPriorityColor = (priority: AutopilotPriority) => {
   }
 };
 
+const getCategoryColor = (category: AutopilotCategory) => {
+  switch (category) {
+    case "community":
+      return "border-l-[hsl(var(--domain-community-accent))]";
+    case "health":
+      return "border-l-[hsl(var(--pill-hydration-accent))]";
+    case "discover":
+      return "border-l-[hsl(var(--domain-discover-accent))]";
+    case "media":
+      return "border-l-[hsl(var(--pill-nutrition-accent))]";
+    case "calendar":
+      return "border-l-[hsl(var(--util-calendar-accent))]";
+    default:
+      return "border-l-[hsl(var(--domain-community-accent))]";
+  }
+};
+
 const getMotivationalHook = (action: AutopilotAction) => {
   const { category, title } = action;
   
   if (title.toLowerCase().includes("dance")) {
-    return "Perfect match for your movement goals 🕺";
+    return "Dance tonight = smiles guaranteed 💃✨";
   }
   if (title.toLowerCase().includes("hydration") || title.toLowerCase().includes("water")) {
-    return "Your hydration streak is on fire 🔥";
+    return "Your streak is legendary — one more day! 🔥";
   }
   if (title.toLowerCase().includes("energy") || title.toLowerCase().includes("peak")) {
-    return "AI detected your 8 AM energy peak ⚡";
+    return "Perfect timing for your 8 AM energy peak ⚡";
   }
   if (title.toLowerCase().includes("biomarker") || title.toLowerCase().includes("results")) {
-    return "Your health data tells a story 📊";
+    return "Your numbers are ready to reveal insights 📊";
   }
   if (title.toLowerCase().includes("invite") || title.toLowerCase().includes("friends")) {
-    return "Your social wellness circle is expanding 👥";
+    return "Your friends are waiting for you 👫 — let's make it happen";
   }
   if (title.toLowerCase().includes("podcast") || title.toLowerCase().includes("episode")) {
-    return "Knowledge that matches your wellness journey 🎧";
+    return "Your next breakthrough is one listen away 🎧";
+  }
+  if (title.toLowerCase().includes("wellness") || title.toLowerCase().includes("yoga")) {
+    return "Your mind and body are calling for this 🧘‍♀️";
+  }
+  if (title.toLowerCase().includes("ai") || title.toLowerCase().includes("suggestion")) {
+    return "Your digital twin has something exciting ✨";
   }
   
-  // Default hooks by category
+  // Enhanced default hooks by category
   switch (category) {
     case "community":
-      return "Your social wellness awaits ✨";
+      return "Your tribe is out there — time to connect 🌟";
     case "health":
-      return "Your wellness journey continues 💪";
+      return "Your future self will thank you 💪";
     case "media":
-      return "Perfect content for your growth 🎯";
+      return "Knowledge that speaks to your soul 🎯";
     case "discover":
-      return "Curated just for your lifestyle 🌟";
+      return "Something amazing just dropped for you 🚀";
     case "calendar":
-      return "Optimize your productive hours ⏰";
+      return "Your productive hours are calling ⏰";
     default:
-      return "AI-powered recommendation for you 🤖";
+      return "AI magic tailored just for you 🤖";
   }
 };
 
@@ -119,93 +142,97 @@ export function VisualActionCard({
   return (
     <div 
       className={cn(
-        "overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg bg-white dark:bg-card",
-        "border-gray-200/50 dark:border-gray-800/50",
+        "group overflow-hidden rounded-xl border-l-4 border-t border-r border-b transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-card",
+        "border-border hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)]",
+        getCategoryColor(action.category),
         className
       )}
     >
-      <div className="flex h-full min-h-[200px]">
-        {/* Left Half - Real Image */}
+      <div className="flex h-full min-h-[220px]">
+        {/* Left Half - Real Image with 16:9 aspect ratio */}
         <div className="w-1/2 relative overflow-hidden">
-          <img
-            src={actionImage}
-            alt={action.title}
-            className="w-full h-full object-cover"
-          />
-          
-          {/* Image overlay with icon */}
-          <div className="absolute inset-0 bg-black/20">
-            <div className="absolute bottom-4 left-4">
-              <div className="w-12 h-12 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
-                <span className="text-2xl">{action.icon}</span>
+          <div className="aspect-video w-full h-full">
+            <img
+              src={actionImage}
+              alt={action.title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            
+            {/* Gradient overlay for better text contrast */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent" />
+            
+            {/* Category badge - top-left corner */}
+            <div className="absolute top-3 left-3">
+              <div className="w-10 h-10 rounded-lg bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/20">
+                <span className="text-lg">{action.icon}</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Half - Action Content */}
-        <div className="w-1/2 p-4 flex flex-col justify-between">
-          <div className="space-y-3">
-            {/* Motivational Hook */}
-            <div className="text-xs font-medium text-muted-foreground">
+        {/* Right Half - Action Content with enhanced typography */}
+        <div className="w-1/2 p-5 flex flex-col justify-between">
+          <div className="space-y-4">
+            {/* Motivational Hook - enhanced */}
+            <div className="text-sm font-medium text-muted-foreground leading-relaxed">
               {motivationalHook}
             </div>
             
-            {/* Title & Tags */}
-            <div className="space-y-2">
-              <h4 className="font-semibold text-sm leading-tight line-clamp-2">
+            {/* Title & Tags with better hierarchy */}
+            <div className="space-y-3">
+              <h4 className="font-bold text-base leading-tight line-clamp-2 text-foreground">
                 {action.title}
               </h4>
               
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <Badge 
                   variant="outline" 
-                  className={cn("text-xs px-2 py-0.5", getPriorityColor(action.priority))}
+                  className={cn("text-xs px-2.5 py-1", getPriorityColor(action.priority))}
                 >
                   {action.priority}
                 </Badge>
                 {action.timeEstimate && (
-                  <Badge variant="outline" className="text-xs px-2 py-0.5">
-                    <Clock className="w-2.5 h-2.5 mr-1" />
+                  <Badge variant="outline" className="text-xs px-2.5 py-1 bg-muted/50">
+                    <Clock className="w-3 h-3 mr-1" />
                     {action.timeEstimate}
                   </Badge>
                 )}
               </div>
             </div>
             
-            {/* Reason */}
-            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+            {/* Reason with softer contrast */}
+            <p className="text-sm text-muted-foreground/80 line-clamp-2 leading-relaxed">
               {action.reason}
             </p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-2 mt-4">
+          {/* Action Buttons with premium styling */}
+          <div className="grid grid-cols-2 gap-3 mt-5">
             <Button 
               size="sm"
               onClick={() => onExecute(action.id)}
-              className="text-xs h-8 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white border-0"
+              className="text-sm h-9 bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:from-[hsl(var(--gradient-join-start))]/90 hover:to-[hsl(var(--gradient-join-end))]/90 text-white border-0 font-medium transition-all duration-200 hover:scale-105 active:scale-95"
             >
-              <CheckCircle className="w-3 h-3 mr-1" />
+              <CheckCircle className="w-3.5 h-3.5 mr-1.5" />
               Do Now
             </Button>
             <Button 
               variant="outline" 
               size="sm"
               onClick={() => onDismiss(action.id)}
-              className="text-xs h-8"
+              className="text-sm h-9 bg-background/60 backdrop-blur-sm border-border/60 hover:bg-background/80 transition-all duration-200"
             >
               Later
             </Button>
           </div>
           
-          {/* Secondary Actions */}
-          <div className="flex justify-between mt-2">
+          {/* Secondary Actions with better spacing */}
+          <div className="flex justify-between mt-3 pt-2 border-t border-border/30">
             <Button 
               variant="ghost" 
               size="sm"
               onClick={() => onEdit?.(action.id)}
-              className="text-xs h-6 px-2 text-muted-foreground hover:text-foreground"
+              className="text-xs h-7 px-3 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Edit className="w-3 h-3 mr-1" />
               Edit
@@ -214,15 +241,15 @@ export function VisualActionCard({
               variant="ghost" 
               size="sm"
               onClick={() => onDetails?.(action.id)}
-              className="text-xs h-6 px-2 text-muted-foreground hover:text-foreground"
+              className="text-xs h-7 px-3 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Eye className="w-3 h-3 mr-1" />
               Details
             </Button>
           </div>
 
-          {/* Timestamp */}
-          <div className="text-xs text-muted-foreground mt-2 text-right">
+          {/* Timestamp with consistent alignment */}
+          <div className="text-xs text-muted-foreground/60 mt-2 text-right font-mono">
             {new Date(action.timestamp).toLocaleTimeString([], { 
               hour: '2-digit', 
               minute: '2-digit' 

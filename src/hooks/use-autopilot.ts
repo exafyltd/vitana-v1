@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { AutopilotAction, AutopilotState, AutopilotPriority, ExecutionResult, AutopilotActionStatus } from "@/types/autopilot";
 
-// Mock data generator with Maxina-flavored actions for demonstration
+// Mock data generator with enhanced motivational actions
 const generateMockActions = (): AutopilotAction[] => [
   {
     id: "1",
     title: "Join Longevity Dance Group Tonight?",
-    reason: "Perfect match for your movement goals + social wellness",
+    reason: "Perfect match for your movement goals + social wellness vibes",
     category: "community",
     priority: "high",
     timeEstimate: "2 min",
@@ -18,8 +18,8 @@ const generateMockActions = (): AutopilotAction[] => [
   },
   {
     id: "2", 
-    title: "New AI Suggestion",
-    reason: "Based on your recent activity patterns",
+    title: "AI Breakthrough Insight Just Dropped",
+    reason: "Your digital twin discovered something fascinating from your patterns",
     category: "discover",
     priority: "medium",
     timeEstimate: "1-2 min",
@@ -31,8 +31,8 @@ const generateMockActions = (): AutopilotAction[] => [
   },
   {
     id: "3",
-    title: "Hydration Streak at 5 Days — Keep It Going?",
-    reason: "One more day to reach your weekly goal",
+    title: "Hydration Streak at 5 Days — Legend Status Awaits",
+    reason: "One more sip closer to your weekly hydration mastery",
     category: "health", 
     priority: "medium",
     timeEstimate: "30 sec",
@@ -44,8 +44,8 @@ const generateMockActions = (): AutopilotAction[] => [
   },
   {
     id: "4",
-    title: "Auto-invite 3 Friends to This Weekend's Meetup",
-    reason: "Sarah, Luna & Marcus match the longevity theme perfectly",
+    title: "Auto-invite Squad to Epic Weekend Meetup",
+    reason: "Sarah, Luna & Marcus are perfect longevity tribe matches",
     category: "community",
     priority: "high", 
     timeEstimate: "1 min",
@@ -57,8 +57,8 @@ const generateMockActions = (): AutopilotAction[] => [
   },
   {
     id: "5",
-    title: "Book Follow-Up: Biomarker Results Review",
-    reason: "Dr. Chen has new insights from your latest panel",
+    title: "Your Biomarker Story Awaits",
+    reason: "Dr. Chen decoded exciting insights from your latest panel",
     category: "health",
     priority: "high",
     timeEstimate: "3 min", 
@@ -70,8 +70,8 @@ const generateMockActions = (): AutopilotAction[] => [
   },
   {
     id: "6",
-    title: "Morning Wellness Routine",
-    reason: "Covers stress resilience techniques you've been exploring",
+    title: "Mindful Morning Magic",
+    reason: "Your soul is calling for these stress-melting techniques",
     category: "media",
     priority: "low",
     timeEstimate: "30 sec",
