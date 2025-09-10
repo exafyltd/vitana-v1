@@ -109,7 +109,7 @@ export default function MyBusiness() {
               onClick={() => setShowCreateService(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              New Service
+              + Business
             </Button>
           </UtilityActionButton>
 
