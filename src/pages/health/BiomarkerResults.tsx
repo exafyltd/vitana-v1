@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { BiomarkersMasterActionPopup } from "@/components/BiomarkersMasterActionPopup";
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,7 +21,9 @@ import {
   CheckCircle,
   AlertTriangle,
   TrendingDown,
-  Clock
+  Clock,
+  Search,
+  TestTube
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
@@ -51,6 +56,7 @@ export default function BiomarkerResults() {
   const [results, setResults] = useState<TestResult[]>([]);
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
+  const [biomarkerActionsOpen, setBiomarkerActionsOpen] = useState(false);
 
   useEffect(() => {
     fetchResults();
@@ -202,13 +208,16 @@ export default function BiomarkerResults() {
       <AppLayout>
         <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
         <SubNavigation items={healthNavigation} />
+        
+        <Universal3CardHeader
+          title="Loading lab results..."
+          description="Please wait while we fetch your biomarker analysis."
+          emoji="⏳"
+          onAutopilotClick={() => {}}
+        />
+        
         <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
-            <StandardHeader
-              title="Loading lab results..."
-              description="Please wait while we fetch your biomarker analysis."
-              emoji="⏳"
-            />
             <div className="space-y-4">
               {[1, 2, 3].map(i => (
                 <Card key={i} className="animate-pulse">
@@ -230,13 +239,16 @@ export default function BiomarkerResults() {
       <AppLayout>
         <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
         <SubNavigation items={healthNavigation} />
+        
+        <Universal3CardHeader
+          title="No lab results yet"
+          description="Order your first lab test to get started."
+          emoji="🧪"
+          onAutopilotClick={() => {}}
+        />
+        
         <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
-            <StandardHeader
-              title="No lab results yet"
-              description="Order your first lab test to get started."
-              emoji="🧪"
-            />
             <Card className="text-center py-12">
               <CardContent>
                 <div className="text-6xl mb-4">🧪</div>
@@ -259,13 +271,27 @@ export default function BiomarkerResults() {
     <AppLayout>
       <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
+      
+      <Universal3CardHeader
+        title="Your lab results are in!"
+        description="View your biomarker analysis and lab test results."
+        emoji="🧪"
+        onAutopilotClick={() => {}}
+      />
+      
       <div className="p-6 bg-gradient-to-br from-background via-muted/20 to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          <StandardHeader
-            title="Your lab results are in!"
-            description="View your biomarker analysis and lab test results."
-            emoji="🧪"
-          />
+          
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search lab results, biomarkers, or test types..." />
+            <Button
+              onClick={() => setBiomarkerActionsOpen(true)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <TestTube className="w-4 h-4 mr-2" />
+              Biomarker Actions
+            </Button>
+          </UtilityActionButton>
           
           <div className="flex items-center justify-between">
             <div className="text-sm text-muted-foreground bg-card/50 px-3 py-1 rounded-md">
@@ -393,6 +419,11 @@ export default function BiomarkerResults() {
           </div>
         </div>
       </div>
+      
+      <BiomarkersMasterActionPopup
+        open={biomarkerActionsOpen}
+        onOpenChange={setBiomarkerActionsOpen}
+      />
     </AppLayout>
   );
 }

@@ -3,9 +3,15 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { HealthMasterActionPopup } from "@/components/HealthMasterActionPopup";
+import { Universal3CardHeader } from "@/components/Universal3CardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { NewsCard } from "@/components/crossover/NewsCard";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
@@ -53,7 +59,6 @@ const overviewCards = [
   },
 ];
 
-import StandardHeader from "@/components/StandardHeader";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 export default withScreenId(function Health() {
@@ -61,6 +66,7 @@ export default withScreenId(function Health() {
   const location = useLocation();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [healthActionsOpen, setHealthActionsOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   
   const latestActions = getLatestActions(2);
@@ -100,17 +106,61 @@ export default withScreenId(function Health() {
     console.log("Current path:", location.pathname);
   }, []);
 
+  const newsItems = [
+    {
+      title: "New Mediterranean Diet Study Results",
+      description: "Latest research shows 23% improvement in cardiovascular health markers",
+      category: "wellness" as const,
+      imageUrl: "/placeholder.svg",
+      author: { name: "Dr. Sarah Chen", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
+      location: "Stanford Medical",
+      timestamp: "2 hours ago"
+    },
+    {
+      title: "Community Wellness Challenge", 
+      description: "Join 500+ members in our 30-day fitness challenge starting Monday",
+      category: "community" as const,
+      imageUrl: "/placeholder.svg", 
+      author: { name: "Wellness Team", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+      location: "Global",
+      timestamp: "4 hours ago"
+    },
+    {
+      title: "Personalized Nutrition Plan Available",
+      description: "AI-powered meal planning based on your biomarker results and preferences",
+      category: "wellness" as const,
+      imageUrl: "/placeholder.svg",
+      author: { name: "NutriAI", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
+      location: "Available Now",
+      timestamp: "6 hours ago"
+    }
+  ];
+
   return (
     <AppLayout>
       <SEO title="Health" description="Discover health services, programs, and educational resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
+      
+      <Universal3CardHeader
+        title="Let's improve quality of life!"
+        description="Discover health services, programs, and educational resources to enhance your wellness journey."
+        emoji="🌱"
+        onAutopilotClick={() => setAutopilotOpen(true)}
+      />
+
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          <StandardHeader
-            title="Let's improve quality of life!"
-            description="Discover health services, programs, and educational resources to enhance your wellness journey."
-            emoji="🌱"
-          />
+          
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search health services, articles, or community..." />
+            <Button
+              onClick={() => setHealthActionsOpen(true)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Heart className="w-4 h-4 mr-2" />
+              Health Actions
+            </Button>
+          </UtilityActionButton>
 
           {/* Intelligent Layer - Autopilot & AI Insights */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -154,6 +204,16 @@ export default withScreenId(function Health() {
             ))}
           </div>
 
+          {/* Health News & Updates */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-foreground">Health News & Updates</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {newsItems.map((item, index) => (
+                <NewsCard key={index} {...item} />
+              ))}
+            </div>
+          </div>
+
           {/* Community & Communication Integration */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20">
@@ -192,6 +252,11 @@ export default withScreenId(function Health() {
       <AutopilotPopup 
         open={autopilotOpen} 
         onOpenChange={setAutopilotOpen}
+      />
+      
+      <HealthMasterActionPopup
+        open={healthActionsOpen}
+        onOpenChange={setHealthActionsOpen}
       />
     </AppLayout>
   );
