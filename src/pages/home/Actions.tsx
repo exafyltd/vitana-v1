@@ -19,6 +19,7 @@ import { Search, Plus } from "lucide-react";
 import { ManageMyActionsPopup } from "@/components/ManageMyActionsPopup";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { VisualActionCard } from "@/components/actions/VisualActionCard";
 
 export default function Actions() {
   const navigate = useNavigate();
@@ -114,60 +115,14 @@ export default function Actions() {
                       return priorityOrder[b.priority] - priorityOrder[a.priority];
                     })
                     .map(action => (
-                      <div 
-                        key={action.id} 
-                        className="p-4 rounded-lg border bg-card transition-colors"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-start space-x-3">
-                            <div className="text-2xl">{action.icon}</div>
-                            <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-1">
-                                <h4 className="font-medium">{action.title}</h4>
-                                <Badge 
-                                  variant="outline" 
-                                  className={`text-xs ${getPriorityColor(action.priority)}`}
-                                >
-                                  {action.priority}
-                                </Badge>
-                                {action.timeEstimate && (
-                                  <Badge variant="outline" className="text-xs">
-                                    <Clock className="w-3 h-3 mr-1" />
-                                    {action.timeEstimate}
-                                  </Badge>
-                                )}
-                              </div>
-                              <p className="text-sm text-muted-foreground mb-3">{action.reason}</p>
-                              <div className="flex space-x-2">
-                                <Button 
-                                  size="sm"
-                                  onClick={() => executeActions([action.id])}
-                                  className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
-                                >
-                                  <CheckCircle className="w-3 h-3 mr-1" />
-                                  Do Now
-                                </Button>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm"
-                                  onClick={() => dismissActions([action.id])}
-                                >
-                                  Later
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  Edit
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  Details
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {new Date(action.timestamp).toLocaleTimeString()}
-                          </div>
-                        </div>
-                      </div>
+                      <VisualActionCard
+                        key={action.id}
+                        action={action}
+                        onExecute={() => executeActions([action.id])}
+                        onDismiss={() => dismissActions([action.id])}
+                        onEdit={() => console.log("Edit action:", action.id)}
+                        onDetails={() => console.log("View details:", action.id)}
+                      />
                     ))
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
@@ -203,67 +158,23 @@ export default function Actions() {
                   <TabsContent key={category.key} value={category.key} className="space-y-3">
                     {actionsByCategory[category.key]?.length > 0 ? (
                       <>
-                        {actionsByCategory[category.key]
-                          .sort((a, b) => {
-                            const priorityOrder = { high: 3, medium: 2, low: 1 };
-                            return priorityOrder[b.priority] - priorityOrder[a.priority];
-                          })
-                          .map(action => (
-                            <div 
-                              key={action.id} 
-                              className={`p-4 rounded-lg border transition-colors ${getCategoryColor(category.key)}`}
-                            >
-                              <div className="flex items-start justify-between">
-                                <div className="flex items-start space-x-3">
-                                  <div className="text-2xl">{action.icon}</div>
-                                  <div className="flex-1">
-                                    <div className="flex items-center space-x-2 mb-1">
-                                      <h4 className="font-medium">{action.title}</h4>
-                                      <Badge 
-                                        variant="outline" 
-                                        className={`text-xs ${getPriorityColor(action.priority)}`}
-                                      >
-                                        {action.priority}
-                                      </Badge>
-                                      {action.timeEstimate && (
-                                        <Badge variant="outline" className="text-xs">
-                                          <Clock className="w-3 h-3 mr-1" />
-                                          {action.timeEstimate}
-                                        </Badge>
-                                      )}
-                                    </div>
-                                    <p className="text-sm text-muted-foreground mb-3">{action.reason}</p>
-                                    <div className="flex space-x-2">
-                                      <Button 
-                                        size="sm"
-                                        onClick={() => executeActions([action.id])}
-                                        className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
-                                      >
-                                        <CheckCircle className="w-3 h-3 mr-1" />
-                                        Do Now
-                                      </Button>
-                                      <Button 
-                                        variant="outline" 
-                                        size="sm"
-                                        onClick={() => dismissActions([action.id])}
-                                      >
-                                        Later
-                                      </Button>
-                                      <Button variant="ghost" size="sm">
-                                        Edit
-                                      </Button>
-                                      <Button variant="ghost" size="sm">
-                                        Details
-                                      </Button>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                  {new Date(action.timestamp).toLocaleTimeString()}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
+                        <div className="grid gap-4">
+                          {actionsByCategory[category.key]
+                            .sort((a, b) => {
+                              const priorityOrder = { high: 3, medium: 2, low: 1 };
+                              return priorityOrder[b.priority] - priorityOrder[a.priority];
+                            })
+                            .map(action => (
+                              <VisualActionCard
+                                key={action.id}
+                                action={action}
+                                onExecute={() => executeActions([action.id])}
+                                onDismiss={() => dismissActions([action.id])}
+                                onEdit={() => console.log("Edit action:", action.id)}
+                                onDetails={() => console.log("View details:", action.id)}
+                              />
+                            ))}
+                        </div>
                         <div className="flex justify-between pt-4">
                           <Button 
                             variant="outline"
