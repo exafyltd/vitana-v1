@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, RotateCcw, Star, TrendingUp, Calendar, Award, Zap, Download } from "lucide-react";
+import { CheckCircle, RotateCcw, Star, TrendingUp, Calendar, Award, Zap, Download, BarChart3 } from "lucide-react";
+import { useState, useMemo } from "react";
 
 interface TimelineEvent {
   id: string;
@@ -130,6 +131,29 @@ const getBadgeVariant = (type: TimelineEvent["type"]) => {
   }
 };
 
+// Separate copy pools
+const TAGLINE_POOL = [
+  "Progress is progress, no matter the size",
+  "Small steps, big impact", 
+  "Every win counts"
+];
+
+const QUOTE_POOL = [
+  "Consistency is your superpower",
+  "Tiny actions compound into transformation",
+  "You're one healthy choice away from momentum",
+  "Show up for yourself—future you will thank you",
+  "Keep the streak alive; your routine loves it"
+];
+
+// Text normalization for de-duplication
+const normalize = (text: string): string => 
+  text.toLowerCase().replace(/[\p{P}\p{S}]/gu, '').trim();
+
+// Pick unused text from pool
+const pickUnused = (pool: string[], shown: Set<string>): string | null =>
+  pool.find(text => !shown.has(normalize(text))) ?? null;
+
 const MotivationalBanner = ({ message, subtext }: { message: string; subtext: string }) => (
   <Card className="mb-8 bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-50" />
@@ -140,33 +164,81 @@ const MotivationalBanner = ({ message, subtext }: { message: string; subtext: st
   </Card>
 );
 
-const MotivationalDivider = ({ message, index }: { message: string; index: number }) => (
+const MotivationalDivider = ({ message }: { message: string }) => (
   <div className="my-8 flex items-center justify-center">
-    <Card className="bg-gradient-to-r from-secondary/20 to-accent/20 border-secondary/30 px-6 py-3">
+    <Card className="bg-gradient-to-r from-secondary/10 to-accent/10 border-secondary/20 px-4 py-2 opacity-80">
       <div className="flex items-center gap-2">
-        <span className="text-2xl">
-          {index % 3 === 0 ? "🌟" : index % 3 === 1 ? "💪" : "🚀"}
-        </span>
-        <span className="font-medium text-secondary-foreground">{message}</span>
+        <span className="text-sm font-medium text-secondary-foreground/80">{message}</span>
       </div>
     </Card>
   </div>
 );
 
+const StatsStrip = ({ events }: { events: TimelineEvent[] }) => {
+  const completedCount = events.filter(e => e.type === "completion").length;
+  const streakEvents = events.filter(e => e.type === "streak");
+  const longestStreak = Math.max(...streakEvents.map(e => e.details?.streakCount ?? 0), 0);
+  const completionRate = Math.round((completedCount / events.length) * 100);
+  
+  return (
+    <div className="my-8 flex items-center justify-center">
+      <Card className="bg-gradient-to-r from-muted/50 to-muted/30 border-muted/40 px-4 py-2">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <BarChart3 className="w-3 h-3" />
+          <span>This week: {events.length} entries • {longestStreak}-day streak • +35 Credits • {completionRate}% completion</span>
+        </div>
+      </Card>
+    </div>
+  );
+};
+
 export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryTimelineProps) {
   const sortedEvents = events.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
   
-  const motivationalMessages = [
-    "Consistency is your superpower 💪",
-    "Progress is progress, no matter the size 🌟", 
-    "Every small step counts towards greatness 🚀"
-  ];
+  // Session-level de-duplication store
+  const [shownAffirmations] = useState(() => new Set<string>());
+  
+  // Select banner message from tagline pool
+  const bannerMessage = useMemo(() => {
+    const selected = TAGLINE_POOL[0]; // Use first tagline for banner
+    shownAffirmations.add(normalize(selected));
+    return selected;
+  }, [shownAffirmations]);
+
+  // Track positions of dividers to enforce spacing
+  const [lastDividerIndex, setLastDividerIndex] = useState(-1);
+
+  const shouldShowDivider = (index: number): boolean => {
+    // Max 1 divider every 4-6 cards
+    if (index - lastDividerIndex < 4) return false;
+    // Don't show divider in first 3 items (banner visible)
+    if (index < 3) return false;
+    // Show every 5th item starting from index 5
+    return index % 5 === 0;
+  };
+
+  const getDividerContent = (index: number): JSX.Element | null => {
+    if (!shouldShowDivider(index)) return null;
+    
+    // Try to get unused quote
+    const unusedQuote = pickUnused(QUOTE_POOL, shownAffirmations);
+    
+    if (unusedQuote) {
+      shownAffirmations.add(normalize(unusedQuote));
+      setLastDividerIndex(index);
+      return <MotivationalDivider message={unusedQuote} />;
+    } else {
+      // Fallback to stats strip when quotes exhausted
+      setLastDividerIndex(index);
+      return <StatsStrip events={sortedEvents} />;
+    }
+  };
 
   return (
     <div className="relative">
       {/* Motivational Banner at Top */}
       <MotivationalBanner 
-        message="Progress is progress, no matter the size 🌟"
+        message={bannerMessage}
         subtext="Celebrate micro-wins on your journey."
       />
 
@@ -184,13 +256,8 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
       <div className="space-y-6">
         {sortedEvents.map((event, index) => (
           <div key={event.id}>
-            {/* Insert motivational divider every 3 events */}
-            {index > 0 && index % 3 === 0 && (
-              <MotivationalDivider 
-                message={motivationalMessages[Math.floor(index / 3) % motivationalMessages.length]}
-                index={Math.floor(index / 3)}
-              />
-            )}
+            {/* Insert motivational content with controlled spacing */}
+            {getDividerContent(index)}
             
             <div className="relative flex items-start gap-6">
               {/* Timeline node with enhanced animations */}
