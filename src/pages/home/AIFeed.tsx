@@ -108,7 +108,7 @@ export default function AIFeed() {
             </SplitBarList>
 
             {/* Activity Feed Tab */}
-            <SplitBarContent value="feed" className="space-y-6">
+            <SplitBarContent value="feed" className="space-y-6 max-h-[calc(100vh-240px)] overflow-y-auto pb-8">
               <MotivationalBanner 
                 variant="learning" 
                 userName="Jovana"
@@ -144,7 +144,7 @@ export default function AIFeed() {
             </SplitBarContent>
 
             {/* My Routines Tab */}
-            <SplitBarContent value="routines" className="space-y-6">
+            <SplitBarContent value="routines" className="space-y-6 max-h-[calc(100vh-240px)] overflow-y-auto pb-8">
               <MotivationalBanner 
                 variant="celebrating" 
                 userName="Jovana"
@@ -163,13 +163,13 @@ export default function AIFeed() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="h-9">
                       <Pause className="w-4 h-4 mr-1" />Pause All
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="h-9">
                       <Settings className="w-4 h-4 mr-1" />Edit
                     </Button>
-                    <Button variant="default" size="sm">
+                    <Button variant="default" size="sm" className="h-9 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
                       <Play className="w-4 h-4 mr-1" />Run Now
                     </Button>
                   </div>
@@ -182,7 +182,7 @@ export default function AIFeed() {
             </SplitBarContent>
 
             {/* AI Ideas Tab */}
-            <SplitBarContent value="ideas" className="space-y-6">
+            <SplitBarContent value="ideas" className="space-y-6 max-h-[calc(100vh-240px)] overflow-y-auto pb-8">
               <MotivationalBanner 
                 variant="adapting" 
                 userName="Jovana"
@@ -214,7 +214,7 @@ export default function AIFeed() {
             </SplitBarContent>
 
             {/* History Tab */}
-            <SplitBarContent value="history" className="space-y-6">
+            <SplitBarContent value="history" className="space-y-6 max-h-[calc(100vh-240px)] overflow-y-auto pb-8">
               <MotivationalBanner 
                 variant="encouraging" 
                 userName="Jovana"
@@ -232,7 +232,7 @@ export default function AIFeed() {
                       <p className="text-sm text-muted-foreground">Milestones, achievements, and growth over time</p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="h-9">
                     <RotateCcw className="w-4 h-4 mr-1" />
                     Export History
                   </Button>

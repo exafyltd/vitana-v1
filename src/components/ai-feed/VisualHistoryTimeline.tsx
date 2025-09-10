@@ -126,19 +126,24 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
             {/* Timeline node */}
             <div className={`
               relative z-10 flex items-center justify-center w-16 h-16 rounded-full 
-              border-4 ${getEventColor(event.type)} shadow-lg
+              border-4 ${getEventColor(event.type)} shadow-lg hover:scale-110 transition-transform duration-300
             `}>
               {getEventIcon(event.type)}
               {/* Pulse animation for recent events */}
               {index < 2 && (
                 <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping" />
               )}
+              {/* Glow effect for milestones */}
+              {event.type === "milestone" && (
+                <div className="absolute inset-0 rounded-full bg-yellow-400/20 animate-pulse" />
+              )}
             </div>
 
             {/* Event card */}
             <Card className={`
-              flex-1 bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-lg 
+              flex-1 bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-xl hover:scale-[1.01]
               transition-all duration-300 group ${index < 2 ? 'ring-2 ring-primary/20' : ''}
+              hover:border-primary/20
             `}>
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-2">
