@@ -78,7 +78,7 @@ export default function AIFeed() {
     <AppLayout>
       <SEO title="AI Feed | Dashboard" description="AI Feed & Automations" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title="AI Feed & Automations"
@@ -108,7 +108,7 @@ export default function AIFeed() {
             </SplitBarList>
 
             {/* Activity Feed Tab */}
-            <SplitBarContent value="feed" className="max-h-[calc(100vh-200px)] overflow-y-auto">
+            <SplitBarContent value="feed">
               <div className="space-y-6 pb-8">
                 <MotivationalBanner 
                   variant="learning" 
@@ -147,7 +147,7 @@ export default function AIFeed() {
             </SplitBarContent>
 
             {/* My Routines Tab */}
-            <SplitBarContent value="routines" className="max-h-[calc(100vh-200px)] overflow-y-auto">
+            <SplitBarContent value="routines">
               <div className="space-y-6 pb-8">
                 <MotivationalBanner 
                   variant="celebrating" 
@@ -187,7 +187,7 @@ export default function AIFeed() {
             </SplitBarContent>
 
             {/* AI Ideas Tab */}
-            <SplitBarContent value="ideas" className="max-h-[calc(100vh-200px)] overflow-y-auto">
+            <SplitBarContent value="ideas">
               <div className="space-y-6 pb-8">
                 <MotivationalBanner 
                   variant="adapting" 
@@ -221,7 +221,7 @@ export default function AIFeed() {
             </SplitBarContent>
 
             {/* History Tab */}
-            <SplitBarContent value="history" className="max-h-[calc(100vh-200px)] overflow-y-auto">
+            <SplitBarContent value="history">
               <div className="space-y-6 pb-8">
                 <MotivationalBanner 
                   variant="encouraging" 
