@@ -13,6 +13,7 @@ import { useState } from "react";
 import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
 import CreateServicePopup from "@/components/CreateServicePopup";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 
 import { communityNavigation } from "@/config/navigation";
 
@@ -99,10 +100,10 @@ export default function MyBusiness() {
 
           {/* Action Buttons */}
           <UtilityActionButton>
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+            <ExpandableSearchButton 
+              placeholder="Search Business…"
+              onSearch={(query) => console.log('Search Business:', query)}
+            />
             <Button 
               variant="default" 
               size="sm"

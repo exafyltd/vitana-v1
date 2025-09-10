@@ -6,6 +6,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MasterActionPopup } from "@/components/MasterActionPopup";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
@@ -277,28 +278,15 @@ export default function Home() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <Button variant="outline" size="sm" onClick={() => setSearchOpen(!searchOpen)}>
-            <Search className="w-4 h-4 mr-2" />
-            Search
-          </Button>
+          <ExpandableSearchButton 
+            placeholder="Search today's content, events, or media…"
+            onSearch={(query) => console.log('Search:', query)}
+          />
           <Button size="sm" onClick={() => setMasterActionOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Action
           </Button>
         </UtilityActionButton>
-
-        {/* Search Input */}
-        {searchOpen && (
-          <div className="mb-6">
-            <Input
-              type="text"
-              placeholder="Search today's content, events, or media..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="max-w-md"
-            />
-          </div>
-        )}
 
         {/* Split Navigation */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">

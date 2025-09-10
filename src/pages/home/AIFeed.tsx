@@ -13,6 +13,7 @@ import { useState } from "react";
 import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Search, Plus } from "lucide-react";
 import { AddToAIFeedPopup } from "@/components/AddToAIFeedPopup";
@@ -80,28 +81,15 @@ export default function AIFeed() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
-            <Button variant="outline" size="sm" onClick={() => setSearchOpen(!searchOpen)}>
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+            <ExpandableSearchButton 
+              placeholder="Search feed, routines, ideas, or history…"
+              onSearch={(query) => console.log('Search AI Feed:', query)}
+            />
             <Button variant="default" size="sm" onClick={() => setAddToFeedOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Feed
             </Button>
           </UtilityActionButton>
-
-          {/* Search Input */}
-          {searchOpen && (
-            <div className="mb-6">
-              <Input
-                type="text"
-                placeholder="Search feed, routines, ideas, or history..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-md"
-              />
-            </div>
-          )}
 
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="feed" className="w-full">

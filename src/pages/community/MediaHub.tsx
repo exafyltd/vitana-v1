@@ -3,6 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -155,10 +156,10 @@ export default function MediaHub() {
 
           {/* Action Buttons Utility Bar */}
           <UtilityActionButton>
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+            <ExpandableSearchButton 
+              placeholder="Search Media…"
+              onSearch={(query) => console.log('Search Media:', query)}
+            />
             <Button size="sm" onClick={() => setIsUploadOpen(true)}>
               <Upload className="w-4 h-4 mr-2" />
               Upload

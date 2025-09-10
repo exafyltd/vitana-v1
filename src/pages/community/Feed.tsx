@@ -3,6 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,10 +30,10 @@ export default withScreenId(function Feed() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <Button variant="outline" size="sm">
-            <Search className="w-4 h-4 mr-2" />
-            Search
-          </Button>
+          <ExpandableSearchButton 
+            placeholder="Search Feed…"
+            onSearch={(query) => console.log('Search Feed:', query)}
+          />
           <Button size="sm" onClick={() => setCreateContentOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Content

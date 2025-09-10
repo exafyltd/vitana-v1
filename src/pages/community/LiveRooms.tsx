@@ -3,6 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Search, Plus, Plane } from "lucide-react";
 import { useState } from "react";
 import { GoLivePopup } from "@/components/GoLivePopup";
@@ -110,10 +111,10 @@ export default function LiveRooms() {
 
         {/* Action Buttons Utility Bar */}
         <UtilityActionButton>
-          <Button variant="outline" size="sm">
-            <Search className="w-4 h-4 mr-2" />
-            Search
-          </Button>
+          <ExpandableSearchButton 
+            placeholder="Search Live Rooms…"
+            onSearch={(query) => console.log('Search Live Rooms:', query)}
+          />
           <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Go Live

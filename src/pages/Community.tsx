@@ -4,6 +4,7 @@ import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
+import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import { AutopilotPopup } from '@/components/AutopilotPopup';
@@ -561,10 +562,10 @@ export default withScreenId(function Community() {
 
           {/* Action Buttons */}
           <UtilityActionButton>
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+            <ExpandableSearchButton 
+              placeholder="Search Community…"
+              onSearch={(query) => console.log('Search Community:', query)}
+            />
             <Button size="sm" onClick={() => setCommunityFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Hub

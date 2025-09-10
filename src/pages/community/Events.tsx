@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { Calendar, Plus, Search, Apple, Droplets, Dumbbell, Brain, Moon, DollarSign } from "lucide-react";
@@ -318,10 +319,10 @@ export default function Events() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <Button variant="outline" size="sm">
-            <Search className="w-4 h-4 mr-2" />
-            Search
-          </Button>
+          <ExpandableSearchButton 
+            placeholder="Search Events…"
+            onSearch={(query) => console.log('Search Events:', query)}
+          />
           <Button size="sm" onClick={() => setCreateEventOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Event

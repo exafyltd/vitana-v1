@@ -3,6 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { communityNavigation } from "@/config/navigation";
@@ -27,10 +28,10 @@ export default withScreenId(function Meetups() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <Button variant="outline" size="sm">
-            <Search className="w-4 h-4 mr-2" />
-            Search
-          </Button>
+          <ExpandableSearchButton 
+            placeholder="Search Meetups…"
+            onSearch={(query) => console.log('Search Meetups:', query)}
+          />
           <Button size="sm" onClick={() => setCreateMeetupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             MeetUp

@@ -10,6 +10,7 @@ import { Users, MessageSquare, TrendingUp, Lightbulb, Plus, Heart, Share2, Clock
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { CreateGroupPopup } from "@/components/CreateGroupPopup";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
@@ -114,10 +115,10 @@ export default function MyGroups() {
 
           {/* Utility Action Button */}
           <UtilityActionButton>
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+            <ExpandableSearchButton 
+              placeholder="Search Groups…"
+              onSearch={(query) => console.log('Search Groups:', query)}
+            />
             <Button size="sm" onClick={() => setCreateGroupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Group

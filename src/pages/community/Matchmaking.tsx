@@ -6,6 +6,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MatchFiltersPopup } from "@/components/MatchFiltersPopup";
 
@@ -36,10 +37,10 @@ export default function Matchmaking() {
 
           {/* Utility Action Button */}
           <UtilityActionButton>
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+            <ExpandableSearchButton 
+              placeholder="Search Matches…"
+              onSearch={(query) => console.log('Search Matches:', query)}
+            />
             <Button size="sm" onClick={() => setMatchFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Matches
