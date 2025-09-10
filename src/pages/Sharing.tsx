@@ -20,6 +20,8 @@ export default withScreenId(function Sharing() {
   const [activeTab, setActiveTab] = useState("consent");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
+  console.log('Sharing component rendered, actionPopupOpen:', actionPopupOpen);
+
   return (
     <AppLayout>
       <SEO title="Sharing Overview | VITANA" description="Share your wellness journey and manage data consent packages securely" canonical={window.location.href} />
@@ -34,7 +36,10 @@ export default withScreenId(function Sharing() {
 
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search consent packages, sharing settings..." />
-            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+            <Button size="sm" onClick={() => {
+              console.log('Button clicked, opening popup');
+              setActionPopupOpen(true);
+            }}>
               <Plus className="h-4 w-4 mr-2" />
               Sharing Actions
             </Button>
@@ -359,7 +364,10 @@ export default withScreenId(function Sharing() {
 
           <ConsentPackagePopup 
             open={actionPopupOpen} 
-            onOpenChange={setActionPopupOpen}
+            onOpenChange={(open) => {
+              console.log('Popup onOpenChange called with:', open);
+              setActionPopupOpen(open);
+            }}
           />
         </div>
       </div>
