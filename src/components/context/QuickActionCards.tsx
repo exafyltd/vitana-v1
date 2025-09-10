@@ -1,0 +1,179 @@
+import { NewsCard } from "@/components/crossover/NewsCard";
+
+interface HydrationReminderCardProps {
+  timeLastIntake?: string;
+  className?: string;
+}
+
+export function HydrationReminderCard({
+  timeLastIntake = "2 hrs since last intake",
+  className
+}: HydrationReminderCardProps) {
+  return (
+    <NewsCard
+      title="Hydration Reminder 💧"
+      description={`Triggered · ${timeLastIntake}`}
+      imageUrl="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop"
+      pillar="Hydration"
+      author={{ name: "Health Assistant", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+      timestamp="Active Alert"
+      className={className}
+    />
+  );
+}
+
+interface MorningRoutineCardProps {
+  peakTime?: string;
+  className?: string;
+}
+
+export function MorningRoutineCard({
+  peakTime = "8 AM energy peak",
+  className
+}: MorningRoutineCardProps) {
+  return (
+    <NewsCard
+      title="Morning Routine 🌅"
+      description={`Detected ${peakTime}`}
+      imageUrl="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop"
+      pillar="Mental"
+      author={{ name: "AI Optimizer", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+      timestamp="Optimization"
+      className={className}
+    />
+  );
+}
+
+interface UpcomingEventCardProps {
+  eventTitle?: string;
+  eventTime?: string;
+  className?: string;
+}
+
+export function UpcomingEventCard({
+  eventTitle = "Healthy Cooking Workshop",
+  eventTime = "2 PM",
+  className
+}: UpcomingEventCardProps) {
+  return (
+    <NewsCard
+      title={eventTitle}
+      description={`Starting at ${eventTime}`}
+      imageUrl="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop"
+      pillar="Nutrition"
+      author={{ name: "Event Calendar", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+      timestamp={eventTime}
+      className={className}
+    />
+  );
+}
+
+interface SleepCheckCardProps {
+  readinessScore?: number;
+  className?: string;
+}
+
+export function SleepCheckCard({
+  readinessScore = 78,
+  className
+}: SleepCheckCardProps) {
+  return (
+    <NewsCard
+      title="Sleep Check-in 🌙"
+      description={`Readiness score tonight: ${readinessScore}`}
+      imageUrl="https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop"
+      pillar="Sleep"
+      author={{ name: "Sleep Tracker", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+      timestamp="Evening Check"
+      className={className}
+    />
+  );
+}
+
+interface CommunitySpotlightCardProps {
+  trendingEvent?: string;
+  className?: string;
+}
+
+export function CommunitySpotlightCard({
+  trendingEvent = "Longevity Dance Night 💃",
+  className
+}: CommunitySpotlightCardProps) {
+  return (
+    <NewsCard
+      title="Community Spotlight"
+      description={`Trending: ${trendingEvent}`}
+      imageUrl="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop"
+      pillar="Mental"
+      author={{ name: "Community Events", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+      timestamp="Trending Now"
+      className={className}
+    />
+  );
+}
+
+interface EnergyPeakCardProps {
+  peakTime?: string;
+  className?: string;
+}
+
+export function EnergyPeakCard({
+  peakTime = "8:00 AM",
+  className
+}: EnergyPeakCardProps) {
+  return (
+    <NewsCard
+      title="Today's Energy Peak ⚡"
+      description={`Best time for focus: ${peakTime}`}
+      imageUrl="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop"
+      pillar="Mental"
+      author={{ name: "Energy Analytics", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+      timestamp="Peak Analysis"
+      className={className}
+    />
+  );
+}
+
+interface MeditationSuggestionCardProps {
+  suggestion?: string;
+  className?: string;
+}
+
+export function MeditationSuggestionCard({
+  suggestion = "Relax 10 min at 6 PM",
+  className
+}: MeditationSuggestionCardProps) {
+  return (
+    <NewsCard
+      title="Meditation Suggestion 🧘"
+      description={suggestion}
+      imageUrl="https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800&h=600&fit=crop"
+      pillar="Mental"
+      author={{ name: "Mindfulness Coach", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+      timestamp="Suggested"
+      className={className}
+    />
+  );
+}
+
+interface SleepReadinessCardProps {
+  checkTime?: string;
+  className?: string;
+}
+
+export function SleepReadinessCard({
+  checkTime = "10:00 PM",
+  className
+}: SleepReadinessCardProps) {
+  return (
+    <NewsCard
+      title="Sleep Readiness 🌙"
+      description={`Check readiness at ${checkTime}`}
+      imageUrl="https://images.unsplash.com/photo-1540331547168-8b63109225b7?w=800&h=600&fit=crop"
+      pillar="Sleep"
+      author={{ name: "Sleep Optimizer", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
+      timestamp="Evening"
+      className={className}
+    />
+  );
+}

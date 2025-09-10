@@ -13,13 +13,25 @@ import EnrichContextPopup from "@/components/EnrichContextPopup";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { homeNavigation } from "@/config/navigation";
 
-// Context Cards
-import { CurrentVibeCard } from "@/components/crossover/CurrentVibeCard";
-import { AIReasoningCard } from "@/components/crossover/AIReasoningCard";
-import { TimelineContextCard } from "@/components/crossover/TimelineContextCard";
-import { EnvironmentalContextCard } from "@/components/crossover/EnvironmentalContextCard";
-import { SocialContextCard } from "@/components/crossover/SocialContextCard";
-import { BiometricContextCard } from "@/components/crossover/BiometricContextCard";
+// Context Visual Cards
+import { MyCurrentVibeCard } from "@/components/context/MyCurrentVibeCard";
+import { BiometricContextVisualCard } from "@/components/context/BiometricContextVisualCard";
+import { MotivationBannerCard } from "@/components/context/MotivationBannerCard";
+import { AISpotlightCard } from "@/components/context/AISpotlightCard";
+import { TodaysPlanCard } from "@/components/context/TodaysPlanCard";
+import { EnvironmentCard } from "@/components/context/EnvironmentCard";
+import { SocialCard } from "@/components/context/SocialCard";
+import { 
+  HydrationReminderCard, 
+  MorningRoutineCard, 
+  UpcomingEventCard, 
+  SleepCheckCard,
+  CommunitySpotlightCard,
+  EnergyPeakCard,
+  MeditationSuggestionCard,
+  SleepReadinessCard 
+} from "@/components/context/QuickActionCards";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
 
 export default function Context() {
   const navigate = useNavigate();
@@ -63,46 +75,91 @@ export default function Context() {
 
             {/* Current Status Tab */}
             <SplitBarContent value="current">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <CurrentVibeCard className="lg:col-span-2" />
-                <BiometricContextCard />
-                <AIReasoningCard className="md:col-span-2" />
+              <div className="mt-6">
+                {/* Row 1: Current Snapshot (1 big + 2 small) */}
+                <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                  <div className="col-span-6">
+                    <MyCurrentVibeCard className="h-full" />
+                  </div>
+                  <div className="col-span-3">
+                    <BiometricContextVisualCard className="h-full" />
+                  </div>
+                  <div className="col-span-3">
+                    <MotivationBannerCard className="h-full" />
+                  </div>
+                </div>
               </div>
             </SplitBarContent>
 
-            {/* AI Reasoning Tab */}
+            {/* AI Logic Tab */}
             <SplitBarContent value="reasoning">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <AIReasoningCard className="lg:col-span-2" />
-                <BiometricContextCard />
-                <CurrentVibeCard className="md:col-span-2" />
+              <div className="mt-6">
+                {/* Row 1: AI Logic Insights (2 small + 1 big) */}
+                <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                  <div className="col-span-3">
+                    <HydrationReminderCard className="h-full" />
+                  </div>
+                  <div className="col-span-3">
+                    <MorningRoutineCard className="h-full" />
+                  </div>
+                  <div className="col-span-6">
+                    <AISpotlightCard className="h-full" />
+                  </div>
+                </div>
               </div>
             </SplitBarContent>
 
             {/* Timeline Tab */}
             <SplitBarContent value="timeline">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <TimelineContextCard className="lg:col-span-2" />
-                <SocialContextCard />
-                <AIReasoningCard className="md:col-span-2" />
+              <div className="mt-6">
+                {/* Row 1: Timeline Context (1 big + 2 small) */}
+                <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                  <div className="col-span-6">
+                    <TodaysPlanCard className="h-full" />
+                  </div>
+                  <div className="col-span-3">
+                    <UpcomingEventCard className="h-full" />
+                  </div>
+                  <div className="col-span-3">
+                    <SleepCheckCard className="h-full" />
+                  </div>
+                </div>
               </div>
             </SplitBarContent>
 
             {/* Environment Tab */}
             <SplitBarContent value="environment">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <EnvironmentalContextCard className="lg:col-span-2" />
-                <BiometricContextCard />
-                <TimelineContextCard className="md:col-span-2" />
+              <div className="mt-6">
+                {/* Row 1: Environment & Social (2 small + 1 big) */}
+                <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                  <div className="col-span-3">
+                    <EnvironmentCard className="h-full" />
+                  </div>
+                  <div className="col-span-3">
+                    <SocialCard className="h-full" />
+                  </div>
+                  <div className="col-span-6">
+                    <CommunitySpotlightCard className="h-full" />
+                  </div>
+                </div>
               </div>
             </SplitBarContent>
 
             {/* Social Tab */}
             <SplitBarContent value="social">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <SocialContextCard className="lg:col-span-2" />
-                <CurrentVibeCard />
-                <EnvironmentalContextCard className="md:col-span-2" />
+              <div className="mt-6">
+                {/* Row 1: Recommendations (1 big + 2 small) */}
+                <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                  <div className="col-span-6">
+                    <EnergyPeakCard className="h-full" />
+                  </div>
+                  <div className="col-span-3">
+                    <MeditationSuggestionCard className="h-full" />
+                  </div>
+                  <div className="col-span-3">
+                    <SleepReadinessCard className="h-full" />
+                  </div>
+                </div>
               </div>
             </SplitBarContent>
           </SplitBar>
