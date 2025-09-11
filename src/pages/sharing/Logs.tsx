@@ -30,14 +30,14 @@ function Logs() {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <SEO 
-          title="Logs & Revocation | Sharing" 
-          description="Monitor all data sharing activities, view access logs, and manage revoked permissions with complete transparency."
-        />
-        <AppLayout>
-          <SubNavigation items={sharingNavigation} />
+    <AppLayout>
+      <SEO 
+        title="Logs & Revocation | Sharing" 
+        description="Monitor all data sharing activities, view access logs, and manage revoked permissions with complete transparency."
+      />
+      <SubNavigation items={sharingNavigation} />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
           <StandardHeader 
             title="Logs & Revocation 📋" 
             description="Complete transparency into your data sharing activities and access management"
@@ -219,14 +219,14 @@ function Logs() {
               </div>
             </SplitBarContent>
           </SplitBar>
-        </AppLayout>
+        </div>
       </div>
 
       <ViewDetailsPopup 
         isOpen={actionPopupOpen} 
         onClose={() => setActionPopupOpen(false)} 
       />
-    </div>
+    </AppLayout>
   );
 }
 

@@ -17,14 +17,14 @@ function SmartPackage() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <SEO 
-          title="Smart Package Creator | Sharing" 
-          description="Use AI-powered recommendations to create intelligent health data packages optimized for your specific needs."
-        />
-        <AppLayout>
-          <SubNavigation items={sharingNavigation} />
+    <AppLayout>
+      <SEO 
+        title="Smart Package Creator | Sharing" 
+        description="Use AI-powered recommendations to create intelligent health data packages optimized for your specific needs."
+      />
+      <SubNavigation items={sharingNavigation} />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
           <StandardHeader 
             title="Smart Package Creator 🧠" 
             description="AI-powered data package creation with intelligent recommendations based on your health profile"
@@ -175,14 +175,14 @@ function SmartPackage() {
               </div>
             </SplitBarContent>
           </SplitBar>
-        </AppLayout>
+        </div>
       </div>
 
       <SmartPackagePopup 
         isOpen={actionPopupOpen} 
         onClose={() => setActionPopupOpen(false)} 
       />
-    </div>
+    </AppLayout>
   );
 }
 

@@ -17,14 +17,14 @@ function Marketplace() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <SEO 
-          title="Integration Marketplace | Sharing" 
-          description="Discover and connect with healthcare platforms, research studies, and wellness apps to maximize the value of your health data."
-        />
-        <AppLayout>
-          <SubNavigation items={sharingNavigation} />
+    <AppLayout>
+      <SEO 
+        title="Integration Marketplace | Sharing" 
+        description="Discover and connect with healthcare platforms, research studies, and wellness apps to maximize the value of your health data."
+      />
+      <SubNavigation items={sharingNavigation} />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
           <StandardHeader 
             title="Integration Marketplace 🛒" 
             description="Discover verified integrations to share your health data with trusted healthcare platforms and research studies"
@@ -190,14 +190,14 @@ function Marketplace() {
               </div>
             </SplitBarContent>
           </SplitBar>
-        </AppLayout>
+        </div>
       </div>
 
       <BrowseServicesPopup 
         isOpen={actionPopupOpen} 
         onClose={() => setActionPopupOpen(false)} 
       />
-    </div>
+    </AppLayout>
   );
 }
 
