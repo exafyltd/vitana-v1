@@ -28,7 +28,7 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
       {/* Header Section with Perfect Symmetry - Three Cards Layout */}
       <div className="flex flex-col lg:flex-row gap-4 mb-8">
         {/* Welcome Message */}
-        <div className="flex-1 bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 relative z-10">
+        <div className="flex-1 bg-card rounded-2xl p-8 shadow-xl border border-white/20 relative z-10">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">
               {title} {emoji}
@@ -39,7 +39,7 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
         
         {/* Autopilot Card with Live Badge Counter */}
         <div 
-          className="w-32 bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-2xl relative z-10"
+          className="w-32 bg-card rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-2xl relative z-10"
           onClick={() => setAutopilotOpen(true)}
           onMouseEnter={() => setShowPreview(true)}
           onMouseLeave={() => setShowPreview(false)}
@@ -61,7 +61,7 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
           
           {/* Hover Preview */}
           {showPreview && pendingCount > 0 && (
-            <div className="absolute top-full left-0 mt-2 w-64 bg-card/95 backdrop-blur-sm border rounded-lg shadow-xl p-3 z-10">
+            <div className="absolute top-full left-0 mt-2 w-64 bg-card border rounded-lg shadow-xl p-3 z-10">
               <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
               {latestActions.map((action, index) => (
                 <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
@@ -80,7 +80,7 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
         
         {/* Vitana Index Card - Circle with 742 */}
         <div 
-          className="w-32 bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-2xl relative z-10"
+          className="w-32 bg-card rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-2xl relative z-10"
           onClick={() => navigate('/health/my-health-tracker')}
         >
           <div className="flex items-center justify-center h-full">
