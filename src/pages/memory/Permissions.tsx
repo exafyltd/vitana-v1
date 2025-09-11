@@ -1,17 +1,108 @@
+import { useState } from "react";
+import { Plus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
+import { NewsCard } from "@/components/crossover/NewsCard";
+import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { Shield, Lock, Eye } from "lucide-react";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Shield, Lock, Eye, Plus } from "lucide-react";
+
+// Privacy and permissions data
+const privacySettings = [
+  {
+    title: "Privacy Dashboard Overview 🔒",
+    description: "Your memory data is secured with military-grade encryption and zero-trust architecture",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop",
+    pillar: "Privacy",
+    author: { name: "Security System", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Always Protected"
+  },
+  {
+    title: "AI Analysis Permissions ⚙️",
+    description: "Control how AI processes your health memories for insights and recommendations",
+    imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop",
+    pillar: "AI Control",
+    author: { name: "Privacy Center", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "User Controlled"
+  },
+  {
+    title: "Data Sharing Controls 🤝",
+    description: "Granular permissions for healthcare providers and research participation",
+    imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&h=600&fit=crop",
+    pillar: "Sharing",
+    author: { name: "Access Management", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
+    timestamp: "Your Choice"
+  }
+];
+
+const accessControls = [
+  {
+    title: "Healthcare Provider Access 🏥",
+    description: "Dr. Sarah Miller has view-only access to your wellness timeline and biomarkers",
+    imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&h=600&fit=crop",
+    pillar: "Healthcare",
+    author: { name: "Dr. Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
+    timestamp: "Active Access"
+  },
+  {
+    title: "Research Participation 🔬",
+    description: "Contributing anonymized wellness data to longevity research studies",
+    imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop",
+    pillar: "Research",
+    author: { name: "Research Institute", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Opt-in Only"
+  },
+  {
+    title: "Community Sharing 👥",
+    description: "Public timeline disabled - your wellness journey remains completely private",
+    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+    pillar: "Community",
+    author: { name: "Privacy Guard", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Privacy Mode"
+  }
+];
+
+const securityFeatures = [
+  {
+    title: "End-to-End Encryption 🛡️",
+    description: "All memory data encrypted in transit and at rest with AES-256 encryption",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop",
+    pillar: "Security",
+    author: { name: "Encryption Engine", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Always Active"
+  },
+  {
+    title: "Access Audit Log 📋",
+    description: "Complete log of who accessed your data, when, and what they viewed",
+    imageUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=600&fit=crop",
+    pillar: "Audit",
+    author: { name: "Security Monitor", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Real-time Tracking"
+  },
+  {
+    title: "Data Retention Control ⏰",
+    description: "Set automatic deletion policies for different types of memory data",
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    pillar: "Control",
+    author: { name: "Data Management", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "User Defined"
+  }
+];
 
 function Permissions() {
+  const [activeTab, setActiveTab] = useState("privacy");
+  const [actionPopupOpen, setActionPopupOpen] = useState(false);
+
   return (
     <AppLayout>
       <SEO title="Permissions - Vitana Memory" description="Control who can access your health memories and personal data." />
@@ -21,17 +112,22 @@ function Permissions() {
         <StandardHeader 
           title="Memory Permissions"
           description="Control access to your health memories and personal data"
+          emoji="🔐"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search permissions..." />
-          <Button size="sm">
+          <ExpandableSearchButton 
+            placeholder="Search permissions..."
+            onSearch={(query) => console.log('Search:', query)}
+          />
+          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Manage Access
           </Button>
         </UtilityActionButton>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        {/* Privacy Settings Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 mb-8">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -82,6 +178,157 @@ function Permissions() {
             </CardContent>
           </Card>
         </div>
+
+        <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <SplitBarList>
+            <SplitBarTrigger value="privacy">Privacy Overview</SplitBarTrigger>
+            <SplitBarTrigger value="access">Access Control</SplitBarTrigger>
+            <SplitBarTrigger value="security">Security Features</SplitBarTrigger>
+          </SplitBarList>
+
+          <SplitBarContent value="privacy">
+            <div className="mt-6">
+              {/* Row 1: Privacy Settings (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={privacySettings[0].title}
+                    description={privacySettings[0].description}
+                    imageUrl={privacySettings[0].imageUrl}
+                    category="privacy"
+                    pillar={privacySettings[0].pillar}
+                    author={privacySettings[0].author}
+                    timestamp={privacySettings[0].timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={privacySettings[1].title}
+                    description={privacySettings[1].description}
+                    imageUrl={privacySettings[1].imageUrl}
+                    category="ai"
+                    pillar={privacySettings[1].pillar}
+                    author={privacySettings[1].author}
+                    timestamp={privacySettings[1].timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={privacySettings[2].title}
+                    description={privacySettings[2].description}
+                    imageUrl={privacySettings[2].imageUrl}
+                    category="sharing"
+                    pillar={privacySettings[2].pillar}
+                    author={privacySettings[2].author}
+                    timestamp={privacySettings[2].timestamp}
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              <MotivationalBanner variant="permissions" />
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="access">
+            <div className="mt-6">
+              {/* Row 1: Access Controls (small + small + big) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={accessControls[0].title}
+                    description={accessControls[0].description}
+                    imageUrl={accessControls[0].imageUrl}
+                    category="healthcare"
+                    pillar={accessControls[0].pillar}
+                    author={accessControls[0].author}
+                    timestamp={accessControls[0].timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={accessControls[1].title}
+                    description={accessControls[1].description}
+                    imageUrl={accessControls[1].imageUrl}
+                    category="research"
+                    pillar={accessControls[1].pillar}
+                    author={accessControls[1].author}
+                    timestamp={accessControls[1].timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={accessControls[2].title}
+                    description={accessControls[2].description}
+                    imageUrl={accessControls[2].imageUrl}
+                    category="community"
+                    pillar={accessControls[2].pillar}
+                    author={accessControls[2].author}
+                    timestamp={accessControls[2].timestamp}
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              <MotivationalBanner variant="partnership" />
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="security">
+            <div className="mt-6">
+              {/* Row 1: Security Features (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={securityFeatures[0].title}
+                    description={securityFeatures[0].description}
+                    imageUrl={securityFeatures[0].imageUrl}
+                    category="security"
+                    pillar={securityFeatures[0].pillar}
+                    author={securityFeatures[0].author}
+                    timestamp={securityFeatures[0].timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={securityFeatures[1].title}
+                    description={securityFeatures[1].description}
+                    imageUrl={securityFeatures[1].imageUrl}
+                    category="audit"
+                    pillar={securityFeatures[1].pillar}
+                    author={securityFeatures[1].author}
+                    timestamp={securityFeatures[1].timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={securityFeatures[2].title}
+                    description={securityFeatures[2].description}
+                    imageUrl={securityFeatures[2].imageUrl}
+                    category="control"
+                    pillar={securityFeatures[2].pillar}
+                    author={securityFeatures[2].author}
+                    timestamp={securityFeatures[2].timestamp}
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              <MotivationalBanner variant="achievement" />
+            </div>
+          </SplitBarContent>
+        </SplitBar>
+
+        <MemoryMasterActionPopup 
+          open={actionPopupOpen}
+          onOpenChange={setActionPopupOpen}
+        />
       </div>
     </AppLayout>
   );
