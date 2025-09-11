@@ -74,37 +74,36 @@ export default withScreenId(function Consent() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <AppLayout>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
       <SEO 
         title="Consent Dashboard | Sharing" 
         description="Manage your data sharing consents, view active permissions, and control how your health data is used."
-        canonical={window.location.href} 
       />
-      <SubNavigation items={sharingNavigation} />
-      
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          
-          <StandardHeader 
-            title="Control your data sharing consent ✨"
-            description="Monitor and manage how your health data is shared with research institutions and healthcare providers"
+      <AppLayout>
+        <SubNavigation items={sharingNavigation} />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* StandardHeader must be inside this container */}
+          <StandardHeader
+            title="Data Consent Control"
+            description="Manage permissions and control how your health data is shared securely"
+            emoji="🛡️"
           />
-          
-          <UtilityActionButton>
+
+          {/* Action row */}
+          <div className="mt-6 flex items-center justify-between">
             <ExpandableSearchButton 
               placeholder="Search consents..." 
               onSearch={(query) => console.log('Searching consents:', query)}
             />
-            <Button 
-              size="sm" 
-              onClick={() => setActionPopupOpen(true)}
-            >
+            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Sharing Actions
+              Create Package
             </Button>
-          </UtilityActionButton>
-          
-          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+          </div>
+
+          {/* SplitBar Navigation */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
             <SplitBarList>
               <SplitBarTrigger value="active">Active Consents</SplitBarTrigger>
               <SplitBarTrigger value="pending">Pending Requests</SplitBarTrigger>
@@ -112,7 +111,7 @@ export default withScreenId(function Consent() {
             </SplitBarList>
             
             <SplitBarContent value="active">
-              <div className="grid grid-cols-12 gap-6 mt-6">
+              <div className="mt-6 grid grid-cols-12 gap-6">
                 {/* Active Consents - Full Width Cards */}
                 <div className="col-span-12">
                   <div className="space-y-4">
@@ -177,7 +176,7 @@ export default withScreenId(function Consent() {
             </SplitBarContent>
             
             <SplitBarContent value="pending">
-              <div className="grid grid-cols-12 gap-6 mt-6">
+              <div className="mt-6 grid grid-cols-12 gap-6">
                 {/* Pending Requests - Full Width Cards */}
                 <div className="col-span-12">
                   <div className="space-y-4">
@@ -236,7 +235,7 @@ export default withScreenId(function Consent() {
             </SplitBarContent>
             
             <SplitBarContent value="overview">
-              <div className="grid grid-cols-12 gap-6 mt-6">
+              <div className="mt-6 grid grid-cols-12 gap-6">
                 {/* Big + Small + Small Pattern (6+3+3) */}
                 <div className="col-span-12 lg:col-span-6">
                   <Card>
@@ -269,7 +268,7 @@ export default withScreenId(function Consent() {
                   </Card>
                 </div>
                 
-                <div className="col-span-12 lg:col-span-3">
+                <div className="col-span-12 sm:col-span-6 lg:col-span-3">
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Active Consents</CardTitle>
@@ -282,7 +281,7 @@ export default withScreenId(function Consent() {
                   </Card>
                 </div>
                 
-                <div className="col-span-12 lg:col-span-3">
+                <div className="col-span-12 sm:col-span-6 lg:col-span-3">
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Pending Requests</CardTitle>
@@ -320,17 +319,14 @@ export default withScreenId(function Consent() {
               </div>
             </SplitBarContent>
           </SplitBar>
-          
+
+          {/* Context-specific Popup */}
+          <ConsentPackagePopup 
+            open={actionPopupOpen} 
+            onOpenChange={setActionPopupOpen}
+          />
         </div>
-      </div>
-      
-      {/* Action Popup Component */}
-      {actionPopupOpen && (
-        <ConsentPackagePopup
-          open={actionPopupOpen}
-          onOpenChange={(open) => setActionPopupOpen(open)}
-        />
-      )}
-    </AppLayout>
+      </AppLayout>
+    </div>
   );
 }, SCREEN_IDS.SHARING_CONSENT);
