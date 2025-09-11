@@ -2,12 +2,18 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Package, Share2, Download, Eye, Calendar, Users } from "lucide-react";
+import { CreateContentPopup } from "@/components/CreateContentPopup";
 
 const packageData = {
   myPackages: [
@@ -67,180 +73,186 @@ const packageData = {
   ]
 };
 
-function Packages() {
+export default withScreenId(function Packages() {
+  const [activeTab, setActiveTab] = useState("my-packages");
+  const [actionPopupOpen, setActionPopupOpen] = useState(false);
+
   return (
     <AppLayout>
       <SEO 
-        title="Share Data Package - Vitana Sharing" 
+        title="Data Packages | Sharing" 
         description="Create, manage, and share customized health data packages with healthcare providers and researchers."
+        canonical={window.location.href}
       />
       <SubNavigation items={sharingNavigation} />
       
-      <div className="px-6 py-8 space-y-8">
-        <StandardHeader 
-          title="Share Data Package"
-          description="Create and manage customized health data packages for sharing with healthcare providers"
-        />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader 
+            title="Data Packages 📦"
+            description="Create and manage customized health data packages for sharing with healthcare providers"
+          />
 
-        {/* Quick Actions */}
-        <div className="flex flex-wrap gap-4">
-          <Button>
-            <Package className="h-4 w-4 mr-2" />
-            Create New Package
-          </Button>
-          <Button variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Export Data
-          </Button>
-          <Button variant="outline">
-            <Share2 className="h-4 w-4 mr-2" />
-            Share Existing Package
-          </Button>
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search packages, templates..." />
+            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Sharing Actions
+            </Button>
+          </UtilityActionButton>
+
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList>
+              <SplitBarTrigger value="my-packages">My Packages</SplitBarTrigger>
+              <SplitBarTrigger value="templates">Templates</SplitBarTrigger>
+              <SplitBarTrigger value="create-custom">Create Custom</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="my-packages">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {packageData.myPackages.map((pkg) => (
+                  <div key={pkg.id} className="col-span-1">
+                    <Card className="h-full">
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <CardTitle className="text-lg">{pkg.name}</CardTitle>
+                            <CardDescription>{pkg.description}</CardDescription>
+                          </div>
+                          <Badge variant="outline">{pkg.size}</Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div>
+                          <div className="text-sm font-medium text-muted-foreground">Data Types Included</div>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {pkg.dataTypes.map((type, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs">{type}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <div className="font-medium text-muted-foreground">Date Range</div>
+                            <div>{pkg.dateRange}</div>
+                          </div>
+                          <div>
+                            <div className="font-medium text-muted-foreground">Created</div>
+                            <div>{pkg.createdDate}</div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="text-sm font-medium text-muted-foreground">Shared With</div>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {pkg.recipients.map((recipient, index) => (
+                              <Badge key={index} variant="outline" className="text-xs">
+                                <Users className="h-3 w-3 mr-1" />
+                                {recipient}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-2 pt-2">
+                          <Button variant="outline" size="sm">
+                            <Eye className="h-4 w-4 mr-2" />
+                            Preview
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Download className="h-4 w-4 mr-2" />
+                            Download
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Share2 className="h-4 w-4 mr-2" />
+                            Share
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="templates">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {packageData.templates.map((template) => (
+                  <div key={template.id} className="col-span-1">
+                    <Card className="h-full">
+                      <CardHeader>
+                        <CardTitle className="text-lg">{template.name}</CardTitle>
+                        <CardDescription>{template.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div>
+                          <div className="text-sm font-medium text-muted-foreground">Included Data Types</div>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {template.dataTypes.map((type, index) => (
+                              <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="text-sm font-medium text-muted-foreground">Best For</div>
+                          <div className="text-sm">{template.useCase}</div>
+                        </div>
+                        
+                        <Button className="w-full" size="sm">
+                          <Package className="h-4 w-4 mr-2" />
+                          Use Template
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="create-custom">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="col-span-1 md:col-span-2">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Package className="h-5 w-5" />
+                        Create Custom Package
+                      </CardTitle>
+                      <CardDescription>
+                        Build a personalized data package with specific health information
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="text-sm text-muted-foreground">
+                        Create a custom data package by selecting specific health metrics, date ranges, and data types 
+                        tailored to your healthcare provider's needs or research participation requirements.
+                      </div>
+                      
+                      <div className="flex gap-4">
+                        <Button size="sm">
+                          <Package className="h-4 w-4 mr-2" />
+                          Start Custom Package
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Eye className="h-4 w-4 mr-2" />
+                          Preview Available Data
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </SplitBarContent>
+          </SplitBar>
+
+          <CreateContentPopup 
+            isOpen={actionPopupOpen} 
+            onClose={() => setActionPopupOpen(false)}
+          />
         </div>
-
-        {/* My Data Packages */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-2">
-            <Package className="h-5 w-5 text-blue-600" />
-            <h2 className="text-xl font-semibold">My Data Packages</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {packageData.myPackages.map((pkg) => (
-              <Card key={pkg.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg">{pkg.name}</CardTitle>
-                      <CardDescription>{pkg.description}</CardDescription>
-                    </div>
-                    <Badge variant="outline">{pkg.size}</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <div className="text-sm font-medium text-muted-foreground">Data Types Included</div>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {pkg.dataTypes.map((type, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">{type}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <div className="font-medium text-muted-foreground">Date Range</div>
-                      <div>{pkg.dateRange}</div>
-                    </div>
-                    <div>
-                      <div className="font-medium text-muted-foreground">Created</div>
-                      <div>{pkg.createdDate}</div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <div className="text-sm font-medium text-muted-foreground">Shared With</div>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {pkg.recipients.map((recipient, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">
-                          <Users className="h-3 w-3 mr-1" />
-                          {recipient}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-2 pt-2">
-                    <Button variant="outline" size="sm">
-                      <Eye className="h-4 w-4 mr-2" />
-                      Preview
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Share2 className="h-4 w-4 mr-2" />
-                      Share
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Package Templates */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-green-600" />
-            <h2 className="text-xl font-semibold">Package Templates</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {packageData.templates.map((template) => (
-              <Card key={template.id}>
-                <CardHeader>
-                  <CardTitle className="text-lg">{template.name}</CardTitle>
-                  <CardDescription>{template.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <div className="text-sm font-medium text-muted-foreground">Included Data Types</div>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {template.dataTypes.map((type, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <div className="text-sm font-medium text-muted-foreground">Best For</div>
-                    <div className="text-sm">{template.useCase}</div>
-                  </div>
-                  
-                  <Button className="w-full">
-                    <Package className="h-4 w-4 mr-2" />
-                    Use Template
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Create Custom Package Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Package className="h-5 w-5" />
-              Create Custom Package
-            </CardTitle>
-            <CardDescription>
-              Build a personalized data package with specific health information
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="text-sm text-muted-foreground">
-              Create a custom data package by selecting specific health metrics, date ranges, and data types 
-              tailored to your healthcare provider's needs or research participation requirements.
-            </div>
-            
-            <div className="flex gap-4">
-              <Button>
-                <Package className="h-4 w-4 mr-2" />
-                Start Custom Package
-              </Button>
-              <Button variant="outline">
-                <Eye className="h-4 w-4 mr-2" />
-                Preview Available Data
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </AppLayout>
   );
-}
-
-export default withScreenId(Packages, SCREEN_IDS.SHARING_PACKAGES);
+}, SCREEN_IDS.SHARING_PACKAGES);
