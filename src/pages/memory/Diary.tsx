@@ -47,14 +47,14 @@ function Diary() {
       <SEO title="Daily Diary - Vitana Memory" description="Record daily voice entries to track your wellness journey and experiences." />
       <SubNavigation items={memoryNavigation} />
       
-      <div className="px-6 py-8 space-y-8">
+      <div className="p-6">
         <StandardHeader 
           title="Daily Diary"
           description="Record your daily experiences and track your wellness journey through voice entries"
         />
 
         {/* Voice Recording Section */}
-        <Card className="border-2 border-dashed border-primary/20 bg-primary/5">
+        <Card className="border-2 border-dashed border-primary/20 bg-primary/5 mt-6">
           <CardContent className="p-8 text-center space-y-6">
             <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
               <Mic className="w-8 h-8 text-primary" />
@@ -70,7 +70,7 @@ function Diary() {
         </Card>
 
         {/* Recent Entries */}
-        <div className="space-y-4">
+        <div className="space-y-4 mt-8">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">Recent Entries</h2>
             <Badge variant="outline" className="text-sm">

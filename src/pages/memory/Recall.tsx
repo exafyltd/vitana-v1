@@ -18,13 +18,13 @@ function Recall() {
       <SEO title="Recall & Search - Vitana Memory" description="Search and recall your health memories with AI assistance." />
       <SubNavigation items={memoryNavigation} />
       
-      <div className="px-6 py-8 space-y-8">
+      <div className="p-6">
         <StandardHeader 
           title="Recall & Search"
           description="AI-powered search through your health memories and experiences"
         />
 
-        <Card>
+        <Card className="mt-6">
           <CardContent className="pt-6">
             <div className="flex gap-4">
               <div className="flex-1">
@@ -46,7 +46,7 @@ function Recall() {
           </CardContent>
         </Card>
 
-        <div className="text-center py-12">
+        <div className="text-center py-12 mt-8">
           <Brain className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
           <h3 className="text-lg font-medium mb-2">AI Memory Search</h3>
           <p className="text-muted-foreground">

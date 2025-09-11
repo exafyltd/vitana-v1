@@ -14,13 +14,13 @@ function Permissions() {
       <SEO title="Permissions - Vitana Memory" description="Control who can access your health memories and personal data." />
       <SubNavigation items={memoryNavigation} />
       
-      <div className="px-6 py-8 space-y-8">
+      <div className="p-6">
         <StandardHeader 
           title="Memory Permissions"
           description="Control access to your health memories and personal data"
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

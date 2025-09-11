@@ -37,13 +37,13 @@ function Timeline() {
       <SEO title="Timeline - Vitana Memory" description="View your comprehensive health timeline and life events." />
       <SubNavigation items={memoryNavigation} />
       
-      <div className="px-6 py-8 space-y-8">
+      <div className="p-6">
         <StandardHeader 
           title="Health Timeline"
           description="Your comprehensive health journey and important life events"
         />
 
-        <div className="space-y-4">
+        <div className="space-y-4 mt-6">
           {timelineData.map((event) => {
             const IconComponent = event.icon;
             return (
