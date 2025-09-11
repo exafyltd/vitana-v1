@@ -13,7 +13,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Package, Share2, Download, Eye, Calendar, Users } from "lucide-react";
-import { CreateContentPopup } from "@/components/CreateContentPopup";
+import { CreatePackagePopup } from "@/components/CreatePackagePopup";
 
 const packageData = {
   myPackages: [
@@ -97,7 +97,7 @@ export default withScreenId(function Packages() {
             <ExpandableSearchButton placeholder="Search packages, templates..." />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Sharing Actions
+              Create Package
             </Button>
           </UtilityActionButton>
 
@@ -247,7 +247,7 @@ export default withScreenId(function Packages() {
             </SplitBarContent>
           </SplitBar>
 
-          <CreateContentPopup 
+          <CreatePackagePopup 
             isOpen={actionPopupOpen} 
             onClose={() => setActionPopupOpen(false)}
           />
