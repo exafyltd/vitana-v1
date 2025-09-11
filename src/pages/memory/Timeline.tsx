@@ -4,9 +4,12 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Clock, Calendar, MapPin, Heart } from "lucide-react";
+import { Clock, Calendar, MapPin, Heart, Plus } from "lucide-react";
 
 const timelineData = [
   {
@@ -42,6 +45,14 @@ function Timeline() {
           title="Health Timeline"
           description="Your comprehensive health journey and important life events"
         />
+
+        <UtilityActionButton>
+          <ExpandableSearchButton placeholder="Search timeline events..." />
+          <Button size="sm">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Event
+          </Button>
+        </UtilityActionButton>
 
         <div className="space-y-4 mt-6">
           {timelineData.map((event) => {

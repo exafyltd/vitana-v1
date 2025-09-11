@@ -5,9 +5,11 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Mic, Play, Calendar, Clock } from "lucide-react";
+import { Mic, Play, Calendar, Clock, Plus } from "lucide-react";
 import VoiceDiaryRecorder from "@/components/memory/VoiceDiaryRecorder";
 import { useState } from "react";
 
@@ -52,6 +54,14 @@ function Diary() {
           title="Daily Diary"
           description="Record your daily experiences and track your wellness journey through voice entries"
         />
+
+        <UtilityActionButton>
+          <ExpandableSearchButton placeholder="Search diary entries..." />
+          <Button size="sm">
+            <Plus className="w-4 h-4 mr-2" />
+            New Entry
+          </Button>
+        </UtilityActionButton>
 
         {/* Voice Recording Section */}
         <Card className="border-2 border-dashed border-primary/20 bg-primary/5 mt-6">

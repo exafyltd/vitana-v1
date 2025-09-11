@@ -5,9 +5,11 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Search, Brain } from "lucide-react";
+import { Search, Brain, Plus } from "lucide-react";
 import { useState } from "react";
 
 function Recall() {
@@ -23,6 +25,14 @@ function Recall() {
           title="Recall & Search"
           description="AI-powered search through your health memories and experiences"
         />
+
+        <UtilityActionButton>
+          <ExpandableSearchButton placeholder="Search memories and experiences..." />
+          <Button size="sm">
+            <Plus className="w-4 h-4 mr-2" />
+            Memory Actions
+          </Button>
+        </UtilityActionButton>
 
         <Card className="mt-6">
           <CardContent className="pt-6">

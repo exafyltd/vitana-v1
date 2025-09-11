@@ -4,9 +4,12 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Shield, Lock, Eye } from "lucide-react";
+import { Shield, Lock, Eye, Plus } from "lucide-react";
 
 function Permissions() {
   return (
@@ -19,6 +22,14 @@ function Permissions() {
           title="Memory Permissions"
           description="Control access to your health memories and personal data"
         />
+
+        <UtilityActionButton>
+          <ExpandableSearchButton placeholder="Search permissions..." />
+          <Button size="sm">
+            <Plus className="w-4 h-4 mr-2" />
+            Manage Access
+          </Button>
+        </UtilityActionButton>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           <Card>
