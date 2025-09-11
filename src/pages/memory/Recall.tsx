@@ -196,7 +196,7 @@ function Recall() {
                     title={searchResults[2].title}
                     description={searchResults[2].description}
                     imageUrl={searchResults[2].imageUrl}
-                    category="sleep"
+                    category="wellness"
                     pillar={searchResults[2].pillar}
                     author={searchResults[2].author}
                     timestamp={searchResults[2].timestamp}
@@ -205,7 +205,7 @@ function Recall() {
                 </div>
               </div>
 
-              <MotivationalBanner variant="recall" />
+              <MotivationalBanner variant="achievement" />
             </div>
           </SplitBarContent>
 
@@ -218,7 +218,7 @@ function Recall() {
                     title={memoryInsights[0].title}
                     description={memoryInsights[0].description}
                     imageUrl={memoryInsights[0].imageUrl}
-                    category="analytics"
+                    category="achievement"
                     pillar={memoryInsights[0].pillar}
                     author={memoryInsights[0].author}
                     timestamp={memoryInsights[0].timestamp}
@@ -230,7 +230,7 @@ function Recall() {
                     title={memoryInsights[1].title}
                     description={memoryInsights[1].description}
                     imageUrl={memoryInsights[1].imageUrl}
-                    category="exercise"
+                    category="wellness"
                     pillar={memoryInsights[1].pillar}
                     author={memoryInsights[1].author}
                     timestamp={memoryInsights[1].timestamp}
@@ -242,7 +242,7 @@ function Recall() {
                     title={memoryInsights[2].title}
                     description={memoryInsights[2].description}
                     imageUrl={memoryInsights[2].imageUrl}
-                    category="mental"
+                    category="wellness"
                     pillar={memoryInsights[2].pillar}
                     author={memoryInsights[2].author}
                     timestamp={memoryInsights[2].timestamp}
@@ -264,7 +264,7 @@ function Recall() {
                     title={quickRecallQueries[0].title}
                     description={quickRecallQueries[0].description}
                     imageUrl={quickRecallQueries[0].imageUrl}
-                    category="exercise"
+                    category="wellness"
                     pillar={quickRecallQueries[0].pillar}
                     author={quickRecallQueries[0].author}
                     timestamp={quickRecallQueries[0].timestamp}
@@ -276,7 +276,7 @@ function Recall() {
                     title={quickRecallQueries[1].title}
                     description={quickRecallQueries[1].description}
                     imageUrl={quickRecallQueries[1].imageUrl}
-                    category="nutrition"
+                    category="wellness"
                     pillar={quickRecallQueries[1].pillar}
                     author={quickRecallQueries[1].author}
                     timestamp={quickRecallQueries[1].timestamp}
@@ -288,7 +288,7 @@ function Recall() {
                     title={quickRecallQueries[2].title}
                     description={quickRecallQueries[2].description}
                     imageUrl={quickRecallQueries[2].imageUrl}
-                    category="sleep"
+                    category="wellness"
                     pillar={quickRecallQueries[2].pillar}
                     author={quickRecallQueries[2].author}
                     timestamp={quickRecallQueries[2].timestamp}

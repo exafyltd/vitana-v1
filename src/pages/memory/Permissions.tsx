@@ -195,7 +195,7 @@ function Permissions() {
                     title={privacySettings[0].title}
                     description={privacySettings[0].description}
                     imageUrl={privacySettings[0].imageUrl}
-                    category="privacy"
+                    category="wellness"
                     pillar={privacySettings[0].pillar}
                     author={privacySettings[0].author}
                     timestamp={privacySettings[0].timestamp}
@@ -207,7 +207,7 @@ function Permissions() {
                     title={privacySettings[1].title}
                     description={privacySettings[1].description}
                     imageUrl={privacySettings[1].imageUrl}
-                    category="ai"
+                    category="media"
                     pillar={privacySettings[1].pillar}
                     author={privacySettings[1].author}
                     timestamp={privacySettings[1].timestamp}
@@ -219,7 +219,7 @@ function Permissions() {
                     title={privacySettings[2].title}
                     description={privacySettings[2].description}
                     imageUrl={privacySettings[2].imageUrl}
-                    category="sharing"
+                    category="community"
                     pillar={privacySettings[2].pillar}
                     author={privacySettings[2].author}
                     timestamp={privacySettings[2].timestamp}
@@ -228,7 +228,7 @@ function Permissions() {
                 </div>
               </div>
 
-              <MotivationalBanner variant="permissions" />
+              <MotivationalBanner variant="guidance" />
             </div>
           </SplitBarContent>
 
@@ -241,7 +241,7 @@ function Permissions() {
                     title={accessControls[0].title}
                     description={accessControls[0].description}
                     imageUrl={accessControls[0].imageUrl}
-                    category="healthcare"
+                    category="wellness"
                     pillar={accessControls[0].pillar}
                     author={accessControls[0].author}
                     timestamp={accessControls[0].timestamp}
@@ -253,7 +253,7 @@ function Permissions() {
                     title={accessControls[1].title}
                     description={accessControls[1].description}
                     imageUrl={accessControls[1].imageUrl}
-                    category="research"
+                    category="achievement"
                     pillar={accessControls[1].pillar}
                     author={accessControls[1].author}
                     timestamp={accessControls[1].timestamp}
@@ -287,7 +287,7 @@ function Permissions() {
                     title={securityFeatures[0].title}
                     description={securityFeatures[0].description}
                     imageUrl={securityFeatures[0].imageUrl}
-                    category="security"
+                    category="wellness"
                     pillar={securityFeatures[0].pillar}
                     author={securityFeatures[0].author}
                     timestamp={securityFeatures[0].timestamp}
@@ -299,7 +299,7 @@ function Permissions() {
                     title={securityFeatures[1].title}
                     description={securityFeatures[1].description}
                     imageUrl={securityFeatures[1].imageUrl}
-                    category="audit"
+                    category="achievement"
                     pillar={securityFeatures[1].pillar}
                     author={securityFeatures[1].author}
                     timestamp={securityFeatures[1].timestamp}
@@ -311,7 +311,7 @@ function Permissions() {
                     title={securityFeatures[2].title}
                     description={securityFeatures[2].description}
                     imageUrl={securityFeatures[2].imageUrl}
-                    category="control"
+                    category="wellness"
                     pillar={securityFeatures[2].pillar}
                     author={securityFeatures[2].author}
                     timestamp={securityFeatures[2].timestamp}
