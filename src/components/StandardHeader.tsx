@@ -28,7 +28,7 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
       {/* Header Section with Perfect Symmetry - Three Cards Layout */}
       <div className="flex flex-col lg:flex-row gap-4 mb-8">
         {/* Welcome Message */}
-        <div className="flex-1 bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border">
+        <div className="flex-1 bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 relative z-10">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">
               {title} {emoji}
@@ -39,7 +39,7 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
         
         {/* Autopilot Card with Live Badge Counter */}
         <div 
-          className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
+          className="w-32 bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-2xl relative z-10"
           onClick={() => setAutopilotOpen(true)}
           onMouseEnter={() => setShowPreview(true)}
           onMouseLeave={() => setShowPreview(false)}
@@ -80,7 +80,7 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
         
         {/* Vitana Index Card - Circle with 742 */}
         <div 
-          className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border cursor-pointer group transition-all duration-300 hover:shadow-xl"
+          className="w-32 bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-2xl relative z-10"
           onClick={() => navigate('/health/my-health-tracker')}
         >
           <div className="flex items-center justify-center h-full">
