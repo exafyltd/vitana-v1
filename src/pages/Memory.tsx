@@ -23,36 +23,30 @@ export default withScreenId(function Memory() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <AppLayout data-testid="vitana-layout-root">
+    <AppLayout>
       <SEO title="Memory | VITANA" description="Track your wellness journey through time and AI insights." />
+      
+      <SubNavigation items={memoryNavigation} />
+      
+      <div className="p-6">
+        <StandardHeader 
+          title="Your Health Memory"
+          description="Track your wellness journey through time and AI insights."
+          emoji="🧠"
+        />
 
-      <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen" data-testid="vitana-container">
-        <div className="max-w-7xl mx-auto" data-testid="vitana-inner">
+        <UtilityActionButton>
+          <ExpandableSearchButton />
+          <Button
+            size="sm"
+            onClick={() => setActionPopupOpen(true)}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Memory
+          </Button>
+        </UtilityActionButton>
 
-          <SubNavigation items={memoryNavigation} />
-
-          <StandardHeader 
-            title="Your Health Memory"
-            description="Track your wellness journey through time and AI insights."
-            emoji="🧠"
-            data-testid="vitana-header" 
-          />
-
-          <div className="flex items-center justify-between mb-4" data-testid="vitana-utility-row">
-            <ExpandableSearchButton />
-            <UtilityActionButton className="flex gap-2">
-              <Button
-                size="sm"
-                onClick={() => setActionPopupOpen(true)}
-                data-testid="vitana-action"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Memory
-              </Button>
-            </UtilityActionButton>
-          </div>
-
-          <SplitBar value={activeTab} onValueChange={setActiveTab} data-testid="vitana-splitbar">
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
               <SplitBarTrigger value="overview" onClick={() => setActiveTab("overview")}>Overview</SplitBarTrigger>
               <SplitBarTrigger value="timeline" onClick={() => setActiveTab("timeline")}>Timeline</SplitBarTrigger>
@@ -62,7 +56,7 @@ export default withScreenId(function Memory() {
 
             <SplitBarContent value="overview" hidden={activeTab !== "overview"}>
               {/* GRID ROW – Pattern 1: 6+3+3 */}
-              <div className="grid grid-cols-12 gap-4 mb-6" data-testid="grid-1">
+              <div className="grid grid-cols-12 gap-4 mb-6">
                 <div className="col-span-12 md:col-span-6">
                   <TimelineContextCard />
                 </div>
@@ -94,11 +88,10 @@ export default withScreenId(function Memory() {
                 </div>
               </div>
 
-              {/* Motivational Banner (deduped) */}
-              <MemoryMotivationalBanner variant="overview" data-testid="motivation-1" />
+              <MemoryMotivationalBanner variant="overview" />
 
               {/* GRID ROW – Pattern 3: 12 */}
-              <div className="grid grid-cols-12 gap-4" data-testid="grid-2">
+              <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-12">
                   <SmartCalendarCard />
                 </div>
@@ -107,7 +100,7 @@ export default withScreenId(function Memory() {
 
             <SplitBarContent value="timeline" hidden={activeTab !== "timeline"}>
               {/* GRID ROW – Pattern 2: 3+3+6 */}
-              <div className="grid grid-cols-12 gap-4 mb-6" data-testid="grid-3">
+              <div className="grid grid-cols-12 gap-4 mb-6">
                 <div className="col-span-12 md:col-span-3">
                   <StandardCard 
                     title="This Week"
@@ -139,11 +132,11 @@ export default withScreenId(function Memory() {
                 </div>
               </div>
 
-              <MemoryMotivationalBanner variant="timeline" data-testid="motivation-2" />
+              <MemoryMotivationalBanner variant="timeline" />
             </SplitBarContent>
 
             <SplitBarContent value="diary" hidden={activeTab !== "diary"}>
-              <div className="grid grid-cols-12 gap-4 mb-6" data-testid="grid-4">
+              <div className="grid grid-cols-12 gap-4 mb-6">
                 <div className="col-span-12 md:col-span-6">
                   <StandardCard 
                     title="Voice Entries"
@@ -186,11 +179,11 @@ export default withScreenId(function Memory() {
                 </div>
               </div>
 
-              <MemoryMotivationalBanner variant="diary" data-testid="motivation-3" />
+              <MemoryMotivationalBanner variant="diary" />
             </SplitBarContent>
 
             <SplitBarContent value="recall" hidden={activeTab !== "recall"}>
-              <div className="grid grid-cols-12 gap-4" data-testid="grid-5">
+              <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-12">
                   <StandardCard 
                     title="Memory Search & Recall"
@@ -222,29 +215,15 @@ export default withScreenId(function Memory() {
                 </div>
               </div>
 
-              <MemoryMotivationalBanner variant="recall" data-testid="motivation-4" />
+              <MemoryMotivationalBanner variant="recall" />
             </SplitBarContent>
           </SplitBar>
 
-          {/* Context-specific popup ONLY */}
           <MemoryMasterActionPopup
             open={actionPopupOpen}
             onOpenChange={setActionPopupOpen}
-            data-testid="vitana-popup"
           />
-
         </div>
-      </div>
     </AppLayout>
   );
 }, SCREEN_IDS.MEMORY_OVERVIEW);
-
-/* VITANA_COMPLIANCE
-{
-  "mandatory": ["SEO","AppLayout","SubNavigation","StandardHeader","UtilityActionButton","ExpandableSearchButton","SplitBar","withScreenId","gradientContainer","maxWidthWrapper","MemoryMasterActionPopup","PlusIconSm"],
-  "forbidden": ["CustomActionIcon","DefaultButtonSize","MissingGradient","GenericPopup","NestedScrollbars"],
-  "gridPatterns": ["6-3-3","3-3-6","12"],
-  "motivation": {"present": true, "dedupe": true},
-  "testIds": true
-}
-*/
