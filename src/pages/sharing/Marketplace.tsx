@@ -48,7 +48,7 @@ function Marketplace() {
             <SplitBarContent value="featured">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-8">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Premium Healthcare Integrations</h3>
                     <p className="text-muted-foreground mb-6">Connect with top-rated healthcare platforms and research institutions.</p>
                     <div className="space-y-4">
@@ -77,7 +77,7 @@ function Marketplace() {
                   </div>
                 </div>
                 <div className="md:col-span-4">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Integration Stats</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
@@ -105,7 +105,7 @@ function Marketplace() {
             <SplitBarContent value="categories">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-6">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Healthcare & Medical</h3>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
@@ -124,7 +124,7 @@ function Marketplace() {
                   </div>
                 </div>
                 <div className="md:col-span-6">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Research & Studies</h3>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
@@ -148,7 +148,7 @@ function Marketplace() {
             <SplitBarContent value="connected">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-8">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Active Connections</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -169,7 +169,7 @@ function Marketplace() {
                   </div>
                 </div>
                 <div className="md:col-span-4">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Connection Summary</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">

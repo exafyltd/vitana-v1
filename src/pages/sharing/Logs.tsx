@@ -61,7 +61,7 @@ function Logs() {
             <SplitBarContent value="activity">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-8">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Recent Data Sharing Activity</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
@@ -110,7 +110,7 @@ function Logs() {
                   </div>
                 </div>
                 <div className="md:col-span-4">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Activity Summary</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
@@ -134,7 +134,7 @@ function Logs() {
             <SplitBarContent value="revoked">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-8">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Revoked Data Access</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -169,7 +169,7 @@ function Logs() {
                   </div>
                 </div>
                 <div className="md:col-span-4">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Revocation Stats</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
@@ -193,7 +193,7 @@ function Logs() {
             <SplitBarContent value="analytics">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-12">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Data Sharing Analytics</h3>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                       <div className="text-center p-4 bg-muted rounded-lg">

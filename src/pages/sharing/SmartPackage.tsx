@@ -48,7 +48,7 @@ function SmartPackage() {
             <SplitBarContent value="recommendations">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-8">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">AI-Powered Package Suggestions</h3>
                     <p className="text-muted-foreground mb-6">Based on your health profile, upcoming appointments, and data patterns, here are intelligent package recommendations.</p>
                     <div className="space-y-4">
@@ -77,7 +77,7 @@ function SmartPackage() {
                   </div>
                 </div>
                 <div className="md:col-span-4">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Quick Stats</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
@@ -101,7 +101,7 @@ function SmartPackage() {
             <SplitBarContent value="builder">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-6">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Package Configuration</h3>
                     <div className="space-y-4">
                       <div>
@@ -133,7 +133,7 @@ function SmartPackage() {
                   </div>
                 </div>
                 <div className="md:col-span-6">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Data Type Selection</h3>
                     <div className="space-y-2 max-h-80 overflow-y-auto">
                       {["Lab Results", "Vital Signs", "Activity Data", "Sleep Patterns", "Nutrition Tracking", "Medication History"].map((type) => (
@@ -151,7 +151,7 @@ function SmartPackage() {
             <SplitBarContent value="templates">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-12">
-                  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
+                  <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
                     <h3 className="text-lg font-semibold mb-4">Package Templates</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="p-4 border rounded-lg">
