@@ -1,143 +1,323 @@
+import { useState } from "react";
+import { Plus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
+import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { NewsCard } from "@/components/crossover/NewsCard";
+import VoiceDiaryRecorder from "@/components/memory/VoiceDiaryRecorder";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Mic, Play, Calendar, Clock, Plus } from "lucide-react";
-import VoiceDiaryRecorder from "@/components/memory/VoiceDiaryRecorder";
-import { useState } from "react";
+import { Mic } from "lucide-react";
 
-// Sample diary entries for now
-const recentEntries = [
+// Mock data for Diary - Voice Entries
+const voiceEntries = [
   {
-    id: 1,
-    date: "2024-01-20",
-    time: "18:30",
-    content: "Had a great workout today. Feeling energized and accomplished. Started with 30 minutes of cardio followed by strength training. My energy levels have been consistently higher since I began this routine.",
-    duration: "2:15",
-    type: "Voice Entry"
+    title: "Morning Wellness Reflection 🎙️",
+    description: "\"Feeling amazing after my new sleep routine. The meditation app transformed my nights!\"",
+    imageUrl: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Mental",
+    author: { name: "Voice Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Home Studio",
+    timestamp: "Today 9:30 AM"
   },
   {
-    id: 2,
-    date: "2024-01-19",
-    time: "22:00",
-    content: "Reflecting on today's meditation session. Found it easier to focus and my stress levels seem more manageable. The breathing exercises are really helping with my anxiety.",
-    duration: "1:45",
-    type: "Voice Entry"
+    title: "Nutrition Discovery Session 🥗",
+    description: "\"The Mediterranean recipe exceeded my expectations - satisfying and energizing!\"",
+    imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Nutrition",
+    author: { name: "Voice Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Kitchen",
+    timestamp: "Yesterday 6:15 PM"
   },
   {
-    id: 3,
-    date: "2024-01-18",
-    time: "07:15",
-    content: "Morning gratitude practice. Grateful for good health, supportive family, and the opportunity to grow. Starting the day with positive intentions.",
-    duration: "1:30",
-    type: "Voice Entry"
+    title: "Exercise Progress Update 🏃‍♀️",
+    description: "\"My endurance is improving daily! Setting ambitious goals for next month.\"",
+    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Exercise",
+    author: { name: "Voice Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Gym",
+    timestamp: "2 days ago"
+  }
+];
+
+// Photo Diary Entries
+const photoEntries = [
+  {
+    title: "Colorful Breakfast Bowl 📸",
+    description: "Captured my vibrant acai bowl with fresh berries and granola - pure wellness art!",
+    imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Nutrition",
+    author: { name: "Photo Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Kitchen",
+    timestamp: "Today 8:00 AM"
+  },
+  {
+    title: "Sunset Yoga Session 🧘‍♀️",
+    description: "Perfect golden hour meditation moment in my garden sanctuary",
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Mental",
+    author: { name: "Photo Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Garden",
+    timestamp: "Yesterday 7:30 PM"
+  },
+  {
+    title: "Post-Workout Achievement 💪",
+    description: "Celebrating my first 10K completion with the biggest smile ever!",
+    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+    category: "achievement" as const,
+    pillar: "Exercise",
+    author: { name: "Photo Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "City Park",
+    timestamp: "3 days ago"
+  }
+];
+
+// Text Diary Entries
+const textEntries = [
+  {
+    title: "Gratitude Journal Entry ✍️",
+    description: "\"Today I'm grateful for the energy boost from my morning routine and the support from my wellness community.\"",
+    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+    category: "wellness" as const,
+    pillar: "Mental",
+    author: { name: "Text Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Journal",
+    timestamp: "Today 10:00 PM"
+  },
+  {
+    title: "Sleep Quality Insights 💤",
+    description: "\"Discovered that blue light blocking glasses significantly improved my sleep score from 72% to 89%.\"",
+    imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
+    category: "wellness" as const,
+    pillar: "Sleep",
+    author: { name: "Text Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Bedroom",
+    timestamp: "Yesterday"
+  },
+  {
+    title: "Community Connection Story 🤝",
+    description: "\"Met three amazing people in the Mediterranean diet group today. We're planning a healthy cooking session!\"",
+    imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop",
+    category: "community" as const,
+    pillar: "Mental",
+    author: { name: "Text Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Community Forum",
+    timestamp: "2 days ago"
   }
 ];
 
 function Diary() {
-  const [isRecording, setIsRecording] = useState(false);
+  const [activeTab, setActiveTab] = useState("voice");
+  const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
     <AppLayout>
-      <SEO title="Daily Diary - Vitana Memory" description="Record daily voice entries to track your wellness journey and experiences." />
+      <SEO title="Voice Diary | VITANA Memory" description="Record and review your wellness journey through voice entries, photos, and personal reflections." />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
         <StandardHeader 
-          title="Daily Diary"
-          description="Record your daily experiences and track your wellness journey through voice entries"
+          title="Wellness Diary"
+          description="Record and review your wellness journey through multimedia entries."
+          emoji="📔"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search diary entries..." />
-          <Button size="sm">
+          <ExpandableSearchButton placeholder="Search diary entries and reflections..." />
+          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             New Entry
           </Button>
         </UtilityActionButton>
 
-        {/* Voice Recording Section */}
-        <Card className="border-2 border-dashed border-primary/20 bg-primary/5 mt-6">
-          <CardContent className="p-8 text-center space-y-6">
-            <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-              <Mic className="w-8 h-8 text-primary" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Record Today's Entry</h3>
-              <p className="text-muted-foreground">
-                Share your thoughts, feelings, and experiences. Your voice will be automatically transcribed and added to your memory timeline.
-              </p>
-            </div>
-            <VoiceDiaryRecorder onRecordingChange={setIsRecording} />
+        {/* Voice Recorder Section */}
+        <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200 mt-6 mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Mic className="h-5 w-5 text-purple-600" />
+              Record Today's Entry
+            </CardTitle>
+            <CardDescription>
+              Share your thoughts, feelings, and wellness observations
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <VoiceDiaryRecorder />
           </CardContent>
         </Card>
 
-        {/* Recent Entries */}
-        <div className="space-y-4 mt-8">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold">Recent Entries</h2>
-            <Badge variant="outline" className="text-sm">
-              {recentEntries.length} entries this week
-            </Badge>
-          </div>
-          
-          <div className="space-y-4">
-            {recentEntries.map((entry) => (
-              <Card key={entry.id}>
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-primary/10 rounded-lg">
-                      <Mic className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex-1 space-y-3">
-                      <div className="flex items-center gap-3">
-                        <Badge variant="outline">{entry.type}</Badge>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Calendar className="h-4 w-4" />
-                          {entry.date}
-                        </div>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Clock className="h-4 w-4" />
-                          {entry.time}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          Duration: {entry.duration}
-                        </div>
-                      </div>
-                      <p className="text-foreground leading-relaxed">{entry.content}</p>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm">
-                          <Play className="h-4 w-4 mr-2" />
-                          Play Recording
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+        <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <SplitBarList>
+            <SplitBarTrigger value="voice">Voice</SplitBarTrigger>
+            <SplitBarTrigger value="photos">Photos</SplitBarTrigger>
+            <SplitBarTrigger value="text">Text</SplitBarTrigger>
+          </SplitBarList>
 
-        {/* Floating Action Button for Quick Recording */}
-        {!isRecording && (
-          <div className="fixed bottom-8 right-8">
-            <Button 
-              size="lg" 
-              className="h-16 w-16 rounded-full shadow-lg bg-primary hover:bg-primary/90"
-              aria-label="Quick voice recording"
-            >
-              <Mic className="h-8 w-8" />
-            </Button>
-          </div>
-        )}
+          <SplitBarContent value="voice">
+            <div className="mt-6">
+              {/* Row 1: Voice Entries (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={voiceEntries[0]?.title || ""}
+                    description={voiceEntries[0]?.description}
+                    imageUrl={voiceEntries[0]?.imageUrl || ""}
+                    category={voiceEntries[0]?.category}
+                    pillar={voiceEntries[0]?.pillar}
+                    author={voiceEntries[0]?.author}
+                    location={voiceEntries[0]?.location}
+                    timestamp={voiceEntries[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={voiceEntries[1]?.title || ""}
+                    description={voiceEntries[1]?.description}
+                    imageUrl={voiceEntries[1]?.imageUrl || ""}
+                    category={voiceEntries[1]?.category}
+                    pillar={voiceEntries[1]?.pillar}
+                    author={voiceEntries[1]?.author}
+                    location={voiceEntries[1]?.location}
+                    timestamp={voiceEntries[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={voiceEntries[2]?.title || ""}
+                    description={voiceEntries[2]?.description}
+                    imageUrl={voiceEntries[2]?.imageUrl || ""}
+                    category={voiceEntries[2]?.category}
+                    pillar={voiceEntries[2]?.pillar}
+                    author={voiceEntries[2]?.author}
+                    location={voiceEntries[2]?.location}
+                    timestamp={voiceEntries[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              <MotivationalBanner variant="encouragement" />
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="photos">
+            <div className="mt-6">
+              {/* Row 1: Photo Entries (small + small + big) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={photoEntries[0]?.title || ""}
+                    description={photoEntries[0]?.description}
+                    imageUrl={photoEntries[0]?.imageUrl || ""}
+                    category={photoEntries[0]?.category}
+                    pillar={photoEntries[0]?.pillar}
+                    author={photoEntries[0]?.author}
+                    location={photoEntries[0]?.location}
+                    timestamp={photoEntries[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={photoEntries[1]?.title || ""}
+                    description={photoEntries[1]?.description}
+                    imageUrl={photoEntries[1]?.imageUrl || ""}
+                    category={photoEntries[1]?.category}
+                    pillar={photoEntries[1]?.pillar}
+                    author={photoEntries[1]?.author}
+                    location={photoEntries[1]?.location}
+                    timestamp={photoEntries[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={photoEntries[2]?.title || ""}
+                    description={photoEntries[2]?.description}
+                    imageUrl={photoEntries[2]?.imageUrl || ""}
+                    category={photoEntries[2]?.category}
+                    pillar={photoEntries[2]?.pillar}
+                    author={photoEntries[2]?.author}
+                    location={photoEntries[2]?.location}
+                    timestamp={photoEntries[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              <MotivationalBanner variant="partnership" />
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="text">
+            <div className="mt-6">
+              {/* Row 1: Text Entries (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={textEntries[0]?.title || ""}
+                    description={textEntries[0]?.description}
+                    imageUrl={textEntries[0]?.imageUrl || ""}
+                    category={textEntries[0]?.category}
+                    pillar={textEntries[0]?.pillar}
+                    author={textEntries[0]?.author}
+                    location={textEntries[0]?.location}
+                    timestamp={textEntries[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={textEntries[1]?.title || ""}
+                    description={textEntries[1]?.description}
+                    imageUrl={textEntries[1]?.imageUrl || ""}
+                    category={textEntries[1]?.category}
+                    pillar={textEntries[1]?.pillar}
+                    author={textEntries[1]?.author}
+                    location={textEntries[1]?.location}
+                    timestamp={textEntries[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={textEntries[2]?.title || ""}
+                    description={textEntries[2]?.description}
+                    imageUrl={textEntries[2]?.imageUrl || ""}
+                    category={textEntries[2]?.category}
+                    pillar={textEntries[2]?.pillar}
+                    author={textEntries[2]?.author}
+                    location={textEntries[2]?.location}
+                    timestamp={textEntries[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              <MotivationalBanner variant="guidance" />
+            </div>
+          </SplitBarContent>
+        </SplitBar>
+
+        <MemoryMasterActionPopup 
+          open={actionPopupOpen}
+          onOpenChange={setActionPopupOpen}
+        />
       </div>
     </AppLayout>
   );

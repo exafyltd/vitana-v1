@@ -1,22 +1,120 @@
+import { useState } from "react";
+import { Plus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { useState } from "react";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
+import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { NewsCard } from "@/components/crossover/NewsCard";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { MemoryMotivationalBanner } from "@/components/memory/MemoryMotivationalBanner";
-import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
-import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
-import { VitanaIndexCard } from "@/components/crossover/VitanaIndexCard";
-import { TimelineContextCard } from "@/components/crossover/TimelineContextCard";
-import { StandardCard } from "@/components/templates/StandardCard";
-import { Brain, Clock, Archive, Mic, BookOpen, Calendar } from "lucide-react";
+
+// Mock data for Memory Overview - Recent Memories
+const recentMemories = [
+  {
+    title: "Morning Wellness Reflection 🌅",
+    description: "Captured the perfect sunrise yoga session and meditation insights",
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    category: "wellness" as const,
+    pillar: "Mental",
+    author: { name: "You", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Home Studio",
+    timestamp: "This morning"
+  },
+  {
+    title: "Hydration Milestone Achievement 💧",
+    description: "Successfully completed 30-day water tracking challenge",
+    imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
+    category: "achievement" as const,
+    pillar: "Hydration",
+    author: { name: "Health Tracker", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Progress Hub",
+    timestamp: "Yesterday"
+  },
+  {
+    title: "Nutrition Discovery Voice Note 🎤",
+    description: "Recorded insights about Mediterranean diet effects on energy levels",
+    imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Nutrition",
+    author: { name: "Voice Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Kitchen",
+    timestamp: "2 days ago"
+  }
+];
+
+// Health Timeline Events
+const timelineEvents = [
+  {
+    title: "Sleep Pattern Breakthrough 😴",
+    description: "Discovered optimal bedtime routine leading to 95% sleep quality score",
+    imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
+    category: "wellness" as const,
+    pillar: "Sleep",
+    author: { name: "Sleep Tracker", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Bedroom",
+    timestamp: "3 days ago"
+  },
+  {
+    title: "Exercise Milestone Celebration 🏃‍♀️",
+    description: "Completed first 10K run after 3 months of training progression",
+    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+    category: "achievement" as const,
+    pillar: "Exercise",
+    author: { name: "Fitness Tracker", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "City Park",
+    timestamp: "1 week ago"
+  },
+  {
+    title: "Mindfulness Photo Collection 📸",
+    description: "Weekly gratitude photo series showcasing daily wellness moments",
+    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Mental",
+    author: { name: "Photo Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Various",
+    timestamp: "This week"
+  }
+];
+
+// Diary Entries
+const diaryEntries = [
+  {
+    title: "Voice Reflection: Energy Levels 🎙️",
+    description: "Detailed analysis of how morning routines impact daily energy patterns",
+    imageUrl: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Mental",
+    author: { name: "Voice Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Morning Routine",
+    timestamp: "Today"
+  },
+  {
+    title: "Wellness Photo Journey 📱",
+    description: "Visual diary of healthy meal prep and mindful eating practices",
+    imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
+    category: "media" as const,
+    pillar: "Nutrition",
+    author: { name: "Photo Diary", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Kitchen Studio",
+    timestamp: "Yesterday"
+  },
+  {
+    title: "Community Connection Memory 👥",
+    description: "Memorable yoga class experience and new friendships formed",
+    imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop",
+    category: "community" as const,
+    pillar: "Mental",
+    author: { name: "Community", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    location: "Wellness Center",
+    timestamp: "2 days ago"
+  }
+];
 
 export default withScreenId(function Memory() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -24,206 +122,184 @@ export default withScreenId(function Memory() {
 
   return (
     <AppLayout>
-      <SEO title="Memory | VITANA" description="Track your wellness journey through time and AI insights." />
-      
+      <SEO title="Memory Hub | VITANA" description="Track and review your wellness journey through AI-driven insights and memory tracking." />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
         <StandardHeader 
-          title="Your Health Memory"
-          description="Track your wellness journey through time and AI insights."
+          title="Memory Hub"
+          description="Track and review your wellness journey through AI-driven insights."
           emoji="🧠"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton />
-          <Button
-            size="sm"
-            onClick={() => setActionPopupOpen(true)}
-          >
+          <ExpandableSearchButton placeholder="Search memories, insights, or timeline..." />
+          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Add Memory
           </Button>
         </UtilityActionButton>
 
-          <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList>
-              <SplitBarTrigger value="overview" onClick={() => setActiveTab("overview")}>Overview</SplitBarTrigger>
-              <SplitBarTrigger value="timeline" onClick={() => setActiveTab("timeline")}>Timeline</SplitBarTrigger>
-              <SplitBarTrigger value="diary" onClick={() => setActiveTab("diary")}>Diary</SplitBarTrigger>
-              <SplitBarTrigger value="recall" onClick={() => setActiveTab("recall")}>Recall</SplitBarTrigger>
-            </SplitBarList>
+        <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <SplitBarList>
+            <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
+            <SplitBarTrigger value="timeline">Timeline</SplitBarTrigger>
+            <SplitBarTrigger value="diary">Diary</SplitBarTrigger>
+          </SplitBarList>
 
-            <SplitBarContent value="overview" hidden={activeTab !== "overview"}>
-              {/* GRID ROW – Pattern 1: 6+3+3 */}
-              <div className="grid grid-cols-12 gap-4 mb-6">
-                <div className="col-span-12 md:col-span-6">
-                  <TimelineContextCard />
-                </div>
-                <div className="col-span-12 md:col-span-3">
-                  <StandardCard 
-                    title="Memory Score"
-                    subtitle="AI-Generated Insights"
-                    icon={Brain}
-                    content={
-                      <div className="space-y-3">
-                        <div className="text-2xl font-bold text-purple-600">94%</div>
-                        <div className="text-sm text-muted-foreground">Wellness journey tracking accuracy</div>
-                      </div>
-                    }
+          <SplitBarContent value="overview">
+            <div className="mt-6">
+              {/* Row 1: Recent Memories (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={recentMemories[0]?.title || ""}
+                    description={recentMemories[0]?.description}
+                    imageUrl={recentMemories[0]?.imageUrl || ""}
+                    category={recentMemories[0]?.category}
+                    pillar={recentMemories[0]?.pillar}
+                    author={recentMemories[0]?.author}
+                    location={recentMemories[0]?.location}
+                    timestamp={recentMemories[0]?.timestamp}
+                    className="h-full"
                   />
                 </div>
-                <div className="col-span-12 md:col-span-3">
-                  <StandardCard 
-                    title="Total Memories"
-                    subtitle="Captured Moments"
-                    icon={Archive}
-                    content={
-                      <div className="space-y-3">
-                        <div className="text-2xl font-bold text-indigo-600">1,247</div>
-                        <div className="text-sm text-muted-foreground">Voice notes, photos & insights</div>
-                      </div>
-                    }
+                <div className="col-span-3">
+                  <NewsCard
+                    title={recentMemories[1]?.title || ""}
+                    description={recentMemories[1]?.description}
+                    imageUrl={recentMemories[1]?.imageUrl || ""}
+                    category={recentMemories[1]?.category}
+                    pillar={recentMemories[1]?.pillar}
+                    author={recentMemories[1]?.author}
+                    location={recentMemories[1]?.location}
+                    timestamp={recentMemories[1]?.timestamp}
+                    className="h-full"
                   />
                 </div>
-              </div>
-
-              <MemoryMotivationalBanner variant="overview" />
-
-              {/* GRID ROW – Pattern 3: 12 */}
-              <div className="grid grid-cols-12 gap-4">
-                <div className="col-span-12">
-                  <SmartCalendarCard />
-                </div>
-              </div>
-            </SplitBarContent>
-
-            <SplitBarContent value="timeline" hidden={activeTab !== "timeline"}>
-              {/* GRID ROW – Pattern 2: 3+3+6 */}
-              <div className="grid grid-cols-12 gap-4 mb-6">
-                <div className="col-span-12 md:col-span-3">
-                  <StandardCard 
-                    title="This Week"
-                    subtitle="Recent Memories"
-                    icon={Clock}
-                    content={
-                      <div className="space-y-3">
-                        <div className="text-2xl font-bold text-blue-600">23</div>
-                        <div className="text-sm text-muted-foreground">New entries added</div>
-                      </div>
-                    }
-                  />
-                </div>
-                <div className="col-span-12 md:col-span-3">
-                  <StandardCard 
-                    title="Longest Streak"
-                    subtitle="Consistency"
-                    icon={Clock}
-                    content={
-                      <div className="space-y-3">
-                        <div className="text-2xl font-bold text-green-600">47</div>
-                        <div className="text-sm text-muted-foreground">Days of daily logging</div>
-                      </div>
-                    }
-                  />
-                </div>
-                <div className="col-span-12 md:col-span-6">
-                  <VitanaIndexCard />
-                </div>
-              </div>
-
-              <MemoryMotivationalBanner variant="timeline" />
-            </SplitBarContent>
-
-            <SplitBarContent value="diary" hidden={activeTab !== "diary"}>
-              <div className="grid grid-cols-12 gap-4 mb-6">
-                <div className="col-span-12 md:col-span-6">
-                  <StandardCard 
-                    title="Voice Entries"
-                    subtitle="Spoken Memories"
-                    icon={Mic}
-                    content={
-                      <div className="space-y-3">
-                        <div className="text-2xl font-bold text-green-600">342</div>
-                        <div className="text-sm text-muted-foreground">Total voice recordings</div>
-                        <div className="text-xs text-muted-foreground">Last: 2 hours ago</div>
-                      </div>
-                    }
-                  />
-                </div>
-                <div className="col-span-12 md:col-span-3">
-                  <StandardCard 
-                    title="Written Notes"
-                    subtitle="Text Entries"
-                    icon={BookOpen}
-                    content={
-                      <div className="space-y-3">
-                        <div className="text-2xl font-bold text-blue-600">156</div>
-                        <div className="text-sm text-muted-foreground">Total written entries</div>
-                      </div>
-                    }
-                  />
-                </div>
-                <div className="col-span-12 md:col-span-3">
-                  <StandardCard 
-                    title="This Month"
-                    subtitle="Recent Activity"
-                    icon={Calendar}
-                    content={
-                      <div className="space-y-3">
-                        <div className="text-2xl font-bold text-purple-600">89</div>
-                        <div className="text-sm text-muted-foreground">New diary entries</div>
-                      </div>
-                    }
+                <div className="col-span-3">
+                  <NewsCard
+                    title={recentMemories[2]?.title || ""}
+                    description={recentMemories[2]?.description}
+                    imageUrl={recentMemories[2]?.imageUrl || ""}
+                    category={recentMemories[2]?.category}
+                    pillar={recentMemories[2]?.pillar}
+                    author={recentMemories[2]?.author}
+                    location={recentMemories[2]?.location}
+                    timestamp={recentMemories[2]?.timestamp}
+                    className="h-full"
                   />
                 </div>
               </div>
 
-              <MemoryMotivationalBanner variant="diary" />
-            </SplitBarContent>
+              <MotivationalBanner variant="encouragement" />
+            </div>
+          </SplitBarContent>
 
-            <SplitBarContent value="recall" hidden={activeTab !== "recall"}>
-              <div className="grid grid-cols-12 gap-4">
-                <div className="col-span-12">
-                  <StandardCard 
-                    title="Memory Search & Recall"
-                    subtitle="AI-Powered Memory Retrieval"
-                    icon={Brain}
-                    content={
-                      <div className="space-y-4">
-                        <div className="text-sm text-muted-foreground">
-                          Search through your entire wellness journey using natural language.
-                          Find specific moments, patterns, and insights from your health memory.
-                        </div>
-                        <div className="flex gap-4 text-sm">
-                          <div>
-                            <div className="font-medium text-orange-600">Fast Search</div>
-                            <div className="text-muted-foreground">Instant results</div>
-                          </div>
-                          <div>
-                            <div className="font-medium text-blue-600">Pattern Detection</div>
-                            <div className="text-muted-foreground">AI insights</div>
-                          </div>
-                          <div>
-                            <div className="font-medium text-green-600">Smart Filters</div>
-                            <div className="text-muted-foreground">Precise results</div>
-                          </div>
-                        </div>
-                      </div>
-                    }
+          <SplitBarContent value="timeline">
+            <div className="mt-6">
+              {/* Row 1: Timeline Events (small + small + big) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={timelineEvents[0]?.title || ""}
+                    description={timelineEvents[0]?.description}
+                    imageUrl={timelineEvents[0]?.imageUrl || ""}
+                    category={timelineEvents[0]?.category}
+                    pillar={timelineEvents[0]?.pillar}
+                    author={timelineEvents[0]?.author}
+                    location={timelineEvents[0]?.location}
+                    timestamp={timelineEvents[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={timelineEvents[1]?.title || ""}
+                    description={timelineEvents[1]?.description}
+                    imageUrl={timelineEvents[1]?.imageUrl || ""}
+                    category={timelineEvents[1]?.category}
+                    pillar={timelineEvents[1]?.pillar}
+                    author={timelineEvents[1]?.author}
+                    location={timelineEvents[1]?.location}
+                    timestamp={timelineEvents[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={timelineEvents[2]?.title || ""}
+                    description={timelineEvents[2]?.description}
+                    imageUrl={timelineEvents[2]?.imageUrl || ""}
+                    category={timelineEvents[2]?.category}
+                    pillar={timelineEvents[2]?.pillar}
+                    author={timelineEvents[2]?.author}
+                    location={timelineEvents[2]?.location}
+                    timestamp={timelineEvents[2]?.timestamp}
+                    className="h-full"
                   />
                 </div>
               </div>
 
-              <MemoryMotivationalBanner variant="recall" />
-            </SplitBarContent>
-          </SplitBar>
+              <MotivationalBanner variant="partnership" />
+            </div>
+          </SplitBarContent>
 
-          <MemoryMasterActionPopup
-            open={actionPopupOpen}
-            onOpenChange={setActionPopupOpen}
-          />
-        </div>
+          <SplitBarContent value="diary">
+            <div className="mt-6">
+              {/* Row 1: Diary Entries (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <NewsCard
+                    title={diaryEntries[0]?.title || ""}
+                    description={diaryEntries[0]?.description}
+                    imageUrl={diaryEntries[0]?.imageUrl || ""}
+                    category={diaryEntries[0]?.category}
+                    pillar={diaryEntries[0]?.pillar}
+                    author={diaryEntries[0]?.author}
+                    location={diaryEntries[0]?.location}
+                    timestamp={diaryEntries[0]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={diaryEntries[1]?.title || ""}
+                    description={diaryEntries[1]?.description}
+                    imageUrl={diaryEntries[1]?.imageUrl || ""}
+                    category={diaryEntries[1]?.category}
+                    pillar={diaryEntries[1]?.pillar}
+                    author={diaryEntries[1]?.author}
+                    location={diaryEntries[1]?.location}
+                    timestamp={diaryEntries[1]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={diaryEntries[2]?.title || ""}
+                    description={diaryEntries[2]?.description}
+                    imageUrl={diaryEntries[2]?.imageUrl || ""}
+                    category={diaryEntries[2]?.category}
+                    pillar={diaryEntries[2]?.pillar}
+                    author={diaryEntries[2]?.author}
+                    location={diaryEntries[2]?.location}
+                    timestamp={diaryEntries[2]?.timestamp}
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              <MotivationalBanner variant="guidance" />
+            </div>
+          </SplitBarContent>
+        </SplitBar>
+
+        <MemoryMasterActionPopup 
+          open={actionPopupOpen}
+          onOpenChange={setActionPopupOpen}
+        />
+      </div>
     </AppLayout>
   );
 }, SCREEN_IDS.MEMORY_OVERVIEW);

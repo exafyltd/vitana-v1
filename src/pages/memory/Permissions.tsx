@@ -1,101 +1,102 @@
-import { useState } from "react";
+import { useState } from 'react';
 import { Plus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { NewsCard } from "@/components/crossover/NewsCard";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
-import { Shield, Lock, Eye } from "lucide-react";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
-// Privacy and permissions data
+// Mock data for privacy settings information
 const privacySettings = [
   {
-    title: "Privacy Dashboard Overview 🔒",
-    description: "Your memory data is secured with military-grade encryption and zero-trust architecture",
+    title: "Data Encryption & Security 🔐",
+    description: "Your health memories are protected with end-to-end encryption and secure cloud storage",
     imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop",
-    pillar: "Privacy",
-    author: { name: "Security System", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "Always Protected"
+    pillar: "Security",
+    author: { name: "Privacy Team", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Always Active"
   },
   {
-    title: "AI Analysis Permissions ⚙️",
-    description: "Control how AI processes your health memories for insights and recommendations",
-    imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop",
-    pillar: "AI Control",
-    author: { name: "Privacy Center", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "User Controlled"
+    title: "AI Analysis Preferences 🤖",
+    description: "Control how artificial intelligence processes your wellness data for personalized insights",
+    imageUrl: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=600&fit=crop",
+    pillar: "AI Privacy",
+    author: { name: "AI Ethics", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Customizable"
   },
   {
     title: "Data Sharing Controls 🤝",
-    description: "Granular permissions for healthcare providers and research participation",
-    imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&h=600&fit=crop",
+    description: "Manage which wellness communities and research initiatives can access your anonymized data",
+    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&h=600&fit=crop",
     pillar: "Sharing",
-    author: { name: "Access Management", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
+    author: { name: "Data Governance", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     timestamp: "Your Choice"
   }
 ];
 
+// Access control information
 const accessControls = [
   {
-    title: "Healthcare Provider Access 🏥",
-    description: "Dr. Sarah Miller has view-only access to your wellness timeline and biomarkers",
+    title: "Healthcare Provider Access 🩺",
+    description: "Share specific health memories with your doctors and medical team for better care",
     imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&h=600&fit=crop",
     pillar: "Healthcare",
-    author: { name: "Dr. Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
-    timestamp: "Active Access"
+    author: { name: "Medical Integration", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Secure Portal"
   },
   {
     title: "Research Participation 🔬",
-    description: "Contributing anonymized wellness data to longevity research studies",
+    description: "Contribute to wellness research studies while maintaining complete anonymity and control",
     imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop",
     pillar: "Research",
-    author: { name: "Research Institute", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "Opt-in Only"
+    author: { name: "Research Ethics", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Voluntary"
   },
   {
-    title: "Community Sharing 👥",
-    description: "Public timeline disabled - your wellness journey remains completely private",
-    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    pillar: "Community",
-    author: { name: "Privacy Guard", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "Privacy Mode"
+    title: "Emergency Access Protocols 🚨",
+    description: "Configure emergency access to critical health information for medical emergencies",
+    imageUrl: "https://images.unsplash.com/photo-1576669801820-6ea9fa584fb0?w=800&h=600&fit=crop",
+    pillar: "Emergency",
+    author: { name: "Emergency Services", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Life-saving Access"
   }
 ];
 
+// Security features information
 const securityFeatures = [
   {
-    title: "End-to-End Encryption 🛡️",
-    description: "All memory data encrypted in transit and at rest with AES-256 encryption",
-    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop",
+    title: "Biometric Authentication 👆",
+    description: "Secure your memories with fingerprint, face recognition, or voice authentication",
+    imageUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
     pillar: "Security",
-    author: { name: "Encryption Engine", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "Always Active"
+    author: { name: "Biometric Security", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Advanced Protection"
   },
   {
-    title: "Access Audit Log 📋",
-    description: "Complete log of who accessed your data, when, and what they viewed",
-    imageUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=600&fit=crop",
+    title: "Access Audit Trail 📊", 
+    description: "Monitor and review every access to your health memories with detailed audit logs",
+    imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
     pillar: "Audit",
-    author: { name: "Security Monitor", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    author: { name: "Security Monitoring", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     timestamp: "Real-time Tracking"
   },
   {
-    title: "Data Retention Control ⏰",
-    description: "Set automatic deletion policies for different types of memory data",
-    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    title: "Data Portability & Control 📤",
+    description: "Export, delete, or transfer your health memories at any time with complete ownership rights",
+    imageUrl: "https://images.unsplash.com/photo-1558618666-fff8c4e96c9b?w=800&h=600&fit=crop",
     pillar: "Control",
-    author: { name: "Data Management", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "User Defined"
+    author: { name: "Data Rights", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    timestamp: "Your Data, Your Choice"
   }
 ];
 
@@ -105,74 +106,63 @@ function Permissions() {
 
   return (
     <AppLayout>
-      <SEO title="Permissions - Vitana Memory" description="Control who can access your health memories and personal data." />
+      <SEO title="Memory Permissions | VITANA Memory" description="Manage privacy, access, and security settings for your health memories and wellness data." />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
         <StandardHeader 
           title="Memory Permissions"
-          description="Control access to your health memories and personal data"
-          emoji="🔐"
+          description="Manage privacy, access, and security settings for your health memories."
+          emoji="🔒"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton 
-            placeholder="Search permissions..."
-            onSearch={(query) => console.log('Search:', query)}
-          />
+          <ExpandableSearchButton placeholder="Search privacy and security settings..." />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Manage Access
           </Button>
         </UtilityActionButton>
 
-        {/* Privacy Settings Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 mb-8">
-          <Card>
+        {/* Quick Settings Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-8">
+          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Privacy Settings
-              </CardTitle>
+              <CardTitle>Privacy Settings</CardTitle>
+              <CardDescription>Control your data privacy and sharing preferences</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">Public Timeline</div>
-                  <div className="text-sm text-muted-foreground">Allow others to see your health journey</div>
-                </div>
+                <span className="text-sm">AI Analysis Enabled</span>
+                <Switch defaultChecked />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Research Participation</span>
                 <Switch />
               </div>
               <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">AI Memory Analysis</div>
-                  <div className="text-sm text-muted-foreground">Enable AI insights from your memories</div>
-                </div>
+                <span className="text-sm">Community Sharing</span>
                 <Switch defaultChecked />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lock className="h-5 w-5" />
-                Data Access
-              </CardTitle>
+              <CardTitle>Data Access</CardTitle>
+              <CardDescription>Manage who can access your health memories</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">Healthcare Providers</div>
-                  <div className="text-sm text-muted-foreground">Share timeline with your doctors</div>
-                </div>
+                <span className="text-sm">Healthcare Providers</span>
                 <Switch defaultChecked />
               </div>
               <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">Research Participation</div>
-                  <div className="text-sm text-muted-foreground">Include memories in research studies</div>
-                </div>
+                <span className="text-sm">Emergency Access</span>
+                <Switch defaultChecked />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Family Members</span>
                 <Switch />
               </div>
             </CardContent>
@@ -192,37 +182,37 @@ function Permissions() {
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
                   <NewsCard
-                    title={privacySettings[0].title}
-                    description={privacySettings[0].description}
-                    imageUrl={privacySettings[0].imageUrl}
+                    title={privacySettings[0]?.title || ""}
+                    description={privacySettings[0]?.description}
+                    imageUrl={privacySettings[0]?.imageUrl || ""}
                     category="wellness"
-                    pillar={privacySettings[0].pillar}
-                    author={privacySettings[0].author}
-                    timestamp={privacySettings[0].timestamp}
+                    pillar={privacySettings[0]?.pillar}
+                    author={privacySettings[0]?.author}
+                    timestamp={privacySettings[0]?.timestamp}
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-3">
                   <NewsCard
-                    title={privacySettings[1].title}
-                    description={privacySettings[1].description}
-                    imageUrl={privacySettings[1].imageUrl}
-                    category="media"
-                    pillar={privacySettings[1].pillar}
-                    author={privacySettings[1].author}
-                    timestamp={privacySettings[1].timestamp}
+                    title={privacySettings[1]?.title || ""}
+                    description={privacySettings[1]?.description}
+                    imageUrl={privacySettings[1]?.imageUrl || ""}
+                    category="wellness"
+                    pillar={privacySettings[1]?.pillar}
+                    author={privacySettings[1]?.author}
+                    timestamp={privacySettings[1]?.timestamp}
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-3">
                   <NewsCard
-                    title={privacySettings[2].title}
-                    description={privacySettings[2].description}
-                    imageUrl={privacySettings[2].imageUrl}
-                    category="community"
-                    pillar={privacySettings[2].pillar}
-                    author={privacySettings[2].author}
-                    timestamp={privacySettings[2].timestamp}
+                    title={privacySettings[2]?.title || ""}
+                    description={privacySettings[2]?.description}
+                    imageUrl={privacySettings[2]?.imageUrl || ""}
+                    category="wellness"
+                    pillar={privacySettings[2]?.pillar}
+                    author={privacySettings[2]?.author}
+                    timestamp={privacySettings[2]?.timestamp}
                     className="h-full"
                   />
                 </div>
@@ -238,37 +228,37 @@ function Permissions() {
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-3">
                   <NewsCard
-                    title={accessControls[0].title}
-                    description={accessControls[0].description}
-                    imageUrl={accessControls[0].imageUrl}
+                    title={accessControls[0]?.title || ""}
+                    description={accessControls[0]?.description}
+                    imageUrl={accessControls[0]?.imageUrl || ""}
                     category="wellness"
-                    pillar={accessControls[0].pillar}
-                    author={accessControls[0].author}
-                    timestamp={accessControls[0].timestamp}
+                    pillar={accessControls[0]?.pillar}
+                    author={accessControls[0]?.author}
+                    timestamp={accessControls[0]?.timestamp}
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-3">
                   <NewsCard
-                    title={accessControls[1].title}
-                    description={accessControls[1].description}
-                    imageUrl={accessControls[1].imageUrl}
-                    category="achievement"
-                    pillar={accessControls[1].pillar}
-                    author={accessControls[1].author}
-                    timestamp={accessControls[1].timestamp}
+                    title={accessControls[1]?.title || ""}
+                    description={accessControls[1]?.description}
+                    imageUrl={accessControls[1]?.imageUrl || ""}
+                    category="wellness"
+                    pillar={accessControls[1]?.pillar}
+                    author={accessControls[1]?.author}
+                    timestamp={accessControls[1]?.timestamp}
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-6">
                   <NewsCard
-                    title={accessControls[2].title}
-                    description={accessControls[2].description}
-                    imageUrl={accessControls[2].imageUrl}
-                    category="community"
-                    pillar={accessControls[2].pillar}
-                    author={accessControls[2].author}
-                    timestamp={accessControls[2].timestamp}
+                    title={accessControls[2]?.title || ""}
+                    description={accessControls[2]?.description}
+                    imageUrl={accessControls[2]?.imageUrl || ""}
+                    category="wellness"
+                    pillar={accessControls[2]?.pillar}
+                    author={accessControls[2]?.author}
+                    timestamp={accessControls[2]?.timestamp}
                     className="h-full"
                   />
                 </div>
@@ -284,37 +274,37 @@ function Permissions() {
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
                   <NewsCard
-                    title={securityFeatures[0].title}
-                    description={securityFeatures[0].description}
-                    imageUrl={securityFeatures[0].imageUrl}
+                    title={securityFeatures[0]?.title || ""}
+                    description={securityFeatures[0]?.description}
+                    imageUrl={securityFeatures[0]?.imageUrl || ""}
                     category="wellness"
-                    pillar={securityFeatures[0].pillar}
-                    author={securityFeatures[0].author}
-                    timestamp={securityFeatures[0].timestamp}
+                    pillar={securityFeatures[0]?.pillar}
+                    author={securityFeatures[0]?.author}
+                    timestamp={securityFeatures[0]?.timestamp}
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-3">
                   <NewsCard
-                    title={securityFeatures[1].title}
-                    description={securityFeatures[1].description}
-                    imageUrl={securityFeatures[1].imageUrl}
-                    category="achievement"
-                    pillar={securityFeatures[1].pillar}
-                    author={securityFeatures[1].author}
-                    timestamp={securityFeatures[1].timestamp}
+                    title={securityFeatures[1]?.title || ""}
+                    description={securityFeatures[1]?.description}
+                    imageUrl={securityFeatures[1]?.imageUrl || ""}
+                    category="wellness"
+                    pillar={securityFeatures[1]?.pillar}
+                    author={securityFeatures[1]?.author}
+                    timestamp={securityFeatures[1]?.timestamp}
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-3">
                   <NewsCard
-                    title={securityFeatures[2].title}
-                    description={securityFeatures[2].description}
-                    imageUrl={securityFeatures[2].imageUrl}
+                    title={securityFeatures[2]?.title || ""}
+                    description={securityFeatures[2]?.description}
+                    imageUrl={securityFeatures[2]?.imageUrl || ""}
                     category="wellness"
-                    pillar={securityFeatures[2].pillar}
-                    author={securityFeatures[2].author}
-                    timestamp={securityFeatures[2].timestamp}
+                    pillar={securityFeatures[2]?.pillar}
+                    author={securityFeatures[2]?.author}
+                    timestamp={securityFeatures[2]?.timestamp}
                     className="h-full"
                   />
                 </div>
