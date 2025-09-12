@@ -11,27 +11,33 @@ export default function DiaryButton() {
 
   // ---- Long-press (≥450ms) starts voice; tap opens text sheet ----
   function onPointerDown(e: React.PointerEvent) {
+    console.log("DiaryButton: Pointer down");
     if (longPressId.current) window.clearTimeout(longPressId.current);
     longPressId.current = window.setTimeout(() => startVoice(), 450);
   }
 
   function onPointerUp(e: React.PointerEvent) {
+    console.log("DiaryButton: Pointer up, rec:", rec);
     if (longPressId.current) {
       window.clearTimeout(longPressId.current);
       longPressId.current = null;
       if (!rec) {
         // it was a tap, not a hold
+        console.log("DiaryButton: Tap - opening text mode");
         setNote(""); 
         setOpen(true); // text mode: open empty sheet
       } else {
+        console.log("DiaryButton: Stopping voice recording");
         stopVoice(); // releasing after hold stops recording
       }
     }
   }
 
   function startVoice() {
+    console.log("DiaryButton: Starting voice recording");
     const SR = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
     if (!SR) { 
+      console.log("DiaryButton: Speech recognition not supported, fallback to text");
       setNote(""); 
       setOpen(true); 
       return; 
@@ -42,11 +48,14 @@ export default function DiaryButton() {
     r.interimResults = false; 
     r.continuous = false;
     r.onresult = (e: any) => { 
-      setNote(e.results?.[0]?.[0]?.transcript || ""); 
+      const transcript = e.results?.[0]?.[0]?.transcript || "";
+      console.log("DiaryButton: Voice transcript:", transcript);
+      setNote(transcript); 
       setRec(false); 
       setOpen(true); 
     };
-    r.onerror = () => { 
+    r.onerror = (e: any) => { 
+      console.log("DiaryButton: Speech recognition error:", e);
       setNote(""); 
       setRec(false); 
       setOpen(true); 
@@ -85,11 +94,10 @@ export default function DiaryButton() {
           "ring-1 ring-black/10 shadow-[0_6px_18px_rgba(0,0,0,0.12)]",
           "grid place-items-center transition-transform duration-150",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-          rec ? "bg-[var(--brand-live)] text-white diary-pulse" :
-                "text-white hover:scale-[1.03] active:scale-[0.98]"
+          rec ? "text-white diary-pulse" : "text-white hover:scale-[1.03] active:scale-[0.98]"
         ].join(" ")}
         style={{
-          background: rec ? undefined : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
+          background: rec ? "#ff004f" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
         }}
       >
         {/* stacked mic + pen */}
