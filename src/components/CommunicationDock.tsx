@@ -1,12 +1,22 @@
 import DiaryOrb from "@/components/diary/DiaryOrb";
+import { Button } from "@/components/ui/button";
+import { Mic, Video } from "lucide-react";
 
 // Placeholder components for existing controls
 function MicButton() {
-  return <button className="p-2 rounded-full hover:bg-gray-100" title="Microphone">🎤</button>;
+  return (
+    <Button variant="ghost" size="icon" title="Microphone">
+      <Mic className="h-5 w-5" />
+    </Button>
+  );
 }
 
 function CameraButton() {
-  return <button className="p-2 rounded-full hover:bg-gray-100" title="Camera">📷</button>;
+  return (
+    <Button variant="ghost" size="icon" title="Camera">
+      <Video className="h-5 w-5" />
+    </Button>
+  );
 }
 
 function ChatInput({ placeholder }: { placeholder: string }) {
