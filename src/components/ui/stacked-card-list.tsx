@@ -50,6 +50,31 @@ export function StackedCardList({
     }
   };
 
+  const getPriorityStyles = (variant?: string) => {
+    switch (variant) {
+      case "destructive":
+        return {
+          iconColor: "text-red-600",
+          accentBorder: "border-l-[3px] border-l-red-500"
+        };
+      case "success":
+        return {
+          iconColor: "text-green-600", 
+          accentBorder: "border-l-[3px] border-l-green-500"
+        };
+      case "secondary":
+        return {
+          iconColor: "text-slate-600",
+          accentBorder: "border-l-[3px] border-l-slate-400"
+        };
+      default:
+        return {
+          iconColor: "text-slate-600",
+          accentBorder: "border-l-[3px] border-l-slate-300"
+        };
+    }
+  };
+
   return (
     <div className={className}>
       {title && (
@@ -59,11 +84,15 @@ export function StackedCardList({
       <div className="space-y-2 md:space-y-3">
         {items.map((item) => {
           const IconComponent = item.icon;
+          const priorityStyles = getPriorityStyles(item.pill?.variant);
           
           return (
             <div
               key={item.id}
-              className="rounded-xl ring-1 ring-black/5 bg-white shadow-sm px-4 py-3 cursor-pointer group hover:bg-slate-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 transition-colors"
+              className={cn(
+                "rounded-xl ring-1 ring-black/5 bg-white shadow-sm px-4 py-3 cursor-pointer group hover:bg-slate-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 transition-all duration-200 active:scale-[0.98]",
+                priorityStyles.accentBorder
+              )}
               tabIndex={0}
               role="button"
               onClick={() => handleItemClick(item)}
@@ -72,8 +101,8 @@ export function StackedCardList({
             >
               <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
                 {/* Left icon bucket */}
-                <div className="h-10 w-10 rounded-full bg-slate-50 ring-1 ring-black/5 grid place-items-center">
-                  <IconComponent className="w-5 h-5 text-slate-600" />
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-slate-50 to-slate-100/80 ring-1 ring-black/5 shadow-inner grid place-items-center">
+                  <IconComponent className={cn("w-5 h-5", priorityStyles.iconColor)} />
                 </div>
                 
                 {/* Middle content */}
