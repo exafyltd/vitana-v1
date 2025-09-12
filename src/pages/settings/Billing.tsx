@@ -1,7 +1,10 @@
+import React, { useState } from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import ScreenScaffold from "@/components/ScreenScaffold";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,19 +12,44 @@ import { settingsNavigation } from "@/config/navigation";
 import { CreditCard, Calendar, Download, Star, Check, Trophy, Gift, Target, Award, Coins, Sparkles } from "lucide-react";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Progress } from "@/components/ui/progress";
+import { BillingActionPopup } from "@/components/BillingActionPopup";
 
 export default function Billing() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [actionPopupOpen, setActionPopupOpen] = useState(false);
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
   return (
     <AppLayout>
       <SEO title="Billing | Settings" description="Manage your subscription and billing information" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
-        <StandardHeader 
-          title="Manage your investment in wellness!"
-          description="Manage your subscription and billing information"
-          emoji="💳"
-        />
+      
+      <ScreenScaffold
+        seoTitle="Billing Settings"
+        sectionNav={settingsNavigation}
+        header={{
+          title: "Manage your investment in wellness! 💳",
+          description: "Manage your subscription and billing information"
+        }}
+        actionText="Billing Actions"
+        onAction={() => setActionPopupOpen(true)}
+      >
+        <UtilityActionButton>
+          <ExpandableSearchButton 
+            placeholder="Search billing..." 
+            onSearch={handleSearch}
+          />
+          <Button 
+            variant="outline" 
+            onClick={() => setActionPopupOpen(true)}
+          >
+            <CreditCard className="w-4 h-4 mr-2" />
+            Billing Actions
+          </Button>
+        </UtilityActionButton>
         
         <SplitBar defaultValue="billing" className="w-full">
           <SplitBarList>
@@ -399,39 +427,47 @@ export default function Billing() {
                   </div>
 
                   <div className="text-center p-4 border rounded-lg bg-green-50">
-                    <div className="text-2xl mb-2">👥</div>
-                    <div className="font-medium text-sm">Community Leader</div>
-                    <div className="text-xs text-muted-foreground">100+ interactions</div>
+                    <div className="text-2xl mb-2">🎯</div>
+                    <div className="font-medium text-sm">Goal Crusher</div>
+                    <div className="text-xs text-muted-foreground">10 goals completed</div>
                   </div>
 
-                  <div className="text-center p-4 border rounded-lg border-dashed opacity-50">
-                    <div className="text-2xl mb-2">🔒</div>
-                    <div className="font-medium text-sm">Points Master</div>
-                    <div className="text-xs text-muted-foreground">Earn 5,000 pts</div>
+                  <div className="text-center p-4 border rounded-lg bg-purple-50">
+                    <div className="text-2xl mb-2">🌟</div>
+                    <div className="font-medium text-sm">Vitana Champion</div>
+                    <div className="text-xs text-muted-foreground">Premium for 3 months</div>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <h4 className="font-medium">Upcoming Milestones</h4>
+                <div>
+                  <h4 className="font-medium mb-3">Coming up next...</h4>
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3 p-3 border rounded-lg">
-                      <Sparkles className="w-5 h-5 text-purple-500" />
-                      <div className="flex-1">
-                        <div className="font-medium text-sm">Points Collector</div>
-                        <div className="text-xs text-muted-foreground">Earn 3,000 total points</div>
-                        <Progress value={81.6} className="h-1 mt-1" />
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="text-xl">🔥</div>
+                        <div>
+                          <h5 className="font-medium text-sm">Streak Master</h5>
+                          <p className="text-xs text-muted-foreground">Maintain 30-day streak</p>
+                        </div>
                       </div>
-                      <div className="text-sm text-muted-foreground">2,450/3,000</div>
+                      <div className="text-right">
+                        <Progress value={23} className="w-20 h-2" />
+                        <div className="text-xs text-muted-foreground">7/30 days</div>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-3 p-3 border rounded-lg">
-                      <Target className="w-5 h-5 text-blue-500" />
-                      <div className="flex-1">
-                        <div className="font-medium text-sm">Weekly Warrior</div>
-                        <div className="text-xs text-muted-foreground">Complete 4 weekly goals</div>
-                        <Progress value={50} className="h-1 mt-1" />
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="text-xl">💎</div>
+                        <div>
+                          <h5 className="font-medium text-sm">Diamond Member</h5>
+                          <p className="text-xs text-muted-foreground">Premium for 6 months</p>
+                        </div>
                       </div>
-                      <div className="text-sm text-muted-foreground">2/4</div>
+                      <div className="text-right">
+                        <Progress value={50} className="w-20 h-2" />
+                        <div className="text-xs text-muted-foreground">3/6 months</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -439,8 +475,12 @@ export default function Billing() {
             </Card>
           </SplitBarContent>
         </SplitBar>
-        </div>
-      </div>
+      </ScreenScaffold>
+      
+      <BillingActionPopup 
+        isOpen={actionPopupOpen}
+        onClose={() => setActionPopupOpen(false)}
+      />
     </AppLayout>
   );
 }
