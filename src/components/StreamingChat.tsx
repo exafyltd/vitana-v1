@@ -68,9 +68,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       <div
         id="comms-dock"
         className={
-          `fixed inset-x-0 bottom-0 p-4 z-40 transition-colors rounded-t-xl relative ` +
+          `fixed inset-x-0 bottom-0 p-4 z-[100] transition-colors rounded-t-xl ` +
           (isVideoActive ? "bg-ruby text-white" : "bg-muted text-foreground")
         }
+        style={{ position: 'fixed', transform: 'translateZ(0)' }}
         role="region"
         aria-label="Communication controls"
       >
