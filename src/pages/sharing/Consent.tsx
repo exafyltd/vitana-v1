@@ -1,19 +1,13 @@
-import SEO from "@/components/SEO";
-import AppLayout from "@/components/AppLayout";
-import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
-import { UtilityActionButton } from "@/components/ui/utility-action-button";
-import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import ScreenScaffold from "@/components/ScreenScaffold";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { sharingNavigation } from "@/config/navigation";
-import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { Shield, Eye, Settings, Clock, AlertTriangle, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { sharingNavigation } from "@/config/navigation";
+import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import ConsentPackagePopup from "@/components/ConsentPackagePopup";
 
 const consentData = {
@@ -74,259 +68,239 @@ export default withScreenId(function Consent() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
-      <SEO 
-        title="Consent Dashboard | Sharing" 
-        description="Manage your data sharing consents, view active permissions, and control how your health data is used."
-      />
-      <AppLayout>
-        <SubNavigation items={sharingNavigation} />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Standard 3-Card Header */}
-          <StandardHeader
-            title="Data Consent Control"
-            description="Manage permissions and control how your health data is shared securely"
-            emoji="🛡️"
-          />
-
-          {/* Search + Action row (inline, left-aligned) */}
-          <div className="mt-6 flex items-center gap-3 flex-wrap">
-            <ExpandableSearchButton 
-              placeholder="Search consents..." 
-              onSearch={(query) => console.log('Searching consents:', query)}
-            />
-            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Package
-            </Button>
-          </div>
-
-          {/* SplitBar Navigation */}
-          <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
-            <SplitBarList>
-              <SplitBarTrigger value="active">Active Consents</SplitBarTrigger>
-              <SplitBarTrigger value="pending">Pending Requests</SplitBarTrigger>
-              <SplitBarTrigger value="overview">Privacy Overview</SplitBarTrigger>
-            </SplitBarList>
-            
-            <SplitBarContent value="active">
-              <div className="mt-6 grid grid-cols-12 gap-6">
-                {/* Active Consents - Full Width Cards */}
-                <div className="col-span-12">
-                  <div className="space-y-4">
-                    {consentData.activeConsents.map((consent) => (
-                      <Card key={consent.id}>
-                        <CardHeader>
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <CardTitle className="text-lg">{consent.organization}</CardTitle>
-                              <CardDescription>{consent.purpose}</CardDescription>
-                            </div>
-                            <Badge variant="secondary">Active</Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                              <div className="text-sm font-medium text-muted-foreground">Data Types Shared</div>
-                              <div className="flex flex-wrap gap-1 mt-1">
-                                {consent.dataTypes.map((type, index) => (
-                                  <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
-                                ))}
-                              </div>
-                            </div>
-                            <div>
-                              <div className="text-sm font-medium text-muted-foreground">Access Period</div>
-                              <div className="text-sm">{consent.grantedDate} to {consent.expiryDate}</div>
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center justify-between pt-2">
-                            <div className="flex items-center gap-4">
-                              <div className="flex items-center gap-2">
-                                <Switch disabled={!consent.canRevoke} />
-                                <span className="text-sm">Data sharing enabled</span>
-                              </div>
-                            </div>
-                            
-                            <div className="flex gap-2">
-                              <Button variant="outline" size="sm">
-                                <Eye className="h-4 w-4 mr-2" />
-                                View Details
-                              </Button>
-                              {consent.canRevoke ? (
-                                <Button variant="outline" size="sm">
-                                  <AlertTriangle className="h-4 w-4 mr-2" />
-                                  Revoke Access
-                                </Button>
-                              ) : (
-                                <Button variant="outline" size="sm" disabled>
-                                  Cannot Revoke
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </SplitBarContent>
-            
-            <SplitBarContent value="pending">
-              <div className="mt-6 grid grid-cols-12 gap-6">
-                {/* Pending Requests - Full Width Cards */}
-                <div className="col-span-12">
-                  <div className="space-y-4">
-                    {consentData.pendingRequests.map((request) => (
-                      <Card key={request.id} className="border-orange-200">
-                        <CardHeader>
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <CardTitle className="text-lg">{request.organization}</CardTitle>
-                              <CardDescription>{request.purpose}</CardDescription>
-                            </div>
-                            <Badge variant="outline">Pending</Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                              <div className="text-sm font-medium text-muted-foreground">Requested Data Types</div>
-                              <div className="flex flex-wrap gap-1 mt-1">
-                                {request.dataTypes.map((type, index) => (
-                                  <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
-                                ))}
-                              </div>
-                            </div>
-                            <div>
-                              <div className="text-sm font-medium text-muted-foreground">Proposed Access Period</div>
-                              <div className="text-sm">{request.requestedDate} to {request.expiryDate}</div>
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center justify-between pt-2">
-                            <div className="text-sm text-muted-foreground">
-                              Requested on {request.requestedDate}
-                            </div>
-                            
-                            <div className="flex gap-2">
-                              <Button variant="outline" size="sm">
-                                <Eye className="h-4 w-4 mr-2" />
-                                Review Details
-                              </Button>
-                              <Button size="sm">
-                                <CheckCircle className="h-4 w-4 mr-2" />
-                                Approve
-                              </Button>
-                              <Button variant="outline" size="sm">
-                                Decline
-                              </Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </SplitBarContent>
-            
-            <SplitBarContent value="overview">
-              <div className="mt-6 grid grid-cols-12 gap-6">
-                {/* Big + Small + Small Pattern (6+3+3) */}
-                <div className="col-span-12 lg:col-span-6">
-                  <Card>
+    <ScreenScaffold
+      seoTitle="Consent Dashboard | Sharing"
+      seoDesc="Manage your data sharing consents, view active permissions, and control how your health data is used."
+      sectionNav={sharingNavigation}
+      header={{
+        title: "Data Consent Control",
+        description: "Manage permissions and control how your health data is shared securely",
+        emoji: "🛡️"
+      }}
+      actionText="Create Package"
+      onAction={() => setActionPopupOpen(true)}
+    >
+      <SplitBar value={activeTab} onValueChange={setActiveTab}>
+        <SplitBarList>
+          <SplitBarTrigger value="active">Active Consents</SplitBarTrigger>
+          <SplitBarTrigger value="pending">Pending Requests</SplitBarTrigger>
+          <SplitBarTrigger value="overview">Privacy Overview</SplitBarTrigger>
+        </SplitBarList>
+        
+        <SplitBarContent value="active">
+          <div className="mt-6 grid grid-cols-12 gap-6">
+            {/* Active Consents - Full Width Cards */}
+            <div className="col-span-12">
+              <div className="space-y-4">
+                {consentData.activeConsents.map((consent) => (
+                  <Card key={consent.id}>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Shield className="h-5 w-5 text-green-600" />
-                        Privacy Protection Status
-                      </CardTitle>
-                      <CardDescription>Your data security and consent overview</CardDescription>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <CardTitle className="text-lg">{consent.organization}</CardTitle>
+                          <CardDescription>{consent.purpose}</CardDescription>
+                        </div>
+                        <Badge variant="secondary">Active</Badge>
+                      </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="text-3xl font-bold text-green-600">100%</div>
-                      <p className="text-sm text-muted-foreground">All data encrypted & secured</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-sm font-medium text-muted-foreground">Data Types Shared</div>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {consent.dataTypes.map((type, index) => (
+                              <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-muted-foreground">Access Period</div>
+                          <div className="text-sm">{consent.grantedDate} to {consent.expiryDate}</div>
+                        </div>
+                      </div>
                       
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>Active Consents</span>
-                          <span className="font-medium">{consentData.activeConsents.length}</span>
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2">
+                            <Switch disabled={!consent.canRevoke} />
+                            <span className="text-sm">Data sharing enabled</span>
+                          </div>
                         </div>
-                        <div className="flex justify-between text-sm">
-                          <span>Pending Requests</span>
-                          <span className="font-medium text-orange-600">{consentData.pendingRequests.length}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span>Revoked Access</span>
-                          <span className="font-medium">0</span>
+                        
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm">
+                            <Eye className="h-4 w-4 mr-2" />
+                            View Details
+                          </Button>
+                          {consent.canRevoke ? (
+                            <Button variant="outline" size="sm">
+                              <AlertTriangle className="h-4 w-4 mr-2" />
+                              Revoke Access
+                            </Button>
+                          ) : (
+                            <Button variant="outline" size="sm" disabled>
+                              Cannot Revoke
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                </div>
-                
-                <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">Active Consents</CardTitle>
-                      <Shield className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{consentData.activeConsents.length}</div>
-                      <p className="text-xs text-muted-foreground">Organizations with access</p>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">Pending Requests</CardTitle>
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{consentData.pendingRequests.length}</div>
-                      <p className="text-xs text-muted-foreground">Awaiting your decision</p>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                {/* Quick Actions - Full Width Row */}
-                <div className="col-span-12">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Quick Actions</CardTitle>
-                      <CardDescription>Manage your privacy settings and consent history</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-4">
-                        <Button>
-                          <Settings className="h-4 w-4 mr-2" />
-                          Privacy Settings
-                        </Button>
-                        <Button variant="outline">
-                          <Eye className="h-4 w-4 mr-2" />
-                          View All Activity
-                        </Button>
-                        <Button variant="outline">Download Consent History</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                ))}
               </div>
-            </SplitBarContent>
-          </SplitBar>
+            </div>
+          </div>
+        </SplitBarContent>
+        
+        <SplitBarContent value="pending">
+          <div className="mt-6 grid grid-cols-12 gap-6">
+            {/* Pending Requests - Full Width Cards */}
+            <div className="col-span-12">
+              <div className="space-y-4">
+                {consentData.pendingRequests.map((request) => (
+                  <Card key={request.id} className="border-orange-200">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <CardTitle className="text-lg">{request.organization}</CardTitle>
+                          <CardDescription>{request.purpose}</CardDescription>
+                        </div>
+                        <Badge variant="outline">Pending</Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-sm font-medium text-muted-foreground">Requested Data Types</div>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {request.dataTypes.map((type, index) => (
+                              <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-muted-foreground">Proposed Access Period</div>
+                          <div className="text-sm">{request.requestedDate} to {request.expiryDate}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="text-sm text-muted-foreground">
+                          Requested on {request.requestedDate}
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm">
+                            <Eye className="h-4 w-4 mr-2" />
+                            Review Details
+                          </Button>
+                          <Button size="sm">
+                            <CheckCircle className="h-4 w-4 mr-2" />
+                            Approve
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            Decline
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </SplitBarContent>
+        
+        <SplitBarContent value="overview">
+          <div className="mt-6 grid grid-cols-12 gap-6">
+            {/* Big + Small + Small Pattern (6+3+3) */}
+            <div className="col-span-12 lg:col-span-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-green-600" />
+                    Privacy Protection Status
+                  </CardTitle>
+                  <CardDescription>Your data security and consent overview</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-3xl font-bold text-green-600">100%</div>
+                  <p className="text-sm text-muted-foreground">All data encrypted & secured</p>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Active Consents</span>
+                      <span className="font-medium">{consentData.activeConsents.length}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Pending Requests</span>
+                      <span className="font-medium text-orange-600">{consentData.pendingRequests.length}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Revoked Access</span>
+                      <span className="font-medium">0</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Active Consents</CardTitle>
+                  <Shield className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{consentData.activeConsents.length}</div>
+                  <p className="text-xs text-muted-foreground">Organizations with access</p>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Pending Requests</CardTitle>
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{consentData.pendingRequests.length}</div>
+                  <p className="text-xs text-muted-foreground">Awaiting your decision</p>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Quick Actions - Full Width Row */}
+            <div className="col-span-12">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                  <CardDescription>Manage your privacy settings and consent history</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-4">
+                    <Button>
+                      <Settings className="h-4 w-4 mr-2" />
+                      Privacy Settings
+                    </Button>
+                    <Button variant="outline">
+                      <Eye className="h-4 w-4 mr-2" />
+                      View All Activity
+                    </Button>
+                    <Button variant="outline">Download Consent History</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </SplitBarContent>
+      </SplitBar>
 
-          {/* Context-specific Popup */}
-          <ConsentPackagePopup 
-            open={actionPopupOpen} 
-            onOpenChange={setActionPopupOpen}
-          />
-        </div>
-      </AppLayout>
-    </div>
+      <ConsentPackagePopup 
+        open={actionPopupOpen} 
+        onOpenChange={setActionPopupOpen}
+      />
+    </ScreenScaffold>
   );
 }, SCREEN_IDS.SHARING_CONSENT);
