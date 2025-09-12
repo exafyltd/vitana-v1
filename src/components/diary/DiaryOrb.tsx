@@ -46,7 +46,7 @@ export default function DiaryOrb() {
         aria-pressed={rec}
         title={rec ? "Recording…" : "Diary"}
         className={[
-          "absolute right-6 md:right-8 -top-5 md:-top-6",
+          "absolute right-4 md:right-6 bottom-2 md:bottom-3",
           "h-14 w-14 md:h-16 md:w-16 rounded-full ring-1 ring-black/10",
           "shadow-[0_6px_18px_rgba(0,0,0,0.12)] grid place-items-center",
           "transition-transform duration-150 select-none",
