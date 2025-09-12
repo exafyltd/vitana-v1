@@ -74,27 +74,24 @@ export default withScreenId(function Consent() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+    <AppLayout>
       <SEO title="Consent Dashboard | Sharing" description="Manage your data sharing consents, view active permissions, and control how your health data is used." />
-      <AppLayout>
+      <SubNavigation items={sharingNavigation} />
+      
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <SubNavigation items={sharingNavigation} />
-          
           <StandardHeader
-            title="Data Consent Control"
+            title="Data Consent Control 🛡️"
             description="Manage permissions and control how your health data is shared securely"
-            emoji="🛡️"
           />
-          
-          <div className="flex items-center gap-3 flex-wrap">
-            <ExpandableSearchButton />
-            <UtilityActionButton>
-              <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-                <Plus className="w-4 h-4 mr-2" />
-                Manage Consent
-              </Button>
-            </UtilityActionButton>
-          </div>
+
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search consent packages, organizations, permissions..." />
+            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Manage Consent
+            </Button>
+          </UtilityActionButton>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="active">Active Consents</SplitBarTrigger>
@@ -317,7 +314,7 @@ export default withScreenId(function Consent() {
             onClose={() => setActionPopupOpen(false)} 
           />
         </div>
-      </AppLayout>
-    </div>
+      </div>
+    </AppLayout>
   );
 }, SCREEN_IDS.SHARING_CONSENT);
