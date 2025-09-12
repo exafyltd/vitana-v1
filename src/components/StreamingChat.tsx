@@ -1,7 +1,7 @@
 import { useState, useImperativeHandle, forwardRef } from "react"
 import { Mic, Video as VideoIcon, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { DiaryOrb } from "@/components/diary/DiaryOrb"
+import DiaryButton from "@/components/diary/DiaryButton"
 
 export interface StreamingChatRef {
   activateVideo: () => void
@@ -108,7 +108,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           </div>
         </div>
         
-        <DiaryOrb />
+        <DiaryButton />
       </div>
     </>
   )

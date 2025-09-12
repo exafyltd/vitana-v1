@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { X, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -14,20 +14,31 @@ interface DiaryQuickEntryProps {
   open: boolean
   onClose: () => void
   initialContent?: string
+  text?: string
+  autoFocusText?: boolean
 }
 
 export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
   open,
   onClose,
-  initialContent = ''
+  initialContent = '',
+  text = '',
+  autoFocusText = false
 }) => {
   const [content, setContent] = useState('')
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    if (open && initialContent) {
-      setContent(initialContent)
+    if (open) {
+      setContent(text || initialContent)
     }
-  }, [open, initialContent])
+  }, [open, initialContent, text])
+
+  useEffect(() => {
+    if (open && autoFocusText && textareaRef.current) {
+      textareaRef.current.focus()
+    }
+  }, [open, autoFocusText])
 
   const handleSave = () => {
     // TODO: Implement actual save functionality
@@ -48,7 +59,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
             <div>
               <SheetTitle>Quick Diary Entry</SheetTitle>
               <SheetDescription>
-                {initialContent ? 'Voice transcript captured. Edit and save your entry.' : 'Write your thoughts...'}
+                {(text || initialContent) ? 'Voice transcript captured. Edit and save your entry.' : 'Write your thoughts...'}
               </SheetDescription>
             </div>
             <Button
@@ -64,11 +75,12 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
 
         <div className="flex-1 flex flex-col gap-4 mt-6">
           <Textarea
+            ref={textareaRef}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="What's on your mind today?"
             className="flex-1 resize-none text-base leading-relaxed"
-            autoFocus
+            autoFocus={!autoFocusText}
           />
 
           <div className="flex gap-2 flex-shrink-0">
