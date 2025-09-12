@@ -15,6 +15,7 @@ import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
+import { NewTicketPopup } from "@/components/NewTicketPopup";
 
 function Support() {
   const [activeTab, setActiveTab] = useState("contact");
@@ -386,6 +387,7 @@ function Support() {
           </SplitBar>
         </div>
       </div>
+      <NewTicketPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
     </AppLayout>
   );
 }

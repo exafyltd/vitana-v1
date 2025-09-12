@@ -14,6 +14,7 @@ import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
+import { ResetDefaultsPopup } from "@/components/ResetDefaultsPopup";
 
 function Preferences() {
   const [activeTab, setActiveTab] = useState("appearance");
@@ -460,6 +461,7 @@ function Preferences() {
           </SplitBar>
         </div>
       </div>
+      <ResetDefaultsPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
     </AppLayout>
   );
 }

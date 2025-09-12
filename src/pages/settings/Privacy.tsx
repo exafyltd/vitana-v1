@@ -13,6 +13,7 @@ import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
+import { PrivacyAuditPopup } from "@/components/PrivacyAuditPopup";
 
 function Privacy() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -397,6 +398,7 @@ function Privacy() {
           </SplitBar>
         </div>
       </div>
+      <PrivacyAuditPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
     </AppLayout>
   );
 }

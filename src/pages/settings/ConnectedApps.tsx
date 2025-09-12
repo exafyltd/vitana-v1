@@ -13,6 +13,7 @@ import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
+import { ConnectAppPopup } from "@/components/ConnectAppPopup";
 
 function ConnectedApps() {
   const [activeTab, setActiveTab] = useState("connected");
@@ -405,6 +406,7 @@ function ConnectedApps() {
           </SplitBar>
         </div>
       </div>
+      <ConnectAppPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
     </AppLayout>
   );
 }

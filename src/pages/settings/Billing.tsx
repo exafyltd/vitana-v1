@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import ScreenScaffold from "@/components/ScreenScaffold";
+import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,16 +27,12 @@ export default function Billing() {
       <SEO title="Billing | Settings" description="Manage your subscription and billing information" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
       
-      <ScreenScaffold
-        seoTitle="Billing Settings"
-        sectionNav={settingsNavigation}
-        header={{
-          title: "Manage your investment in wellness! 💳",
-          description: "Manage your subscription and billing information"
-        }}
-        actionText="Billing Actions"
-        onAction={() => setActionPopupOpen(true)}
-      >
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
+            title="Manage your investment in wellness! 💳"
+            description="Manage your subscription and billing information"
+          />
         <UtilityActionButton>
           <ExpandableSearchButton 
             placeholder="Search billing..." 
@@ -475,7 +471,8 @@ export default function Billing() {
             </Card>
           </SplitBarContent>
         </SplitBar>
-      </ScreenScaffold>
+      </div>
+    </div>
       
       <BillingActionPopup 
         isOpen={actionPopupOpen}

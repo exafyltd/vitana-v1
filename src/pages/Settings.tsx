@@ -14,6 +14,7 @@ import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
+import { QuickSetupPopup } from "@/components/QuickSetupPopup";
 
 function Settings() {
   const navigate = useNavigate();
@@ -434,6 +435,7 @@ function Settings() {
           </SplitBar>
         </div>
       </div>
+      <QuickSetupPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
     </AppLayout>
   );
 }
