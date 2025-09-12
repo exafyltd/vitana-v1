@@ -97,7 +97,7 @@ export default function DiaryButton() {
           rec ? "text-white diary-pulse" : "text-white hover:scale-[1.03] active:scale-[0.98]"
         ].join(" ")}
         style={{
-          background: rec ? "#ff004f" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
+          background: rec ? "var(--brand-live)" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
         }}
       >
         {/* stacked mic + pen */}
