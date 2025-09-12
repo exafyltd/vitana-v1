@@ -1,6 +1,7 @@
 import { useState, useImperativeHandle, forwardRef } from "react"
 import { Mic, Video as VideoIcon, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { DiaryOrb } from "@/components/diary/DiaryOrb"
 
 export interface StreamingChatRef {
   activateVideo: () => void
@@ -65,14 +66,15 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
       {/* Bottom communication bar */}
       <div
+        id="comms-dock"
         className={
-          `fixed inset-x-0 bottom-0 p-4 z-40 transition-colors rounded-t-xl ` +
+          `fixed inset-x-0 bottom-0 p-4 z-40 transition-colors rounded-t-xl relative ` +
           (isVideoActive ? "bg-ruby text-white" : "bg-muted text-foreground")
         }
         role="region"
         aria-label="Communication controls"
       >
-        <div className="max-w-4xl mx-auto flex items-center gap-3">
+        <div className="max-w-4xl mx-auto flex items-center gap-3 pr-20 md:pr-24">
           <Button
             variant="ghost"
             size="icon"
@@ -104,6 +106,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             />
           </div>
         </div>
+        
+        <DiaryOrb />
       </div>
     </>
   )

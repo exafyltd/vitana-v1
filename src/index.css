@@ -126,6 +126,9 @@ All colors MUST be HSL.
     /* Unified Layout System Variables */
     --row-base: 70px;
     --grid-gap: 1.5rem;
+    
+    /* Diary Voice Button */
+    --brand-live: #ff004f;
   }
 
   .dark {
@@ -460,6 +463,23 @@ All colors MUST be HSL.
   }
   .icon-data * {
     color: hsl(var(--util-settings-accent));
+  }
+
+  /* Diary Pulse Animation */
+  @keyframes diary-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 0, 79, 0.35); }
+    70% { box-shadow: 0 0 0 16px rgba(255, 0, 79, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 0, 79, 0); }
+  }
+  
+  .diary-pulse {
+    animation: diary-pulse 2s infinite;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .diary-pulse {
+      animation: none;
+    }
   }
 
   /* Card Background Tints */
