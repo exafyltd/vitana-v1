@@ -1,14 +1,20 @@
-import ScreenScaffold from "@/components/ScreenScaffold";
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Shield, Eye, Settings, Clock, AlertTriangle, CheckCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import ConsentPackagePopup from "@/components/ConsentPackagePopup";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Shield, Eye, Settings, Clock, AlertTriangle, CheckCircle } from "lucide-react";
+import ManageConsentPopup from "@/components/ManageConsentPopup";
 
 const consentData = {
   activeConsents: [
@@ -68,18 +74,27 @@ export default withScreenId(function Consent() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <ScreenScaffold
-      seoTitle="Consent Dashboard | Sharing"
-      seoDesc="Manage your data sharing consents, view active permissions, and control how your health data is used."
-      sectionNav={sharingNavigation}
-      header={{
-        title: "Data Consent Control",
-        description: "Manage permissions and control how your health data is shared securely",
-        emoji: "🛡️"
-      }}
-      actionText="Create Package"
-      onAction={() => setActionPopupOpen(true)}
-    >
+    <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <SEO title="Consent Dashboard | Sharing" description="Manage your data sharing consents, view active permissions, and control how your health data is used." />
+      <AppLayout>
+        <div className="max-w-7xl mx-auto">
+          <SubNavigation items={sharingNavigation} />
+          
+          <StandardHeader
+            title="Data Consent Control"
+            description="Manage permissions and control how your health data is shared securely"
+            emoji="🛡️"
+          />
+          
+          <div className="flex items-center gap-3 flex-wrap">
+            <ExpandableSearchButton />
+            <UtilityActionButton>
+              <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+                <Plus className="w-4 h-4 mr-2" />
+                Manage Consent
+              </Button>
+            </UtilityActionButton>
+          </div>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="active">Active Consents</SplitBarTrigger>
@@ -297,10 +312,12 @@ export default withScreenId(function Consent() {
         </SplitBarContent>
       </SplitBar>
 
-      <ConsentPackagePopup 
-        open={actionPopupOpen} 
-        onOpenChange={setActionPopupOpen}
-      />
-    </ScreenScaffold>
+          <ManageConsentPopup 
+            isOpen={actionPopupOpen} 
+            onClose={() => setActionPopupOpen(false)} 
+          />
+        </div>
+      </AppLayout>
+    </div>
   );
 }, SCREEN_IDS.SHARING_CONSENT);
