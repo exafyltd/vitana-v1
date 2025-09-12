@@ -69,6 +69,7 @@ export default withScreenId(function Health() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [healthActionsOpen, setHealthActionsOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [activeHealthTab, setActiveHealthTab] = useState("today");
   
   const latestActions = getLatestActions(2);
 
@@ -162,7 +163,7 @@ export default withScreenId(function Health() {
             </Button>
           </UtilityActionButton>
 
-          <SplitBar value="today" className="w-full">
+          <SplitBar value={activeHealthTab} onValueChange={setActiveHealthTab} className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="today">Today</SplitBarTrigger>
               <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
