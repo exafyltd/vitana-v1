@@ -6,11 +6,13 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Brain, Zap, Package, Sparkles, Target, Users } from "lucide-react";
 import { useState } from "react";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { SmartPackagePopup } from "@/components/SmartPackagePopup";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
+import { StandardCard } from "@/components/templates/StandardCard";
 
 function SmartPackage() {
   const [activeTab, setActiveTab] = useState("recommendations");
@@ -43,131 +45,338 @@ function SmartPackage() {
         </SplitBarList>
 
         <SplitBarContent value="recommendations">
-          <div className="mt-6 grid grid-cols-12 gap-6">
-            <div className="col-span-12 lg:col-span-8">
-              <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                <h3 className="text-lg font-semibold mb-4">AI-Powered Package Suggestions</h3>
-                <p className="text-muted-foreground mb-6">Based on your health profile, upcoming appointments, and data patterns, here are intelligent package recommendations.</p>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-                    <div>
-                      <h4 className="font-medium">Cardiology Consultation Package</h4>
-                      <p className="text-sm text-muted-foreground">95% match - Based on heart rate variability data</p>
+          <div className="grid grid-cols-12 gap-4">
+            {/* Row 1: Big + Small + Small (6+3+3) */}
+            <div className="col-span-12 md:col-span-6">
+              <StandardCard
+                title="AI-Powered Recommendations"
+                subtitle="Smart Package Suggestions"
+                icon={Brain}
+                content={
+                  <div className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="p-3 bg-muted rounded-lg">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <div className="font-medium text-sm">Cardiology Consultation Package</div>
+                            <div className="text-xs text-muted-foreground">95% match - Heart rate data detected</div>
+                          </div>
+                          <div className="text-green-600 font-bold text-xs">95%</div>
+                        </div>
+                      </div>
+                      <div className="p-3 bg-muted rounded-lg">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <div className="font-medium text-sm">Annual Physical Package</div>
+                            <div className="text-xs text-muted-foreground">92% match - Appointment scheduled</div>
+                          </div>
+                          <div className="text-green-600 font-bold text-xs">92%</div>
+                        </div>
+                      </div>
                     </div>
-                    <Button size="sm" variant="outline">View Details</Button>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-                    <div>
-                      <h4 className="font-medium">Annual Physical Exam Package</h4>
-                      <p className="text-sm text-muted-foreground">92% match - Upcoming appointment detected</p>
-                    </div>
-                    <Button size="sm" variant="outline">View Details</Button>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-                    <div>
-                      <h4 className="font-medium">Diabetes Prevention Study</h4>
-                      <p className="text-sm text-muted-foreground">88% match - Research criteria match</p>
-                    </div>
-                    <Button size="sm" variant="outline">View Details</Button>
-                  </div>
-                </div>
-              </div>
+                }
+              />
             </div>
-            <div className="col-span-12 lg:col-span-4">
-              <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                <h3 className="text-lg font-semibold mb-4">Quick Stats</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Available Data Types</span>
-                    <span className="font-medium">24</span>
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title="AI Accuracy"
+                subtitle="Prediction Score"
+                icon={Target}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-green-600">94%</div>
+                    <div className="text-xs text-muted-foreground">Match accuracy rate</div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Created Packages</span>
-                    <span className="font-medium">8</span>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title="Package Types"
+                subtitle="Available Options"
+                icon={Package}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-blue-600">24</div>
+                    <div className="text-xs text-muted-foreground">Data categories</div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">AI Accuracy</span>
-                    <span className="font-medium">94%</span>
+                }
+              />
+            </div>
+
+            {/* Row 2: Motivational Banner */}
+            <div className="col-span-12">
+              <MotivationalBanner variant="encouragement" />
+            </div>
+
+            {/* Row 3: Small + Small + Big (3+3+6) */}
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title="Created Packages"
+                subtitle="Your Library"
+                icon={Users}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-purple-600">8</div>
+                    <div className="text-xs text-muted-foreground">Packages ready</div>
                   </div>
-                </div>
-              </div>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title="Active Sharing"
+                subtitle="Current Usage"
+                icon={Zap}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-orange-600">3</div>
+                    <div className="text-xs text-muted-foreground">Packages in use</div>
+                  </div>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-6">
+              <StandardCard
+                title="Recent AI Insights"
+                subtitle="Latest Recommendations"
+                icon={Sparkles}
+                content={
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Detected upcoming cardiology appointment</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span>Heart rate variability patterns analyzed</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span>Research study eligibility matched</span>
+                    </div>
+                  </div>
+                }
+              />
             </div>
           </div>
         </SplitBarContent>
 
         <SplitBarContent value="builder">
-          <div className="mt-6 grid grid-cols-12 gap-6">
-            <div className="col-span-12 lg:col-span-6">
-              <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                <h3 className="text-lg font-semibold mb-4">Package Configuration</h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Package Name</label>
-                    <input 
-                      type="text" 
-                      className="w-full mt-1 p-2 border rounded-lg" 
-                      placeholder="e.g., Cardiology Consultation Package"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Purpose/Recipient</label>
-                    <input 
-                      type="text" 
-                      className="w-full mt-1 p-2 border rounded-lg" 
-                      placeholder="e.g., Dr. Smith at Mayo Clinic"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Description</label>
-                    <textarea 
-                      className="w-full mt-1 p-2 border rounded-lg" 
-                      rows={3}
-                      placeholder="Describe the specific use case..."
-                    />
-                  </div>
-                  <Button className="w-full">Generate AI Recommendations</Button>
-                </div>
-              </div>
-            </div>
-            <div className="col-span-12 lg:col-span-6">
-              <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                <h3 className="text-lg font-semibold mb-4">Data Type Selection</h3>
-                <div className="space-y-2 max-h-80 overflow-y-auto">
-                  {["Lab Results", "Vital Signs", "Activity Data", "Sleep Patterns", "Nutrition Tracking", "Medication History"].map((type) => (
-                    <div key={type} className="flex items-center space-x-2">
-                      <input type="checkbox" className="rounded" />
-                      <span className="text-sm">{type}</span>
+          <div className="grid grid-cols-12 gap-4">
+            {/* Row 1: Single Full Row (12) */}
+            <div className="col-span-12">
+              <StandardCard
+                title="Custom Package Builder"
+                subtitle="Create Tailored Data Packages"
+                icon={Package}
+                content={
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium">Package Name</label>
+                        <input 
+                          type="text" 
+                          className="w-full mt-1 p-2 border rounded-lg" 
+                          placeholder="e.g., Cardiology Consultation Package"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium">Purpose/Recipient</label>
+                        <input 
+                          type="text" 
+                          className="w-full mt-1 p-2 border rounded-lg" 
+                          placeholder="e.g., Dr. Smith at Mayo Clinic"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium">Description</label>
+                        <textarea 
+                          className="w-full mt-1 p-2 border rounded-lg" 
+                          rows={2}
+                          placeholder="Describe the specific use case..."
+                        />
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
+                    <div className="space-y-3">
+                      <div className="font-medium text-sm">Data Type Selection</div>
+                      <div className="max-h-40 overflow-y-auto space-y-2">
+                        {["Lab Results", "Vital Signs", "Activity Data", "Sleep Patterns", "Nutrition Tracking", "Medication History"].map((type) => (
+                          <div key={type} className="flex items-center space-x-2">
+                            <input type="checkbox" className="rounded" />
+                            <span className="text-sm">{type}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <Button className="w-full mt-4">Generate AI Recommendations</Button>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+
+            {/* Row 2: Motivational Banner */}
+            <div className="col-span-12">
+              <MotivationalBanner variant="guidance" />
+            </div>
+
+            {/* Row 3: Big + Small + Small (6+3+3) */}
+            <div className="col-span-12 md:col-span-6">
+              <StandardCard
+                title="Smart Suggestions"
+                subtitle="AI-Powered Recommendations"
+                icon={Brain}
+                content={
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Include recent lab results for comprehensive view</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span>Add medication history for drug interactions</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span>Include activity data for lifestyle assessment</span>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title="Templates"
+                subtitle="Quick Start"
+                icon={Zap}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-blue-600">6</div>
+                    <div className="text-xs text-muted-foreground">Available templates</div>
+                  </div>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title="Data Types"
+                subtitle="Available"
+                icon={Package}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-green-600">24</div>
+                    <div className="text-xs text-muted-foreground">Categories ready</div>
+                  </div>
+                }
+              />
             </div>
           </div>
         </SplitBarContent>
 
         <SplitBarContent value="templates">
-          <div className="mt-6 grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-12 gap-4">
+            {/* Row 1: Small + Small + Big (3+3+6) */}
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title="Quick Templates"
+                subtitle="Ready to Use"
+                icon={Zap}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-blue-600">6</div>
+                    <div className="text-xs text-muted-foreground">Pre-built packages</div>
+                  </div>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title="Most Popular"
+                subtitle="Community Favorite"
+                icon={Users}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-green-600">89%</div>
+                    <div className="text-xs text-muted-foreground">Success rate</div>
+                  </div>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-6">
+              <StandardCard
+                title="Package Templates Library"
+                subtitle="Choose Your Starting Point"
+                icon={Package}
+                content={
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="p-3 border rounded-lg">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="font-medium text-sm">General Health Checkup</div>
+                          <div className="text-xs text-muted-foreground">Complete health overview for annual visits</div>
+                        </div>
+                        <Button size="sm" variant="outline">Use</Button>
+                      </div>
+                    </div>
+                    <div className="p-3 border rounded-lg">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="font-medium text-sm">Specialist Consultation</div>
+                          <div className="text-xs text-muted-foreground">Targeted data for specialist appointments</div>
+                        </div>
+                        <Button size="sm" variant="outline">Use</Button>
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+
+            {/* Row 2: Motivational Banner */}
             <div className="col-span-12">
-              <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                <h3 className="text-lg font-semibold mb-4">Package Templates</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">General Health Checkup</h4>
-                    <p className="text-sm text-muted-foreground mb-3">Complete health overview for annual visits</p>
-                    <Button size="sm" variant="outline" className="w-full">Use Template</Button>
+              <MotivationalBanner variant="partnership" />
+            </div>
+
+            {/* Row 3: Single Full Row (12) */}
+            <div className="col-span-12">
+              <StandardCard
+                title="Advanced Template Features"
+                subtitle="Coming Soon"
+                icon={Sparkles}
+                content={
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <span>AI-customized templates based on your data</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span>Dynamic templates that adapt to appointments</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span>Collaborative templates with healthcare providers</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                        <span>Smart template recommendations</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        <span>Template sharing with community</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
+                        <span>Version control and template history</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Specialist Consultation</h4>
-                    <p className="text-sm text-muted-foreground mb-3">Targeted data for specialist appointments</p>
-                    <Button size="sm" variant="outline" className="w-full">Use Template</Button>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Research Participation</h4>
-                    <p className="text-sm text-muted-foreground mb-3">Comprehensive data for research studies</p>
-                    <Button size="sm" variant="outline" className="w-full">Use Template</Button>
-                  </div>
-                </div>
-              </div>
+                }
+              />
             </div>
           </div>
         </SplitBarContent>
