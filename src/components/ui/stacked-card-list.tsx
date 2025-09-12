@@ -10,7 +10,7 @@ interface StackedCardItem {
   subtext: string;
   pill?: {
     label: string;
-    variant?: "default" | "destructive" | "secondary" | "outline";
+    variant?: "default" | "destructive" | "secondary" | "outline" | "success";
   };
   cta?: {
     label: string;
@@ -56,19 +56,19 @@ export function StackedCardList({
         <h3 className="font-semibold text-foreground mb-2">{title}</h3>
       )}
       
-      <div className="space-y-3">
+      <div className="space-y-2 md:space-y-3">
         {items.map((item) => {
           const IconComponent = item.icon;
           
           return (
             <div
               key={item.id}
-              className="rounded-xl ring-1 ring-black/5 bg-white shadow-sm p-4 cursor-pointer transition-all hover:shadow-md focus-within:ring-2 focus-within:ring-primary focus-within:outline-none group"
+              className="rounded-xl ring-1 ring-black/5 bg-white shadow-sm px-4 py-3 cursor-pointer group hover:bg-slate-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 transition-colors"
               tabIndex={0}
               role="button"
               onClick={() => handleItemClick(item)}
               onKeyDown={(e) => handleKeyDown(e, item)}
-              aria-label={`${item.title}: ${item.subtext}`}
+              aria-label={`${item.title} — ${item.cta?.label || 'View details'}`}
             >
               <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
                 {/* Left icon bucket */}
@@ -77,15 +77,15 @@ export function StackedCardList({
                 </div>
                 
                 {/* Middle content */}
-                <div className="min-w-0 space-y-1">
-                  <div className="flex items-center gap-2 flex-wrap">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
                     <h4 className="font-medium truncate text-foreground">
                       {item.title}
                     </h4>
                     {item.pill && (
                       <Badge 
                         variant={item.pill.variant || "default"} 
-                        className="text-xs flex-shrink-0"
+                        className="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
                       >
                         {item.pill.label}
                       </Badge>
@@ -97,7 +97,7 @@ export function StackedCardList({
                 </div>
                 
                 {/* Right CTA */}
-                <div className="flex-shrink-0">
+                <div className="w-[112px] flex justify-end">
                   {item.cta ? (
                     <>
                       <div className="block md:hidden">

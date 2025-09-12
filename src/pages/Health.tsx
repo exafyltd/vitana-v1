@@ -189,7 +189,7 @@ export default withScreenId(function Health() {
                   pill: {
                     label: suggestion.priority,
                     variant: suggestion.priority === "high" ? "destructive" : 
-                            suggestion.priority === "medium" ? "secondary" : "default"
+                            suggestion.priority === "medium" ? "secondary" : "success"
                   },
                   cta: suggestion.action ? {
                     label: suggestion.action,
