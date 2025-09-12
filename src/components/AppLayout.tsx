@@ -20,7 +20,6 @@ import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
-import CommunicationDock from "@/components/CommunicationDock";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -394,7 +393,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </div>
 
           <SidebarInset>
-            <div className="bg-background min-h-screen w-full rounded-tl-2xl pb-[calc(var(--dock-h)+env(safe-area-inset-bottom))]">
+            <div className="bg-background min-h-screen w-full rounded-tl-2xl">
               {children}
             </div>
           </SidebarInset>
@@ -413,7 +412,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
         onOpenChange={setWalletPopupOpen} 
       />
       <StreamingChat ref={streamingChatRef} />
-      <CommunicationDock />
     </div>
   );
 }

@@ -123,14 +123,9 @@ All colors MUST be HSL.
     --gradient-disabled-start: 220 14% 60%; /* Grey */
     --gradient-disabled-end: 220 13% 69%; /* Light Grey */
 
-  /* Unified Layout System Variables */
-  --row-base: 70px;
-  --grid-gap: 1.5rem;
-
-  /* Communication Dock Variables */
-  --dock-h: 72px;
-  --dock-radius: 1.25rem;
-  --brand-live: 348 91% 49%;
+    /* Unified Layout System Variables */
+    --row-base: 70px;
+    --grid-gap: 1.5rem;
   }
 
   .dark {
@@ -561,21 +556,6 @@ All colors MUST be HSL.
   @keyframes fade-in {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Visual polish: gentle recording halo with reduced-motion support */
-  @keyframes diary-pulse {
-    0% { box-shadow: 0 0 0 0 hsl(var(--brand-live) / 0.35); }
-    70% { box-shadow: 0 0 0 16px hsl(var(--brand-live) / 0); }
-    100% { box-shadow: 0 0 0 0 hsl(var(--brand-live) / 0); }
-  }
-  .diary-pulse { 
-    animation: diary-pulse 1.8s ease-out infinite; 
-  }
-  @media (prefers-reduced-motion: reduce) { 
-    .diary-pulse { 
-      animation: none; 
-    } 
   }
 
   /* Accessibility helpers */
