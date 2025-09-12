@@ -126,6 +126,11 @@ All colors MUST be HSL.
     /* Unified Layout System Variables */
     --row-base: 70px;
     --grid-gap: 1.5rem;
+    
+    /* Communication Dock Variables */
+    --dock-h: 72px;
+    --dock-radius: 1.25rem;
+    --brand-live: 339 89% 49%;
   }
 
   .dark {
