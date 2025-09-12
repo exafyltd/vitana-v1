@@ -1,6 +1,12 @@
-import ScreenScaffold from "@/components/ScreenScaffold";
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -11,18 +17,24 @@ function SmartPackage() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <ScreenScaffold
-      seoTitle="Smart Package Creator | Sharing"
-      seoDesc="Use AI-powered recommendations to create intelligent health data packages optimized for your specific needs."
-      sectionNav={sharingNavigation}
-      header={{
-        title: "Smart Package Creator",
-        description: "AI-powered data package creation with intelligent recommendations based on your health profile",
-        emoji: "🧠"
-      }}
-      actionText="Create Package"
-      onAction={() => setActionPopupOpen(true)}
-    >
+    <AppLayout>
+      <SEO title="Smart Package Creator | Sharing" description="Use AI-powered recommendations to create intelligent health data packages optimized for your specific needs." />
+      <SubNavigation items={sharingNavigation} />
+      
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
+            title="Smart Package Creator 🧠"
+            description="AI-powered data package creation with intelligent recommendations based on your health profile"
+          />
+
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search AI recommendations, templates, data types..." />
+            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create Package
+            </Button>
+          </UtilityActionButton>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="recommendations">AI Recommendations</SplitBarTrigger>
@@ -161,11 +173,13 @@ function SmartPackage() {
         </SplitBarContent>
       </SplitBar>
 
-      <SmartPackagePopup 
-        isOpen={actionPopupOpen} 
-        onClose={() => setActionPopupOpen(false)} 
-      />
-    </ScreenScaffold>
+          <SmartPackagePopup 
+            isOpen={actionPopupOpen} 
+            onClose={() => setActionPopupOpen(false)} 
+          />
+        </div>
+      </div>
+    </AppLayout>
   );
 }
 

@@ -1,6 +1,12 @@
-import ScreenScaffold from "@/components/ScreenScaffold";
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -11,18 +17,24 @@ function Marketplace() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   return (
-    <ScreenScaffold
-      seoTitle="Integration Marketplace | Sharing"
-      seoDesc="Discover and connect with healthcare platforms, research studies, and wellness apps to maximize the value of your health data."
-      sectionNav={sharingNavigation}
-      header={{
-        title: "Integration Marketplace",
-        description: "Discover verified integrations to share your health data with trusted healthcare platforms and research studies",
-        emoji: "🛒"
-      }}
-      actionText="Browse Services"
-      onAction={() => setActionPopupOpen(true)}
-    >
+    <AppLayout>
+      <SEO title="Integration Marketplace | Sharing" description="Discover and connect with healthcare platforms, research studies, and wellness apps to maximize the value of your health data." />
+      <SubNavigation items={sharingNavigation} />
+      
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
+            title="Integration Marketplace 🛒"
+            description="Discover verified integrations to share your health data with trusted healthcare platforms and research studies"
+          />
+
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search integrations, research studies, healthcare platforms..." />
+            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Browse Services
+            </Button>
+          </UtilityActionButton>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="featured">Featured Integrations</SplitBarTrigger>
@@ -176,11 +188,13 @@ function Marketplace() {
         </SplitBarContent>
       </SplitBar>
 
-      <BrowseServicesPopup 
-        isOpen={actionPopupOpen} 
-        onClose={() => setActionPopupOpen(false)} 
-      />
-    </ScreenScaffold>
+          <BrowseServicesPopup 
+            isOpen={actionPopupOpen} 
+            onClose={() => setActionPopupOpen(false)} 
+          />
+        </div>
+      </div>
+    </AppLayout>
   );
 }
 
