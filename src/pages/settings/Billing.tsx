@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { settingsNavigation } from "@/config/navigation";
-import { CreditCard, Calendar, Download, Star, Check, Trophy, Gift, Target, Award, Coins, Sparkles } from "lucide-react";
+import { CreditCard, Calendar, Download, Star, Check, Trophy, Gift, Target, Award, Coins, Sparkles, Plus } from "lucide-react";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Progress } from "@/components/ui/progress";
 import { BillingActionPopup } from "@/components/BillingActionPopup";
@@ -39,10 +39,10 @@ export default function Billing() {
             onSearch={handleSearch}
           />
           <Button 
-            variant="outline" 
+            size="sm" 
             onClick={() => setActionPopupOpen(true)}
           >
-            <CreditCard className="w-4 h-4 mr-2" />
+            <Plus className="h-4 w-4 mr-2" />
             Billing Actions
           </Button>
         </UtilityActionButton>
