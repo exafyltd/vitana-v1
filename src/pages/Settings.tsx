@@ -1,16 +1,25 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { Button } from "@/components/ui/button";
+import { Plus, Settings as SettingsIcon, Shield, Bell, Smartphone, CreditCard, HelpCircle, Users, Languages } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
 import { useRTL } from "@/components/RTLProvider";
 import { settingsNavigation } from "@/config/navigation";
-import { Languages, RotateCcw, Shield, Bell, Settings as SettingsIcon, Smartphone, CreditCard, HelpCircle, Users } from "lucide-react";
-import StandardHeader from "@/components/StandardHeader";
+import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
+import { StandardCard } from "@/components/templates/StandardCard";
 
-export default function Settings() {
+function Settings() {
   const navigate = useNavigate();
   const { isRTL, toggleRTL } = useRTL();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   const categoryCards = [
     {
@@ -78,114 +87,355 @@ export default function Settings() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Fine-tune your Vitana experience!"
-            description="Manage your account settings, privacy, and preferences to personalize your wellness journey."
-            emoji="⚙️"
+            title="Settings Overview ⚙️"
+            description="Manage your account settings, privacy, and preferences to personalize your wellness journey"
           />
 
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="bg-card border shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <Shield className="w-5 h-5 text-green-600" />
-                  <span className="text-sm font-medium text-green-600">Protected</span>
-                </div>
-                <h3 className="font-semibold text-foreground">Privacy Status</h3>
-                <p className="text-sm text-muted-foreground">All privacy settings active</p>
-              </CardContent>
-            </Card>
+          <UtilityActionButton>
+            <ExpandableSearchButton placeholder="Search settings, privacy controls, integrations..." />
+            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Quick Setup
+            </Button>
+          </UtilityActionButton>
 
-            <Card className="bg-card border shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <Bell className="w-5 h-5 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-600">5 Active</span>
-                </div>
-                <h3 className="font-semibold text-foreground">Notifications</h3>
-                <p className="text-sm text-muted-foreground">5 notification types enabled</p>
-              </CardContent>
-            </Card>
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList>
+              <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
+              <SplitBarTrigger value="categories">Categories</SplitBarTrigger>
+              <SplitBarTrigger value="shortcuts">Quick Actions</SplitBarTrigger>
+            </SplitBarList>
 
-            <Card className="bg-card border shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <Smartphone className="w-5 h-5 text-purple-600" />
-                  <span className="text-sm font-medium text-purple-600">3 Apps</span>
+            <SplitBarContent value="overview">
+              <div className="grid grid-cols-12 gap-4">
+                {/* Row 1: Big + Small + Small (6+3+3) */}
+                <div className="col-span-12 md:col-span-6">
+                  <StandardCard
+                    title="Settings Overview"
+                    subtitle="Your Account Status"
+                    icon={SettingsIcon}
+                    content={
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4 text-center">
+                          <div>
+                            <div className="text-2xl font-bold text-green-600">Protected</div>
+                            <div className="text-xs text-muted-foreground">Privacy Status</div>
+                          </div>
+                          <div>
+                            <div className="text-2xl font-bold text-blue-600">Premium</div>
+                            <div className="text-xs text-muted-foreground">Subscription</div>
+                          </div>
+                        </div>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span>Notifications Active</span>
+                            <span className="text-blue-600">5 types</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Connected Apps</span>
+                            <span className="text-green-600">3 apps</span>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  />
                 </div>
-                <h3 className="font-semibold text-foreground">Connected Apps</h3>
-                <p className="text-sm text-muted-foreground">Health apps & wearables</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card border shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <CreditCard className="w-5 h-5 text-orange-600" />
-                  <span className="text-sm font-medium text-orange-600">Premium</span>
+                <div className="col-span-12 md:col-span-3">
+                  <StandardCard
+                    title="Privacy Score"
+                    subtitle="Protection Level"
+                    icon={Shield}
+                    content={
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-green-600">95%</div>
+                        <div className="text-xs text-muted-foreground">Excellent security</div>
+                      </div>
+                    }
+                  />
                 </div>
-                <h3 className="font-semibold text-foreground">Subscription</h3>
-                <p className="text-sm text-muted-foreground">Active until Dec 2024</p>
-              </CardContent>
-            </Card>
-          </div>
+                <div className="col-span-12 md:col-span-3">
+                  <StandardCard
+                    title="Active Settings"
+                    subtitle="Configured"
+                    icon={Bell}
+                    content={
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-blue-600">12</div>
+                        <div className="text-xs text-muted-foreground">Settings configured</div>
+                      </div>
+                    }
+                  />
+                </div>
 
-          {/* Quick Actions */}
-          <Card className="bg-card border shadow-sm mb-8">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-foreground mb-4">Quick Actions</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button 
-                  onClick={() => navigate('/settings/privacy')}
-                  className="flex flex-col items-center p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
-                >
-                  <Shield className="w-6 h-6 text-primary mb-2" />
-                  <span className="text-sm font-medium">Manage Privacy</span>
-                </button>
-                <button 
-                  onClick={() => navigate('/settings/notifications')}
-                  className="flex flex-col items-center p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
-                >
-                  <Bell className="w-6 h-6 text-primary mb-2" />
-                  <span className="text-sm font-medium">Edit Notifications</span>
-                </button>
-                <button 
-                  onClick={() => navigate('/settings/connected-apps')}
-                  className="flex flex-col items-center p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
-                >
-                  <Smartphone className="w-6 h-6 text-primary mb-2" />
-                  <span className="text-sm font-medium">Add App</span>
-                </button>
-                 <button 
-                   onClick={toggleRTL}
-                   className="flex flex-col items-center p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
-                 >
-                   <Languages className="w-6 h-6 text-primary mb-2" />
-                   <span className="text-sm font-medium">{isRTL ? 'LTR Mode' : 'RTL Mode'}</span>
-                 </button>
-               </div>
-            </CardContent>
-          </Card>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categoryCards.map((card) => (
-              <Card 
-                key={card.id}
-                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card border shadow-sm"
-                onClick={() => navigate(card.path)}
-              >
-                <CardContent className="p-6">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-4`}>
-                    <card.icon className="w-6 h-6 text-gray-700" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">{card.title}</h3>
-                  <p className="text-muted-foreground text-sm">{card.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                {/* Row 2: Motivational Banner */}
+                <div className="col-span-12">
+                  <MotivationalBanner variant="encouragement" />
+                </div>
+
+                {/* Row 3: Small + Small + Big (3+3+6) */}
+                <div className="col-span-12 md:col-span-3">
+                  <StandardCard
+                    title="Connected Apps"
+                    subtitle="Integrations"
+                    icon={Smartphone}
+                    content={
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-purple-600">3</div>
+                        <div className="text-xs text-muted-foreground">Active connections</div>
+                      </div>
+                    }
+                  />
+                </div>
+                <div className="col-span-12 md:col-span-3">
+                  <StandardCard
+                    title="Billing Status"
+                    subtitle="Subscription"
+                    icon={CreditCard}
+                    content={
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-orange-600">Active</div>
+                        <div className="text-xs text-muted-foreground">Until Dec 2024</div>
+                      </div>
+                    }
+                  />
+                </div>
+                <div className="col-span-12 md:col-span-6">
+                  <StandardCard
+                    title="Recent Settings Activity"
+                    subtitle="Latest Changes"
+                    icon={SettingsIcon}
+                    content={
+                      <div className="space-y-3 text-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <span>Privacy settings updated 2 days ago</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <span>Connected new fitness app 1 week ago</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                          <span>Notification preferences saved</span>
+                        </div>
+                      </div>
+                    }
+                  />
+                </div>
+              </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="categories">
+              <div className="grid grid-cols-12 gap-4">
+                {/* Row 1: Single Full Row (12) */}
+                <div className="col-span-12">
+                  <StandardCard
+                    title="Settings Categories"
+                    subtitle="Organize Your Configuration"
+                    icon={SettingsIcon}
+                    content={
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {categoryCards.map((card) => (
+                          <div 
+                            key={card.id}
+                            className="cursor-pointer p-4 border rounded-lg hover:shadow-md transition-all"
+                            onClick={() => navigate(card.path)}
+                          >
+                            <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center mb-3`}>
+                              <card.icon className="w-5 h-5 text-gray-700" />
+                            </div>
+                            <h4 className="font-medium mb-1">{card.title}</h4>
+                            <p className="text-xs text-muted-foreground">{card.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    }
+                  />
+                </div>
+
+                {/* Row 2: Motivational Banner */}
+                <div className="col-span-12">
+                  <MotivationalBanner variant="guidance" />
+                </div>
+
+                {/* Row 3: Big + Small + Small (6+3+3) */}
+                <div className="col-span-12 md:col-span-6">
+                  <StandardCard
+                    title="Most Used Settings"
+                    subtitle="Popular Configurations"
+                    icon={Users}
+                    content={
+                      <div className="space-y-3 text-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <span>Privacy Controls (95% of users configure)</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <span>Notification Settings (89% of users)</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                          <span>App Integrations (76% of users)</span>
+                        </div>
+                      </div>
+                    }
+                  />
+                </div>
+                <div className="col-span-12 md:col-span-3">
+                  <StandardCard
+                    title="Categories"
+                    subtitle="Available"
+                    icon={SettingsIcon}
+                    content={
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-blue-600">7</div>
+                        <div className="text-xs text-muted-foreground">Setting groups</div>
+                      </div>
+                    }
+                  />
+                </div>
+                <div className="col-span-12 md:col-span-3">
+                  <StandardCard
+                    title="Completion"
+                    subtitle="Setup Progress"
+                    icon={Shield}
+                    content={
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-green-600">85%</div>
+                        <div className="text-xs text-muted-foreground">Settings complete</div>
+                      </div>
+                    }
+                  />
+                </div>
+              </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="shortcuts">
+              <div className="grid grid-cols-12 gap-4">
+                {/* Row 1: Small + Small + Big (3+3+6) */}
+                <div className="col-span-12 md:col-span-3">
+                  <StandardCard
+                    title="Quick Actions"
+                    subtitle="Available"
+                    icon={Users}
+                    content={
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-blue-600">4</div>
+                        <div className="text-xs text-muted-foreground">Shortcuts ready</div>
+                      </div>
+                    }
+                  />
+                </div>
+                <div className="col-span-12 md:col-span-3">
+                  <StandardCard
+                    title="Language"
+                    subtitle="Current Mode"
+                    icon={Languages}
+                    content={
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-purple-600">{isRTL ? 'RTL' : 'LTR'}</div>
+                        <div className="text-xs text-muted-foreground">Text direction</div>
+                      </div>
+                    }
+                  />
+                </div>
+                <div className="col-span-12 md:col-span-6">
+                  <StandardCard
+                    title="Quick Settings Actions"
+                    subtitle="One-Click Configuration"
+                    icon={SettingsIcon}
+                    content={
+                      <div className="grid grid-cols-2 gap-3">
+                        <Button 
+                          variant="outline"
+                          onClick={() => navigate('/settings/privacy')}
+                          className="flex flex-col items-center p-3 h-auto"
+                        >
+                          <Shield className="w-5 h-5 mb-1" />
+                          <span className="text-xs">Privacy</span>
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          onClick={() => navigate('/settings/notifications')}
+                          className="flex flex-col items-center p-3 h-auto"
+                        >
+                          <Bell className="w-5 h-5 mb-1" />
+                          <span className="text-xs">Notifications</span>
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          onClick={() => navigate('/settings/connected-apps')}
+                          className="flex flex-col items-center p-3 h-auto"
+                        >
+                          <Smartphone className="w-5 h-5 mb-1" />
+                          <span className="text-xs">Apps</span>
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          onClick={toggleRTL}
+                          className="flex flex-col items-center p-3 h-auto"
+                        >
+                          <Languages className="w-5 h-5 mb-1" />
+                          <span className="text-xs">{isRTL ? 'LTR' : 'RTL'}</span>
+                        </Button>
+                      </div>
+                    }
+                  />
+                </div>
+
+                {/* Row 2: Motivational Banner */}
+                <div className="col-span-12">
+                  <MotivationalBanner variant="partnership" />
+                </div>
+
+                {/* Row 3: Single Full Row (12) */}
+                <div className="col-span-12">
+                  <StandardCard
+                    title="Advanced Quick Actions"
+                    subtitle="Coming Soon"
+                    icon={SettingsIcon}
+                    content={
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span>One-click privacy templates</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Smart notification presets</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span>Bulk app connection wizard</span>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <span>AI-powered setting suggestions</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span>Voice-controlled configuration</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
+                            <span>Smart backup and restore</span>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  />
+                </div>
+              </div>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
     </AppLayout>
   );
 }
+
+export default withScreenId(Settings, SCREEN_IDS.SETTINGS_OVERVIEW);
