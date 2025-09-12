@@ -83,15 +83,15 @@ export default withScreenId(function Consent() {
         <SubNavigation items={sharingNavigation} />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* StandardHeader must be inside this container */}
+          {/* Standard 3-Card Header */}
           <StandardHeader
             title="Data Consent Control"
             description="Manage permissions and control how your health data is shared securely"
             emoji="🛡️"
           />
 
-          {/* Action row */}
-          <div className="mt-6 flex items-center justify-between">
+          {/* Search + Action row (inline, left-aligned) */}
+          <div className="mt-6 flex items-center gap-3 flex-wrap">
             <ExpandableSearchButton 
               placeholder="Search consents..." 
               onSearch={(query) => console.log('Searching consents:', query)}
