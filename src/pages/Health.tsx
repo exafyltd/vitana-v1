@@ -4,7 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search, Plus } from "lucide-react";
+import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search, Plus, Sparkles } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { HealthMasterActionPopup } from "@/components/HealthMasterActionPopup";
@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
-import SmartSuggestions from "@/components/health/SmartSuggestions";
+import { HorizontalCardRail } from "@/components/ui/horizontal-card-rail";
 import HealthCoachChat from "@/components/health/HealthCoachChat";
 
 import { healthNavigation } from "@/config/navigation";
@@ -176,11 +176,34 @@ export default withScreenId(function Health() {
                 ))}
               </div>
               
-              {/* Today's Smart Suggestions */}
-              <SmartSuggestions 
-                suggestions={smartSuggestions}
+              {/* Today's AI Health Insights */}
+              <HorizontalCardRail
                 title="Today's AI Health Insights"
-                variant="list"
+                items={smartSuggestions.map((suggestion, index) => ({
+                  id: `insight-${index}`,
+                  icon: suggestion.type === "action" ? Target : 
+                        suggestion.type === "insight" ? Moon : 
+                        Sparkles,
+                  title: suggestion.title,
+                  subtext: suggestion.description,
+                  pill: {
+                    label: suggestion.priority,
+                    variant: suggestion.priority === "high" ? "destructive" : 
+                            suggestion.priority === "medium" ? "secondary" : "default"
+                  },
+                  cta: suggestion.action ? {
+                    label: suggestion.action,
+                    onClick: () => {
+                      if (suggestion.title.includes("Annual Physical")) {
+                        console.log("Booking appointment...");
+                      } else if (suggestion.title.includes("Sleep")) {
+                        console.log("Opening sleep help...");
+                      } else if (suggestion.title.includes("Nutrition")) {
+                        navigate("/community/groups/mediterranean");
+                      }
+                    }
+                  } : undefined
+                }))}
               />
               
               {/* Today's Community Activity */}
