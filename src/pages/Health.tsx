@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
-import { HorizontalCardRail } from "@/components/ui/horizontal-card-rail";
+import { StackedCardList } from "@/components/ui/stacked-card-list";
 import HealthCoachChat from "@/components/health/HealthCoachChat";
 
 import { healthNavigation } from "@/config/navigation";
@@ -177,7 +177,7 @@ export default withScreenId(function Health() {
               </div>
               
               {/* Today's AI Health Insights */}
-              <HorizontalCardRail
+              <StackedCardList
                 title="Today's AI Health Insights"
                 items={smartSuggestions.map((suggestion, index) => ({
                   id: `insight-${index}`,
