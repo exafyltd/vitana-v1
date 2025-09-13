@@ -1,0 +1,458 @@
+import { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { adminNavigation } from "@/config/navigation";
+import { useAuth } from "@/context/AuthProvider";
+import { useTenant } from "@/hooks/useTenant";
+import { useToast } from "@/hooks/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Users, UserPlus, Shield, Trash2, Search, Filter } from "lucide-react";
+
+interface User {
+  id: string;
+  email: string;
+  user_metadata?: any;
+  app_metadata?: any;
+  created_at: string;
+}
+
+interface UserWithMemberships extends User {
+  memberships: Array<{
+    id: string;
+    tenant_id: string;
+    role: string;
+    status: string;
+    tenant: {
+      name: string;
+      slug: string;
+    };
+  }>;
+}
+
+interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+const ROLE_OPTIONS = [
+  { value: "community", label: "Community Member", description: "Basic community access" },
+  { value: "patient", label: "Patient", description: "Patient portal access" },
+  { value: "professional", label: "Professional", description: "Healthcare professional access" },
+  { value: "staff", label: "Staff", description: "Staff portal access" },
+  { value: "admin", label: "Admin", description: "Full tenant administration" },
+];
+
+export default function UserManagement() {
+  const { session } = useAuth();
+  const { isExafyAdmin, activeTenantId, tenant } = useTenant();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
+  const [searchEmail, setSearchEmail] = useState("");
+  const [selectedTenant, setSelectedTenant] = useState<string>("");
+  const [selectedRole, setSelectedRole] = useState<string>("");
+  const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+  const [assigningTo, setAssigningTo] = useState<User | null>(null);
+  const [isAssigning, setIsAssigning] = useState(false);
+  
+  // Fetch users with their memberships
+  const { data: users, isLoading: usersLoading } = useQuery({
+    queryKey: ["admin-users", activeTenantId],
+    queryFn: async () => {
+      // First get users
+      const { data: usersData, error: usersError } = await supabase
+        .from("profiles")
+        .select(`
+          user_id,
+          full_name,
+          email,
+          created_at
+        `);
+      
+      if (usersError) throw usersError;
+      
+      // Then get memberships with tenant info
+      const { data: membershipsData, error: membershipsError } = await supabase
+        .from("memberships")
+        .select(`
+          id,
+          user_id,
+          tenant_id,
+          role,
+          status,
+          tenants!inner(
+            id,
+            name,
+            slug
+          )
+        `);
+        
+      if (membershipsError) throw membershipsError;
+      
+      // Combine the data
+      const usersWithMemberships = usersData?.map(user => ({
+        id: user.user_id,
+        email: user.email || '',
+        full_name: user.full_name || '',
+        created_at: user.created_at,
+        memberships: membershipsData?.filter(m => m.user_id === user.user_id)
+          .map(m => ({
+            id: m.id,
+            tenant_id: m.tenant_id,
+            role: m.role,
+            status: m.status,
+            tenant: {
+              name: m.tenants.name,
+              slug: m.tenants.slug
+            }
+          })) || []
+      })) || [];
+      
+      return usersWithMemberships;
+    },
+    enabled: !!activeTenantId,
+  });
+  
+  // Fetch available tenants
+  const { data: tenants } = useQuery({
+    queryKey: ["admin-tenants"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("tenants")
+        .select("*")
+        .order("name");
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: isExafyAdmin,
+  });
+
+  const handleAssignRole = async () => {
+    if (!assigningTo || !selectedRole) return;
+    
+    // Determine tenant ID: use selectedTenant for Exafy admins, activeTenantId for others
+    const targetTenantId = isExafyAdmin ? selectedTenant : activeTenantId;
+    if (!targetTenantId) return;
+    
+    setIsAssigning(true);
+    try {
+      const { error } = await supabase
+        .from("memberships")
+        .insert({
+          user_id: assigningTo.id,
+          tenant_id: targetTenantId,
+          role: selectedRole as any,
+          status: "active"
+        });
+        
+      if (error) throw error;
+      
+      toast({
+        title: "Role Assigned",
+        description: `Successfully assigned ${selectedRole} role to ${assigningTo.email}`,
+      });
+      
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      setAssignDialogOpen(false);
+      setAssigningTo(null);
+      setSelectedTenant("");
+      setSelectedRole("");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to assign role",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAssigning(false);
+    }
+  };
+
+  const handleRevokeRole = async (membershipId: string, userEmail: string, role: string) => {
+    try {
+      const { error } = await supabase
+        .from("memberships")
+        .update({ status: "inactive" })
+        .eq("id", membershipId);
+        
+      if (error) throw error;
+      
+      toast({
+        title: "Role Revoked",
+        description: `Successfully revoked ${role} role from ${userEmail}`,
+      });
+      
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to revoke role",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const filteredUsers = users?.filter(user => {
+    if (searchEmail && !user.email.toLowerCase().includes(searchEmail.toLowerCase())) {
+      return false;
+    }
+    
+    // For non-Exafy admins, only show users within their tenant
+    if (!isExafyAdmin) {
+      return user.memberships.some(m => m.tenant_id === activeTenantId);
+    }
+    
+    return true;
+  }) || [];
+
+  const canAssignRole = (targetRole: string): boolean => {
+    if (isExafyAdmin) return true; // Exafy admins can assign any role
+    
+    // Client admins can assign community, patient, professional, staff roles within their tenant
+    const restrictedRoles = ["community", "patient", "professional", "staff"];
+    return restrictedRoles.includes(targetRole);
+  };
+
+  if (usersLoading) {
+    return (
+      <AppLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  return (
+    <AppLayout>
+      <SEO 
+        title="User Management | VITANA Admin" 
+        description="Manage user roles and permissions across tenants" 
+        canonical={window.location.href} 
+      />
+      <SubNavigation items={adminNavigation} />
+      
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <StandardHeader
+            title="User Management"
+            description={isExafyAdmin 
+              ? "Manage user roles and permissions across all tenants" 
+              : `Manage user roles within ${tenant?.name}`
+            }
+            emoji="👥"
+          />
+
+          {/* Search and Filters */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Search className="h-5 w-5" />
+                Search & Filter Users
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex gap-4 items-end">
+                <div className="flex-1">
+                  <Label htmlFor="search">Search by Email</Label>
+                  <Input
+                    id="search"
+                    placeholder="Enter email address..."
+                    value={searchEmail}
+                    onChange={(e) => setSearchEmail(e.target.value)}
+                  />
+                </div>
+                <Dialog open={assignDialogOpen} onOpenChange={setAssignDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button>
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      Assign Role
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Assign Role to User</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Select User (by email)</Label>
+                        <Select
+                          value={assigningTo?.id || ""}
+                          onValueChange={(value) => {
+                            const user = filteredUsers.find(u => u.id === value);
+                            setAssigningTo(user || null);
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Choose a user..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {filteredUsers.map((user) => (
+                              <SelectItem key={user.id} value={user.id}>
+                                {user.email} ({user.full_name || 'No name'})
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      {isExafyAdmin && (
+                        <div>
+                          <Label>Select Tenant</Label>
+                          <Select value={selectedTenant} onValueChange={setSelectedTenant}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Choose a tenant..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {tenants?.map((tenant) => (
+                                <SelectItem key={tenant.id} value={tenant.id}>
+                                  {tenant.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                      
+                      <div>
+                        <Label>Select Role</Label>
+                        <Select value={selectedRole} onValueChange={setSelectedRole}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Choose a role..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ROLE_OPTIONS.filter(role => canAssignRole(role.value)).map((role) => (
+                              <SelectItem key={role.value} value={role.value}>
+                                <div>
+                                  <div className="font-medium">{role.label}</div>
+                                  <div className="text-sm text-muted-foreground">{role.description}</div>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="flex justify-end gap-2">
+                        <Button 
+                          variant="outline" 
+                          onClick={() => setAssignDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          onClick={handleAssignRole}
+                          disabled={!assigningTo || (isExafyAdmin && !selectedTenant) || !selectedRole || isAssigning}
+                        >
+                          {isAssigning ? "Assigning..." : "Assign Role"}
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Users List */}
+          <div className="space-y-4">
+            {filteredUsers.map((user) => (
+              <Card key={user.id}>
+                <CardContent className="p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/60 rounded-full flex items-center justify-center text-white font-semibold">
+                          {user.email.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">{user.email}</h3>
+                          {user.full_name && (
+                            <p className="text-sm text-muted-foreground">{user.full_name}</p>
+                          )}
+                          <p className="text-xs text-muted-foreground">
+                            Joined: {new Date(user.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {user.memberships.filter(m => m.status === "active").length > 0 ? (
+                          user.memberships
+                            .filter(m => m.status === "active")
+                            .map((membership) => (
+                              <div key={membership.id} className="flex items-center gap-2">
+                                <Badge variant="secondary" className="flex items-center gap-1">
+                                  <Shield className="h-3 w-3" />
+                                  {membership.role} @ {membership.tenant.name}
+                                </Badge>
+                                {(isExafyAdmin || (membership.tenant_id === activeTenantId && membership.role !== "admin")) && (
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                        <Trash2 className="h-3 w-3" />
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>Revoke Role</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          Are you sure you want to revoke the {membership.role} role from {user.email} 
+                                          at {membership.tenant.name}? This action cannot be undone.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction 
+                                          onClick={() => handleRevokeRole(membership.id, user.email, membership.role)}
+                                          className="bg-destructive text-destructive-foreground"
+                                        >
+                                          Revoke Role
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                )}
+                              </div>
+                            ))
+                        ) : (
+                          <Badge variant="outline">No active roles</Badge>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+            
+            {filteredUsers.length === 0 && (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">No Users Found</h3>
+                  <p className="text-muted-foreground">
+                    {searchEmail ? "No users match your search criteria." : "No users available to manage."}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}

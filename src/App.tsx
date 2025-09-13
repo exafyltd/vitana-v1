@@ -142,6 +142,7 @@ import Staff from "./pages/admin/Staff";
 import Bootstrap from "./pages/admin/Bootstrap";
 import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
+import UserManagement from "./pages/admin/UserManagement";
 
 const App = () => (
   <RTLProvider>
@@ -772,7 +773,14 @@ const App = () => (
           <Route path="/admin/users" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="admin">
-                <div className="p-6"><h1 className="text-3xl font-bold">User Management</h1><p className="text-muted-foreground">Manage system users and permissions</p></div>
+                <UserManagement />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/user-management" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <UserManagement />
               </ProtectedRoute>
             </AuthGuard>
           } />
