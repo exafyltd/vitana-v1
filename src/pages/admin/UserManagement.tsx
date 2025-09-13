@@ -150,16 +150,45 @@ export default function UserManagement() {
     
     setIsAssigning(true);
     try {
-      const { error } = await supabase
+      // Check if membership already exists
+      const { data: existingMembership } = await supabase
         .from("memberships")
-        .insert({
-          user_id: assigningTo.id,
-          tenant_id: targetTenantId,
-          role: selectedRole as any,
-          status: "active"
-        });
-        
-      if (error) throw error;
+        .select("id, status")
+        .eq("user_id", assigningTo.id)
+        .eq("tenant_id", targetTenantId)
+        .eq("role", selectedRole as any)
+        .single();
+      
+      if (existingMembership) {
+        if (existingMembership.status === "active") {
+          toast({
+            title: "Role Already Assigned",
+            description: `User already has ${selectedRole} role for this tenant`,
+            variant: "destructive",
+          });
+          return;
+        } else {
+          // Reactivate existing membership
+          const { error } = await supabase
+            .from("memberships")
+            .update({ status: "active" })
+            .eq("id", existingMembership.id);
+            
+          if (error) throw error;
+        }
+      } else {
+        // Create new membership
+        const { error } = await supabase
+          .from("memberships")
+          .insert({
+            user_id: assigningTo.id,
+            tenant_id: targetTenantId,
+            role: selectedRole as any,
+            status: "active"
+          });
+          
+        if (error) throw error;
+      }
       
       toast({
         title: "Role Assigned",
@@ -172,6 +201,7 @@ export default function UserManagement() {
       setSelectedTenant("");
       setSelectedRole("");
     } catch (error: any) {
+      console.error("Role assignment error:", error);
       toast({
         title: "Error",
         description: error.message || "Failed to assign role",
