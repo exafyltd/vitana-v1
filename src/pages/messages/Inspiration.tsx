@@ -5,9 +5,11 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { InspirationMasterActionPopup } from "@/components/messages/InspirationMasterActionPopup";
-import { Lightbulb, Copy, Send, Plus } from "lucide-react";
+import { Lightbulb, Copy, Send, Plus, Heart, Clock, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { messagesNavigation } from "@/config/navigation";
 
@@ -48,6 +50,7 @@ const inspirationTemplates = [
 
 export default function Inspiration() {
   const [inspirationActionOpen, setInspirationActionOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("templates");
   return (
     <AppLayout>
       <SEO 
@@ -76,46 +79,114 @@ export default function Inspiration() {
             </Button>
           </UtilityActionButton>
 
-          <div className="space-y-6 mt-6">
-            {inspirationTemplates.map((category, categoryIdx) => (
-              <Card key={categoryIdx}>
+          <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <SplitBarList className="grid w-full grid-cols-4">
+              <SplitBarTrigger value="templates">
+                <Lightbulb className="w-4 h-4 mr-2" />
+                Templates
+              </SplitBarTrigger>
+              <SplitBarTrigger value="favorites">
+                <Heart className="w-4 h-4 mr-2" />
+                My Favorites
+              </SplitBarTrigger>
+              <SplitBarTrigger value="recent">
+                <Clock className="w-4 h-4 mr-2" />
+                Recently Used
+              </SplitBarTrigger>
+              <SplitBarTrigger value="custom">
+                <Edit className="w-4 h-4 mr-2" />
+                Custom Messages
+              </SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="templates">
+              <div className="space-y-6">
+                {inspirationTemplates.map((category, categoryIdx) => (
+                  <Card key={categoryIdx}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Lightbulb className="w-5 h-5 text-yellow-500" />
+                        {category.category}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {category.templates.map((template, templateIdx) => (
+                        <div key={templateIdx} className="border rounded-lg p-4 flex items-center justify-between">
+                          <div className="flex items-center gap-3 flex-1">
+                            <span className="text-xl">{template.icon}</span>
+                            <p className="text-sm">{template.text}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => navigator.clipboard.writeText(template.text)}
+                            >
+                              <Copy className="w-3 h-3 mr-1" />
+                              Copy
+                            </Button>
+                            <Button
+                              variant="default"
+                              size="sm"
+                              onClick={() => console.log(`Forwarding: ${template.text}`)}
+                            >
+                              <Send className="w-3 h-3 mr-1" />
+                              Send
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="favorites">
+              <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Lightbulb className="w-5 h-5 text-yellow-500" />
-                    {category.category}
+                    <Heart className="w-5 h-5 text-red-500" />
+                    My Favorite Templates
+                    <Badge variant="secondary">0</Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  {category.templates.map((template, templateIdx) => (
-                    <div key={templateIdx} className="border rounded-lg p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-3 flex-1">
-                        <span className="text-xl">{template.icon}</span>
-                        <p className="text-sm">{template.text}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => navigator.clipboard.writeText(template.text)}
-                        >
-                          <Copy className="w-3 h-3 mr-1" />
-                          Copy
-                        </Button>
-                        <Button
-                          variant="default"
-                          size="sm"
-                          onClick={() => console.log(`Forwarding: ${template.text}`)}
-                        >
-                          <Send className="w-3 h-3 mr-1" />
-                          Send
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                <CardContent>
+                  <p className="text-muted-foreground text-center py-8">Your saved favorite templates will appear here.</p>
                 </CardContent>
               </Card>
-            ))}
-          </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="recent">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-blue-500" />
+                    Recently Used Templates
+                    <Badge variant="secondary">0</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-center py-8">Templates you've used recently will appear here.</p>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+
+            <SplitBarContent value="custom">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Edit className="w-5 h-5 text-green-500" />
+                    Custom Messages
+                    <Badge variant="secondary">0</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-center py-8">Your custom created messages will appear here.</p>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
       
