@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Mic, NotebookPen } from "lucide-react";
 import { toast } from "sonner";
 
@@ -10,153 +10,207 @@ interface DiaryEntry {
   created_at: string;
 }
 
+type Status = "idle" | "recording" | "stopping";
+
 export default function DiaryButton() {
-  const [rec, setRec] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
   const [isSupported, setIsSupported] = useState(true);
-  const recogRef = useRef<any>(null);
-  const timeoutRef = useRef<number | null>(null);
+  
+  const recognitionRef = useRef<any>(null);
+  const transcriptRef = useRef<string>("");
+  const userStoppedRef = useRef<boolean>(false);
+  const autoStopTimerRef = useRef<number | null>(null);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (autoStopTimerRef.current) {
+        clearTimeout(autoStopTimerRef.current);
+      }
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch {}
+      }
+    };
+  }, []);
 
   function toggleRecording() {
-    if (rec) {
+    if (status === "recording") {
       stopRecording();
-    } else {
+    } else if (status === "idle") {
       startRecording();
     }
   }
 
-  function startRecording() {
+  async function startRecording() {
+    if (status !== "idle") return;
+
     const SR = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
     
     if (!SR) {
       setIsSupported(false);
-      toast.error("Voice dictation isn't supported in this browser");
+      toast("Voice dictation isn't supported in this browser.");
       return;
     }
 
-    // Check microphone permission
-    navigator.mediaDevices?.getUserMedia({ audio: true })
-      .then(() => {
-        const recognition = new SR();
-        recognition.lang = navigator.language || 'en-US';
-        recognition.interimResults = false;
-        recognition.continuous = false;
-        recognition.maxAlternatives = 1;
+    // Optional pre-permission (helps Chrome)
+    try {
+      const stream = await navigator.mediaDevices?.getUserMedia?.({ audio: true });
+      stream?.getTracks().forEach(track => track.stop());
+    } catch {
+      // Permission prompt may have been shown already
+    }
 
-        recognition.onstart = () => {
-          setRec(true);
-          // Auto-stop at 60s for safety
-          timeoutRef.current = window.setTimeout(() => {
-            stopRecording();
-          }, 60000);
-        };
+    recognitionRef.current = new SR();
+    const r = recognitionRef.current;
+    
+    r.lang = navigator.language || "en-US";
+    r.interimResults = false;
+    r.continuous = false;
+    r.maxAlternatives = 1;
 
-        recognition.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript;
-          saveDiaryEntry(transcript);
-        };
+    transcriptRef.current = "";
+    userStoppedRef.current = false;
+    setStatus("recording");
 
-        recognition.onerror = (event: any) => {
-          console.error("Speech recognition error:", event.error);
-          setRec(false);
-          if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-            timeoutRef.current = null;
-          }
-          
-          if (event.error === 'not-allowed') {
-            toast.error("Allow mic in browser settings");
-          } else {
-            toast.error("Recording failed. Please try again.");
-          }
-        };
+    r.onresult = (e: any) => {
+      const res = e.results?.[0]?.[0]?.transcript ?? "";
+      transcriptRef.current += (transcriptRef.current ? " " : "") + res.trim();
+    };
 
-        recognition.onend = () => {
-          setRec(false);
-          if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-            timeoutRef.current = null;
-          }
-        };
+    r.onerror = (e: any) => {
+      // Don't show error if we stopped it ourselves
+      if (userStoppedRef.current && (e.error === "aborted" || e.error === "no-speech")) return;
+      
+      const msg = e.error === "not-allowed" 
+        ? "Microphone permission is blocked."
+        : e.error === "audio-capture" 
+        ? "No microphone available."
+        : e.error === "network" 
+        ? "Network error during transcription."
+        : e.error === "no-speech" 
+        ? "No speech detected."
+        : "Recording issue.";
+      
+      toast(msg);
+    };
 
-        recogRef.current = recognition;
-        recognition.start();
-      })
-      .catch(() => {
-        toast.error("Allow mic in browser settings");
-      });
+    r.onend = () => {
+      const text = (transcriptRef.current || "").trim();
+      setStatus("idle");
+      
+      // If natural end without user stopping and no text, do nothing
+      if (!userStoppedRef.current && !text) return;
+      
+      if (text) {
+        saveDiary({ text, source: "voice" });
+        toastWithActions("Diary saved", [
+          { label: "View", onClick: () => window.location.href = '/memory/diary' },
+          { label: "Undo", onClick: () => undoLastDiary() }
+        ]);
+      } else {
+        toast("No speech detected. Try again closer to the mic.");
+      }
+    };
+
+    try {
+      r.start();
+      
+      // Safety auto-stop after 60s
+      autoStopTimerRef.current = window.setTimeout(() => {
+        stopRecording();
+      }, 60000);
+    } catch {}
   }
 
   function stopRecording() {
-    if (recogRef.current) {
-      recogRef.current.stop();
+    if (status !== "recording") return;
+    
+    setStatus("stopping");
+    userStoppedRef.current = true;
+    
+    if (autoStopTimerRef.current) {
+      clearTimeout(autoStopTimerRef.current);
+      autoStopTimerRef.current = null;
     }
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setRec(false);
+    
+    try {
+      recognitionRef.current?.stop();
+    } catch {}
+
+    // Fallback guard: if onend doesn't fire, finalize after 2s
+    setTimeout(() => {
+      // Check if we're still in stopping state
+      setStatus(currentStatus => {
+        if (currentStatus === "stopping") {
+          const text = (transcriptRef.current || "").trim();
+          if (text) {
+            saveDiary({ text, source: "voice" });
+            toastWithActions("Diary saved", [
+              { label: "View", onClick: () => window.location.href = '/memory/diary' },
+              { label: "Undo", onClick: () => undoLastDiary() }
+            ]);
+          }
+          return "idle";
+        }
+        return currentStatus;
+      });
+    }, 2000);
   }
 
-  function saveDiaryEntry(transcript: string) {
-    const finalTranscript = transcript.trim() || "(no speech detected)";
-    
-    if (finalTranscript === "(no speech detected)") {
-      toast.error("No speech detected");
-      return;
-    }
-
+  function saveDiary({ text, source }: { text: string; source: string }) {
     try {
-      // Create diary entry
       const entry: DiaryEntry = {
         id: crypto.randomUUID(),
-        text: finalTranscript,
-        source: 'voice',
+        text,
+        source,
         tags: ['voice', 'diary'],
         created_at: new Date().toISOString()
       };
 
-      // Get existing entries
       const existingEntries = JSON.parse(localStorage.getItem('diary_entries') || '[]');
       const updatedEntries = [entry, ...existingEntries];
-      
-      // Save to localStorage
       localStorage.setItem('diary_entries', JSON.stringify(updatedEntries));
-
-      // Show success toast with actions
-      toast.success("Diary saved", {
-        description: new Date().toLocaleTimeString(),
-        action: {
-          label: "View",
-          onClick: () => window.location.href = '/memory/diary'
-        },
-        duration: 10000
-      });
-
-      // Store entry ID for potential undo
-      (window as any).lastDiaryEntryId = entry.id;
       
-      // Show undo option for 10 seconds
-      setTimeout(() => {
-        if ((window as any).lastDiaryEntryId === entry.id) {
-          toast("Undo available", {
-            description: "Delete the last diary entry",
-            action: {
-              label: "Undo",
-              onClick: () => undoDiaryEntry(entry.id)
-            },
-            duration: 5000
-          });
-        }
-      }, 1000);
-
+      (window as any).lastDiaryEntryId = entry.id;
     } catch (error) {
       console.error("Error saving diary entry:", error);
-      toast.error("Failed to save diary entry");
+      toast("Failed to save diary entry");
     }
   }
 
-  function undoDiaryEntry(entryId: string) {
+  function toastWithActions(message: string, actions: Array<{ label: string; onClick: () => void }>) {
+    // Show main toast with first action
+    toast.success(message, {
+      description: new Date().toLocaleTimeString(),
+      action: actions[0] ? {
+        label: actions[0].label,
+        onClick: actions[0].onClick
+      } : undefined,
+      duration: 10000
+    });
+
+    // Show undo option after 1 second
+    if (actions[1]) {
+      setTimeout(() => {
+        toast("Undo available", {
+          description: "Delete the last diary entry",
+          action: {
+            label: actions[1].label,
+            onClick: actions[1].onClick
+          },
+          duration: 5000
+        });
+      }, 1000);
+    }
+  }
+
+  function undoLastDiary() {
     try {
+      const entryId = (window as any).lastDiaryEntryId;
+      if (!entryId) return;
+
       const existingEntries = JSON.parse(localStorage.getItem('diary_entries') || '[]');
       const filteredEntries = existingEntries.filter((entry: DiaryEntry) => entry.id !== entryId);
       localStorage.setItem('diary_entries', JSON.stringify(filteredEntries));
@@ -165,9 +219,11 @@ export default function DiaryButton() {
       (window as any).lastDiaryEntryId = null;
     } catch (error) {
       console.error("Error deleting diary entry:", error);
-      toast.error("Failed to delete diary entry");
+      toast("Failed to delete diary entry");
     }
   }
+
+  const isRecording = status === "recording";
 
   return (
     <button
@@ -180,11 +236,11 @@ export default function DiaryButton() {
       }}
       role="button"
       aria-label="Diary voice dictation"
-      aria-pressed={rec}
+      aria-pressed={isRecording}
       title={
         !isSupported 
           ? "Voice dictation not supported" 
-          : rec 
+          : isRecording 
             ? "Recording…" 
             : "Diary"
       }
@@ -197,12 +253,12 @@ export default function DiaryButton() {
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         !isSupported 
           ? "text-white opacity-60 cursor-not-allowed" 
-          : rec 
+          : isRecording 
             ? "text-white diary-pulse" 
             : "text-white hover:scale-[1.03] active:scale-[0.98]"
       ].join(" ")}
       style={{
-        background: rec ? "var(--brand-live)" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
+        background: isRecording ? "var(--brand-live)" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
       }}
     >
       {/* stacked mic + pen */}
