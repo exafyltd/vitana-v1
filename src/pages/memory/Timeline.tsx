@@ -9,7 +9,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
-import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { TimelineMasterActionPopup } from "@/components/memory/TimelineMasterActionPopup";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -295,7 +295,7 @@ function Timeline() {
           </SplitBarContent>
         </SplitBar>
 
-        <MemoryMasterActionPopup 
+        <TimelineMasterActionPopup
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
         />
