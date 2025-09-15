@@ -529,6 +529,10 @@ export type Database = {
         Args: { p_tenant_slug: string }
         Returns: undefined
       }
+      validate_role_assignment: {
+        Args: { p_role: string; p_tenant_id: string; p_user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       collection_method: "home_kit" | "lab_facility"
