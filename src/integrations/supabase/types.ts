@@ -49,6 +49,39 @@ export type Database = {
           },
         ]
       }
+      diary_entries: {
+        Row: {
+          created_at: string
+          duration: number | null
+          id: string
+          source: string
+          tags: string[] | null
+          text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration?: number | null
+          id?: string
+          source?: string
+          tags?: string[] | null
+          text: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration?: number | null
+          id?: string
+          source?: string
+          tags?: string[] | null
+          text?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       lab_test_orders: {
         Row: {
           collection_method: Database["public"]["Enums"]["collection_method"]
