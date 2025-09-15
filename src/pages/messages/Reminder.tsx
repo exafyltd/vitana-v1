@@ -81,7 +81,7 @@ export default function Reminder() {
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <SplitBarList className="grid w-full grid-cols-4">
+            <SplitBarList>
               <SplitBarTrigger value="unanswered">
                 <Clock className="w-4 h-4 mr-2" />
                 Unanswered
