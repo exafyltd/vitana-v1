@@ -150,31 +150,32 @@ export default function UserManagement() {
     
     setIsAssigning(true);
     try {
-      // Check if membership already exists
-      const { data: existingMembership } = await supabase
+      // Check if ANY membership exists for this user-tenant pair (due to unique constraint)
+      const { data: existingMembership, error: fetchError } = await supabase
         .from("memberships")
-        .select("id, status")
+        .select("id, role, status")
         .eq("user_id", assigningTo.id)
         .eq("tenant_id", targetTenantId)
-        .eq("role", selectedRole as any)
-        .single();
+        .maybeSingle();
+        
+      if (fetchError) {
+        console.error("Error fetching existing membership:", fetchError);
+        throw fetchError;
+      }
       
       if (existingMembership) {
-        if (existingMembership.status === "active") {
-          toast({
-            title: "Role Already Assigned",
-            description: `User already has ${selectedRole} role for this tenant`,
-            variant: "destructive",
-          });
-          return;
-        } else {
-          // Reactivate existing membership
-          const { error } = await supabase
-            .from("memberships")
-            .update({ status: "active" })
-            .eq("id", existingMembership.id);
-            
-          if (error) throw error;
+        // Update existing membership with new role
+        const { error } = await supabase
+          .from("memberships")
+          .update({ 
+            role: selectedRole as "community" | "patient" | "professional" | "staff" | "admin",
+            status: "active" 
+          })
+          .eq("id", existingMembership.id);
+          
+        if (error) {
+          console.error("Error updating membership:", error);
+          throw error;
         }
       } else {
         // Create new membership
@@ -183,11 +184,14 @@ export default function UserManagement() {
           .insert({
             user_id: assigningTo.id,
             tenant_id: targetTenantId,
-            role: selectedRole as any,
+            role: selectedRole as "community" | "patient" | "professional" | "staff" | "admin",
             status: "active"
           });
           
-        if (error) throw error;
+        if (error) {
+          console.error("Error creating membership:", error);
+          throw error;
+        }
       }
       
       toast({
@@ -202,9 +206,20 @@ export default function UserManagement() {
       setSelectedRole("");
     } catch (error: any) {
       console.error("Role assignment error:", error);
+      
+      // More specific error messages
+      let errorMessage = "Failed to assign role";
+      if (error.message?.includes("permission denied") || error.message?.includes("RLS")) {
+        errorMessage = "Permission denied. You may not have sufficient privileges to assign this role.";
+      } else if (error.message?.includes("unique constraint") || error.message?.includes("duplicate key")) {
+        errorMessage = "A membership record already exists. Please try refreshing the page.";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       toast({
         title: "Error",
-        description: error.message || "Failed to assign role",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
