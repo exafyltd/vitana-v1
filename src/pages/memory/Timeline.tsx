@@ -136,7 +136,7 @@ function Timeline() {
           <ExpandableSearchButton placeholder="Search timeline events and milestones..." />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Add Event
+            Record Moment
           </Button>
         </UtilityActionButton>
 
