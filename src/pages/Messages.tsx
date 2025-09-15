@@ -4,9 +4,10 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SplitScreen } from "@/components/ui/split-screen";
-import MessageComposer from "@/components/messages/MessageComposer";
-import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle, Lightbulb, Mail, Zap, Copy, Send } from "lucide-react";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { InboxMasterActionPopup } from "@/components/messages/InboxMasterActionPopup";
+import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle, Lightbulb, Mail, Zap, Copy, Send, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -96,6 +97,7 @@ const stats = {
 
 export default withScreenId(function Messages() {
   const [activeOverviewTab, setActiveOverviewTab] = useState("direct");
+  const [inboxActionOpen, setInboxActionOpen] = useState(false);
 
   const EmptyState = ({ icon: Icon, title, description }: any) => (
     <div className="flex flex-col items-center justify-center h-64 text-center">
@@ -121,6 +123,17 @@ export default withScreenId(function Messages() {
             description="Manage your conversations, notifications, and stay connected with your wellness community."
             emoji="💬"
           />
+
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search messages, contacts, or groups..."
+              onSearch={(query) => console.log('Search:', query)}
+            />
+            <Button size="sm" onClick={() => setInboxActionOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              New Message
+            </Button>
+          </UtilityActionButton>
 
           <SplitBar value={activeOverviewTab} onValueChange={setActiveOverviewTab}>
             <SplitBarList>
@@ -207,6 +220,11 @@ export default withScreenId(function Messages() {
           </SplitBar>
         </div>
       </div>
+      
+      <InboxMasterActionPopup 
+        open={inboxActionOpen}
+        onOpenChange={setInboxActionOpen}
+      />
     </AppLayout>
   );
 }, SCREEN_IDS.INBOX_OVERVIEW);

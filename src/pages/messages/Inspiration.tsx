@@ -3,8 +3,12 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Lightbulb, Copy, Send } from "lucide-react";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { InspirationMasterActionPopup } from "@/components/messages/InspirationMasterActionPopup";
+import { Lightbulb, Copy, Send, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { messagesNavigation } from "@/config/navigation";
 
 const inspirationTemplates = [
@@ -43,6 +47,7 @@ const inspirationTemplates = [
 ];
 
 export default function Inspiration() {
+  const [inspirationActionOpen, setInspirationActionOpen] = useState(false);
   return (
     <AppLayout>
       <SEO 
@@ -59,6 +64,17 @@ export default function Inspiration() {
             description="Pre-written messages and templates to inspire your wellness community"
             emoji="💡"
           />
+
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search message templates..."
+              onSearch={(query) => console.log('Search:', query)}
+            />
+            <Button size="sm" onClick={() => setInspirationActionOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Template Actions
+            </Button>
+          </UtilityActionButton>
 
           <div className="space-y-6 mt-6">
             {inspirationTemplates.map((category, categoryIdx) => (
@@ -102,6 +118,11 @@ export default function Inspiration() {
           </div>
         </div>
       </div>
+      
+      <InspirationMasterActionPopup 
+        open={inspirationActionOpen}
+        onOpenChange={setInspirationActionOpen}
+      />
     </AppLayout>
   );
 }

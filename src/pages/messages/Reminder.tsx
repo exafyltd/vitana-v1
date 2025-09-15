@@ -3,10 +3,14 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clock, Send } from "lucide-react";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { ReminderMasterActionPopup } from "@/components/messages/ReminderMasterActionPopup";
+import { Clock, Send, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 import { messagesNavigation } from "@/config/navigation";
 
 const unansweredMessages = [
@@ -45,6 +49,7 @@ const unansweredMessages = [
 ];
 
 export default function Reminder() {
+  const [reminderActionOpen, setReminderActionOpen] = useState(false);
   return (
     <AppLayout>
       <SEO 
@@ -61,6 +66,17 @@ export default function Reminder() {
             description="Catch up with unanswered messages and respond quickly"
             emoji="⏰"
           />
+
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search unanswered messages..."
+              onSearch={(query) => console.log('Search:', query)}
+            />
+            <Button size="sm" onClick={() => setReminderActionOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Quick Actions
+            </Button>
+          </UtilityActionButton>
 
           <Card className="mt-6">
             <CardHeader>
@@ -106,6 +122,11 @@ export default function Reminder() {
           </Card>
         </div>
       </div>
+      
+      <ReminderMasterActionPopup 
+        open={reminderActionOpen}
+        onOpenChange={setReminderActionOpen}
+      />
     </AppLayout>
   );
 }
