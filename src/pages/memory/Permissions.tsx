@@ -12,7 +12,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
-import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { PermissionsMasterActionPopup } from "@/components/memory/PermissionsMasterActionPopup";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
@@ -315,7 +315,7 @@ function Permissions() {
           </SplitBarContent>
         </SplitBar>
 
-        <MemoryMasterActionPopup 
+        <PermissionsMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
         />

@@ -9,7 +9,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
-import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { DiaryMasterActionPopup } from "@/components/memory/DiaryMasterActionPopup";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import VoiceDiaryRecorder from "@/components/memory/VoiceDiaryRecorder";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -314,7 +314,7 @@ function Diary() {
           </SplitBarContent>
         </SplitBar>
 
-        <MemoryMasterActionPopup 
+        <DiaryMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
         />

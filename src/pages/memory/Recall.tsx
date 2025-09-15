@@ -12,7 +12,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
-import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { RecallMasterActionPopup } from "@/components/memory/RecallMasterActionPopup";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
@@ -293,7 +293,7 @@ function Recall() {
           </SplitBarContent>
         </SplitBar>
 
-        <MemoryMasterActionPopup 
+        <RecallMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
         />
