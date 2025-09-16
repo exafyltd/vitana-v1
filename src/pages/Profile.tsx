@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProfile } from "@/context/ProfileProvider";
 import { ProfileStats } from "@/components/profile/shared/ProfileStats";
+import { CommunityImpactWidget } from "@/components/profile/community/CommunityImpactWidget";
+import { SuccessStoryCarousel } from "@/components/profile/community/SuccessStoryCarousel";
 
 // Dummy data for the profile stats
 const dummyProfileStats = {
@@ -179,29 +181,15 @@ export default function Profile() {
                       </CardContent>
                     </Card>
 
-                    <Card className="rounded-xl shadow-sm">
-                      <CardHeader>
-                        <CardTitle>Public Engagement</CardTitle>
-                        <CardDescription>Read-only summary</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                          <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div className="rounded-xl border p-3 shadow-sm">
-                              <div className="text-xs text-muted-foreground">Health Index</div>
-                              <div className="mt-1 text-2xl font-semibold">78 <span className="text-sm text-muted-foreground align-middle">(↑ steady)</span></div>
-                            </div>
-                            <div className="rounded-xl border p-3 shadow-sm">
-                              <div className="text-xs text-muted-foreground">Community</div>
-                              <div className="mt-1 text-2xl font-semibold">{dummyProfileStats.posts}</div>
-                              <div className="text-xs text-muted-foreground">posts • events • groups</div>
-                            </div>
-                          </div>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          <Badge>Badges: 5</Badge>
-                          <Badge variant="secondary">Streak: 12 days</Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <CommunityImpactWidget 
+                      vitanaIndex={mockUserProfile.vitanaIndex}
+                      communityStats={{
+                        posts: dummyProfileStats.posts,
+                        helpedUsers: 12,
+                        featuredStories: 3,
+                        influenceScore: 85
+                      }}
+                    />
 
                     <Card className="rounded-xl shadow-sm">
                       <CardHeader>
@@ -284,6 +272,11 @@ export default function Profile() {
                         ))}
                       </CardContent>
                     </Card>
+                  </div>
+
+                  {/* Success Story Carousel */}
+                  <div className="lg:col-span-2">
+                    <SuccessStoryCarousel />
                   </div>
                 </div>
               </div>
