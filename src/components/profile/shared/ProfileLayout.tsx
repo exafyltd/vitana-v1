@@ -14,6 +14,10 @@ import { SuccessStoryCarousel } from "../community/SuccessStoryCarousel";
 import { CompatibilityIndicator } from "../engagement/CompatibilityIndicator";
 import { ContextualCTAs } from "../engagement/ContextualCTAs";
 import { ViewModeIntelligence } from "../engagement/ViewModeIntelligence";
+import { SmartEditingToolbar } from "../editor/SmartEditingToolbar";
+import { ProfileProgressCard } from "../editor/ProfileProgressCard";
+import { useAutoSave } from "@/hooks/useAutoSave";
+import { useState, useCallback } from "react";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -40,18 +44,101 @@ export function ProfileLayout({
   onEditShowcase,
   onEditVisibility
 }: ProfileLayoutProps) {
+  // Smart editing state
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [editHistory, setEditHistory] = useState<UserProfile[]>([profile]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  
   // Mock achievements data - replace with real data from profile
   const mockAchievements = ['Mindfulness Master', 'Community Helper', 'Wellness Warrior'];
   const mockEngagementBadges = ['Posted 20+ videos', 'Joined 5+ groups', 'Daily meditation streak'];
 
+  // Auto-save functionality
+  const handleSaveProfile = useCallback(async (updatedProfile: UserProfile) => {
+    // TODO: Implement actual profile saving logic
+    console.log('Saving profile:', updatedProfile);
+    // This would typically call a Supabase update function
+  }, []);
+
+  const { forceSave, hasUnsavedChanges, isSaving } = useAutoSave({
+    data: profile,
+    onSave: handleSaveProfile,
+    enabled: editMode
+  });
+
+  // History management
+  const canUndo = historyIndex > 0;
+  const canRedo = historyIndex < editHistory.length - 1;
+
+  const handleUndo = useCallback(() => {
+    if (canUndo) {
+      setHistoryIndex(prev => prev - 1);
+    }
+  }, [canUndo]);
+
+  const handleRedo = useCallback(() => {
+    if (canRedo) {
+      setHistoryIndex(prev => prev + 1);
+    }
+  }, [canRedo]);
+
+  // Section navigation
+  const handleSectionClick = useCallback((sectionId: string) => {
+    switch (sectionId) {
+      case 'identity':
+        onEditIdentity?.();
+        break;
+      case 'about':
+        onEditAbout?.();
+        break;
+      case 'avatar':
+      case 'cover':
+        onEditShowcase?.();
+        break;
+      case 'location':
+      case 'links':
+      case 'languages':
+        onEditAbout?.();
+        break;
+      case 'services':
+        onEditServices?.();
+        break;
+      default:
+        console.log('Unknown section:', sectionId);
+    }
+  }, [onEditIdentity, onEditAbout, onEditShowcase, onEditServices]);
+
+  const effectiveEditMode = editMode && !isPreviewMode;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+      {/* Smart Editing Toolbar */}
+      {editMode && (
+        <SmartEditingToolbar
+          hasUnsavedChanges={hasUnsavedChanges}
+          isSaving={isSaving}
+          isPreviewMode={isPreviewMode}
+          canUndo={canUndo}
+          canRedo={canRedo}
+          onSave={forceSave}
+          onTogglePreview={() => setIsPreviewMode(!isPreviewMode)}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          onAutopilot={() => {
+            const autopilotElement = document.querySelector('[data-autopilot-trigger]') as HTMLElement;
+            if (autopilotElement) {
+              autopilotElement.click();
+            }
+          }}
+        />
+      )}
+
       <div className="space-y-8">
         <div className="max-w-6xl mx-auto">
           <ProfileHeader 
             profile={profile}
             scope={scope}
-            editMode={editMode}
+            editMode={effectiveEditMode}
             onEdit={onEditIdentity}
           />
         </div>
@@ -81,23 +168,32 @@ export function ProfileLayout({
             
             {/* Engagement Sidebar */}
             <div className="space-y-4">
-              <CompatibilityIndicator 
-                isOwnProfile={isOwnProfile}
-                mutualConnections={5}
-              />
-              <ContextualCTAs 
-                isOwnProfile={isOwnProfile}
-                profileType="coach"
-                hasActiveChallenge={true}
-                isServiceProvider={true}
-                compatibilityScore={92}
-              />
+              {effectiveEditMode ? (
+                <ProfileProgressCard
+                  profile={profile}
+                  onSectionClick={handleSectionClick}
+                />
+              ) : (
+                <>
+                  <CompatibilityIndicator 
+                    isOwnProfile={isOwnProfile}
+                    mutualConnections={5}
+                  />
+                  <ContextualCTAs 
+                    isOwnProfile={isOwnProfile}
+                    profileType="coach"
+                    hasActiveChallenge={true}
+                    isServiceProvider={true}
+                    compatibilityScore={92}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>
         
         {/* Showcase Section - Single unified location */}
-        {editMode && onEditShowcase && (
+        {effectiveEditMode && onEditShowcase && (
           <div className="px-6">
             <div className="max-w-6xl mx-auto">
               <div className="bg-background rounded-lg border p-6 shadow-sm">
@@ -117,7 +213,7 @@ export function ProfileLayout({
         )}
         
         {/* Autopilot Suggestions - Positioned after Showcase */}
-        {editMode && (
+        {effectiveEditMode && (
           <div className="px-6">
             <div className="max-w-6xl mx-auto">
               <AutopilotSuggestions 
@@ -145,7 +241,7 @@ export function ProfileLayout({
             <ProfileTabs
               profile={profile} 
               scope={scope} 
-              editMode={editMode}
+              editMode={effectiveEditMode}
               isOwnProfile={isOwnProfile}
               onEditAbout={onEditAbout}
               onEditServices={onEditServices}
