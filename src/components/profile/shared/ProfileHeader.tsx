@@ -89,7 +89,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
         {/* Avatar - Centered */}
         <div className="flex justify-center -mt-32 mb-4">
           <div className="relative">
-            <Avatar className="h-54 w-54 border-4 border-background shadow-xl drop-shadow-2xl"
+            <Avatar className="h-48 w-48 border-4 border-background shadow-xl drop-shadow-2xl"
                     style={{
                       filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
                     }}>
