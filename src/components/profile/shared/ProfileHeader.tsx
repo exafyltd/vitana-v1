@@ -18,7 +18,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
   return (
     <div className="relative">
       {/* Cover Image */}
-      <div className="h-48 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-t-2xl relative overflow-hidden">
+      <div className="aspect-[16/5] bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-t-2xl relative overflow-hidden">
         {profile.coverUrl && (
           <img 
             src={profile.coverUrl} 

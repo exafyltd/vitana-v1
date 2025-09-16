@@ -145,7 +145,8 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
       {/* Cover Photo */}
       <div className="space-y-2">
         <Label>Cover Photo</Label>
-        <Card className="relative h-32 border-2 border-dashed border-muted-foreground/25 hover:border-muted-foreground/50 transition-colors">
+        <p className="text-xs text-muted-foreground">Recommended: 16:5 aspect ratio (e.g., 1600x500px)</p>
+        <Card className="relative aspect-[16/5] border-2 border-dashed border-muted-foreground/25 hover:border-muted-foreground/50 transition-colors">
           {coverUrl ? (
             <div className="relative h-full">
               <img 
