@@ -2,7 +2,10 @@ import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { ProfileHeader } from "./ProfileHeader";
 import { ProfileStats } from "./ProfileStats";
-import { ProfileAchievementsStrip } from "./ProfileAchievementsStrip";
+import { ProfessionalCredentialsStrip } from "./ProfessionalCredentialsStrip";
+import { ProfessionalCTAs } from "./ProfessionalCTAs";
+import { CredentialUploadPopup } from "./CredentialUploadPopup";
+import { GoLivePopup } from "@/components/GoLivePopup";
 import { ProfileTabs } from "./ProfileTabs";
 import PageHeader from "@/components/PageHeader";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
@@ -49,9 +52,9 @@ export function ProfileLayout({
   const [editHistory, setEditHistory] = useState<UserProfile[]>([profile]);
   const [historyIndex, setHistoryIndex] = useState(0);
   
-  // Mock achievements data - replace with real data from profile
-  const mockAchievements = ['Mindfulness Master', 'Community Helper', 'Wellness Warrior'];
-  const mockEngagementBadges = ['Posted 20+ videos', 'Joined 5+ groups', 'Daily meditation streak'];
+  // Popup states
+  const [showCredentialUpload, setShowCredentialUpload] = useState(false);
+  const [showGoLive, setShowGoLive] = useState(false);
 
   // Auto-save functionality
   const handleSaveProfile = useCallback(async (updatedProfile: UserProfile) => {
@@ -145,9 +148,10 @@ export function ProfileLayout({
         
         <ProfileStats profile={profile} />
         
-        <ProfileAchievementsStrip 
-          achievements={mockAchievements}
-          engagementBadges={mockEngagementBadges}
+        <ProfessionalCredentialsStrip 
+          credentials={profile.professionalCredentials}
+          isOwnProfile={isOwnProfile}
+          onUploadCredentials={() => setShowCredentialUpload(true)}
         />
 
         {/* Community Impact + Success Story + Engagement (Public social proof) */}
@@ -178,6 +182,23 @@ export function ProfileLayout({
                   <CompatibilityIndicator 
                     isOwnProfile={isOwnProfile}
                     mutualConnections={5}
+                  />
+                  <ProfessionalCTAs 
+                    credentials={profile.professionalCredentials}
+                    isOwnProfile={isOwnProfile}
+                    onGoLive={() => setShowGoLive(true)}
+                    onJoinLive={() => {
+                      // Handle joining live session
+                      console.log('Joining live session');
+                    }}
+                    onBookSession={() => {
+                      // Handle booking session
+                      console.log('Booking session');
+                    }}
+                    onMessage={() => {
+                      // Handle messaging
+                      console.log('Sending message');
+                    }}
                   />
                   <ContextualCTAs 
                     isOwnProfile={isOwnProfile}
@@ -276,6 +297,23 @@ export function ProfileLayout({
             </Tooltip>
           </TooltipProvider>
         )}
+
+        {/* Credential Upload Popup */}
+        <CredentialUploadPopup
+          open={showCredentialUpload}
+          onOpenChange={setShowCredentialUpload}
+          existingCredentials={profile.professionalCredentials?.coachingSpecialties}
+          onSave={(credentials) => {
+            // Handle saving credentials
+            console.log('Saving credentials:', credentials);
+          }}
+        />
+
+        {/* Go Live Popup */}
+        <GoLivePopup
+          open={showGoLive}
+          onOpenChange={setShowGoLive}
+        />
       </div>
     </div>
   );
