@@ -38,9 +38,39 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
           </Button>
         )}
         
-        {/* VITANA Index Badge - Clean Medal Style */}
+      
+      </div>
+
+      {/* Profile Info */}
+      <div className="px-6 pb-6 relative">
+        {/* Avatar - Centered */}
+        <div className="flex justify-center -mt-32 mb-4">
+          <div className="relative">
+            <Avatar className="h-48 w-48 border-4 border-background shadow-xl drop-shadow-2xl"
+                    style={{
+                      filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
+                    }}>
+              <AvatarImage src={profile.avatarUrl} alt={profile.name} />
+              <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+                {profile.name.split(' ').map(n => n[0]).join('')}
+              </AvatarFallback>
+            </Avatar>
+            {editMode && onEdit && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="absolute bottom-2 right-2 h-8 w-8 rounded-full p-0 bg-background shadow-lg"
+                onClick={onEdit}
+              >
+                <Edit3 className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* VITANA Index Badge - Positioned at same level as avatar */}
         {profile.vitanaIndex && (
-          <div className="absolute top-4 right-4">
+          <div className="absolute right-6 -mt-32">
             <div className="relative">
               {/* Pulsing glow effect */}
               <div className="absolute inset-0 w-20 h-20 rounded-full bg-white/40 blur-lg animate-pulse"></div>
@@ -71,45 +101,17 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
                 </div>
               )}
             </div>
-          </div>
-        )}
-        
-        {/* Longevity Archetype - Positioned as badge subtitle */}
-        {profile.vitanaIndex && profile.longevityArchetype && (
-          <div className="absolute right-4 flex justify-center w-20" style={{ top: '104px' }}>
-            <span className="text-xs font-normal leading-tight text-center whitespace-nowrap" style={{ color: '#6A7A89', fontSize: '12px' }}>
-              {profile.longevityArchetype}
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Profile Info */}
-      <div className="px-6 pb-6 relative">
-        {/* Avatar - Centered */}
-        <div className="flex justify-center -mt-32 mb-4">
-          <div className="relative">
-            <Avatar className="h-48 w-48 border-4 border-background shadow-xl drop-shadow-2xl"
-                    style={{
-                      filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
-                    }}>
-              <AvatarImage src={profile.avatarUrl} alt={profile.name} />
-              <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
-                {profile.name.split(' ').map(n => n[0]).join('')}
-              </AvatarFallback>
-            </Avatar>
-            {editMode && onEdit && (
-              <Button
-                size="sm"
-                variant="outline"
-                className="absolute bottom-2 right-2 h-8 w-8 rounded-full p-0 bg-background shadow-lg"
-                onClick={onEdit}
-              >
-                <Edit3 className="h-3 w-3" />
-              </Button>
+            
+            {/* Longevity Archetype - Positioned as badge subtitle */}
+            {profile.longevityArchetype && (
+              <div className="flex justify-center w-20 mt-2">
+                <span className="text-xs font-normal leading-tight text-center whitespace-nowrap" style={{ color: '#6A7A89', fontSize: '12px' }}>
+                  {profile.longevityArchetype}
+                </span>
+              </div>
             )}
           </div>
-        </div>
+        )}
 
         {/* Name, Handle, and Actions - Centered */}
         <div className="text-center mb-4">
