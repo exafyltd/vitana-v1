@@ -21,11 +21,9 @@ export function ProfessionalCTAs({
   onBookSession,
   onMessage
 }: ProfessionalCTAsProps) {
-  // Don't show if not a professional or no credentials
-  if (!credentials) return null;
-
-  const isCurrentlyLive = credentials.currentlyLive;
-  const canGoLive = credentials.isLiveStreamingEnabled;
+  // Allow rendering even without credentials (use sensible defaults)
+  const isCurrentlyLive = credentials?.currentlyLive ?? false;
+  const canGoLive = credentials?.isLiveStreamingEnabled ?? true;
 
   return (
     <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">

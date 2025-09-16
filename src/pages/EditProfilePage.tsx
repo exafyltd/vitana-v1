@@ -166,6 +166,7 @@ export default function EditProfilePage() {
         profile={profile}
         scope={scope}
         editMode={true}
+        isOwnProfile={viewAs === "me"}
         onEditIdentity={handleEditIdentity}
         onEditAbout={handleEditAbout}
         onEditServices={handleEditServices}

@@ -173,10 +173,28 @@ export function ProfileLayout({
             {/* Engagement Sidebar */}
             <div className="space-y-4">
               {effectiveEditMode ? (
-                <ProfileProgressCard
-                  profile={profile}
-                  onSectionClick={handleSectionClick}
-                />
+                <>
+                  <ProfileProgressCard
+                    profile={profile}
+                    onSectionClick={handleSectionClick}
+                  />
+                  <div className="mt-4">
+                    <ProfessionalCTAs 
+                      credentials={profile.professionalCredentials}
+                      isOwnProfile={true}
+                      onGoLive={() => setShowGoLive(true)}
+                      onJoinLive={() => {
+                        console.log('Joining live session');
+                      }}
+                      onBookSession={() => {
+                        console.log('Booking session');
+                      }}
+                      onMessage={() => {
+                        console.log('Sending message');
+                      }}
+                    />
+                  </div>
+                </>
               ) : (
                 <>
                   <CompatibilityIndicator 
