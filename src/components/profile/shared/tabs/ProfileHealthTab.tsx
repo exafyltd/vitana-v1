@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Heart, Moon, Apple, Droplets, Zap, Settings } from "lucide-react";
+import { Activity, Heart, Moon, Apple, Droplets, Zap, Settings, Share2, Trophy, TrendingUp, Users } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 
@@ -19,45 +19,45 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
     { 
       label: 'Sleep Quality', 
       value: 85, 
-      icon: <Moon className="h-5 w-5 text-blue-600" />,
+      icon: <Moon className="h-5 w-5 text-[hsl(var(--pill-sleep-accent))]" />,
       trend: '+5%'
     },
     { 
       label: 'Exercise', 
       value: 92, 
-      icon: <Activity className="h-5 w-5 text-green-600" />,
+      icon: <Activity className="h-5 w-5 text-[hsl(var(--pill-fitness-accent))]" />,
       trend: '+12%'
     },
     { 
       label: 'Nutrition', 
       value: 78, 
-      icon: <Apple className="h-5 w-5 text-orange-600" />,
+      icon: <Apple className="h-5 w-5 text-[hsl(var(--pill-nutrition-accent))]" />,
       trend: '+3%'
     },
     { 
       label: 'Hydration', 
       value: 88, 
-      icon: <Droplets className="h-5 w-5 text-cyan-600" />,
+      icon: <Droplets className="h-5 w-5 text-[hsl(var(--pill-hydration-accent))]" />,
       trend: '+8%'
     },
     { 
       label: 'Heart Health', 
       value: 91, 
-      icon: <Heart className="h-5 w-5 text-red-600" />,
+      icon: <Heart className="h-5 w-5 text-[hsl(var(--domain-community-accent))]" />,
       trend: '+2%'
     },
     { 
       label: 'Energy', 
       value: 83, 
-      icon: <Zap className="h-5 w-5 text-yellow-600" />,
+      icon: <Zap className="h-5 w-5 text-[hsl(var(--pill-mental-accent))]" />,
       trend: '+7%'
     }
   ];
 
   const getScoreColor = (value: number) => {
-    if (value >= 90) return 'text-green-600';
-    if (value >= 70) return 'text-yellow-600';
-    return 'text-red-600';
+    if (value >= 90) return 'text-[hsl(var(--pill-mental-accent))]';
+    if (value >= 70) return 'text-[hsl(var(--pill-nutrition-accent))]';
+    return 'text-[hsl(var(--domain-community-accent))]';
   };
 
   const getProgressColor = (value: number) => {
@@ -86,38 +86,86 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
         </Card>
       )}
 
-      {/* Vitana Index Card */}
+      {/* Vitana Index Card with Enhanced Features */}
       {profile.vitanaIndex && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5" />
-              Overall Health Score
+        <Card className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--sys-vitana-accent)/0.1)] to-[hsl(var(--domain-community-accent)/0.1)]" />
+          <CardHeader className="relative">
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
+                Overall Health Score
+              </div>
+              <Button size="sm" variant="outline" className="gap-2">
+                <Share2 className="h-3 w-3" />
+                Share Progress
+              </Button>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-4xl font-bold text-primary">
-                {profile.vitanaIndex}
+          <CardContent className="relative">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-4xl font-bold text-[hsl(var(--sys-vitana-accent))]">
+                    {profile.vitanaIndex}
+                  </div>
+                  {profile.vitanaPercentile && (
+                    <Badge className="bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--domain-community-accent))] text-white border-0">
+                      <Trophy className="h-3 w-3 mr-1" />
+                      Top {100 - profile.vitanaPercentile}%
+                    </Badge>
+                  )}
+                </div>
+                <Progress value={profile.vitanaIndex / 10} className="h-3 mb-2" />
+                <p className="text-sm text-muted-foreground">
+                  Your overall health and wellness score based on all tracked metrics.
+                </p>
               </div>
-              {profile.vitanaPercentile && (
-                <Badge variant="secondary">
-                  Top {100 - profile.vitanaPercentile}%
-                </Badge>
-              )}
+              
+              {/* Anonymous Benchmarking */}
+              <div className="space-y-3">
+                <h4 className="font-medium text-sm flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Community Comparison
+                </h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-muted-foreground">vs. Your age group (25-35)</span>
+                    <Badge variant="secondary" className="text-xs">+15 above average</Badge>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-muted-foreground">vs. Similar goals</span>
+                    <Badge variant="secondary" className="text-xs">Top 12%</Badge>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-muted-foreground">vs. Activity level</span>
+                    <Badge variant="secondary" className="text-xs">Above average</Badge>
+                  </div>
+                </div>
+              </div>
             </div>
-            <Progress value={profile.vitanaIndex / 10} className="h-3" />
-            <p className="text-sm text-muted-foreground mt-2">
-              Your overall health and wellness score based on all tracked metrics.
-            </p>
+            
+            {/* Milestone Achievement */}
+            <div className="mt-6 p-4 rounded-lg bg-gradient-to-r from-[hsl(var(--pill-mental-accent)/0.1)] to-[hsl(var(--pill-nutrition-accent)/0.1)] border">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-medium text-sm">Latest Achievement</div>
+                  <div className="text-xs text-muted-foreground">30-day wellness streak completed!</div>
+                </div>
+                <Button size="sm" variant="ghost" className="gap-2">
+                  <Share2 className="h-3 w-3" />
+                  Share
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Health Metrics Grid */}
+      {/* Health Metrics Grid with Enhanced Colors */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {healthMetrics.map((metric, index) => (
-          <Card key={index}>
+          <Card key={index} className="hover:shadow-md transition-shadow duration-200">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -133,38 +181,76 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
                   <span className={`text-2xl font-bold ${getScoreColor(metric.value)}`}>
                     {metric.value}%
                   </span>
+                  <Button size="sm" variant="ghost" className="h-6 w-6 p-0">
+                    <Share2 className="h-3 w-3" />
+                  </Button>
                 </div>
                 <Progress 
                   value={metric.value} 
                   className="h-2"
                 />
+                <div className="text-xs text-muted-foreground">
+                  Goal: 90% • Current streak: {Math.floor(Math.random() * 15 + 5)} days
+                </div>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* Health Insights */}
+      {/* Health Insights with Progress Visualization */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Health Insights</CardTitle>
+          <CardTitle className="flex items-center justify-between">
+            Recent Health Insights
+            <Badge variant="outline" className="text-xs">
+              <TrendingUp className="h-3 w-3 mr-1" />
+              Improving
+            </Badge>
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-              <p className="text-sm text-green-800">
-                <strong>Great progress!</strong> Your exercise consistency has improved by 12% this month.
-              </p>
+          <div className="space-y-4">
+            {/* Progress Visualizations */}
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+              <div className="p-4 rounded-lg border bg-gradient-to-r from-background to-[hsl(var(--pill-sleep-accent)/0.1)]">
+                <div className="flex items-center gap-2 mb-2">
+                  <Moon className="h-4 w-4 text-[hsl(var(--pill-sleep-accent))]" />
+                  <span className="font-medium text-sm">Sleep Consistency</span>
+                </div>
+                <div className="text-2xl font-bold text-[hsl(var(--pill-sleep-accent))]">21 days</div>
+                <div className="text-xs text-muted-foreground">Current streak</div>
+                <Progress value={70} className="h-2 mt-2" />
+              </div>
+              
+              <div className="p-4 rounded-lg border bg-gradient-to-r from-background to-[hsl(var(--pill-fitness-accent)/0.1)]">
+                <div className="flex items-center gap-2 mb-2">
+                  <Activity className="h-4 w-4 text-[hsl(var(--pill-fitness-accent))]" />
+                  <span className="font-medium text-sm">Workout Goals</span>
+                </div>
+                <div className="text-2xl font-bold text-[hsl(var(--pill-fitness-accent))]">4/5</div>
+                <div className="text-xs text-muted-foreground">This week</div>
+                <Progress value={80} className="h-2 mt-2" />
+              </div>
             </div>
-            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-sm text-blue-800">
-                <strong>Sleep quality:</strong> You're averaging 7.5 hours of quality sleep. Keep it up!
-              </p>
-            </div>
-            <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-              <p className="text-sm text-orange-800">
-                <strong>Nutrition tip:</strong> Consider adding more leafy greens to boost your nutrition score.
-              </p>
+            
+            {/* Insights */}
+            <div className="space-y-3">
+              <div className="p-3 bg-[hsl(var(--pill-mental-accent)/0.1)] rounded-lg border border-[hsl(var(--pill-mental-accent)/0.2)]">
+                <p className="text-sm text-foreground">
+                  <strong>Great progress!</strong> Your exercise consistency has improved by 12% this month.
+                </p>
+              </div>
+              <div className="p-3 bg-[hsl(var(--pill-sleep-accent)/0.1)] rounded-lg border border-[hsl(var(--pill-sleep-accent)/0.2)]">
+                <p className="text-sm text-foreground">
+                  <strong>Sleep quality:</strong> You're averaging 7.5 hours of quality sleep. Keep it up!
+                </p>
+              </div>
+              <div className="p-3 bg-[hsl(var(--pill-nutrition-accent)/0.1)] rounded-lg border border-[hsl(var(--pill-nutrition-accent)/0.2)]">
+                <p className="text-sm text-foreground">
+                  <strong>Nutrition tip:</strong> Consider adding more leafy greens to boost your nutrition score.
+                </p>
+              </div>
             </div>
           </div>
         </CardContent>

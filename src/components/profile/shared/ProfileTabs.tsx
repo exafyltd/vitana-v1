@@ -8,11 +8,14 @@ import { ProfileMediaTab } from "./tabs/ProfileMediaTab";
 import { ProfileGroupsTab } from "./tabs/ProfileGroupsTab";
 import { ProfileHealthTab } from "./tabs/ProfileHealthTab";
 import { ProfileServicesTab } from "./tabs/ProfileServicesTab";
+import { SmartTabPreview } from "../engagement/SmartTabPreview";
+import { useState } from "react";
 
 interface ProfileTabsProps {
   profile: UserProfile;
   scope: Scope;
   editMode?: boolean;
+  isOwnProfile?: boolean;
   onEditAbout?: () => void;
   onEditServices?: () => void;
   onEditCompliance?: () => void;
@@ -23,11 +26,13 @@ export function ProfileTabs({
   profile, 
   scope, 
   editMode,
+  isOwnProfile = false,
   onEditAbout,
   onEditServices,
   onEditCompliance,
   onEditVisibility
 }: ProfileTabsProps) {
+  const [activeTab, setActiveTab] = useState("posts");
   // Determine which tabs to show
   const showHealthTab = profile.visibility.healthShareConsent && 
     shouldShowField('public', scope); // Health is public when consented
@@ -41,16 +46,21 @@ export function ProfileTabs({
   if (showServicesTab) tabs.push('services');
 
   return (
-    <div className="px-6">
-      <div className="max-w-6xl mx-auto">
-        <Tabs defaultValue="posts" className="space-y-6">
-          <TabsList className={`grid w-full grid-cols-${tabs.length}`}>
-            <TabsTrigger value="posts">Posts</TabsTrigger>
-            <TabsTrigger value="media">Media</TabsTrigger>
-            <TabsTrigger value="groups">Groups</TabsTrigger>
-            {showHealthTab && <TabsTrigger value="health">Health Snapshot</TabsTrigger>}
-            {showServicesTab && <TabsTrigger value="services">Services</TabsTrigger>}
-          </TabsList>
+    <div className="space-y-6">
+      <Tabs defaultValue="posts" onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className={`grid w-full grid-cols-${tabs.length}`}>
+          <TabsTrigger value="posts">Posts</TabsTrigger>
+          <TabsTrigger value="media">Media</TabsTrigger>
+          <TabsTrigger value="groups">Groups</TabsTrigger>
+          {showHealthTab && <TabsTrigger value="health">Health Snapshot</TabsTrigger>}
+          {showServicesTab && <TabsTrigger value="services">Services</TabsTrigger>}
+        </TabsList>
+
+        {/* Smart Tab Previews */}
+        <SmartTabPreview 
+          tabType={activeTab as any}
+          isActive={!isOwnProfile} // Only show previews when viewing others
+        />
 
           <TabsContent value="posts">
             <ProfilePostsTab 
@@ -96,7 +106,6 @@ export function ProfileTabs({
             </TabsContent>
           )}
         </Tabs>
-      </div>
     </div>
   );
 }

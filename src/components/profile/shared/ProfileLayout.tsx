@@ -11,11 +11,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Star, Zap } from "lucide-react";
 import { CommunityImpactWidget } from "../community/CommunityImpactWidget";
 import { SuccessStoryCarousel } from "../community/SuccessStoryCarousel";
+import { CompatibilityIndicator } from "../engagement/CompatibilityIndicator";
+import { ContextualCTAs } from "../engagement/ContextualCTAs";
+import { ViewModeIntelligence } from "../engagement/ViewModeIntelligence";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
   scope: Scope;
   editMode?: boolean;
+  isOwnProfile?: boolean;
   onEditIdentity?: () => void;
   onEditAbout?: () => void;
   onEditServices?: () => void;
@@ -27,7 +31,8 @@ interface ProfileLayoutProps {
 export function ProfileLayout({ 
   profile, 
   scope, 
-  editMode, 
+  editMode,
+  isOwnProfile = false,
   onEditIdentity,
   onEditAbout,
   onEditServices,
@@ -58,19 +63,36 @@ export function ProfileLayout({
           engagementBadges={mockEngagementBadges}
         />
 
-        {/* Community Impact + Success Story (Public social proof) */}
+        {/* Community Impact + Success Story + Engagement (Public social proof) */}
         <div className="px-6">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-            <CommunityImpactWidget 
-              vitanaIndex={profile.vitanaIndex ?? 0}
-              communityStats={{
-                posts: profile.stats.posts,
-                helpedUsers: 12,
-                featuredStories: 3,
-                influenceScore: 85
-              }}
-            />
-            <SuccessStoryCarousel />
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <CommunityImpactWidget 
+                vitanaIndex={profile.vitanaIndex ?? 0}
+                communityStats={{
+                  posts: profile.stats.posts,
+                  helpedUsers: 12,
+                  featuredStories: 3,
+                  influenceScore: 85
+                }}
+              />
+              <SuccessStoryCarousel />
+            </div>
+            
+            {/* Engagement Sidebar */}
+            <div className="space-y-4">
+              <CompatibilityIndicator 
+                isOwnProfile={isOwnProfile}
+                mutualConnections={5}
+              />
+              <ContextualCTAs 
+                isOwnProfile={isOwnProfile}
+                profileType="coach"
+                hasActiveChallenge={true}
+                isServiceProvider={true}
+                compatibilityScore={92}
+              />
+            </div>
           </div>
         </div>
         
@@ -108,12 +130,23 @@ export function ProfileLayout({
           </div>
         )}
         
+        {/* View Mode Intelligence */}
+        <div className="px-6">
+          <div className="max-w-6xl mx-auto">
+            <ViewModeIntelligence 
+              isOwnProfile={isOwnProfile}
+              viewerCompatibility={92}
+            />
+          </div>
+        </div>
+        
         <div className="px-6">
           <div className="max-w-6xl mx-auto">
             <ProfileTabs
               profile={profile} 
               scope={scope} 
               editMode={editMode}
+              isOwnProfile={isOwnProfile}
               onEditAbout={onEditAbout}
               onEditServices={onEditServices}
               onEditCompliance={onEditCompliance}
