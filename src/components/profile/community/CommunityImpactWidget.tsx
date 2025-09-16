@@ -20,8 +20,8 @@ export function CommunityImpactWidget({
   className 
 }: CommunityImpactWidgetProps) {
   const getInfluenceLevel = (score: number) => {
-    if (score >= 80) return { label: "Community Leader", color: "hsl(var(--pill-mental-accent))" };
-    if (score >= 60) return { label: "Active Contributor", color: "hsl(var(--pill-nutrition-accent))" };
+    if (score >= 80) return { label: "Community Leader", color: "hsl(var(--domain-community-accent))" };
+    if (score >= 60) return { label: "Active Contributor", color: "hsl(var(--util-profile-accent))" };
     if (score >= 40) return { label: "Emerging Voice", color: "hsl(var(--pill-hydration-accent))" };
     return { label: "Getting Started", color: "hsl(var(--muted-foreground))" };
   };
@@ -51,7 +51,10 @@ export function CommunityImpactWidget({
             </div>
             <div className="flex items-end gap-1">
               <span className="text-2xl font-bold text-foreground">{vitanaIndex}</span>
-              <Badge variant="outline" className="text-xs border-green-200 text-green-700 bg-green-50">
+              <Badge 
+                variant="outline" 
+                className="text-xs bg-[hsl(var(--sys-vitana-accent)/0.1)] border-[hsl(var(--sys-vitana-accent)/0.2)] text-[hsl(var(--sys-vitana-accent))]"
+              >
                 ↗ +3 this week
               </Badge>
             </div>
@@ -60,7 +63,13 @@ export function CommunityImpactWidget({
           {/* Community Influence */}
           <div className="rounded-xl border p-3 shadow-sm bg-gradient-to-br from-background to-background/50">
             <div className="flex items-center gap-2 mb-1">
-              <div className="rounded-full p-1" style={{ backgroundColor: `${influence.color}15`, border: `1px solid ${influence.color}30` }}>
+              <div 
+                className="rounded-full p-1"
+                style={{ 
+                  backgroundColor: `${influence.color}15`, 
+                  border: `1px solid ${influence.color}30` 
+                }}
+              >
                 <Star className="h-3 w-3" style={{ color: influence.color }} />
               </div>
               <div className="text-xs text-muted-foreground">Influence</div>
@@ -75,7 +84,7 @@ export function CommunityImpactWidget({
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
-              <Heart className="h-3 w-3 text-red-500" />
+              <Heart className="h-3 w-3 text-[hsl(var(--domain-community-accent))]" />
               <span className="text-lg font-bold text-foreground">{communityStats.helpedUsers}</span>
             </div>
             <div className="text-xs text-muted-foreground">People Helped</div>
@@ -83,7 +92,7 @@ export function CommunityImpactWidget({
           
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
-              <Zap className="h-3 w-3 text-yellow-500" />
+              <Zap className="h-3 w-3 text-[hsl(var(--pill-sleep-accent))]" />
               <span className="text-lg font-bold text-foreground">{communityStats.featuredStories}</span>
             </div>
             <div className="text-xs text-muted-foreground">Featured Stories</div>
@@ -91,29 +100,17 @@ export function CommunityImpactWidget({
           
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
-              <Users className="h-3 w-3 text-blue-500" />
+              <Users className="h-3 w-3 text-[hsl(var(--util-profile-accent))]" />
               <span className="text-lg font-bold text-foreground">{communityStats.posts}</span>
             </div>
             <div className="text-xs text-muted-foreground">Posts Shared</div>
           </div>
         </div>
 
-        {/* Action Badges */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Badge className="bg-gradient-to-r from-green-100 to-blue-100 text-green-800 border-green-200 hover:from-green-200 hover:to-blue-200 transition-all duration-200">
-            <Heart className="h-3 w-3 mr-1" />
-            Wellness Mentor
-          </Badge>
-          <Badge className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 border-purple-200 hover:from-purple-200 hover:to-pink-200 transition-all duration-200">
-            <Star className="h-3 w-3 mr-1" />
-            Top Contributor
-          </Badge>
-        </div>
-
         {/* CTA */}
         <Button 
           size="sm" 
-          className="w-full bg-gradient-to-r from-hsl(var(--pill-mental-accent)) to-hsl(var(--pill-nutrition-accent)) hover:from-hsl(var(--pill-mental-accent))/90 hover:to-hsl(var(--pill-nutrition-accent))/90 text-white border-0"
+          className="w-full bg-gradient-to-r from-[hsl(var(--pill-mental-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:from-[hsl(var(--pill-mental-accent)/0.9)] hover:to-[hsl(var(--pill-nutrition-accent)/0.9)] text-white border-0"
         >
           Share Your Success Story
         </Button>

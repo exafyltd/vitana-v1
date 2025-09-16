@@ -45,7 +45,7 @@ const mockStories: SuccessStory[] = [
     metric: {
       type: "Sleep Quality",
       improvement: "+40% better",
-      icon: <Heart className="h-3 w-3" />
+      icon: <Heart className="h-3 w-3 text-[hsl(var(--domain-community-accent))]" />
     }
   },
   {
@@ -124,7 +124,7 @@ export function SuccessStoryCarousel({ className }: SuccessStoryCarouselProps) {
                   {currentStory.metric.icon}
                   {currentStory.metric.type}
                 </div>
-                <div className="text-sm font-semibold text-green-600">
+                <div className="text-sm font-semibold text-[hsl(var(--sys-vitana-accent))]">
                   {currentStory.metric.improvement}
                 </div>
               </div>
@@ -138,10 +138,10 @@ export function SuccessStoryCarousel({ className }: SuccessStoryCarouselProps) {
             <button
               key={index}
               onClick={() => setCurrentStoryIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              className={`h-1.5 rounded-full transition-all duration-300 ${
                 index === currentStoryIndex 
-                  ? 'bg-hsl(var(--domain-community-accent)) w-6' 
-                  : 'bg-border hover:bg-muted-foreground/30'
+                  ? 'bg-[hsl(var(--domain-community-accent))] w-6' 
+                  : 'bg-border hover:bg-muted-foreground/30 w-2'
               }`}
               aria-label={`View story ${index + 1}`}
             />

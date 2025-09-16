@@ -9,6 +9,8 @@ import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Star, Zap } from "lucide-react";
+import { CommunityImpactWidget } from "../community/CommunityImpactWidget";
+import { SuccessStoryCarousel } from "../community/SuccessStoryCarousel";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -55,6 +57,22 @@ export function ProfileLayout({
           achievements={mockAchievements}
           engagementBadges={mockEngagementBadges}
         />
+
+        {/* Community Impact + Success Story (Public social proof) */}
+        <div className="px-6">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CommunityImpactWidget 
+              vitanaIndex={profile.vitanaIndex ?? 0}
+              communityStats={{
+                posts: profile.stats.posts,
+                helpedUsers: 12,
+                featuredStories: 3,
+                influenceScore: 85
+              }}
+            />
+            <SuccessStoryCarousel />
+          </div>
+        </div>
         
         {/* Showcase Section - Single unified location */}
         {editMode && onEditShowcase && (
