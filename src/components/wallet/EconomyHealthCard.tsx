@@ -1,11 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Activity, TrendingUp, AlertTriangle, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function EconomyHealthCard() {
   return (
-    <Card>
+    <Card className="relative">
+      <RewardDot 
+        points={4} 
+        description="Monitor economy health for market insights"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Activity className="h-5 w-5 text-emerald-500" />

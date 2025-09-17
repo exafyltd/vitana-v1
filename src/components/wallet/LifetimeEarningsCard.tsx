@@ -1,10 +1,17 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Trophy, BarChart3 } from "lucide-react";
 
 export function LifetimeEarningsCard() {
   return (
-    <Card>
+    <Card className="relative">
+      <RewardDot 
+        points={10} 
+        description="Milestone achievements unlock bonus rewards"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Trophy className="h-5 w-5 text-yellow-500" />

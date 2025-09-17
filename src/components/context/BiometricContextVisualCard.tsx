@@ -23,6 +23,9 @@ export function BiometricContextVisualCard({
       pillar="Exercise"
       author={{ name: "Health Metrics", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Live Data"
+      rewardPoints={7}
+      rewardDescription="Share biometric data for health credits"
+      showReward={true}
       className={className}
     />
   );

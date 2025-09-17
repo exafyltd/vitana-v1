@@ -1,11 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Shield, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function ActiveBenefitsCard() {
   return (
-    <Card>
+    <Card className="relative">
+      <RewardDot 
+        points={7} 
+        description="Maximize benefits for additional value"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Shield className="h-5 w-5 text-blue-500" />

@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { CheckCircle, AlertTriangle, Zap, Clock, Award, TrendingUp, Droplet } from "lucide-react";
 import { AutopilotAction, AutopilotActionStatus } from "@/types/autopilot";
 
@@ -148,7 +149,13 @@ export function VisualActivityFeed({ activities }: VisualActivityFeedProps) {
         
         return (
           <div key={activity.id}>
-            <Card className={`${getCategoryGradient(activity.category, activity.title)} border-white/20 hover:shadow-lg hover:scale-[1.005] transition-all duration-200 group overflow-hidden`}>
+            <Card className={`${getCategoryGradient(activity.category, activity.title)} border-white/20 hover:shadow-lg hover:scale-[1.005] transition-all duration-200 group relative`}>
+              <RewardDot 
+                points={activity.status === "completed" ? 5 : 3} 
+                description={activity.status === "completed" ? "Activity completed! Credits earned" : "Complete activity for credits"}
+                position="top-right"
+                size="md"
+              />
               <CardContent className="p-0">
                 <div className="flex min-h-[120px]">
                   {/* Left: Expanded Image (40% width) */}

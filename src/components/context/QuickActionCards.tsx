@@ -17,6 +17,9 @@ export function HydrationReminderCard({
       pillar="Hydration"
       author={{ name: "Health Assistant", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Active Alert"
+      rewardPoints={3}
+      rewardDescription="Complete hydration check for credits"
+      showReward={true}
       className={className}
     />
   );
@@ -39,6 +42,9 @@ export function MorningRoutineCard({
       pillar="Mental"
       author={{ name: "AI Optimizer", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Optimization"
+      rewardPoints={4}
+      rewardDescription="Complete morning routine for credits"
+      showReward={true}
       className={className}
     />
   );
@@ -63,6 +69,9 @@ export function UpcomingEventCard({
       pillar="Nutrition"
       author={{ name: "Event Calendar", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp={eventTime}
+      rewardPoints={8}
+      rewardDescription="Join event for participation credits"
+      showReward={true}
       className={className}
     />
   );
@@ -85,6 +94,9 @@ export function SleepCheckCard({
       pillar="Sleep"
       author={{ name: "Sleep Tracker", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Evening Check"
+      rewardPoints={5}
+      rewardDescription="Log sleep data for wellness credits"
+      showReward={true}
       className={className}
     />
   );
@@ -107,6 +119,9 @@ export function CommunitySpotlightCard({
       pillar="Mental"
       author={{ name: "Community Events", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Trending Now"
+      rewardPoints={6}
+      rewardDescription="Join community events for social credits"
+      showReward={true}
       className={className}
     />
   );
@@ -129,6 +144,9 @@ export function EnergyPeakCard({
       pillar="Mental"
       author={{ name: "Energy Analytics", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Peak Analysis"
+      rewardPoints={4}
+      rewardDescription="Track energy patterns for wellness credits"
+      showReward={true}
       className={className}
     />
   );
@@ -151,6 +169,9 @@ export function MeditationSuggestionCard({
       pillar="Mental"
       author={{ name: "Mindfulness Coach", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Suggested"
+      rewardPoints={3}
+      rewardDescription="Complete meditation for mindfulness credits"
+      showReward={true}
       className={className}
     />
   );
@@ -173,6 +194,9 @@ export function SleepReadinessCard({
       pillar="Sleep"
       author={{ name: "Sleep Optimizer", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Evening"
+      rewardPoints={4}
+      rewardDescription="Complete sleep prep for rest credits"
+      showReward={true}
       className={className}
     />
   );

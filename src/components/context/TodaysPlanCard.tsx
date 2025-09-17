@@ -17,6 +17,9 @@ export function TodaysPlanCard({
       pillar="Mental"
       author={{ name: "Daily Schedule", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
       timestamp="Today"
+      rewardPoints={6}
+      rewardDescription="Complete daily plan for organization credits"
+      showReward={true}
       className={className}
     />
   );

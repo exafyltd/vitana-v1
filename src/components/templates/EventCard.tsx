@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Clock, MapPin, Users, Calendar, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
@@ -29,6 +30,9 @@ interface EventCardProps {
   onSendPlan?: (enabled: boolean) => void;
   className?: string;
   maxItems?: number;
+  rewardPoints?: number;
+  rewardDescription?: string;
+  showReward?: boolean;
 }
 
 const EventCardBase = React.forwardRef<HTMLDivElement, EventCardProps>(
@@ -41,6 +45,9 @@ const EventCardBase = React.forwardRef<HTMLDivElement, EventCardProps>(
     onSendPlan,
     className,
     maxItems = 5,
+    rewardPoints,
+    rewardDescription = "Participate in events for credits",
+    showReward = false,
     ...props 
   }, ref) => {
     const displayEvents = events.slice(0, maxItems);
@@ -66,7 +73,15 @@ const EventCardBase = React.forwardRef<HTMLDivElement, EventCardProps>(
 
     if (variant === "timeline") {
       return (
-        <Card ref={ref} className={cn("bg-gradient-to-br from-calendar-primary/5 to-calendar-accent/5 border-calendar-primary/20", className)} {...props}>
+        <Card ref={ref} className={cn("bg-gradient-to-br from-calendar-primary/5 to-calendar-accent/5 border-calendar-primary/20 relative", className)} {...props}>
+          {showReward && rewardPoints && (
+            <RewardDot 
+              points={rewardPoints}
+              description={rewardDescription}
+              position="top-right"
+              size="md"
+            />
+          )}
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold tracking-wide">{title}</CardTitle>
@@ -170,7 +185,15 @@ const EventCardBase = React.forwardRef<HTMLDivElement, EventCardProps>(
 
     // List variant
     return (
-      <Card ref={ref} className={cn("bg-gradient-to-br from-calendar-accent/5 to-calendar-primary/5 border-calendar-accent/20", className)} {...props}>
+      <Card ref={ref} className={cn("bg-gradient-to-br from-calendar-accent/5 to-calendar-primary/5 border-calendar-accent/20 relative", className)} {...props}>
+        {showReward && rewardPoints && (
+          <RewardDot 
+            points={rewardPoints}
+            description={rewardDescription}
+            position="top-right"
+            size="md"
+          />
+        )}
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm font-semibold tracking-wide">{title}</CardTitle>

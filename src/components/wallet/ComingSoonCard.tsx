@@ -1,11 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Sparkles, Bell, Rocket } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function ComingSoonCard() {
   return (
-    <Card className="border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10">
+    <Card className="border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10 relative">
+      <RewardDot 
+        points={2} 
+        description="Stay informed about new features"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary animate-pulse" />
