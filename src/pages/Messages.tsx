@@ -34,7 +34,8 @@ export default function Messages() {
 
   const handleConversationCreated = (threadId: string, recipientId: string) => {
     setSelectedThreadId(threadId);
-    setSelectedRecipientId(null);
+    // Keep recipientId until thread data is loaded with participants
+    setSelectedRecipientId(recipientId);
   };
 
   if (isLoading) {

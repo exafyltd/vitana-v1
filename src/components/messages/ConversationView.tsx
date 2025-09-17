@@ -48,6 +48,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
+  const [isThreadDataLoaded, setIsThreadDataLoaded] = useState(false);
 
   // Fetch recipient data when recipientId changes
   useEffect(() => {
@@ -75,10 +76,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   useEffect(() => {
     if (threadId) {
       fetchMessages(threadId);
+      // Check if thread data has participants loaded
+      const currentThread = threads.find(thread => thread.id === threadId);
+      if (currentThread && currentThread.participants && currentThread.participants.length > 0) {
+        setIsThreadDataLoaded(true);
+      }
     } else if (recipientId) {
       fetchMessages(undefined, recipientId);
     }
-  }, [threadId, recipientId, fetchMessages]);
+  }, [threadId, recipientId, fetchMessages, threads]);
 
   useEffect(() => {
     // Scroll to bottom when new messages arrive
@@ -154,11 +160,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   const getConversationTitle = () => {
+    // If we have thread data with participants, use that
     if (threadId && threads.length > 0) {
-      // Find the current thread
       const currentThread = threads.find(thread => thread.id === threadId);
       if (currentThread && currentThread.participants) {
-        // Find the other participant (not the current user)
         const otherParticipant = currentThread.participants.find(
           participant => participant.user_id !== user?.id
         );
@@ -166,18 +171,20 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           return otherParticipant.display_name || 'Unknown User';
         }
       }
-      return 'Thread Conversation';
     }
     
-    // Use recipient data for direct messages
-    if (recipientId && recipientData) {
+    // Fallback to recipient data if available (for new conversations)
+    if (recipientData) {
       return recipientData.display_name || recipientData.full_name || 'Unknown User';
     }
     
+    // Final fallbacks
+    if (threadId) return 'Thread Conversation';
     return recipientId ? 'Direct Message' : 'New Message';
   };
 
   const getConversationAvatar = () => {
+    // If we have thread data with participants, use that
     if (threadId && threads.length > 0) {
       const currentThread = threads.find(thread => thread.id === threadId);
       if (currentThread && currentThread.participants) {
@@ -188,8 +195,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       }
     }
     
-    // Use recipient data for direct messages
-    if (recipientId && recipientData) {
+    // Fallback to recipient data for new conversations
+    if (recipientData) {
       return recipientData.avatar_url;
     }
     
