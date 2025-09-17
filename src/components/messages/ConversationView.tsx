@@ -181,26 +181,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               </Button>
             )}
             
-            {thread?.type === 'group' ? (
-              <div className="flex -space-x-2">
-                {thread.participants?.slice(0, 3).map((participant, index) => (
-                  <Avatar key={participant.id} className="w-8 h-8 border-2 border-background">
-                    <AvatarImage src={participant.profile?.avatar_url} />
-                    <AvatarFallback className="text-xs">
-                      {participant.profile?.display_name?.[0] || 
-                       participant.profile?.full_name?.[0] || 'U'}
-                    </AvatarFallback>
-                  </Avatar>
-                ))}
-              </div>
-            ) : (
-              <Avatar>
-                <AvatarImage src={thread?.participants?.find(p => p.user_id !== currentUser?.id)?.profile?.avatar_url} />
-                <AvatarFallback>
-                  {getConversationTitle()[0]?.toUpperCase() || 'U'}
-                </AvatarFallback>
-              </Avatar>
-            )}
+            <Avatar>
+              <AvatarFallback>
+                {getConversationTitle()[0]?.toUpperCase() || 'U'}
+              </AvatarFallback>
+            </Avatar>
             
             <div>
               <CardTitle className="text-base">{getConversationTitle()}</CardTitle>
