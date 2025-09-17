@@ -110,7 +110,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
             </div>
             <Progress value={implementationProgress} className="h-2 mb-2" />
             <p className="text-xs text-muted-foreground">
-              <span className="font-semibold text-primary">{totalImpact} VTP</span> potential monthly increase
+              <span className="font-semibold text-primary">{totalImpact} VTN</span> potential monthly increase
             </p>
           </div>
 
@@ -149,7 +149,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1 text-xs text-emerald-600">
                       <DollarSign className="h-3 w-3" />
-                      +{strategy.impact} VTP/month
+                      +{strategy.impact} VTN/month
                     </div>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
@@ -170,7 +170,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-primary">{totalImpact}</div>
-              <div className="text-xs text-muted-foreground">VTP Potential</div>
+              <div className="text-xs text-muted-foreground">VTN Potential</div>
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-emerald-600">{implementedStrategies}</div>

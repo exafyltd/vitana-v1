@@ -94,7 +94,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
             Spending Intelligence
           </CardTitle>
           <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            {totalSavings} VTP Savings Available
+            {totalSavings} VTN Savings Available
           </Badge>
         </div>
       </CardHeader>
@@ -144,7 +144,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
                   {insight.savings && (
                     <div className="flex items-center gap-1 text-xs text-emerald-600">
                       <DollarSign className="h-3 w-3" />
-                      Save {insight.savings} VTP
+                      Save {insight.savings} VTN
                     </div>
                   )}
                 </div>

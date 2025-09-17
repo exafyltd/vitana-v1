@@ -11,7 +11,7 @@ export function EconomyHealthCard() {
           <Activity className="h-5 w-5 text-emerald-500" />
           Economy Health
         </CardTitle>
-        <CardDescription>VTP ecosystem status</CardDescription>
+        <CardDescription>VTN ecosystem status</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
@@ -21,7 +21,7 @@ export function EconomyHealthCard() {
         
         <div className="space-y-3 text-sm">
           <div className="flex justify-between items-center">
-            <span>VTP Burn Rate</span>
+            <span>VTN Burn Rate</span>
             <div className="flex items-center gap-1 text-green-600">
               <TrendingUp className="h-3 w-3" />
               <span className="font-medium">2.4%</span>
@@ -34,8 +34,8 @@ export function EconomyHealthCard() {
           </div>
           
           <div className="flex justify-between items-center">
-            <span>Total VTP Supply</span>
-            <span className="font-medium">12.4M VTP</span>
+            <span>Total VTN Supply</span>
+            <span className="font-medium">12.4M VTN</span>
           </div>
           
           <div className="flex justify-between items-center">

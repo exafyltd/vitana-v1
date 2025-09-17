@@ -21,7 +21,7 @@ export function LifetimeEarningsCard() {
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div className="text-center p-2 bg-muted/50 rounded">
             <div className="font-semibold text-lg">15,847</div>
-            <div className="text-muted-foreground">Total VTP</div>
+            <div className="text-muted-foreground">Total VTN</div>
           </div>
           <div className="text-center p-2 bg-muted/50 rounded">
             <div className="font-semibold text-lg">$1,247</div>

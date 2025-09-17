@@ -120,7 +120,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
             Live Opportunities
           </CardTitle>
           <Badge variant="secondary" className="bg-gradient-to-r from-primary to-purple-600 text-primary-foreground">
-            {totalPotential} VTP Available
+            {totalPotential} VTN Available
           </Badge>
         </div>
       </CardHeader>
@@ -189,7 +189,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary" className="text-xs font-bold">
-                    {opportunity.baseReward * opportunity.multiplier} VTP
+                    {opportunity.baseReward * opportunity.multiplier} VTN
                   </Badge>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3" />
@@ -212,7 +212,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <div className="text-lg font-bold text-emerald-600">{totalPotential}</div>
-            <div className="text-xs text-muted-foreground">Total VTP</div>
+            <div className="text-xs text-muted-foreground">Total VTN</div>
           </div>
         </div>
 

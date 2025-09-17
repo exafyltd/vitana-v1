@@ -309,6 +309,9 @@ export default function Home() {
                     location={todayScheduledEvents[0]?.location}
                     attendees={todayScheduledEvents[0]?.attendees}
                     timestamp={todayScheduledEvents[0]?.timestamp}
+                    showReward={true}
+                    rewardPoints={5}
+                    rewardDescription="Earn credits for attending"
                     className="h-full"
                   />
                 </div>
@@ -322,6 +325,9 @@ export default function Home() {
                     location={todayScheduledEvents[1]?.location}
                     attendees={todayScheduledEvents[1]?.attendees}
                     timestamp={todayScheduledEvents[1]?.timestamp}
+                    showReward={true}
+                    rewardPoints={4}
+                    rewardDescription="Earn credits for learning"
                     className="h-full"
                   />
                 </div>
@@ -335,6 +341,9 @@ export default function Home() {
                     location={todayScheduledEvents[2]?.location}
                     attendees={todayScheduledEvents[2]?.attendees}
                     timestamp={todayScheduledEvents[2]?.timestamp}
+                    showReward={true}
+                    rewardPoints={8}
+                    rewardDescription="Earn credits for group participation"
                     className="h-full"
                   />
                 </div>
@@ -353,6 +362,9 @@ export default function Home() {
                     mediaType={todayMediaContent[0]?.mediaType}
                     author={todayMediaContent[0]?.author}
                     timestamp={todayMediaContent[0]?.timestamp}
+                    showReward={true}
+                    rewardPoints={3}
+                    rewardDescription="Earn credits for completing meditation"
                     className="h-full"
                   />
                 </div>
@@ -365,6 +377,9 @@ export default function Home() {
                     mediaType={todayMediaContent[1]?.mediaType}
                     author={todayMediaContent[1]?.author}
                     timestamp={todayMediaContent[1]?.timestamp}
+                    showReward={true}
+                    rewardPoints={2}
+                    rewardDescription="Earn credits for workout playlist"
                     className="h-full"
                   />
                 </div>
@@ -377,6 +392,9 @@ export default function Home() {
                     mediaType={todayMediaContent[2]?.mediaType}
                     author={todayMediaContent[2]?.author}
                     timestamp={todayMediaContent[2]?.timestamp}
+                    showReward={true}
+                    rewardPoints={4}
+                    rewardDescription="Earn credits for cooking tutorial"
                     className="h-full"
                   />
                 </div>
@@ -396,6 +414,9 @@ export default function Home() {
                     location={todayEventsAndMeetups[0]?.location}
                     attendees={todayEventsAndMeetups[0]?.attendees}
                     timestamp={todayEventsAndMeetups[0]?.timestamp}
+                    showReward={true}
+                    rewardPoints={8}
+                    rewardDescription="Earn credits for joining meetup"
                     className="h-full"
                   />
                 </div>
@@ -409,6 +430,9 @@ export default function Home() {
                     location={todayEventsAndMeetups[1]?.location}
                     attendees={todayEventsAndMeetups[1]?.attendees}
                     timestamp={todayEventsAndMeetups[1]?.timestamp}
+                    showReward={true}
+                    rewardPoints={6}
+                    rewardDescription="Earn credits for hydration challenge"
                     className="h-full"
                   />
                 </div>

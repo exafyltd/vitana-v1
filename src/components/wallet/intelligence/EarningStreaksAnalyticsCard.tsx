@@ -198,7 +198,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
                       To {streak.nextMilestone} days
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      +{streak.reward} VTP
+                      +{streak.reward} VTN
                     </span>
                   </div>
                   <Progress value={streak.progress} className="h-1.5" />
@@ -230,7 +230,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="text-xs text-purple-600 font-semibold">
-                    +{opportunity.reward} VTP
+                    +{opportunity.reward} VTN
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {opportunity.deadline} left

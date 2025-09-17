@@ -135,7 +135,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             </div>
             <span>Digital Wallet</span>
             <Badge variant="outline" className="ml-auto text-green-600 border-green-200">
-              {currentBalance.toLocaleString()} VTP
+              {currentBalance.toLocaleString()} VTN
             </Badge>
           </DialogTitle>
           <DialogDescription>
@@ -152,7 +152,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                   <div className="text-lg font-bold text-green-600">
                     {currentBalance.toLocaleString()}
                   </div>
-                  <div className="text-xs text-muted-foreground">VTP Balance</div>
+                  <div className="text-xs text-muted-foreground">VTN Balance</div>
                   <div className="flex items-center justify-center gap-1 mt-1">
                     <TrendingUp className="h-3 w-3 text-green-500" />
                     <span className="text-xs text-green-600">+{monthlyTrend}%</span>
@@ -219,7 +219,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                     </div>
                     
                     <div className={cn("text-sm font-medium", getTransactionColor(transaction.type))}>
-                      {transaction.amount > 0 ? '+' : ''}{transaction.amount} VTP
+                      {transaction.amount > 0 ? '+' : ''}{transaction.amount} VTN
                     </div>
                   </div>
                 </Card>

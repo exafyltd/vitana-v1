@@ -151,7 +151,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
             <div className="grid grid-cols-3 gap-3 mb-2">
               <div className="text-center">
                 <div className="text-lg font-bold text-primary">{totalCrossPlatformPotential}</div>
-                <div className="text-xs text-muted-foreground">VTP Potential</div>
+                <div className="text-xs text-muted-foreground">VTN Potential</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-purple-600">{avgSynergy}%</div>
@@ -201,7 +201,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                     <Progress value={opportunity.effort} className="h-1.5" />
                   </div>
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-emerald-600">+{opportunity.potential} VTP</div>
+                    <div className="text-sm font-semibold text-emerald-600">+{opportunity.potential} VTN</div>
                     <div className="text-xs text-muted-foreground">{opportunity.timeframe}</div>
                   </div>
                 </div>

@@ -145,7 +145,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
                       {action.priority} priority
                     </Badge>
                     <Badge variant="secondary" className={`text-xs ${getCategoryColor(action.category)}`}>
-                      +{action.expectedReturn} VTP
+                      +{action.expectedReturn} VTN
                     </Badge>
                   </div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">

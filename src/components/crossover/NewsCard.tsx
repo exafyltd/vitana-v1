@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
@@ -28,6 +29,9 @@ interface NewsCardProps {
   actionButton?: React.ReactNode;
   showSmartAction?: boolean;
   onActionClick?: () => void;
+  rewardPoints?: number;
+  rewardDescription?: string;
+  showReward?: boolean;
 }
 
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
@@ -48,7 +52,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     onClick,
     actionButton,
     showSmartAction = false,
-    onActionClick
+    onActionClick,
+    rewardPoints,
+    rewardDescription = "Earn credits",
+    showReward = false
   }, ref) => {
     
     const categoryStyles = {
@@ -149,6 +156,16 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         )}
         onClick={onClick}
       >
+        {/* Reward Dot */}
+        {showReward && rewardPoints && (
+          <RewardDot 
+            points={rewardPoints}
+            description={rewardDescription}
+            position="bottom-right"
+            size="md"
+          />
+        )}
+        
         <div className="relative h-full">
           {/* Background Image */}
           <div 

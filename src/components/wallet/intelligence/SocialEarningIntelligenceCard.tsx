@@ -152,7 +152,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">{totalPotential}</div>
-              <div className="text-xs text-muted-foreground">VTP Available</div>
+              <div className="text-xs text-muted-foreground">VTN Available</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
@@ -230,7 +230,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
 
               <div className="flex items-center justify-between">
                 <div className="text-sm font-bold text-emerald-600">
-                  +{opportunity.reward} VTP
+                  +{opportunity.reward} VTN
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
                   Join Now

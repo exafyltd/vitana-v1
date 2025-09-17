@@ -23,7 +23,7 @@ export function LabWalletCard() {
           </div>
           <div className="p-2 bg-green-50 rounded">
             <div className="text-lg font-bold text-green-600">847</div>
-            <div className="text-xs text-muted-foreground">VTP Earned</div>
+            <div className="text-xs text-muted-foreground">VTN Earned</div>
           </div>
         </div>
         

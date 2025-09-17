@@ -198,7 +198,7 @@ export function celebrateSuccess(event: SuccessEvent) {
   // Show toast notification
   const defaultMessages = {
     balance_update: `Balance updated successfully!`,
-    reward_earned: `You earned ${event.amount || 0} ${event.currency || 'VTP'}!`,
+    reward_earned: `You earned ${event.amount || 0} ${event.currency || 'VTN'}!`,
     transaction_complete: `Transaction completed successfully!`,
     subscription_activated: `Subscription activated!`
   };

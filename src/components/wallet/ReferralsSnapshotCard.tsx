@@ -26,14 +26,14 @@ export function ReferralsSnapshotCard() {
           </div>
           <div>
             <div className="text-2xl font-bold text-amber-600">247</div>
-            <div className="text-xs text-muted-foreground">VTP Earned</div>
+            <div className="text-xs text-muted-foreground">VTN Earned</div>
           </div>
         </div>
         
         <div className="text-center py-2 bg-muted/50 rounded-lg">
           <div className="text-sm text-muted-foreground">Next reward at</div>
           <div className="font-semibold">15 referrals</div>
-          <div className="text-xs text-green-600">+500 VTP bonus</div>
+          <div className="text-xs text-green-600">+500 VTN bonus</div>
         </div>
         
         <div className="flex gap-2">

@@ -73,7 +73,7 @@ export function RewardDot({
           <div className="text-center">
             {points && (
               <div className="font-semibold text-purple-600">
-                +{points} VTP
+                +{points} credits
               </div>
             )}
             <div className="text-xs text-muted-foreground">
