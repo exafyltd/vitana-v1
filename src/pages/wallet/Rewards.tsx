@@ -11,6 +11,10 @@ import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivational
 import { WalletRewardCard } from "@/components/wallet/WalletRewardCard";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { EarningStreaksAnalyticsCard } from "@/components/wallet/intelligence/EarningStreaksAnalyticsCard";
+import { CommissionForecastingCard } from "@/components/wallet/intelligence/CommissionForecastingCard";
+import { SocialEarningIntelligenceCard } from "@/components/wallet/intelligence/SocialEarningIntelligenceCard";
+import { EarningIntelligenceSplitScreen } from "@/components/wallet/intelligence/EarningIntelligenceSplitScreen";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -113,12 +117,18 @@ function Rewards() {
             <SplitBarTrigger value="earned">Earned Rewards</SplitBarTrigger>
             <SplitBarTrigger value="pending">Pending Commissions</SplitBarTrigger>
             <SplitBarTrigger value="referral">Withdrawal & Referral</SplitBarTrigger>
+            <SplitBarTrigger value="intelligence">Earning Intelligence</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner variant="rewards" />
 
           <SplitBarContent value="earned">
             <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <EarningStreaksAnalyticsCard />
+                <WalletMotivationalBanner variant="rewards" />
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {rewardsData.earned.map((reward) => (
                   <WalletRewardCard
@@ -129,13 +139,16 @@ function Rewards() {
                   />
                 ))}
               </div>
-              
-              <WalletMotivationalBanner variant="rewards" />
             </div>
           </SplitBarContent>
 
           <SplitBarContent value="pending">
             <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <CommissionForecastingCard />
+                <WalletMotivationalBanner variant="rewards" />
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {rewardsData.pending.map((commission) => (
                   <WalletRewardCard
@@ -146,13 +159,16 @@ function Rewards() {
                   />
                 ))}
               </div>
-              
-              <WalletMotivationalBanner variant="rewards" />
             </div>
           </SplitBarContent>
 
           <SplitBarContent value="referral">
             <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <SocialEarningIntelligenceCard />
+                <WalletMotivationalBanner variant="rewards" />
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {rewardsData.referral.map((referral) => (
                   <WalletRewardCard
@@ -163,9 +179,11 @@ function Rewards() {
                   />
                 ))}
               </div>
-              
-              <WalletMotivationalBanner variant="rewards" />
             </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="intelligence">
+            <EarningIntelligenceSplitScreen />
           </SplitBarContent>
         </SplitBar>
 
