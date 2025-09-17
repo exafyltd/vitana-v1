@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Sparkles, ArrowRight, Clock, Target, TrendingUp } from "lucide-react";
 
 interface PredictiveAction {
@@ -99,7 +100,13 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
   const avgConfidence = mockActions.reduce((sum, action) => sum + action.confidence, 0) / mockActions.length;
 
   return (
-    <Card className={`${className} overflow-hidden`}>
+    <Card className={`${className} overflow-hidden relative`}>
+      <RewardDot 
+        points={12} 
+        description="Act on AI predictions for maximum rewards"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">

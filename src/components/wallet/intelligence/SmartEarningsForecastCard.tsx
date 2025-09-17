@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { TrendingUp, Zap, Clock, Target } from "lucide-react";
 
 interface EarningOpportunity {
@@ -84,7 +85,13 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
   const completionProgress = 65; // Mock progress based on user activity
 
   return (
-    <Card className={`${className} overflow-hidden`}>
+    <Card className={`${className} overflow-hidden relative`}>
+      <RewardDot 
+        points={8} 
+        description="Complete forecast actions for bonus credits"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">

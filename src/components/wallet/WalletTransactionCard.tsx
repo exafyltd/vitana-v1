@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { 
   ArrowUpRight, 
   ArrowDownLeft, 
@@ -110,16 +111,53 @@ export function WalletTransactionCard({
   const Icon = getIcon();
   const StatusIcon = getStatusIcon();
 
+  // Get reward points based on transaction type
+  const getRewardPoints = () => {
+    switch (type) {
+      case "reward":
+        return 2; // Earn credits for reviewing rewards
+      case "incoming":
+        return 3; // Earn credits for sharing referral success
+      case "conversion":
+        return 5; // Earn credits for sharing conversion strategies
+      case "purchase":
+        return 1; // Earn credits for subscription feedback
+      default:
+        return 2;
+    }
+  };
+
+  const getRewardDescription = () => {
+    switch (type) {
+      case "reward":
+        return "Share reward feedback";
+      case "incoming":
+        return "Tell your success story";
+      case "conversion":
+        return "Share conversion tips";
+      case "purchase":
+        return "Rate your purchase";
+      default:
+        return "Engage with transaction";
+    }
+  };
+
   return (
     <Card 
       className={cn(
-        "group cursor-pointer hover:shadow-lg transition-all duration-300 border-l-4",
+        "group cursor-pointer hover:shadow-lg transition-all duration-300 border-l-4 relative",
         type === "incoming" || type === "reward" ? "border-l-green-500" : 
         type === "outgoing" || type === "purchase" ? "border-l-red-500" : "border-l-blue-500",
         className
       )}
       onClick={onClick}
     >
+      <RewardDot 
+        points={getRewardPoints()} 
+        description={getRewardDescription()}
+        position="bottom-right"
+        size="sm"
+      />
       <CardContent className="p-4">
         {imageUrl && (
           <div className="relative h-20 mb-3 rounded-lg overflow-hidden">

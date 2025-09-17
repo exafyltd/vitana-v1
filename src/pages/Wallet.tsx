@@ -119,7 +119,9 @@ const quickActionsData = [
     category: "wellness" as const,
     pillar: "Finance",
     author: { name: "VITANA Store", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "Limited Time"
+    timestamp: "Limited Time",
+    rewardPoints: 10,
+    rewardDescription: "Earn credits for completing purchase"
   },
   {
     title: "Transfer to Friend 🤝",
@@ -128,7 +130,9 @@ const quickActionsData = [
     category: "community" as const,
     pillar: "Social",
     author: { name: "Transfer Service", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "Available 24/7"
+    timestamp: "Available 24/7",
+    rewardPoints: 5,
+    rewardDescription: "Earn credits for social sharing"
   },
   {
     title: "Convert Rewards 🔄",
@@ -137,7 +141,9 @@ const quickActionsData = [
     category: "achievement" as const,
     pillar: "Rewards",
     author: { name: "Rewards Engine", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "Instant Conversion"
+    timestamp: "Instant Conversion",
+    rewardPoints: 3,
+    rewardDescription: "Earn credits for conversion feedback"
   }
 ];
 
@@ -305,6 +311,8 @@ export default function Wallet() {
                     pillar={quickActionsData[0].pillar}
                     author={quickActionsData[0].author}
                     timestamp={quickActionsData[0].timestamp}
+                    rewardPoints={quickActionsData[0].rewardPoints}
+                    rewardDescription={quickActionsData[0].rewardDescription}
                     className="h-full"
                   />
                 </div>
@@ -317,6 +325,8 @@ export default function Wallet() {
                     pillar={quickActionsData[1].pillar}
                     author={quickActionsData[1].author}
                     timestamp={quickActionsData[1].timestamp}
+                    rewardPoints={quickActionsData[1].rewardPoints}
+                    rewardDescription={quickActionsData[1].rewardDescription}
                     className="h-full"
                   />
                 </div>
@@ -329,6 +339,8 @@ export default function Wallet() {
                     pillar={quickActionsData[2].pillar}
                     author={quickActionsData[2].author}
                     timestamp={quickActionsData[2].timestamp}
+                    rewardPoints={quickActionsData[2].rewardPoints}
+                    rewardDescription={quickActionsData[2].rewardDescription}
                     className="h-full"
                   />
                 </div>

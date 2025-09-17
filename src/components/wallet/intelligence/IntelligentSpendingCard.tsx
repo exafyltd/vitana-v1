@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Brain, AlertTriangle, TrendingDown, Calendar, DollarSign } from "lucide-react";
 
 interface SpendingInsight {
@@ -86,7 +87,13 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
   const spendingEfficiency = 78; // Mock efficiency score
   
   return (
-    <Card className={`${className} overflow-hidden`}>
+    <Card className={`${className} overflow-hidden relative`}>
+      <RewardDot 
+        points={6} 
+        description="Apply spending insights for savings rewards"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
