@@ -7,8 +7,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
-import { useMessages, MessageThread } from '@/hooks/useMessages';
-import { supabase } from '@/integrations/supabase/client';
+import { useHybridMessages } from '@/hooks/useHybridMessages';
+import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
 import { 
   ArrowLeft, 
@@ -22,30 +22,37 @@ import {
 import { cn } from '@/lib/utils';
 
 interface ConversationViewProps {
-  thread?: MessageThread;
-  recipientId?: string; // for direct messages
+  threadId?: string | null;
+  recipientId?: string | null;
   onBack?: () => void;
   className?: string;
 }
 
 const ConversationView: React.FC<ConversationViewProps> = ({
-  thread,
+  threadId,
   recipientId,
   onBack,
   className
 }) => {
-  const { messages, loading, sending, sendMessage, markAsRead } = useMessages(thread?.id);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const { user } = useAuth();
+  const { 
+    messages, 
+    sendMessage, 
+    fetchMessages, 
+    markAsRead, 
+    isSending,
+    context
+  } = useHybridMessages();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    const getCurrentUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setCurrentUser(user);
-    };
-    getCurrentUser();
-  }, []);
+    if (threadId) {
+      fetchMessages(threadId);
+    } else if (recipientId) {
+      fetchMessages(undefined, recipientId);
+    }
+  }, [threadId, recipientId, fetchMessages]);
 
   useEffect(() => {
     // Scroll to bottom when new messages arrive
@@ -54,10 +61,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   useEffect(() => {
     // Mark messages as read when viewing thread
-    if (thread?.id && !loading) {
-      markAsRead(thread.id);
+    if (threadId) {
+      markAsRead(threadId);
     }
-  }, [thread?.id, loading, markAsRead]);
+  }, [threadId, markAsRead]);
 
   const handleSendMessage = async (
     content: string, 
@@ -66,14 +73,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     actionButtons?: any[]
   ) => {
     try {
-      await sendMessage(
-        content,
-        recipientId,
-        messageType,
-        contentData,
-        undefined, // workflow_type
-        actionButtons
-      );
+      if (context === 'global' && threadId) {
+        await sendMessage(threadId, content, messageType, contentData);
+      } else if (context === 'tenant') {
+        await sendMessage(content, threadId, recipientId, messageType, contentData);
+      }
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -81,10 +85,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   const handleActionClick = async (action: any) => {
     try {
-      // Record the action
-      const { data: user } = await supabase.auth.getUser();
-      if (!user.user) return;
-
       // Handle different action types
       switch (action.action || action.type) {
         case 'payment_accept':
@@ -92,11 +92,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             title: 'Payment Processing',
             description: 'Redirecting to payment gateway...',
           });
-          // Here you would integrate with payment processing
           break;
           
         case 'payment_decline':
-          await sendMessage('Payment request declined', undefined, 'system');
+          await handleSendMessage('Payment request declined', 'system');
           break;
           
         case 'calendar_accept':
@@ -104,15 +103,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             title: 'Calendar Updated',
             description: 'Event added to your calendar',
           });
-          await sendMessage('Event accepted ✅', undefined, 'system');
+          await handleSendMessage('Event accepted ✅', 'system');
           break;
           
         case 'calendar_decline':
-          await sendMessage('Event declined ❌', undefined, 'system');
+          await handleSendMessage('Event declined ❌', 'system');
           break;
           
         case 'quick_reply':
-          await sendMessage(action.text);
+          await handleSendMessage(action.text);
           break;
           
         default:
@@ -129,29 +128,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   const getConversationTitle = () => {
-    if (thread) {
-      if (thread.name) return thread.name;
-      if (thread.type === 'group') return 'Group Chat';
-      
-      // For direct messages, show other participant's name
-      const otherParticipant = thread.participants?.find(
-        p => p.user_id !== currentUser?.id
-      );
-      return otherParticipant?.profile?.display_name || 
-             otherParticipant?.profile?.full_name || 
-             'Direct Message';
-    }
-    return 'New Message';
+    return threadId ? 'Thread Conversation' : recipientId ? 'Direct Message' : 'New Message';
   };
 
   const getConversationSubtitle = () => {
-    if (thread?.type === 'group') {
-      return `${thread.participants?.length || 0} members`;
-    }
-    return 'Direct message';
+    return context === 'global' ? 'Global Community' : 'Professional Network';
   };
 
-  if (loading && messages.length === 0) {
+  if (messages.length === 0 && !threadId && !recipientId) {
     return (
       <Card className={cn("flex flex-col h-full", className)}>
         <CardHeader className="flex-shrink-0 border-b">
@@ -222,12 +206,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               <CardTitle className="text-base">{getConversationTitle()}</CardTitle>
               <p className="text-sm text-muted-foreground">{getConversationSubtitle()}</p>
             </div>
-            
-            {thread?.unread_count && thread.unread_count > 0 && (
-              <Badge variant="secondary" className="ml-auto">
-                {thread.unread_count}
-              </Badge>
-            )}
           </div>
           
           <div className="flex items-center gap-1">
@@ -255,14 +233,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               </div>
             ) : (
               messages.map((message, index) => {
-                const isOwnMessage = message.sender_id === currentUser?.id;
+                const isOwnMessage = message.sender_id === user?.id;
                 const showAvatar = !isOwnMessage && (
                   index === 0 || 
                   messages[index - 1]?.sender_id !== message.sender_id
                 );
                 const showTimestamp = index === messages.length - 1 || 
                   new Date(messages[index + 1]?.created_at).getTime() - 
-                  new Date(message.created_at).getTime() > 5 * 60 * 1000; // 5 minutes
+                  new Date(message.created_at).getTime() > 5 * 60 * 1000;
 
                 return (
                   <MessageBubble
@@ -284,7 +262,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       {/* Message Input */}
       <MessageInput
         onSendMessage={handleSendMessage}
-        disabled={sending}
+        disabled={isSending}
         placeholder={`Message ${getConversationTitle()}...`}
       />
     </Card>

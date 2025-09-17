@@ -82,6 +82,314 @@ export type Database = {
         }
         Relationships: []
       }
+      global_community_events: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          end_time: string | null
+          event_type: string
+          id: string
+          location: string | null
+          max_participants: number | null
+          participant_count: number
+          start_time: string
+          title: string
+          updated_at: string
+          virtual_link: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          end_time?: string | null
+          event_type?: string
+          id?: string
+          location?: string | null
+          max_participants?: number | null
+          participant_count?: number
+          start_time: string
+          title: string
+          updated_at?: string
+          virtual_link?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          end_time?: string | null
+          event_type?: string
+          id?: string
+          location?: string | null
+          max_participants?: number | null
+          participant_count?: number
+          start_time?: string
+          title?: string
+          updated_at?: string
+          virtual_link?: string | null
+        }
+        Relationships: []
+      }
+      global_community_groups: {
+        Row: {
+          avatar_url: string | null
+          category: string | null
+          cover_url: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          is_public: boolean
+          member_count: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          category?: string | null
+          cover_url?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          member_count?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          category?: string | null
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          member_count?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      global_community_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          interests: string[] | null
+          is_visible: boolean
+          location: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          interests?: string[] | null
+          is_visible?: boolean
+          location?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          interests?: string[] | null
+          is_visible?: boolean
+          location?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      global_event_participants: {
+        Row: {
+          event_id: string
+          id: string
+          registered_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          event_id: string
+          id?: string
+          registered_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          event_id?: string
+          id?: string
+          registered_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_global_event_participants_event"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_group_members: {
+        Row: {
+          group_id: string
+          id: string
+          is_active: boolean
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          is_active?: boolean
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          is_active?: boolean
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_global_group_members_group"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_message_threads: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          metadata: Json | null
+          name: string | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          metadata?: Json | null
+          name?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          metadata?: Json | null
+          name?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      global_messages: {
+        Row: {
+          body: string
+          content_data: Json | null
+          created_at: string | null
+          id: string
+          message_type: string
+          parent_message_id: string | null
+          sender_id: string
+          thread_id: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          content_data?: Json | null
+          created_at?: string | null
+          id?: string
+          message_type?: string
+          parent_message_id?: string | null
+          sender_id: string
+          thread_id: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          content_data?: Json | null
+          created_at?: string | null
+          id?: string
+          message_type?: string
+          parent_message_id?: string | null
+          sender_id?: string
+          thread_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_global_messages_thread"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "global_message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      global_thread_participants: {
+        Row: {
+          id: string
+          is_active: boolean
+          joined_at: string
+          last_read_at: string | null
+          role: string
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          is_active?: boolean
+          joined_at?: string
+          last_read_at?: string | null
+          role?: string
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          is_active?: boolean
+          joined_at?: string
+          last_read_at?: string | null
+          role?: string
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_global_thread_participants_thread"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "global_message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lab_test_orders: {
         Row: {
           collection_method: Database["public"]["Enums"]["collection_method"]
@@ -698,8 +1006,16 @@ export type Database = {
         Args: { tenant_id_param: string; user_id_param: string }
         Returns: boolean
       }
+      is_community_user: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       is_exafy_admin: {
         Args: { user_id_param: string }
+        Returns: boolean
+      }
+      is_tenant_scoped_user: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       list_roles_for_active_tenant: {
