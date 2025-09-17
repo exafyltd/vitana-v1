@@ -194,14 +194,14 @@ function RoomCard({ room, onJoin }: { room: LiveRoom; onJoin: (room: LiveRoom) =
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer group relative">
+    <Card className="hover:shadow-lg transition-all duration-200 cursor-pointer group relative">
       <RewardDot 
         points={getRewardPoints()} 
         description={getRewardDescription()}
         position="top-right"
         size="sm"
       />
-      <div className="relative">
+      <div className="relative overflow-hidden">
         <div 
           className="h-32 bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 flex items-center justify-center"
           style={{

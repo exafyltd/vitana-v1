@@ -87,7 +87,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
   const spendingEfficiency = 78; // Mock efficiency score
   
   return (
-    <Card className={`${className} overflow-hidden relative`}>
+    <Card className={`${className} relative`}>
       <RewardDot 
         points={6} 
         description="Apply spending insights for savings rewards"

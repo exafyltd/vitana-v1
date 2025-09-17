@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Gift, Clock, Users, Zap, Timer } from "lucide-react";
 
 interface RewardOpportunity {
@@ -112,7 +113,13 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
   const totalPotential = activeOpportunities.reduce((sum, opp) => sum + (opp.baseReward * opp.multiplier), 0);
 
   return (
-    <Card className={`${className} overflow-hidden`}>
+    <Card className={`${className} relative`}>
+      <RewardDot 
+        points={15} 
+        description="Join live opportunities for bonus rewards"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">

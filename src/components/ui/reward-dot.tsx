@@ -24,18 +24,18 @@ export function RewardDot({
   const dotElement = (
     <div
       className={cn(
-        "absolute rounded-full bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg z-10",
+        "absolute rounded-full bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg z-50",
         {
           // Size variants
           "w-2 h-2": size === "sm",
           "w-3 h-3": size === "md", 
           "w-4 h-4": size === "lg",
           
-          // Position variants
-          "-top-1 -right-1": position === "top-right",
-          "-top-1 -left-1": position === "top-left",
-          "-bottom-1 -right-1": position === "bottom-right",
-          "-bottom-1 -left-1": position === "bottom-left",
+          // Position variants - using positive positioning inside card boundaries
+          "top-2 right-2": position === "top-right",
+          "top-2 left-2": position === "top-left",
+          "bottom-2 right-2": position === "bottom-right",
+          "bottom-2 left-2": position === "bottom-left",
           
           // Animation
           "animate-pulse": animate,

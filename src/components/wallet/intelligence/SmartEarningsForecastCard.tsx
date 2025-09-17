@@ -85,7 +85,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
   const completionProgress = 65; // Mock progress based on user activity
 
   return (
-    <Card className={`${className} overflow-hidden relative`}>
+    <Card className={`${className} relative`}>
       <RewardDot 
         points={8} 
         description="Complete forecast actions for bonus credits"

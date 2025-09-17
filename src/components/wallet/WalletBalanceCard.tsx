@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { TrendingUp, DollarSign, Coins, Shield, ArrowUpRight, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -75,12 +76,18 @@ export function WalletBalanceCard({
   return (
     <Card 
       className={cn(
-        "group cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden",
+        "group cursor-pointer hover:shadow-lg transition-all duration-300 relative",
         getGradient(),
         className
       )}
       onClick={onClick}
     >
+      <RewardDot 
+        points={type === "cash" ? 5 : type === "credits" ? 3 : 8} 
+        description={`Earn more ${type === "cash" ? "cash" : type === "credits" ? "credits" : "tokens"} through activities`}
+        position="top-right"
+        size="md"
+      />
       <CardContent className="p-6">
         {imageUrl && (
           <div className="relative h-32 mb-4 rounded-lg overflow-hidden">

@@ -151,7 +151,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       <Card 
         ref={ref}
         className={cn(
-          "group relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-0 h-full",
+          "group relative cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-0 h-full",
           className
         )}
         onClick={onClick}
@@ -166,7 +166,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           />
         )}
         
-        <div className="relative h-full">
+        <div className="relative h-full overflow-hidden">
           {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"

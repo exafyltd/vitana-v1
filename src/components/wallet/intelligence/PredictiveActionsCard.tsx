@@ -100,7 +100,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
   const avgConfidence = mockActions.reduce((sum, action) => sum + action.confidence, 0) / mockActions.length;
 
   return (
-    <Card className={`${className} overflow-hidden relative`}>
+    <Card className={`${className} relative`}>
       <RewardDot 
         points={12} 
         description="Act on AI predictions for maximum rewards"
