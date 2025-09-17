@@ -7,12 +7,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { InboxMasterActionPopup } from "@/components/messages/InboxMasterActionPopup";
-import { MessageSquare, Users, Bell, Archive, Clock, AlertTriangle, Lightbulb, Mail, Zap, Copy, Send, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import ConversationView from "@/components/messages/ConversationView";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MessageSquare, Users, Bell, Archive, Plus, DollarSign, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useState, useEffect } from "react";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { useMessages, MessageThread } from "@/hooks/useMessages";
+import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 import { messagesNavigation } from "@/config/navigation";
 
@@ -98,6 +104,61 @@ const stats = {
 export default withScreenId(function Messages() {
   const [activeOverviewTab, setActiveOverviewTab] = useState("direct");
   const [inboxActionOpen, setInboxActionOpen] = useState(false);
+  const [selectedThread, setSelectedThread] = useState<MessageThread | null>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const { threads, loading } = useMessages();
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user);
+    };
+    getCurrentUser();
+  }, []);
+
+  const ThreadItem = ({ thread }: { thread: MessageThread }) => {
+    const otherParticipant = thread.participants?.find(p => p.user_id !== currentUser?.id);
+    const displayName = thread.name || 
+      otherParticipant?.profile?.display_name || 
+      otherParticipant?.profile?.full_name || 
+      'Unknown User';
+
+    return (
+      <div
+        className={cn(
+          "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors",
+          "hover:bg-muted/50",
+          selectedThread?.id === thread.id && "bg-muted"
+        )}
+        onClick={() => setSelectedThread(thread)}
+      >
+        <Avatar className="flex-shrink-0">
+          <AvatarImage src={otherParticipant?.profile?.avatar_url || ''} />
+          <AvatarFallback>
+            {displayName[0]?.toUpperCase() || 'U'}
+          </AvatarFallback>
+        </Avatar>
+        
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between">
+            <p className="font-medium truncate">{displayName}</p>
+            <span className="text-xs text-muted-foreground">
+              {thread.last_message && format(new Date(thread.last_message.created_at), 'HH:mm')}
+            </span>
+          </div>
+          <p className="text-sm text-muted-foreground truncate">
+            {thread.last_message?.body || 'No messages yet'}
+          </p>
+        </div>
+        
+        {thread.unread_count && thread.unread_count > 0 && (
+          <Badge variant="secondary" className="flex-shrink-0">
+            {thread.unread_count}
+          </Badge>
+        )}
+      </div>
+    );
+  };
 
   const EmptyState = ({ icon: Icon, title, description }: any) => (
     <div className="flex flex-col items-center justify-center h-64 text-center">
@@ -110,114 +171,127 @@ export default withScreenId(function Messages() {
   return (
     <AppLayout>
       <SEO 
-        title="Inbox | Communication Hub" 
+        title="Messages | Communication Hub" 
         description="Manage your conversations, notifications, and stay connected with your community"
         canonical={window.location.href}
       />
       <SubNavigation items={messagesNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-domain-messages-tint via-background to-domain-messages-tint/50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <StandardHeader
-            title="Stay connected with your community!"
-            description="Manage your conversations, notifications, and stay connected with your wellness community."
-            emoji="💬"
-          />
-
-          <UtilityActionButton>
-            <ExpandableSearchButton 
-              placeholder="Search messages, contacts, or groups..."
-              onSearch={(query) => console.log('Search:', query)}
+      <div className="flex h-[calc(100vh-120px)]">
+        {/* Sidebar */}
+        <div className="w-80 border-r bg-muted/30 flex flex-col">
+          <div className="p-4 border-b bg-background">
+            <StandardHeader
+              title="Messages"
+              description="Stay connected with your community"
+              emoji="💬"
             />
-            <Button size="sm" onClick={() => setInboxActionOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              New Message
-            </Button>
-          </UtilityActionButton>
 
-          <SplitBar value={activeOverviewTab} onValueChange={setActiveOverviewTab}>
-            <SplitBarList>
-              <SplitBarTrigger value="direct">Direct Messages</SplitBarTrigger>
-              <SplitBarTrigger value="groups">Group Chats</SplitBarTrigger>
-              <SplitBarTrigger value="notifications">Notifications</SplitBarTrigger>
-              <SplitBarTrigger value="archived">Archived</SplitBarTrigger>
-            </SplitBarList>
+            <UtilityActionButton className="mt-4">
+              <ExpandableSearchButton 
+                placeholder="Search conversations..."
+                onSearch={(query) => console.log('Search:', query)}
+              />
+              <Button size="sm" onClick={() => setInboxActionOpen(true)}>
+                <Plus className="w-4 h-4 mr-2" />
+                New
+              </Button>
+            </UtilityActionButton>
 
-            <SplitBarContent value="direct" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5" />
-                    Direct Messages
-                    <Badge variant="secondary">{stats.unreadDirect}</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <EmptyState 
-                    icon={MessageSquare}
-                    title="No direct messages"
-                    description="Start a conversation with community members"
-                  />
-                </CardContent>
-              </Card>
+            <SplitBar value={activeOverviewTab} onValueChange={setActiveOverviewTab} className="mt-4">
+              <SplitBarList>
+                <SplitBarTrigger value="direct">Direct</SplitBarTrigger>
+                <SplitBarTrigger value="groups">Groups</SplitBarTrigger>
+                <SplitBarTrigger value="notifications">Alerts</SplitBarTrigger>
+              </SplitBarList>
+            </SplitBar>
+          </div>
+
+          {/* Conversation List */}
+          <ScrollArea className="flex-1">
+            <SplitBarContent value="direct" className="p-4">
+              {loading ? (
+                <div className="space-y-3">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3">
+                      <div className="w-10 h-10 bg-muted rounded-full animate-pulse" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-muted rounded animate-pulse" />
+                        <div className="h-3 bg-muted rounded w-3/4 animate-pulse" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : threads.length === 0 ? (
+                <EmptyState 
+                  icon={MessageSquare}
+                  title="No conversations"
+                  description="Start a new conversation to connect with others"
+                />
+              ) : (
+                <div className="space-y-1">
+                  {threads.filter(t => t.type === 'direct').map(thread => (
+                    <ThreadItem key={thread.id} thread={thread} />
+                  ))}
+                </div>
+              )}
             </SplitBarContent>
 
-            <SplitBarContent value="groups" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="w-5 h-5" />
-                    Group Chats
-                    <Badge variant="secondary">{stats.unreadGroups}</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <EmptyState 
-                    icon={Users}
-                    title="No group chats"
-                    description="Join or create group conversations"
-                  />
-                </CardContent>
-              </Card>
+            <SplitBarContent value="groups" className="p-4">
+              {threads.filter(t => t.type === 'group').length === 0 ? (
+                <EmptyState 
+                  icon={Users}
+                  title="No group chats"
+                  description="Join or create group conversations"
+                />
+              ) : (
+                <div className="space-y-1">
+                  {threads.filter(t => t.type === 'group').map(thread => (
+                    <ThreadItem key={thread.id} thread={thread} />
+                  ))}
+                </div>
+              )}
             </SplitBarContent>
 
-            <SplitBarContent value="notifications" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Bell className="w-5 h-5" />
-                    Notifications
-                    <Badge variant="secondary">{stats.unreadNotifications}</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <EmptyState 
-                    icon={Bell}
-                    title="No notifications"
-                    description="Your notifications will appear here"
-                  />
-                </CardContent>
-              </Card>
+            <SplitBarContent value="notifications" className="p-4">
+              <EmptyState 
+                icon={Bell}
+                title="No notifications"
+                description="System notifications will appear here"
+              />
             </SplitBarContent>
+          </ScrollArea>
+        </div>
 
-            <SplitBarContent value="archived" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Archive className="w-5 h-5" />
-                    Archived Messages
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <EmptyState 
-                    icon={Archive}
-                    title="No archived messages"
-                    description="Archived conversations will appear here"
-                  />
-                </CardContent>
-              </Card>
-            </SplitBarContent>
-          </SplitBar>
+        {/* Main Chat Area */}
+        <div className="flex-1 flex flex-col">
+          {selectedThread ? (
+            <ConversationView 
+              thread={selectedThread}
+              onBack={() => setSelectedThread(null)}
+              className="h-full border-none"
+            />
+          ) : (
+            <div className="flex-1 flex items-center justify-center bg-muted/10">
+              <div className="text-center max-w-sm">
+                <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                <h3 className="text-xl font-semibold mb-2">Select a conversation</h3>
+                <p className="text-muted-foreground mb-6">
+                  Choose a conversation from the sidebar or start a new one
+                </p>
+                <div className="flex gap-2 justify-center">
+                  <Button onClick={() => setInboxActionOpen(true)}>
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    New Message
+                  </Button>
+                  <Button variant="outline">
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Request Payment
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       

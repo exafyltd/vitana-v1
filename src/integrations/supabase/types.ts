@@ -265,37 +265,179 @@ export type Database = {
           },
         ]
       }
+      message_actions: {
+        Row: {
+          action_data: Json | null
+          action_type: string
+          created_at: string
+          id: string
+          message_id: string
+          user_id: string
+        }
+        Insert: {
+          action_data?: Json | null
+          action_type: string
+          created_at?: string
+          id?: string
+          message_id: string
+          user_id: string
+        }
+        Update: {
+          action_data?: Json | null
+          action_type?: string
+          created_at?: string
+          id?: string
+          message_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_actions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      message_templates: {
+        Row: {
+          category: string
+          content: Json
+          created_at: string
+          id: string
+          is_active: boolean
+          template_type: string
+          tenant_id: string
+          updated_at: string
+          variables: Json | null
+        }
+        Insert: {
+          category: string
+          content: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          template_type: string
+          tenant_id: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Update: {
+          category?: string
+          content?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          template_type?: string
+          tenant_id?: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Relationships: []
+      }
+      message_threads: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          metadata: Json | null
+          name: string | null
+          tenant_id: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          metadata?: Json | null
+          name?: string | null
+          tenant_id: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          metadata?: Json | null
+          name?: string | null
+          tenant_id?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
+          action_buttons: Json | null
           body: string
+          content_data: Json | null
           created_at: string | null
+          expires_at: string | null
           id: string
+          message_type: string
+          parent_message_id: string | null
           recipient_id: string | null
           sender_id: string
           tenant_id: string
+          thread_id: string | null
+          updated_at: string
+          workflow_type: string | null
         }
         Insert: {
+          action_buttons?: Json | null
           body: string
+          content_data?: Json | null
           created_at?: string | null
+          expires_at?: string | null
           id?: string
+          message_type?: string
+          parent_message_id?: string | null
           recipient_id?: string | null
           sender_id: string
           tenant_id: string
+          thread_id?: string | null
+          updated_at?: string
+          workflow_type?: string | null
         }
         Update: {
+          action_buttons?: Json | null
           body?: string
+          content_data?: Json | null
           created_at?: string | null
+          expires_at?: string | null
           id?: string
+          message_type?: string
+          parent_message_id?: string | null
           recipient_id?: string | null
           sender_id?: string
           tenant_id?: string
+          thread_id?: string | null
+          updated_at?: string
+          workflow_type?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "messages_parent_message_id_fkey"
+            columns: ["parent_message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "messages_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
             referencedColumns: ["id"]
           },
         ]
@@ -456,6 +598,44 @@ export type Database = {
           slug?: string | null
         }
         Relationships: []
+      }
+      thread_participants: {
+        Row: {
+          id: string
+          is_active: boolean
+          joined_at: string
+          last_read_at: string | null
+          role: string
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          is_active?: boolean
+          joined_at?: string
+          last_read_at?: string | null
+          role?: string
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          is_active?: boolean
+          joined_at?: string
+          last_read_at?: string | null
+          role?: string
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thread_participants_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       wallet_credits: {
         Row: {
