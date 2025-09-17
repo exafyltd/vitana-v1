@@ -198,73 +198,73 @@ export default withScreenId(function Messages() {
               </Button>
             </UtilityActionButton>
 
-            <SplitBar value={activeOverviewTab} onValueChange={setActiveOverviewTab} className="mt-4">
+            <SplitBar value={activeOverviewTab} onValueChange={setActiveOverviewTab} className="mt-4 flex flex-col flex-1">
               <SplitBarList>
                 <SplitBarTrigger value="direct">Direct</SplitBarTrigger>
                 <SplitBarTrigger value="groups">Groups</SplitBarTrigger>
                 <SplitBarTrigger value="notifications">Alerts</SplitBarTrigger>
               </SplitBarList>
+
+              {/* Conversation List */}
+              <SplitBarContent value="direct" className="flex-1">
+                <ScrollArea className="h-full p-4">
+                  {loading ? (
+                    <div className="space-y-3">
+                      {[...Array(3)].map((_, i) => (
+                        <div key={i} className="flex items-center gap-3 p-3">
+                          <div className="w-10 h-10 bg-muted rounded-full animate-pulse" />
+                          <div className="flex-1 space-y-2">
+                            <div className="h-4 bg-muted rounded animate-pulse" />
+                            <div className="h-3 bg-muted rounded w-3/4 animate-pulse" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : threads.length === 0 ? (
+                    <EmptyState 
+                      icon={MessageSquare}
+                      title="No conversations"
+                      description="Start a new conversation to connect with others"
+                    />
+                  ) : (
+                    <div className="space-y-1">
+                      {threads.filter(t => t.type === 'direct').map(thread => (
+                        <ThreadItem key={thread.id} thread={thread} />
+                      ))}
+                    </div>
+                  )}
+                </ScrollArea>
+              </SplitBarContent>
+
+              <SplitBarContent value="groups" className="flex-1">
+                <ScrollArea className="h-full p-4">
+                  {threads.filter(t => t.type === 'group').length === 0 ? (
+                    <EmptyState 
+                      icon={Users}
+                      title="No group chats"
+                      description="Join or create group conversations"
+                    />
+                  ) : (
+                    <div className="space-y-1">
+                      {threads.filter(t => t.type === 'group').map(thread => (
+                        <ThreadItem key={thread.id} thread={thread} />
+                      ))}
+                    </div>
+                  )}
+                </ScrollArea>
+              </SplitBarContent>
+
+              <SplitBarContent value="notifications" className="flex-1">
+                <ScrollArea className="h-full p-4">
+                  <EmptyState 
+                    icon={Bell}
+                    title="No notifications"
+                    description="System notifications will appear here"
+                  />
+                </ScrollArea>
+              </SplitBarContent>
             </SplitBar>
           </div>
-
-          {/* Conversation List */}
-          <SplitBarContent value="direct" className="flex-1">
-            <ScrollArea className="h-full p-4">
-              {loading ? (
-                <div className="space-y-3">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="flex items-center gap-3 p-3">
-                      <div className="w-10 h-10 bg-muted rounded-full animate-pulse" />
-                      <div className="flex-1 space-y-2">
-                        <div className="h-4 bg-muted rounded animate-pulse" />
-                        <div className="h-3 bg-muted rounded w-3/4 animate-pulse" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : threads.length === 0 ? (
-                <EmptyState 
-                  icon={MessageSquare}
-                  title="No conversations"
-                  description="Start a new conversation to connect with others"
-                />
-              ) : (
-                <div className="space-y-1">
-                  {threads.filter(t => t.type === 'direct').map(thread => (
-                    <ThreadItem key={thread.id} thread={thread} />
-                  ))}
-                </div>
-              )}
-            </ScrollArea>
-          </SplitBarContent>
-
-          <SplitBarContent value="groups" className="flex-1">
-            <ScrollArea className="h-full p-4">
-              {threads.filter(t => t.type === 'group').length === 0 ? (
-                <EmptyState 
-                  icon={Users}
-                  title="No group chats"
-                  description="Join or create group conversations"
-                />
-              ) : (
-                <div className="space-y-1">
-                  {threads.filter(t => t.type === 'group').map(thread => (
-                    <ThreadItem key={thread.id} thread={thread} />
-                  ))}
-                </div>
-              )}
-            </ScrollArea>
-          </SplitBarContent>
-
-          <SplitBarContent value="notifications" className="flex-1">
-            <ScrollArea className="h-full p-4">
-              <EmptyState 
-                icon={Bell}
-                title="No notifications"
-                description="System notifications will appear here"
-              />
-            </ScrollArea>
-          </SplitBarContent>
         </div>
 
         {/* Main Chat Area */}
