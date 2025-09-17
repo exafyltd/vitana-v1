@@ -169,46 +169,60 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   const getConversationTitle = () => {
-    // If we have thread data with participants, use that
+    // Prefer thread participants if available
     if (threadId && threads.length > 0) {
-      const currentThread = threads.find(thread => thread.id === threadId);
+      const currentThread: any = threads.find((thread: any) => thread.id === threadId);
       if (currentThread && currentThread.participants && currentThread.participants.length > 0) {
-        const otherParticipant = currentThread.participants.find(
-          participant => participant.user_id !== user?.id
-        );
-        if (otherParticipant) {
-          return otherParticipant.display_name || 'Unknown User';
+        const others: any[] = currentThread.participants.filter((p: any) => p.user_id !== user?.id);
+        if (others.length > 0) {
+          const names = others
+            .map((p: any) => p.profile?.display_name || p.profile?.full_name || p.display_name || p.full_name)
+            .filter(Boolean) as string[];
+          if (names.length > 1) return names.slice(0, 2).join(', '); // simple group label
+          if (names.length === 1) return names[0];
         }
+        // Fallback to thread name for group chats
+        if (currentThread.name) return currentThread.name;
       }
     }
     
-    // Fallback to recipient data if available (for new conversations or when thread data isn't loaded)
+    // Fallback to recipient data
     if (recipientData) {
-      return recipientData.display_name || recipientData.full_name || 'Unknown User';
+      return recipientData.display_name || recipientData.full_name || 'Conversation';
     }
     
-    // Final fallbacks
-    if (threadId) return 'Loading...';
-    return recipientId ? 'Direct Message' : 'New Message';
+    // Fallback to messages' sender info
+    const otherMsg: any = messages.find(m => m.sender_id !== user?.id);
+    if (otherMsg && otherMsg.sender) {
+      const s: any = otherMsg.sender;
+      return s.display_name || s.full_name || 'Conversation';
+    }
+
+    // Safe default
+    return 'Conversation';
   };
 
   const getConversationAvatar = () => {
-    // If we have thread data with participants, use that
+    // Prefer thread participants if available
     if (threadId && threads.length > 0) {
-      const currentThread = threads.find(thread => thread.id === threadId);
+      const currentThread: any = threads.find((thread: any) => thread.id === threadId);
       if (currentThread && currentThread.participants) {
-        const otherParticipant = currentThread.participants.find(
-          participant => participant.user_id !== user?.id
-        );
-        return otherParticipant?.avatar_url;
+        const other: any = currentThread.participants.find((p: any) => p.user_id !== user?.id);
+        return other?.profile?.avatar_url || other?.avatar_url || null;
       }
     }
     
     // Fallback to recipient data for new conversations
     if (recipientData) {
-      return recipientData.avatar_url;
+      return recipientData.avatar_url || null;
     }
     
+    // Fallback to messages' sender info
+    const otherMsg = messages.find(m => m.sender_id !== user?.id);
+    if (otherMsg && otherMsg.sender) {
+      return otherMsg.sender.avatar_url || null;
+    }
+
     return null;
   };
 
