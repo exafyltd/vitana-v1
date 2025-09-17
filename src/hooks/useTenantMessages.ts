@@ -106,10 +106,12 @@ export function useTenantMessages() {
   const fetchThreads = useCallback(async () => {
     if (!user || !activeTenantId || !isTenantContext) {
       setThreads([]);
+      setIsLoading(false);
       return;
     }
 
     try {
+      setIsLoading(true);
       // Get threads where user is a participant
       const { data: threadData, error: threadError } = await supabase
         .from('message_threads')
@@ -179,9 +181,11 @@ export function useTenantMessages() {
       );
 
       setThreads(threadsWithDetails);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching tenant threads:', error);
       setThreads([]);
+      setIsLoading(false);
     }
   }, [user, activeTenantId, isTenantContext]);
 

@@ -96,6 +96,7 @@ export function useGlobalMessages() {
   const fetchThreads = useCallback(async () => {
     if (!user || !isGlobalContext) {
       setThreads([]);
+      setIsLoading(false);
       return;
     }
 
@@ -164,9 +165,11 @@ export function useGlobalMessages() {
       );
 
       setThreads(threadsWithDetails);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching global threads:', error);
       setThreads([]);
+      setIsLoading(false);
     }
   }, [user, isGlobalContext]);
 
