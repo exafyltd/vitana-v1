@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Users, Globe, Building } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
+import NewConversationPopup from "@/components/NewConversationPopup";
 
 export default function Messages() {
   const { user } = useAuth();
@@ -23,12 +24,18 @@ export default function Messages() {
   const { threads, isLoading, context } = useHybridMessages();
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
+  const [showNewConversation, setShowNewConversation] = useState(false);
 
   useEffect(() => {
     if (threads.length > 0 && !selectedThreadId && !selectedRecipientId) {
       setSelectedThreadId(threads[0].id);
     }
   }, [threads, selectedThreadId, selectedRecipientId]);
+
+  const handleConversationCreated = (threadId: string, recipientId: string) => {
+    setSelectedThreadId(threadId);
+    setSelectedRecipientId(null);
+  };
 
   if (isLoading) {
     return (
@@ -70,7 +77,7 @@ export default function Messages() {
             <span>{contextInfo.label}</span>
           </div>
         </div>
-        <Button>
+        <Button onClick={() => setShowNewConversation(true)}>
           <Plus className="w-4 h-4 mr-2" />
           New Message
         </Button>
@@ -87,7 +94,7 @@ export default function Messages() {
                   <p className="text-sm text-muted-foreground mb-4">
                     Start a new conversation to connect with others in your {context === 'global' ? 'global community' : 'professional network'}
                   </p>
-                  <Button>
+                  <Button onClick={() => setShowNewConversation(true)}>
                     <Plus className="w-4 h-4 mr-2" />
                     Start Conversation
                   </Button>
@@ -169,6 +176,12 @@ export default function Messages() {
           )}
         </div>
       </div>
+
+      <NewConversationPopup
+        open={showNewConversation}
+        onOpenChange={setShowNewConversation}
+        onConversationCreated={handleConversationCreated}
+      />
     </AppLayout>
   );
 }
