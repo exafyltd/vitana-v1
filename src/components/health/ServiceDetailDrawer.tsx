@@ -5,7 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, Clock, MapPin, Star, Users, Shield, CreditCard, MessageSquare, Heart, CheckCircle, Award, Bookmark } from "lucide-react";
-// Remove react-i18next import - not available
+import { useToast } from "@/hooks/use-toast";
+import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
+import { useState } from "react";
 
 interface ServiceProvider {
   id: string;
@@ -104,6 +106,8 @@ const mockServiceDetails: Record<string, ServiceDetail> = {
 };
 
 export default function ServiceDetailDrawer({ service, open, onOpenChange }: ServiceDetailDrawerProps) {
+  const { toast } = useToast();
+  const [showBookingFlow, setShowBookingFlow] = useState(false);
 
   if (!service) return null;
 
@@ -178,7 +182,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
 
           {/* Action Buttons */}
           <div className="flex gap-3">
-            <Button className="flex-1" size="lg">
+            <Button className="flex-1" size="lg" onClick={() => setShowBookingFlow(true)}>
               <Calendar className="w-4 h-4 mr-2" />
               Book Now
             </Button>
@@ -308,6 +312,31 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           )}
         </div>
       </SheetContent>
+      
+      {/* Booking Payment Flow */}
+      <BookingPaymentFlow
+        isOpen={showBookingFlow}
+        onClose={() => setShowBookingFlow(false)}
+        booking={{
+          id: serviceDetail.id,
+          title: serviceDetail.title,
+          description: serviceDetail.description,
+          price: parseInt(serviceDetail.price?.replace('$', '') || '50'),
+          currency: 'usd',
+          provider: {
+            name: serviceDetail.providers[0]?.name || 'Healthcare Provider',
+            avatar: serviceDetail.providers[0]?.avatar,
+            rating: serviceDetail.providers[0]?.rating
+          },
+          schedule: {
+            date: new Date().toISOString().split('T')[0],
+            time: '10:00',
+            duration: serviceDetail.duration || '60 minutes'
+          },
+          location: serviceDetail.location || 'Healthcare Facility',
+          type: 'service'
+        }}
+      />
     </Sheet>
   );
 }

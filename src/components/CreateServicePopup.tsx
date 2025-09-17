@@ -24,6 +24,8 @@ import {
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useMessages } from "@/hooks/useMessages";
+import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 
 interface CreateServicePopupProps {
   isOpen: boolean;
@@ -92,6 +94,8 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
     tags: [] as string[]
   });
   const { toast } = useToast();
+  const { sendMessage } = useMessages();
+  const [showPaymentDemo, setShowPaymentDemo] = useState(false);
 
   const handleNext = () => {
     if (currentStep < 4) {
@@ -127,12 +131,37 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
     onClose();
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
+    // Simulate service creation and notification
+    const serviceData = {
+      title: formData.title,
+      price: parseFloat(formData.price) || 0,
+      currency: formData.currency === 'USD' ? 'usd' : 'credits',
+      date: formData.date?.toISOString().split('T')[0],
+      time: formData.time,
+      location: formData.location,
+      description: formData.description
+    };
+
+    // Send service creation notification to community
+    try {
+      await sendMessage(
+        `New service available: ${formData.title} - ${formData.currency === 'USD' ? '$' + formData.price : formData.price + ' credits'}`,
+        undefined, // Broadcast to community
+        'service_announcement',
+        serviceData
+      );
+    } catch (error) {
+      console.error('Error broadcasting service:', error);
+    }
+
     toast({
       title: "Service Published! 🚀",
       description: "Your service is now live and accepting bookings."
     });
-    onClose();
+    
+    // Demo the booking flow
+    setShowPaymentDemo(true);
   };
 
   const resetForm = () => {
@@ -453,6 +482,31 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
           </div>
         </div>
       </DialogContent>
+      
+      {/* Demo Booking Payment Flow */}
+      <BookingPaymentFlow
+        isOpen={showPaymentDemo}
+        onClose={() => setShowPaymentDemo(false)}
+        booking={{
+          id: 'demo_service',
+          title: formData.title || 'Your Service',
+          description: formData.description || 'Service description',
+          price: parseFloat(formData.price) || 50,
+          currency: formData.currency === 'USD' ? 'usd' : 'credits',
+          provider: {
+            name: 'You',
+            avatar: '/lovable-uploads/design-team-avatar.jpg',
+            rating: 4.9
+          },
+          schedule: {
+            date: formData.date?.toISOString().split('T')[0] || new Date().toISOString().split('T')[0],
+            time: formData.time || '10:00',
+            duration: formData.duration + ' minutes'
+          },
+          location: formData.location || 'Your location',
+          type: 'service'
+        }}
+      />
     </Dialog>
   );
 }

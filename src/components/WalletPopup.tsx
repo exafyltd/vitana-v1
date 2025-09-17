@@ -30,7 +30,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { useRole } from "@/hooks/useRole";
+import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
+import CreditTransferPopup from "@/components/payment/CreditTransferPopup";
 
 interface Transaction {
   id: string;
@@ -100,7 +101,8 @@ const getTransactionColor = (type: Transaction['type']) => {
 export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { currentRole } = useRole();
+  const [showPaymentRequest, setShowPaymentRequest] = useState(false);
+  const [showCreditTransfer, setShowCreditTransfer] = useState(false);
   
   const currentBalance = 2847;
   const pendingRewards = 156;
@@ -178,13 +180,13 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             <Card>
               <CardContent className="p-3">
                 <div className="grid grid-cols-3 gap-2">
-                  <Button variant="ghost" size="sm" className="flex-col h-auto p-2" onClick={handleRedeem}>
+                  <Button variant="ghost" size="sm" className="flex-col h-auto p-2" onClick={() => setShowPaymentRequest(true)}>
                     <Gift className="h-4 w-4 mb-1" />
-                    <span className="text-xs">Redeem</span>
+                    <span className="text-xs">Request</span>
                   </Button>
-                  <Button variant="ghost" size="sm" className="flex-col h-auto p-2">
+                  <Button variant="ghost" size="sm" className="flex-col h-auto p-2" onClick={() => setShowCreditTransfer(true)}>
                     <Database className="h-4 w-4 mb-1" />
-                    <span className="text-xs">Export</span>
+                    <span className="text-xs">Transfer</span>
                   </Button>
                   <Button variant="ghost" size="sm" className="flex-col h-auto p-2">
                     <Shield className="h-4 w-4 mb-1" />
@@ -248,13 +250,13 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
 
         <DialogFooter className="flex-col sm:flex-row gap-2">
           <div className="flex gap-2 w-full">
-            <Button variant="outline" size="sm" onClick={handleRedeem}>
+            <Button variant="outline" size="sm" onClick={() => setShowPaymentRequest(true)}>
               <Gift className="h-4 w-4 mr-2" />
-              Redeem
+              Request
             </Button>
-            <Button variant="outline" size="sm" onClick={handleExportData}>
+            <Button variant="outline" size="sm" onClick={() => setShowCreditTransfer(true)}>
               <Download className="h-4 w-4 mr-2" />
-              Export
+              Transfer
             </Button>
           </div>
           <Button onClick={handleViewFullWallet} className="w-full sm:w-auto">
@@ -262,6 +264,20 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             Open Full Wallet
           </Button>
         </DialogFooter>
+        
+        {/* Payment Request Popup */}
+        <PaymentRequestPopup
+          isOpen={showPaymentRequest}
+          onClose={() => setShowPaymentRequest(false)}
+          paymentType="transfer"
+        />
+        
+        {/* Credit Transfer Popup */}
+        <CreditTransferPopup
+          isOpen={showCreditTransfer}
+          onClose={() => setShowCreditTransfer(false)}
+          currentBalance={currentBalance}
+        />
       </DialogContent>
     </Dialog>
   );

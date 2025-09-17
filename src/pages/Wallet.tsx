@@ -10,6 +10,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
 import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionPopup";
+import { CrossSystemNotifier } from "@/components/notifications/CrossSystemNotifier";
 import { WalletBalanceCard } from "@/components/wallet/WalletBalanceCard";
 import { WalletTransactionCard } from "@/components/wallet/WalletTransactionCard";
 import { NewsCard } from "@/components/crossover/NewsCard";
@@ -353,6 +354,9 @@ export default function Wallet() {
           open={masterActionOpen}
           onOpenChange={setMasterActionOpen}
         />
+        
+        {/* Cross-system notification handler */}
+        <CrossSystemNotifier />
       </div>
     </AppLayout>
   );

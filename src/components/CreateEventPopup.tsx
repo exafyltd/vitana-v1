@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, MapPin, Clock, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useMessages } from "@/hooks/useMessages";
+import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 
 interface CreateEventPopupProps {
   isOpen: boolean;
@@ -16,6 +18,8 @@ interface CreateEventPopupProps {
 
 export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
   const { toast } = useToast();
+  const { sendMessage } = useMessages();
+  const [showPaymentDemo, setShowPaymentDemo] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -25,15 +29,46 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
     duration: "",
     location: "",
     capacity: "",
-    isVirtual: false
+    isVirtual: false,
+    price: "",
+    isPaid: false
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // Create event notification
+    const eventData = {
+      title: formData.title,
+      description: formData.description,
+      date: formData.date,
+      time: formData.time,
+      location: formData.location,
+      capacity: formData.capacity,
+      price: formData.isPaid ? parseFloat(formData.price) : 0,
+      category: formData.category
+    };
+
+    try {
+      await sendMessage(
+        `New event: ${formData.title} on ${formData.date} at ${formData.time}${formData.isPaid ? ` - $${formData.price}` : ' - Free'}`,
+        undefined, // Broadcast to community
+        'event_announcement',
+        eventData
+      );
+    } catch (error) {
+      console.error('Error broadcasting event:', error);
+    }
+
     toast({
       title: "Event Created! 🎉",
       description: `${formData.title} has been created successfully.`
     });
-    onClose();
+    
+    if (formData.isPaid) {
+      setShowPaymentDemo(true);
+    } else {
+      onClose();
+    }
+    
     setFormData({
       title: "",
       description: "",
@@ -43,7 +78,9 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
       duration: "",
       location: "",
       capacity: "",
-      isVirtual: false
+      isVirtual: false,
+      price: "",
+      isPaid: false
     });
   };
 
@@ -179,6 +216,34 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
                   />
                 </div>
               </div>
+
+              {/* Pricing (Optional) */}
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="isPaid"
+                    checked={formData.isPaid}
+                    onChange={(e) => setFormData({...formData, isPaid: e.target.checked})}
+                    className="rounded"
+                  />
+                  <Label htmlFor="isPaid">This is a paid event</Label>
+                </div>
+                
+                {formData.isPaid && (
+                  <div>
+                    <Label htmlFor="price">Event Price</Label>
+                    <Input
+                      id="price"
+                      type="number"
+                      value={formData.price}
+                      onChange={(e) => setFormData({...formData, price: e.target.value})}
+                      placeholder="0.00"
+                      className="mt-1"
+                    />
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
 
@@ -192,6 +257,18 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
           </div>
         </div>
       </DialogContent>
+      
+      {/* Demo Payment Request for Paid Events */}
+      <PaymentRequestPopup
+        isOpen={showPaymentDemo}
+        onClose={() => {
+          setShowPaymentDemo(false);
+          onClose();
+        }}
+        initialAmount={formData.price}
+        initialDescription={`Event registration: ${formData.title}`}
+        paymentType="event"
+      />
     </Dialog>
   );
 }
