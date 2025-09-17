@@ -4,7 +4,7 @@ import { useTenantMessages } from "./useTenantMessages";
 
 /**
  * Unified messaging hook that automatically routes to global or tenant context
- * based on the user's current role
+ * based on the user's current role with WhatsApp-like message persistence
  */
 export function useHybridMessages() {
   const { currentRole } = useRole();

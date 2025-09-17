@@ -54,7 +54,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   useEffect(() => {
     const fetchRecipientData = async () => {
       if (recipientId) {
-        console.log('Debug - Fetching recipient data for:', recipientId, 'context:', context);
         try {
           const { data, error } = await supabase
             .from(context === 'global' ? 'global_community_profiles' : 'profiles')
@@ -62,7 +61,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             .eq('user_id', recipientId)
             .single();
           
-          console.log('Debug - Recipient data result:', data, error);
           if (!error && data) {
             setRecipientData(data);
           }
@@ -114,8 +112,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       } else if (context === 'tenant') {
         await sendMessage(content, threadId, recipientId, messageType, contentData);
       }
+      
+      // Don't refetch messages - optimistic updates handle this automatically
     } catch (error) {
       console.error('Error sending message:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send message',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -164,17 +169,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   const getConversationTitle = () => {
-    console.log('Debug - threadId:', threadId, 'recipientId:', recipientId, 'recipientData:', recipientData, 'threads:', threads);
-    
     // If we have thread data with participants, use that
     if (threadId && threads.length > 0) {
       const currentThread = threads.find(thread => thread.id === threadId);
-      console.log('Debug - currentThread:', currentThread);
       if (currentThread && currentThread.participants && currentThread.participants.length > 0) {
         const otherParticipant = currentThread.participants.find(
           participant => participant.user_id !== user?.id
         );
-        console.log('Debug - otherParticipant:', otherParticipant);
         if (otherParticipant) {
           return otherParticipant.display_name || 'Unknown User';
         }
@@ -183,12 +184,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     
     // Fallback to recipient data if available (for new conversations or when thread data isn't loaded)
     if (recipientData) {
-      console.log('Debug - using recipientData:', recipientData);
       return recipientData.display_name || recipientData.full_name || 'Unknown User';
     }
     
     // Final fallbacks
-    if (threadId) return 'Loading...';  // Changed from 'Thread Conversation'
+    if (threadId) return 'Loading...';
     return recipientId ? 'Direct Message' : 'New Message';
   };
 

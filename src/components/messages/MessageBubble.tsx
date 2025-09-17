@@ -4,12 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Message } from '@/hooks/useMessages';
 import { format } from 'date-fns';
-import { Clock, Check, CheckCheck } from 'lucide-react';
+import { Clock, Check, CheckCheck, Loader2 } from 'lucide-react';
 
 interface MessageBubbleProps {
-  message: Message;
+  message: any; // Can be Message or GlobalMessage or TenantMessage
   isOwnMessage: boolean;
   onActionClick?: (action: any) => void;
   showAvatar?: boolean;
@@ -23,6 +22,32 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   showAvatar = true,
   showTimestamp = true
 }) => {
+  // Check if this is an optimistic message (temporary)
+  const isOptimistic = message.id?.toString().startsWith('temp-');
+  
+  const getMessageStatus = () => {
+    if (isOptimistic) {
+      return 'sending';
+    }
+    // For now, assume all real messages are delivered
+    // In the future, you could add read receipts and delivery confirmations
+    return 'delivered';
+  };
+
+  const renderStatusIcon = () => {
+    if (!isOwnMessage) return null;
+    
+    const status = getMessageStatus();
+    
+    switch (status) {
+      case 'sending':
+        return <Loader2 className="w-3 h-3 animate-spin" />;
+      case 'delivered':
+        return <CheckCheck className="w-3 h-3" />;
+      default:
+        return <Clock className="w-3 h-3" />;
+    }
+  };
   const renderContent = () => {
     switch (message.message_type) {
       case 'payment_request':
@@ -192,10 +217,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         )}
         
         <div className={cn(
-          "rounded-2xl px-4 py-2 max-w-md",
+          "rounded-2xl px-4 py-2 max-w-md relative",
           isOwnMessage 
             ? "bg-primary text-primary-foreground" 
-            : "bg-muted"
+            : "bg-muted",
+          isOptimistic && "opacity-70"
         )}>
           {renderContent()}
         </div>
@@ -205,11 +231,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             "flex items-center gap-1 text-xs text-muted-foreground px-3",
             isOwnMessage ? "flex-row-reverse" : ""
           )}>
-            <Clock className="w-3 h-3" />
             <span>{format(new Date(message.created_at), 'HH:mm')}</span>
-            {isOwnMessage && (
-              <CheckCheck className="w-3 h-3" />
-            )}
+            {renderStatusIcon()}
           </div>
         )}
       </div>

@@ -201,6 +201,31 @@ export function useTenantMessages() {
     try {
       setIsSending(true);
 
+      // Get user profile for optimistic update
+      const { data: userProfile } = await supabase
+        .from('profiles')
+        .select('user_id, full_name, display_name, avatar_url')
+        .eq('user_id', user.id)
+        .single();
+
+      // Create optimistic message
+      const optimisticMessage: TenantMessage = {
+        id: `temp-${Date.now()}`,
+        body,
+        sender_id: user.id,
+        thread_id: threadId || null,
+        recipient_id: recipientId || null,
+        tenant_id: activeTenantId,
+        message_type: messageType,
+        content_data: contentData,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        sender: userProfile || null
+      };
+
+      // Add optimistic message immediately
+      setMessages(prev => [...prev, optimisticMessage]);
+
       const { data, error } = await supabase
         .from('messages')
         .insert({
@@ -215,7 +240,20 @@ export function useTenantMessages() {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        // Remove optimistic message on error
+        setMessages(prev => prev.filter(msg => msg.id !== optimisticMessage.id));
+        throw error;
+      }
+
+      // Replace optimistic message with real message
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.id === optimisticMessage.id 
+            ? { ...data, sender: userProfile } 
+            : msg
+        )
+      );
 
       // Update thread's updated_at if thread exists
       if (threadId) {
@@ -226,11 +264,8 @@ export function useTenantMessages() {
           .eq('tenant_id', activeTenantId);
       }
 
-      // Refresh messages and threads
-      await Promise.all([
-        threadId ? fetchMessages(threadId) : fetchMessages(undefined, recipientId),
-        fetchThreads(),
-      ]);
+      // Only refresh threads (not messages since we have optimistic update)
+      await fetchThreads();
 
       return data;
     } catch (error) {
@@ -239,7 +274,7 @@ export function useTenantMessages() {
     } finally {
       setIsSending(false);
     }
-  }, [user, activeTenantId, isTenantContext, fetchMessages, fetchThreads]);
+  }, [user, activeTenantId, isTenantContext, fetchThreads]);
 
   const createThread = useCallback(async (
     participantIds: string[],
@@ -310,11 +345,34 @@ export function useTenantMessages() {
       .on(
         'postgres_changes',
         {
-          event: '*',
+          event: 'INSERT',
           schema: 'public',
           table: 'messages',
         },
-        () => {
+        async (payload) => {
+          console.log('New tenant message received:', payload.new);
+          const newMessage = payload.new as any;
+          
+          // Only add messages for our tenant
+          if (newMessage.tenant_id !== activeTenantId) return;
+          
+          // Skip if this is our own message (already handled by optimistic update)
+          if (newMessage.sender_id === user.id) return;
+          
+          // Fetch sender profile for the new message
+          const { data: senderProfile } = await supabase
+            .from('profiles')
+            .select('user_id, full_name, display_name, avatar_url')
+            .eq('user_id', newMessage.sender_id)
+            .single();
+
+          // Add message with sender data
+          setMessages(prev => [...prev, {
+            ...newMessage,
+            sender: senderProfile
+          }]);
+          
+          // Also refresh threads to update last message
           fetchThreads();
         }
       )
@@ -329,8 +387,11 @@ export function useTenantMessages() {
           schema: 'public',
           table: 'message_threads',
         },
-        () => {
-          fetchThreads();
+        (payload) => {
+          const thread = payload.new as any;
+          if (thread && thread.tenant_id === activeTenantId) {
+            fetchThreads();
+          }
         }
       )
       .subscribe();
