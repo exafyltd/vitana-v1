@@ -8,6 +8,7 @@ import { Search, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "@/hooks/useRole";
+import { useTenant } from "@/hooks/useTenant";
 import { toast } from "sonner";
 
 interface NewConversationPopupProps {
@@ -23,6 +24,7 @@ export default function NewConversationPopup({
 }: NewConversationPopupProps) {
   const { user } = useAuth();
   const { currentRole } = useRole();
+  const { activeTenantId } = useTenant();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -36,62 +38,24 @@ export default function NewConversationPopup({
       const isGlobalContext = currentRole === 'community';
       
       if (isGlobalContext) {
-        // Search global community profiles and their corresponding profile emails separately
-        const { data: communityProfiles, error: communityError } = await supabase
-          .from('global_community_profiles')
-          .select('user_id, display_name, avatar_url, bio')
-          .or(`display_name.ilike.%${searchQuery}%`)
-          .neq('user_id', user.id)
-          .eq('is_visible', true)
-          .limit(10);
-
-        if (communityError) throw communityError;
-
-        // Also search by email in profiles table for community users
-        const { data: profilesByEmail, error: emailError } = await supabase
-          .from('profiles')
-          .select('user_id, display_name, full_name, avatar_url, bio, email')
-          .or(`email.ilike.%${searchQuery}%,full_name.ilike.%${searchQuery}%`)
-          .neq('user_id', user.id)
-          .limit(10);
-
-        if (emailError) throw emailError;
-
-        // Combine results, prioritizing community profiles but including email matches
-        const communityUserIds = new Set((communityProfiles || []).map(p => p.user_id));
-        const emailMatches = (profilesByEmail || []).filter(p => communityUserIds.has(p.user_id));
-        
-        // Merge the data
-        const results = (communityProfiles || []).map(cp => {
-          const profileMatch = emailMatches.find(em => em.user_id === cp.user_id);
-          return {
-            ...cp,
-            email: profileMatch?.email,
-            full_name: profileMatch?.full_name
-          };
+        // Use secure RPC function for global directory search
+        const { data, error } = await supabase.rpc('search_global_directory', {
+          search_term: searchQuery.trim()
         });
 
-        // Add any additional email-only matches
-        const additionalEmailMatches = (profilesByEmail || [])
-          .filter(p => !communityUserIds.has(p.user_id))
-          .map(p => ({
-            user_id: p.user_id,
-            display_name: p.display_name,
-            avatar_url: p.avatar_url,
-            bio: p.bio,
-            email: p.email,
-            full_name: p.full_name
-          }));
-
-        setSearchResults([...results, ...additionalEmailMatches]);
+        if (error) throw error;
+        setSearchResults(data || []);
       } else {
-        // Search profiles in the same tenant including email
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('user_id, display_name, full_name, avatar_url, bio, email')
-          .or(`display_name.ilike.%${searchQuery}%,full_name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
-          .neq('user_id', user.id)
-          .limit(10);
+        // Use secure RPC function for tenant directory search
+        if (!activeTenantId) {
+          toast.error('No tenant context available');
+          return;
+        }
+
+        const { data, error } = await supabase.rpc('search_tenant_directory', {
+          search_term: searchQuery.trim(),
+          tenant_id_param: activeTenantId
+        });
 
         if (error) throw error;
         setSearchResults(data || []);

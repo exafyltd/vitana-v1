@@ -1024,6 +1024,28 @@ export type Database = {
           role: string
         }[]
       }
+      search_global_directory: {
+        Args: { search_term: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          display_name: string
+          email: string
+          full_name: string
+          user_id: string
+        }[]
+      }
+      search_tenant_directory: {
+        Args: { search_term: string; tenant_id_param: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          display_name: string
+          email: string
+          full_name: string
+          user_id: string
+        }[]
+      }
       set_role_preference: {
         Args: { p_role: string; p_tenant_id: string }
         Returns: undefined
