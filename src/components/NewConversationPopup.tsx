@@ -36,8 +36,8 @@ export default function NewConversationPopup({
       const isGlobalContext = currentRole === 'community';
       
       if (isGlobalContext) {
-        // Search global community profiles
-        const { data, error } = await supabase
+        // Search global community profiles and their corresponding profile emails separately
+        const { data: communityProfiles, error: communityError } = await supabase
           .from('global_community_profiles')
           .select('user_id, display_name, avatar_url, bio')
           .or(`display_name.ilike.%${searchQuery}%`)
@@ -45,14 +45,51 @@ export default function NewConversationPopup({
           .eq('is_visible', true)
           .limit(10);
 
-        if (error) throw error;
-        setSearchResults(data || []);
+        if (communityError) throw communityError;
+
+        // Also search by email in profiles table for community users
+        const { data: profilesByEmail, error: emailError } = await supabase
+          .from('profiles')
+          .select('user_id, display_name, full_name, avatar_url, bio, email')
+          .or(`email.ilike.%${searchQuery}%,full_name.ilike.%${searchQuery}%`)
+          .neq('user_id', user.id)
+          .limit(10);
+
+        if (emailError) throw emailError;
+
+        // Combine results, prioritizing community profiles but including email matches
+        const communityUserIds = new Set((communityProfiles || []).map(p => p.user_id));
+        const emailMatches = (profilesByEmail || []).filter(p => communityUserIds.has(p.user_id));
+        
+        // Merge the data
+        const results = (communityProfiles || []).map(cp => {
+          const profileMatch = emailMatches.find(em => em.user_id === cp.user_id);
+          return {
+            ...cp,
+            email: profileMatch?.email,
+            full_name: profileMatch?.full_name
+          };
+        });
+
+        // Add any additional email-only matches
+        const additionalEmailMatches = (profilesByEmail || [])
+          .filter(p => !communityUserIds.has(p.user_id))
+          .map(p => ({
+            user_id: p.user_id,
+            display_name: p.display_name,
+            avatar_url: p.avatar_url,
+            bio: p.bio,
+            email: p.email,
+            full_name: p.full_name
+          }));
+
+        setSearchResults([...results, ...additionalEmailMatches]);
       } else {
-        // Search profiles in the same tenant
+        // Search profiles in the same tenant including email
         const { data, error } = await supabase
           .from('profiles')
-          .select('user_id, display_name, full_name, avatar_url, bio')
-          .or(`display_name.ilike.%${searchQuery}%,full_name.ilike.%${searchQuery}%`)
+          .select('user_id, display_name, full_name, avatar_url, bio, email')
+          .or(`display_name.ilike.%${searchQuery}%,full_name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
           .neq('user_id', user.id)
           .limit(10);
 
@@ -198,6 +235,9 @@ export default function NewConversationPopup({
                       <div>
                         <p className="font-medium">
                           {profile.display_name || profile.full_name || 'Unknown User'}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate max-w-40">
+                          {profile.email}
                         </p>
                         {profile.bio && (
                           <p className="text-sm text-muted-foreground truncate max-w-40">
