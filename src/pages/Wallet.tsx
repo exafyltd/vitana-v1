@@ -13,6 +13,10 @@ import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionP
 import { WalletBalanceCard } from "@/components/wallet/WalletBalanceCard";
 import { WalletTransactionCard } from "@/components/wallet/WalletTransactionCard";
 import { NewsCard } from "@/components/crossover/NewsCard";
+import { SmartEarningsForecastCard } from "@/components/wallet/intelligence/SmartEarningsForecastCard";
+import { IntelligentSpendingCard } from "@/components/wallet/intelligence/IntelligentSpendingCard";
+import { PredictiveActionsCard } from "@/components/wallet/intelligence/PredictiveActionsCard";
+import { DynamicRewardOpportunityCard } from "@/components/wallet/intelligence/DynamicRewardOpportunityCard";
 import { walletNavigation } from "@/config/navigation";
 
 // Mock data for Overview screen
@@ -170,14 +174,17 @@ export default function Wallet() {
           <SplitBarList>
             <SplitBarTrigger value="balance-overview">Balance Overview</SplitBarTrigger>
             <SplitBarTrigger value="recent-activity">Recent Activity</SplitBarTrigger>
-            <SplitBarTrigger value="quick-actions">Quick Actions</SplitBarTrigger>
+            <SplitBarTrigger value="quick-actions">Smart Actions</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="balance-overview">
             <div className="mt-6">
-              {/* Row 1: Balance Overview Cards (big + small + small) */}
+              {/* Row 1: Smart Earnings Forecast + Balance Cards */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
+                  <SmartEarningsForecastCard className="h-full" />
+                </div>
+                <div className="col-span-3">
                   <WalletBalanceCard
                     type={balanceOverviewData[0].type}
                     title={balanceOverviewData[0].title}
@@ -203,7 +210,13 @@ export default function Wallet() {
                     className="h-full"
                   />
                 </div>
-                <div className="col-span-3">
+              </div>
+
+              <WalletMotivationalBanner variant="overview" />
+
+              {/* Row 2: Additional Balance Card */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-12">
                   <WalletBalanceCard
                     type={balanceOverviewData[2].type}
                     title={balanceOverviewData[2].title}
@@ -217,15 +230,16 @@ export default function Wallet() {
                   />
                 </div>
               </div>
-
-              <WalletMotivationalBanner variant="overview" />
             </div>
           </SplitBarContent>
 
           <SplitBarContent value="recent-activity">
             <div className="mt-6">
-              {/* Row 1: Recent Transactions (small + small + big) */}
+              {/* Row 1: Intelligent Spending + Transactions */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <IntelligentSpendingCard className="h-full" />
+                </div>
                 <div className="col-span-3">
                   <WalletTransactionCard
                     {...recentActivityData[0]}
@@ -238,33 +252,27 @@ export default function Wallet() {
                     className="h-full"
                   />
                 </div>
-                <div className="col-span-6">
+              </div>
+
+              <WalletMotivationalBanner variant="overview" />
+
+              {/* Row 2: More Transactions */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-4">
                   <WalletTransactionCard
                     {...recentActivityData[2]}
                     className="h-full"
                   />
                 </div>
-              </div>
-
-              <WalletMotivationalBanner variant="overview" />
-
-              {/* Row 2: More Transactions (big + small + small) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-6">
+                <div className="col-span-4">
                   <WalletTransactionCard
                     {...recentActivityData[3]}
                     className="h-full"
                   />
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-4">
                   <WalletTransactionCard
                     {...recentActivityData[4]}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <WalletTransactionCard
-                    {...recentActivityData[0]}
                     className="h-full"
                   />
                 </div>
@@ -274,9 +282,21 @@ export default function Wallet() {
 
           <SplitBarContent value="quick-actions">
             <div className="mt-6">
-              {/* Row 1: Quick Action Cards (big + small + small) */}
+              {/* Row 1: AI Predictions + Dynamic Opportunities */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
+                  <PredictiveActionsCard className="h-full" />
+                </div>
+                <div className="col-span-6">
+                  <DynamicRewardOpportunityCard className="h-full" />
+                </div>
+              </div>
+
+              <WalletMotivationalBanner variant="overview" />
+
+              {/* Row 2: Traditional Quick Actions */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-4">
                   <NewsCard
                     title={quickActionsData[0].title}
                     description={quickActionsData[0].description}
@@ -288,7 +308,7 @@ export default function Wallet() {
                     className="h-full"
                   />
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-4">
                   <NewsCard
                     title={quickActionsData[1].title}
                     description={quickActionsData[1].description}
@@ -300,7 +320,7 @@ export default function Wallet() {
                     className="h-full"
                   />
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-4">
                   <NewsCard
                     title={quickActionsData[2].title}
                     description={quickActionsData[2].description}
@@ -313,8 +333,6 @@ export default function Wallet() {
                   />
                 </div>
               </div>
-
-              <WalletMotivationalBanner variant="overview" />
             </div>
           </SplitBarContent>
         </SplitBar>
