@@ -996,6 +996,14 @@ export type Database = {
         Args: { p_user_email: string; p_user_id: string }
         Returns: undefined
       }
+      create_global_direct_thread: {
+        Args: { p_recipient_id: string }
+        Returns: string
+      }
+      create_tenant_direct_thread: {
+        Args: { p_recipient_id: string; p_tenant_id: string }
+        Returns: string
+      }
       get_role_preference: {
         Args: { p_tenant_id: string }
         Returns: {

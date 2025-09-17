@@ -76,65 +76,28 @@ export default function NewConversationPopup({
       const isGlobalContext = currentRole === 'community';
       
       if (isGlobalContext) {
-        // Create global thread
-        const { data: threadData, error: threadError } = await supabase
-          .from('global_message_threads')
-          .insert({
-            created_by: user.id,
-            type: 'direct',
-            name: null,
-          })
-          .select()
-          .single();
+        // Use secure RPC to create global thread
+        const { data: threadId, error } = await supabase.rpc('create_global_direct_thread', {
+          p_recipient_id: recipientId
+        });
 
-        if (threadError) throw threadError;
-
-        // Add participants
-        const { error: participantError } = await supabase
-          .from('global_thread_participants')
-          .insert([
-            { thread_id: threadData.id, user_id: user.id, role: 'admin' },
-            { thread_id: threadData.id, user_id: recipientId, role: 'member' },
-          ]);
-
-        if (participantError) throw participantError;
+        if (error) throw error;
         
-        onConversationCreated?.(threadData.id, recipientId);
+        onConversationCreated?.(threadId, recipientId);
       } else {
-        // Create tenant thread - need tenant_id
-        const { data: membership } = await supabase
-          .from('memberships')
-          .select('tenant_id')
-          .eq('user_id', user.id)
-          .eq('status', 'active')
-          .single();
+        // Use secure RPC to create tenant thread
+        if (!activeTenantId) {
+          throw new Error('No active tenant found');
+        }
 
-        if (!membership) throw new Error('No active membership found');
+        const { data: threadId, error } = await supabase.rpc('create_tenant_direct_thread', {
+          p_recipient_id: recipientId,
+          p_tenant_id: activeTenantId
+        });
 
-        const { data: threadData, error: threadError } = await supabase
-          .from('message_threads')
-          .insert({
-            tenant_id: membership.tenant_id,
-            created_by: user.id,
-            type: 'direct',
-            name: null,
-          })
-          .select()
-          .single();
-
-        if (threadError) throw threadError;
-
-        // Add participants
-        const { error: participantError } = await supabase
-          .from('thread_participants')
-          .insert([
-            { thread_id: threadData.id, user_id: user.id, role: 'admin' },
-            { thread_id: threadData.id, user_id: recipientId, role: 'member' },
-          ]);
-
-        if (participantError) throw participantError;
+        if (error) throw error;
         
-        onConversationCreated?.(threadData.id, recipientId);
+        onConversationCreated?.(threadId, recipientId);
       }
 
       toast.success('Conversation started!');
