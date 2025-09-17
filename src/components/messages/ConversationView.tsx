@@ -37,6 +37,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const { user } = useAuth();
   const { 
     messages, 
+    threads,
     sendMessage, 
     fetchMessages, 
     markAsRead, 
@@ -128,7 +129,35 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   const getConversationTitle = () => {
-    return threadId ? 'Thread Conversation' : recipientId ? 'Direct Message' : 'New Message';
+    if (threadId && threads.length > 0) {
+      // Find the current thread
+      const currentThread = threads.find(thread => thread.id === threadId);
+      if (currentThread && currentThread.participants) {
+        // Find the other participant (not the current user)
+        const otherParticipant = currentThread.participants.find(
+          participant => participant.user_id !== user?.id
+        );
+        if (otherParticipant) {
+          return otherParticipant.display_name || 'Unknown User';
+        }
+      }
+      return 'Thread Conversation';
+    }
+    
+    return recipientId ? 'Direct Message' : 'New Message';
+  };
+
+  const getConversationAvatar = () => {
+    if (threadId && threads.length > 0) {
+      const currentThread = threads.find(thread => thread.id === threadId);
+      if (currentThread && currentThread.participants) {
+        const otherParticipant = currentThread.participants.find(
+          participant => participant.user_id !== user?.id
+        );
+        return otherParticipant?.avatar_url;
+      }
+    }
+    return null;
   };
 
   const getConversationSubtitle = () => {
@@ -182,6 +211,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             )}
             
             <Avatar>
+              <AvatarImage src={getConversationAvatar() || undefined} />
               <AvatarFallback>
                 {getConversationTitle()[0]?.toUpperCase() || 'U'}
               </AvatarFallback>
