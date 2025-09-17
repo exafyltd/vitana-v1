@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { TrendingUp, TrendingDown, Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -85,9 +86,15 @@ function VitanaIndexMiniBase({
 
   return (
     <Card 
-      className="cursor-pointer hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20"
+      className="cursor-pointer hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20 relative"
       onClick={handleClick}
     >
+      <RewardDot 
+        points={Math.floor(score / 10)} 
+        description="Improve your health score for more credits"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

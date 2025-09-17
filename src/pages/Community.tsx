@@ -33,7 +33,9 @@ const todayHighlights = [
     author: { name: "Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
     location: "City Park",
     attendees: 32,
-    timestamp: "7:00 AM"
+    timestamp: "7:00 AM",
+    rewardPoints: 8,
+    rewardDescription: "Join the run for fitness credits"
   },
   {
     title: "Mindful Break Podcast",
@@ -43,7 +45,9 @@ const todayHighlights = [
     pillar: "Mental",
     author: { name: "Dr. Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Podcast Studio",
-    timestamp: "New Episode"
+    timestamp: "New Episode",
+    rewardPoints: 4,
+    rewardDescription: "Listen and share for wellness credits"
   },
   {
     title: "Community Hydration Challenge 💪",
@@ -54,7 +58,9 @@ const todayHighlights = [
     author: { name: "Dr. Roberts", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
     location: "Virtual",
     attendees: 85,
-    timestamp: "10:00 AM"
+    timestamp: "10:00 AM",
+    rewardPoints: 12,
+    rewardDescription: "Complete hydration goals for bonus credits"
   }
 ];
 
@@ -69,7 +75,9 @@ const weeklyEvents = [
     author: { name: "Dance Team", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Community Center",
     attendees: 45,
-    timestamp: "Friday 8 PM"
+    timestamp: "Friday 8 PM",
+    rewardPoints: 10,
+    rewardDescription: "Dance for fitness and social credits"
   },
   {
     title: "Nutrition Workshop 🍎",
@@ -80,7 +88,9 @@ const weeklyEvents = [
     author: { name: "Chef Emma", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Community Kitchen",
     attendees: 18,
-    timestamp: "Sunday 11 AM"
+    timestamp: "Sunday 11 AM",
+    rewardPoints: 6,
+    rewardDescription: "Learn nutrition skills for wellness credits"
   },
   {
     title: "AI Spotlight: Sleep & Recovery Circle ✨",
@@ -91,7 +101,9 @@ const weeklyEvents = [
     author: { name: "Sleep Expert James", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
     location: "Wellness Center",
     attendees: 12,
-    timestamp: "Every Wednesday"
+    timestamp: "Every Wednesday",
+    rewardPoints: 15,
+    rewardDescription: "AI-powered sleep improvement rewards"
   }
 ];
 
@@ -105,7 +117,9 @@ const communityPeople = [
     pillar: "Mental",
     author: { name: "Jovana T.", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Digital Nomad",
-    timestamp: "Online Now"
+    timestamp: "Online Now",
+    rewardPoints: 5,
+    rewardDescription: "Connect with new people for social credits"
   },
   {
     title: "Dr. Roberts - Hydration Expert 🩺",
@@ -115,7 +129,9 @@ const communityPeople = [
     pillar: "Hydration",
     author: { name: "Dr. Roberts", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
     location: "Medical Center",
-    timestamp: "Available for consult"
+    timestamp: "Available for consult",
+    rewardPoints: 8,
+    rewardDescription: "Book consultation for wellness credits"
   },
   {
     title: "Mariia - Wellness Ambassador 🌸",
@@ -125,7 +141,9 @@ const communityPeople = [
     pillar: "Mental",
     author: { name: "Mariia", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Wellness Studio",
-    timestamp: "Active in community"
+    timestamp: "Active in community",
+    rewardPoints: 6,
+    rewardDescription: "Follow wellness ambassador for inspiration credits"
   }
 ];
 
@@ -139,7 +157,9 @@ const communityMedia = [
     pillar: "Mental",
     author: { name: "Yoga Instructor Lisa", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Yoga Studio",
-    timestamp: "45 min video"
+    timestamp: "45 min video",
+    rewardPoints: 7,
+    rewardDescription: "Watch wellness videos for mindfulness credits"
   },
   {
     title: "3 Easy Morning Stretches 🎬",
@@ -149,7 +169,9 @@ const communityMedia = [
     pillar: "Exercise",
     author: { name: "Fitness Coach Mike", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
     location: "Home Studio",
-    timestamp: "5 min routine"
+    timestamp: "5 min routine",
+    rewardPoints: 3,
+    rewardDescription: "Try quick routines for exercise credits"
   },
   {
     title: "Focus Beats for Study Playlist 🎵",
@@ -159,7 +181,9 @@ const communityMedia = [
     pillar: "Mental",
     author: { name: "VITANA Music", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Music Studio",
-    timestamp: "2h playlist"
+    timestamp: "2h playlist",
+    rewardPoints: 2,
+    rewardDescription: "Listen to wellness music for mental health credits"
   }
 ];
 
@@ -421,6 +445,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                 location={rowEvents[0]?.location}
                 attendees={rowEvents[0]?.attendees}
                 timestamp={rowEvents[0]?.timestamp}
+                rewardPoints={rowEvents[0]?.rewardPoints}
+                rewardDescription={rowEvents[0]?.rewardDescription}
                 className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
                 showSmartAction={true}
                 onActionClick={() => handleActionClick(rowEvents[0])}
@@ -439,6 +465,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
+                  rewardPoints={rowEvents[1]?.rewardPoints}
+                  rewardDescription={rowEvents[1]?.rewardDescription}
                   className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[1])}
@@ -458,6 +486,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
+                  rewardPoints={rowEvents[2]?.rewardPoints}
+                  rewardDescription={rowEvents[2]?.rewardDescription}
                   className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[2])}
@@ -481,6 +511,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   location={rowEvents[0].location}
                   attendees={rowEvents[0].attendees}
                   timestamp={rowEvents[0].timestamp}
+                  rewardPoints={rowEvents[0]?.rewardPoints}
+                  rewardDescription={rowEvents[0]?.rewardDescription}
                   className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[0])}
@@ -500,6 +532,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
+                  rewardPoints={rowEvents[1]?.rewardPoints}
+                  rewardDescription={rowEvents[1]?.rewardDescription}
                   className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[1])}
@@ -519,6 +553,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
+                  rewardPoints={rowEvents[2]?.rewardPoints}
+                  rewardDescription={rowEvents[2]?.rewardDescription}
                   className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[2])}

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Lightbulb, ArrowRight, Sparkles, Target } from "lucide-react";
 import { withCardId } from "@/lib/withCardId";
 
@@ -117,7 +118,13 @@ function SmartSuggestionsBase({
   }
 
   return (
-    <Card className="bg-gradient-to-br from-calendar-accent/5 to-calendar-primary/5 border-calendar-accent/20">
+    <Card className="bg-gradient-to-br from-calendar-accent/5 to-calendar-primary/5 border-calendar-accent/20 relative">
+      <RewardDot 
+        points={displaySuggestions.length * 2} 
+        description="Act on AI suggestions for health rewards"
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Sparkles className="w-5 h-5 text-calendar-primary" />

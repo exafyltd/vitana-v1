@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Zap, Brain, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { withCardId } from "@/lib/withCardId";
@@ -32,7 +33,13 @@ function AutopilotWidgetBase({
   if (variant === "inline") {
     return;
   }
-  return <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20 hover:shadow-lg transition-all duration-300">
+  return <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20 hover:shadow-lg transition-all duration-300 relative">
+      <RewardDot 
+        points={suggestions.length > 0 ? 10 : 3} 
+        description={suggestions.length > 0 ? "Complete autopilot suggestions for rewards" : "Enable autopilot for credits"}
+        position="top-right"
+        size="md"
+      />
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

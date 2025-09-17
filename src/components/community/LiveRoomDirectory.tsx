@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { RewardDot } from "@/components/ui/reward-dot";
 import { Mic, Video, Users, Clock, Star, Heart, MessageSquare, Calendar, Play } from "lucide-react";
 // Remove react-i18next import - not available
 
@@ -181,8 +182,25 @@ function RoomCard({ room, onJoin }: { room: LiveRoom; onJoin: (room: LiveRoom) =
     return `${current}/${max}`;
   };
 
+  const getRewardPoints = () => {
+    if (room.premium) return 8;
+    if (room.isLive) return 6;
+    return 4;
+  };
+
+  const getRewardDescription = () => {
+    if (room.isLive) return "Join live session for bonus credits";
+    return "Schedule participation for credits";
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer group">
+    <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer group relative">
+      <RewardDot 
+        points={getRewardPoints()} 
+        description={getRewardDescription()}
+        position="top-right"
+        size="sm"
+      />
       <div className="relative">
         <div 
           className="h-32 bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 flex items-center justify-center"
