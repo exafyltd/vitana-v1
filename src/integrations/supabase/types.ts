@@ -629,6 +629,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_thread_participants_thread_id"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "thread_participants_thread_id_fkey"
             columns: ["thread_id"]
             isOneToOne: false

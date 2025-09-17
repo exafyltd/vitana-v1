@@ -208,8 +208,8 @@ export default withScreenId(function Messages() {
           </div>
 
           {/* Conversation List */}
-          <ScrollArea className="flex-1">
-            <SplitBarContent value="direct" className="p-4">
+          <SplitBarContent value="direct" className="flex-1">
+            <ScrollArea className="h-full p-4">
               {loading ? (
                 <div className="space-y-3">
                   {[...Array(3)].map((_, i) => (
@@ -235,9 +235,11 @@ export default withScreenId(function Messages() {
                   ))}
                 </div>
               )}
-            </SplitBarContent>
+            </ScrollArea>
+          </SplitBarContent>
 
-            <SplitBarContent value="groups" className="p-4">
+          <SplitBarContent value="groups" className="flex-1">
+            <ScrollArea className="h-full p-4">
               {threads.filter(t => t.type === 'group').length === 0 ? (
                 <EmptyState 
                   icon={Users}
@@ -251,16 +253,18 @@ export default withScreenId(function Messages() {
                   ))}
                 </div>
               )}
-            </SplitBarContent>
+            </ScrollArea>
+          </SplitBarContent>
 
-            <SplitBarContent value="notifications" className="p-4">
+          <SplitBarContent value="notifications" className="flex-1">
+            <ScrollArea className="h-full p-4">
               <EmptyState 
                 icon={Bell}
                 title="No notifications"
                 description="System notifications will appear here"
               />
-            </SplitBarContent>
-          </ScrollArea>
+            </ScrollArea>
+          </SplitBarContent>
         </div>
 
         {/* Main Chat Area */}
