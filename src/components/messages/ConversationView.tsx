@@ -10,6 +10,7 @@ import MessageInput from './MessageInput';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   ArrowLeft, 
   MoreVertical, 
@@ -46,6 +47,30 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   } = useHybridMessages();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const [recipientData, setRecipientData] = useState<any>(null);
+
+  // Fetch recipient data when recipientId changes
+  useEffect(() => {
+    const fetchRecipientData = async () => {
+      if (recipientId && !threadId) {
+        try {
+          const { data, error } = await supabase
+            .from(context === 'global' ? 'global_community_profiles' : 'profiles')
+            .select(context === 'global' ? 'user_id, display_name, avatar_url' : 'user_id, display_name, full_name, avatar_url')
+            .eq('user_id', recipientId)
+            .single();
+          
+          if (!error && data) {
+            setRecipientData(data);
+          }
+        } catch (error) {
+          console.error('Error fetching recipient data:', error);
+        }
+      }
+    };
+
+    fetchRecipientData();
+  }, [recipientId, context, threadId]);
 
   useEffect(() => {
     if (threadId) {
@@ -144,6 +169,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       return 'Thread Conversation';
     }
     
+    // Use recipient data for direct messages
+    if (recipientId && recipientData) {
+      return recipientData.display_name || recipientData.full_name || 'Unknown User';
+    }
+    
     return recipientId ? 'Direct Message' : 'New Message';
   };
 
@@ -157,6 +187,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         return otherParticipant?.avatar_url;
       }
     }
+    
+    // Use recipient data for direct messages
+    if (recipientId && recipientData) {
+      return recipientData.avatar_url;
+    }
+    
     return null;
   };
 
