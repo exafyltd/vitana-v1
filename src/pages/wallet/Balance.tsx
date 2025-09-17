@@ -11,6 +11,10 @@ import { WalletBalanceCard } from "@/components/wallet/WalletBalanceCard";
 import { WalletTransactionCard } from "@/components/wallet/WalletTransactionCard";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { CreditEarningPredictionCard } from "@/components/wallet/intelligence/CreditEarningPredictionCard";
+import { TokenMarketIntelligenceCard } from "@/components/wallet/intelligence/TokenMarketIntelligenceCard";
+import { MembershipROIAnalyticsCard } from "@/components/wallet/intelligence/MembershipROIAnalyticsCard";
+import { EarningOptimizationSplitScreen } from "@/components/wallet/intelligence/EarningOptimizationSplitScreen";
 import { CreditCard, Coins, Shield, Plus, TrendingUp } from "lucide-react";
 import { useState } from "react";
 import {
@@ -62,7 +66,8 @@ function Balance() {
   const splitBarOptions = [
     { value: "credits", label: "Credits Account" },
     { value: "tokens", label: "Tokens Account" },
-    { value: "membership", label: "Membership Benefits" }
+    { value: "membership", label: "Membership Benefits" },
+    { value: "optimization", label: "Earning Optimization" }
   ];
 
   const getContextualAction = () => {
@@ -108,6 +113,7 @@ function Balance() {
             <SplitBarTrigger value="credits">Credits Account</SplitBarTrigger>
             <SplitBarTrigger value="tokens">Tokens Account</SplitBarTrigger>
             <SplitBarTrigger value="membership">Membership Benefits</SplitBarTrigger>
+            <SplitBarTrigger value="optimization">Earning Optimization</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner 
@@ -137,10 +143,13 @@ function Balance() {
                 />
               </div>
 
-              <WalletMotivationalBanner 
-                variant="balance" 
-                activeTab="credits"
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <CreditEarningPredictionCard />
+                <WalletMotivationalBanner 
+                  variant="balance" 
+                  activeTab="credits"
+                />
+              </div>
 
               <div className="grid grid-cols-1 gap-4">
                 {balanceData.credits.transactions.map((transaction) => (
@@ -176,10 +185,13 @@ function Balance() {
                 />
               </div>
 
-              <WalletMotivationalBanner 
-                variant="balance" 
-                activeTab="tokens"
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <TokenMarketIntelligenceCard />
+                <WalletMotivationalBanner 
+                  variant="balance" 
+                  activeTab="tokens"
+                />
+              </div>
 
               <div className="grid grid-cols-1 gap-4">
                 {balanceData.tokens.governance.map((vote) => (
@@ -213,10 +225,13 @@ function Balance() {
                 />
               </div>
 
-              <WalletMotivationalBanner 
-                variant="balance" 
-                activeTab="membership"
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <MembershipROIAnalyticsCard />
+                <WalletMotivationalBanner 
+                  variant="balance" 
+                  activeTab="membership"
+                />
+              </div>
 
               <div className="grid grid-cols-1 gap-4">
                 {balanceData.membership.benefits.map((benefit) => (
@@ -228,6 +243,10 @@ function Balance() {
                 ))}
               </div>
             </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="optimization">
+            <EarningOptimizationSplitScreen />
           </SplitBarContent>
         </SplitBar>
         </div>
