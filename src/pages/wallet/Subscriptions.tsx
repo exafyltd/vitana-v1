@@ -11,6 +11,9 @@ import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivational
 import { WalletSubscriptionCard } from "@/components/wallet/WalletSubscriptionCard";
 import { walletNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { SubscriptionROIAnalyticsCard } from "@/components/wallet/intelligence/SubscriptionROIAnalyticsCard";
+import { PersonalizedSubscriptionRecommendationCard } from "@/components/wallet/intelligence/PersonalizedSubscriptionRecommendationCard";
+import { SmartRecommendationsSplitScreen } from "@/components/wallet/intelligence/SmartRecommendationsSplitScreen";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -81,7 +84,8 @@ function Subscriptions() {
   const splitBarOptions = [
     { value: "active", label: "Active" },
     { value: "paused", label: "Paused" }, 
-    { value: "available", label: "Available" }
+    { value: "available", label: "Available" },
+    { value: "recommendations", label: "Smart Recommendations" }
   ];
 
   return (
@@ -112,12 +116,18 @@ function Subscriptions() {
             <SplitBarTrigger value="active">Active</SplitBarTrigger>
             <SplitBarTrigger value="paused">Paused</SplitBarTrigger>
             <SplitBarTrigger value="available">Available</SplitBarTrigger>
+            <SplitBarTrigger value="recommendations">Smart Recommendations</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner variant="subscriptions" />
 
           <SplitBarContent value="active">
             <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <SubscriptionROIAnalyticsCard />
+                <WalletMotivationalBanner variant="subscriptions" />
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {subscriptionData.active.map((subscription) => (
                   <WalletSubscriptionCard
@@ -128,8 +138,6 @@ function Subscriptions() {
                   />
                 ))}
               </div>
-              
-              <WalletMotivationalBanner variant="subscriptions" />
             </div>
           </SplitBarContent>
 
@@ -153,6 +161,11 @@ function Subscriptions() {
           <SplitBarContent value="available">
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <PersonalizedSubscriptionRecommendationCard />
+                <WalletMotivationalBanner variant="subscriptions" />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {subscriptionData.available.map((subscription) => (
                   <WalletSubscriptionCard
                     key={subscription.id}
@@ -162,9 +175,11 @@ function Subscriptions() {
                   />
                 ))}
               </div>
-              
-              <WalletMotivationalBanner variant="subscriptions" />
             </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="recommendations">
+            <SmartRecommendationsSplitScreen />
           </SplitBarContent>
         </SplitBar>
 
