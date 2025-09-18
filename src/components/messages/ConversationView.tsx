@@ -28,6 +28,9 @@ import { cn } from '@/lib/utils';
 import MessageSkeleton from './MessageSkeleton';
 import EmptyStateIllustration from './EmptyStateIllustration';
 import ErrorMessage from './ErrorMessage';
+import SystemMessage from './SystemMessage';
+import GroupMembersModal from './GroupMembersModal';
+import GroupAvatarStack from './GroupAvatarStack';
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -69,6 +72,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isThreadDataLoaded, setIsThreadDataLoaded] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [showMembersModal, setShowMembersModal] = useState(false);
+  const [threadParticipants, setThreadParticipants] = useState<any[]>([]);
+  const [currentUserRole, setCurrentUserRole] = useState<string>('member');
 
   // Focus and intersection states for smart read detection
   const [isWindowFocused, setIsWindowFocused] = useState(true);
@@ -138,9 +144,16 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       const currentThread = threads.find(thread => thread.id === threadId);
       if (currentThread && currentThread.participants && currentThread.participants.length > 0) {
         setIsThreadDataLoaded(true);
+        setThreadParticipants(currentThread.participants);
+        
+        // Find current user's role
+        const userParticipant = currentThread.participants.find((p: any) => p.user_id === user?.id);
+        if (userParticipant) {
+          setCurrentUserRole(userParticipant.role || 'member');
+        }
       }
     }
-  }, [threadId, threads]);
+  }, [threadId, threads, user?.id]);
 
   useEffect(() => {
     // Scroll to bottom when new messages arrive
@@ -308,17 +321,25 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     // Prefer thread participants if available
     if (threadId && threads.length > 0) {
       const currentThread: any = threads.find((thread: any) => thread.id === threadId);
-      if (currentThread && currentThread.participants && currentThread.participants.length > 0) {
-        const others: any[] = currentThread.participants.filter((p: any) => p.user_id !== user?.id);
-        if (others.length > 0) {
-          const names = others
-            .map((p: any) => p.profile?.display_name || p.profile?.full_name || p.display_name || p.full_name)
-            .filter(Boolean) as string[];
-          if (names.length > 1) return names.slice(0, 2).join(', '); // simple group label
-          if (names.length === 1) return names[0];
+      if (currentThread) {
+        // For group chats, use the thread name
+        if (currentThread.type === 'group' && currentThread.name) {
+          return currentThread.name;
         }
-        // Fallback to thread name for group chats
-        if (currentThread.name) return currentThread.name;
+        
+        // For direct chats, show other participant's name
+        if (currentThread.participants && currentThread.participants.length > 0) {
+          const others: any[] = currentThread.participants.filter((p: any) => p.user_id !== user?.id);
+          if (others.length > 0) {
+            const names = others
+              .map((p: any) => p.profile?.display_name || p.profile?.full_name || p.display_name || p.full_name)
+              .filter(Boolean) as string[];
+            if (names.length > 1) return names.slice(0, 2).join(', '); // simple group label
+            if (names.length === 1) return names[0];
+          }
+          // Fallback to thread name for group chats
+          if (currentThread.name) return currentThread.name;
+        }
       }
     }
     
@@ -339,9 +360,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   const getConversationAvatar = () => {
-    // Prefer thread participants if available
+    // For group chats, don't show a single avatar
     if (threadId && threads.length > 0) {
       const currentThread: any = threads.find((thread: any) => thread.id === threadId);
+      if (currentThread?.type === 'group') {
+        return null; // Will be handled by GroupAvatarStack
+      }
+      
+      // For direct chats, show other participant's avatar
       if (currentThread && currentThread.participants) {
         const other: any = currentThread.participants.find((p: any) => p.user_id !== user?.id);
         return other?.profile?.avatar_url || other?.avatar_url || null;
@@ -363,7 +389,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   const getConversationSubtitle = () => {
+    const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
+    
+    if (currentThread?.type === 'group') {
+      const participantCount = threadParticipants.length;
+      return `${participantCount} ${participantCount === 1 ? 'member' : 'members'}`;
+    }
+    
     return messageContext === 'global' ? 'Global Community' : 'Professional Network';
+  };
+
+  const isGroupChat = () => {
+    const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
+    return currentThread?.type === 'group';
   };
 
   // Loading state for when conversation is being loaded
@@ -392,29 +430,51 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   }
 
   return (
-    <Card className={cn("flex flex-col h-full", className)}>
-      {/* Header */}
-      <CardHeader className="flex-shrink-0 border-b">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {onBack && (
-              <Button size="sm" variant="ghost" onClick={onBack}>
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
-            )}
-            
-            <Avatar>
-              <AvatarImage src={getConversationAvatar() || undefined} />
-              <AvatarFallback>
-                {getConversationTitle()[0]?.toUpperCase() || 'U'}
-              </AvatarFallback>
-            </Avatar>
-            
-            <div>
-              <CardTitle className="text-base">{getConversationTitle()}</CardTitle>
-              <p className="text-sm text-muted-foreground">{getConversationSubtitle()}</p>
+    <>
+      <Card className={cn("flex flex-col h-full", className)}>
+        {/* Header */}
+        <CardHeader className="flex-shrink-0 border-b">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {onBack && (
+                <Button size="sm" variant="ghost" onClick={onBack}>
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+              )}
+              
+              {isGroupChat() ? (
+                <div 
+                  className="cursor-pointer"
+                  onClick={() => setShowMembersModal(true)}
+                >
+                  <GroupAvatarStack 
+                    participants={threadParticipants} 
+                    maxVisible={3}
+                    size="md"
+                  />
+                </div>
+              ) : (
+                <Avatar>
+                  <AvatarImage src={getConversationAvatar() || undefined} />
+                  <AvatarFallback>
+                    {getConversationTitle()[0]?.toUpperCase() || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+              
+              <div 
+                className={isGroupChat() ? "cursor-pointer" : ""}
+                onClick={isGroupChat() ? () => setShowMembersModal(true) : undefined}
+              >
+                <CardTitle className="text-base">{getConversationTitle()}</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  {isGroupChat() 
+                    ? `${threadParticipants.length} ${threadParticipants.length === 1 ? 'member' : 'members'}`
+                    : messageContext === 'global' ? 'Global Community' : 'Professional Network'
+                  }
+                </p>
+              </div>
             </div>
-          </div>
           
           <div className="flex items-center gap-1">
             <Button size="sm" variant="ghost">
@@ -591,7 +651,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         />
       </div>
     </Card>
-  );
+
+    <GroupMembersModal
+      open={showMembersModal}
+      onOpenChange={setShowMembersModal}
+      threadId={threadId || ''}
+      context={messageContext}
+      currentUserRole={currentUserRole}
+    />
+  </>;
 };
 
 export default ConversationView;

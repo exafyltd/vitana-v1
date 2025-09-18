@@ -22,6 +22,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ConversationListSkeleton from "@/components/messages/ConversationListSkeleton";
 import EmptyStateIllustration from "@/components/messages/EmptyStateIllustration";
 import ErrorMessage from "@/components/messages/ErrorMessage";
+import CreateGroupPopup from "@/components/messages/CreateGroupPopup";
 
 export default function Messages() {
   const { user } = useAuth();
@@ -34,6 +35,7 @@ export default function Messages() {
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [showNewConversation, setShowNewConversation] = useState(false);
+  const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [localThreads, setLocalThreads] = useState(threads);
 
   useEffect(() => {
@@ -84,6 +86,11 @@ export default function Messages() {
     setSelectedThreadId(threadId);
     // Keep recipientId until participants are loaded so header shows the name
     setSelectedRecipientId(recipientId);
+  };
+
+  const handleGroupCreated = (threadId: string) => {
+    setSelectedThreadId(threadId);
+    setSelectedRecipientId(null);
   };
 
   if (isLoading) {
@@ -139,10 +146,20 @@ export default function Messages() {
             </TabsList>
           </Tabs>
         </div>
-        <Button onClick={() => setShowNewConversation(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          New Message
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            onClick={() => setShowCreateGroup(true)}
+            className="flex items-center gap-2"
+          >
+            <Users className="w-4 h-4" />
+            New Group
+          </Button>
+          <Button onClick={() => setShowNewConversation(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            New Message
+          </Button>
+        </div>
       </div>
 
       <div className="flex-1 flex">  
@@ -241,6 +258,13 @@ export default function Messages() {
         open={showNewConversation}
         onOpenChange={setShowNewConversation}
         onConversationCreated={handleConversationCreated}
+        context={messageContext}
+      />
+      
+      <CreateGroupPopup
+        open={showCreateGroup}
+        onOpenChange={setShowCreateGroup}
+        onGroupCreated={handleGroupCreated}
         context={messageContext}
       />
     </AppLayout>
