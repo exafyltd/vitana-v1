@@ -543,9 +543,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <div className="conversation-viewport h-full flex flex-col">
-        {/* Zone 1: Fixed Header */}
-        <div className="conversation-header flex-shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b px-4 py-3">
+      <div className="conversation-pane">
+        {/* Zone 1: Top Zone - Fixed Header */}
+        <div className="conversation-header">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {onBack && (
@@ -597,8 +597,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           </div>
         </div>
 
-        {/* Zone 2: Scrollable Chat History */}  
-        <div className="flex-1 overflow-y-auto px-4 py-3" id="chat-scroll">
+        {/* Zone 2: History Zone - Only Scrollable Area */}  
+        <div className="conversation-history chat-scroll" id="chat-scroll">
           {messages.length === 0 && optimisticMessages.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No messages yet</p>
@@ -659,16 +659,16 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   </div>
                 </div>
               ))}
+              
+              {/* Bottom buffer to ensure last message is never hidden */}
+              <div className="conversation-bottom-buffer" />
             </>
           )}
-          
-          {/* Bottom padding to ensure last message is never hidden */}
-          <div className="h-4" />
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Zone 3: Fixed Composer */}
-        <div className="conversation-composer flex-shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t px-4 py-3">
+        {/* Zone 3: Composer Zone - Fixed Above Communication Dock */}
+        <div className="conversation-composer">
           {/* Typing Indicators */}
           {typingUsers.length > 0 && (
             <div className="mb-2">
