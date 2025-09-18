@@ -114,32 +114,54 @@ export function useTenantMessages() {
 
     try {
       setIsLoading(true);
-      // Get threads where user is a participant
-      const { data: threadData, error: threadError } = await supabase
+      
+      // First get thread IDs where user participates
+      const { data: myParticipation, error: partErr } = await supabase
+        .from('thread_participants')
+        .select('thread_id, last_read_at')
+        .eq('user_id', user.id)
+        .eq('is_active', true);
+
+      if (partErr) throw partErr;
+
+      const threadIds = (myParticipation || []).map((p: any) => p.thread_id);
+      if (threadIds.length === 0) {
+        setThreads([]);
+        setIsLoading(false);
+        return;
+      }
+
+      // Get threads by IDs
+      const { data: threadRows, error: threadError } = await supabase
         .from('message_threads')
-        .select(`
-          *,
-          participants:thread_participants!inner(
-            user_id,
-            role,
-            last_read_at,
-            profile:profiles(
-              full_name,
-              display_name,
-              avatar_url
-            )
-          )
-        `)
+        .select('*')
         .eq('tenant_id', activeTenantId)
-        .eq('thread_participants.user_id', user.id)
-        .eq('thread_participants.is_active', true)
+        .in('id', threadIds)
         .order('updated_at', { ascending: false });
 
       if (threadError) throw threadError;
 
+      // Get all participants for these threads
+      const { data: allParticipants } = await supabase
+        .from('thread_participants')
+        .select(`
+          thread_id, 
+          user_id, 
+          role, 
+          last_read_at,
+          profile:profiles(
+            user_id,
+            full_name,
+            display_name,
+            avatar_url
+          )
+        `)
+        .in('thread_id', threadIds)
+        .eq('is_active', true);
+
       // Get last message and unread count for each thread
       const threadsWithDetails = await Promise.all(
-        (threadData || []).map(async (thread) => {
+        (threadRows || []).map(async (thread) => {
           // Get last message
           const { data: lastMessage } = await supabase
             .from('messages')
@@ -150,9 +172,21 @@ export function useTenantMessages() {
             .limit(1)
             .single();
 
+          // Get participants for this thread
+          const participants = (allParticipants || [])
+            .filter((p: any) => p.thread_id === thread.id)
+            .map((p: any) => ({
+              user_id: p.user_id,
+              role: p.role,
+              last_read_at: p.last_read_at,
+              full_name: p.profile?.full_name,
+              display_name: p.profile?.display_name,
+              avatar_url: p.profile?.avatar_url,
+            }));
+
           // Get unread count
-          const userParticipant = thread.participants.find(
-            (p: any) => p.user_id === user.id
+          const userParticipant = (myParticipation || []).find(
+            (p: any) => p.thread_id === thread.id
           );
           const lastReadAt = userParticipant?.last_read_at;
           
@@ -176,6 +210,7 @@ export function useTenantMessages() {
 
           return {
             ...thread,
+            participants,
             last_message: lastMessage,
             unread_count: unreadCount,
           };
