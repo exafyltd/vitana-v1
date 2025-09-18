@@ -346,7 +346,31 @@ export function useTenantMessages() {
     if (!user || !activeTenantId || !isTenantContext) return;
 
     try {
-      // Create thread
+      // For direct threads, use the Supabase function to prevent duplicates
+      if (type === 'direct' && participantIds.length === 1) {
+        const { data: threadId, error: rpcError } = await supabase.rpc(
+          'create_tenant_direct_thread',
+          { 
+            p_recipient_id: participantIds[0],
+            p_tenant_id: activeTenantId
+          }
+        );
+
+        if (rpcError) throw rpcError;
+
+        await fetchThreads();
+        
+        // Return the thread object
+        const { data: thread } = await supabase
+          .from('message_threads')
+          .select('*')
+          .eq('id', threadId)
+          .single();
+        
+        return thread;
+      }
+
+      // For group threads, create normally
       const { data: thread, error: threadError } = await supabase
         .from('message_threads')
         .insert({

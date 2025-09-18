@@ -179,7 +179,30 @@ export default function Messages() {
                   onAction={() => setShowNewConversation(true)}
                 />
               ) : (
-                localThreads.map((thread) => (
+                // De-duplicate direct threads by counterpart, keep most recent
+                localThreads
+                  .reduce((acc, thread) => {
+                    if (thread.type === 'direct') {
+                      // Find the other participant (not current user)
+                      const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
+                      const key = counterpart?.user_id || 'unknown';
+                      
+                      // Keep the thread with the most recent updated_at
+                      const existing = acc.find(t => t._dedupeKey === key);
+                      if (!existing || new Date(thread.updated_at) > new Date(existing.updated_at)) {
+                        // Remove existing if found, add new one
+                        const filtered = acc.filter(t => t._dedupeKey !== key);
+                        filtered.push({ ...thread, _dedupeKey: key });
+                        return filtered;
+                      }
+                      return acc;
+                    } else {
+                      // Keep group threads as-is
+                      acc.push({ ...thread, _dedupeKey: thread.id });
+                      return acc;
+                    }
+                  }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
+                  .map((thread) => (
                   <Card
                     key={thread.id}
                     className={`p-4 cursor-pointer transition-colors hover:bg-muted/50 ${
@@ -195,7 +218,6 @@ export default function Messages() {
                         <AvatarImage src={thread.participants?.[0]?.avatar_url} />
                         <AvatarFallback>
                           {thread.participants?.[0]?.display_name?.[0] || 
-                           thread.participants?.[0]?.full_name?.[0] || 
                            thread.name?.[0] || '?'}
                         </AvatarFallback>
                       </Avatar>
@@ -204,7 +226,6 @@ export default function Messages() {
                           <h3 className="font-medium truncate">
                             {thread.name || 
                              thread.participants?.find(p => p.user_id !== user?.id)?.display_name ||
-                             thread.participants?.find(p => p.user_id !== user?.id)?.full_name ||
                              'Unknown'}
                           </h3>
                            {thread.unread_count > 0 && (

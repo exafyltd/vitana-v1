@@ -390,23 +390,28 @@ export function useGlobalMessages() {
     if (!user || !isGlobalContext) return;
 
     try {
-      // For direct threads, check if one already exists between the same participants
+      // For direct threads, use the Supabase function to prevent duplicates  
       if (type === 'direct' && participantIds.length === 1) {
-        const existingThreadId = await findExistingDirectThread(participantIds);
-        if (existingThreadId) {
-          // Return existing thread instead of creating new one
-          const { data: existingThread } = await supabase
-            .from('global_message_threads')
-            .select('*')
-            .eq('id', existingThreadId)
-            .single();
-          
-          await fetchThreads(); // Refresh threads list
-          return existingThread;
-        }
+        const { data: threadId, error: rpcError } = await supabase.rpc(
+          'create_global_direct_thread',
+          { p_recipient_id: participantIds[0] }
+        );
+
+        if (rpcError) throw rpcError;
+
+        await fetchThreads();
+        
+        // Return the thread object
+        const { data: thread } = await supabase
+          .from('global_message_threads')
+          .select('*')
+          .eq('id', threadId)
+          .single();
+        
+        return thread;
       }
 
-      // Create new thread
+      // For group threads, create normally
       const { data: thread, error: threadError } = await supabase
         .from('global_message_threads')
         .insert({
@@ -439,7 +444,7 @@ export function useGlobalMessages() {
       console.error('Error creating global thread:', error);
       throw error;
     }
-  }, [user, isGlobalContext, fetchThreads, findExistingDirectThread]);
+  }, [user, isGlobalContext, fetchThreads]);
 
   // Debounced mark as read with smart timestamp checking
   const markAsReadTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
