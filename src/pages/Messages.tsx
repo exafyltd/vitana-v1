@@ -163,7 +163,7 @@ export default function Messages() {
         </div>
       </div>
 
-      <div className="flex-1 flex">  
+      <div className="flex-1 flex pb-24">  
         <div className="w-80 border-r">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
@@ -244,6 +244,7 @@ export default function Messages() {
                 threadId={selectedThreadId}
                 recipientId={selectedRecipientId}
                 context={messageContext}
+                className="h-full"
               />
             </ConversationErrorBoundary>
           ) : (
