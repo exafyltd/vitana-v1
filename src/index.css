@@ -488,9 +488,10 @@ All colors MUST be HSL.
 
   /* Enhanced CSS for message viewport with safe areas */
   .message-viewport {
-    height: calc(100vh - var(--header-height, 120px) - var(--comm-dock-h, 72px) - env(safe-area-inset-bottom));
+    height: calc(100vh - var(--header-height, 200px) - env(safe-area-inset-bottom));
     display: grid;
     grid-template-rows: auto 1fr auto;
+    min-height: 0;
   }
 
   .chat-history-container {

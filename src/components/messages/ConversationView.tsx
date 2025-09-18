@@ -509,9 +509,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      {/* 3-row grid layout: header, scrollable messages, fixed composer */}
-      <div className={cn("flex-1 min-h-0 grid grid-rows-[auto,1fr,auto] h-full", className)}>
-        {/* Row 1: sticky header */}
+      <div className="message-viewport">
+        {/* Row 1: Conversation header */}
         <div className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -564,13 +563,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           </div>
         </div>
 
-        {/* Row 2: ONLY scrollable area – chat history */}  
-        <div
-          id="chat-scroll"
-          className="min-h-0 overflow-y-auto overscroll-contain px-4 py-3 scroll-smooth"
-          style={{ scrollPaddingBottom: '120px' }}
-          data-conversation-container
-        >
+        {/* Row 2: Chat history - ONLY scrollable area */}  
+        <div className="chat-history-container px-4 py-3">
           {messages.length === 0 && optimisticMessages.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No messages yet</p>
@@ -635,16 +629,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           )}
           
           {/* Spacer so last bubble never sits under the composer */}
-          <div style={{ height: 'calc(var(--composer-h, 112px) + var(--comm-dock-h, 72px) + env(safe-area-inset-bottom))' }} />
+          <div style={{ height: 'calc(var(--composer-h, 112px) + var(--comm-dock-h, 68px) + 20px + env(safe-area-inset-bottom))' }} />
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Row 3: composer – ALWAYS visible, above dock */}
-        <div
-          id="composer-wrap"
-          className="relative z-30 border-t bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-          style={{ marginBottom: 'calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom))' }}
-        >
+        {/* Row 3: Composer - ALWAYS visible, above dock */}
+        <div className="composer-container">
           {/* Typing Indicators */}
           {typingUsers.length > 0 && (
             <TypingIndicator users={typingUsers} className="border-b" />
@@ -674,13 +664,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </div>
       </div>
 
-    <GroupMembersModal
-      open={showMembersModal}
-      onOpenChange={setShowMembersModal}
-      threadId={threadId || ''}
-      context={messageContext}
-      currentUserRole={currentUserRole}
-    />
+      <GroupMembersModal
+        open={showMembersModal}
+        onOpenChange={setShowMembersModal}
+        threadId={threadId || ''}
+        context={messageContext}
+        currentUserRole={currentUserRole}
+      />
     </>
   );
 };
