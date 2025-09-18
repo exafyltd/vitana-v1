@@ -50,17 +50,21 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       return 'sending';
     }
     
-    // Check for read status
-    if (message.read_at || message.is_read) {
+    // WhatsApp-style status logic with idempotent checks
+    // Never regress from read → delivered → sent
+    if (message.read_at) {
       return 'read';
     }
     
-    // Check for delivered status
-    if (message.delivered_at || message.is_delivered !== false) {
+    if (message.delivered_at) {
       return 'delivered';
     }
     
-    return 'sent';
+    if (message.sent_at || message.created_at) {
+      return 'sent';
+    }
+    
+    return 'sending';
   };
 
   const renderStatusIcon = () => {
@@ -72,10 +76,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       case 'sending':
         return <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />;
       case 'sent':
+        // Single checkmark - message sent but not delivered
         return <Check className="w-3 h-3 text-muted-foreground" />;
       case 'delivered':
+        // Double checkmark - message delivered but not read
         return <CheckCheck className="w-3 h-3 text-muted-foreground" />;
       case 'read':
+        // Colored double checkmark - message read (WhatsApp style)
         return <CheckCheck className="w-3 h-3 text-primary" />;
       default:
         return <Clock className="w-3 h-3 text-muted-foreground" />;

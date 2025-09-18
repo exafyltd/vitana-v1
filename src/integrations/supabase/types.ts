@@ -313,10 +313,13 @@ export type Database = {
           body: string
           content_data: Json | null
           created_at: string | null
+          delivered_at: string | null
           id: string
           message_type: string
           parent_message_id: string | null
+          read_at: string | null
           sender_id: string
+          sent_at: string | null
           thread_id: string
           updated_at: string
         }
@@ -324,10 +327,13 @@ export type Database = {
           body: string
           content_data?: Json | null
           created_at?: string | null
+          delivered_at?: string | null
           id?: string
           message_type?: string
           parent_message_id?: string | null
+          read_at?: string | null
           sender_id: string
+          sent_at?: string | null
           thread_id: string
           updated_at?: string
         }
@@ -335,10 +341,13 @@ export type Database = {
           body?: string
           content_data?: Json | null
           created_at?: string | null
+          delivered_at?: string | null
           id?: string
           message_type?: string
           parent_message_id?: string | null
+          read_at?: string | null
           sender_id?: string
+          sent_at?: string | null
           thread_id?: string
           updated_at?: string
         }
@@ -733,12 +742,15 @@ export type Database = {
           body: string
           content_data: Json | null
           created_at: string | null
+          delivered_at: string | null
           expires_at: string | null
           id: string
           message_type: string
           parent_message_id: string | null
+          read_at: string | null
           recipient_id: string | null
           sender_id: string
+          sent_at: string | null
           tenant_id: string
           thread_id: string | null
           updated_at: string
@@ -749,12 +761,15 @@ export type Database = {
           body: string
           content_data?: Json | null
           created_at?: string | null
+          delivered_at?: string | null
           expires_at?: string | null
           id?: string
           message_type?: string
           parent_message_id?: string | null
+          read_at?: string | null
           recipient_id?: string | null
           sender_id: string
+          sent_at?: string | null
           tenant_id: string
           thread_id?: string | null
           updated_at?: string
@@ -765,12 +780,15 @@ export type Database = {
           body?: string
           content_data?: Json | null
           created_at?: string | null
+          delivered_at?: string | null
           expires_at?: string | null
           id?: string
           message_type?: string
           parent_message_id?: string | null
+          read_at?: string | null
           recipient_id?: string | null
           sender_id?: string
+          sent_at?: string | null
           tenant_id?: string
           thread_id?: string | null
           updated_at?: string
