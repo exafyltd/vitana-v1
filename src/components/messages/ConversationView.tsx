@@ -25,6 +25,9 @@ import {
   Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import MessageSkeleton from './MessageSkeleton';
+import EmptyStateIllustration from './EmptyStateIllustration';
+import ErrorMessage from './ErrorMessage';
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -64,6 +67,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
   const [isThreadDataLoaded, setIsThreadDataLoaded] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   // Focus and intersection states for smart read detection
   const [isWindowFocused, setIsWindowFocused] = useState(true);
@@ -206,6 +211,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     actionButtons?: any[]
   ) => {
     try {
+      setSendError(null);
       let newMessage;
       if (messageContext === 'global' && threadId) {
         newMessage = await sendMessage(threadId, content, messageType, contentData);
@@ -227,11 +233,30 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       
     } catch (error) {
       console.error('Error sending message:', error);
+      setSendError('Failed to send message. Please try again.');
       toast({
-        title: 'Error',
-        description: 'Failed to send message',
+        title: 'Message Failed',
+        description: 'Your message could not be sent. Please try again.',
         variant: 'destructive',
       });
+    }
+  };
+
+  const retryLoadMessages = async () => {
+    if (!threadId) return;
+    
+    try {
+      setLoadError(null);
+      if (paginatedMessages.shouldUsePagination) {
+        await paginatedMessages.fetchInitialMessages(
+          threadId, 
+          messageContext, 
+          messageContext === 'tenant' ? undefined : undefined
+        );
+      }
+    } catch (error) {
+      console.error('Error loading messages:', error);
+      setLoadError('Failed to load messages. Please try again.');
     }
   };
 
@@ -341,7 +366,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return messageContext === 'global' ? 'Global Community' : 'Professional Network';
   };
 
-  if (messages.length === 0 && !threadId && !recipientId) {
+  // Loading state for when conversation is being loaded
+  if ((!threadId && !recipientId) || (threadId && !isThreadDataLoaded && messages.length === 0)) {
     return (
       <Card className={cn("flex flex-col h-full", className)}>
         <CardHeader className="flex-shrink-0 border-b">
@@ -359,17 +385,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           </div>
         </CardHeader>
         <CardContent className="flex-1 p-4">
-          <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="flex gap-3">
-                <Skeleton className="h-8 w-8 rounded-full flex-shrink-0" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-16 w-64 rounded-2xl" />
-                </div>
-              </div>
-            ))}
-          </div>
+          <MessageSkeleton count={3} />
         </CardContent>
       </Card>
     );
@@ -467,13 +483,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 data-conversation-container
                 ref={paginatedMessages.scrollContainerRef}
               >
-                <div className="p-4 space-y-4">
-                  {messages.length === 0 ? (
-                    <div className="text-center py-12">
-                      <p className="text-muted-foreground">No messages yet</p>
-                      <p className="text-sm text-muted-foreground">Start the conversation!</p>
-                    </div>
-                  ) : (
+                  <div className="p-4 space-y-4">
+                    {loadError ? (
+                      <div className="flex justify-center py-8">
+                        <ErrorMessage 
+                          title="Failed to load messages"
+                          description="Check your connection and try again"
+                          onRetry={retryLoadMessages}
+                          variant="inline"
+                        />
+                      </div>
+                    ) : messages.length === 0 ? (
+                      <EmptyStateIllustration type="conversation" />
+                    ) : (
                     messages.map((message, index) => {
                       const isOwnMessage = message.sender_id === user?.id;
                       const showAvatar = !isOwnMessage && (
@@ -548,13 +570,26 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       )}
 
       {/* Message Input */}
-      <MessageInput
-        onSendMessage={handleSendMessage}
-        onTypingStart={startTyping}
-        onTypingStop={stopTyping}
-        disabled={isSending}
-        placeholder={`Message ${getConversationTitle()}...`}
-      />
+      <div className="border-t p-4">
+        {sendError && (
+          <div className="mb-3">
+            <ErrorMessage 
+              title="Message failed to send"
+              description={sendError}
+              onRetry={() => setSendError(null)}
+              variant="inline"
+              className="text-xs"
+            />
+          </div>
+        )}
+        <MessageInput
+          onSendMessage={handleSendMessage}
+          onTypingStart={startTyping}
+          onTypingStop={stopTyping}
+          disabled={isSending}
+          placeholder={`Message ${getConversationTitle()}...`}
+        />
+      </div>
     </Card>
   );
 };

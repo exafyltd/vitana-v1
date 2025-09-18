@@ -19,6 +19,9 @@ import { MessageSquare, Users, Globe, Building } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import NewConversationPopup from "@/components/NewConversationPopup";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ConversationListSkeleton from "@/components/messages/ConversationListSkeleton";
+import EmptyStateIllustration from "@/components/messages/EmptyStateIllustration";
+import ErrorMessage from "@/components/messages/ErrorMessage";
 
 export default function Messages() {
   const { user } = useAuth();
@@ -92,10 +95,15 @@ export default function Messages() {
           title="Messages"
           description="Loading your conversations..."
         />
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading messages...</p>
+        <div className="flex-1 flex">
+          <div className="w-80 border-r">
+            <ConversationListSkeleton />
+          </div>
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Loading messages...</p>
+            </div>
           </div>
         </div>
       </AppLayout>
@@ -142,17 +150,11 @@ export default function Messages() {
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
               {localThreads.length === 0 ? (
-                <Card className="p-6 text-center">
-                  <MessageSquare className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="font-semibold mb-2">No conversations yet</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Start a new conversation to connect with others in your {messageContext === 'global' ? 'global community' : 'professional network'}
-                  </p>
-                  <Button onClick={() => setShowNewConversation(true)}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Start Conversation
-                  </Button>
-                </Card>
+                <EmptyStateIllustration 
+                  type="inbox"
+                  context={messageContext}
+                  onAction={() => setShowNewConversation(true)}
+                />
               ) : (
                 localThreads.map((thread) => (
                   <Card
