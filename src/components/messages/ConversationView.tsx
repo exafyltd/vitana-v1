@@ -94,32 +94,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
 
-  // Sync hybrid messages from hook - this is the main message source
-  useEffect(() => {
-    console.log('ConversationView: Syncing hybrid messages', {
-      hybridMessagesLength: hybridMessagesFromHook?.length || 0,
-      shouldUsePagination: paginatedMessages.shouldUsePagination
-    });
-    
-    if (hybridMessagesFromHook) {
-      setHybridMessages(hybridMessagesFromHook);
-    }
-  }, [hybridMessagesFromHook, paginatedMessages.shouldUsePagination]);
+  // Use hybrid messages directly from the hook - no local state needed
+  const messages = hybridMessagesFromHook || [];
 
-  // State for different message sources
-  const [hybridMessages, setHybridMessages] = useState<any[]>([]);
-  
-  // For now, always use hybrid messages for simplicity  
-  const messages = hybridMessages;
-
-  // Fetch messages when thread/recipient changes
+  // Debug logging for thread/recipient changes
   useEffect(() => {
     console.log('ConversationView: Thread/recipient effect', { 
       threadId, 
       recipientId,
-      messageContext
+      messageContext,
+      messagesLength: messages.length,
+      threadsLength: threads.length
     });
-  }, [threadId, recipientId, messageContext]);
+  }, [threadId, recipientId, messageContext, messages.length, threads.length]);
 
   // Handle scroll to top for loading older messages
   const handleScrollToTop = useCallback(() => {
@@ -517,19 +504,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return currentThread?.type === 'group';
   };
 
-  // Better loading state logic
+  // Simple loading check - only show loading if we have no data at all
   const isLoadingConversation = (!threadId && !recipientId) || 
-    (threadId && threads.length === 0) ||
-    (threadId && messages.length === 0 && optimisticMessages.length === 0 && !loadError);
+    (threadId && threads.length === 0 && messages.length === 0);
 
-  console.log('ConversationView: Checking loading state', {
+  console.log('ConversationView: Loading state check', {
     threadId,
     recipientId,
     threadsLength: threads.length,
     messagesLength: messages.length,
     optimisticMessagesLength: optimisticMessages.length,
-    isLoadingConversation,
-    loadError
+    isLoadingConversation
   });
 
   // Loading state for when conversation is being loaded  
