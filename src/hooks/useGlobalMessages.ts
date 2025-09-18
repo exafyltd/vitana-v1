@@ -101,52 +101,82 @@ export function useGlobalMessages() {
     }
 
     try {
-      // Get threads where user is a participant
-      const { data: threadData, error: threadError } = await supabase
+      setIsLoading(true);
+
+      // 1) Find threads where the current user participates (avoid FK-dependent embeds)
+      const { data: myParticipation, error: partErr } = await supabase
+        .from('global_thread_participants')
+        .select('thread_id, last_read_at')
+        .eq('user_id', user.id)
+        .eq('is_active', true);
+
+      if (partErr) throw partErr;
+
+      const threadIds = (myParticipation || []).map((p: any) => p.thread_id);
+      if (threadIds.length === 0) {
+        setThreads([]);
+        setIsLoading(false);
+        return;
+      }
+
+      // 2) Fetch threads by ids
+      const { data: threadRows, error: threadErr } = await supabase
         .from('global_message_threads')
-        .select(`
-          *,
-          participants:global_thread_participants!inner(
-            user_id,
-            role,
-            last_read_at,
-            profile:global_community_profiles(
-              display_name,
-              avatar_url
-            )
-          )
-        `)
-        .eq('global_thread_participants.user_id', user.id)
-        .eq('global_thread_participants.is_active', true)
+        .select('*')
+        .in('id', threadIds)
         .order('updated_at', { ascending: false });
 
-      if (threadError) throw threadError;
+      if (threadErr) throw threadErr;
 
-      // Get last message and unread count for each thread
+      // 3) Fetch all participants for these threads
+      const { data: allParticipants } = await supabase
+        .from('global_thread_participants')
+        .select('thread_id, user_id, role, last_read_at')
+        .in('thread_id', threadIds)
+        .eq('is_active', true);
+
+      // 4) Fetch profiles for participant users
+      const userIds = Array.from(new Set((allParticipants || []).map((p: any) => p.user_id)));
+      const { data: profiles } = await supabase
+        .from('global_community_profiles')
+        .select('user_id, display_name, avatar_url')
+        .in('user_id', userIds.length > 0 ? userIds : ['00000000-0000-0000-0000-000000000000']);
+
+      const profileMap: Record<string, any> = Object.fromEntries(
+        (profiles || []).map((p: any) => [p.user_id, p])
+      );
+
+      // 5) For each thread get last message and unread count
       const threadsWithDetails = await Promise.all(
-        (threadData || []).map(async (thread) => {
-          // Get last message
+        (threadRows || []).map(async (thread: any) => {
+          const participants = (allParticipants || [])
+            .filter((p: any) => p.thread_id === thread.id)
+            .map((p: any) => ({
+              user_id: p.user_id,
+              role: p.role,
+              last_read_at: p.last_read_at,
+              display_name: profileMap[p.user_id]?.display_name,
+              avatar_url: profileMap[p.user_id]?.avatar_url,
+            }));
+
+          // Last message
           const { data: lastMessage } = await supabase
             .from('global_messages')
             .select('*')
             .eq('thread_id', thread.id)
             .order('created_at', { ascending: false })
             .limit(1)
-            .single();
+            .maybeSingle();
 
-          // Get unread count
-          const userParticipant = thread.participants.find(
-            (p: any) => p.user_id === user.id
-          );
-          const lastReadAt = userParticipant?.last_read_at;
-          
+          // Unread count based on my last_read_at
+          const me = (myParticipation || []).find((p: any) => p.thread_id === thread.id);
           let unreadCount = 0;
-          if (lastReadAt) {
+          if (me?.last_read_at) {
             const { count } = await supabase
               .from('global_messages')
               .select('*', { count: 'exact', head: true })
               .eq('thread_id', thread.id)
-              .gt('created_at', lastReadAt);
+              .gt('created_at', me.last_read_at as string);
             unreadCount = count || 0;
           } else {
             const { count } = await supabase
@@ -158,17 +188,18 @@ export function useGlobalMessages() {
 
           return {
             ...thread,
-            last_message: lastMessage,
+            participants,
+            last_message: lastMessage || null,
             unread_count: unreadCount,
-          };
+          } as GlobalMessageThread;
         })
       );
 
       setThreads(threadsWithDetails);
-      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching global threads:', error);
       setThreads([]);
+    } finally {
       setIsLoading(false);
     }
   }, [user, isGlobalContext]);
