@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
+import type { MessageKind, SendMessageArgs } from './useHybridMessages';
 
 export interface GlobalMessage {
   id: string;
@@ -296,7 +297,8 @@ export function useGlobalMessages() {
     }
   }, [user, isGlobalContext]);
 
-  const sendMessage = useCallback(async (
+  // Legacy sendMessage for backwards compatibility - will be removed
+  const sendMessageLegacy = useCallback(async (
     threadId: string,
     body: string,
     messageType = 'text',
@@ -374,6 +376,11 @@ export function useGlobalMessages() {
       setIsSending(false);
     }
   }, [user, isGlobalContext, fetchThreads]);
+
+  // New standardized sendMessage function
+  const sendMessage = useCallback(async (args: SendMessageArgs) => {
+    return sendMessageLegacy(args.threadId, args.content, args.type || 'text', args.contentData);
+  }, [sendMessageLegacy]);
 
   const createThread = useCallback(async (
     participantIds: string[],

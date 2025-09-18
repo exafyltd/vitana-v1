@@ -3,6 +3,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { useTenant } from "./useTenant";
 import { supabase } from "@/integrations/supabase/client";
+import type { MessageKind, SendMessageArgs } from './useHybridMessages';
 
 export interface TenantMessage {
   id: string;
@@ -190,7 +191,8 @@ export function useTenantMessages() {
     }
   }, [user, activeTenantId, isTenantContext]);
 
-  const sendMessage = useCallback(async (
+  // Legacy sendMessage for backwards compatibility - will be removed
+  const sendMessageLegacy = useCallback(async (
     body: string,
     threadId?: string,
     recipientId?: string,
@@ -276,6 +278,11 @@ export function useTenantMessages() {
       setIsSending(false);
     }
   }, [user, activeTenantId, isTenantContext, fetchThreads]);
+
+  // New standardized sendMessage function
+  const sendMessage = useCallback(async (args: SendMessageArgs) => {
+    return sendMessageLegacy(args.content, args.threadId, args.recipientId, args.type || 'text', args.contentData);
+  }, [sendMessageLegacy]);
 
   const createThread = useCallback(async (
     participantIds: string[],

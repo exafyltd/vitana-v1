@@ -225,12 +225,20 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   ) => {
     try {
       setSendError(null);
-      let newMessage;
-      if (messageContext === 'global' && threadId) {
-        newMessage = await sendMessage(threadId, content, messageType, contentData);
-      } else if (messageContext === 'tenant') {
-        newMessage = await sendMessage(content, threadId, recipientId, messageType, contentData);
+      
+      if (!threadId) {
+        console.error('No thread ID available for sending message');
+        return;
       }
+
+      const newMessage = await sendMessage({
+        context: messageContext,
+        threadId,
+        content,
+        type: (messageType as any) || 'text',
+        contentData,
+        recipientId
+      });
       
       // Add to paginated messages if using pagination
       if (paginatedMessages.shouldUsePagination && newMessage) {
