@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -56,6 +56,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [recipientData, setRecipientData] = useState<any>(null);
   const [isThreadDataLoaded, setIsThreadDataLoaded] = useState(false);
 
+  // Focus and intersection states for smart read detection
+  const [isWindowFocused, setIsWindowFocused] = useState(true);
+  const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
+  const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
+
   // Fetch recipient data when recipientId changes
   useEffect(() => {
     const fetchRecipientData = async () => {
@@ -99,12 +104,62 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  useEffect(() => {
-    // Mark messages as read when viewing thread
-    if (threadId) {
+  // Enhanced mark as read logic with focus and intersection detection
+  const handleMarkAsRead = useCallback(() => {
+    if (threadId && isWindowFocused && isLastMessageVisible) {
       markAsRead(threadId);
     }
-  }, [threadId, markAsRead]);
+  }, [threadId, isWindowFocused, isLastMessageVisible, markAsRead]);
+
+  // Set up focus tracking
+  useEffect(() => {
+    const handleFocus = () => setIsWindowFocused(true);
+    const handleBlur = () => setIsWindowFocused(false);
+    const handleVisibilityChange = () => setIsWindowFocused(!document.hidden);
+
+    // Initial state
+    setIsWindowFocused(document.hasFocus() && !document.hidden);
+
+    // Event listeners
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('blur', handleBlur);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('blur', handleBlur);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  // Set up intersection observer for last message visibility
+  useEffect(() => {
+    if (!messagesEndRef.current) return;
+
+    intersectionObserverRef.current = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setIsLastMessageVisible(entry.isIntersecting && entry.intersectionRatio > 0.5);
+      },
+      { 
+        threshold: [0, 0.5, 1.0],
+        rootMargin: '0px 0px -10px 0px' // Slight margin to ensure message is fully visible
+      }
+    );
+
+    intersectionObserverRef.current.observe(messagesEndRef.current);
+
+    return () => {
+      if (intersectionObserverRef.current) {
+        intersectionObserverRef.current.disconnect();
+      }
+    };
+  }, [messages.length]); // Re-observe when messages change
+
+  // Trigger mark as read when conditions are met
+  useEffect(() => {
+    handleMarkAsRead();
+  }, [handleMarkAsRead]);
 
   const handleSendMessage = async (
     content: string, 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { useTenant } from "./useTenant";
@@ -321,21 +321,70 @@ export function useTenantMessages() {
     }
   }, [user, activeTenantId, isTenantContext, fetchThreads]);
 
+  // Debounced mark as read with smart timestamp checking
+  const markAsReadTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  
   const markAsRead = useCallback(async (threadId: string) => {
     if (!user || !activeTenantId || !isTenantContext) return;
 
-    try {
-      await supabase
-        .from('thread_participants')
-        .update({ last_read_at: new Date().toISOString() })
-        .eq('thread_id', threadId)
-        .eq('user_id', user.id);
-
-      await fetchThreads();
-    } catch (error) {
-      console.error('Error marking tenant thread as read:', error);
+    // Clear existing timeout for this thread
+    const existingTimeout = markAsReadTimeouts.current.get(threadId);
+    if (existingTimeout) {
+      clearTimeout(existingTimeout);
     }
-  }, [user, activeTenantId, isTenantContext, fetchThreads]);
+
+    // Debounce to avoid excessive calls
+    const timeout = setTimeout(async () => {
+      try {
+        const now = new Date().toISOString();
+        
+        // Get current last_read_at to check if update is needed
+        const { data: currentParticipant } = await supabase
+          .from('thread_participants')
+          .select('last_read_at')
+          .eq('thread_id', threadId)
+          .eq('user_id', user.id)
+          .single();
+
+        // Only update if new timestamp is later (idempotent)
+        if (!currentParticipant?.last_read_at || new Date(now) > new Date(currentParticipant.last_read_at)) {
+          const { error } = await supabase
+            .from('thread_participants')
+            .update({ last_read_at: now })
+            .eq('thread_id', threadId)
+            .eq('user_id', user.id);
+
+          if (!error) {
+            // Optimistically update local state immediately
+            setThreads(prev => prev.map(thread => 
+              thread.id === threadId 
+                ? { ...thread, unread_count: 0 }
+                : thread
+            ));
+
+            // Trigger real-time sync for other tabs/devices
+            await supabase.channel('unread_sync').send({
+              type: 'broadcast',
+              event: 'thread_read',
+              payload: { 
+                threadId, 
+                userId: user.id, 
+                timestamp: now,
+                context: 'tenant',
+                tenantId: activeTenantId
+              }
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error marking tenant thread as read:', error);
+      } finally {
+        markAsReadTimeouts.current.delete(threadId);
+      }
+    }, 300); // 300ms debounce
+
+    markAsReadTimeouts.current.set(threadId, timeout);
+  }, [user, activeTenantId, isTenantContext]);
 
   // Set up real-time subscriptions
   useEffect(() => {
@@ -466,6 +515,7 @@ export function useTenantMessages() {
     createThread,
     markAsRead,
     fetchMessages,
+    fetchThreads,
     refetchMessages: fetchMessages,
     startTyping,
     stopTyping,

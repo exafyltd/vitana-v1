@@ -9,7 +9,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useRole } from "@/hooks/useRole";
-import { useEffect, useState } from "react";
+import { useUnreadSync } from "@/hooks/useUnreadSync";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,10 +24,14 @@ export default function Messages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
-  const { threads, isLoading, context } = useHybridMessages(messageContext);
+  const { threads, isLoading, context, ...hybridMessages } = useHybridMessages(messageContext);
+  const globalMessages = useHybridMessages('global');
+  const tenantMessages = useHybridMessages('tenant');
+  const isGlobalContext = context === 'global';
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [showNewConversation, setShowNewConversation] = useState(false);
+  const [localThreads, setLocalThreads] = useState(threads);
 
   useEffect(() => {
     if (threads.length > 0 && !selectedThreadId && !selectedRecipientId) {
@@ -39,6 +44,38 @@ export default function Messages() {
     setSelectedThreadId(null);
     setSelectedRecipientId(null);
   }, [messageContext]);
+
+  // Handle real-time unread sync across tabs/devices
+  const handleThreadRead = useCallback((threadId: string, context: 'global' | 'tenant') => {
+    if (context === messageContext) {
+      setLocalThreads(prev => prev.map(thread => 
+        thread.id === threadId 
+          ? { ...thread, unread_count: 0 }
+          : thread
+      ));
+    }
+  }, [messageContext]);
+
+  const handleUnreadChange = useCallback((threadId: string, context: 'global' | 'tenant') => {
+    if (context === messageContext) {
+      // Use the fetchThreads function from the appropriate hook
+      setTimeout(() => {
+        if (isGlobalContext) {
+          globalMessages.fetchThreads();
+        } else {
+          tenantMessages.fetchThreads();
+        }
+      }, 100); // Small delay to ensure DB is updated
+    }
+  }, [messageContext, isGlobalContext, globalMessages, tenantMessages]);
+
+  // Initialize unread sync
+  useUnreadSync(handleThreadRead, handleUnreadChange);
+
+  // Keep local threads in sync with fetched threads
+  useEffect(() => {
+    setLocalThreads(threads);
+  }, [threads]);
 
   const handleConversationCreated = (threadId: string, recipientId: string) => {
     setSelectedThreadId(threadId);
@@ -104,7 +141,7 @@ export default function Messages() {
         <div className="w-80 border-r">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
-              {threads.length === 0 ? (
+              {localThreads.length === 0 ? (
                 <Card className="p-6 text-center">
                   <MessageSquare className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <h3 className="font-semibold mb-2">No conversations yet</h3>
@@ -117,7 +154,7 @@ export default function Messages() {
                   </Button>
                 </Card>
               ) : (
-                threads.map((thread) => (
+                localThreads.map((thread) => (
                   <Card
                     key={thread.id}
                     className={`p-4 cursor-pointer transition-colors hover:bg-muted/50 ${
@@ -145,11 +182,14 @@ export default function Messages() {
                              thread.participants?.find(p => p.user_id !== user?.id)?.full_name ||
                              'Unknown'}
                           </h3>
-                          {thread.unread_count > 0 && (
-                            <Badge variant="secondary" className="ml-2">
-                              {thread.unread_count}
-                            </Badge>
-                          )}
+                           {thread.unread_count > 0 && (
+                             <Badge 
+                               variant="secondary" 
+                               className="ml-2 bg-primary text-primary-foreground animate-in fade-in duration-200"
+                             >
+                               {thread.unread_count > 99 ? '99+' : thread.unread_count}
+                             </Badge>
+                           )}
                         </div>
                         {thread.last_message && (
                           <p className="text-sm text-muted-foreground truncate mt-1">
