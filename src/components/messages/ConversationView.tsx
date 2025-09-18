@@ -191,6 +191,40 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, []);
 
+  // Mark thread as read when viewing it
+  useEffect(() => {
+    if (threadId && isWindowFocused && messages.length > 0 && markAsRead) {
+      // Mark as read when thread is opened and has messages
+      markAsRead(threadId);
+    }
+  }, [threadId, isWindowFocused, messages.length, markAsRead]);
+
+  // Mark as read when new messages arrive in the currently viewed thread
+  useEffect(() => {
+    if (threadId && isWindowFocused && messages.length > 0 && markAsRead) {
+      // Small delay to ensure the message is fully rendered
+      const timer = setTimeout(() => {
+        markAsRead(threadId);
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [threadId, messages, isWindowFocused, markAsRead]);
+
+  // Track window focus for read receipts
+  useEffect(() => {
+    const handleFocus = () => setIsWindowFocused(true);
+    const handleBlur = () => setIsWindowFocused(false);
+    
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('blur', handleBlur);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('blur', handleBlur);
+    };
+  }, []);
+
   // Scroll to bottom when new messages arrive (only if user is at bottom)
   useEffect(() => {
     scrollToBottom();
@@ -564,7 +598,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </div>
 
         {/* Row 2: Chat history - ONLY scrollable area */}  
-        <div className="chat-history-container px-4 py-3">
+        <div className="chat-history-container px-4 py-3" id="chat-scroll">
           {messages.length === 0 && optimisticMessages.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No messages yet</p>

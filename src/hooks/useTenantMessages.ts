@@ -459,6 +459,11 @@ export function useTenantMessages() {
                 tenantId: activeTenantId
               }
             });
+
+            // Force refresh of threads to ensure consistency
+            setTimeout(() => {
+              fetchThreads();
+            }, 500);
           }
         }
       } catch (error) {

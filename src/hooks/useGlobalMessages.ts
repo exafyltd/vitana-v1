@@ -498,6 +498,11 @@ export function useGlobalMessages() {
                 context: 'global'
               }
             });
+
+            // Force refresh of threads to ensure consistency
+            setTimeout(() => {
+              fetchThreads();
+            }, 500);
           }
         }
       } catch (error) {
