@@ -40,7 +40,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const [reactionBarPosition, setReactionBarPosition] = useState({ x: 0, y: 0 });
 
   // Use reactions hook
-  const { reactionSummary, toggleReaction } = useMessageReactions(message.id);
+  const { reactionSummary, addReaction, removeReaction } = useMessageReactions(message.id);
 
   // Check if this is an optimistic message (temporary)
   const isOptimistic = message.id?.toString().startsWith('temp-');
@@ -118,9 +118,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, []);
 
   const handleReactionSelect = useCallback((emoji: string) => {
-    toggleReaction(emoji);
-    setShowReactionBar(false);
-  }, [toggleReaction]);
+    addReaction(emoji);
+    // Don't close reaction bar immediately to allow multiple reactions
+  }, [addReaction]);
 
   // Long press handling for mobile
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -484,7 +484,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <div>
                 <ReactionCluster
                   reactions={reactionSummary}
-                  onReactionClick={toggleReaction}
+                  onReactionClick={addReaction}
+                  onReactionRemove={removeReaction}
                   onShowPopover={() => setShowReactionPopover(true)}
                   className={cn(
                     isOwnMessage ? "justify-end" : "justify-start"

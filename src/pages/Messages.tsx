@@ -163,13 +163,13 @@ export default function Messages() {
         </div>
       </div>
 
-      <div className="flex-1 flex" 
+      <div className="flex-1 flex gap-0" 
         style={{ 
           height: 'calc(100vh - var(--header-height, 200px) - env(safe-area-inset-bottom))',
           '--header-height': '200px'
         } as React.CSSProperties}
       >
-        <div className="w-80 border-r">
+        <div className="w-80 border-r border-border">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
               {localThreads.length === 0 ? (
@@ -260,7 +260,7 @@ export default function Messages() {
           </ScrollArea>
         </div>
         
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 px-4 py-4">
           {selectedThreadId || selectedRecipientId ? (
             <ConversationErrorBoundary>
               <ConversationView 

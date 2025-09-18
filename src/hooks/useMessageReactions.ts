@@ -53,57 +53,68 @@ export function useMessageReactions(messageId: string) {
     }
   }, [messageId]);
 
-  // Toggle reaction (add if not exists, remove if exists)
-  const toggleReaction = useCallback(async (emoji: string) => {
+  // Add reaction (always adds, allows multiple same emojis)
+  const addReaction = useCallback(async (emoji: string) => {
     if (!user || !ALLOWED_EMOJIS.includes(emoji as any)) return;
 
-    const existingReaction = reactions.find(
-      r => r.user_id === user.id && r.emoji === emoji
-    );
-
     try {
-      if (existingReaction) {
-        // Remove reaction
-        const optimisticReactions = reactions.filter(
-          r => !(r.user_id === user.id && r.emoji === emoji)
-        );
-        setReactions(optimisticReactions);
+      // Always add reaction
+      const newReaction: MessageReaction = {
+        message_id: messageId,
+        user_id: user.id,
+        emoji,
+        created_at: new Date().toISOString()
+      };
 
-        const { error } = await supabase
-          .from('message_reactions')
-          .delete()
-          .eq('message_id', messageId)
-          .eq('user_id', user.id)
-          .eq('emoji', emoji);
+      setReactions([...reactions, newReaction]);
 
-        if (error) {
-          // Rollback on error
-          setReactions(reactions);
-          throw error;
-        }
-      } else {
-        // Add reaction
-        const newReaction: MessageReaction = {
-          message_id: messageId,
-          user_id: user.id,
-          emoji,
-          created_at: new Date().toISOString()
-        };
+      const { error } = await supabase
+        .from('message_reactions')
+        .insert(newReaction);
 
-        setReactions([...reactions, newReaction]);
-
-        const { error } = await supabase
-          .from('message_reactions')
-          .insert(newReaction);
-
-        if (error) {
-          // Rollback on error
-          setReactions(reactions);
-          throw error;
-        }
+      if (error) {
+        // Rollback on error
+        setReactions(reactions);
+        throw error;
       }
     } catch (error) {
-      console.error('Error toggling reaction:', error);
+      console.error('Error adding reaction:', error);
+    }
+  }, [messageId, user, reactions]);
+
+  // Remove specific reaction (for right-click or long press)
+  const removeReaction = useCallback(async (emoji: string, reactionId?: string) => {
+    if (!user) return;
+
+    try {
+      // If no specific reaction ID, remove the most recent one from this user
+      const targetReaction = reactionId 
+        ? reactions.find(r => r.message_id === messageId && r.emoji === emoji)
+        : reactions.filter(r => r.user_id === user.id && r.emoji === emoji).slice(-1)[0];
+
+      if (!targetReaction) return;
+
+      // Optimistic removal
+      const optimisticReactions = reactions.filter(
+        r => !(r.user_id === targetReaction.user_id && r.emoji === emoji && r.created_at === targetReaction.created_at)
+      );
+      setReactions(optimisticReactions);
+
+      const { error } = await supabase
+        .from('message_reactions')
+        .delete()
+        .eq('message_id', messageId)
+        .eq('user_id', targetReaction.user_id)
+        .eq('emoji', emoji)
+        .eq('created_at', targetReaction.created_at);
+
+      if (error) {
+        // Rollback on error
+        setReactions(reactions);
+        throw error;
+      }
+    } catch (error) {
+      console.error('Error removing reaction:', error);
     }
   }, [messageId, user, reactions]);
 
@@ -158,6 +169,7 @@ export function useMessageReactions(messageId: string) {
     reactions,
     reactionSummary: getReactionSummary(),
     loading,
-    toggleReaction
+    addReaction,
+    removeReaction
   };
 }

@@ -5,6 +5,7 @@ import { ReactionSummary } from '@/hooks/useMessageReactions';
 interface ReactionClusterProps {
   reactions: ReactionSummary[];
   onReactionClick: (emoji: string) => void;
+  onReactionRemove?: (emoji: string) => void;
   onShowPopover: () => void;
   className?: string;
 }
@@ -12,6 +13,7 @@ interface ReactionClusterProps {
 export function ReactionCluster({ 
   reactions, 
   onReactionClick, 
+  onReactionRemove,
   onShowPopover, 
   className 
 }: ReactionClusterProps) {
@@ -25,7 +27,11 @@ export function ReactionCluster({
           onClick={() => onReactionClick(reaction.emoji)}
           onContextMenu={(e) => {
             e.preventDefault();
-            onShowPopover();
+            if (onReactionRemove && reaction.hasUserReacted) {
+              onReactionRemove(reaction.emoji);
+            } else {
+              onShowPopover();
+            }
           }}
           className={cn(
             "flex items-center gap-1 px-2 py-1 rounded-full text-xs",

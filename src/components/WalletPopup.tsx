@@ -26,11 +26,13 @@ import {
   Shield,
   ExternalLink,
   Plus,
-  Download
+  Download,
+  Send
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
+import MakePaymentPopup from "@/components/payment/MakePaymentPopup";
 import CreditTransferPopup from "@/components/payment/CreditTransferPopup";
 
 interface Transaction {
@@ -102,6 +104,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
+  const [showMakePayment, setShowMakePayment] = useState(false);
   const [showCreditTransfer, setShowCreditTransfer] = useState(false);
   
   const currentBalance = 2847;
@@ -254,6 +257,10 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
               <Gift className="h-4 w-4 mr-2" />
               Request
             </Button>
+            <Button variant="outline" size="sm" onClick={() => setShowMakePayment(true)}>
+              <Send className="h-4 w-4 mr-2" />
+              Pay
+            </Button>
             <Button variant="outline" size="sm" onClick={() => setShowCreditTransfer(true)}>
               <Download className="h-4 w-4 mr-2" />
               Transfer
@@ -269,6 +276,13 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
         <PaymentRequestPopup
           isOpen={showPaymentRequest}
           onClose={() => setShowPaymentRequest(false)}
+          paymentType="transfer"
+        />
+        
+        {/* Make Payment Popup */}
+        <MakePaymentPopup
+          isOpen={showMakePayment}
+          onClose={() => setShowMakePayment(false)}
           paymentType="transfer"
         />
         

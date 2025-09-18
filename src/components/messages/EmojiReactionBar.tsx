@@ -12,7 +12,7 @@ const REACTION_EMOJIS = ['👍', '❤️', '😂', '😮', '🙏', '🎉'];
 export function EmojiReactionBar({ onEmojiSelect, onClose, className }: EmojiReactionBarProps) {
   const handleEmojiClick = (emoji: string) => {
     onEmojiSelect(emoji);
-    onClose();
+    // Don't close immediately to allow multiple reactions
   };
 
   return (
