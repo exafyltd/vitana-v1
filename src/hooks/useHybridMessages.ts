@@ -6,13 +6,14 @@ import { useTenantMessages } from "./useTenantMessages";
  * Unified messaging hook that automatically routes to global or tenant context
  * based on the user's current role with WhatsApp-like message persistence
  */
-export function useHybridMessages() {
+export function useHybridMessages(forceContext?: 'global' | 'tenant') {
   const { currentRole } = useRole();
   const globalMessages = useGlobalMessages();
   const tenantMessages = useTenantMessages();
 
-  // Route to appropriate context based on role
-  const isGlobalContext = currentRole === 'community';
+  // Route to appropriate context based on role or forced context
+  const isGlobalContext = forceContext === 'global' || 
+    (forceContext !== 'tenant' && currentRole === 'community');
   
   if (isGlobalContext) {
     return {

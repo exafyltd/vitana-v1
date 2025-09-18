@@ -74,8 +74,8 @@ export function useRole() {
     return ROLE_HIERARCHY[currentRole] >= ROLE_HIERARCHY[requiredRole];
   };
 
-  // Return admin role for Exafy admins, otherwise use role preference
-  const effectiveRole = isExafyAdmin ? "admin" : (query.data as UserRole | null);
+  // Allow Exafy admins to choose their role, defaulting to community for global messaging access
+  const effectiveRole = isExafyAdmin ? (query.data as UserRole | null) || "community" : (query.data as UserRole | null);
 
   return { 
     currentRole: effectiveRole, 

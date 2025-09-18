@@ -15,12 +15,14 @@ interface NewConversationPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConversationCreated?: (threadId: string, recipientId: string) => void;
+  context?: 'global' | 'tenant';
 }
 
 export default function NewConversationPopup({
   open,
   onOpenChange,
   onConversationCreated,
+  context,
 }: NewConversationPopupProps) {
   const { user } = useAuth();
   const { currentRole } = useRole();
@@ -30,12 +32,15 @@ export default function NewConversationPopup({
   const [isSearching, setIsSearching] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
+  // Determine context: use prop if provided, otherwise fall back to role-based logic
+  const effectiveContext = context || (currentRole === 'community' ? 'global' : 'tenant');
+
   const searchUsers = async () => {
     if (!searchQuery.trim() || !user) return;
     
     setIsSearching(true);
     try {
-      const isGlobalContext = currentRole === 'community';
+      const isGlobalContext = effectiveContext === 'global';
       
       if (isGlobalContext) {
         // Use secure RPC function for global directory search
@@ -73,7 +78,7 @@ export default function NewConversationPopup({
     
     setIsCreating(true);
     try {
-      const isGlobalContext = currentRole === 'community';
+      const isGlobalContext = effectiveContext === 'global';
       
       if (isGlobalContext) {
         // Use secure RPC to create global thread

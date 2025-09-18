@@ -27,24 +27,26 @@ interface ConversationViewProps {
   recipientId?: string | null;
   onBack?: () => void;
   className?: string;
+  context?: 'global' | 'tenant';
 }
 
 const ConversationView: React.FC<ConversationViewProps> = ({
   threadId,
   recipientId,
   onBack,
-  className
+  className,
+  context
 }) => {
   const { user } = useAuth();
   const { 
-    messages, 
+    messages,
     threads,
     sendMessage, 
     fetchMessages, 
     markAsRead, 
     isSending,
-    context
-  } = useHybridMessages();
+    context: messageContext
+  } = useHybridMessages(context);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
@@ -56,8 +58,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       if (recipientId) {
         try {
           const { data, error } = await supabase
-            .from(context === 'global' ? 'global_community_profiles' : 'profiles')
-            .select(context === 'global' ? 'user_id, display_name, avatar_url' : 'user_id, display_name, full_name, avatar_url')
+            .from(messageContext === 'global' ? 'global_community_profiles' : 'profiles')
+            .select(messageContext === 'global' ? 'user_id, display_name, avatar_url' : 'user_id, display_name, full_name, avatar_url')
             .eq('user_id', recipientId)
             .single();
           
@@ -107,9 +109,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     actionButtons?: any[]
   ) => {
     try {
-      if (context === 'global' && threadId) {
+      if (messageContext === 'global' && threadId) {
         await sendMessage(threadId, content, messageType, contentData);
-      } else if (context === 'tenant') {
+      } else if (messageContext === 'tenant') {
         await sendMessage(content, threadId, recipientId, messageType, contentData);
       }
       
@@ -227,7 +229,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   const getConversationSubtitle = () => {
-    return context === 'global' ? 'Global Community' : 'Professional Network';
+    return messageContext === 'global' ? 'Global Community' : 'Professional Network';
   };
 
   if (messages.length === 0 && !threadId && !recipientId) {

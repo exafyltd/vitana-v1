@@ -17,11 +17,13 @@ import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Users, Globe, Building } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import NewConversationPopup from "@/components/NewConversationPopup";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Messages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
-  const { threads, isLoading, context } = useHybridMessages();
+  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
+  const { threads, isLoading, context } = useHybridMessages(messageContext);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [showNewConversation, setShowNewConversation] = useState(false);
@@ -31,6 +33,12 @@ export default function Messages() {
       setSelectedThreadId(threads[0].id);
     }
   }, [threads, selectedThreadId, selectedRecipientId]);
+
+  // Reset selection when context changes
+  useEffect(() => {
+    setSelectedThreadId(null);
+    setSelectedRecipientId(null);
+  }, [messageContext]);
 
   const handleConversationCreated = (threadId: string, recipientId: string) => {
     setSelectedThreadId(threadId);
@@ -73,10 +81,18 @@ export default function Messages() {
       
       <div className="flex items-center justify-between p-6 border-b">
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-            <contextInfo.icon className="w-4 h-4" />
-            <span>{contextInfo.label}</span>
-          </div>
+          <Tabs value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')}>
+            <TabsList>
+              <TabsTrigger value="global" className="flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                Global Community
+              </TabsTrigger>
+              <TabsTrigger value="tenant" className="flex items-center gap-2">
+                <Building className="w-4 h-4" />
+                Professional Network
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
         <Button onClick={() => setShowNewConversation(true)}>
           <Plus className="w-4 h-4 mr-2" />
@@ -93,7 +109,7 @@ export default function Messages() {
                   <MessageSquare className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <h3 className="font-semibold mb-2">No conversations yet</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Start a new conversation to connect with others in your {context === 'global' ? 'global community' : 'professional network'}
+                    Start a new conversation to connect with others in your {messageContext === 'global' ? 'global community' : 'professional network'}
                   </p>
                   <Button onClick={() => setShowNewConversation(true)}>
                     <Plus className="w-4 h-4 mr-2" />
@@ -163,6 +179,7 @@ export default function Messages() {
             <ConversationView 
               threadId={selectedThreadId}
               recipientId={selectedRecipientId}
+              context={messageContext}
             />
           ) : (
             <div className="flex items-center justify-center h-full">
@@ -182,6 +199,7 @@ export default function Messages() {
         open={showNewConversation}
         onOpenChange={setShowNewConversation}
         onConversationCreated={handleConversationCreated}
+        context={messageContext}
       />
     </AppLayout>
   );
