@@ -163,7 +163,7 @@ export default function Messages() {
         </div>
       </div>
 
-      <div className="flex-1 flex gap-0" 
+      <div className="flex-1 flex gap-0 relative" 
         style={{ 
           height: 'calc(100vh - var(--header-height, 200px) - env(safe-area-inset-bottom))',
           '--header-height': '200px'
@@ -260,18 +260,18 @@ export default function Messages() {
           </ScrollArea>
         </div>
         
-        <div className="flex-1 min-h-0 px-4 py-4">
+        <div className="flex-1 min-h-0 relative">
           {selectedThreadId || selectedRecipientId ? (
             <ConversationErrorBoundary>
               <ConversationView 
                 threadId={selectedThreadId}
                 recipientId={selectedRecipientId}
                 context={messageContext}
-                className="h-full"
+                className="h-full px-4 py-4"
               />
             </ConversationErrorBoundary>
           ) : (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex items-center justify-center h-full px-4 py-4">
               <div className="text-center">
                 <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
                 <h3 className="text-lg font-semibold mb-2">Select a conversation</h3>

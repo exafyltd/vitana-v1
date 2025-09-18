@@ -500,26 +500,42 @@ All colors MUST be HSL.
     overscroll-behavior: contain;
     scroll-behavior: smooth;
     scroll-padding-bottom: 120px;
+    padding-bottom: 120px; /* Account for fixed composer */
   }
 
   .composer-container {
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 320px; /* Account for sidebar width */
     z-index: 30;
     border-top: 1px solid hsl(var(--border));
-    background: hsl(var(--background) / 0.8);
+    background: hsl(var(--background) / 0.95);
     backdrop-filter: blur(12px);
-    margin-bottom: calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom));
+    padding: 0 1rem;
+    box-shadow: 0 -4px 16px -4px hsl(var(--border) / 0.4);
+  }
+
+  /* Mobile responsiveness for composer */
+  @media (max-width: 768px) {
+    .composer-container {
+      left: 0;
+    }
   }
 
   @supports (backdrop-filter: blur(12px)) {
     .composer-container {
-      background: hsl(var(--background) / 0.6);
+      background: hsl(var(--background) / 0.8);
     }
   }
 
-  /* Auto-scroll detection helper */
-  .at-bottom {
+  .chat-history-container {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     scroll-behavior: smooth;
+    scroll-padding-bottom: 120px;
+    padding-bottom: 120px; /* Account for fixed composer */
   }
 
   /* Safe area helpers */
