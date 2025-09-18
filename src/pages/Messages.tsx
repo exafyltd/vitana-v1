@@ -163,7 +163,12 @@ export default function Messages() {
         </div>
       </div>
 
-      <div className="conversation-layout">
+      <div className="flex-1 flex gap-0 relative" 
+        style={{ 
+          height: 'calc(100vh - var(--header-height, 200px) - env(safe-area-inset-bottom))',
+          '--header-height': '200px'
+        } as React.CSSProperties}
+      >
         <div className="w-80 border-r border-border flex-shrink-0">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
