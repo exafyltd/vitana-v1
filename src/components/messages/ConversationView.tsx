@@ -552,9 +552,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <Card className={cn("flex flex-col h-full", className)}>
+      <Card className={cn("flex flex-col h-full max-h-full", className)}>
         {/* Header */}
-        <CardHeader className="flex-shrink-0 border-b">
+        <CardHeader className="flex-shrink-0 border-b p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {onBack && (
@@ -607,7 +607,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       </CardHeader>
 
       {/* Messages */}
-      <CardContent className="flex-1 p-0 overflow-hidden">
+      <CardContent className="flex-1 p-0 overflow-hidden min-h-0">
         <ScrollArea className="h-full" data-conversation-container>
           <div className="p-4 space-y-4">
             {messages.length === 0 && optimisticMessages.length === 0 ? (
@@ -682,7 +682,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       )}
 
       {/* Message Input */}
-      <div className="border-t p-4">
+      <div className="flex-shrink-0 border-t p-4 bg-background">
         {sendError && (
           <div className="mb-3">
             <ErrorMessage 
