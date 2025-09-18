@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { Clock, Check, CheckCheck, Loader2 } from 'lucide-react';
+import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon } from 'lucide-react';
 
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
@@ -29,9 +29,18 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     if (isOptimistic) {
       return 'sending';
     }
-    // For now, assume all real messages are delivered
-    // In the future, you could add read receipts and delivery confirmations
-    return 'delivered';
+    
+    // Check for read status
+    if (message.read_at || message.is_read) {
+      return 'read';
+    }
+    
+    // Check for delivered status
+    if (message.delivered_at || message.is_delivered !== false) {
+      return 'delivered';
+    }
+    
+    return 'sent';
   };
 
   const renderStatusIcon = () => {
@@ -41,11 +50,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     
     switch (status) {
       case 'sending':
-        return <Loader2 className="w-3 h-3 animate-spin" />;
+        return <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />;
+      case 'sent':
+        return <Check className="w-3 h-3 text-muted-foreground" />;
       case 'delivered':
-        return <CheckCheck className="w-3 h-3" />;
+        return <CheckCheck className="w-3 h-3 text-muted-foreground" />;
+      case 'read':
+        return <CheckCheck className="w-3 h-3 text-primary" />;
       default:
-        return <Clock className="w-3 h-3" />;
+        return <Clock className="w-3 h-3 text-muted-foreground" />;
     }
   };
   const renderContent = () => {
@@ -170,6 +183,35 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   >
                     {reply}
                   </Button>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+
+      case 'attachment':
+        return (
+          <div className="space-y-2">
+            {message.body && <p className="break-words">{message.body}</p>}
+            {message.content_data?.files && (
+              <div className="space-y-2">
+                {message.content_data.files.map((file: any, index: number) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 p-2 bg-background/50 rounded-lg border"
+                  >
+                    {file.type?.startsWith('image/') ? (
+                      <ImageIcon className="w-4 h-4 text-muted-foreground" />
+                    ) : (
+                      <FileText className="w-4 h-4 text-muted-foreground" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{file.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {file.size ? `${(file.size / 1024 / 1024).toFixed(1)} MB` : 'Unknown size'}
+                      </p>
+                    </div>
+                  </div>
                 ))}
               </div>
             )}

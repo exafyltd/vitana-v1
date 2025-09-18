@@ -7,6 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
+import TypingIndicator from './TypingIndicator';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
@@ -45,6 +46,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     fetchMessages, 
     markAsRead, 
     isSending,
+    typingUsers,
+    startTyping,
+    stopTyping,
     context: messageContext
   } = useHybridMessages(context);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -337,6 +341,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 );
               })
             )}
+            
+            {/* Typing Indicator */}
+            {typingUsers && typingUsers.length > 0 && (
+              <TypingIndicator users={typingUsers} />
+            )}
+            
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
@@ -345,6 +355,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       {/* Message Input */}
       <MessageInput
         onSendMessage={handleSendMessage}
+        onTypingStart={() => startTyping?.(threadId)}
+        onTypingStop={() => stopTyping?.(threadId)}
         disabled={isSending}
         placeholder={`Message ${getConversationTitle()}...`}
       />

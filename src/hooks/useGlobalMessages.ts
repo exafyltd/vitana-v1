@@ -44,6 +44,7 @@ export function useGlobalMessages() {
   const [threads, setThreads] = useState<GlobalMessageThread[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const [typingUsers, setTypingUsers] = useState<Array<{ id: string; name: string; avatar?: string }>>([]);
 
   // Only use global messages for community users
   const isGlobalContext = currentRole === 'community';
@@ -532,16 +533,49 @@ export function useGlobalMessages() {
     }
   }, [isGlobalContext, fetchThreads]);
 
+  const startTyping = useCallback(async (threadId?: string) => {
+    if (!user || !isGlobalContext || !threadId) return;
+    
+    try {
+      await supabase
+        .from('global_typing_indicators')
+        .upsert({
+          thread_id: threadId,
+          user_id: user.id,
+          updated_at: new Date().toISOString()
+        });
+    } catch (error) {
+      console.error('Error starting typing:', error);
+    }
+  }, [user, isGlobalContext]);
+
+  const stopTyping = useCallback(async (threadId?: string) => {
+    if (!user || !isGlobalContext || !threadId) return;
+    
+    try {
+      await supabase
+        .from('global_typing_indicators')
+        .delete()
+        .eq('thread_id', threadId)
+        .eq('user_id', user.id);
+    } catch (error) {
+      console.error('Error stopping typing:', error);
+    }
+  }, [user, isGlobalContext]);
+
   return {
     messages,
     threads,
     isLoading,
     isSending,
+    typingUsers,
     sendMessage,
     createThread,
     markAsRead,
     fetchMessages,
     refetchMessages: fetchMessages,
+    startTyping,
+    stopTyping,
     isGlobalContext,
   };
 }

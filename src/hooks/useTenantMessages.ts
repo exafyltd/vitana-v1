@@ -51,6 +51,7 @@ export function useTenantMessages() {
   const [threads, setThreads] = useState<TenantMessageThread[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const [typingUsers, setTypingUsers] = useState<Array<{ id: string; name: string; avatar?: string }>>([]);
 
   // Only use tenant messages for professional roles
   const isTenantContext = currentRole && ['patient', 'professional', 'staff', 'admin'].includes(currentRole);
@@ -413,16 +414,51 @@ export function useTenantMessages() {
     }
   }, [isTenantContext, activeTenantId, fetchThreads]);
 
+  const startTyping = useCallback(async (threadId?: string) => {
+    if (!user || !activeTenantId || !isTenantContext || !threadId) return;
+    
+    try {
+      await supabase
+        .from('typing_indicators')
+        .upsert({
+          thread_id: threadId,
+          user_id: user.id,
+          tenant_id: activeTenantId,
+          updated_at: new Date().toISOString()
+        });
+    } catch (error) {
+      console.error('Error starting typing:', error);
+    }
+  }, [user, activeTenantId, isTenantContext]);
+
+  const stopTyping = useCallback(async (threadId?: string) => {
+    if (!user || !activeTenantId || !isTenantContext || !threadId) return;
+    
+    try {
+      await supabase
+        .from('typing_indicators')
+        .delete()
+        .eq('thread_id', threadId)
+        .eq('user_id', user.id)
+        .eq('tenant_id', activeTenantId);
+    } catch (error) {
+      console.error('Error stopping typing:', error);
+    }
+  }, [user, activeTenantId, isTenantContext]);
+
   return {
     messages,
     threads,
     isLoading,
     isSending,
+    typingUsers,
     sendMessage,
     createThread,
     markAsRead,
     fetchMessages,
     refetchMessages: fetchMessages,
+    startTyping,
+    stopTyping,
     isTenantContext,
   };
 }
