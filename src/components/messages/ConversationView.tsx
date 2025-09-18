@@ -467,12 +467,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 onClick={isGroupChat() ? () => setShowMembersModal(true) : undefined}
               >
                 <CardTitle className="text-base">{getConversationTitle()}</CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  {isGroupChat() 
-                    ? `${threadParticipants.length} ${threadParticipants.length === 1 ? 'member' : 'members'}`
-                    : messageContext === 'global' ? 'Global Community' : 'Professional Network'
-                  }
-                </p>
+                <p className="text-sm text-muted-foreground">{getConversationSubtitle()}</p>
               </div>
             </div>
           
@@ -659,7 +654,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       context={messageContext}
       currentUserRole={currentUserRole}
     />
-  </>;
+    </>
+  );
 };
 
 export default ConversationView;
