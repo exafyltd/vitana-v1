@@ -217,6 +217,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     handleMarkAsRead();
   }, [handleMarkAsRead]);
 
+  // State for optimistic messages
+  const [optimisticMessages, setOptimisticMessages] = useState<Array<{
+    id: string;
+    content: string;
+    status: 'sending' | 'failed';
+    originalMessage?: any;
+  }>>([]);
+
   const handleSendMessage = async (
     content: string, 
     messageType?: string, 
@@ -231,6 +239,22 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         return;
       }
 
+      // Create optimistic "sending" bubble
+      const optimisticId = `sending-${Date.now()}`;
+      const optimisticMessage = {
+        id: optimisticId,
+        content,
+        status: 'sending' as const,
+        originalMessage: { content, messageType, contentData, actionButtons }
+      };
+
+      setOptimisticMessages(prev => [...prev, optimisticMessage]);
+
+      // Scroll to keep last bubble visible
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 10);
+
       const newMessage = await sendMessage({
         context: messageContext,
         threadId,
@@ -239,6 +263,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         contentData,
         recipientId
       });
+      
+      // Remove optimistic message on success
+      setOptimisticMessages(prev => prev.filter(msg => msg.id !== optimisticId));
       
       // Add to paginated messages if using pagination
       if (paginatedMessages.shouldUsePagination && newMessage) {
@@ -254,12 +281,71 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       
     } catch (error) {
       console.error('Error sending message:', error);
-      setSendError('Failed to send message. Please try again.');
+      
+      // Mark optimistic message as failed
+      setOptimisticMessages(prev => 
+        prev.map(msg => 
+          msg.content === content && msg.status === 'sending' 
+            ? { ...msg, status: 'failed' as const }
+            : msg
+        )
+      );
+      
+      const errorMessage = error instanceof Error ? error.message : "unknown";
+      setSendError(`Failed to send message: ${errorMessage}`);
+      
       toast({
         title: 'Message Failed',
-        description: 'Your message could not be sent. Please try again.',
+        description: `Message failed: ${errorMessage}`,
         variant: 'destructive',
       });
+      
+      console.error({
+        stage: "send", 
+        threadId: threadId, 
+        payload: { text: content }, 
+        error
+      });
+    }
+  };
+
+  const retryFailedMessage = async (optimisticId: string) => {
+    const failedMessage = optimisticMessages.find(msg => msg.id === optimisticId);
+    if (!failedMessage?.originalMessage) return;
+
+    // Mark as sending again
+    setOptimisticMessages(prev => 
+      prev.map(msg => 
+        msg.id === optimisticId 
+          ? { ...msg, status: 'sending' as const }
+          : msg
+      )
+    );
+
+    const { content, messageType, contentData, actionButtons } = failedMessage.originalMessage;
+    
+    try {
+      await sendMessage({
+        context: messageContext,
+        threadId: threadId!,
+        content,
+        type: messageType || 'text',
+        contentData,
+        recipientId
+      });
+      
+      // Remove on success
+      setOptimisticMessages(prev => prev.filter(msg => msg.id !== optimisticId));
+      
+    } catch (error) {
+      // Mark as failed again
+      setOptimisticMessages(prev => 
+        prev.map(msg => 
+          msg.id === optimisticId 
+            ? { ...msg, status: 'failed' as const }
+            : msg
+        )
+      );
     }
   };
 
@@ -593,33 +679,66 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         ) : (
           <ScrollArea className="h-full" data-conversation-container>
             <div className="p-4 space-y-4">
-              {hybridMessages.length === 0 ? (
+              {hybridMessages.length === 0 && optimisticMessages.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-muted-foreground">No messages yet</p>
                   <p className="text-sm text-muted-foreground">Start the conversation!</p>
                 </div>
               ) : (
-                hybridMessages.map((message, index) => {
-                  const isOwnMessage = message.sender_id === user?.id;
-                  const showAvatar = !isOwnMessage && (
-                    index === 0 || 
-                    hybridMessages[index - 1]?.sender_id !== message.sender_id
-                  );
-                  const showTimestamp = index === hybridMessages.length - 1 || 
-                    new Date(hybridMessages[index + 1]?.created_at).getTime() - 
-                    new Date(message.created_at).getTime() > 5 * 60 * 1000;
+                <>
+                  {hybridMessages.map((message, index) => {
+                    const isOwnMessage = message.sender_id === user?.id;
+                    const showAvatar = !isOwnMessage && (
+                      index === 0 || 
+                      hybridMessages[index - 1]?.sender_id !== message.sender_id
+                    );
+                    const showTimestamp = index === hybridMessages.length - 1 || 
+                      new Date(hybridMessages[index + 1]?.created_at).getTime() - 
+                      new Date(message.created_at).getTime() > 5 * 60 * 1000;
 
-                  return (
-                    <MessageBubble
-                      key={message.id}
-                      message={message}
-                      isOwnMessage={isOwnMessage}
-                      onActionClick={handleActionClick}
-                      showAvatar={showAvatar}
-                      showTimestamp={showTimestamp}
-                    />
-                  );
-                })
+                    return (
+                      <MessageBubble
+                        key={message.id}
+                        message={message}
+                        isOwnMessage={isOwnMessage}
+                        onActionClick={handleActionClick}
+                        showAvatar={showAvatar}
+                        showTimestamp={showTimestamp}
+                      />
+                    );
+                  })}
+                  
+                  {/* Render optimistic messages */}
+                  {optimisticMessages.map((optMessage) => (
+                    <div key={optMessage.id} className="flex justify-end">
+                      <div className={cn(
+                        "max-w-[70%] rounded-lg px-3 py-2 text-sm",
+                        optMessage.status === 'sending' 
+                          ? "bg-primary/70 text-primary-foreground" 
+                          : "bg-destructive/70 text-destructive-foreground"
+                      )}>
+                        <div className="flex items-center gap-2">
+                          <span>{optMessage.content}</span>
+                          {optMessage.status === 'sending' ? (
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-6 w-12 p-0 text-xs"
+                              onClick={() => retryFailedMessage(optMessage.id)}
+                            >
+                              Retry
+                            </Button>
+                          )}
+                        </div>
+                        <div className="text-xs opacity-70 mt-1">
+                          {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
               )}
               <div ref={messagesEndRef} />
             </div>

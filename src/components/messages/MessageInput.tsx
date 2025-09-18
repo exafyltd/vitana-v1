@@ -26,13 +26,14 @@ import {
 } from 'lucide-react';
 
 interface MessageInputProps {
-  onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[]) => void;
+  onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[]) => Promise<void>;
   onTypingStart?: () => void;
   onTypingStop?: () => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
   threadId?: string;
+  activeThread?: { id: string } | null;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
@@ -42,7 +43,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
   placeholder = "Type a message...",
   disabled = false,
   className,
-  threadId
+  threadId,
+  activeThread
 }) => {
   const [message, setMessage] = useState('');
   const [isComposing, setIsComposing] = useState(false);
@@ -127,13 +129,27 @@ const MessageInput: React.FC<MessageInputProps> = ({
     handleTypingStop();
   };
 
-  const handleSend = () => {
-    if ((!message.trim() && attachments.length === 0) || disabled || isUploading) return;
+  const handleSend = async (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
     
+    // Guard conditions
+    if (!activeThread?.id || message.trim() === '' || disabled || isUploading) {
+      return;
+    }
+    
+    const raw = message;
+    const text = raw.trim();
+    
+    // Clear composer optimistically
+    setMessage("");
+    setAttachments([]);
+    setUploadProgress({});
     handleTypingStop();
 
     try {
-      let messageContent = message.trim();
+      let messageContent = text;
       let messageType = 'text';
       let contentData: any = null;
 
@@ -145,8 +161,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
         };
         
         // Include text with attachments if provided
-        if (message.trim()) {
-          messageContent = message.trim();
+        if (text) {
+          messageContent = text;
         } else {
           messageContent = attachments.length === 1 
             ? `Shared ${attachments[0].filename}` 
@@ -154,20 +170,31 @@ const MessageInput: React.FC<MessageInputProps> = ({
         }
       }
 
-      onSendMessage(messageContent, messageType, contentData);
-      setMessage("");
-      setAttachments([]);
-      setUploadProgress({});
+      await onSendMessage(messageContent, messageType, contentData);
       
       if (textareaRef.current) {
         textareaRef.current.focus();
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      
+      // Restore composer text on error
+      setMessage(raw);
+      setAttachments(attachments);
+      
+      const errorMessage = error instanceof Error ? error.message : "unknown";
+      
       toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
+        title: "Message failed",
+        description: `Message failed: ${errorMessage}`,
         variant: "destructive"
+      });
+      
+      console.error({
+        stage: "send", 
+        threadId: activeThread?.id, 
+        payload: { text }, 
+        error
       });
     }
   };
@@ -284,7 +311,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     setAttachments(prev => prev.filter((_, i) => i !== index));
   };
 
-  const sendPaymentRequest = (amount: string, description: string) => {
+  const sendPaymentRequest = async (amount: string, description: string) => {
     const paymentData = {
       amount: parseFloat(amount),
       description,
@@ -296,7 +323,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       { label: 'Decline', variant: 'outline', action: 'payment_decline' }
     ];
 
-    onSendMessage(
+    await onSendMessage(
       `Payment request: $${amount} - ${description}`,
       'payment_request',
       paymentData,
@@ -304,7 +331,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     );
   };
 
-  const sendCalendarInvite = (title: string, date: string) => {
+  const sendCalendarInvite = async (title: string, date: string) => {
     const eventData = {
       title,
       date,
@@ -317,7 +344,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       { label: 'Maybe', variant: 'secondary', action: 'calendar_maybe' }
     ];
 
-    onSendMessage(
+    await onSendMessage(
       `Calendar invite: ${title} on ${date}`,
       'calendar_invite',
       eventData,
@@ -328,7 +355,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const quickReactions = ['❤️', '👍', '😊', '🎉', '💪', '🙏'];
 
   return (
-    <div className={cn("flex flex-col gap-2 p-4 bg-background border-t", className)}>
+    <form onSubmit={handleSend} className={cn("flex flex-col gap-2 p-4 bg-background border-t", className)}>
       {/* File Attachments Preview */}
       {(attachments.length > 0 || Object.keys(uploadProgress).length > 0) && (
         <div className="px-4 pb-2" id="attachment-status">
@@ -394,7 +421,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           {/* Payment Request */}
           <Popover>
             <PopoverTrigger asChild>
-              <Button size="sm" variant="ghost" className="h-9 w-9 p-0">
+              <Button type="button" size="sm" variant="ghost" className="h-9 w-9 p-0">
                 <DollarSign className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
@@ -411,6 +438,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
                     id="payment-description"
                   />
                   <Button 
+                    type="button"
                     size="sm" 
                     className="w-full"
                     onClick={() => {
@@ -431,7 +459,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           {/* Calendar Invite */}
           <Popover>
             <PopoverTrigger asChild>
-              <Button size="sm" variant="ghost" className="h-9 w-9 p-0">
+              <Button type="button" size="sm" variant="ghost" className="h-9 w-9 p-0">
                 <Calendar className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
@@ -448,6 +476,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
                     id="event-date"
                   />
                   <Button 
+                    type="button"
                     size="sm" 
                     className="w-full"
                     onClick={() => {
@@ -468,7 +497,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           {/* Quick Reactions */}
           <Popover>
             <PopoverTrigger asChild>
-              <Button size="sm" variant="ghost" className="h-9 w-9 p-0">
+              <Button type="button" size="sm" variant="ghost" className="h-9 w-9 p-0">
                 <Smile className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
@@ -479,6 +508,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
                   {quickReactions.map((emoji, index) => (
                     <Button
                       key={index}
+                      type="button"
                       size="sm"
                       variant="ghost"
                       className="h-8 w-8 p-0 text-lg"
@@ -504,6 +534,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           />
           
           <Button
+            type="button"
             size="sm"
             variant="ghost"
             className="h-9 w-9 p-0 mb-1"
@@ -531,10 +562,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
             <div id="message-error" aria-live="polite" className="sr-only" />
             
             <Button
+              type="submit"
               size="sm"
               variant="ghost"
-              onClick={handleSend}
-              disabled={!message.trim() && attachments.length === 0 || disabled || isUploading}
+              disabled={!activeThread?.id || message.trim() === '' || disabled || isUploading}
               className="absolute right-1 bottom-1 h-8 w-8 p-0"
               aria-label="Send message"
             >
@@ -547,7 +578,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
