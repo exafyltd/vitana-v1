@@ -311,7 +311,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
       {/* Messages */}
       <CardContent className="flex-1 p-0 overflow-hidden">
-        <ScrollArea className="h-full">
+        <ScrollArea className="h-full" data-conversation-container>
           <div className="p-4 space-y-4">
             {messages.length === 0 ? (
               <div className="text-center py-12">

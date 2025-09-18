@@ -48,12 +48,35 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
   const { toast } = useToast();
 
-  // Auto-resize textarea
+  // Auto-resize textarea with proper row limits (1-6 rows)
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
+      // Reset height to calculate scrollHeight properly
       textarea.style.height = 'auto';
-      textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+      
+      // Calculate line height (approximately 24px for default text)
+      const lineHeight = 24;
+      const minHeight = lineHeight; // 1 row
+      const maxHeight = lineHeight * 6; // 6 rows max
+      
+      // Set height based on content, clamped to min/max
+      const newHeight = Math.max(minHeight, Math.min(textarea.scrollHeight, maxHeight));
+      textarea.style.height = newHeight + 'px';
+      
+      // Enable scrolling if content exceeds max height
+      textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+      
+      // Keep last message visible when composer grows
+      if (newHeight > minHeight) {
+        // Small delay to ensure DOM has updated
+        setTimeout(() => {
+          const container = document.querySelector('[data-conversation-container]');
+          if (container) {
+            container.scrollTop = container.scrollHeight;
+          }
+        }, 10);
+      }
     }
   }, [message]);
 
@@ -134,10 +157,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
+    // Shift+Enter = new line, Enter = send
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
+    // Allow Shift+Enter to create new lines naturally
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -345,7 +370,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
       {/* File Attachments Preview */}
       {attachments.length > 0 && (
-        <div className="px-4 pb-2">
+        <div className="px-4 pb-2" id="attachment-status">
           <div className="flex flex-wrap gap-2">
             {attachments.map((file, index) => (
               <div
@@ -363,6 +388,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
                   variant="ghost"
                   className="h-6 w-6 p-0"
                   onClick={() => removeAttachment(index)}
+                  aria-label={`Remove ${file.name}`}
                 >
                   <X className="w-3 h-3" />
                 </Button>
@@ -402,15 +428,21 @@ const MessageInput: React.FC<MessageInputProps> = ({
             onBlur={handleBlur}
             placeholder={placeholder}
             disabled={disabled}
-            className="min-h-[40px] max-h-[120px] pr-12 resize-none"
+            className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-3"
             rows={1}
+            aria-label="Message composer"
+            aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
           />
+          {/* Error messages area */}
+          <div id="message-error" aria-live="polite" className="sr-only" />
+          
           <Button
             size="sm"
             variant="ghost"
             onClick={handleSend}
-            disabled={(!message.trim() && attachments.length === 0) || disabled || isUploading}
+            disabled={!message.trim() && attachments.length === 0 || disabled || isUploading}
             className="absolute right-1 bottom-1 h-8 w-8 p-0"
+            aria-label="Send message"
           >
             {isUploading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
