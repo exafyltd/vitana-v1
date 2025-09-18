@@ -418,14 +418,18 @@ export function useTenantMessages() {
     if (!user || !activeTenantId || !isTenantContext || !threadId) return;
     
     try {
-      await supabase
-        .from('typing_indicators')
-        .upsert({
-          thread_id: threadId,
+      // Use realtime channel for typing instead of database
+      const channel = supabase.channel(`tenant_typing_${threadId}`);
+      await channel.send({
+        type: 'broadcast',
+        event: 'typing_start',
+        payload: {
           user_id: user.id,
+          thread_id: threadId,
           tenant_id: activeTenantId,
-          updated_at: new Date().toISOString()
-        });
+          timestamp: Date.now()
+        }
+      });
     } catch (error) {
       console.error('Error starting typing:', error);
     }
@@ -435,12 +439,18 @@ export function useTenantMessages() {
     if (!user || !activeTenantId || !isTenantContext || !threadId) return;
     
     try {
-      await supabase
-        .from('typing_indicators')
-        .delete()
-        .eq('thread_id', threadId)
-        .eq('user_id', user.id)
-        .eq('tenant_id', activeTenantId);
+      // Use realtime channel for typing instead of database
+      const channel = supabase.channel(`tenant_typing_${threadId}`);
+      await channel.send({
+        type: 'broadcast',
+        event: 'typing_stop',
+        payload: {
+          user_id: user.id,
+          thread_id: threadId,
+          tenant_id: activeTenantId,
+          timestamp: Date.now()
+        }
+      });
     } catch (error) {
       console.error('Error stopping typing:', error);
     }

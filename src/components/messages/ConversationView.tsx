@@ -46,11 +46,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     fetchMessages, 
     markAsRead, 
     isSending,
-    typingUsers,
-    startTyping,
-    stopTyping,
     context: messageContext
-  } = useHybridMessages(context);
+  } = useHybridMessages(context, threadId || recipientId);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
@@ -341,12 +338,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 );
               })
             )}
-            
-            {/* Typing Indicator */}
-            {typingUsers && typingUsers.length > 0 && (
-              <TypingIndicator users={typingUsers} />
-            )}
-            
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
@@ -355,8 +346,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       {/* Message Input */}
       <MessageInput
         onSendMessage={handleSendMessage}
-        onTypingStart={() => startTyping?.(threadId)}
-        onTypingStop={() => stopTyping?.(threadId)}
         disabled={isSending}
         placeholder={`Message ${getConversationTitle()}...`}
       />

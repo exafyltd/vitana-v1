@@ -390,6 +390,35 @@ export type Database = {
           },
         ]
       }
+      global_typing_indicators: {
+        Row: {
+          id: string
+          thread_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          thread_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          thread_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_typing_indicators_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "global_message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lab_test_orders: {
         Row: {
           collection_method: Database["public"]["Enums"]["collection_method"]
@@ -952,6 +981,45 @@ export type Database = {
           },
         ]
       }
+      typing_indicators: {
+        Row: {
+          id: string
+          tenant_id: string
+          thread_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          tenant_id: string
+          thread_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          tenant_id?: string
+          thread_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "typing_indicators_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "typing_indicators_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wallet_credits: {
         Row: {
           amount: number
@@ -994,6 +1062,10 @@ export type Database = {
     Functions: {
       bootstrap_admin_user: {
         Args: { p_user_email: string; p_user_id: string }
+        Returns: undefined
+      }
+      cleanup_old_typing_indicators: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       create_global_direct_thread: {

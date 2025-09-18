@@ -537,13 +537,17 @@ export function useGlobalMessages() {
     if (!user || !isGlobalContext || !threadId) return;
     
     try {
-      await supabase
-        .from('global_typing_indicators')
-        .upsert({
-          thread_id: threadId,
+      // Use realtime channel for typing instead of database
+      const channel = supabase.channel(`global_typing_${threadId}`);
+      await channel.send({
+        type: 'broadcast',
+        event: 'typing_start',
+        payload: {
           user_id: user.id,
-          updated_at: new Date().toISOString()
-        });
+          thread_id: threadId,
+          timestamp: Date.now()
+        }
+      });
     } catch (error) {
       console.error('Error starting typing:', error);
     }
@@ -553,11 +557,17 @@ export function useGlobalMessages() {
     if (!user || !isGlobalContext || !threadId) return;
     
     try {
-      await supabase
-        .from('global_typing_indicators')
-        .delete()
-        .eq('thread_id', threadId)
-        .eq('user_id', user.id);
+      // Use realtime channel for typing instead of database
+      const channel = supabase.channel(`global_typing_${threadId}`);
+      await channel.send({
+        type: 'broadcast',
+        event: 'typing_stop',
+        payload: {
+          user_id: user.id,
+          thread_id: threadId,
+          timestamp: Date.now()
+        }
+      });
     } catch (error) {
       console.error('Error stopping typing:', error);
     }
