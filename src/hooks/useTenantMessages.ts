@@ -159,6 +159,16 @@ export function useTenantMessages() {
         .in('thread_id', threadIds)
         .eq('is_active', true);
 
+      // Deduplicate participants by user_id within each thread
+      const deduplicatedParticipants = (allParticipants || []).reduce((acc: any[], participant: any) => {
+        const key = `${participant.thread_id}-${participant.user_id}`;
+        const existing = acc.find(p => `${p.thread_id}-${p.user_id}` === key);
+        if (!existing) {
+          acc.push(participant);
+        }
+        return acc;
+      }, []);
+
       // Get last message and unread count for each thread
       const threadsWithDetails = await Promise.all(
         (threadRows || []).map(async (thread) => {
@@ -173,7 +183,7 @@ export function useTenantMessages() {
             .single();
 
           // Get participants for this thread
-          const participants = (allParticipants || [])
+          const participants = deduplicatedParticipants
             .filter((p: any) => p.thread_id === thread.id)
             .map((p: any) => ({
               user_id: p.user_id,
@@ -217,7 +227,16 @@ export function useTenantMessages() {
         })
       );
 
-      setThreads(threadsWithDetails);
+      // Deduplicate threads by ID to prevent duplicates
+      const uniqueThreads = threadsWithDetails.reduce((acc: any[], thread: any) => {
+        const existing = acc.find(t => t.id === thread.id);
+        if (!existing) {
+          acc.push(thread);
+        }
+        return acc;
+      }, []);
+
+      setThreads(uniqueThreads);
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching tenant threads:', error);
