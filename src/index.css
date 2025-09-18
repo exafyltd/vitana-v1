@@ -486,6 +486,46 @@ All colors MUST be HSL.
     }
   }
 
+  /* Enhanced CSS for message viewport with safe areas */
+  .message-viewport {
+    height: calc(100vh - var(--header-height, 120px) - var(--comm-dock-h, 72px) - env(safe-area-inset-bottom));
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .chat-history-container {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    scroll-padding-bottom: 120px;
+  }
+
+  .composer-container {
+    position: relative;
+    z-index: 30;
+    border-top: 1px solid hsl(var(--border));
+    background: hsl(var(--background) / 0.8);
+    backdrop-filter: blur(12px);
+    margin-bottom: calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom));
+  }
+
+  @supports (backdrop-filter: blur(12px)) {
+    .composer-container {
+      background: hsl(var(--background) / 0.6);
+    }
+  }
+
+  /* Auto-scroll detection helper */
+  .at-bottom {
+    scroll-behavior: smooth;
+  }
+
+  /* Safe area helpers */
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+  }
+
   /* Card Background Tints */
   .card-mental {
     background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--pill-mental-accent) / 0.03)) !important;

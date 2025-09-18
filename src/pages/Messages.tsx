@@ -163,7 +163,12 @@ export default function Messages() {
         </div>
       </div>
 
-      <div className="flex-1 flex pb-24">  
+      <div className="flex-1 flex" 
+        style={{ 
+          height: 'calc(100vh - var(--header-height, 200px) - env(safe-area-inset-bottom))',
+          '--header-height': '200px'
+        } as React.CSSProperties}
+      >
         <div className="w-80 border-r">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
@@ -183,9 +188,6 @@ export default function Messages() {
                     onClick={() => {
                       setSelectedThreadId(thread.id);
                       setSelectedRecipientId(null);
-                      requestAnimationFrame(() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      });
                     }}
                   >
                     <div className="flex items-start space-x-3">
@@ -237,7 +239,7 @@ export default function Messages() {
           </ScrollArea>
         </div>
         
-        <div className="flex-1">
+        <div className="flex-1 min-h-0">
           {selectedThreadId || selectedRecipientId ? (
             <ConversationErrorBoundary>
               <ConversationView 

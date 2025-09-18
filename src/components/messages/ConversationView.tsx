@@ -485,8 +485,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Loading state for when conversation is being loaded  
   if (isLoadingConversation) {
     return (
-      <Card className={cn("flex flex-col h-full", className)}>
-        <CardHeader className="flex-shrink-0 border-b">
+      <div className={cn("grid grid-rows-[auto,1fr,auto] h-full min-h-0", className)}>
+        <div className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
           <div className="flex items-center gap-3">
             {onBack && (
               <Button size="sm" variant="ghost" onClick={onBack}>
@@ -499,11 +499,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               <Skeleton className="h-3 w-20" />
             </div>
           </div>
-        </CardHeader>
-        <CardContent className="flex-1 p-4">
+        </div>
+        <div className="flex-1 p-4">
           <MessageSkeleton count={3} />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
