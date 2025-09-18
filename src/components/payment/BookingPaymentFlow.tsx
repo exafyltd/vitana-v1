@@ -56,7 +56,7 @@ export default function BookingPaymentFlow({
   const [paymentMethod, setPaymentMethod] = useState<'credits' | 'cash'>('credits');
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
-  const { sendMessage } = useMessages();
+  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
 
   const canAfford = () => {
     if (booking.currency === 'credits') {

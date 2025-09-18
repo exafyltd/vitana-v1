@@ -53,15 +53,20 @@ export interface ThreadParticipant {
   } | null;
 }
 
-export const useMessages = (threadId?: string) => {
+export const useMessages = (threadId?: string, enableAutoFetch: boolean = false) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [threads, setThreads] = useState<MessageThread[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const { toast } = useToast();
 
   // Fetch messages for a specific thread or all direct messages
   const fetchMessages = useCallback(async () => {
+    if (!enableAutoFetch) {
+      setLoading(false);
+      return;
+    }
+    
     try {
       setLoading(true);
       
@@ -104,19 +109,25 @@ export const useMessages = (threadId?: string) => {
       setMessages(transformedMessages);
     } catch (error) {
       console.error('Error fetching messages:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load messages',
-        variant: 'destructive',
-      });
+      // Don't show toast error for automatic fetching to prevent global errors
+      if (enableAutoFetch) {
+        console.warn('Message fetching disabled due to missing context or permissions');
+      }
     } finally {
       setLoading(false);
     }
-  }, [threadId, toast]);
+  }, [threadId, enableAutoFetch, toast]);
 
   // Fetch user's message threads
   const fetchThreads = useCallback(async () => {
+    if (!enableAutoFetch) {
+      setLoading(false);
+      return;
+    }
+    
     try {
+      setLoading(true);
+      
       // First get current user
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -177,13 +188,14 @@ export const useMessages = (threadId?: string) => {
       setThreads(enrichedThreads);
     } catch (error) {
       console.error('Error fetching threads:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load conversations',
-        variant: 'destructive',
-      });
+      // Don't show toast error for automatic fetching to prevent global errors
+      if (enableAutoFetch) {
+        console.warn('Thread fetching disabled due to missing context or permissions');
+      }
+    } finally {
+      setLoading(false);
     }
-  }, [toast]);
+  }, [enableAutoFetch, toast]);
 
   // Send a message
   const sendMessage = useCallback(async (
@@ -331,11 +343,20 @@ export const useMessages = (threadId?: string) => {
     }
   }, [fetchThreads]);
 
-  // Set up real-time subscriptions
+  // Fetch data on mount and when threadId changes - only if auto-fetch is enabled
   useEffect(() => {
-    fetchMessages();
-    fetchThreads();
+    if (enableAutoFetch) {
+      fetchMessages();
+      fetchThreads();
+    }
+  }, [fetchMessages, fetchThreads, threadId, enableAutoFetch]);
 
+  // Subscribe to real-time message updates - only if auto-fetch is enabled
+  useEffect(() => {
+    if (!enableAutoFetch) {
+      return;
+    }
+    
     // Subscribe to new messages
     const messageSubscription = supabase
       .channel('messages-channel')
@@ -392,7 +413,7 @@ export const useMessages = (threadId?: string) => {
       supabase.removeChannel(messageSubscription);
       supabase.removeChannel(threadSubscription);
     };
-  }, [threadId, fetchMessages, fetchThreads]);
+  }, [threadId, fetchMessages, fetchThreads, enableAutoFetch]);
 
   return {
     messages,

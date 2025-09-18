@@ -94,7 +94,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
     tags: [] as string[]
   });
   const { toast } = useToast();
-  const { sendMessage } = useMessages();
+  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
   const [showPaymentDemo, setShowPaymentDemo] = useState(false);
 
   const handleNext = () => {

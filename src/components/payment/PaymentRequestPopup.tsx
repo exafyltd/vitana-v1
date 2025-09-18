@@ -37,7 +37,7 @@ export default function PaymentRequestPopup({
   const [description, setDescription] = useState(initialDescription);
   const [dueDate, setDueDate] = useState('');
   const { toast } = useToast();
-  const { sendMessage } = useMessages();
+  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
 
   const handleSendRequest = async () => {
     if (!amount || !description) {

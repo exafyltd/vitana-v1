@@ -38,7 +38,7 @@ export default function SocialShareButton({
 }: SocialShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
-  const { sendMessage } = useMessages();
+  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
 
   const getShareText = () => {
     switch (type) {

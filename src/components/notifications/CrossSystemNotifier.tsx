@@ -11,7 +11,7 @@ interface NotificationEvent {
 
 export const CrossSystemNotifier = () => {
   const { toast } = useToast();
-  const { sendMessage } = useMessages();
+  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
 
   useEffect(() => {
     // Listen for real-time notification events

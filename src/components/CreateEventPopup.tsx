@@ -18,7 +18,7 @@ interface CreateEventPopupProps {
 
 export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
   const { toast } = useToast();
-  const { sendMessage } = useMessages();
+  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
   const [showPaymentDemo, setShowPaymentDemo] = useState(false);
   const [formData, setFormData] = useState({
     title: "",

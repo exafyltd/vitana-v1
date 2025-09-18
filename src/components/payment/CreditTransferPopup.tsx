@@ -39,7 +39,7 @@ export default function CreditTransferPopup({
   const [note, setNote] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
-  const { sendMessage } = useMessages();
+  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
 
   const transferAmount = parseFloat(amount) || 0;
   const canTransfer = transferAmount > 0 && transferAmount <= currentBalance;
