@@ -65,6 +65,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     typingUsers,
     startTyping,
     stopTyping,
+    fetchMessages,
     context: messageContext
   } = useHybridMessages(context, threadId || recipientId);
 
@@ -143,6 +144,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
     fetchRecipientData();
   }, [recipientId, context]);
+
+  // Ensure messages are fetched when switching threads
+  useEffect(() => {
+    if (threadId) {
+      fetchMessages(threadId);
+    }
+  }, [threadId, fetchMessages]);
 
   useEffect(() => {
     if (threadId) {
@@ -693,7 +701,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
            disabled={isSending}
            placeholder={`Message ${getConversationTitle()}...`}
            threadId={threadId}
-           activeThread={threadId ? threads.find(t => t.id === threadId) : undefined}
+           activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : undefined}
          />
       </div>
     </Card>

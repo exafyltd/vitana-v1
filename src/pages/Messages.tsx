@@ -183,6 +183,9 @@ export default function Messages() {
                     onClick={() => {
                       setSelectedThreadId(thread.id);
                       setSelectedRecipientId(null);
+                      requestAnimationFrame(() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      });
                     }}
                   >
                     <div className="flex items-start space-x-3">
