@@ -487,55 +487,49 @@ All colors MUST be HSL.
   }
 
   /* Enhanced CSS for message viewport with safe areas */
-  .message-viewport {
-    height: calc(100vh - var(--header-height, 200px) - env(safe-area-inset-bottom));
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+  /* Conversation viewport uses flex layout for three zones */
+  .conversation-viewport {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     min-height: 0;
   }
 
-  .chat-history-container {
+  /* Conversation header - fixed at top */
+  .conversation-header {
+    flex-shrink: 0;
+    z-index: 10;
+  }
+
+  /* Chat history - scrollable middle zone */
+  .conversation-viewport > .flex-1 {
     min-height: 0;
-    overflow-y: auto;
     overscroll-behavior: contain;
     scroll-behavior: smooth;
-    scroll-padding-bottom: 120px;
-    padding-bottom: 120px; /* Account for fixed composer */
+    scroll-padding-bottom: 16px;
   }
 
-  .composer-container {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 320px; /* Account for sidebar width */
-    z-index: 30;
-    border-top: 1px solid hsl(var(--border));
-    background: hsl(var(--background) / 0.95);
-    backdrop-filter: blur(12px);
-    padding: 0 1rem;
-    box-shadow: 0 -4px 16px -4px hsl(var(--border) / 0.4);
+  /* Conversation composer - fixed at bottom, above dock */
+  .conversation-composer {
+    flex-shrink: 0;
+    z-index: 20;
+    margin-bottom: calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom));
+    box-shadow: 0 -2px 8px -2px hsl(var(--border) / 0.15);
   }
 
-  /* Mobile responsiveness for composer */
-  @media (max-width: 768px) {
-    .composer-container {
-      left: 0;
-    }
-  }
-
+  /* Enhanced backdrop support */
   @supports (backdrop-filter: blur(12px)) {
-    .composer-container {
-      background: hsl(var(--background) / 0.8);
+    .conversation-header,
+    .conversation-composer {
+      background: hsl(var(--background) / 0.85);
     }
   }
 
-  .chat-history-container {
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scroll-behavior: smooth;
-    scroll-padding-bottom: 120px;
-    padding-bottom: 120px; /* Account for fixed composer */
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .conversation-composer {
+      margin-bottom: calc(var(--comm-dock-h, 72px) + 4px + env(safe-area-inset-bottom));
+    }
   }
 
   /* Safe area helpers */

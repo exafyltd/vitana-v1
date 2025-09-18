@@ -543,9 +543,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <div className="message-viewport">
-        {/* Row 1: Conversation header */}
-        <div className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
+      <div className="conversation-viewport h-full flex flex-col">
+        {/* Zone 1: Fixed Header */}
+        <div className="conversation-header flex-shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {onBack && (
@@ -597,8 +597,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           </div>
         </div>
 
-        {/* Row 2: Chat history - ONLY scrollable area */}  
-        <div className="chat-history-container px-4 py-3" id="chat-scroll">
+        {/* Zone 2: Scrollable Chat History */}  
+        <div className="flex-1 overflow-y-auto px-4 py-3" id="chat-scroll">
           {messages.length === 0 && optimisticMessages.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No messages yet</p>
@@ -662,20 +662,22 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             </>
           )}
           
-          {/* Spacer so last bubble never sits under the composer */}
-          <div style={{ height: 'calc(var(--composer-h, 112px) + var(--comm-dock-h, 68px) + 20px + env(safe-area-inset-bottom))' }} />
+          {/* Bottom padding to ensure last message is never hidden */}
+          <div className="h-4" />
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Row 3: Composer - ALWAYS visible, above dock */}
-        <div className="composer-container">
+        {/* Zone 3: Fixed Composer */}
+        <div className="conversation-composer flex-shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t px-4 py-3">
           {/* Typing Indicators */}
           {typingUsers.length > 0 && (
-            <TypingIndicator users={typingUsers} className="border-b" />
+            <div className="mb-2">
+              <TypingIndicator users={typingUsers} />
+            </div>
           )}
           
           {sendError && (
-            <div className="p-3 pb-0">
+            <div className="mb-2">
               <ErrorMessage 
                 title="Message failed to send"
                 description={sendError}
