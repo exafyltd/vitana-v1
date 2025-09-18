@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,10 @@ import { format } from 'date-fns';
 import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon, Download, ExternalLink } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType } from '@/lib/fileUpload';
+import { useMessageReactions } from '@/hooks/useMessageReactions';
+import { EmojiReactionBar } from './EmojiReactionBar';
+import { ReactionCluster } from './ReactionCluster';
+import { ReactionPopover } from './ReactionPopover';
 
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
@@ -24,11 +28,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   showAvatar = true,
   showTimestamp = true
 }) => {
+  const messageRef = useRef<HTMLDivElement>(null);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const [imageZoomModal, setImageZoomModal] = useState<{ isOpen: boolean; url: string; filename: string }>({
     isOpen: false,
     url: '',
     filename: ''
   });
+  const [showReactionBar, setShowReactionBar] = useState(false);
+  const [showReactionPopover, setShowReactionPopover] = useState(false);
+  const [reactionBarPosition, setReactionBarPosition] = useState({ x: 0, y: 0 });
+
+  // Use reactions hook
+  const { reactionSummary, toggleReaction } = useMessageReactions(message.id);
 
   // Check if this is an optimistic message (temporary)
   const isOptimistic = message.id?.toString().startsWith('temp-');
@@ -87,6 +99,62 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     link.click();
     document.body.removeChild(link);
   };
+
+  // Reaction handlers
+  const handleShowReactionBar = useCallback((clientX: number, clientY: number) => {
+    setReactionBarPosition({ x: clientX, y: clientY - 60 });
+    setShowReactionBar(true);
+  }, []);
+
+  const handleHideReactionBar = useCallback(() => {
+    setShowReactionBar(false);
+  }, []);
+
+  const handleReactionSelect = useCallback((emoji: string) => {
+    toggleReaction(emoji);
+    setShowReactionBar(false);
+  }, [toggleReaction]);
+
+  // Long press handling for mobile
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    longPressTimer.current = setTimeout(() => {
+      handleShowReactionBar(touch.clientX, touch.clientY);
+      // Add haptic feedback on mobile
+      if ('vibrate' in navigator) {
+        navigator.vibrate(50);
+      }
+    }, 500);
+  }, [handleShowReactionBar]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }, []);
+
+  // Right click handling for desktop
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    handleShowReactionBar(e.clientX, e.clientY);
+  }, [handleShowReactionBar]);
+
+  // Keyboard handling
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'r' && document.activeElement === messageRef.current) {
+        e.preventDefault();
+        if (messageRef.current) {
+          const rect = messageRef.current.getBoundingClientRect();
+          handleShowReactionBar(rect.right - 100, rect.top - 60);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleShowReactionBar]);
 
   const renderAttachment = (attachment: any, index: number) => {
     const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
@@ -355,7 +423,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   return (
     <>
       <div className={cn(
-        "flex gap-3 max-w-[85%]",
+        "flex gap-3 max-w-[85%] relative",
         isOwnMessage ? "ml-auto flex-row-reverse" : ""
       )}>
         {showAvatar && !isOwnMessage && (
@@ -380,14 +448,43 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             </span>
           )}
           
-          <div className={cn(
-            "rounded-2xl px-4 py-2 max-w-md relative",
-            isOwnMessage 
-              ? "bg-primary text-primary-foreground" 
-              : "bg-muted",
-            isOptimistic && "opacity-70"
-          )}>
-            {renderContent()}
+          <div className="relative">
+            <div 
+              ref={messageRef}
+              tabIndex={0}
+              className={cn(
+                "rounded-2xl px-4 py-2 max-w-md relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
+                isOwnMessage 
+                  ? "bg-primary text-primary-foreground" 
+                  : "bg-muted",
+                isOptimistic && "opacity-70"
+              )}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onContextMenu={handleContextMenu}
+              role="button"
+              aria-label="Long press or right click to add reactions"
+            >
+              {renderContent()}
+            </div>
+            
+            {/* Reaction Clusters */}
+            <ReactionPopover
+              reactions={reactionSummary}
+              open={showReactionPopover}
+              onOpenChange={setShowReactionPopover}
+            >
+              <div>
+                <ReactionCluster
+                  reactions={reactionSummary}
+                  onReactionClick={toggleReaction}
+                  onShowPopover={() => setShowReactionPopover(true)}
+                  className={cn(
+                    isOwnMessage ? "justify-end" : "justify-start"
+                  )}
+                />
+              </div>
+            </ReactionPopover>
           </div>
           
           {showTimestamp && (
@@ -401,6 +498,22 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           )}
         </div>
       </div>
+
+      {/* Floating Emoji Reaction Bar */}
+      {showReactionBar && (
+        <div 
+          className="fixed z-50"
+          style={{ 
+            left: reactionBarPosition.x, 
+            top: reactionBarPosition.y 
+          }}
+        >
+          <EmojiReactionBar
+            onEmojiSelect={handleReactionSelect}
+            onClose={handleHideReactionBar}
+          />
+        </div>
+      )}
       
       {/* Image Zoom Modal */}
       <ImageZoomModal
