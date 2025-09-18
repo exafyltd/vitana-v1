@@ -38,6 +38,10 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
+    /* Communication dock height for layout calculations */
+    --comm-dock-h: 72px;
+    --composer-h: 112px;
+
     /* Vitana Pillar-First Color System */
     /* 5 Health Pillars */
     --pill-nutrition-accent: 150 60% 45%;
@@ -589,5 +593,15 @@ All colors MUST be HSL.
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  /* Better scroll behavior for chat */
+  .chat-scroll {
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+  }
+
+  .safe-bottom { 
+    padding-bottom: calc(env(safe-area-inset-bottom) + 12px); 
   }
 }

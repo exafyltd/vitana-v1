@@ -169,68 +169,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, threads, user?.id]);
 
-  useEffect(() => {
-    // Scroll to bottom when new messages arrive
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  // Enhanced mark as read logic with focus and intersection detection
-  const handleMarkAsRead = useCallback(() => {
-    if (threadId && isWindowFocused && isLastMessageVisible) {
-      markAsRead(threadId);
-    }
-  }, [threadId, isWindowFocused, isLastMessageVisible, markAsRead]);
-
-  // Set up focus tracking
-  useEffect(() => {
-    const handleFocus = () => setIsWindowFocused(true);
-    const handleBlur = () => setIsWindowFocused(false);
-    const handleVisibilityChange = () => setIsWindowFocused(!document.hidden);
-
-    // Initial state
-    setIsWindowFocused(document.hasFocus() && !document.hidden);
-
-    // Event listeners
-    window.addEventListener('focus', handleFocus);
-    window.addEventListener('blur', handleBlur);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      window.removeEventListener('focus', handleFocus);
-      window.removeEventListener('blur', handleBlur);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
-
-  // Set up intersection observer for last message visibility
-  useEffect(() => {
-    if (!messagesEndRef.current) return;
-
-    intersectionObserverRef.current = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        setIsLastMessageVisible(entry.isIntersecting && entry.intersectionRatio > 0.5);
-      },
-      { 
-        threshold: [0, 0.5, 1.0],
-        rootMargin: '0px 0px -10px 0px' // Slight margin to ensure message is fully visible
-      }
-    );
-
-    intersectionObserverRef.current.observe(messagesEndRef.current);
-
-    return () => {
-      if (intersectionObserverRef.current) {
-        intersectionObserverRef.current.disconnect();
-      }
-    };
-  }, [messages.length]); // Re-observe when messages change
-
-  // Trigger mark as read when conditions are met
-  useEffect(() => {
-    handleMarkAsRead();
-  }, [handleMarkAsRead]);
-
   // State for optimistic messages
   const [optimisticMessages, setOptimisticMessages] = useState<Array<{
     id: string;
@@ -238,6 +176,25 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     status: 'sending' | 'failed';
     originalMessage?: any;
   }>>([]);
+
+  // Enhanced scroll to bottom with auto-scroll detection
+  const scrollToBottom = useCallback((force = false) => {
+    const chatScroll = document.getElementById('chat-scroll');
+    if (!chatScroll) return;
+    
+    // Check if user is already at bottom (within 8px threshold)
+    const isAtBottom = chatScroll.scrollTop + chatScroll.clientHeight >= chatScroll.scrollHeight - 8;
+    
+    // Only auto-scroll if user is at bottom or force is true
+    if (isAtBottom || force) {
+      chatScroll.scrollTop = chatScroll.scrollHeight;
+    }
+  }, []);
+
+  // Scroll to bottom when new messages arrive (only if user is at bottom)
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, optimisticMessages, scrollToBottom]);
 
   const handleSendMessage = async (
     content: string, 
@@ -266,7 +223,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
       // Scroll to keep last bubble visible
       setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        scrollToBottom();
       }, 10);
 
       const newMessage = await sendMessage({
@@ -552,9 +509,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <Card className={cn("flex flex-col h-full max-h-full", className)}>
-        {/* Header */}
-        <CardHeader className="flex-shrink-0 border-b p-4">
+      {/* 3-row grid layout: header, scrollable messages, fixed composer */}
+      <div className={cn("flex-1 min-h-0 grid grid-rows-[auto,1fr,auto] h-full", className)}>
+        {/* Row 1: sticky header */}
+        <div className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {onBack && (
@@ -587,124 +545,134 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 className={isGroupChat() ? "cursor-pointer" : ""}
                 onClick={isGroupChat() ? () => setShowMembersModal(true) : undefined}
               >
-                <CardTitle className="text-base">{getConversationTitle()}</CardTitle>
+                <h2 className="text-base font-semibold">{getConversationTitle()}</h2>
                 <p className="text-sm text-muted-foreground">{getConversationSubtitle()}</p>
               </div>
             </div>
           
-          <div className="flex items-center gap-1">
-            <Button size="sm" variant="ghost">
-              <Phone className="w-4 h-4" />
-            </Button>
-            <Button size="sm" variant="ghost">
-              <Video className="w-4 h-4" />
-            </Button>
-            <Button size="sm" variant="ghost">
-              <Info className="w-4 h-4" />
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button size="sm" variant="ghost">
+                <Phone className="w-4 h-4" />
+              </Button>
+              <Button size="sm" variant="ghost">
+                <Video className="w-4 h-4" />
+              </Button>
+              <Button size="sm" variant="ghost">
+                <Info className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </div>
-      </CardHeader>
 
-      {/* Messages */}
-      <CardContent className="flex-1 p-0 overflow-hidden min-h-0">
-        <ScrollArea className="h-full" data-conversation-container>
-          <div className="p-4 space-y-4">
-            {messages.length === 0 && optimisticMessages.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">No messages yet</p>
-                <p className="text-sm text-muted-foreground">Start the conversation!</p>
-              </div>
-            ) : (
-              <>
-                {messages.map((message, index) => {
-                  const isOwnMessage = message.sender_id === user?.id;
-                  const showAvatar = !isOwnMessage && (
-                    index === 0 || 
-                    messages[index - 1]?.sender_id !== message.sender_id
-                  );
-                  const showTimestamp = index === messages.length - 1 || 
-                    new Date(messages[index + 1]?.created_at).getTime() - 
-                    new Date(message.created_at).getTime() > 5 * 60 * 1000;
+        {/* Row 2: ONLY scrollable area – chat history */}  
+        <div
+          id="chat-scroll"
+          className="min-h-0 overflow-y-auto overscroll-contain px-4 py-3 scroll-smooth"
+          style={{ scrollPaddingBottom: '120px' }}
+          data-conversation-container
+        >
+          {messages.length === 0 && optimisticMessages.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No messages yet</p>
+              <p className="text-sm text-muted-foreground">Start the conversation!</p>
+            </div>
+          ) : (
+            <>
+              {messages.map((message, index) => {
+                const isOwnMessage = message.sender_id === user?.id;
+                const showAvatar = !isOwnMessage && (
+                  index === 0 || 
+                  messages[index - 1]?.sender_id !== message.sender_id
+                );
+                const showTimestamp = index === messages.length - 1 || 
+                  new Date(messages[index + 1]?.created_at).getTime() - 
+                  new Date(message.created_at).getTime() > 5 * 60 * 1000;
 
-                  return (
+                return (
+                  <div key={message.id} className="mb-4">
                     <MessageBubble
-                      key={message.id}
                       message={message}
                       isOwnMessage={isOwnMessage}
                       onActionClick={handleActionClick}
                       showAvatar={showAvatar}
                       showTimestamp={showTimestamp}
                     />
-                  );
-                })}
-                
-                {/* Render optimistic messages */}
-                {optimisticMessages.map((optMessage) => (
-                  <div key={optMessage.id} className="flex justify-end">
-                    <div className={cn(
-                      "max-w-[70%] rounded-lg px-3 py-2 text-sm",
-                      optMessage.status === 'sending' 
-                        ? "bg-primary/70 text-primary-foreground" 
-                        : "bg-destructive/70 text-destructive-foreground"
-                    )}>
-                      <div className="flex items-center gap-2">
-                        <span>{optMessage.content}</span>
-                        {optMessage.status === 'sending' ? (
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                        ) : (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-6 w-12 p-0 text-xs"
-                            onClick={() => retryFailedMessage(optMessage.id)}
-                          >
-                            Retry
-                          </Button>
-                        )}
-                      </div>
-                      <div className="text-xs opacity-70 mt-1">
-                        {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
-                      </div>
+                  </div>
+                );
+              })}
+              
+              {/* Render optimistic messages */}
+              {optimisticMessages.map((optMessage) => (
+                <div key={optMessage.id} className="flex justify-end mb-4">
+                  <div className={cn(
+                    "max-w-[70%] rounded-lg px-3 py-2 text-sm",
+                    optMessage.status === 'sending' 
+                      ? "bg-primary/70 text-primary-foreground" 
+                      : "bg-destructive/70 text-destructive-foreground"
+                  )}>
+                    <div className="flex items-center gap-2">
+                      <span>{optMessage.content}</span>
+                      {optMessage.status === 'sending' ? (
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 w-12 p-0 text-xs"
+                          onClick={() => retryFailedMessage(optMessage.id)}
+                        >
+                          Retry
+                        </Button>
+                      )}
+                    </div>
+                    <div className="text-xs opacity-70 mt-1">
+                      {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
                     </div>
                   </div>
-                ))}
-              </>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-        </ScrollArea>
-      </CardContent>
+                </div>
+              ))}
+            </>
+          )}
+          
+          {/* Spacer so last bubble never sits under the composer */}
+          <div style={{ height: 'calc(var(--composer-h, 112px) + var(--comm-dock-h, 72px) + env(safe-area-inset-bottom))' }} />
+          <div ref={messagesEndRef} />
+        </div>
 
-      {/* Typing Indicators */}
-      {typingUsers.length > 0 && (
-        <TypingIndicator users={typingUsers} className="border-t" />
-      )}
-
-      {/* Message Input */}
-      <div className="flex-shrink-0 border-t p-4 bg-background">
-        {sendError && (
-          <div className="mb-3">
-            <ErrorMessage 
-              title="Message failed to send"
-              description={sendError}
-              onRetry={() => setSendError(null)}
-              variant="inline"
-              className="text-xs"
-            />
-          </div>
-        )}
-         <MessageInput
-           onSendMessage={handleSendMessage}
-           onTypingStart={startTyping}
-           onTypingStop={stopTyping}
-           disabled={isSending}
-           placeholder={`Message ${getConversationTitle()}...`}
-           threadId={threadId}
-           activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : undefined}
-         />
+        {/* Row 3: composer – ALWAYS visible, above dock */}
+        <div
+          id="composer-wrap"
+          className="relative z-30 border-t bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+          style={{ marginBottom: 'calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom))' }}
+        >
+          {/* Typing Indicators */}
+          {typingUsers.length > 0 && (
+            <TypingIndicator users={typingUsers} className="border-b" />
+          )}
+          
+          {sendError && (
+            <div className="p-3 pb-0">
+              <ErrorMessage 
+                title="Message failed to send"
+                description={sendError}
+                onRetry={() => setSendError(null)}
+                variant="inline"
+                className="text-xs"
+              />
+            </div>
+          )}
+          
+          <MessageInput
+            onSendMessage={handleSendMessage}
+            onTypingStart={startTyping}
+            onTypingStop={stopTyping}
+            disabled={isSending}
+            placeholder={`Message ${getConversationTitle()}...`}
+            threadId={threadId}
+            activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : undefined}
+          />
+        </div>
       </div>
-    </Card>
 
     <GroupMembersModal
       open={showMembersModal}

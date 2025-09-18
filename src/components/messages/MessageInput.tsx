@@ -58,7 +58,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const { toast } = useToast();
   const { activeTenantId } = useTenant();
 
-  // Auto-resize textarea with proper row limits (1-6 rows)
+  // Auto-resize textarea with proper row limits (1-6 rows) and update CSS var
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -77,15 +77,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
       // Enable scrolling if content exceeds max height
       textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
       
-      // Keep last message visible when composer grows
-      if (newHeight > minHeight) {
-        // Small delay to ensure DOM has updated
-        setTimeout(() => {
-          const container = document.querySelector('[data-conversation-container]');
-          if (container) {
-            container.scrollTop = container.scrollHeight;
-          }
-        }, 10);
+      // Update the CSS variable for layout calculations
+      const composerElement = document.getElementById('composer');
+      if (composerElement) {
+        const totalComposerHeight = newHeight + 32; // padding and borders
+        composerElement.style.setProperty('--composer-h', `${Math.max(112, totalComposerHeight)}px`);
       }
     }
   }, [message]);
@@ -355,7 +351,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const quickReactions = ['❤️', '👍', '😊', '🎉', '💪', '🙏'];
 
   return (
-    <form onSubmit={handleSend} className={cn("flex flex-col gap-2 p-4 bg-background border-t", className)}>
+    <form 
+      id="composer"
+      onSubmit={handleSend} 
+      className={cn("flex flex-col gap-2 px-3 py-2", className)}
+      style={{ '--composer-h': '112px' } as React.CSSProperties}
+    >
       {/* File Attachments Preview */}
       {(attachments.length > 0 || Object.keys(uploadProgress).length > 0) && (
         <div className="px-4 pb-2" id="attachment-status">
