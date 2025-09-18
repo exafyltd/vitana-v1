@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon } from 'lucide-react';
+import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon, Download, ExternalLink } from 'lucide-react';
+import { ImageZoomModal } from './ImageZoomModal';
+import { formatFileSize, isImageType } from '@/lib/fileUpload';
 
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
@@ -22,6 +24,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   showAvatar = true,
   showTimestamp = true
 }) => {
+  const [imageZoomModal, setImageZoomModal] = useState<{ isOpen: boolean; url: string; filename: string }>({
+    isOpen: false,
+    url: '',
+    filename: ''
+  });
+
   // Check if this is an optimistic message (temporary)
   const isOptimistic = message.id?.toString().startsWith('temp-');
   
@@ -61,6 +69,108 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         return <Clock className="w-3 h-3 text-muted-foreground" />;
     }
   };
+
+  const handleImageClick = (url: string, filename: string) => {
+    setImageZoomModal({ isOpen: true, url, filename });
+  };
+
+  const handleFileClick = (url: string, filename: string) => {
+    // Open file in new tab
+    window.open(url, '_blank');
+  };
+
+  const handleDownload = (url: string, filename: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const renderAttachment = (attachment: any, index: number) => {
+    const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
+
+    if (isImage) {
+      // Render image thumbnail
+      return (
+        <div 
+          key={index}
+          className="relative group cursor-pointer max-w-xs"
+          onClick={() => handleImageClick(attachment.url, attachment.filename)}
+        >
+          <img
+            src={attachment.url}
+            alt={attachment.filename}
+            className="w-full h-auto rounded-lg max-h-64 object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors" />
+          <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+            <Button
+              size="sm"
+              variant="secondary"
+              className="h-7 w-7 p-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDownload(attachment.url, attachment.filename);
+              }}
+              aria-label="Download image"
+            >
+              <Download className="w-3 h-3" />
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="h-7 w-7 p-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFileClick(attachment.url, attachment.filename);
+              }}
+              aria-label="Open in new tab"
+            >
+              <ExternalLink className="w-3 h-3" />
+            </Button>
+          </div>
+          {/* Image info overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 rounded-b-lg">
+            <p className="text-white text-xs font-medium truncate">{attachment.filename}</p>
+            <p className="text-white/80 text-xs">{formatFileSize(attachment.size)}</p>
+          </div>
+        </div>
+      );
+    } else {
+      // Render file chip
+      return (
+        <div
+          key={index}
+          className="flex items-center gap-3 p-3 bg-background/50 rounded-lg border cursor-pointer hover:bg-background/70 transition-colors max-w-xs"
+          onClick={() => handleFileClick(attachment.url, attachment.filename)}
+        >
+          <FileText className="w-8 h-8 text-muted-foreground flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium truncate">{attachment.filename}</p>
+            <p className="text-xs text-muted-foreground">
+              {formatFileSize(attachment.size)}
+            </p>
+          </div>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-7 w-7 p-0 flex-shrink-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDownload(attachment.url, attachment.filename);
+            }}
+            aria-label="Download file"
+          >
+            <Download className="w-3 h-3" />
+          </Button>
+        </div>
+      );
+    }
+  };
+  
   const renderContent = () => {
     switch (message.message_type) {
       case 'payment_request':
@@ -191,8 +301,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
       case 'attachment':
         return (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {message.body && <p className="break-words">{message.body}</p>}
+            
+            {/* New attachment format with proper rendering */}
+            {message.content_data?.attachments && (
+              <div className="space-y-2">
+                {message.content_data.attachments.map((attachment: any, index: number) => 
+                  renderAttachment(attachment, index)
+                )}
+              </div>
+            )}
+            
+            {/* Legacy attachment format support */}
             {message.content_data?.files && (
               <div className="space-y-2">
                 {message.content_data.files.map((file: any, index: number) => (
@@ -208,7 +329,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{file.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {file.size ? `${(file.size / 1024 / 1024).toFixed(1)} MB` : 'Unknown size'}
+                        {file.size ? formatFileSize(file.size) : 'Unknown size'}
                       </p>
                     </div>
                   </div>
@@ -232,53 +353,63 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }
 
   return (
-    <div className={cn(
-      "flex gap-3 max-w-[85%]",
-      isOwnMessage ? "ml-auto flex-row-reverse" : ""
-    )}>
-      {showAvatar && !isOwnMessage && (
-        <Avatar className="w-8 h-8 flex-shrink-0">
-          <AvatarImage 
-            src={message.sender?.avatar_url} 
-            alt={message.sender?.display_name || message.sender?.full_name || 'User'} 
-          />
-          <AvatarFallback>
-            {(message.sender?.display_name?.[0] || message.sender?.full_name?.[0] || 'U').toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-      )}
-      
+    <>
       <div className={cn(
-        "flex flex-col gap-1",
-        isOwnMessage ? "items-end" : "items-start"
+        "flex gap-3 max-w-[85%]",
+        isOwnMessage ? "ml-auto flex-row-reverse" : ""
       )}>
-        {!isOwnMessage && showAvatar && (
-          <span className="text-xs text-muted-foreground px-3">
-            {message.sender?.display_name || message.sender?.full_name || 'Unknown User'}
-          </span>
+        {showAvatar && !isOwnMessage && (
+          <Avatar className="w-8 h-8 flex-shrink-0">
+            <AvatarImage 
+              src={message.sender?.avatar_url} 
+              alt={message.sender?.display_name || message.sender?.full_name || 'User'} 
+            />
+            <AvatarFallback>
+              {(message.sender?.display_name?.[0] || message.sender?.full_name?.[0] || 'U').toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
         )}
         
         <div className={cn(
-          "rounded-2xl px-4 py-2 max-w-md relative",
-          isOwnMessage 
-            ? "bg-primary text-primary-foreground" 
-            : "bg-muted",
-          isOptimistic && "opacity-70"
+          "flex flex-col gap-1",
+          isOwnMessage ? "items-end" : "items-start"
         )}>
-          {renderContent()}
-        </div>
-        
-        {showTimestamp && (
+          {!isOwnMessage && showAvatar && (
+            <span className="text-xs text-muted-foreground px-3">
+              {message.sender?.display_name || message.sender?.full_name || 'Unknown User'}
+            </span>
+          )}
+          
           <div className={cn(
-            "flex items-center gap-1 text-xs text-muted-foreground px-3",
-            isOwnMessage ? "flex-row-reverse" : ""
+            "rounded-2xl px-4 py-2 max-w-md relative",
+            isOwnMessage 
+              ? "bg-primary text-primary-foreground" 
+              : "bg-muted",
+            isOptimistic && "opacity-70"
           )}>
-            <span>{format(new Date(message.created_at), 'HH:mm')}</span>
-            {renderStatusIcon()}
+            {renderContent()}
           </div>
-        )}
+          
+          {showTimestamp && (
+            <div className={cn(
+              "flex items-center gap-1 text-xs text-muted-foreground px-3",
+              isOwnMessage ? "flex-row-reverse" : ""
+            )}>
+              <span>{format(new Date(message.created_at), 'HH:mm')}</span>
+              {renderStatusIcon()}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+      
+      {/* Image Zoom Modal */}
+      <ImageZoomModal
+        isOpen={imageZoomModal.isOpen}
+        onClose={() => setImageZoomModal({ isOpen: false, url: '', filename: '' })}
+        imageUrl={imageZoomModal.url}
+        filename={imageZoomModal.filename}
+      />
+    </>
   );
 };
 
