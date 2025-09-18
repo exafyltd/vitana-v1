@@ -48,6 +48,59 @@ export function useGlobalMessages() {
   // Only use global messages for community users
   const isGlobalContext = currentRole === 'community';
 
+  // Helper function to find existing direct thread between two users
+  const findExistingDirectThread = useCallback(async (participantIds: string[]) => {
+    if (!user || !isGlobalContext || participantIds.length !== 1) return null;
+    
+    const allParticipants = [user.id, ...participantIds].sort();
+    
+    try {
+      // Find threads where current user participates
+      const { data: myThreads } = await supabase
+        .from('global_thread_participants')
+        .select('thread_id')
+        .eq('user_id', user.id)
+        .eq('is_active', true);
+
+      if (!myThreads || myThreads.length === 0) return null;
+
+      const threadIds = myThreads.map(t => t.thread_id);
+
+      // For each thread, check if it's a direct thread with exactly the same participants
+      for (const threadId of threadIds) {
+        const { data: threadParticipants } = await supabase
+          .from('global_thread_participants')
+          .select('user_id')
+          .eq('thread_id', threadId)
+          .eq('is_active', true);
+
+        if (!threadParticipants) continue;
+
+        const threadUserIds = threadParticipants.map(p => p.user_id).sort();
+        
+        // Check if participants match exactly
+        if (threadUserIds.length === allParticipants.length && 
+            threadUserIds.every((id, index) => id === allParticipants[index])) {
+          
+          // Verify it's a direct thread
+          const { data: thread } = await supabase
+            .from('global_message_threads')
+            .select('id, type')
+            .eq('id', threadId)
+            .eq('type', 'direct')
+            .single();
+
+          if (thread) return thread.id;
+        }
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error finding existing direct thread:', error);
+      return null;
+    }
+  }, [user, isGlobalContext]);
+
   const fetchMessages = useCallback(async (threadId?: string) => {
     if (!user || !isGlobalContext) {
       setMessages([]);
@@ -71,17 +124,38 @@ export function useGlobalMessages() {
       const { data: messagesData, error } = await query;
       if (error) throw error;
 
-      // Get sender profiles separately
+      // Get sender profiles separately with fallback to main profiles
       const senderIds = messagesData?.map(m => m.sender_id) || [];
-      const { data: senderProfiles } = await supabase
+      
+      // First try global community profiles
+      const { data: globalProfiles } = await supabase
         .from('global_community_profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', senderIds);
 
+      // Fallback to main profiles for missing data
+      const { data: mainProfiles } = await supabase
+        .from('profiles')
+        .select('user_id, display_name, full_name, avatar_url')
+        .in('user_id', senderIds);
+
+      // Create profile map with fallback logic
+      const profileMap: Record<string, any> = {};
+      senderIds.forEach(userId => {
+        const globalProfile = globalProfiles?.find(p => p.user_id === userId);
+        const mainProfile = mainProfiles?.find(p => p.user_id === userId);
+        
+        profileMap[userId] = {
+          user_id: userId,
+          display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
+          avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
+        };
+      });
+
       // Combine messages with sender data
       const messagesWithSenders = messagesData?.map(message => ({
         ...message,
-        sender: senderProfiles?.find(p => p.user_id === message.sender_id) || null
+        sender: profileMap[message.sender_id] || null
       })) || [];
 
       setMessages(messagesWithSenders);
@@ -135,16 +209,33 @@ export function useGlobalMessages() {
         .in('thread_id', threadIds)
         .eq('is_active', true);
 
-      // 4) Fetch profiles for participant users
+      // 4) Fetch profiles for participant users with fallback
       const userIds = Array.from(new Set((allParticipants || []).map((p: any) => p.user_id)));
-      const { data: profiles } = await supabase
+      
+      // First try global community profiles
+      const { data: globalProfiles } = await supabase
         .from('global_community_profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', userIds.length > 0 ? userIds : ['00000000-0000-0000-0000-000000000000']);
 
-      const profileMap: Record<string, any> = Object.fromEntries(
-        (profiles || []).map((p: any) => [p.user_id, p])
-      );
+      // Fallback to main profiles for missing data
+      const { data: mainProfiles } = await supabase
+        .from('profiles')
+        .select('user_id, display_name, full_name, avatar_url')
+        .in('user_id', userIds.length > 0 ? userIds : ['00000000-0000-0000-0000-000000000000']);
+
+      // Create profile map with fallback logic
+      const profileMap: Record<string, any> = {};
+      userIds.forEach(userId => {
+        const globalProfile = globalProfiles?.find(p => p.user_id === userId);
+        const mainProfile = mainProfiles?.find(p => p.user_id === userId);
+        
+        profileMap[userId] = {
+          user_id: userId,
+          display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
+          avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
+        };
+      });
 
       // 5) For each thread get last message and unread count
       const threadsWithDetails = await Promise.all(
@@ -155,8 +246,8 @@ export function useGlobalMessages() {
               user_id: p.user_id,
               role: p.role,
               last_read_at: p.last_read_at,
-              display_name: profileMap[p.user_id]?.display_name,
-              avatar_url: profileMap[p.user_id]?.avatar_url,
+              display_name: profileMap[p.user_id]?.display_name || 'Unknown User',
+              avatar_url: profileMap[p.user_id]?.avatar_url || null,
             }));
 
           // Last message
@@ -291,7 +382,23 @@ export function useGlobalMessages() {
     if (!user || !isGlobalContext) return;
 
     try {
-      // Create thread
+      // For direct threads, check if one already exists between the same participants
+      if (type === 'direct' && participantIds.length === 1) {
+        const existingThreadId = await findExistingDirectThread(participantIds);
+        if (existingThreadId) {
+          // Return existing thread instead of creating new one
+          const { data: existingThread } = await supabase
+            .from('global_message_threads')
+            .select('*')
+            .eq('id', existingThreadId)
+            .single();
+          
+          await fetchThreads(); // Refresh threads list
+          return existingThread;
+        }
+      }
+
+      // Create new thread
       const { data: thread, error: threadError } = await supabase
         .from('global_message_threads')
         .insert({
@@ -324,7 +431,7 @@ export function useGlobalMessages() {
       console.error('Error creating global thread:', error);
       throw error;
     }
-  }, [user, isGlobalContext, fetchThreads]);
+  }, [user, isGlobalContext, fetchThreads, findExistingDirectThread]);
 
   const markAsRead = useCallback(async (threadId: string) => {
     if (!user || !isGlobalContext) return;
@@ -362,12 +469,24 @@ export function useGlobalMessages() {
           // Skip if this is our own message (already handled by optimistic update)
           if (newMessage.sender_id === user.id) return;
           
-          // Fetch sender profile for the new message
-          const { data: senderProfile } = await supabase
+          // Fetch sender profile for the new message with fallback
+          const { data: globalProfile } = await supabase
             .from('global_community_profiles')
             .select('user_id, display_name, avatar_url')
             .eq('user_id', newMessage.sender_id)
-            .single();
+            .maybeSingle();
+
+          const { data: mainProfile } = await supabase
+            .from('profiles')
+            .select('user_id, display_name, full_name, avatar_url')
+            .eq('user_id', newMessage.sender_id)
+            .maybeSingle();
+
+          const senderProfile = {
+            user_id: newMessage.sender_id,
+            display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
+            avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
+          };
 
           // Add message with sender data
           setMessages(prev => [...prev, {
