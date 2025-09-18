@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface VirtualizedListProps {
@@ -9,9 +9,9 @@ interface VirtualizedListProps {
   renderItem: (item: any, index: number) => React.ReactNode;
   onScrollToTop?: () => void;
   scrollThreshold?: number;
-  overscan?: number;
 }
 
+// Simple virtualized list implementation without external dependencies
 const VirtualizedList: React.FC<VirtualizedListProps> = ({
   items,
   itemHeight,
@@ -20,50 +20,30 @@ const VirtualizedList: React.FC<VirtualizedListProps> = ({
   renderItem,
   onScrollToTop,
   scrollThreshold = 100,
-  overscan = 5,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
-  const [isNearTop, setIsNearTop] = useState(false);
 
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    const scrollOffset = e.currentTarget.scrollTop;
-    setScrollTop(scrollOffset);
+    const offset = e.currentTarget.scrollTop;
+    setScrollTop(offset);
     
-    const nearTop = scrollOffset <= scrollThreshold;
-    
-    if (nearTop !== isNearTop) {
-      setIsNearTop(nearTop);
-      
-      if (nearTop && onScrollToTop) {
-        onScrollToTop();
-      }
+    if (offset <= scrollThreshold && onScrollToTop) {
+      onScrollToTop();
     }
-  }, [scrollThreshold, isNearTop, onScrollToTop]);
+  }, [scrollThreshold, onScrollToTop]);
 
-  // Calculate visible range
+  // Calculate which items are visible
   const startIndex = Math.floor(scrollTop / itemHeight);
-  const endIndex = Math.min(
-    startIndex + Math.ceil(height / itemHeight) + overscan,
-    items.length - 1
-  );
+  const visibleCount = Math.ceil(height / itemHeight) + 2; // +2 for buffer
+  const endIndex = Math.min(startIndex + visibleCount, items.length);
 
-  const visibleItems = items.slice(
-    Math.max(0, startIndex - overscan),
-    endIndex + 1
-  );
-
-  // Scroll to bottom when new items are added (for chat behavior)
-  const scrollToBottom = useCallback(() => {
+  // Auto-scroll to bottom for new messages
+  useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, []);
-
-  useEffect(() => {
-    // Auto-scroll to bottom on new messages
-    scrollToBottom();
-  }, [items.length, scrollToBottom]);
+  }, [items.length]);
 
   return (
     <div
@@ -73,19 +53,19 @@ const VirtualizedList: React.FC<VirtualizedListProps> = ({
       onScroll={handleScroll}
     >
       <div style={{ height: items.length * itemHeight, position: 'relative' }}>
-        {visibleItems.map((item, index) => {
-          const absoluteIndex = Math.max(0, startIndex - overscan) + index;
+        {items.slice(startIndex, endIndex).map((item, index) => {
+          const actualIndex = startIndex + index;
           return (
             <div
-              key={absoluteIndex}
+              key={actualIndex}
               style={{
                 position: 'absolute',
-                top: absoluteIndex * itemHeight,
+                top: actualIndex * itemHeight,
                 width: '100%',
-                height: itemHeight,
+                minHeight: itemHeight,
               }}
             >
-              {renderItem(item, absoluteIndex)}
+              {renderItem(item, actualIndex)}
             </div>
           );
         })}

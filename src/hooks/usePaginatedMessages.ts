@@ -6,7 +6,7 @@ export interface MessageCursor {
   id: string;
 }
 
-export interface MessageData {
+export type MessageData = {
   id: string;
   thread_id: string;
   sender_id: string;
@@ -21,86 +21,26 @@ export interface MessageData {
     full_name?: string;
     avatar_url?: string;
   } | null;
-}
+};
 
-export interface PaginatedMessagesState {
-  messages: MessageData[];
-  hasOlder: boolean;
-  isLoadingOlder: boolean;
-  cursor?: MessageCursor;
-}
-
-export interface PaginatedMessagesConfig {
+export type PaginatedMessagesConfig = {
   pageSize?: number;
   virtualizationThreshold?: number;
   paginationThreshold?: number;
-}
-
-const DEFAULT_CONFIG: Required<PaginatedMessagesConfig> = {
-  pageSize: 50,
-  virtualizationThreshold: 200,
-  paginationThreshold: 50,
 };
 
-/**
- * Hook for paginated message fetching with cursor-based pagination
- * Optimized for long threads with viewport anchoring
- */
 export function usePaginatedMessages(config: PaginatedMessagesConfig = {}) {
-  const finalConfig = { ...DEFAULT_CONFIG, ...config };
-  const [state, setState] = useState<PaginatedMessagesState>({
-    messages: [],
-    hasOlder: false,
-    isLoadingOlder: false,
-  });
+  const pageSize = config.pageSize || 50;
+  const paginationThreshold = config.paginationThreshold || 50;
+  const virtualizationThreshold = config.virtualizationThreshold || 200;
 
-  // Track first message element for scroll anchoring
+  const [messages, setMessages] = useState<MessageData[]>([]);
+  const [hasOlder, setHasOlder] = useState<boolean>(false);
+  const [isLoadingOlder, setIsLoadingOlder] = useState<boolean>(false);
+  const [cursor, setCursor] = useState<MessageCursor | undefined>(undefined);
+
   const firstMessageRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-
-  const fetchSenderProfiles = useCallback(async (senderIds: string[], context: 'global' | 'tenant'): Promise<Record<string, any>> => {
-    if (senderIds.length === 0) return {};
-
-    const profileMap: Record<string, any> = {};
-
-    if (context === 'global') {
-      // First try global community profiles
-      const { data: globalProfiles } = await supabase
-        .from('global_community_profiles')
-        .select('user_id, display_name, avatar_url')
-        .in('user_id', senderIds);
-
-      // Fallback to main profiles for missing data
-      const { data: mainProfiles } = await supabase
-        .from('profiles')
-        .select('user_id, display_name, full_name, avatar_url')
-        .in('user_id', senderIds);
-
-      senderIds.forEach(userId => {
-        const globalProfile = globalProfiles?.find(p => p.user_id === userId);
-        const mainProfile = mainProfiles?.find(p => p.user_id === userId);
-        
-        profileMap[userId] = {
-          user_id: userId,
-          display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
-          avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
-        };
-      });
-    } else {
-      // Tenant context - use main profiles
-      const { data: senderProfiles } = await supabase
-        .from('profiles')
-        .select('user_id, full_name, display_name, avatar_url')
-        .in('user_id', senderIds);
-
-      senderIds.forEach(userId => {
-        const profile = senderProfiles?.find(p => p.user_id === userId);
-        profileMap[userId] = profile || { user_id: userId, display_name: 'Unknown User', avatar_url: null };
-      });
-    }
-
-    return profileMap;
-  }, []);
 
   const fetchInitialMessages = useCallback(async (
     threadId: string,
@@ -110,179 +50,121 @@ export function usePaginatedMessages(config: PaginatedMessagesConfig = {}) {
     try {
       const tableName = context === 'global' ? 'global_messages' : 'messages';
       
-      let query = supabase
+      // Use type assertion to avoid TypeScript recursion
+      let queryBuilder = supabase
         .from(tableName)
         .select('*')
         .eq('thread_id', threadId)
         .order('created_at', { ascending: false })
-        .order('id', { ascending: false })
-        .limit(finalConfig.pageSize);
+        .limit(pageSize) as any;
 
       if (context === 'tenant' && tenantId) {
-        query = query.eq('tenant_id', tenantId);
+        queryBuilder = queryBuilder.eq('tenant_id', tenantId);
       }
 
-      const { data: messagesData, error } = await query;
-      if (error) throw error;
+      const result = await queryBuilder;
+      if (result.error) throw result.error;
 
-      // Reverse to show oldest first in UI
-      const reversedMessages = (messagesData || []).reverse();
+      const messagesData: any[] = result.data || [];
+      const reversedMessages = [...messagesData].reverse();
       
-      // Get sender profiles
-      const senderIds = reversedMessages.map(m => m.sender_id);
-      const profileMap = await fetchSenderProfiles(senderIds, context);
+      if (messagesData.length > 0) {
+        const lastMessage = messagesData[messagesData.length - 1];
+        setCursor({
+          created_at: lastMessage.created_at,
+          id: lastMessage.id
+        });
+      } else {
+        setCursor(undefined);
+      }
 
-      // Combine messages with sender data
-      const messagesWithSenders = reversedMessages.map(message => ({
-        ...message,
-        sender: profileMap[message.sender_id] || null
-      }));
+      setMessages(reversedMessages);
+      setHasOlder(messagesData.length === pageSize);
+      setIsLoadingOlder(false);
 
-      // Set cursor to oldest message for pagination
-      const cursor = messagesData && messagesData.length > 0 
-        ? {
-            created_at: messagesData[messagesData.length - 1].created_at,
-            id: messagesData[messagesData.length - 1].id
-          }
-        : undefined;
-
-      setState((prev: PaginatedMessagesState) => ({
-        ...prev,
-        messages: messagesWithSenders,
-        hasOlder: messagesData ? messagesData.length === finalConfig.pageSize : false,
-        isLoadingOlder: false,
-        cursor,
-      }));
-
-      return messagesWithSenders;
+      return reversedMessages;
     } catch (error) {
-      console.error('Error fetching initial messages:', error);
-      setState(prev => ({ ...prev, messages: [], hasOlder: false, isLoadingOlder: false }));
+      console.error('Error fetching messages:', error);
+      setMessages([]);
+      setHasOlder(false);
+      setIsLoadingOlder(false);
       return [];
     }
-  }, [finalConfig.pageSize, fetchSenderProfiles]);
+  }, [pageSize]);
 
   const loadOlderMessages = useCallback(async (
     threadId: string,
     context: 'global' | 'tenant',
     tenantId?: string
   ) => {
-    if (!state.hasOlder || state.isLoadingOlder || !state.cursor) return;
+    if (!hasOlder || isLoadingOlder || !cursor) return;
 
     try {
-      setState(prev => ({ ...prev, isLoadingOlder: true }));
-
-      // Store scroll position before adding new messages
-      const scrollContainer = scrollContainerRef.current;
-      const firstMessage = firstMessageRef.current;
-      const oldScrollHeight = scrollContainer?.scrollHeight || 0;
-      const oldScrollTop = scrollContainer?.scrollTop || 0;
-      const firstMessageOffsetTop = firstMessage?.offsetTop || 0;
+      setIsLoadingOlder(true);
 
       const tableName = context === 'global' ? 'global_messages' : 'messages';
       
-      let query = supabase
+      // Use type assertion to avoid TypeScript recursion
+      let queryBuilder = supabase
         .from(tableName)
         .select('*')
         .eq('thread_id', threadId)
-        .lt('created_at', state.cursor.created_at)
+        .lt('created_at', cursor.created_at)
         .order('created_at', { ascending: false })
-        .order('id', { ascending: false })
-        .limit(finalConfig.pageSize);
+        .limit(pageSize) as any;
 
       if (context === 'tenant' && tenantId) {
-        query = query.eq('tenant_id', tenantId);
+        queryBuilder = queryBuilder.eq('tenant_id', tenantId);
       }
 
-      const { data: olderMessagesData, error } = await query;
-      if (error) throw error;
+      const result = await queryBuilder;
+      if (result.error) throw result.error;
 
-      if (!olderMessagesData || olderMessagesData.length === 0) {
-        setState(prev => ({ ...prev, hasOlder: false, isLoadingOlder: false }));
+      const olderMessagesData: any[] = result.data || [];
+
+      if (olderMessagesData.length === 0) {
+        setHasOlder(false);
+        setIsLoadingOlder(false);
         return;
       }
 
-      // Reverse to show oldest first
-      const reversedOlderMessages = olderMessagesData.reverse();
+      const reversedOlderMessages = [...olderMessagesData].reverse();
       
-      // Get sender profiles
-      const senderIds = reversedOlderMessages.map(m => m.sender_id);
-      const profileMap = await fetchSenderProfiles(senderIds, context);
+      if (olderMessagesData.length > 0) {
+        const lastMessage = olderMessagesData[olderMessagesData.length - 1];
+        setCursor({
+          created_at: lastMessage.created_at,
+          id: lastMessage.id
+        });
+      }
 
-      // Combine messages with sender data
-      const olderMessagesWithSenders = reversedOlderMessages.map(message => ({
-        ...message,
-        sender: profileMap[message.sender_id] || null
-      }));
-
-      // Update cursor to the oldest message
-      const newCursor = {
-        created_at: olderMessagesData[olderMessagesData.length - 1].created_at,
-        id: olderMessagesData[olderMessagesData.length - 1].id
-      };
-
-      setState(prev => ({
-        messages: [...olderMessagesWithSenders, ...prev.messages],
-        hasOlder: olderMessagesData.length === finalConfig.pageSize,
-        isLoadingOlder: false,
-        cursor: newCursor,
-      }));
-
-      // Restore scroll position to prevent viewport jump
-      requestAnimationFrame(() => {
-        if (scrollContainer) {
-          const newScrollHeight = scrollContainer.scrollHeight;
-          const heightDifference = newScrollHeight - oldScrollHeight;
-          scrollContainer.scrollTop = oldScrollTop + heightDifference;
-        }
-      });
+      setMessages(currentMessages => [...reversedOlderMessages, ...currentMessages]);
+      setHasOlder(olderMessagesData.length === pageSize);
+      setIsLoadingOlder(false);
 
     } catch (error) {
       console.error('Error loading older messages:', error);
-      setState(prev => ({ ...prev, isLoadingOlder: false }));
+      setIsLoadingOlder(false);
     }
-  }, [state.hasOlder, state.isLoadingOlder, state.cursor, finalConfig.pageSize, fetchSenderProfiles]);
+  }, [hasOlder, isLoadingOlder, cursor, pageSize]);
 
   const addNewMessage = useCallback((message: MessageData) => {
-    setState(prev => ({
-      ...prev,
-      messages: [...prev.messages, message]
-    }));
+    setMessages(currentMessages => [...currentMessages, message]);
   }, []);
 
-  const updateMessage = useCallback((messageId: string, updates: Partial<MessageData>) => {
-    setState(prev => ({
-      ...prev,
-      messages: prev.messages.map(msg => 
-        msg.id === messageId ? { ...msg, ...updates } : msg
-      )
-    }));
-  }, []);
-
-  const removeMessage = useCallback((messageId: string) => {
-    setState(prev => ({
-      ...prev,
-      messages: prev.messages.filter(msg => msg.id !== messageId)
-    }));
-  }, []);
-
-  const shouldUsePagination = state.messages.length > finalConfig.paginationThreshold;
-  const shouldUseVirtualization = state.messages.length > finalConfig.virtualizationThreshold;
+  const shouldUsePagination = messages.length > paginationThreshold;
+  const shouldUseVirtualization = messages.length > virtualizationThreshold;
 
   return {
-    messages: state.messages,
-    hasOlder: state.hasOlder,
-    isLoadingOlder: state.isLoadingOlder,
-    cursor: state.cursor,
+    messages,
+    hasOlder,
+    isLoadingOlder,
     fetchInitialMessages,
     loadOlderMessages,
     addNewMessage,
-    updateMessage,
-    removeMessage,
     shouldUsePagination,
     shouldUseVirtualization,
     firstMessageRef,
     scrollContainerRef,
-    config: finalConfig,
-  } as const;
+  };
 }
