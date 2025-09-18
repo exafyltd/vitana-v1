@@ -46,6 +46,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     fetchMessages, 
     markAsRead, 
     isSending,
+    typingUsers,
+    startTyping,
+    stopTyping,
     context: messageContext
   } = useHybridMessages(context, threadId || recipientId);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -343,9 +346,16 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </ScrollArea>
       </CardContent>
 
+      {/* Typing Indicators */}
+      {typingUsers.length > 0 && (
+        <TypingIndicator users={typingUsers} className="border-t" />
+      )}
+
       {/* Message Input */}
       <MessageInput
         onSendMessage={handleSendMessage}
+        onTypingStart={startTyping}
+        onTypingStop={stopTyping}
         disabled={isSending}
         placeholder={`Message ${getConversationTitle()}...`}
       />

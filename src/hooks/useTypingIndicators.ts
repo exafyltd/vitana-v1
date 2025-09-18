@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
+import { g1Analytics } from '@/lib/analytics-events';
 
 interface TypingUser {
   id: string;
@@ -11,14 +12,44 @@ interface TypingUser {
 export function useTypingIndicators(threadId?: string, context: 'global' | 'tenant' = 'global') {
   const { user } = useAuth();
   const [typingUsers, setTypingUsers] = useState<TypingUser[]>([]);
+  const [userCache] = useState<Map<string, TypingUser>>(new Map());
 
   const startTyping = useCallback(async () => {
     if (!user || !threadId) return;
     
     try {
-      const channelName = context === 'global' 
-        ? `global_typing_${threadId}` 
-        : `tenant_typing_${threadId}`;
+      // Use new channel format: typing:{threadId}
+      const channelName = `typing:${threadId}`;
+      
+      // Get user profile info to include in payload
+      let userName = 'Unknown User';
+      let userAvatar: string | undefined;
+
+      if (context === 'global') {
+        const { data: globalProfile } = await supabase
+          .from('global_community_profiles')
+          .select('display_name, avatar_url')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        const { data: mainProfile } = await supabase
+          .from('profiles')
+          .select('display_name, full_name, avatar_url')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        userName = globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User';
+        userAvatar = globalProfile?.avatar_url || mainProfile?.avatar_url || undefined;
+      } else {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('display_name, full_name, avatar_url')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        userName = profile?.display_name || profile?.full_name || 'Unknown User';
+        userAvatar = profile?.avatar_url || undefined;
+      }
       
       const channel = supabase.channel(channelName);
       await channel.send({
@@ -27,9 +58,14 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
         payload: {
           user_id: user.id,
           thread_id: threadId,
+          name: userName,
+          avatar: userAvatar,
           timestamp: Date.now()
         }
       });
+
+      // Track analytics
+      g1Analytics.autopilotActionExecuted('typing_start');
     } catch (error) {
       console.error('Error starting typing:', error);
     }
@@ -39,9 +75,7 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
     if (!user || !threadId) return;
     
     try {
-      const channelName = context === 'global' 
-        ? `global_typing_${threadId}` 
-        : `tenant_typing_${threadId}`;
+      const channelName = `typing:${threadId}`;
       
       const channel = supabase.channel(channelName);
       await channel.send({
@@ -53,6 +87,9 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
           timestamp: Date.now()
         }
       });
+
+      // Track analytics
+      g1Analytics.autopilotActionExecuted('typing_stop');
     } catch (error) {
       console.error('Error stopping typing:', error);
     }
@@ -62,63 +99,37 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
   useEffect(() => {
     if (!user || !threadId) return;
 
-    const channelName = context === 'global' 
-      ? `global_typing_${threadId}` 
-      : `tenant_typing_${threadId}`;
+    const channelName = `typing:${threadId}`;
 
     const typingChannel = supabase
       .channel(channelName)
-      .on('broadcast', { event: 'typing_start' }, async (payload) => {
-        const { user_id, timestamp } = payload.payload;
+      .on('broadcast', { event: 'typing_start' }, (payload) => {
+        const { user_id, name, avatar } = payload.payload;
         
         // Don't show typing indicator for ourselves
         if (user_id === user.id) return;
 
-        // Fetch user profile
-        let userName = 'Unknown User';
-        let userAvatar: string | undefined;
+        // Use data from payload (no DB query needed)
+        const typingUser: TypingUser = {
+          id: user_id,
+          name: name || 'Unknown User',
+          avatar: avatar
+        };
 
-        if (context === 'global') {
-          const { data: globalProfile } = await supabase
-            .from('global_community_profiles')
-            .select('display_name, avatar_url')
-            .eq('user_id', user_id)
-            .maybeSingle();
-          
-          const { data: mainProfile } = await supabase
-            .from('profiles')
-            .select('display_name, full_name, avatar_url')
-            .eq('user_id', user_id)
-            .maybeSingle();
-
-          userName = globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User';
-          userAvatar = globalProfile?.avatar_url || mainProfile?.avatar_url || undefined;
-        } else {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('display_name, full_name, avatar_url')
-            .eq('user_id', user_id)
-            .maybeSingle();
-
-          userName = profile?.display_name || profile?.full_name || 'Unknown User';
-          userAvatar = profile?.avatar_url || undefined;
-        }
+        // Cache the user data
+        userCache.set(user_id, typingUser);
 
         setTypingUsers(prev => {
           const exists = prev.find(u => u.id === user_id);
           if (exists) return prev;
           
-          return [...prev, {
-            id: user_id,
-            name: userName,
-            avatar: userAvatar
-          }];
+          return [...prev, typingUser];
         });
 
-        // Auto-remove after 5 seconds if no stop event
+        // Auto-remove after 1.5 seconds if no stop event (WhatsApp style)
         setTimeout(() => {
           setTypingUsers(prev => prev.filter(u => u.id !== user_id));
-        }, 5000);
+        }, 1500);
       })
       .on('broadcast', { event: 'typing_stop' }, (payload) => {
         const { user_id } = payload.payload;
@@ -129,7 +140,7 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
     return () => {
       supabase.removeChannel(typingChannel);
     };
-  }, [user, threadId, context]);
+  }, [user, threadId, context, userCache]);
 
   return {
     typingUsers,

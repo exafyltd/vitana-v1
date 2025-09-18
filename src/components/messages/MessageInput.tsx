@@ -45,6 +45,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout>();
+  const debounceTimeoutRef = useRef<NodeJS.Timeout>();
   const { toast } = useToast();
 
   // Auto-resize textarea
@@ -56,7 +57,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
   }, [message]);
 
-  // Typing indicator logic
+  // WhatsApp-style typing indicator logic
   const handleTypingStart = () => {
     if (!isComposing && onTypingStart) {
       setIsComposing(true);
@@ -68,23 +69,31 @@ const MessageInput: React.FC<MessageInputProps> = ({
       clearTimeout(typingTimeoutRef.current);
     }
     
-    // Set timeout to stop typing after 3 seconds of inactivity
+    // Set timeout to stop typing after 1.5 seconds of inactivity (WhatsApp style)
     typingTimeoutRef.current = setTimeout(() => {
       if (onTypingStop) {
         onTypingStop();
       }
       setIsComposing(false);
-    }, 3000);
+    }, 1500);
   };
 
   const handleTypingStop = () => {
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
     if (isComposing && onTypingStop) {
       onTypingStop();
     }
     setIsComposing(false);
+  };
+
+  const handleBlur = () => {
+    // Stop typing immediately on blur (WhatsApp style)
+    handleTypingStop();
   };
 
   const handleSend = async () => {
@@ -133,8 +142,17 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
+    
+    // Clear existing debounce timeout
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+    
     if (e.target.value.trim()) {
-      handleTypingStart();
+      // Debounce typing start by 250ms (WhatsApp style)
+      debounceTimeoutRef.current = setTimeout(() => {
+        handleTypingStart();
+      }, 250);
     } else {
       handleTypingStop();
     }
@@ -381,6 +399,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
             value={message}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
+            onBlur={handleBlur}
             placeholder={placeholder}
             disabled={disabled}
             className="min-h-[40px] max-h-[120px] pr-12 resize-none"

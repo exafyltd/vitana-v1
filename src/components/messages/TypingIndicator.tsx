@@ -14,11 +14,16 @@ interface TypingIndicatorProps {
 const TypingIndicator: React.FC<TypingIndicatorProps> = ({ users, className }) => {
   if (users.length === 0) return null;
 
-  const displayName = users.length === 1 
-    ? users[0].name 
-    : users.length === 2 
-      ? `${users[0].name} and ${users[1].name}`
-      : `${users[0].name} and ${users.length - 1} others`;
+  // WhatsApp-style text patterns
+  const getDisplayText = () => {
+    if (users.length === 1) {
+      return `${users[0].name} is typing…`;
+    } else if (users.length === 2) {
+      return `${users[0].name} and ${users[1].name} are typing…`;
+    } else {
+      return 'Several people are typing…';
+    }
+  };
 
   return (
     <div className={cn("flex items-center gap-3 px-4 py-2", className)}>
@@ -34,7 +39,7 @@ const TypingIndicator: React.FC<TypingIndicatorProps> = ({ users, className }) =
       </div>
       
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span>{displayName} {users.length === 1 ? 'is' : 'are'} typing</span>
+        <span>{getDisplayText()}</span>
         <div className="flex gap-1">
           {[0, 1, 2].map((i) => (
             <div
