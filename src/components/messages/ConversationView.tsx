@@ -8,7 +8,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
 import TypingIndicator from './TypingIndicator';
+import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
+import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -19,7 +21,8 @@ import {
   Video, 
   Info,
   Users,
-  Settings
+  Settings,
+  Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -40,10 +43,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 }) => {
   const { user } = useAuth();
   const { 
-    messages,
     threads,
     sendMessage, 
-    fetchMessages, 
     markAsRead, 
     isSending,
     typingUsers,
@@ -51,6 +52,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     stopTyping,
     context: messageContext
   } = useHybridMessages(context, threadId || recipientId);
+
+  // Use paginated messages for performance
+  const paginatedMessages = usePaginatedMessages({
+    pageSize: 50,
+    paginationThreshold: 50,
+    virtualizationThreshold: 200,
+  });
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
@@ -60,6 +69,38 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isWindowFocused, setIsWindowFocused] = useState(true);
   const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
+
+  // Use paginated messages instead of hybrid messages for long threads
+  const messages = paginatedMessages.shouldUsePagination 
+    ? paginatedMessages.messages 
+    : [];  // Will be set from hybrid messages for short threads
+
+  const [hybridMessages, setHybridMessages] = useState<any[]>([]);
+
+  // Fetch messages on thread/recipient change
+  useEffect(() => {
+    if (threadId && paginatedMessages.shouldUsePagination) {
+      paginatedMessages.fetchInitialMessages(
+        threadId, 
+        messageContext, 
+        messageContext === 'tenant' ? undefined : undefined // Add tenant ID if needed
+      );
+    } else if (threadId) {
+      // For short threads, use hybrid messages
+      // fetchMessages will be called by useHybridMessages
+    }
+  }, [threadId, messageContext, paginatedMessages]);
+
+  // Handle scroll to top for loading older messages
+  const handleScrollToTop = useCallback(() => {
+    if (threadId && paginatedMessages.hasOlder && !paginatedMessages.isLoadingOlder) {
+      paginatedMessages.loadOlderMessages(
+        threadId,
+        messageContext,
+        messageContext === 'tenant' ? undefined : undefined // Add tenant ID if needed
+      );
+    }
+  }, [threadId, messageContext, paginatedMessages]);
 
   // Fetch recipient data when recipientId changes
   useEffect(() => {
@@ -88,16 +129,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   useEffect(() => {
     if (threadId) {
-      fetchMessages(threadId);
       // Check if thread data has participants loaded
       const currentThread = threads.find(thread => thread.id === threadId);
       if (currentThread && currentThread.participants && currentThread.participants.length > 0) {
         setIsThreadDataLoaded(true);
       }
-    } else if (recipientId) {
-      fetchMessages(undefined, recipientId);
     }
-  }, [threadId, recipientId, fetchMessages, threads]);
+  }, [threadId, threads]);
 
   useEffect(() => {
     // Scroll to bottom when new messages arrive
@@ -168,13 +206,25 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     actionButtons?: any[]
   ) => {
     try {
+      let newMessage;
       if (messageContext === 'global' && threadId) {
-        await sendMessage(threadId, content, messageType, contentData);
+        newMessage = await sendMessage(threadId, content, messageType, contentData);
       } else if (messageContext === 'tenant') {
-        await sendMessage(content, threadId, recipientId, messageType, contentData);
+        newMessage = await sendMessage(content, threadId, recipientId, messageType, contentData);
       }
       
-      // Don't refetch messages - optimistic updates handle this automatically
+      // Add to paginated messages if using pagination
+      if (paginatedMessages.shouldUsePagination && newMessage) {
+        paginatedMessages.addNewMessage({
+          ...newMessage,
+          sender: { 
+            user_id: user?.id || '',
+            display_name: user?.email || 'You',
+            avatar_url: null 
+          }
+        });
+      }
+      
     } catch (error) {
       console.error('Error sending message:', error);
       toast({
@@ -366,39 +416,130 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
       {/* Messages */}
       <CardContent className="flex-1 p-0 overflow-hidden">
-        <ScrollArea className="h-full" data-conversation-container>
-          <div className="p-4 space-y-4">
-            {messages.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">No messages yet</p>
-                <p className="text-sm text-muted-foreground">Start the conversation!</p>
+        {paginatedMessages.shouldUsePagination ? (
+          <div className="h-full relative">
+            {paginatedMessages.isLoadingOlder && (
+              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
+                <div className="bg-background/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                  Loading older messages...
+                </div>
               </div>
-            ) : (
-              messages.map((message, index) => {
-                const isOwnMessage = message.sender_id === user?.id;
-                const showAvatar = !isOwnMessage && (
-                  index === 0 || 
-                  messages[index - 1]?.sender_id !== message.sender_id
-                );
-                const showTimestamp = index === messages.length - 1 || 
-                  new Date(messages[index + 1]?.created_at).getTime() - 
-                  new Date(message.created_at).getTime() > 5 * 60 * 1000;
-
-                return (
-                  <MessageBubble
-                    key={message.id}
-                    message={message}
-                    isOwnMessage={isOwnMessage}
-                    onActionClick={handleActionClick}
-                    showAvatar={showAvatar}
-                    showTimestamp={showTimestamp}
-                  />
-                );
-              })
             )}
-            <div ref={messagesEndRef} />
+            
+            {paginatedMessages.shouldUseVirtualization ? (
+              <VirtualizedList
+                items={messages}
+                itemHeight={80}
+                height={400} // Fixed height for virtualization
+                className="p-4"
+                onScrollToTop={handleScrollToTop}
+                renderItem={(message, index) => {
+                  const isOwnMessage = message.sender_id === user?.id;
+                  const showAvatar = !isOwnMessage && (
+                    index === 0 || 
+                    messages[index - 1]?.sender_id !== message.sender_id
+                  );
+                  const showTimestamp = index === messages.length - 1 || 
+                    new Date(messages[index + 1]?.created_at).getTime() - 
+                    new Date(message.created_at).getTime() > 5 * 60 * 1000;
+
+                  return (
+                    <div
+                      ref={index === 0 ? paginatedMessages.firstMessageRef : undefined}  
+                      className="mb-4"
+                    >
+                      <MessageBubble
+                        key={message.id}
+                        message={message}
+                        isOwnMessage={isOwnMessage}
+                        onActionClick={handleActionClick}
+                        showAvatar={showAvatar}
+                        showTimestamp={showTimestamp}
+                      />
+                    </div>
+                  );
+                }}
+              />
+            ) : (
+              <ScrollArea 
+                className="h-full" 
+                data-conversation-container
+                ref={paginatedMessages.scrollContainerRef}
+              >
+                <div className="p-4 space-y-4">
+                  {messages.length === 0 ? (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground">No messages yet</p>
+                      <p className="text-sm text-muted-foreground">Start the conversation!</p>
+                    </div>
+                  ) : (
+                    messages.map((message, index) => {
+                      const isOwnMessage = message.sender_id === user?.id;
+                      const showAvatar = !isOwnMessage && (
+                        index === 0 || 
+                        messages[index - 1]?.sender_id !== message.sender_id
+                      );
+                      const showTimestamp = index === messages.length - 1 || 
+                        new Date(messages[index + 1]?.created_at).getTime() - 
+                        new Date(message.created_at).getTime() > 5 * 60 * 1000;
+
+                      return (
+                        <div
+                          key={message.id}
+                          ref={index === 0 ? paginatedMessages.firstMessageRef : undefined}
+                        >
+                          <MessageBubble
+                            message={message}
+                            isOwnMessage={isOwnMessage}
+                            onActionClick={handleActionClick}
+                            showAvatar={showAvatar}
+                            showTimestamp={showTimestamp}
+                          />
+                        </div>
+                      );
+                    })
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
+              </ScrollArea>
+            )}
           </div>
-        </ScrollArea>
+        ) : (
+          <ScrollArea className="h-full" data-conversation-container>
+            <div className="p-4 space-y-4">
+              {hybridMessages.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No messages yet</p>
+                  <p className="text-sm text-muted-foreground">Start the conversation!</p>
+                </div>
+              ) : (
+                hybridMessages.map((message, index) => {
+                  const isOwnMessage = message.sender_id === user?.id;
+                  const showAvatar = !isOwnMessage && (
+                    index === 0 || 
+                    hybridMessages[index - 1]?.sender_id !== message.sender_id
+                  );
+                  const showTimestamp = index === hybridMessages.length - 1 || 
+                    new Date(hybridMessages[index + 1]?.created_at).getTime() - 
+                    new Date(message.created_at).getTime() > 5 * 60 * 1000;
+
+                  return (
+                    <MessageBubble
+                      key={message.id}
+                      message={message}
+                      isOwnMessage={isOwnMessage}
+                      onActionClick={handleActionClick}
+                      showAvatar={showAvatar}
+                      showTimestamp={showTimestamp}
+                    />
+                  );
+                })
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          </ScrollArea>
+        )}
       </CardContent>
 
       {/* Typing Indicators */}
