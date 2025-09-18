@@ -7,6 +7,7 @@ import { Plus } from "lucide-react";
 import { SplitBar, SplitBarContent } from "@/components/ui/split-bar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
+import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useRole } from "@/hooks/useRole";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
@@ -235,11 +236,13 @@ export default function Messages() {
         
         <div className="flex-1">
           {selectedThreadId || selectedRecipientId ? (
-            <ConversationView 
-              threadId={selectedThreadId}
-              recipientId={selectedRecipientId}
-              context={messageContext}
-            />
+            <ConversationErrorBoundary>
+              <ConversationView 
+                threadId={selectedThreadId}
+                recipientId={selectedRecipientId}
+                context={messageContext}
+              />
+            </ConversationErrorBoundary>
           ) : (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">

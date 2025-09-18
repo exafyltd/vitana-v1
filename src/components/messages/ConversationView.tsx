@@ -48,8 +48,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   context
 }) => {
   const { user } = useAuth();
-  const { 
+  
+  // Use paginated messages for performance
+  const paginatedMessages = usePaginatedMessages({
+    pageSize: 50,
+    paginationThreshold: 50,
+    virtualizationThreshold: 200,
+  });
+
+  const {
     threads,
+    messages: hybridMessagesFromHook,
     sendMessage, 
     markAsRead, 
     isSending,
@@ -59,11 +68,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     context: messageContext
   } = useHybridMessages(context, threadId || recipientId);
 
-  // Use paginated messages for performance
-  const paginatedMessages = usePaginatedMessages({
-    pageSize: 50,
-    paginationThreshold: 50,
-    virtualizationThreshold: 200,
+  // Debug logging
+  console.log('ConversationView render:', {
+    threadId,
+    recipientId,
+    context,
+    messageContext,
+    threadsLength: threads.length,
+    hybridMessagesLength: hybridMessagesFromHook?.length || 0,
+    shouldUsePagination: paginatedMessages.shouldUsePagination
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -81,26 +94,32 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
 
-  // Use paginated messages instead of hybrid messages for long threads
-  const messages = paginatedMessages.shouldUsePagination 
-    ? paginatedMessages.messages 
-    : [];  // Will be set from hybrid messages for short threads
-
-  const [hybridMessages, setHybridMessages] = useState<any[]>([]);
-
-  // Fetch messages on thread/recipient change
+  // Sync hybrid messages from hook - this is the main message source
   useEffect(() => {
-    if (threadId && paginatedMessages.shouldUsePagination) {
-      paginatedMessages.fetchInitialMessages(
-        threadId, 
-        messageContext, 
-        messageContext === 'tenant' ? undefined : undefined // Add tenant ID if needed
-      );
-    } else if (threadId) {
-      // For short threads, use hybrid messages
-      // fetchMessages will be called by useHybridMessages
+    console.log('ConversationView: Syncing hybrid messages', {
+      hybridMessagesLength: hybridMessagesFromHook?.length || 0,
+      shouldUsePagination: paginatedMessages.shouldUsePagination
+    });
+    
+    if (hybridMessagesFromHook) {
+      setHybridMessages(hybridMessagesFromHook);
     }
-  }, [threadId, messageContext, paginatedMessages]);
+  }, [hybridMessagesFromHook, paginatedMessages.shouldUsePagination]);
+
+  // State for different message sources
+  const [hybridMessages, setHybridMessages] = useState<any[]>([]);
+  
+  // For now, always use hybrid messages for simplicity  
+  const messages = hybridMessages;
+
+  // Fetch messages when thread/recipient changes
+  useEffect(() => {
+    console.log('ConversationView: Thread/recipient effect', { 
+      threadId, 
+      recipientId,
+      messageContext
+    });
+  }, [threadId, recipientId, messageContext]);
 
   // Handle scroll to top for loading older messages
   const handleScrollToTop = useCallback(() => {
@@ -498,8 +517,23 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return currentThread?.type === 'group';
   };
 
-  // Loading state for when conversation is being loaded
-  if ((!threadId && !recipientId) || (threadId && !isThreadDataLoaded && messages.length === 0)) {
+  // Better loading state logic
+  const isLoadingConversation = (!threadId && !recipientId) || 
+    (threadId && threads.length === 0) ||
+    (threadId && messages.length === 0 && optimisticMessages.length === 0 && !loadError);
+
+  console.log('ConversationView: Checking loading state', {
+    threadId,
+    recipientId,
+    threadsLength: threads.length,
+    messagesLength: messages.length,
+    optimisticMessagesLength: optimisticMessages.length,
+    isLoadingConversation,
+    loadError
+  });
+
+  // Loading state for when conversation is being loaded  
+  if (isLoadingConversation) {
     return (
       <Card className={cn("flex flex-col h-full", className)}>
         <CardHeader className="flex-shrink-0 border-b">
@@ -581,25 +615,16 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
       {/* Messages */}
       <CardContent className="flex-1 p-0 overflow-hidden">
-        {paginatedMessages.shouldUsePagination ? (
-          <div className="h-full relative">
-            {paginatedMessages.isLoadingOlder && (
-              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
-                <div className="bg-background/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-2 text-sm text-muted-foreground">
-                  <Loader2 className="w-3 h-3 animate-spin" />
-                  Loading older messages...
-                </div>
+        <ScrollArea className="h-full" data-conversation-container>
+          <div className="p-4 space-y-4">
+            {messages.length === 0 && optimisticMessages.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No messages yet</p>
+                <p className="text-sm text-muted-foreground">Start the conversation!</p>
               </div>
-            )}
-            
-            {paginatedMessages.shouldUseVirtualization ? (
-              <VirtualizedList
-                items={messages}
-                itemHeight={80}
-                height={400} // Fixed height for virtualization
-                className="p-4"
-                onScrollToTop={handleScrollToTop}
-                renderItem={(message, index) => {
+            ) : (
+              <>
+                {messages.map((message, index) => {
                   const isOwnMessage = message.sender_id === user?.id;
                   const showAvatar = !isOwnMessage && (
                     index === 0 || 
@@ -610,140 +635,52 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                     new Date(message.created_at).getTime() > 5 * 60 * 1000;
 
                   return (
-                    <div
-                      ref={index === 0 ? paginatedMessages.firstMessageRef : undefined}  
-                      className="mb-4"
-                    >
-                      <MessageBubble
-                        key={message.id}
-                        message={message}
-                        isOwnMessage={isOwnMessage}
-                        onActionClick={handleActionClick}
-                        showAvatar={showAvatar}
-                        showTimestamp={showTimestamp}
-                      />
-                    </div>
+                    <MessageBubble
+                      key={message.id}
+                      message={message}
+                      isOwnMessage={isOwnMessage}
+                      onActionClick={handleActionClick}
+                      showAvatar={showAvatar}
+                      showTimestamp={showTimestamp}
+                    />
                   );
-                }}
-              />
-            ) : (
-              <ScrollArea 
-                className="h-full" 
-                data-conversation-container
-                ref={paginatedMessages.scrollContainerRef}
-              >
-                  <div className="p-4 space-y-4">
-                    {loadError ? (
-                      <div className="flex justify-center py-8">
-                        <ErrorMessage 
-                          title="Failed to load messages"
-                          description="Check your connection and try again"
-                          onRetry={retryLoadMessages}
-                          variant="inline"
-                        />
+                })}
+                
+                {/* Render optimistic messages */}
+                {optimisticMessages.map((optMessage) => (
+                  <div key={optMessage.id} className="flex justify-end">
+                    <div className={cn(
+                      "max-w-[70%] rounded-lg px-3 py-2 text-sm",
+                      optMessage.status === 'sending' 
+                        ? "bg-primary/70 text-primary-foreground" 
+                        : "bg-destructive/70 text-destructive-foreground"
+                    )}>
+                      <div className="flex items-center gap-2">
+                        <span>{optMessage.content}</span>
+                        {optMessage.status === 'sending' ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 w-12 p-0 text-xs"
+                            onClick={() => retryFailedMessage(optMessage.id)}
+                          >
+                            Retry
+                          </Button>
+                        )}
                       </div>
-                    ) : messages.length === 0 ? (
-                      <EmptyStateIllustration type="conversation" />
-                    ) : (
-                    messages.map((message, index) => {
-                      const isOwnMessage = message.sender_id === user?.id;
-                      const showAvatar = !isOwnMessage && (
-                        index === 0 || 
-                        messages[index - 1]?.sender_id !== message.sender_id
-                      );
-                      const showTimestamp = index === messages.length - 1 || 
-                        new Date(messages[index + 1]?.created_at).getTime() - 
-                        new Date(message.created_at).getTime() > 5 * 60 * 1000;
-
-                      return (
-                        <div
-                          key={message.id}
-                          ref={index === 0 ? paginatedMessages.firstMessageRef : undefined}
-                        >
-                          <MessageBubble
-                            message={message}
-                            isOwnMessage={isOwnMessage}
-                            onActionClick={handleActionClick}
-                            showAvatar={showAvatar}
-                            showTimestamp={showTimestamp}
-                          />
-                        </div>
-                      );
-                    })
-                  )}
-                  <div ref={messagesEndRef} />
-                </div>
-              </ScrollArea>
-            )}
-          </div>
-        ) : (
-          <ScrollArea className="h-full" data-conversation-container>
-            <div className="p-4 space-y-4">
-              {hybridMessages.length === 0 && optimisticMessages.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">No messages yet</p>
-                  <p className="text-sm text-muted-foreground">Start the conversation!</p>
-                </div>
-              ) : (
-                <>
-                  {hybridMessages.map((message, index) => {
-                    const isOwnMessage = message.sender_id === user?.id;
-                    const showAvatar = !isOwnMessage && (
-                      index === 0 || 
-                      hybridMessages[index - 1]?.sender_id !== message.sender_id
-                    );
-                    const showTimestamp = index === hybridMessages.length - 1 || 
-                      new Date(hybridMessages[index + 1]?.created_at).getTime() - 
-                      new Date(message.created_at).getTime() > 5 * 60 * 1000;
-
-                    return (
-                      <MessageBubble
-                        key={message.id}
-                        message={message}
-                        isOwnMessage={isOwnMessage}
-                        onActionClick={handleActionClick}
-                        showAvatar={showAvatar}
-                        showTimestamp={showTimestamp}
-                      />
-                    );
-                  })}
-                  
-                  {/* Render optimistic messages */}
-                  {optimisticMessages.map((optMessage) => (
-                    <div key={optMessage.id} className="flex justify-end">
-                      <div className={cn(
-                        "max-w-[70%] rounded-lg px-3 py-2 text-sm",
-                        optMessage.status === 'sending' 
-                          ? "bg-primary/70 text-primary-foreground" 
-                          : "bg-destructive/70 text-destructive-foreground"
-                      )}>
-                        <div className="flex items-center gap-2">
-                          <span>{optMessage.content}</span>
-                          {optMessage.status === 'sending' ? (
-                            <Loader2 className="w-3 h-3 animate-spin" />
-                          ) : (
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-6 w-12 p-0 text-xs"
-                              onClick={() => retryFailedMessage(optMessage.id)}
-                            >
-                              Retry
-                            </Button>
-                          )}
-                        </div>
-                        <div className="text-xs opacity-70 mt-1">
-                          {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
-                        </div>
+                      <div className="text-xs opacity-70 mt-1">
+                        {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
                       </div>
                     </div>
-                  ))}
-                </>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-          </ScrollArea>
-        )}
+                  </div>
+                ))}
+              </>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+        </ScrollArea>
       </CardContent>
 
       {/* Typing Indicators */}
@@ -764,13 +701,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             />
           </div>
         )}
-        <MessageInput
-          onSendMessage={handleSendMessage}
-          onTypingStart={startTyping}
-          onTypingStop={stopTyping}
-          disabled={isSending}
-          placeholder={`Message ${getConversationTitle()}...`}
-        />
+         <MessageInput
+           onSendMessage={handleSendMessage}
+           onTypingStart={startTyping}
+           onTypingStop={stopTyping}
+           disabled={isSending}
+           placeholder={`Message ${getConversationTitle()}...`}
+           threadId={threadId}
+           activeThread={threadId ? threads.find(t => t.id === threadId) : undefined}
+         />
       </div>
     </Card>
 
