@@ -152,8 +152,7 @@ class PushNotificationManager {
           badge: payload.badge || '/badge-72.png',
           tag: payload.tag,
           data: payload.data,
-          requireInteraction: true,
-          vibrate: [200, 100, 200]
+          requireInteraction: true
         });
       } else {
         // Fallback to basic notification
