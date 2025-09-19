@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Copy, Key, Send, AlertTriangle } from "lucide-react";
+import { Copy, Key, Send, AlertTriangle, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { isDiagnosticsEnabled } from "@/lib/diagnostics";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,16 +22,23 @@ export default function VapidKeyGenerator() {
   const [isTesting, setIsTesting] = useState(false);
   const { toast } = useToast();
 
-  // Gate the page behind diagnostics flag
-  if (!isDiagnosticsEnabled()) {
+  // Gate the page behind VITE_DIAGNOSTICS_ENABLED and ?diagnostics=1
+  const urlParams = new URLSearchParams(window.location.search);
+  const hasDebugParam = urlParams.get('diagnostics') === '1';
+  const isViteEnabled = import.meta.env.VITE_DIAGNOSTICS_ENABLED === 'true';
+  
+  if (!isViteEnabled || !hasDebugParam) {
     return (
-      <div className="p-6">
-        <Alert>
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            This tool is only available in development mode or when diagnostics are enabled.
-          </AlertDescription>
-        </Alert>
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="w-96">
+          <CardContent className="p-6 text-center">
+            <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h2 className="text-lg font-semibold mb-2">404 - Not Found</h2>
+            <p className="text-sm text-muted-foreground">
+              The page you're looking for doesn't exist.
+            </p>
+          </CardContent>
+        </Card>
       </div>
     );
   }

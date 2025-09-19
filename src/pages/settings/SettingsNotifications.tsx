@@ -22,7 +22,8 @@ const settingsSubItems = [
 
 export default function SettingsNotifications() {
   const navigate = useNavigate();
-  const showDiagnostics = shouldShowDiagnosticsPanel();
+  const urlParams = new URLSearchParams(window.location.search);
+  const showDiagnostics = urlParams.get('diagnostics') === '1';
   
   return (
     <AppLayout>
@@ -231,7 +232,7 @@ export default function SettingsNotifications() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => navigate('/admin/tools/vapid')}
+                  onClick={() => navigate('/admin/tools/vapid?diagnostics=1')}
                 >
                   Open Generator
                 </Button>

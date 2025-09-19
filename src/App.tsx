@@ -838,9 +838,7 @@ const App = () => (
           } />
           <Route path="/admin/tools/vapid" element={
             <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <VapidKeyGenerator />
-              </ProtectedRoute>
+              <VapidKeyGenerator />
             </AuthGuard>
           } />
           
