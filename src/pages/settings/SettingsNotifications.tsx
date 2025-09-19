@@ -5,7 +5,10 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bell, Mail, Smartphone, MessageSquare, Calendar, Brain, Users, Moon } from "lucide-react";
+import { Bell, Mail, Smartphone, MessageSquare, Calendar, Brain, Users, Moon, Key } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { shouldShowDiagnosticsPanel } from "@/lib/diagnostics";
 
 const settingsSubItems = [
   { id: "overview", name: "Overview", path: "/settings" },
@@ -18,6 +21,9 @@ const settingsSubItems = [
 ];
 
 export default function SettingsNotifications() {
+  const navigate = useNavigate();
+  const showDiagnostics = shouldShowDiagnosticsPanel();
+  
   return (
     <AppLayout>
       <SEO title="Notifications | Settings" description="Configure your notification preferences" canonical={window.location.href} />
@@ -206,6 +212,33 @@ export default function SettingsNotifications() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Development Tools */}
+        {showDiagnostics && (
+          <Card className="border-dashed">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-orange-600">
+                <Key className="w-5 h-5" />
+                Development Tools
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium">VAPID Key Generator</h4>
+                  <p className="text-sm text-muted-foreground">Generate Web Push notification keys (Dev only)</p>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate('/admin/tools/vapid')}
+                >
+                  Open Generator
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </AppLayout>
   );

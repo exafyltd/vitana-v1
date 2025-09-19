@@ -167,9 +167,12 @@ export default function VapidKeyGenerator() {
           <Key className="w-8 h-8" />
           VAPID Key Generator
         </h1>
-        <p className="text-muted-foreground">
-          Generate VAPID keys for Web Push notifications (Development Only)
-        </p>
+          <p className="text-muted-foreground">
+            Generate VAPID keys for Web Push notifications (Development Only)
+          </p>
+          <p className="text-xs text-muted-foreground bg-blue-50 dark:bg-blue-950 p-2 rounded">
+            <strong>Next step:</strong> paste these into Lovable Secrets as VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT.
+          </p>
       </div>
 
       <Alert>
