@@ -7,7 +7,13 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { messagesNavigation } from "@/config/navigation";
 import { Button } from "@/components/ui/button";
-import { Plus, Users } from "lucide-react";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Plus, Users, MessageSquareText } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
@@ -139,7 +145,9 @@ export default function Messages() {
               <EmptyStateIllustration 
                 type="inbox"
                 context={messageContext}
+                threads={localThreads}
                 onAction={() => setShowNewConversation(true)}
+                onCreateGroup={() => setShowCreateGroup(true)}
               />
             ) : (
               // De-duplicate direct threads by counterpart, keep most recent
@@ -267,19 +275,24 @@ export default function Messages() {
                 placeholder="Search conversations, people, or groups…"
                 onSearch={(query) => console.log('Search:', query)}
               />
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowCreateGroup(true)}
-                className="flex items-center gap-2"
-              >
-                <Users className="w-4 h-4" />
-                New Group
-              </Button>
-              <Button size="sm" onClick={() => setShowNewConversation(true)}>
-                <Plus className="w-4 h-4 mr-2" />
-                New Message
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size="sm">
+                    <Plus className="w-4 h-4 mr-2" />
+                    New
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setShowNewConversation(true)}>
+                    <MessageSquareText className="w-4 h-4 mr-2" />
+                    New Message
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setShowCreateGroup(true)}>
+                    <Users className="w-4 h-4 mr-2" />
+                    Create Group
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </UtilityActionButton>
 
             {/* Split Navigation */}
@@ -311,6 +324,7 @@ export default function Messages() {
         open={showNewConversation}
         onOpenChange={setShowNewConversation}
         onConversationCreated={handleConversationCreated}
+        onGroupCreated={handleGroupCreated}
         context={messageContext}
       />
       
