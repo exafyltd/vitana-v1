@@ -293,6 +293,7 @@ export function useTenantMessages() {
           body,
           message_type: messageType,
           content_data: contentData,
+          sent_at: new Date().toISOString(),
         })
         .select()
         .single();
