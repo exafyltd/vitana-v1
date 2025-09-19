@@ -60,13 +60,37 @@ export default function Messages() {
 
   // Handle real-time unread sync across tabs/devices
   const handleThreadRead = useCallback((threadId: string, context: 'global' | 'tenant') => {
+    console.log('📖 Messages.tsx: handleThreadRead called', { threadId, context, messageContext });
     if (context === messageContext) {
-      setLocalThreads(prev => prev.map(thread => 
+      setLocalThreads(prev => {
+        const updated = prev.map(thread => 
+          thread.id === threadId 
+            ? { ...thread, unread_count: 0 }
+            : thread
+        );
+        console.log('📖 Messages.tsx: Local threads updated for read', { threadId, updated: updated.find(t => t.id === threadId) });
+        return updated;
+      });
+    }
+  }, [messageContext]);
+
+  // Immediate optimistic unread update when conversation is opened
+  const handleConversationOpened = useCallback((threadId: string) => {
+    console.log('🚀 Messages.tsx: Conversation opened immediately', { threadId, messageContext });
+    setLocalThreads(prev => {
+      const updated = prev.map(thread => 
         thread.id === threadId 
           ? { ...thread, unread_count: 0 }
           : thread
-      ));
-    }
+      );
+      const updatedThread = updated.find(t => t.id === threadId);
+      console.log('🚀 Messages.tsx: Immediate unread count update', { 
+        threadId, 
+        before: prev.find(t => t.id === threadId)?.unread_count,
+        after: updatedThread?.unread_count 
+      });
+      return updated;
+    });
   }, [messageContext]);
 
   const handleUnreadChange = useCallback((threadId: string, context: 'global' | 'tenant') => {
@@ -180,8 +204,13 @@ export default function Messages() {
                     selectedThreadId === thread.id ? 'bg-muted' : ''
                   }`}
                   onClick={() => {
+                    console.log('🎯 Messages.tsx: Thread clicked', { threadId: thread.id, unreadCount: thread.unread_count });
                     setSelectedThreadId(thread.id);
                     setSelectedRecipientId(null);
+                    // Immediately clear unread count for better UX
+                    if (thread.unread_count > 0) {
+                      handleConversationOpened(thread.id);
+                    }
                   }}
                 >
                   <div className="flex items-start space-x-3">
@@ -239,6 +268,8 @@ export default function Messages() {
               recipientId={selectedRecipientId}
               context={messageContext}
               className="h-full"
+              onThreadRead={handleThreadRead}
+              onConversationOpened={handleConversationOpened}
             />
           </ConversationErrorBoundary>
         ) : (

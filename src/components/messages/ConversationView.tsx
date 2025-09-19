@@ -38,6 +38,8 @@ interface ConversationViewProps {
   onBack?: () => void;
   className?: string;
   context?: 'global' | 'tenant';
+  onThreadRead?: (threadId: string, context: 'global' | 'tenant') => void;
+  onConversationOpened?: (threadId: string) => void;
 }
 
 const ConversationView: React.FC<ConversationViewProps> = ({
@@ -45,7 +47,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   recipientId,
   onBack,
   className,
-  context
+  context,
+  onThreadRead,
+  onConversationOpened
 }) => {
   const { user } = useAuth();
   
@@ -194,22 +198,37 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Mark thread as read when viewing it
   useEffect(() => {
     if (threadId && isWindowFocused && messages.length > 0 && markAsRead) {
-      // Mark as read when thread is opened and has messages
+      console.log('📖 ConversationView: Marking thread as read', { threadId, messageContext, messagesLength: messages.length });
+      
+      // Immediate UI update via parent callback
+      if (onConversationOpened) {
+        console.log('🚀 ConversationView: Calling onConversationOpened immediately');
+        onConversationOpened(threadId);
+      }
+      
+      // Backend update (debounced)
       markAsRead(threadId);
     }
-  }, [threadId, isWindowFocused, messages.length, markAsRead]);
+  }, [threadId, isWindowFocused, messages.length, markAsRead, onConversationOpened, messageContext]);
 
   // Mark as read when new messages arrive in the currently viewed thread
   useEffect(() => {
     if (threadId && isWindowFocused && messages.length > 0 && markAsRead) {
-      // Small delay to ensure the message is fully rendered
+      console.log('📖 ConversationView: New messages arrived, marking as read', { threadId, messagesLength: messages.length });
+      
+      // Immediate UI update via parent callback for new messages
+      if (onConversationOpened) {
+        onConversationOpened(threadId);
+      }
+      
+      // Small delay to ensure the message is fully rendered before backend update
       const timer = setTimeout(() => {
         markAsRead(threadId);
       }, 500);
       
       return () => clearTimeout(timer);
     }
-  }, [threadId, messages, isWindowFocused, markAsRead]);
+  }, [threadId, messages, isWindowFocused, markAsRead, onConversationOpened]);
 
   // Track window focus for read receipts
   useEffect(() => {
