@@ -5,13 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon, Download, ExternalLink } from 'lucide-react';
+import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon, Download, ExternalLink, AlertTriangle, RotateCcw } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType } from '@/lib/fileUpload';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { EmojiReactionBar } from './EmojiReactionBar';
 import { ReactionCluster } from './ReactionCluster';
 import { ReactionPopover } from './ReactionPopover';
+import { useOfflineQueue } from '@/hooks/useOfflineQueue';
+import { useToast } from '@/hooks/use-toast';
 
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
@@ -39,13 +41,21 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const [showReactionPopover, setShowReactionPopover] = useState(false);
   const [reactionBarPosition, setReactionBarPosition] = useState({ x: 0, y: 0 });
 
-  // Use reactions hook
+  // Use reactions and offline queue hooks
   const { reactionSummary, addReaction, removeReaction } = useMessageReactions(message.id);
+  const { retryItem, getItem } = useOfflineQueue();
+  const { toast } = useToast();
 
-  // Check if this is an optimistic message (temporary)
+  // Check if this is an optimistic/queued message
   const isOptimistic = message.id?.toString().startsWith('temp-');
+  const queueItem = isOptimistic ? getItem(message.idempotency_key) : null;
   
   const getMessageStatus = () => {
+    if (isOptimistic && queueItem) {
+      // Return outbox status for queued messages
+      return queueItem.status;
+    }
+    
     if (isOptimistic) {
       return 'sending';
     }
@@ -73,19 +83,54 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     const status = getMessageStatus();
     
     switch (status) {
+      case 'queued':
+        return <div title="Queued for sending"><Clock className="w-3 h-3 text-muted-foreground" /></div>;
       case 'sending':
-        return <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />;
+        return <div title="Sending..."><Loader2 className="w-3 h-3 animate-spin text-muted-foreground" /></div>;
+      case 'failed':
+        return (
+          <div className="flex items-center gap-1">
+            <div title="Failed to send"><AlertTriangle className="w-3 h-3 text-destructive" /></div>
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-5 w-5 p-0 text-destructive hover:text-destructive"
+              onClick={handleRetry}
+              title="Retry sending"
+            >
+              <RotateCcw className="w-3 h-3" />
+            </Button>
+          </div>
+        );
       case 'sent':
         // Single checkmark - message sent but not delivered
-        return <Check className="w-3 h-3 text-muted-foreground" />;
+        return <div title="Sent"><Check className="w-3 h-3 text-muted-foreground" /></div>;
       case 'delivered':
         // Double checkmark - message delivered but not read
-        return <CheckCheck className="w-3 h-3 text-muted-foreground" />;
+        return <div title="Delivered"><CheckCheck className="w-3 h-3 text-muted-foreground" /></div>;
       case 'read':
         // Colored double checkmark - message read (WhatsApp style)
-        return <CheckCheck className="w-3 h-3 text-primary" />;
+        return <div title="Read"><CheckCheck className="w-3 h-3 text-primary" /></div>;
       default:
         return <Clock className="w-3 h-3 text-muted-foreground" />;
+    }
+  };
+
+  const handleRetry = async () => {
+    if (!queueItem) return;
+    
+    try {
+      await retryItem(queueItem.idempotency_key);
+      toast({
+        title: "Retry initiated",
+        description: "Message queued for retry"
+      });
+    } catch (error) {
+      toast({
+        title: "Retry failed",
+        description: error instanceof Error ? error.message : "Failed to retry message",
+        variant: "destructive"
+      });
     }
   };
 
@@ -464,7 +509,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 isOwnMessage 
                   ? "bg-primary text-primary-foreground" 
                   : "bg-muted",
-                isOptimistic && "opacity-70"
+                isOptimistic && queueItem?.status === 'queued' && "opacity-70",
+                isOptimistic && queueItem?.status === 'failed' && "opacity-80 border border-destructive/30"
               )}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}

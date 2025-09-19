@@ -5,14 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { X, Wifi, WifiOff, AlertTriangle, Clock, Users, MessageSquare } from 'lucide-react';
+import { X, Wifi, WifiOff, AlertTriangle, Clock, Users, MessageSquare, Loader2, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useOfflineQueue } from '@/hooks/useOfflineQueue';
 
 export interface DiagnosticEvent {
   id: string;
   timestamp: string;
-  type: 'send' | 'ack' | 'delivered' | 'read' | 'typing_start' | 'typing_stop' | 'unread_change' | 'error' | 'duplicate';
+  type: 'send' | 'ack' | 'delivered' | 'read' | 'typing_start' | 'typing_stop' | 'unread_change' | 'error' | 'duplicate' | 'queued' | 'retry_start' | 'retry_success' | 'retry_fail' | 'dropped_after_max';
   threadId?: string;
   userId?: string;
   content?: string;
@@ -49,6 +50,7 @@ export function RealtimeCheckPanel({
   const [subscriptions, setSubscriptions] = useState<string[]>([]);
   const eventIdRef = useRef(0);
   const messageIdTracker = useRef(new Set<string>());
+  const { stats: queueStats, isOnline } = useOfflineQueue();
 
   // Add diagnostic event
   const addEvent = useCallback((event: Omit<DiagnosticEvent, 'id' | 'timestamp'>) => {
@@ -218,6 +220,16 @@ export function RealtimeCheckPanel({
       case 'typing_start':
       case 'typing_stop':
         return <Users className="w-3 h-3" />;
+      case 'queued':
+        return <Clock className="w-3 h-3 text-yellow-500" />;
+      case 'retry_start':
+        return <Loader2 className="w-3 h-3 animate-spin text-blue-500" />;
+      case 'retry_success':
+        return <Check className="w-3 h-3 text-green-500" />;
+      case 'retry_fail':
+        return <AlertTriangle className="w-3 h-3 text-orange-500" />;
+      case 'dropped_after_max':
+        return <X className="w-3 h-3 text-red-500" />;
       case 'error':
         return <AlertTriangle className="w-3 h-3 text-red-500" />;
       default:
@@ -248,6 +260,54 @@ export function RealtimeCheckPanel({
         </CardHeader>
         
         <CardContent className="h-[calc(100%-80px)] space-y-4">
+          {/* Network Status */}
+          <div>
+            <h4 className="text-xs font-medium mb-2">Network Status</h4>
+            <div className="flex items-center gap-2 text-xs">
+              {isOnline ? (
+                <Wifi className="w-4 h-4 text-green-500" />
+              ) : (
+                <WifiOff className="w-4 h-4 text-red-500" />
+              )}
+              <span>{isOnline ? 'Online' : 'Offline'}</span>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Outbox Queue Status */}
+          <div>
+            <h4 className="text-xs font-medium mb-2">Message Queue</h4>
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span>Total Items:</span>
+                <Badge variant="outline" className="text-xs px-1">
+                  {queueStats.total}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span>Queued:</span>
+                <Badge variant="outline" className="text-xs px-1">
+                  {queueStats.queued}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span>Sending:</span>
+                <Badge variant="outline" className="text-xs px-1">
+                  {queueStats.sending}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span>Failed:</span>
+                <Badge variant="outline" className="text-xs px-1">
+                  {queueStats.failed}
+                </Badge>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
           {/* WebSocket Status */}
           <div>
             <h4 className="text-xs font-medium mb-2">WebSocket Status</h4>
