@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { useTenant } from "./useTenant";
@@ -21,7 +21,7 @@ export function useOptimizedHybridMessages(forceContext?: 'global' | 'tenant') {
   const [optimizedThreads, setOptimizedThreads] = useState(hybridMessages.threads);
   
   // Sync optimized threads when hybrid messages threads change
-  useEffect(() => {
+  React.useEffect(() => {
     setOptimizedThreads(hybridMessages.threads);
   }, [hybridMessages.threads]);
 
