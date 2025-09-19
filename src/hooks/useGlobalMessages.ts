@@ -314,7 +314,7 @@ export function useGlobalMessages() {
         .from('global_community_profiles')
         .select('user_id, display_name, avatar_url')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       // Create optimistic message
       const optimisticMessage: GlobalMessage = {
@@ -406,7 +406,7 @@ export function useGlobalMessages() {
           .from('global_message_threads')
           .select('*')
           .eq('id', threadId)
-          .single();
+          .maybeSingle();
         
         return thread;
       }
@@ -469,7 +469,7 @@ export function useGlobalMessages() {
           .select('last_read_at')
           .eq('thread_id', threadId)
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
         // Only update if new timestamp is later (idempotent)
         if (!currentParticipant?.last_read_at || new Date(now) > new Date(currentParticipant.last_read_at)) {
@@ -520,7 +520,7 @@ export function useGlobalMessages() {
     if (!user || !isGlobalContext) return;
 
     const messageChannel = supabase
-      .channel('global_messages_changes')
+      .channel('global_messages_realtime')
       .on(
         'postgres_changes',
         {
@@ -567,7 +567,7 @@ export function useGlobalMessages() {
       .subscribe();
 
     const threadChannel = supabase
-      .channel('global_threads_changes')
+      .channel('global_threads_realtime')
       .on(
         'postgres_changes',
         {
@@ -575,7 +575,8 @@ export function useGlobalMessages() {
           schema: 'public',
           table: 'global_message_threads',
         },
-        () => {
+        (payload) => {
+          console.log('Global thread change:', payload);
           fetchThreads();
         }
       )
