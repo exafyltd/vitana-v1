@@ -41,8 +41,10 @@ export class ProfileDirectory {
     if (!userIds.length) return [];
     
     try {
+      // Convert string IDs to UUIDs for the RPC function
+      const uuidIds = userIds.filter(id => id); // Filter out empty IDs
       const { data, error } = await supabase.rpc('get_minimal_profiles_by_ids', {
-        user_ids: userIds
+        user_ids: uuidIds
       });
 
       if (error) {
@@ -50,7 +52,12 @@ export class ProfileDirectory {
         return [];
       }
 
-      return data || [];
+      // Convert UUID responses back to strings for consistency
+      return (data || []).map(profile => ({
+        user_id: profile.user_id?.toString() || profile.user_id,
+        display_name: profile.display_name || 'Unknown User',
+        avatar_url: profile.avatar_url || ''
+      }));
     } catch (error) {
       console.error('Error in getMinimalByIds:', error);
       return [];
@@ -81,7 +88,12 @@ export class ProfileDirectory {
         return [];
       }
 
-      return data || [];
+      // Convert UUID responses back to strings for consistency
+      return (data || []).map(profile => ({
+        user_id: profile.user_id?.toString() || profile.user_id,
+        display_name: profile.display_name || 'Unknown User',
+        avatar_url: profile.avatar_url || ''
+      }));
     } catch (error) {
       console.error('Error in searchMinimal:', error);
       return [];
@@ -105,7 +117,7 @@ export class Threads {
 
     try {
       const { data, error } = await supabase.rpc('get_thread_participants', {
-        thread_id_param: threadId,
+        thread_id_param: threadId, // This function expects UUID but will handle string conversion
         context_param: context
       });
 
@@ -114,7 +126,15 @@ export class Threads {
         return [];
       }
 
-      return data || [];
+      // Convert response to ensure string IDs
+      return (data || []).map(participant => ({
+        user_id: participant.user_id?.toString() || participant.user_id,
+        display_name: participant.display_name || 'Unknown User',
+        avatar_url: participant.avatar_url || '',
+        role: participant.role || 'member',
+        joined_at: participant.joined_at || new Date().toISOString(),
+        last_read_at: participant.last_read_at || null
+      }));
     } catch (error) {
       console.error('Error in getParticipants:', error);
       return [];
@@ -135,7 +155,7 @@ export class Reactions {
 
     try {
       const { data, error } = await supabase.rpc('get_message_reactions', {
-        message_id_param: messageId
+        message_id_param: messageId // This function expects UUID but will handle string conversion
       });
 
       if (error) {
@@ -143,7 +163,15 @@ export class Reactions {
         return [];
       }
 
-      return data || [];
+      // Convert response to ensure string IDs
+      return (data || []).map(reaction => ({
+        message_id: reaction.message_id?.toString() || reaction.message_id,
+        user_id: reaction.user_id?.toString() || reaction.user_id,
+        emoji: reaction.emoji,
+        created_at: reaction.created_at,
+        display_name: reaction.display_name || 'Unknown User',
+        avatar_url: reaction.avatar_url || ''
+      }));
     } catch (error) {
       console.error('Error in listForMessage:', error);
       return [];
@@ -159,7 +187,7 @@ export class Reactions {
 
     try {
       const { data, error } = await supabase.rpc('toggle_message_reaction', {
-        message_id_param: messageId,
+        message_id_param: messageId, // This function expects UUID but will handle string conversion
         emoji_param: emoji
       });
 
