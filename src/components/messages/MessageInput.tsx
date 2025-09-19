@@ -568,7 +568,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               type="submit"
               size="sm"
               variant="ghost"
-              disabled={!activeThread?.id || message.trim() === '' || disabled || isUploading}
+              disabled={( (!activeThread?.id && !recipientId) || message.trim() === '' || disabled || isUploading)}
               className="absolute right-1 bottom-1 h-8 w-8 p-0"
               aria-label="Send message"
             >
