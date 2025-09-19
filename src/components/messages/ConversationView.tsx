@@ -557,8 +557,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Loading state for when conversation is being loaded  
   if (isLoadingConversation) {
     return (
-      <div className={cn("grid grid-rows-[auto,1fr,auto] h-full min-h-0", className)}>
-        <div className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
+      <div className={cn("flex flex-col h-full min-w-0", className)}>
+        <div className="shrink-0 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
           <div className="flex items-center gap-3">
             {onBack && (
               <Button size="sm" variant="ghost" onClick={onBack}>
@@ -572,7 +572,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex-1 p-4">
+        <div className="flex-1 min-h-0 p-4">
           <MessageSkeleton count={3} />
         </div>
       </div>
@@ -581,11 +581,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <div className="conversation-viewport relative h-full">
-        {/* Top Zone - Conversation Header (fixed at top) */}
-        <div className="conversation-header absolute top-0 left-0 right-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+      <div className={cn("flex flex-col h-full min-w-0 overflow-hidden", className)}>
+        {/* Header - Sticky at top */}
+        <div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b shadow-sm">
+          <div className="flex items-center justify-between px-4 py-3">
+            <div className="flex items-center gap-3 min-w-0">
               {onBack && (
                 <Button size="sm" variant="ghost" onClick={onBack}>
                   <ArrowLeft className="w-4 h-4" />
@@ -594,7 +594,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               
               {isGroupChat() ? (
                 <div 
-                  className="cursor-pointer"
+                  className="cursor-pointer shrink-0"
                   onClick={() => setShowMembersModal(true)}
                 >
                   <GroupAvatarStack 
@@ -604,7 +604,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   />
                 </div>
               ) : (
-                <Avatar>
+                <Avatar className="shrink-0">
                   <AvatarImage src={getConversationAvatar() || undefined} />
                   <AvatarFallback>
                     {getConversationTitle()[0]?.toUpperCase() || 'U'}
@@ -613,15 +613,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               )}
               
               <div 
-                className={isGroupChat() ? "cursor-pointer" : ""}
+                className={cn("min-w-0 flex-1", isGroupChat() ? "cursor-pointer" : "")}
                 onClick={isGroupChat() ? () => setShowMembersModal(true) : undefined}
               >
-                <h2 className="text-base font-semibold">{getConversationTitle()}</h2>
-                <p className="text-sm text-muted-foreground">{getConversationSubtitle()}</p>
+                <h2 className="text-base font-semibold truncate">{getConversationTitle()}</h2>
+                <p className="text-sm text-muted-foreground truncate">{getConversationSubtitle()}</p>
               </div>
             </div>
           
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 shrink-0">
               <Button size="sm" variant="ghost">
                 <Phone className="w-4 h-4" />
               </Button>
@@ -635,9 +635,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           </div>
         </div>
 
-        {/* History Zone - Scrollable Messages (middle zone with top and bottom padding) */}
+        {/* Messages - Scrollable area */}
         <div 
-          className="conversation-history absolute top-[73px] left-0 right-0 bottom-[112px] overflow-y-auto px-4 py-3" 
+          className="flex-1 min-h-0 overflow-y-auto px-4 py-3" 
           id="chat-scroll"
         >
           {messages.length === 0 && optimisticMessages.length === 0 ? (
@@ -692,7 +692,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               {optimisticMessages.map((optMessage) => (
                 <div key={optMessage.id} className="flex justify-end mb-4">
                   <div className={cn(
-                    "max-w-[70%] rounded-lg px-3 py-2 text-sm",
+                    "max-w-[680px] rounded-lg px-3 py-2 text-sm",
                     optMessage.status === 'sending' 
                       ? "bg-primary/70 text-primary-foreground" 
                       : "bg-destructive/70 text-destructive-foreground"
@@ -721,42 +721,46 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             </>
           )}
           
-          {/* Bottom padding to ensure last message is never hidden by input field */}
-          <div className="h-16" />
+          {/* Bottom padding and scroll anchor */}
+          <div className="h-4" />
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Composer Zone - Fixed at bottom, always visible */}
-        <div className="conversation-composer absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t px-4 py-3">
-          {/* Typing Indicators */}
-          {typingUsers.length > 0 && (
-            <div className="mb-2">
-              <TypingIndicator users={typingUsers} />
-            </div>
-          )}
-          
-          {sendError && (
-            <div className="mb-2">
-              <ErrorMessage 
-                title="Message failed to send"
-                description={sendError}
-                onRetry={() => setSendError(null)}
-                variant="inline"
-                className="text-xs"
+        {/* Composer - Fixed at bottom */}
+        <div className="shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t shadow-sm">
+          <div className="px-4 py-3">
+            {/* Typing Indicators */}
+            {typingUsers.length > 0 && (
+              <div className="mb-2">
+                <TypingIndicator users={typingUsers} />
+              </div>
+            )}
+            
+            {sendError && (
+              <div className="mb-2">
+                <ErrorMessage 
+                  title="Message failed to send"
+                  description={sendError}
+                  onRetry={() => setSendError(null)}
+                  variant="inline"
+                  className="text-xs"
+                />
+              </div>
+            )}
+            
+            <div className="flex-1 min-w-0">
+              <MessageInput
+                onSendMessage={handleSendMessage}
+                onTypingStart={startTyping}
+                onTypingStop={stopTyping}
+                disabled={isSending}
+                placeholder={`Message ${getConversationTitle()}...`}
+                threadId={threadId}
+                recipientId={recipientId}
+                activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
               />
             </div>
-          )}
-          
-          <MessageInput
-            onSendMessage={handleSendMessage}
-            onTypingStart={startTyping}
-            onTypingStop={stopTyping}
-            disabled={isSending}
-            placeholder={`Message ${getConversationTitle()}...`}
-            threadId={threadId}
-            recipientId={recipientId}
-            activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
-          />
+          </div>
         </div>
       </div>
 

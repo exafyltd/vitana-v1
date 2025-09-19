@@ -297,14 +297,14 @@ export default function Messages() {
         </ScrollArea>
       </div>
       
-      <div className="flex-1 min-h-0">
+      <div className="min-w-0 flex flex-col overflow-hidden">
         {selectedThreadId || selectedRecipientId ? (
           <ConversationErrorBoundary>
             <ConversationView 
               threadId={selectedThreadId}
               recipientId={selectedRecipientId}
               context={messageContext}
-              className="h-full"
+              className="flex-1 min-h-0"
               onThreadRead={handleThreadRead}
               onConversationOpened={handleConversationOpened}
             />
@@ -363,38 +363,27 @@ export default function Messages() {
               </DropdownMenu>
             </UtilityActionButton>
 
-            {/* Split Navigation with Density Toggle */}
-            <div className="flex items-center justify-between mb-6">
-              <SplitBar value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} className="flex-1">
-                <SplitBarList>
-                  <SplitBarTrigger value="global" className="flex items-center gap-2">
-                    <Globe className="w-4 h-4" />
-                    Global Community
-                  </SplitBarTrigger>
-                  <SplitBarTrigger value="tenant" className="flex items-center gap-2">
-                    <Building className="w-4 h-4" />
-                    Professional Network
-                  </SplitBarTrigger>
-                </SplitBarList>
+            {/* Split Navigation */}
+            <SplitBar value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} className="flex-1">
+              <SplitBarList>
+                <SplitBarTrigger value="global" className="flex items-center gap-2">
+                  <Globe className="w-4 h-4" />
+                  Global Community
+                </SplitBarTrigger>
+                <SplitBarTrigger value="tenant" className="flex items-center gap-2">
+                  <Building className="w-4 h-4" />
+                  Professional Network
+                </SplitBarTrigger>
+              </SplitBarList>
 
-                <SplitBarContent value="global">
-                  {renderConversationContent()}
-                </SplitBarContent>
+              <SplitBarContent value="global">
+                {renderConversationContent()}
+              </SplitBarContent>
 
-                <SplitBarContent value="tenant">
-                  {renderConversationContent()}
-                </SplitBarContent>
-              </SplitBar>
-              
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setDensityMode(densityMode === 'comfortable' ? 'compact' : 'comfortable')}
-                className="ml-4"
-              >
-                {densityMode === 'comfortable' ? 'Compact' : 'Comfortable'}
-              </Button>
-            </div>
+              <SplitBarContent value="tenant">
+                {renderConversationContent()}
+              </SplitBarContent>
+            </SplitBar>
           </div>
         </div>
       </AppLayout>
