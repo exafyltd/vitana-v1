@@ -17,9 +17,9 @@ import { Plus, Users, MessageSquareText } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
-import { useHybridMessages } from "@/hooks/useHybridMessages";
-import { useRole } from "@/hooks/useRole";
-import { useUnreadSync } from "@/hooks/useUnreadSync";
+import { useOptimizedHybridMessages } from "@/hooks/useOptimizedHybridMessages";
+import { useUnreadSync } from '@/hooks/useUnreadSync';
+import { useRole } from '@/hooks/useRole';
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { Card } from "@/components/ui/card";
@@ -35,11 +35,16 @@ import CreateGroupPopup from "@/components/messages/CreateGroupPopup";
 export default function Messages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
-  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
-  const { threads, isLoading, context, ...hybridMessages } = useHybridMessages(messageContext);
-  const globalMessages = useHybridMessages('global');
-  const tenantMessages = useHybridMessages('tenant');
-  const isGlobalContext = context === 'global';
+  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>(
+    currentRole === 'community' ? 'global' : 'tenant'
+  );
+  
+  const { 
+    threads, 
+    isLoading, 
+    context,
+    markAsRead 
+  } = useOptimizedHybridMessages(messageContext);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [showNewConversation, setShowNewConversation] = useState(false);
@@ -58,61 +63,17 @@ export default function Messages() {
     setSelectedRecipientId(null);
   }, [messageContext]);
 
-  // Handle real-time unread sync across tabs/devices
-  const handleThreadRead = useCallback((threadId: string, context: 'global' | 'tenant') => {
-    console.log('📖 Messages.tsx: handleThreadRead called', { threadId, context, messageContext });
-    if (context === messageContext) {
-      setLocalThreads(prev => {
-        const updated = prev.map(thread => 
-          thread.id === threadId 
-            ? { ...thread, unread_count: 0 }
-            : thread
-        );
-        console.log('📖 Messages.tsx: Local threads updated for read', { threadId, updated: updated.find(t => t.id === threadId) });
-        return updated;
-      });
-    }
-  }, [messageContext]);
+  const handleThreadRead = useCallback((threadId: string) => {
+    markAsRead(threadId);
+    console.log('Thread marked as read:', threadId);
+  }, [markAsRead]);
 
-  // Immediate optimistic unread update when conversation is opened
   const handleConversationOpened = useCallback((threadId: string) => {
-    console.log('🚀 Messages.tsx: Conversation opened immediately', { threadId, messageContext });
-    setLocalThreads(prev => {
-      const updated = prev.map(thread => 
-        thread.id === threadId 
-          ? { ...thread, unread_count: 0 }
-          : thread
-      );
-      const updatedThread = updated.find(t => t.id === threadId);
-      console.log('🚀 Messages.tsx: Immediate unread count update', { 
-        threadId, 
-        before: prev.find(t => t.id === threadId)?.unread_count,
-        after: updatedThread?.unread_count 
-      });
-      return updated;
-    });
-  }, [messageContext]);
+    setSelectedThreadId(threadId);
+  }, []);
 
-  const handleUnreadChange = useCallback((threadId: string, context: 'global' | 'tenant') => {
-    if (context === messageContext) {
-      // Use the fetchThreads function from the appropriate hook
-      setTimeout(() => {
-        if (isGlobalContext) {
-          globalMessages.fetchThreads();
-        } else {
-          tenantMessages.fetchThreads();
-        }
-      }, 100); // Small delay to ensure DB is updated
-    }
-  }, [messageContext, isGlobalContext, globalMessages, tenantMessages]);
-
-  // Initialize unread sync
-  useUnreadSync(handleThreadRead, handleUnreadChange);
-
-  // Keep local threads in sync with fetched threads
-  useEffect(() => {
-    setLocalThreads(threads);
-  }, [threads]);
+  // Initialize unread sync with simplified handlers
+  useUnreadSync(handleThreadRead, handleThreadRead);
 
   const handleConversationCreated = (threadId: string, recipientId: string) => {
     setSelectedThreadId(threadId);
@@ -165,17 +126,17 @@ export default function Messages() {
       <div className="w-80 border-r border-border flex-shrink-0">
         <ScrollArea className="h-full">
           <div className="p-4 space-y-2">
-            {localThreads.length === 0 ? (
+            {threads.length === 0 ? (
               <EmptyStateIllustration 
                 type="inbox"
                 context={messageContext}
-                threads={localThreads}
+                threads={threads}
                 onAction={() => setShowNewConversation(true)}
                 onCreateGroup={() => setShowCreateGroup(true)}
               />
             ) : (
               // De-duplicate direct threads by counterpart, keep most recent
-              localThreads
+              threads
                 .reduce((acc, thread) => {
                   if (thread.type === 'direct') {
                     // Find the other participant (not current user)
@@ -196,7 +157,7 @@ export default function Messages() {
                     acc.push({ ...thread, _dedupeKey: thread.id });
                     return acc;
                   }
-                }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
+                }, [] as (typeof threads[0] & { _dedupeKey: string })[])
                 .map((thread) => (
                 <Card
                   key={thread.id}
@@ -209,7 +170,7 @@ export default function Messages() {
                     setSelectedRecipientId(null);
                     // Immediately clear unread count for better UX
                     if (thread.unread_count > 0) {
-                      handleConversationOpened(thread.id);
+                      handleThreadRead(thread.id);
                     }
                   }}
                 >
