@@ -77,7 +77,7 @@ export class ProfileDirectory {
     }
 
     try {
-      const { data, error } = await supabase.rpc('search_minimal_profiles', {
+      const { data, error } = await supabase.rpc('search_minimal_profiles_text', {
         search_query: query.trim(),
         search_scope: scope
       });

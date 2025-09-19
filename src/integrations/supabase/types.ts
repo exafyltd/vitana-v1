@@ -1255,7 +1255,26 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_message_reactions_text: {
+        Args: { message_id_param: string }
+        Returns: {
+          avatar_url: string
+          created_at: string
+          display_name: string
+          emoji: string
+          message_id: string
+          user_id: string
+        }[]
+      }
       get_minimal_profiles_by_ids: {
+        Args: { user_ids: string[] }
+        Returns: {
+          avatar_url: string
+          display_name: string
+          user_id: string
+        }[]
+      }
+      get_minimal_profiles_by_ids_text: {
         Args: { user_ids: string[] }
         Returns: {
           avatar_url: string
@@ -1270,6 +1289,17 @@ export type Database = {
         }[]
       }
       get_thread_participants: {
+        Args: { context_param?: string; thread_id_param: string }
+        Returns: {
+          avatar_url: string
+          display_name: string
+          joined_at: string
+          last_read_at: string
+          role: string
+          user_id: string
+        }[]
+      }
+      get_thread_participants_text: {
         Args: { context_param?: string; thread_id_param: string }
         Returns: {
           avatar_url: string
@@ -1313,7 +1343,7 @@ export type Database = {
           user_id: string
         }[]
       }
-      search_minimal_profiles: {
+      search_minimal_profiles_text: {
         Args: { search_query: string; search_scope?: string }
         Returns: {
           avatar_url: string
@@ -1341,6 +1371,10 @@ export type Database = {
         Returns: undefined
       }
       toggle_message_reaction: {
+        Args: { emoji_param: string; message_id_param: string }
+        Returns: boolean
+      }
+      toggle_message_reaction_text: {
         Args: { emoji_param: string; message_id_param: string }
         Returns: boolean
       }
