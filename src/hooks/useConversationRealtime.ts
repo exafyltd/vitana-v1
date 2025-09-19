@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import type { GlobalMessage } from './useGlobalMessages';
 import type { TenantMessage } from './useTenantMessages';
 import { instrumentRealtimeEvent, trackSubscription } from '@/lib/diagnostics';
+import { ProfileDirectory } from '@/lib/secure-accessors';
 
 /**
  * Focused real-time hook for individual conversation threads
@@ -37,29 +38,29 @@ export function useConversationRealtime(
 
         if (error) throw error;
 
-        // Get sender profiles
+        // Get sender profiles using secure accessor
         const senderIds = messagesData?.map(m => m.sender_id) || [];
-        const { data: globalProfiles } = await supabase
-          .from('global_community_profiles')
-          .select('user_id, display_name, avatar_url')
-          .in('user_id', senderIds);
-
-        const { data: mainProfiles } = await supabase
-          .from('profiles')
-          .select('user_id, display_name, full_name, avatar_url')
-          .in('user_id', senderIds);
+        const profiles = await ProfileDirectory.getMinimalByIds(senderIds);
 
         // Create profile map
         const profileMap: Record<string, any> = {};
-        senderIds.forEach(userId => {
-          const globalProfile = globalProfiles?.find(p => p.user_id === userId);
-          const mainProfile = mainProfiles?.find(p => p.user_id === userId);
-          
-          profileMap[userId] = {
-            user_id: userId,
-            display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
-            avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
+        profiles.forEach(profile => {
+          profileMap[profile.user_id] = {
+            user_id: profile.user_id,
+            display_name: profile.display_name || 'Unknown User',
+            avatar_url: profile.avatar_url || null
           };
+        });
+        
+        // Add self to profile map if needed
+        senderIds.forEach(userId => {
+          if (!profileMap[userId]) {
+            profileMap[userId] = {
+              user_id: userId,
+              display_name: userId === user?.id ? 'You' : 'Unknown User',
+              avatar_url: null
+            };
+          }
         });
 
         const messagesWithSenders = messagesData?.map(message => ({
@@ -147,34 +148,28 @@ export function useConversationRealtime(
           // For tenant messages, verify tenant_id matches
           if (context === 'tenant' && newMessage.tenant_id !== activeTenantId) return;
 
-          // Fetch sender profile
+          // Fetch sender profile using secure accessor
           let senderProfile = null;
           if (context === 'global') {
-            const { data: globalProfile } = await supabase
-              .from('global_community_profiles')
-              .select('user_id, display_name, avatar_url')
-              .eq('user_id', newMessage.sender_id)
-              .maybeSingle();
-
-            const { data: mainProfile } = await supabase
-              .from('profiles')
-              .select('user_id, display_name, full_name, avatar_url')
-              .eq('user_id', newMessage.sender_id)
-              .maybeSingle();
-
-            senderProfile = {
+            const profiles = await ProfileDirectory.getMinimalByIds([newMessage.sender_id]);
+            senderProfile = profiles[0] || {
               user_id: newMessage.sender_id,
-              display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
-              avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
+              display_name: 'Unknown User',
+              avatar_url: null
             };
           } else {
+            // For tenant context, still query profiles directly since it's not in scope
             const { data: profile } = await supabase
               .from('profiles')
               .select('user_id, full_name, display_name, avatar_url')
               .eq('user_id', newMessage.sender_id)
               .maybeSingle();
 
-            senderProfile = profile;
+            senderProfile = profile || {
+              user_id: newMessage.sender_id,
+              display_name: 'Unknown User',
+              avatar_url: null
+            };
           }
 
           // Add the new message to local state

@@ -1,13 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
-
-export interface MessageReaction {
-  message_id: string;
-  user_id: string;
-  emoji: string;
-  created_at: string;
-}
+import { Reactions, type MessageReaction } from '@/lib/secure-accessors';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface ReactionSummary {
   emoji: string;
@@ -27,96 +21,66 @@ export function useMessageReactions(messageId: string) {
   const [reactions, setReactions] = useState<MessageReaction[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch reactions for a message
+  // Fetch reactions for a message using secure accessor
   const fetchReactions = useCallback(async () => {
     if (!messageId) return;
     
     try {
-      const { data, error } = await supabase
-        .from('message_reactions')
-        .select(`
-          *,
-          profiles:user_id (
-            display_name,
-            avatar_url
-          )
-        `)
-        .eq('message_id', messageId)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      setReactions(data || []);
+      const reactionsData = await Reactions.listForMessage(messageId);
+      setReactions(reactionsData);
     } catch (error) {
       console.error('Error fetching reactions:', error);
+      setReactions([]);
     } finally {
       setLoading(false);
     }
   }, [messageId]);
 
-  // Add reaction (always adds, allows multiple same emojis)
+  // Add reaction (using secure toggle accessor)
   const addReaction = useCallback(async (emoji: string) => {
     if (!user || !ALLOWED_EMOJIS.includes(emoji as any)) return;
 
     try {
-      // Always add reaction
-      const newReaction: MessageReaction = {
-        message_id: messageId,
-        user_id: user.id,
-        emoji,
-        created_at: new Date().toISOString()
-      };
-
-      setReactions([...reactions, newReaction]);
-
-      const { error } = await supabase
-        .from('message_reactions')
-        .insert(newReaction);
-
-      if (error) {
-        // Rollback on error
-        setReactions(reactions);
-        throw error;
+      const wasAdded = await Reactions.toggle(messageId, emoji);
+      
+      if (wasAdded) {
+        // Optimistically add reaction
+        const newReaction: MessageReaction = {
+          message_id: messageId,
+          user_id: user.id,
+          emoji: emoji,
+          created_at: new Date().toISOString(),
+          display_name: 'You',
+          avatar_url: ''
+        };
+        setReactions(prev => [...prev, newReaction]);
       }
     } catch (error) {
       console.error('Error adding reaction:', error);
+      // Refresh on error to ensure consistency
+      fetchReactions();
     }
-  }, [messageId, user, reactions]);
+  }, [messageId, user, fetchReactions]);
 
-  // Remove specific reaction (for right-click or long press)
-  const removeReaction = useCallback(async (emoji: string, reactionId?: string) => {
+  // Remove reaction (using secure toggle accessor)
+  const removeReaction = useCallback(async (emoji: string) => {
     if (!user) return;
 
     try {
-      // If no specific reaction ID, remove the most recent one from this user
-      const targetReaction = reactionId 
-        ? reactions.find(r => r.message_id === messageId && r.emoji === emoji)
-        : reactions.filter(r => r.user_id === user.id && r.emoji === emoji).slice(-1)[0];
-
-      if (!targetReaction) return;
-
-      // Optimistic removal
-      const optimisticReactions = reactions.filter(
-        r => !(r.user_id === targetReaction.user_id && r.emoji === emoji && r.created_at === targetReaction.created_at)
-      );
-      setReactions(optimisticReactions);
-
-      const { error } = await supabase
-        .from('message_reactions')
-        .delete()
-        .eq('message_id', messageId)
-        .eq('user_id', targetReaction.user_id)
-        .eq('emoji', emoji)
-        .eq('created_at', targetReaction.created_at);
-
-      if (error) {
-        // Rollback on error
-        setReactions(reactions);
-        throw error;
+      const wasRemoved = await Reactions.toggle(messageId, emoji);
+      
+      if (!wasRemoved) {
+        // Reaction was removed (toggle returned false)
+        setReactions(prev => prev.filter(r => 
+          !(r.message_id === messageId && r.user_id === user.id && r.emoji === emoji)
+        ));
       }
     } catch (error) {
       console.error('Error removing reaction:', error);
+      // Refresh on error to ensure consistency
+      fetchReactions();
     }
-  }, [messageId, user, reactions]);
+  }, [messageId, user, fetchReactions]);
 
   // Get reaction summary grouped by emoji
   const getReactionSummary = useCallback((): ReactionSummary[] => {
@@ -133,14 +97,14 @@ export function useMessageReactions(messageId: string) {
       count: reactionList.length,
       users: reactionList.map(r => ({
         user_id: r.user_id,
-        display_name: (r as any).profiles?.display_name,
-        avatar_url: (r as any).profiles?.avatar_url
+        display_name: r.display_name,
+        avatar_url: r.avatar_url
       })),
       hasUserReacted: user ? reactionList.some(r => r.user_id === user.id) : false
     }));
   }, [reactions, user]);
 
-  // Set up real-time subscription
+  // Set up real-time subscription - RLS will filter events automatically
   useEffect(() => {
     fetchReactions();
 
@@ -155,6 +119,7 @@ export function useMessageReactions(messageId: string) {
           filter: `message_id=eq.${messageId}`
         },
         () => {
+          // Refresh reactions to get proper user data via secure accessor
           fetchReactions();
         }
       )

@@ -30,7 +30,7 @@ import EmptyStateIllustration from './EmptyStateIllustration';
 import ErrorMessage from './ErrorMessage';
 import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
-import GroupAvatarStack from './GroupAvatarStack';
+import { ProfileDirectory } from "@/lib/secure-accessors";
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -125,14 +125,27 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     const fetchRecipientData = async () => {
       if (recipientId) {
         try {
-          const { data, error } = await supabase
-            .from(messageContext === 'global' ? 'global_community_profiles' : 'profiles')
-            .select(messageContext === 'global' ? 'user_id, display_name, avatar_url' : 'user_id, display_name, full_name, avatar_url')
-            .eq('user_id', recipientId)
-            .single();
-          
-          if (!error && data) {
-            setRecipientData(data);
+          if (messageContext === 'global') {
+            // Use secure accessor for global profiles
+            const profiles = await ProfileDirectory.getMinimalByIds([recipientId]);
+            if (profiles.length > 0) {
+              setRecipientData({
+                user_id: profiles[0].user_id,
+                display_name: profiles[0].display_name,
+                avatar_url: profiles[0].avatar_url
+              });
+            }
+          } else {
+            // For tenant context, still query profiles directly since it's not in scope of hardening
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('user_id, display_name, full_name, avatar_url')
+              .eq('user_id', recipientId)
+              .single();
+            
+            if (!error && data) {
+              setRecipientData(data);
+            }
           }
         } catch (error) {
           console.error('Error fetching recipient data:', error);
@@ -143,7 +156,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     };
 
     fetchRecipientData();
-  }, [recipientId, context]);
+  }, [recipientId, messageContext]);
 
   // Ensure messages are fetched when switching threads
   useEffect(() => {

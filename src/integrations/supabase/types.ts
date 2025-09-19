@@ -1115,10 +1115,40 @@ export type Database = {
         Args: { p_recipient_id: string; p_tenant_id: string }
         Returns: string
       }
+      get_message_reactions: {
+        Args: { message_id_param: string }
+        Returns: {
+          avatar_url: string
+          created_at: string
+          display_name: string
+          emoji: string
+          message_id: string
+          user_id: string
+        }[]
+      }
+      get_minimal_profiles_by_ids: {
+        Args: { user_ids: string[] }
+        Returns: {
+          avatar_url: string
+          display_name: string
+          user_id: string
+        }[]
+      }
       get_role_preference: {
         Args: { p_tenant_id: string }
         Returns: {
           role: string
+        }[]
+      }
+      get_thread_participants: {
+        Args: { context_param?: string; thread_id_param: string }
+        Returns: {
+          avatar_url: string
+          display_name: string
+          joined_at: string
+          last_read_at: string
+          role: string
+          user_id: string
         }[]
       }
       get_user_admin_status: {
@@ -1154,6 +1184,14 @@ export type Database = {
           user_id: string
         }[]
       }
+      search_minimal_profiles: {
+        Args: { search_query: string; search_scope?: string }
+        Returns: {
+          avatar_url: string
+          display_name: string
+          user_id: string
+        }[]
+      }
       search_tenant_directory: {
         Args: { search_term: string; tenant_id_param: string }
         Returns: {
@@ -1172,6 +1210,10 @@ export type Database = {
       switch_to_tenant_by_slug: {
         Args: { p_tenant_slug: string }
         Returns: undefined
+      }
+      toggle_message_reaction: {
+        Args: { emoji_param: string; message_id_param: string }
+        Returns: boolean
       }
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }
