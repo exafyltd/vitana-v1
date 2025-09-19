@@ -13,6 +13,7 @@ import { useHybridMessages } from '@/hooks/useHybridMessages';
 import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
+import { logThreadEvent, checkThreadHealth } from '@/lib/diagnostics';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   ArrowLeft, 
@@ -86,6 +87,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isThreadDataLoaded, setIsThreadDataLoaded] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [scopeSwitchAttempted, setScopeSwitchAttempted] = useState(false);
   const [showMembersModal, setShowMembersModal] = useState(false);
   const [threadParticipants, setThreadParticipants] = useState<any[]>([]);
   const [currentUserRole, setCurrentUserRole] = useState<string>('member');
@@ -144,6 +146,55 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
     fetchRecipientData();
   }, [recipientId, context]);
+
+  // Scope guard and health check
+  useEffect(() => {
+    if (threadId && !scopeSwitchAttempted) {
+      const verifyThreadScope = async () => {
+        try {
+          // First try to fetch in current context
+          const { data: currentScopeThread, error: currentError } = await supabase
+            .from(context === 'global' ? 'global_message_threads' : 'message_threads')
+            .select('id')
+            .eq('id', threadId)
+            .single();
+
+          if (currentError && currentError.code === 'PGRST116') {
+            // Thread not found in current scope, try other scope
+            const otherContext = context === 'global' ? 'tenant' : 'global';
+            const { data: otherScopeThread } = await supabase
+              .from(otherContext === 'global' ? 'global_message_threads' : 'message_threads')
+              .select('id')
+              .eq('id', threadId)
+              .single();
+
+            if (otherScopeThread) {
+              // Thread exists in other scope, switch context
+              setScopeSwitchAttempted(true);
+              const newUrl = new URL(window.location.href);
+              newUrl.searchParams.set('scope', otherContext);
+              window.location.href = newUrl.toString();
+              return;
+            }
+          }
+
+          // Perform health check
+          if (currentScopeThread) {
+            const health = await checkThreadHealth(threadId, messageContext);
+            if (health.repaired) {
+              // Thread was repaired, refetch messages
+              fetchMessages(threadId);
+            }
+          }
+        } catch (error) {
+          console.error('Thread scope verification failed:', error);
+          setLoadError(error instanceof Error ? error.message : 'Failed to verify thread access');
+        }
+      };
+
+      verifyThreadScope();
+    }
+  }, [threadId, context, messageContext, scopeSwitchAttempted]);
 
   // Ensure messages are fetched when switching threads
   useEffect(() => {
@@ -301,7 +352,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       
       toast({
         title: 'Message Failed',
-        description: `Message failed: ${errorMessage}`,
+        description: errorMessage,
         variant: 'destructive',
       });
       
@@ -660,6 +711,18 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 </div>
               ))}
             </>
+          )}
+
+          {/* Error Display */}
+          {(loadError || sendError) && (
+            <div className="mb-4">
+              <ErrorMessage
+                title={loadError ? "Failed to load conversation" : "Failed to send message"}
+                description={loadError || sendError || "Unknown error occurred"}
+                onRetry={loadError ? retryLoadMessages : undefined}
+                variant="inline"
+              />
+            </div>
           )}
           
           {/* Bottom padding to ensure last message is never hidden */}

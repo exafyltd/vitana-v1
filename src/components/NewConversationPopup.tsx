@@ -31,9 +31,18 @@ export default function NewConversationPopup({
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
 
   // Determine context: use prop if provided, otherwise fall back to role-based logic
   const effectiveContext = context || (currentRole === 'community' ? 'global' : 'tenant');
+
+  const toggleSelection = (userId: string) => {
+    setSelected(prev => 
+      prev.includes(userId) 
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId]
+    );
+  };
 
   const searchUsers = async () => {
     if (!searchQuery.trim() || !user) return;
@@ -73,20 +82,29 @@ export default function NewConversationPopup({
     }
   };
 
-  const startConversation = async (recipientId: string) => {
-    if (!user) return;
+  const startConversation = async () => {
+    if (!user || selected.length !== 1) return;
     
+    const recipientId = selected[0];
     setIsCreating(true);
+    
     try {
       const isGlobalContext = effectiveContext === 'global';
       
       if (isGlobalContext) {
-        // Use secure RPC to create global thread
-        const { data: threadId, error } = await supabase.rpc('create_global_direct_thread', {
-          p_recipient_id: recipientId
-        });
+        // Use atomic RPC function for global DMs  
+        const { data, error } = await supabase.rpc('create_or_get_global_dm' as any, {
+          p_other_user: recipientId
+        }) as { data: { thread_id: string }[] | null, error: any };
 
-        if (error) throw error;
+        if (error) {
+          throw new Error(`Failed to create conversation: ${error.message}`);
+        }
+        
+        const threadId = data?.[0]?.thread_id;
+        if (!threadId) {
+          throw new Error('No thread ID returned from server');
+        }
         
         onConversationCreated?.(threadId, recipientId);
       } else {
@@ -100,7 +118,9 @@ export default function NewConversationPopup({
           p_tenant_id: activeTenantId
         });
 
-        if (error) throw error;
+        if (error) {
+          throw new Error(`Failed to create conversation: ${error.message}`);
+        }
         
         onConversationCreated?.(threadId, recipientId);
       }
@@ -109,9 +129,11 @@ export default function NewConversationPopup({
       onOpenChange(false);
       setSearchQuery('');
       setSearchResults([]);
+      setSelected([]);
     } catch (error) {
       console.error('Error creating conversation:', error);
-      toast.error('Failed to start conversation');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      toast.error(errorMessage);
     } finally {
       setIsCreating(false);
     }
@@ -179,15 +201,50 @@ export default function NewConversationPopup({
                       </div>
                     </div>
                     <Button
-                      onClick={() => startConversation(profile.user_id)}
-                      disabled={isCreating}
+                      onClick={() => toggleSelection(profile.user_id)}
+                      disabled={isCreating || profile.user_id === user?.id}
                       size="sm"
+                      variant={selected.includes(profile.user_id) ? "default" : "outline"}
                     >
-                      {isCreating ? 'Starting...' : 'Message'}
+                      {profile.user_id === user?.id 
+                        ? 'You' 
+                        : selected.includes(profile.user_id) 
+                          ? 'Remove' 
+                          : 'Add'
+                      }
                     </Button>
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {selected.length > 0 && (
+            <div className="space-y-2">
+              <Label>Selected ({selected.length})</Label>
+              <div className="flex flex-wrap gap-2">
+                {selected.map(userId => {
+                  const user = searchResults.find(p => p.user_id === userId);
+                  return user ? (
+                    <div key={userId} className="flex items-center gap-2 bg-muted px-2 py-1 rounded-md text-sm">
+                      <span>{user.display_name || user.full_name || 'Unknown'}</span>
+                      <button 
+                        onClick={() => toggleSelection(userId)}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : null;
+                })}
+              </div>
+              <Button 
+                onClick={startConversation}
+                disabled={selected.length !== 1 || isCreating}
+                className="w-full"
+              >
+                {isCreating ? 'Starting...' : selected.length === 1 ? 'Start Chat' : 'Select one person to start chat'}
+              </Button>
             </div>
           )}
 
