@@ -557,8 +557,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Loading state for when conversation is being loaded  
   if (isLoadingConversation) {
     return (
-      <div className={cn("flex flex-col h-full min-w-0", className)}>
-        <div className="shrink-0 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
+      <div className={cn("flex flex-col h-[calc(100vh-160px)] w-full min-w-0", className)}>
+        <header className="shrink-0 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
           <div className="flex items-center gap-3">
             {onBack && (
               <Button size="sm" variant="ghost" onClick={onBack}>
@@ -571,7 +571,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               <Skeleton className="h-3 w-20" />
             </div>
           </div>
-        </div>
+        </header>
         <div className="flex-1 min-h-0 p-4">
           <MessageSkeleton count={3} />
         </div>
@@ -581,9 +581,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <div className={cn("flex flex-col h-full min-w-0 overflow-hidden", className)}>
+      <div className={cn("flex flex-col h-[calc(100vh-160px)] w-full min-w-0", className)}>
         {/* Header - Sticky at top */}
-        <div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b shadow-sm">
+        <header className="shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b shadow-sm">
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-3 min-w-0">
               {onBack && (
@@ -633,111 +633,113 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               </Button>
             </div>
           </div>
-        </div>
+        </header>
 
-        {/* Messages - Scrollable area */}
-        <div 
-          className="flex-1 min-h-0 overflow-y-auto px-4 py-3" 
-          id="chat-scroll"
-        >
-          {messages.length === 0 && optimisticMessages.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No messages yet</p>
-              <p className="text-sm text-muted-foreground">Start the conversation!</p>
-            </div>
-          ) : (
-            <>
-              {messages.map((message, index) => {
-                const isOwnMessage = message.sender_id === user?.id;
-                const previousMessage = index > 0 ? messages[index - 1] : null;
-                const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
-                
-                // Smart avatar display logic
-                const showAvatar = !isOwnMessage && (!previousMessage || previousMessage.sender_id !== message.sender_id);
-                
-                // Smart spacing logic - group consecutive messages from same sender
-                const isConsecutiveFromSameSender = previousMessage && previousMessage.sender_id === message.sender_id;
-                const isLastInGroup = !nextMessage || nextMessage.sender_id !== message.sender_id;
-                
-                // Time-based grouping (within 5 minutes)
-                const timeDiff = previousMessage 
-                  ? new Date(message.created_at).getTime() - new Date(previousMessage.created_at).getTime()
-                  : Infinity;
-                const isWithinTimeWindow = timeDiff < 5 * 60 * 1000; // 5 minutes
-                
-                // Determine spacing
-                const shouldUseSmallSpacing = isConsecutiveFromSameSender && isWithinTimeWindow;
-                
-                const showTimestamp = isLastInGroup || !isWithinTimeWindow;
+        {/* Messages - Flexible scrollable area */}
+        <div className="flex-1 min-h-0">
+          <div 
+            className="h-full overflow-y-auto px-4 py-3 min-w-0" 
+            id="chat-scroll"
+          >
+            {messages.length === 0 && optimisticMessages.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No messages yet</p>
+                <p className="text-sm text-muted-foreground">Start the conversation!</p>
+              </div>
+            ) : (
+              <>
+                {messages.map((message, index) => {
+                  const isOwnMessage = message.sender_id === user?.id;
+                  const previousMessage = index > 0 ? messages[index - 1] : null;
+                  const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
+                  
+                  // Smart avatar display logic
+                  const showAvatar = !isOwnMessage && (!previousMessage || previousMessage.sender_id !== message.sender_id);
+                  
+                  // Smart spacing logic - group consecutive messages from same sender
+                  const isConsecutiveFromSameSender = previousMessage && previousMessage.sender_id === message.sender_id;
+                  const isLastInGroup = !nextMessage || nextMessage.sender_id !== message.sender_id;
+                  
+                  // Time-based grouping (within 5 minutes)
+                  const timeDiff = previousMessage 
+                    ? new Date(message.created_at).getTime() - new Date(previousMessage.created_at).getTime()
+                    : Infinity;
+                  const isWithinTimeWindow = timeDiff < 5 * 60 * 1000; // 5 minutes
+                  
+                  // Determine spacing
+                  const shouldUseSmallSpacing = isConsecutiveFromSameSender && isWithinTimeWindow;
+                  
+                  const showTimestamp = isLastInGroup || !isWithinTimeWindow;
 
-                return (
-                  <div 
-                    key={message.id} 
-                    className={cn(
-                      shouldUseSmallSpacing ? "mb-1" : "mb-4"
-                    )}
-                  >
-                    <MessageBubble
-                      message={message}
-                      isOwnMessage={isOwnMessage}
-                      onActionClick={handleActionClick}
-                      showAvatar={showAvatar}
-                      showTimestamp={showTimestamp}
-                    />
-                  </div>
-                );
-              })}
-              
-              {/* Render optimistic messages */}
-              {optimisticMessages.map((optMessage) => (
-                <div key={optMessage.id} className="flex justify-end mb-4">
-                  <div className={cn(
-                    "max-w-[680px] rounded-lg px-3 py-2 text-sm",
-                    optMessage.status === 'sending' 
-                      ? "bg-primary/70 text-primary-foreground" 
-                      : "bg-destructive/70 text-destructive-foreground"
-                  )}>
-                    <div className="flex items-center gap-2">
-                      <span>{optMessage.content}</span>
-                      {optMessage.status === 'sending' ? (
-                        <Loader2 className="w-3 h-3 animate-spin" />
-                      ) : (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-6 w-12 p-0 text-xs"
-                          onClick={() => retryFailedMessage(optMessage.id)}
-                        >
-                          Retry
-                        </Button>
+                  return (
+                    <div 
+                      key={message.id} 
+                      className={cn(
+                        shouldUseSmallSpacing ? "mb-1" : "mb-4"
                       )}
+                    >
+                      <MessageBubble
+                        message={message}
+                        isOwnMessage={isOwnMessage}
+                        onActionClick={handleActionClick}
+                        showAvatar={showAvatar}
+                        showTimestamp={showTimestamp}
+                      />
                     </div>
-                    <div className="text-xs opacity-70 mt-1">
-                      {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
+                  );
+                })}
+                
+                {/* Render optimistic messages */}
+                {optimisticMessages.map((optMessage) => (
+                  <div key={optMessage.id} className="flex justify-end mb-4">
+                    <div className={cn(
+                      "max-w-[680px] rounded-lg px-3 py-2 text-sm",
+                      optMessage.status === 'sending' 
+                        ? "bg-primary/70 text-primary-foreground" 
+                        : "bg-destructive/70 text-destructive-foreground"
+                    )}>
+                      <div className="flex items-center gap-2">
+                        <span>{optMessage.content}</span>
+                        {optMessage.status === 'sending' ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 w-12 p-0 text-xs"
+                            onClick={() => retryFailedMessage(optMessage.id)}
+                          >
+                            Retry
+                          </Button>
+                        )}
+                      </div>
+                      <div className="text-xs opacity-70 mt-1">
+                        {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </>
-          )}
-          
-          {/* Bottom padding and scroll anchor */}
-          <div className="h-4" />
-          <div ref={messagesEndRef} />
+                ))}
+              </>
+            )}
+            
+            {/* Bottom padding and scroll anchor */}
+            <div className="h-4" />
+            <div ref={messagesEndRef} />
+          </div>
         </div>
 
-        {/* Composer - Fixed at bottom */}
-        <div className="conversation-composer shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t shadow-sm">
-          <div className="px-4 py-3">
+        {/* Composer - Sticky at bottom, full-width */}
+        <footer className="sticky bottom-0 w-full bg-background border-t">
+          <div className="flex items-center gap-2 px-4 py-3">
             {/* Typing Indicators */}
             {typingUsers.length > 0 && (
-              <div className="mb-2">
+              <div className="absolute -top-8 left-4 right-4">
                 <TypingIndicator users={typingUsers} />
               </div>
             )}
             
             {sendError && (
-              <div className="mb-2">
+              <div className="absolute -top-16 left-4 right-4">
                 <ErrorMessage 
                   title="Message failed to send"
                   description={sendError}
@@ -761,7 +763,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               />
             </div>
           </div>
-        </div>
+        </footer>
       </div>
 
       <GroupMembersModal
