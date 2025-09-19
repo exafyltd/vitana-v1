@@ -1240,6 +1240,12 @@ export type Database = {
         Args: { p_recipient_id: string }
         Returns: string
       }
+      create_or_get_global_dm: {
+        Args: { p_other_user: string }
+        Returns: {
+          thread_id: string
+        }[]
+      }
       create_tenant_direct_thread: {
         Args: { p_recipient_id: string; p_tenant_id: string }
         Returns: string

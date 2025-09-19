@@ -100,4 +100,33 @@ export class PerformanceTracker {
   }
 }
 
+// Diagnostics logging for thread operations
+export function logThreadEvent(
+  type: 'thread_ok' | 'thread_repaired' | 'thread_created',
+  data: {
+    threadId?: string;
+    message?: string;
+    error?: string;
+  } = {}
+) {
+  if (!isDiagnosticsEnabled()) return;
+  
+  // Post to realtime diagnostics if available
+  if (window.postMessage) {
+    window.postMessage({
+      type: 'diagnostic-event',
+      data: {
+        type,
+        threadId: data.threadId,
+        message: data.message,
+        error: data.error,
+        timestamp: new Date().toISOString()
+      }
+    }, '*');
+  }
+  
+  // Also log to console for debugging
+  console.log(`[Diagnostics] ${type}:`, data);
+}
+
 export const perfTracker = new PerformanceTracker();

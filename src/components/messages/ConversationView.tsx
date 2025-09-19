@@ -32,6 +32,7 @@ import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
 import { ProfileDirectory } from "@/lib/secure-accessors";
+import { logThreadEvent } from '@/lib/diagnostics';
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -95,6 +96,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isWindowFocused, setIsWindowFocused] = useState(true);
   const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
+
+  // Scope guarding - auto-switch scope if thread is found in wrong context
+  const [scopeSwitched, setScopeSwitched] = useState(false);
 
   // Use hybrid messages directly from the hook - no local state needed
   const messages = hybridMessagesFromHook || [];
@@ -170,6 +174,57 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, recipientId, fetchMessages]);
 
+  // Scope guard: verify thread exists in the correct context
+  useEffect(() => {
+    const verifyThreadScope = async () => {
+      if (!threadId || scopeSwitched) return;
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlScope = urlParams.get('scope');
+      
+      if (urlScope === 'global' && context === 'global') {
+        try {
+          // Check if thread exists in global context
+          const { data, error } = await supabase
+            .from('global_message_threads')
+            .select('id')
+            .eq('id', threadId)
+            .single();
+          
+          if (error && error.code === 'PGRST116') {
+            // Thread not found in global, try tenant
+            const { data: tenantThread } = await supabase
+              .from('message_threads')
+              .select('id')
+              .eq('id', threadId)
+              .maybeSingle();
+              
+            if (tenantThread) {
+              setScopeSwitched(true);
+              // Auto-switch to tenant scope
+              const newUrl = new URL(window.location.href);
+              newUrl.searchParams.set('scope', 'tenant');
+              window.location.href = newUrl.toString();
+              return;
+            }
+          }
+          
+          if (data) {
+            logThreadEvent('thread_ok', {
+              threadId,
+              message: 'Thread found in correct scope'
+            });
+          }
+        } catch (error: any) {
+          console.error('Scope verification error:', error);
+          setLoadError(`Thread verification failed: ${error.message}`);
+        }
+      }
+    };
+    
+    verifyThreadScope();
+  }, [threadId, context, scopeSwitched]);
+
   // Enhanced thread data loading
   useEffect(() => {
     const loadThreadData = async () => {
@@ -185,7 +240,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         const profilesTable = messageContext === 'global' ? 'global_community_profiles' : 'profiles';
         
         // Get thread participants
-        const { data: participants, error: participantsError } = await supabase
+        let { data: participants, error: participantsError } = await supabase
           .from(participantsTable)
           .select('*')
           .eq('thread_id', threadId)
@@ -193,8 +248,42 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
         if (participantsError) {
           console.error('Error fetching participants:', participantsError);
-          setLoadError('Failed to load conversation details');
+          setLoadError(`Failed to load conversation: ${participantsError.message || participantsError.code}`);
           return;
+        }
+
+        // Check if user is actually a participant (health check)
+        const isParticipant = participants?.some(p => p.user_id === user?.id);
+        if (!isParticipant && participants?.length > 0) {
+          // Try to add user as participant (repair scenario)
+          try {
+            const { error: repairError } = await supabase
+              .from(participantsTable)
+              .insert({
+                thread_id: threadId,
+                user_id: user?.id,
+                role: 'member',
+                is_active: true
+              });
+            
+            if (!repairError) {
+              logThreadEvent('thread_repaired', {
+                threadId,
+                message: 'User added as participant during health check'
+              });
+              // Re-fetch participants after repair
+              const { data: updatedParticipants } = await supabase
+                .from(participantsTable)
+                .select('*')
+                .eq('thread_id', threadId)
+                .eq('is_active', true);
+              if (updatedParticipants) {
+                participants = updatedParticipants;
+              }
+            }
+          } catch (repairError: any) {
+            console.warn('Failed to repair thread participation:', repairError);
+          }
         }
 
         // Get participant profiles  
@@ -237,9 +326,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         }
 
         setIsThreadDataLoaded(true);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error loading thread data:', error);
-        setLoadError('Failed to load conversation details');
+        setLoadError(`Failed to load conversation: ${error.message || error.code || 'Unknown error'}`);
       }
     };
 
@@ -322,12 +411,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         content: content.trim(),
         type: type as any
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending message:', error);
-      setSendError('Failed to send message. Please try again.');
+      const errorMessage = `Failed to send message: ${error.message || error.code || 'Unknown error'}`;
+      setSendError(errorMessage);
       toast({
         title: "Message Failed",
-        description: "Failed to send message. Please try again.",
+        description: errorMessage,
         variant: "destructive"
       });
     }

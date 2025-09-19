@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { toast } from "sonner";
+import { logThreadEvent } from "@/lib/diagnostics";
 
 interface User {
   user_id: string;
@@ -41,6 +42,7 @@ export default function NewConversationPopup({
   const { activeTenantId } = useTenant();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [selectedRecipients, setSelectedRecipients] = useState<User[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -50,19 +52,30 @@ export default function NewConversationPopup({
   // Determine context: use prop if provided, otherwise fall back to role-based logic
   const effectiveContext = context || (currentRole === 'community' ? 'global' : 'tenant');
 
+  // Toggle user selection logic
+  const toggleUser = (userId: string) => {
+    setSelected(s => s.includes(userId) ? s.filter(x => x !== userId) : [...s, userId]);
+  };
+
   // Auto-switch to group mode when multiple recipients are selected
   useEffect(() => {
-    if (selectedRecipients.length > 1 && !isGroupMode) {
+    if (selected.length > 1 && !isGroupMode) {
       setIsGroupMode(true);
       if (!groupName) {
         const names = selectedRecipients.map(r => r.display_name || r.full_name).filter(Boolean);
         setGroupName(names.slice(0, 3).join(', ') + (names.length > 3 ? '...' : ''));
       }
-    } else if (selectedRecipients.length <= 1 && isGroupMode) {
+    } else if (selected.length <= 1 && isGroupMode) {
       setIsGroupMode(false);
       setGroupName('');
     }
-  }, [selectedRecipients, isGroupMode, groupName]);
+  }, [selected, selectedRecipients, isGroupMode, groupName]);
+
+  // Keep selectedRecipients in sync with selected IDs
+  useEffect(() => {
+    const recipients = searchResults.filter(user => selected.includes(user.user_id));
+    setSelectedRecipients(recipients);
+  }, [selected, searchResults]);
 
   const searchUsers = async () => {
     if (!searchQuery.trim() || !user) return;
@@ -103,15 +116,13 @@ export default function NewConversationPopup({
   };
 
   const addRecipient = (recipient: User) => {
-    if (!selectedRecipients.find(r => r.user_id === recipient.user_id)) {
-      setSelectedRecipients([...selectedRecipients, recipient]);
-    }
+    toggleUser(recipient.user_id);
     setSearchQuery('');
     setSearchResults([]);
   };
 
   const removeRecipient = (userId: string) => {
-    setSelectedRecipients(selectedRecipients.filter(r => r.user_id !== userId));
+    toggleUser(userId);
   };
 
   const startConversation = async () => {
@@ -119,65 +130,59 @@ export default function NewConversationPopup({
     
     if (isGroupMode) {
       // Create group chat
-      if (!groupName.trim() || selectedRecipients.length === 0) {
+      if (!groupName.trim() || selected.length === 0) {
         toast.error('Group name and recipients are required');
         return;
       }
       return createGroup();
     } else {
       // Create direct message
-      if (selectedRecipients.length !== 1) {
+      if (selected.length !== 1) {
         toast.error('Select exactly one recipient for direct message');
         return;
       }
-      return createDirectMessage(selectedRecipients[0].user_id);
+      return startChat();
     }
   };
 
-  const createDirectMessage = async (recipientId: string) => {
-    if (!user) return;
+  // Start Chat (DM only) - uses the new atomic function
+  const startChat = async () => {
+    if (selected.length !== 1) return;
     
     setIsCreating(true);
     try {
-      const isGlobalContext = effectiveContext === 'global';
+      const otherId = selected[0];
+      const { data, error } = await supabase.rpc('create_or_get_global_dm', { 
+        p_other_user: otherId 
+      });
       
-      if (isGlobalContext) {
-        // Use secure RPC to create global thread
-        const { data: threadId, error } = await supabase.rpc('create_global_direct_thread', {
-          p_recipient_id: recipientId
-        });
-
-        if (error) throw error;
-        
-        onConversationCreated?.(threadId, recipientId);
-      } else {
-        // Use secure RPC to create tenant thread
-        if (!activeTenantId) {
-          throw new Error('No active tenant found');
-        }
-
-        const { data: threadId, error } = await supabase.rpc('create_tenant_direct_thread', {
-          p_recipient_id: recipientId,
-          p_tenant_id: activeTenantId
-        });
-
-        if (error) throw error;
-        
-        onConversationCreated?.(threadId, recipientId);
+      if (error) {
+        toast.error(`Could not start chat: ${error.message}`);
+        return;
       }
-
-      toast.success('Conversation started!');
-      resetForm();
-    } catch (error) {
-      console.error('Error creating conversation:', error);
-      toast.error('Failed to start conversation');
+      
+      const threadId = data?.[0]?.thread_id;
+      if (threadId) {
+        // Log success to diagnostics
+        logThreadEvent('thread_created', {
+          threadId,
+          message: 'DM thread created successfully'
+        });
+        
+        toast.success('Chat started!');
+        onConversationCreated?.(threadId, otherId);
+        resetForm();
+      }
+    } catch (error: any) {
+      console.error('Error starting chat:', error);
+      toast.error(`Could not start chat: ${error.message || 'Unknown error'}`);
     } finally {
       setIsCreating(false);
     }
   };
 
   const createGroup = async () => {
-    if (!user || !groupName.trim() || selectedRecipients.length === 0) return;
+    if (!user || !groupName.trim() || selected.length === 0) return;
     
     setIsCreating(true);
     try {
@@ -253,9 +258,9 @@ export default function NewConversationPopup({
       toast.success(`Group "${groupName}" created successfully!`);
       onGroupCreated?.(thread.id);
       resetForm();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating group:', error);
-      toast.error('Failed to create group');
+      toast.error(`Failed to create group: ${error.message || 'Unknown error'}`);
     } finally {
       setIsCreating(false);
     }
@@ -265,6 +270,7 @@ export default function NewConversationPopup({
     onOpenChange(false);
     setSearchQuery('');
     setSearchResults([]);
+    setSelected([]);
     setSelectedRecipients([]);
     setIsGroupMode(false);
     setGroupName('');
@@ -386,12 +392,17 @@ export default function NewConversationPopup({
                       </div>
                     </div>
                     <Button
-                      onClick={() => addRecipient(profile)}
-                      disabled={selectedRecipients.find(r => r.user_id === profile.user_id) !== undefined}
+                      onClick={() => toggleUser(profile.user_id)}
+                      disabled={profile.user_id === user?.id}
                       size="sm"
-                      variant={selectedRecipients.find(r => r.user_id === profile.user_id) ? "secondary" : "default"}
+                      variant={selected.includes(profile.user_id) ? "secondary" : "default"}
                     >
-                      {selectedRecipients.find(r => r.user_id === profile.user_id) ? 'Added' : 'Add'}
+                      {profile.user_id === user?.id 
+                        ? 'You' 
+                        : selected.includes(profile.user_id) 
+                          ? 'Remove' 
+                          : 'Add'
+                      }
                     </Button>
                   </div>
                 ))}
@@ -416,9 +427,9 @@ export default function NewConversationPopup({
             </Button>
             <Button
               onClick={startConversation}
-              disabled={isCreating || selectedRecipients.length === 0 || (isGroupMode && !groupName.trim())}
+              disabled={isCreating || selected.length === 0 || (isGroupMode && !groupName.trim())}
             >
-              {isCreating ? 'Creating...' : isGroupMode ? 'Create Group' : 'Start Chat'}
+              {isCreating ? 'Creating...' : isGroupMode ? 'Create Group' : (selected.length === 1 ? 'Start Chat' : 'Start Group')}
             </Button>
           </div>
         </div>
