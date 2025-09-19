@@ -2,6 +2,7 @@ import { useRole } from "./useRole";
 import { useGlobalMessages } from "./useGlobalMessages";
 import { useTenantMessages } from "./useTenantMessages";
 import { useTypingIndicators } from "./useTypingIndicators";
+import { instrumentRealtimeEvent, perfTracker } from "@/lib/diagnostics";
 
 export type MessageKind = "text" | "image" | "file" | "system";
 
@@ -30,12 +31,36 @@ export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?:
   const context = isGlobalContext ? 'global' : 'tenant';
   const { typingUsers, startTyping, stopTyping } = useTypingIndicators(threadId, context);
   
-  // Create unified sendMessage function
+  // Create unified sendMessage function with instrumentation
   const sendMessage = async (args: SendMessageArgs) => {
-    if (args.context === 'global') {
-      return globalMessages.sendMessage(args);
-    } else {
-      return tenantMessages.sendMessage(args);
+    const operationId = `send-${Date.now()}`;
+    perfTracker.start(operationId);
+    
+    instrumentRealtimeEvent('send', {
+      threadId: args.threadId,
+      content: args.content
+    });
+
+    try {
+      let result;
+      if (args.context === 'global') {
+        result = await globalMessages.sendMessage(args);
+      } else {
+        result = await tenantMessages.sendMessage(args);
+      }
+      
+      perfTracker.end(operationId, 'ack', {
+        threadId: args.threadId,
+        content: args.content
+      });
+      
+      return result;
+    } catch (error) {
+      instrumentRealtimeEvent('error', {
+        threadId: args.threadId,
+        error: error instanceof Error ? error.message : 'Send failed'
+      });
+      throw error;
     }
   };
 

@@ -3,6 +3,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import type { GlobalMessage } from './useGlobalMessages';
 import type { TenantMessage } from './useTenantMessages';
+import { instrumentRealtimeEvent, trackSubscription } from '@/lib/diagnostics';
 
 /**
  * Focused real-time hook for individual conversation threads
@@ -116,6 +117,9 @@ export function useConversationRealtime(
     // Set up real-time subscription filtered by thread_id
     const channelName = `thread_messages_${threadId}`;
     
+    // Track subscription
+    trackSubscription(`${channelName}:postgres_changes`, 'add');
+    
     const messageChannel = supabase
       .channel(channelName)
       .on(
@@ -129,6 +133,13 @@ export function useConversationRealtime(
         async (payload) => {
           console.log(`New ${context} message in thread ${threadId}:`, payload.new);
           const newMessage = payload.new as any;
+          
+          // Track the delivered event
+          instrumentRealtimeEvent('delivered', {
+            threadId,
+            userId: newMessage.sender_id,
+            content: newMessage.body
+          });
           
           // Skip our own messages (handled by optimistic updates)
           if (newMessage.sender_id === user.id) return;
@@ -176,6 +187,7 @@ export function useConversationRealtime(
       .subscribe();
 
     return () => {
+      trackSubscription(`${channelName}:postgres_changes`, 'remove');
       supabase.removeChannel(messageChannel);
     };
   }, [threadId, context, activeTenantId, user, fetchThreadMessages]);

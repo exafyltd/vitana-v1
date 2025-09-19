@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { g1Analytics } from '@/lib/analytics-events';
+import { instrumentRealtimeEvent, trackChannelStatus, trackSubscription } from '@/lib/diagnostics';
 
 interface TypingUser {
   id: string;
@@ -64,6 +65,10 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
         }
       });
 
+      // Track diagnostics
+      instrumentRealtimeEvent('typing_start', { threadId, userId: user.id });
+      trackChannelStatus(channelName, 'connected');
+
       // Track analytics
       g1Analytics.autopilotActionExecuted('typing_start');
     } catch (error) {
@@ -88,6 +93,9 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
         }
       });
 
+      // Track diagnostics
+      instrumentRealtimeEvent('typing_stop', { threadId, userId: user.id });
+
       // Track analytics
       g1Analytics.autopilotActionExecuted('typing_stop');
     } catch (error) {
@@ -100,6 +108,9 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
     if (!user || !threadId) return;
 
     const channelName = `typing:${threadId}`;
+
+    // Track subscription
+    trackSubscription(`typing:${threadId}`, 'add');
 
     const typingChannel = supabase
       .channel(channelName)
@@ -138,6 +149,7 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
       .subscribe();
 
     return () => {
+      trackSubscription(`typing:${threadId}`, 'remove');
       supabase.removeChannel(typingChannel);
     };
   }, [user, threadId, context, userCache]);
