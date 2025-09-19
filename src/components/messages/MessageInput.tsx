@@ -3,12 +3,22 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
+import { VoiceRecorder } from '@/components/ui/voice-recorder';
+import { AttachmentPreview } from '@/components/ui/attachment-preview';
 import { cn } from '@/lib/utils';
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
-import { validateFile, uploadChatAttachment, formatFileSize, type AttachmentData, type UploadProgress } from "@/lib/fileUpload";
+import { 
+  validateFile, 
+  uploadChatAttachment, 
+  uploadVoiceMessage,
+  formatFileSize, 
+  isValidFileType,
+  type AttachmentData, 
+  type UploadProgress 
+} from "@/lib/fileUpload";
 import { 
   Send, 
   Smile, 
@@ -22,7 +32,8 @@ import {
   X,
   FileText,
   Image as ImageIcon,
-  Loader2
+  Loader2,
+  Mic
 } from 'lucide-react';
 
 interface MessageInputProps {
@@ -53,6 +64,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const [attachments, setAttachments] = useState<AttachmentData[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: UploadProgress }>({});
+  const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout>();
@@ -254,10 +266,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
     try {
       const currentThreadId = threadId || 'current-thread';
       
-      const attachmentData = await uploadChatAttachment(
+      const attachmentResult = await uploadChatAttachment(
         file,
-        activeTenantId || 'default',
-        currentThreadId,
         (progress) => {
           setUploadProgress(prev => ({
             ...prev,
@@ -265,6 +275,16 @@ const MessageInput: React.FC<MessageInputProps> = ({
           }));
         }
       );
+
+      // Convert FileUploadResult to AttachmentData format
+      const attachmentData: AttachmentData = {
+        type: attachmentResult.type.startsWith('image/') ? 'image' : 'file',
+        url: attachmentResult.url,
+        name: attachmentResult.name,
+        size: attachmentResult.size,
+        mime: attachmentResult.type,
+        filename: attachmentResult.name
+      };
 
       // Add successful upload to attachments
       setAttachments(prev => [...prev, attachmentData]);
@@ -306,7 +326,55 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const removeAttachment = (index: number) => {
+    const file = attachments[index];
+    if (file) {
+      const fileId = `${file.name}-${file.size}`;
+      setUploadProgress(prev => {
+        const newProgress = { ...prev };
+        delete newProgress[fileId];
+        return newProgress;
+      });
+    }
     setAttachments(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleVoiceRecording = async (audioBlob: Blob, duration: number) => {
+    try {
+      setIsUploading(true);
+      
+      const result = await uploadVoiceMessage(audioBlob, duration, (progress) => {
+        // Voice message upload progress could be shown here
+      });
+
+      // Send voice message
+      await onSendMessage(
+        `🎤 Voice message (${Math.round(duration)}s)`,
+        'voice',
+        {
+          url: result.url,
+          duration: result.duration,
+          size: result.size,
+          name: result.name
+        }
+      );
+
+      setShowVoiceRecorder(false);
+      
+      toast({
+        title: "Voice message sent",
+        description: "Your voice message has been sent successfully",
+      });
+
+    } catch (error) {
+      console.error('Voice message error:', error);
+      toast({
+        title: "Failed to send voice message",
+        description: "There was an error sending your voice message",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const sendPaymentRequest = async (amount: string, description: string) => {
@@ -407,10 +475,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               >
                 <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                 <span className="text-muted-foreground">
-                  {progress.stage === 'validating' && 'Validating...'}
-                  {progress.stage === 'uploading' && `Uploading... ${progress.progress}%`}
-                  {progress.stage === 'complete' && 'Complete!'}
-                  {progress.stage === 'error' && 'Error'}
+                  Uploading... {progress.percentage}%
                 </span>
               </div>
             ))}
@@ -531,7 +596,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           <input
             ref={fileInputRef}
             type="file"
-            accept=".png,.jpg,.jpeg,.webp,.pdf,.txt,.docx,.xlsx"
+            accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.zip,.rar"
             onChange={handleFileSelect}
             className="hidden"
           />
@@ -545,6 +610,18 @@ const MessageInput: React.FC<MessageInputProps> = ({
             disabled={disabled || isUploading}
           >
             <Paperclip className="w-4 h-4" />
+          </Button>
+
+          {/* Voice Message Button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowVoiceRecorder(true)}
+            disabled={isUploading || showVoiceRecorder}
+            className="h-9 w-9 p-0 mb-1"
+          >
+            <Mic className="h-4 w-4" />
           </Button>
 
           <div className="flex-1 relative">
