@@ -516,6 +516,33 @@ export function useTenantMessages() {
           fetchThreads();
         }
       )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'messages',
+        },
+        (payload) => {
+          console.log('Tenant message updated (read receipt):', payload.new);
+          const updatedMessage = payload.new as any;
+          
+          // Only update messages for our tenant
+          if (updatedMessage.tenant_id !== activeTenantId) return;
+          
+          // Update the message status in local state for real-time read receipts
+          setMessages(prev => prev.map(msg => 
+            msg.id === updatedMessage.id 
+              ? {
+                  ...msg,
+                  read_at: updatedMessage.read_at,
+                  delivered_at: updatedMessage.delivered_at,
+                  sent_at: updatedMessage.sent_at
+                }
+              : msg
+          ));
+        }
+      )
       .subscribe();
 
     const threadChannel = supabase
