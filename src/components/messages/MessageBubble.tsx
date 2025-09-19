@@ -430,27 +430,34 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   return (
     <>
       <div className={cn(
-        "flex gap-3 max-w-[85%] relative",
-        isOwnMessage ? "ml-auto flex-row-reverse" : ""
+        "flex gap-2 w-full relative",
+        isOwnMessage ? "justify-end" : "justify-start"
       )}>
-        {showAvatar && !isOwnMessage && (
-          <Avatar className="w-8 h-8 flex-shrink-0">
-            <AvatarImage 
-              src={message.sender?.avatar_url} 
-              alt={message.sender?.display_name || message.sender?.full_name || 'User'} 
-            />
-            <AvatarFallback>
-              {(message.sender?.display_name?.[0] || message.sender?.full_name?.[0] || 'U').toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-        )}
-        
+        {/* Avatar column - fixed width to maintain alignment */}
         <div className={cn(
-          "flex flex-col gap-1",
-          isOwnMessage ? "items-end" : "items-start"
+          "w-8 flex justify-center",
+          isOwnMessage && "order-2"
+        )}>
+          {showAvatar && !isOwnMessage && (
+            <Avatar className="w-8 h-8 flex-shrink-0 mt-0.5">
+              <AvatarImage 
+                src={message.sender?.avatar_url} 
+                alt={message.sender?.display_name || message.sender?.full_name || 'User'} 
+              />
+              <AvatarFallback>
+                {(message.sender?.display_name?.[0] || message.sender?.full_name?.[0] || 'U').toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          )}
+        </div>
+        
+        {/* Message content column */}
+        <div className={cn(
+          "flex flex-col min-w-0 max-w-[calc(100%-3rem)]",
+          isOwnMessage ? "items-end order-1" : "items-start"
         )}>
           {!isOwnMessage && showAvatar && (
-            <span className="text-xs text-muted-foreground px-3">
+            <span className="text-xs text-muted-foreground mb-1 ml-3">
               {message.sender?.display_name || message.sender?.full_name || 'Unknown User'}
             </span>
           )}
@@ -460,7 +467,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               ref={messageRef}
               tabIndex={0}
               className={cn(
-                "rounded-2xl px-4 py-2 max-w-md relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
+                "rounded-2xl px-4 py-2 max-w-sm relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
+                "word-wrap break-words",
                 isOwnMessage 
                   ? "bg-primary text-primary-foreground" 
                   : "bg-muted",
@@ -497,10 +505,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           
           {showTimestamp && (
             <div className={cn(
-              "flex items-center gap-1 text-xs text-muted-foreground px-3",
-              isOwnMessage ? "flex-row-reverse" : ""
+              "flex items-center gap-1 mt-1 ml-3",
+              isOwnMessage ? "justify-end" : "justify-start"
             )}>
-              <span>{format(new Date(message.created_at), 'HH:mm')}</span>
+              <span className="text-xs text-muted-foreground">
+                {format(new Date(message.created_at), 'HH:mm')}
+              </span>
               {renderStatusIcon()}
             </div>
           )}

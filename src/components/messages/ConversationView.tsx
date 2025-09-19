@@ -649,16 +649,34 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             <>
               {messages.map((message, index) => {
                 const isOwnMessage = message.sender_id === user?.id;
-                const showAvatar = !isOwnMessage && (
-                  index === 0 || 
-                  messages[index - 1]?.sender_id !== message.sender_id
-                );
-                const showTimestamp = index === messages.length - 1 || 
-                  new Date(messages[index + 1]?.created_at).getTime() - 
-                  new Date(message.created_at).getTime() > 5 * 60 * 1000;
+                const previousMessage = index > 0 ? messages[index - 1] : null;
+                const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
+                
+                // Smart avatar display logic
+                const showAvatar = !isOwnMessage && (!previousMessage || previousMessage.sender_id !== message.sender_id);
+                
+                // Smart spacing logic - group consecutive messages from same sender
+                const isConsecutiveFromSameSender = previousMessage && previousMessage.sender_id === message.sender_id;
+                const isLastInGroup = !nextMessage || nextMessage.sender_id !== message.sender_id;
+                
+                // Time-based grouping (within 5 minutes)
+                const timeDiff = previousMessage 
+                  ? new Date(message.created_at).getTime() - new Date(previousMessage.created_at).getTime()
+                  : Infinity;
+                const isWithinTimeWindow = timeDiff < 5 * 60 * 1000; // 5 minutes
+                
+                // Determine spacing
+                const shouldUseSmallSpacing = isConsecutiveFromSameSender && isWithinTimeWindow;
+                
+                const showTimestamp = isLastInGroup || !isWithinTimeWindow;
 
                 return (
-                  <div key={message.id} className="mb-4">
+                  <div 
+                    key={message.id} 
+                    className={cn(
+                      shouldUseSmallSpacing ? "mb-1" : "mb-4"
+                    )}
+                  >
                     <MessageBubble
                       message={message}
                       isOwnMessage={isOwnMessage}
