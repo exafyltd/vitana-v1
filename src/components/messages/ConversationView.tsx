@@ -14,6 +14,7 @@ import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
 import { logThreadEvent, checkThreadHealth } from '@/lib/diagnostics';
+import { useRealtimeMessages } from '@/hooks/useRealtimeMessages';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   ArrowLeft, 
@@ -96,6 +97,20 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isWindowFocused, setIsWindowFocused] = useState(true);
   const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
+
+  // Setup real-time message subscriptions
+  useRealtimeMessages(
+    threadId,
+    messageContext,
+    (newMessage) => {
+      console.log('New message received via real-time:', newMessage);
+      // The useHybridMessages hook should handle the actual message updates
+      // This is just for logging and potential future enhancements
+    },
+    (updatedMessage) => {
+      console.log('Message updated via real-time:', updatedMessage);
+    }
+  );
 
   // Use hybrid messages directly from the hook - no local state needed
   const messages = hybridMessagesFromHook || [];
@@ -290,9 +305,52 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     try {
       setSendError(null);
       
-      if (!threadId) {
-        console.error('No thread ID available for sending message');
+      // If no thread but we have recipient, create a new DM thread
+      if (!threadId && recipientId && messageContext === 'global') {
+        console.log('Creating new global DM thread for recipient:', recipientId);
+        
+        const { data, error } = await supabase.rpc('create_or_get_global_dm', {
+          p_other_user: recipientId
+        });
+        
+        if (error) {
+          throw new Error(`Failed to create conversation: ${error.message}`);
+        }
+        
+        if (!data || data.length === 0) {
+          throw new Error('No thread ID returned from create_or_get_global_dm');
+        }
+        
+        const newThreadId = data[0].thread_id;
+        console.log('Created/found thread:', newThreadId);
+        
+        // Update the URL to reflect the new thread
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('thread', newThreadId);
+        newUrl.searchParams.delete('recipient'); // Remove recipient param
+        window.history.replaceState({}, '', newUrl.toString());
+        
+        // Send the message to the new thread
+        const newMessage = await sendMessage({
+          context: messageContext,
+          threadId: newThreadId,
+          content,
+          type: (messageType as any) || 'text',
+          contentData,
+          recipientId
+        });
+        
+        // Refresh threads to show the new conversation
+        setTimeout(() => {
+          window.location.reload(); // Simple reload to ensure all state is updated
+        }, 500);
+        
         return;
+      }
+      
+      if (!threadId) {
+        console.error('No thread ID or recipient ID available for sending message');
+        throw new Error('Cannot send message: no conversation selected');
       }
 
       // Create optimistic "sending" bubble
@@ -758,7 +816,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             disabled={isSending}
             placeholder={`Message ${getConversationTitle()}...`}
             threadId={threadId}
-            activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : undefined}
+            recipientId={recipientId}
+            activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : (recipientId ? { id: `temp-${recipientId}`, recipientId } : undefined)}
           />
         </div>
       </div>
