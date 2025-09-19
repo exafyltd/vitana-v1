@@ -30,6 +30,7 @@ import EmptyStateIllustration from './EmptyStateIllustration';
 import ErrorMessage from './ErrorMessage';
 import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
+import GroupAvatarStack from './GroupAvatarStack';
 import { ProfileDirectory } from "@/lib/secure-accessors";
 
 interface ConversationViewProps {
