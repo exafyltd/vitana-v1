@@ -5,7 +5,6 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { useSidebar } from "@/components/ui/sidebar";
 import { messagesNavigation } from "@/config/navigation";
 import { Button } from "@/components/ui/button";
 import { 
@@ -36,7 +35,6 @@ import CreateGroupPopup from "@/components/messages/CreateGroupPopup";
 export default function Messages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
-  const { open: sidebarOpen } = useSidebar();
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
   const { threads, isLoading, context, ...hybridMessages } = useHybridMessages(messageContext);
   const globalMessages = useHybridMessages('global');
@@ -134,7 +132,7 @@ export default function Messages() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
         <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
         <AppLayout>
-          <div className={`${sidebarOpen ? 'max-w-7xl mx-auto' : 'w-full'} px-4 sm:px-6 lg:px-8`}>
+          <div className="w-full px-4 sm:px-6 lg:px-8">
             <div className="space-y-6 lg:space-y-8">
               <SubNavigation items={messagesNavigation} />
               <StandardHeader 
@@ -330,7 +328,7 @@ export default function Messages() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
       <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
       <AppLayout>
-        <div className={`${sidebarOpen ? 'max-w-7xl mx-auto' : 'w-full'} px-4 sm:px-6 lg:px-8`}>
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="space-y-6 lg:space-y-8">
             <SubNavigation items={messagesNavigation} />
             
