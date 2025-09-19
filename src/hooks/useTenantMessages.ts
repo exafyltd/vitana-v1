@@ -263,7 +263,7 @@ export function useTenantMessages() {
         .from('profiles')
         .select('user_id, full_name, display_name, avatar_url')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       // Create optimistic message
       const optimisticMessage: TenantMessage = {
@@ -365,7 +365,7 @@ export function useTenantMessages() {
           .from('message_threads')
           .select('*')
           .eq('id', threadId)
-          .single();
+          .maybeSingle();
         
         return thread;
       }
@@ -429,7 +429,7 @@ export function useTenantMessages() {
           .select('last_read_at')
           .eq('thread_id', threadId)
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
         // Only update if new timestamp is later (idempotent)
         if (!currentParticipant?.last_read_at || new Date(now) > new Date(currentParticipant.last_read_at)) {
@@ -481,7 +481,7 @@ export function useTenantMessages() {
     if (!user || !activeTenantId || !isTenantContext) return;
 
     const messageChannel = supabase
-      .channel('tenant_messages_changes')
+      .channel('tenant_messages_realtime')
       .on(
         'postgres_changes',
         {
@@ -504,7 +504,7 @@ export function useTenantMessages() {
             .from('profiles')
             .select('user_id, full_name, display_name, avatar_url')
             .eq('user_id', newMessage.sender_id)
-            .single();
+            .maybeSingle();
 
           // Add message with sender data
           setMessages(prev => [...prev, {
@@ -519,7 +519,7 @@ export function useTenantMessages() {
       .subscribe();
 
     const threadChannel = supabase
-      .channel('tenant_threads_changes')
+      .channel('tenant_threads_realtime')
       .on(
         'postgres_changes',
         {
