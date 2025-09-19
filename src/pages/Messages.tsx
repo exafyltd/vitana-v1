@@ -45,6 +45,8 @@ export default function Messages() {
   const [showNewConversation, setShowNewConversation] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [localThreads, setLocalThreads] = useState(threads);
+  const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
+  const [pinnedThreads, setPinnedThreads] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (threads.length > 0 && !selectedThreadId && !selectedRecipientId) {
@@ -164,7 +166,7 @@ export default function Messages() {
     >
       <div className="w-80 border-r border-border flex-shrink-0">
         <ScrollArea className="h-full">
-          <div className="p-4 space-y-2">
+          <div className={`p-4 ${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
             {localThreads.length === 0 ? (
               <EmptyStateIllustration 
                 type="inbox"
@@ -197,12 +199,19 @@ export default function Messages() {
                     return acc;
                   }
                 }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
-                .map((thread) => (
+                .map((thread) => {
+                  const isPinned = pinnedThreads.has(thread.id);
+                  const isActive = selectedThreadId === thread.id;
+                  const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
+                  
+                  return (
                 <Card
                   key={thread.id}
-                  className={`p-4 cursor-pointer transition-colors hover:bg-muted/50 ${
-                    selectedThreadId === thread.id ? 'bg-muted' : ''
-                  }`}
+                  className={`${cardHeight} cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                    isActive 
+                      ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
+                      : 'hover:shadow-sm'
+                  } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
                   onClick={() => {
                     console.log('🎯 Messages.tsx: Thread clicked', { threadId: thread.id, unreadCount: thread.unread_count });
                     setSelectedThreadId(thread.id);
@@ -214,47 +223,75 @@ export default function Messages() {
                   }}
                 >
                   <div className="flex items-start space-x-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src={thread.participants?.[0]?.avatar_url} />
-                      <AvatarFallback>
-                        {thread.participants?.[0]?.display_name?.[0] || 
-                         thread.name?.[0] || '?'}
-                      </AvatarFallback>
-                    </Avatar>
+                    <div className="relative">
+                      <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
+                        <AvatarImage src={thread.participants?.[0]?.avatar_url} />
+                        <AvatarFallback>
+                          {thread.participants?.[0]?.display_name?.[0] || 
+                           thread.name?.[0] || '?'}
+                        </AvatarFallback>
+                      </Avatar>
+                      {/* Online presence indicator */}
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-background rounded-full"></div>
+                    </div>
+                    
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-medium truncate">
-                          {thread.name || 
-                           thread.participants?.find(p => p.user_id !== user?.id)?.display_name ||
-                           'Unknown'}
-                        </h3>
-                         {thread.unread_count > 0 && (
-                           <Badge 
-                             variant="secondary" 
-                             className="ml-2 bg-primary text-primary-foreground animate-in fade-in duration-200"
-                           >
-                             {thread.unread_count > 99 ? '99+' : thread.unread_count}
-                           </Badge>
-                         )}
-                      </div>
-                      {thread.last_message && (
-                        <p className="text-sm text-muted-foreground truncate mt-1">
-                          {thread.last_message.body}
-                        </p>
-                      )}
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center text-xs text-muted-foreground">
-                          <Users className="w-3 h-3 mr-1" />
-                          {thread.participants?.length || 0} participants
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
+                              {thread.name || 
+                               thread.participants?.find(p => p.user_id !== user?.id)?.display_name ||
+                               'Unknown'}
+                            </h3>
+                            {isPinned && (
+                              <div className="w-2 h-2 bg-domain-messages-accent rounded-full flex-shrink-0"></div>
+                            )}
+                          </div>
+                          
+                          {thread.last_message && (
+                            <p className={`text-muted-foreground truncate ${
+                              densityMode === 'compact' ? 'text-xs mt-0.5' : 'text-sm mt-1'
+                            }`}>
+                              {/* Show typing indicator if applicable */}
+                              {/* {typingIndicator ? 'typing...' : thread.last_message.body} */}
+                              {thread.last_message.body}
+                            </p>
+                          )}
+                          
+                          {densityMode === 'comfortable' && (
+                            <div className="flex items-center text-xs text-muted-foreground mt-1">
+                              <Users className="w-3 h-3 mr-1" />
+                              {thread.participants?.length || 0} participants
+                            </div>
+                          )}
                         </div>
-                        <span className="text-xs text-muted-foreground">
-                          {thread.updated_at && new Date(thread.updated_at).toLocaleDateString()}
-                        </span>
+                        
+                        <div className="flex flex-col items-end gap-1 ml-2 flex-shrink-0">
+                          <span className={`text-muted-foreground ${
+                            densityMode === 'compact' ? 'text-xs' : 'text-xs'
+                          }`}>
+                            {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric'
+                            })}
+                          </span>
+                          
+                          {thread.unread_count > 0 && (
+                            <Badge 
+                              variant="secondary" 
+                              className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
+                            >
+                              {thread.unread_count > 99 ? '99+' : thread.unread_count}
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </Card>
-              ))
+                 );
+               })
             )}
           </div>
         </ScrollArea>
@@ -326,27 +363,38 @@ export default function Messages() {
               </DropdownMenu>
             </UtilityActionButton>
 
-            {/* Split Navigation */}
-            <SplitBar value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} className="w-full">
-              <SplitBarList>
-                <SplitBarTrigger value="global" className="flex items-center gap-2">
-                  <Globe className="w-4 h-4" />
-                  Global Community
-                </SplitBarTrigger>
-                <SplitBarTrigger value="tenant" className="flex items-center gap-2">
-                  <Building className="w-4 h-4" />
-                  Professional Network
-                </SplitBarTrigger>
-              </SplitBarList>
+            {/* Split Navigation with Density Toggle */}
+            <div className="flex items-center justify-between mb-6">
+              <SplitBar value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} className="flex-1">
+                <SplitBarList>
+                  <SplitBarTrigger value="global" className="flex items-center gap-2">
+                    <Globe className="w-4 h-4" />
+                    Global Community
+                  </SplitBarTrigger>
+                  <SplitBarTrigger value="tenant" className="flex items-center gap-2">
+                    <Building className="w-4 h-4" />
+                    Professional Network
+                  </SplitBarTrigger>
+                </SplitBarList>
 
-              <SplitBarContent value="global">
-                {renderConversationContent()}
-              </SplitBarContent>
+                <SplitBarContent value="global">
+                  {renderConversationContent()}
+                </SplitBarContent>
 
-              <SplitBarContent value="tenant">
-                {renderConversationContent()}
-              </SplitBarContent>
-            </SplitBar>
+                <SplitBarContent value="tenant">
+                  {renderConversationContent()}
+                </SplitBarContent>
+              </SplitBar>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setDensityMode(densityMode === 'comfortable' ? 'compact' : 'comfortable')}
+                className="ml-4"
+              >
+                {densityMode === 'comfortable' ? 'Compact' : 'Comfortable'}
+              </Button>
+            </div>
           </div>
         </div>
       </AppLayout>
