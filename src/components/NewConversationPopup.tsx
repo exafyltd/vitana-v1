@@ -142,12 +142,15 @@ export default function NewConversationPopup({
       const isGlobalContext = effectiveContext === 'global';
       
       if (isGlobalContext) {
-        // Use secure RPC to create global thread
-        const { data: threadId, error } = await supabase.rpc('create_global_direct_thread', {
-          p_recipient_id: recipientId
+        // Use the function directly since it's not in the generated types yet
+        const { data, error } = await supabase.rpc('create_or_get_global_dm' as any, {
+          p_other_user: recipientId
         });
 
         if (error) throw error;
+        
+        const threadId = data?.[0]?.thread_id;
+        if (!threadId) throw new Error('Failed to create or get thread');
         
         onConversationCreated?.(threadId, recipientId);
       } else {

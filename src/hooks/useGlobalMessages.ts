@@ -390,14 +390,17 @@ export function useGlobalMessages() {
     if (!user || !isGlobalContext) return;
 
     try {
-      // For direct threads, use the Supabase function to prevent duplicates  
+      // For direct threads, use the better function to prevent duplicates  
       if (type === 'direct' && participantIds.length === 1) {
-        const { data: threadId, error: rpcError } = await supabase.rpc(
-          'create_global_direct_thread',
-          { p_recipient_id: participantIds[0] }
+        const { data, error: rpcError } = await supabase.rpc(
+          'create_or_get_global_dm' as any,
+          { p_other_user: participantIds[0] }
         );
 
         if (rpcError) throw rpcError;
+
+        const threadId = data?.[0]?.thread_id;
+        if (!threadId) throw new Error('Failed to create or get thread');
 
         await fetchThreads();
         
