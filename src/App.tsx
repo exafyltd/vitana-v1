@@ -143,7 +143,6 @@ import Bootstrap from "./pages/admin/Bootstrap";
 import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
 import UserManagement from "./pages/admin/UserManagement";
-import VapidKeyGenerator from "./pages/admin/VapidKeyGenerator";
 
 const App = () => (
   <RTLProvider>
@@ -834,11 +833,6 @@ const App = () => (
               <ProtectedRoute requiredRole="staff">
                 <TenantManagement />
               </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/tools/vapid" element={
-            <AuthGuard>
-              <VapidKeyGenerator />
             </AuthGuard>
           } />
           

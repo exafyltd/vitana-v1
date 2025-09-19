@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { g1Analytics } from '@/lib/analytics-events';
-import { instrumentRealtimeEvent, trackChannelStatus, trackSubscription } from '@/lib/diagnostics';
-import { ProfileDirectory } from '@/lib/secure-accessors';
 
 interface TypingUser {
   id: string;
@@ -28,26 +26,20 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
       let userAvatar: string | undefined;
 
       if (context === 'global') {
-        // For global context, try to get profile via secure accessor
-        try {
-          const profiles = await ProfileDirectory.getMinimalByIds([user.id]);
-          if (profiles.length > 0) {
-            userName = profiles[0].display_name || 'Unknown User';
-            userAvatar = profiles[0].avatar_url || undefined;
-          } else {
-            // Fallback to main profile for self
-            const { data: mainProfile } = await supabase
-              .from('profiles')
-              .select('display_name, full_name, avatar_url')
-              .eq('user_id', user.id)
-              .maybeSingle();
-            userName = mainProfile?.display_name || mainProfile?.full_name || 'Unknown User';
-            userAvatar = mainProfile?.avatar_url || undefined;
-          }
-        } catch (error) {
-          console.warn('Could not fetch global profile for typing, using fallback');
-          userName = 'Unknown User';
-        }
+        const { data: globalProfile } = await supabase
+          .from('global_community_profiles')
+          .select('display_name, avatar_url')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        const { data: mainProfile } = await supabase
+          .from('profiles')
+          .select('display_name, full_name, avatar_url')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        userName = globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User';
+        userAvatar = globalProfile?.avatar_url || mainProfile?.avatar_url || undefined;
       } else {
         const { data: profile } = await supabase
           .from('profiles')
@@ -71,10 +63,6 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
           timestamp: Date.now()
         }
       });
-
-      // Track diagnostics
-      instrumentRealtimeEvent('typing_start', { threadId, userId: user.id });
-      trackChannelStatus(channelName, 'connected');
 
       // Track analytics
       g1Analytics.autopilotActionExecuted('typing_start');
@@ -100,9 +88,6 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
         }
       });
 
-      // Track diagnostics
-      instrumentRealtimeEvent('typing_stop', { threadId, userId: user.id });
-
       // Track analytics
       g1Analytics.autopilotActionExecuted('typing_stop');
     } catch (error) {
@@ -115,9 +100,6 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
     if (!user || !threadId) return;
 
     const channelName = `typing:${threadId}`;
-
-    // Track subscription
-    trackSubscription(`typing:${threadId}`, 'add');
 
     const typingChannel = supabase
       .channel(channelName)
@@ -156,7 +138,6 @@ export function useTypingIndicators(threadId?: string, context: 'global' | 'tena
       .subscribe();
 
     return () => {
-      trackSubscription(`typing:${threadId}`, 'remove');
       supabase.removeChannel(typingChannel);
     };
   }, [user, threadId, context, userCache]);

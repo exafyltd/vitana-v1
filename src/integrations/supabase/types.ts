@@ -818,69 +818,6 @@ export type Database = {
           },
         ]
       }
-      notification_logs: {
-        Row: {
-          action: string
-          created_at: string
-          id: string
-          message_id: string | null
-          reason: string | null
-          thread_id: string
-          user_id: string
-        }
-        Insert: {
-          action: string
-          created_at?: string
-          id?: string
-          message_id?: string | null
-          reason?: string | null
-          thread_id: string
-          user_id: string
-        }
-        Update: {
-          action?: string
-          created_at?: string
-          id?: string
-          message_id?: string | null
-          reason?: string | null
-          thread_id?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      notification_settings: {
-        Row: {
-          created_at: string
-          dnd_enabled: boolean
-          dnd_end_time: string | null
-          dnd_start_time: string | null
-          id: string
-          push_enabled: boolean
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          dnd_enabled?: boolean
-          dnd_end_time?: string | null
-          dnd_start_time?: string | null
-          id?: string
-          push_enabled?: boolean
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          dnd_enabled?: boolean
-          dnd_end_time?: string | null
-          dnd_start_time?: string | null
-          id?: string
-          push_enabled?: boolean
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       notifications: {
         Row: {
           created_at: string
@@ -985,45 +922,6 @@ export type Database = {
           },
         ]
       }
-      push_subscriptions: {
-        Row: {
-          auth_key: string
-          created_at: string
-          endpoint: string
-          id: string
-          is_active: boolean
-          muted_threads: string[] | null
-          p256dh_key: string
-          updated_at: string
-          user_agent: string | null
-          user_id: string
-        }
-        Insert: {
-          auth_key: string
-          created_at?: string
-          endpoint: string
-          id?: string
-          is_active?: boolean
-          muted_threads?: string[] | null
-          p256dh_key: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id: string
-        }
-        Update: {
-          auth_key?: string
-          created_at?: string
-          endpoint?: string
-          id?: string
-          is_active?: boolean
-          muted_threads?: string[] | null
-          p256dh_key?: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       role_preferences: {
         Row: {
           id: string
@@ -1122,33 +1020,6 @@ export type Database = {
           },
         ]
       }
-      thread_presence: {
-        Row: {
-          context: string
-          id: string
-          last_seen: string
-          tenant_id: string | null
-          thread_id: string
-          user_id: string
-        }
-        Insert: {
-          context: string
-          id?: string
-          last_seen?: string
-          tenant_id?: string | null
-          thread_id: string
-          user_id: string
-        }
-        Update: {
-          context?: string
-          id?: string
-          last_seen?: string
-          tenant_id?: string | null
-          thread_id?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       typing_indicators: {
         Row: {
           id: string
@@ -1240,80 +1111,14 @@ export type Database = {
         Args: { p_recipient_id: string }
         Returns: string
       }
-      create_or_get_global_dm: {
-        Args: { p_other_user: string }
-        Returns: {
-          thread_id: string
-        }[]
-      }
       create_tenant_direct_thread: {
         Args: { p_recipient_id: string; p_tenant_id: string }
         Returns: string
-      }
-      get_message_reactions: {
-        Args: { message_id_param: string }
-        Returns: {
-          avatar_url: string
-          created_at: string
-          display_name: string
-          emoji: string
-          message_id: string
-          user_id: string
-        }[]
-      }
-      get_message_reactions_text: {
-        Args: { message_id_param: string }
-        Returns: {
-          avatar_url: string
-          created_at: string
-          display_name: string
-          emoji: string
-          message_id: string
-          user_id: string
-        }[]
-      }
-      get_minimal_profiles_by_ids: {
-        Args: { user_ids: string[] }
-        Returns: {
-          avatar_url: string
-          display_name: string
-          user_id: string
-        }[]
-      }
-      get_minimal_profiles_by_ids_text: {
-        Args: { user_ids: string[] }
-        Returns: {
-          avatar_url: string
-          display_name: string
-          user_id: string
-        }[]
       }
       get_role_preference: {
         Args: { p_tenant_id: string }
         Returns: {
           role: string
-        }[]
-      }
-      get_thread_participants: {
-        Args: { context_param?: string; thread_id_param: string }
-        Returns: {
-          avatar_url: string
-          display_name: string
-          joined_at: string
-          last_read_at: string
-          role: string
-          user_id: string
-        }[]
-      }
-      get_thread_participants_text: {
-        Args: { context_param?: string; thread_id_param: string }
-        Returns: {
-          avatar_url: string
-          display_name: string
-          joined_at: string
-          last_read_at: string
-          role: string
-          user_id: string
         }[]
       }
       get_user_admin_status: {
@@ -1349,14 +1154,6 @@ export type Database = {
           user_id: string
         }[]
       }
-      search_minimal_profiles_text: {
-        Args: { search_query: string; search_scope?: string }
-        Returns: {
-          avatar_url: string
-          display_name: string
-          user_id: string
-        }[]
-      }
       search_tenant_directory: {
         Args: { search_term: string; tenant_id_param: string }
         Returns: {
@@ -1375,14 +1172,6 @@ export type Database = {
       switch_to_tenant_by_slug: {
         Args: { p_tenant_slug: string }
         Returns: undefined
-      }
-      toggle_message_reaction: {
-        Args: { emoji_param: string; message_id_param: string }
-        Returns: boolean
-      }
-      toggle_message_reaction_text: {
-        Args: { emoji_param: string; message_id_param: string }
-        Returns: boolean
       }
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }

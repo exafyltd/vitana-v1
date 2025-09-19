@@ -31,8 +31,6 @@ import ConversationListSkeleton from "@/components/messages/ConversationListSkel
 import EmptyStateIllustration from "@/components/messages/EmptyStateIllustration";
 import ErrorMessage from "@/components/messages/ErrorMessage";
 import CreateGroupPopup from "@/components/messages/CreateGroupPopup";
-import { RealtimeCheckPanel } from "@/components/diagnostics/RealtimeCheckPanel";
-import { shouldShowDiagnosticsPanel } from "@/lib/diagnostics";
 
 export default function Messages() {
   const { user } = useAuth();
@@ -47,7 +45,6 @@ export default function Messages() {
   const [showNewConversation, setShowNewConversation] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [localThreads, setLocalThreads] = useState(threads);
-  const [showDiagnostics, setShowDiagnostics] = useState(shouldShowDiagnosticsPanel);
 
   useEffect(() => {
     if (threads.length > 0 && !selectedThreadId && !selectedRecipientId) {
@@ -335,13 +332,6 @@ export default function Messages() {
         open={showCreateGroup}
         onOpenChange={setShowCreateGroup}
         onGroupCreated={handleGroupCreated}
-        context={messageContext}
-      />
-
-      <RealtimeCheckPanel
-        isVisible={showDiagnostics}
-        onClose={() => setShowDiagnostics(false)}
-        selectedThreadId={selectedThreadId}
         context={messageContext}
       />
     </div>
