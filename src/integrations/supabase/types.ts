@@ -818,6 +818,69 @@ export type Database = {
           },
         ]
       }
+      notification_logs: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          message_id: string | null
+          reason: string | null
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          message_id?: string | null
+          reason?: string | null
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          message_id?: string | null
+          reason?: string | null
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notification_settings: {
+        Row: {
+          created_at: string
+          dnd_enabled: boolean
+          dnd_end_time: string | null
+          dnd_start_time: string | null
+          id: string
+          push_enabled: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dnd_enabled?: boolean
+          dnd_end_time?: string | null
+          dnd_start_time?: string | null
+          id?: string
+          push_enabled?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dnd_enabled?: boolean
+          dnd_end_time?: string | null
+          dnd_start_time?: string | null
+          id?: string
+          push_enabled?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -922,6 +985,45 @@ export type Database = {
           },
         ]
       }
+      push_subscriptions: {
+        Row: {
+          auth_key: string
+          created_at: string
+          endpoint: string
+          id: string
+          is_active: boolean
+          muted_threads: string[] | null
+          p256dh_key: string
+          updated_at: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          auth_key: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          is_active?: boolean
+          muted_threads?: string[] | null
+          p256dh_key: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          auth_key?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          is_active?: boolean
+          muted_threads?: string[] | null
+          p256dh_key?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       role_preferences: {
         Row: {
           id: string
@@ -1019,6 +1121,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      thread_presence: {
+        Row: {
+          context: string
+          id: string
+          last_seen: string
+          tenant_id: string | null
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          context: string
+          id?: string
+          last_seen?: string
+          tenant_id?: string | null
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          context?: string
+          id?: string
+          last_seen?: string
+          tenant_id?: string | null
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       typing_indicators: {
         Row: {
