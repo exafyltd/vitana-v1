@@ -685,7 +685,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           )}
           
           {/* Bottom padding to ensure last message is never hidden by input field */}
-          <div className="h-8" />
+          <div className="h-16" />
           <div ref={messagesEndRef} />
         </div>
 
