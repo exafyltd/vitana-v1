@@ -33,8 +33,7 @@ interface MessageInputProps {
   disabled?: boolean;
   className?: string;
   threadId?: string;
-  recipientId?: string;
-  activeThread?: { id: string; recipientId?: string } | null;
+  activeThread?: { id: string } | null;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
@@ -45,7 +44,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
   disabled = false,
   className,
   threadId,
-  recipientId,
   activeThread
 }) => {
   const [message, setMessage] = useState('');
@@ -132,8 +130,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
       e.preventDefault();
     }
     
-    // Guard conditions - allow sending if we have either a thread or recipient
-    if ((!activeThread?.id && !recipientId) || message.trim() === '' || disabled || isUploading) {
+    // Guard conditions
+    if (!activeThread?.id || message.trim() === '' || disabled || isUploading) {
       return;
     }
     
@@ -568,7 +566,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               type="submit"
               size="sm"
               variant="ghost"
-              disabled={( (!activeThread?.id && !recipientId) || message.trim() === '' || disabled || isUploading)}
+              disabled={!activeThread?.id || message.trim() === '' || disabled || isUploading}
               className="absolute right-1 bottom-1 h-8 w-8 p-0"
               aria-label="Send message"
             >
