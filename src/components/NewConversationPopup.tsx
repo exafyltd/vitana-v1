@@ -135,27 +135,78 @@ export default function NewConversationPopup({
   };
 
   const createDirectMessage = async (recipientId: string) => {
-    if (!user) return;
+    console.log('🔄 Starting conversation creation...', {
+      user: user?.id,
+      recipientId,
+      effectiveContext,
+      currentRole,
+      activeTenantId
+    });
+
+    if (!user) {
+      console.error('❌ No authenticated user found');
+      toast.error('Authentication required');
+      return;
+    }
     
     setIsCreating(true);
     try {
       const isGlobalContext = effectiveContext === 'global';
+      console.log('📍 Context determined:', { isGlobalContext, effectiveContext });
       
       if (isGlobalContext) {
+        console.log('🌐 Creating global conversation...');
+        
+        // Check if user is community user first
+        const { data: isCommunityData, error: communityError } = await supabase.rpc('is_community_user');
+        console.log('👥 Community user check:', { isCommunityData, communityError });
+        
+        if (communityError) {
+          console.error('❌ Community user check failed:', communityError);
+          throw new Error(`Community user verification failed: ${communityError.message}`);
+        }
+        
+        if (!isCommunityData) {
+          console.error('❌ User is not a community user');
+          throw new Error('Only community users can create global conversations');
+        }
+
         // Use the function directly since it's not in the generated types yet
+        console.log('🔍 Calling create_or_get_global_dm...');
         const { data, error } = await supabase.rpc('create_or_get_global_dm' as any, {
           p_other_user: recipientId
         });
 
-        if (error) throw error;
+        console.log('📦 RPC Response:', { data, error });
+
+        if (error) {
+          console.error('❌ RPC Error:', error);
+          throw new Error(`Failed to create conversation: ${error.message}`);
+        }
         
-        const threadId = data?.[0]?.thread_id;
-        if (!threadId) throw new Error('Failed to create or get thread');
+        console.log('📋 Raw data received:', data);
         
+        if (!data || !Array.isArray(data) || data.length === 0) {
+          console.error('❌ Invalid response format:', data);
+          throw new Error('Invalid response from server - no data returned');
+        }
+        
+        const threadId = data[0]?.thread_id;
+        console.log('🔗 Extracted thread ID:', threadId);
+        
+        if (!threadId) {
+          console.error('❌ No thread ID in response:', data[0]);
+          throw new Error('Failed to create or get thread - no thread ID returned');
+        }
+        
+        console.log('✅ Conversation created successfully!', { threadId, recipientId });
         onConversationCreated?.(threadId, recipientId);
       } else {
+        console.log('🏢 Creating tenant conversation...');
+        
         // Use secure RPC to create tenant thread
         if (!activeTenantId) {
+          console.error('❌ No active tenant found');
           throw new Error('No active tenant found');
         }
 
@@ -164,16 +215,41 @@ export default function NewConversationPopup({
           p_tenant_id: activeTenantId
         });
 
-        if (error) throw error;
+        console.log('📦 Tenant RPC Response:', { threadId, error });
+
+        if (error) {
+          console.error('❌ Tenant RPC Error:', error);
+          throw error;
+        }
         
+        console.log('✅ Tenant conversation created!', { threadId, recipientId });
         onConversationCreated?.(threadId, recipientId);
       }
 
       toast.success('Conversation started!');
       resetForm();
-    } catch (error) {
-      console.error('Error creating conversation:', error);
-      toast.error('Failed to start conversation');
+    } catch (error: any) {
+      console.error('💥 Full error details:', {
+        message: error?.message,
+        details: error?.details,
+        hint: error?.hint,
+        code: error?.code,
+        fullError: error
+      });
+      
+      let errorMessage = 'Failed to start conversation';
+      
+      if (error?.message?.includes('Access denied')) {
+        errorMessage = 'Access denied - check your permissions';
+      } else if (error?.message?.includes('community')) {
+        errorMessage = 'Only community users can create global conversations';
+      } else if (error?.message?.includes('Authentication')) {
+        errorMessage = 'Please log in to start conversations';
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setIsCreating(false);
     }
