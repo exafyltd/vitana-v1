@@ -272,7 +272,7 @@ class MessageOutboxService {
         context: item.context,
         threadId: item.thread_id,
         content: item.payload.content,
-        type: item.payload.message_type,
+        type: (item.payload.message_type as MessageKind) || 'text',
         contentData: {
           ...item.payload.content_data,
           idempotency_key: item.idempotency_key // Add idempotency key to prevent duplicates
