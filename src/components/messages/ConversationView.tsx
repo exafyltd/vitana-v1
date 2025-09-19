@@ -543,9 +543,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <div className="conversation-viewport h-full flex flex-col">
-        {/* Zone 1: Fixed Header */}
-        <div className="conversation-header flex-shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b px-4 py-3">
+      <div className="conversation-viewport relative h-full">
+        {/* Top Zone - Conversation Header (fixed at top) */}
+        <div className="conversation-header absolute top-0 left-0 right-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {onBack && (
@@ -597,8 +597,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           </div>
         </div>
 
-        {/* Zone 2: Scrollable Chat History */}  
-        <div className="flex-1 overflow-y-auto px-4 py-3" id="chat-scroll">
+        {/* History Zone - Scrollable Messages (middle zone with top and bottom padding) */}
+        <div 
+          className="conversation-history absolute top-[73px] left-0 right-0 bottom-[112px] overflow-y-auto px-4 py-3" 
+          id="chat-scroll"
+        >
           {messages.length === 0 && optimisticMessages.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No messages yet</p>
@@ -667,8 +670,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Zone 3: Fixed Composer */}
-        <div className="conversation-composer flex-shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t px-4 py-3">
+        {/* Composer Zone - Fixed at bottom, always visible */}
+        <div className="conversation-composer absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t px-4 py-3">
           {/* Typing Indicators */}
           {typingUsers.length > 0 && (
             <div className="mb-2">
@@ -695,7 +698,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             disabled={isSending}
             placeholder={`Message ${getConversationTitle()}...`}
             threadId={threadId}
-            activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : undefined}
+            recipientId={recipientId}
+            activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
           />
         </div>
       </div>
