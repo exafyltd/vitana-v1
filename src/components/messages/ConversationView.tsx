@@ -727,7 +727,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </div>
 
         {/* Composer - Fixed at bottom */}
-        <div className="shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t shadow-sm">
+        <div className="conversation-composer shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t shadow-sm">
           <div className="px-4 py-3">
             {/* Typing Indicators */}
             {typingUsers.length > 0 && (
