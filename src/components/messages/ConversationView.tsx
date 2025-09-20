@@ -265,9 +265,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     };
   }, []);
 
-  // Scroll to bottom when new messages arrive (only if user is at bottom)
+  // Scroll to bottom when new messages arrive (always force to mimic WhatsApp)
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(true);
   }, [messages, optimisticMessages, scrollToBottom]);
 
   const handleSendMessage = async (

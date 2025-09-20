@@ -22,19 +22,12 @@ import {
 import { 
   Send, 
   Smile, 
-  Paperclip, 
-  DollarSign, 
-  Calendar,
-  Heart,
-  Zap,
-  Clock,
-  MapPin,
   X,
-  FileText,
-  Image as ImageIcon,
   Loader2,
-  Mic
+  Mic,
+  Paperclip
 } from 'lucide-react';
+import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 
 interface MessageInputProps {
   onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[]) => Promise<void>;
@@ -419,6 +412,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const quickReactions = ['❤️', '👍', '😊', '🎉', '💪', '🙏'];
+  const canSend = (message.trim().length > 0 || attachments.length > 0) && !isUploading && !disabled;
 
   return (
     <form 
@@ -483,180 +477,63 @@ const MessageInput: React.FC<MessageInputProps> = ({
         </div>
       )}
 
-      <div className="flex items-end gap-2">
-        {/* Quick Actions */}
-        <div className="flex gap-1">
-          {/* Payment Request */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button type="button" size="sm" variant="ghost" className="h-9 w-9 p-0">
-                <DollarSign className="w-4 h-4" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80">
-              <div className="space-y-3">
-                <h4 className="font-medium">Send Payment Request</h4>
-                <div className="space-y-2">
-                  <Textarea
-                    placeholder="Amount (USD)"
-                    id="payment-amount"
-                  />
-                  <Textarea
-                    placeholder="What's this for?"
-                    id="payment-description"
-                  />
-                  <Button 
-                    type="button"
-                    size="sm" 
-                    className="w-full"
-                    onClick={() => {
-                      const amount = (document.getElementById('payment-amount') as HTMLInputElement)?.value;
-                      const description = (document.getElementById('payment-description') as HTMLInputElement)?.value;
-                      if (amount && description) {
-                        sendPaymentRequest(amount, description);
-                      }
-                    }}
-                  >
-                    Send Request
-                  </Button>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+      <div className="flex items-end gap-3">
+        {/* Left: Emoji button */}
+        <Button type="button" size="sm" variant="ghost" className="h-9 w-9 p-0" aria-label="Open emoji picker">
+          <Smile className="w-4 h-4" />
+        </Button>
 
-          {/* Calendar Invite */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button type="button" size="sm" variant="ghost" className="h-9 w-9 p-0">
-                <Calendar className="w-4 h-4" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80">
-              <div className="space-y-3">
-                <h4 className="font-medium">Send Calendar Invite</h4>
-                <div className="space-y-2">
-                  <Textarea
-                    placeholder="Event title"
-                    id="event-title"
-                  />
-                  <Textarea
-                    placeholder="Date & Time"
-                    id="event-date"
-                  />
-                  <Button 
-                    type="button"
-                    size="sm" 
-                    className="w-full"
-                    onClick={() => {
-                      const title = (document.getElementById('event-title') as HTMLInputElement)?.value;
-                      const date = (document.getElementById('event-date') as HTMLInputElement)?.value;
-                      if (title && date) {
-                        sendCalendarInvite(title, new Date(date).toLocaleDateString());
-                      }
-                    }}
-                  >
-                    Send Invite
-                  </Button>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+        {/* Left: Attachment menu (WhatsApp-style) */}
+        <AttachmentMenu onFileAttach={() => fileInputRef.current?.click()} disabled={disabled || isUploading} />
 
-          {/* Quick Reactions */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button type="button" size="sm" variant="ghost" className="h-9 w-9 p-0">
-                <Smile className="w-4 h-4" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64">
-              <div className="space-y-2">
-                <h4 className="font-medium text-sm">Quick Reactions</h4>
-                <div className="grid grid-cols-6 gap-1">
-                  {quickReactions.map((emoji, index) => (
-                    <Button
-                      key={index}
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      className="h-8 w-8 p-0 text-lg"
-                      onClick={() => onSendMessage(emoji)}
-                    >
-                      {emoji}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.zip,.rar"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+
+        {/* Text input takes all remaining space */}
+        <div className="flex-1">
+          <Textarea
+            ref={textareaRef}
+            value={message}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+            onBlur={handleBlur}
+            placeholder={placeholder}
+            disabled={disabled}
+            className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 py-3"
+            rows={1}
+            aria-label="Message composer"
+            aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
+          />
         </div>
 
-        {/* Message Input Area */}
-        <div className="flex items-end gap-2 flex-1 relative">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.zip,.rar"
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-          
-          <Button
-            type="button"
-            size="sm"
-            variant="ghost"
-            className="h-9 w-9 p-0 mb-1"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={disabled || isUploading}
-          >
-            <Paperclip className="w-4 h-4" />
+        {/* Right: Send or Mic */}
+        {canSend ? (
+          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label="Send message">
+            {isUploading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Send className="w-4 h-4" />
+            )}
           </Button>
-
-          {/* Voice Message Button */}
+        ) : (
           <Button
             type="button"
             variant="ghost"
             size="sm"
             onClick={() => setShowVoiceRecorder(true)}
             disabled={isUploading || showVoiceRecorder}
-            className="h-9 w-9 p-0 mb-1"
+            className="h-9 w-9 p-0"
+            aria-label="Record voice message"
           >
             <Mic className="h-4 w-4" />
           </Button>
-
-          <div className="flex-1 relative">
-            <Textarea
-              ref={textareaRef}
-              value={message}
-              onChange={handleInputChange}
-              onKeyPress={handleKeyPress}
-              onBlur={handleBlur}
-              placeholder={placeholder}
-              disabled={disabled}
-              className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 py-3 pr-12"
-              rows={1}
-              aria-label="Message composer"
-              aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
-            />
-            {/* Error messages area */}
-            <div id="message-error" aria-live="polite" className="sr-only" />
-            
-            <Button
-              type="submit"
-              size="sm"
-              variant="ghost"
-              disabled={(!activeThread?.id && !recipientId) || message.trim() === '' || disabled || isUploading}
-              className="absolute right-1 bottom-1 h-8 w-8 p-0"
-              aria-label="Send message"
-            >
-              {isUploading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4" />
-              )}
-            </Button>
-          </div>
-        </div>
+        )}
       </div>
     </form>
   );
