@@ -295,9 +295,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
       setOptimisticMessages(prev => [...prev, optimisticMessage]);
 
-      // Scroll to keep last bubble visible
+      // Scroll to keep last bubble visible - force scroll for new messages
       setTimeout(() => {
-        scrollToBottom();
+        scrollToBottom(true);
       }, 10);
 
       const newMessage = await sendMessage({

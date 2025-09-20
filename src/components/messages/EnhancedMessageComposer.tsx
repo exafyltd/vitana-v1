@@ -6,13 +6,13 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { 
   Send, 
-  Paperclip, 
-  Image, 
   Smile, 
   Mic, 
   X,
-  AlertCircle
+  AlertCircle,
+  Paperclip
 } from 'lucide-react';
+import { AttachmentMenu } from './AttachmentMenu';
 import { cn } from '@/lib/utils';
 
 interface Attachment {
@@ -151,93 +151,97 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
           </div>
         )}
 
-        <div className="flex items-end gap-2">
-          <div className="flex-1 relative">
-            <Textarea
-              ref={textareaRef}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={placeholder}
-              disabled={disabled}
-              rows={1}
-              className="min-h-[40px] max-h-32 resize-none rounded-2xl pr-32 py-3"
-              style={{ 
-                fieldSizing: 'content',
-                minHeight: '40px'
-              } as React.CSSProperties}
-            />
-            
-            {/* Action buttons inside textarea */}
-            <div className="absolute right-2 bottom-2 flex items-center gap-1">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      onClick={handleFileAttach}
-                      className="w-8 h-8 p-0 rounded-full hover:bg-muted"
-                    >
-                      <Paperclip className="w-4 h-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Attach file</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+        <div className="flex items-end gap-3">
+          {/* Left: Emoji button */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  className="w-10 h-10 p-0 rounded-full hover:bg-muted flex-shrink-0"
+                >
+                  <Smile className="w-5 h-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Add emoji</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
+          {/* Middle: Attachment menu + Text input */}
+          <div className="flex-1 relative flex items-end gap-2">
+            {/* Attachment menu */}
+            <div className="flex-shrink-0">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      className="w-8 h-8 p-0 rounded-full hover:bg-muted"
-                    >
-                      <Image className="w-4 h-4" />
-                    </Button>
+                    <div>
+                      <AttachmentMenu
+                        onFileAttach={handleFileAttach}
+                        disabled={disabled}
+                        className="hover:bg-muted"
+                      />
+                    </div>
                   </TooltipTrigger>
-                  <TooltipContent>Add image</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      className="w-8 h-8 p-0 rounded-full hover:bg-muted"
-                    >
-                      <Smile className="w-4 h-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Add emoji</TooltipContent>
+                  <TooltipContent>Attach</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
+
+            {/* Text input */}
+            <div className="flex-1">
+              <Textarea
+                ref={textareaRef}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={placeholder}
+                disabled={disabled}
+                rows={1}
+                className="min-h-[40px] max-h-32 resize-none rounded-2xl py-3 px-4"
+                style={{ 
+                  fieldSizing: 'content',
+                  minHeight: '40px'
+                } as React.CSSProperties}
+              />
+            </div>
           </div>
 
-          <Button
-            onClick={handleSend}
-            disabled={!canSend}
-            size="sm"
-            className={cn(
-              "w-10 h-10 rounded-full flex-shrink-0 transition-all duration-200",
-              canSend 
-                ? "bg-domain-messages-accent hover:bg-domain-messages-accent/90 text-white scale-100"
-                : "bg-muted text-muted-foreground scale-95"
-            )}
-          >
-            {isSending ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-            ) : (
-              <Send className="w-4 h-4" />
-            )}
-          </Button>
+          {/* Right: Send button or Mic */}
+          {canSend ? (
+            <Button
+              onClick={handleSend}
+              disabled={!canSend}
+              size="sm"
+              className={cn(
+                "w-10 h-10 rounded-full flex-shrink-0 transition-all duration-200",
+                "bg-domain-messages-accent hover:bg-domain-messages-accent/90 text-white"
+              )}
+            >
+              {isSending ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+              ) : (
+                <Send className="w-4 h-4" />
+              )}
+            </Button>
+          ) : (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    className="w-10 h-10 p-0 rounded-full hover:bg-muted flex-shrink-0"
+                  >
+                    <Mic className="w-5 h-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Voice message</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
 
         {/* Keyboard hint */}
