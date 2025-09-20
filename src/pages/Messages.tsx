@@ -95,6 +95,22 @@ export default function Messages() {
     });
   }, [messageContext]);
 
+  // Move the just-sent conversation to the top instantly (independent of hook instance)
+  const handleMessageSent = useCallback((threadId: string, newMessage: any, ctx: 'global' | 'tenant') => {
+    if (ctx !== messageContext) return;
+    setLocalThreads(prev => {
+      const existing = prev.find(t => t.id === threadId);
+      if (!existing) return prev;
+      const updatedThread = {
+        ...existing,
+        updated_at: newMessage?.created_at || new Date().toISOString(),
+        last_message: newMessage ? { ...newMessage } : existing.last_message,
+      } as any;
+      const others = prev.filter(t => t.id !== threadId);
+      return [updatedThread, ...others];
+    });
+  }, [messageContext]);
+
   const handleUnreadChange = useCallback((threadId: string, context: 'global' | 'tenant') => {
     if (context === messageContext) {
       // Use the fetchThreads function from the appropriate hook
@@ -177,7 +193,15 @@ export default function Messages() {
               />
             ) : (
               // De-duplicate direct threads by counterpart, keep most recent
-              localThreads
+              [...localThreads]
+                .sort((a, b) => {
+                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
+                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
+                  if (ap !== bp) return bp - ap;
+                  const ad = new Date(a.updated_at).getTime();
+                  const bd = new Date(b.updated_at).getTime();
+                  return bd - ad;
+                })
                 .reduce((acc, thread) => {
                   if (thread.type === 'direct') {
                     // Find the other participant (not current user)
@@ -307,6 +331,7 @@ export default function Messages() {
               className="flex-1 min-h-0"
               onThreadRead={handleThreadRead}
               onConversationOpened={handleConversationOpened}
+              onMessageSent={handleMessageSent}
             />
           </ConversationErrorBoundary>
         ) : (

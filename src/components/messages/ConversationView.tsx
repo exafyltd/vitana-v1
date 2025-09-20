@@ -41,6 +41,7 @@ interface ConversationViewProps {
   context?: 'global' | 'tenant';
   onThreadRead?: (threadId: string, context: 'global' | 'tenant') => void;
   onConversationOpened?: (threadId: string) => void;
+  onMessageSent?: (threadId: string, newMessage: any, context: 'global' | 'tenant') => void;
 }
 
 const ConversationView: React.FC<ConversationViewProps> = ({
@@ -50,7 +51,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   className,
   context,
   onThreadRead,
-  onConversationOpened
+  onConversationOpened,
+  onMessageSent
 }) => {
   const { user } = useAuth();
   
@@ -307,6 +309,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         recipientId
       });
       
+      // Notify parent immediately so thread jumps to top
+      if (onMessageSent && threadId && newMessage) {
+        onMessageSent(threadId, newMessage, messageContext);
+      }
+
       // Remove optimistic message on success
       setOptimisticMessages(prev => prev.filter(msg => msg.id !== optimisticId));
       
