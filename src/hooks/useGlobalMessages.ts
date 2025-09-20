@@ -360,13 +360,30 @@ export function useGlobalMessages() {
         )
       );
 
+      const now = new Date().toISOString();
+
       // Update thread's updated_at
       await supabase
         .from('global_message_threads')
-        .update({ updated_at: new Date().toISOString() })
+        .update({ updated_at: now })
         .eq('id', threadId);
 
-      // Only refresh threads (not messages since we have optimistic update)
+      // Immediately move this thread to the top locally for instant feedback
+      setThreads(prev => {
+        const threadToMove = prev.find(t => t.id === threadId);
+        if (!threadToMove) return prev;
+        
+        const updatedThread = {
+          ...threadToMove,
+          updated_at: now,
+          last_message: { ...data, sender: userProfile }
+        };
+        
+        const otherThreads = prev.filter(t => t.id !== threadId);
+        return [updatedThread, ...otherThreads];
+      });
+
+      // Refresh threads to ensure consistency with database
       await fetchThreads();
 
       return data;
@@ -564,7 +581,23 @@ export function useGlobalMessages() {
             sender: senderProfile
           }]);
           
-          // Also refresh threads to update last message
+          // Immediately move the thread with new message to the top
+          setThreads(prev => {
+            const threadToMove = prev.find(t => t.id === newMessage.thread_id);
+            if (!threadToMove) return prev;
+            
+            const updatedThread = {
+              ...threadToMove,
+              updated_at: newMessage.created_at,
+              last_message: { ...newMessage, sender: senderProfile },
+              unread_count: threadToMove.unread_count + 1
+            };
+            
+            const otherThreads = prev.filter(t => t.id !== newMessage.thread_id);
+            return [updatedThread, ...otherThreads];
+          });
+          
+          // Also refresh threads to update last message and ensure consistency
           fetchThreads();
         }
       )

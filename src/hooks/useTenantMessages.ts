@@ -313,16 +313,33 @@ export function useTenantMessages() {
         )
       );
 
+      const now = new Date().toISOString();
+
       // Update thread's updated_at if thread exists
       if (threadId) {
         await supabase
           .from('message_threads')
-          .update({ updated_at: new Date().toISOString() })
+          .update({ updated_at: now })
           .eq('id', threadId)
           .eq('tenant_id', activeTenantId);
+
+        // Immediately move this thread to the top locally for instant feedback
+        setThreads(prev => {
+          const threadToMove = prev.find(t => t.id === threadId);
+          if (!threadToMove) return prev;
+          
+          const updatedThread = {
+            ...threadToMove,
+            updated_at: now,
+            last_message: { ...data, sender: userProfile }
+          };
+          
+          const otherThreads = prev.filter(t => t.id !== threadId);
+          return [updatedThread, ...otherThreads];
+        });
       }
 
-      // Only refresh threads (not messages since we have optimistic update)
+      // Refresh threads to ensure consistency with database
       await fetchThreads();
 
       return data;
@@ -513,7 +530,23 @@ export function useTenantMessages() {
             sender: senderProfile
           }]);
           
-          // Also refresh threads to update last message
+          // Immediately move the thread with new message to the top
+          setThreads(prev => {
+            const threadToMove = prev.find(t => t.id === newMessage.thread_id);
+            if (!threadToMove) return prev;
+            
+            const updatedThread = {
+              ...threadToMove,
+              updated_at: newMessage.created_at,
+              last_message: { ...newMessage, sender: senderProfile },
+              unread_count: threadToMove.unread_count + 1
+            };
+            
+            const otherThreads = prev.filter(t => t.id !== newMessage.thread_id);
+            return [updatedThread, ...otherThreads];
+          });
+          
+          // Also refresh threads to update counts and ensure consistency
           fetchThreads();
         }
       )
