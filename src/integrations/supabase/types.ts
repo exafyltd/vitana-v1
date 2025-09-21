@@ -82,6 +82,39 @@ export type Database = {
         }
         Relationships: []
       }
+      exchange_rates: {
+        Row: {
+          change_24h: number | null
+          created_at: string | null
+          from_currency: string
+          id: string
+          is_active: boolean | null
+          rate: number
+          to_currency: string
+          trend: string | null
+        }
+        Insert: {
+          change_24h?: number | null
+          created_at?: string | null
+          from_currency: string
+          id?: string
+          is_active?: boolean | null
+          rate: number
+          to_currency: string
+          trend?: string | null
+        }
+        Update: {
+          change_24h?: number | null
+          created_at?: string | null
+          from_currency?: string
+          id?: string
+          is_active?: boolean | null
+          rate?: number
+          to_currency?: string
+          trend?: string | null
+        }
+        Relationships: []
+      }
       global_community_events: {
         Row: {
           created_at: string
@@ -1188,6 +1221,33 @@ export type Database = {
           },
         ]
       }
+      user_wallets: {
+        Row: {
+          balance: number
+          created_at: string | null
+          currency_type: string
+          id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string | null
+          currency_type: string
+          id?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string | null
+          currency_type?: string
+          id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       wallet_credits: {
         Row: {
           amount: number
@@ -1222,6 +1282,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          exchange_rate: number | null
+          fees: number | null
+          from_currency: string | null
+          from_user_id: string | null
+          id: string
+          metadata: Json | null
+          status: string | null
+          to_currency: string | null
+          to_user_id: string | null
+          transaction_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          exchange_rate?: number | null
+          fees?: number | null
+          from_currency?: string | null
+          from_user_id?: string | null
+          id?: string
+          metadata?: Json | null
+          status?: string | null
+          to_currency?: string | null
+          to_user_id?: string | null
+          transaction_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          exchange_rate?: number | null
+          fees?: number | null
+          from_currency?: string | null
+          from_user_id?: string | null
+          id?: string
+          metadata?: Json | null
+          status?: string | null
+          to_currency?: string | null
+          to_user_id?: string | null
+          transaction_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
@@ -1320,6 +1428,14 @@ export type Database = {
         Args: { tenant_id_param: string; user_id_param: string }
         Returns: boolean
       }
+      get_user_balance: {
+        Args: { currency_param: string; user_id_param: string }
+        Returns: number
+      }
+      initialize_user_wallet: {
+        Args: { user_id_param: string }
+        Returns: undefined
+      }
       is_community_user: {
         Args: Record<PropertyKey, never>
         Returns: boolean
@@ -1387,6 +1503,15 @@ export type Database = {
       toggle_message_reaction_text: {
         Args: { emoji_param: string; message_id_param: string }
         Returns: boolean
+      }
+      update_user_balance: {
+        Args: {
+          amount_param: number
+          currency_param: string
+          operation?: string
+          user_id_param: string
+        }
+        Returns: number
       }
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }
