@@ -10,6 +10,9 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
 import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionPopup";
+import { StakeTokensPopup } from "@/components/wallet/popups/StakeTokensPopup";
+import { AddFundsPopup } from "@/components/wallet/popups/AddFundsPopup";
+import { BuyCreditsPopup } from "@/components/wallet/popups/BuyCreditsPopup";
 import { CrossSystemNotifier } from "@/components/notifications/CrossSystemNotifier";
 import { WalletBalanceCard } from "@/components/wallet/WalletBalanceCard";
 import { WalletTransactionCard } from "@/components/wallet/WalletTransactionCard";
@@ -61,12 +64,28 @@ const quickActionsData = [
 
 export default function Wallet() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [stakeTokensOpen, setStakeTokensOpen] = useState(false);
+  const [addFundsOpen, setAddFundsOpen] = useState(false);
+  const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("balance-overview");
   const { balances, transactions, loading, error, getBalance } = useWallet();
 
   // Handle opening specific wallet actions
   const handleWalletAction = (actionType: string) => {
-    setMasterActionOpen(true);
+    switch (actionType) {
+      case 'stake-tokens':
+        setStakeTokensOpen(true);
+        break;
+      case 'add-funds':
+        setAddFundsOpen(true);
+        break;
+      case 'buy-credits':
+        setBuyCreditsOpen(true);
+        break;
+      default:
+        setMasterActionOpen(true);
+        break;
+    }
   };
 
   return (
@@ -361,6 +380,21 @@ export default function Wallet() {
         <WalletMasterActionPopup 
           open={masterActionOpen}
           onOpenChange={setMasterActionOpen}
+        />
+
+        <StakeTokensPopup 
+          open={stakeTokensOpen}
+          onOpenChange={setStakeTokensOpen}
+        />
+
+        <AddFundsPopup 
+          open={addFundsOpen}
+          onOpenChange={setAddFundsOpen}
+        />
+
+        <BuyCreditsPopup 
+          open={buyCreditsOpen}
+          onOpenChange={setBuyCreditsOpen}
         />
         
         {/* Cross-system notification handler */}
