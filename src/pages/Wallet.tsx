@@ -98,12 +98,22 @@ export default function Wallet() {
 
           <SplitBarContent value="balance-overview">
             <div className="mt-6">
-              {/* Row 1: Smart Earnings Forecast + Balance Cards */}
+              {/* Row 1: All Account Balance Cards */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-6">
-                  <SmartEarningsForecastCard className="h-full" />
+                <div className="col-span-4">
+                  <WalletBalanceCard
+                    type="tokens"
+                    title="VTN Tokens"
+                    balance={`${getBalance('VTN').toLocaleString()} VTN`}
+                    subBalance="Staked: 25%"
+                    change="+5.7%"
+                    changeType="increase"
+                    status="Growing"
+                    description="Vitana Network Tokens for governance and staking rewards"
+                    className="h-full"
+                  />
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-4">
                   <WalletBalanceCard
                     type="cash"
                     title="USD Balance"
@@ -116,7 +126,7 @@ export default function Wallet() {
                     className="h-full"
                   />
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-4">
                   <WalletBalanceCard
                     type="credits"
                     title="Credits Balance"
@@ -133,20 +143,10 @@ export default function Wallet() {
 
               <WalletMotivationalBanner variant="overview" />
 
-              {/* Row 2: Additional Balance Card */}
+              {/* Row 2: Smart Earnings Forecast */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-12">
-                  <WalletBalanceCard
-                    type="tokens"
-                    title="VTN Tokens"
-                    balance={`${getBalance('VTN').toLocaleString()} VTN`}
-                    subBalance="Staked: 25%"
-                    change="+5.7%"
-                    changeType="increase"
-                    status="Growing"
-                    description="Vitana Network Tokens for governance and staking rewards"
-                    className="h-full"
-                  />
+                  <SmartEarningsForecastCard className="h-full" />
                 </div>
               </div>
             </div>
