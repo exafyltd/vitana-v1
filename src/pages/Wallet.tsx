@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Shield } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -20,6 +20,7 @@ import { PredictiveActionsCard } from "@/components/wallet/intelligence/Predicti
 import { DynamicRewardOpportunityCard } from "@/components/wallet/intelligence/DynamicRewardOpportunityCard";
 import { walletNavigation } from "@/config/navigation";
 import { useWallet } from "@/hooks/useWallet";
+import { toast } from "sonner";
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -111,6 +112,24 @@ export default function Wallet() {
                     status="Growing"
                     description="Vitana Network Tokens for governance and staking rewards"
                     className="h-full"
+                    primaryAction={{
+                      label: "Stake Tokens",
+                      onClick: () => toast.info("Staking feature coming soon!"),
+                      icon: Coins,
+                      variant: "default"
+                    }}
+                    secondaryActions={[
+                      {
+                        label: "View Details",
+                        onClick: () => toast.info("Token details coming soon!"),
+                        icon: Eye
+                      },
+                      {
+                        label: "Transfer",
+                        onClick: () => toast.info("Transfer feature coming soon!"),
+                        icon: ArrowUpRight
+                      }
+                    ]}
                   />
                 </div>
                 <div className="col-span-4">
@@ -124,6 +143,24 @@ export default function Wallet() {
                     status="Active"
                     description="US Dollar balance for instant purchases, withdrawals and secure transactions"
                     className="h-full"
+                    primaryAction={{
+                      label: "Add Funds",
+                      onClick: () => toast.info("Add funds feature coming soon!"),
+                      icon: DollarSign,
+                      variant: "default"
+                    }}
+                    secondaryActions={[
+                      {
+                        label: "Withdraw",
+                        onClick: () => toast.info("Withdrawal feature coming soon!"),
+                        icon: ArrowUpRight
+                      },
+                      {
+                        label: "Transaction History",
+                        onClick: () => toast.info("Transaction history coming soon!"),
+                        icon: Eye
+                      }
+                    ]}
                   />
                 </div>
                 <div className="col-span-4">
@@ -137,6 +174,24 @@ export default function Wallet() {
                     status="Active"
                     description="Platform credits for seamless transactions, rewards and premium features"
                     className="h-full"
+                    primaryAction={{
+                      label: "Buy Credits",
+                      onClick: () => toast.info("Credit purchase feature coming soon!"),
+                      icon: CreditCard,
+                      variant: "default"
+                    }}
+                    secondaryActions={[
+                      {
+                        label: "Spend Credits",
+                        onClick: () => toast.info("Credit spending feature coming soon!"),
+                        icon: ArrowUpRight
+                      },
+                      {
+                        label: "Credit History",
+                        onClick: () => toast.info("Credit history coming soon!"),
+                        icon: Eye
+                      }
+                    ]}
                   />
                 </div>
               </div>

@@ -3,8 +3,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
-import { TrendingUp, DollarSign, Coins, Shield, ArrowUpRight, Eye } from "lucide-react";
+import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
+import { TrendingUp, DollarSign, Coins, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+interface ActionConfig {
+  label: string;
+  onClick: () => void;
+  icon: React.ComponentType<{ className?: string }>;
+  variant?: "default" | "outline" | "secondary" | "ghost" | "link" | "destructive";
+}
 
 interface WalletBalanceCardProps {
   type: "cash" | "credits" | "tokens";
@@ -18,6 +26,8 @@ interface WalletBalanceCardProps {
   imageUrl?: string;
   className?: string;
   onClick?: () => void;
+  primaryAction?: ActionConfig;
+  secondaryActions?: ActionConfig[];
 }
 
 export function WalletBalanceCard({
@@ -31,7 +41,9 @@ export function WalletBalanceCard({
   description,
   imageUrl,
   className,
-  onClick
+  onClick,
+  primaryAction,
+  secondaryActions
 }: WalletBalanceCardProps) {
   
   const getIcon = () => {
@@ -144,14 +156,27 @@ export function WalletBalanceCard({
 
           {/* Action Buttons */}
           <div className="flex gap-2 pt-2">
-            <Button size="sm" className="flex-1">
-              <ArrowUpRight className="h-4 w-4 mr-1" />
-              Manage
-            </Button>
-            <Button size="sm" variant="outline">
-              <Eye className="h-4 w-4 mr-1" />
-              Details
-            </Button>
+            {primaryAction && (
+              <Button 
+                size="sm" 
+                className="flex-1" 
+                variant={primaryAction.variant || "default"}
+                onClick={primaryAction.onClick}
+              >
+                <primaryAction.icon className="h-4 w-4 mr-1" />
+                {primaryAction.label}
+              </Button>
+            )}
+            {secondaryActions && secondaryActions.length > 0 && (
+              <KebabMenu>
+                {secondaryActions.map((action, index) => (
+                  <DropdownMenuItem key={index} onClick={action.onClick}>
+                    <action.icon className="h-4 w-4 mr-2" />
+                    {action.label}
+                  </DropdownMenuItem>
+                ))}
+              </KebabMenu>
+            )}
           </div>
         </div>
       </CardContent>
