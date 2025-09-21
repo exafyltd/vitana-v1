@@ -12,6 +12,7 @@ import { useWallet } from '@/hooks/useWallet';
 import { useMessages } from '@/hooks/useMessages';
 import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
+import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 
 interface ExchangeAndSendStepProps {
   onBack: () => void;
@@ -22,7 +23,9 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
   const { exchangeCurrency, transferFunds, getBalance } = useWallet();
   const { sendMessage } = useMessages(undefined, false);
   const { toast } = useToast();
-  const [recipient, setRecipient] = useState('');
+  const { members, loading: loadingMembers, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
+  const [selectedRecipient, setSelectedRecipient] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [fromCurrency, setFromCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('CREDITS');
   const [toCurrency, setToCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('VTN');
   const [amount, setAmount] = useState('');
@@ -35,12 +38,15 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
     { value: 'USD', label: 'USD', icon: DollarSign }
   ];
 
-  // Mock community members for demo
-  const communityMembers = [
-    { id: 'user1', name: 'Alice Johnson', email: 'alice@example.com', avatar: '' },
-    { id: 'user2', name: 'Bob Smith', email: 'bob@example.com', avatar: '' },
-    { id: 'user3', name: 'Carol Davis', email: 'carol@example.com', avatar: '' },
-  ];
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    searchMembers(value);
+  };
+
+  const handleRecipientSelect = (member: any) => {
+    setSelectedRecipient(member.user_id);
+    setSearchTerm(getDisplayName(member));
+  };
 
   const getCurrencyIcon = (currency: string) => {
     const currencyData = currencies.find(c => c.value === currency);
@@ -56,10 +62,10 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
   };
 
   const handleExchangeAndSend = async () => {
-    if (!recipient || !amount || parseFloat(amount) <= 0) {
+    if (!selectedRecipient || !amount || parseFloat(amount) <= 0) {
       toast({
         title: 'Missing Information',
-        description: 'Please fill in all required fields',
+        description: 'Please select a recipient and enter an amount',
         variant: 'destructive'
       });
       return;
@@ -93,13 +99,12 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
       const receivedAmount = (exchangeAmount - exchangeFees) * exchangeRate;
 
       // Step 2: Send the exchanged currency
-      const recipientId = recipient || 'user1';
-      await transferFunds(recipientId, toCurrency, receivedAmount);
+      await transferFunds(selectedRecipient, toCurrency, receivedAmount);
 
       // Send notification message
       await sendMessage(
         `💱➡️ Exchange & Send completed: ${exchangeAmount} ${fromCurrency} → ${receivedAmount.toFixed(2)} ${toCurrency}${description ? `\n📝 ${description}` : ''}`,
-        recipientId,
+        selectedRecipient,
         'exchange_and_send',
         {
           type: 'exchange_and_send',
@@ -108,7 +113,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
           toAmount: receivedAmount,
           toCurrency,
           description,
-          recipientId
+          recipientId: selectedRecipient
         }
       );
 
@@ -128,6 +133,16 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
   const balance = getBalance(fromCurrency);
   const calculation = amount ? calculateExchange(parseFloat(amount), fromCurrency, toCurrency) : null;
   const isValidAmount = amount && parseFloat(amount) > 0 && parseFloat(amount) <= balance;
+  const selectedMember = members.find(m => m.user_id === selectedRecipient);
+
+  // Filter members based on search
+  const filteredMembers = searchTerm 
+    ? members.filter(member => 
+        getDisplayName(member).toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (member.email && member.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (member.handle && member.handle.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
+    : members;
 
   return (
     <>
@@ -151,37 +166,69 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
               <Input
                 id="recipient"
                 placeholder="Search community members..."
-                value={recipient}
-                onChange={(e) => setRecipient(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-9"
               />
             </div>
             
-            {/* Quick Select Community Members */}
-            <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">Quick select:</p>
-              <div className="grid gap-1 max-h-24 overflow-y-auto">
-                {communityMembers.map((member) => (
+            {/* Selected Member Display */}
+            {selectedMember && (
+              <div className="p-2 bg-primary/5 rounded-lg border">
+                <div className="flex items-center gap-2">
+                  <Avatar className="h-5 w-5">
+                    <AvatarImage src={selectedMember.avatar_url || ''} />
+                    <AvatarFallback className="text-xs">
+                      {getInitials(selectedMember)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium">{getDisplayName(selectedMember)}</div>
+                  </div>
                   <Button
-                    key={member.id}
                     variant="ghost"
                     size="sm"
-                    onClick={() => setRecipient(member.id)}
-                    className="justify-start h-auto py-1 px-2"
+                    onClick={() => {
+                      setSelectedRecipient('');
+                      setSearchTerm('');
+                    }}
+                    className="h-5 w-5 p-0 text-xs"
                   >
-                    <Avatar className="h-5 w-5 mr-2">
-                      <AvatarImage src={member.avatar} />
-                      <AvatarFallback className="text-xs">
-                        {member.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="text-left">
-                      <div className="text-xs font-medium">{member.name}</div>
-                    </div>
+                    ×
                   </Button>
-                ))}
+                </div>
               </div>
-            </div>
+            )}
+            
+            {/* Community Members List */}
+            {!selectedRecipient && (
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground">
+                  {loadingMembers ? 'Loading...' : `${filteredMembers.length} members`}
+                </p>
+                <div className="grid gap-1 max-h-24 overflow-y-auto">
+                  {filteredMembers.map((member) => (
+                    <Button
+                      key={member.user_id}
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRecipientSelect(member)}
+                      className="justify-start h-auto py-1 px-2"
+                    >
+                      <Avatar className="h-5 w-5 mr-2">
+                        <AvatarImage src={member.avatar_url || ''} />
+                        <AvatarFallback className="text-xs">
+                          {getInitials(member)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="text-left">
+                        <div className="text-xs font-medium">{getDisplayName(member)}</div>
+                      </div>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -294,7 +341,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
           </Button>
           <Button 
             onClick={handleExchangeAndSend}
-            disabled={!isValidAmount || !recipient || isProcessing || fromCurrency === toCurrency}
+            disabled={!isValidAmount || !selectedRecipient || isProcessing || fromCurrency === toCurrency}
             className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
           >
             {isProcessing ? (

@@ -11,6 +11,7 @@ import { ArrowLeft, Send, Loader2, DollarSign, Coins, CreditCard, Search } from 
 import { useWallet } from '@/hooks/useWallet';
 import { useMessages } from '@/hooks/useMessages';
 import { useToast } from '@/hooks/use-toast';
+import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 
 interface SendStepProps {
   onBack: () => void;
@@ -21,7 +22,9 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
   const { transferFunds, getBalance } = useWallet();
   const { sendMessage } = useMessages(undefined, false);
   const { toast } = useToast();
-  const [recipient, setRecipient] = useState('');
+  const { members, loading: loadingMembers, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
+  const [selectedRecipient, setSelectedRecipient] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [currency, setCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('CREDITS');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
@@ -33,12 +36,15 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
     { value: 'USD', label: 'USD', icon: DollarSign }
   ];
 
-  // Mock community members for demo
-  const communityMembers = [
-    { id: 'user1', name: 'Alice Johnson', email: 'alice@example.com', avatar: '' },
-    { id: 'user2', name: 'Bob Smith', email: 'bob@example.com', avatar: '' },
-    { id: 'user3', name: 'Carol Davis', email: 'carol@example.com', avatar: '' },
-  ];
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    searchMembers(value);
+  };
+
+  const handleRecipientSelect = (member: any) => {
+    setSelectedRecipient(member.user_id);
+    setSearchTerm(getDisplayName(member));
+  };
 
   const getCurrencyIcon = (currency: string) => {
     const currencyData = currencies.find(c => c.value === currency);
@@ -48,10 +54,10 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
   };
 
   const handleSend = async () => {
-    if (!recipient || !amount || parseFloat(amount) <= 0) {
+    if (!selectedRecipient || !amount || parseFloat(amount) <= 0) {
       toast({
         title: 'Missing Information',
-        description: 'Please fill in all required fields',
+        description: 'Please select a recipient and enter an amount',
         variant: 'destructive'
       });
       return;
@@ -72,22 +78,19 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
     setIsProcessing(true);
 
     try {
-      // For demo, use the first community member's ID if no specific recipient selected
-      const recipientId = recipient || 'user1';
-      
-      await transferFunds(recipientId, currency, sendAmount);
+      await transferFunds(selectedRecipient, currency, sendAmount);
 
       // Send notification message
       await sendMessage(
         `💸 Payment sent: ${sendAmount} ${currency}${description ? `\n📝 ${description}` : ''}`,
-        recipientId,
+        selectedRecipient,
         'payment_sent',
         {
           type: 'transfer',
           amount: sendAmount,
           currency,
           description,
-          recipientId
+          recipientId: selectedRecipient
         }
       );
 
@@ -103,6 +106,16 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
   const fees = amount ? parseFloat(amount) * 0.005 : 0; // 0.5% fee
   const total = amount ? parseFloat(amount) + fees : 0;
   const isValidAmount = amount && parseFloat(amount) > 0 && total <= balance;
+  const selectedMember = members.find(m => m.user_id === selectedRecipient);
+
+  // Filter members based on search
+  const filteredMembers = searchTerm 
+    ? members.filter(member => 
+        getDisplayName(member).toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (member.email && member.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (member.handle && member.handle.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
+    : members;
 
   return (
     <>
@@ -126,38 +139,75 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
               <Input
                 id="recipient"
                 placeholder="Search community members..."
-                value={recipient}
-                onChange={(e) => setRecipient(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-9"
               />
             </div>
             
-            {/* Quick Select Community Members */}
-            <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">Quick select:</p>
-              <div className="grid gap-1">
-                {communityMembers.map((member) => (
+            {/* Selected Member Display */}
+            {selectedMember && (
+              <div className="p-2 bg-primary/5 rounded-lg border">
+                <div className="flex items-center gap-2">
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage src={selectedMember.avatar_url || ''} />
+                    <AvatarFallback className="text-xs">
+                      {getInitials(selectedMember)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium">{getDisplayName(selectedMember)}</div>
+                    {selectedMember.email && (
+                      <div className="text-xs text-muted-foreground">{selectedMember.email}</div>
+                    )}
+                  </div>
                   <Button
-                    key={member.id}
                     variant="ghost"
                     size="sm"
-                    onClick={() => setRecipient(member.id)}
-                    className="justify-start h-auto py-2 px-2"
+                    onClick={() => {
+                      setSelectedRecipient('');
+                      setSearchTerm('');
+                    }}
+                    className="h-6 w-6 p-0"
                   >
-                    <Avatar className="h-6 w-6 mr-2">
-                      <AvatarImage src={member.avatar} />
-                      <AvatarFallback className="text-xs">
-                        {member.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="text-left">
-                      <div className="text-sm font-medium">{member.name}</div>
-                      <div className="text-xs text-muted-foreground">{member.email}</div>
-                    </div>
+                    ×
                   </Button>
-                ))}
+                </div>
               </div>
-            </div>
+            )}
+            
+            {/* Community Members List */}
+            {!selectedRecipient && (
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground">
+                  {loadingMembers ? 'Loading members...' : `${filteredMembers.length} members found`}
+                </p>
+                <div className="grid gap-1 max-h-32 overflow-y-auto">
+                  {filteredMembers.map((member) => (
+                    <Button
+                      key={member.user_id}
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRecipientSelect(member)}
+                      className="justify-start h-auto py-2 px-2"
+                    >
+                      <Avatar className="h-6 w-6 mr-2">
+                        <AvatarImage src={member.avatar_url || ''} />
+                        <AvatarFallback className="text-xs">
+                          {getInitials(member)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="text-left flex-1">
+                        <div className="text-sm font-medium">{getDisplayName(member)}</div>
+                        {member.email && (
+                          <div className="text-xs text-muted-foreground">{member.email}</div>
+                        )}
+                      </div>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -233,7 +283,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
           </Button>
           <Button 
             onClick={handleSend}
-            disabled={!isValidAmount || !recipient || isProcessing}
+            disabled={!isValidAmount || !selectedRecipient || isProcessing}
             className="flex-1"
           >
             {isProcessing ? (
