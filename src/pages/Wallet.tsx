@@ -122,7 +122,7 @@ export default function Wallet() {
                     change="+2.3%"
                     changeType="increase"
                     status="Active"
-                    description="US Dollar balance for purchases and withdrawals"
+                    description="US Dollar balance for instant purchases, withdrawals and secure transactions"
                     className="h-full"
                   />
                 </div>
@@ -135,7 +135,7 @@ export default function Wallet() {
                     change="+12.1%"
                     changeType="increase"
                     status="Active"
-                    description="Platform credits for transactions and rewards"
+                    description="Platform credits for seamless transactions, rewards and premium features"
                     className="h-full"
                   />
                 </div>
