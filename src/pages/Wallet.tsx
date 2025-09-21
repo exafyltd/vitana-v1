@@ -20,7 +20,6 @@ import { PredictiveActionsCard } from "@/components/wallet/intelligence/Predicti
 import { DynamicRewardOpportunityCard } from "@/components/wallet/intelligence/DynamicRewardOpportunityCard";
 import { walletNavigation } from "@/config/navigation";
 import { useWallet } from "@/hooks/useWallet";
-import { toast } from "sonner";
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -64,6 +63,11 @@ export default function Wallet() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("balance-overview");
   const { balances, transactions, loading, error, getBalance } = useWallet();
+
+  // Handle opening specific wallet actions
+  const handleWalletAction = (actionType: string) => {
+    setMasterActionOpen(true);
+  };
 
   return (
     <AppLayout>
@@ -114,19 +118,19 @@ export default function Wallet() {
                     className="h-full"
                     primaryAction={{
                       label: "Stake Tokens",
-                      onClick: () => toast.info("Staking feature coming soon!"),
+                      onClick: () => handleWalletAction('stake-tokens'),
                       icon: Coins,
                       variant: "default"
                     }}
                     secondaryActions={[
                       {
                         label: "View Details",
-                        onClick: () => toast.info("Token details coming soon!"),
+                        onClick: () => handleWalletAction('token-details'),
                         icon: Eye
                       },
                       {
                         label: "Transfer",
-                        onClick: () => toast.info("Transfer feature coming soon!"),
+                        onClick: () => handleWalletAction('transfer'),
                         icon: ArrowUpRight
                       }
                     ]}
@@ -145,19 +149,19 @@ export default function Wallet() {
                     className="h-full"
                     primaryAction={{
                       label: "Add Funds",
-                      onClick: () => toast.info("Add funds feature coming soon!"),
+                      onClick: () => handleWalletAction('add-funds'),
                       icon: DollarSign,
                       variant: "default"
                     }}
                     secondaryActions={[
                       {
                         label: "Withdraw",
-                        onClick: () => toast.info("Withdrawal feature coming soon!"),
+                        onClick: () => handleWalletAction('withdraw'),
                         icon: ArrowUpRight
                       },
                       {
                         label: "Transaction History",
-                        onClick: () => toast.info("Transaction history coming soon!"),
+                        onClick: () => handleWalletAction('transaction-history'),
                         icon: Eye
                       }
                     ]}
@@ -176,19 +180,19 @@ export default function Wallet() {
                     className="h-full"
                     primaryAction={{
                       label: "Buy Credits",
-                      onClick: () => toast.info("Credit purchase feature coming soon!"),
+                      onClick: () => handleWalletAction('buy-credits'),
                       icon: CreditCard,
                       variant: "default"
                     }}
                     secondaryActions={[
                       {
                         label: "Spend Credits",
-                        onClick: () => toast.info("Credit spending feature coming soon!"),
+                        onClick: () => handleWalletAction('spend-credits'),
                         icon: ArrowUpRight
                       },
                       {
                         label: "Credit History",
-                        onClick: () => toast.info("Credit history coming soon!"),
+                        onClick: () => handleWalletAction('credit-history'),
                         icon: Eye
                       }
                     ]}
