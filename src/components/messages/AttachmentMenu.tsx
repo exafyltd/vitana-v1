@@ -1,134 +1,154 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Paperclip, 
-  Image, 
-  FileText, 
-  Camera, 
-  User, 
-  BarChart3,
-  Palette
+  DollarSign, 
+  Calendar, 
+  FileText
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface AttachmentMenuProps {
   onFileAttach: () => void;
-  onImageAttach?: () => void;
-  onDocumentAttach?: () => void;
-  onCameraAttach?: () => void;
-  onContactAttach?: () => void;
-  onPollAttach?: () => void;
-  onDrawingAttach?: () => void;
+  onPaymentRequest: (amount: string, description: string) => void;
+  onCalendarInvite: (title: string, date: string) => void;
   disabled?: boolean;
   className?: string;
 }
 
-const attachmentOptions = [
-  {
-    id: 'photos',
-    label: 'Photos & videos',
-    icon: Image,
-    color: 'text-blue-500',
-    action: 'onImageAttach'
-  },
-  {
-    id: 'camera',
-    label: 'Camera',
-    icon: Camera,
-    color: 'text-pink-500',
-    action: 'onCameraAttach'
-  },
-  {
-    id: 'document',
-    label: 'Document',
-    icon: FileText,
-    color: 'text-purple-500',
-    action: 'onDocumentAttach'
-  },
-  {
-    id: 'contact',
-    label: 'Contact',
-    icon: User,
-    color: 'text-orange-500',
-    action: 'onContactAttach'
-  },
-  {
-    id: 'poll',
-    label: 'Poll',
-    icon: BarChart3,
-    color: 'text-green-500',
-    action: 'onPollAttach'
-  },
-  {
-    id: 'drawing',
-    label: 'Drawing',
-    icon: Palette,
-    color: 'text-red-500',
-    action: 'onDrawingAttach'
-  }
-];
+function PaymentDialog({ onPaymentRequest }: { onPaymentRequest: (amount: string, description: string) => void }) {
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+  const [open, setOpen] = useState(false);
 
-export function AttachmentMenu({
-  onFileAttach,
-  onImageAttach,
-  onDocumentAttach,
-  onCameraAttach,
-  onContactAttach,
-  onPollAttach,
-  onDrawingAttach,
-  disabled = false,
-  className
-}: AttachmentMenuProps) {
-  const handleOptionClick = (option: typeof attachmentOptions[0]) => {
-    switch (option.action) {
-      case 'onImageAttach':
-        if (onImageAttach) {
-          onImageAttach();
-        } else {
-          onFileAttach();
-        }
-        break;
-      case 'onDocumentAttach':
-        if (onDocumentAttach) {
-          onDocumentAttach();
-        } else {
-          onFileAttach();
-        }
-        break;
-      case 'onCameraAttach':
-        if (onCameraAttach) {
-          onCameraAttach();
-        } else {
-          onFileAttach();
-        }
-        break;
-      case 'onContactAttach':
-        if (onContactAttach) {
-          onContactAttach();
-        } else {
-          onFileAttach();
-        }
-        break;
-      case 'onPollAttach':
-        if (onPollAttach) {
-          onPollAttach();
-        } else {
-          onFileAttach();
-        }
-        break;
-      case 'onDrawingAttach':
-        if (onDrawingAttach) {
-          onDrawingAttach();
-        } else {
-          onFileAttach();
-        }
-        break;
-      default:
-        onFileAttach();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (amount && description) {
+      onPaymentRequest(amount, description);
+      setAmount('');
+      setDescription('');
+      setOpen(false);
     }
   };
 
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          className="w-full justify-start h-10 px-3"
+        >
+          <DollarSign className="w-5 h-5 mr-3 text-green-500" />
+          <span className="text-sm">Request Payment</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Request Payment</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="amount">Amount ($)</Label>
+            <Input
+              id="amount"
+              type="number"
+              step="0.01"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="0.00"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="description">Description</Label>
+            <Input
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="What's this for?"
+              required
+            />
+          </div>
+          <Button type="submit" className="w-full">
+            Send Payment Request
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string, date: string) => void }) {
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (title && date) {
+      onCalendarInvite(title, date);
+      setTitle('');
+      setDate('');
+      setOpen(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          className="w-full justify-start h-10 px-3"
+        >
+          <Calendar className="w-5 h-5 mr-3 text-blue-500" />
+          <span className="text-sm">Send Calendar Invite</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Send Calendar Invite</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="title">Event Title</Label>
+            <Input
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Meeting title"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="date">Date & Time</Label>
+            <Input
+              id="date"
+              type="datetime-local"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </div>
+          <Button type="submit" className="w-full">
+            Send Calendar Invite
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function AttachmentMenu({
+  onFileAttach,
+  onPaymentRequest,
+  onCalendarInvite,
+  disabled = false,
+  className
+}: AttachmentMenuProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -151,20 +171,17 @@ export function AttachmentMenu({
         className="w-56 p-2 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
       >
         <div className="grid gap-1">
-          {attachmentOptions.map((option) => {
-            const Icon = option.icon;
-            return (
-              <Button
-                key={option.id}
-                variant="ghost"
-                className="w-full justify-start h-10 px-3"
-                onClick={() => handleOptionClick(option)}
-              >
-                <Icon className={cn("w-5 h-5 mr-3", option.color)} />
-                <span className="text-sm">{option.label}</span>
-              </Button>
-            );
-          })}
+          <Button
+            variant="ghost"
+            className="w-full justify-start h-10 px-3"
+            onClick={onFileAttach}
+          >
+            <FileText className="w-5 h-5 mr-3 text-purple-500" />
+            <span className="text-sm">Attach File</span>
+          </Button>
+          
+          <PaymentDialog onPaymentRequest={onPaymentRequest} />
+          <CalendarDialog onCalendarInvite={onCalendarInvite} />
         </div>
       </PopoverContent>
     </Popover>

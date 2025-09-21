@@ -179,6 +179,14 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
                     <div>
                       <AttachmentMenu
                         onFileAttach={handleFileAttach}
+                        onPaymentRequest={(amount, description) => {
+                          // Add payment request logic if needed for enhanced composer
+                          console.log('Payment request:', amount, description);
+                        }}
+                        onCalendarInvite={(title, date) => {
+                          // Add calendar invite logic if needed for enhanced composer  
+                          console.log('Calendar invite:', title, date);
+                        }}
                         disabled={disabled}
                         className="hover:bg-muted"
                       />

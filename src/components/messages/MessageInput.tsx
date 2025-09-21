@@ -28,6 +28,7 @@ import {
   Paperclip
 } from 'lucide-react';
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
+import { EmojiPicker } from '@/components/ui/emoji-picker';
 
 interface MessageInputProps {
   onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[]) => Promise<void>;
@@ -479,12 +480,21 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
       <div className="flex items-end gap-3">
         {/* Left: Emoji button */}
-        <Button type="button" size="sm" variant="ghost" className="h-9 w-9 p-0" aria-label="Open emoji picker">
-          <Smile className="w-4 h-4" />
-        </Button>
+        <EmojiPicker 
+          onEmojiSelect={(emoji) => {
+            setMessage(prev => prev + emoji);
+            textareaRef.current?.focus();
+          }}
+          className="h-9 w-9"
+        />
 
-        {/* Left: Attachment menu (WhatsApp-style) */}
-        <AttachmentMenu onFileAttach={() => fileInputRef.current?.click()} disabled={disabled || isUploading} />
+        {/* Left: Attachment menu */}
+        <AttachmentMenu 
+          onFileAttach={() => fileInputRef.current?.click()}
+          onPaymentRequest={sendPaymentRequest}
+          onCalendarInvite={sendCalendarInvite}
+          disabled={disabled || isUploading} 
+        />
 
         {/* Hidden file input */}
         <input
