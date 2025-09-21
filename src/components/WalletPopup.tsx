@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useWallet } from "@/hooks/useWallet";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 import MakePaymentPopup from "@/components/payment/MakePaymentPopup";
 import CreditTransferPopup from "@/components/payment/CreditTransferPopup";
@@ -111,7 +112,11 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
   const [showCreditTransfer, setShowCreditTransfer] = useState(false);
   const [showExchangeAndSend, setShowExchangeAndSend] = useState(false);
   
-  const currentBalance = 2847;
+  const { balances, loading, getBalance, exchangeCurrency } = useWallet();
+  
+  const currentBalance = getBalance('VTN');
+  const usdBalance = getBalance('USD');
+  const creditsBalance = getBalance('CREDITS');
   const pendingRewards = 156;
   const monthlyTrend = 12.5; // percentage increase
   
@@ -144,7 +149,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             </div>
             <span>Digital Wallet</span>
             <Badge variant="outline" className="ml-auto text-green-600 border-green-200">
-              {currentBalance.toLocaleString()} VTN
+              {loading ? '...' : currentBalance.toLocaleString()} VTN
             </Badge>
           </DialogTitle>
           <DialogDescription>
@@ -162,7 +167,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
               <Card>
                 <CardContent className="p-3 text-center">
                   <div className="text-lg font-bold text-green-600">
-                    {currentBalance.toLocaleString()}
+                    {loading ? '...' : currentBalance.toLocaleString()}
                   </div>
                   <div className="text-xs text-muted-foreground">VTN Balance</div>
                   <div className="flex items-center justify-center gap-1 mt-1">
@@ -188,11 +193,18 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
 
             {/* Quick Exchange Widget */}
             <QuickExchangeWidget 
-              onExchange={(fromAmount, fromCurrency, toCurrency, toAmount) => {
-                toast({
-                  title: "Exchange Completed",
-                  description: `Converted ${fromAmount} ${fromCurrency} to ${toAmount} ${toCurrency}`,
-                });
+              onExchange={async (fromAmount, fromCurrency, toCurrency, toAmount) => {
+                try {
+                  const exchangeRate = toAmount / fromAmount;
+                  await exchangeCurrency(
+                    fromCurrency as 'USD' | 'VTN' | 'CREDITS',
+                    toCurrency as 'USD' | 'VTN' | 'CREDITS',
+                    fromAmount,
+                    exchangeRate
+                  );
+                } catch (error) {
+                  // Error handled in useWallet hook
+                }
               }}
               onExchangeAndSend={() => setShowExchangeAndSend(true)}
             />
