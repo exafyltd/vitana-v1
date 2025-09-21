@@ -122,7 +122,7 @@ export default function Wallet() {
                     change="+2.3%"
                     changeType="increase"
                     status="Active"
-                    description="US Dollar holdings ready for withdrawal"
+                    description="US Dollar balance for purchases and withdrawals"
                     className="h-full"
                   />
                 </div>
