@@ -1,0 +1,313 @@
+import React, { useState } from 'react';
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ArrowLeft, Zap, Loader2, DollarSign, Coins, CreditCard, Search, ArrowUpDown } from "lucide-react";
+import { useWallet } from '@/hooks/useWallet';
+import { useMessages } from '@/hooks/useMessages';
+import { useToast } from '@/hooks/use-toast';
+import { calculateExchange } from '@/lib/exchangeRates';
+
+interface ExchangeAndSendStepProps {
+  onBack: () => void;
+  onClose: () => void;
+}
+
+export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProps) {
+  const { exchangeCurrency, transferFunds, getBalance } = useWallet();
+  const { sendMessage } = useMessages(undefined, false);
+  const { toast } = useToast();
+  const [recipient, setRecipient] = useState('');
+  const [fromCurrency, setFromCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('CREDITS');
+  const [toCurrency, setToCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('VTN');
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const currencies = [
+    { value: 'CREDITS', label: 'Credits', icon: CreditCard },
+    { value: 'VTN', label: 'VTN Tokens', icon: Coins },
+    { value: 'USD', label: 'USD', icon: DollarSign }
+  ];
+
+  // Mock community members for demo
+  const communityMembers = [
+    { id: 'user1', name: 'Alice Johnson', email: 'alice@example.com', avatar: '' },
+    { id: 'user2', name: 'Bob Smith', email: 'bob@example.com', avatar: '' },
+    { id: 'user3', name: 'Carol Davis', email: 'carol@example.com', avatar: '' },
+  ];
+
+  const getCurrencyIcon = (currency: string) => {
+    const currencyData = currencies.find(c => c.value === currency);
+    if (!currencyData) return null;
+    const Icon = currencyData.icon;
+    return <Icon className="h-4 w-4" />;
+  };
+
+  const handleSwapCurrencies = () => {
+    const temp = fromCurrency;
+    setFromCurrency(toCurrency);
+    setToCurrency(temp);
+  };
+
+  const handleExchangeAndSend = async () => {
+    if (!recipient || !amount || parseFloat(amount) <= 0) {
+      toast({
+        title: 'Missing Information',
+        description: 'Please fill in all required fields',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    const exchangeAmount = parseFloat(amount);
+    const currentBalance = getBalance(fromCurrency);
+
+    if (exchangeAmount > currentBalance) {
+      toast({
+        title: 'Insufficient Balance',
+        description: `You only have ${currentBalance} ${fromCurrency}`,
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      // Step 1: Exchange currency
+      const exchangeRate = fromCurrency === 'CREDITS' && toCurrency === 'VTN' ? 0.5 : 
+                          fromCurrency === 'VTN' && toCurrency === 'CREDITS' ? 2.0 :
+                          fromCurrency === 'USD' && toCurrency === 'VTN' ? 2.5 :
+                          fromCurrency === 'VTN' && toCurrency === 'USD' ? 0.4 : 1.0;
+
+      await exchangeCurrency(fromCurrency, toCurrency, exchangeAmount, exchangeRate);
+
+      // Calculate received amount after exchange fees
+      const exchangeFees = exchangeAmount * 0.01; // 1% exchange fee
+      const receivedAmount = (exchangeAmount - exchangeFees) * exchangeRate;
+
+      // Step 2: Send the exchanged currency
+      const recipientId = recipient || 'user1';
+      await transferFunds(recipientId, toCurrency, receivedAmount);
+
+      // Send notification message
+      await sendMessage(
+        `💱➡️ Exchange & Send completed: ${exchangeAmount} ${fromCurrency} → ${receivedAmount.toFixed(2)} ${toCurrency}${description ? `\n📝 ${description}` : ''}`,
+        recipientId,
+        'exchange_and_send',
+        {
+          type: 'exchange_and_send',
+          fromAmount: exchangeAmount,
+          fromCurrency,
+          toAmount: receivedAmount,
+          toCurrency,
+          description,
+          recipientId
+        }
+      );
+
+      toast({
+        title: '✅ Exchange & Send Complete!',
+        description: `Converted ${exchangeAmount} ${fromCurrency} to ${receivedAmount.toFixed(2)} ${toCurrency} and sent successfully`,
+      });
+
+      onClose();
+    } catch (error) {
+      // Error handling is done in the hooks
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const balance = getBalance(fromCurrency);
+  const calculation = amount ? calculateExchange(parseFloat(amount), fromCurrency, toCurrency) : null;
+  const isValidAmount = amount && parseFloat(amount) > 0 && parseFloat(amount) <= balance;
+
+  return (
+    <>
+      <DialogHeader>
+        <DialogTitle className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" onClick={onBack} className="p-1 h-8 w-8">
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <Zap className="h-5 w-5 text-purple-600" />
+          Exchange & Send
+        </DialogTitle>
+      </DialogHeader>
+
+      <div className="space-y-4">
+        {/* Recipient Selection */}
+        <div className="space-y-2">
+          <Label htmlFor="recipient">Send to</Label>
+          <div className="space-y-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="recipient"
+                placeholder="Search community members..."
+                value={recipient}
+                onChange={(e) => setRecipient(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+            
+            {/* Quick Select Community Members */}
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Quick select:</p>
+              <div className="grid gap-1 max-h-24 overflow-y-auto">
+                {communityMembers.map((member) => (
+                  <Button
+                    key={member.id}
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setRecipient(member.id)}
+                    className="justify-start h-auto py-1 px-2"
+                  >
+                    <Avatar className="h-5 w-5 mr-2">
+                      <AvatarImage src={member.avatar} />
+                      <AvatarFallback className="text-xs">
+                        {member.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="text-left">
+                      <div className="text-xs font-medium">{member.name}</div>
+                    </div>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Exchange Setup */}
+        <div className="space-y-3">
+          <Label>Exchange & Send Amount</Label>
+          
+          {/* From Currency */}
+          <div className="flex gap-2">
+            <Input
+              type="number"
+              placeholder="0.00"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="flex-1"
+            />
+            <Select value={fromCurrency} onValueChange={(value: any) => setFromCurrency(value)}>
+              <SelectTrigger className="w-28">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.map((currency) => (
+                  <SelectItem key={currency.value} value={currency.value}>
+                    <div className="flex items-center gap-1">
+                      {getCurrencyIcon(currency.value)}
+                      <span className="text-xs">{currency.value}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Available: {balance} {fromCurrency}
+          </p>
+
+          {/* Swap Button */}
+          <div className="flex justify-center">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSwapCurrencies}
+              className="rounded-full h-8 w-8 p-0"
+            >
+              <ArrowUpDown className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {/* To Currency */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">They'll receive:</span>
+            <Select value={toCurrency} onValueChange={(value: any) => setToCurrency(value)}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.filter(c => c.value !== fromCurrency).map((currency) => (
+                  <SelectItem key={currency.value} value={currency.value}>
+                    <div className="flex items-center gap-1">
+                      {getCurrencyIcon(currency.value)}
+                      <span className="text-xs">{currency.value}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="space-y-2">
+          <Label htmlFor="description">Description (optional)</Label>
+          <Textarea
+            id="description"
+            placeholder="What's this for?"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={2}
+          />
+        </div>
+
+        {/* Transaction Preview */}
+        {calculation && (
+          <Card className="bg-gradient-to-r from-purple-50/30 to-blue-50/30 border-purple-200/50">
+            <CardContent className="p-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>You send:</span>
+                <span className="font-medium">{parseFloat(amount).toFixed(2)} {fromCurrency}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span>They receive:</span>
+                <span className="font-medium text-purple-700">{calculation.toAmount.toFixed(2)} {toCurrency}</span>
+              </div>
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Exchange rate:</span>
+                <span>1 {fromCurrency} = {calculation.rate} {toCurrency}</span>
+              </div>
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Total fees:</span>
+                <span>{(calculation.fees + calculation.toAmount * 0.005).toFixed(3)} {fromCurrency}</span>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Action Buttons */}
+        <div className="flex gap-2 pt-2">
+          <Button variant="outline" onClick={onBack} className="flex-1">
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleExchangeAndSend}
+            disabled={!isValidAmount || !recipient || isProcessing || fromCurrency === toCurrency}
+            className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              'Exchange & Send'
+            )}
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+}
