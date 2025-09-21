@@ -163,7 +163,7 @@ export function WalletBalanceCard({
                 variant={primaryAction.variant || "default"}
                 onClick={primaryAction.onClick}
               >
-                <primaryAction.icon className="h-4 w-4 mr-1" />
+                {React.createElement(primaryAction.icon, { className: "h-4 w-4 mr-1" })}
                 {primaryAction.label}
               </Button>
             )}
@@ -171,7 +171,7 @@ export function WalletBalanceCard({
               <KebabMenu>
                 {secondaryActions.map((action, index) => (
                   <DropdownMenuItem key={index} onClick={action.onClick}>
-                    <action.icon className="h-4 w-4 mr-2" />
+                    {React.createElement(action.icon, { className: "h-4 w-4 mr-2" })}
                     {action.label}
                   </DropdownMenuItem>
                 ))}
