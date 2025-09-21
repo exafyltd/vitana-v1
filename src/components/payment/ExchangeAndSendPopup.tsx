@@ -1,0 +1,339 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { useMessages } from "@/hooks/useMessages";
+import { ArrowRight, ArrowUpDown, Send, Zap, DollarSign, Coins, CreditCard } from "lucide-react";
+import { calculateExchange, formatCurrency, getCurrencySymbol } from "@/lib/exchangeRates";
+
+interface ExchangeAndSendPopupProps {
+  isOpen: boolean;
+  onClose: () => void;
+  recipient?: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
+  initialAmount?: string;
+  initialFromCurrency?: string;
+  initialToCurrency?: string;
+}
+
+export default function ExchangeAndSendPopup({ 
+  isOpen, 
+  onClose, 
+  recipient,
+  initialAmount = "",
+  initialFromCurrency = "USD",
+  initialToCurrency = "VTN"
+}: ExchangeAndSendPopupProps) {
+  const [amount, setAmount] = useState(initialAmount);
+  const [fromCurrency, setFromCurrency] = useState(initialFromCurrency);
+  const [toCurrency, setToCurrency] = useState(initialToCurrency);
+  const [description, setDescription] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
+  const { sendMessage } = useMessages(undefined, false);
+
+  const currencies = [
+    { value: 'USD', label: 'US Dollars', icon: DollarSign },
+    { value: 'VTN', label: 'VTN Tokens', icon: CreditCard },
+    { value: 'CREDITS', label: 'Credits', icon: Coins }
+  ];
+
+  // Mock user balance
+  const userBalance = {
+    USD: 2847.32,
+    VTN: 892,
+    CREDITS: 1547
+  };
+
+  const getCurrencyIcon = (currency: string) => {
+    const currencyData = currencies.find(c => c.value === currency);
+    const Icon = currencyData?.icon || Coins;
+    return <Icon className="w-4 h-4" />;
+  };
+
+  const calculation = calculateExchange(
+    parseFloat(amount) || 0,
+    fromCurrency,
+    toCurrency
+  );
+
+  const canAfford = () => {
+    const paymentAmount = parseFloat(amount) || 0;
+    return userBalance[fromCurrency as keyof typeof userBalance] >= paymentAmount;
+  };
+
+  const handleSwapCurrencies = () => {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+  };
+
+  const handleExchangeAndSend = async () => {
+    if (!amount || !description) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in amount and description",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!canAfford()) {
+      toast({
+        title: "Insufficient Balance",
+        description: `You don't have enough ${fromCurrency}`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!calculation) {
+      toast({
+        title: "Exchange Error", 
+        description: "Unable to calculate exchange rate",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      // Simulate exchange + send process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      const exchangeData = {
+        originalAmount: calculation.fromAmount,
+        originalCurrency: fromCurrency,
+        exchangedAmount: calculation.total,
+        exchangedCurrency: toCurrency,
+        exchangeRate: calculation.rate,
+        fees: calculation.fees,
+        description,
+        recipient: recipient?.name || "Recipient",
+        transactionId: `EXS_${Date.now()}`,
+        type: "exchange_and_send"
+      };
+
+      await sendMessage(
+        `💱➡️ Exchange & Send: ${formatCurrency(calculation.fromAmount, fromCurrency)} → ${formatCurrency(calculation.total, toCurrency)} - ${description}`,
+        recipient?.id,
+        'exchange_and_send',
+        exchangeData
+      );
+
+      toast({
+        title: "Exchange & Send Completed! ✨",
+        description: `Converted ${formatCurrency(calculation.fromAmount, fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)} and sent to ${recipient?.name || 'recipient'}`,
+        duration: 6000
+      });
+
+      onClose();
+      setAmount('');
+      setDescription('');
+    } catch (error) {
+      console.error('Exchange and send error:', error);
+      toast({
+        title: "Transaction Failed",
+        description: "Please try again or contact support",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Zap className="w-5 h-5 text-purple-600" />
+            Exchange & Send
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          {/* Recipient */}
+          {recipient && (
+            <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
+              <Avatar className="w-10 h-10">
+                <AvatarImage src={recipient.avatar} />
+                <AvatarFallback>{recipient.name[0]}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <p className="font-medium">{recipient.name}</p>
+                <p className="text-sm text-muted-foreground">Recipient</p>
+              </div>
+            </div>
+          )}
+
+          {/* Balance Display */}
+          <Card>
+            <CardContent className="p-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Your Balance:</span>
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1">
+                    <DollarSign className="w-3 h-3" />
+                    {userBalance.USD.toLocaleString()}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <CreditCard className="w-3 h-3" />
+                    {userBalance.VTN}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Coins className="w-3 h-3" />
+                    {userBalance.CREDITS}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Amount Input */}
+          <div>
+            <Label htmlFor="amount">Amount</Label>
+            <Input
+              id="amount"
+              type="number"
+              placeholder="0.00"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+          </div>
+
+          {/* Currency Selection */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>You Send</Label>
+              <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {currencies.map(currency => (
+                    <SelectItem key={currency.value} value={currency.value}>
+                      <div className="flex items-center gap-2">
+                        {getCurrencyIcon(currency.value)}
+                        {currency.label}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>They Receive</Label>
+              <div className="flex gap-1">
+                <Select value={toCurrency} onValueChange={setToCurrency}>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currencies.filter(c => c.value !== fromCurrency).map(currency => (
+                      <SelectItem key={currency.value} value={currency.value}>
+                        <div className="flex items-center gap-2">
+                          {getCurrencyIcon(currency.value)}
+                          {currency.label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0"
+                  onClick={handleSwapCurrencies}
+                >
+                  <ArrowUpDown className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Exchange Preview */}
+          {calculation && parseFloat(amount) > 0 && (
+            <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-center gap-3 text-sm mb-3">
+                  <div className="text-center">
+                    <p className="text-muted-foreground">You send</p>
+                    <p className="font-bold text-purple-600">
+                      {formatCurrency(calculation.fromAmount, fromCurrency)}
+                    </p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-purple-500" />
+                  <div className="text-center">
+                    <p className="text-muted-foreground">They receive</p>
+                    <p className="font-bold text-green-600">
+                      {formatCurrency(calculation.total, toCurrency)}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="text-xs text-center text-muted-foreground">
+                  Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency} • Fee: {formatCurrency(calculation.fees, fromCurrency)}
+                </div>
+                
+                {fromCurrency === 'VTN' && toCurrency === 'CREDITS' && (
+                  <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
+                    🎉 +5% Bonus Applied
+                  </Badge>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Description */}
+          <div>
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              placeholder="What is this payment for?"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={2}
+            />
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4">
+            <Button variant="outline" onClick={onClose} className="flex-1" disabled={isProcessing}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleExchangeAndSend} 
+              className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+              disabled={!canAfford() || !calculation || parseFloat(amount) <= 0 || isProcessing}
+            >
+              {isProcessing ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4 mr-2" />
+                  Exchange & Send
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

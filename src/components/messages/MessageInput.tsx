@@ -493,6 +493,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
           onFileAttach={() => fileInputRef.current?.click()}
           onPaymentRequest={sendPaymentRequest}
           onCalendarInvite={sendCalendarInvite}
+          onExchangeAndSend={() => {
+            // This would integrate with ExchangeAndSendPopup
+            console.log('Exchange & Send clicked from chat');
+          }}
           disabled={disabled || isUploading} 
         />
 

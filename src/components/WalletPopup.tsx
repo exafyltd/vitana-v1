@@ -34,6 +34,9 @@ import { useToast } from "@/hooks/use-toast";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 import MakePaymentPopup from "@/components/payment/MakePaymentPopup";
 import CreditTransferPopup from "@/components/payment/CreditTransferPopup";
+import ExchangeAndSendPopup from "@/components/payment/ExchangeAndSendPopup";
+import { ExchangeRateDisplay } from "@/components/wallet/ExchangeRateDisplay";
+import { QuickExchangeWidget } from "@/components/wallet/QuickExchangeWidget";
 
 interface Transaction {
   id: string;
@@ -106,6 +109,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   const [showMakePayment, setShowMakePayment] = useState(false);
   const [showCreditTransfer, setShowCreditTransfer] = useState(false);
+  const [showExchangeAndSend, setShowExchangeAndSend] = useState(false);
   
   const currentBalance = 2847;
   const pendingRewards = 156;
@@ -150,6 +154,9 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
 
         <ScrollArea className="flex-1 max-h-[400px]">
           <div className="space-y-4 pr-4">
+            {/* Exchange Rates */}
+            <ExchangeRateDisplay compact={true} />
+            
             {/* Balance Overview */}
             <div className="grid grid-cols-2 gap-3">
               <Card>
@@ -178,6 +185,17 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Quick Exchange Widget */}
+            <QuickExchangeWidget 
+              onExchange={(fromAmount, fromCurrency, toCurrency, toAmount) => {
+                toast({
+                  title: "Exchange Completed",
+                  description: `Converted ${fromAmount} ${fromCurrency} to ${toAmount} ${toCurrency}`,
+                });
+              }}
+              onExchangeAndSend={() => setShowExchangeAndSend(true)}
+            />
 
             {/* Quick Actions */}
             <Card>
@@ -291,6 +309,12 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
           isOpen={showCreditTransfer}
           onClose={() => setShowCreditTransfer(false)}
           currentBalance={currentBalance}
+        />
+        
+        {/* Exchange And Send Popup */}
+        <ExchangeAndSendPopup
+          isOpen={showExchangeAndSend}
+          onClose={() => setShowExchangeAndSend(false)}
         />
       </DialogContent>
     </Dialog>
