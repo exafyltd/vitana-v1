@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface WalletMasterActionPopupProps {
   open: boolean;
@@ -35,12 +36,21 @@ export function WalletMasterActionPopup({ open, onOpenChange }: WalletMasterActi
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleAction = async (actionType: string) => {
+    console.log('🔥 Button clicked, action type:', actionType);
     setLoading(actionType);
+    
+    console.log('🔗 Wallet hook functions available:', { updateBalance, exchangeCurrency, transferFunds });
+    
+    // Check authentication status
+    const { data: { user } } = await supabase.auth.getUser();
+    console.log('👤 Current user:', user ? 'Authenticated' : 'Not authenticated', user?.id);
     
     try {
       switch (actionType) {
         case 'buy-credits':
+          console.log('💳 Executing buy-credits action...');
           await updateBalance('CREDITS', 100, 'add');
+          console.log('✅ Buy credits completed successfully');
           toast({
             title: '✅ Credits Purchased!',
             description: 'Added 100 CREDITS to your wallet',
@@ -49,7 +59,9 @@ export function WalletMasterActionPopup({ open, onOpenChange }: WalletMasterActi
           break;
 
         case 'buy-tokens':
+          console.log('🪙 Executing buy-tokens action...');
           await updateBalance('VTN', 50, 'add');
+          console.log('✅ Buy tokens completed successfully');
           toast({
             title: '✅ Tokens Purchased!',
             description: 'Added 50 VTN tokens to your wallet',
@@ -106,7 +118,19 @@ export function WalletMasterActionPopup({ open, onOpenChange }: WalletMasterActi
           console.log(`Unhandled wallet action: ${actionType}`);
       }
     } catch (error) {
-      console.error('Wallet action error:', error);
+      console.error('❌ Wallet action failed:', { actionType, error });
+      console.error('Error details:', error);
+      
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
+      
+      toast({
+        title: '❌ Action Failed',
+        description: `Failed to ${actionType}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: 'destructive'
+      });
     } finally {
       setLoading(null);
       onOpenChange(false);
