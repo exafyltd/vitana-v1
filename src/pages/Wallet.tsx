@@ -19,98 +19,9 @@ import { IntelligentSpendingCard } from "@/components/wallet/intelligence/Intell
 import { PredictiveActionsCard } from "@/components/wallet/intelligence/PredictiveActionsCard";
 import { DynamicRewardOpportunityCard } from "@/components/wallet/intelligence/DynamicRewardOpportunityCard";
 import { walletNavigation } from "@/config/navigation";
+import { useWallet } from "@/hooks/useWallet";
 
-// Mock data for Overview screen
-const balanceOverviewData = [
-  {
-    type: "cash" as const,
-    title: "Cash Balance",
-    balance: "$2,847.32",
-    subBalance: "Available for withdrawal",
-    change: "+$124.50 this week",
-    changeType: "increase" as const,
-    status: "Active",
-    description: "Your main cash balance ready for withdrawal to your bank account"
-  },
-  {
-    type: "credits" as const,
-    title: "Credits Balance", 
-    balance: "1,547 Credits",
-    subBalance: "Expires in 90 days",
-    change: "+247 credits earned",
-    changeType: "increase" as const,
-    status: "Active",
-    description: "Use credits for subscriptions, services, and premium features"
-  },
-  {
-    type: "tokens" as const,
-    title: "VTN Tokens",
-    balance: "892 VTN",
-    subBalance: "150 VTN staked",
-    change: "+12.5% growth",
-    changeType: "increase" as const,
-    status: "Staking",
-    description: "Your VITANA tokens for governance voting and staking rewards"
-  }
-];
-
-const recentActivityData = [
-  {
-    id: "tx1",
-    type: "reward" as const,
-    title: "Biomarker Reward Earned",
-    description: "Completed health assessment and shared biomarker data",
-    amount: "+150 Credits",
-    status: "completed" as const,
-    timestamp: "2 hours ago",
-    source: { name: "Health AI", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    category: "Health Data"
-  },
-  {
-    id: "tx2", 
-    type: "incoming" as const,
-    title: "Referral Bonus",
-    description: "Friend joined through your referral link",
-    amount: "+$50.00",
-    status: "completed" as const,
-    timestamp: "Yesterday",
-    source: { name: "Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
-    category: "Referral"
-  },
-  {
-    id: "tx3",
-    type: "purchase" as const,
-    title: "Premium Subscription",
-    description: "Monthly premium health plan renewal",
-    amount: "-$29.99",
-    status: "completed" as const,
-    timestamp: "3 days ago",
-    source: { name: "VITANA", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    category: "Subscription"
-  },
-  {
-    id: "tx4",
-    type: "conversion" as const,
-    title: "Credits to Cash",
-    description: "Converted 500 credits to cash balance",
-    amount: "+$125.00",
-    status: "pending" as const,
-    timestamp: "5 days ago",
-    source: { name: "Wallet System", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    category: "Conversion"
-  },
-  {
-    id: "tx5",
-    type: "reward" as const,
-    title: "Community Engagement",
-    description: "Active participation in wellness challenges",
-    amount: "+75 Credits",
-    status: "completed" as const,
-    timestamp: "1 week ago",
-    source: { name: "Community AI", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    category: "Engagement"
-  }
-];
+// Mock data has been removed - quickActionsData is defined later in the file
 
 const quickActionsData = [
   {
@@ -151,6 +62,7 @@ const quickActionsData = [
 export default function Wallet() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("balance-overview");
+  const { balances, transactions, loading, error, getBalance } = useWallet();
 
   return (
     <AppLayout>
@@ -193,27 +105,27 @@ export default function Wallet() {
                 </div>
                 <div className="col-span-3">
                   <WalletBalanceCard
-                    type={balanceOverviewData[0].type}
-                    title={balanceOverviewData[0].title}
-                    balance={balanceOverviewData[0].balance}
-                    subBalance={balanceOverviewData[0].subBalance}
-                    change={balanceOverviewData[0].change}
-                    changeType={balanceOverviewData[0].changeType}
-                    status={balanceOverviewData[0].status}
-                    description={balanceOverviewData[0].description}
+                    type="cash"
+                    title="USD Balance"
+                    balance={`$${getBalance('USD').toLocaleString()}`}
+                    subBalance="Available: 100%"
+                    change="+2.3%"
+                    changeType="increase"
+                    status="Active"
+                    description="US Dollar holdings ready for withdrawal"
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-3">
                   <WalletBalanceCard
-                    type={balanceOverviewData[1].type}
-                    title={balanceOverviewData[1].title}
-                    balance={balanceOverviewData[1].balance}
-                    subBalance={balanceOverviewData[1].subBalance}
-                    change={balanceOverviewData[1].change}
-                    changeType={balanceOverviewData[1].changeType}
-                    status={balanceOverviewData[1].status}
-                    description={balanceOverviewData[1].description}
+                    type="credits"
+                    title="Credits Balance"
+                    balance={`${getBalance('CREDITS').toLocaleString()} Credits`}
+                    subBalance="Available: 100%"
+                    change="+12.1%"
+                    changeType="increase"
+                    status="Active"
+                    description="Platform credits for transactions and rewards"
                     className="h-full"
                   />
                 </div>
@@ -225,14 +137,14 @@ export default function Wallet() {
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-12">
                   <WalletBalanceCard
-                    type={balanceOverviewData[2].type}
-                    title={balanceOverviewData[2].title}
-                    balance={balanceOverviewData[2].balance}
-                    subBalance={balanceOverviewData[2].subBalance}
-                    change={balanceOverviewData[2].change}
-                    changeType={balanceOverviewData[2].changeType}
-                    status={balanceOverviewData[2].status}
-                    description={balanceOverviewData[2].description}
+                    type="tokens"
+                    title="VTN Tokens"
+                    balance={`${getBalance('VTN').toLocaleString()} VTN`}
+                    subBalance="Staked: 25%"
+                    change="+5.7%"
+                    changeType="increase"
+                    status="Growing"
+                    description="Vitana Network Tokens for governance and staking rewards"
                     className="h-full"
                   />
                 </div>
@@ -248,16 +160,48 @@ export default function Wallet() {
                   <IntelligentSpendingCard className="h-full" />
                 </div>
                 <div className="col-span-3">
-                  <WalletTransactionCard
-                    {...recentActivityData[0]}
-                    className="h-full"
-                  />
+                  {loading ? (
+                    <div className="h-full flex items-center justify-center text-muted-foreground">
+                      Loading transactions...
+                    </div>
+                  ) : transactions.length > 0 ? (
+                    <WalletTransactionCard
+                      id={transactions[0].id}
+                      type="reward"
+                      title={`${transactions[0].transaction_type} Transaction`}
+                      description={`${transactions[0].from_currency || ''} ${transactions[0].to_currency ? `→ ${transactions[0].to_currency}` : ''}`}
+                      amount={`${transactions[0].amount > 0 ? '+' : ''}${transactions[0].amount}`}
+                      status={transactions[0].status as any}
+                      timestamp={new Date(transactions[0].created_at).toLocaleDateString()}
+                      className="h-full"
+                    />
+                  ) : (
+                    <div className="h-full flex items-center justify-center text-muted-foreground">
+                      No transactions yet
+                    </div>
+                  )}
                 </div>
                 <div className="col-span-3">
-                  <WalletTransactionCard
-                    {...recentActivityData[1]}
-                    className="h-full"
-                  />
+                  {loading ? (
+                    <div className="h-full flex items-center justify-center text-muted-foreground">
+                      Loading transactions...
+                    </div>
+                  ) : transactions.length > 1 ? (
+                    <WalletTransactionCard
+                      id={transactions[1].id}
+                      type="incoming"
+                      title={`${transactions[1].transaction_type} Transaction`}
+                      description={`${transactions[1].from_currency || ''} ${transactions[1].to_currency ? `→ ${transactions[1].to_currency}` : ''}`}
+                      amount={`${transactions[1].amount > 0 ? '+' : ''}${transactions[1].amount}`}
+                      status={transactions[1].status as any}
+                      timestamp={new Date(transactions[1].created_at).toLocaleDateString()}
+                      className="h-full"
+                    />
+                  ) : (
+                    <div className="h-full flex items-center justify-center text-muted-foreground">
+                      No additional transactions
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -265,24 +209,29 @@ export default function Wallet() {
 
               {/* Row 2: More Transactions */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-4">
-                  <WalletTransactionCard
-                    {...recentActivityData[2]}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-4">
-                  <WalletTransactionCard
-                    {...recentActivityData[3]}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-4">
-                  <WalletTransactionCard
-                    {...recentActivityData[4]}
-                    className="h-full"
-                  />
-                </div>
+                {transactions.slice(2, 5).map((transaction, index) => (
+                  <div key={transaction.id} className="col-span-4">
+                    <WalletTransactionCard
+                      id={transaction.id}
+                      type="conversion"
+                      title={`${transaction.transaction_type} Transaction`}
+                      description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
+                      amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
+                      status={transaction.status as any}
+                      timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                      className="h-full"
+                    />
+                  </div>
+                ))}
+                {transactions.length < 5 && (
+                  Array.from({ length: 3 - Math.max(0, transactions.length - 2) }).map((_, index) => (
+                    <div key={`empty-${index}`} className="col-span-4">
+                      <div className="h-full flex items-center justify-center text-muted-foreground">
+                        No additional transactions
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </SplitBarContent>

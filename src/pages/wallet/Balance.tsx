@@ -24,6 +24,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { useWallet } from "@/hooks/useWallet";
 
 const balanceData = {
   credits: {
@@ -62,6 +63,7 @@ function Balance() {
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isTokensOpen, setIsTokensOpen] = useState(false);
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
+  const { balances, transactions, loading, error, getBalance } = useWallet();
 
   const splitBarOptions = [
     { value: "credits", label: "Credits Account" },
@@ -127,19 +129,19 @@ function Balance() {
                 <WalletBalanceCard
                   type="credits"
                   title="Credits Balance"
-                  balance={`${balanceData.credits.balance.toLocaleString()} credits`}
-                  subBalance={`${balanceData.credits.pending} credits pending`}
-                  change="+125 this week"
+                  balance={`${getBalance('CREDITS').toLocaleString()} credits`}
+                  subBalance="Available: 100%"
+                  change="+12.1%"
                   changeType="increase"
                   status="Active"
                   description="Use credits for health services, lab tests, and premium features"
                 />
                 <WalletBalanceCard
                   type="credits"
-                  title="Credits Expiry"
-                  balance={balanceData.credits.expiry}
-                  description="Keep your credits active by using them regularly"
-                  status="Tracked"
+                  title="Credits Status"
+                  balance="Active"
+                  description="Your credits are active and ready to use"
+                  status="Healthy"
                 />
               </div>
 
@@ -152,13 +154,23 @@ function Balance() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                {balanceData.credits.transactions.map((transaction) => (
+                {loading && <div className="text-center py-4">Loading transactions...</div>}
+                {transactions.filter(t => t.from_currency === 'CREDITS' || t.to_currency === 'CREDITS').slice(0, 5).map((transaction) => (
                   <WalletTransactionCard
                     key={transaction.id}
-                    {...transaction}
+                    id={transaction.id}
+                    type="reward"
+                    title={`${transaction.transaction_type} Transaction`}
+                    description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
+                    amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
+                    status={transaction.status as any}
+                    timestamp={new Date(transaction.created_at).toLocaleDateString()}
                     onClick={() => console.log('Transaction clicked:', transaction.id)}
                   />
                 ))}
+                {!loading && transactions.filter(t => t.from_currency === 'CREDITS' || t.to_currency === 'CREDITS').length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">No credit transactions yet</div>
+                )}
               </div>
             </div>
           </SplitBarContent>
@@ -169,17 +181,17 @@ function Balance() {
                 <WalletBalanceCard
                   type="tokens"
                   title="VTN Balance"
-                  balance={`${balanceData.tokens.vtn.toLocaleString()} VTN`}
-                  subBalance={`${balanceData.tokens.staked} staked`}
-                  change="+5.2% APY"
+                  balance={`${getBalance('VTN').toLocaleString()} VTN`}
+                  subBalance="Staked: 25%"
+                  change="+5.7%"
                   changeType="increase"
-                  status="Staking"
+                  status="Growing"
                   description="Vitana Network tokens for governance and rewards"
                 />
                 <WalletBalanceCard
                   type="tokens"
                   title="Staking Rewards"
-                  balance={`${balanceData.tokens.rewards} VTN`}
+                  balance="45.50 VTN"
                   description="Accumulated rewards from staking your VTN tokens"
                   status="Claimable"
                 />
@@ -194,13 +206,23 @@ function Balance() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                {balanceData.tokens.governance.map((vote) => (
+                {loading && <div className="text-center py-4">Loading transactions...</div>}
+                {transactions.filter(t => t.from_currency === 'VTN' || t.to_currency === 'VTN').slice(0, 5).map((transaction) => (
                   <WalletTransactionCard
-                    key={vote.id}
-                    {...vote}
-                    onClick={() => console.log('Governance clicked:', vote.title)}
+                    key={transaction.id}
+                    id={transaction.id}
+                    type="conversion"
+                    title={`${transaction.transaction_type} Transaction`}
+                    description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
+                    amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
+                    status={transaction.status as any}
+                    timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                    onClick={() => console.log('Token transaction clicked:', transaction.id)}
                   />
                 ))}
+                {!loading && transactions.filter(t => t.from_currency === 'VTN' || t.to_currency === 'VTN').length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">No VTN transactions yet</div>
+                )}
               </div>
             </div>
           </SplitBarContent>
@@ -210,18 +232,20 @@ function Balance() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <WalletBalanceCard
                   type="cash"
-                  title="Membership Tier"
-                  balance={balanceData.membership.tier}
-                  subBalance={`${balanceData.membership.coverage}% coverage`}
-                  description="Your current membership level and benefits coverage"
+                  title="USD Balance"
+                  balance={`$${getBalance('USD').toLocaleString()}`}
+                  subBalance="Available: 100%"
+                  change="+2.3%"
+                  changeType="increase"
                   status="Active"
+                  description="US Dollar holdings and fiat operations"
                 />
                 <WalletBalanceCard
                   type="cash"
-                  title="Upgrade Benefits"
-                  balance="Platinum Tier"
-                  description="Unlock 90% coverage + exclusive perks"
-                  status="Available"
+                  title="Membership Tier"
+                  balance="Premium"
+                  description="75% coverage + exclusive health benefits"
+                  status="Active"
                 />
               </div>
 
@@ -234,13 +258,23 @@ function Balance() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                {balanceData.membership.benefits.map((benefit) => (
+                {loading && <div className="text-center py-4">Loading transactions...</div>}
+                {transactions.filter(t => t.from_currency === 'USD' || t.to_currency === 'USD').slice(0, 5).map((transaction) => (
                   <WalletTransactionCard
-                    key={benefit.id}
-                    {...benefit}
-                    onClick={() => console.log('Benefit clicked:', benefit.title)}
+                    key={transaction.id}
+                    id={transaction.id}
+                    type="purchase"
+                    title={`${transaction.transaction_type} Transaction`}
+                    description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
+                    amount={`${transaction.amount > 0 ? '+' : ''}$${Math.abs(transaction.amount)}`}
+                    status={transaction.status as any}
+                    timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                    onClick={() => console.log('USD transaction clicked:', transaction.id)}
                   />
                 ))}
+                {!loading && transactions.filter(t => t.from_currency === 'USD' || t.to_currency === 'USD').length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">No USD transactions yet</div>
+                )}
               </div>
             </div>
           </SplitBarContent>
