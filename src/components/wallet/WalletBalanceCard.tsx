@@ -137,7 +137,7 @@ export function WalletBalanceCard({
 
           {/* Description */}
           {description && (
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed h-10 flex items-start">
               {description}
             </p>
           )}
