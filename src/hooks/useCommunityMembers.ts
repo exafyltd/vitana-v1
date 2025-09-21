@@ -21,47 +21,58 @@ export function useCommunityMembers() {
     try {
       setLoading(true);
       
+      // Get current user to exclude from results
+      const { data: { user } } = await supabase.auth.getUser();
+
       if (search && search.trim()) {
-        // Use RPC function for searching
+        // Search visible global community profiles by display name only (RLS-safe)
         const { data, error } = await supabase
-          .rpc('search_global_directory', { search_term: search.trim() });
+          .from('global_community_profiles')
+          .select('user_id, display_name, avatar_url')
+          .eq('is_visible', true)
+          .ilike('display_name', `%${search.trim()}%`)
+          .order('display_name', { ascending: true })
+          .limit(20);
 
         if (error) throw error;
 
-        // Transform the data to match our interface
-        const transformedData = data?.map((user: any) => ({
-          user_id: user.user_id,
-          full_name: user.full_name,
-          email: user.email,
-          display_name: user.display_name,
-          handle: null, // Not returned by search function
-          avatar_url: user.avatar_url
-        })) || [];
+        const transformedData = (data || [])
+          .filter((p: any) => !user || p.user_id !== user.id)
+          .map((p: any) => ({
+            user_id: p.user_id,
+            full_name: null,
+            email: null,
+            display_name: p.display_name,
+            handle: null,
+            avatar_url: p.avatar_url
+          }));
 
         setMembers(transformedData);
       } else {
-        // Fetch visible community profiles when no search term
+        // Fetch default visible community profiles
         const { data, error } = await supabase
           .from('global_community_profiles')
-          .select('user_id, display_name, avatar_url, bio')
+          .select('user_id, display_name, avatar_url')
           .eq('is_visible', true)
           .order('display_name', { ascending: true })
           .limit(20);
 
         if (error) throw error;
 
-        // Transform to match interface
-        const transformedData = data?.map((profile: any) => ({
-          user_id: profile.user_id,
-          full_name: null,
-          email: null,
-          display_name: profile.display_name,
-          handle: null,
-          avatar_url: profile.avatar_url
-        })) || [];
+        const transformedData = (data || [])
+          .filter((p: any) => !user || p.user_id !== user.id)
+          .map((p: any) => ({
+            user_id: p.user_id,
+            full_name: null,
+            email: null,
+            display_name: p.display_name,
+            handle: null,
+            avatar_url: p.avatar_url
+          }));
 
         setMembers(transformedData);
       }
+
     } catch (error) {
       console.error('Error fetching community members:', error);
       toast({
