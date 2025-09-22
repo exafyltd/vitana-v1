@@ -69,7 +69,8 @@ export default function ExchangeAndSendPopup({
 
   const canAfford = () => {
     const paymentAmount = parseFloat(amount) || 0;
-    return userBalance[fromCurrency as keyof typeof userBalance] >= paymentAmount;
+    const normalizedCurrency = fromCurrency.toUpperCase();
+    return userBalance[normalizedCurrency as keyof typeof userBalance] >= paymentAmount;
   };
 
   const handleSwapCurrencies = () => {
@@ -113,9 +114,9 @@ export default function ExchangeAndSendPopup({
 
       const exchangeData = {
         originalAmount: calculation.fromAmount,
-        originalCurrency: fromCurrency,
+        originalCurrency: fromCurrency.toUpperCase(),
         exchangedAmount: calculation.total,
-        exchangedCurrency: toCurrency,
+        exchangedCurrency: toCurrency.toUpperCase(),
         exchangeRate: calculation.rate,
         fees: calculation.fees,
         description,

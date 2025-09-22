@@ -33,7 +33,7 @@ export default function PaymentRequestPopup({
   paymentType = 'transfer'
 }: PaymentRequestPopupProps) {
   const [amount, setAmount] = useState(initialAmount);
-  const [currency, setCurrency] = useState('credits');
+  const [currency, setCurrency] = useState('CREDITS');
   const [description, setDescription] = useState(initialDescription);
   const [dueDate, setDueDate] = useState('');
   const { toast } = useToast();
@@ -53,7 +53,7 @@ export default function PaymentRequestPopup({
       // Create payment request message
       const paymentData = {
         amount: parseFloat(amount),
-        currency,
+        currency: currency.toUpperCase(),
         description,
         dueDate: dueDate || undefined,
         paymentType,
@@ -103,10 +103,10 @@ export default function PaymentRequestPopup({
   };
 
   const getCurrencyIcon = () => {
-    switch (currency) {
-      case 'credits': return <Coins className="w-4 h-4" />;
-      case 'usd': return <DollarSign className="w-4 h-4" />;
-      case 'vtn': return <CreditCard className="w-4 h-4" />;
+    switch (currency.toUpperCase()) {
+      case 'CREDITS': return <Coins className="w-4 h-4" />;
+      case 'USD': return <DollarSign className="w-4 h-4" />;
+      case 'VTN': return <CreditCard className="w-4 h-4" />;
       default: return <Coins className="w-4 h-4" />;
     }
   };
@@ -155,19 +155,19 @@ export default function PaymentRequestPopup({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="credits">
+                  <SelectItem value="CREDITS">
                     <div className="flex items-center gap-2">
                       <Coins className="w-4 h-4" />
                       Credits
                     </div>
                   </SelectItem>
-                  <SelectItem value="usd">
+                  <SelectItem value="USD">
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-4 h-4" />
                       USD
                     </div>
                   </SelectItem>
-                  <SelectItem value="vtn">
+                  <SelectItem value="VTN">
                     <div className="flex items-center gap-2">
                       <CreditCard className="w-4 h-4" />
                       VTN
@@ -206,7 +206,7 @@ export default function PaymentRequestPopup({
             <Badge variant="outline" className="capitalize">
               {paymentType} Payment
             </Badge>
-            {currency === 'credits' && (
+            {currency.toUpperCase() === 'CREDITS' && (
               <Badge variant="secondary">
                 Platform Credits
               </Badge>

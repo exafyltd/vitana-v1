@@ -34,7 +34,7 @@ export default function MakePaymentPopup({
   paymentType = 'transfer'
 }: MakePaymentPopupProps) {
   const [amount, setAmount] = useState(initialAmount);
-  const [currency, setCurrency] = useState('credits');
+  const [currency, setCurrency] = useState('CREDITS');
   const [description, setDescription] = useState(initialDescription);
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
@@ -49,10 +49,10 @@ export default function MakePaymentPopup({
 
   const canAfford = () => {
     const paymentAmount = parseFloat(amount) || 0;
-    switch (currency) {
-      case 'credits': return userBalance.credits >= paymentAmount;
-      case 'usd': return userBalance.usd >= paymentAmount;
-      case 'vtn': return userBalance.vtn >= paymentAmount;
+    switch (currency.toUpperCase()) {
+      case 'CREDITS': return userBalance.credits >= paymentAmount;
+      case 'USD': return userBalance.usd >= paymentAmount;
+      case 'VTN': return userBalance.vtn >= paymentAmount;
       default: return false;
     }
   };
@@ -82,7 +82,7 @@ export default function MakePaymentPopup({
       // Create payment confirmation message
       const paymentData = {
         amount: parseFloat(amount),
-        currency,
+        currency: currency.toUpperCase(),
         description,
         paymentType,
         paidBy: "current_user", // This would be the actual user
@@ -129,10 +129,10 @@ export default function MakePaymentPopup({
   };
 
   const getCurrencyIcon = () => {
-    switch (currency) {
-      case 'credits': return <Coins className="w-4 h-4" />;
-      case 'usd': return <DollarSign className="w-4 h-4" />;
-      case 'vtn': return <CreditCard className="w-4 h-4" />;
+    switch (currency.toUpperCase()) {
+      case 'CREDITS': return <Coins className="w-4 h-4" />;
+      case 'USD': return <DollarSign className="w-4 h-4" />;
+      case 'VTN': return <CreditCard className="w-4 h-4" />;
       default: return <Coins className="w-4 h-4" />;
     }
   };
@@ -208,19 +208,19 @@ export default function MakePaymentPopup({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="credits">
+                  <SelectItem value="CREDITS">
                     <div className="flex items-center gap-2">
                       <Coins className="w-4 h-4" />
                       Credits
                     </div>
                   </SelectItem>
-                  <SelectItem value="usd">
+                  <SelectItem value="USD">
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-4 h-4" />
                       USD
                     </div>
                   </SelectItem>
-                  <SelectItem value="vtn">
+                  <SelectItem value="VTN">
                     <div className="flex items-center gap-2">
                       <CreditCard className="w-4 h-4" />
                       VTN
@@ -249,7 +249,7 @@ export default function MakePaymentPopup({
               <Badge variant="outline" className="capitalize">
                 {paymentType} Payment
               </Badge>
-              {currency === 'credits' && (
+              {currency.toUpperCase() === 'CREDITS' && (
                 <Badge variant="secondary">
                   Platform Credits
                 </Badge>

@@ -62,11 +62,13 @@ export function PaymentMessageHandler({
   };
 
   const getBalance = (currency: string) => {
-    return balances.find(b => b.currency_type === currency?.toUpperCase())?.balance || 0;
+    const normalizedCurrency = currency?.toUpperCase();
+    return balances.find(b => b.currency_type === normalizedCurrency)?.balance || 0;
   };
 
   const canAfford = (amount: number, currency: string) => {
-    return getBalance(currency) >= amount;
+    const normalizedCurrency = currency?.toUpperCase();
+    return getBalance(normalizedCurrency) >= amount;
   };
 
   const handlePaymentAccept = async () => {
@@ -88,7 +90,7 @@ export function PaymentMessageHandler({
       // Perform the atomic transfer
       const result = await transferFunds(
         message.sender_id, 
-        currency as "USD" | "VTN" | "CREDITS", 
+        currency.toUpperCase() as "USD" | "VTN" | "CREDITS", 
         amount
       );
 
@@ -194,8 +196,8 @@ export function PaymentMessageHandler({
 
       // Perform atomic exchange first
       const exchangeResult = await exchangeCurrency(
-        originalCurrency.toUpperCase(),
-        exchangedCurrency.toUpperCase(), 
+        originalCurrency.toUpperCase() as "USD" | "VTN" | "CREDITS",
+        exchangedCurrency.toUpperCase() as "USD" | "VTN" | "CREDITS", 
         originalAmount,
         exchangeRate
       );

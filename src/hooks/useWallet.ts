@@ -75,7 +75,8 @@ export function useWallet() {
 
   // Get balance for specific currency
   const getBalance = (currency: 'USD' | 'VTN' | 'CREDITS'): number => {
-    const balance = balances.find(b => b.currency_type === currency);
+    const normalizedCurrency = currency.toUpperCase();
+    const balance = balances.find(b => b.currency_type === normalizedCurrency);
     return balance ? Number(balance.balance) : 1000; // Default balance
   };
 
@@ -89,9 +90,12 @@ export function useWallet() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
+      // Normalize currency to uppercase
+      const normalizedCurrency = currency.toUpperCase();
+
       const { data, error } = await supabase.rpc('update_user_balance', {
         user_id_param: user.id,
-        currency_param: currency,
+        currency_param: normalizedCurrency,
         amount_param: amount,
         operation: operation
       });
@@ -124,11 +128,15 @@ export function useWallet() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
+      // Normalize currency to uppercase
+      const normalizedFromCurrency = fromCurrency.toUpperCase();
+      const normalizedToCurrency = toCurrency.toUpperCase();
+
       // Use atomic exchange RPC
       const { data, error } = await supabase.rpc('process_wallet_exchange', {
         p_user_id: user.id,
-        p_from_currency: fromCurrency,
-        p_to_currency: toCurrency,
+        p_from_currency: normalizedFromCurrency,
+        p_to_currency: normalizedToCurrency,
         p_amount: amount,
         p_exchange_rate: exchangeRate
       });
@@ -174,11 +182,14 @@ export function useWallet() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
+      // Normalize currency to uppercase
+      const normalizedCurrency = currency.toUpperCase();
+
       // Use atomic transfer RPC
       const { data, error } = await supabase.rpc('process_wallet_transfer', {
         p_from_user_id: user.id,
         p_to_user_id: toUserId,
-        p_currency: currency,
+        p_currency: normalizedCurrency,
         p_amount: amount
       });
 
@@ -233,7 +244,8 @@ export function useWallet() {
               table: 'user_wallets',
               filter: `user_id=eq.${user.id}`
             },
-            () => {
+            (payload) => {
+              console.log('🔄 Wallet balance changed:', payload);
               fetchBalances();
             }
           )
@@ -245,8 +257,9 @@ export function useWallet() {
               table: 'wallet_transactions',
               filter: `from_user_id=eq.${user.id}`
             },
-            () => {
-              fetchTransactions();
+            (payload) => {
+              console.log('💸 Outgoing transaction:', payload);
+              Promise.all([fetchTransactions(), fetchBalances()]);
             }
           )
           .on(
@@ -257,12 +270,14 @@ export function useWallet() {
               table: 'wallet_transactions',
               filter: `to_user_id=eq.${user.id}`
             },
-            () => {
-              fetchTransactions();
-              fetchBalances(); // Refresh balances when receiving funds
+            (payload) => {
+              console.log('💰 Incoming transaction:', payload);
+              Promise.all([fetchTransactions(), fetchBalances()]);
             }
           )
-          .subscribe();
+          .subscribe((status) => {
+            console.log('📡 Wallet subscription status:', status);
+          });
 
         return () => {
           supabase.removeChannel(channel);
