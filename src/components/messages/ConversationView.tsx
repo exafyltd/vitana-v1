@@ -101,6 +101,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [threadParticipants, setThreadParticipants] = useState<any[]>([]);
   const [currentUserRole, setCurrentUserRole] = useState<string>('member');
 
+  // Reply state management
+  const [replyingTo, setReplyingTo] = useState<any>(null);
+
   // Focus and intersection states for smart read detection
   const [isWindowFocused, setIsWindowFocused] = useState(true);
   const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
@@ -302,7 +305,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     content: string, 
     messageType?: string, 
     contentData?: any, 
-    actionButtons?: any[]
+    actionButtons?: any[],
+    parentMessageId?: string
   ) => {
     try {
       setSendError(null);
@@ -334,7 +338,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         content,
         type: (messageType as any) || 'text',
         contentData,
-        recipientId
+        recipientId,
+        parentMessageId: parentMessageId || replyingTo?.id
       });
       
       // Notify parent immediately so thread jumps to top
@@ -344,6 +349,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
       // Remove optimistic message on success
       setOptimisticMessages(prev => prev.filter(msg => msg.id !== optimisticId));
+      
+      // Clear reply state on successful send
+      setReplyingTo(null);
       
       // Add to paginated messages if using pagination
       if (paginatedMessages.shouldUsePagination && newMessage) {
@@ -570,6 +578,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return currentThread?.type === 'group';
   };
 
+  // Reply handlers
+  const handleReply = (message: any) => {
+    setReplyingTo(message);
+  };
+
+  const handleCancelReply = () => {
+    setReplyingTo(null);
+  };
+
   // Simple loading check - only show loading if we have no data at all
   const isLoadingConversation = (!threadId && !recipientId) || 
     (threadId && threads.length === 0 && messages.length === 0);
@@ -712,6 +729,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                       message={message}
                       isOwnMessage={isOwnMessage}
                       onActionClick={handleActionClick}
+                      onReply={handleReply}
                       showAvatar={showAvatar}
                       showTimestamp={showTimestamp}
                       onUpdateMessage={async (messageId: string, updates: any) => {
@@ -797,6 +815,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 threadId={threadId}
                 recipientId={recipientId}
                 activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
+                replyingTo={replyingTo}
+                onCancelReply={handleCancelReply}
               />
             </div>
           </div>
