@@ -33,6 +33,7 @@ import ErrorMessage from "@/components/messages/ErrorMessage";
 import CreateGroupPopup from "@/components/messages/CreateGroupPopup";
 import TypingIndicator from '@/components/messages/TypingIndicator';
 import PresenceIndicator from '@/components/messages/PresenceIndicator';
+import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
 
 export default function Messages() {
   const { user } = useAuth();
@@ -251,16 +252,15 @@ export default function Messages() {
                   <div className="flex items-start space-x-3">
                     <div className="relative">
                       <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
-                        <AvatarImage src={thread.participants?.[0]?.avatar_url} />
+                        <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
                         <AvatarFallback>
-                          {thread.participants?.[0]?.display_name?.[0] || 
-                           thread.name?.[0] || '?'}
+                          {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
                         </AvatarFallback>
                       </Avatar>
                       {/* Dynamic presence indicator */}
                       <div className="absolute -bottom-0.5 -right-0.5">
                         <PresenceIndicator 
-                          userId={thread.participants?.find(p => p.user_id !== user?.id)?.user_id || ''} 
+                          userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 
                           context={context}
                           size="sm"
                         />

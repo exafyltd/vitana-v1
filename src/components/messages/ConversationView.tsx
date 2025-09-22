@@ -32,6 +32,7 @@ import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
+import { getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -612,9 +613,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 </div>
               ) : (
                 <Avatar className="shrink-0">
-                  <AvatarImage src={getConversationAvatar() || undefined} />
+                  <AvatarImage src={getConversationDisplayAvatar(threads.find(t => t.id === threadId), user?.id) || undefined} />
                   <AvatarFallback>
-                    {getConversationTitle()[0]?.toUpperCase() || 'U'}
+                    {getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)[0]?.toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
               )}
@@ -623,7 +624,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 className={cn("min-w-0 flex-1", isGroupChat() ? "cursor-pointer" : "")}
                 onClick={isGroupChat() ? () => setShowMembersModal(true) : undefined}
               >
-                <h2 className="text-base font-semibold truncate">{getConversationTitle()}</h2>
+                <h2 className="text-base font-semibold truncate">{getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}</h2>
                 <p className="text-sm text-muted-foreground truncate">{getConversationSubtitle()}</p>
               </div>
             </div>
@@ -761,7 +762,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 onTypingStart={startTyping}
                 onTypingStop={stopTyping}
                 disabled={isSending}
-                placeholder={`Message ${getConversationTitle()}...`}
+                placeholder={`Message ${getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}...`}
                 threadId={threadId}
                 recipientId={recipientId}
                 activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
