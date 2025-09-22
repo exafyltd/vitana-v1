@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useUserPresence, UserPresence } from '@/hooks/useUserPresence';
 
@@ -8,6 +8,8 @@ interface PresenceIndicatorProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   showText?: boolean;
+  showConnection?: boolean;
+  enableAnimation?: boolean;
 }
 
 const PresenceIndicator: React.FC<PresenceIndicatorProps> = ({ 
@@ -15,14 +17,56 @@ const PresenceIndicator: React.FC<PresenceIndicatorProps> = ({
   context = 'global', 
   size = 'sm',
   className,
-  showText = false 
+  showText = false,
+  showConnection = false,
+  enableAnimation = true
 }) => {
-  const { getUserPresence, getStatusColor, getStatusText } = useUserPresence(context);
+  const { getUserPresence, getStatusColor, getStatusText, getConnectionStatusColor, connection } = useUserPresence(context);
+  const [isLoading, setIsLoading] = useState(true);
   const presence = getUserPresence(userId);
 
-  // Show presence indicator for users active in the last 24 hours
+  // Handle loading state
+  useEffect(() => {
+    if (presence || connection.status === 'connected') {
+      const timer = setTimeout(() => setIsLoading(false), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [presence, connection.status]);
+
+  // Show connection status if requested
+  if (showConnection) {
+    return (
+      <div className={cn("flex items-center gap-1 text-xs", className)}>
+        <div 
+          className={cn(
+            "w-2 h-2 rounded-full transition-colors duration-200",
+            getConnectionStatusColor()
+          )}
+        />
+        <span className="text-muted-foreground">
+          {connection.status === 'connected' ? 'Connected' : 
+           connection.status === 'connecting' ? 'Connecting...' : 'Disconnected'}
+        </span>
+      </div>
+    );
+  }
+
+  // Show loading state
+  if (isLoading && !presence) {
+    return (
+      <div 
+        className={cn(
+          "rounded-full border-2 border-background animate-pulse bg-muted",
+          size === 'sm' ? 'w-3 h-3' : size === 'md' ? 'w-4 h-4' : 'w-5 h-5',
+          className
+        )}
+      />
+    );
+  }
+
+  // Hide if no presence data and not loading
   if (!presence) {
-    return null; // Only hide if no presence data at all
+    return null;
   }
 
   const lastSeen = new Date(presence.last_seen);
@@ -53,12 +97,13 @@ const PresenceIndicator: React.FC<PresenceIndicatorProps> = ({
   return (
     <div 
       className={cn(
-        "rounded-full border-2 border-background flex-shrink-0",
+        "rounded-full border-2 border-background flex-shrink-0 transition-all duration-200",
         sizeClasses[size],
         statusColor,
+        enableAnimation && presence.status === 'online' && "animate-pulse",
         className
       )}
-      title={statusText}
+      title={`${statusText}${connection.status !== 'connected' ? ' (Offline mode)' : ''}`}
     />
   );
 };
