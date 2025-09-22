@@ -6,7 +6,6 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import { useSidebar } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { messagesNavigation } from "@/config/navigation";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,6 @@ import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherPart
 export default function Messages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
-  const { open: sidebarOpen } = useSidebar();
   const isMobile = useIsMobile();
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
   const { threads, isLoading, context, ...hybridMessages } = useHybridMessages(messageContext);
@@ -181,15 +179,15 @@ export default function Messages() {
     );
   }
 
-  // Get responsive panel sizes based on sidebar state and screen size
+  // Get responsive panel sizes based on screen size
   const getConversationPanelSize = () => {
     if (isMobile) return 100; // Full width on mobile
-    return sidebarOpen ? 28 : 32; // 28% when sidebar open, 32% when collapsed
+    return 30; // 30% on desktop - will adapt naturally with CSS
   };
 
   const getChatPanelSize = () => {
     if (isMobile) return 0; // Hidden on mobile when conversation list is shown
-    return sidebarOpen ? 72 : 68; // 72% when sidebar open, 68% when collapsed
+    return 70; // 70% on desktop - will adapt naturally with CSS
   };
 
   const renderConversationList = (threads: typeof localThreads) => (
