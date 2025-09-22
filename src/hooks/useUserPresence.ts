@@ -353,26 +353,26 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   const getStatusColor = useCallback((status: PresenceStatus): string => {
     switch (status) {
       case 'online':
-        return 'bg-emerald-500';
+        return 'bg-[hsl(var(--health-success))]';
       case 'away':
-        return 'bg-amber-500';
+        return 'bg-[hsl(var(--health-warning))]';
       case 'offline':
-        return 'bg-slate-400';
+        return 'bg-[hsl(var(--muted-foreground))]';
       default:
-        return 'bg-slate-400';
+        return 'bg-[hsl(var(--muted-foreground))]';
     }
   }, []);
 
   const getConnectionStatusColor = useCallback((): string => {
     switch (connection.status) {
       case 'connected':
-        return 'bg-emerald-500';
+        return 'bg-[hsl(var(--health-success))]';
       case 'connecting':
-        return 'bg-amber-500';
+        return 'bg-[hsl(var(--health-warning))]';
       case 'disconnected':
-        return 'bg-red-500';
+        return 'bg-[hsl(var(--destructive))]';
       default:
-        return 'bg-slate-400';
+        return 'bg-[hsl(var(--muted-foreground))]';
     }
   }, [connection.status]);
 

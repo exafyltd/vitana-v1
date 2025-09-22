@@ -97,12 +97,15 @@ const PresenceIndicator: React.FC<PresenceIndicatorProps> = ({
   return (
     <div 
       className={cn(
-        "rounded-full border-2 border-background flex-shrink-0 transition-all duration-200",
+        "rounded-full border-2 border-background flex-shrink-0 transition-all duration-200 shadow-sm",
         sizeClasses[size],
         statusColor,
         enableAnimation && presence.status === 'online' && "animate-pulse",
         className
       )}
+      style={{
+        boxShadow: presence.status === 'online' ? '0 0 6px rgba(var(--health-success), 0.4)' : undefined
+      }}
       title={`${statusText}${connection.status !== 'connected' ? ' (Offline mode)' : ''}`}
     />
   );
