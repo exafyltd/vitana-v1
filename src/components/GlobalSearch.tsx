@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useSidebar } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
 interface SearchSuggestion {
@@ -73,10 +72,9 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { open: sidebarOpen, setOpen } = useSidebar();
 
   useEffect(() => {
-    if (query.trim() && sidebarOpen) {
+    if (query.trim() && open) {
       const filtered = mockSuggestions.filter(suggestion =>
         suggestion.title.toLowerCase().includes(query.toLowerCase()) ||
         suggestion.subtitle?.toLowerCase().includes(query.toLowerCase())
@@ -88,18 +86,19 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
       setShowSuggestions(false);
       setSelectedIndex(-1);
     }
-  }, [query, sidebarOpen]);
+  }, [query, open]);
 
   const handleInputClick = () => {
-    if (!sidebarOpen) {
-      setOpen(true);
+    if (!open) {
+      // Can't control sidebar from here, just focus input
+      inputRef.current?.focus();
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!sidebarOpen) {
+    if (!open) {
       e.preventDefault();
-      setOpen(true);
+      // Can't control sidebar from here
       return;
     }
 
@@ -189,10 +188,10 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   };
 
   return (
-    <Popover open={showSuggestions && filteredSuggestions.length > 0 && sidebarOpen} onOpenChange={setShowSuggestions}>
+    <Popover open={showSuggestions && filteredSuggestions.length > 0 && open} onOpenChange={setShowSuggestions}>
       <PopoverTrigger asChild>
         <div className="relative w-full">
-          {sidebarOpen ? (
+          {open ? (
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
               <Input
