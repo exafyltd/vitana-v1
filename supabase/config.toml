@@ -1,1 +1,4 @@
 project_id = "inmkhvwdcuyhnxkgfvsb"
+
+[functions.transaction-cleanup]
+verify_jwt = false

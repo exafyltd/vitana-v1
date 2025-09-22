@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthProvider';
 import { useWalletRealtime } from './useWalletRealtime';
+import { useTransactionCleanup } from './useTransactionCleanup';
 
 export interface UserBalance {
   currency_type: 'USD' | 'VTN' | 'CREDITS';
@@ -183,13 +184,20 @@ export function useWallet() {
   ): Promise<any> => {
     if (!user?.id) return null;
     
+    // Create timeout promise
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Transaction timeout - please try again')), 30000)
+    );
+    
     try {
-      const { data, error } = await supabase.rpc('process_wallet_transfer', {
+      const transferPromise = supabase.rpc('process_wallet_transfer', {
         p_from_user_id: user.id,
         p_to_user_id: toUserId,
         p_currency: currency.toUpperCase(),
         p_amount: amount
       });
+
+      const { data, error } = await Promise.race([transferPromise, timeoutPromise]) as any;
 
       if (error) throw error;
 
@@ -213,12 +221,14 @@ export function useWallet() {
       return null;
     } catch (error) {
       console.error('Transfer error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Transfer failed';
+      
       toast({
         title: "Transfer Failed",
-        description: error.message || "Please try again",
+        description: errorMessage,
         variant: "destructive"
       });
-      return null;
+      throw new Error(errorMessage);
     }
   };
 
@@ -232,8 +242,13 @@ export function useWallet() {
   ) => {
     if (!user?.id) return null;
     
+    // Create timeout promise
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Exchange and send timeout - please try again')), 30000)
+    );
+    
     try {
-      const { data, error } = await supabase.rpc('process_wallet_exchange_and_send', {
+      const exchangePromise = supabase.rpc('process_wallet_exchange_and_send', {
         p_from_user_id: user.id,
         p_to_user_id: toUserId,
         p_from_currency: fromCurrency.toUpperCase(),
@@ -241,6 +256,8 @@ export function useWallet() {
         p_amount: amount,
         p_exchange_rate: exchangeRate
       });
+
+      const { data, error } = await Promise.race([exchangePromise, timeoutPromise]) as any;
 
       if (error) throw error;
 
@@ -267,12 +284,14 @@ export function useWallet() {
       return null;
     } catch (error) {
       console.error('Exchange and send error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Exchange and send failed';
+      
       toast({
         title: "Exchange & Send Failed",
-        description: error.message || "Please try again",
+        description: errorMessage,
         variant: "destructive"
       });
-      return null;
+      throw new Error(errorMessage);
     }
   };
 
@@ -355,11 +374,14 @@ export function useWallet() {
     }
   }, [user?.id, fetchBalances, fetchTransactions]);
 
-  // Setup real-time subscriptions
+  // Setup real-time subscriptions and transaction cleanup
   useWalletRealtime({
     onBalanceUpdate: fetchBalances,
     onTransactionUpdate: fetchTransactions,
   });
+
+  // Enable automatic transaction cleanup
+  useTransactionCleanup();
 
   return {
     balances,

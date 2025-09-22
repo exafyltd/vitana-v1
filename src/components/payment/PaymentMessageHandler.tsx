@@ -76,10 +76,22 @@ export function PaymentMessageHandler({
     if (!onSendReply || !onUpdateMessage) return;
     
     setIsProcessing(true);
+    
+    // Create timeout for payment processing
+    const timeoutId = setTimeout(() => {
+      setIsProcessing(false);
+      toast({
+        title: "Payment Timeout",
+        description: "Payment is taking longer than expected. Please check your balance and try again.",
+        variant: "destructive",
+      });
+    }, 30000);
+    
     try {
       const { amount, currency, description } = paymentData;
       
       if (!canAfford(amount, currency)) {
+        clearTimeout(timeoutId);
         toast({
           title: "Insufficient Balance",
           description: `You don't have enough ${currency} to complete this payment`,
@@ -96,6 +108,9 @@ export function PaymentMessageHandler({
       );
 
       if (result) {
+        // Clear timeout since payment succeeded
+        clearTimeout(timeoutId);
+        
         // Refresh wallet data to show updated balances
         await refreshData();
         
@@ -129,6 +144,7 @@ export function PaymentMessageHandler({
       }
 
     } catch (error) {
+      clearTimeout(timeoutId);
       console.error('Payment acceptance error:', error);
       toast({
         title: "Payment Failed",
