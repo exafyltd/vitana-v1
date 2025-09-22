@@ -9,7 +9,7 @@ import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon, Downlo
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType } from '@/lib/fileUpload';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
-import { EmojiReactionBar } from './EmojiReactionBar';
+import { MessageContextMenu } from './MessageContextMenu';
 import { ReactionCluster } from './ReactionCluster';
 import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
@@ -47,9 +47,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     url: '',
     filename: ''
   });
-  const [showReactionBar, setShowReactionBar] = useState(false);
   const [showReactionPopover, setShowReactionPopover] = useState(false);
-  const [reactionBarPosition, setReactionBarPosition] = useState({ x: 0, y: 0 });
 
   // Use reactions hook
   const { reactionSummary, addReaction, removeReaction } = useMessageReactions(message.id);
@@ -119,27 +117,54 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     document.body.removeChild(link);
   };
 
-  // Reaction handlers
-  const handleShowReactionBar = useCallback((clientX: number, clientY: number) => {
-    setReactionBarPosition({ x: clientX, y: clientY - 60 });
-    setShowReactionBar(true);
-  }, []);
-
-  const handleHideReactionBar = useCallback(() => {
-    setShowReactionBar(false);
-  }, []);
-
+  // Reaction and action handlers
   const handleReactionSelect = useCallback((emoji: string) => {
     addReaction(emoji);
-    // Don't close reaction bar immediately to allow multiple reactions
   }, [addReaction]);
 
   const handleReply = useCallback(() => {
     if (onReply) {
       onReply(message);
     }
-    setShowReactionBar(false);
   }, [onReply, message]);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(message.body || message.content || '');
+  }, [message]);
+
+  const handleForward = useCallback(() => {
+    // TODO: Implement forward functionality
+    console.log('Forward message:', message.id);
+  }, [message]);
+
+  const handleStar = useCallback(() => {
+    // TODO: Implement star functionality
+    console.log('Star message:', message.id);
+  }, [message]);
+
+  const handlePin = useCallback(() => {
+    // TODO: Implement pin functionality
+    console.log('Pin message:', message.id);
+  }, [message]);
+
+  const handleDelete = useCallback(() => {
+    // TODO: Implement delete functionality with confirmation
+    console.log('Delete message:', message.id);
+  }, [message]);
+
+  const handleSelect = useCallback(() => {
+    // TODO: Implement select functionality for multi-select mode
+    console.log('Select message:', message.id);
+  }, [message]);
+
+  const handleShare = useCallback(() => {
+    // TODO: Implement share functionality
+    if (navigator.share) {
+      navigator.share({
+        text: message.body || message.content || '',
+      });
+    }
+  }, [message]);
 
   const handleScrollToParent = useCallback(() => {
     if (onScrollToMessage && message.parent_message_id) {
@@ -149,15 +174,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   // Long press handling for mobile
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    const touch = e.touches[0];
     longPressTimer.current = setTimeout(() => {
-      handleShowReactionBar(touch.clientX, touch.clientY);
       // Add haptic feedback on mobile
       if ('vibrate' in navigator) {
         navigator.vibrate(50);
       }
     }, 500);
-  }, [handleShowReactionBar]);
+  }, []);
 
   const handleTouchEnd = useCallback(() => {
     if (longPressTimer.current) {
@@ -165,28 +188,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       longPressTimer.current = null;
     }
   }, []);
-
-  // Right click handling for desktop
-  const handleContextMenu = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    handleShowReactionBar(e.clientX, e.clientY);
-  }, [handleShowReactionBar]);
-
-  // Keyboard handling
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'r' && document.activeElement === messageRef.current) {
-        e.preventDefault();
-        if (messageRef.current) {
-          const rect = messageRef.current.getBoundingClientRect();
-          handleShowReactionBar(rect.right - 100, rect.top - 60);
-        }
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleShowReactionBar]);
 
   const renderAttachment = (attachment: any, index: number) => {
     const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
@@ -468,34 +469,46 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           )}
           
           <div className="relative">
-            <div 
-              ref={messageRef}
-              tabIndex={0}
-              className={cn(
-                "rounded-2xl px-4 py-2 max-w-[min(680px,100%)] w-fit relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
-                "break-words",
-                isOwnMessage 
-                  ? "bg-primary text-primary-foreground" 
-                  : "bg-muted",
-                isOptimistic && "opacity-70"
-              )}
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-              onContextMenu={handleContextMenu}
-              role="button"
-              aria-label="Long press or right click to add reactions"
+            <MessageContextMenu
+              onReply={onReply ? handleReply : undefined}
+              onCopy={handleCopy}
+              onForward={handleForward}
+              onStar={handleStar}
+              onPin={handlePin}
+              onDelete={isOwnMessage ? handleDelete : undefined}
+              onSelect={handleSelect}
+              onShare={handleShare}
+              onEmojiSelect={handleReactionSelect}
+              isOwnMessage={isOwnMessage}
             >
-              {/* Reply Quote - shows if this message is replying to another */}
-              {(message.parent_message_id || parentMessage) && (
-                <ReplyQuote
-                  parentMessage={parentMessage}
-                  onQuoteClick={handleScrollToParent}
-                  isOwnMessage={isOwnMessage}
-                />
-              )}
-              
-              {renderContent()}
-            </div>
+              <div 
+                ref={messageRef}
+                tabIndex={0}
+                className={cn(
+                  "rounded-2xl px-4 py-2 max-w-[min(680px,100%)] w-fit relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
+                  "break-words",
+                  isOwnMessage 
+                    ? "bg-primary text-primary-foreground" 
+                    : "bg-muted",
+                  isOptimistic && "opacity-70"
+                )}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                role="button"
+                aria-label="Long press or right click for options"
+              >
+                {/* Reply Quote - shows if this message is replying to another */}
+                {(message.parent_message_id || parentMessage) && (
+                  <ReplyQuote
+                    parentMessage={parentMessage}
+                    onQuoteClick={handleScrollToParent}
+                    isOwnMessage={isOwnMessage}
+                  />
+                )}
+                
+                {renderContent()}
+              </div>
+            </MessageContextMenu>
             
             {/* Reaction Clusters */}
             <ReactionPopover
@@ -531,23 +544,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         </div>
       </div>
 
-      {/* Floating Emoji Reaction Bar */}
-      {showReactionBar && (
-        <div 
-          className="fixed z-50"
-          style={{ 
-            left: reactionBarPosition.x, 
-            top: reactionBarPosition.y 
-          }}
-        >
-          <EmojiReactionBar
-            onEmojiSelect={handleReactionSelect}
-            onClose={handleHideReactionBar}
-            onReply={onReply ? handleReply : undefined}
-          />
-        </div>
-      )}
-      
       {/* Image Zoom Modal */}
       <ImageZoomModal
         isOpen={imageZoomModal.isOpen}
