@@ -18,15 +18,8 @@ const KebabMenu = React.forwardRef<
   React.ElementRef<typeof DropdownMenuTrigger>,
   KebabMenuProps
 >(({ children, className, ...props }, ref) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  const handleTriggerClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsOpen(!isOpen);
-  };
-
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           ref={ref}
@@ -34,13 +27,18 @@ const KebabMenu = React.forwardRef<
           size="sm"
           className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
           aria-label="More options menu"
-          onClick={handleTriggerClick}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
           {...props}
         >
           <MoreVertical className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 z-50 bg-popover border border-border shadow-md">
+      <DropdownMenuContent
+        align="end"
+        className="w-48 z-50 bg-popover border border-border shadow-md"
+        onPointerDown={(e) => e.stopPropagation()}
+      >
         {children}
       </DropdownMenuContent>
     </DropdownMenu>

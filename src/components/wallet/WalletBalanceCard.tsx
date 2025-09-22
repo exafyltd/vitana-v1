@@ -180,7 +180,13 @@ export function WalletBalanceCard({
             {secondaryActions && secondaryActions.length > 0 && (
               <KebabMenu>
                 {secondaryActions.map((action, index) => (
-                  <DropdownMenuItem key={index} onClick={action.onClick}>
+                  <DropdownMenuItem
+                    key={index}
+                    onSelect={(e) => {
+                      e.stopPropagation();
+                      action.onClick();
+                    }}
+                  >
                     {React.createElement(action.icon, { className: "h-4 w-4 mr-2" })}
                     {action.label}
                   </DropdownMenuItem>
