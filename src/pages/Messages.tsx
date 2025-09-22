@@ -365,13 +365,13 @@ export default function Messages() {
             </div>
           ) : (
             // Show chat view on mobile
-            <div className="h-full bg-background/95 backdrop-blur-sm">
+            <div className="h-full bg-background/95 backdrop-blur-sm min-w-0">
               <ConversationErrorBoundary>
                 <ConversationView 
                   threadId={selectedThreadId}
                   recipientId={selectedRecipientId}
                   context={messageContext}
-                  className="flex-1 min-h-0"
+                  className="flex-1 min-h-0 min-w-0"
                   onBack={() => setSelectedThreadId(null)}
                   onThreadRead={handleThreadRead}
                   onConversationOpened={handleConversationOpened}
@@ -429,14 +429,14 @@ export default function Messages() {
             minSize={50}
             className="transition-all duration-300"
           >
-            <div className="h-full bg-background/95 backdrop-blur-sm">
+            <div className="h-full bg-background/95 backdrop-blur-sm min-w-0">
               {selectedThreadId || selectedRecipientId ? (
                 <ConversationErrorBoundary>
                   <ConversationView 
                     threadId={selectedThreadId}
                     recipientId={selectedRecipientId}
                     context={messageContext}
-                    className="flex-1 min-h-0"
+                    className="flex-1 min-h-0 min-w-0"
                     onThreadRead={handleThreadRead}
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}

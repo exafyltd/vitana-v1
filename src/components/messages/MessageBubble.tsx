@@ -458,7 +458,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         
         {/* Message content column */}
         <div className={cn(
-          "flex flex-col min-w-0 max-w-[calc(100%-3rem)]",
+          "w-full max-w-full flex flex-col min-w-0",
           isOwnMessage ? "items-end order-1" : "items-start"
         )}>
           {!isOwnMessage && showAvatar && (
@@ -472,8 +472,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               ref={messageRef}
               tabIndex={0}
               className={cn(
-                "rounded-2xl px-4 py-2 max-w-sm relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
-                "word-wrap break-words",
+                "rounded-2xl px-4 py-2 max-w-[min(680px,100%)] w-fit relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
+                "break-words",
                 isOwnMessage 
                   ? "bg-primary text-primary-foreground" 
                   : "bg-muted",
