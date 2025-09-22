@@ -125,7 +125,8 @@ export default withScreenId(function Memory() {
       <SEO title="Memory Hub | VITANA" description="Track and review your wellness journey through AI-driven insights and memory tracking." />
       <SubNavigation items={memoryNavigation} />
       
-      <div className="p-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
         <StandardHeader 
           title="Memory Hub"
           description="Track and review your wellness journey through AI-driven insights."
@@ -299,6 +300,7 @@ export default withScreenId(function Memory() {
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
         />
+        </div>
       </div>
     </AppLayout>
   );

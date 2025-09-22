@@ -46,7 +46,7 @@ export default function Calendar() {
         emoji="📅"
       />
       
-      <div className="p-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

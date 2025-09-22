@@ -269,7 +269,8 @@ export default function Home() {
       <SEO title="Home | VITANA" description="VITANA Home Dashboard - Your wellness journey starts here" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       
-      <div className="p-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
         <StandardHeader
           title={greeting}
           description="Your wellness journey starts today."
@@ -691,6 +692,7 @@ export default function Home() {
         open={showOnboarding}
         onOpenChange={handleOnboardingComplete}
       />
+      </div>
     </AppLayout>
   );
 }

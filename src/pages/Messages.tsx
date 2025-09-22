@@ -154,8 +154,8 @@ export default function Messages() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
         <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
         <AppLayout>
-          <div className="w-full h-full">
-            <div className="space-y-6 lg:space-y-8 p-4 sm:p-6 lg:p-8">
+          <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+            <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
               <SubNavigation items={messagesNavigation} />
               <StandardHeader 
                 title="Messages"
@@ -461,68 +461,65 @@ export default function Messages() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
+    <AppLayout>
       <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
-      <AppLayout>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-6 lg:space-y-8">
-            <SubNavigation items={messagesNavigation} />
-            
-            <StandardHeader 
-              title="Messages"
-              description="Connect with your community and professional network"
+      <SubNavigation items={messagesNavigation} />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
+          <StandardHeader 
+            title="Messages"
+            description="Connect with your community and professional network"
+          />
+
+          {/* Utility Action Button */}
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search conversations, people, or groups…"
+              onSearch={(query) => console.log('Search:', query)}
             />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm">
+                  <Plus className="w-4 h-4 mr-2" />
+                  New
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setShowNewConversation(true)}>
+                  <MessageSquareText className="w-4 h-4 mr-2" />
+                  New Message
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowCreateGroup(true)}>
+                  <Users className="w-4 h-4 mr-2" />
+                  Create Group
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </UtilityActionButton>
 
-            {/* Utility Action Button */}
-            <UtilityActionButton>
-              <ExpandableSearchButton 
-                placeholder="Search conversations, people, or groups…"
-                onSearch={(query) => console.log('Search:', query)}
-              />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="sm">
-                    <Plus className="w-4 h-4 mr-2" />
-                    New
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setShowNewConversation(true)}>
-                    <MessageSquareText className="w-4 h-4 mr-2" />
-                    New Message
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowCreateGroup(true)}>
-                    <Users className="w-4 h-4 mr-2" />
-                    Create Group
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </UtilityActionButton>
+          {/* Split Navigation */}
+          <SplitBar value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} className="flex-1">
+            <SplitBarList>
+              <SplitBarTrigger value="global" className="flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                Global Community
+              </SplitBarTrigger>
+              <SplitBarTrigger value="tenant" className="flex items-center gap-2">
+                <Building className="w-4 h-4" />
+                Professional Network
+              </SplitBarTrigger>
+            </SplitBarList>
 
-            {/* Split Navigation */}
-            <SplitBar value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} className="flex-1">
-              <SplitBarList>
-                <SplitBarTrigger value="global" className="flex items-center gap-2">
-                  <Globe className="w-4 h-4" />
-                  Global Community
-                </SplitBarTrigger>
-                <SplitBarTrigger value="tenant" className="flex items-center gap-2">
-                  <Building className="w-4 h-4" />
-                  Professional Network
-                </SplitBarTrigger>
-              </SplitBarList>
+            <SplitBarContent value="global">
+              {renderConversationContent()}
+            </SplitBarContent>
 
-              <SplitBarContent value="global">
-                {renderConversationContent()}
-              </SplitBarContent>
-
-              <SplitBarContent value="tenant">
-                {renderConversationContent()}
-              </SplitBarContent>
-            </SplitBar>
-          </div>
+            <SplitBarContent value="tenant">
+              {renderConversationContent()}
+            </SplitBarContent>
+          </SplitBar>
         </div>
-      </AppLayout>
+      </div>
 
       <NewConversationPopup
         open={showNewConversation}
@@ -538,6 +535,6 @@ export default function Messages() {
         onGroupCreated={handleGroupCreated}
         context={messageContext}
       />
-    </div>
+    </AppLayout>
   );
 }

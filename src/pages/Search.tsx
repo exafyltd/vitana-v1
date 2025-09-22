@@ -224,7 +224,8 @@ export default function Search() {
         description="Search for people, groups, content, and health topics in the VITANA community"
       />
 
-      <div className="p-6 space-y-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6">
         {/* Search Header */}
         <div className="space-y-4">
           <div className="flex items-center gap-4">
@@ -297,6 +298,7 @@ export default function Search() {
             )}
           </TabsContent>
         </Tabs>
+        </div>
       </div>
     </AppLayout>
   );

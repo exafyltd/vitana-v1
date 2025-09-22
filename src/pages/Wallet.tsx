@@ -115,7 +115,8 @@ export default function Wallet() {
       <SEO title="Vitana Wallet | VITANA" description="Your digital bank account for health rewards and benefits" canonical={window.location.href} />
       <SubNavigation items={walletNavigation} />
       
-      <div className="p-6">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
         <StandardHeader
           title="Vitana Wallet"
           description="Your digital bank account for health rewards and benefits"
@@ -468,6 +469,7 @@ export default function Wallet() {
         
         {/* Cross-system notification handler */}
         <CrossSystemNotifier />
+        </div>
       </div>
     </AppLayout>
   );
