@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 
@@ -16,6 +16,8 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   const { user } = useAuth();
   const [presenceMap, setPresenceMap] = useState<Map<string, UserPresence>>(new Map());
   const [isActive, setIsActive] = useState(true);
+  const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const isActiveRef = useRef<boolean>(true);
 
   // Track user activity
   const updateActivity = useCallback(() => {
@@ -68,120 +70,119 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     };
   }, [updateActivity]);
 
-  // Set up Supabase realtime presence
+  // Keep a ref of isActive to avoid resubscribing the channel
+  useEffect(() => {
+    isActiveRef.current = isActive;
+  }, [isActive]);
+
+  // Function to track presence via realtime + DB (stable, uses refs)
+  const trackPresence = useCallback(async () => {
+    if (!user?.id) return;
+    const status: PresenceStatus = document.hidden || !isActiveRef.current ? 'away' : 'online';
+    const timestamp = new Date().toISOString();
+    try {
+      if (channelRef.current) {
+        await channelRef.current.track({
+          user_id: user.id,
+          status,
+          last_seen: timestamp,
+          display_name: user.user_metadata?.display_name || user.email?.split('@')[0],
+          avatar_url: user.user_metadata?.avatar_url,
+        });
+      }
+      await supabase
+        .from('thread_presence')
+        .upsert({
+          user_id: user.id,
+          thread_id: '00000000-0000-0000-0000-000000000000',
+          context: 'global',
+          last_seen: timestamp,
+        });
+      console.log(`[Presence] Tracked ${user.id} as ${status} @ ${timestamp}`);
+    } catch (err) {
+      console.error('[Presence] trackPresence failed', err);
+    }
+  }, [user?.id]);
+
+// Set up Supabase realtime presence
   useEffect(() => {
     if (!user?.id) return;
 
-    const channelName = `presence_global`; // Always use global presence channel
-    const channel = supabase.channel(channelName);
+    const channelName = `presence_global`;
+    const channel = supabase.channel(channelName, {
+      config: { presence: { key: user.id } },
+    });
+    channelRef.current = channel;
 
     console.log(`[Presence] Setting up presence for user ${user.id} in channel ${channelName}`);
 
-    // Track current user's presence and store in database
-    const trackPresence = async () => {
-      const status: PresenceStatus = document.hidden || !isActive ? 'away' : 'online';
-      const timestamp = new Date().toISOString();
-      
-      console.log(`[Presence] Tracking presence: ${user.id} is ${status}`);
-      
-      // Track in realtime channel
-      await channel.track({
-        user_id: user.id,
-        status,
-        last_seen: timestamp,
-        display_name: user.user_metadata?.display_name || user.email?.split('@')[0],
-        avatar_url: user.user_metadata?.avatar_url,
-      });
-
-      // Store in database as fallback
-      try {
-        await supabase
-          .from('thread_presence')
-          .upsert({
-            user_id: user.id,
-            thread_id: '00000000-0000-0000-0000-000000000000', // Global presence marker
-            context: 'global',
-            last_seen: timestamp
-          });
-      } catch (error) {
-        console.error('[Presence] Failed to update database presence:', error);
-      }
-    };
-
-    // Load existing presence from database as fallback
+    // Load existing presence from database as fallback (last 24h)
     const loadDatabasePresence = async () => {
       try {
         const { data } = await supabase
           .from('thread_presence')
           .select('*')
           .eq('context', 'global')
-          .gte('last_seen', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()); // Last 24 hours
-
+          .gte('last_seen', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
         if (data) {
           const dbPresenceMap = new Map<string, UserPresence>();
           data.forEach(item => {
-            if (item.user_id !== user.id) {
-              const minutesAway = Math.floor((Date.now() - new Date(item.last_seen).getTime()) / (1000 * 60));
-              let status: PresenceStatus = 'offline';
-              
-              if (minutesAway <= 5) status = 'online';
-              else if (minutesAway <= 15) status = 'away';
-              
-              dbPresenceMap.set(item.user_id, {
-                user_id: item.user_id,
-                status,
-                last_seen: item.last_seen,
-                display_name: 'User', // Will be updated by realtime data
-                avatar_url: null,
-              });
-            }
+            const minutesAway = Math.floor((Date.now() - new Date(item.last_seen).getTime()) / (1000 * 60));
+            let status: PresenceStatus = 'offline';
+            if (minutesAway <= 5) status = 'online';
+            else if (minutesAway <= 15) status = 'away';
+            dbPresenceMap.set(item.user_id, {
+              user_id: item.user_id,
+              status,
+              last_seen: item.last_seen,
+              display_name: 'User',
+              avatar_url: undefined,
+            });
+          });
+          setPresenceMap(prev => {
+            const merged = new Map(prev);
+            // Only add DB entries for users we don't already have via realtime
+            dbPresenceMap.forEach((val, key) => {
+              if (!merged.has(key)) merged.set(key, val);
+            });
+            return merged;
           });
           console.log(`[Presence] Loaded ${dbPresenceMap.size} users from database`);
-          setPresenceMap(dbPresenceMap);
         }
       } catch (error) {
         console.error('[Presence] Failed to load database presence:', error);
       }
     };
 
-    // Subscribe to presence changes
     channel
       .on('presence', { event: 'sync' }, () => {
         const newState = channel.presenceState();
         const newPresenceMap = new Map<string, UserPresence>();
-
         console.log(`[Presence] Syncing presence state:`, newState);
-
-        Object.entries(newState).forEach(([userId, presences]) => {
+        Object.entries(newState).forEach(([key, presences]) => {
           const presence = (presences as any[])[0];
-          // Include ALL users, not just others (removed userId !== user.id check)
           if (presence) {
-            // Determine actual status based on last_seen
             const lastSeen = new Date(presence.last_seen);
-            const now = new Date();
-            const minutesAway = (now.getTime() - lastSeen.getTime()) / (1000 * 60);
-
+            const minutesAway = (Date.now() - lastSeen.getTime()) / (1000 * 60);
             let actualStatus: PresenceStatus = presence.status;
-            if (minutesAway > 15) {
-              actualStatus = 'offline';
-            } else if (minutesAway > 5) {
-              actualStatus = 'away';
-            }
-
-            newPresenceMap.set(userId, {
-              user_id: userId,
+            if (minutesAway > 15) actualStatus = 'offline';
+            else if (minutesAway > 5) actualStatus = 'away';
+            newPresenceMap.set(String(key), {
+              user_id: String(key),
               status: actualStatus,
               last_seen: presence.last_seen,
               display_name: presence.display_name,
               avatar_url: presence.avatar_url,
             });
-
-            console.log(`[Presence] User ${userId} (${presence.display_name}) is ${actualStatus}`);
+            console.log(`[Presence] User ${key} (${presence.display_name}) is ${actualStatus}`);
           }
         });
-
+        setPresenceMap(prev => {
+          const merged = new Map(prev);
+          newPresenceMap.forEach((val, key) => merged.set(key, val));
+          return merged;
+        });
         console.log(`[Presence] Updated presence map with ${newPresenceMap.size} users`);
-        setPresenceMap(newPresenceMap);
       })
       .on('presence', { event: 'join' }, ({ newPresences }) => {
         console.log('[Presence] User joined:', newPresences);
@@ -196,23 +197,36 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
         }
       });
 
-    // Load database presence immediately
+    // Initial DB fallback load
     loadDatabasePresence();
 
-    // Update presence when activity changes
-    trackPresence();
-
-    // Set up periodic heartbeat every 30 seconds
-    const heartbeatInterval = setInterval(() => {
+    // Heartbeat every 30s
+    const heartbeat = setInterval(() => {
       trackPresence();
     }, 30000);
 
-    // Cleanup on unmount
     return () => {
-      clearInterval(heartbeatInterval);
-      channel.unsubscribe();
+      clearInterval(heartbeat);
+      supabase.removeChannel(channel);
+      channelRef.current = null;
     };
-  }, [user?.id, context, isActive]);
+  }, [user?.id, context]);
+
+  // Update presence when activity or visibility changes
+  useEffect(() => {
+    trackPresence();
+  }, [isActive, trackPresence]);
+
+  useEffect(() => {
+    const onVisibility = () => trackPresence();
+    const onBeforeUnload = () => trackPresence();
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('beforeunload', onBeforeUnload);
+    };
+  }, [trackPresence]);
 
   const getUserPresence = useCallback((userId: string): UserPresence | null => {
     return presenceMap.get(userId) || null;
