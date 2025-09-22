@@ -1344,6 +1344,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_old_presence_records: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       cleanup_old_typing_indicators: {
         Args: Record<PropertyKey, never>
         Returns: undefined
