@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Shield } from "lucide-react";
+import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Shield, Send, ArrowUpDown } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -13,6 +13,9 @@ import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionP
 import { StakeTokensPopup } from "@/components/wallet/popups/StakeTokensPopup";
 import { AddFundsPopup } from "@/components/wallet/popups/AddFundsPopup";
 import { BuyCreditsPopup } from "@/components/wallet/popups/BuyCreditsPopup";
+import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
+import MakePaymentPopup from "@/components/payment/MakePaymentPopup";
+import ExchangeAndSendPopup from "@/components/payment/ExchangeAndSendPopup";
 import { CrossSystemNotifier } from "@/components/notifications/CrossSystemNotifier";
 import { WalletBalanceCard } from "@/components/wallet/WalletBalanceCard";
 import { WalletTransactionCard } from "@/components/wallet/WalletTransactionCard";
@@ -67,11 +70,15 @@ export default function Wallet() {
   const [stakeTokensOpen, setStakeTokensOpen] = useState(false);
   const [addFundsOpen, setAddFundsOpen] = useState(false);
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
+  const [paymentRequestOpen, setPaymentRequestOpen] = useState(false);
+  const [makePaymentOpen, setMakePaymentOpen] = useState(false);
+  const [exchangeAndSendOpen, setExchangeAndSendOpen] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
   const [activeTab, setActiveTab] = useState("balance-overview");
   const { balances, transactions, loading, error, getBalance } = useWallet();
 
   // Handle opening specific wallet actions
-  const handleWalletAction = (actionType: string) => {
+  const handleWalletAction = (actionType: string, currency?: string) => {
     switch (actionType) {
       case 'stake-tokens':
         setStakeTokensOpen(true);
@@ -81,6 +88,21 @@ export default function Wallet() {
         break;
       case 'buy-credits':
         setBuyCreditsOpen(true);
+        break;
+      case 'buy-tokens':
+        setStakeTokensOpen(true);
+        break;
+      case 'send':
+        setSelectedCurrency(currency || '');
+        setMakePaymentOpen(true);
+        break;
+      case 'request':
+        setSelectedCurrency(currency || '');
+        setPaymentRequestOpen(true);
+        break;
+      case 'exchange':
+        setSelectedCurrency(currency || '');
+        setExchangeAndSendOpen(true);
         break;
       default:
         setMasterActionOpen(true);
@@ -143,14 +165,24 @@ export default function Wallet() {
                     }}
                     secondaryActions={[
                       {
-                        label: "View Details",
-                        onClick: () => handleWalletAction('token-details'),
-                        icon: Eye
+                        label: "Buy Tokens",
+                        onClick: () => handleWalletAction('buy-tokens', 'VTN'),
+                        icon: Coins
                       },
                       {
-                        label: "Transfer",
-                        onClick: () => handleWalletAction('transfer'),
-                        icon: ArrowUpRight
+                        label: "Send",
+                        onClick: () => handleWalletAction('send', 'VTN'),
+                        icon: Send
+                      },
+                      {
+                        label: "Request",
+                        onClick: () => handleWalletAction('request', 'VTN'),
+                        icon: CreditCard
+                      },
+                      {
+                        label: "Exchange",
+                        onClick: () => handleWalletAction('exchange', 'VTN'),
+                        icon: ArrowUpDown
                       }
                     ]}
                   />
@@ -174,14 +206,24 @@ export default function Wallet() {
                     }}
                     secondaryActions={[
                       {
+                        label: "Send",
+                        onClick: () => handleWalletAction('send', 'USD'),
+                        icon: Send
+                      },
+                      {
+                        label: "Request",
+                        onClick: () => handleWalletAction('request', 'USD'),
+                        icon: CreditCard
+                      },
+                      {
+                        label: "Exchange",
+                        onClick: () => handleWalletAction('exchange', 'USD'),
+                        icon: ArrowUpDown
+                      },
+                      {
                         label: "Withdraw",
                         onClick: () => handleWalletAction('withdraw'),
                         icon: ArrowUpRight
-                      },
-                      {
-                        label: "Transaction History",
-                        onClick: () => handleWalletAction('transaction-history'),
-                        icon: Eye
                       }
                     ]}
                   />
@@ -205,14 +247,24 @@ export default function Wallet() {
                     }}
                     secondaryActions={[
                       {
+                        label: "Send",
+                        onClick: () => handleWalletAction('send', 'CREDITS'),
+                        icon: Send
+                      },
+                      {
+                        label: "Request",
+                        onClick: () => handleWalletAction('request', 'CREDITS'),
+                        icon: CreditCard
+                      },
+                      {
+                        label: "Exchange",
+                        onClick: () => handleWalletAction('exchange', 'CREDITS'),
+                        icon: ArrowUpDown
+                      },
+                      {
                         label: "Spend Credits",
                         onClick: () => handleWalletAction('spend-credits'),
                         icon: ArrowUpRight
-                      },
-                      {
-                        label: "Credit History",
-                        onClick: () => handleWalletAction('credit-history'),
-                        icon: Eye
                       }
                     ]}
                   />
@@ -395,6 +447,23 @@ export default function Wallet() {
         <BuyCreditsPopup 
           open={buyCreditsOpen}
           onOpenChange={setBuyCreditsOpen}
+        />
+
+        <PaymentRequestPopup 
+          isOpen={paymentRequestOpen}
+          onClose={() => setPaymentRequestOpen(false)}
+          initialAmount=""
+          initialDescription=""
+        />
+
+        <MakePaymentPopup 
+          isOpen={makePaymentOpen}
+          onClose={() => setMakePaymentOpen(false)}
+        />
+
+        <ExchangeAndSendPopup 
+          isOpen={exchangeAndSendOpen}
+          onClose={() => setExchangeAndSendOpen(false)}
         />
         
         {/* Cross-system notification handler */}
