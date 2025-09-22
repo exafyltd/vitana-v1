@@ -85,6 +85,16 @@ export function WalletBalanceCard({
 
   const Icon = getIcon();
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Prevent card click when clicking on kebab menu or its children
+    const target = e.target as HTMLElement;
+    if (target.closest('[data-radix-dropdown-menu-trigger]') || 
+        target.closest('[data-radix-dropdown-menu-content]')) {
+      return;
+    }
+    onClick?.();
+  };
+
   return (
     <Card 
       className={cn(
@@ -92,7 +102,7 @@ export function WalletBalanceCard({
         getGradient(),
         className
       )}
-      onClick={onClick}
+      onClick={handleCardClick}
     >
       <RewardDot 
         points={type === "cash" ? 5 : type === "credits" ? 3 : 8} 
