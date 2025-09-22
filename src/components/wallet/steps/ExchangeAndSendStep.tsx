@@ -20,7 +20,7 @@ interface ExchangeAndSendStepProps {
 }
 
 export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProps) {
-  const { exchangeCurrency, transferFunds, getBalance } = useWallet();
+  const { exchangeCurrency, transferFunds, getBalance, exchangeAndSend } = useWallet();
   const { sendMessage } = useMessages(undefined, false);
   const { toast } = useToast();
   const { members, loading: loadingMembers, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
@@ -86,41 +86,34 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
     setIsProcessing(true);
 
     try {
-      // Step 1: Exchange currency
+      // Calculate exchange rate
       const exchangeRate = fromCurrency === 'CREDITS' && toCurrency === 'VTN' ? 0.5 : 
                           fromCurrency === 'VTN' && toCurrency === 'CREDITS' ? 2.0 :
                           fromCurrency === 'USD' && toCurrency === 'VTN' ? 2.5 :
                           fromCurrency === 'VTN' && toCurrency === 'USD' ? 0.4 : 1.0;
 
-      await exchangeCurrency(fromCurrency, toCurrency, exchangeAmount, exchangeRate);
-
-      // Calculate received amount after exchange fees
-      const exchangeFees = exchangeAmount * 0.01; // 1% exchange fee
-      const receivedAmount = (exchangeAmount - exchangeFees) * exchangeRate;
-
-      // Step 2: Send the exchanged currency
-      await transferFunds(selectedRecipient, toCurrency, receivedAmount);
-
-      // Send notification message
-      await sendMessage(
-        `💱➡️ Exchange & Send completed: ${exchangeAmount} ${fromCurrency} → ${receivedAmount.toFixed(2)} ${toCurrency}${description ? `\n📝 ${description}` : ''}`,
-        selectedRecipient,
-        'exchange_and_send',
-        {
-          type: 'exchange_and_send',
-          fromAmount: exchangeAmount,
-          fromCurrency,
-          toAmount: receivedAmount,
-          toCurrency,
-          description,
-          recipientId: selectedRecipient
-        }
-      );
-
-      toast({
-        title: '✅ Exchange & Send Complete!',
-        description: `Converted ${exchangeAmount} ${fromCurrency} to ${receivedAmount.toFixed(2)} ${toCurrency} and sent successfully`,
-      });
+      // Use atomic exchange and send operation
+      const result = await exchangeAndSend(selectedRecipient, fromCurrency, toCurrency, exchangeAmount, exchangeRate);
+      
+      if (result) {
+        // Send notification message
+        await sendMessage(
+          `💱➡️ Exchange & Send completed: ${exchangeAmount} ${fromCurrency} → ${result.netAmount.toFixed(2)} ${toCurrency}${description ? `\n📝 ${description}` : ''}`,
+          selectedRecipient,
+          'exchange_and_send',
+          {
+            type: 'exchange_and_send',
+            fromAmount: exchangeAmount,
+            fromCurrency,
+            toAmount: result.netAmount,
+            toCurrency,
+            description,
+            recipientId: selectedRecipient,
+            exchangeTransactionId: result.exchangeTransactionId,
+            transferTransactionId: result.transferTransactionId
+          }
+        );
+      }
 
       onClose();
     } catch (error) {
