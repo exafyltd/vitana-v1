@@ -109,8 +109,72 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [isLastMessageVisible, setIsLastMessageVisible] = useState(false);
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
 
-  // Use hybrid messages directly from the hook - no local state needed
-  const messages = hybridMessagesFromHook || [];
+  // State for optimistic messages
+  const [optimisticMessages, setOptimisticMessages] = useState<Array<{
+    id: string;
+    content: string;
+    status: 'sending' | 'failed';
+    originalMessage?: any;
+  }>>([]);
+
+  // State for optimistic message updates (for payments)
+  const [optimisticMessageUpdates, setOptimisticMessageUpdates] = useState<Map<string, any>>(new Map());
+
+  // Performance monitoring
+  const performanceTimers = useRef<Map<string, number>>(new Map());
+
+  // Optimistic message update handler (replaces full refresh)
+  const handleOptimisticMessageUpdate = useCallback(async (messageId: string, updates: any) => {
+    console.log('🚀 Optimistic message update:', messageId, updates);
+    
+    // Immediate UI update
+    setOptimisticMessageUpdates(prev => {
+      const newMap = new Map(prev);
+      newMap.set(messageId, { 
+        ...newMap.get(messageId), 
+        ...updates,
+        _optimistic: true,
+        _updatedAt: Date.now()
+      });
+      return newMap;
+    });
+
+    // Background database update (don't wait for this)
+    try {
+      const table = messageContext === 'global' ? 'global_messages' : 'messages';
+      await supabase
+        .from(table)
+        .update(updates)
+        .eq('id', messageId);
+      
+      console.log('✅ Database message update completed for:', messageId);
+      
+      // Remove optimistic update after successful database update
+      setTimeout(() => {
+        setOptimisticMessageUpdates(prev => {
+          const newMap = new Map(prev);
+          newMap.delete(messageId);
+          return newMap;
+        });
+      }, 1000);
+      
+    } catch (error) {
+      console.error('❌ Failed to update message in database:', error);
+      // Keep optimistic update on error
+    }
+  }, [messageContext]);
+
+  // Get message with optimistic updates applied
+  const getMessageWithUpdates = useCallback((message: any) => {
+    const updates = optimisticMessageUpdates.get(message.id);
+    if (updates) {
+      return { ...message, ...updates };
+    }
+    return message;
+  }, [optimisticMessageUpdates]);
+
+  // Use hybrid messages with optimistic updates applied
+  const messages = (hybridMessagesFromHook || []).map(getMessageWithUpdates);
 
   // Debug logging for thread/recipient changes
   useEffect(() => {
@@ -193,14 +257,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       }
     }
   }, [threadId, threads, user?.id]);
-
-  // State for optimistic messages
-  const [optimisticMessages, setOptimisticMessages] = useState<Array<{
-    id: string;
-    content: string;
-    status: 'sending' | 'failed';
-    originalMessage?: any;
-  }>>([]);
 
   // Enhanced scroll to bottom with auto-scroll detection
   const scrollToBottom = useCallback((force = false) => {
@@ -732,13 +788,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                       onReply={handleReply}
                       showAvatar={showAvatar}
                       showTimestamp={showTimestamp}
-                      onUpdateMessage={async (messageId: string, updates: any) => {
-                        // Since messages are managed by useHybridMessages hook,
-                        // we'll refresh the messages to get the updated data
-                        if (fetchMessages) {
-                          await fetchMessages();
-                        }
-                      }}
+                      onUpdateMessage={handleOptimisticMessageUpdate}
                       onSendReply={handleSendMessage}
                     />
                   </div>

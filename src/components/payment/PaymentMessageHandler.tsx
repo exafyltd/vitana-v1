@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthProvider';
+import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
 import { 
   CheckCircle, 
   XCircle, 
@@ -38,6 +39,7 @@ export function PaymentMessageHandler({
     refreshData 
   } = useWallet();
   const { toast } = useToast();
+  const { measureAsync } = usePerformanceMonitor();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const paymentData = message.content_data;
@@ -77,6 +79,18 @@ export function PaymentMessageHandler({
     
     setIsProcessing(true);
     
+    // Performance monitoring
+    const paymentId = `payment-${message.id}-${Date.now()}`;
+    
+    // Immediate optimistic UI update
+    onUpdateMessage(message.id, {
+      content_data: {
+        ...paymentData,
+        status: 'processing',
+        processingStarted: new Date().toISOString()
+      }
+    });
+    
     // Create timeout for payment processing
     const timeoutId = setTimeout(() => {
       setIsProcessing(false);
@@ -100,28 +114,31 @@ export function PaymentMessageHandler({
         return;
       }
 
-      // Perform the atomic transfer
-      const result = await transferFunds(
-        message.sender_id, 
-        currency.toUpperCase() as "USD" | "VTN" | "CREDITS", 
-        amount
-      );
+      // Measure the actual transfer operation
+      const result = await measureAsync(`Payment Transfer ${paymentId}`, async () => {
+        return transferFunds(
+          message.sender_id, 
+          currency.toUpperCase() as "USD" | "VTN" | "CREDITS", 
+          amount
+        );
+      }, 5000); // Log if over 5 seconds
 
       if (result) {
         // Clear timeout since payment succeeded
         clearTimeout(timeoutId);
         
-        // Refresh wallet data to show updated balances
-        await refreshData();
-        
-        // Update the original message status
-        await onUpdateMessage?.(message.id, {
+        // Immediate optimistic UI update
+        onUpdateMessage(message.id, {
           content_data: {
             ...paymentData,
             status: 'completed',
-            transactionId: result.id
+            transactionId: result.id,
+            completedAt: new Date().toISOString()
           }
         });
+        
+        // Background wallet refresh (don't wait)
+        refreshData().catch(console.error);
 
         // Send confirmation message
         await onSendReply?.(
@@ -195,6 +212,17 @@ export function PaymentMessageHandler({
     if (!onSendReply || !onUpdateMessage) return;
     
     setIsProcessing(true);
+    const startTime = performance.now();
+    
+    // Immediate optimistic UI update
+    onUpdateMessage(message.id, {
+      content_data: {
+        ...paymentData,
+        status: 'processing',
+        processingStarted: new Date().toISOString()
+      }
+    });
+    
     try {
       const { 
         originalAmount, 
@@ -224,18 +252,22 @@ export function PaymentMessageHandler({
       );
 
       if (result) {
-        // Refresh wallet data to show updated balances
-        await refreshData();
+        const endTime = performance.now();
+        console.log(`🔄 Exchange & Send processing completed in ${endTime - startTime}ms`);
         
-        // Update the original message status
-        await onUpdateMessage?.(message.id, {
+        // Immediate optimistic UI update
+        onUpdateMessage(message.id, {
           content_data: {
             ...paymentData,
             status: 'completed',
             exchangeTransactionId: result.exchangeTransactionId,
-            transferTransactionId: result.transferTransactionId
+            transferTransactionId: result.transferTransactionId,
+            completedAt: new Date().toISOString()
           }
         });
+        
+        // Background wallet refresh (don't wait)
+        refreshData().catch(console.error);
 
         await onSendReply?.(
           `🔄✅ Exchange & Send completed: ${formatCurrency(originalAmount, originalCurrency)} → ${formatCurrency(result.netAmount, exchangedCurrency)}`,
