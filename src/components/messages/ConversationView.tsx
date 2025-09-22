@@ -90,6 +90,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isUserNearBottom, setIsUserNearBottom] = useState(true);
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
   const [isThreadDataLoaded, setIsThreadDataLoaded] = useState(false);
@@ -128,6 +130,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       );
     }
   }, [threadId, messageContext, paginatedMessages]);
+
+  // Track scroll position and trigger top pagination
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 16;
+    setIsUserNearBottom(nearBottom);
+    if (el.scrollTop <= 0) {
+      handleScrollToTop();
+    }
+  }, [handleScrollToTop]);
 
   // Fetch recipient data when recipientId changes
   useEffect(() => {
@@ -188,15 +201,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   // Enhanced scroll to bottom with auto-scroll detection
   const scrollToBottom = useCallback((force = false) => {
-    const chatScroll = document.getElementById('chat-scroll');
-    if (!chatScroll) return;
-    
-    // Check if user is already at bottom (within 8px threshold)
-    const isAtBottom = chatScroll.scrollTop + chatScroll.clientHeight >= chatScroll.scrollHeight - 8;
-    
-    // Only auto-scroll if user is at bottom or force is true
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 8;
     if (isAtBottom || force) {
-      chatScroll.scrollTop = chatScroll.scrollHeight;
+      el.scrollTo({ top: el.scrollHeight, behavior: force ? 'smooth' : 'auto' });
     }
   }, []);
 
@@ -267,10 +277,26 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     };
   }, []);
 
-  // Scroll to bottom when new messages arrive (always force to mimic WhatsApp)
+  // Auto-scroll when you're near bottom and new messages arrive
   useEffect(() => {
-    scrollToBottom(true);
-  }, [messages, optimisticMessages, scrollToBottom]);
+    if (isUserNearBottom) {
+      scrollToBottom(false);
+    }
+  }, [messages, isUserNearBottom, scrollToBottom]);
+
+  // Force scroll when sending/optimistic updates
+  useEffect(() => {
+    if (optimisticMessages.length) {
+      scrollToBottom(true);
+    }
+  }, [optimisticMessages, scrollToBottom]);
+
+  // Force scroll on thread change or initial load
+  useEffect(() => {
+    if (threadId) {
+      setTimeout(() => scrollToBottom(true), 0);
+    }
+  }, [threadId, scrollToBottom]);
 
   const handleSendMessage = async (
     content: string, 
@@ -640,8 +666,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
         {/* Messages - Scrollable area */}
         <div 
-          className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-3" 
+          className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-3 overscroll-contain" 
           id="chat-scroll"
+          ref={scrollRef}
+          onScroll={handleScroll}
         >
           {messages.length === 0 && optimisticMessages.length === 0 ? (
             <div className="text-center py-12">
