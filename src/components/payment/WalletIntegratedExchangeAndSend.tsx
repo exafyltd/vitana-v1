@@ -103,10 +103,11 @@ export default function WalletIntegratedExchangeAndSend({
     setIsProcessing(true);
 
     try {
+      // Use server-side calculated amounts for accuracy
       const exchangeData = {
-        originalAmount: calculation.fromAmount,
+        originalAmount: parseFloat(amount),
         originalCurrency: fromCurrency,
-        exchangedAmount: calculation.total,
+        exchangedAmount: calculation.total, // This is the net amount after fees
         exchangedCurrency: toCurrency,
         exchangeRate: calculation.rate,
         fees: calculation.fees,
@@ -119,14 +120,14 @@ export default function WalletIntegratedExchangeAndSend({
       };
 
       await onSendMessage(
-        `💱➡️ Exchange & Send Request: Convert ${formatCurrency(calculation.fromAmount, fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)} and send to you - ${description}`,
+        `💱➡️ Exchange & Send Request: Convert ${formatCurrency(parseFloat(amount), fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)} and send to you - ${description}`,
         'exchange_and_send',
         exchangeData
       );
 
       toast({
         title: "Exchange & Send Request Sent! ✨",
-        description: `Request to convert ${formatCurrency(calculation.fromAmount, fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)} sent to ${recipient.name}`,
+        description: `Request to convert ${formatCurrency(parseFloat(amount), fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)} sent to ${recipient.name}`,
         duration: 6000
       });
 

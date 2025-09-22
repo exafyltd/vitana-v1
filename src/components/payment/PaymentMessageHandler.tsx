@@ -34,6 +34,7 @@ export function PaymentMessageHandler({
     updateBalance, 
     exchangeCurrency, 
     transferFunds, 
+    exchangeAndSend, 
     refreshData 
   } = useWallet();
   const { toast } = useToast();
@@ -197,59 +198,48 @@ export function PaymentMessageHandler({
         return;
       }
 
-      // Perform atomic exchange first
-      const exchangeResult = await exchangeCurrency(
+      // Perform atomic exchange and send in one operation
+      const result = await exchangeAndSend(
+        message.sender_id,
         originalCurrency.toUpperCase() as "USD" | "VTN" | "CREDITS",
         exchangedCurrency.toUpperCase() as "USD" | "VTN" | "CREDITS", 
         originalAmount,
         exchangeRate
       );
 
-      if (exchangeResult) {
-        // Calculate the converted amount after fees
-        const exchangeFee = originalAmount * 0.01;
-        const convertedAmount = (originalAmount - exchangeFee) * exchangeRate;
+      if (result) {
+        // Refresh wallet data to show updated balances
+        await refreshData();
         
-        // Then perform atomic transfer to the recipient
-        const transferResult = await transferFunds(
-          message.sender_id,
-          exchangedCurrency as "USD" | "VTN" | "CREDITS",
-          convertedAmount
+        // Update the original message status
+        await onUpdateMessage?.(message.id, {
+          content_data: {
+            ...paymentData,
+            status: 'completed',
+            exchangeTransactionId: result.exchangeTransactionId,
+            transferTransactionId: result.transferTransactionId
+          }
+        });
+
+        await onSendReply?.(
+          `🔄✅ Exchange & Send completed: ${formatCurrency(originalAmount, originalCurrency)} → ${formatCurrency(result.netAmount, exchangedCurrency)}`,
+          'exchange_and_send_confirmation',
+          {
+            ...paymentData,
+            status: 'completed',
+            completedBy: user?.id,
+            completedAt: new Date().toISOString(),
+            exchangeTransactionId: result.exchangeTransactionId,
+            transferTransactionId: result.transferTransactionId,
+            netAmount: result.netAmount
+          }
         );
 
-        if (transferResult) {
-          // Refresh wallet data to show updated balances
-          await refreshData();
-          
-          // Update the original message status
-          await onUpdateMessage?.(message.id, {
-            content_data: {
-              ...paymentData,
-              status: 'completed',
-              exchangeTransactionId: exchangeResult.id,
-              transferTransactionId: transferResult.id
-            }
-          });
-
-          await onSendReply?.(
-            `🔄✅ Exchange & Send completed: ${formatCurrency(originalAmount, originalCurrency)} → ${formatCurrency(convertedAmount, exchangedCurrency)}`,
-            'exchange_and_send_confirmation',
-            {
-              ...paymentData,
-              status: 'completed',
-              completedBy: user?.id,
-              completedAt: new Date().toISOString(),
-              exchangeTransactionId: exchangeResult.id,
-              transferTransactionId: transferResult.id
-            }
-          );
-
-          toast({
-            title: "Exchange & Send Completed! ✨",
-            description: `Converted and sent ${formatCurrency(convertedAmount, exchangedCurrency)}`,
-            duration: 6000
-          });
-        }
+        toast({
+          title: "Exchange & Send Completed! ✨",
+          description: `Converted and sent ${formatCurrency(result.netAmount, exchangedCurrency)}`,
+          duration: 6000
+        });
       }
 
     } catch (error) {

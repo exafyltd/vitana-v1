@@ -80,7 +80,7 @@ export function useWallet() {
   const getBalance = (currency: 'USD' | 'VTN' | 'CREDITS'): number => {
     const normalizedCurrency = currency.toUpperCase();
     const balance = balances.find(b => b.currency_type === normalizedCurrency);
-    return balance ? Number(balance.balance) : 1000; // Default balance
+    return balance ? Number(balance.balance) : 0; // Return 0 instead of 1000 for accurate balance checking
   };
 
   // Update balance for specific currency
@@ -181,49 +181,98 @@ export function useWallet() {
     currency: 'USD' | 'VTN' | 'CREDITS',
     amount: number
   ): Promise<any> => {
+    if (!user?.id) return null;
+    
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('User not authenticated');
-
-      // Normalize currency to uppercase
-      const normalizedCurrency = currency.toUpperCase();
-
-      // Use atomic transfer RPC
       const { data, error } = await supabase.rpc('process_wallet_transfer', {
         p_from_user_id: user.id,
         p_to_user_id: toUserId,
-        p_currency: normalizedCurrency,
+        p_currency: currency.toUpperCase(),
         p_amount: amount
       });
 
       if (error) throw error;
 
-      const result = data[0];
-      const transferFee = amount * 0.005;
-      const netAmount = amount - transferFee;
-
+      const result = data?.[0];
+      if (result) {
+        toast({
+          title: "Transfer Successful! 💸",
+          description: `${amount.toLocaleString()} ${currency} sent successfully`
+        });
+        
+        // Refresh data to show updated balances
+        await refreshData();
+        
+        return {
+          id: result.transaction_id,
+          fromBalance: result.from_balance,
+          toBalance: result.to_balance
+        };
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Transfer error:', error);
       toast({
-        title: 'Transfer Completed! ✅',
-        description: `Sent ${amount} ${currency} (recipient receives ${netAmount.toFixed(2)} ${currency})`,
-        duration: 5000
+        title: "Transfer Failed",
+        description: error.message || "Please try again",
+        variant: "destructive"
+      });
+      return null;
+    }
+  };
+
+  // Atomic exchange and send operation
+  const exchangeAndSend = async (
+    toUserId: string,
+    fromCurrency: "USD" | "VTN" | "CREDITS",
+    toCurrency: "USD" | "VTN" | "CREDITS",
+    amount: number,
+    exchangeRate: number
+  ) => {
+    if (!user?.id) return null;
+    
+    try {
+      const { data, error } = await supabase.rpc('process_wallet_exchange_and_send', {
+        p_from_user_id: user.id,
+        p_to_user_id: toUserId,
+        p_from_currency: fromCurrency.toUpperCase(),
+        p_to_currency: toCurrency.toUpperCase(),
+        p_amount: amount,
+        p_exchange_rate: exchangeRate
       });
 
-      // Refresh data
-      await Promise.all([fetchBalances(), fetchTransactions()]);
+      if (error) throw error;
 
-      return {
-        id: result.transaction_id,
-        from_balance: result.from_balance,
-        to_balance: result.to_balance
-      };
-    } catch (err) {
-      console.error('Error processing transfer:', err);
+      const result = data?.[0];
+      if (result) {
+        toast({
+          title: "Exchange & Send Successful! ✨",
+          description: `Converted and sent ${result.net_converted_amount.toLocaleString()} ${toCurrency}`,
+          duration: 6000
+        });
+        
+        // Refresh data to show updated balances
+        await refreshData();
+        
+        return {
+          exchangeTransactionId: result.exchange_transaction_id,
+          transferTransactionId: result.transfer_transaction_id,
+          fromBalance: result.from_balance,
+          toBalance: result.to_balance,
+          netAmount: result.net_converted_amount
+        };
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Exchange and send error:', error);
       toast({
-        title: 'Transfer Failed',
-        description: err instanceof Error ? err.message : 'Transfer failed',
-        variant: 'destructive'
+        title: "Exchange & Send Failed",
+        description: error.message || "Please try again",
+        variant: "destructive"
       });
-      throw err;
+      return null;
     }
   };
 
@@ -321,6 +370,7 @@ export function useWallet() {
     updateBalance,
     exchangeCurrency,
     transferFunds,
+    exchangeAndSend,
     refreshData
   };
 }

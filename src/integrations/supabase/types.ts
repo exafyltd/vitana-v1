@@ -1472,6 +1472,23 @@ export type Database = {
           transaction_id: string
         }[]
       }
+      process_wallet_exchange_and_send: {
+        Args: {
+          p_amount: number
+          p_exchange_rate: number
+          p_from_currency: string
+          p_from_user_id: string
+          p_to_currency: string
+          p_to_user_id: string
+        }
+        Returns: {
+          exchange_transaction_id: string
+          from_balance: number
+          net_converted_amount: number
+          to_balance: number
+          transfer_transaction_id: string
+        }[]
+      }
       process_wallet_transfer: {
         Args: {
           p_amount: number
