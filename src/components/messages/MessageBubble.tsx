@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon, Download, ExternalLink } from 'lucide-react';
+import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon, Download, ExternalLink, Reply } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType } from '@/lib/fileUpload';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { EmojiReactionBar } from './EmojiReactionBar';
 import { ReactionCluster } from './ReactionCluster';
 import { ReactionPopover } from './ReactionPopover';
+import { ReplyQuote } from './ReplyQuote';
 
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
@@ -19,6 +20,9 @@ interface MessageBubbleProps {
   onActionClick?: (action: any) => void;
   showAvatar?: boolean;
   showTimestamp?: boolean;
+  onReply?: (message: any) => void;
+  onScrollToMessage?: (messageId: string) => void;
+  parentMessage?: any;
 }
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({
@@ -26,7 +30,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   isOwnMessage,
   onActionClick,
   showAvatar = true,
-  showTimestamp = true
+  showTimestamp = true,
+  onReply,
+  onScrollToMessage,
+  parentMessage
 }) => {
   const messageRef = useRef<HTMLDivElement>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
@@ -121,6 +128,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     addReaction(emoji);
     // Don't close reaction bar immediately to allow multiple reactions
   }, [addReaction]);
+
+  const handleReply = useCallback(() => {
+    if (onReply) {
+      onReply(message);
+    }
+    setShowReactionBar(false);
+  }, [onReply, message]);
+
+  const handleScrollToParent = useCallback(() => {
+    if (onScrollToMessage && message.parent_message_id) {
+      onScrollToMessage(message.parent_message_id);
+    }
+  }, [onScrollToMessage, message.parent_message_id]);
 
   // Long press handling for mobile
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -480,6 +500,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               role="button"
               aria-label="Long press or right click to add reactions"
             >
+              {/* Reply Quote - shows if this message is replying to another */}
+              {(message.parent_message_id || parentMessage) && (
+                <ReplyQuote
+                  parentMessage={parentMessage}
+                  onQuoteClick={handleScrollToParent}
+                  isOwnMessage={isOwnMessage}
+                />
+              )}
+              
               {renderContent()}
             </div>
             
@@ -529,6 +558,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           <EmojiReactionBar
             onEmojiSelect={handleReactionSelect}
             onClose={handleHideReactionBar}
+            onReply={onReply ? handleReply : undefined}
           />
         </div>
       )}

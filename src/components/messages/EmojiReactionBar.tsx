@@ -1,15 +1,25 @@
 import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Reply } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface EmojiReactionBarProps {
   onEmojiSelect: (emoji: string) => void;
   onClose: () => void;
+  onReply?: () => void;
+  position?: { x: number; y: number };
   className?: string;
 }
 
 const REACTION_EMOJIS = ['👍', '❤️', '😂', '😮', '🙏', '🎉'];
 
-export function EmojiReactionBar({ onEmojiSelect, onClose, className }: EmojiReactionBarProps) {
+export function EmojiReactionBar({ 
+  onEmojiSelect, 
+  onClose, 
+  onReply, 
+  position = { x: 0, y: 0 },
+  className 
+}: EmojiReactionBarProps) {
   const handleEmojiClick = (emoji: string) => {
     onEmojiSelect(emoji);
     // Don't close immediately to allow multiple reactions
@@ -18,13 +28,35 @@ export function EmojiReactionBar({ onEmojiSelect, onClose, className }: EmojiRea
   return (
     <div
       className={cn(
-        "flex items-center gap-1 p-2 bg-background/95 backdrop-blur-sm",
+        "fixed z-50 flex items-center gap-1 p-2 bg-background/95 backdrop-blur-sm",
         "border border-border rounded-full shadow-lg",
         "animate-scale-in",
         className
       )}
+      style={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        transform: 'translateX(-50%)'
+      }}
       onMouseLeave={onClose}
     >
+      {/* Reply button (if available) */}
+      {onReply && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-10 h-10 p-0 rounded-full hover:bg-accent/20"
+          onClick={() => {
+            onReply();
+            onClose();
+          }}
+          aria-label="Reply to message"
+        >
+          <Reply className="w-4 h-4" />
+        </Button>
+      )}
+      
+      {/* Emoji reactions */}
       {REACTION_EMOJIS.map((emoji) => (
         <button
           key={emoji}

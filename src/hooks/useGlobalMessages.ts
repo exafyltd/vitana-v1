@@ -302,7 +302,8 @@ export function useGlobalMessages() {
     threadId: string,
     body: string,
     messageType = 'text',
-    contentData?: any
+    contentData?: any,
+    parentMessageId?: string
   ) => {
     if (!user || !isGlobalContext) return;
 
@@ -340,6 +341,7 @@ export function useGlobalMessages() {
           body,
           message_type: messageType,
           content_data: contentData,
+          parent_message_id: parentMessageId || null,
           sent_at: new Date().toISOString(),
         })
         .select()
@@ -397,7 +399,7 @@ export function useGlobalMessages() {
 
   // New standardized sendMessage function
   const sendMessage = useCallback(async (args: SendMessageArgs) => {
-    return sendMessageLegacy(args.threadId, args.content, args.type || 'text', args.contentData);
+    return sendMessageLegacy(args.threadId, args.content, args.type || 'text', args.contentData, args.parentMessageId);
   }, [sendMessageLegacy]);
 
   const createThread = useCallback(async (

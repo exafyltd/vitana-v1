@@ -29,9 +29,10 @@ import {
 } from 'lucide-react';
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
+import { ReplyPreview } from '@/components/messages/ReplyPreview';
 
 interface MessageInputProps {
-  onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[]) => Promise<void>;
+  onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[], parentMessageId?: string) => Promise<void>;
   onTypingStart?: () => void;
   onTypingStop?: () => void;
   placeholder?: string;
@@ -40,6 +41,8 @@ interface MessageInputProps {
   threadId?: string;
   recipientId?: string | null;
   activeThread?: { id: string } | null;
+  replyingTo?: any;
+  onCancelReply?: () => void;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
@@ -51,7 +54,9 @@ const MessageInput: React.FC<MessageInputProps> = ({
   className,
   threadId,
   recipientId,
-  activeThread
+  activeThread,
+  replyingTo,
+  onCancelReply
 }) => {
   const [message, setMessage] = useState('');
   const [isComposing, setIsComposing] = useState(false);
@@ -174,7 +179,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         }
       }
 
-      await onSendMessage(messageContent, messageType, contentData);
+      await onSendMessage(messageContent, messageType, contentData, undefined, replyingTo?.id);
       
       if (textareaRef.current) {
         textareaRef.current.focus();
@@ -422,6 +427,14 @@ const MessageInput: React.FC<MessageInputProps> = ({
       className={cn("flex flex-col gap-2 px-3 py-2", className)}
       style={{ '--composer-h': '112px' } as React.CSSProperties}
     >
+      {/* Reply Preview */}
+      {replyingTo && onCancelReply && (
+        <ReplyPreview 
+          message={replyingTo} 
+          onCancel={onCancelReply}
+        />
+      )}
+
       {/* File Attachments Preview */}
       {(attachments.length > 0 || Object.keys(uploadProgress).length > 0) && (
         <div className="px-4 pb-2" id="attachment-status">

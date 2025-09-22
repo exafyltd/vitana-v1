@@ -12,6 +12,7 @@ export type SendMessageArgs = {
   type?: MessageKind;
   contentData?: Record<string, any>;
   recipientId?: string;
+  parentMessageId?: string;
 };
 
 /**
@@ -30,12 +31,17 @@ export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?:
   const context = isGlobalContext ? 'global' : 'tenant';
   const { typingUsers, startTyping, stopTyping } = useTypingIndicators(threadId, context);
   
-  // Create unified sendMessage function
   const sendMessage = async (args: SendMessageArgs) => {
+    // Include parent_message_id if provided
+    const messageArgs = {
+      ...args,
+      parentMessageId: args.parentMessageId
+    };
+    
     if (args.context === 'global') {
-      return globalMessages.sendMessage(args);
+      return globalMessages.sendMessage(messageArgs);
     } else {
-      return tenantMessages.sendMessage(args);
+      return tenantMessages.sendMessage(messageArgs);
     }
   };
 
