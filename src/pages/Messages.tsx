@@ -5,6 +5,9 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { useSidebar } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { messagesNavigation } from "@/config/navigation";
 import { Button } from "@/components/ui/button";
 import { 
@@ -38,6 +41,8 @@ import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherPart
 export default function Messages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
+  const { open: sidebarOpen } = useSidebar();
+  const isMobile = useIsMobile();
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
   const { threads, isLoading, context, ...hybridMessages } = useHybridMessages(messageContext);
   const globalMessages = useHybridMessages('global');
@@ -151,8 +156,8 @@ export default function Messages() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
         <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
         <AppLayout>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="space-y-6 lg:space-y-8">
+          <div className="w-full h-full">
+            <div className="space-y-6 lg:space-y-8 p-4 sm:p-6 lg:p-8">
               <SubNavigation items={messagesNavigation} />
               <StandardHeader 
                 title="Messages"
@@ -176,186 +181,286 @@ export default function Messages() {
     );
   }
 
-  const renderConversationContent = () => (
-    <div className="flex-1 flex gap-0 relative" 
-      style={{ 
-        height: 'calc(100vh - var(--header-height, 300px) - env(safe-area-inset-bottom))',
-        '--header-height': '300px'
-      } as React.CSSProperties}
-    >
-      <div className="w-80 border-r border-border flex-shrink-0">
-        <ScrollArea className="h-full">
-          <div className={`p-4 ${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
-            {localThreads.length === 0 ? (
-              <EmptyStateIllustration 
-                type="inbox"
-                context={messageContext}
-                threads={localThreads}
-                onAction={() => setShowNewConversation(true)}
-                onCreateGroup={() => setShowCreateGroup(true)}
-              />
-            ) : (
-              // De-duplicate direct threads by counterpart, keep most recent
-              [...localThreads]
-                .sort((a, b) => {
-                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
-                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
-                  if (ap !== bp) return bp - ap;
-                  const ad = new Date(a.updated_at).getTime();
-                  const bd = new Date(b.updated_at).getTime();
-                  return bd - ad;
-                })
-                .reduce((acc, thread) => {
-                  if (thread.type === 'direct') {
-                    // Find the other participant (not current user)
-                    const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
-                    const key = counterpart?.user_id || 'unknown';
-                    
-                    // Keep the thread with the most recent updated_at
-                    const existing = acc.find(t => t._dedupeKey === key);
-                    if (!existing || new Date(thread.updated_at) > new Date(existing.updated_at)) {
-                      // Remove existing if found, add new one
-                      const filtered = acc.filter(t => t._dedupeKey !== key);
-                      filtered.push({ ...thread, _dedupeKey: key });
-                      return filtered;
-                    }
-                    return acc;
-                  } else {
-                    // Keep group threads as-is
-                    acc.push({ ...thread, _dedupeKey: thread.id });
-                    return acc;
+  // Get responsive panel sizes based on sidebar state and screen size
+  const getConversationPanelSize = () => {
+    if (isMobile) return 100; // Full width on mobile
+    return sidebarOpen ? 28 : 32; // 28% when sidebar open, 32% when collapsed
+  };
+
+  const getChatPanelSize = () => {
+    if (isMobile) return 0; // Hidden on mobile when conversation list is shown
+    return sidebarOpen ? 72 : 68; // 72% when sidebar open, 68% when collapsed
+  };
+
+  const renderConversationList = (threads: typeof localThreads) => (
+    <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
+      {threads.length === 0 ? (
+        <EmptyStateIllustration 
+          type="inbox"
+          context={messageContext}
+          threads={threads}
+          onAction={() => setShowNewConversation(true)}
+          onCreateGroup={() => setShowCreateGroup(true)}
+        />
+      ) : (
+        // De-duplicate direct threads by counterpart, keep most recent
+        [...threads]
+          .sort((a, b) => {
+            const ap = pinnedThreads.has(a.id) ? 1 : 0;
+            const bp = pinnedThreads.has(b.id) ? 1 : 0;
+            if (ap !== bp) return bp - ap;
+            const ad = new Date(a.updated_at).getTime();
+            const bd = new Date(b.updated_at).getTime();
+            return bd - ad;
+          })
+          .reduce((acc, thread) => {
+            if (thread.type === 'direct') {
+              // Find the other participant (not current user)
+              const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
+              const key = counterpart?.user_id || 'unknown';
+              
+              // Keep the thread with the most recent updated_at
+              const existing = acc.find(t => t._dedupeKey === key);
+              if (!existing || new Date(thread.updated_at) > new Date(existing.updated_at)) {
+                // Remove existing if found, add new one
+                const filtered = acc.filter(t => t._dedupeKey !== key);
+                filtered.push({ ...thread, _dedupeKey: key });
+                return filtered;
+              }
+              return acc;
+            } else {
+              // Keep group threads as-is
+              acc.push({ ...thread, _dedupeKey: thread.id });
+              return acc;
+            }
+          }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
+          .map((thread) => {
+            const isPinned = pinnedThreads.has(thread.id);
+            const isActive = selectedThreadId === thread.id;
+            const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
+            
+            return (
+              <Card
+                key={thread.id}
+                className={`${cardHeight} cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                  isActive 
+                    ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
+                    : 'hover:shadow-sm'
+                } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
+                onClick={() => {
+                  console.log('🎯 Messages.tsx: Thread clicked', { threadId: thread.id, unreadCount: thread.unread_count });
+                  setSelectedThreadId(thread.id);
+                  setSelectedRecipientId(null);
+                  // On mobile, this will switch to chat view
+                  if (thread.unread_count > 0) {
+                    handleConversationOpened(thread.id);
                   }
-                }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
-                .map((thread) => {
-                  const isPinned = pinnedThreads.has(thread.id);
-                  const isActive = selectedThreadId === thread.id;
-                  const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
-                  
-                  return (
-                <Card
-                  key={thread.id}
-                  className={`${cardHeight} cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
-                    isActive 
-                      ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
-                      : 'hover:shadow-sm'
-                  } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
-                  onClick={() => {
-                    console.log('🎯 Messages.tsx: Thread clicked', { threadId: thread.id, unreadCount: thread.unread_count });
-                    setSelectedThreadId(thread.id);
-                    setSelectedRecipientId(null);
-                    // Immediately clear unread count for better UX
-                    if (thread.unread_count > 0) {
-                      handleConversationOpened(thread.id);
-                    }
-                  }}
-                >
-                  <div className="flex items-start space-x-3">
-                    <div className="relative">
-                      <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
-                        <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
-                        <AvatarFallback>
-                          {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
-                        </AvatarFallback>
-                      </Avatar>
-                      {/* Dynamic presence indicator */}
-                      <div className="absolute -bottom-0.5 -right-0.5">
-                        <PresenceIndicator 
-                          userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 
-                          context={context}
-                          size="sm"
-                        />
-                      </div>
+                }}
+              >
+                <div className="flex items-start space-x-3">
+                  <div className="relative">
+                    <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
+                      <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
+                      <AvatarFallback>
+                        {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
+                      </AvatarFallback>
+                    </Avatar>
+                    {/* Dynamic presence indicator */}
+                    <div className="absolute -bottom-0.5 -right-0.5">
+                      <PresenceIndicator 
+                        userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 
+                        context={context}
+                        size="sm"
+                      />
                     </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
-                              {thread.name || 
-                               thread.participants?.find(p => p.user_id !== user?.id)?.display_name ||
-                               'Unknown'}
-                            </h3>
-                            {isPinned && (
-                              <div className="w-2 h-2 bg-domain-messages-accent rounded-full flex-shrink-0"></div>
-                            )}
-                          </div>
-                          
-                          {thread.last_message && (
-                            <p className={`text-muted-foreground truncate ${
-                              densityMode === 'compact' ? 'text-xs mt-0.5' : 'text-sm mt-1'
-                            }`}>
-                              {/* Show typing indicator if applicable */}
-                              {/* {typingIndicator ? 'typing...' : thread.last_message.body} */}
-                              {thread.last_message.body}
-                            </p>
-                          )}
-                          
-                          {densityMode === 'comfortable' && (
-                            <div className="flex items-center text-xs text-muted-foreground mt-1">
-                              <Users className="w-3 h-3 mr-1" />
-                              {thread.participants?.length || 0} participants
-                            </div>
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
+                            {thread.name || 
+                             thread.participants?.find(p => p.user_id !== user?.id)?.display_name ||
+                             'Unknown'}
+                          </h3>
+                          {isPinned && (
+                            <div className="w-2 h-2 bg-domain-messages-accent rounded-full flex-shrink-0"></div>
                           )}
                         </div>
                         
-                        <div className="flex flex-col items-end gap-1 ml-2 flex-shrink-0">
-                          <span className={`text-muted-foreground ${
-                            densityMode === 'compact' ? 'text-xs' : 'text-xs'
+                        {thread.last_message && (
+                          <p className={`text-muted-foreground truncate ${
+                            densityMode === 'compact' ? 'text-xs mt-0.5' : 'text-sm mt-1'
                           }`}>
-                            {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric'
-                            })}
-                          </span>
-                          
-                          {thread.unread_count > 0 && (
-                            <Badge 
-                              variant="secondary" 
-                              className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
-                            >
-                              {thread.unread_count > 99 ? '99+' : thread.unread_count}
-                            </Badge>
-                          )}
-                        </div>
+                            {thread.last_message.body}
+                          </p>
+                        )}
+                        
+                        {densityMode === 'comfortable' && (
+                          <div className="flex items-center text-xs text-muted-foreground mt-1">
+                            <Users className="w-3 h-3 mr-1" />
+                            {thread.participants?.length || 0} participants
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="flex flex-col items-end gap-1 ml-2 flex-shrink-0">
+                        <span className={`text-muted-foreground ${
+                          densityMode === 'compact' ? 'text-xs' : 'text-xs'
+                        }`}>
+                          {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </span>
+                        
+                        {thread.unread_count > 0 && (
+                          <Badge 
+                            variant="secondary" 
+                            className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
+                          >
+                            {thread.unread_count > 99 ? '99+' : thread.unread_count}
+                          </Badge>
+                        )}
                       </div>
                     </div>
                   </div>
-                </Card>
-                 );
-               })
-            )}
-          </div>
-        </ScrollArea>
-      </div>
-      
-      <div className="min-w-0 flex flex-col overflow-hidden">
-        {selectedThreadId || selectedRecipientId ? (
-          <ConversationErrorBoundary>
-            <ConversationView 
-              threadId={selectedThreadId}
-              recipientId={selectedRecipientId}
-              context={messageContext}
-              className="flex-1 min-h-0"
-              onThreadRead={handleThreadRead}
-              onConversationOpened={handleConversationOpened}
-              onMessageSent={handleMessageSent}
-            />
-          </ConversationErrorBoundary>
-        ) : (
-          <div className="flex items-center justify-center h-full px-4 py-4">
-            <div className="text-center">
-              <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-semibold mb-2">Select a conversation</h3>
-              <p className="text-muted-foreground">
-                Choose a conversation from the left to start messaging
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
+                </div>
+              </Card>
+            );
+          })
+      )}
     </div>
   );
+
+  const renderConversationContent = () => {
+    // Mobile layout - stack conversations and chat
+    if (isMobile) {
+      return (
+        <div className="h-[calc(100vh-200px)]">
+          {!selectedThreadId ? (
+            // Show conversation list on mobile
+            <div className="h-full bg-card/50 backdrop-blur-sm">
+              <SplitBar value={messageContext} onValueChange={(value) => setMessageContext(value as 'global' | 'tenant')} className="h-full">
+                <div className="border-b p-2">
+                  <SplitBarList className="grid w-full grid-cols-2">
+                    <SplitBarTrigger value="global">Global</SplitBarTrigger>
+                    <SplitBarTrigger value="tenant">Community</SplitBarTrigger>
+                  </SplitBarList>
+                </div>
+                
+                <ScrollArea className="flex-1">
+                  <SplitBarContent value="global" className="p-0 m-0">
+                    <div className="p-4">
+                      {renderConversationList(localThreads)}
+                    </div>
+                  </SplitBarContent>
+                  
+                  <SplitBarContent value="tenant" className="p-0 m-0">
+                    <div className="p-4">
+                      {renderConversationList(localThreads)}
+                    </div>
+                  </SplitBarContent>
+                </ScrollArea>
+              </SplitBar>
+            </div>
+          ) : (
+            // Show chat view on mobile
+            <div className="h-full bg-background/95 backdrop-blur-sm">
+              <ConversationErrorBoundary>
+                <ConversationView 
+                  threadId={selectedThreadId}
+                  recipientId={selectedRecipientId}
+                  context={messageContext}
+                  className="flex-1 min-h-0"
+                  onBack={() => setSelectedThreadId(null)}
+                  onThreadRead={handleThreadRead}
+                  onConversationOpened={handleConversationOpened}
+                  onMessageSent={handleMessageSent}
+                />
+              </ConversationErrorBoundary>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // Desktop layout - resizable panels
+    return (
+      <div className="h-[calc(100vh-200px)]">
+        <ResizablePanelGroup direction="horizontal" className="h-full">
+          {/* Conversation List Panel */}
+          <ResizablePanel 
+            defaultSize={getConversationPanelSize()} 
+            minSize={20} 
+            maxSize={50}
+            className="transition-all duration-300"
+          >
+            <div className="h-full border-r bg-card/50 backdrop-blur-sm">
+              <SplitBar value={messageContext} onValueChange={(value) => setMessageContext(value as 'global' | 'tenant')} className="h-full">
+                <div className="border-b p-2">
+                  <SplitBarList className="grid w-full grid-cols-2">
+                    <SplitBarTrigger value="global">Global</SplitBarTrigger>
+                    <SplitBarTrigger value="tenant">Community</SplitBarTrigger>
+                  </SplitBarList>
+                </div>
+                
+                <ScrollArea className="flex-1">
+                  <SplitBarContent value="global" className="p-0 m-0">
+                    <div className="p-4">
+                      {renderConversationList(localThreads)}
+                    </div>
+                  </SplitBarContent>
+                  
+                  <SplitBarContent value="tenant" className="p-0 m-0">
+                    <div className="p-4">
+                      {renderConversationList(localThreads)}
+                    </div>
+                  </SplitBarContent>
+                </ScrollArea>
+              </SplitBar>
+            </div>
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
+
+          {/* Chat Area Panel */}
+          <ResizablePanel 
+            defaultSize={getChatPanelSize()}
+            minSize={50}
+            className="transition-all duration-300"
+          >
+            <div className="h-full bg-background/95 backdrop-blur-sm">
+              {selectedThreadId || selectedRecipientId ? (
+                <ConversationErrorBoundary>
+                  <ConversationView 
+                    threadId={selectedThreadId}
+                    recipientId={selectedRecipientId}
+                    context={messageContext}
+                    className="flex-1 min-h-0"
+                    onThreadRead={handleThreadRead}
+                    onConversationOpened={handleConversationOpened}
+                    onMessageSent={handleMessageSent}
+                  />
+                </ConversationErrorBoundary>
+              ) : (
+                <div className="h-full flex items-center justify-center px-4 py-4">
+                  <div className="text-center">
+                    <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                    <h3 className="text-lg font-semibold mb-2">Select a conversation</h3>
+                    <p className="text-muted-foreground">
+                      Choose a conversation from the left to start messaging
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
