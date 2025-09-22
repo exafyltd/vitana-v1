@@ -13,6 +13,7 @@ import {
   Paperclip
 } from 'lucide-react';
 import { AttachmentMenu } from './AttachmentMenu';
+import { useRecipientData } from '@/hooks/useRecipientData';
 import { cn } from '@/lib/utils';
 
 interface Attachment {
@@ -29,6 +30,8 @@ interface EnhancedMessageComposerProps {
   disabled?: boolean;
   isOffline?: boolean;
   className?: string;
+  recipientId?: string | null;
+  threadId?: string;
 }
 
 const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
@@ -36,7 +39,9 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
   placeholder = "Type a message...",
   disabled = false,
   isOffline = false,
-  className
+  className,
+  recipientId,
+  threadId
 }) => {
   const [message, setMessage] = useState('');
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -44,6 +49,7 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
   const [showHint, setShowHint] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { recipient } = useRecipientData(recipientId, threadId);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -185,6 +191,7 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
                         onCalendarInvite={(title, date) => {
                           console.log('Calendar invite:', title, date);
                         }}
+                        recipient={recipient}
                         disabled={disabled}
                         className="hover:bg-muted"
                       />

@@ -30,6 +30,7 @@ import {
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { ReplyPreview } from '@/components/messages/ReplyPreview';
+import { useRecipientData } from '@/hooks/useRecipientData';
 
 interface MessageInputProps {
   onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[], parentMessageId?: string) => Promise<void>;
@@ -70,6 +71,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
   const { toast } = useToast();
   const { activeTenantId } = useTenant();
+  const { recipient } = useRecipientData(recipientId, threadId);
 
   // Auto-resize textarea with proper row limits (1-6 rows) and update CSS var
   useEffect(() => {
@@ -508,11 +510,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
             await onSendMessage(content, messageType, contentData);
           }}
           onCalendarInvite={sendCalendarInvite}
-          recipient={recipientId ? {
-            id: recipientId,
-            name: recipientId, // This would need proper recipient data
-            avatar: undefined
-          } : undefined}
+          recipient={recipient}
           disabled={disabled || isUploading} 
         />
 
