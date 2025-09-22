@@ -37,7 +37,6 @@ const KebabMenu = React.forwardRef<
       <DropdownMenuContent
         align="end"
         className="w-48 z-50 bg-popover border border-border shadow-md"
-        onPointerDown={(e) => e.stopPropagation()}
       >
         {children}
       </DropdownMenuContent>

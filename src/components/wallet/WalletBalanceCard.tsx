@@ -86,10 +86,8 @@ export function WalletBalanceCard({
   const Icon = getIcon();
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Prevent card click when clicking on kebab menu or its children
     const target = e.target as HTMLElement;
-    if (target.closest('[data-radix-dropdown-menu-trigger]') || 
-        target.closest('[data-radix-dropdown-menu-content]')) {
+    if (target.closest('[data-kebab-root]')) {
       return;
     }
     onClick?.();
@@ -178,20 +176,25 @@ export function WalletBalanceCard({
               </Button>
             )}
             {secondaryActions && secondaryActions.length > 0 && (
-              <KebabMenu>
-                {secondaryActions.map((action, index) => (
-                  <DropdownMenuItem
-                    key={index}
-                    onSelect={(e) => {
-                      e.stopPropagation();
-                      action.onClick();
-                    }}
-                  >
-                    {React.createElement(action.icon, { className: "h-4 w-4 mr-2" })}
-                    {action.label}
-                  </DropdownMenuItem>
-                ))}
-              </KebabMenu>
+              <div
+                data-kebab-root
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <KebabMenu>
+                  {secondaryActions.map((action, index) => (
+                    <DropdownMenuItem
+                      key={index}
+                      onSelect={() => {
+                        setTimeout(() => action.onClick(), 0);
+                      }}
+                    >
+                      {React.createElement(action.icon, { className: "h-4 w-4 mr-2" })}
+                      {action.label}
+                    </DropdownMenuItem>
+                  ))}
+                </KebabMenu>
+              </div>
             )}
           </div>
         </div>
