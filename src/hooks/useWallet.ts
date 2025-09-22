@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/AuthProvider';
+import { useWalletRealtime } from './useWalletRealtime';
 
 export interface UserBalance {
   currency_type: 'USD' | 'VTN' | 'CREDITS';
@@ -288,6 +290,28 @@ export function useWallet() {
     initializeData();
   }, []);
 
+  const refreshData = useCallback(async () => {
+    if (!user?.id) return;
+    
+    setLoading(true);
+    try {
+      await Promise.all([
+        fetchBalances(),
+        fetchTransactions()
+      ]);
+    } catch (error) {
+      console.error('Error refreshing wallet data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id, fetchBalances, fetchTransactions]);
+
+  // Setup real-time subscriptions
+  useWalletRealtime({
+    onBalanceUpdate: fetchBalances,
+    onTransactionUpdate: fetchTransactions,
+  });
+
   return {
     balances,
     transactions,
@@ -297,6 +321,6 @@ export function useWallet() {
     updateBalance,
     exchangeCurrency,
     transferFunds,
-    refreshData: () => Promise.all([fetchBalances(), fetchTransactions()])
+    refreshData
   };
 }

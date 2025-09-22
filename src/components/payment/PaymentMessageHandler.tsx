@@ -95,8 +95,11 @@ export function PaymentMessageHandler({
       );
 
       if (result) {
+        // Refresh wallet data to show updated balances
+        await refreshData();
+        
         // Update the original message status
-        await onUpdateMessage(message.id, {
+        await onUpdateMessage?.(message.id, {
           content_data: {
             ...paymentData,
             status: 'completed',
@@ -105,7 +108,7 @@ export function PaymentMessageHandler({
         });
 
         // Send confirmation message
-        await onSendReply(
+        await onSendReply?.(
           `✅ Payment completed: ${formatCurrency(amount, currency)} - ${description}`,
           'payment_confirmation',
           {
@@ -215,8 +218,11 @@ export function PaymentMessageHandler({
         );
 
         if (transferResult) {
+          // Refresh wallet data to show updated balances
+          await refreshData();
+          
           // Update the original message status
-          await onUpdateMessage(message.id, {
+          await onUpdateMessage?.(message.id, {
             content_data: {
               ...paymentData,
               status: 'completed',
@@ -225,7 +231,7 @@ export function PaymentMessageHandler({
             }
           });
 
-          await onSendReply(
+          await onSendReply?.(
             `🔄✅ Exchange & Send completed: ${formatCurrency(originalAmount, originalCurrency)} → ${formatCurrency(convertedAmount, exchangedCurrency)}`,
             'exchange_and_send_confirmation',
             {
