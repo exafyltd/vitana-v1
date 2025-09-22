@@ -14,8 +14,10 @@ import {
   Pin, 
   Trash2, 
   MousePointer2,
-  Share
+  Share,
+  Plus
 } from 'lucide-react';
+import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { cn } from '@/lib/utils';
 
 interface MessageContextMenuProps {
@@ -34,7 +36,7 @@ interface MessageContextMenuProps {
   isPinned?: boolean;
 }
 
-const QUICK_REACTIONS = ['👍', '❤️', '😂', '😮', '🙏', '🎉'];
+const QUICK_REACTIONS = ['👍', '❤️', '😂', '😮', '🙏'];
 
 export function MessageContextMenu({
   children,
@@ -137,7 +139,7 @@ export function MessageContextMenu({
               <div className="text-xs font-medium text-muted-foreground mb-2 px-1">
                 Quick reactions
               </div>
-              <div className="flex flex-wrap gap-1">
+              <div className="flex gap-1">
                 {QUICK_REACTIONS.map((emoji) => (
                   <button
                     key={emoji}
@@ -152,6 +154,24 @@ export function MessageContextMenu({
                     {emoji}
                   </button>
                 ))}
+                
+                {/* More emojis button */}
+                <EmojiPicker 
+                  onEmojiSelect={onEmojiSelect}
+                  trigger={
+                    <button
+                      className={cn(
+                        "flex items-center justify-center w-8 h-8 rounded-md",
+                        "hover:bg-accent transition-colors duration-200",
+                        "text-muted-foreground hover:text-foreground",
+                        "hover:scale-110 transform transition-transform"
+                      )}
+                      aria-label="More emojis"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  }
+                />
               </div>
             </div>
           </>
