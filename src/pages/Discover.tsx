@@ -289,8 +289,8 @@ export default withScreenId(function Discover() {
     <AppLayout>
       <SEO title="Discover Overview | VITANA" description="Discover wellness services, products, and providers tailored to your needs" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      <div className="p-6 space-y-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-8">
           <StandardHeader
             title="Discover your Longevity Marketplace"
             description="Find doctors, wellness services, and community groups perfectly matched to your healthy aging journey."
@@ -397,7 +397,7 @@ export default withScreenId(function Discover() {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                {featuredOffers.map((offer) => (
                  <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">
                    <div className="relative">
