@@ -686,9 +686,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                       onActionClick={handleActionClick}
                       showAvatar={showAvatar}
                       showTimestamp={showTimestamp}
-                      onUpdateMessage={(messageId: string, updates: any) => {
-                        // Update message status/content if needed
-                        console.log('Message update requested:', messageId, updates);
+                      onUpdateMessage={async (messageId: string, updates: any) => {
+                        // Since messages are managed by useHybridMessages hook,
+                        // we'll refresh the messages to get the updated data
+                        if (fetchMessages) {
+                          await fetchMessages();
+                        }
                       }}
                       onSendReply={handleSendMessage}
                     />

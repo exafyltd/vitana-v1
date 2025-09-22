@@ -119,43 +119,40 @@ export function useWallet() {
     toCurrency: 'USD' | 'VTN' | 'CREDITS',
     amount: number,
     exchangeRate: number
-  ): Promise<void> => {
+  ): Promise<any> => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
-      const fees = amount * 0.01; // 1% fee
-      const toAmount = (amount - fees) * exchangeRate;
+      // Use atomic exchange RPC
+      const { data, error } = await supabase.rpc('process_wallet_exchange', {
+        p_user_id: user.id,
+        p_from_currency: fromCurrency,
+        p_to_currency: toCurrency,
+        p_amount: amount,
+        p_exchange_rate: exchangeRate
+      });
 
-      // Start transaction
-      const { error: transactionError } = await supabase
-        .from('wallet_transactions')
-        .insert({
-          from_user_id: user.id,
-          to_user_id: user.id,
-          transaction_type: 'exchange',
-          from_currency: fromCurrency,
-          to_currency: toCurrency,
-          amount: amount,
-          exchange_rate: exchangeRate,
-          fees: fees,
-          status: 'pending'
-        });
+      if (error) throw error;
 
-      if (transactionError) throw transactionError;
-
-      // Update balances
-      await updateBalance(fromCurrency, amount, 'subtract');
-      await updateBalance(toCurrency, toAmount, 'add');
-
-      // Refresh data
-      await Promise.all([fetchBalances(), fetchTransactions()]);
+      const result = data[0];
+      const exchangeFee = amount * 0.01;
+      const convertedAmount = (amount - exchangeFee) * exchangeRate;
 
       toast({
         title: 'Exchange Completed! ✅',
-        description: `Converted ${amount} ${fromCurrency} to ${toAmount.toFixed(2)} ${toCurrency}`,
+        description: `Converted ${amount} ${fromCurrency} to ${convertedAmount.toFixed(2)} ${toCurrency}`,
         duration: 5000
       });
+      
+      // Refresh data
+      await Promise.all([fetchBalances(), fetchTransactions()]);
+      
+      return {
+        id: result.transaction_id,
+        from_balance: result.from_balance,
+        to_balance: result.to_balance
+      };
     } catch (err) {
       console.error('Error processing exchange:', err);
       toast({
@@ -172,41 +169,39 @@ export function useWallet() {
     toUserId: string,
     currency: 'USD' | 'VTN' | 'CREDITS',
     amount: number
-  ): Promise<void> => {
+  ): Promise<any> => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
-      const fees = amount * 0.005; // 0.5% transfer fee
-      const transferAmount = amount - fees;
+      // Use atomic transfer RPC
+      const { data, error } = await supabase.rpc('process_wallet_transfer', {
+        p_from_user_id: user.id,
+        p_to_user_id: toUserId,
+        p_currency: currency,
+        p_amount: amount
+      });
 
-      // Create transaction record
-      const { error: transactionError } = await supabase
-        .from('wallet_transactions')
-        .insert({
-          from_user_id: user.id,
-          to_user_id: toUserId,
-          transaction_type: 'transfer',
-          from_currency: currency,
-          to_currency: currency,
-          amount: amount,
-          fees: fees,
-          status: 'pending'
-        });
+      if (error) throw error;
 
-      if (transactionError) throw transactionError;
+      const result = data[0];
+      const transferFee = amount * 0.005;
+      const netAmount = amount - transferFee;
 
-      // Update sender balance
-      await updateBalance(currency, amount, 'subtract');
+      toast({
+        title: 'Transfer Completed! ✅',
+        description: `Sent ${amount} ${currency} (recipient receives ${netAmount.toFixed(2)} ${currency})`,
+        duration: 5000
+      });
 
       // Refresh data
       await Promise.all([fetchBalances(), fetchTransactions()]);
 
-      toast({
-        title: 'Transfer Initiated ✅',
-        description: `Sent ${transferAmount.toFixed(2)} ${currency} (fee: ${fees.toFixed(2)})`,
-        duration: 5000
-      });
+      return {
+        id: result.transaction_id,
+        from_balance: result.from_balance,
+        to_balance: result.to_balance
+      };
     } catch (err) {
       console.error('Error processing transfer:', err);
       toast({
@@ -252,6 +247,19 @@ export function useWallet() {
             },
             () => {
               fetchTransactions();
+            }
+          )
+          .on(
+            'postgres_changes',
+            {
+              event: '*',
+              schema: 'public',
+              table: 'wallet_transactions',
+              filter: `to_user_id=eq.${user.id}`
+            },
+            () => {
+              fetchTransactions();
+              fetchBalances(); // Refresh balances when receiving funds
             }
           )
           .subscribe();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,7 @@ export function PaymentMessageHandler({
     refreshData 
   } = useWallet();
   const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const paymentData = message.content_data;
   const isCurrentUser = message.sender_id === user?.id;
@@ -69,8 +70,11 @@ export function PaymentMessageHandler({
   };
 
   const handlePaymentAccept = async () => {
+    if (!onSendReply || !onUpdateMessage) return;
+    
+    setIsProcessing(true);
     try {
-      const { amount, currency, description, transactionId } = paymentData;
+      const { amount, currency, description } = paymentData;
       
       if (!canAfford(amount, currency)) {
         toast({
@@ -81,47 +85,52 @@ export function PaymentMessageHandler({
         return;
       }
 
-        // Transfer funds to the sender (who requested the payment)
-        await transferFunds(
-          message.sender_id, 
-          currency as "USD" | "VTN" | "CREDITS", 
-          amount
-        );
-
-      // Send confirmation message
-      await onSendReply?.(
-        `✅ Payment completed: ${formatCurrency(amount, currency)} - ${description}`,
-        'payment_confirmation',
-        {
-          ...paymentData,
-          status: 'completed',
-          completedBy: user?.id,
-          completedAt: new Date().toISOString(),
-          originalTransactionId: transactionId
-        }
+      // Perform the atomic transfer
+      const result = await transferFunds(
+        message.sender_id, 
+        currency as "USD" | "VTN" | "CREDITS", 
+        amount
       );
 
-      // Update the original message status
-      onUpdateMessage?.(message.id, {
-        content_data: { ...paymentData, status: 'completed' }
-      });
+      if (result) {
+        // Update the original message status
+        await onUpdateMessage(message.id, {
+          content_data: {
+            ...paymentData,
+            status: 'completed',
+            transactionId: result.id
+          }
+        });
 
-      toast({
-        title: "Payment Sent! ✅",
-        description: `${formatCurrency(amount, currency)} sent successfully`,
-        duration: 5000
-      });
+        // Send confirmation message
+        await onSendReply(
+          `✅ Payment completed: ${formatCurrency(amount, currency)} - ${description}`,
+          'payment_confirmation',
+          {
+            ...paymentData,
+            status: 'completed',
+            completedBy: user?.id,
+            completedAt: new Date().toISOString(),
+            transactionId: result.id
+          }
+        );
 
-      // Refresh wallet data to show updated balance
-      refreshData();
+        toast({
+          title: "Payment Completed! ✅",
+          description: `${formatCurrency(amount, currency)} sent successfully`,
+          duration: 5000
+        });
+      }
 
     } catch (error) {
       console.error('Payment acceptance error:', error);
       toast({
         title: "Payment Failed",
-        description: "Failed to process payment. Please try again.",
+        description: error.message || "Failed to process payment. Please try again.",
         variant: "destructive"
       });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -161,6 +170,9 @@ export function PaymentMessageHandler({
   };
 
   const handleExchangeAndSendAccept = async () => {
+    if (!onSendReply || !onUpdateMessage) return;
+    
+    setIsProcessing(true);
     try {
       const { 
         originalAmount, 
@@ -180,47 +192,67 @@ export function PaymentMessageHandler({
         return;
       }
 
-      // Perform exchange and send
-      await exchangeCurrency(
+      // Perform atomic exchange first
+      const exchangeResult = await exchangeCurrency(
         originalCurrency.toUpperCase(),
         exchangedCurrency.toUpperCase(), 
         originalAmount,
         exchangeRate
       );
 
-        // Then transfer the exchanged amount to recipient
-        await transferFunds(
+      if (exchangeResult) {
+        // Calculate the converted amount after fees
+        const exchangeFee = originalAmount * 0.01;
+        const convertedAmount = (originalAmount - exchangeFee) * exchangeRate;
+        
+        // Then perform atomic transfer to the recipient
+        const transferResult = await transferFunds(
           message.sender_id,
           exchangedCurrency as "USD" | "VTN" | "CREDITS",
-          exchangedAmount
+          convertedAmount
         );
 
-      await onSendReply?.(
-        `🔄✅ Exchange & Send completed: ${formatCurrency(originalAmount, originalCurrency)} → ${formatCurrency(exchangedAmount, exchangedCurrency)}`,
-        'exchange_and_send_confirmation',
-        {
-          ...paymentData,
-          status: 'completed',
-          completedBy: user?.id,
-          completedAt: new Date().toISOString()
+        if (transferResult) {
+          // Update the original message status
+          await onUpdateMessage(message.id, {
+            content_data: {
+              ...paymentData,
+              status: 'completed',
+              exchangeTransactionId: exchangeResult.id,
+              transferTransactionId: transferResult.id
+            }
+          });
+
+          await onSendReply(
+            `🔄✅ Exchange & Send completed: ${formatCurrency(originalAmount, originalCurrency)} → ${formatCurrency(convertedAmount, exchangedCurrency)}`,
+            'exchange_and_send_confirmation',
+            {
+              ...paymentData,
+              status: 'completed',
+              completedBy: user?.id,
+              completedAt: new Date().toISOString(),
+              exchangeTransactionId: exchangeResult.id,
+              transferTransactionId: transferResult.id
+            }
+          );
+
+          toast({
+            title: "Exchange & Send Completed! ✨",
+            description: `Converted and sent ${formatCurrency(convertedAmount, exchangedCurrency)}`,
+            duration: 6000
+          });
         }
-      );
-
-      toast({
-        title: "Exchange & Send Completed! ✨",
-        description: `Converted and sent ${formatCurrency(exchangedAmount, exchangedCurrency)}`,
-        duration: 6000
-      });
-
-      refreshData();
+      }
 
     } catch (error) {
       console.error('Exchange and send error:', error);
       toast({
         title: "Transaction Failed",
-        description: "Failed to complete exchange and send",
+        description: error.message || "Failed to complete exchange and send",
         variant: "destructive"
       });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -281,15 +313,16 @@ export function PaymentMessageHandler({
             <div className="flex gap-2">
               <Button 
                 onClick={handlePaymentAccept}
-                disabled={!canPay}
+                disabled={!canPay || isProcessing}
                 className="flex-1"
                 size="sm"
               >
-                {canPay ? 'Accept' : 'Insufficient Balance'}
+                {isProcessing ? 'Processing...' : canPay ? 'Accept' : 'Insufficient Balance'}
               </Button>
               <Button 
                 variant="outline" 
                 onClick={handlePaymentDecline}
+                disabled={isProcessing}
                 className="flex-1"
                 size="sm"
               >
@@ -350,15 +383,16 @@ export function PaymentMessageHandler({
             <div className="flex gap-2">
               <Button 
                 onClick={handleExchangeAndSendAccept}
-                disabled={!canAfford(originalAmount, originalCurrency)}
+                disabled={!canAfford(originalAmount, originalCurrency) || isProcessing}
                 className="flex-1"
                 size="sm"
               >
-                Accept Exchange
+                {isProcessing ? 'Processing...' : 'Accept Exchange'}
               </Button>
               <Button 
                 variant="outline" 
                 onClick={handlePaymentDecline}
+                disabled={isProcessing}
                 className="flex-1"
                 size="sm"
               >

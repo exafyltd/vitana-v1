@@ -1458,6 +1458,33 @@ export type Database = {
           role: string
         }[]
       }
+      process_wallet_exchange: {
+        Args: {
+          p_amount: number
+          p_exchange_rate: number
+          p_from_currency: string
+          p_to_currency: string
+          p_user_id: string
+        }
+        Returns: {
+          from_balance: number
+          to_balance: number
+          transaction_id: string
+        }[]
+      }
+      process_wallet_transfer: {
+        Args: {
+          p_amount: number
+          p_currency: string
+          p_from_user_id: string
+          p_to_user_id: string
+        }
+        Returns: {
+          from_balance: number
+          to_balance: number
+          transaction_id: string
+        }[]
+      }
       search_global_directory: {
         Args: { search_term: string }
         Returns: {
