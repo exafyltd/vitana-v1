@@ -31,6 +31,8 @@ import ConversationListSkeleton from "@/components/messages/ConversationListSkel
 import EmptyStateIllustration from "@/components/messages/EmptyStateIllustration";
 import ErrorMessage from "@/components/messages/ErrorMessage";
 import CreateGroupPopup from "@/components/messages/CreateGroupPopup";
+import TypingIndicator from '@/components/messages/TypingIndicator';
+import PresenceIndicator from '@/components/messages/PresenceIndicator';
 
 export default function Messages() {
   const { user } = useAuth();
@@ -255,8 +257,14 @@ export default function Messages() {
                            thread.name?.[0] || '?'}
                         </AvatarFallback>
                       </Avatar>
-                      {/* Online presence indicator */}
-                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-background rounded-full"></div>
+                      {/* Dynamic presence indicator */}
+                      <div className="absolute -bottom-0.5 -right-0.5">
+                        <PresenceIndicator 
+                          userId={thread.participants?.find(p => p.user_id !== user?.id)?.user_id || ''} 
+                          context={context}
+                          size="sm"
+                        />
+                      </div>
                     </div>
                     
                     <div className="flex-1 min-w-0">
