@@ -15,11 +15,9 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
   useEffect(() => {
     if (!user?.id) return;
 
-    console.log('🔗 Setting up wallet real-time subscriptions for user:', user.id);
-
-    // Subscribe to wallet balance changes with connection monitoring
+    // Subscribe to wallet balance changes
     const balanceChannel = supabase
-      .channel('wallet-balances-optimized')
+      .channel('wallet-balances')
       .on(
         'postgres_changes',
         {
@@ -29,7 +27,7 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
           filter: `user_id=eq.${user.id}`,
         },
         (payload) => {
-          console.log('💰 Balance updated:', payload);
+          console.log('Balance updated:', payload);
           onBalanceUpdate();
           
           // Show notification for balance increases (received payments)
@@ -49,21 +47,11 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
           }
         }
       )
-      .subscribe((status) => {
-        console.log('💳 Balance subscription status:', status);
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Balance subscription active');
-        } else if (status === 'CHANNEL_ERROR') {
-          console.error('Balance subscription error - attempting reconnect');
-          setTimeout(() => {
-            balanceChannel.unsubscribe();
-          }, 2000);
-        }
-      });
+      .subscribe();
 
-    // Subscribe to transaction changes with connection monitoring
+    // Subscribe to transaction changes
     const transactionChannel = supabase
-      .channel('wallet-transactions-optimized')
+      .channel('wallet-transactions')
       .on(
         'postgres_changes',
         {
@@ -73,21 +61,11 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
           filter: `or(from_user_id.eq.${user.id},to_user_id.eq.${user.id})`,
         },
         (payload) => {
-          console.log('💸 Transaction updated:', payload);
+          console.log('Transaction updated:', payload);
           onTransactionUpdate();
         }
       )
-      .subscribe((status) => {
-        console.log('💸 Transaction subscription status:', status);
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Transaction subscription active');
-        } else if (status === 'CHANNEL_ERROR') {
-          console.error('Transaction subscription error - attempting reconnect');
-          setTimeout(() => {
-            transactionChannel.unsubscribe();
-          }, 2000);
-        }
-      });
+      .subscribe();
 
     return () => {
       supabase.removeChannel(balanceChannel);

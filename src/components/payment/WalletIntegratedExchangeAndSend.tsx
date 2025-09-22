@@ -102,16 +102,6 @@ export default function WalletIntegratedExchangeAndSend({
 
     setIsProcessing(true);
 
-    // Create timeout for request sending
-    const timeoutId = setTimeout(() => {
-      setIsProcessing(false);
-      toast({
-        title: "Request Timeout",
-        description: "Request is taking longer than expected. Please try again.",
-        variant: "destructive",
-      });
-    }, 15000);
-
     try {
       // Use server-side calculated amounts for accuracy
       const exchangeData = {
@@ -135,9 +125,6 @@ export default function WalletIntegratedExchangeAndSend({
         exchangeData
       );
 
-      // Clear timeout since request succeeded
-      clearTimeout(timeoutId);
-
       toast({
         title: "Exchange & Send Request Sent! ✨",
         description: `Request to convert ${formatCurrency(parseFloat(amount), fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)} sent to ${recipient.name}`,
@@ -148,7 +135,6 @@ export default function WalletIntegratedExchangeAndSend({
       setAmount('');
       setDescription('');
     } catch (error) {
-      clearTimeout(timeoutId);
       console.error('Exchange and send error:', error);
       toast({
         title: "Request Failed",
