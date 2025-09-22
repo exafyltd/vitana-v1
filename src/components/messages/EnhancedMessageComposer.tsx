@@ -24,7 +24,7 @@ interface Attachment {
 }
 
 interface EnhancedMessageComposerProps {
-  onSendMessage: (content: string, attachments?: Attachment[]) => Promise<void>;
+  onSendMessage: (content: string, messageType?: string, contentData?: any) => Promise<void>;
   placeholder?: string;
   disabled?: boolean;
   isOffline?: boolean;
@@ -64,7 +64,7 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
 
     setIsSending(true);
     try {
-      await onSendMessage(message, attachments);
+      await onSendMessage(message, 'text', { attachments });
       setMessage('');
       setAttachments([]);
     } catch (error) {
@@ -179,12 +179,10 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
                     <div>
                       <AttachmentMenu
                         onFileAttach={handleFileAttach}
-                        onPaymentRequest={(amount, description) => {
-                          // Add payment request logic if needed for enhanced composer
-                          console.log('Payment request:', amount, description);
+                        onSendMessage={async (content, messageType, contentData) => {
+                          await onSendMessage(content, messageType, contentData);
                         }}
                         onCalendarInvite={(title, date) => {
-                          // Add calendar invite logic if needed for enhanced composer  
                           console.log('Calendar invite:', title, date);
                         }}
                         disabled={disabled}

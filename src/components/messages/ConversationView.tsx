@@ -14,6 +14,7 @@ import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
 import { 
   ArrowLeft, 
   MoreVertical, 
@@ -420,17 +421,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   const handleActionClick = async (action: any) => {
     try {
-      // Handle different action types
+      // Handle different action types with wallet integration
       switch (action.action || action.type) {
         case 'payment_accept':
-          toast({
-            title: 'Payment Processing',
-            description: 'Redirecting to payment gateway...',
-          });
-          break;
-          
         case 'payment_decline':
-          await handleSendMessage('Payment request declined', 'system');
+          // These are handled by PaymentMessageHandler
           break;
           
         case 'calendar_accept':

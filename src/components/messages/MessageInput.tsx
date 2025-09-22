@@ -504,12 +504,15 @@ const MessageInput: React.FC<MessageInputProps> = ({
         {/* Left: Attachment menu */}
         <AttachmentMenu 
           onFileAttach={() => fileInputRef.current?.click()}
-          onPaymentRequest={sendPaymentRequest}
-          onCalendarInvite={sendCalendarInvite}
-          onExchangeAndSend={() => {
-            // This would integrate with ExchangeAndSendPopup
-            console.log('Exchange & Send clicked from chat');
+          onSendMessage={async (content, messageType, contentData) => {
+            await onSendMessage(content, messageType, contentData);
           }}
+          onCalendarInvite={sendCalendarInvite}
+          recipient={recipientId ? {
+            id: recipientId,
+            name: recipientId, // This would need proper recipient data
+            avatar: undefined
+          } : undefined}
           disabled={disabled || isUploading} 
         />
 

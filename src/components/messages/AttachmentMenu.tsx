@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import WalletIntegratedExchangeAndSend from '@/components/payment/WalletIntegratedExchangeAndSend';
+import WalletIntegratedPaymentRequest from '@/components/payment/WalletIntegratedPaymentRequest';
 import { 
   Paperclip, 
   DollarSign, 
@@ -15,74 +17,17 @@ import { cn } from '@/lib/utils';
 
 interface AttachmentMenuProps {
   onFileAttach: () => void;
-  onPaymentRequest: (amount: string, description: string) => void;
+  onSendMessage: (content: string, messageType?: string, contentData?: any) => Promise<void>;
   onCalendarInvite: (title: string, date: string) => void;
-  onExchangeAndSend?: () => void;
+  recipient?: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
   disabled?: boolean;
   className?: string;
 }
 
-function PaymentDialog({ onPaymentRequest }: { onPaymentRequest: (amount: string, description: string) => void }) {
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
-  const [open, setOpen] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (amount && description) {
-      onPaymentRequest(amount, description);
-      setAmount('');
-      setDescription('');
-      setOpen(false);
-    }
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          className="w-full justify-start h-10 px-3"
-        >
-          <DollarSign className="w-5 h-5 mr-3 text-green-500" />
-          <span className="text-sm">Request Payment</span>
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Request Payment</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="amount">Amount ($)</Label>
-            <Input
-              id="amount"
-              type="number"
-              step="0.01"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="0.00"
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="description">Description</Label>
-            <Input
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="What's this for?"
-              required
-            />
-          </div>
-          <Button type="submit" className="w-full">
-            Send Payment Request
-          </Button>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string, date: string) => void }) {
   const [title, setTitle] = useState('');
@@ -146,12 +91,14 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
 
 export function AttachmentMenu({
   onFileAttach,
-  onPaymentRequest,
+  onSendMessage,
   onCalendarInvite,
-  onExchangeAndSend,
+  recipient,
   disabled = false,
   className
 }: AttachmentMenuProps) {
+  const [showExchangeAndSend, setShowExchangeAndSend] = useState(false);
+  const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -175,18 +122,28 @@ export function AttachmentMenu({
       >
         <div className="grid gap-1">
           {/* Exchange & Send - Primary Action */}
-          {onExchangeAndSend && (
+          {recipient && (
             <Button
               variant="ghost"
               className="w-full justify-start h-10 px-3 bg-gradient-to-r from-purple-50/50 to-blue-50/50 hover:from-purple-100/50 hover:to-blue-100/50 border border-purple-200/30"
-              onClick={onExchangeAndSend}
+              onClick={() => setShowExchangeAndSend(true)}
             >
               <Zap className="w-5 h-5 mr-3 text-purple-600" />
               <span className="text-sm font-medium">Exchange & Send</span>
             </Button>
           )}
           
-          <PaymentDialog onPaymentRequest={onPaymentRequest} />
+          {recipient && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start h-10 px-3"
+              onClick={() => setShowPaymentRequest(true)}
+            >
+              <DollarSign className="w-5 h-5 mr-3 text-green-500" />
+              <span className="text-sm">Request Payment</span>
+            </Button>
+          )}
+          
           <CalendarDialog onCalendarInvite={onCalendarInvite} />
           
           <Button
@@ -198,6 +155,24 @@ export function AttachmentMenu({
             <span className="text-sm">Attach File</span>
           </Button>
         </div>
+        
+        {/* Wallet Integration Dialogs */}
+        {recipient && (
+          <>
+            <WalletIntegratedExchangeAndSend
+              isOpen={showExchangeAndSend}
+              onClose={() => setShowExchangeAndSend(false)}
+              onSendMessage={onSendMessage}
+              recipient={recipient}
+            />
+            <WalletIntegratedPaymentRequest
+              isOpen={showPaymentRequest}
+              onClose={() => setShowPaymentRequest(false)}
+              onSendMessage={onSendMessage}
+              recipient={recipient}
+            />
+          </>
+        )}
       </PopoverContent>
     </Popover>
   );
