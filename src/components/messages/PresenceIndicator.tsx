@@ -20,15 +20,17 @@ const PresenceIndicator: React.FC<PresenceIndicatorProps> = ({
   const { getUserPresence, getStatusColor, getStatusText } = useUserPresence(context);
   const presence = getUserPresence(userId);
 
-  // Don't show indicator if user has never been online or is offline for too long
-  if (!presence || presence.status === 'offline') {
-    const lastSeen = presence ? new Date(presence.last_seen) : null;
-    const daysSinceLastSeen = lastSeen ? Math.floor((Date.now() - lastSeen.getTime()) / (1000 * 60 * 60 * 24)) : 999;
-    
-    // Hide indicator if offline for more than 7 days or never seen
-    if (daysSinceLastSeen > 7) {
-      return null;
-    }
+  // Show presence indicator for users active in the last 24 hours
+  if (!presence) {
+    return null; // Only hide if no presence data at all
+  }
+
+  const lastSeen = new Date(presence.last_seen);
+  const hoursAway = Math.floor((Date.now() - lastSeen.getTime()) / (1000 * 60 * 60));
+  
+  // Hide indicator if offline for more than 24 hours
+  if (hoursAway > 24) {
+    return null;
   }
 
   const sizeClasses = {
