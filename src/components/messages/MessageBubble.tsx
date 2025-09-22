@@ -13,6 +13,7 @@ import { EmojiReactionBar } from './EmojiReactionBar';
 import { ReactionCluster } from './ReactionCluster';
 import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
+import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
 
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
@@ -23,6 +24,8 @@ interface MessageBubbleProps {
   onReply?: (message: any) => void;
   onScrollToMessage?: (messageId: string) => void;
   parentMessage?: any;
+  onUpdateMessage?: (messageId: string, updates: any) => void;
+  onSendReply?: (content: string, messageType?: string, contentData?: any) => Promise<void>;
 }
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({
@@ -33,7 +36,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   showTimestamp = true,
   onReply,
   onScrollToMessage,
-  parentMessage
+  parentMessage,
+  onUpdateMessage,
+  onSendReply
 }) => {
   const messageRef = useRef<HTMLDivElement>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
@@ -269,34 +274,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const renderContent = () => {
     switch (message.message_type) {
       case 'payment_request':
+      case 'exchange_and_send':
+      case 'payment_confirmation':
         return (
-          <Card className="max-w-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="secondary">Payment Request</Badge>
-              </div>
-              <p className="font-semibold text-lg">
-                ${message.content_data?.amount || '0.00'}
-              </p>
-              <p className="text-sm text-muted-foreground mb-3">
-                {message.content_data?.description || message.body}
-              </p>
-              {message.action_buttons && (
-                <div className="flex gap-2">
-                  {message.action_buttons.map((button: any, index: number) => (
-                    <Button
-                      key={index}
-                      size="sm"
-                      variant={button.variant || 'default'}
-                      onClick={() => onActionClick?.(button)}
-                    >
-                      {button.label}
-                    </Button>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <PaymentMessageHandler
+            message={message}
+            onUpdateMessage={onUpdateMessage}
+            onSendReply={onSendReply}
+          />
         );
 
       case 'calendar_invite':

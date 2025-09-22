@@ -686,6 +686,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                       onActionClick={handleActionClick}
                       showAvatar={showAvatar}
                       showTimestamp={showTimestamp}
+                      onUpdateMessage={(messageId: string, updates: any) => {
+                        // Update message status/content if needed
+                        console.log('Message update requested:', messageId, updates);
+                      }}
+                      onSendReply={handleSendMessage}
                     />
                   </div>
                 );
