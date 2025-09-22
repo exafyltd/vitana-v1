@@ -1340,6 +1340,10 @@ export type Database = {
         Args: { p_user_email: string; p_user_id: string }
         Returns: undefined
       }
+      cleanup_abandoned_transactions: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       cleanup_old_typing_indicators: {
         Args: Record<PropertyKey, never>
         Returns: undefined
