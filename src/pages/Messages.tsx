@@ -336,7 +336,7 @@ export default function Messages() {
     // Mobile layout - stack conversations and chat
     if (isMobile) {
       return (
-        <div className="h-[calc(100vh-200px)]">
+        <div className="h-[calc(100vh-200px)] flex flex-col min-h-0 overflow-hidden">
           {!selectedThreadId ? (
             // Show conversation list on mobile
             <div className="h-full bg-card/50 backdrop-blur-sm">
@@ -365,7 +365,7 @@ export default function Messages() {
             </div>
           ) : (
             // Show chat view on mobile
-            <div className="h-full bg-background/95 backdrop-blur-sm min-w-0">
+            <div className="h-full bg-background/95 backdrop-blur-sm min-w-0 flex flex-col min-h-0 overflow-hidden">
               <ConversationErrorBoundary>
                 <ConversationView 
                   threadId={selectedThreadId}
@@ -386,7 +386,7 @@ export default function Messages() {
 
     // Desktop layout - resizable panels
     return (
-      <div className="h-[calc(100vh-200px)]">
+      <div className="h-[calc(100vh-200px)] flex flex-col min-h-0 overflow-hidden">
         <ResizablePanelGroup direction="horizontal" className="h-full">
           {/* Conversation List Panel */}
           <ResizablePanel 
@@ -429,7 +429,7 @@ export default function Messages() {
             minSize={50}
             className="transition-all duration-300"
           >
-            <div className="h-full bg-background/95 backdrop-blur-sm min-w-0">
+            <div className="h-full bg-background/95 backdrop-blur-sm min-w-0 flex flex-col min-h-0 overflow-hidden">
               {selectedThreadId || selectedRecipientId ? (
                 <ConversationErrorBoundary>
                   <ConversationView 
