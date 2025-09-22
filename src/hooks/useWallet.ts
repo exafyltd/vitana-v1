@@ -25,11 +25,12 @@ export interface TransactionData {
 }
 
 export function useWallet() {
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [balances, setBalances] = useState<UserBalance[]>([]);
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
 
   // Fetch user balances
   const fetchBalances = async () => {
@@ -234,8 +235,7 @@ export function useWallet() {
       setLoading(false);
 
       // Set up real-time subscription for balance changes
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
+      if (user?.id) {
         const channel = supabase
           .channel('wallet-changes')
           .on(
@@ -288,7 +288,7 @@ export function useWallet() {
     };
 
     initializeData();
-  }, []);
+  }, [user?.id]);
 
   const refreshData = useCallback(async () => {
     if (!user?.id) return;
