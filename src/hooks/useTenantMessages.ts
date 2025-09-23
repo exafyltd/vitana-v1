@@ -252,7 +252,8 @@ export function useTenantMessages() {
     recipientId?: string,
     messageType = 'text',
     contentData?: any,
-    parentMessageId?: string
+    parentMessageId?: string,
+    actionButtons?: any[]
   ) => {
     if (!user || !activeTenantId || !isTenantContext) return;
 
@@ -296,6 +297,7 @@ export function useTenantMessages() {
           content_data: contentData,
           parent_message_id: parentMessageId || null,
           sent_at: new Date().toISOString(),
+          action_buttons: actionButtons || null,
         })
         .select()
         .single();
@@ -354,8 +356,8 @@ export function useTenantMessages() {
   }, [user, activeTenantId, isTenantContext, fetchThreads]);
 
   // New standardized sendMessage function
-  const sendMessage = useCallback(async (args: SendMessageArgs) => {
-    return sendMessageLegacy(args.content, args.threadId, args.recipientId, args.type || 'text', args.contentData, args.parentMessageId);
+  const sendMessage = useCallback(async (args: SendMessageArgs & { actionButtons?: any[] }) => {
+    return sendMessageLegacy(args.content, args.threadId, args.recipientId, args.type || 'text', args.contentData, args.parentMessageId, args.actionButtons);
   }, [sendMessageLegacy]);
 
   const createThread = useCallback(async (

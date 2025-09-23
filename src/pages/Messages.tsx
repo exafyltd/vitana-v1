@@ -402,13 +402,13 @@ export default function Messages() {
                 
                 <ScrollArea className="flex-1">
                   <SplitBarContent value="global" className="p-0 m-0">
-                    <div className="p-4">
+                    <div className="p-4 pr-2">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
                   
                   <SplitBarContent value="tenant" className="p-0 m-0">
-                    <div className="p-4">
+                    <div className="p-4 pr-2">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>

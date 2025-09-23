@@ -12,6 +12,7 @@ import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
 import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
+import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
@@ -56,6 +57,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   onConversationOpened,
   onMessageSent
 }) => {
+  // Import calendar hook at the top
+  const { respondToInvite, getInviteResponse } = useCalendarEvents();
   const { user } = useAuth();
   
   // Use paginated messages for performance

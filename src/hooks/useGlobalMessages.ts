@@ -303,7 +303,8 @@ export function useGlobalMessages() {
     body: string,
     messageType = 'text',
     contentData?: any,
-    parentMessageId?: string
+    parentMessageId?: string,
+    actionButtons?: any[]
   ) => {
     if (!user || !isGlobalContext) return;
 
@@ -343,6 +344,7 @@ export function useGlobalMessages() {
           content_data: contentData,
           parent_message_id: parentMessageId || null,
           sent_at: new Date().toISOString(),
+          action_buttons: actionButtons || null,
         })
         .select()
         .single();
@@ -398,8 +400,8 @@ export function useGlobalMessages() {
   }, [user, isGlobalContext, fetchThreads]);
 
   // New standardized sendMessage function
-  const sendMessage = useCallback(async (args: SendMessageArgs) => {
-    return sendMessageLegacy(args.threadId, args.content, args.type || 'text', args.contentData, args.parentMessageId);
+  const sendMessage = useCallback(async (args: SendMessageArgs & { actionButtons?: any[] }) => {
+    return sendMessageLegacy(args.threadId, args.content, args.type || 'text', args.contentData, args.parentMessageId, args.actionButtons);
   }, [sendMessageLegacy]);
 
   const createThread = useCallback(async (

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { CalendarInviteStatus } from './CalendarInviteStatus';
 import { 
   Clock, 
   Check, 
@@ -352,36 +353,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 )}
               </div>
               
-              {message.action_buttons && (
-                <div className="flex gap-2">
-                  {message.action_buttons.map((button: any, index: number) => (
-                    <Button
-                      key={index}
-                      size="sm"
-                      variant={
-                        button.action === 'calendar_accept' ? 'default' :
-                        button.action === 'calendar_decline' ? 'outline' :
-                        button.action === 'calendar_maybe' ? 'secondary' :
-                        button.variant || 'default'
-                      }
-                      className={
-                        button.action === 'calendar_accept' ? 'bg-green-600 hover:bg-green-700' :
-                        button.action === 'calendar_decline' ? 'text-red-600 border-red-200 hover:bg-red-50' :
-                        ''
-                      }
-                      onClick={() => onActionClick?.({
-                        ...button,
-                        messageData: message.content_data
-                      })}
-                    >
-                      {button.action === 'calendar_accept' && <CheckCircle className="w-3 h-3 mr-1" />}
-                      {button.action === 'calendar_decline' && <X className="w-3 h-3 mr-1" />}
-                      {button.action === 'calendar_maybe' && <Clock className="w-3 h-3 mr-1" />}
-                      {button.label}
-                    </Button>
-                  ))}
-                </div>
-              )}
+              <CalendarInviteStatus 
+                messageId={message.id}
+                actionButtons={message.action_buttons}
+                onActionClick={onActionClick}
+                messageData={message.content_data}
+              />
             </CardContent>
           </Card>
         );
@@ -407,7 +384,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                       key={index}
                       size="sm"
                       variant={button.variant || 'default'}
-                      onClick={() => onActionClick?.(button)}
+                      onClick={() => onActionClick?.({
+                        ...button,
+                        messageId: message.id
+                      })}
                     >
                       {button.label}
                     </Button>
@@ -439,7 +419,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     size="sm"
                     variant="outline"
                     className="h-7 px-2 text-xs"
-                    onClick={() => onActionClick?.({ type: 'quick_reply', text: reply })}
+                    onClick={() => onActionClick?.({ 
+                      type: 'quick_reply', 
+                      text: reply,
+                      messageId: message.id
+                    })}
                   >
                     {reply}
                   </Button>
