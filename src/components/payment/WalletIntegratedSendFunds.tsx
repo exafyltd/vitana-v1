@@ -33,7 +33,7 @@ export default function WalletIntegratedSendFunds({
   const [isProcessing, setIsProcessing] = useState(false);
   
   const { toast } = useToast();
-  const { balances, transferFunds } = useWallet();
+  const { getBalance, transferFunds, refreshData, loading } = useWallet();
 
   const currencies = [
     { value: 'USD' as const, label: 'USD', icon: DollarSign },
@@ -47,7 +47,7 @@ export default function WalletIntegratedSendFunds({
     return currency.icon;
   };
 
-  const userBalance = balances.find(b => b.currency_type === currency)?.balance || 0;
+  const userBalance = getBalance(currency);
   const canAfford = parseFloat(amount || '0') <= userBalance;
 
   const handleSend = async () => {
@@ -75,21 +75,23 @@ export default function WalletIntegratedSendFunds({
       // Perform the actual wallet transfer
       const result = await transferFunds(recipient.id, currency, parseFloat(amount));
       
-      if (result.success) {
-        // Send a notification message to the chat
+      if (result && result.id) {
+        // Send a confirmation message to the chat rendered by PaymentMessageHandler
         await onSendMessage(
-          `💰 Sent ${amount} ${currency}${description ? ` - ${description}` : ''}`,
-          'payment_sent',
+          `✅ Payment completed: ${parseFloat(amount).toLocaleString()} ${currency}${description ? ` - ${description}` : ''}`,
+          'payment_confirmation',
           {
-            type: 'fund_transfer',
             amount: parseFloat(amount),
             currency,
-            recipient_id: recipient.id,
-            recipient_name: recipient.name,
             description,
-            transaction_id: result.transaction_id
+            status: 'completed',
+            transactionId: result.id,
+            completedAt: new Date().toISOString()
           }
         );
+
+        // Optionally refresh, though transferFunds already refreshes
+        await refreshData();
 
         toast({
           title: "💸 Funds Sent Successfully!",
@@ -102,7 +104,7 @@ export default function WalletIntegratedSendFunds({
         setDescription('');
         onClose();
       } else {
-        throw new Error(result.error || 'Transfer failed');
+        throw new Error('Transfer failed');
       }
     } catch (error: any) {
       console.error('Transfer error:', error);

@@ -32,11 +32,13 @@ export function PaymentMessageHandler({
   const { user } = useAuth();
   const { 
     balances, 
+    getBalance: walletGetBalance,
     updateBalance, 
     exchangeCurrency, 
     transferFunds, 
     exchangeAndSend, 
-    refreshData 
+    refreshData,
+    loading
   } = useWallet();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -70,14 +72,9 @@ export function PaymentMessageHandler({
     }
   };
 
-  const getBalance = (currency: string) => {
-    const normalizedCurrency = currency?.toUpperCase();
-    return balances.find(b => b.currency_type === normalizedCurrency)?.balance || 0;
-  };
-
   const canAfford = (amount: number, currency: string) => {
-    const normalizedCurrency = currency?.toUpperCase();
-    return getBalance(normalizedCurrency) >= amount;
+    const normalizedCurrency = (currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS';
+    return walletGetBalance(normalizedCurrency) >= amount;
   };
 
   const handlePaymentAccept = async () => {
@@ -314,7 +311,7 @@ export function PaymentMessageHandler({
 
   const renderPaymentRequest = () => {
     const { amount, currency, description, status = 'pending' } = paymentData;
-    const currentBalance = getBalance(currency);
+    const currentBalance = walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS');
     const canPay = canAfford(amount, currency);
     const effectiveStatus = isCompleted ? 'completed' : status;
 
@@ -352,11 +349,11 @@ export function PaymentMessageHandler({
             <div className="flex gap-2">
               <Button 
                 onClick={handlePaymentAccept}
-                disabled={!canPay || isProcessing}
+                disabled={loading || !canPay || isProcessing}
                 className="flex-1"
                 size="sm"
               >
-                {isProcessing ? 'Processing...' : canPay ? 'Accept' : 'Insufficient Balance'}
+                {isProcessing ? 'Processing...' : loading ? 'Checking...' : canPay ? 'Accept' : 'Insufficient Balance'}
               </Button>
               <Button 
                 variant="outline" 
@@ -371,7 +368,7 @@ export function PaymentMessageHandler({
           )}
 
           {/* Insufficient balance warning */}
-          {!isCurrentUser && effectiveStatus === 'pending' && !canPay && (
+          {!isCurrentUser && effectiveStatus === 'pending' && !loading && !canPay && (
             <div className="flex items-center gap-1 mt-2 text-xs text-red-600">
               <AlertTriangle className="w-3 h-3" />
               <span>Insufficient {currency} balance</span>
