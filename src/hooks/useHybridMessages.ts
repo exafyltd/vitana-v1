@@ -13,6 +13,7 @@ export type SendMessageArgs = {
   contentData?: Record<string, any>;
   recipientId?: string;
   parentMessageId?: string;
+  actionButtons?: any[];
 };
 
 /**

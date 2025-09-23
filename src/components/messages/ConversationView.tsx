@@ -347,7 +347,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         type: (messageType as any) || 'text',
         contentData,
         recipientId,
-        parentMessageId: parentMessageId || replyingTo?.id
+        parentMessageId: parentMessageId || replyingTo?.id,
+        actionButtons,
       });
       
       // Notify parent immediately so thread jumps to top
@@ -425,7 +426,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         content,
         type: messageType || 'text',
         contentData,
-        recipientId
+        recipientId,
+        actionButtons,
       });
       
       // Remove on success
@@ -473,16 +475,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         case 'calendar_accept':
         case 'calendar_decline':
         case 'calendar_maybe':
-          // Import the calendar hook dynamically to avoid circular dependencies
-          const { useCalendarEvents } = await import('@/hooks/useCalendarEvents');
-          const calendarEvents = useCalendarEvents();
-          
-          const response = action.action.replace('calendar_', '');
+          const response = (action.action || action.type).replace('calendar_', '');
           const eventData = action.messageData;
           
           try {
             // Respond to the invite (this will create the event if accepted)
-            await calendarEvents.respondToInvite(
+            await respondToInvite(
               action.messageId || 'unknown',
               response as 'accepted' | 'declined' | 'maybe',
               response === 'accepted' && eventData ? {
