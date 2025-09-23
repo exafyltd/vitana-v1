@@ -178,12 +178,12 @@ export default function Messages() {
   // Get responsive panel sizes based on screen size
   const getConversationPanelSize = () => {
     if (isMobile) return 100; // Full width on mobile
-    return 40; // 40% on desktop - conversation list
+    return 43; // 43% on desktop - ensures full card content incl. rounded corners
   };
 
   const getChatPanelSize = () => {
     if (isMobile) return 0; // Hidden on mobile when conversation list is shown
-    return 60; // 60% on desktop - chat area wider
+    return 57; // 57% on desktop - chat remains wider
   };
 
   const renderConversationList = (threads: typeof localThreads) => (
@@ -300,7 +300,7 @@ export default function Messages() {
                       </div>
                       
                       <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
-                        <span className={`text-muted-foreground ${
+                        <span className={`text-muted-foreground whitespace-nowrap ${
                           densityMode === 'compact' ? 'text-xs' : 'text-xs'
                         }`}>
                           {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
@@ -387,7 +387,7 @@ export default function Messages() {
           {/* Conversation List Panel */}
           <ResizablePanel 
             defaultSize={getConversationPanelSize()} 
-            minSize={25} 
+            minSize={27} 
             maxSize={50}
             className="transition-all duration-300 min-w-0 flex flex-col overflow-hidden"
           >
