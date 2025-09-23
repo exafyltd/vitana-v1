@@ -178,12 +178,12 @@ export default function Messages() {
   // Get responsive panel sizes based on screen size
   const getConversationPanelSize = () => {
     if (isMobile) return 100; // Full width on mobile
-    return 35; // 35% on desktop - prevents card truncation
+    return 45; // 45% on desktop - ensures full card content incl. timestamps
   };
 
   const getChatPanelSize = () => {
     if (isMobile) return 0; // Hidden on mobile when conversation list is shown
-    return 65; // 65% on desktop - chat area more prominent
+    return 55; // 55% on desktop - chat remains slightly wider
   };
 
   const renderConversationList = (threads: typeof localThreads) => (
@@ -402,13 +402,13 @@ export default function Messages() {
                 
                 <ScrollArea className="flex-1">
                   <SplitBarContent value="global" className="p-0 m-0">
-                    <div className="p-4 pr-6">
+                    <div className="p-4 pr-8">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
                   
                   <SplitBarContent value="tenant" className="p-0 m-0">
-                    <div className="p-4 pr-6">
+                    <div className="p-4 pr-8">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
