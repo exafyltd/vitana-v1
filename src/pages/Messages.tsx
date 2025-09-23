@@ -54,11 +54,7 @@ export default function Messages() {
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
   const [pinnedThreads, setPinnedThreads] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    if (threads.length > 0 && !selectedThreadId && !selectedRecipientId) {
-      setSelectedThreadId(threads[0].id);
-    }
-  }, [threads, selectedThreadId, selectedRecipientId]);
+  // Remove auto-selection - let user choose conversation manually
 
   // Reset selection when context changes
   useEffect(() => {
@@ -182,12 +178,12 @@ export default function Messages() {
   // Get responsive panel sizes based on screen size
   const getConversationPanelSize = () => {
     if (isMobile) return 100; // Full width on mobile
-    return 30; // 30% on desktop - will adapt naturally with CSS
+    return 40; // 40% on desktop - more breathing room for cards
   };
 
   const getChatPanelSize = () => {
     if (isMobile) return 0; // Hidden on mobile when conversation list is shown
-    return 70; // 70% on desktop - will adapt naturally with CSS
+    return 60; // 60% on desktop - still wider but not overwhelming
   };
 
   const renderConversationList = (threads: typeof localThreads) => (
@@ -391,7 +387,7 @@ export default function Messages() {
           {/* Conversation List Panel */}
           <ResizablePanel 
             defaultSize={getConversationPanelSize()} 
-            minSize={20} 
+            minSize={25} 
             maxSize={50}
             className="transition-all duration-300"
           >

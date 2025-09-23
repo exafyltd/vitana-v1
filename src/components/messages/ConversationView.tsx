@@ -294,12 +294,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [optimisticMessages, scrollToBottom]);
 
-  // Force scroll on thread change or initial load
+  // Scroll to latest messages after they are loaded (not immediately on threadId change)
   useEffect(() => {
-    if (threadId) {
-      setTimeout(() => scrollToBottom(true), 0);
+    if (threadId && messages.length > 0) {
+      // Wait for DOM to update, then scroll to bottom to show latest messages
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          scrollToBottom(true);
+        });
+      }, 50);
     }
-  }, [threadId, scrollToBottom]);
+  }, [threadId, messages.length, scrollToBottom]);
 
   const handleSendMessage = async (
     content: string, 
