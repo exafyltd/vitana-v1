@@ -67,6 +67,7 @@ const quickActionsData = [
 
 export default function Wallet() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [exchangeStep, setExchangeStep] = useState<'menu' | 'exchange'>('menu');
   const [stakeTokensOpen, setStakeTokensOpen] = useState(false);
   const [addFundsOpen, setAddFundsOpen] = useState(false);
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
@@ -101,6 +102,13 @@ export default function Wallet() {
         setPaymentRequestOpen(true);
         break;
       case 'exchange':
+        // Exchange-only: open master action popup directly to exchange step
+        setSelectedCurrency(currency || '');
+        setExchangeStep('exchange');
+        setMasterActionOpen(true);
+        break;
+      case 'exchange-and-send':
+        // Combined exchange & send functionality
         setSelectedCurrency(currency || '');
         setExchangeAndSendOpen(true);
         break;
@@ -432,7 +440,13 @@ export default function Wallet() {
 
         <WalletMasterActionPopup 
           open={masterActionOpen}
-          onOpenChange={setMasterActionOpen}
+          onOpenChange={(open) => {
+            setMasterActionOpen(open);
+            if (!open) {
+              setExchangeStep('menu');
+            }
+          }}
+          initialStep={exchangeStep}
         />
 
         <StakeTokensPopup 

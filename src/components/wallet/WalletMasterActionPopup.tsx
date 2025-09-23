@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -31,15 +31,23 @@ import { useToast } from '@/hooks/use-toast';
 interface WalletMasterActionPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialStep?: StepType;
 }
 
 type StepType = 'menu' | 'exchange' | 'send' | 'exchange-and-send' | 'buy-credits' | 'buy-tokens';
 
-export function WalletMasterActionPopup({ open, onOpenChange }: WalletMasterActionPopupProps) {
+export function WalletMasterActionPopup({ open, onOpenChange, initialStep }: WalletMasterActionPopupProps) {
   const { updateBalance } = useWallet();
   const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState<StepType>('menu');
+  const [currentStep, setCurrentStep] = useState<StepType>(initialStep || 'menu');
   const [loading, setLoading] = useState<string | null>(null);
+
+  // Reset to initial step or menu when popup opens
+  useEffect(() => {
+    if (open) {
+      setCurrentStep(initialStep || 'menu');
+    }
+  }, [open, initialStep]);
 
   const handleQuickAction = async (actionType: string) => {
     setLoading(actionType);

@@ -113,6 +113,12 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
             transferTransactionId: result.transferTransactionId
           }
         );
+
+        // Success toast
+        toast({
+          title: '✅ Exchange & Send Complete!',
+          description: `Converted ${exchangeAmount} ${fromCurrency} to ${result.netAmount.toFixed(2)} ${toCurrency} and sent successfully`,
+        });
       }
 
       onClose();
