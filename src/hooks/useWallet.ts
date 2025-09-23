@@ -147,12 +147,11 @@ export function useWallet() {
       if (error) throw error;
 
       const result = data[0];
-      const exchangeFee = amount * 0.01;
-      const convertedAmount = (amount - exchangeFee) * exchangeRate;
+      const convertedAmount = amount * exchangeRate;
 
       toast({
         title: 'Exchange Completed! ✅',
-        description: `Converted ${amount} ${fromCurrency} to ${convertedAmount.toFixed(2)} ${toCurrency}`,
+        description: `Converted ${amount} ${fromCurrency} to ${convertedAmount.toFixed(2)} ${toCurrency} (No fees!)`,
         duration: 5000
       });
       
