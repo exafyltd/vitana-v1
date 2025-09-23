@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,6 +16,7 @@ import {
   AlertTriangle,
   Receipt
 } from 'lucide-react';
+import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 
 interface PaymentMessageHandlerProps {
   message: any;
@@ -40,7 +41,13 @@ export function PaymentMessageHandler({
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
 
+  // Initialize local lock based on message id
+  useEffect(() => {
+    const lock = getLocalStorageItem('global', 'payments', `lock:${message.id}`);
+    setIsLocked(lock === '1');
+  }, [message.id]);
   const paymentData = message.content_data;
   const isCurrentUser = message.sender_id === user?.id;
   const messageType = message.message_type;
@@ -75,7 +82,20 @@ export function PaymentMessageHandler({
 
   const handlePaymentAccept = async () => {
     if (!onSendReply || !onUpdateMessage) return;
-    
+
+    // Prevent duplicate processing
+    if (paymentData?.status && paymentData.status !== 'pending') {
+      toast({ title: "Already processed", description: `This request is ${paymentData.status}.`, duration: 3000 });
+      return;
+    }
+    if (isLocked) {
+      toast({ title: "Already accepted", description: "This payment request was already accepted.", duration: 3000 });
+      return;
+    }
+
+    // Lock immediately to avoid rapid re-clicks across re-renders
+    setLocalStorageItem('global', 'payments', `lock:${message.id}`, '1');
+    setIsLocked(true);
     setIsProcessing(true);
     setIsCompleted(true); // Immediately disable UI
     try {
@@ -130,12 +150,14 @@ export function PaymentMessageHandler({
         });
       }
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Payment acceptance error:', error);
       setIsCompleted(false); // Reset on error so user can retry
+      setIsLocked(false);
+      setLocalStorageItem('global', 'payments', `lock:${message.id}`, '0');
       toast({
         title: "Payment Failed",
-        description: error.message || "Failed to process payment. Please try again.",
+        description: (error && (error.message || error.toString())) || "Failed to process payment. Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -180,7 +202,20 @@ export function PaymentMessageHandler({
 
   const handleExchangeAndSendAccept = async () => {
     if (!onSendReply || !onUpdateMessage) return;
-    
+
+    // Prevent duplicate processing
+    if (paymentData?.status && paymentData.status !== 'pending') {
+      toast({ title: "Already processed", description: `This request is ${paymentData.status}.`, duration: 3000 });
+      return;
+    }
+    if (isLocked) {
+      toast({ title: "Already accepted", description: "This request was already accepted.", duration: 3000 });
+      return;
+    }
+
+    // Lock immediately
+    setLocalStorageItem('global', 'payments', `lock:${message.id}`, '1');
+    setIsLocked(true);
     setIsProcessing(true);
     setIsCompleted(true); // Immediately disable UI
     try {
@@ -284,7 +319,7 @@ export function PaymentMessageHandler({
     const effectiveStatus = isCompleted ? 'completed' : status;
 
     return (
-      <Card className={`${getStatusColor(status)} max-w-sm w-full sm:w-auto`}>
+      <Card className={`${getStatusColor(effectiveStatus)} max-w-sm w-full sm:w-auto`}>
         <CardContent className="p-4">
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-2">
