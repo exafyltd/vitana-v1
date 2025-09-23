@@ -229,14 +229,8 @@ export function QuickExchangeWidget({
               
               <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
                 <span>Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency}</span>
-                <span>Fee: {formatCurrency(calculation.fees, fromCurrency)}</span>
+                <span>No fees - Free exchange</span>
               </div>
-              
-              {fromCurrency === 'VTN' && toCurrency === 'CREDITS' && (
-                <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
-                  🎉 +5% Bonus Applied
-                </Badge>
-              )}
             </CardContent>
           </Card>
         )}

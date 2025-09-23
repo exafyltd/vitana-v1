@@ -86,11 +86,8 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
     setIsProcessing(true);
 
     try {
-      // Get exchange rate (simplified for demo)
-      const exchangeRate = fromCurrency === 'CREDITS' && toCurrency === 'VTN' ? 0.5 : 
-                          fromCurrency === 'VTN' && toCurrency === 'CREDITS' ? 2.0 :
-                          fromCurrency === 'USD' && toCurrency === 'VTN' ? 2.5 :
-                          fromCurrency === 'VTN' && toCurrency === 'USD' ? 0.4 : 1.0;
+      // Use the correct exchange rate from calculation
+      const exchangeRate = calculation?.rate || 1.0;
 
       await exchangeCurrency(fromCurrency, toCurrency, exchangeAmount, exchangeRate);
       onClose();
@@ -196,8 +193,8 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
                 <span>1 {fromCurrency} = {calculation.rate} {toCurrency}</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Fee (1%):</span>
-                <span>{calculation.fees.toFixed(2)} {fromCurrency}</span>
+                <span>No fees:</span>
+                <span>Free exchange</span>
               </div>
             </CardContent>
           </Card>
