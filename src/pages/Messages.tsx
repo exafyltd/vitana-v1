@@ -178,12 +178,12 @@ export default function Messages() {
   // Get responsive panel sizes based on screen size
   const getConversationPanelSize = () => {
     if (isMobile) return 100; // Full width on mobile
-    return 48; // 48% on desktop - ensures full card content incl. timestamps
+    return 40; // 40% on desktop - conversation list
   };
 
   const getChatPanelSize = () => {
     if (isMobile) return 0; // Hidden on mobile when conversation list is shown
-    return 52; // 52% on desktop - chat remains slightly wider
+    return 60; // 60% on desktop - chat area wider
   };
 
   const renderConversationList = (threads: typeof localThreads) => (
