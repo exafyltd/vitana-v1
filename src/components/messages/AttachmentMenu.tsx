@@ -4,14 +4,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import WalletIntegratedExchangeAndSend from '@/components/payment/WalletIntegratedExchangeAndSend';
+import WalletIntegratedSendFunds from '@/components/payment/WalletIntegratedSendFunds';
 import WalletIntegratedPaymentRequest from '@/components/payment/WalletIntegratedPaymentRequest';
 import { 
   Paperclip, 
   DollarSign, 
   Calendar, 
   FileText,
-  Zap
+  Send
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -97,7 +97,7 @@ export function AttachmentMenu({
   disabled = false,
   className
 }: AttachmentMenuProps) {
-  const [showExchangeAndSend, setShowExchangeAndSend] = useState(false);
+  const [showSendFunds, setShowSendFunds] = useState(false);
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   return (
     <Popover>
@@ -121,15 +121,15 @@ export function AttachmentMenu({
         className="w-56 p-2 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
       >
         <div className="grid gap-1">
-          {/* Exchange & Send - Primary Action */}
+          {/* Send Funds - Primary Action */}
           {recipient && (
             <Button
               variant="ghost"
-              className="w-full justify-start h-10 px-3 bg-gradient-to-r from-purple-50/50 to-blue-50/50 hover:from-purple-100/50 hover:to-blue-100/50 border border-purple-200/30"
-              onClick={() => setShowExchangeAndSend(true)}
+              className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
+              onClick={() => setShowSendFunds(true)}
             >
-              <Zap className="w-5 h-5 mr-3 text-purple-600" />
-              <span className="text-sm font-medium">Exchange & Send</span>
+              <Send className="w-5 h-5 mr-3 text-green-600" />
+              <span className="text-sm font-medium">Send Funds</span>
             </Button>
           )}
           
@@ -159,9 +159,9 @@ export function AttachmentMenu({
         {/* Wallet Integration Dialogs */}
         {recipient && (
           <>
-            <WalletIntegratedExchangeAndSend
-              isOpen={showExchangeAndSend}
-              onClose={() => setShowExchangeAndSend(false)}
+            <WalletIntegratedSendFunds
+              isOpen={showSendFunds}
+              onClose={() => setShowSendFunds(false)}
               onSendMessage={onSendMessage}
               recipient={recipient}
             />
