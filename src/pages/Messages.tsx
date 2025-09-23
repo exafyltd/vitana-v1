@@ -417,7 +417,7 @@ export default function Messages() {
             </div>
           </ResizablePanel>
 
-          <ResizableHandle withHandle className="mx-2" />
+          <ResizableHandle withHandle className="mx-3" />
 
           {/* Chat Area Panel */}
           <ResizablePanel 
