@@ -783,10 +783,30 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                       showAvatar={showAvatar}
                       showTimestamp={showTimestamp}
                       onUpdateMessage={async (messageId: string, updates: any) => {
-                        // Since messages are managed by useHybridMessages hook,
-                        // we'll refresh the messages to get the updated data
-                        if (fetchMessages) {
-                          await fetchMessages();
+                        try {
+                          // Update the message in the database first
+                          const { error } = await supabase
+                            .from(messageContext === 'global' ? 'global_messages' : 'messages')
+                            .update(updates)
+                            .eq('id', messageId);
+                          
+                          if (error) {
+                            console.error('Error updating message:', error);
+                            throw error;
+                          }
+                          
+                          // Then refresh the messages to show the updated state
+                          if (fetchMessages) {
+                            await fetchMessages();
+                          }
+                        } catch (error) {
+                          console.error('Failed to update message:', error);
+                          toast({
+                            title: "Update Failed",
+                            description: "Failed to update message. Please try again.",
+                            variant: "destructive"
+                          });
+                          throw error; // Re-throw so PaymentMessageHandler can handle it
                         }
                       }}
                       onSendReply={handleSendMessage}

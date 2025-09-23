@@ -39,6 +39,7 @@ export function PaymentMessageHandler({
   } = useWallet();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const paymentData = message.content_data;
   const isCurrentUser = message.sender_id === user?.id;
@@ -76,6 +77,7 @@ export function PaymentMessageHandler({
     if (!onSendReply || !onUpdateMessage) return;
     
     setIsProcessing(true);
+    setIsCompleted(true); // Immediately disable UI
     try {
       const { amount, currency, description } = paymentData;
       
@@ -130,6 +132,7 @@ export function PaymentMessageHandler({
 
     } catch (error) {
       console.error('Payment acceptance error:', error);
+      setIsCompleted(false); // Reset on error so user can retry
       toast({
         title: "Payment Failed",
         description: error.message || "Failed to process payment. Please try again.",
@@ -179,6 +182,7 @@ export function PaymentMessageHandler({
     if (!onSendReply || !onUpdateMessage) return;
     
     setIsProcessing(true);
+    setIsCompleted(true); // Immediately disable UI
     try {
       const { 
         originalAmount, 
@@ -244,6 +248,7 @@ export function PaymentMessageHandler({
 
     } catch (error) {
       console.error('Exchange and send error:', error);
+      setIsCompleted(false); // Reset on error so user can retry
       toast({
         title: "Transaction Failed",
         description: error.message || "Failed to complete exchange and send",
@@ -276,6 +281,7 @@ export function PaymentMessageHandler({
     const { amount, currency, description, status = 'pending' } = paymentData;
     const currentBalance = getBalance(currency);
     const canPay = canAfford(amount, currency);
+    const effectiveStatus = isCompleted ? 'completed' : status;
 
     return (
       <Card className={`${getStatusColor(status)} max-w-sm w-full sm:w-auto`}>
@@ -287,16 +293,16 @@ export function PaymentMessageHandler({
                 {formatCurrency(amount, currency)}
               </span>
             </div>
-            <Badge variant={status === 'completed' ? 'default' : status === 'declined' ? 'destructive' : 'secondary'}>
-              {getStatusIcon(status)}
-              <span className="ml-1 capitalize">{status}</span>
+            <Badge variant={effectiveStatus === 'completed' ? 'default' : effectiveStatus === 'declined' ? 'destructive' : 'secondary'}>
+              {getStatusIcon(effectiveStatus)}
+              <span className="ml-1 capitalize">{effectiveStatus}</span>
             </Badge>
           </div>
           
           <p className="text-sm text-muted-foreground mb-3">{description}</p>
           
           {/* Show current balance for non-current users */}
-          {!isCurrentUser && status === 'pending' && (
+          {!isCurrentUser && effectiveStatus === 'pending' && (
             <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
               <span>Your balance:</span>
               <span className="flex items-center gap-1">
@@ -307,7 +313,7 @@ export function PaymentMessageHandler({
           )}
 
           {/* Action buttons for recipient */}
-          {!isCurrentUser && status === 'pending' && (
+          {!isCurrentUser && effectiveStatus === 'pending' && (
             <div className="flex gap-2">
               <Button 
                 onClick={handlePaymentAccept}
@@ -330,7 +336,7 @@ export function PaymentMessageHandler({
           )}
 
           {/* Insufficient balance warning */}
-          {!isCurrentUser && status === 'pending' && !canPay && (
+          {!isCurrentUser && effectiveStatus === 'pending' && !canPay && (
             <div className="flex items-center gap-1 mt-2 text-xs text-red-600">
               <AlertTriangle className="w-3 h-3" />
               <span>Insufficient {currency} balance</span>
@@ -351,9 +357,11 @@ export function PaymentMessageHandler({
       description,
       status = 'pending'
     } = paymentData;
+    
+    const effectiveStatus = isCompleted ? 'completed' : status;
 
     return (
-      <Card className={`${getStatusColor(status)} max-w-sm`}>
+      <Card className={`${getStatusColor(effectiveStatus)} max-w-sm`}>
         <CardContent className="p-4">
           <div className="flex items-start justify-between mb-3">
             <div className="text-sm">
@@ -369,15 +377,15 @@ export function PaymentMessageHandler({
                 <span>{formatCurrency(exchangedAmount, exchangedCurrency)}</span>
               </div>
             </div>
-            <Badge variant={status === 'completed' ? 'default' : status === 'declined' ? 'destructive' : 'secondary'}>
-              {getStatusIcon(status)}
-              <span className="ml-1 capitalize">{status}</span>
+            <Badge variant={effectiveStatus === 'completed' ? 'default' : effectiveStatus === 'declined' ? 'destructive' : 'secondary'}>
+              {getStatusIcon(effectiveStatus)}
+              <span className="ml-1 capitalize">{effectiveStatus}</span>
             </Badge>
           </div>
           
           <p className="text-sm text-muted-foreground mb-3">{description}</p>
 
-          {!isCurrentUser && status === 'pending' && (
+          {!isCurrentUser && effectiveStatus === 'pending' && (
             <div className="flex gap-2">
               <Button 
                 onClick={handleExchangeAndSendAccept}
