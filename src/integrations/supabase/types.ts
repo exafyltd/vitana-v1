@@ -49,6 +49,99 @@ export type Database = {
           },
         ]
       }
+      calendar_events: {
+        Row: {
+          attendees_count: number | null
+          created_at: string
+          description: string | null
+          end_time: string | null
+          event_type: string
+          has_rewards: boolean | null
+          id: string
+          is_recurring: boolean
+          location: string | null
+          metadata: Json | null
+          priority: string
+          recurring_pattern: Json | null
+          source_message_id: string | null
+          source_type: string | null
+          start_time: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attendees_count?: number | null
+          created_at?: string
+          description?: string | null
+          end_time?: string | null
+          event_type?: string
+          has_rewards?: boolean | null
+          id?: string
+          is_recurring?: boolean
+          location?: string | null
+          metadata?: Json | null
+          priority?: string
+          recurring_pattern?: Json | null
+          source_message_id?: string | null
+          source_type?: string | null
+          start_time: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attendees_count?: number | null
+          created_at?: string
+          description?: string | null
+          end_time?: string | null
+          event_type?: string
+          has_rewards?: boolean | null
+          id?: string
+          is_recurring?: boolean
+          location?: string | null
+          metadata?: Json | null
+          priority?: string
+          recurring_pattern?: Json | null
+          source_message_id?: string | null
+          source_type?: string | null
+          start_time?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      calendar_invite_responses: {
+        Row: {
+          event_id: string | null
+          id: string
+          message_id: string
+          responded_at: string
+          response: string
+          user_id: string
+        }
+        Insert: {
+          event_id?: string | null
+          id?: string
+          message_id: string
+          responded_at?: string
+          response: string
+          user_id: string
+        }
+        Update: {
+          event_id?: string | null
+          id?: string
+          message_id?: string
+          responded_at?: string
+          response?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       diary_entries: {
         Row: {
           created_at: string

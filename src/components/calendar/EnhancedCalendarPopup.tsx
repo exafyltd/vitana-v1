@@ -40,102 +40,20 @@ import {
   Video,
   Coffee,
   Heart,
-  Dumbbell
+  Dumbbell,
+  Loader2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-
-interface CalendarEvent {
-  id: string;
-  title: string;
-  time: string;
-  type: 'personal' | 'community' | 'professional' | 'health' | 'workout' | 'nutrition';
-  status: 'confirmed' | 'pending' | 'conflict';
-  location?: string;
-  attendees?: number;
-  hasRewards?: boolean;
-  description?: string;
-  duration?: number; // in minutes
-  date: Date;
-  recurring?: boolean;
-  priority?: 'low' | 'medium' | 'high';
-}
+import { useCalendarEvents, CalendarEvent } from '@/hooks/useCalendarEvents';
 
 interface EnhancedCalendarPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-const mockEvents: CalendarEvent[] = [
-  {
-    id: '1',
-    title: 'Morning Yoga Session',
-    time: '9:00 AM',
-    type: 'personal',
-    status: 'confirmed',
-    location: 'Home Studio',
-    hasRewards: true,
-    description: 'Start your day with mindful movement',
-    duration: 60,
-    date: new Date(),
-    priority: 'medium'
-  },
-  {
-    id: '2',
-    title: 'Dr. Roberts Consultation',
-    time: '11:30 AM',
-    type: 'health',
-    status: 'confirmed',
-    location: 'Vitana Clinic',
-    attendees: 2,
-    description: 'Quarterly health checkup',
-    duration: 30,
-    date: new Date(),
-    priority: 'high'
-  },
-  {
-    id: '3',
-    title: 'Community Meetup',
-    time: '2:00 PM',
-    type: 'community',
-    status: 'pending',
-    location: 'Central Park',
-    attendees: 12,
-    hasRewards: true,
-    description: 'Weekly wellness community gathering',
-    duration: 120,
-    date: new Date(),
-    priority: 'medium'
-  },
-  {
-    id: '4',
-    title: 'Evening Workout',
-    time: '6:00 PM',
-    type: 'workout',
-    status: 'conflict',
-    location: 'Fitness Center',
-    description: 'HIIT training session',
-    duration: 45,
-    date: new Date(),
-    priority: 'medium'
-  },
-  {
-    id: '5',
-    title: 'Nutrition Consultation',
-    time: '10:00 AM',
-    type: 'nutrition',
-    status: 'confirmed',
-    location: 'Wellness Center',
-    attendees: 1,
-    description: 'Monthly nutrition plan review',
-    duration: 60,
-    date: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
-    priority: 'high'
-  }
-];
-
-const getTypeColor = (type: CalendarEvent['type']) => {
+const getTypeColor = (type: CalendarEvent['event_type']) => {
   switch (type) {
     case 'personal': return 'bg-blue-500/20 text-blue-600 border-blue-200';
     case 'community': return 'bg-purple-500/20 text-purple-600 border-purple-200';
@@ -147,7 +65,7 @@ const getTypeColor = (type: CalendarEvent['type']) => {
   }
 };
 
-const getTypeIcon = (type: CalendarEvent['type']) => {
+const getTypeIcon = (type: CalendarEvent['event_type']) => {
   switch (type) {
     case 'personal': return <Heart className="h-3 w-3" />;
     case 'community': return <Users className="h-3 w-3" />;
@@ -180,6 +98,7 @@ const getPriorityColor = (priority: CalendarEvent['priority']) => {
 export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPopupProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { events, loading, addEvent, removeEvent, getEventsForDate, getUpcomingEvents } = useCalendarEvents();
   
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeTab, setActiveTab] = useState("overview");
@@ -190,67 +109,68 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
   // Form states for quick add
   const [newEventTitle, setNewEventTitle] = useState("");
   const [newEventTime, setNewEventTime] = useState("");
-  const [newEventType, setNewEventType] = useState<CalendarEvent['type']>('personal');
+  const [newEventType, setNewEventType] = useState<CalendarEvent['event_type']>('personal');
   const [newEventLocation, setNewEventLocation] = useState("");
   
-  const upcomingEvents = mockEvents.filter(e => e.date >= new Date()).slice(0, 6);
-  const todayEvents = mockEvents.filter(e => isSameDay(e.date, new Date()));
-  const conflictCount = mockEvents.filter(e => e.status === 'conflict').length;
+  // Use real events from the hook
+  const upcomingEvents = getUpcomingEvents(6);
+  const todayEvents = getEventsForDate(new Date());
+  const conflictCount = events.filter(e => e.status === 'conflict').length;
   const weekStart = startOfWeek(currentWeek);
   const weekEnd = endOfWeek(currentWeek);
   const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
-  
-  const handleViewFullCalendar = () => {
-    onOpenChange(false);
-    navigate('/calendar');
+
+  const getEventsForWeekDay = (date: Date) => {
+    return getEventsForDate(date);
   };
-  
-  const handleQuickAdd = () => {
-    if (!newEventTitle || !newEventTime) {
+
+  const handleQuickAdd = async () => {
+    if (!newEventTitle.trim()) {
       toast({
-        title: "Missing Information",
-        description: "Please fill in title and time",
+        title: "Title Required",
+        description: "Please enter an event title",
         variant: "destructive"
       });
       return;
     }
-    
-    const newEvent: CalendarEvent = {
-      id: Date.now().toString(),
-      title: newEventTitle,
-      time: newEventTime,
-      type: newEventType,
-      status: 'confirmed',
-      location: newEventLocation,
-      date: selectedDate,
-      priority: 'medium'
-    };
-    
-    // Add to mockEvents (in real app, this would be an API call)
-    mockEvents.push(newEvent);
-    
-    toast({
-      title: "Event Created",
-      description: `${newEventTitle} added to your calendar`
-    });
-    
-    // Reset form
-    setNewEventTitle("");
-    setNewEventTime("");
-    setNewEventLocation("");
-    setShowQuickAdd(false);
+
+    try {
+      const today = new Date();
+      const [hours, minutes] = newEventTime ? newEventTime.split(':').map(Number) : [9, 0];
+      const startTime = new Date(today);
+      startTime.setHours(hours, minutes, 0, 0);
+
+      await addEvent({
+        title: newEventTitle,
+        description: "",
+        start_time: startTime.toISOString(),
+        end_time: new Date(startTime.getTime() + 60 * 60 * 1000).toISOString(), // 1 hour default
+        location: newEventLocation || undefined,
+        event_type: newEventType,
+        status: 'confirmed',
+        priority: 'medium',
+        is_recurring: false,
+        attendees_count: 0,
+        has_rewards: false,
+        source_type: 'manual',
+        user_id: '' // This will be set by the hook
+      });
+
+      // Reset form
+      setNewEventTitle("");
+      setNewEventTime("");
+      setNewEventLocation("");
+      setShowQuickAdd(false);
+    } catch (error) {
+      console.error('Error adding event:', error);
+    }
   };
 
-  const handleDeleteEvent = (eventId: string) => {
-    // In real app, this would be an API call
-    const eventIndex = mockEvents.findIndex(e => e.id === eventId);
-    if (eventIndex > -1) {
-      const event = mockEvents[eventIndex];
-      mockEvents.splice(eventIndex, 1);
-      toast({
-        title: "Event Deleted",
-        description: `${event.title} has been removed`
-      });
+  const handleDeleteEvent = async (eventId: string) => {
+    try {
+      await removeEvent(eventId);
+    } catch (error) {
+      console.error('Error deleting event:', error);
     }
   };
 
@@ -283,6 +203,12 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
         </Button>
       )
     });
+  };
+
+  const formatEventTime = (startTime: string, endTime?: string | null) => {
+    const start = new Date(startTime);
+    const end = endTime ? new Date(endTime) : new Date(start.getTime() + 60 * 60 * 1000);
+    return `${format(start, 'h:mm a')} - ${format(end, 'h:mm a')}`;
   };
 
   return (
@@ -335,50 +261,53 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
                           <div className="flex items-start justify-between">
                             <div className="flex-1 space-y-1">
                               <div className="flex items-center gap-2">
-                                {getTypeIcon(event.type)}
-                                <span className="font-medium text-sm">{event.title}</span>
-                                {event.hasRewards && (
-                                  <div className="w-2 h-2 rounded-full bg-purple-500" title="Rewards Available" />
+                                <Badge className={cn("text-xs px-2 py-0.5", getTypeColor(event.event_type))}>
+                                  {getTypeIcon(event.event_type)}
+                                  <span className="ml-1 capitalize">{event.event_type}</span>
+                                </Badge>
+                                {event.has_rewards && (
+                                  <Badge variant="outline" className="text-xs px-1.5 py-0.5 border-yellow-300 text-yellow-600">
+                                    <Zap className="h-2.5 w-2.5 mr-0.5" />
+                                    Rewards
+                                  </Badge>
                                 )}
                                 {getStatusIcon(event.status)}
                               </div>
-                              
-                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                <div className="flex items-center gap-1">
+                              <h4 className="font-medium">{event.title}</h4>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
                                   <Clock className="h-3 w-3" />
-                                  {event.time}
-                                  {event.duration && <span>({event.duration}min)</span>}
-                                </div>
-                                
+                                  {formatEventTime(event.start_time, event.end_time)}
+                                </span>
                                 {event.location && (
-                                  <div className="flex items-center gap-1">
+                                  <span className="flex items-center gap-1">
                                     <MapPin className="h-3 w-3" />
                                     {event.location}
-                                  </div>
+                                  </span>
                                 )}
-                                
-                                {event.attendees && (
-                                  <div className="flex items-center gap-1">
+                                {event.attendees_count && event.attendees_count > 0 && (
+                                  <span className="flex items-center gap-1">
                                     <Users className="h-3 w-3" />
-                                    {event.attendees}
-                                  </div>
+                                    {event.attendees_count}
+                                  </span>
                                 )}
                               </div>
-                              
-                              {event.description && (
-                                <p className="text-xs text-muted-foreground">{event.description}</p>
-                              )}
-                              
-                              <Badge variant="secondary" className={cn("text-xs w-fit", getTypeColor(event.type))}>
-                                {event.type}
-                              </Badge>
                             </div>
-                            
-                            <div className="flex gap-1 ml-2">
-                              <Button variant="ghost" size="sm" onClick={() => setEditingEvent(event)}>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0"
+                                onClick={() => setEditingEvent(event)}
+                              >
                                 <Edit className="h-3 w-3" />
                               </Button>
-                              <Button variant="ghost" size="sm" onClick={() => handleDeleteEvent(event.id)}>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
+                                onClick={() => handleDeleteEvent(event.id)}
+                              >
                                 <Trash2 className="h-3 w-3" />
                               </Button>
                             </div>
@@ -386,9 +315,13 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
                         </Card>
                       ))
                     ) : (
-                      <div className="text-center py-6">
-                        <Calendar className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                        <p className="text-sm text-muted-foreground">No events today</p>
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>No events scheduled for today</p>
+                        <Button variant="outline" size="sm" className="mt-2" onClick={() => setActiveTab("create")}>
+                          <Plus className="h-3 w-3 mr-1" />
+                          Add Event
+                        </Button>
                       </div>
                     )}
                   </CardContent>
@@ -399,58 +332,57 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
                   <CardHeader className="pb-3">
                     <CardTitle className="text-lg flex items-center gap-2">
                       <ChevronRight className="h-4 w-4" />
-                      Next 6 Events
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    {upcomingEvents.map((event) => (
-                      <Card key={event.id} className="p-3 hover:bg-accent/50 transition-colors">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            {getTypeIcon(event.type)}
-                            <div>
-                              <p className="font-medium text-sm">{event.title}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {format(event.date, 'MMM dd')} at {event.time}
-                              </p>
-                            </div>
-                          </div>
-                          <Badge variant="outline" className={cn("text-xs", getTypeColor(event.type))}>
-                            {event.type}
-                          </Badge>
-                        </div>
-                      </Card>
-                    ))}
-                  </CardContent>
-                </Card>
-
-                {/* AI Suggestions */}
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" />
-                      AI Recommendations
+                      Upcoming Events
+                      <Badge variant="secondary">{upcomingEvents.length} events</Badge>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button variant="outline" size="sm" onClick={handleSmartScheduling}>
-                        <Zap className="h-3 w-3 mr-2" />
-                        Smart Scheduling
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Video className="h-3 w-3 mr-2" />
-                        Virtual Options
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <RefreshCw className="h-3 w-3 mr-2" />
-                        Reschedule Conflicts
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Bell className="h-3 w-3 mr-2" />
-                        Set Reminders
-                      </Button>
+                    {upcomingEvents.length > 0 ? (
+                      <div className="space-y-2">
+                        {upcomingEvents.map((event, idx) => (
+                          <div key={event.id} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center gap-3">
+                              <div className={cn("w-2 h-2 rounded-full", getTypeColor(event.event_type).split(' ')[0])} />
+                              <div>
+                                <p className="font-medium text-sm">{event.title}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {format(new Date(event.start_time), 'MMM d')} • {formatEventTime(event.start_time, event.end_time)}
+                                </p>
+                              </div>
+                            </div>
+                            {getStatusIcon(event.status)}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-4 text-muted-foreground">
+                        <p className="text-sm">No upcoming events</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* AI Recommendations */}
+                <Card className="border-dashed">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center gap-2 text-primary">
+                      <Sparkles className="h-4 w-4" />
+                      AI Schedule Recommendations
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <p className="text-sm font-medium text-blue-900">📅 Optimal Meeting Time</p>
+                      <p className="text-xs text-blue-700 mt-1">Tuesday 2-3 PM shows highest productivity based on your patterns</p>
                     </div>
+                    <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+                      <p className="text-sm font-medium text-green-900">🏃‍♂️ Workout Reminder</p>
+                      <p className="text-xs text-green-700 mt-1">You have a 30-minute gap at 5 PM - perfect for a quick workout</p>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={handleSmartScheduling} className="w-full">
+                      <Sparkles className="h-3 w-3 mr-1" />
+                      Get More Suggestions
+                    </Button>
                   </CardContent>
                 </Card>
               </div>
@@ -460,132 +392,208 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
           <TabsContent value="week" className="flex-1 overflow-hidden">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold">
-                  {format(weekStart, 'MMM dd')} - {format(weekEnd, 'MMM dd, yyyy')}
-                </h3>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-4">
                   <Button variant="outline" size="sm" onClick={() => handleNavigateWeek('prev')}>
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-3 w-3" />
                   </Button>
+                  <h3 className="font-semibold">
+                    {format(weekStart, 'MMM d')} - {format(weekEnd, 'MMM d, yyyy')}
+                  </h3>
                   <Button variant="outline" size="sm" onClick={() => handleNavigateWeek('next')}>
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
+                <Button variant="outline" size="sm" onClick={() => setCurrentWeek(new Date())}>
+                  Today
+                </Button>
               </div>
-              
-              <div className="grid grid-cols-7 gap-2">
-                {weekDays.map((day) => (
-                  <Card key={day.toString()} className={cn("p-3", isToday(day) && "bg-primary/5 border-primary/20")}>
-                    <div className="text-center">
-                      <p className="text-xs font-medium">{format(day, 'EEE')}</p>
-                      <p className={cn("text-lg", isToday(day) && "text-primary font-bold")}>
-                        {format(day, 'd')}
-                      </p>
-                      <div className="mt-2 space-y-1">
-                        {mockEvents
-                          .filter(event => isSameDay(event.date, day))
-                          .slice(0, 2)
-                          .map(event => (
-                            <div key={event.id} className={cn("text-xs p-1 rounded", getTypeColor(event.type))}>
-                              {event.title}
+
+              <ScrollArea className="h-[420px]">
+                <div className="grid grid-cols-7 gap-2 mb-4">
+                  {weekDays.map((day, index) => {
+                    const dayEvents = getEventsForWeekDay(day);
+                    const isCurrentDay = isToday(day);
+                    
+                    return (
+                      <div key={index} className={cn(
+                        "space-y-2 p-2 rounded-lg border min-h-[120px]",
+                        isCurrentDay ? "bg-primary/5 border-primary/20" : "bg-muted/20"
+                      )}>
+                        <div className="text-center">
+                          <p className="text-xs font-medium text-muted-foreground">
+                            {format(day, 'EEE')}
+                          </p>
+                          <p className={cn(
+                            "text-sm font-semibold",
+                            isCurrentDay ? "text-primary" : ""
+                          )}>
+                            {format(day, 'd')}
+                          </p>
+                        </div>
+                        <div className="space-y-1">
+                          {dayEvents.slice(0, 3).map((event) => (
+                            <div
+                              key={event.id}
+                              className={cn(
+                                "text-xs p-1 rounded border-l-2 cursor-pointer hover:bg-white/50",
+                                getTypeColor(event.event_type).split(' ')[0]
+                              )}
+                              onClick={() => setEditingEvent(event)}
+                            >
+                              <p className="font-medium truncate">{event.title}</p>
+                              <p className="text-xs opacity-75">
+                                {format(new Date(event.start_time), 'HH:mm')}
+                              </p>
                             </div>
-                          ))
-                        }
+                          ))}
+                          {dayEvents.length > 3 && (
+                            <p className="text-xs text-muted-foreground text-center">
+                              +{dayEvents.length - 3} more
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
+                    );
+                  })}
+                </div>
+              </ScrollArea>
             </div>
           </TabsContent>
 
           <TabsContent value="month" className="flex-1 overflow-hidden">
-            <CalendarComponent
-              mode="single"
-              selected={selectedDate}
-              onSelect={(date) => date && setSelectedDate(date)}
-              className="rounded-md border w-full"
-            />
+            <div className="flex gap-4 h-[500px]">
+              <div className="flex-1">
+                <CalendarComponent
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={(date) => date && setSelectedDate(date)}
+                  className="rounded-md border"
+                  disabled={false}
+                />
+              </div>
+              <div className="w-80 space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">
+                      {format(selectedDate, 'MMMM d, yyyy')}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {getEventsForDate(selectedDate).length > 0 ? (
+                      <div className="space-y-2">
+                        {getEventsForDate(selectedDate).map((event) => (
+                          <div key={event.id} className="flex items-center gap-2 p-2 rounded border">
+                            <div className={cn("w-3 h-3 rounded-full", getTypeColor(event.event_type).split(' ')[0])} />
+                            <div className="flex-1">
+                              <p className="font-medium text-sm">{event.title}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {formatEventTime(event.start_time, event.end_time)}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">No events scheduled</p>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="create" className="flex-1 overflow-hidden">
-            <Card>
-              <CardHeader>
-                <CardTitle>Create New Event</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="title">Event Title</Label>
-                  <Input
-                    id="title"
-                    value={newEventTitle}
-                    onChange={(e) => setNewEventTitle(e.target.value)}
-                    placeholder="Enter event title"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="time">Time</Label>
-                    <Input
-                      id="time"
-                      type="time"
-                      value={newEventTime}
-                      onChange={(e) => setNewEventTime(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="type">Type</Label>
-                    <Select value={newEventType} onValueChange={(value: CalendarEvent['type']) => setNewEventType(value)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="personal">Personal</SelectItem>
-                        <SelectItem value="health">Health</SelectItem>
-                        <SelectItem value="workout">Workout</SelectItem>
-                        <SelectItem value="nutrition">Nutrition</SelectItem>
-                        <SelectItem value="community">Community</SelectItem>
-                        <SelectItem value="professional">Professional</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                
-                <div>
-                  <Label htmlFor="location">Location (Optional)</Label>
-                  <Input
-                    id="location"
-                    value={newEventLocation}
-                    onChange={(e) => setNewEventLocation(e.target.value)}
-                    placeholder="Enter location"
-                  />
-                </div>
-                
-                <Button onClick={handleQuickAdd} className="w-full">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Event
-                </Button>
-              </CardContent>
-            </Card>
+            <ScrollArea className="h-[500px]">
+              <div className="space-y-6 pr-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Quick Add Event</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Event Title</Label>
+                      <Input
+                        id="title"
+                        placeholder="Enter event title..."
+                        value={newEventTitle}
+                        onChange={(e) => setNewEventTitle(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="time">Time</Label>
+                        <Input
+                          id="time"
+                          type="time"
+                          value={newEventTime}
+                          onChange={(e) => setNewEventTime(e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="type">Type</Label>
+                        <Select value={newEventType} onValueChange={(value: CalendarEvent['event_type']) => setNewEventType(value)}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="personal">Personal</SelectItem>
+                            <SelectItem value="community">Community</SelectItem>
+                            <SelectItem value="professional">Professional</SelectItem>
+                            <SelectItem value="health">Health</SelectItem>
+                            <SelectItem value="workout">Workout</SelectItem>
+                            <SelectItem value="nutrition">Nutrition</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="location">Location (Optional)</Label>
+                      <Input
+                        id="location"
+                        placeholder="Enter location..."
+                        value={newEventLocation}
+                        onChange={(e) => setNewEventLocation(e.target.value)}
+                      />
+                    </div>
+                    
+                    <Button onClick={handleQuickAdd} className="w-full" disabled={loading}>
+                      {loading ? (
+                        <>
+                          <Loader2 className="h-3 w-3 mr-2 animate-spin" />
+                          Adding...
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="h-3 w-3 mr-2" />
+                          Add Event
+                        </>
+                      )}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </ScrollArea>
           </TabsContent>
         </Tabs>
 
-        <DialogFooter className="flex-col sm:flex-row gap-2">
-          <div className="flex gap-2 w-full">
+        <DialogFooter className="flex items-center justify-between">
+          <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={handleSyncExternal}>
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className="h-3 w-3 mr-1" />
               Sync External
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setActiveTab("create")}>
-              <Plus className="h-4 w-4 mr-2" />
-              Quick Add
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => navigate('/calendar')}>
+              <ExternalLink className="h-3 w-3 mr-1" />
+              Full Calendar
+            </Button>
+            <Button onClick={() => onOpenChange(false)}>
+              Done
             </Button>
           </div>
-          <Button onClick={handleViewFullCalendar} className="w-full sm:w-auto">
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Full Calendar
-          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

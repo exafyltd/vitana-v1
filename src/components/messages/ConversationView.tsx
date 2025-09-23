@@ -468,15 +468,59 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           break;
           
         case 'calendar_accept':
-          toast({
-            title: 'Calendar Updated',
-            description: 'Event added to your calendar',
-          });
-          await handleSendMessage('Event accepted ✅', 'system');
-          break;
-          
         case 'calendar_decline':
-          await handleSendMessage('Event declined ❌', 'system');
+        case 'calendar_maybe':
+          // Import the calendar hook dynamically to avoid circular dependencies
+          const { useCalendarEvents } = await import('@/hooks/useCalendarEvents');
+          const calendarEvents = useCalendarEvents();
+          
+          const response = action.action.replace('calendar_', '');
+          const eventData = action.messageData;
+          
+          try {
+            // Respond to the invite (this will create the event if accepted)
+            await calendarEvents.respondToInvite(
+              action.messageId || 'unknown',
+              response as 'accepted' | 'declined' | 'maybe',
+              response === 'accepted' && eventData ? {
+                title: eventData.title || 'Event',
+                description: eventData.description,
+                start_time: eventData.date ? new Date(eventData.date).toISOString() : new Date().toISOString(),
+                end_time: eventData.endDate ? new Date(eventData.endDate).toISOString() : undefined,
+                location: eventData.location,
+                event_type: eventData.type || 'personal',
+                status: 'confirmed',
+                priority: eventData.priority || 'medium',
+                is_recurring: false,
+                attendees_count: eventData.attendees || 0,
+                has_rewards: eventData.hasRewards || false,
+                metadata: { originalMessage: eventData },
+                source_type: 'invite',
+                user_id: '' // This will be set by the hook
+              } : undefined
+            );
+            
+            // Send confirmation message
+            const responseMessages = {
+              accepted: 'Event accepted ✅ - Added to your calendar',
+              declined: 'Event declined ❌',
+              maybe: 'Responded "Maybe" ❓ - Marked as tentative'
+            };
+            
+            await handleSendMessage(responseMessages[response as keyof typeof responseMessages], 'system');
+            
+            toast({
+              title: 'Response Sent',
+              description: responseMessages[response as keyof typeof responseMessages],
+            });
+          } catch (error) {
+            console.error('Error responding to calendar invite:', error);
+            toast({
+              title: 'Error',
+              description: 'Failed to process calendar invite response',
+              variant: 'destructive',
+            });
+          }
           break;
           
         case 'quick_reply':

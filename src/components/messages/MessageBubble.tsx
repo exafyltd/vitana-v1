@@ -5,7 +5,22 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { Clock, Check, CheckCheck, Loader2, FileText, Image as ImageIcon, Download, ExternalLink, Reply } from 'lucide-react';
+import { 
+  Clock, 
+  Check, 
+  CheckCheck, 
+  Loader2, 
+  FileText, 
+  Image as ImageIcon, 
+  Download, 
+  ExternalLink, 
+  Reply,
+  Calendar,
+  MapPin,
+  Users,
+  CheckCircle,
+  X
+} from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType } from '@/lib/fileUpload';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
@@ -287,27 +302,81 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
       case 'calendar_invite':
         return (
-          <Card className="max-w-sm">
+          <Card className="max-w-sm border-primary/20">
             <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="secondary">Calendar Invite</Badge>
+              <div className="flex items-center justify-between mb-3">
+                <Badge variant="secondary" className="flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  Calendar Invite
+                </Badge>
+                {message.content_data?.priority === 'high' && (
+                  <Badge variant="destructive" className="text-xs">
+                    High Priority
+                  </Badge>
+                )}
               </div>
-              <h4 className="font-semibold mb-1">
-                {message.content_data?.title || 'Event Invitation'}
-              </h4>
-              <p className="text-sm text-muted-foreground mb-2">
-                {message.content_data?.date && format(new Date(message.content_data.date), 'PPP')}
-              </p>
-              <p className="text-sm mb-3">{message.body}</p>
+              
+              <div className="space-y-2 mb-4">
+                <h4 className="font-semibold text-base">
+                  {message.content_data?.title || 'Event Invitation'}
+                </h4>
+                
+                {message.content_data?.date && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Clock className="w-4 h-4" />
+                    <span>
+                      {format(new Date(message.content_data.date), 'PPP')}
+                      {message.content_data?.time && ` at ${message.content_data.time}`}
+                    </span>
+                  </div>
+                )}
+                
+                {message.content_data?.location && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <MapPin className="w-4 h-4" />
+                    <span>{message.content_data.location}</span>
+                  </div>
+                )}
+                
+                {message.content_data?.attendees && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Users className="w-4 h-4" />
+                    <span>{message.content_data.attendees} attendees</span>
+                  </div>
+                )}
+                
+                {message.body && (
+                  <p className="text-sm text-muted-foreground border-l-2 border-muted pl-3 mt-3">
+                    {message.body}
+                  </p>
+                )}
+              </div>
+              
               {message.action_buttons && (
                 <div className="flex gap-2">
                   {message.action_buttons.map((button: any, index: number) => (
                     <Button
                       key={index}
                       size="sm"
-                      variant={button.variant || 'default'}
-                      onClick={() => onActionClick?.(button)}
+                      variant={
+                        button.action === 'calendar_accept' ? 'default' :
+                        button.action === 'calendar_decline' ? 'outline' :
+                        button.action === 'calendar_maybe' ? 'secondary' :
+                        button.variant || 'default'
+                      }
+                      className={
+                        button.action === 'calendar_accept' ? 'bg-green-600 hover:bg-green-700' :
+                        button.action === 'calendar_decline' ? 'text-red-600 border-red-200 hover:bg-red-50' :
+                        ''
+                      }
+                      onClick={() => onActionClick?.({
+                        ...button,
+                        messageData: message.content_data
+                      })}
                     >
+                      {button.action === 'calendar_accept' && <CheckCircle className="w-3 h-3 mr-1" />}
+                      {button.action === 'calendar_decline' && <X className="w-3 h-3 mr-1" />}
+                      {button.action === 'calendar_maybe' && <Clock className="w-3 h-3 mr-1" />}
                       {button.label}
                     </Button>
                   ))}
