@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isToday, addDays } from "date-fns";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +26,15 @@ import {
   Zap,
   Sparkles,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
+  Edit,
+  Trash2,
+  CheckCircle,
+  Bell,
+  Video,
+  Coffee,
+  Heart,
+  Dumbbell
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -35,11 +44,15 @@ interface CalendarEvent {
   id: string;
   title: string;
   time: string;
-  type: 'personal' | 'community' | 'professional' | 'health';
+  type: 'personal' | 'community' | 'professional' | 'health' | 'workout' | 'nutrition';
   status: 'confirmed' | 'pending' | 'conflict';
   location?: string;
   attendees?: number;
   hasRewards?: boolean;
+  description?: string;
+  duration?: number; // in minutes
+  date?: Date;
+  priority?: 'low' | 'medium' | 'high';
 }
 
 interface CalendarPopupProps {
@@ -55,7 +68,11 @@ const mockEvents: CalendarEvent[] = [
     type: 'personal',
     status: 'confirmed',
     location: 'Home Studio',
-    hasRewards: true
+    hasRewards: true,
+    description: 'Start your day with mindful movement',
+    duration: 60,
+    date: new Date(),
+    priority: 'medium'
   },
   {
     id: '2',
@@ -64,7 +81,11 @@ const mockEvents: CalendarEvent[] = [
     type: 'health',
     status: 'confirmed',
     location: 'Vitana Clinic',
-    attendees: 2
+    attendees: 2,
+    description: 'Quarterly health checkup',
+    duration: 30,
+    date: new Date(),
+    priority: 'high'
   },
   {
     id: '3',
@@ -74,25 +95,60 @@ const mockEvents: CalendarEvent[] = [
     status: 'pending',
     location: 'Central Park',
     attendees: 12,
-    hasRewards: true
+    hasRewards: true,
+    description: 'Weekly wellness community gathering',
+    duration: 120,
+    date: new Date(),
+    priority: 'medium'
   },
   {
     id: '4',
     title: 'Evening Workout',
     time: '6:00 PM',
-    type: 'personal',
+    type: 'workout',
     status: 'conflict',
-    location: 'Fitness Center'
+    location: 'Fitness Center',
+    description: 'HIIT training session',
+    duration: 45,
+    date: new Date(),
+    priority: 'medium'
+  },
+  {
+    id: '5',
+    title: 'Nutrition Consultation',
+    time: '10:00 AM',
+    type: 'nutrition',
+    status: 'confirmed',
+    location: 'Wellness Center',
+    attendees: 1,
+    description: 'Monthly nutrition plan review',
+    duration: 60,
+    date: addDays(new Date(), 1), // Tomorrow
+    priority: 'high'
   }
 ];
 
 const getTypeColor = (type: CalendarEvent['type']) => {
   switch (type) {
-    case 'personal': return 'bg-blue-500/20 text-blue-600';
-    case 'community': return 'bg-purple-500/20 text-purple-600';
-    case 'professional': return 'bg-green-500/20 text-green-600';
-    case 'health': return 'bg-red-500/20 text-red-600';
-    default: return 'bg-gray-500/20 text-gray-600';
+    case 'personal': return 'bg-blue-500/20 text-blue-600 border-blue-200';
+    case 'community': return 'bg-purple-500/20 text-purple-600 border-purple-200';
+    case 'professional': return 'bg-green-500/20 text-green-600 border-green-200';
+    case 'health': return 'bg-red-500/20 text-red-600 border-red-200';
+    case 'workout': return 'bg-orange-500/20 text-orange-600 border-orange-200';
+    case 'nutrition': return 'bg-emerald-500/20 text-emerald-600 border-emerald-200';
+    default: return 'bg-gray-500/20 text-gray-600 border-gray-200';
+  }
+};
+
+const getTypeIcon = (type: CalendarEvent['type']) => {
+  switch (type) {
+    case 'personal': return <Heart className="h-3 w-3" />;
+    case 'community': return <Users className="h-3 w-3" />;
+    case 'professional': return <Users className="h-3 w-3" />;
+    case 'health': return <Heart className="h-3 w-3" />;
+    case 'workout': return <Dumbbell className="h-3 w-3" />;
+    case 'nutrition': return <Coffee className="h-3 w-3" />;
+    default: return <Calendar className="h-3 w-3" />;
   }
 };
 
@@ -100,6 +156,7 @@ const getStatusIcon = (status: CalendarEvent['status']) => {
   switch (status) {
     case 'conflict': return <AlertTriangle className="h-3 w-3 text-amber-500" />;
     case 'pending': return <Clock className="h-3 w-3 text-blue-500" />;
+    case 'confirmed': return <CheckCircle className="h-3 w-3 text-green-500" />;
     default: return null;
   }
 };

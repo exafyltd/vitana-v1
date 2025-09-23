@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, Calendar } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -9,6 +9,8 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MasterActionPopup } from "@/components/MasterActionPopup";
+import { CalendarPopup } from "@/components/CalendarPopup";
+import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { NewsCard } from "@/components/crossover/NewsCard";
@@ -240,6 +242,7 @@ const guideDailyMatches = [
 
 export default function Home() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState("today");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -283,6 +286,10 @@ export default function Home() {
             placeholder="Search today's content, events, or media…"
             onSearch={(query) => console.log('Search:', query)}
           />
+          <Button size="sm" onClick={() => setCalendarOpen(true)} variant="outline">
+            <Calendar className="w-4 h-4 mr-2" />
+            Calendar
+          </Button>
           <Button size="sm" onClick={() => setMasterActionOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Action
@@ -685,6 +692,12 @@ export default function Home() {
       <MasterActionPopup 
         open={masterActionOpen} 
         onOpenChange={setMasterActionOpen}
+      />
+      
+      {/* Calendar Popup */}
+      <EnhancedCalendarPopup 
+        open={calendarOpen} 
+        onOpenChange={setCalendarOpen}
       />
       
       {/* Onboarding Overlay */}

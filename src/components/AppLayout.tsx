@@ -185,11 +185,18 @@ function AppSidebar({
               {/* Calendar Button */}
               <Button 
                 variant="ghost" 
-                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
-                title="Calendar & Events"
+                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg group"
+                title="Calendar & Events - 3 events today"
                 onClick={() => setCalendarPopupOpen(true)}
               >
-                <Calendar className="h-4 w-4 text-white" />
+                <Calendar className="h-4 w-4 text-white group-hover:text-primary transition-colors" />
+                {/* Event count indicator */}
+                <Badge 
+                  variant="secondary" 
+                  className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-blue-500 text-white h-4 w-4 text-[10px] min-w-[16px]"
+                >
+                  3
+                </Badge>
               </Button>
               
               {/* Wallet Button */}
