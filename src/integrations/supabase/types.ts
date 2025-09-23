@@ -436,6 +436,7 @@ export type Database = {
       }
       global_messages: {
         Row: {
+          action_buttons: Json | null
           body: string
           content_data: Json | null
           created_at: string | null
@@ -450,6 +451,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          action_buttons?: Json | null
           body: string
           content_data?: Json | null
           created_at?: string | null
@@ -464,6 +466,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          action_buttons?: Json | null
           body?: string
           content_data?: Json | null
           created_at?: string | null
