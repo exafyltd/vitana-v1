@@ -178,12 +178,12 @@ export default function Messages() {
   // Get responsive panel sizes based on screen size
   const getConversationPanelSize = () => {
     if (isMobile) return 100; // Full width on mobile
-    return 45; // 45% on desktop - ensures full card content incl. timestamps
+    return 48; // 48% on desktop - ensures full card content incl. timestamps
   };
 
   const getChatPanelSize = () => {
     if (isMobile) return 0; // Hidden on mobile when conversation list is shown
-    return 55; // 55% on desktop - chat remains slightly wider
+    return 52; // 52% on desktop - chat remains slightly wider
   };
 
   const renderConversationList = (threads: typeof localThreads) => (
@@ -236,7 +236,7 @@ export default function Messages() {
             return (
               <Card
                 key={thread.id}
-                className={`${cardHeight} cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                className={`${cardHeight} mr-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
                   isActive 
                     ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
                     : 'hover:shadow-sm'
@@ -299,7 +299,7 @@ export default function Messages() {
                         )}
                       </div>
                       
-                      <div className="flex flex-col items-end gap-1 ml-2 flex-shrink-0">
+                      <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
                         <span className={`text-muted-foreground ${
                           densityMode === 'compact' ? 'text-xs' : 'text-xs'
                         }`}>
@@ -346,13 +346,13 @@ export default function Messages() {
                 
                 <ScrollArea className="flex-1">
                   <SplitBarContent value="global" className="p-0 m-0">
-                    <div className="p-4">
+                    <div className="p-4 pr-12">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
                   
                   <SplitBarContent value="tenant" className="p-0 m-0">
-                    <div className="p-4">
+                    <div className="p-4 pr-12">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
@@ -402,13 +402,13 @@ export default function Messages() {
                 
                 <ScrollArea className="flex-1">
                   <SplitBarContent value="global" className="p-0 m-0">
-                    <div className="p-4 pr-8">
+                    <div className="p-4 pr-12">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
                   
                   <SplitBarContent value="tenant" className="p-0 m-0">
-                    <div className="p-4 pr-8">
+                    <div className="p-4 pr-12">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
@@ -417,7 +417,7 @@ export default function Messages() {
             </div>
           </ResizablePanel>
 
-          <ResizableHandle withHandle className="mx-3" />
+          <ResizableHandle withHandle className="mx-4" />
 
           {/* Chat Area Panel */}
           <ResizablePanel 
