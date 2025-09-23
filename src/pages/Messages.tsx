@@ -389,7 +389,7 @@ export default function Messages() {
             defaultSize={getConversationPanelSize()} 
             minSize={25} 
             maxSize={50}
-            className="transition-all duration-300"
+            className="transition-all duration-300 min-w-0 flex flex-col overflow-hidden"
           >
             <div className="h-full border-r bg-card/50 backdrop-blur-sm">
               <SplitBar value={messageContext} onValueChange={(value) => setMessageContext(value as 'global' | 'tenant')} className="h-full">
@@ -402,13 +402,13 @@ export default function Messages() {
                 
                 <ScrollArea className="flex-1">
                   <SplitBarContent value="global" className="p-0 m-0">
-                    <div className="p-4 pr-2">
+                    <div className="p-4 pr-6">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
                   
                   <SplitBarContent value="tenant" className="p-0 m-0">
-                    <div className="p-4 pr-2">
+                    <div className="p-4 pr-6">
                       {renderConversationList(localThreads)}
                     </div>
                   </SplitBarContent>
@@ -417,7 +417,7 @@ export default function Messages() {
             </div>
           </ResizablePanel>
 
-          <ResizableHandle withHandle className="mx-1" />
+          <ResizableHandle withHandle className="mx-2" />
 
           {/* Chat Area Panel */}
           <ResizablePanel 
