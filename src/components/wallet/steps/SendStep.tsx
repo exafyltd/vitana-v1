@@ -103,8 +103,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
   };
 
   const balance = getBalance(currency);
-  const fees = amount ? parseFloat(amount) * 0.005 : 0; // 0.5% fee
-  const total = amount ? parseFloat(amount) + fees : 0;
+  const total = amount ? parseFloat(amount) : 0;
   const isValidAmount = amount && parseFloat(amount) > 0 && total <= balance;
   const selectedMember = members.find(m => m.user_id === selectedRecipient);
 
@@ -261,12 +260,12 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
           <Card>
             <CardContent className="p-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span>Amount:</span>
+                <span>Amount to send:</span>
                 <span>{parseFloat(amount).toFixed(2)} {currency}</span>
               </div>
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Transfer fee (0.5%):</span>
-                <span>{fees.toFixed(2)} {currency}</span>
+              <div className="flex justify-between text-sm text-green-600">
+                <span>Transfer fees:</span>
+                <span>FREE</span>
               </div>
               <div className="border-t pt-2 flex justify-between text-sm font-medium">
                 <span>Total deducted:</span>
