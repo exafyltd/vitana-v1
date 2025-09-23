@@ -18,46 +18,54 @@ export interface ExchangeCalculation {
   toCurrency: string;
 }
 
-// Mock exchange rates - in real app this would come from an API
+// Vitana System exchange rates - VTN is growing with system adoption
 export const getCurrentExchangeRates = (): ExchangeRate[] => [
   {
     from: 'USD',
     to: 'VTN', 
-    rate: 2.45, // 1 USD = 2.45 VTN
+    rate: 100, // 1 USD = 100 VTN
     trend: 'up',
-    change24h: 1.2,
+    change24h: 2.5, // VTN growing due to system adoption
     lastUpdated: new Date()
   },
   {
     from: 'VTN',
     to: 'USD',
-    rate: 0.408, // 1 VTN = 0.408 USD
+    rate: 0.01, // 1 VTN = 0.01 USD
     trend: 'up', 
-    change24h: -1.2,
+    change24h: 2.5, // VTN appreciating
     lastUpdated: new Date()
   },
   {
     from: 'VTN',
     to: 'CREDITS',
-    rate: 1.05, // 1 VTN = 1.05 Credits (5% bonus)
-    trend: 'stable',
-    change24h: 0,
+    rate: 1.0, // 1 VTN = 1 Credit (perfect parity)
+    trend: 'up',
+    change24h: 1.8, // VTN trending up
     lastUpdated: new Date()
   },
   {
     from: 'CREDITS',
     to: 'VTN', 
-    rate: 0.952, // 1 Credit = 0.952 VTN
-    trend: 'stable',
-    change24h: 0,
+    rate: 1.0, // 1 Credit = 1 VTN (perfect parity)
+    trend: 'up',
+    change24h: 1.8, // Following VTN growth
     lastUpdated: new Date()
   },
   {
     from: 'USD',
     to: 'CREDITS',
-    rate: 2.57, // 1 USD = 2.57 Credits (via VTN conversion)
+    rate: 100, // 1 USD = 100 Credits
     trend: 'up',
-    change24h: 1.2,
+    change24h: 2.2, // Credits growing with USD/VTN
+    lastUpdated: new Date()
+  },
+  {
+    from: 'CREDITS',
+    to: 'USD',
+    rate: 0.01, // 1 Credit = 0.01 USD
+    trend: 'up',
+    change24h: 2.2,
     lastUpdated: new Date()
   }
 ];
@@ -81,8 +89,8 @@ export const calculateExchange = (
   }
   
   const toAmount = fromAmount * rate.rate;
-  const fees = fromAmount * 0.01; // 1% fee
-  const total = toAmount - (fees * rate.rate); // Convert fee to target currency
+  const fees = 0; // No fees in Vitana System
+  const total = toAmount; // No fee deduction
   
   return {
     fromAmount,
@@ -100,7 +108,7 @@ export const formatCurrency = (amount: number, currency: string): string => {
     case 'USD':
       return `$${amount.toFixed(2)}`;
     case 'VTN':
-      return `${amount.toFixed(0)} VTN`;
+      return `${amount.toFixed(0)} VTN`; // Vitana Tokens
     case 'CREDITS':
       return `${amount.toFixed(0)} Credits`;
     default:
@@ -111,7 +119,7 @@ export const formatCurrency = (amount: number, currency: string): string => {
 export const getCurrencySymbol = (currency: string): string => {
   switch (currency.toUpperCase()) {
     case 'USD': return '$';
-    case 'VTN': return 'VTN';
+    case 'VTN': return 'VTN'; // Vitana Tokens
     case 'CREDITS': return 'Credits';
     default: return currency;
   }
