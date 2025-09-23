@@ -13,13 +13,32 @@ import { calculateExchange } from '@/lib/exchangeRates';
 interface ExchangeStepProps {
   onBack: () => void;
   onClose: () => void;
+  initialCurrency?: 'USD' | 'VTN' | 'CREDITS';
 }
 
-export function ExchangeStep({ onBack, onClose }: ExchangeStepProps) {
+export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepProps) {
   const { exchangeCurrency, getBalance } = useWallet();
   const { toast } = useToast();
-  const [fromCurrency, setFromCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('CREDITS');
-  const [toCurrency, setToCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('VTN');
+  
+  // Set initial currencies based on the selected currency from the card
+  const getInitialFromCurrency = () => {
+    if (initialCurrency) return initialCurrency;
+    return 'CREDITS';
+  };
+  
+  const getInitialToCurrency = () => {
+    if (!initialCurrency) return 'VTN';
+    // If initial currency is set, default to a different currency
+    switch (initialCurrency) {
+      case 'USD': return 'VTN';
+      case 'VTN': return 'CREDITS';
+      case 'CREDITS': return 'USD';
+      default: return 'VTN';
+    }
+  };
+  
+  const [fromCurrency, setFromCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>(getInitialFromCurrency());
+  const [toCurrency, setToCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>(getInitialToCurrency());
   const [amount, setAmount] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 

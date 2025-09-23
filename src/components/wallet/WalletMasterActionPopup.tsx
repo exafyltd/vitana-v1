@@ -32,11 +32,12 @@ interface WalletMasterActionPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialStep?: StepType;
+  selectedCurrency?: 'USD' | 'VTN' | 'CREDITS';
 }
 
 type StepType = 'menu' | 'exchange' | 'send' | 'exchange-and-send' | 'buy-credits' | 'buy-tokens';
 
-export function WalletMasterActionPopup({ open, onOpenChange, initialStep }: WalletMasterActionPopupProps) {
+export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selectedCurrency }: WalletMasterActionPopupProps) {
   const { updateBalance } = useWallet();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState<StepType>(initialStep || 'menu');
@@ -114,7 +115,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep }: Wal
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 'exchange':
-        return <ExchangeStep onBack={handleBack} onClose={handleClose} />;
+        return <ExchangeStep onBack={handleBack} onClose={handleClose} initialCurrency={selectedCurrency} />;
       case 'send':
         return <SendStep onBack={handleBack} onClose={handleClose} />;
       case 'exchange-and-send':
