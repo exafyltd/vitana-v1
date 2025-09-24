@@ -54,7 +54,42 @@ export default function Messages() {
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
   const [pinnedThreads, setPinnedThreads] = useState<Set<string>>(new Set());
 
-  // Remove auto-selection - let user choose conversation manually
+  // Auto-select the most recent conversation (WhatsApp-style behavior)
+  useEffect(() => {
+    if (localThreads.length > 0 && !selectedThreadId) {
+      // Get the most recent conversation from the sorted and deduplicated list
+      const sortedThreads = [...localThreads]
+        .sort((a, b) => {
+          const ap = pinnedThreads.has(a.id) ? 1 : 0;
+          const bp = pinnedThreads.has(b.id) ? 1 : 0;
+          if (ap !== bp) return bp - ap;
+          const ad = new Date(a.updated_at).getTime();
+          const bd = new Date(b.updated_at).getTime();
+          return bd - ad;
+        })
+        .reduce((acc, thread) => {
+          if (thread.type === 'direct') {
+            const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
+            const key = counterpart?.user_id || 'unknown';
+            const existing = acc.find(t => t._dedupeKey === key);
+            if (!existing || new Date(thread.updated_at) > new Date(existing.updated_at)) {
+              const filtered = acc.filter(t => t._dedupeKey !== key);
+              filtered.push({ ...thread, _dedupeKey: key });
+              return filtered;
+            }
+            return acc;
+          } else {
+            acc.push({ ...thread, _dedupeKey: thread.id });
+            return acc;
+          }
+        }, [] as (typeof localThreads[0] & { _dedupeKey: string })[]);
+
+      if (sortedThreads.length > 0) {
+        setSelectedThreadId(sortedThreads[0].id);
+        setSelectedRecipientId(null);
+      }
+    }
+  }, [localThreads, selectedThreadId, pinnedThreads, user?.id]);
 
   // Reset selection when context changes
   useEffect(() => {
