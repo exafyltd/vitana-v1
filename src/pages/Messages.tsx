@@ -399,44 +399,61 @@ export default function Messages() {
       );
     }
 
-    // Desktop layout - simple side by side
+    // Desktop layout - resizable panels
     return (
-      <div className="h-[calc(100vh-200px)] flex min-h-0 overflow-hidden">
-        {/* Conversation List */}
-        <div className="w-96 border-r bg-card/50 backdrop-blur-sm">
-          <ScrollArea className="h-full">
-            <div className="p-4 pr-12">
-              {renderConversationList(localThreads)}
+      <div className="h-[calc(100vh-200px)] flex flex-col min-h-0 overflow-hidden">
+        <ResizablePanelGroup direction="horizontal" className="h-full">
+          {/* Conversation List Panel */}
+          <ResizablePanel 
+            defaultSize={getConversationPanelSize()} 
+            minSize={27} 
+            maxSize={50}
+            className="transition-all duration-300 min-w-0 flex flex-col overflow-hidden"
+          >
+            <div className="h-full border-r bg-card/50 backdrop-blur-sm">
+              <ScrollArea className="h-full">
+                <div className="p-4 pr-12">
+                  {renderConversationList(localThreads)}
+                </div>
+              </ScrollArea>
             </div>
-          </ScrollArea>
-        </div>
+          </ResizablePanel>
 
-        {/* Chat Area */}
-        <div className="flex-1 bg-background/95 backdrop-blur-sm min-w-0 flex flex-col min-h-0 overflow-hidden">
-          {selectedThreadId || selectedRecipientId ? (
-            <ConversationErrorBoundary>
-              <ConversationView 
-                threadId={selectedThreadId}
-                recipientId={selectedRecipientId}
-                context={messageContext}
-                className="flex-1 min-h-0 min-w-0"
-                onThreadRead={handleThreadRead}
-                onConversationOpened={handleConversationOpened}
-                onMessageSent={handleMessageSent}
-              />
-            </ConversationErrorBoundary>
-          ) : (
-            <div className="h-full flex items-center justify-center px-4 py-4">
-              <div className="text-center">
-                <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">Select a conversation</h3>
-                <p className="text-muted-foreground">
-                  Choose a conversation from the left to start messaging
-                </p>
-              </div>
+          <ResizableHandle withHandle className="mx-4" />
+
+          {/* Chat Area Panel */}
+          <ResizablePanel 
+            defaultSize={getChatPanelSize()}
+            minSize={50}
+            className="transition-all duration-300"
+          >
+            <div className="h-full bg-background/95 backdrop-blur-sm min-w-0 flex flex-col min-h-0 overflow-hidden">
+              {selectedThreadId || selectedRecipientId ? (
+                <ConversationErrorBoundary>
+                  <ConversationView 
+                    threadId={selectedThreadId}
+                    recipientId={selectedRecipientId}
+                    context={messageContext}
+                    className="flex-1 min-h-0 min-w-0"
+                    onThreadRead={handleThreadRead}
+                    onConversationOpened={handleConversationOpened}
+                    onMessageSent={handleMessageSent}
+                  />
+                </ConversationErrorBoundary>
+              ) : (
+                <div className="h-full flex items-center justify-center px-4 py-4">
+                  <div className="text-center">
+                    <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                    <h3 className="text-lg font-semibold mb-2">Select a conversation</h3>
+                    <p className="text-muted-foreground">
+                      Choose a conversation from the left to start messaging
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     );
   };
