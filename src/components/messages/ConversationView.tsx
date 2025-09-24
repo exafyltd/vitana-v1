@@ -479,31 +479,42 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           const eventData = action.messageData;
           
           try {
+            console.log('🎯 Processing calendar action:', { action: action.action, messageData: eventData });
+            
+            // Validate event data for accept actions
+            if (response === 'accepted' && eventData) {
+              if (!eventData.title && !eventData.date) {
+                throw new Error('Missing required event data (title or date)');
+              }
+            }
+
             // Respond to the invite (this will create the event if accepted)
-            await respondToInvite(
+            const result = await respondToInvite(
               action.messageId || 'unknown',
               response as 'accepted' | 'declined' | 'maybe',
               response === 'accepted' && eventData ? {
-                title: eventData.title || 'Event',
+                title: eventData.title || 'Calendar Event',
                 description: eventData.description,
                 start_time: eventData.date ? new Date(eventData.date).toISOString() : new Date().toISOString(),
                 end_time: eventData.endDate ? new Date(eventData.endDate).toISOString() : undefined,
                 location: eventData.location,
-                event_type: eventData.type || 'personal',
+                event_type: (eventData.type as any) || 'personal',
                 status: 'confirmed',
-                priority: eventData.priority || 'medium',
+                priority: (eventData.priority as any) || 'medium',
                 is_recurring: false,
                 attendees_count: eventData.attendees || 0,
                 has_rewards: eventData.hasRewards || false,
                 metadata: { originalMessage: eventData },
                 source_type: 'invite',
-                user_id: '' // This will be set by the hook
+                user_id: '' // Will be overridden by the hook
               } : undefined
             );
             
             // Send confirmation message
             const responseMessages = {
-              accepted: 'Event accepted ✅ - Added to your calendar',
+              accepted: result?.error 
+                ? 'Event accepted ✅ - Response recorded (add event manually if needed)'
+                : 'Event accepted ✅ - Added to your calendar',
               declined: 'Event declined ❌',
               maybe: 'Responded "Maybe" ❓ - Marked as tentative'
             };
@@ -513,12 +524,29 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             toast({
               title: 'Response Sent',
               description: responseMessages[response as keyof typeof responseMessages],
+              variant: result?.error ? 'default' : 'default',
             });
+
           } catch (error) {
-            console.error('Error responding to calendar invite:', error);
+            console.error('❌ Error responding to calendar invite:', error);
+            
+            // More specific error messages
+            let errorMessage = 'Failed to process calendar invite response';
+            if (error instanceof Error) {
+              if (error.message.includes('Missing required event data')) {
+                errorMessage = 'Invalid event data received';
+              } else if (error.message.includes('start_time')) {
+                errorMessage = 'Invalid event date/time format';
+              } else if (error.message.includes('User not authenticated')) {
+                errorMessage = 'Please log in to respond to calendar invites';
+              } else {
+                errorMessage = `Error: ${error.message}`;
+              }
+            }
+            
             toast({
-              title: 'Error',
-              description: 'Failed to process calendar invite response',
+              title: 'Calendar Invite Error',
+              description: errorMessage,
               variant: 'destructive',
             });
           }

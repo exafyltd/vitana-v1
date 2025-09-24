@@ -161,32 +161,89 @@ export function useCalendarEvents() {
       const user = (await supabase.auth.getUser()).data.user;
       if (!user) throw new Error('User not authenticated');
 
-      let eventId: string | undefined;
+      console.log('📅 Responding to calendar invite:', { messageId, response, eventData });
 
-      // If accepting the invite, create the calendar event
-      if (response === 'accepted' && eventData) {
-        const newEvent = await addEvent({
-          ...eventData,
-          source_message_id: messageId,
-          source_type: 'invite'
-        });
-        eventId = newEvent.id;
-      }
-
-      // Record the invite response
-      const { error } = await supabase
+      // Always record the invite response first
+      const { error: responseError } = await supabase
         .from('calendar_invite_responses')
         .upsert({
           message_id: messageId,
           user_id: user.id,
-          event_id: eventId,
+          event_id: null, // Will be updated if event creation succeeds
           response
         });
 
-      if (error) throw error;
+      if (responseError) {
+        console.error('❌ Failed to record invite response:', responseError);
+        throw responseError;
+      }
+
+      console.log('✅ Invite response recorded successfully');
+
+      let eventId: string | undefined;
+
+      // If accepting the invite, create the calendar event
+      if (response === 'accepted' && eventData) {
+        try {
+          console.log('📝 Creating calendar event for accepted invite:', eventData);
+          
+          // Validate and clean event data
+          const cleanEventData = {
+            ...eventData,
+            user_id: user.id, // Ensure user_id is set correctly
+            source_message_id: messageId,
+            source_type: 'invite' as const,
+            // Ensure required fields have defaults
+            title: eventData.title || 'Calendar Event',
+            event_type: eventData.event_type || 'personal' as const,
+            status: eventData.status || 'confirmed' as const,
+            priority: eventData.priority || 'medium' as const,
+            is_recurring: eventData.is_recurring || false,
+          };
+
+          // Validate start_time format
+          const startTime = new Date(cleanEventData.start_time);
+          if (isNaN(startTime.getTime())) {
+            throw new Error('Invalid start_time format');
+          }
+
+          console.log('🔧 Cleaned event data:', cleanEventData);
+
+          const newEvent = await addEvent(cleanEventData);
+          eventId = newEvent.id;
+
+          console.log('✅ Calendar event created successfully:', eventId);
+
+          // Update the invite response with the event ID
+          const { error: updateError } = await supabase
+            .from('calendar_invite_responses')
+            .update({ event_id: eventId })
+            .eq('message_id', messageId)
+            .eq('user_id', user.id);
+
+          if (updateError) {
+            console.error('⚠️ Failed to update invite response with event ID:', updateError);
+            // Don't throw here - the event was created successfully
+          }
+
+        } catch (eventError) {
+          console.error('❌ Failed to create calendar event:', eventError);
+          
+          // Event creation failed, but response was already recorded
+          toast({
+            title: 'Partial Success',
+            description: 'Response recorded, but failed to add event to calendar. You can add it manually.',
+            variant: 'destructive',
+          });
+          
+          // Don't throw - we want to return success for the response part
+          return { eventId: undefined, response, error: eventError };
+        }
+      }
 
       return { eventId, response };
     } catch (err) {
+      console.error('❌ Failed to respond to invite:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to respond to invite';
       toast({
         title: 'Error',
