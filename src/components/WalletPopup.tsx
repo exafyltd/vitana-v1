@@ -114,9 +114,9 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
   
   const { balances, loading, getBalance, exchangeCurrency } = useWallet();
   
-  const currentBalance = getBalance('VTN');
-  const usdBalance = getBalance('USD');
-  const creditsBalance = getBalance('CREDITS');
+  const currentBalance = getBalance('VTN') || 0;
+  const usdBalance = getBalance('USD') || 0;
+  const creditsBalance = getBalance('CREDITS') || 0;
   const pendingRewards = 156;
   const monthlyTrend = 12.5; // percentage increase
   

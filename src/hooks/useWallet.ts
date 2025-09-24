@@ -77,10 +77,13 @@ export function useWallet() {
   };
 
   // Get balance for specific currency
-  const getBalance = (currency: 'USD' | 'VTN' | 'CREDITS'): number => {
+  const getBalance = (currency: 'USD' | 'VTN' | 'CREDITS'): number | null => {
+    // Return null when still loading to indicate unavailable data
+    if (loading && balances.length === 0) return null;
+    
     const normalizedCurrency = currency.toUpperCase();
     const balance = balances.find(b => b.currency_type === normalizedCurrency);
-    return balance ? Number(balance.balance) : 0; // Return 0 instead of 1000 for accurate balance checking
+    return balance ? Number(balance.balance) : 0;
   };
 
   // Update balance for specific currency
@@ -275,64 +278,14 @@ export function useWallet() {
     }
   };
 
-  // Subscribe to real-time balance updates
+  // Initialize wallet data on mount
   useEffect(() => {
     const initializeData = async () => {
+      if (!user?.id) return;
+      
       setLoading(true);
       await Promise.all([fetchBalances(), fetchTransactions()]);
       setLoading(false);
-
-      // Set up real-time subscription for balance changes
-      if (user?.id) {
-        const channel = supabase
-          .channel('wallet-changes')
-          .on(
-            'postgres_changes',
-            {
-              event: '*',
-              schema: 'public',
-              table: 'user_wallets',
-              filter: `user_id=eq.${user.id}`
-            },
-            (payload) => {
-              console.log('🔄 Wallet balance changed:', payload);
-              fetchBalances();
-            }
-          )
-          .on(
-            'postgres_changes',
-            {
-              event: '*',
-              schema: 'public',
-              table: 'wallet_transactions',
-              filter: `from_user_id=eq.${user.id}`
-            },
-            (payload) => {
-              console.log('💸 Outgoing transaction:', payload);
-              Promise.all([fetchTransactions(), fetchBalances()]);
-            }
-          )
-          .on(
-            'postgres_changes',
-            {
-              event: '*',
-              schema: 'public',
-              table: 'wallet_transactions',
-              filter: `to_user_id=eq.${user.id}`
-            },
-            (payload) => {
-              console.log('💰 Incoming transaction:', payload);
-              Promise.all([fetchTransactions(), fetchBalances()]);
-            }
-          )
-          .subscribe((status) => {
-            console.log('📡 Wallet subscription status:', status);
-          });
-
-        return () => {
-          supabase.removeChannel(channel);
-        };
-      }
     };
 
     initializeData();
@@ -370,6 +323,7 @@ export function useWallet() {
     exchangeCurrency,
     transferFunds,
     exchangeAndSend,
-    refreshData
+    refreshData,
+    isLoaded: !loading || balances.length > 0
   };
 }

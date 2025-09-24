@@ -77,7 +77,7 @@ export default function Wallet() {
   const [exchangeAndSendOpen, setExchangeAndSendOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<string>('');
   const [activeTab, setActiveTab] = useState("balance-overview");
-  const { balances, transactions, loading, error, getBalance } = useWallet();
+  const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
 
   // Handle opening specific wallet actions
   const handleWalletAction = (actionType: string, currency?: string) => {
@@ -161,13 +161,14 @@ export default function Wallet() {
                   <WalletBalanceCard
                     type="tokens"
                     title="VTN Tokens"
-                    balance={`${getBalance('VTN').toLocaleString()} VTN`}
+                    balance={getBalance('VTN') !== null ? `${getBalance('VTN')!.toLocaleString()} VTN` : "Loading..."}
                     subBalance="Staked: 25%"
                     change="+5.7%"
                     changeType="increase"
                     status="Growing"
                     description="Vitana Network Tokens for governance and staking rewards"
                     className="h-full"
+                    isLoading={!isLoaded}
                     primaryAction={{
                       label: "Stake Tokens",
                       onClick: () => handleWalletAction('stake-tokens'),
@@ -202,13 +203,14 @@ export default function Wallet() {
                   <WalletBalanceCard
                     type="cash"
                     title="USD Balance"
-                    balance={`$${getBalance('USD').toLocaleString()}`}
+                    balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+2.3%"
                     changeType="increase"
                     status="Active"
                     description="US Dollar balance for instant purchases, withdrawals and secure transactions"
                     className="h-full"
+                    isLoading={!isLoaded}
                     primaryAction={{
                       label: "Add Funds",
                       onClick: () => handleWalletAction('add-funds'),
@@ -243,13 +245,14 @@ export default function Wallet() {
                   <WalletBalanceCard
                     type="credits"
                     title="Credits Balance"
-                    balance={`${getBalance('CREDITS').toLocaleString()} Credits`}
+                    balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+12.1%"
                     changeType="increase"
                     status="Active"
                     description="Platform credits for seamless transactions, rewards and premium features"
                     className="h-full"
+                    isLoading={!isLoaded}
                     primaryAction={{
                       label: "Buy Credits",
                       onClick: () => handleWalletAction('buy-credits'),

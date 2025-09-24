@@ -72,7 +72,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
     }
 
     const exchangeAmount = parseFloat(amount);
-    const currentBalance = getBalance(fromCurrency);
+    const currentBalance = getBalance(fromCurrency) || 0;
 
     if (exchangeAmount > currentBalance) {
       toast({
@@ -99,7 +99,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
   };
 
   const calculation = amount ? calculateExchange(parseFloat(amount), fromCurrency, toCurrency) : null;
-  const fromBalance = getBalance(fromCurrency);
+  const fromBalance = getBalance(fromCurrency) || 0;
   const isValidAmount = amount && parseFloat(amount) > 0 && parseFloat(amount) <= fromBalance;
 
   return (

@@ -74,7 +74,7 @@ export function PaymentMessageHandler({
 
   const canAfford = (amount: number, currency: string) => {
     const normalizedCurrency = (currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS';
-    return walletGetBalance(normalizedCurrency) >= amount;
+    return (walletGetBalance(normalizedCurrency) || 0) >= amount;
   };
 
   const handlePaymentAccept = async () => {
@@ -311,7 +311,7 @@ export function PaymentMessageHandler({
 
   const renderPaymentRequest = () => {
     const { amount, currency, description, status = 'pending' } = paymentData;
-    const currentBalance = walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS');
+    const currentBalance = (walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS') || 0);
     const canPay = canAfford(amount, currency);
     const effectiveStatus = isCompleted ? 'completed' : status;
 

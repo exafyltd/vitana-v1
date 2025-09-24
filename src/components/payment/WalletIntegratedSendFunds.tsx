@@ -47,7 +47,7 @@ export default function WalletIntegratedSendFunds({
     return currency.icon;
   };
 
-  const userBalance = getBalance(currency);
+  const userBalance = getBalance(currency) || 0;
   const canAfford = parseFloat(amount || '0') <= userBalance;
 
   const handleSend = async () => {

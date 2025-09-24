@@ -64,7 +64,7 @@ export default function WalletIntegratedExchangeAndSend({
 
   const canAfford = () => {
     const paymentAmount = parseFloat(amount) || 0;
-    return getBalance(fromCurrency as "USD" | "VTN" | "CREDITS") >= paymentAmount;
+    return (getBalance(fromCurrency as "USD" | "VTN" | "CREDITS") || 0) >= paymentAmount;
   };
 
   const handleSwapCurrencies = () => {

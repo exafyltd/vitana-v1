@@ -25,8 +25,8 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
   const [creditAmount, setCreditAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const currentCredits = getBalance('CREDITS');
-  const usdBalance = getBalance('USD');
+  const currentCredits = getBalance('CREDITS') || 0;
+  const usdBalance = getBalance('USD') || 0;
   
   const creditPackages = [
     { credits: 100, cost: 25, bonus: 0, popular: false },

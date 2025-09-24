@@ -25,7 +25,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
   const [fundAmount, setFundAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const currentBalance = getBalance('USD');
+  const currentBalance = getBalance('USD') || 0;
   const quickAmounts = [25, 50, 100, 200, 500];
   const paymentMethods = [
     { id: 'card', name: 'Credit/Debit Card', icon: CreditCard, fee: '2.9%' },

@@ -64,7 +64,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
     }
 
     const sendAmount = parseFloat(amount);
-    const currentBalance = getBalance(currency);
+    const currentBalance = getBalance(currency) || 0;
 
     if (sendAmount > currentBalance) {
       toast({
@@ -102,7 +102,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
     }
   };
 
-  const balance = getBalance(currency);
+  const balance = getBalance(currency) || 0;
   const total = amount ? parseFloat(amount) : 0;
   const isValidAmount = amount && parseFloat(amount) > 0 && total <= balance;
   const selectedMember = members.find(m => m.user_id === selectedRecipient);

@@ -25,7 +25,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
   const [stakeAmount, setStakeAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const vtnBalance = getBalance('VTN');
+  const vtnBalance = getBalance('VTN') || 0;
   const stakingPeriods = [
     { period: '30 days', apy: '8%', multiplier: 1.2 },
     { period: '90 days', apy: '12%', multiplier: 1.5 },

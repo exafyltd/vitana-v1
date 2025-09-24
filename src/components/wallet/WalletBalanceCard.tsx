@@ -28,6 +28,7 @@ interface WalletBalanceCardProps {
   onClick?: () => void;
   primaryAction?: ActionConfig;
   secondaryActions?: ActionConfig[];
+  isLoading?: boolean;
 }
 
 export function WalletBalanceCard({
@@ -43,7 +44,8 @@ export function WalletBalanceCard({
   className,
   onClick,
   primaryAction,
-  secondaryActions
+  secondaryActions,
+  isLoading = false
 }: WalletBalanceCardProps) {
   
   const getIcon = () => {
@@ -139,14 +141,22 @@ export function WalletBalanceCard({
           {/* Balance Display */}
           <div className="space-y-2">
             <div className="text-3xl font-bold text-foreground">
-              {balance}
+              {isLoading ? (
+                <div className="h-9 w-32 bg-muted/50 animate-pulse rounded" />
+              ) : (
+                balance
+              )}
             </div>
             {subBalance && (
               <div className="text-sm text-muted-foreground">
-                {subBalance}
+                {isLoading ? (
+                  <div className="h-4 w-24 bg-muted/30 animate-pulse rounded" />
+                ) : (
+                  subBalance
+                )}
               </div>
             )}
-            {change && (
+            {change && !isLoading && (
               <div className={cn("text-sm flex items-center gap-1", getChangeColor())}>
                 {changeType === "increase" && <TrendingUp className="h-3 w-3" />}
                 {changeType === "decrease" && <TrendingUp className="h-3 w-3 rotate-180" />}

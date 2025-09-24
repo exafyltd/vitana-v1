@@ -72,7 +72,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
     }
 
     const exchangeAmount = parseFloat(amount);
-    const currentBalance = getBalance(fromCurrency);
+    const currentBalance = getBalance(fromCurrency) || 0;
 
     if (exchangeAmount > currentBalance) {
       toast({
@@ -129,7 +129,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
     }
   };
 
-  const balance = getBalance(fromCurrency);
+  const balance = getBalance(fromCurrency) || 0;
   const calculation = amount ? calculateExchange(parseFloat(amount), fromCurrency, toCurrency) : null;
   const isValidAmount = amount && parseFloat(amount) > 0 && parseFloat(amount) <= balance;
   const selectedMember = members.find(m => m.user_id === selectedRecipient);

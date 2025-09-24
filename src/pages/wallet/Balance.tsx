@@ -63,7 +63,7 @@ function Balance() {
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isTokensOpen, setIsTokensOpen] = useState(false);
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
-  const { balances, transactions, loading, error, getBalance } = useWallet();
+  const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
 
   const splitBarOptions = [
     { value: "credits", label: "Credits Account" },
@@ -129,12 +129,13 @@ function Balance() {
                 <WalletBalanceCard
                   type="credits"
                   title="Credits Balance"
-                  balance={`${getBalance('CREDITS').toLocaleString()} credits`}
+                  balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} credits` : "Loading..."}
                   subBalance="Available: 100%"
                   change="+12.1%"
                   changeType="increase"
                   status="Active"
                   description="Use credits for health services, lab tests, and premium features"
+                  isLoading={!isLoaded}
                 />
                 <WalletBalanceCard
                   type="credits"
@@ -181,12 +182,13 @@ function Balance() {
                 <WalletBalanceCard
                   type="tokens"
                   title="VTN Balance"
-                  balance={`${getBalance('VTN').toLocaleString()} VTN`}
+                  balance={getBalance('VTN') !== null ? `${getBalance('VTN')!.toLocaleString()} VTN` : "Loading..."}
                   subBalance="Staked: 25%"
                   change="+5.7%"
                   changeType="increase"
                   status="Growing"
                   description="Vitana Network tokens for governance and rewards"
+                  isLoading={!isLoaded}
                 />
                 <WalletBalanceCard
                   type="tokens"
@@ -233,12 +235,13 @@ function Balance() {
                 <WalletBalanceCard
                   type="cash"
                   title="USD Balance"
-                  balance={`$${getBalance('USD').toLocaleString()}`}
+                  balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
                   subBalance="Available: 100%"
                   change="+2.3%"
                   changeType="increase"
                   status="Active"
                   description="US Dollar holdings and fiat operations"
+                  isLoading={!isLoaded}
                 />
                 <WalletBalanceCard
                   type="cash"
