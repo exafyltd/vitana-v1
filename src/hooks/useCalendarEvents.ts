@@ -170,12 +170,34 @@ export function useCalendarEvents() {
           message_id: messageId,
           user_id: user.id,
           event_id: null, // Will be updated if event creation succeeds
-          response
+          response,
+          responded_at: new Date().toISOString()
+        }, {
+          onConflict: 'message_id,user_id'
         });
 
       if (responseError) {
-        console.error('❌ Failed to record invite response:', responseError);
-        throw responseError;
+        console.error('❌ Failed to record invite response:', responseError.code, responseError);
+        
+        // Fallback: try direct update if upsert fails with duplicate key
+        if (responseError.code === '23505') {
+          const { error: updateError } = await supabase
+            .from('calendar_invite_responses')
+            .update({ 
+              response, 
+              responded_at: new Date().toISOString(),
+              event_id: null 
+            })
+            .eq('message_id', messageId)
+            .eq('user_id', user.id);
+          
+          if (updateError) {
+            console.error('❌ Fallback update also failed:', updateError);
+            throw updateError;
+          }
+        } else {
+          throw responseError;
+        }
       }
 
       console.log('✅ Invite response recorded successfully');
@@ -257,13 +279,19 @@ export function useCalendarEvents() {
   // Get invite response for a message
   const getInviteResponse = async (messageId: string): Promise<CalendarInviteResponse | null> => {
     try {
+      const user = (await supabase.auth.getUser()).data.user;
+      if (!user) return null;
+
       const { data, error } = await supabase
         .from('calendar_invite_responses')
         .select('*')
         .eq('message_id', messageId)
-        .single();
+        .eq('user_id', user.id)
+        .order('responded_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "not found"
+      if (error) throw error;
 
       return data as CalendarInviteResponse;
     } catch (err) {
