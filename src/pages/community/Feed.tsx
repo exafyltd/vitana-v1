@@ -35,6 +35,7 @@ export default withScreenId(function Feed() {
             placeholder="Search Feed…"
             onSearch={(query) => console.log('Search Feed:', query)}
           />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setCreateContentOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Content
