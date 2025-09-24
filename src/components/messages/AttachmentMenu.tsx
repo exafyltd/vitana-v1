@@ -130,9 +130,12 @@ export function AttachmentMenu({
             variant="ghost"
             className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
             onClick={() => {
+              console.log('AttachmentMenu: Send Funds clicked', { recipient });
               if (recipient) {
+                console.log('AttachmentMenu: Using recipient-specific send funds');
                 setShowSendFunds(true);
               } else {
+                console.log('AttachmentMenu: Using global send funds');
                 setShowGlobalSendFunds(true);
               }
             }}
@@ -146,9 +149,12 @@ export function AttachmentMenu({
             variant="ghost"
             className="w-full justify-start h-10 px-3"
             onClick={() => {
+              console.log('AttachmentMenu: Request Payment clicked', { recipient });
               if (recipient) {
+                console.log('AttachmentMenu: Using recipient-specific payment request');
                 setShowPaymentRequest(true);
               } else {
+                console.log('AttachmentMenu: Using global payment request');
                 setShowGlobalPaymentRequest(true);
               }
             }}
