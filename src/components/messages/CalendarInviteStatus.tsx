@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, X, Clock } from 'lucide-react';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CalendarInviteStatusProps {
   messageId: string;
@@ -43,6 +44,24 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
     };
 
     fetchResponse();
+
+    // Set up real-time subscription for this specific message's responses
+    const channel = supabase
+      .channel(`invite-response-${messageId}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public', 
+        table: 'calendar_invite_responses',
+        filter: `message_id=eq.${messageId}`
+      }, (payload) => {
+        console.log('📨 Invite response updated:', payload);
+        fetchResponse(); // Refresh response data
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [messageId, getInviteResponse]);
 
   if (loading) return null;

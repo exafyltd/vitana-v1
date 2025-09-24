@@ -250,6 +250,9 @@ export function useCalendarEvents() {
             // Don't throw here - the event was created successfully
           }
 
+          // Refresh events list to show the new event immediately
+          await fetchEvents();
+
         } catch (eventError) {
           console.error('❌ Failed to create calendar event:', eventError);
           
@@ -345,6 +348,37 @@ export function useCalendarEvents() {
 
   useEffect(() => {
     fetchEvents();
+
+    // Set up real-time subscription for calendar events
+    const eventsChannel = supabase
+      .channel('calendar-events-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'calendar_events'
+      }, (payload) => {
+        console.log('📅 Calendar event change detected:', payload);
+        fetchEvents(); // Refresh events list
+      })
+      .subscribe();
+
+    // Set up real-time subscription for invite responses 
+    const responsesChannel = supabase
+      .channel('calendar-responses-changes')
+      .on('postgres_changes', {
+        event: '*', 
+        schema: 'public',
+        table: 'calendar_invite_responses'
+      }, (payload) => {
+        console.log('📨 Calendar invite response change detected:', payload);
+        // This will trigger updates in CalendarInviteStatus components
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(eventsChannel);
+      supabase.removeChannel(responsesChannel);
+    };
   }, []);
 
   return {
