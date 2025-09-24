@@ -154,14 +154,16 @@ export function useCalendarEvents() {
   // Handle calendar invite response
   const respondToInvite = async (
     messageId: string, 
-    response: 'accepted' | 'declined' | 'maybe',
+    response: 'accepted' | 'declined' | 'maybe' | 'accept' | 'decline',
     eventData?: Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>
   ) => {
     try {
       const user = (await supabase.auth.getUser()).data.user;
       if (!user) throw new Error('User not authenticated');
 
-      console.log('📅 Responding to calendar invite:', { messageId, response, eventData });
+      const normalized = (response === 'accept' ? 'accepted' : response === 'decline' ? 'declined' : response) as 'accepted' | 'declined' | 'maybe';
+
+      console.log('📅 Responding to calendar invite:', { messageId, response, normalized, eventData });
 
       // Always record the invite response first
       const { error: responseError } = await supabase
@@ -170,7 +172,7 @@ export function useCalendarEvents() {
           message_id: messageId,
           user_id: user.id,
           event_id: null, // Will be updated if event creation succeeds
-          response,
+          response: normalized,
           responded_at: new Date().toISOString()
         }, {
           onConflict: 'message_id,user_id'
@@ -184,7 +186,7 @@ export function useCalendarEvents() {
           const { error: updateError } = await supabase
             .from('calendar_invite_responses')
             .update({ 
-              response, 
+              response: normalized, 
               responded_at: new Date().toISOString(),
               event_id: null 
             })
@@ -205,7 +207,7 @@ export function useCalendarEvents() {
       let eventId: string | undefined;
 
       // If accepting the invite, create the calendar event
-      if (response === 'accepted' && eventData) {
+      if (normalized === 'accepted' && eventData) {
         try {
           console.log('📝 Creating calendar event for accepted invite:', eventData);
           
@@ -263,7 +265,7 @@ export function useCalendarEvents() {
         }
       }
 
-      return { eventId, response };
+      return { eventId, response: normalized };
     } catch (err) {
       console.error('❌ Failed to respond to invite:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to respond to invite';
@@ -293,7 +295,12 @@ export function useCalendarEvents() {
 
       if (error) throw error;
 
-      return data as CalendarInviteResponse;
+      const normalized = data ? { 
+        ...data, 
+        response: data.response === 'accept' ? 'accepted' : data.response === 'decline' ? 'declined' : data.response
+      } : null;
+
+      return normalized as CalendarInviteResponse | null;
     } catch (err) {
       console.error('Error fetching invite response:', err);
       return null;

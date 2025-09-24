@@ -474,12 +474,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           
         case 'calendar_accept':
         case 'calendar_decline':
-        case 'calendar_maybe':
-          const response = (action.action || action.type).replace('calendar_', '');
+        case 'calendar_maybe': {
+          const raw = (action.action || action.type).replace('calendar_', '');
+          const response: 'accepted' | 'declined' | 'maybe' =
+            raw === 'accept' ? 'accepted' :
+            raw === 'decline' ? 'declined' : 'maybe';
           const eventData = action.messageData;
           
           try {
-            console.log('🎯 Processing calendar action:', { action: action.action, messageData: eventData });
+            console.log('🎯 Processing calendar action:', { action: action.action, raw, normalized: response, messageData: eventData });
             
             // Validate event data for accept actions
             if (response === 'accepted' && eventData) {
@@ -488,22 +491,40 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               }
             }
 
+            const composeIso = (dateStr?: string, timeStr?: string) => {
+              if (!dateStr) return new Date().toISOString();
+              const dt = new Date(dateStr);
+              if (timeStr && /^\d{1,2}:\d{2}/.test(timeStr)) {
+                const [h, m] = timeStr.split(':').map(Number);
+                dt.setHours(h, m, 0, 0);
+              }
+              return dt.toISOString();
+            };
+
+            const start_time = response === 'accepted' && eventData
+              ? composeIso(eventData.date, eventData.time)
+              : undefined;
+
+            const end_time = response === 'accepted' && eventData
+              ? (eventData.endDate || eventData.endTime ? composeIso(eventData.endDate || eventData.date, eventData.endTime) : undefined)
+              : undefined;
+
             // Respond to the invite (this will create the event if accepted)
             const result = await respondToInvite(
               action.messageId || 'unknown',
-              response as 'accepted' | 'declined' | 'maybe',
+              response,
               response === 'accepted' && eventData ? {
                 title: eventData.title || 'Calendar Event',
                 description: eventData.description,
-                start_time: eventData.date ? new Date(eventData.date).toISOString() : new Date().toISOString(),
-                end_time: eventData.endDate ? new Date(eventData.endDate).toISOString() : undefined,
+                start_time: start_time || new Date().toISOString(),
+                end_time,
                 location: eventData.location,
                 event_type: (eventData.type as any) || 'personal',
                 status: 'confirmed',
                 priority: (eventData.priority as any) || 'medium',
                 is_recurring: false,
                 attendees_count: eventData.attendees || 0,
-                has_rewards: eventData.hasRewards || false,
+                has_rewards: !!eventData.hasRewards,
                 metadata: { originalMessage: eventData },
                 source_type: 'invite',
                 user_id: '' // Will be overridden by the hook
@@ -524,7 +545,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             toast({
               title: 'Response Sent',
               description: responseMessages[response as keyof typeof responseMessages],
-              variant: result?.error ? 'default' : 'default',
+              variant: 'default',
             });
 
           } catch (error) {
@@ -551,6 +572,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             });
           }
           break;
+        }
           
         case 'quick_reply':
           await handleSendMessage(action.text);

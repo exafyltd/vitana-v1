@@ -50,7 +50,12 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
   const getStatusBadge = () => {
     if (!response) return null;
     
-    switch (response.response) {
+    const resp =
+      response.response === 'accept' ? 'accepted' :
+      response.response === 'decline' ? 'declined' :
+      response.response;
+    
+    switch (resp) {
       case 'accepted':
         return (
           <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
