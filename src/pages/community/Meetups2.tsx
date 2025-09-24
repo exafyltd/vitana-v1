@@ -14,7 +14,8 @@ import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthProvider";
 import happyCoffeeGroup from '@/assets/happy-coffee-group.jpg';
 import { 
   CalendarDays, 
@@ -215,7 +216,7 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
   const baseAuthor = event.author || { name: event.organizer_name || 'Community', avatar: undefined };
   const authorAvatar = sanitizeUrl(baseAuthor.avatar) ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=faces';
 
-  const canEdit = currentUserId && event.created_by === currentUserId && !event.id?.startsWith('dummy');
+  const canEdit = !!currentUserId && (event.created_by === currentUserId || event.createdBy === currentUserId) && !String(event.id || '').startsWith('dummy');
   
   // Debug logging
   console.log('Event check:', {
@@ -382,9 +383,9 @@ const Meetups = () => {
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   
-  const { 
+  
+const { 
     events,
     todayEvents,
     upcomingEvents,
@@ -393,14 +394,9 @@ const Meetups = () => {
     searchEvents
   } = useCommunityEvents();
 
-  // Get current user ID for edit permissions
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setCurrentUserId(user?.id || null);
-    };
-    getCurrentUser();
-  }, []);
+  // Use auth context for current user ID
+  const { user } = useAuth();
+  const currentUserId = user?.id || null;
 
   const handleEditEvent = (event: any) => {
     setSelectedEvent(event);
