@@ -6,16 +6,25 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CreateMeetupPopup } from '@/components/CreateMeetupPopup';
+import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Plus, Users, Search, Calendar, MapPin, Clock } from "lucide-react";
-import { CreateMeetupPopup } from "@/components/CreateMeetupPopup";
+import { NewsCard } from '@/components/crossover/NewsCard';
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { useState } from "react";
-import { useCommunityEvents } from "@/hooks/useCommunityEvents";
-import { format } from "date-fns";
-import { Badge } from "@/components/ui/badge";
-import { Apple, Droplets, Dumbbell, Brain, Moon } from "lucide-react";
+import { 
+  CalendarDays, 
+  Clock, 
+  MapPin, 
+  Users, 
+  Search, 
+  Calendar,
+  Plus,
+  Heart,
+  Activity,
+  BookOpen
+} from 'lucide-react';
 
 // Featured dummy events for hybrid display
 const featuredTodayEvents = [
@@ -30,7 +39,9 @@ const featuredTodayEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Mental",
-    icon: Brain
+    imageUrl: "/api/placeholder/600/400?text=Morning+Yoga",
+    author: { name: "Wellness Community", avatar: "/api/placeholder/32/32" },
+    category: "wellness"
   },
   {
     id: "dummy-today-2", 
@@ -43,7 +54,9 @@ const featuredTodayEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Nutrition",
-    icon: Apple
+    imageUrl: "/api/placeholder/600/400?text=Cooking+Workshop",
+    author: { name: "Chef Maria", avatar: "/api/placeholder/32/32" },
+    category: "wellness"
   },
   {
     id: "dummy-today-3",
@@ -56,7 +69,9 @@ const featuredTodayEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Exercise",
-    icon: Dumbbell
+    imageUrl: "/api/placeholder/600/400?text=HIIT+Bootcamp",
+    author: { name: "FitLife Trainers", avatar: "/api/placeholder/32/32" },
+    category: "fitness"
   }
 ];
 
@@ -72,7 +87,9 @@ const featuredUpcomingEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Exercise",
-    icon: Dumbbell
+    imageUrl: "/api/placeholder/600/400?text=Hiking+Adventure",
+    author: { name: "Nature Explorers", avatar: "/api/placeholder/32/32" },
+    category: "outdoor"
   },
   {
     id: "dummy-upcoming-2",
@@ -85,7 +102,9 @@ const featuredUpcomingEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Mental",
-    icon: Brain
+    imageUrl: "/api/placeholder/600/400?text=Stress+Management",
+    author: { name: "Dr. Sarah Wilson", avatar: "/api/placeholder/32/32" },
+    category: "wellness"
   },
   {
     id: "dummy-upcoming-3",
@@ -98,7 +117,9 @@ const featuredUpcomingEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Nutrition",
-    icon: Apple
+    imageUrl: "/api/placeholder/600/400?text=Plant+Based+Cooking",
+    author: { name: "Green Kitchen Academy", avatar: "/api/placeholder/32/32" },
+    category: "wellness"
   },
   {
     id: "dummy-upcoming-4",
@@ -111,110 +132,135 @@ const featuredUpcomingEvents = [
     created_by: "dummy", 
     event_type: "meetup",
     pillar: "Sleep",
-    icon: Moon
+    imageUrl: "/api/placeholder/600/400?text=Sleep+Hygiene",
+    author: { name: "Sleep Wellness Center", avatar: "/api/placeholder/32/32" },
+    category: "wellness"
   }
 ];
 
-export default withScreenId(function Meetups() {
-  const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
-  const { events, todayEvents, upcomingEvents, loading, searchEvents } = useCommunityEvents();
+// Transform event data to NewsCard format
+const transformEventToNewsCard = (event: any) => ({
+  title: event.title,
+  description: event.description,
+  imageUrl: event.image_url || event.imageUrl || "/api/placeholder/600/400?text=Community+Meetup",
+  category: event.category || "community",
+  pillar: event.category || "community",
+  author: event.author || {
+    name: event.organizer_name || "Community",
+    avatar: "/api/placeholder/32/32"
+  },
+  location: event.location || "TBA",
+  attendees: event.participant_count || 0,
+  timestamp: formatEventTime(event.start_time)
+});
 
-  const formatEventTime = (dateString: string) => {
-    return format(new Date(dateString), "MMM d, h:mm a");
-  };
+const formatEventTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString('en-US', { 
+    hour: 'numeric', 
+    minute: '2-digit', 
+    hour12: true 
+  });
+};
 
-  const renderEventCard = (event: any, isRealEvent: boolean = true) => (
-    <Card key={event.id} className="hover:shadow-lg transition-shadow">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold line-clamp-2">{event.title}</h3>
-          <Badge variant={isRealEvent ? "default" : "secondary"} className="text-xs">
-            {isRealEvent ? "Community Meetup" : "Featured Event"}
-          </Badge>
-        </div>
-        
-        {event.description && (
-          <p className="text-muted-foreground mb-4 line-clamp-2">{event.description}</p>
-        )}
-        
-        <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-primary" />
-            <span>{formatEventTime(event.start_time)}</span>
-          </div>
-          
-          {event.location && (
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span>{event.location}</span>
-            </div>
-          )}
-          
-          {event.virtual_link && (
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-primary" />
-              <span>Virtual Event</span>
-            </div>
-          )}
-          
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-primary" />
-            <span>
-              {event.participant_count} participant{event.participant_count !== 1 ? 's' : ''}
-              {event.max_participants && ` / ${event.max_participants}`}
-            </span>
-          </div>
-        </div>
-        
-        <div className="flex gap-2 mt-4">
-          <Button size="sm" variant="outline" className="flex-1">
-            View Details
-          </Button>
-          <Button size="sm" className="flex-1">
-            Join Meetup
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
-
-  const renderEventsSection = (realEvents: any[], featuredEvents: any[], sectionTitle: string) => {
-    const combinedEvents = [
-      ...realEvents.map(event => ({ ...event, isReal: true })),
-      ...featuredEvents.map(event => ({ ...event, isReal: false }))
-    ];
-
-    if (combinedEvents.length === 0) {
-      return (
-        <div className="text-center py-8">
-          <Users className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-          <p className="text-muted-foreground">No meetups scheduled yet</p>
-        </div>
-      );
-    }
-
+const renderEventGrid = (events: any[]) => {
+  if (events.length === 0) {
     return (
-      <div className="space-y-6">
-        {realEvents.length > 0 && (
-          <div>
-            <h3 className="text-base font-medium text-muted-foreground mb-4">Community Created</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {realEvents.map(event => renderEventCard(event, true))}
+      <div className="text-center py-12">
+        <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+        <h3 className="text-lg font-semibold mb-2">No meetups scheduled</h3>
+        <p className="text-muted-foreground">Create your first meetup to bring the community together!</p>
+      </div>
+    );
+  }
+
+  const rows = [];
+  
+  // Group events into rows of 3 using CTO-approved patterns
+  for (let i = 0; i < events.length; i += 3) {
+    const rowEvents = events.slice(i, i + 3);
+    const isEvenRow = Math.floor(i / 3) % 2 === 0;
+    
+    rows.push(
+      <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
+        {isEvenRow ? (
+          // Row pattern: big + small + small
+          <>
+            <div className="col-span-6">
+              <NewsCard
+                key={`${i}-0`}
+                {...transformEventToNewsCard(rowEvents[0])}
+                className="h-full"
+              />
             </div>
-          </div>
-        )}
-        
-        {featuredEvents.length > 0 && (
-          <div>
-            <h3 className="text-base font-medium text-muted-foreground mb-4">Featured Events</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredEvents.map(event => renderEventCard(event, false))}
-            </div>
-          </div>
+            {rowEvents[1] && (
+              <div className="col-span-3">
+                <NewsCard
+                  key={`${i}-1`}
+                  {...transformEventToNewsCard(rowEvents[1])}
+                  className="h-full"
+                />
+              </div>
+            )}
+            {rowEvents[2] && (
+              <div className="col-span-3">
+                <NewsCard
+                  key={`${i}-2`}
+                  {...transformEventToNewsCard(rowEvents[2])}
+                  className="h-full"
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          // Row pattern: small + small + big
+          <>
+            {rowEvents[0] && (
+              <div className="col-span-3">
+                <NewsCard
+                  key={`${i}-0`}
+                  {...transformEventToNewsCard(rowEvents[0])}
+                  className="h-full"
+                />
+              </div>
+            )}
+            {rowEvents[1] && (
+              <div className="col-span-3">
+                <NewsCard
+                  key={`${i}-1`}
+                  {...transformEventToNewsCard(rowEvents[1])}
+                  className="h-full"
+                />
+              </div>
+            )}
+            {rowEvents[2] && (
+              <div className="col-span-6">
+                <NewsCard
+                  key={`${i}-2`}
+                  {...transformEventToNewsCard(rowEvents[2])}
+                  className="h-full"
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
     );
-  };
+  }
+  
+  return <div className="px-6">{rows}</div>;
+};
+
+const Meetups = () => {
+  const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
+  const { 
+    events,
+    todayEvents,
+    upcomingEvents,
+    loading,
+    searchQuery,
+    searchEvents
+  } = useCommunityEvents();
 
   return (
     <AppLayout>
@@ -246,21 +292,18 @@ export default withScreenId(function Meetups() {
             <p className="text-muted-foreground">Loading meetups...</p>
           </div>
         ) : (
-          <div className="space-y-8 mt-6">
-            {(todayEvents.length > 0 || featuredTodayEvents.length > 0) && (
-              <div>
-                <h2 className="text-xl font-semibold mb-4">Today's Meetups</h2>
-                {renderEventsSection(todayEvents, featuredTodayEvents, "Today")}
-              </div>
-            )}
-            
-            {(upcomingEvents.length > 0 || featuredUpcomingEvents.length > 0) && (
-              <div>
-                <h2 className="text-xl font-semibold mb-4">Upcoming Meetups</h2>
-                {renderEventsSection(upcomingEvents, featuredUpcomingEvents, "Upcoming")}
-              </div>
-            )}
-          </div>
+          <SplitBar defaultValue="today" className="mt-6">
+            <SplitBarList className="grid w-full grid-cols-2">
+              <SplitBarTrigger value="today">Today</SplitBarTrigger>
+              <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
+            </SplitBarList>
+            <SplitBarContent value="today" className="mt-6">
+              {renderEventGrid([...todayEvents, ...featuredTodayEvents])}
+            </SplitBarContent>
+            <SplitBarContent value="upcoming" className="mt-6">
+              {renderEventGrid([...upcomingEvents, ...featuredUpcomingEvents])}
+            </SplitBarContent>
+          </SplitBar>
         )}
       </div>
 
@@ -271,4 +314,6 @@ export default withScreenId(function Meetups() {
       />
     </AppLayout>
   );
-}, SCREEN_IDS.COMMUNITY_MEETUPS);
+};
+
+export default withScreenId(Meetups, SCREEN_IDS.COMMUNITY_MEETUPS);

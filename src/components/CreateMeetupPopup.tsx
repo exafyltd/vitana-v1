@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, MapPin, Calendar, Clock, X, AlertCircle } from "lucide-react";
+import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from "@/hooks/use-toast";
 
@@ -34,11 +34,42 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
     capacity: "",
     requirements: "",
     isRecurring: false,
-    recurringType: "weekly" // daily, weekly, monthly
+    recurringType: "weekly",
+    imageUrl: ""
   });
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const availableTags = ["Beginner Friendly", "All Levels", "Advanced", "Women Only", "Men Only", "Seniors", "Youth", "Family"];
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  
+  const availableTags = [
+    'Beginner Friendly', 'Outdoor', 'Indoor', 'Free', 'Family Friendly', 
+    'Adults Only', 'Bring Equipment', 'Materials Provided', 'Expert Led',
+    'Group Activity', 'Individual Focus', 'Certification Available'
+  ];
+
+  const defaultImages = [
+    '/api/placeholder/600/400?text=Community+Meetup',
+    '/api/placeholder/600/400?text=Wellness+Circle',
+    '/api/placeholder/600/400?text=Outdoor+Adventure',
+    '/api/placeholder/600/400?text=Learning+Workshop',
+    '/api/placeholder/600/400?text=Social+Gathering',
+    '/api/placeholder/600/400?text=Fitness+Group'
+  ];
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      // Create a temporary URL for preview
+      const imageUrl = URL.createObjectURL(file);
+      setFormData({...formData, imageUrl});
+    }
+  };
+
+  const selectDefaultImage = (imageUrl: string) => {
+    setFormData({...formData, imageUrl});
+    setSelectedImage(null);
+  };
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev => 
@@ -106,6 +137,7 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
       start_time: startTime,
       end_time: endTime,
       max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
+      image_url: formData.imageUrl || defaultImages[0]
     };
 
     const result = await createEvent(eventData);
@@ -128,9 +160,11 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
         capacity: "",
         requirements: "",
         isRecurring: false,
-        recurringType: "weekly"
+        recurringType: "weekly",
+        imageUrl: ""
       });
       setSelectedTags([]);
+      setSelectedImage(null);
       setErrors({});
     } else {
       toast({
@@ -236,6 +270,65 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
                       {selectedTags.includes(tag) && <X className="w-3 h-3 ml-1" />}
                     </Badge>
                   ))}
+                </div>
+              </div>
+
+              <div>
+                <Label>Meetup Image</Label>
+                <div className="mt-2 space-y-4">
+                  <div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      id="image-upload"
+                    />
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      onClick={() => document.getElementById('image-upload')?.click()}
+                      className="w-full"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Upload Custom Image
+                    </Button>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">Or choose a default image:</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {defaultImages.map((imageUrl, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => selectDefaultImage(imageUrl)}
+                          className={`relative aspect-video rounded border-2 overflow-hidden transition-all ${
+                            formData.imageUrl === imageUrl 
+                              ? 'border-primary ring-2 ring-primary/20' 
+                              : 'border-border hover:border-primary/50'
+                          }`}
+                        >
+                          <img 
+                            src={imageUrl} 
+                            alt={`Default option ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {formData.imageUrl && (
+                    <div className="border rounded p-2">
+                      <p className="text-sm text-muted-foreground mb-2">Selected image:</p>
+                      <img 
+                        src={formData.imageUrl} 
+                        alt="Preview" 
+                        className="w-full h-32 object-cover rounded"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
