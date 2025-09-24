@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CreateMeetupPopupProps {
   isOpen: boolean;
@@ -125,73 +126,100 @@ const generateImageUrl = (title: string, description: string) => {
     }
 
     setLoading(true);
-    
-    // Create ISO datetime string
-    const startTime = new Date(`${formData.date}T${formData.time}`).toISOString();
-    
-    // Calculate end time based on duration
-    let endTime = undefined;
-    if (formData.duration) {
-      const start = new Date(startTime);
-      const durationMap = {
-        "30min": 30,
-        "1hour": 60,
-        "2hour": 120,
-        "half-day": 240,
-        "full-day": 480
+
+    try {
+      // Create ISO datetime string
+      const startTime = new Date(`${formData.date}T${formData.time}`).toISOString();
+      
+      // Calculate end time based on duration
+      let endTime: string | undefined = undefined;
+      if (formData.duration) {
+        const start = new Date(startTime);
+        const durationMap = {
+          "30min": 30,
+          "1hour": 60,
+          "2hour": 120,
+          "half-day": 240,
+          "full-day": 480
+        } as const;
+        const minutes = durationMap[formData.duration as keyof typeof durationMap] || 60;
+        start.setMinutes(start.getMinutes() + minutes);
+        endTime = start.toISOString();
+      }
+
+      // Upload selected image to Supabase Storage (covers) and use permanent public URL
+      let uploadedImageUrl: string | undefined;
+      if (selectedImage) {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          const ext = selectedImage.name.split('.').pop() || 'jpg';
+          const fileName = `${Date.now()}.${ext}`;
+          const filePath = `${(user?.id ?? 'public')}/${fileName}`;
+          const { error: uploadError } = await supabase.storage.from('covers').upload(filePath, selectedImage, {
+            upsert: true,
+            contentType: selectedImage.type,
+          });
+          if (uploadError) throw uploadError;
+          const { data: pub } = supabase.storage.from('covers').getPublicUrl(filePath);
+          uploadedImageUrl = pub.publicUrl;
+        } catch (e) {
+          console.error('Image upload failed:', e);
+          toast({
+            title: "Image upload failed",
+            description: "We’ll use an automatic fallback image.",
+            variant: "default",
+          });
+        }
+      }
+
+      const eventData = {
+        title: formData.title,
+        description: formData.description || undefined,
+        event_type: 'meetup',
+        location: formData.isVirtual ? undefined : formData.location || undefined,
+        virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
+        start_time: startTime,
+        end_time: endTime,
+        max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
+        image_url: uploadedImageUrl,
       };
-      const minutes = durationMap[formData.duration as keyof typeof durationMap] || 60;
-      start.setMinutes(start.getMinutes() + minutes);
-      endTime = start.toISOString();
-    }
 
-    const eventData = {
-      title: formData.title,
-      description: formData.description || undefined,
-      event_type: 'meetup',
-      location: formData.isVirtual ? undefined : formData.location || undefined,
-      virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
-      start_time: startTime,
-      end_time: endTime,
-      max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
-      image_url: formData.imageUrl || generateImageUrl(formData.title, formData.description || '')
-    };
-
-    const result = await createEvent(eventData);
-    
-    if (result.success) {
-      toast({
-        title: "Meetup Created!",
-        description: "Your meetup has been successfully created and will appear in the community.",
-      });
-      onClose();
-      setFormData({
-        title: "",
-        description: "",
-        category: "",
-        date: "",
-        time: "",
-        duration: "",
-        location: "",
-        isVirtual: false,
-        capacity: "",
-        requirements: "",
-        isRecurring: false,
-        recurringType: "weekly",
-        imageUrl: ""
-      });
-      setSelectedTags([]);
-      setSelectedImage(null);
-      setErrors({});
-    } else {
-      toast({
-        title: "Error Creating Meetup",
-        description: "There was an issue creating your meetup. Please try again.",
-        variant: "destructive",
-      });
+      const result = await createEvent(eventData);
+      
+      if (result.success) {
+        toast({
+          title: "Meetup Created!",
+          description: "Your meetup has been successfully created and will appear in the community.",
+        });
+        onClose();
+        setFormData({
+          title: "",
+          description: "",
+          category: "",
+          date: "",
+          time: "",
+          duration: "",
+          location: "",
+          isVirtual: false,
+          capacity: "",
+          requirements: "",
+          isRecurring: false,
+          recurringType: "weekly",
+          imageUrl: ""
+        });
+        setSelectedTags([]);
+        setSelectedImage(null);
+        setErrors({});
+      } else {
+        toast({
+          title: "Error Creating Meetup",
+          description: "There was an issue creating your meetup. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (

@@ -55,8 +55,8 @@ const featuredTodayEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Nutrition",
-    imageUrl: "/api/placeholder/600/400?text=Cooking+Workshop",
-    author: { name: "Chef Maria", avatar: "/api/placeholder/32/32" },
+    // imageUrl omitted to use curated fallback
+    author: { name: "Chef Maria", avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=64&h=64&fit=crop&crop=faces" },
     category: "wellness"
   },
   {
@@ -70,8 +70,8 @@ const featuredTodayEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Exercise",
-    imageUrl: "/api/placeholder/600/400?text=HIIT+Bootcamp",
-    author: { name: "FitLife Trainers", avatar: "/api/placeholder/32/32" },
+    // imageUrl omitted to use curated fallback
+    author: { name: "FitLife Trainers", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop&crop=faces" },
     category: "fitness"
   },
   {
@@ -85,7 +85,7 @@ const featuredTodayEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Exercise",
-    author: { name: "FitLife Trainers", avatar: "/api/placeholder/32/32" },
+    author: { name: "FitLife Trainers", avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=64&h=64&fit=crop&crop=faces" },
     category: "fitness"
   },
   {
@@ -99,7 +99,7 @@ const featuredTodayEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Mental",
-    author: { name: "Nature Explorers", avatar: "/api/placeholder/32/32" },
+    author: { name: "Nature Explorers", avatar: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=64&h=64&fit=crop&crop=faces" },
     category: "wellness"
   },
   {
@@ -113,7 +113,7 @@ const featuredTodayEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Exercise",
-    author: { name: "Run Together", avatar: "/api/placeholder/32/32" },
+    author: { name: "Run Together", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=faces" },
     category: "fitness"
   }
 ];
@@ -130,8 +130,8 @@ const featuredUpcomingEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Exercise",
-    imageUrl: "/api/placeholder/600/400?text=Hiking+Adventure",
-    author: { name: "Nature Explorers", avatar: "/api/placeholder/32/32" },
+    // imageUrl omitted to use curated fallback
+    author: { name: "Nature Explorers", avatar: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=64&h=64&fit=crop&crop=faces" },
     category: "outdoor"
   },
   {
@@ -145,8 +145,8 @@ const featuredUpcomingEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Mental",
-    imageUrl: "/api/placeholder/600/400?text=Stress+Management",
-    author: { name: "Dr. Sarah Wilson", avatar: "/api/placeholder/32/32" },
+    // imageUrl omitted to use curated fallback
+    author: { name: "Dr. Sarah Wilson", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=faces" },
     category: "wellness"
   },
   {
@@ -160,8 +160,8 @@ const featuredUpcomingEvents = [
     created_by: "dummy",
     event_type: "meetup",
     pillar: "Nutrition",
-    imageUrl: "/api/placeholder/600/400?text=Plant+Based+Cooking",
-    author: { name: "Green Kitchen Academy", avatar: "/api/placeholder/32/32" },
+    // imageUrl omitted to use curated fallback
+    author: { name: "Green Kitchen Academy", avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=64&h=64&fit=crop&crop=faces" },
     category: "wellness"
   },
   {
@@ -175,8 +175,8 @@ const featuredUpcomingEvents = [
     created_by: "dummy", 
     event_type: "meetup",
     pillar: "Sleep",
-    imageUrl: "/api/placeholder/600/400?text=Sleep+Hygiene",
-    author: { name: "Sleep Wellness Center", avatar: "/api/placeholder/32/32" },
+    // imageUrl omitted to use curated fallback
+    author: { name: "Sleep Wellness Center", avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=64&h=64&fit=crop&crop=faces" },
     category: "wellness"
   }
 ];
@@ -185,8 +185,22 @@ const featuredUpcomingEvents = [
 const sanitizeUrl = (url?: string) => {
   if (!url) return undefined;
   const s = String(url).trim();
-  if (!s || s.includes('undefined') || s.startsWith('/api/placeholder')) return undefined;
-  return s;
+  if (!s) return undefined;
+  const lower = s.toLowerCase();
+  // Reject unsafe or temporary schemes and known bad placeholders
+  if (
+    lower.startsWith('blob:') ||
+    lower.startsWith('data:') ||
+    lower.startsWith('javascript:') ||
+    lower.startsWith('about:') ||
+    s.includes('undefined') ||
+    s.startsWith('/api/placeholder')
+  ) {
+    return undefined;
+  }
+  const isHttp = /^https?:\/\//i.test(s);
+  const isAsset = s.startsWith('/assets/');
+  return (isHttp || isAsset) ? s : undefined;
 };
 
 // Transform event data to NewsCard format
@@ -196,7 +210,7 @@ const transformEventToNewsCard = (event: any) => {
   const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
 
   const baseAuthor = event.author || { name: event.organizer_name || 'Community', avatar: undefined };
-  const authorAvatar = sanitizeUrl(baseAuthor.avatar) ?? 'https://placehold.co/32x32?text=%20';
+  const authorAvatar = sanitizeUrl(baseAuthor.avatar) ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=faces';
 
   return {
     title: event.title,
@@ -214,32 +228,26 @@ const transformEventToNewsCard = (event: any) => {
 // Generate contextual image based on meetup content
 const generateImageUrl = (title: string, description: string) => {
   const text = `${title} ${description || ''}`.toLowerCase();
-  const build = (t: string) => `https://placehold.co/1200x800?text=${encodeURIComponent(t)}`;
-  
-  if (text.includes('yoga') || text.includes('meditation') || text.includes('mindfulness')) {
-    return build('Yoga & Meditation');
-  }
-  if (text.includes('cooking') || text.includes('nutrition') || text.includes('food') || text.includes('recipe')) {
-    return build('Healthy Cooking');
-  }
-  if (text.includes('hiking') || text.includes('outdoor') || text.includes('nature') || text.includes('trail')) {
-    return build('Outdoor Adventure');
-  }
-  if (text.includes('fitness') || text.includes('workout') || text.includes('exercise') || text.includes('hiit')) {
-    return build('Fitness Training');
-  }
-  if (text.includes('stress') || text.includes('mental') || text.includes('therapy') || text.includes('wellness')) {
-    return build('Mental Wellness');
-  }
-  if (text.includes('sleep') || text.includes('rest') || text.includes('recovery')) {
-    return build('Sleep & Recovery');  
-  }
-  if (text.includes('social') || text.includes('networking') || text.includes('community')) {
-    return build('Community Social');
-  }
-  
-  // Default community meetup image
-  return build('Community Meetup');
+
+  const urls = {
+    yoga: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1200&auto=format&q=80',
+    cooking: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=1200&auto=format&q=80',
+    hiking: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&q=80',
+    fitness: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1200&auto=format&q=80',
+    mental: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&auto=format&q=80',
+    sleep: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=1200&auto=format&q=80',
+    community: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&q=80',
+  } as const;
+
+  if (text.match(/yoga|meditation|mindfulness/)) return urls.yoga;
+  if (text.match(/cooking|nutrition|food|recipe/)) return urls.cooking;
+  if (text.match(/hiking|outdoor|nature|trail/)) return urls.hiking;
+  if (text.match(/fitness|workout|exercise|hiit/)) return urls.fitness;
+  if (text.match(/stress|mental|therapy|wellness/)) return urls.mental;
+  if (text.match(/sleep|rest|recovery/)) return urls.sleep;
+  if (text.match(/social|networking|community/)) return urls.community;
+
+  return urls.community;
 };
 
 const formatEventTime = (dateString: string) => {
