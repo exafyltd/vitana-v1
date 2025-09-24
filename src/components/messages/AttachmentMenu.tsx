@@ -122,27 +122,33 @@ export function AttachmentMenu({
       >
         <div className="grid gap-1">
           {/* Send Funds - Primary Action */}
-          {recipient && (
-            <Button
-              variant="ghost"
-              className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
-              onClick={() => setShowSendFunds(true)}
-            >
-              <Send className="w-5 h-5 mr-3 text-green-600" />
-              <span className="text-sm font-medium">Send Funds</span>
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            className={`w-full justify-start h-10 px-3 ${
+              recipient 
+                ? "bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30" 
+                : "opacity-50 cursor-not-allowed"
+            }`}
+            onClick={() => recipient && setShowSendFunds(true)}
+            disabled={!recipient}
+            title={!recipient ? "Select a conversation to send funds" : "Send funds to recipient"}
+          >
+            <Send className={`w-5 h-5 mr-3 ${recipient ? "text-green-600" : "text-muted-foreground"}`} />
+            <span className="text-sm font-medium">Send Funds</span>
+          </Button>
           
-          {recipient && (
-            <Button
-              variant="ghost"
-              className="w-full justify-start h-10 px-3"
-              onClick={() => setShowPaymentRequest(true)}
-            >
-              <DollarSign className="w-5 h-5 mr-3 text-green-500" />
-              <span className="text-sm">Request Payment</span>
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            className={`w-full justify-start h-10 px-3 ${
+              !recipient ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => recipient && setShowPaymentRequest(true)}
+            disabled={!recipient}
+            title={!recipient ? "Select a conversation to request payment" : "Request payment from recipient"}
+          >
+            <DollarSign className={`w-5 h-5 mr-3 ${recipient ? "text-green-500" : "text-muted-foreground"}`} />
+            <span className="text-sm">Request Payment</span>
+          </Button>
           
           <CalendarDialog onCalendarInvite={onCalendarInvite} />
           
