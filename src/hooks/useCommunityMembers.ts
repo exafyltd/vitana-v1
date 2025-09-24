@@ -20,11 +20,13 @@ export function useCommunityMembers() {
   const fetchMembers = async (search?: string) => {
     try {
       setLoading(true);
+      console.log('useCommunityMembers: fetchMembers called with search:', search);
       
       // Get current user to exclude from results
       const { data: { user } } = await supabase.auth.getUser();
 
       if (search && search.trim()) {
+        console.log('useCommunityMembers: Performing search for:', search.trim());
         // Search visible global community profiles by display name only (RLS-safe)
         const { data, error } = await supabase
           .from('global_community_profiles')
@@ -35,6 +37,7 @@ export function useCommunityMembers() {
           .limit(20);
 
         if (error) throw error;
+        console.log('useCommunityMembers: Search results:', data);
 
         const transformedData = (data || [])
           .filter((p: any) => !user || p.user_id !== user.id)
@@ -47,8 +50,10 @@ export function useCommunityMembers() {
             avatar_url: p.avatar_url
           }));
 
+        console.log('useCommunityMembers: Transformed search results:', transformedData);
         setMembers(transformedData);
       } else {
+        console.log('useCommunityMembers: Fetching default members');
         // Fetch default visible community profiles
         const { data, error } = await supabase
           .from('global_community_profiles')
@@ -58,6 +63,7 @@ export function useCommunityMembers() {
           .limit(20);
 
         if (error) throw error;
+        console.log('useCommunityMembers: Default results:', data);
 
         const transformedData = (data || [])
           .filter((p: any) => !user || p.user_id !== user.id)
@@ -70,6 +76,7 @@ export function useCommunityMembers() {
             avatar_url: p.avatar_url
           }));
 
+        console.log('useCommunityMembers: Transformed default results:', transformedData);
         setMembers(transformedData);
       }
 
@@ -90,6 +97,7 @@ export function useCommunityMembers() {
   }, []);
 
   const searchMembers = (term: string) => {
+    console.log('useCommunityMembers: searchMembers called with term:', term);
     setSearchTerm(term);
     fetchMembers(term);
   };

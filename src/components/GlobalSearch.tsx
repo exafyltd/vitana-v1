@@ -36,19 +36,30 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { members, loading, searchMembers, getDisplayName } = useCommunityMembers();
 
+  // Trigger search when query changes
   useEffect(() => {
     if (query.trim() && open) {
-      // Search for community members
+      console.log('GlobalSearch: Searching for:', query);
       searchMembers(query);
-      
-      // Combine member results with content suggestions
-      const memberSuggestions: SearchSuggestion[] = members.map(member => ({
-        id: member.user_id,
-        type: 'person' as const,
-        title: getDisplayName(member),
-        subtitle: 'Community Member',
-        avatar: member.avatar_url || undefined
-      }));
+    }
+  }, [query, open, searchMembers]);
+
+  // Update suggestions when members data changes
+  useEffect(() => {
+    console.log('GlobalSearch: Members updated:', members.length, 'members, query:', query);
+    if (query.trim() && open) {
+      // Create member suggestions from current members data
+      const memberSuggestions: SearchSuggestion[] = members.map(member => {
+        const displayName = getDisplayName(member);
+        console.log('GlobalSearch: Member:', displayName, 'matches query:', query, '?', displayName.toLowerCase().includes(query.toLowerCase()));
+        return {
+          id: member.user_id,
+          type: 'person' as const,
+          title: displayName,
+          subtitle: 'Community Member',
+          avatar: member.avatar_url || undefined
+        };
+      });
 
       // Filter content suggestions based on query
       const contentSuggestions = mockContentSuggestions.filter(suggestion =>
@@ -57,14 +68,16 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
       );
 
       const allSuggestions = [...memberSuggestions, ...contentSuggestions];
+      console.log('GlobalSearch: Final suggestions:', allSuggestions.map(s => s.title));
       setFilteredSuggestions(allSuggestions);
       setShowSuggestions(true);
       setSelectedIndex(-1);
     } else {
       setShowSuggestions(false);
       setSelectedIndex(-1);
+      setFilteredSuggestions([]);
     }
-  }, [query, open, members, searchMembers, getDisplayName]);
+  }, [members, query, open, getDisplayName]);
 
   const handleInputClick = () => {
     if (!open) {
