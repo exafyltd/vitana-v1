@@ -35,6 +35,7 @@ import LabTestCard from '@/components/LabTestCard';
 import LabTestOrderPopup from '@/components/LabTestOrderPopup';
 import { IntentRouter } from '@/pages/discover/IntentRouter';
 import { supabase } from '@/integrations/supabase/client';
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -391,12 +392,15 @@ export default withScreenId(function Discover() {
 
           {/* Featured Offers */}
           <section className="mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold text-foreground">Featured Offers</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-foreground">Featured Offers</h2>
+            <div className="flex items-center gap-2">
+              <UniversalCalendarButton />
               <Button variant="outline" size="sm" onClick={() => navigate('/discover/trending')}>
                 View All
               </Button>
             </div>
+          </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                {featuredOffers.map((offer) => (
                  <Card key={offer.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full">

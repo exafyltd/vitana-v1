@@ -15,6 +15,7 @@ import { StandardCard } from "@/components/templates/StandardCard";
 import { VideoFeedCard } from "@/components/crossover/VideoFeedCard";
 import ConsentPackagePopup from "@/components/ConsentPackagePopup";
 import { Share2, Users, Shield, Database, FileText, Globe } from "lucide-react";
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 export default withScreenId(function Sharing() {
   const [activeTab, setActiveTab] = useState("consent");
@@ -36,6 +37,7 @@ export default withScreenId(function Sharing() {
 
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search consent packages, sharing settings..." />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => {
               console.log('Button clicked, opening popup');
               setActionPopupOpen(true);

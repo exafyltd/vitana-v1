@@ -13,6 +13,7 @@ import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionP
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 // Mock data for Memory Overview - Recent Memories
 const recentMemories = [
@@ -135,6 +136,7 @@ export default withScreenId(function Memory() {
 
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search memories, insights, or timeline..." />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Add Memory

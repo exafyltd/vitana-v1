@@ -19,6 +19,7 @@ import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import { StackedCardList } from "@/components/ui/stacked-card-list";
 import HealthCoachChat from "@/components/health/HealthCoachChat";
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 import { healthNavigation } from "@/config/navigation";
 
@@ -153,6 +154,7 @@ export default withScreenId(function Health() {
 
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search health services, articles, or community..." />
+            <UniversalCalendarButton />
             <Button
               variant="default"
               size="sm"

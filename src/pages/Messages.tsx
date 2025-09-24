@@ -32,6 +32,7 @@ import NewConversationPopup from "@/components/NewConversationPopup";
 import ConversationListSkeleton from "@/components/messages/ConversationListSkeleton";
 import EmptyStateIllustration from "@/components/messages/EmptyStateIllustration";
 import ErrorMessage from "@/components/messages/ErrorMessage";
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import CreateGroupPopup from "@/components/messages/CreateGroupPopup";
 import TypingIndicator from '@/components/messages/TypingIndicator';
 import PresenceIndicator from '@/components/messages/PresenceIndicator';
@@ -508,6 +509,7 @@ export default function Messages() {
               placeholder="Search conversations, people, or groups…"
               onSearch={(query) => console.log('Search:', query)}
             />
+            <UniversalCalendarButton />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="sm">

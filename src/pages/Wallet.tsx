@@ -26,6 +26,7 @@ import { PredictiveActionsCard } from "@/components/wallet/intelligence/Predicti
 import { DynamicRewardOpportunityCard } from "@/components/wallet/intelligence/DynamicRewardOpportunityCard";
 import { walletNavigation } from "@/config/navigation";
 import { useWallet } from "@/hooks/useWallet";
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -139,6 +140,7 @@ export default function Wallet() {
             placeholder="Search transactions, rewards, or benefits..."
             onSearch={(query) => console.log('Search:', query)}
           />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setMasterActionOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Wallet Actions

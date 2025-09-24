@@ -15,6 +15,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
 import { QuickSetupPopup } from "@/components/QuickSetupPopup";
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 function Settings() {
   const navigate = useNavigate();
@@ -94,6 +95,7 @@ function Settings() {
 
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search settings, privacy controls, integrations..." />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Quick Setup
