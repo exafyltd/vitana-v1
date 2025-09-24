@@ -40,8 +40,7 @@ export function UniversalCalendarButton({
           onClick={() => setCalendarOpen(true)} 
           className={className}
         >
-          <Calendar className="w-4 h-4 mr-2" />
-          Calendar
+          <Calendar className="w-4 h-4" />
         </Button>
         
         {/* Event count badge */}
