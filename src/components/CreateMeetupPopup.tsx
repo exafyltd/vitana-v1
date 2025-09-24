@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, MapPin, Calendar, Clock, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 
 interface CreateMeetupPopupProps {
   isOpen: boolean;
@@ -17,7 +17,8 @@ interface CreateMeetupPopupProps {
 }
 
 export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
-  const { toast } = useToast();
+  const { createEvent } = useCommunityEvents();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -41,26 +42,64 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
     );
   };
 
-  const handleSubmit = () => {
-    toast({
-      title: "Meetup Created! 🎉",
-      description: `${formData.title} has been created successfully.`
-    });
-    onClose();
-    setFormData({
-      title: "",
-      description: "",
-      category: "",
-      date: "",
-      time: "",
-      duration: "",
-      location: "",
-      isVirtual: false,
-      capacity: "",
-      requirements: "",
-      isRecurring: false
-    });
-    setSelectedTags([]);
+  const handleSubmit = async () => {
+    if (!formData.title || !formData.date || !formData.time) {
+      return;
+    }
+
+    setLoading(true);
+    
+    // Create ISO datetime string
+    const startTime = new Date(`${formData.date}T${formData.time}`).toISOString();
+    
+    // Calculate end time based on duration
+    let endTime = undefined;
+    if (formData.duration) {
+      const start = new Date(startTime);
+      const durationMap = {
+        "30min": 30,
+        "1hour": 60,
+        "2hour": 120,
+        "half-day": 240,
+        "full-day": 480
+      };
+      const minutes = durationMap[formData.duration as keyof typeof durationMap] || 60;
+      start.setMinutes(start.getMinutes() + minutes);
+      endTime = start.toISOString();
+    }
+
+    const eventData = {
+      title: formData.title,
+      description: formData.description || undefined,
+      event_type: 'meetup',
+      location: formData.isVirtual ? undefined : formData.location || undefined,
+      virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
+      start_time: startTime,
+      end_time: endTime,
+      max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
+    };
+
+    const result = await createEvent(eventData);
+    
+    if (result.success) {
+      onClose();
+      setFormData({
+        title: "",
+        description: "",
+        category: "",
+        date: "",
+        time: "",
+        duration: "",
+        location: "",
+        isVirtual: false,
+        capacity: "",
+        requirements: "",
+        isRecurring: false
+      });
+      setSelectedTags([]);
+    }
+    
+    setLoading(false);
   };
 
   return (
@@ -253,8 +292,8 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
             <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button onClick={handleSubmit} className="flex-1">
-              Create Meetup
+            <Button onClick={handleSubmit} className="flex-1" disabled={loading}>
+              {loading ? "Creating..." : "Create Meetup"}
             </Button>
           </div>
         </div>
