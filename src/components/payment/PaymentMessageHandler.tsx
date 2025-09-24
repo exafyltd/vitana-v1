@@ -345,25 +345,33 @@ export function PaymentMessageHandler({
           )}
 
           {/* Action buttons for recipient */}
-          {!isCurrentUser && effectiveStatus === 'pending' && (
+          {!isCurrentUser && (effectiveStatus === 'pending' || effectiveStatus === 'completed') && (
             <div className="flex gap-2">
               <Button 
-                onClick={handlePaymentAccept}
-                disabled={loading || !canPay || isProcessing}
-                className="flex-1"
+                onClick={effectiveStatus === 'pending' ? handlePaymentAccept : undefined}
+                disabled={effectiveStatus === 'completed' || loading || !canPay || isProcessing}
+                className={`flex-1 ${effectiveStatus === 'completed' ? 'opacity-50' : ''}`}
                 size="sm"
+                variant={effectiveStatus === 'completed' ? 'secondary' : 'default'}
               >
-                {isProcessing ? 'Processing...' : loading ? 'Checking...' : canPay ? 'Accept' : 'Insufficient Balance'}
+                {effectiveStatus === 'completed' ? (
+                  <span className="flex items-center gap-1">
+                    <CheckCircle className="w-4 h-4" />
+                    Accepted
+                  </span>
+                ) : isProcessing ? 'Processing...' : loading ? 'Checking...' : canPay ? 'Accept' : 'Insufficient Balance'}
               </Button>
-              <Button 
-                variant="outline" 
-                onClick={handlePaymentDecline}
-                disabled={isProcessing}
-                className="flex-1"
-                size="sm"
-              >
-                Decline
-              </Button>
+              {effectiveStatus === 'pending' && (
+                <Button 
+                  variant="outline" 
+                  onClick={handlePaymentDecline}
+                  disabled={isProcessing}
+                  className="flex-1"
+                  size="sm"
+                >
+                  Decline
+                </Button>
+              )}
             </div>
           )}
 
@@ -417,25 +425,33 @@ export function PaymentMessageHandler({
           
           <p className="text-sm text-muted-foreground mb-3">{description}</p>
 
-          {!isCurrentUser && effectiveStatus === 'pending' && (
+          {!isCurrentUser && (effectiveStatus === 'pending' || effectiveStatus === 'completed') && (
             <div className="flex gap-2">
               <Button 
-                onClick={handleExchangeAndSendAccept}
-                disabled={!canAfford(originalAmount, originalCurrency) || isProcessing}
-                className="flex-1"
+                onClick={effectiveStatus === 'pending' ? handleExchangeAndSendAccept : undefined}
+                disabled={effectiveStatus === 'completed' || !canAfford(originalAmount, originalCurrency) || isProcessing}
+                className={`flex-1 ${effectiveStatus === 'completed' ? 'opacity-50' : ''}`}
                 size="sm"
+                variant={effectiveStatus === 'completed' ? 'secondary' : 'default'}
               >
-                {isProcessing ? 'Processing...' : 'Accept Exchange'}
+                {effectiveStatus === 'completed' ? (
+                  <span className="flex items-center gap-1">
+                    <CheckCircle className="w-4 h-4" />
+                    Accepted
+                  </span>
+                ) : isProcessing ? 'Processing...' : 'Accept Exchange'}
               </Button>
-              <Button 
-                variant="outline" 
-                onClick={handlePaymentDecline}
-                disabled={isProcessing}
-                className="flex-1"
-                size="sm"
-              >
-                Decline
-              </Button>
+              {effectiveStatus === 'pending' && (
+                <Button 
+                  variant="outline" 
+                  onClick={handlePaymentDecline}
+                  disabled={isProcessing}
+                  className="flex-1"
+                  size="sm"
+                >
+                  Decline
+                </Button>
+              )}
             </div>
           )}
         </CardContent>
