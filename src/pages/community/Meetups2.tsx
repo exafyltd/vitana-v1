@@ -245,12 +245,6 @@ export default withScreenId(function Meetups() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Loading meetups...</p>
           </div>
-        ) : events.length === 0 ? (
-          <div className="text-center py-12">
-            <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No meetups yet</h3>
-            <p className="text-muted-foreground">Create your first meetup to bring the community together!</p>
-          </div>
         ) : (
           <div className="space-y-8 mt-6">
             {(todayEvents.length > 0 || featuredTodayEvents.length > 0) && (

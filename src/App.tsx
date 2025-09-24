@@ -77,7 +77,7 @@ import MyHealthTracker from "./pages/health/MyHealthTracker";
 import MyGroups from "./pages/community/MyGroups";
 import Feed from "./pages/community/Feed";
 import CommunityEvents from "./pages/community/Events";
-import Meetups from "./pages/community/Meetups";
+import Meetups from "./pages/community/Meetups2";
 import MyBusiness from "./pages/community/MyBusinessRenamed";
 import MediaHub from "./pages/community/MediaHub";
 import LiveRooms from "./pages/community/LiveRooms";
