@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { useCommunityMembers } from "@/hooks/useCommunityMembers";
 
 interface SearchSuggestion {
   id: string;
@@ -15,51 +16,12 @@ interface SearchSuggestion {
   avatar?: string;
 }
 
-// People index for search resolution
-interface Person {
-  id: string;
-  name: string;
-  handle: string;
-  aliases?: string[];
-}
-
-const peopleIndex: Person[] = [
-  { id: '1', name: 'Sarah Miller', handle: 'sarahwellness', aliases: ['Sarah'] },
-  { id: '2', name: 'Dr. Roberts', handle: 'dr-roberts', aliases: ['Roberts', 'Dr Roberts'] },
-  { id: '3', name: 'Mariia Maxina', handle: 'maxina', aliases: ['Mariia', 'Maria Maksina'] },
-  { id: '4', name: 'Emma Wilson', handle: 'emmawilson', aliases: ['Emma'] },
-  { id: '5', name: 'James Davis', handle: 'jamesdavis', aliases: ['James'] },
-];
-
-const mockSuggestions: SearchSuggestion[] = [
-  { id: '1', type: 'person', title: 'Sarah Miller', subtitle: 'Yoga Enthusiast', avatar: '/lovable-uploads/sarah-miller-avatar.jpg' },
-  { id: '2', type: 'person', title: 'Dr. Roberts', subtitle: 'Health Coach', avatar: '/lovable-uploads/dr-roberts-avatar.jpg' },
+// Mock content suggestions for non-member searches
+const mockContentSuggestions: SearchSuggestion[] = [
   { id: '3', type: 'group', title: 'Mindful Living', subtitle: '1.2k members' },
   { id: '4', type: 'content', title: '10-Minute Morning Meditation', subtitle: 'Video • 2.1k views' },
   { id: '5', type: 'health', title: 'Sleep Quality Tips', subtitle: 'Health Topic' },
 ];
-
-// Find person by query with fuzzy matching
-function findPersonByQuery(query: string): Person | null {
-  const normalizedQuery = query.toLowerCase().trim();
-  
-  // Handle exact query - strip @ if present
-  const handleQuery = normalizedQuery.replace(/^@/, '');
-  const byHandle = peopleIndex.find(p => p.handle === handleQuery);
-  if (byHandle) return byHandle;
-
-  // Exact name match
-  const exactName = peopleIndex.find(p => p.name.toLowerCase() === normalizedQuery);
-  if (exactName) return exactName;
-
-  // Alias or starts with match
-  const fuzzyMatch = peopleIndex.find(p =>
-    (p.aliases ?? []).some(a => a.toLowerCase() === normalizedQuery) ||
-    p.name.toLowerCase().startsWith(normalizedQuery)
-  );
-  
-  return fuzzyMatch ?? null;
-}
 
 interface GlobalSearchProps {
   open: boolean;
@@ -72,21 +34,37 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { members, loading, searchMembers, getDisplayName } = useCommunityMembers();
 
   useEffect(() => {
     if (query.trim() && open) {
-      const filtered = mockSuggestions.filter(suggestion =>
+      // Search for community members
+      searchMembers(query);
+      
+      // Combine member results with content suggestions
+      const memberSuggestions: SearchSuggestion[] = members.map(member => ({
+        id: member.user_id,
+        type: 'person' as const,
+        title: getDisplayName(member),
+        subtitle: 'Community Member',
+        avatar: member.avatar_url || undefined
+      }));
+
+      // Filter content suggestions based on query
+      const contentSuggestions = mockContentSuggestions.filter(suggestion =>
         suggestion.title.toLowerCase().includes(query.toLowerCase()) ||
         suggestion.subtitle?.toLowerCase().includes(query.toLowerCase())
       );
-      setFilteredSuggestions(filtered);
+
+      const allSuggestions = [...memberSuggestions, ...contentSuggestions];
+      setFilteredSuggestions(allSuggestions);
       setShowSuggestions(true);
-      setSelectedIndex(-1); // Reset selection on new results
+      setSelectedIndex(-1);
     } else {
       setShowSuggestions(false);
       setSelectedIndex(-1);
     }
-  }, [query, open]);
+  }, [query, open, members, searchMembers, getDisplayName]);
 
   const handleInputClick = () => {
     if (!open) {
@@ -144,10 +122,13 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
 
   const handleSearch = (searchQuery: string = query) => {
     if (searchQuery.trim()) {
-      // First try to find as person
-      const person = findPersonByQuery(searchQuery);
-      if (person) {
-        navigate(`/u/${person.handle}`);
+      // First try to find as community member
+      const member = members.find(m => 
+        getDisplayName(m).toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      if (member) {
+        // Navigate to member profile - assuming we use user_id for routing
+        navigate(`/u/${member.user_id}`);
         setQuery('');
         setShowSuggestions(false);
         inputRef.current?.blur();
@@ -164,13 +145,8 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
 
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
     if (suggestion.type === 'person') {
-      // Find the person's handle for routing
-      const person = peopleIndex.find(p => p.name === suggestion.title);
-      if (person) {
-        navigate(`/u/${person.handle}`);
-      } else {
-        navigate(`/search?q=${encodeURIComponent(suggestion.title)}&type=${suggestion.type}`);
-      }
+      // Navigate to member profile using user_id
+      navigate(`/u/${suggestion.id}`);
     } else {
       navigate(`/search?q=${encodeURIComponent(suggestion.title)}&type=${suggestion.type}`);
     }
