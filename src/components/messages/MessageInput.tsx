@@ -41,6 +41,7 @@ interface MessageInputProps {
   className?: string;
   threadId?: string;
   recipientId?: string | null;
+  effectiveRecipientId?: string | null;
   activeThread?: { id: string } | null;
   replyingTo?: any;
   onCancelReply?: () => void;
@@ -55,6 +56,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   className,
   threadId,
   recipientId,
+  effectiveRecipientId,
   activeThread,
   replyingTo,
   onCancelReply
@@ -511,6 +513,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           }}
           onCalendarInvite={sendCalendarInvite}
           recipient={recipient}
+          recipientIdHint={effectiveRecipientId}
           disabled={disabled || isUploading} 
         />
 

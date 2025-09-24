@@ -13,10 +13,7 @@ export const useRecipientData = (recipientId?: string | null, threadId?: string)
 
   useEffect(() => {
     const fetchRecipientData = async () => {
-      console.log('useRecipientData: fetchRecipientData called', { recipientId, threadId });
-      
       if (!recipientId && !threadId) {
-        console.log('useRecipientData: No recipientId or threadId, setting recipient to null');
         setRecipient(null);
         return;
       }
@@ -50,12 +47,9 @@ export const useRecipientData = (recipientId?: string | null, threadId?: string)
           }
           
           if (participants && participants.length > 0) {
-            console.log('useRecipientData: Found participants', participants);
             // Find the other participant (not current user)
             const { data: { user } } = await supabase.auth.getUser();
-            console.log('useRecipientData: Current user ID', user?.id);
             const otherParticipant = participants.find(p => p.user_id !== user?.id);
-            console.log('useRecipientData: Other participant found', otherParticipant);
             if (otherParticipant) {
               targetUserId = otherParticipant.user_id;
             }
@@ -78,7 +72,6 @@ export const useRecipientData = (recipientId?: string | null, threadId?: string)
               name: profile.display_name || 'Unknown User',
               avatar: profile.avatar_url
             };
-            console.log('useRecipientData: Setting recipient from global profiles', recipientData);
             setRecipient(recipientData);
           } else {
             // Fallback to regular profiles
@@ -95,7 +88,6 @@ export const useRecipientData = (recipientId?: string | null, threadId?: string)
                 name: profile.display_name || profile.full_name || 'Unknown User',
                 avatar: profile.avatar_url
               };
-              console.log('useRecipientData: Setting recipient from profiles', recipientData);
               setRecipient(recipientData);
             } else {
               const fallbackRecipient = {
@@ -103,7 +95,6 @@ export const useRecipientData = (recipientId?: string | null, threadId?: string)
                 name: 'Unknown User',
                 avatar: undefined
               };
-              console.log('useRecipientData: Setting fallback recipient', fallbackRecipient);
               setRecipient(fallbackRecipient);
             }
           }

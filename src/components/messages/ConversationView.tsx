@@ -104,6 +104,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [threadParticipants, setThreadParticipants] = useState<any[]>([]);
   const [currentUserRole, setCurrentUserRole] = useState<string>('member');
 
+  // Compute effective recipient ID for direct conversations
+  const effectiveRecipientId = React.useMemo(() => {
+    if (recipientId) return recipientId;
+    
+    // For direct conversations, find the other participant
+    if (threadParticipants.length === 2) {
+      const otherParticipant = threadParticipants.find(p => p.user_id !== user?.id);
+      return otherParticipant?.user_id || null;
+    }
+    
+    return null;
+  }, [recipientId, threadParticipants, user?.id]);
+
   // Reply state management
   const [replyingTo, setReplyingTo] = useState<any>(null);
 
@@ -945,6 +958,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 placeholder={`Message ${getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}...`}
                 threadId={threadId}
                 recipientId={recipientId}
+                effectiveRecipientId={effectiveRecipientId}
                 activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
                 replyingTo={replyingTo}
                 onCancelReply={handleCancelReply}

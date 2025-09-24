@@ -26,6 +26,7 @@ interface AttachmentMenuProps {
     name: string;
     avatar?: string;
   };
+  recipientIdHint?: string | null;
   disabled?: boolean;
   className?: string;
 }
@@ -96,6 +97,7 @@ export function AttachmentMenu({
   onSendMessage,
   onCalendarInvite,
   recipient,
+  recipientIdHint,
   disabled = false,
   className
 }: AttachmentMenuProps) {
@@ -103,6 +105,15 @@ export function AttachmentMenu({
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   const [showGlobalSendFunds, setShowGlobalSendFunds] = useState(false);
   const [showGlobalPaymentRequest, setShowGlobalPaymentRequest] = useState(false);
+
+  // Create effective recipient for direct conversations
+  const effectiveRecipient = recipient || (recipientIdHint ? {
+    id: recipientIdHint,
+    name: 'Conversation Partner',
+    avatar: undefined
+  } : undefined);
+
+  console.log('AttachmentMenu render:', { recipient, recipientIdHint, effectiveRecipient });
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -130,8 +141,8 @@ export function AttachmentMenu({
             variant="ghost"
             className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
             onClick={() => {
-              console.log('AttachmentMenu: Send Funds clicked', { recipient });
-              if (recipient) {
+              console.log('AttachmentMenu: Send Funds clicked', { recipient, recipientIdHint, effectiveRecipient });
+              if (effectiveRecipient) {
                 console.log('AttachmentMenu: Using recipient-specific send funds');
                 setShowSendFunds(true);
               } else {
@@ -149,8 +160,8 @@ export function AttachmentMenu({
             variant="ghost"
             className="w-full justify-start h-10 px-3"
             onClick={() => {
-              console.log('AttachmentMenu: Request Payment clicked', { recipient });
-              if (recipient) {
+              console.log('AttachmentMenu: Request Payment clicked', { recipient, recipientIdHint, effectiveRecipient });
+              if (effectiveRecipient) {
                 console.log('AttachmentMenu: Using recipient-specific payment request');
                 setShowPaymentRequest(true);
               } else {
@@ -177,19 +188,19 @@ export function AttachmentMenu({
         </div>
         
         {/* Wallet Integration Dialogs */}
-        {recipient && (
+        {effectiveRecipient && (
           <>
             <WalletIntegratedSendFunds
               isOpen={showSendFunds}
               onClose={() => setShowSendFunds(false)}
               onSendMessage={onSendMessage}
-              recipient={recipient}
+              recipient={effectiveRecipient}
             />
             <WalletIntegratedPaymentRequest
               isOpen={showPaymentRequest}
               onClose={() => setShowPaymentRequest(false)}
               onSendMessage={onSendMessage}
-              recipient={recipient}
+              recipient={effectiveRecipient}
             />
           </>
         )}
@@ -199,13 +210,13 @@ export function AttachmentMenu({
           isOpen={showGlobalSendFunds}
           onClose={() => setShowGlobalSendFunds(false)}
           onSendMessage={onSendMessage}
-          preSelectedRecipient={recipient}
+          preSelectedRecipient={effectiveRecipient}
         />
         <GlobalPaymentRequest
           isOpen={showGlobalPaymentRequest}
           onClose={() => setShowGlobalPaymentRequest(false)}
           onSendMessage={onSendMessage}
-          preSelectedRecipient={recipient}
+          preSelectedRecipient={effectiveRecipient}
         />
       </PopoverContent>
     </Popover>
