@@ -239,7 +239,7 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
     attendees: event.participant_count || 0,
     timestamp: formatEventTime(event.start_time),
     ...(canEdit && onEdit && {
-      actions: (
+      actionButton: (
         <Button
           size="sm"
           variant="outline"
@@ -248,6 +248,7 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
             onEdit(event);
           }}
           className="ml-2"
+          aria-label="Edit meetup"
         >
           <Edit className="w-4 h-4 mr-1" />
           Edit
