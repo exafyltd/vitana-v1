@@ -39,12 +39,33 @@ export function useCommunityEvents() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
+      
+      // Check authentication status
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log("Authentication check:", { 
+        user: user?.id || "Not authenticated",
+        email: user?.email 
+      });
+
       const { data, error } = await supabase
         .from("global_community_events")
         .select("*")
         .order("start_time", { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Database error:", error);
+        if (error.message.includes("JWT")) {
+          toast({
+            title: "Authentication Required",
+            description: "Please log in to view community events.",
+            variant: "destructive",
+          });
+          return;
+        }
+        throw error;
+      }
+      
+      console.log("Fetched events:", data?.length || 0);
       setEvents(data || []);
     } catch (error) {
       console.error("Error fetching events:", error);
