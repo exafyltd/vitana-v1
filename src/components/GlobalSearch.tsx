@@ -50,7 +50,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
     if (query.trim() && open) {
       // Create member suggestions from current members data
       const memberSuggestions: SearchSuggestion[] = members.map(member => {
-        const displayName = getDisplayName(member);
+        const displayName = member.display_name || member.full_name || 'Unknown User';
         console.log('GlobalSearch: Member:', displayName, 'matches query:', query, '?', displayName.toLowerCase().includes(query.toLowerCase()));
         return {
           id: member.user_id,
@@ -77,7 +77,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
       setSelectedIndex(-1);
       setFilteredSuggestions([]);
     }
-  }, [members, query, open, getDisplayName]);
+  }, [members, query, open]);
 
   const handleInputClick = () => {
     if (!open) {
@@ -136,9 +136,10 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   const handleSearch = (searchQuery: string = query) => {
     if (searchQuery.trim()) {
       // First try to find as community member
-      const member = members.find(m => 
-        getDisplayName(m).toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      const member = members.find(m => {
+        const displayName = m.display_name || m.full_name || 'Unknown User';
+        return displayName.toLowerCase().includes(searchQuery.toLowerCase());
+      });
       if (member) {
         // Navigate to member profile - assuming we use user_id for routing
         navigate(`/u/${member.user_id}`);
