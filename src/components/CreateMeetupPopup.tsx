@@ -8,8 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, MapPin, Calendar, Clock, X } from "lucide-react";
+import { Users, MapPin, Calendar, Clock, X, AlertCircle } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
+import { useToast } from "@/hooks/use-toast";
 
 interface CreateMeetupPopupProps {
   isOpen: boolean;
@@ -18,7 +19,9 @@ interface CreateMeetupPopupProps {
 
 export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
   const { createEvent } = useCommunityEvents();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -30,7 +33,8 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
     isVirtual: false,
     capacity: "",
     requirements: "",
-    isRecurring: false
+    isRecurring: false,
+    recurringType: "weekly" // daily, weekly, monthly
   });
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -42,8 +46,33 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
     );
   };
 
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = "Meetup title is required";
+    }
+    if (!formData.date) {
+      newErrors.date = "Date is required";
+    }
+    if (!formData.time) {
+      newErrors.time = "Time is required";
+    }
+    if (!formData.isVirtual && !formData.location.trim()) {
+      newErrors.location = "Location is required for in-person meetups";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async () => {
-    if (!formData.title || !formData.date || !formData.time) {
+    if (!validateForm()) {
+      toast({
+        title: "Form Incomplete",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -82,6 +111,10 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
     const result = await createEvent(eventData);
     
     if (result.success) {
+      toast({
+        title: "Meetup Created!",
+        description: "Your meetup has been successfully created and will appear in the community.",
+      });
       onClose();
       setFormData({
         title: "",
@@ -94,9 +127,17 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
         isVirtual: false,
         capacity: "",
         requirements: "",
-        isRecurring: false
+        isRecurring: false,
+        recurringType: "weekly"
       });
       setSelectedTags([]);
+      setErrors({});
+    } else {
+      toast({
+        title: "Error Creating Meetup",
+        description: "There was an issue creating your meetup. Please try again.",
+        variant: "destructive",
+      });
     }
     
     setLoading(false);
@@ -125,8 +166,14 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
                   value={formData.title}
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
                   placeholder="e.g., Weekend Hiking Adventure, Meditation Circle"
-                  className="mt-1"
+                  className={`mt-1 ${errors.title ? 'border-destructive' : ''}`}
                 />
+                {errors.title && (
+                  <p className="text-sm text-destructive mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.title}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -210,8 +257,14 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    className="mt-1"
+                    className={`mt-1 ${errors.date ? 'border-destructive' : ''}`}
                   />
+                  {errors.date && (
+                    <p className="text-sm text-destructive mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.date}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -221,8 +274,14 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
                     type="time"
                     value={formData.time}
                     onChange={(e) => setFormData({...formData, time: e.target.value})}
-                    className="mt-1"
+                    className={`mt-1 ${errors.time ? 'border-destructive' : ''}`}
                   />
+                  {errors.time && (
+                    <p className="text-sm text-destructive mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.time}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -245,8 +304,14 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
                     placeholder="e.g., Central Park, Community Center, Local Gym"
-                    className="mt-1"
+                    className={`mt-1 ${errors.location ? 'border-destructive' : ''}`}
                   />
+                  {errors.location && (
+                    <p className="text-sm text-destructive mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.location}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -263,15 +328,32 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
                   />
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>Recurring Meetup</Label>
-                    <p className="text-sm text-muted-foreground">Repeats weekly</p>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <Label>Recurring Meetup</Label>
+                      <p className="text-sm text-muted-foreground">Create a repeating event</p>
+                    </div>
+                    <Switch 
+                      checked={formData.isRecurring}
+                      onCheckedChange={(checked) => setFormData({...formData, isRecurring: checked})}
+                    />
                   </div>
-                  <Switch 
-                    checked={formData.isRecurring}
-                    onCheckedChange={(checked) => setFormData({...formData, isRecurring: checked})}
-                  />
+                  {formData.isRecurring && (
+                    <div>
+                      <Label htmlFor="recurringType">Frequency</Label>
+                      <Select value={formData.recurringType} onValueChange={(value) => setFormData({...formData, recurringType: value})}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select frequency" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="daily">Daily</SelectItem>
+                          <SelectItem value="weekly">Weekly</SelectItem>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
                 </div>
               </div>
 
