@@ -13,6 +13,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { useState } from "react";
+import happyCoffeeGroup from '@/assets/happy-coffee-group.jpg';
 import { 
   CalendarDays, 
   Clock, 
@@ -30,18 +31,18 @@ import {
 const featuredTodayEvents = [
   {
     id: "dummy-today-1",
-    title: "Morning Yoga & Meditation",
-    description: "Start your day with peaceful yoga and mindfulness meditation in the park",
+    title: "Coffee & Community Connections",
+    description: "Join fellow community members for morning coffee, meaningful conversations, and new friendships",
     start_time: new Date().toISOString(),
-    location: "Central Park",
-    participant_count: 15,
-    max_participants: 20,
+    location: "Downtown Café Hub",
+    participant_count: 18,
+    max_participants: 25,
     created_by: "dummy",
     event_type: "meetup",
-    pillar: "Mental",
-    imageUrl: "/api/placeholder/600/400?text=Morning+Yoga",
-    author: { name: "Wellness Community", avatar: "/api/placeholder/32/32" },
-    category: "wellness"
+    pillar: "Social",
+    imageUrl: happyCoffeeGroup,
+    author: { name: "Community Connect", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" },
+    category: "community"
   },
   {
     id: "dummy-today-2", 
