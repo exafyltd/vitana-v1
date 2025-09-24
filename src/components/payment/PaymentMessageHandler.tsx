@@ -43,12 +43,15 @@ export function PaymentMessageHandler({
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isDeclined, setIsDeclined] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
 
-  // Initialize local lock based on message id
+  // Initialize local lock and declined status based on message id
   useEffect(() => {
     const lock = getLocalStorageItem('global', 'payments', `lock:${message.id}`);
+    const declined = getLocalStorageItem('global', 'payments', `declined:${message.id}`);
     setIsLocked(lock === '1');
+    setIsDeclined(declined === '1');
   }, [message.id]);
   const paymentData = message.content_data;
   const isCurrentUser = message.sender_id === user?.id;
@@ -163,6 +166,25 @@ export function PaymentMessageHandler({
   };
 
   const handlePaymentDecline = async () => {
+    if (!onSendReply || !onUpdateMessage) return;
+
+    // Prevent duplicate processing
+    if (paymentData?.status && paymentData.status !== 'pending') {
+      toast({ title: "Already processed", description: `This request is ${paymentData.status}.`, duration: 3000 });
+      return;
+    }
+    if (isDeclined || isLocked) {
+      toast({ title: "Already processed", description: "This payment request has already been processed.", duration: 3000 });
+      return;
+    }
+
+    // Lock immediately to avoid duplicate actions
+    setLocalStorageItem('global', 'payments', `declined:${message.id}`, '1');
+    setLocalStorageItem('global', 'payments', `lock:${message.id}`, '1');
+    setIsDeclined(true);
+    setIsLocked(true);
+    setIsProcessing(true);
+
     try {
       const { amount, currency, description } = paymentData;
       
@@ -178,7 +200,7 @@ export function PaymentMessageHandler({
       );
 
       // Update the original message status
-      onUpdateMessage?.(message.id, {
+      await onUpdateMessage?.(message.id, {
         content_data: { ...paymentData, status: 'declined' }
       });
 
@@ -187,13 +209,20 @@ export function PaymentMessageHandler({
         description: "Payment request has been declined",
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Payment decline error:', error);
+      // Reset on error so user can retry
+      setIsDeclined(false);
+      setIsLocked(false);
+      setLocalStorageItem('global', 'payments', `declined:${message.id}`, '0');
+      setLocalStorageItem('global', 'payments', `lock:${message.id}`, '0');
       toast({
         title: "Error",
-        description: "Failed to decline payment",
+        description: error?.message || "Failed to decline payment",
         variant: "destructive"
       });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -313,7 +342,7 @@ export function PaymentMessageHandler({
     const { amount, currency, description, status = 'pending' } = paymentData;
     const currentBalance = (walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS') || 0);
     const canPay = canAfford(amount, currency);
-    const effectiveStatus = isCompleted ? 'completed' : status;
+    const effectiveStatus = isDeclined ? 'declined' : isCompleted ? 'completed' : status;
 
     return (
       <Card className={`${getStatusColor(effectiveStatus)} max-w-sm w-full sm:w-auto`}>
@@ -345,33 +374,35 @@ export function PaymentMessageHandler({
           )}
 
           {/* Action buttons for recipient */}
-          {!isCurrentUser && (effectiveStatus === 'pending' || effectiveStatus === 'completed') && (
+          {!isCurrentUser && effectiveStatus === 'pending' && (
             <div className="flex gap-2">
               <Button 
-                onClick={effectiveStatus === 'pending' ? handlePaymentAccept : undefined}
-                disabled={effectiveStatus === 'completed' || loading || !canPay || isProcessing}
-                className={`flex-1 ${effectiveStatus === 'completed' ? 'opacity-50' : ''}`}
+                onClick={handlePaymentAccept}
+                disabled={isCompleted || isDeclined || loading || !canPay || isProcessing || isLocked}
+                className="flex-1"
                 size="sm"
-                variant={effectiveStatus === 'completed' ? 'secondary' : 'default'}
               >
-                {effectiveStatus === 'completed' ? (
-                  <span className="flex items-center gap-1">
-                    <CheckCircle className="w-4 h-4" />
-                    Accepted
-                  </span>
-                ) : isProcessing ? 'Processing...' : loading ? 'Checking...' : canPay ? 'Accept' : 'Insufficient Balance'}
+                {isProcessing ? 'Processing...' : loading ? 'Checking...' : canPay ? 'Accept' : 'Insufficient Balance'}
               </Button>
-              {effectiveStatus === 'pending' && (
-                <Button 
-                  variant="outline" 
-                  onClick={handlePaymentDecline}
-                  disabled={isProcessing}
-                  className="flex-1"
-                  size="sm"
-                >
-                  Decline
-                </Button>
-              )}
+              <Button 
+                variant="outline" 
+                onClick={handlePaymentDecline}
+                disabled={isCompleted || isDeclined || isProcessing || isLocked}
+                className="flex-1"
+                size="sm"
+              >
+                {isProcessing ? 'Processing...' : 'Decline'}
+              </Button>
+            </div>
+          )}
+
+          {/* Show status for processed requests */}
+          {!isCurrentUser && (effectiveStatus === 'completed' || effectiveStatus === 'declined') && (
+            <div className="flex items-center justify-center py-2">
+              <Badge variant={effectiveStatus === 'completed' ? 'default' : 'destructive'} className="flex items-center gap-1">
+                {getStatusIcon(effectiveStatus)}
+                <span className="capitalize">{effectiveStatus === 'completed' ? 'Accepted' : 'Declined'}</span>
+              </Badge>
             </div>
           )}
 
@@ -398,7 +429,7 @@ export function PaymentMessageHandler({
       status = 'pending'
     } = paymentData;
     
-    const effectiveStatus = isCompleted ? 'completed' : status;
+    const effectiveStatus = isDeclined ? 'declined' : isCompleted ? 'completed' : status;
 
     return (
       <Card className={`${getStatusColor(effectiveStatus)} max-w-sm`}>
@@ -425,33 +456,35 @@ export function PaymentMessageHandler({
           
           <p className="text-sm text-muted-foreground mb-3">{description}</p>
 
-          {!isCurrentUser && (effectiveStatus === 'pending' || effectiveStatus === 'completed') && (
+          {!isCurrentUser && effectiveStatus === 'pending' && (
             <div className="flex gap-2">
               <Button 
-                onClick={effectiveStatus === 'pending' ? handleExchangeAndSendAccept : undefined}
-                disabled={effectiveStatus === 'completed' || !canAfford(originalAmount, originalCurrency) || isProcessing}
-                className={`flex-1 ${effectiveStatus === 'completed' ? 'opacity-50' : ''}`}
+                onClick={handleExchangeAndSendAccept}
+                disabled={isCompleted || isDeclined || !canAfford(originalAmount, originalCurrency) || isProcessing || isLocked}
+                className="flex-1"
                 size="sm"
-                variant={effectiveStatus === 'completed' ? 'secondary' : 'default'}
               >
-                {effectiveStatus === 'completed' ? (
-                  <span className="flex items-center gap-1">
-                    <CheckCircle className="w-4 h-4" />
-                    Accepted
-                  </span>
-                ) : isProcessing ? 'Processing...' : 'Accept Exchange'}
+                {isProcessing ? 'Processing...' : 'Accept Exchange'}
               </Button>
-              {effectiveStatus === 'pending' && (
-                <Button 
-                  variant="outline" 
-                  onClick={handlePaymentDecline}
-                  disabled={isProcessing}
-                  className="flex-1"
-                  size="sm"
-                >
-                  Decline
-                </Button>
-              )}
+              <Button 
+                variant="outline" 
+                onClick={handlePaymentDecline}
+                disabled={isCompleted || isDeclined || isProcessing || isLocked}
+                className="flex-1"
+                size="sm"
+              >
+                {isProcessing ? 'Processing...' : 'Decline'}
+              </Button>
+            </div>
+          )}
+
+          {/* Show status for processed requests */}
+          {!isCurrentUser && (effectiveStatus === 'completed' || effectiveStatus === 'declined') && (
+            <div className="flex items-center justify-center py-2">
+              <Badge variant={effectiveStatus === 'completed' ? 'default' : 'destructive'} className="flex items-center gap-1">
+                {getStatusIcon(effectiveStatus)}
+                <span className="capitalize">{effectiveStatus === 'completed' ? 'Accepted' : 'Declined'}</span>
+              </Badge>
             </div>
           )}
         </CardContent>
