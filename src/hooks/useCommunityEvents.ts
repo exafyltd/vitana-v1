@@ -27,6 +27,7 @@ interface CreateEventData {
   start_time: string;
   end_time?: string;
   max_participants?: number;
+  image_url?: string;
 }
 
 export function useCommunityEvents() {
@@ -98,6 +99,7 @@ export function useCommunityEvents() {
           start_time: eventData.start_time,
           end_time: eventData.end_time,
           max_participants: eventData.max_participants,
+          image_url: eventData.image_url,
           created_by: user.id,
         }])
         .select()
