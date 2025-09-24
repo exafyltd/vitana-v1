@@ -189,6 +189,7 @@ function AppSidebar({
                   className="h-8 w-8 p-0 text-white group-hover:text-primary transition-colors"
                   showEventCount={true}
                   showConflictIndicator={true}
+                  showText={false}
                 />
               </div>
               

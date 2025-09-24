@@ -11,6 +11,7 @@ interface UniversalCalendarButtonProps {
   className?: string;
   showEventCount?: boolean;
   showConflictIndicator?: boolean;
+  showText?: boolean;
 }
 
 export function UniversalCalendarButton({
@@ -18,7 +19,8 @@ export function UniversalCalendarButton({
   size = "sm",
   className = "",
   showEventCount = true,
-  showConflictIndicator = true
+  showConflictIndicator = true,
+  showText = true
 }: UniversalCalendarButtonProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const { events, getUpcomingEvents } = useCalendarEvents();
@@ -40,7 +42,8 @@ export function UniversalCalendarButton({
           onClick={() => setCalendarOpen(true)} 
           className={className}
         >
-          <Calendar className="w-4 h-4" />
+          <Calendar className={`w-4 h-4 ${showText ? 'mr-2' : ''}`} />
+          {showText && 'Calendar'}
         </Button>
         
         {/* Event count badge */}
