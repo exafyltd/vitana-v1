@@ -134,8 +134,8 @@ function Timeline() {
         />
 
         <UtilityActionButton>
-          <UniversalCalendarButton />
           <ExpandableSearchButton placeholder="Search timeline events and milestones..." />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Record Moment

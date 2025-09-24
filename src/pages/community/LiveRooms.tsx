@@ -112,11 +112,11 @@ export default function LiveRooms() {
 
         {/* Action Buttons Utility Bar */}
         <UtilityActionButton>
-          <UniversalCalendarButton />
           <ExpandableSearchButton 
             placeholder="Search Live Rooms…"
             onSearch={(query) => console.log('Search Live Rooms:', query)}
           />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Go Live

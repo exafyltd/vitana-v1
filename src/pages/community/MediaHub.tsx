@@ -157,11 +157,11 @@ export default function MediaHub() {
 
           {/* Action Buttons Utility Bar */}
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search Media…"
               onSearch={(query) => console.log('Search Media:', query)}
             />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setIsUploadOpen(true)}>
               <Upload className="w-4 h-4 mr-2" />
               Upload

@@ -87,11 +87,11 @@ export default function Actions() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
-            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search actions, categories, or autopilot tasks…"
               onSearch={(query) => console.log('Search Actions:', query)}
             />
+            <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setManageActionsOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Actions

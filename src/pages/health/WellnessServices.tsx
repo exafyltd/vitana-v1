@@ -268,8 +268,8 @@ export default function WellnessServices() {
           />
 
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search services, providers, or programs..." />
+            <UniversalCalendarButton />
             <Button
               variant="default"
               size="sm"

@@ -101,12 +101,12 @@ export default function MyBusiness() {
 
           {/* Action Buttons */}
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search Business…"
               onSearch={(query) => console.log('Search Business:', query)}
             />
-            <Button 
+            <UniversalCalendarButton />
+            <Button
               variant="default" 
               size="sm"
               onClick={() => setShowCreateService(true)}

@@ -32,8 +32,8 @@ export default function EducationResources() {
           />
 
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search articles, videos, podcasts, or topics..." />
+            <UniversalCalendarButton />
             <Button
               variant="default"
               size="sm"

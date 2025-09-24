@@ -32,8 +32,8 @@ function SmartPackage() {
           />
 
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search AI recommendations, templates, data types..." />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Create Package

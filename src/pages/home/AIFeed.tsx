@@ -89,11 +89,11 @@ export default function AIFeed() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
-            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search feed, routines, ideas, or history…"
               onSearch={(query) => console.log('Search AI Feed:', query)}
             />
+            <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setAddToFeedOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Feed

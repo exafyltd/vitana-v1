@@ -95,8 +95,8 @@ export default withScreenId(function Packages() {
           />
 
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search packages, templates..." />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Create Package

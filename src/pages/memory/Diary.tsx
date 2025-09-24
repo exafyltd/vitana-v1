@@ -137,8 +137,8 @@ function Diary() {
         />
 
         <UtilityActionButton>
-          <UniversalCalendarButton />
           <ExpandableSearchButton placeholder="Search diary entries and reflections..." />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             New Entry

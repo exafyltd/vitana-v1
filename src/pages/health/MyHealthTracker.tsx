@@ -130,8 +130,8 @@ export default function MyHealthTracker() {
           />
 
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search health metrics, goals, or tracking data..." />
+            <UniversalCalendarButton />
             <Button
               variant="default"
               size="sm"

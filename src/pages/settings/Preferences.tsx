@@ -33,8 +33,8 @@ function Preferences() {
           />
 
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search preferences, themes, language settings..." />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Reset Defaults

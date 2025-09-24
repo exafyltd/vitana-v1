@@ -106,8 +106,8 @@ function Rewards() {
         />
 
         <UtilityActionButton>
-          <UniversalCalendarButton />
           <ExpandableSearchButton placeholder="Search rewards, commissions, or achievements..." />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Quick Actions

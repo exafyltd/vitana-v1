@@ -105,8 +105,8 @@ function Subscriptions() {
         />
 
         <UtilityActionButton>
-          <UniversalCalendarButton />
           <ExpandableSearchButton placeholder="Search subscriptions and plans..." />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setAddSubscriptionOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Add Subscription

@@ -104,8 +104,8 @@ function Balance() {
         />
 
         <UtilityActionButton>
-          <UniversalCalendarButton />
           <ExpandableSearchButton placeholder="Search balances, transactions, or benefits..." />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={contextualAction.onClick}>
             <contextualAction.icon className="h-4 w-4 mr-2" />
             {contextualAction.label}

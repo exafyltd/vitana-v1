@@ -87,8 +87,8 @@ export default withScreenId(function Consent() {
           />
 
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search consent packages, organizations, permissions..." />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Manage Consent

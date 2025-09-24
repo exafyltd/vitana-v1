@@ -54,11 +54,11 @@ export default function Context() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
-            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search context data, cards, or insights…"
               onSearch={(query) => console.log("Search:", query)}
             />
+            <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setContextPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Context

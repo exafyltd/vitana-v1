@@ -29,11 +29,11 @@ export default withScreenId(function Meetups() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <UniversalCalendarButton />
           <ExpandableSearchButton 
             placeholder="Search Meetups…"
             onSearch={(query) => console.log('Search Meetups:', query)}
           />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setCreateMeetupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             MeetUp

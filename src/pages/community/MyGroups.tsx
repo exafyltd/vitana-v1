@@ -116,11 +116,11 @@ export default function MyGroups() {
 
           {/* Utility Action Button */}
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search Groups…"
               onSearch={(query) => console.log('Search Groups:', query)}
             />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setCreateGroupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Group

@@ -320,11 +320,11 @@ export default function Events() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
-          <UniversalCalendarButton />
           <ExpandableSearchButton 
             placeholder="Search Events…"
             onSearch={(query) => console.log('Search Events:', query)}
           />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setCreateEventOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Event
