@@ -126,7 +126,7 @@ export default function GlobalPaymentRequest({
       // Send payment request message
       const messageContent = `💳 Payment Request\n\n**Amount:** ${numericAmount.toLocaleString()} ${currency}\n**From:** You\n**Description:** ${description || 'Payment request'}\n\nThe recipient can approve or decline this request from their wallet.`;
       
-      await onSendMessage(messageContent, 'system', {
+      await onSendMessage(messageContent, 'payment_request', {
         type: 'payment_request',
         requestId,
         amount: numericAmount,
