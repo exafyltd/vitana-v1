@@ -81,7 +81,7 @@ export function useCommunityEvents() {
     }
   };
 
-  // Create a new community event
+// Create a new community event
   const createEvent = async (eventData: CreateEventData) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -122,6 +122,56 @@ export function useCommunityEvents() {
       toast({
         title: "Error",
         description: "Failed to create meetup. Please try again.",
+        variant: "destructive",
+      });
+      return { success: false, error };
+    }
+  };
+
+  // Update an existing community event
+  const updateEvent = async (eventId: string, eventData: CreateEventData) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+
+      const { data, error } = await supabase
+        .from("global_community_events")
+        .update({
+          title: eventData.title,
+          description: eventData.description,
+          event_type: eventData.event_type || 'meetup',
+          location: eventData.location,
+          virtual_link: eventData.virtual_link,
+          start_time: eventData.start_time,
+          end_time: eventData.end_time,
+          max_participants: eventData.max_participants,
+          image_url: eventData.image_url,
+        })
+        .eq('id', eventId)
+        .eq('created_by', user.id) // Ensure only the creator can update
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Update local state immediately
+      setEvents(prev => prev.map(event => 
+        event.id === eventId ? data : event
+      ));
+      
+      toast({
+        title: "Meetup Updated! ✏️",
+        description: `${eventData.title} has been updated successfully.`,
+      });
+
+      return { success: true, data };
+    } catch (error) {
+      console.error("Error updating event:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update meetup. Please try again.",
         variant: "destructive",
       });
       return { success: false, error };
@@ -218,6 +268,7 @@ export function useCommunityEvents() {
     searchQuery,
     fetchEvents,
     createEvent,
+    updateEvent,
     searchEvents,
   };
 }

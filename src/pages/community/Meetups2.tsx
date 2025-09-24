@@ -7,12 +7,14 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import { CreateMeetupPopup } from '@/components/CreateMeetupPopup';
+import { EditMeetupPopup } from '@/components/EditMeetupPopup';
 import { useCommunityEvents } from '@/hooks/useCommunityEvents';
+import { supabase } from "@/integrations/supabase/client";
 import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import happyCoffeeGroup from '@/assets/happy-coffee-group.jpg';
 import { 
   CalendarDays, 
@@ -24,7 +26,8 @@ import {
   Plus,
   Heart,
   Activity,
-  BookOpen
+  BookOpen,
+  Edit
 } from 'lucide-react';
 
 // Featured dummy events for hybrid display
@@ -204,13 +207,15 @@ const sanitizeUrl = (url?: string) => {
 };
 
 // Transform event data to NewsCard format
-const transformEventToNewsCard = (event: any) => {
+const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (event: any) => void) => {
   const rawImage = event.image_url || event.imageUrl;
   const safeImage = sanitizeUrl(rawImage);
   const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
 
   const baseAuthor = event.author || { name: event.organizer_name || 'Community', avatar: undefined };
   const authorAvatar = sanitizeUrl(baseAuthor.avatar) ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=faces';
+
+  const canEdit = currentUserId && event.created_by === currentUserId && !event.id?.startsWith('dummy');
 
   return {
     title: event.title,
@@ -221,7 +226,23 @@ const transformEventToNewsCard = (event: any) => {
     author: { name: baseAuthor.name, avatar: authorAvatar },
     location: event.location || 'TBA',
     attendees: event.participant_count || 0,
-    timestamp: formatEventTime(event.start_time)
+    timestamp: formatEventTime(event.start_time),
+    ...(canEdit && onEdit && {
+      actions: (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit(event);
+          }}
+          className="ml-2"
+        >
+          <Edit className="w-4 h-4 mr-1" />
+          Edit
+        </Button>
+      )
+    })
   };
 };
 
@@ -259,7 +280,7 @@ const formatEventTime = (dateString: string) => {
   });
 };
 
-const renderEventGrid = (events: any[]) => {
+const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event: any) => void) => {
   if (events.length === 0) {
     return (
       <div className="text-center py-12">
@@ -285,7 +306,7 @@ const renderEventGrid = (events: any[]) => {
             <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
-                {...transformEventToNewsCard(rowEvents[0])}
+                {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit)}
                 className="h-full min-h-[320px] md:min-h-[360px]"
               />
             </div>
@@ -293,7 +314,7 @@ const renderEventGrid = (events: any[]) => {
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1])}
+                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit)}
                   className="h-full min-h-[280px]"
                 />
               </div>
@@ -302,7 +323,7 @@ const renderEventGrid = (events: any[]) => {
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2])}
+                  {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit)}
                   className="h-full min-h-[280px]"
                 />
               </div>
@@ -315,7 +336,7 @@ const renderEventGrid = (events: any[]) => {
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-0`}
-                  {...transformEventToNewsCard(rowEvents[0])}
+                  {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit)}
                   className="h-full min-h-[280px]"
                 />
               </div>
@@ -324,7 +345,7 @@ const renderEventGrid = (events: any[]) => {
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1])}
+                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit)}
                   className="h-full min-h-[280px]"
                 />
               </div>
@@ -333,7 +354,7 @@ const renderEventGrid = (events: any[]) => {
               <div className="col-span-6">
               <NewsCard
                 key={`${i}-2`}
-                {...transformEventToNewsCard(rowEvents[2])}
+                {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit)}
                 className="h-full min-h-[320px] md:min-h-[360px]"
               />
               </div>
@@ -349,6 +370,10 @@ const renderEventGrid = (events: any[]) => {
 
 const Meetups = () => {
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
+  const [editMeetupOpen, setEditMeetupOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  
   const { 
     events,
     todayEvents,
@@ -357,6 +382,20 @@ const Meetups = () => {
     searchQuery,
     searchEvents
   } = useCommunityEvents();
+
+  // Get current user ID for edit permissions
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUserId(user?.id || null);
+    };
+    getCurrentUser();
+  }, []);
+
+  const handleEditEvent = (event: any) => {
+    setSelectedEvent(event);
+    setEditMeetupOpen(true);
+  };
 
   // Build a list with at least 12 items prioritizing primary, then secondary, then featured
   const buildPaddedList = (primary: any[], secondary: any[], featured: any[]) => {
@@ -420,10 +459,10 @@ const Meetups = () => {
               <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
             </SplitBarList>
             <SplitBarContent value="today" className="mt-6">
-              {renderEventGrid(todayList)}
+              {renderEventGrid(todayList, currentUserId, handleEditEvent)}
             </SplitBarContent>
             <SplitBarContent value="upcoming" className="mt-6">
-              {renderEventGrid(upcomingList)}
+              {renderEventGrid(upcomingList, currentUserId, handleEditEvent)}
             </SplitBarContent>
           </SplitBar>
         )}
@@ -434,6 +473,18 @@ const Meetups = () => {
         isOpen={createMeetupOpen} 
         onClose={() => setCreateMeetupOpen(false)}
       />
+
+      {/* Edit Meetup Popup */}
+      {selectedEvent && (
+        <EditMeetupPopup 
+          isOpen={editMeetupOpen} 
+          onClose={() => {
+            setEditMeetupOpen(false);
+            setSelectedEvent(null);
+          }}
+          event={selectedEvent}
+        />
+      )}
     </AppLayout>
   );
 };
