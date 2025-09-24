@@ -16,7 +16,7 @@ import {
   Send
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
+import { useRecipientData } from '@/hooks/useRecipientData';
 interface AttachmentMenuProps {
   onFileAttach: () => void;
   onSendMessage: (content: string, messageType?: string, contentData?: any) => Promise<void>;
@@ -27,6 +27,7 @@ interface AttachmentMenuProps {
     avatar?: string;
   };
   recipientIdHint?: string | null;
+  threadId?: string;
   disabled?: boolean;
   className?: string;
 }
@@ -98,6 +99,7 @@ export function AttachmentMenu({
   onCalendarInvite,
   recipient,
   recipientIdHint,
+  threadId,
   disabled = false,
   className
 }: AttachmentMenuProps) {
@@ -106,14 +108,16 @@ export function AttachmentMenu({
   const [showGlobalSendFunds, setShowGlobalSendFunds] = useState(false);
   const [showGlobalPaymentRequest, setShowGlobalPaymentRequest] = useState(false);
 
-  // Create effective recipient for direct conversations
-  const effectiveRecipient = recipient || (recipientIdHint ? {
+  // Create effective recipient for direct conversations using actual profile data
+  const { recipient: fetchedRecipient } = useRecipientData(recipient?.id ?? recipientIdHint ?? null, threadId);
+
+  const effectiveRecipient = recipient || fetchedRecipient || (recipientIdHint ? {
     id: recipientIdHint,
-    name: 'Conversation Partner',
-    avatar: undefined
+    name: recipient?.name ?? '',
+    avatar: recipient?.avatar
   } : undefined);
 
-  console.log('AttachmentMenu render:', { recipient, recipientIdHint, effectiveRecipient });
+  console.log('AttachmentMenu render:', { recipientProp: recipient, recipientIdHint, fetchedRecipient, effectiveRecipient });
   return (
     <Popover>
       <PopoverTrigger asChild>

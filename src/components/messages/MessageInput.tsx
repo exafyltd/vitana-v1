@@ -514,6 +514,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           onCalendarInvite={sendCalendarInvite}
           recipient={recipient}
           recipientIdHint={effectiveRecipientId}
+          threadId={threadId}
           disabled={disabled || isUploading} 
         />
 
