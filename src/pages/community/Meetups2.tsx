@@ -142,9 +142,9 @@ const featuredUpcomingEvents = [
 const transformEventToNewsCard = (event: any) => ({
   title: event.title,
   description: event.description,
-  imageUrl: event.image_url || event.imageUrl || "/api/placeholder/600/400?text=Community+Meetup",
+  imageUrl: event.image_url || event.imageUrl || generateImageUrl(event.title, event.description),
   category: event.category || "community",
-  pillar: event.category || "community",
+  pillar: event.category || "community",  
   author: event.author || {
     name: event.organizer_name || "Community",
     avatar: "/api/placeholder/32/32"
@@ -153,6 +153,36 @@ const transformEventToNewsCard = (event: any) => ({
   attendees: event.participant_count || 0,
   timestamp: formatEventTime(event.start_time)
 });
+
+// Generate contextual image based on meetup content
+const generateImageUrl = (title: string, description: string) => {
+  const text = `${title} ${description || ''}`.toLowerCase();
+  
+  if (text.includes('yoga') || text.includes('meditation') || text.includes('mindfulness')) {
+    return '/api/placeholder/600/400?text=Yoga+%26+Meditation';
+  }
+  if (text.includes('cooking') || text.includes('nutrition') || text.includes('food') || text.includes('recipe')) {
+    return '/api/placeholder/600/400?text=Healthy+Cooking';
+  }
+  if (text.includes('hiking') || text.includes('outdoor') || text.includes('nature') || text.includes('trail')) {
+    return '/api/placeholder/600/400?text=Outdoor+Adventure';
+  }
+  if (text.includes('fitness') || text.includes('workout') || text.includes('exercise') || text.includes('hiit')) {
+    return '/api/placeholder/600/400?text=Fitness+Training';
+  }
+  if (text.includes('stress') || text.includes('mental') || text.includes('therapy') || text.includes('wellness')) {
+    return '/api/placeholder/600/400?text=Mental+Wellness';
+  }
+  if (text.includes('sleep') || text.includes('rest') || text.includes('recovery')) {
+    return '/api/placeholder/600/400?text=Sleep+%26+Recovery';  
+  }
+  if (text.includes('social') || text.includes('networking') || text.includes('community')) {
+    return '/api/placeholder/600/400?text=Community+Social';
+  }
+  
+  // Default community meetup image
+  return '/api/placeholder/600/400?text=Community+Meetup';
+};
 
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);

@@ -47,14 +47,34 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
     'Group Activity', 'Individual Focus', 'Certification Available'
   ];
 
-  const defaultImages = [
-    '/api/placeholder/600/400?text=Community+Meetup',
-    '/api/placeholder/600/400?text=Wellness+Circle',
-    '/api/placeholder/600/400?text=Outdoor+Adventure',
-    '/api/placeholder/600/400?text=Learning+Workshop',
-    '/api/placeholder/600/400?text=Social+Gathering',
-    '/api/placeholder/600/400?text=Fitness+Group'
-  ];
+  // Auto-generate image based on content
+const generateImageUrl = (title: string, description: string) => {
+  const text = `${title} ${description || ''}`.toLowerCase();
+  
+  if (text.includes('yoga') || text.includes('meditation') || text.includes('mindfulness')) {
+    return '/api/placeholder/600/400?text=Yoga+%26+Meditation';
+  }
+  if (text.includes('cooking') || text.includes('nutrition') || text.includes('food') || text.includes('recipe')) {
+    return '/api/placeholder/600/400?text=Healthy+Cooking';
+  }
+  if (text.includes('hiking') || text.includes('outdoor') || text.includes('nature') || text.includes('trail')) {
+    return '/api/placeholder/600/400?text=Outdoor+Adventure';
+  }
+  if (text.includes('fitness') || text.includes('workout') || text.includes('exercise') || text.includes('hiit')) {
+    return '/api/placeholder/600/400?text=Fitness+Training';
+  }
+  if (text.includes('stress') || text.includes('mental') || text.includes('therapy') || text.includes('wellness')) {
+    return '/api/placeholder/600/400?text=Mental+Wellness';
+  }
+  if (text.includes('sleep') || text.includes('rest') || text.includes('recovery')) {
+    return '/api/placeholder/600/400?text=Sleep+%26+Recovery';  
+  }
+  if (text.includes('social') || text.includes('networking') || text.includes('community')) {
+    return '/api/placeholder/600/400?text=Community+Social';
+  }
+  
+  return '/api/placeholder/600/400?text=Community+Meetup';
+};
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -66,10 +86,6 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
     }
   };
 
-  const selectDefaultImage = (imageUrl: string) => {
-    setFormData({...formData, imageUrl});
-    setSelectedImage(null);
-  };
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev => 
@@ -137,7 +153,7 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
       start_time: startTime,
       end_time: endTime,
       max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
-      image_url: formData.imageUrl || defaultImages[0]
+      image_url: formData.imageUrl || generateImageUrl(formData.title, formData.description || '')
     };
 
     const result = await createEvent(eventData);
@@ -296,27 +312,9 @@ export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
                   </div>
                   
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">Or choose a default image:</p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {defaultImages.map((imageUrl, index) => (
-                        <button
-                          key={index}
-                          type="button"
-                          onClick={() => selectDefaultImage(imageUrl)}
-                          className={`relative aspect-video rounded border-2 overflow-hidden transition-all ${
-                            formData.imageUrl === imageUrl 
-                              ? 'border-primary ring-2 ring-primary/20' 
-                              : 'border-border hover:border-primary/50'
-                          }`}
-                        >
-                          <img 
-                            src={imageUrl} 
-                            alt={`Default option ${index + 1}`}
-                            className="w-full h-full object-cover"
-                          />
-                        </button>
-                      ))}
-                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      💡 Meetup image will be automatically generated based on your title and description
+                    </p>
                   </div>
 
                   {formData.imageUrl && (
