@@ -14,6 +14,7 @@ import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
 import CreateServicePopup from "@/components/CreateServicePopup";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 
 import { communityNavigation } from "@/config/navigation";
 
@@ -100,6 +101,7 @@ export default function MyBusiness() {
 
           {/* Action Buttons */}
           <UtilityActionButton>
+            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search Business…"
               onSearch={(query) => console.log('Search Business:', query)}

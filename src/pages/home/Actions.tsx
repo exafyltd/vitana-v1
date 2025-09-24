@@ -14,6 +14,7 @@ import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Search, Plus } from "lucide-react";
 import { ManageMyActionsPopup } from "@/components/ManageMyActionsPopup";
@@ -86,6 +87,7 @@ export default function Actions() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
+            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search actions, categories, or autopilot tasks…"
               onSearch={(query) => console.log('Search Actions:', query)}

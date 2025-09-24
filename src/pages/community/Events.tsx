@@ -5,6 +5,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { Calendar, Plus, Search, Apple, Droplets, Dumbbell, Brain, Moon, DollarSign } from "lucide-react";
@@ -319,6 +320,7 @@ export default function Events() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
+          <UniversalCalendarButton />
           <ExpandableSearchButton 
             placeholder="Search Events…"
             onSearch={(query) => console.log('Search Events:', query)}

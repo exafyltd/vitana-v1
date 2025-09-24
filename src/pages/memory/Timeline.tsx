@@ -7,6 +7,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { TimelineMasterActionPopup } from "@/components/memory/TimelineMasterActionPopup";
@@ -133,6 +134,7 @@ function Timeline() {
         />
 
         <UtilityActionButton>
+          <UniversalCalendarButton />
           <ExpandableSearchButton placeholder="Search timeline events and milestones..." />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />

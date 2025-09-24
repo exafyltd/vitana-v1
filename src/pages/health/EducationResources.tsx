@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { EducationMasterActionPopup } from "@/components/EducationMasterActionPopup";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ export default function EducationResources() {
           />
 
           <UtilityActionButton>
+            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search articles, videos, podcasts, or topics..." />
             <Button
               variant="default"

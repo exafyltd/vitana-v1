@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -156,6 +157,7 @@ export default function MediaHub() {
 
           {/* Action Buttons Utility Bar */}
           <UtilityActionButton>
+            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search Media…"
               onSearch={(query) => console.log('Search Media:', query)}

@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { ServicesMasterActionPopup } from "@/components/ServicesMasterActionPopup";
 import { ServiceDetailSplitScreen } from "@/components/ui/split-screen";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -267,6 +268,7 @@ export default function WellnessServices() {
           />
 
           <UtilityActionButton>
+            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search services, providers, or programs..." />
             <Button
               variant="default"

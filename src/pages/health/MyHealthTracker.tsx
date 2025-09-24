@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { HealthTrackerMasterActionPopup } from "@/components/HealthTrackerMasterActionPopup";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -129,6 +130,7 @@ export default function MyHealthTracker() {
           />
 
           <UtilityActionButton>
+            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search health metrics, goals, or tracking data..." />
             <Button
               variant="default"

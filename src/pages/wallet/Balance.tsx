@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
@@ -103,6 +104,7 @@ function Balance() {
         />
 
         <UtilityActionButton>
+          <UniversalCalendarButton />
           <ExpandableSearchButton placeholder="Search balances, transactions, or benefits..." />
           <Button size="sm" onClick={contextualAction.onClick}>
             <contextualAction.icon className="h-4 w-4 mr-2" />

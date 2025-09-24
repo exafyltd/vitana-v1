@@ -11,6 +11,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import EnrichContextPopup from "@/components/EnrichContextPopup";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { homeNavigation } from "@/config/navigation";
 
 // Context Visual Cards
@@ -53,6 +54,7 @@ export default function Context() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
+            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search context data, cards, or insights…"
               onSearch={(query) => console.log("Search:", query)}

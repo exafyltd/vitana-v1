@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { communityNavigation } from "@/config/navigation";
@@ -28,6 +29,7 @@ export default withScreenId(function Meetups() {
 
         {/* Utility Action Button */}
         <UtilityActionButton>
+          <UniversalCalendarButton />
           <ExpandableSearchButton 
             placeholder="Search Meetups…"
             onSearch={(query) => console.log('Search Meetups:', query)}

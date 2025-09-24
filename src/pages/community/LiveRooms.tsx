@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Search, Plus, Plane } from "lucide-react";
 import { useState } from "react";
 import { GoLivePopup } from "@/components/GoLivePopup";
@@ -111,6 +112,7 @@ export default function LiveRooms() {
 
         {/* Action Buttons Utility Bar */}
         <UtilityActionButton>
+          <UniversalCalendarButton />
           <ExpandableSearchButton 
             placeholder="Search Live Rooms…"
             onSearch={(query) => console.log('Search Live Rooms:', query)}

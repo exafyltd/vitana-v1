@@ -5,6 +5,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { BiomarkersMasterActionPopup } from "@/components/BiomarkersMasterActionPopup";
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -284,6 +285,7 @@ export default function BiomarkerResults() {
           />
 
           <UtilityActionButton>
+            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search lab results, biomarkers, or test types..." />
             <Button
               variant="default"

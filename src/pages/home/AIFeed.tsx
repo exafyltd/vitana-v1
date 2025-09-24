@@ -14,6 +14,7 @@ import { homeNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Search, Plus } from "lucide-react";
 import { AddToAIFeedPopup } from "@/components/AddToAIFeedPopup";
@@ -88,6 +89,7 @@ export default function AIFeed() {
 
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
+            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search feed, routines, ideas, or history…"
               onSearch={(query) => console.log('Search AI Feed:', query)}

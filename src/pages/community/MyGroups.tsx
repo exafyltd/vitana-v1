@@ -11,6 +11,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { CreateGroupPopup } from "@/components/CreateGroupPopup";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
@@ -115,6 +116,7 @@ export default function MyGroups() {
 
           {/* Utility Action Button */}
           <UtilityActionButton>
+            <UniversalCalendarButton />
             <ExpandableSearchButton 
               placeholder="Search Groups…"
               onSearch={(query) => console.log('Search Groups:', query)}
