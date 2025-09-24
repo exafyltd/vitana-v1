@@ -510,8 +510,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               : undefined;
 
             // Respond to the invite (this will create the event if accepted)
+            const isValidUUID = (v?: string) => !!v && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
+            const safeMessageId = action.messageId;
+            if (!isValidUUID(safeMessageId)) {
+              toast({
+                title: 'Please wait',
+                description: 'Still syncing this message. Try again in a moment.',
+                variant: 'default',
+              });
+              return;
+            }
+
             const result = await respondToInvite(
-              action.messageId || 'unknown',
+              safeMessageId,
               response,
               response === 'accepted' && eventData ? {
                 title: eventData.title || 'Calendar Event',

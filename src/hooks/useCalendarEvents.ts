@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-
+import { z } from 'zod';
 export interface CalendarEvent {
   id: string;
   title: string;
@@ -32,6 +32,33 @@ export interface CalendarInviteResponse {
   response: 'accepted' | 'declined' | 'maybe' | 'pending';
   responded_at: string;
 }
+
+
+// Allowed enums and helpers for validation
+const ALLOWED_EVENT_TYPES = new Set(['personal','community','professional','health','workout','nutrition']);
+const ALLOWED_STATUSES = new Set(['confirmed','pending','conflict','cancelled']);
+const ALLOWED_PRIORITIES = new Set(['low','medium','high']);
+
+const isValidUUID = (v?: string | null) => !!v && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
+
+const eventSchema = z.object({
+  title: z.string().trim().min(1).max(200).default('Calendar Event'),
+  description: z.string().trim().max(2000).optional().nullable(),
+  start_time: z.string().refine((v) => !Number.isNaN(new Date(v).getTime()), { message: 'Invalid start_time' }),
+  end_time: z.string().optional().nullable(),
+  location: z.string().trim().max(300).optional().nullable(),
+  event_type: z.string().transform(v => ALLOWED_EVENT_TYPES.has(v as any) ? (v as any) : 'personal'),
+  status: z.string().transform(v => ALLOWED_STATUSES.has(v as any) ? (v as any) : 'confirmed'),
+  priority: z.string().transform(v => ALLOWED_PRIORITIES.has(v as any) ? (v as any) : 'medium'),
+  is_recurring: z.boolean().default(false),
+  recurring_pattern: z.any().optional(),
+  attendees_count: z.number().int().nonnegative().optional().nullable(),
+  has_rewards: z.boolean().optional().nullable(),
+  metadata: z.any().optional(),
+  source_message_id: z.string().uuid().optional().nullable(),
+  source_type: z.enum(['manual','invite','imported']).optional(),
+  user_id: z.string().uuid().optional(),
+});
 
 export function useCalendarEvents() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
@@ -163,6 +190,10 @@ export function useCalendarEvents() {
 
       const normalized = (response === 'accept' ? 'accepted' : response === 'decline' ? 'declined' : response) as 'accepted' | 'declined' | 'maybe';
 
+      if (!isValidUUID(messageId)) {
+        throw new Error('Invalid invite reference. Please wait until the message is fully sent, then try again.');
+      }
+
       console.log('📅 Responding to calendar invite:', { messageId, response, normalized, eventData });
 
       // Always record the invite response first
@@ -212,20 +243,28 @@ export function useCalendarEvents() {
           console.log('📝 Creating calendar event for accepted invite:', eventData);
           
           // Validate and clean event data
-          const cleanEventData = {
+          const rawEventData = {
             ...eventData,
             user_id: user.id, // Ensure user_id is set correctly
             source_message_id: messageId,
             source_type: 'invite' as const,
             // Ensure required fields have defaults
             title: eventData.title || 'Calendar Event',
-            event_type: eventData.event_type || 'personal' as const,
-            status: eventData.status || 'confirmed' as const,
-            priority: eventData.priority || 'medium' as const,
-            is_recurring: eventData.is_recurring || false,
-          };
+            event_type: (eventData as any).event_type || 'personal',
+            status: (eventData as any).status || 'confirmed',
+            priority: (eventData as any).priority || 'medium',
+            is_recurring: !!eventData.is_recurring,
+          } as any;
 
-          // Validate start_time format
+          // Sanitize enums and validate ISO times
+          if (!ALLOWED_EVENT_TYPES.has(rawEventData.event_type)) rawEventData.event_type = 'personal';
+          if (!ALLOWED_STATUSES.has(rawEventData.status)) rawEventData.status = 'confirmed';
+          if (!ALLOWED_PRIORITIES.has(rawEventData.priority)) rawEventData.priority = 'medium';
+
+          // Validate with zod (will coerce/guard invalid values)
+          const cleanEventData = eventSchema.parse(rawEventData) as Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>;
+
+          // Validate start_time format explicitly
           const startTime = new Date(cleanEventData.start_time);
           if (isNaN(startTime.getTime())) {
             throw new Error('Invalid start_time format');
