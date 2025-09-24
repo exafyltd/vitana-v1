@@ -171,7 +171,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
             style={{ 
-              backgroundImage: `url(${imageUrl})`,
+              backgroundImage: `url("${imageUrl}")`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}

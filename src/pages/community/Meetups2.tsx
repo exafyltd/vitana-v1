@@ -180,17 +180,22 @@ const featuredUpcomingEvents = [
   }
 ];
 
+// URL sanitizer to avoid broken placeholders
+const sanitizeUrl = (url?: string) => {
+  if (!url) return undefined;
+  const s = String(url).trim();
+  if (!s || s.includes('undefined') || s.startsWith('/api/placeholder')) return undefined;
+  return s;
+};
+
 // Transform event data to NewsCard format
 const transformEventToNewsCard = (event: any) => {
   const rawImage = event.image_url || event.imageUrl;
-  const imageUrl = (typeof rawImage === 'string' && rawImage.trim().length > 0)
-    ? rawImage
-    : generateImageUrl(event.title, event.description);
+  const safeImage = sanitizeUrl(rawImage);
+  const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
 
   const baseAuthor = event.author || { name: event.organizer_name || 'Community', avatar: undefined };
-  const authorAvatar = (baseAuthor.avatar && String(baseAuthor.avatar).trim().length > 0)
-    ? baseAuthor.avatar
-    : 'https://placehold.co/32x32?text=%20';
+  const authorAvatar = sanitizeUrl(baseAuthor.avatar) ?? 'https://placehold.co/32x32?text=%20';
 
   return {
     title: event.title,
@@ -344,6 +349,32 @@ const Meetups = () => {
     searchEvents
   } = useCommunityEvents();
 
+  // Build a list with at least 12 items prioritizing primary, then secondary, then featured
+  const buildPaddedList = (primary: any[], secondary: any[], featured: any[]) => {
+    const byId = new Set<string>();
+    const result: any[] = [];
+
+    const pushUnique = (arr: any[]) => {
+      for (const e of arr) {
+        const id = e.id || `${e.title}-${e.start_time}`;
+        if (!byId.has(id)) {
+          byId.add(id);
+          result.push(e);
+        }
+        if (result.length >= 12) break;
+      }
+    };
+
+    pushUnique(primary);
+    if (result.length < 12) pushUnique(secondary);
+    if (result.length < 12) pushUnique(featured);
+
+    return result;
+  };
+
+  const todayList = buildPaddedList(todayEvents, upcomingEvents, featuredTodayEvents);
+  const upcomingList = buildPaddedList(upcomingEvents, todayEvents, featuredUpcomingEvents);
+
   return (
     <AppLayout>
       <SEO title="Meetups | Community" description="Discover and join local meetups and events" canonical={window.location.href} />
@@ -380,10 +411,10 @@ const Meetups = () => {
               <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
             </SplitBarList>
             <SplitBarContent value="today" className="mt-6">
-              {renderEventGrid([...todayEvents, ...featuredTodayEvents])}
+              {renderEventGrid(todayList)}
             </SplitBarContent>
             <SplitBarContent value="upcoming" className="mt-6">
-              {renderEventGrid([...upcomingEvents, ...featuredUpcomingEvents])}
+              {renderEventGrid(upcomingList)}
             </SplitBarContent>
           </SplitBar>
         )}
