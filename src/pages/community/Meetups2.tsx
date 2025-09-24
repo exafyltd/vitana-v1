@@ -182,20 +182,20 @@ const featuredUpcomingEvents = [
 
 // Transform event data to NewsCard format
 const transformEventToNewsCard = (event: any) => {
-  const rawImage = event.image_url || event.imageUrl || undefined;
-  const safeImage = (typeof rawImage === 'string' && rawImage.trim().length > 0 && !rawImage.includes('undefined'))
-    ? (rawImage.includes('/api/placeholder') ? '/placeholder.svg' : rawImage)
+  const rawImage = event.image_url || event.imageUrl;
+  const imageUrl = (typeof rawImage === 'string' && rawImage.trim().length > 0)
+    ? rawImage
     : generateImageUrl(event.title, event.description);
 
   const baseAuthor = event.author || { name: event.organizer_name || 'Community', avatar: undefined };
-  const authorAvatar = baseAuthor.avatar && String(baseAuthor.avatar).includes('/api/placeholder')
-    ? '/placeholder.svg'
-    : (baseAuthor.avatar || 'https://placehold.co/32x32');
+  const authorAvatar = (baseAuthor.avatar && String(baseAuthor.avatar).trim().length > 0)
+    ? baseAuthor.avatar
+    : 'https://placehold.co/32x32?text=%20';
 
   return {
     title: event.title,
     description: event.description,
-    imageUrl: safeImage || '/placeholder.svg',
+    imageUrl,
     category: event.category || 'community',
     pillar: event.category || 'community',
     author: { name: baseAuthor.name, avatar: authorAvatar },
@@ -205,9 +205,35 @@ const transformEventToNewsCard = (event: any) => {
   };
 };
 
-// Generate a safe local placeholder image
-const generateImageUrl = (_title: string, _description: string) => {
-  return '/placeholder.svg';
+// Generate contextual image based on meetup content
+const generateImageUrl = (title: string, description: string) => {
+  const text = `${title} ${description || ''}`.toLowerCase();
+  const build = (t: string) => `https://placehold.co/1200x800?text=${encodeURIComponent(t)}`;
+  
+  if (text.includes('yoga') || text.includes('meditation') || text.includes('mindfulness')) {
+    return build('Yoga & Meditation');
+  }
+  if (text.includes('cooking') || text.includes('nutrition') || text.includes('food') || text.includes('recipe')) {
+    return build('Healthy Cooking');
+  }
+  if (text.includes('hiking') || text.includes('outdoor') || text.includes('nature') || text.includes('trail')) {
+    return build('Outdoor Adventure');
+  }
+  if (text.includes('fitness') || text.includes('workout') || text.includes('exercise') || text.includes('hiit')) {
+    return build('Fitness Training');
+  }
+  if (text.includes('stress') || text.includes('mental') || text.includes('therapy') || text.includes('wellness')) {
+    return build('Mental Wellness');
+  }
+  if (text.includes('sleep') || text.includes('rest') || text.includes('recovery')) {
+    return build('Sleep & Recovery');  
+  }
+  if (text.includes('social') || text.includes('networking') || text.includes('community')) {
+    return build('Community Social');
+  }
+  
+  // Default community meetup image
+  return build('Community Meetup');
 };
 
 const formatEventTime = (dateString: string) => {
