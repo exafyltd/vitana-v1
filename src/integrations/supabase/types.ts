@@ -216,6 +216,7 @@ export type Database = {
           end_time: string | null
           event_type: string
           id: string
+          image_url: string | null
           location: string | null
           max_participants: number | null
           participant_count: number
@@ -231,6 +232,7 @@ export type Database = {
           end_time?: string | null
           event_type?: string
           id?: string
+          image_url?: string | null
           location?: string | null
           max_participants?: number | null
           participant_count?: number
@@ -246,6 +248,7 @@ export type Database = {
           end_time?: string | null
           event_type?: string
           id?: string
+          image_url?: string | null
           location?: string | null
           max_participants?: number | null
           participant_count?: number
