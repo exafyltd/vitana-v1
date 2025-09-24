@@ -216,6 +216,16 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
   const authorAvatar = sanitizeUrl(baseAuthor.avatar) ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=faces';
 
   const canEdit = currentUserId && event.created_by === currentUserId && !event.id?.startsWith('dummy');
+  
+  // Debug logging
+  console.log('Event check:', {
+    eventId: event.id,
+    eventTitle: event.title,
+    eventCreatedBy: event.created_by,
+    currentUserId,
+    canEdit,
+    isDummy: event.id?.startsWith('dummy')
+  });
 
   return {
     title: event.title,
