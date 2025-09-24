@@ -6,6 +6,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import WalletIntegratedSendFunds from '@/components/payment/WalletIntegratedSendFunds';
 import WalletIntegratedPaymentRequest from '@/components/payment/WalletIntegratedPaymentRequest';
+import GlobalSendFunds from '@/components/payment/GlobalSendFunds';
+import GlobalPaymentRequest from '@/components/payment/GlobalPaymentRequest';
 import { 
   Paperclip, 
   DollarSign, 
@@ -99,6 +101,8 @@ export function AttachmentMenu({
 }: AttachmentMenuProps) {
   const [showSendFunds, setShowSendFunds] = useState(false);
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
+  const [showGlobalSendFunds, setShowGlobalSendFunds] = useState(false);
+  const [showGlobalPaymentRequest, setShowGlobalPaymentRequest] = useState(false);
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -121,32 +125,36 @@ export function AttachmentMenu({
         className="w-56 p-2 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
       >
         <div className="grid gap-1">
-          {/* Send Funds - Primary Action */}
+          {/* Send Funds - Always Enabled */}
           <Button
             variant="ghost"
-            className={`w-full justify-start h-10 px-3 ${
-              recipient 
-                ? "bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30" 
-                : "opacity-50 cursor-not-allowed"
-            }`}
-            onClick={() => recipient && setShowSendFunds(true)}
-            disabled={!recipient}
-            title={!recipient ? "Select a conversation to send funds" : "Send funds to recipient"}
+            className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
+            onClick={() => {
+              if (recipient) {
+                setShowSendFunds(true);
+              } else {
+                setShowGlobalSendFunds(true);
+              }
+            }}
+            title="Send funds to anyone"
           >
-            <Send className={`w-5 h-5 mr-3 ${recipient ? "text-green-600" : "text-muted-foreground"}`} />
+            <Send className="w-5 h-5 mr-3 text-green-600" />
             <span className="text-sm font-medium">Send Funds</span>
           </Button>
           
           <Button
             variant="ghost"
-            className={`w-full justify-start h-10 px-3 ${
-              !recipient ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            onClick={() => recipient && setShowPaymentRequest(true)}
-            disabled={!recipient}
-            title={!recipient ? "Select a conversation to request payment" : "Request payment from recipient"}
+            className="w-full justify-start h-10 px-3"
+            onClick={() => {
+              if (recipient) {
+                setShowPaymentRequest(true);
+              } else {
+                setShowGlobalPaymentRequest(true);
+              }
+            }}
+            title="Request payment from anyone"
           >
-            <DollarSign className={`w-5 h-5 mr-3 ${recipient ? "text-green-500" : "text-muted-foreground"}`} />
+            <DollarSign className="w-5 h-5 mr-3 text-green-500" />
             <span className="text-sm">Request Payment</span>
           </Button>
           
@@ -179,6 +187,20 @@ export function AttachmentMenu({
             />
           </>
         )}
+        
+        {/* Global Payment Dialogs */}
+        <GlobalSendFunds
+          isOpen={showGlobalSendFunds}
+          onClose={() => setShowGlobalSendFunds(false)}
+          onSendMessage={onSendMessage}
+          preSelectedRecipient={recipient}
+        />
+        <GlobalPaymentRequest
+          isOpen={showGlobalPaymentRequest}
+          onClose={() => setShowGlobalPaymentRequest(false)}
+          onSendMessage={onSendMessage}
+          preSelectedRecipient={recipient}
+        />
       </PopoverContent>
     </Popover>
   );
