@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { Plus, MessageCircle, Phone, Mail, Book, Users, Send, Search, HelpCircle, Settings as SettingsIcon } from "lucide-react";
@@ -34,6 +35,7 @@ function Support() {
 
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search help articles, support topics, FAQs..." />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               New Ticket

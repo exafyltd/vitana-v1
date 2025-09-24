@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { MatchFiltersPopup } from "@/components/MatchFiltersPopup";
 import { Users, Target, Calendar, UserCheck, Plus } from "lucide-react";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 
 // Import match-specific cards
 import { PeopleMatchCard } from "@/components/crossover/PeopleMatchCard";
@@ -42,6 +43,7 @@ export default function Matches() {
               placeholder="Search people, groups, coaches, events…"
               onSearch={(query) => console.log("Search:", query)}
             />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setMatchFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Matches

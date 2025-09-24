@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
@@ -119,6 +120,7 @@ function Recall() {
 
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Ask AI about your wellness journey..." />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Memory Actions

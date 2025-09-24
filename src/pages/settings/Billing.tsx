@@ -5,6 +5,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -38,6 +39,7 @@ export default function Billing() {
             placeholder="Search billing..." 
             onSearch={handleSearch}
           />
+          <UniversalCalendarButton />
           <Button 
             size="sm" 
             onClick={() => setActionPopupOpen(true)}

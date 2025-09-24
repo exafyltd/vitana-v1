@@ -5,6 +5,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { InspirationMasterActionPopup } from "@/components/messages/InspirationMasterActionPopup";
 import { Lightbulb, Copy, Send, Plus, Heart, Clock, Edit } from "lucide-react";
@@ -73,6 +74,7 @@ export default function Inspiration() {
               placeholder="Search message templates..."
               onSearch={(query) => console.log('Search:', query)}
             />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setInspirationActionOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Template Actions

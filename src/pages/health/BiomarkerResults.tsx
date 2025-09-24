@@ -285,8 +285,8 @@ export default function BiomarkerResults() {
           />
 
           <UtilityActionButton>
-            <UniversalCalendarButton />
             <ExpandableSearchButton placeholder="Search lab results, biomarkers, or test types..." />
+            <UniversalCalendarButton />
             <Button
               variant="default"
               size="sm"

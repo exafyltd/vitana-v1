@@ -5,6 +5,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { ReminderMasterActionPopup } from "@/components/messages/ReminderMasterActionPopup";
 import { Clock, Send, Plus, MessageCircle, BarChart3, AlertCircle } from "lucide-react";
@@ -74,6 +75,7 @@ export default function Reminder() {
               placeholder="Search unanswered messages..."
               onSearch={(query) => console.log('Search:', query)}
             />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setReminderActionOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Quick Actions

@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Switch } from "@/components/ui/switch";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
@@ -118,6 +119,7 @@ function Permissions() {
 
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search privacy and security settings..." />
+          <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Manage Access

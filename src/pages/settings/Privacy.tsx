@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { Plus, Shield, Eye, Users, Lock, Smartphone, History, Settings as SettingsIcon } from "lucide-react";
@@ -32,6 +33,7 @@ function Privacy() {
 
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search privacy controls, data settings, security..." />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Privacy Audit
