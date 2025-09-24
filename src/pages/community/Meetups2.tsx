@@ -265,7 +265,7 @@ const renderEventGrid = (events: any[]) => {
               <NewsCard
                 key={`${i}-0`}
                 {...transformEventToNewsCard(rowEvents[0])}
-                className="h-full"
+                className="h-full min-h-[320px] md:min-h-[360px]"
               />
             </div>
             {rowEvents[1] && (
@@ -273,7 +273,7 @@ const renderEventGrid = (events: any[]) => {
                 <NewsCard
                   key={`${i}-1`}
                   {...transformEventToNewsCard(rowEvents[1])}
-                  className="h-full"
+                  className="h-full min-h-[280px]"
                 />
               </div>
             )}
@@ -282,7 +282,7 @@ const renderEventGrid = (events: any[]) => {
                 <NewsCard
                   key={`${i}-2`}
                   {...transformEventToNewsCard(rowEvents[2])}
-                  className="h-full"
+                  className="h-full min-h-[280px]"
                 />
               </div>
             )}
@@ -295,7 +295,7 @@ const renderEventGrid = (events: any[]) => {
                 <NewsCard
                   key={`${i}-0`}
                   {...transformEventToNewsCard(rowEvents[0])}
-                  className="h-full"
+                  className="h-full min-h-[280px]"
                 />
               </div>
             )}
@@ -304,17 +304,17 @@ const renderEventGrid = (events: any[]) => {
                 <NewsCard
                   key={`${i}-1`}
                   {...transformEventToNewsCard(rowEvents[1])}
-                  className="h-full"
+                  className="h-full min-h-[280px]"
                 />
               </div>
             )}
             {rowEvents[2] && (
               <div className="col-span-6">
-                <NewsCard
-                  key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2])}
-                  className="h-full"
-                />
+              <NewsCard
+                key={`${i}-2`}
+                {...transformEventToNewsCard(rowEvents[2])}
+                className="h-full min-h-[320px] md:min-h-[360px]"
+              />
               </div>
             )}
           </>
