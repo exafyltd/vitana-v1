@@ -586,10 +586,6 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
             </Button>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => navigate('/calendar')}>
-              <ExternalLink className="h-3 w-3 mr-1" />
-              Full Calendar
-            </Button>
             <Button onClick={() => onOpenChange(false)}>
               Done
             </Button>

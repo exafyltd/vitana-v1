@@ -26,7 +26,6 @@ import {
   Zap,
   Sparkles,
   RefreshCw,
-  ExternalLink,
   Edit,
   Trash2,
   CheckCircle,
@@ -170,10 +169,6 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
   const upcomingEvents = mockEvents.slice(0, 4);
   const conflictCount = mockEvents.filter(e => e.status === 'conflict').length;
   
-  const handleViewFullCalendar = () => {
-    onOpenChange(false);
-    navigate('/calendar');
-  };
   
   const handleQuickAdd = () => {
     setShowQuickAdd(true);
@@ -325,9 +320,8 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
               Add Event
             </Button>
           </div>
-          <Button onClick={handleViewFullCalendar} className="w-full sm:w-auto">
-            <ExternalLink className="h-4 w-4 mr-2" />
-            View Full Calendar
+          <Button onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
+            Done
           </Button>
         </DialogFooter>
       </DialogContent>

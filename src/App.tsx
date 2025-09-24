@@ -71,16 +71,7 @@ import MyHealthTracker from "./pages/health/MyHealthTracker";
 
 // Health Tracker sub-pages - REMOVED (redirected to /health/my-health-tracker)
 
-// Calendar sub-pages
-import Month from "./pages/calendar/Month";
-import Week from "./pages/calendar/Week";
-import Day from "./pages/calendar/Day";
-import Appointments from "./pages/calendar/Appointments";
-import CalendarEvents from "./pages/calendar/Events";
-import Reminders from "./pages/calendar/Reminders";
-import Motivation from "./pages/calendar/Motivation";
-import CalendarProgress from "./pages/calendar/Progress";
-import CalendarRecommendations from "./pages/calendar/Recommendations";
+// Calendar sub-pages - REMOVED (using universal popup system)
 
 // Community sub-pages
 import MyGroups from "./pages/community/MyGroups";
@@ -279,56 +270,6 @@ const App = () => (
           <Route path="/health-tracker/biomarker-results" element={<Navigate to="/health/my-health-tracker" replace />} />
           
           {/* Calendar routes */}
-          <Route path="/calendar" element={
-            <AuthGuard>
-              <Calendar />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/month" element={
-            <AuthGuard>
-              <Month />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/week" element={
-            <AuthGuard>
-              <Week />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/day" element={
-            <AuthGuard>
-              <Day />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/appointments" element={
-            <AuthGuard>
-              <Appointments />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/events" element={
-            <AuthGuard>
-              <CalendarEvents />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/reminders" element={
-            <AuthGuard>
-              <Reminders />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/motivation" element={
-            <AuthGuard>
-              <Motivation />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/progress" element={
-            <AuthGuard>
-              <CalendarProgress />
-            </AuthGuard>
-          } />
-          <Route path="/calendar/recommendations" element={
-            <AuthGuard>
-              <CalendarRecommendations />
-            </AuthGuard>
-          } />
 
           <Route path="/comm" element={
             <AuthGuard>

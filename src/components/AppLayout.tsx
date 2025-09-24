@@ -14,7 +14,7 @@ import { useTenant } from "@/hooks/useTenant";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
-import { CalendarPopup } from "@/components/CalendarPopup";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { WalletPopup } from "@/components/WalletPopup";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
@@ -31,8 +31,6 @@ function AppSidebar({
   streamingChatRef, 
   autopilotPopupOpen, 
   setAutopilotPopupOpen, 
-  calendarPopupOpen,
-  setCalendarPopupOpen,
   walletPopupOpen,
   setWalletPopupOpen,
   onSidebarOpenChange 
@@ -40,8 +38,6 @@ function AppSidebar({
   streamingChatRef: React.RefObject<StreamingChatRef>;
   autopilotPopupOpen: boolean;
   setAutopilotPopupOpen: (open: boolean) => void;
-  calendarPopupOpen: boolean;
-  setCalendarPopupOpen: (open: boolean) => void;
   walletPopupOpen: boolean;
   setWalletPopupOpen: (open: boolean) => void;
   onSidebarOpenChange: (open: boolean) => void;
@@ -182,22 +178,19 @@ function AppSidebar({
           {/* Utility Icons - only show when sidebar is open */}
           {open && (
             <div className="flex items-center space-x-1 ml-4">
-              {/* Calendar Button */}
-              <Button 
-                variant="ghost" 
-                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg group"
-                title="Calendar & Events - 3 events today"
-                onClick={() => setCalendarPopupOpen(true)}
+              {/* Calendar Button - Today's Overview */}
+              <div 
+                className="relative shrink-0 transition-all duration-200"
+                title="Calendar & Events - Today's overview"
               >
-                <Calendar className="h-4 w-4 text-white group-hover:text-primary transition-colors" />
-                {/* Event count indicator */}
-                <Badge 
-                  variant="secondary" 
-                  className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-blue-500 text-white h-4 w-4 text-[10px] min-w-[16px]"
-                >
-                  3
-                </Badge>
-              </Button>
+                <UniversalCalendarButton 
+                  variant="ghost" 
+                  size="sm"
+                  className="h-8 w-8 p-0 text-white group-hover:text-primary transition-colors"
+                  showEventCount={true}
+                  showConflictIndicator={true}
+                />
+              </div>
               
               {/* Wallet Button */}
               <Button 
@@ -356,7 +349,6 @@ function AppSidebar({
 export default function AppLayout({ children }: AppLayoutProps) {
   const streamingChatRef = useRef<StreamingChatRef>(null);
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
-  const [calendarPopupOpen, setCalendarPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const { tenant } = useTenant();
   
@@ -391,8 +383,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
               streamingChatRef={streamingChatRef} 
               autopilotPopupOpen={autopilotPopupOpen}
               setAutopilotPopupOpen={setAutopilotPopupOpen}
-              calendarPopupOpen={calendarPopupOpen}
-              setCalendarPopupOpen={setCalendarPopupOpen}
               walletPopupOpen={walletPopupOpen}
               setWalletPopupOpen={setWalletPopupOpen}
               onSidebarOpenChange={handleSidebarOpenChange}
@@ -409,10 +399,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <AutopilotPopup 
         open={autopilotPopupOpen} 
         onOpenChange={setAutopilotPopupOpen} 
-      />
-      <CalendarPopup 
-        open={calendarPopupOpen} 
-        onOpenChange={setCalendarPopupOpen} 
       />
       <WalletPopup 
         open={walletPopupOpen} 

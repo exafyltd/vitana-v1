@@ -117,7 +117,8 @@ export default function NotificationBell() {
         navigate('/health/insights/biomarker-results');
         break;
       case 'appointment_reminder':
-        navigate('/calendar/appointments');
+        // Appointments handled by universal calendar popup
+        navigate('/calendar');
         break;
       default:
         break;

@@ -95,7 +95,8 @@ export function HealthTrackerMasterActionPopup({ open, onOpenChange }: HealthTra
       icon: Calendar,
       action: () => {
         onOpenChange(false);
-        navigate('/calendar');
+        // Universal calendar managed separately
+        onOpenChange(false);
       }
     }
   ];
