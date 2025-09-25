@@ -38,20 +38,37 @@ export function useWallet() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Initialize user wallet if it doesn't exist
-      await supabase.rpc('initialize_user_wallet', { user_id_param: user.id });
+      // Initialize user wallet with timeout
+      const initPromise = supabase.rpc('initialize_user_wallet', { user_id_param: user.id });
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('Wallet initialization timeout')), 5000)
+      );
+      
+      await Promise.race([initPromise, timeoutPromise]);
 
-      // Fetch current balances
-      const { data, error } = await supabase
+      // Fetch current balances with timeout
+      const balancePromise = supabase
         .from('user_wallets')
         .select('currency_type, balance, updated_at')
         .eq('user_id', user.id);
+        
+      const balanceTimeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('Balance fetch timeout')), 5000)
+      );
 
-      if (error) throw error;
-      setBalances((data as UserBalance[]) || []);
+      const result = await Promise.race([balancePromise, balanceTimeoutPromise]);
+      if (result.error) throw result.error;
+      setBalances((result.data as UserBalance[]) || []);
+      setError(null); // Clear any previous errors
     } catch (err) {
       console.error('Error fetching balances:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch balances');
+      // Set default balances to prevent infinite loading
+      setBalances([
+        { currency_type: 'USD', balance: 0, updated_at: new Date().toISOString() },
+        { currency_type: 'VTN', balance: 0, updated_at: new Date().toISOString() },
+        { currency_type: 'CREDITS', balance: 0, updated_at: new Date().toISOString() }
+      ]);
     }
   };
 
@@ -61,18 +78,25 @@ export function useWallet() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data, error } = await supabase
+      const transactionPromise = supabase
         .from('wallet_transactions')
         .select('*')
         .or(`from_user_id.eq.${user.id},to_user_id.eq.${user.id}`)
         .order('created_at', { ascending: false })
         .limit(10);
 
-      if (error) throw error;
-      setTransactions((data as TransactionData[]) || []);
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('Transaction fetch timeout')), 5000)
+      );
+
+      const result = await Promise.race([transactionPromise, timeoutPromise]);
+      if (result.error) throw result.error;
+      setTransactions((result.data as TransactionData[]) || []);
     } catch (err) {
       console.error('Error fetching transactions:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch transactions');
+      // Set empty transactions to prevent infinite loading  
+      setTransactions([]);
     }
   };
 
@@ -281,11 +305,26 @@ export function useWallet() {
   // Initialize wallet data on mount
   useEffect(() => {
     const initializeData = async () => {
-      if (!user?.id) return;
+      if (!user?.id) {
+        setLoading(false);
+        return;
+      }
       
       setLoading(true);
-      await Promise.all([fetchBalances(), fetchTransactions()]);
-      setLoading(false);
+      try {
+        // Add overall timeout for initialization
+        const initPromise = Promise.all([fetchBalances(), fetchTransactions()]);
+        const overallTimeout = new Promise<never>((_, reject) => 
+          setTimeout(() => reject(new Error('Wallet initialization timeout')), 10000)
+        );
+        
+        await Promise.race([initPromise, overallTimeout]);
+      } catch (error) {
+        console.error('Wallet initialization failed:', error);
+        setError(error instanceof Error ? error.message : 'Failed to initialize wallet');
+      } finally {
+        setLoading(false);
+      }
     };
 
     initializeData();
@@ -296,16 +335,23 @@ export function useWallet() {
     
     setLoading(true);
     try {
-      await Promise.all([
+      // Add timeout for refresh operations
+      const refreshPromise = Promise.all([
         fetchBalances(),
         fetchTransactions()
       ]);
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('Refresh timeout')), 8000)
+      );
+      
+      await Promise.race([refreshPromise, timeoutPromise]);
     } catch (error) {
       console.error('Error refreshing wallet data:', error);
+      setError(error instanceof Error ? error.message : 'Failed to refresh wallet data');
     } finally {
       setLoading(false);
     }
-  }, [user?.id, fetchBalances, fetchTransactions]);
+  }, [user?.id]);
 
   // Setup real-time subscriptions
   useWalletRealtime({

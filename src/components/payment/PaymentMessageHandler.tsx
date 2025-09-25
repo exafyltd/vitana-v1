@@ -38,13 +38,15 @@ export function PaymentMessageHandler({
     transferFunds, 
     exchangeAndSend, 
     refreshData,
-    loading
+    loading,
+    error: walletError
   } = useWallet();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isDeclined, setIsDeclined] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
 
   // Initialize local lock and declined status based on message id
   useEffect(() => {
@@ -53,6 +55,19 @@ export function PaymentMessageHandler({
     setIsLocked(lock === '1');
     setIsDeclined(declined === '1');
   }, [message.id]);
+
+  // Add timeout for wallet loading
+  useEffect(() => {
+    if (loading) {
+      const timeout = setTimeout(() => {
+        setLoadingTimeout(true);
+      }, 10000); // 10 second timeout
+
+      return () => clearTimeout(timeout);
+    } else {
+      setLoadingTimeout(false);
+    }
+  }, [loading]);
   const paymentData = message.content_data;
   const isCurrentUser = message.sender_id === user?.id;
   const messageType = message.message_type;
@@ -378,11 +393,14 @@ export function PaymentMessageHandler({
             <div className="flex gap-2">
               <Button 
                 onClick={handlePaymentAccept}
-                disabled={isCompleted || isDeclined || loading || !canPay || isProcessing || isLocked}
+                disabled={isCompleted || isDeclined || (loading && !loadingTimeout) || !canPay || isProcessing || isLocked}
                 className="flex-1"
                 size="sm"
               >
-                {isProcessing ? 'Processing...' : loading ? 'Checking...' : canPay ? 'Accept' : 'Insufficient Balance'}
+                {isProcessing ? 'Processing...' : 
+                 (loading && !loadingTimeout) ? 'Checking...' : 
+                 loadingTimeout ? 'Accept (Wallet Error)' :
+                 canPay ? 'Accept' : 'Insufficient Balance'}
               </Button>
               <Button 
                 variant="outline" 
