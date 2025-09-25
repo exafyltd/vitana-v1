@@ -330,6 +330,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     actionButtons?: any[],
     parentMessageId?: string
   ) => {
+    // Skip optimistic rendering for system messages (they represent completed actions)
+    const isSystemMessage = messageType === 'system';
+    let optimisticId: string | null = null;
+
     try {
       setSendError(null);
       
@@ -338,21 +342,23 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         return;
       }
 
-      // Create optimistic "sending" bubble
-      const optimisticId = `sending-${Date.now()}`;
-      const optimisticMessage = {
-        id: optimisticId,
-        content,
-        status: 'sending' as const,
-        originalMessage: { content, messageType, contentData, actionButtons }
-      };
+      if (!isSystemMessage) {
+        // Create optimistic "sending" bubble for user messages only
+        optimisticId = `sending-${Date.now()}`;
+        const optimisticMessage = {
+          id: optimisticId,
+          content,
+          status: 'sending' as const,
+          originalMessage: { content, messageType, contentData, actionButtons }
+        };
 
-      setOptimisticMessages(prev => [...prev, optimisticMessage]);
+        setOptimisticMessages(prev => [...prev, optimisticMessage]);
 
-      // Scroll to keep last bubble visible - force scroll for new messages
-      setTimeout(() => {
-        scrollToBottom(true);
-      }, 10);
+        // Scroll to keep last bubble visible - force scroll for new messages
+        setTimeout(() => {
+          scrollToBottom(true);
+        }, 10);
+      }
 
       const newMessage = await sendMessage({
         context: messageContext,
@@ -370,8 +376,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         onMessageSent(threadId, newMessage, messageContext);
       }
 
-      // Remove optimistic message on success
-      setOptimisticMessages(prev => prev.filter(msg => msg.id !== optimisticId));
+      // Remove optimistic message on success (only if it exists)
+      if (optimisticId) {
+        setOptimisticMessages(prev => prev.filter(msg => msg.id !== optimisticId));
+      }
       
       // Clear reply state on successful send
       setReplyingTo(null);
@@ -391,14 +399,16 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     } catch (error) {
       console.error('Error sending message:', error);
       
-      // Mark optimistic message as failed
-      setOptimisticMessages(prev => 
-        prev.map(msg => 
-          msg.content === content && msg.status === 'sending' 
-            ? { ...msg, status: 'failed' as const }
-            : msg
-        )
-      );
+      // Mark optimistic message as failed (only if it exists)
+      if (optimisticId) {
+        setOptimisticMessages(prev => 
+          prev.map(msg => 
+            msg.content === content && msg.status === 'sending' 
+              ? { ...msg, status: 'failed' as const }
+              : msg
+          )
+        );
+      }
       
       const errorMessage = error instanceof Error ? error.message : "unknown";
       setSendError(`Failed to send message: ${errorMessage}`);
