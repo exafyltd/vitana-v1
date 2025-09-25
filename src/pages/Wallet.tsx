@@ -29,6 +29,7 @@ import { PredictiveActionsCard } from "@/components/wallet/intelligence/Predicti
 import { DynamicRewardOpportunityCard } from "@/components/wallet/intelligence/DynamicRewardOpportunityCard";
 import { walletNavigation } from "@/config/navigation";
 import { useWallet } from "@/hooks/useWallet";
+import { useAuth } from "@/context/AuthProvider";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 // Mock data has been removed - quickActionsData is defined later in the file
@@ -85,6 +86,7 @@ export default function Wallet() {
   const [selectedCurrency, setSelectedCurrency] = useState<string>('');
   const [activeTab, setActiveTab] = useState("balance-overview");
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
+  const { user } = useAuth();
 
   // Handle opening specific wallet actions
   const handleWalletAction = (actionType: string, currency?: string) => {
@@ -331,6 +333,8 @@ export default function Wallet() {
                       amount={`${transactions[0].amount > 0 ? '+' : ''}${transactions[0].amount}`}
                       status={transactions[0].status as any}
                       timestamp={new Date(transactions[0].created_at).toLocaleDateString()}
+                      transaction={transactions[0]}
+                      currentUserId={user?.id}
                       className="h-full"
                     />
                   ) : (
@@ -353,6 +357,8 @@ export default function Wallet() {
                       amount={`${transactions[1].amount > 0 ? '+' : ''}${transactions[1].amount}`}
                       status={transactions[1].status as any}
                       timestamp={new Date(transactions[1].created_at).toLocaleDateString()}
+                      transaction={transactions[1]}
+                      currentUserId={user?.id}
                       className="h-full"
                     />
                   ) : (
@@ -377,6 +383,8 @@ export default function Wallet() {
                       amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
                       status={transaction.status as any}
                       timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                      transaction={transaction}
+                      currentUserId={user?.id}
                       className="h-full"
                     />
                   </div>

@@ -21,8 +21,14 @@ export interface TransactionData {
   fees: number;
   status: 'pending' | 'completed' | 'failed' | 'cancelled';
   created_at: string;
+  updated_at: string;
   from_user_id?: string;
   to_user_id?: string;
+  from_user_name?: string;
+  from_user_avatar?: string;
+  to_user_name?: string;
+  to_user_avatar?: string;
+  metadata?: any;
 }
 
 export function useWallet() {
@@ -101,7 +107,7 @@ export function useWallet() {
     }
   };
 
-  // Fetch user transactions
+  // Fetch user transactions with user profiles
   const fetchTransactions = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -109,7 +115,11 @@ export function useWallet() {
 
       const transactionPromise = supabase
         .from('wallet_transactions')
-        .select('*')
+        .select(`
+          *,
+          from_profile:profiles!wallet_transactions_from_user_id_fkey(display_name, avatar_url),
+          to_profile:profiles!wallet_transactions_to_user_id_fkey(display_name, avatar_url)
+        `)
         .or(`from_user_id.eq.${user.id},to_user_id.eq.${user.id}`)
         .order('created_at', { ascending: false })
         .limit(10);
@@ -120,7 +130,17 @@ export function useWallet() {
 
       const result = await Promise.race([transactionPromise, timeoutPromise]);
       if (result.error) throw result.error;
-      setTransactions((result.data as TransactionData[]) || []);
+      
+      // Map the data to include user profile information
+      const mappedTransactions = (result.data || []).map((tx: any) => ({
+        ...tx,
+        from_user_name: tx.from_profile?.display_name || 'Unknown User',
+        from_user_avatar: tx.from_profile?.avatar_url,
+        to_user_name: tx.to_profile?.display_name || 'Unknown User',
+        to_user_avatar: tx.to_profile?.avatar_url,
+      }));
+
+      setTransactions(mappedTransactions as TransactionData[]);
     } catch (err) {
       console.error('Error fetching transactions:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch transactions');

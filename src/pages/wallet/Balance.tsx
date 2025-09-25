@@ -26,6 +26,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useWallet } from "@/hooks/useWallet";
+import { useAuth } from "@/context/AuthProvider";
 
 const balanceData = {
   credits: {
@@ -65,6 +66,7 @@ function Balance() {
   const [isTokensOpen, setIsTokensOpen] = useState(false);
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
+  const { user } = useAuth();
 
   const splitBarOptions = [
     { value: "credits", label: "Credits Account" },
@@ -168,6 +170,8 @@ function Balance() {
                     amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
                     status={transaction.status as any}
                     timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                    transaction={transaction}
+                    currentUserId={user?.id}
                     onClick={() => console.log('Transaction clicked:', transaction.id)}
                   />
                 ))}
@@ -221,6 +225,8 @@ function Balance() {
                     amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
                     status={transaction.status as any}
                     timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                    transaction={transaction}
+                    currentUserId={user?.id}
                     onClick={() => console.log('Token transaction clicked:', transaction.id)}
                   />
                 ))}
@@ -274,6 +280,8 @@ function Balance() {
                     amount={`${transaction.amount > 0 ? '+' : ''}$${Math.abs(transaction.amount)}`}
                     status={transaction.status as any}
                     timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                    transaction={transaction}
+                    currentUserId={user?.id}
                     onClick={() => console.log('USD transaction clicked:', transaction.id)}
                   />
                 ))}

@@ -33,6 +33,22 @@ interface WalletTransactionCardProps {
   imageUrl?: string;
   className?: string;
   onClick?: () => void;
+  // New detailed transaction props
+  transaction?: {
+    transaction_type: string;
+    from_currency?: string;
+    to_currency?: string;
+    fees?: number;
+    exchange_rate?: number;
+    from_user_name?: string;
+    from_user_avatar?: string;
+    to_user_name?: string;
+    to_user_avatar?: string;
+    from_user_id?: string;
+    to_user_id?: string;
+    metadata?: any;
+  };
+  currentUserId?: string;
 }
 
 export function WalletTransactionCard({
@@ -47,8 +63,35 @@ export function WalletTransactionCard({
   category,
   imageUrl,
   className,
-  onClick
+  onClick,
+  transaction,
+  currentUserId
 }: WalletTransactionCardProps) {
+  
+  // Determine transaction flow based on actual data
+  const getTransactionFlow = () => {
+    if (!transaction || !currentUserId) return { fromUser: null, toUser: null, isIncoming: false };
+    
+    const isIncoming = transaction.to_user_id === currentUserId;
+    const isOutgoing = transaction.from_user_id === currentUserId;
+    
+    return {
+      fromUser: {
+        id: transaction.from_user_id,
+        name: transaction.from_user_name || 'Unknown User',
+        avatar: transaction.from_user_avatar
+      },
+      toUser: {
+        id: transaction.to_user_id, 
+        name: transaction.to_user_name || 'Unknown User',
+        avatar: transaction.to_user_avatar
+      },
+      isIncoming,
+      isOutgoing
+    };
+  };
+
+  const transactionFlow = getTransactionFlow();
   
   const getIcon = () => {
     switch (type) {
@@ -184,12 +227,64 @@ export function WalletTransactionCard({
               <div className="flex-1 min-w-0">
                 <h4 className="font-semibold text-base truncate">{title}</h4>
                 <p className="text-sm text-muted-foreground line-clamp-1">{description}</p>
+                
+                {/* Enhanced transaction details */}
+                {transaction && (
+                  <div className="mt-1 space-y-1">
+                    {/* Transaction flow */}
+                    {transactionFlow.fromUser && transactionFlow.toUser && (
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Avatar className="h-4 w-4">
+                          <AvatarImage src={transactionFlow.fromUser.avatar} />
+                          <AvatarFallback className="text-[8px]">
+                            {transactionFlow.fromUser.name.substring(0, 2).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="truncate max-w-[60px]">{transactionFlow.fromUser.name}</span>
+                        <ArrowRightLeft className="h-3 w-3" />
+                        <span className="truncate max-w-[60px]">{transactionFlow.toUser.name}</span>
+                        <Avatar className="h-4 w-4">
+                          <AvatarImage src={transactionFlow.toUser.avatar} />
+                          <AvatarFallback className="text-[8px]">
+                            {transactionFlow.toUser.name.substring(0, 2).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                      </div>
+                    )}
+                    
+                    {/* Currency info for exchanges */}
+                    {transaction.transaction_type === 'exchange' && transaction.from_currency && transaction.to_currency && (
+                      <div className="text-xs text-muted-foreground">
+                        {transaction.from_currency} → {transaction.to_currency}
+                        {transaction.exchange_rate && (
+                          <span className="ml-1">@ {transaction.exchange_rate}</span>
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Fees info */}
+                    {transaction.fees !== undefined && (
+                      <div className="text-xs">
+                        {transaction.fees > 0 ? (
+                          <span className="text-orange-600">Fee: {transaction.fees}</span>
+                        ) : (
+                          <span className="text-green-600">No fees! ✨</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
             <div className="text-right">
               <div className={cn("font-bold text-lg", getAmountColor())}>
                 {amount}
               </div>
+              {transaction?.from_currency && (
+                <div className="text-xs text-muted-foreground">
+                  {transaction.from_currency}
+                </div>
+              )}
             </div>
           </div>
 
@@ -203,6 +298,9 @@ export function WalletTransactionCard({
               >
                 {status}
               </Badge>
+              <span className="text-xs text-muted-foreground">
+                {transaction?.transaction_type || type}
+              </span>
             </div>
             
             {source && (
