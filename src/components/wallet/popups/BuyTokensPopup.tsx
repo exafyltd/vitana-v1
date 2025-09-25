@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Coins, TrendingUp, Loader2, Star, Zap } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { getExchangeRate } from '@/lib/exchangeRates';
 
 interface BuyTokensPopupProps {
   open: boolean;
@@ -28,12 +29,16 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
   const currentTokens = getBalance('VTN') || 0;
   const usdBalance = getBalance('USD') || 0;
   
-  // VTN token packages with current market rate of $2.50 per VTN
+  // Get actual exchange rate: 1 USD = 100 VTN, so 1 VTN = $0.01
+  const exchangeRate = getExchangeRate('VTN', 'USD');
+  const vtnPriceInUSD = exchangeRate?.rate || 0.01; // Fallback to $0.01 per VTN
+  
+  // VTN token packages with correct market rate
   const tokenPackages = [
-    { tokens: 10, cost: 25, bonus: 0, popular: false },
-    { tokens: 50, cost: 100, bonus: 5, popular: true },
-    { tokens: 100, cost: 200, bonus: 15, popular: false },
-    { tokens: 250, cost: 500, bonus: 50, popular: false }
+    { tokens: 100, cost: Math.round(100 * vtnPriceInUSD), bonus: 0, popular: false },
+    { tokens: 500, cost: Math.round(500 * vtnPriceInUSD), bonus: 50, popular: true },
+    { tokens: 1000, cost: Math.round(1000 * vtnPriceInUSD), bonus: 150, popular: false },
+    { tokens: 2500, cost: Math.round(2500 * vtnPriceInUSD), bonus: 500, popular: false }
   ];
 
   const handleBuyTokens = async (tokens: number, cost: number, bonus: number) => {
@@ -81,7 +86,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
     }
 
     const tokens = parseFloat(tokenAmount);
-    const cost = Math.round(tokens * 2.5); // $2.50 per VTN token
+    const cost = Math.round(tokens * vtnPriceInUSD * 100) / 100; // Use actual exchange rate
     
     if (cost > usdBalance) {
       toast({
@@ -199,9 +204,9 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
               step="0.1"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Rate: $2.50 per VTN</span>
+              <span>Rate: ${vtnPriceInUSD.toFixed(2)} per VTN</span>
               {tokenAmount && (
-                <span>Cost: ${(parseFloat(tokenAmount) * 2.5).toFixed(2)}</span>
+                <span>Cost: ${(parseFloat(tokenAmount) * vtnPriceInUSD).toFixed(2)}</span>
               )}
             </div>
             <Button
