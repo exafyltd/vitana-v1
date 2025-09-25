@@ -137,6 +137,8 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
             thread_id: '00000000-0000-0000-0000-000000000000',
             context: 'global',
             last_seen: timestamp,
+          }, {
+            onConflict: 'user_id,thread_id,context'
           });
         
         console.log(`[Presence] Successfully tracked ${user.id} as ${status}`);

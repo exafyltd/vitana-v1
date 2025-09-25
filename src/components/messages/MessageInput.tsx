@@ -45,6 +45,7 @@ interface MessageInputProps {
   activeThread?: { id: string } | null;
   replyingTo?: any;
   onCancelReply?: () => void;
+  isSending?: boolean;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
@@ -59,7 +60,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
   effectiveRecipientId,
   activeThread,
   replyingTo,
-  onCancelReply
+  onCancelReply,
+  isSending = false
 }) => {
   const [message, setMessage] = useState('');
   const [isComposing, setIsComposing] = useState(false);
@@ -148,7 +150,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
     
     // Guard conditions - allow sending if we have either threadId or recipientId
-    if ((!activeThread?.id && !recipientId) || message.trim() === '' || disabled || isUploading) {
+    if ((!activeThread?.id && !recipientId) || message.trim() === '' || disabled || isUploading || isSending) {
       return;
     }
     
@@ -422,7 +424,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const quickReactions = ['❤️', '👍', '😊', '🎉', '💪', '🙏'];
-  const canSend = (message.trim().length > 0 || attachments.length > 0) && !isUploading && !disabled;
+  const canSend = (message.trim().length > 0 || attachments.length > 0) && !isUploading && !disabled && !isSending;
 
   return (
     <form 

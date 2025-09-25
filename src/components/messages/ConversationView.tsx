@@ -1020,6 +1020,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 onTypingStart={startTyping}
                 onTypingStop={stopTyping}
                 disabled={isSending}
+                isSending={isSending}
                 placeholder={`Message ${getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}...`}
                 threadId={threadId}
                 recipientId={recipientId}
