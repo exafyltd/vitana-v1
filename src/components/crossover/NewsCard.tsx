@@ -109,29 +109,30 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             buttonIcon = Calendar;
             buttonType = "join";
             break;
-        case "people":
-          buttonText = "Follow";
-          buttonIcon = UserPlus;
-          buttonType = "follow";
-          break;
-        case "media":
-          buttonText = mediaType === "video" ? "Watch Now" : 
-                      mediaType === "podcast" ? "Listen Now" : 
-                      mediaType === "music" ? "Play Now" : "View";
-          buttonIcon = PlayCircle;
-          buttonType = mediaType ? "play" : "secondary";
-          break;
-        case "group":
-          buttonText = "Join Group";
-          buttonIcon = Users;
-          buttonType = "join";
-          break;
-        default:
-          buttonText = "View";
-          buttonType = "secondary";
-      }
-      
-      const ButtonIcon = buttonIcon;
+          case "people":
+            buttonText = "Follow";
+            buttonIcon = UserPlus;
+            buttonType = "follow";
+            break;
+          case "media":
+            buttonText = mediaType === "video" ? "Watch Now" : 
+                        mediaType === "podcast" ? "Listen Now" : 
+                        mediaType === "music" ? "Play Now" : "View";
+            buttonIcon = PlayCircle;
+            buttonType = mediaType ? "play" : "secondary";
+            break;
+          case "group":
+            buttonText = "Join Group";
+            buttonIcon = Users;
+            buttonType = "join";
+            break;
+          default:
+            buttonText = "View";
+            buttonType = "secondary";
+        }
+        }
+        
+        const ButtonIcon = buttonIcon;
       
       // Get gradient classes based on button type
       const getButtonClasses = () => {

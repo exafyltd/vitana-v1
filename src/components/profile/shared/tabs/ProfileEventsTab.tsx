@@ -36,14 +36,14 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
 
   useEffect(() => {
     const fetchEvents = async () => {
-      if (!profile.userId) return;
+      if (!profile.id) return;
       
       try {
         // Fetch events created by user
         const { data: created, error: createdError } = await supabase
           .from('global_community_events')
           .select('*')
-          .eq('created_by', profile.userId)
+          .eq('created_by', profile.id)
           .order('start_time', { ascending: false });
 
         if (createdError) throw createdError;
@@ -65,7 +65,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
               created_by
             )
           `)
-          .eq('user_id', profile.userId)
+          .eq('user_id', profile.id)
           .eq('status', 'attending');
 
         if (joinedError) throw joinedError;
@@ -80,9 +80,9 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         setLoading(false);
       }
     };
-
+    
     fetchEvents();
-  }, [profile.userId]);
+  }, [profile.id]);
 
   const formatEventTime = (dateString: string) => {
     const date = new Date(dateString);

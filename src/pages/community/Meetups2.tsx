@@ -33,11 +33,6 @@ import {
   UserMinus,
   Share2
 } from 'lucide-react';
-import { formatEventTime } from "./formatEventTime";
-import { generateImageUrl } from "./generateImageUrl";
-import { useCommunityEvents } from "@/hooks/useCommunityEvents";
-import { useAuth } from "@/context/AuthProvider";
-import { useEventParticipation } from "@/hooks/useEventParticipation";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 
 // Featured dummy events for hybrid display
@@ -241,29 +236,49 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
     title: event.title,
     description: event.description,
     imageUrl,
-    category: event.category || 'community',
-    pillar: event.category || 'community',
+    category: 'event' as const,
+    pillar: event.pillar || 'community',
     author: { name: baseAuthor.name, avatar: authorAvatar },
     location: event.location || 'TBA',
     attendees: event.participant_count || 0,
     timestamp: formatEventTime(event.start_time),
-    ...(canEdit && onEdit && {
-      actionButton: (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit(event);
+    showSmartAction: true,
+    ...(String(event.id || '').startsWith('dummy')
+      ? {
+          onActionClick: () => {
+            window.location.assign('/community/meetups');
+          }
+        }
+      : { eventId: String(event.id) }
+    ),
+    actionButton: (
+      <div className="flex items-center gap-2">
+        {canEdit && onEdit && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(event);
+            }}
+            aria-label="Edit meetup"
+          >
+            <Edit className="w-4 h-4 mr-1" />
+            Edit
+          </Button>
+        )}
+        <SocialShareButton
+          type="event"
+          data={{
+            title: event.title,
+            description: event.description,
+            link: `${window.location.origin}/community/meetups?event=${encodeURIComponent(event.id)}`
           }}
-          className="ml-2"
-          aria-label="Edit meetup"
-        >
-          <Edit className="w-4 h-4 mr-1" />
-          Edit
-        </Button>
-      )
-    })
+          variant="icon"
+          size="sm"
+        />
+      </div>
+    )
   };
 };
 
