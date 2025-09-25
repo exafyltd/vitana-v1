@@ -323,6 +323,23 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, messages.length, scrollToBottom]);
 
+  // Deduplication effect: Remove optimistic messages if real message with same content exists
+  useEffect(() => {
+    if (messages.length > 0 && optimisticMessages.length > 0) {
+      const latestMessages = messages.slice(-5); // Check last 5 messages for efficiency
+      
+      setOptimisticMessages(prev => 
+        prev.filter(optMsg => {
+          // Remove optimistic message if a real message with the same content exists
+          const hasRealMessage = latestMessages.some(realMsg => 
+            realMsg.content?.trim() === optMsg.content?.trim()
+          );
+          return !hasRealMessage;
+        })
+      );
+    }
+  }, [messages, optimisticMessages]);
+
   const handleSendMessage = async (
     content: string, 
     messageType?: string, 
@@ -332,6 +349,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   ) => {
     // Skip optimistic rendering for system messages (they represent completed actions)
     const isSystemMessage = messageType === 'system';
+    
+    // Additional guard: Skip optimistic rendering for known system confirmation patterns
+    const isSystemConfirmation = content.includes('Event accepted ✅') || 
+                                 content.includes('Event declined ❌') || 
+                                 content.includes('Responded "Maybe" ❓');
+    
     let optimisticId: string | null = null;
 
     try {
@@ -342,7 +365,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         return;
       }
 
-      if (!isSystemMessage) {
+      if (!isSystemMessage && !isSystemConfirmation) {
         // Create optimistic "sending" bubble for user messages only
         optimisticId = `sending-${Date.now()}`;
         const optimisticMessage = {
@@ -902,6 +925,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               
               {/* Render optimistic messages */}
               {optimisticMessages.map((optMessage) => {
+                // Render guard: Skip optimistic bubbles that have a persisted twin
+                const hasPersistedTwin = messages.some(realMsg => 
+                  realMsg.content?.trim() === optMessage.content?.trim()
+                );
+                
+                if (hasPersistedTwin) {
+                  return null;
+                }
+                
                 // Check if this is a calendar invite
                 const isCalendarInvite = optMessage.originalMessage?.messageType === 'calendar_invite';
                 
@@ -948,7 +980,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                     </div>
                   </div>
                 );
-              })}
+              }).filter(Boolean)}
             </>
           )}
           
