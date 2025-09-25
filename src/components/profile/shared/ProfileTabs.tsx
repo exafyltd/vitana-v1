@@ -8,6 +8,7 @@ import { ProfileMediaTab } from "./tabs/ProfileMediaTab";
 import { ProfileGroupsTab } from "./tabs/ProfileGroupsTab";
 import { ProfileHealthTab } from "./tabs/ProfileHealthTab";
 import { ProfileServicesTab } from "./tabs/ProfileServicesTab";
+import { ProfileEventsTab } from "./tabs/ProfileEventsTab";
 import { SmartTabPreview } from "../engagement/SmartTabPreview";
 import { useState } from "react";
 
@@ -41,7 +42,7 @@ export function ProfileTabs({
     profile.offerings.some(offering => offering.status === 'published');
 
   // In edit mode, remove showcase tab since it's now a standalone section
-  const tabs = ['posts', 'media', 'groups'];
+  const tabs = ['posts', 'media', 'groups', 'events'];
   if (showHealthTab) tabs.push('health');
   if (showServicesTab) tabs.push('services');
 
@@ -52,6 +53,7 @@ export function ProfileTabs({
           <TabsTrigger value="posts">Posts</TabsTrigger>
           <TabsTrigger value="media">Media</TabsTrigger>
           <TabsTrigger value="groups">Groups</TabsTrigger>
+          <TabsTrigger value="events">Events</TabsTrigger>
           {showHealthTab && <TabsTrigger value="health">Health Snapshot</TabsTrigger>}
           {showServicesTab && <TabsTrigger value="services">Services</TabsTrigger>}
         </TabsList>
@@ -81,6 +83,15 @@ export function ProfileTabs({
 
           <TabsContent value="groups">
             <ProfileGroupsTab profile={profile} scope={scope} />
+          </TabsContent>
+
+          <TabsContent value="events">
+            <ProfileEventsTab 
+              profile={profile} 
+              scope={scope}
+              editMode={editMode}
+              isOwnProfile={isOwnProfile}
+            />
           </TabsContent>
 
           {showHealthTab && (

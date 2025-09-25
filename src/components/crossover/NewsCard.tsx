@@ -4,7 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
-import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle } from "lucide-react";
+import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle, UserMinus } from "lucide-react";
+import { useEventParticipation } from "@/hooks/useEventParticipation";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
 
@@ -32,6 +33,7 @@ interface NewsCardProps {
   rewardPoints?: number;
   rewardDescription?: string;
   showReward?: boolean;
+  eventId?: string; // For event participation
 }
 
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
@@ -55,7 +57,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     onActionClick,
     rewardPoints,
     rewardDescription = "Earn credits",
-    showReward = false
+    showReward = false,
+    eventId
   }, ref) => {
     
     const categoryStyles = {
@@ -75,6 +78,15 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     };
 
     const MediaIcon = getMediaIcon();
+    
+    // Use event participation hook if eventId is provided
+    const eventParticipation = useEventParticipation(
+      eventId || '', 
+      attendees || 0
+    );
+    
+    // Only use participation data if eventId exists
+    const displayAttendees = eventId ? eventParticipation.participantCount : attendees;
 
     // Smart action button logic based on content type
     const getSmartAction = () => {
@@ -84,13 +96,19 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       let buttonIcon = null;
       let buttonType: "join" | "follow" | "play" | "secondary" = "secondary";
       
-      switch (category) {
-        case "event":
-        case "community":
-          buttonText = "Join Now";
-          buttonIcon = Calendar;
+        // For events, use participation state
+        if (category === "event" && eventId) {
+          buttonText = eventParticipation?.isParticipating ? "Leave Event" : "Join Event";
+          buttonIcon = eventParticipation?.isParticipating ? UserMinus : UserPlus;
           buttonType = "join";
-          break;
+        } else {
+        switch (category) {
+          case "event":
+          case "community":
+            buttonText = "Join Now";
+            buttonIcon = Calendar;
+            buttonType = "join";
+            break;
         case "people":
           buttonText = "Follow";
           buttonIcon = UserPlus;
@@ -136,9 +154,14 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         <Button
           size="sm"
           className={getButtonClasses()}
+          disabled={eventId ? eventParticipation?.loading : false}
           onClick={(e) => {
             e.stopPropagation();
-            onActionClick?.();
+            if (eventId && category === "event") {
+              eventParticipation?.toggleParticipation();
+            } else {
+              onActionClick?.();
+            }
           }}
         >
           {ButtonIcon && <ButtonIcon className="w-4 h-4" />}
@@ -262,10 +285,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                       {location}
                     </div>
                   )}
-                  {attendees && (
+                  {(attendees !== undefined || (eventId && eventParticipation?.participantCount > 0)) && (
                     <div className="flex items-center gap-1">
                       <Users className="w-3 h-3" />
-                      {attendees}
+                      {displayAttendees}
                     </div>
                   )}
                 </div>

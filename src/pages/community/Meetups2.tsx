@@ -28,8 +28,17 @@ import {
   Heart,
   Activity,
   BookOpen,
-  Edit
+  Edit,
+  UserPlus,
+  UserMinus,
+  Share2
 } from 'lucide-react';
+import { formatEventTime } from "./formatEventTime";
+import { generateImageUrl } from "./generateImageUrl";
+import { useCommunityEvents } from "@/hooks/useCommunityEvents";
+import { useAuth } from "@/context/AuthProvider";
+import { useEventParticipation } from "@/hooks/useEventParticipation";
+import SocialShareButton from "@/components/sharing/SocialShareButton";
 
 // Featured dummy events for hybrid display
 const featuredTodayEvents = [

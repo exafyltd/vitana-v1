@@ -17,6 +17,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { useProfile } from "@/context/ProfileProvider";
 import { useEnhancedMotivationalMessage } from "@/hooks/useEnhancedMotivationalMessage";
 import { homeNavigation } from "@/config/navigation";
+import { CommunityEventsCard } from "@/components/home/CommunityEventsCard";
 
 // Mock data for Today and Guide screens
 const todayScheduledEvents = [
@@ -406,7 +407,46 @@ export default function Home() {
 
               <MotivationalBanner variant="partnership" />
 
-              {/* Row 3: Events & Meetups (big + small + small) */}
+              {/* Row 3: Community Events Card + Events & Meetups (big + small + small) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+                <div className="col-span-4">
+                  <CommunityEventsCard maxEvents={4} />
+                </div>
+                <div className="col-span-4">
+                  <NewsCard
+                    title={todayEventsAndMeetups[0]?.title || ""}
+                    description={todayEventsAndMeetups[0]?.description}
+                    imageUrl={todayEventsAndMeetups[0]?.imageUrl || ""}
+                    pillar={todayEventsAndMeetups[0]?.pillar}
+                    author={todayEventsAndMeetups[0]?.author}
+                    location={todayEventsAndMeetups[0]?.location}
+                    attendees={todayEventsAndMeetups[0]?.attendees}
+                    timestamp={todayEventsAndMeetups[0]?.timestamp}
+                    showReward={true}
+                    rewardPoints={6}
+                    rewardDescription="Earn credits for community connection"
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-4">
+                  <NewsCard
+                    title={todayEventsAndMeetups[1]?.title || ""}
+                    description={todayEventsAndMeetups[1]?.description}
+                    imageUrl={todayEventsAndMeetups[1]?.imageUrl || ""}
+                    pillar={todayEventsAndMeetups[1]?.pillar}
+                    author={todayEventsAndMeetups[1]?.author}
+                    location={todayEventsAndMeetups[1]?.location}
+                    attendees={todayEventsAndMeetups[1]?.attendees}
+                    timestamp={todayEventsAndMeetups[1]?.timestamp}
+                    showReward={true}
+                    rewardPoints={5}
+                    rewardDescription="Earn credits for challenge participation"
+                    className="h-full"
+                  />
+                </div>
+              </div>
+
+              {/* Row 4: More Events & Meetups (big + small + small) */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
                   <NewsCard
