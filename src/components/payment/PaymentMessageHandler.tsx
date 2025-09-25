@@ -79,6 +79,11 @@ export function PaymentMessageHandler({
     if (!isCurrentUser && messageType === 'payment_request') {
       console.log('🔄 Payment request opened, refreshing wallet data...');
       refreshData();
+      const t = setTimeout(() => {
+        console.log('⏱️ Second-pass wallet refresh');
+        refreshData();
+      }, 500);
+      return () => clearTimeout(t);
     }
   }, [message.id, isCurrentUser, messageType, refreshData]);
 
@@ -102,9 +107,9 @@ export function PaymentMessageHandler({
 
   const canAfford = (amount: number, currency: string) => {
     const normalizedCurrency = (currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS';
-    const balance = walletGetBalance(normalizedCurrency) || 0;
-    const canPay = balance >= amount;
-    console.log(`💰 Can afford ${amount} ${currency}? ${canPay} (current balance: ${balance})`);
+    const balance = walletGetBalance(normalizedCurrency);
+    const canPay = typeof balance === 'number' ? balance >= amount : true; // unknown balance -> allow attempt
+    console.log(`💰 Can afford ${amount} ${currency}? ${canPay} (current balance:`, balance, ')');
     return canPay;
   };
 
@@ -387,8 +392,9 @@ export function PaymentMessageHandler({
   };
 
   const renderPaymentRequest = () => {
-    const { amount, currency, description, status = 'pending' } = paymentData;
-    const currentBalance = (walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS') || 0);
+  const { amount, currency, description, status = 'pending' } = paymentData;
+    const balanceVal = walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS');
+    const currentBalanceDisplay = balanceVal === null ? '—' : balanceVal.toLocaleString();
     const canPay = canAfford(amount, currency);
     const effectiveStatus = isDeclined ? 'declined' : isCompleted ? 'completed' : status;
 
@@ -418,7 +424,7 @@ export function PaymentMessageHandler({
                 <div className="flex items-center gap-2">
                   <span className="flex items-center gap-1">
                     {getCurrencyIcon(currency)}
-                    {currentBalance.toLocaleString()}
+                    {currentBalanceDisplay}
                   </span>
                   <Button
                     variant="ghost"
@@ -444,12 +450,13 @@ export function PaymentMessageHandler({
             <div className="flex gap-2">
               <Button 
                 onClick={handlePaymentAccept}
-                disabled={isCompleted || isDeclined || (loading && !loadingTimeout) || !canPay || isProcessing || isLocked}
+                disabled={isCompleted || isDeclined || isProcessing || isLocked || (loading && !loadingTimeout) || (typeof balanceVal === 'number' && !canPay)}
                 className="flex-1"
                 size="sm"
               >
                 {isProcessing ? 'Processing...' : 
                  (loading && !loadingTimeout) ? 'Checking...' : 
+                 (balanceVal === null) ? 'Checking...' :
                  loadingTimeout ? 'Accept (Wallet Error)' :
                  canPay ? 'Accept' : 'Insufficient Balance'}
               </Button>
@@ -476,7 +483,7 @@ export function PaymentMessageHandler({
           )}
 
           {/* Insufficient balance warning */}
-          {!isCurrentUser && effectiveStatus === 'pending' && !loading && !canPay && (
+          {!isCurrentUser && effectiveStatus === 'pending' && typeof balanceVal === 'number' && balanceVal < amount && (
             <div className="flex items-center gap-1 mt-2 text-xs text-red-600">
               <AlertTriangle className="w-3 h-3" />
               <span>Insufficient {currency} balance</span>

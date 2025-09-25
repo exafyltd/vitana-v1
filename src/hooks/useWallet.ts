@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthProvider';
 import { useWalletRealtime } from './useWalletRealtime';
+import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 
 export interface UserBalance {
   currency_type: 'USD' | 'VTN' | 'CREDITS';
@@ -38,19 +39,23 @@ export function useWallet() {
       const { data: { user } } = await supabase.auth.getUser();
       console.log('🔍 Fetching balances for user:', user?.id);
       if (!user) {
-        console.log('❌ No authenticated user found');
+        setError('Not authenticated');
         return;
       }
 
-      // Initialize user wallet with timeout
-      console.log('🔧 Initializing wallet for user:', user.id);
-      const initPromise = supabase.rpc('initialize_user_wallet', { user_id_param: user.id });
-      const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('Wallet initialization timeout')), 5000)
-      );
-      
-      await Promise.race([initPromise, timeoutPromise]);
-      console.log('✅ Wallet initialized successfully');
+      // Optimistically load last known good balances from cache
+      const cacheStr = getLocalStorageItem(user.id, 'wallet', 'lastGoodBalances');
+      if (cacheStr) {
+        try {
+          const cached: UserBalance[] = JSON.parse(cacheStr);
+          if (Array.isArray(cached) && cached.length) {
+            setBalances(cached);
+            console.log('🗄️ Loaded cached balances:', cached);
+          }
+        } catch {
+          console.warn('⚠️ Failed to parse cached balances');
+        }
+      }
 
       // Fetch current balances with timeout
       console.log('💰 Fetching balances from database...');
@@ -58,33 +63,41 @@ export function useWallet() {
         .from('user_wallets')
         .select('currency_type, balance, updated_at')
         .eq('user_id', user.id);
-        
-      const balanceTimeoutPromise = new Promise<never>((_, reject) => 
+
+      const balanceTimeoutPromise = new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('Balance fetch timeout')), 5000)
       );
 
-      const result = await Promise.race([balancePromise, balanceTimeoutPromise]);
-      if (result.error) {
-        console.log('❌ Database error:', result.error);
-        throw result.error;
+      let result: any = await Promise.race([balancePromise, balanceTimeoutPromise]);
+      if (result.error) throw result.error;
+
+      let balanceData: UserBalance[] = (result.data as UserBalance[]) || [];
+
+      // If no rows, initialize once then refetch
+      if (!balanceData.length) {
+        console.log('ℹ️ No wallet rows found. Initializing once...');
+        const init = supabase.rpc('initialize_user_wallet', { user_id_param: user.id });
+        const initTimeout = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Wallet init timeout')), 4000)
+        );
+        await Promise.race([init, initTimeout]);
+
+        // Refetch balances after init
+        result = await Promise.race([balancePromise, balanceTimeoutPromise]);
+        if (result.error) throw result.error;
+        balanceData = (result.data as UserBalance[]) || [];
       }
-      
-      console.log('📊 Raw balance data from DB:', result.data);
-      const balanceData = (result.data as UserBalance[]) || [];
-      console.log('💰 Setting balances:', balanceData);
-      setBalances(balanceData);
-      setError(null); // Clear any previous errors
+
+      console.log('📊 Final balance data:', balanceData);
+      if (balanceData.length) {
+        setBalances(balanceData);
+        setLocalStorageItem(user.id, 'wallet', 'lastGoodBalances', JSON.stringify(balanceData));
+        setError(null); // Clear any previous errors
+      }
     } catch (err) {
       console.error('❌ Error fetching balances:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch balances');
-      // Set default balances to prevent infinite loading
-      const defaultBalances: UserBalance[] = [
-        { currency_type: 'USD', balance: 0, updated_at: new Date().toISOString() },
-        { currency_type: 'VTN', balance: 0, updated_at: new Date().toISOString() },
-        { currency_type: 'CREDITS', balance: 0, updated_at: new Date().toISOString() }
-      ];
-      console.log('🔄 Setting default balances due to error:', defaultBalances);
-      setBalances(defaultBalances);
+      // Do not overwrite with zero defaults; keep last known balances
     }
   };
 
@@ -116,19 +129,16 @@ export function useWallet() {
     }
   };
 
-  // Get balance for specific currency
   const getBalance = (currency: 'USD' | 'VTN' | 'CREDITS'): number | null => {
-    // Return null when still loading to indicate unavailable data
-    if (loading && balances.length === 0) {
-      console.log('⏳ Still loading balances, returning null for', currency);
+    const normalizedCurrency = currency.toUpperCase();
+    const entry = balances.find(b => b.currency_type === normalizedCurrency);
+    if (!entry) {
+      console.log(`ℹ️ Balance for ${normalizedCurrency} not available yet`);
       return null;
     }
-    
-    const normalizedCurrency = currency.toUpperCase();
-    const balance = balances.find(b => b.currency_type === normalizedCurrency);
-    const result = balance ? Number(balance.balance) : 0;
-    console.log(`💰 getBalance(${currency}):`, result, 'from balance:', balance);
-    return result;
+    const num = Number(entry.balance);
+    console.log(`💰 getBalance(${normalizedCurrency}):`, num, 'from balance:', entry);
+    return Number.isFinite(num) ? num : null;
   };
 
   // Update balance for specific currency
