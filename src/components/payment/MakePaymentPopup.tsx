@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/hooks/useMessages";
 import { CreditCard, Coins, DollarSign, Send, CheckCircle, AlertCircle, Wallet } from "lucide-react";
+import { getCurrencyIcon } from "@/lib/currencies";
 
 interface MakePaymentPopupProps {
   isOpen: boolean;
@@ -128,14 +129,7 @@ export default function MakePaymentPopup({
     }
   };
 
-  const getCurrencyIcon = () => {
-    switch (currency.toUpperCase()) {
-      case 'CREDITS': return <Coins className="w-4 h-4" />;
-      case 'USD': return <DollarSign className="w-4 h-4" />;
-      case 'VTN': return <CreditCard className="w-4 h-4" />;
-      default: return <Coins className="w-4 h-4" />;
-    }
-  };
+  // Use centralized currency icon configuration
 
   const formatBalance = (bal: number) => {
     return bal.toLocaleString();
@@ -173,15 +167,15 @@ export default function MakePaymentPopup({
                 <span className="text-muted-foreground">Your Balance:</span>
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1">
-                    <Coins className="w-3 h-3" />
+                    {getCurrencyIcon('CREDITS', 'w-3 h-3')}
                     {formatBalance(userBalance.credits)}
                   </span>
                   <span className="flex items-center gap-1">
-                    <DollarSign className="w-3 h-3" />
+                    {getCurrencyIcon('USD', 'w-3 h-3')}
                     {formatBalance(userBalance.usd)}
                   </span>
                   <span className="flex items-center gap-1">
-                    <CreditCard className="w-3 h-3" />
+                    {getCurrencyIcon('VTN', 'w-3 h-3')}
                     {formatBalance(userBalance.vtn)}
                   </span>
                 </div>
@@ -210,19 +204,19 @@ export default function MakePaymentPopup({
                 <SelectContent>
                   <SelectItem value="CREDITS">
                     <div className="flex items-center gap-2">
-                      <Coins className="w-4 h-4" />
+                      {getCurrencyIcon('CREDITS', 'w-4 h-4')}
                       Credits
                     </div>
                   </SelectItem>
                   <SelectItem value="USD">
                     <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4" />
+                      {getCurrencyIcon('USD', 'w-4 h-4')}
                       USD
                     </div>
                   </SelectItem>
                   <SelectItem value="VTN">
                     <div className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4" />
+                      {getCurrencyIcon('VTN', 'w-4 h-4')}
                       VTN
                     </div>
                   </SelectItem>
