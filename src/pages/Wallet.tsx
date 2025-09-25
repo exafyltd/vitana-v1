@@ -13,6 +13,7 @@ import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionP
 import { StakeTokensPopup } from "@/components/wallet/popups/StakeTokensPopup";
 import { AddFundsPopup } from "@/components/wallet/popups/AddFundsPopup";
 import { BuyCreditsPopup } from "@/components/wallet/popups/BuyCreditsPopup";
+import { BuyTokensPopup } from "@/components/wallet/popups/BuyTokensPopup";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 import MakePaymentPopup from "@/components/payment/MakePaymentPopup";
 import ExchangeAndSendPopup from "@/components/payment/ExchangeAndSendPopup";
@@ -73,6 +74,7 @@ export default function Wallet() {
   const [stakeTokensOpen, setStakeTokensOpen] = useState(false);
   const [addFundsOpen, setAddFundsOpen] = useState(false);
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
+  const [buyTokensOpen, setBuyTokensOpen] = useState(false);
   const [paymentRequestOpen, setPaymentRequestOpen] = useState(false);
   const [makePaymentOpen, setMakePaymentOpen] = useState(false);
   const [exchangeAndSendOpen, setExchangeAndSendOpen] = useState(false);
@@ -93,7 +95,7 @@ export default function Wallet() {
         setBuyCreditsOpen(true);
         break;
       case 'buy-tokens':
-        setStakeTokensOpen(true);
+        setBuyTokensOpen(true);
         break;
       case 'send':
         setSelectedCurrency(currency || '');
@@ -471,6 +473,11 @@ export default function Wallet() {
         <BuyCreditsPopup 
           open={buyCreditsOpen}
           onOpenChange={setBuyCreditsOpen}
+        />
+
+        <BuyTokensPopup 
+          open={buyTokensOpen}
+          onOpenChange={setBuyTokensOpen}
         />
 
         <PaymentRequestPopup 
