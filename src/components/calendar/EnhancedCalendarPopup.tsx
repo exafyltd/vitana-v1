@@ -18,6 +18,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthProvider";
+import { useToast } from '@/hooks/use-toast';
 import { 
   Calendar,
   Clock, 
@@ -44,7 +46,6 @@ import {
   Loader2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { useCalendarEvents, CalendarEvent } from '@/hooks/useCalendarEvents';
 
@@ -98,6 +99,7 @@ const getPriorityColor = (priority: CalendarEvent['priority']) => {
 export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPopupProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
   const { events, loading, addEvent, removeEvent, getEventsForDate, getUpcomingEvents, fetchEvents } = useCalendarEvents();
   
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -236,8 +238,11 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
               </Badge>
             )}
           </DialogTitle>
-          <DialogDescription>
-            Full calendar management with AI-powered scheduling
+          <DialogDescription className="space-y-2">
+            <div>Full calendar management with AI-powered scheduling</div>
+            <div className="text-xs text-muted-foreground">
+              Viewing calendar as: {user?.email || 'Unknown User'}
+            </div>
           </DialogDescription>
         </DialogHeader>
 

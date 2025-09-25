@@ -20,7 +20,7 @@ import { useRecipientData } from '@/hooks/useRecipientData';
 interface AttachmentMenuProps {
   onFileAttach: () => void;
   onSendMessage: (content: string, messageType?: string, contentData?: any) => Promise<void>;
-  onCalendarInvite: (title: string, date: string) => void;
+  onCalendarInvite: (title: string, date: string, time?: string, endTime?: string, location?: string, description?: string) => void;
   recipient?: {
     id: string;
     name: string;
@@ -33,17 +33,30 @@ interface AttachmentMenuProps {
 }
 
 
-function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string, date: string) => void }) {
+function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string, date: string, time?: string, endTime?: string, location?: string, description?: string) => void }) {
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
+  const [datetime, setDatetime] = useState('');
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
   const [open, setOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (title && date) {
-      onCalendarInvite(title, date);
+    if (title && datetime) {
+      // Parse datetime-local string (YYYY-MM-DDTHH:mm)
+      const [datePart, timePart] = datetime.split('T');
+      
+      // Calculate end time (60 minutes later)
+      const [hours, minutes] = timePart.split(':').map(Number);
+      const endDate = new Date();
+      endDate.setHours(hours, minutes + 60, 0, 0);
+      const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
+      
+      onCalendarInvite(title, datePart, timePart, endTime, location, description);
       setTitle('');
-      setDate('');
+      setDatetime('');
+      setLocation('');
+      setDescription('');
       setOpen(false);
     }
   };
@@ -75,13 +88,31 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
             />
           </div>
           <div>
-            <Label htmlFor="date">Date & Time</Label>
+            <Label htmlFor="datetime">Date & Time</Label>
             <Input
-              id="date"
+              id="datetime"
               type="datetime-local"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={datetime}
+              onChange={(e) => setDatetime(e.target.value)}
               required
+            />
+          </div>
+          <div>
+            <Label htmlFor="location">Location (optional)</Label>
+            <Input
+              id="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Meeting location"
+            />
+          </div>
+          <div>
+            <Label htmlFor="description">Description (optional)</Label>
+            <Input
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Meeting description"
             />
           </div>
           <Button type="submit" className="w-full">

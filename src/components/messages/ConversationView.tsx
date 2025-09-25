@@ -59,7 +59,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   onMessageSent
 }) => {
   // Import calendar hook at the top
-  const { respondToInvite, getInviteResponse, addEvent } = useCalendarEvents();
+  const { respondToInvite, getInviteResponse, addEvent, fetchEvents } = useCalendarEvents();
   const { user } = useAuth();
   
   // Use paginated messages for performance
@@ -344,20 +344,37 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         try {
           console.log('📅 Creating sender calendar event for invite:', contentData);
           
-          const composeDateTime = (date: string, time?: string, endTime?: string) => {
-            if (!time) return new Date(date).toISOString();
-            const [hours, minutes] = time.split(':').map(Number);
+          const composeDateTime = (date: string, time?: string) => {
+            // Handle datetime-local format (YYYY-MM-DDTHH:mm)
+            if (date.includes('T')) {
+              return new Date(date).toISOString();
+            }
+            
+            // Handle separate date and time
+            if (time) {
+              const [hours, minutes] = time.split(':').map(Number);
+              const dateTime = new Date(date);
+              dateTime.setHours(hours, minutes, 0, 0);
+              return dateTime.toISOString();
+            }
+            
+            // Default to 09:00 local time if no time provided
             const dateTime = new Date(date);
-            dateTime.setHours(hours, minutes, 0, 0);
+            dateTime.setHours(9, 0, 0, 0);
             return dateTime.toISOString();
           };
+
+          const startTime = composeDateTime(contentData.date, contentData.time);
+          const endTime = contentData.endTime ? 
+            composeDateTime(contentData.endDate || contentData.date, contentData.endTime) :
+            new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString(); // Default +1 hour
 
           const senderEventData = {
             user_id: user?.id || '',
             title: contentData.title || content.split(':')[1]?.trim() || 'Calendar Event',
             description: contentData.description || `Calendar invite sent`,
-            start_time: composeDateTime(contentData.date, contentData.time),
-            end_time: contentData.endTime ? composeDateTime(contentData.endDate || contentData.date, contentData.endTime) : null,
+            start_time: startTime,
+            end_time: endTime,
             location: contentData.location || '',
             event_type: 'personal' as const,
             status: 'confirmed' as const,
@@ -369,7 +386,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
           await addEvent(senderEventData);
           
-          // Dispatch calendar refresh event
+          // Immediate refresh for visual confirmation
+          fetchEvents();
+          
+          // Dispatch calendar refresh event for other components
           window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
           
           console.log('📅 Successfully created sender calendar event');
