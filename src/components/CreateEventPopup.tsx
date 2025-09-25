@@ -20,7 +20,7 @@ interface CreateEventPopupProps {
 export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
   const { toast } = useToast();
   const { sendMessage } = useHybridMessages();
-  const { addEvent, updateEvent } = useCalendarEvents();
+  const { addEvent } = useCalendarEvents();
   const [showPaymentDemo, setShowPaymentDemo] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -68,7 +68,7 @@ ${formData.description ? `${formData.description}\n` : ''}📍 **When**: ${formD
 ${formData.location ? `📍 **Where**: ${formData.location}\n` : ''}${formData.capacity ? `👥 **Capacity**: ${formData.capacity} people\n` : ''}${formData.isPaid ? `💰 **Price**: $${formData.price}\n` : ''}
 Please respond to confirm your attendance!`;
 
-      // Create calendar event for sender first
+      // Helper to create ISO date strings
       const composeIso = (dateStr: string, timeStr?: string) => {
         const dt = new Date(dateStr);
         if (timeStr && /^\d{1,2}:\d{2}/.test(timeStr)) {
@@ -78,7 +78,66 @@ Please respond to confirm your attendance!`;
         return dt.toISOString();
       };
 
-      const eventData = {
+      // Send message first to get message ID, then create event
+      console.log('Creating calendar invite message...');
+      const sentMessage = await sendMessage({
+        context: 'global' as const,
+        threadId: '', // This will be handled by the messaging system
+        content: messageContent,
+        type: 'system',
+        contentData: {
+          eventType: 'calendar_invite',
+          ...formData
+        },
+        actionButtons: [
+          {
+            label: 'Accept',
+            action: 'calendar_accept',
+            data: {
+              title: formData.title,
+              description: formData.description,
+              location: formData.location,
+              start_time: composeIso(formData.date, formData.time),
+              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
+              event_type: 'personal',
+              status: 'confirmed',
+              priority: 'medium'
+            }
+          },
+          {
+            label: 'Decline', 
+            action: 'calendar_decline',
+            data: {
+              title: formData.title,
+              description: formData.description,
+              location: formData.location,
+              start_time: composeIso(formData.date, formData.time),
+              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
+              event_type: 'personal',
+              status: 'confirmed',
+              priority: 'medium'
+            }
+          },
+          {
+            label: 'Maybe',
+            action: 'calendar_maybe',
+            data: {
+              title: formData.title,
+              description: formData.description,
+              location: formData.location,
+              start_time: composeIso(formData.date, formData.time),
+              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
+              event_type: 'personal',
+              status: 'confirmed',
+              priority: 'medium'
+            }
+          }
+        ]
+      });
+
+      // Now create the sender's calendar event with the message ID
+      console.log('Creating sender calendar event...');
+      const senderEventData = {
         title: formData.title,
         description: formData.description,
         start_time: composeIso(formData.date, formData.time),
@@ -90,78 +149,17 @@ Please respond to confirm your attendance!`;
         is_recurring: false,
         attendees_count: formData.capacity ? parseInt(formData.capacity) : undefined,
         has_rewards: false,
-        source_type: 'manual' as const,
+        source_type: 'invite' as const, // Mark as invite from the start
+        source_message_id: sentMessage.id, // Link to the message immediately
         user_id: '', // Will be set by addEvent hook
       };
 
-      // Add event to sender's calendar with source_type 'manual' to distinguish from invites
-      const senderEventData = {
-        ...eventData,
-        source_type: 'manual' as const,
-        source_message_id: null // Will be updated after message is sent
-      };
       const createdEvent = await addEvent(senderEventData);
-
-      const sentMessage = await sendMessage({
-        context: 'global' as const,
-        threadId: '', // This will be handled by the messaging system
-        content: messageContent,
-        type: 'system',
-        contentData: {
-          eventType: 'calendar_invite',
-          ...formData,
-          senderEventId: createdEvent.id // Link to sender's calendar event
-        },
-        actionButtons: [
-          {
-            label: 'Accept',
-            action: 'calendar_accept',
-            data: {
-              ...formData,
-              senderEventId: createdEvent.id,
-              start_time: composeIso(formData.date, formData.time),
-              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined
-            }
-          },
-          {
-            label: 'Decline', 
-            action: 'calendar_decline',
-            data: {
-              ...formData,
-              senderEventId: createdEvent.id,
-              start_time: composeIso(formData.date, formData.time),
-              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined
-            }
-          },
-          {
-            label: 'Maybe',
-            action: 'calendar_maybe',
-            data: {
-              ...formData,
-              senderEventId: createdEvent.id,
-              start_time: composeIso(formData.date, formData.time),
-              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined
-            }
-          }
-        ]
-      });
-
-      // Update sender's event with the message ID for linking
-      if (sentMessage && createdEvent) {
-        try {
-          await updateEvent(createdEvent.id, {
-            source_message_id: sentMessage.id,
-            source_type: 'invite'
-          });
-        } catch (error) {
-          console.error('Failed to link event with message:', error);
-          // Don't fail the whole operation for this
-        }
-      }
+      console.log('Sender event created:', createdEvent);
 
       toast({
         title: 'Event Created!',
-        description: 'Your event has been added to your calendar and invitation sent.',
+        description: 'Your calendar invite has been sent successfully.',
       });
 
       if (formData.isPaid && formData.price && parseFloat(formData.price) > 0) {
