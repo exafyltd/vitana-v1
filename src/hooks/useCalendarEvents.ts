@@ -94,14 +94,33 @@ export function useCalendarEvents() {
     }
   };
 
-  // Add a new calendar event
+  // Add a new calendar event (with auth check and idempotency)
   const addEvent = async (eventData: Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>) => {
     try {
+      const authUser = (await supabase.auth.getUser()).data.user;
+      if (!authUser) {
+        throw new Error('User not authenticated');
+      }
+
+      // Idempotency: if source_message_id provided, return existing
+      if (eventData.source_message_id) {
+        const { data: existing } = await supabase
+          .from('calendar_events')
+          .select('*')
+          .eq('user_id', authUser.id)
+          .eq('source_message_id', eventData.source_message_id)
+          .limit(1)
+          .maybeSingle();
+        if (existing) {
+          return existing as any;
+        }
+      }
+
       const { data, error } = await supabase
         .from('calendar_events')
         .insert({
           ...eventData,
-          user_id: (await supabase.auth.getUser()).data.user?.id
+          user_id: authUser.id
         })
         .select()
         .single();

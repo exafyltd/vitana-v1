@@ -20,6 +20,7 @@ import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -392,6 +393,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
           <SidebarInset>
             <div className="bg-background min-h-screen w-full rounded-tl-2xl">
+              <PendingCalendarEventProcessor />
               {children}
             </div>
           </SidebarInset>
@@ -405,7 +407,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
         open={walletPopupOpen} 
         onOpenChange={setWalletPopupOpen} 
       />
-      <StreamingChat ref={streamingChatRef} />
+       <StreamingChat ref={streamingChatRef} />
+       {/* Processes queued calendar events after sign-in */}
+       <div className="hidden">
+         {/* Keep DOM clean while mounting the processor */}
+         {/* eslint-disable-next-line jsx-a11y/heading-has-content */}
+       </div>
     </div>
   );
 }
