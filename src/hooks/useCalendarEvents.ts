@@ -116,16 +116,38 @@ export function useCalendarEvents() {
         }
       }
 
-      const { data, error } = await supabase
-        .from('calendar_events')
-        .insert({
-          ...eventData,
-          user_id: authUser.id
-        })
-        .select()
-        .single();
+      // Try to insert - handle unique constraint violation gracefully
+      let data: any;
+      try {
+        const result = await supabase
+          .from('calendar_events')
+          .insert({
+            ...eventData,
+            user_id: authUser.id
+          })
+          .select()
+          .single();
 
-      if (error) throw error;
+        if (result.error) throw result.error;
+        data = result.data;
+      } catch (insertError: any) {
+        // Handle unique constraint violation (23505) - event already exists
+        if (insertError?.code === '23505' && eventData.source_message_id) {
+          console.log('📅 Event already exists, returning existing event');
+          const { data: existing } = await supabase
+            .from('calendar_events')
+            .select('*')
+            .eq('user_id', authUser.id)
+            .eq('source_message_id', eventData.source_message_id)
+            .limit(1)
+            .single();
+          
+          if (existing) {
+            return existing;
+          }
+        }
+        throw insertError;
+      }
 
       setEvents(prev => [...prev, data as CalendarEvent]);
       

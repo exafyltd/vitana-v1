@@ -25,11 +25,12 @@ export default function PendingCalendarEventProcessor() {
 
         for (const item of pending) {
           try {
-            // Idempotency: if source_message_id exists, check if already inserted
+            // Idempotency: if source_message_id exists, check if already inserted by THIS user
             if (item.source_message_id) {
               const { data: existing } = await supabase
                 .from('calendar_events')
                 .select('id')
+                .eq('user_id', user.id)
                 .eq('source_message_id', item.source_message_id)
                 .limit(1)
                 .maybeSingle();

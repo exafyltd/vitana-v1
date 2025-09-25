@@ -30,6 +30,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
   const [response, setResponse] = useState<CalendarInviteResponse | null>(null);
   const [allResponses, setAllResponses] = useState<CalendarInviteResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const isMessageSender = (senderId && senderId === user?.id) || (messageData?.sender_id === user?.id);
@@ -146,6 +147,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
           <Button
             key={index}
             size="sm"
+            disabled={isSubmitting}
             variant={
               button.action === 'calendar_accept' ? 'default' :
               button.action === 'calendar_decline' ? 'outline' :
@@ -157,11 +159,18 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
               button.action === 'calendar_decline' ? 'text-red-600 border-red-200 hover:bg-red-50' :
               ''
             }
-            onClick={() => onActionClick?.({
-              ...button,
-              messageData,
-              messageId
-            })}
+            onClick={async () => {
+              setIsSubmitting(true);
+              try {
+                await onActionClick?.({
+                  ...button,
+                  messageData,
+                  messageId
+                });
+              } finally {
+                setIsSubmitting(false);
+              }
+            }}
           >
             {button.action === 'calendar_accept' && <CheckCircle className="w-3 h-3 mr-1" />}
             {button.action === 'calendar_decline' && <X className="w-3 h-3 mr-1" />}
