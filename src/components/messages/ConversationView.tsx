@@ -489,6 +489,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                       return new Date(y || new Date().getFullYear(), (m ? m-1 : new Date().getMonth()), d || new Date().getDate(), 10, 0, 0, 0).toISOString();
                     })() : new Date(new Date(st).getTime() + 60 * 60 * 1000).toISOString());
 
+                  const { enqueuePendingSenderEvent } = await import('@/lib/calendarPendingQueue');
                   enqueuePendingSenderEvent({
                     title: contentData.title || content.split(':')[1]?.trim() || 'Calendar Event',
                     description: contentData.description || `Calendar invite sent`,
