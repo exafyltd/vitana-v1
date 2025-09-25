@@ -33,7 +33,7 @@ import ErrorMessage from './ErrorMessage';
 import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
-import { CalendarInvitePreview } from './CalendarInvitePreview';
+
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
 
@@ -211,20 +211,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, threads, user?.id]);
 
-  // State for optimistic messages
-  const [optimisticMessages, setOptimisticMessages] = useState<Array<{
-    id: string;
-    content: string;
-    status: 'sending' | 'failed';
-    originalMessage?: any;
-    sig?: string; // Stable signature for deduplication
-  }>>([]);
 
-  // Helper to build stable signature for deduplication
-  const buildStableSig = useCallback((messageType: string, body: string, contentData?: any) => {
-    const sortedContentData = contentData ? JSON.stringify(contentData, Object.keys(contentData).sort()) : '';
-    return `${messageType}:${body.trim()}:${sortedContentData}`;
-  }, []);
 
   // Enhanced scroll to bottom with auto-scroll detection
   const scrollToBottom = useCallback((force = false) => {
@@ -311,12 +298,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [messages, isUserNearBottom, scrollToBottom]);
 
-  // Force scroll when sending/optimistic updates
-  useEffect(() => {
-    if (optimisticMessages.length) {
-      scrollToBottom(true);
-    }
-  }, [optimisticMessages, scrollToBottom]);
 
   // Scroll to latest messages after they are loaded (not immediately on threadId change)
   useEffect(() => {
@@ -330,41 +311,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, messages.length, scrollToBottom]);
 
-  // Enhanced deduplication effect: Remove optimistic messages if real message with same content/signature exists
-  useEffect(() => {
-    if (messages.length > 0 && optimisticMessages.length > 0) {
-      const latestMessages = messages.slice(-5); // Check last 5 messages for efficiency
-      
-      setOptimisticMessages(prev => 
-        prev.filter(optMsg => {
-          // Primary deduplication: content matching using body field
-          const hasContentMatch = latestMessages.some(realMsg => 
-            realMsg.body?.trim() === optMsg.content?.trim()
-          );
-          
-          // Secondary deduplication: signature matching for robustness
-          let hasSignatureMatch = false;
-          if (optMsg.sig) {
-            hasSignatureMatch = latestMessages.some(realMsg => {
-              const realSig = buildStableSig(realMsg.message_type || 'text', realMsg.body || '', realMsg.content_data);
-              return realSig === optMsg.sig;
-            });
-          }
-          
-          const shouldRemove = hasContentMatch || hasSignatureMatch;
-          if (shouldRemove) {
-            console.debug(`[Dedup] Removing optimistic message ${optMsg.id}`, { 
-              hasContentMatch, 
-              hasSignatureMatch, 
-              content: optMsg.content.substring(0, 50) 
-            });
-          }
-          
-          return !shouldRemove;
-        })
-      );
-    }
-  }, [messages, optimisticMessages, buildStableSig]);
 
   const handleSendMessage = async (
     content: string, 
@@ -373,59 +319,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     actionButtons?: any[],
     parentMessageId?: string
   ) => {
-    // Skip optimistic rendering for system messages (they represent completed actions)
-    const isSystemMessage = messageType === 'system';
-    
-    // Additional guard: Skip optimistic rendering for known system confirmation patterns
-    const isSystemConfirmation = content.includes('Event accepted ✅') || 
-                                 content.includes('Event declined ❌') || 
-                                 content.includes('Responded "Maybe" ❓');
-    
-    let optimisticId: string | null = null;
-
     try {
       setSendError(null);
-      
       if (!threadId) {
         console.error('No thread ID available for sending message');
         return;
       }
 
-      if (!isSystemMessage && !isSystemConfirmation) {
-        // Create optimistic "sending" bubble for user messages only
-        optimisticId = `sending-${Date.now()}`;
-        const stableSig = buildStableSig(messageType || 'text', content, contentData);
-        
-        const optimisticMessage = {
-          id: optimisticId,
-          content,
-          status: 'sending' as const,
-          originalMessage: { content, messageType, contentData, actionButtons },
-          sig: stableSig
-        };
-
-        console.debug(`[Send] Adding optimistic message ${optimisticId}`, { 
-          content: content.substring(0, 50), 
-          messageType, 
-          sig: stableSig 
-        });
-
-        setOptimisticMessages(prev => [...prev, optimisticMessage]);
-
-        // Scroll to keep last bubble visible - force scroll for new messages
-        setTimeout(() => {
-          scrollToBottom(true);
-        }, 10);
-      }
-
-      // Create timeout promise
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => {
-          reject(new Error('Message sending timed out after 10 seconds'));
-        }, 10000);
+        setTimeout(() => reject(new Error('Message sending timed out after 10 seconds')), 10000);
       });
 
-      // Race between sending and timeout
       const sendPromise = sendMessage({
         context: messageContext,
         threadId,
@@ -438,24 +342,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       });
 
       const newMessage = await Promise.race([sendPromise, timeoutPromise]) as any;
-      
-      console.debug(`[Send] Message sent successfully ${optimisticId}`);
-      
-      // Notify parent immediately so thread jumps to top
+
       if (onMessageSent && threadId && newMessage) {
         onMessageSent(threadId, newMessage, messageContext);
       }
 
-      // Remove optimistic message on success (only if it exists)
-      if (optimisticId) {
-        console.debug(`[Send] Removing optimistic message on success ${optimisticId}`);
-        setOptimisticMessages(prev => prev.filter(msg => msg.id !== optimisticId));
-      }
-      
-      // Clear reply state on successful send
       setReplyingTo(null);
-      
-      // Add to paginated messages if using pagination
+
       if (paginatedMessages.shouldUsePagination && newMessage) {
         paginatedMessages.addNewMessage({
           ...newMessage,
@@ -466,42 +359,23 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           }
         });
       }
-      
     } catch (error) {
       console.error('Error sending message:', error);
       const isTimeout = error instanceof Error && error.message.includes('timed out');
-      
-      // Mark optimistic message as failed (only if it exists)
-      if (optimisticId) {
-        console.debug(`[Send] Marking optimistic message as failed ${optimisticId}`, { isTimeout });
-        setOptimisticMessages(prev => 
-          prev.map(msg => 
-            msg.id === optimisticId
-              ? { ...msg, status: 'failed' as const }
-              : msg
-          )
-        );
-      }
-      
-      const errorMessage = error instanceof Error ? error.message : "unknown";
+
+      const errorMessage = error instanceof Error ? error.message : 'unknown';
       setSendError(`Failed to send message: ${errorMessage}`);
-      
-      if (isTimeout) {
-        toast({
-          title: 'Sending Timed Out',
-          description: 'Your message is taking longer than expected. You can retry sending it.',
-          variant: 'destructive',
-        });
-      } else {
-        toast({
-          title: 'Message Failed',
-          description: `Message failed: ${errorMessage}`,
-          variant: 'destructive',
-        });
-      }
-      
+
+      toast({
+        title: isTimeout ? 'Sending Timed Out' : 'Message Failed',
+        description: isTimeout
+          ? 'Your message is taking longer than expected. You can retry sending it.'
+          : `Message failed: ${errorMessage}`,
+        variant: 'destructive',
+      });
+
       console.error({
-        stage: "send", 
+        stage: 'send', 
         threadId: threadId, 
         payload: { text: content }, 
         error,
@@ -510,70 +384,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   };
 
-  const retryFailedMessage = async (optimisticId: string) => {
-    const failedMessage = optimisticMessages.find(msg => msg.id === optimisticId);
-    if (!failedMessage?.originalMessage) return;
-
-    console.debug(`[Retry] Retrying failed message ${optimisticId}`);
-
-    // Mark as sending again
-    setOptimisticMessages(prev => 
-      prev.map(msg => 
-        msg.id === optimisticId 
-          ? { ...msg, status: 'sending' as const }
-          : msg
-      )
-    );
-
-    const { content, messageType, contentData, actionButtons } = failedMessage.originalMessage;
-    
-    try {
-      // Use the same timeout logic as the original send
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => {
-          reject(new Error('Retry timed out after 10 seconds'));
-        }, 10000);
-      });
-
-      const sendPromise = sendMessage({
-        context: messageContext,
-        threadId: threadId!,
-        content,
-        type: messageType || 'text',
-        contentData,
-        recipientId,
-        actionButtons,
-      });
-
-      await Promise.race([sendPromise, timeoutPromise]);
-      
-      console.debug(`[Retry] Retry successful, removing optimistic message ${optimisticId}`);
-      
-      // Remove on success
-      setOptimisticMessages(prev => prev.filter(msg => msg.id !== optimisticId));
-      
-    } catch (error) {
-      console.debug(`[Retry] Retry failed ${optimisticId}`, error);
-      
-      // Mark as failed again
-      setOptimisticMessages(prev => 
-        prev.map(msg => 
-          msg.id === optimisticId 
-            ? { ...msg, status: 'failed' as const }
-            : msg
-        )
-      );
-      
-      const isTimeout = error instanceof Error && error.message.includes('timed out');
-      if (isTimeout) {
-        toast({
-          title: 'Retry Timed Out',
-          description: 'The retry is taking longer than expected. Please try again.',
-          variant: 'destructive',
-        });
-      }
-    }
-  };
 
   const retryLoadMessages = async () => {
     if (!threadId) return;
@@ -609,7 +419,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           const response: 'accepted' | 'declined' | 'maybe' =
             raw === 'accept' ? 'accepted' :
             raw === 'decline' ? 'declined' : 'maybe';
-          const eventData = action.messageData;
+          const eventData = action.data ?? action.messageData;
           
           try {
             console.log('🎯 Processing calendar action:', { action: action.action, raw, normalized: response, messageData: eventData });
@@ -840,7 +650,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     recipientId,
     threadsLength: threads.length,
     messagesLength: messages.length,
-    optimisticMessagesLength: optimisticMessages.length,
     isLoadingConversation
   });
 
@@ -932,7 +741,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           ref={scrollRef}
           onScroll={handleScroll}
         >
-          {messages.length === 0 && optimisticMessages.length === 0 ? (
+          {messages.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No messages yet</p>
               <p className="text-sm text-muted-foreground">Start the conversation!</p>
@@ -1009,72 +818,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 );
               })}
               
-              {/* Render optimistic messages */}
-              {optimisticMessages.map((optMessage) => {
-                // Enhanced render guard: Skip optimistic bubbles that have a persisted twin
-                const hasContentTwin = messages.some(realMsg => 
-                  realMsg.body?.trim() === optMessage.content?.trim()
-                );
-                
-                let hasSignatureTwin = false;
-                if (optMessage.sig) {
-                  hasSignatureTwin = messages.some(realMsg => {
-                    const realSig = buildStableSig(realMsg.message_type || 'text', realMsg.body || '', realMsg.content_data);
-                    return realSig === optMessage.sig;
-                  });
-                }
-                
-                if (hasContentTwin || hasSignatureTwin) {
-                  return null;
-                }
-                
-                // Check if this is a calendar invite
-                const isCalendarInvite = optMessage.originalMessage?.messageType === 'calendar_invite';
-                
-                if (isCalendarInvite) {
-                  return (
-                    <div key={optMessage.id} className="flex justify-end mb-4">
-                      <CalendarInvitePreview
-                        contentData={optMessage.originalMessage?.contentData}
-                        content={optMessage.content}
-                        status={optMessage.status}
-                        onRetry={() => retryFailedMessage(optMessage.id)}
-                      />
-                    </div>
-                  );
-                }
-                
-                // Default rendering for non-calendar messages
-                return (
-                  <div key={optMessage.id} className="flex justify-end mb-4">
-                    <div className={cn(
-                      "max-w-[680px] rounded-lg px-3 py-2 text-sm",
-                      optMessage.status === 'sending' 
-                        ? "bg-primary/70 text-primary-foreground" 
-                        : "bg-destructive/70 text-destructive-foreground"
-                    )}>
-                      <div className="flex items-center gap-2">
-                        <span>{optMessage.content}</span>
-                        {optMessage.status === 'sending' ? (
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                        ) : (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-6 w-12 p-0 text-xs"
-                            onClick={() => retryFailedMessage(optMessage.id)}
-                          >
-                            Retry
-                          </Button>
-                        )}
-                      </div>
-                      <div className="text-xs opacity-70 mt-1">
-                        {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
-                      </div>
-                    </div>
-                  </div>
-                );
-              }).filter(Boolean)}
             </>
           )}
           
