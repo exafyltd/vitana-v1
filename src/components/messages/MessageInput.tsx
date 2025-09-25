@@ -403,6 +403,20 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const sendCalendarInvite = async (title: string, date: string, time?: string, endTime?: string, location?: string, description?: string) => {
+    // Compose ISO timestamps using safe numeric constructor
+    const composeIso = (dateStr: string, timeStr?: string) => {
+      const [y, m, d] = dateStr.split('-').map(Number);
+      if (timeStr) {
+        const [h, mi] = timeStr.split(':').map(Number);
+        return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
+      }
+      return new Date(y, m-1, d, 9, 0, 0, 0).toISOString();
+    };
+
+    const start_time = composeIso(date, time);
+    const end_time = endTime ? composeIso(date, endTime) : 
+      new Date(new Date(start_time).getTime() + 60 * 60 * 1000).toISOString();
+
     const eventData = {
       title,
       date,
@@ -410,7 +424,9 @@ const MessageInput: React.FC<MessageInputProps> = ({
       endTime,
       location,
       description,
-      type: 'meeting'
+      type: 'meeting',
+      start_time, // Add explicit ISO times
+      end_time
     };
 
     const actionButtons = [

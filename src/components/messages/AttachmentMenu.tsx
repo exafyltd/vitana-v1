@@ -46,11 +46,11 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
       // Parse datetime-local string (YYYY-MM-DDTHH:mm)
       const [datePart, timePart] = datetime.split('T');
       
-      // Calculate end time (60 minutes later)
+      // Calculate end time (60 minutes later) based on selected datetime
       const [hours, minutes] = timePart.split(':').map(Number);
-      const endDate = new Date();
-      endDate.setHours(hours, minutes + 60, 0, 0);
-      const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
+      const [year, month, day] = datePart.split('-').map(Number);
+      const selectedDate = new Date(year, month - 1, day, hours, minutes + 60, 0, 0);
+      const endTime = `${selectedDate.getHours().toString().padStart(2, '0')}:${selectedDate.getMinutes().toString().padStart(2, '0')}`;
       
       onCalendarInvite(title, datePart, timePart, endTime, location, description);
       setTitle('');

@@ -347,27 +347,28 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           const composeDateTime = (date: string, time?: string) => {
             // Handle datetime-local format (YYYY-MM-DDTHH:mm)
             if (date.includes('T')) {
-              return new Date(date).toISOString();
+              const [datePart, timePart] = date.split('T');
+              const [y, m, d] = datePart.split('-').map(Number);
+              const [h, mi] = timePart.split(':').map(Number);
+              return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
             }
             
             // Handle separate date and time
+            const [y, m, d] = date.split('-').map(Number);
             if (time) {
-              const [hours, minutes] = time.split(':').map(Number);
-              const dateTime = new Date(date);
-              dateTime.setHours(hours, minutes, 0, 0);
-              return dateTime.toISOString();
+              const [h, mi] = time.split(':').map(Number);
+              return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
             }
             
             // Default to 09:00 local time if no time provided
-            const dateTime = new Date(date);
-            dateTime.setHours(9, 0, 0, 0);
-            return dateTime.toISOString();
+            return new Date(y, m-1, d, 9, 0, 0, 0).toISOString();
           };
 
-          const startTime = composeDateTime(contentData.date, contentData.time);
-          const endTime = contentData.endTime ? 
+          // Use explicit ISO times from contentData if available, otherwise compose from date/time
+          const startTime = contentData.start_time || composeDateTime(contentData.date, contentData.time);
+          const endTime = contentData.end_time || (contentData.endTime ? 
             composeDateTime(contentData.endDate || contentData.date, contentData.endTime) :
-            new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString(); // Default +1 hour
+            new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString());
 
           const senderEventData = {
             user_id: user?.id || '',
@@ -387,12 +388,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           await addEvent(senderEventData);
           
           // Immediate refresh for visual confirmation
-          fetchEvents();
+          await fetchEvents();
           
           // Dispatch calendar refresh event for other components
           window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
           
-          console.log('📅 Successfully created sender calendar event');
+          // Show confirmation toast
+          toast({
+            title: 'Calendar Event Added',
+            description: `Added "${senderEventData.title}" to your calendar`,
+            variant: 'default',
+          });
+          
+          console.log('📅 Successfully created sender calendar event:', senderEventData.title, new Date(startTime).toLocaleString());
         } catch (error) {
           console.error('📅 Failed to create sender calendar event:', error);
           toast({
