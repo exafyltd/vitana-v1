@@ -47,6 +47,7 @@ export function PaymentMessageHandler({
   const [isDeclined, setIsDeclined] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
+  const [forceRefreshBalance, setForceRefreshBalance] = useState(false);
 
   // Initialize local lock and declined status based on message id
   useEffect(() => {
@@ -68,9 +69,18 @@ export function PaymentMessageHandler({
       setLoadingTimeout(false);
     }
   }, [loading]);
+  
   const paymentData = message.content_data;
   const isCurrentUser = message.sender_id === user?.id;
   const messageType = message.message_type;
+
+  // Force refresh wallet data when payment modal is opened
+  useEffect(() => {
+    if (!isCurrentUser && messageType === 'payment_request') {
+      console.log('🔄 Payment request opened, refreshing wallet data...');
+      refreshData();
+    }
+  }, [message.id, isCurrentUser, messageType, refreshData]);
 
   const getCurrencyIcon = (currency: string) => {
     switch (currency?.toUpperCase()) {
@@ -92,7 +102,30 @@ export function PaymentMessageHandler({
 
   const canAfford = (amount: number, currency: string) => {
     const normalizedCurrency = (currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS';
-    return (walletGetBalance(normalizedCurrency) || 0) >= amount;
+    const balance = walletGetBalance(normalizedCurrency) || 0;
+    const canPay = balance >= amount;
+    console.log(`💰 Can afford ${amount} ${currency}? ${canPay} (current balance: ${balance})`);
+    return canPay;
+  };
+
+  const handleRefreshBalance = async () => {
+    console.log('🔄 Manual balance refresh requested');
+    setForceRefreshBalance(true);
+    try {
+      await refreshData();
+      toast({
+        title: "Balance Refreshed",
+        description: "Wallet balance has been updated",
+      });
+    } catch (error) {
+      toast({
+        title: "Refresh Failed",
+        description: "Could not refresh balance. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setForceRefreshBalance(false);
+    }
   };
 
   const handlePaymentAccept = async () => {
@@ -379,12 +412,30 @@ export function PaymentMessageHandler({
           
           {/* Show current balance for non-current users */}
           {!isCurrentUser && effectiveStatus === 'pending' && (
-            <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-              <span>Your balance:</span>
-              <span className="flex items-center gap-1">
-                {getCurrencyIcon(currency)}
-                {currentBalance.toLocaleString()}
-              </span>
+            <div className="space-y-2 mb-3">
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>Your balance:</span>
+                <div className="flex items-center gap-2">
+                  <span className="flex items-center gap-1">
+                    {getCurrencyIcon(currency)}
+                    {currentBalance.toLocaleString()}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleRefreshBalance}
+                    disabled={forceRefreshBalance}
+                    className="h-6 px-2 text-xs"
+                  >
+                    {forceRefreshBalance ? '...' : '🔄'}
+                  </Button>
+                </div>
+              </div>
+              {walletError && (
+                <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
+                  Wallet Error: {walletError}
+                </div>
+              )}
             </div>
           )}
 

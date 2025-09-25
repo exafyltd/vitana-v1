@@ -36,17 +36,24 @@ export function useWallet() {
   const fetchBalances = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      console.log('🔍 Fetching balances for user:', user?.id);
+      if (!user) {
+        console.log('❌ No authenticated user found');
+        return;
+      }
 
       // Initialize user wallet with timeout
+      console.log('🔧 Initializing wallet for user:', user.id);
       const initPromise = supabase.rpc('initialize_user_wallet', { user_id_param: user.id });
       const timeoutPromise = new Promise<never>((_, reject) => 
         setTimeout(() => reject(new Error('Wallet initialization timeout')), 5000)
       );
       
       await Promise.race([initPromise, timeoutPromise]);
+      console.log('✅ Wallet initialized successfully');
 
       // Fetch current balances with timeout
+      console.log('💰 Fetching balances from database...');
       const balancePromise = supabase
         .from('user_wallets')
         .select('currency_type, balance, updated_at')
@@ -57,18 +64,27 @@ export function useWallet() {
       );
 
       const result = await Promise.race([balancePromise, balanceTimeoutPromise]);
-      if (result.error) throw result.error;
-      setBalances((result.data as UserBalance[]) || []);
+      if (result.error) {
+        console.log('❌ Database error:', result.error);
+        throw result.error;
+      }
+      
+      console.log('📊 Raw balance data from DB:', result.data);
+      const balanceData = (result.data as UserBalance[]) || [];
+      console.log('💰 Setting balances:', balanceData);
+      setBalances(balanceData);
       setError(null); // Clear any previous errors
     } catch (err) {
-      console.error('Error fetching balances:', err);
+      console.error('❌ Error fetching balances:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch balances');
       // Set default balances to prevent infinite loading
-      setBalances([
+      const defaultBalances: UserBalance[] = [
         { currency_type: 'USD', balance: 0, updated_at: new Date().toISOString() },
         { currency_type: 'VTN', balance: 0, updated_at: new Date().toISOString() },
         { currency_type: 'CREDITS', balance: 0, updated_at: new Date().toISOString() }
-      ]);
+      ];
+      console.log('🔄 Setting default balances due to error:', defaultBalances);
+      setBalances(defaultBalances);
     }
   };
 
@@ -103,11 +119,16 @@ export function useWallet() {
   // Get balance for specific currency
   const getBalance = (currency: 'USD' | 'VTN' | 'CREDITS'): number | null => {
     // Return null when still loading to indicate unavailable data
-    if (loading && balances.length === 0) return null;
+    if (loading && balances.length === 0) {
+      console.log('⏳ Still loading balances, returning null for', currency);
+      return null;
+    }
     
     const normalizedCurrency = currency.toUpperCase();
     const balance = balances.find(b => b.currency_type === normalizedCurrency);
-    return balance ? Number(balance.balance) : 0;
+    const result = balance ? Number(balance.balance) : 0;
+    console.log(`💰 getBalance(${currency}):`, result, 'from balance:', balance);
+    return result;
   };
 
   // Update balance for specific currency
