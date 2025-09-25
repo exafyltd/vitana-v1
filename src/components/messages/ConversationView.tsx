@@ -600,6 +600,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             
             await handleSendMessage(responseMessages[response as keyof typeof responseMessages], 'system');
             
+            // Trigger calendar refresh to ensure immediate UI sync
+            window.dispatchEvent(new Event('calendar-events:refresh'));
+            
             toast({
               title: 'Response Sent',
               description: responseMessages[response as keyof typeof responseMessages],

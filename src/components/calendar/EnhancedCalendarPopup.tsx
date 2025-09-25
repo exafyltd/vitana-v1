@@ -98,7 +98,7 @@ const getPriorityColor = (priority: CalendarEvent['priority']) => {
 export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPopupProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { events, loading, addEvent, removeEvent, getEventsForDate, getUpcomingEvents } = useCalendarEvents();
+  const { events, loading, addEvent, removeEvent, getEventsForDate, getUpcomingEvents, fetchEvents } = useCalendarEvents();
   
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeTab, setActiveTab] = useState("overview");
@@ -210,6 +210,13 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
     const end = endTime ? new Date(endTime) : new Date(start.getTime() + 60 * 60 * 1000);
     return `${format(start, 'h:mm a')} - ${format(end, 'h:mm a')}`;
   };
+
+  // Refresh events when popup opens to ensure latest data
+  React.useEffect(() => {
+    if (open) {
+      fetchEvents();
+    }
+  }, [open, fetchEvents]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

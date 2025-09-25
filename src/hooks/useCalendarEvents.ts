@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
+
+// Global event bus constant
+const CALENDAR_REFRESH_EVENT = 'calendar-events:refresh';
 export interface CalendarEvent {
   id: string;
   title: string;
@@ -65,6 +68,7 @@ export function useCalendarEvents() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const debounceTimeoutRef = useRef<NodeJS.Timeout>();
 
   // Fetch user's calendar events
   const fetchEvents = async () => {
@@ -111,6 +115,9 @@ export function useCalendarEvents() {
         description: `"${eventData.title}" has been added to your calendar`,
       });
 
+      // Dispatch global refresh event
+      window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
+
       return data;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to add calendar event';
@@ -138,6 +145,9 @@ export function useCalendarEvents() {
       setEvents(prev => prev.map(event => 
         event.id === eventId ? { ...event, ...data } as CalendarEvent : event
       ));
+
+      // Dispatch global refresh event
+      window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
 
       return data;
     } catch (err) {
@@ -167,6 +177,9 @@ export function useCalendarEvents() {
         title: 'Event Removed',
         description: 'Event has been removed from your calendar',
       });
+
+      // Dispatch global refresh event
+      window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to remove calendar event';
       toast({
@@ -292,6 +305,9 @@ export function useCalendarEvents() {
           // Refresh events list to show the new event immediately
           await fetchEvents();
 
+          // Dispatch global refresh event for other components
+          window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
+
         } catch (eventError) {
           console.error('❌ Failed to create calendar event:', eventError);
           
@@ -306,6 +322,9 @@ export function useCalendarEvents() {
           return { eventId: undefined, response, error: eventError };
         }
       }
+
+      // Dispatch global refresh event after successful invite response
+      window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
 
       return { eventId, response: normalized };
     } catch (err) {
@@ -388,6 +407,23 @@ export function useCalendarEvents() {
   useEffect(() => {
     fetchEvents();
 
+    // Debounced fetch events for global refresh event bus
+    const debouncedFetchEvents = () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+      debounceTimeoutRef.current = setTimeout(() => {
+        fetchEvents();
+      }, 150); // 150ms debounce to prevent burst refreshes
+    };
+
+    // Global refresh event listener
+    const handleGlobalRefresh = () => {
+      debouncedFetchEvents();
+    };
+
+    window.addEventListener(CALENDAR_REFRESH_EVENT, handleGlobalRefresh);
+
     // Set up real-time subscription for calendar events
     const eventsChannel = supabase
       .channel('calendar-events-changes')
@@ -415,6 +451,10 @@ export function useCalendarEvents() {
       .subscribe();
 
     return () => {
+      window.removeEventListener(CALENDAR_REFRESH_EVENT, handleGlobalRefresh);
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
       supabase.removeChannel(eventsChannel);
       supabase.removeChannel(responsesChannel);
     };
