@@ -8,7 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, MapPin, Clock, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useMessages } from "@/hooks/useMessages";
+import { useHybridMessages } from "@/hooks/useHybridMessages";
+import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 
 interface CreateEventPopupProps {
@@ -18,15 +19,19 @@ interface CreateEventPopupProps {
 
 export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
   const { toast } = useToast();
-  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
+  const { sendMessage } = useHybridMessages();
+  const { addEvent } = useCalendarEvents();
   const [showPaymentDemo, setShowPaymentDemo] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     category: "",
     date: "",
     time: "",
-    duration: "",
+    endTime: "",
+    endDate: "",
     location: "",
     capacity: "",
     isVirtual: false,
@@ -34,54 +39,114 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
     isPaid: false
   });
 
-  const handleSubmit = async () => {
-    // Create event notification
-    const eventData = {
-      title: formData.title,
-      description: formData.description,
-      date: formData.date,
-      time: formData.time,
-      location: formData.location,
-      capacity: formData.capacity,
-      price: formData.isPaid ? parseFloat(formData.price) : 0,
-      category: formData.category
-    };
-
-    try {
-      await sendMessage(
-        `New event: ${formData.title} on ${formData.date} at ${formData.time}${formData.isPaid ? ` - $${formData.price}` : ' - Free'}`,
-        undefined, // Broadcast to community
-        'event_announcement',
-        eventData
-      );
-    } catch (error) {
-      console.error('Error broadcasting event:', error);
-    }
-
-    toast({
-      title: "Event Created! 🎉",
-      description: `${formData.title} has been created successfully.`
-    });
-    
-    if (formData.isPaid) {
-      setShowPaymentDemo(true);
-    } else {
-      onClose();
-    }
-    
+  const resetForm = () => {
     setFormData({
       title: "",
       description: "",
       category: "",
       date: "",
       time: "",
-      duration: "",
+      endTime: "",
+      endDate: "",
       location: "",
       capacity: "",
       isVirtual: false,
       price: "",
       isPaid: false
     });
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.title || !formData.date) return;
+
+    setIsSubmitting(true);
+    
+    try {
+      const messageContent = `📅 **Event Invitation**: ${formData.title}
+
+${formData.description ? `${formData.description}\n` : ''}📍 **When**: ${formData.date}${formData.time ? ` at ${formData.time}` : ''}
+${formData.location ? `📍 **Where**: ${formData.location}\n` : ''}${formData.capacity ? `👥 **Capacity**: ${formData.capacity} people\n` : ''}${formData.isPaid ? `💰 **Price**: $${formData.price}\n` : ''}
+Please respond to confirm your attendance!`;
+
+      // Create calendar event for sender first
+      const composeIso = (dateStr: string, timeStr?: string) => {
+        const dt = new Date(dateStr);
+        if (timeStr && /^\d{1,2}:\d{2}/.test(timeStr)) {
+          const [h, m] = timeStr.split(':').map(Number);
+          dt.setHours(h, m, 0, 0);
+        }
+        return dt.toISOString();
+      };
+
+      const eventData = {
+        title: formData.title,
+        description: formData.description,
+        start_time: composeIso(formData.date, formData.time),
+        end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
+        location: formData.location,
+        event_type: 'personal' as const,
+        status: 'confirmed' as const,
+        priority: 'medium' as const,
+        is_recurring: false,
+        attendees_count: formData.capacity ? parseInt(formData.capacity) : undefined,
+        has_rewards: false,
+        source_type: 'manual' as const,
+        user_id: '', // Will be set by addEvent hook
+      };
+
+      // Add event to sender's calendar
+      const createdEvent = await addEvent(eventData);
+
+      await sendMessage({
+        context: 'global' as const,
+        threadId: '', // This will be handled by the messaging system
+        content: messageContent,
+        type: 'system',
+        contentData: {
+          eventType: 'calendar_invite',
+          ...formData,
+          senderEventId: createdEvent.id // Link to sender's calendar event
+        },
+        actionButtons: [
+          {
+            label: 'Accept',
+            action: 'calendar_accept',
+            data: formData
+          },
+          {
+            label: 'Decline', 
+            action: 'calendar_decline',
+            data: formData
+          },
+          {
+            label: 'Maybe',
+            action: 'calendar_maybe',
+            data: formData
+          }
+        ]
+      });
+
+      toast({
+        title: 'Event Created!',
+        description: 'Your event has been added to your calendar and invitation sent.',
+      });
+
+      if (formData.isPaid && formData.price && parseFloat(formData.price) > 0) {
+        setShowPaymentDemo(true);
+      } else {
+        onClose();
+        resetForm();
+      }
+    } catch (error) {
+      console.error('Error creating event:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to create event. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -141,20 +206,14 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
                 </div>
 
                 <div>
-                  <Label htmlFor="duration">Duration</Label>
-                  <Select value={formData.duration} onValueChange={(value) => setFormData({...formData, duration: value})}>
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select duration" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="30min">30 minutes</SelectItem>
-                      <SelectItem value="1hour">1 hour</SelectItem>
-                      <SelectItem value="1.5hour">1.5 hours</SelectItem>
-                      <SelectItem value="2hour">2 hours</SelectItem>
-                      <SelectItem value="half-day">Half day</SelectItem>
-                      <SelectItem value="full-day">Full day</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="endTime">End Time (Optional)</Label>
+                  <Input
+                    id="endTime"
+                    type="time"
+                    value={formData.endTime}
+                    onChange={(e) => setFormData({...formData, endTime: e.target.value})}
+                    className="mt-1"
+                  />
                 </div>
               </div>
             </CardContent>
@@ -251,8 +310,12 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
             <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button onClick={handleSubmit} className="flex-1">
-              Create Event
+            <Button 
+              onClick={handleSubmit} 
+              className="flex-1"
+              disabled={!formData.title || !formData.date || isSubmitting}
+            >
+              {isSubmitting ? 'Creating...' : 'Create Event'}
             </Button>
           </div>
         </div>

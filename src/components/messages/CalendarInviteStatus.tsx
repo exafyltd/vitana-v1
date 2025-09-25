@@ -11,6 +11,7 @@ interface CalendarInviteStatusProps {
   actionButtons?: any[];
   onActionClick?: (action: any) => void;
   messageData?: any;
+  senderId?: string;
 }
 
 interface CalendarInviteResponse {
@@ -26,7 +27,8 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
   messageId, 
   actionButtons, 
   onActionClick, 
-  messageData 
+  messageData,
+  senderId 
 }) => {
   const { getInviteResponse } = useCalendarEvents();
   const { user } = useAuth();
@@ -106,8 +108,11 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
   const renderActionButtons = () => {
     if (response || !actionButtons) return null;
     
+    // Check if current user is the sender (use senderId prop or fallback to messageData)
+    const isMessageSender = (senderId && senderId === user?.id) || (messageData?.sender_id === user?.id);
+    
     // Don't show action buttons to the sender of the invite
-    if (messageData?.sender_id === user?.id) {
+    if (isMessageSender) {
       return (
         <div className="mt-3">
           <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">

@@ -358,6 +358,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 actionButtons={message.action_buttons}
                 onActionClick={onActionClick}
                 messageData={message.content_data}
+                senderId={message.sender_id}
               />
             </CardContent>
           </Card>
