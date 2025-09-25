@@ -33,6 +33,7 @@ import ErrorMessage from './ErrorMessage';
 import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
+import { CalendarInvitePreview } from './CalendarInvitePreview';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
 
@@ -890,35 +891,54 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               })}
               
               {/* Render optimistic messages */}
-              {optimisticMessages.map((optMessage) => (
-                <div key={optMessage.id} className="flex justify-end mb-4">
-                  <div className={cn(
-                    "max-w-[680px] rounded-lg px-3 py-2 text-sm",
-                    optMessage.status === 'sending' 
-                      ? "bg-primary/70 text-primary-foreground" 
-                      : "bg-destructive/70 text-destructive-foreground"
-                  )}>
-                    <div className="flex items-center gap-2">
-                      <span>{optMessage.content}</span>
-                      {optMessage.status === 'sending' ? (
-                        <Loader2 className="w-3 h-3 animate-spin" />
-                      ) : (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-6 w-12 p-0 text-xs"
-                          onClick={() => retryFailedMessage(optMessage.id)}
-                        >
-                          Retry
-                        </Button>
-                      )}
+              {optimisticMessages.map((optMessage) => {
+                // Check if this is a calendar invite
+                const isCalendarInvite = optMessage.originalMessage?.messageType === 'calendar_invite';
+                
+                if (isCalendarInvite) {
+                  return (
+                    <div key={optMessage.id} className="flex justify-end mb-4">
+                      <CalendarInvitePreview
+                        contentData={optMessage.originalMessage?.contentData}
+                        content={optMessage.content}
+                        status={optMessage.status}
+                        onRetry={() => retryFailedMessage(optMessage.id)}
+                      />
                     </div>
-                    <div className="text-xs opacity-70 mt-1">
-                      {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
+                  );
+                }
+                
+                // Default rendering for non-calendar messages
+                return (
+                  <div key={optMessage.id} className="flex justify-end mb-4">
+                    <div className={cn(
+                      "max-w-[680px] rounded-lg px-3 py-2 text-sm",
+                      optMessage.status === 'sending' 
+                        ? "bg-primary/70 text-primary-foreground" 
+                        : "bg-destructive/70 text-destructive-foreground"
+                    )}>
+                      <div className="flex items-center gap-2">
+                        <span>{optMessage.content}</span>
+                        {optMessage.status === 'sending' ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 w-12 p-0 text-xs"
+                            onClick={() => retryFailedMessage(optMessage.id)}
+                          >
+                            Retry
+                          </Button>
+                        )}
+                      </div>
+                      <div className="text-xs opacity-70 mt-1">
+                        {optMessage.status === 'sending' ? 'Sending...' : 'Failed to send'}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </>
           )}
           
