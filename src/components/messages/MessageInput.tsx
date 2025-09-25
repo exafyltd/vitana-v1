@@ -402,10 +402,14 @@ const MessageInput: React.FC<MessageInputProps> = ({
     );
   };
 
-  const sendCalendarInvite = async (title: string, date: string) => {
+  const sendCalendarInvite = async (title: string, date: string, time?: string, endTime?: string, location?: string, description?: string) => {
     const eventData = {
       title,
       date,
+      time,
+      endTime,
+      location,
+      description,
       type: 'meeting'
     };
 
@@ -415,8 +419,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
       { label: 'Maybe', variant: 'secondary', action: 'calendar_maybe' }
     ];
 
+    const timeStr = time ? ` at ${time}` : '';
+    const locationStr = location ? ` at ${location}` : '';
+    
     await onSendMessage(
-      `Calendar invite: ${title} on ${date}`,
+      `Calendar invite: ${title}${timeStr} on ${date}${locationStr}`,
       'calendar_invite',
       eventData,
       actionButtons

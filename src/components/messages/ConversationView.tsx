@@ -12,7 +12,7 @@ import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
 import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
-import { useCalendarEvents } from '@/hooks/useCalendarEvents';
+  import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
@@ -59,7 +59,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   onMessageSent
 }) => {
   // Import calendar hook at the top
-  const { respondToInvite, getInviteResponse } = useCalendarEvents();
+  const { respondToInvite, getInviteResponse, addEvent } = useCalendarEvents();
   const { user } = useAuth();
   
   // Use paginated messages for performance
@@ -338,6 +338,50 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       });
 
       const newMessage = await sendPromise;
+
+      // Create calendar event for sender when sending calendar invites
+      if (newMessage && messageType === 'calendar_invite' && contentData) {
+        try {
+          console.log('📅 Creating sender calendar event for invite:', contentData);
+          
+          const composeDateTime = (date: string, time?: string, endTime?: string) => {
+            if (!time) return new Date(date).toISOString();
+            const [hours, minutes] = time.split(':').map(Number);
+            const dateTime = new Date(date);
+            dateTime.setHours(hours, minutes, 0, 0);
+            return dateTime.toISOString();
+          };
+
+          const senderEventData = {
+            user_id: user?.id || '',
+            title: contentData.title || content.split(':')[1]?.trim() || 'Calendar Event',
+            description: contentData.description || `Calendar invite sent`,
+            start_time: composeDateTime(contentData.date, contentData.time),
+            end_time: contentData.endTime ? composeDateTime(contentData.endDate || contentData.date, contentData.endTime) : null,
+            location: contentData.location || '',
+            event_type: 'personal' as const,
+            status: 'confirmed' as const,
+            priority: 'medium' as const,
+            is_recurring: false,
+            source_type: 'invite' as const,
+            source_message_id: newMessage.id
+          };
+
+          await addEvent(senderEventData);
+          
+          // Dispatch calendar refresh event
+          window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
+          
+          console.log('📅 Successfully created sender calendar event');
+        } catch (error) {
+          console.error('📅 Failed to create sender calendar event:', error);
+          toast({
+            title: 'Calendar Event',
+            description: 'Invite sent, but failed to add to your calendar. You can add it manually.',
+            variant: 'default',
+          });
+        }
+      }
 
       if (onMessageSent && threadId && newMessage) {
         onMessageSent(threadId, newMessage, messageContext);
