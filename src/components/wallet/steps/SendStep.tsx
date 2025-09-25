@@ -7,11 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Send, Loader2, DollarSign, Coins, CreditCard, Search } from "lucide-react";
+import { ArrowLeft, Send, Loader2, Search } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useMessages } from '@/hooks/useMessages';
 import { useToast } from '@/hooks/use-toast';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
+import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 
 interface SendStepProps {
   onBack: () => void;
@@ -30,11 +31,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
   const [description, setDescription] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const currencies = [
-    { value: 'CREDITS', label: 'Credits', icon: CreditCard },
-    { value: 'VTN', label: 'VTN Tokens', icon: Coins },
-    { value: 'USD', label: 'USD', icon: DollarSign }
-  ];
+  const currencies = CURRENCY_CONFIGS;
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
@@ -46,12 +43,6 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
     setSearchTerm(getDisplayName(member));
   };
 
-  const getCurrencyIcon = (currency: string) => {
-    const currencyData = currencies.find(c => c.value === currency);
-    if (!currencyData) return null;
-    const Icon = currencyData.icon;
-    return <Icon className="h-4 w-4" />;
-  };
 
   const handleSend = async () => {
     if (!selectedRecipient || !amount || parseFloat(amount) <= 0) {
@@ -226,12 +217,12 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
               <SelectTrigger className="w-36">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+                <SelectContent className="bg-background border-border z-50">
                 {currencies.map((curr) => (
                   <SelectItem key={curr.value} value={curr.value}>
                     <div className="flex items-center gap-2">
                       {getCurrencyIcon(curr.value)}
-                      {curr.label}
+                      {curr.fullLabel}
                     </div>
                   </SelectItem>
                 ))}

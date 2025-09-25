@@ -10,8 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useWallet } from "@/hooks/useWallet";
-import { ArrowRight, ArrowUpDown, Send, Zap, DollarSign, Coins, CreditCard } from "lucide-react";
+import { ArrowRight, ArrowUpDown, Send, Zap } from "lucide-react";
 import { calculateExchange, formatCurrency } from "@/lib/exchangeRates";
+import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
 
 interface WalletIntegratedExchangeAndSendProps {
   isOpen: boolean;
@@ -44,17 +45,7 @@ export default function WalletIntegratedExchangeAndSend({
   const { toast } = useToast();
   const { balances, exchangeCurrency, getBalance } = useWallet();
 
-  const currencies = [
-    { value: 'USD', label: 'US Dollars', icon: DollarSign },
-    { value: 'VTN', label: 'VTN Tokens', icon: CreditCard },
-    { value: 'CREDITS', label: 'Credits', icon: Coins }
-  ];
-
-  const getCurrencyIcon = (currency: string) => {
-    const currencyData = currencies.find(c => c.value === currency);
-    const Icon = currencyData?.icon || Coins;
-    return <Icon className="w-4 h-4" />;
-  };
+  const currencies = CURRENCY_CONFIGS;
 
   const calculation = calculateExchange(
     parseFloat(amount) || 0,
@@ -208,12 +199,12 @@ export default function WalletIntegratedExchangeAndSend({
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border-border z-50">
                   {currencies.map(currency => (
                     <SelectItem key={currency.value} value={currency.value}>
                       <div className="flex items-center gap-2">
                         {getCurrencyIcon(currency.value)}
-                        {currency.label}
+                        {currency.fullLabel}
                       </div>
                     </SelectItem>
                   ))}
@@ -228,12 +219,12 @@ export default function WalletIntegratedExchangeAndSend({
                   <SelectTrigger className="flex-1">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-background border-border z-50">
                     {currencies.filter(c => c.value !== fromCurrency).map(currency => (
                       <SelectItem key={currency.value} value={currency.value}>
                         <div className="flex items-center gap-2">
                           {getCurrencyIcon(currency.value)}
-                          {currency.label}
+                          {currency.fullLabel}
                         </div>
                       </SelectItem>
                     ))}

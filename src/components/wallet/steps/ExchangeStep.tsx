@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, ArrowUpDown, Loader2, DollarSign, Coins, CreditCard } from "lucide-react";
+import { ArrowLeft, ArrowUpDown, Loader2 } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
+import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 
 interface ExchangeStepProps {
   onBack: () => void;
@@ -42,18 +43,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
   const [amount, setAmount] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const currencies = [
-    { value: 'CREDITS', label: 'Credits', icon: CreditCard },
-    { value: 'VTN', label: 'VTN Tokens', icon: Coins },
-    { value: 'USD', label: 'USD', icon: DollarSign }
-  ];
-
-  const getCurrencyIcon = (currency: string) => {
-    const currencyData = currencies.find(c => c.value === currency);
-    if (!currencyData) return null;
-    const Icon = currencyData.icon;
-    return <Icon className="h-4 w-4" />;
-  };
+  const currencies = CURRENCY_CONFIGS;
 
   const handleSwapCurrencies = () => {
     const temp = fromCurrency;
@@ -131,12 +121,12 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
               <SelectTrigger className="w-36">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+                <SelectContent className="bg-background border-border z-50">
                 {currencies.map((currency) => (
                   <SelectItem key={currency.value} value={currency.value}>
                     <div className="flex items-center gap-2">
                       {getCurrencyIcon(currency.value)}
-                      {currency.label}
+                      {currency.fullLabel}
                     </div>
                   </SelectItem>
                 ))}
@@ -167,12 +157,12 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-background border-border z-50">
               {currencies.filter(c => c.value !== fromCurrency).map((currency) => (
                 <SelectItem key={currency.value} value={currency.value}>
                   <div className="flex items-center gap-2">
                     {getCurrencyIcon(currency.value)}
-                    {currency.label}
+                    {currency.fullLabel}
                   </div>
                 </SelectItem>
               ))}

@@ -8,7 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '@/hooks/useWallet';
-import { DollarSign, Coins, Zap, Send, Loader2 } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
+import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 
 interface WalletIntegratedSendFundsProps {
   isOpen: boolean;
@@ -35,17 +36,7 @@ export default function WalletIntegratedSendFunds({
   const { toast } = useToast();
   const { getBalance, transferFunds, refreshData, loading } = useWallet();
 
-  const currencies = [
-    { value: 'USD' as const, label: 'USD', icon: DollarSign },
-    { value: 'VTN' as const, label: 'VTN', icon: Coins },
-    { value: 'CREDITS' as const, label: 'Credits', icon: Zap },
-  ];
-
-  const getCurrencyIcon = (currencyType: string) => {
-    const currency = currencies.find(c => c.value === currencyType);
-    if (!currency) return DollarSign;
-    return currency.icon;
-  };
+  const currencies = CURRENCY_CONFIGS;
 
   const userBalance = getBalance(currency) || 0;
   const canAfford = parseFloat(amount || '0') <= userBalance;
@@ -159,18 +150,15 @@ export default function WalletIntegratedSendFunds({
                 <SelectTrigger className="w-28">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  {currencies.map(curr => {
-                    const Icon = curr.icon;
-                    return (
-                      <SelectItem key={curr.value} value={curr.value}>
-                        <div className="flex items-center gap-2">
-                          <Icon className="w-4 h-4" />
-                          {curr.label}
-                        </div>
-                      </SelectItem>
-                    );
-                  })}
+                <SelectContent className="bg-background border-border z-50">
+                  {currencies.map(curr => (
+                    <SelectItem key={curr.value} value={curr.value}>
+                      <div className="flex items-center gap-2">
+                        {getCurrencyIcon(curr.value)}
+                        {curr.fullLabel}
+                      </div>
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -179,7 +167,7 @@ export default function WalletIntegratedSendFunds({
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Available Balance:</span>
               <div className="flex items-center gap-1">
-                {React.createElement(getCurrencyIcon(currency), { className: "w-4 h-4" })}
+                {getCurrencyIcon(currency)}
                 <span className={`font-medium ${!canAfford && amount ? 'text-destructive' : ''}`}>
                   {userBalance.toLocaleString()} {currency}
                 </span>
@@ -205,7 +193,7 @@ export default function WalletIntegratedSendFunds({
               <div className="flex items-center justify-between text-sm">
                 <span>Sending:</span>
                 <div className="flex items-center gap-1 font-medium">
-                  {React.createElement(getCurrencyIcon(currency), { className: "w-4 h-4" })}
+                  {getCurrencyIcon(currency)}
                   {parseFloat(amount).toLocaleString()} {currency}
                 </div>
               </div>
@@ -217,7 +205,7 @@ export default function WalletIntegratedSendFunds({
                 <div className="flex items-center justify-between text-sm font-medium">
                   <span>Total:</span>
                   <div className="flex items-center gap-1">
-                    {React.createElement(getCurrencyIcon(currency), { className: "w-4 h-4" })}
+                    {getCurrencyIcon(currency)}
                     {parseFloat(amount).toLocaleString()} {currency}
                   </div>
                 </div>

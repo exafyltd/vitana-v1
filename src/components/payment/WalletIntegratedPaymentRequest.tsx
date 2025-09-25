@@ -10,7 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useWallet } from "@/hooks/useWallet";
-import { CreditCard, Coins, DollarSign, Send } from "lucide-react";
+import { Send } from "lucide-react";
+import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
 
 interface WalletIntegratedPaymentRequestProps {
   isOpen: boolean;
@@ -96,14 +97,6 @@ export default function WalletIntegratedPaymentRequest({
     }
   };
 
-  const getCurrencyIcon = () => {
-    switch (currency) {
-      case 'CREDITS': return <Coins className="w-4 h-4" />;
-      case 'USD': return <DollarSign className="w-4 h-4" />;
-      case 'VTN': return <CreditCard className="w-4 h-4" />;
-      default: return <Coins className="w-4 h-4" />;
-    }
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -138,9 +131,7 @@ export default function WalletIntegratedPaymentRequest({
                 <div className="flex items-center gap-3">
                   {balances.map((balance) => (
                     <span key={balance.currency_type} className="flex items-center gap-1">
-                      {balance.currency_type === 'USD' ? <DollarSign className="w-3 h-3" /> : 
-                       balance.currency_type === 'VTN' ? <CreditCard className="w-3 h-3" /> : 
-                       <Coins className="w-3 h-3" />}
+                      {getCurrencyIcon(balance.currency_type, "w-3 h-3")}
                       {balance.balance.toLocaleString()}
                     </span>
                   ))}
@@ -167,25 +158,15 @@ export default function WalletIntegratedPaymentRequest({
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="CREDITS">
-                    <div className="flex items-center gap-2">
-                      <Coins className="w-4 h-4" />
-                      Credits
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="USD">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4" />
-                      USD
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="VTN">
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4" />
-                      VTN
-                    </div>
-                  </SelectItem>
+                <SelectContent className="bg-background border-border z-50">
+                  {CURRENCY_CONFIGS.map(currency => (
+                    <SelectItem key={currency.value} value={currency.value}>
+                      <div className="flex items-center gap-2">
+                        {getCurrencyIcon(currency.value)}
+                        {currency.fullLabel}
+                      </div>
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

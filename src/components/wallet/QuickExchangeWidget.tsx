@@ -5,10 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { ArrowUpDown, ArrowRight, DollarSign, Coins, CreditCard, Zap } from 'lucide-react';
+import { ArrowUpDown, ArrowRight, Zap } from 'lucide-react';
 import { calculateExchange, formatCurrency, getCurrencySymbol } from '@/lib/exchangeRates';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 
 interface QuickExchangeWidgetProps {
   onExchange?: (fromAmount: number, fromCurrency: string, toCurrency: string, toAmount: number) => void;
@@ -27,17 +28,7 @@ export function QuickExchangeWidget({
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 
-  const currencies = [
-    { value: 'USD', label: 'US Dollars', icon: DollarSign },
-    { value: 'VTN', label: 'VTN Tokens', icon: CreditCard },
-    { value: 'CREDITS', label: 'Credits', icon: Coins }
-  ];
-
-  const getCurrencyIcon = (currency: string) => {
-    const currencyData = currencies.find(c => c.value === currency);
-    const Icon = currencyData?.icon || Coins;
-    return <Icon className="w-4 h-4" />;
-  };
+  const currencies = CURRENCY_CONFIGS;
 
   const calculation = calculateExchange(
     parseFloat(fromAmount) || 0,
@@ -152,12 +143,12 @@ export function QuickExchangeWidget({
                 <SelectTrigger className="h-9">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border-border z-50">
                   {currencies.map(currency => (
                     <SelectItem key={currency.value} value={currency.value}>
                       <div className="flex items-center gap-2">
                         {getCurrencyIcon(currency.value)}
-                        {currency.label}
+                        {currency.fullLabel}
                       </div>
                     </SelectItem>
                   ))}
@@ -192,12 +183,12 @@ export function QuickExchangeWidget({
                 <SelectTrigger className="h-9">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border-border z-50">
                   {currencies.filter(c => c.value !== fromCurrency).map(currency => (
                     <SelectItem key={currency.value} value={currency.value}>
                       <div className="flex items-center gap-2">
                         {getCurrencyIcon(currency.value)}
-                        {currency.label}
+                        {currency.fullLabel}
                       </div>
                     </SelectItem>
                   ))}

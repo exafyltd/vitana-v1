@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
-import { TrendingUp, DollarSign, Coins, Shield } from "lucide-react";
+import { TrendingUp, DollarSign, Coins, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ActionConfig {
@@ -53,7 +53,7 @@ export function WalletBalanceCard({
       case "cash":
         return DollarSign;
       case "credits":
-        return Shield;
+        return CreditCard;
       case "tokens":
         return Coins;
       default:
