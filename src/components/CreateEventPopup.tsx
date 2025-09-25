@@ -20,7 +20,7 @@ interface CreateEventPopupProps {
 export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
   const { toast } = useToast();
   const { sendMessage } = useHybridMessages();
-  const { addEvent } = useCalendarEvents();
+  const { addEvent, updateEvent } = useCalendarEvents();
   const [showPaymentDemo, setShowPaymentDemo] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -94,10 +94,15 @@ Please respond to confirm your attendance!`;
         user_id: '', // Will be set by addEvent hook
       };
 
-      // Add event to sender's calendar
-      const createdEvent = await addEvent(eventData);
+      // Add event to sender's calendar with source_type 'manual' to distinguish from invites
+      const senderEventData = {
+        ...eventData,
+        source_type: 'manual' as const,
+        source_message_id: null // Will be updated after message is sent
+      };
+      const createdEvent = await addEvent(senderEventData);
 
-      await sendMessage({
+      const sentMessage = await sendMessage({
         context: 'global' as const,
         threadId: '', // This will be handled by the messaging system
         content: messageContent,
@@ -111,20 +116,48 @@ Please respond to confirm your attendance!`;
           {
             label: 'Accept',
             action: 'calendar_accept',
-            data: formData
+            data: {
+              ...formData,
+              senderEventId: createdEvent.id,
+              start_time: composeIso(formData.date, formData.time),
+              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined
+            }
           },
           {
             label: 'Decline', 
             action: 'calendar_decline',
-            data: formData
+            data: {
+              ...formData,
+              senderEventId: createdEvent.id,
+              start_time: composeIso(formData.date, formData.time),
+              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined
+            }
           },
           {
             label: 'Maybe',
             action: 'calendar_maybe',
-            data: formData
+            data: {
+              ...formData,
+              senderEventId: createdEvent.id,
+              start_time: composeIso(formData.date, formData.time),
+              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined
+            }
           }
         ]
       });
+
+      // Update sender's event with the message ID for linking
+      if (sentMessage && createdEvent) {
+        try {
+          await updateEvent(createdEvent.id, {
+            source_message_id: sentMessage.id,
+            source_type: 'invite'
+          });
+        } catch (error) {
+          console.error('Failed to link event with message:', error);
+          // Don't fail the whole operation for this
+        }
+      }
 
       toast({
         title: 'Event Created!',

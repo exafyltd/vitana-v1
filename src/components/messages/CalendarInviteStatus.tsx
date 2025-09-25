@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, X, Clock } from 'lucide-react';
-import { useCalendarEvents } from '@/hooks/useCalendarEvents';
+import { useCalendarEvents, CalendarInviteResponse } from '@/hooks/useCalendarEvents';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { useToast } from '@/hooks/use-toast';
+import { InviteResponseSummary } from './InviteResponseSummary';
 
 interface CalendarInviteStatusProps {
   messageId: string;
@@ -14,14 +16,6 @@ interface CalendarInviteStatusProps {
   senderId?: string;
 }
 
-interface CalendarInviteResponse {
-  id: string;
-  message_id: string;
-  user_id: string;
-  response: string;
-  event_id?: string;
-  responded_at: string;
-}
 
 export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({ 
   messageId, 
@@ -30,16 +24,27 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
   messageData,
   senderId 
 }) => {
-  const { getInviteResponse } = useCalendarEvents();
+  const { getInviteResponse, getAllInviteResponses } = useCalendarEvents();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [response, setResponse] = useState<CalendarInviteResponse | null>(null);
+  const [allResponses, setAllResponses] = useState<CalendarInviteResponse[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const isMessageSender = (senderId && senderId === user?.id) || (messageData?.sender_id === user?.id);
+    
     const fetchResponse = async () => {
       try {
-        const existingResponse = await getInviteResponse(messageId);
-        setResponse(existingResponse);
+        if (isMessageSender) {
+          // For senders, fetch all responses to show summary
+          const responses = await getAllInviteResponses(messageId);
+          setAllResponses(responses);
+        } else {
+          // For recipients, fetch their own response
+          const existingResponse = await getInviteResponse(messageId);
+          setResponse(existingResponse);
+        }
       } catch (error) {
         console.error('Error fetching invite response:', error);
       } finally {
@@ -59,6 +64,18 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
         filter: `message_id=eq.${messageId}`
       }, (payload) => {
         console.log('📨 Invite response updated:', payload);
+        
+        // Show toast notification to sender when someone responds
+        if (isMessageSender && payload.eventType === 'INSERT') {
+          const newResponse = payload.new as any;
+          if (newResponse.user_id !== user?.id) {
+            toast({
+              title: '🎉 New Response!',
+              description: `Someone ${newResponse.response} your calendar invite`,
+            });
+          }
+        }
+        
         fetchResponse(); // Refresh response data
       })
       .subscribe();
@@ -66,17 +83,14 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [messageId, getInviteResponse]);
+  }, [messageId, getInviteResponse, getAllInviteResponses, senderId, messageData, user?.id, toast]);
 
   if (loading) return null;
 
   const getStatusBadge = () => {
     if (!response) return null;
     
-    const resp =
-      response.response === 'accept' ? 'accepted' :
-      response.response === 'decline' ? 'declined' :
-      response.response;
+    const resp = response.response;
     
     switch (resp) {
       case 'accepted':
@@ -155,10 +169,19 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
     );
   };
 
+  // Check if current user is the sender
+  const isMessageSender = (senderId && senderId === user?.id) || (messageData?.sender_id === user?.id);
+
   return (
     <div className="mt-2">
-      {getStatusBadge()}
-      {renderActionButtons()}
+      {isMessageSender ? (
+        <InviteResponseSummary responses={allResponses} />
+      ) : (
+        <>
+          {getStatusBadge()}
+          {renderActionButtons()}
+        </>
+      )}
     </div>
   );
 };

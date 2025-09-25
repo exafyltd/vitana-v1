@@ -368,6 +368,29 @@ export function useCalendarEvents() {
     }
   };
 
+  // Get ALL invite responses for a message (for senders to see summary)
+  const getAllInviteResponses = async (messageId: string): Promise<CalendarInviteResponse[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('calendar_invite_responses')
+        .select('*')
+        .eq('message_id', messageId)
+        .order('responded_at', { ascending: false });
+
+      if (error) throw error;
+
+      const normalized = (data || []).map(item => ({
+        ...item,
+        response: item.response === 'accept' ? 'accepted' : item.response === 'decline' ? 'declined' : item.response
+      }));
+
+      return normalized as CalendarInviteResponse[];
+    } catch (err) {
+      console.error('Error fetching all invite responses:', err);
+      return [];
+    }
+  };
+
   // Check for event conflicts
   const checkConflicts = (startTime: string, endTime?: string) => {
     const start = new Date(startTime);
@@ -470,6 +493,7 @@ export function useCalendarEvents() {
     removeEvent,
     respondToInvite,
     getInviteResponse,
+    getAllInviteResponses,
     checkConflicts,
     getEventsForDate,
     getUpcomingEvents,
