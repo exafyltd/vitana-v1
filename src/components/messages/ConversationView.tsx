@@ -326,10 +326,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         return;
       }
 
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Message sending timed out after 10 seconds')), 10000);
-      });
-
       const sendPromise = sendMessage({
         context: messageContext,
         threadId,
@@ -341,7 +337,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         actionButtons,
       });
 
-      const newMessage = await Promise.race([sendPromise, timeoutPromise]) as any;
+      const newMessage = await sendPromise;
 
       if (onMessageSent && threadId && newMessage) {
         onMessageSent(threadId, newMessage, messageContext);

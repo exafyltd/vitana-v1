@@ -38,11 +38,15 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
       try {
         if (isMessageSender) {
           // For senders, fetch all responses to show summary
+          console.log('📅 Fetching all responses for message:', messageId);
           const responses = await getAllInviteResponses(messageId);
+          console.log('📅 Found responses for sender:', responses);
           setAllResponses(responses);
         } else {
           // For recipients, fetch their own response
+          console.log('📅 Fetching own response for message:', messageId);
           const existingResponse = await getInviteResponse(messageId);
+          console.log('📅 Found own response:', existingResponse);
           setResponse(existingResponse);
         }
       } catch (error) {
