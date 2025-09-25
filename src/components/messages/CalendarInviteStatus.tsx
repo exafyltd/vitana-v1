@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, X, Clock } from 'lucide-react';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/context/AuthProvider';
 
 interface CalendarInviteStatusProps {
   messageId: string;
@@ -28,6 +29,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
   messageData 
 }) => {
   const { getInviteResponse } = useCalendarEvents();
+  const { user } = useAuth();
   const [response, setResponse] = useState<CalendarInviteResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -103,6 +105,17 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
 
   const renderActionButtons = () => {
     if (response || !actionButtons) return null;
+    
+    // Don't show action buttons to the sender of the invite
+    if (messageData?.sender_id === user?.id) {
+      return (
+        <div className="mt-3">
+          <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
+            Invitation sent
+          </Badge>
+        </div>
+      );
+    }
     
     return (
       <div className="flex gap-2 mt-3">

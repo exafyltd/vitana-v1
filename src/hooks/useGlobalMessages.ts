@@ -557,8 +557,35 @@ export function useGlobalMessages() {
           console.log('New global message received:', payload.new);
           const newMessage = payload.new as any;
           
-          // Skip if this is our own message (already handled by optimistic update)
-          if (newMessage.sender_id === user.id) return;
+          // If this is our own message, replace any temp message with the real one
+          if (newMessage.sender_id === user.id) {
+            setMessages(prev => {
+              // Find and remove any temp messages for this user that might be stuck
+              const tempMessageIndex = prev.findIndex(msg => 
+                msg.id.startsWith('temp-') && 
+                msg.sender_id === user.id &&
+                msg.thread_id === newMessage.thread_id &&
+                Math.abs(new Date(msg.created_at).getTime() - new Date(newMessage.created_at).getTime()) < 10000 // Within 10 seconds
+              );
+              
+              if (tempMessageIndex >= 0) {
+                // Replace temp message with real message
+                const newMessages = [...prev];
+                newMessages[tempMessageIndex] = { ...newMessage, sender: prev[tempMessageIndex].sender };
+                return newMessages;
+              }
+              
+              // Check if real message already exists to prevent duplicates
+              const realMessageExists = prev.some(msg => msg.id === newMessage.id);
+              if (!realMessageExists) {
+                // Add real message if it doesn't exist
+                return [...prev, { ...newMessage, sender: prev.find(m => m.sender_id === user.id)?.sender || null }];
+              }
+              
+              return prev;
+            });
+            return;
+          }
           
           // Fetch sender profile for the new message with fallback
           const { data: globalProfile } = await supabase
