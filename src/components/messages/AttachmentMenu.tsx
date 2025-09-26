@@ -140,6 +140,7 @@ export function AttachmentMenu({
   const [showGlobalSendFunds, setShowGlobalSendFunds] = useState(false);
   const [showGlobalPaymentRequest, setShowGlobalPaymentRequest] = useState(false);
   const [pendingAction, setPendingAction] = useState<'send' | 'request' | null>(null);
+  const [isTimeout, setIsTimeout] = useState(false);
   
   const { requestPopup, clearPopup, isPopupActive } = usePopupCoordination();
 
@@ -152,7 +153,34 @@ export function AttachmentMenu({
     avatar: recipient?.avatar
   } : undefined);
 
-  const hasResolvableContext = !!(threadId || recipientIdHint);
+  // Fix logic to check for valid, non-empty string values
+  const hasResolvableContext = !!(
+    (threadId && typeof threadId === 'string' && threadId.trim() !== '') || 
+    (recipientIdHint && typeof recipientIdHint === 'string' && recipientIdHint.trim() !== '')
+  );
+
+  // Add debug logging
+  console.log('AttachmentMenu Debug:', {
+    threadId,
+    recipientIdHint,
+    hasResolvableContext,
+    loading,
+    effectiveRecipient: effectiveRecipient?.id,
+    isTimeout
+  });
+
+  // Add timeout mechanism to prevent indefinite loading
+  useEffect(() => {
+    if (loading && hasResolvableContext) {
+      const timeout = setTimeout(() => {
+        console.log('AttachmentMenu: Loading timeout reached');
+        setIsTimeout(true);
+      }, 3000);
+      return () => clearTimeout(timeout);
+    } else {
+      setIsTimeout(false);
+    }
+  }, [loading, hasResolvableContext]);
 
   // Handle pending actions when loading completes
   useEffect(() => {
@@ -180,7 +208,7 @@ export function AttachmentMenu({
     }
   }, [loading, pendingAction, effectiveRecipient, hasResolvableContext, requestPopup]);
 
-  const isLoadingRecipient = loading && hasResolvableContext;
+  const isLoadingRecipient = loading && hasResolvableContext && !isTimeout;
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -224,7 +252,7 @@ export function AttachmentMenu({
           >
             <Send className="w-5 h-5 mr-3 text-green-600" />
             <span className="text-sm font-medium">
-              {isLoadingRecipient ? 'Loading...' : 'Send Funds'}
+              {isLoadingRecipient ? 'Loading...' : isTimeout ? 'Send Funds (retry)' : 'Send Funds'}
             </span>
           </Button>
           
@@ -248,7 +276,7 @@ export function AttachmentMenu({
           >
             <DollarSign className="w-5 h-5 mr-3 text-green-500" />
             <span className="text-sm">
-              {isLoadingRecipient ? 'Loading...' : 'Request Payment'}
+              {isLoadingRecipient ? 'Loading...' : isTimeout ? 'Request Payment (retry)' : 'Request Payment'}
             </span>
           </Button>
           
