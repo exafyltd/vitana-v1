@@ -66,34 +66,48 @@ export default function WalletIntegratedSendFunds({
       return;
     }
 
-    setIsProcessing(true);
+    // Store values before reset
+    const numericAmount = parseFloat(amount);
+    const recipientName = effectiveRecipient.name;
+    const desc = description;
+    
+    // Reset form and close immediately
+    setAmount('');
+    setDescription('');
+    onClose();
 
+    // Show progress toast
+    toast({
+      title: "Sending Funds",
+      description: `Sending ${numericAmount.toLocaleString()} ${currency} to ${recipientName}...`,
+    });
+
+    // Process transfer in background
     try {
-      // Perform the actual wallet transfer
-      const result = await transferFunds(recipient.id, currency, parseFloat(amount));
+      // Perform the actual wallet transfer (this already calls refreshData internally)
+      const result = await transferFunds(recipient.id, currency, numericAmount);
       
       if (result && result.id) {
-        // Send a confirmation message to the chat rendered by PaymentMessageHandler
-        await onSendMessage(
-          `✅ Payment completed: ${parseFloat(amount).toLocaleString()} ${currency}${description ? ` - ${description}` : ''}`,
+        // Send a confirmation message to the chat (fire-and-forget)
+        onSendMessage(
+          `✅ Payment completed: ${numericAmount.toLocaleString()} ${currency}${desc ? ` - ${desc}` : ''}`,
           'payment_confirmation',
           {
-            amount: parseFloat(amount),
+            amount: numericAmount,
             currency,
-            description,
+            description: desc,
             status: 'completed',
             transactionId: result.id,
             completedAt: new Date().toISOString()
           }
-        );
+        ).catch((error) => {
+          console.error('Error sending confirmation message:', error);
+        });
 
-        // Optionally refresh, though transferFunds already refreshes
-        await refreshData();
-
-        // Reset form and close
-        setAmount('');
-        setDescription('');
-        onClose();
+        toast({
+          title: "Funds Sent Successfully",
+          description: `${numericAmount.toLocaleString()} ${currency} sent to ${recipientName}`,
+        });
       } else {
         throw new Error('Transfer failed');
       }
@@ -104,8 +118,6 @@ export default function WalletIntegratedSendFunds({
         description: error.message || "Failed to send funds. Please try again.",
         variant: "destructive"
       });
-    } finally {
-      setIsProcessing(false);
     }
   };
 
@@ -219,7 +231,6 @@ export default function WalletIntegratedSendFunds({
               variant="outline" 
               onClick={onClose}
               className="flex-1"
-              disabled={isProcessing}
             >
               Cancel
             </Button>
@@ -230,21 +241,11 @@ export default function WalletIntegratedSendFunds({
                 !amount || 
                 !recipient.id || 
                 parseFloat(amount || '0') <= 0 || 
-                !canAfford || 
-                isProcessing
+                !canAfford
               }
             >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Send className="w-4 h-4 mr-2" />
-                  Send Funds
-                </>
-              )}
+              <Send className="w-4 h-4 mr-2" />
+              Send Funds
             </Button>
           </div>
         </div>

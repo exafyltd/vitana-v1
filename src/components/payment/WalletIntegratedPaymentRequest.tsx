@@ -60,41 +60,46 @@ export default function WalletIntegratedPaymentRequest({
       return;
     }
 
-    setIsProcessing(true);
+    // Construct payment data
+    const paymentData = {
+      amount: parseFloat(amount),
+      currency: currency.toUpperCase(),
+      description,
+      dueDate: dueDate || undefined,
+      paymentType,
+      requestedBy: "current_user",
+      recipientId: recipient.id,
+      status: "pending",
+      transactionId: `REQ_${Date.now()}`
+    };
 
-    try {
-      const paymentData = {
-        amount: parseFloat(amount),
-        currency: currency.toUpperCase(),
-        description,
-        dueDate: dueDate || undefined,
-        paymentType,
-        requestedBy: "current_user",
-        recipientId: recipient.id,
-        status: "pending",
-        transactionId: `REQ_${Date.now()}`
-      };
+    // Reset form and close immediately
+    const amountStr = amount;
+    const currencyStr = currency;
+    const descriptionStr = description;
+    setAmount('');
+    setDescription('');
+    setDueDate('');
+    onClose();
 
-      await onSendMessage(
-        `💰 Payment Request: ${currency === 'USD' ? '$' : ''}${amount} ${currency === 'USD' ? '' : currency} - ${description}`,
-        'payment_request',
-        paymentData
-      );
-
-      onClose();
-      setAmount('');
-      setDescription('');
-      setDueDate('');
-    } catch (error) {
+    // Send message in background (fire-and-forget)
+    onSendMessage(
+      `💰 Payment Request: ${currencyStr === 'USD' ? '$' : ''}${amountStr} ${currencyStr === 'USD' ? '' : currencyStr} - ${descriptionStr}`,
+      'payment_request',
+      paymentData
+    ).then(() => {
+      toast({
+        title: "Payment Request Sent",
+        description: `Request for ${amountStr} ${currencyStr} sent successfully`,
+      });
+    }).catch((error) => {
       console.error('Error sending payment request:', error);
       toast({
-        title: "Error",
-        description: "Failed to send payment request",
+        title: "Error",  
+        description: "Failed to send payment request. Please try again.",
         variant: "destructive"
       });
-    } finally {
-      setIsProcessing(false);
-    }
+    });
   };
 
 
@@ -213,25 +218,16 @@ export default function WalletIntegratedPaymentRequest({
 
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
-            <Button variant="outline" onClick={onClose} className="flex-1" disabled={isProcessing}>
+            <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
             <Button 
               onClick={handleSendRequest} 
               className="flex-1"
-              disabled={isProcessing || !effectiveRecipient}
+              disabled={!effectiveRecipient}
             >
-              {isProcessing ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Send className="w-4 h-4 mr-2" />
-                  Send Request
-                </>
-              )}
+              <Send className="w-4 h-4 mr-2" />
+              Send Request
             </Button>
           </div>
         </div>
