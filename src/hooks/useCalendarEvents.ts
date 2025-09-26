@@ -253,78 +253,93 @@ export function useCalendarEvents() {
 
       const normalized = (response === 'accept' ? 'accepted' : response === 'decline' ? 'declined' : response) as 'accepted' | 'declined' | 'maybe';
 
-      if (!isValidUUID(messageId)) {
-        throw new Error('Invalid invite reference. Please wait until the message is fully sent, then try again.');
+      // Validate UUID only if we're going to use it for database operations
+      const validMessageId = isValidUUID(messageId) ? messageId : null;
+      if (!validMessageId) {
+        console.warn('Invalid message ID for invite response, proceeding without source tracking');
       }
 
-      console.log('📅 Responding to calendar invite:', { messageId, response, normalized, eventData });
+      console.log('📅 Responding to calendar invite:', { messageId: validMessageId, response, normalized, eventData });
 
-      // Always record the invite response first
-      const { error: responseError } = await supabase
-        .from('calendar_invite_responses')
-        .upsert({
-          message_id: messageId,
-          user_id: user.id,
-          event_id: null, // Will be updated if event creation succeeds
-          response: normalized,
-          responded_at: new Date().toISOString()
-        }, {
-          onConflict: 'message_id,user_id'
-        });
+      // Record the invite response first (only if we have a valid message ID)
+      let responseRecorded = false;
+      if (validMessageId) {
+        const { error: responseError } = await supabase
+          .from('calendar_invite_responses')
+          .upsert({
+            message_id: validMessageId,
+            user_id: user.id,
+            event_id: null, // Will be updated if event creation succeeds
+            response: normalized,
+            responded_at: new Date().toISOString()
+          }, {
+            onConflict: 'message_id,user_id'
+          });
 
-      if (responseError) {
-        console.error('❌ Failed to record invite response:', responseError.code, responseError);
-        
-        // Fallback: try direct update if upsert fails with duplicate key
-        if (responseError.code === '23505') {
-          const { error: updateError } = await supabase
-            .from('calendar_invite_responses')
-            .update({ 
-              response: normalized, 
-              responded_at: new Date().toISOString(),
-              event_id: null 
-            })
-            .eq('message_id', messageId)
-            .eq('user_id', user.id);
+        if (responseError) {
+          console.error('❌ Failed to record invite response:', responseError.code, responseError);
           
-          if (updateError) {
-            console.error('❌ Fallback update also failed:', updateError);
-            throw updateError;
+          // Fallback: try direct update if upsert fails with duplicate key
+          if (responseError.code === '23505') {
+            const { error: updateError } = await supabase
+              .from('calendar_invite_responses')
+              .update({ 
+                response: normalized, 
+                responded_at: new Date().toISOString(),
+                event_id: null 
+              })
+              .eq('message_id', validMessageId)
+              .eq('user_id', user.id);
+            
+            if (updateError) {
+              console.error('❌ Fallback update also failed:', updateError);
+              // Don't throw, continue with calendar event creation
+            } else {
+              responseRecorded = true;
+            }
+          } else {
+            console.warn('⚠️ Could not record invite response, continuing with event creation');
           }
         } else {
-          throw responseError;
+          responseRecorded = true;
         }
       }
 
-      console.log('✅ Invite response recorded successfully');
+      if (responseRecorded) {
+        console.log('✅ Invite response recorded successfully');
+      }
 
       let eventId: string | undefined;
 
       // If declined: remove any event created from this invite for current user
       if (normalized === 'declined') {
         try {
-          const { data: existing } = await supabase
-            .from('calendar_events')
-            .select('id')
-            .eq('user_id', user.id)
-            .eq('source_message_id', messageId);
-
-          if ((existing || []).length > 0) {
-            const { error: delError } = await supabase
+          if (validMessageId) {
+            const { data: existing } = await supabase
               .from('calendar_events')
-              .delete()
+              .select('id')
               .eq('user_id', user.id)
-              .eq('source_message_id', messageId);
-            if (delError) {
-              console.error('⚠️ Failed to delete declined invite events:', delError);
+              .eq('source_message_id', validMessageId);
+
+            if ((existing || []).length > 0) {
+              const { error: delError } = await supabase
+                .from('calendar_events')
+                .delete()
+                .eq('user_id', user.id)
+                .eq('source_message_id', validMessageId);
+              if (delError) {
+                console.error('⚠️ Failed to delete declined invite events:', delError);
+              }
+            }
+
+            if (responseRecorded) {
+              await supabase
+                .from('calendar_invite_responses')
+                .update({ event_id: null })
+                .eq('message_id', validMessageId)
+                .eq('user_id', user.id);
             }
           }
-
-          await supabase
-            .from('calendar_invite_responses')
-            .update({ event_id: null })
-            .eq('message_id', messageId)
-            .eq('user_id', user.id);
 
           await fetchEvents();
           window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
@@ -338,14 +353,18 @@ export function useCalendarEvents() {
       // If accepting or maybe responding to the invite, upsert the calendar event
       if ((normalized === 'accepted' || normalized === 'maybe') && eventData) {
         try {
-          // Check if event already exists for idempotency
-          const { data: existingEvent } = await supabase
-            .from('calendar_events')
-            .select('*')
-            .eq('user_id', user.id)
-            .eq('source_message_id', messageId)
-            .limit(1)
-            .maybeSingle();
+          // Check if event already exists for idempotency (only if we have valid message ID)
+          let existingEvent = null;
+          if (validMessageId) {
+            const { data } = await supabase
+              .from('calendar_events')
+              .select('*')
+              .eq('user_id', user.id)
+              .eq('source_message_id', validMessageId)
+              .limit(1)
+              .maybeSingle();
+            existingEvent = data;
+          }
 
           const desiredStatus = normalized === 'accepted' ? ('confirmed' as const) : ('pending' as const);
 

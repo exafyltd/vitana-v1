@@ -440,188 +440,97 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
       const newMessage = await sendPromise;
 
-      // Create calendar event for sender when sending calendar invites
-      if (newMessage && messageType === 'calendar_invite' && contentData) {
-        // Check if user is authenticated before creating calendar event
-          if (!user?.id) {
-            console.log('📅 Skipping calendar event creation - user not authenticated. Queueing locally.');
+      // Create calendar event for sender when sending calendar invites (background processing)
+      if (newMessage && messageType === 'calendar_invite' && contentData && user?.id) {
+        // Show immediate success feedback
+        toast({
+          title: 'Invite Sent',
+          description: 'Adding event to your calendar...',
+          variant: 'default',
+        });
 
+        // Process calendar creation in background to avoid blocking UI
+        const createCalendarEvent = async () => {
+          try {
+            console.log('📅 Creating sender calendar event for invite:', contentData);
+            
             const composeDateTime = (date: string, time?: string) => {
-              if (date?.includes('T')) {
+              // Handle datetime-local format (YYYY-MM-DDTHH:mm)
+              if (date.includes('T')) {
                 const [datePart, timePart] = date.split('T');
                 const [y, m, d] = datePart.split('-').map(Number);
                 const [h, mi] = timePart.split(':').map(Number);
                 return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
               }
-              const [y, m, d] = (date || '').split('-').map(Number);
+              
+              // Handle separate date and time
+              const [y, m, d] = date.split('-').map(Number);
               if (time) {
                 const [h, mi] = time.split(':').map(Number);
                 return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
               }
-              return new Date(y || new Date().getFullYear(), (m ? m-1 : new Date().getMonth()), d || new Date().getDate(), 9, 0, 0, 0).toISOString();
+              
+              // Default to 09:00 local time if no time provided
+              return new Date(y, m-1, d, 9, 0, 0, 0).toISOString();
             };
 
+            // Use explicit ISO times from contentData if available, otherwise compose from date/time
             const startTime = contentData.start_time || composeDateTime(contentData.date, contentData.time);
-            const endTime = contentData.end_time || (contentData.endTime ?
+            const endTime = contentData.end_time || (contentData.endTime ? 
               composeDateTime(contentData.endDate || contentData.date, contentData.endTime) :
               new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString());
 
-            // Queue locally for post-login processing
-            try {
-              const { enqueuePendingSenderEvent } = await import('@/lib/calendarPendingQueue');
-              enqueuePendingSenderEvent({
-                title: contentData.title || content.split(':')[1]?.trim() || 'Calendar Event',
-                description: contentData.description || `Calendar invite sent`,
-                start_time: startTime,
-                end_time: endTime,
-                location: contentData.location || '',
-                event_type: 'personal',
-                status: 'confirmed',
-                priority: 'medium',
-                is_recurring: false,
-                source_type: 'invite',
-                source_message_id: newMessage.id
-              });
-            } catch (e) {
-              console.error('Failed to queue pending sender event:', e);
-            }
+            // Generate a unique ID for linking instead of using message ID
+            const eventKey = `${user.id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
+            const senderEventData = {
+              user_id: user.id,
+              title: contentData.title || content.split(':')[1]?.trim() || 'Calendar Event',
+              description: contentData.description || `Calendar invite sent`,
+              start_time: startTime,
+              end_time: endTime,
+              location: contentData.location || '',
+              event_type: 'personal' as const,
+              status: 'confirmed' as const,
+              priority: 'medium' as const,
+              is_recurring: false,
+              source_type: 'invite' as const,
+              metadata: { event_key: eventKey, message_ref: newMessage.id }
+            };
+
+            await addEvent(senderEventData as any);
+            
+            // Refresh calendar in background
+            await fetchEvents();
+            window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
+            
             toast({
-              title: 'Invite Sent',
-              description: 'We\'ll add it to your calendar after you sign in.',
+              title: 'Calendar Event Added',
+              description: `Added "${senderEventData.title}" to your calendar`,
               variant: 'default',
-            });
-          } else {
-            try {
-              console.log('📅 Creating sender calendar event for invite:', contentData);
-              
-              const composeDateTime = (date: string, time?: string) => {
-                // Handle datetime-local format (YYYY-MM-DDTHH:mm)
-                if (date.includes('T')) {
-                  const [datePart, timePart] = date.split('T');
-                  const [y, m, d] = datePart.split('-').map(Number);
-                  const [h, mi] = timePart.split(':').map(Number);
-                  return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
-                }
-                
-                // Handle separate date and time
-                const [y, m, d] = date.split('-').map(Number);
-                if (time) {
-                  const [h, mi] = time.split(':').map(Number);
-                  return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
-                }
-                
-                // Default to 09:00 local time if no time provided
-                return new Date(y, m-1, d, 9, 0, 0, 0).toISOString();
-              };
+             });
+             
+             console.log('📅 Successfully created sender calendar event:', senderEventData.title);
+           } catch (error: any) {
+             console.error('📅 Failed to create sender calendar event:', error);
+             
+             toast({
+               title: 'Calendar Event Failed',
+               description: 'Failed to add event to your calendar. You can add it manually.',
+               variant: 'destructive',
+             });
+           }
+         };
 
-              // Use explicit ISO times from contentData if available, otherwise compose from date/time
-              const startTime = contentData.start_time || composeDateTime(contentData.date, contentData.time);
-              const endTime = contentData.end_time || (contentData.endTime ? 
-                composeDateTime(contentData.endDate || contentData.date, contentData.endTime) :
-                new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString());
-
-              const senderEventData = {
-                user_id: user.id,
-                title: contentData.title || content.split(':')[1]?.trim() || 'Calendar Event',
-                description: contentData.description || `Calendar invite sent`,
-                start_time: startTime,
-                end_time: endTime,
-                location: contentData.location || '',
-                event_type: 'personal' as const,
-                status: 'confirmed' as const,
-                priority: 'medium' as const,
-                is_recurring: false,
-                source_type: 'invite' as const,
-                source_message_id: newMessage.id
-              };
-
-              await addEvent(senderEventData as any);
-              
-              await fetchEvents();
-              window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
-              
-              toast({
-                title: 'Calendar Event Added',
-                description: `Added "${senderEventData.title}" to your calendar`,
-                variant: 'default',
-              });
-              
-              console.log('📅 Successfully created sender calendar event:', senderEventData.title, new Date(startTime).toLocaleString());
-            } catch (error: any) {
-              console.error('📅 Failed to create sender calendar event:', error);
-
-              const message = typeof error?.message === 'string' ? error.message.toLowerCase() : '';
-              const looksAuth = message.includes('auth') || message.includes('jwt') || message.includes('rls') || message.includes('permission');
-
-              if (looksAuth) {
-                try {
-                  const st = contentData.start_time || (function(){
-                    const date = contentData.date;
-                    const time = contentData.time;
-                    if (date?.includes('T')) {
-                      const [datePart, timePart] = date.split('T');
-                      const [y, m, d] = datePart.split('-').map(Number);
-                      const [h, mi] = timePart.split(':').map(Number);
-                      return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
-                    }
-                    const [y, m, d] = (date || '').split('-').map(Number);
-                    if (time) {
-                      const [h, mi] = time.split(':').map(Number);
-                      return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
-                    }
-                    return new Date(y || new Date().getFullYear(), (m ? m-1 : new Date().getMonth()), d || new Date().getDate(), 9, 0, 0, 0).toISOString();
-                  })();
-                  const et = contentData.end_time || (contentData.endTime ?
-                    (function(){
-                      const date = contentData.endDate || contentData.date;
-                      const time = contentData.endTime;
-                      if (date?.includes('T')) {
-                        const [datePart, timePart] = date.split('T');
-                        const [y, m, d] = datePart.split('-').map(Number);
-                        const [h, mi] = timePart.split(':').map(Number);
-                        return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
-                      }
-                      const [y, m, d] = (date || '').split('-').map(Number);
-                      if (time) {
-                        const [h, mi] = time.split(':').map(Number);
-                        return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
-                      }
-                      return new Date(y || new Date().getFullYear(), (m ? m-1 : new Date().getMonth()), d || new Date().getDate(), 10, 0, 0, 0).toISOString();
-                    })() : new Date(new Date(st).getTime() + 60 * 60 * 1000).toISOString());
-
-                  const { enqueuePendingSenderEvent } = await import('@/lib/calendarPendingQueue');
-                  enqueuePendingSenderEvent({
-                    title: contentData.title || content.split(':')[1]?.trim() || 'Calendar Event',
-                    description: contentData.description || `Calendar invite sent`,
-                    start_time: st,
-                    end_time: et,
-                    location: contentData.location || '',
-                    event_type: 'personal',
-                    status: 'confirmed',
-                    priority: 'medium',
-                    is_recurring: false,
-                    source_type: 'invite',
-                    source_message_id: newMessage.id
-                  });
-                } catch (e) {
-                  console.error('Failed to queue pending sender event after auth error:', e);
-                }
-
-                toast({
-                  title: 'Invite Sent',
-                  description: 'We\'ll add it to your calendar after you sign in.',
-                  variant: 'default',
-                });
-              } else {
-                toast({
-                  title: 'Calendar Event',
-                  description: 'Invite sent, but failed to add to your calendar. You can add it manually.',
-                  variant: 'default',
-                });
-              }
-            }
-          }
+        // Run calendar creation in background
+        createCalendarEvent();
+      } else if (messageType === 'calendar_invite' && contentData && !user?.id) {
+        // Handle unauthenticated users
+        toast({
+          title: 'Invite Sent',
+          description: 'Sign in to add the event to your calendar.',
+          variant: 'default',
+        });
       }
 
       if (onMessageSent && threadId && newMessage) {

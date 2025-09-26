@@ -25,18 +25,30 @@ export default function PendingCalendarEventProcessor() {
 
         for (const item of pending) {
           try {
-            // Idempotency: if source_message_id exists, check if already inserted by THIS user
+            // Idempotency: if source_message_id exists and is valid UUID, check if already inserted by THIS user
             if (item.source_message_id) {
-              const { data: existing } = await supabase
-                .from('calendar_events')
-                .select('id')
-                .eq('user_id', user.id)
-                .eq('source_message_id', item.source_message_id)
-                .limit(1)
-                .maybeSingle();
-              if (existing?.id) {
-                dequeueBySourceMessageId(item.source_message_id);
-                continue;
+              // Check if it's a valid UUID before querying
+              const isValidUUID = (uuid: string) => {
+                const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+                return uuidRegex.test(uuid);
+              };
+
+              if (isValidUUID(item.source_message_id)) {
+                const { data: existing } = await supabase
+                  .from('calendar_events')
+                  .select('id')
+                  .eq('user_id', user.id)
+                  .eq('source_message_id', item.source_message_id)
+                  .limit(1)
+                  .maybeSingle();
+                if (existing?.id) {
+                  dequeueBySourceMessageId(item.source_message_id);
+                  continue;
+                }
+              } else {
+                // Invalid UUID, remove source_message_id to avoid database errors
+                console.warn('Invalid source_message_id in pending event, removing:', item.source_message_id);
+                item.source_message_id = undefined;
               }
             }
 
