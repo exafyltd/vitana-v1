@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '@/hooks/useWallet';
-import { useRecipientData } from '@/hooks/useRecipientData';
 import { Send, Loader2 } from 'lucide-react';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 
@@ -37,16 +36,10 @@ export default function WalletIntegratedSendFunds({
   const { toast } = useToast();
   const { getBalance, transferFunds, refreshData, loading } = useWallet();
   
-  // Fetch recipient data if name is not provided
-  const { recipient: fetchedRecipient, loading: recipientLoading } = useRecipientData(
-    recipient.name ? null : recipient.id,
-    null
-  );
-  
-  // Use fetched data if original recipient doesn't have a name
+  // Use preloaded recipient data directly - no loading needed
   const effectiveRecipient = {
     ...recipient,
-    name: recipient.name || fetchedRecipient?.name || 'Loading recipient...'
+    name: recipient.name || 'Recipient'
   };
 
   const currencies = CURRENCY_CONFIGS;

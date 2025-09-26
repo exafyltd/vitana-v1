@@ -392,8 +392,8 @@ export function useGlobalMessages() {
         return [updatedThread, ...otherThreads];
       });
 
-      // Refresh threads to ensure consistency with database
-      await fetchThreads();
+      // Background refresh for consistency (non-blocking)
+      setTimeout(() => fetchThreads(), 100);
 
       return data;
     } catch (error) {

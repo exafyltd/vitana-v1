@@ -10,7 +10,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useWallet } from "@/hooks/useWallet";
-import { useRecipientData } from "@/hooks/useRecipientData";
 import { Send } from "lucide-react";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
 
@@ -45,16 +44,10 @@ export default function WalletIntegratedPaymentRequest({
   const { toast } = useToast();
   const { balances } = useWallet();
   
-  // Fetch recipient data if name is not provided
-  const { recipient: fetchedRecipient, loading: recipientLoading } = useRecipientData(
-    recipient?.name ? null : recipient?.id,
-    null
-  );
-  
-  // Use fetched data if original recipient doesn't have a name
+  // Use preloaded recipient data directly - no loading needed
   const effectiveRecipient = recipient ? {
     ...recipient,
-    name: recipient.name || fetchedRecipient?.name || 'Loading recipient...'
+    name: recipient.name || 'Recipient'
   } : null;
 
   const handleSendRequest = async () => {
