@@ -118,6 +118,35 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return null;
   }, [recipientId, threadParticipants, user?.id]);
 
+  // Compute full recipient object for direct conversations  
+  const effectiveRecipient = React.useMemo(() => {
+    if (recipientId) {
+      // Find recipient in threadParticipants
+      const recipientParticipant = threadParticipants.find(p => p.user_id === recipientId);
+      if (recipientParticipant) {
+        return {
+          id: recipientId,
+          name: recipientParticipant.name || recipientParticipant.user?.name || recipientParticipant.display_name || 'User',
+          avatar: recipientParticipant.avatar || recipientParticipant.user?.avatar_url
+        };
+      }
+    }
+    
+    // For direct conversations, find the other participant
+    if (threadParticipants.length === 2) {
+      const otherParticipant = threadParticipants.find(p => p.user_id !== user?.id);
+      if (otherParticipant) {
+        return {
+          id: otherParticipant.user_id,
+          name: otherParticipant.name || otherParticipant.user?.name || otherParticipant.display_name || 'User',
+          avatar: otherParticipant.avatar || otherParticipant.user?.avatar_url
+        };
+      }
+    }
+    
+    return null;
+  }, [recipientId, threadParticipants, user?.id]);
+
   // Reply state management
   const [replyingTo, setReplyingTo] = useState<any>(null);
 
@@ -1039,6 +1068,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 threadId={threadId}
                 recipientId={recipientId}
                 effectiveRecipientId={effectiveRecipientId}
+                effectiveRecipient={effectiveRecipient}
                 activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
                 replyingTo={replyingTo}
                 onCancelReply={handleCancelReply}

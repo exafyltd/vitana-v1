@@ -24,7 +24,7 @@ interface AttachmentMenuProps {
   onCalendarInvite: (title: string, date: string, time?: string, endTime?: string, location?: string, description?: string) => void;
   recipient?: {
     id: string;
-    name: string;
+    name?: string;
     avatar?: string;
   };
   recipientIdHint?: string | null;
@@ -143,7 +143,10 @@ export function AttachmentMenu({
   const { requestPopup, clearPopup, isPopupActive } = usePopupCoordination();
 
   // Create effective recipient for direct conversations using actual profile data
-  const { recipient: fetchedRecipient, loading } = useRecipientData(recipient?.id ?? recipientIdHint ?? null, threadId);
+  const { recipient: fetchedRecipient, loading } = useRecipientData(
+    recipient ? null : recipientIdHint, 
+    recipient ? null : threadId
+  );
 
   // Determine if this is a 1:1 conversation context (has recipient info)
   const hasRecipientContext = !!(
@@ -152,16 +155,19 @@ export function AttachmentMenu({
     threadId
   );
 
-  // For 1:1 conversations, prioritize immediate recipient or create one from hint
-  const effectiveRecipient = hasRecipientContext ? (
-    recipient || 
-    fetchedRecipient || 
-    (recipientIdHint ? {
-      id: recipientIdHint,
-      name: fetchedRecipient?.name || '',
-      avatar: fetchedRecipient?.avatar
-    } : undefined)
-  ) : undefined;
+  // Use the passed recipient prop directly if available, fallback to fetching only if needed
+  const effectiveRecipient = recipient || fetchedRecipient || (recipientIdHint ? {
+    id: recipientIdHint,
+    name: 'User',
+    avatar: undefined
+  } : undefined);
+  
+  // Ensure we have a proper recipient object with required name field for wallet components
+  const walletRecipient = effectiveRecipient ? {
+    id: effectiveRecipient.id,
+    name: effectiveRecipient.name || 'User',
+    avatar: effectiveRecipient.avatar
+  } : { id: recipientIdHint || '', name: 'User', avatar: undefined };
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -191,7 +197,7 @@ export function AttachmentMenu({
             onClick={async () => {
               // For 1:1 conversations, always use integrated popup
               if (hasRecipientContext) {
-                const success = await requestPopup('wallet-integrated', { recipient: effectiveRecipient });
+                const success = await requestPopup('wallet-integrated', { recipient: walletRecipient });
                 if (success) {
                   setShowSendFunds(true);
                 }
@@ -213,7 +219,7 @@ export function AttachmentMenu({
             onClick={async () => {
               // For 1:1 conversations, always use integrated popup
               if (hasRecipientContext) {
-                const success = await requestPopup('wallet-integrated', { recipient: effectiveRecipient });
+                const success = await requestPopup('wallet-integrated', { recipient: walletRecipient });
                 if (success) {
                   setShowPaymentRequest(true);
                 }
@@ -250,7 +256,7 @@ export function AttachmentMenu({
                 clearPopup('wallet-integrated');
               }}
               onSendMessage={onSendMessage}
-              recipient={effectiveRecipient || { id: recipientIdHint || '', name: '', avatar: undefined }}
+              recipient={walletRecipient}
             />
             <WalletIntegratedPaymentRequest
               isOpen={showPaymentRequest}
@@ -259,7 +265,7 @@ export function AttachmentMenu({
                 clearPopup('wallet-integrated');
               }}
               onSendMessage={onSendMessage}
-              recipient={effectiveRecipient || { id: recipientIdHint || '', name: '', avatar: undefined }}
+              recipient={walletRecipient}
             />
           </>
         )}
@@ -269,13 +275,13 @@ export function AttachmentMenu({
           isOpen={showGlobalSendFunds}
           onClose={() => setShowGlobalSendFunds(false)}
           onSendMessage={onSendMessage}
-          preSelectedRecipient={effectiveRecipient}
+          preSelectedRecipient={walletRecipient}
         />
         <GlobalPaymentRequest
           isOpen={showGlobalPaymentRequest}
           onClose={() => setShowGlobalPaymentRequest(false)}
           onSendMessage={onSendMessage}
-          preSelectedRecipient={effectiveRecipient}
+          preSelectedRecipient={walletRecipient}
         />
       </PopoverContent>
     </Popover>
