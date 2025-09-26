@@ -8,6 +8,7 @@ import WalletIntegratedSendFunds from '@/components/payment/WalletIntegratedSend
 import WalletIntegratedPaymentRequest from '@/components/payment/WalletIntegratedPaymentRequest';
 import GlobalSendFunds from '@/components/payment/GlobalSendFunds';
 import GlobalPaymentRequest from '@/components/payment/GlobalPaymentRequest';
+import { usePopupCoordination } from '@/hooks/usePopupCoordination';
 import { 
   Paperclip, 
   DollarSign, 
@@ -138,6 +139,8 @@ export function AttachmentMenu({
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   const [showGlobalSendFunds, setShowGlobalSendFunds] = useState(false);
   const [showGlobalPaymentRequest, setShowGlobalPaymentRequest] = useState(false);
+  
+  const { requestPopup, clearPopup, isPopupActive } = usePopupCoordination();
 
   // Create effective recipient for direct conversations using actual profile data
   const { recipient: fetchedRecipient } = useRecipientData(recipient?.id ?? recipientIdHint ?? null, threadId);
@@ -175,11 +178,14 @@ export function AttachmentMenu({
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
-            onClick={() => {
+            onClick={async () => {
               console.log('AttachmentMenu: Send Funds clicked', { recipient, recipientIdHint, effectiveRecipient });
               if (effectiveRecipient) {
                 console.log('AttachmentMenu: Using recipient-specific send funds');
-                setShowSendFunds(true);
+                const success = await requestPopup('wallet-integrated', { recipient: effectiveRecipient });
+                if (success) {
+                  setShowSendFunds(true);
+                }
               } else {
                 console.log('AttachmentMenu: Using global send funds');
                 setShowGlobalSendFunds(true);
@@ -194,11 +200,14 @@ export function AttachmentMenu({
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3"
-            onClick={() => {
+            onClick={async () => {
               console.log('AttachmentMenu: Request Payment clicked', { recipient, recipientIdHint, effectiveRecipient });
               if (effectiveRecipient) {
                 console.log('AttachmentMenu: Using recipient-specific payment request');
-                setShowPaymentRequest(true);
+                const success = await requestPopup('wallet-integrated', { recipient: effectiveRecipient });
+                if (success) {
+                  setShowPaymentRequest(true);
+                }
               } else {
                 console.log('AttachmentMenu: Using global payment request');
                 setShowGlobalPaymentRequest(true);
@@ -227,13 +236,19 @@ export function AttachmentMenu({
           <>
             <WalletIntegratedSendFunds
               isOpen={showSendFunds}
-              onClose={() => setShowSendFunds(false)}
+              onClose={() => {
+                setShowSendFunds(false);
+                clearPopup('wallet-integrated');
+              }}
               onSendMessage={onSendMessage}
               recipient={effectiveRecipient}
             />
             <WalletIntegratedPaymentRequest
               isOpen={showPaymentRequest}
-              onClose={() => setShowPaymentRequest(false)}
+              onClose={() => {
+                setShowPaymentRequest(false);
+                clearPopup('wallet-integrated');
+              }}
               onSendMessage={onSendMessage}
               recipient={effectiveRecipient}
             />

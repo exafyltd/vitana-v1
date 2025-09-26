@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { CalendarPopup } from "./CalendarPopup";
 import { WalletPopup } from "./WalletPopup";
+import { PopupCoordinationWrapper } from "./payment/PopupCoordinationWrapper";
 import { AutopilotPopup } from "./AutopilotPopup";
 import { CreateContentPopup } from "./CreateContentPopup";
 import { CreateEventPopup } from "./CreateEventPopup";
@@ -25,6 +26,7 @@ import { CreateMeetupPopup } from "./CreateMeetupPopup";
 import { GoLivePopup } from "./GoLivePopup";
 import { MediaUploadPopup } from "./MediaUploadPopup";
 import LabTestOrderPopup from "./LabTestOrderPopup";
+import { usePopupCoordination } from "@/hooks/usePopupCoordination";
 
 interface MasterActionPopupProps {
   open: boolean;
@@ -107,18 +109,32 @@ const actionItems = [
 export function MasterActionPopup({ open, onOpenChange }: MasterActionPopupProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activePopup, setActivePopup] = useState<string | null>(null);
+  const { requestPopup, clearPopup, canShowPopup } = usePopupCoordination();
 
   const filteredActions = actionItems.filter(action =>
     action.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     action.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleActionClick = (actionId: string) => {
+  const handleActionClick = async (actionId: string) => {
+    // For wallet actions, check popup coordination
+    if (actionId === 'wallet') {
+      const success = await requestPopup('wallet-generic');
+      if (!success) {
+        // Show a brief message that a wallet action is already in progress
+        console.log('Wallet popup blocked by higher priority popup');
+        return;
+      }
+    }
+    
     setActivePopup(actionId);
     onOpenChange(false); // Close master popup
   };
 
   const handlePopupClose = () => {
+    if (activePopup === 'wallet') {
+      clearPopup('wallet-generic');
+    }
     setActivePopup(null);
   };
 
@@ -163,7 +179,13 @@ export function MasterActionPopup({ open, onOpenChange }: MasterActionPopupProps
 
       {/* Individual Popups */}
       <CalendarPopup open={activePopup === "calendar"} onOpenChange={handlePopupClose} />
-      <WalletPopup open={activePopup === "wallet"} onOpenChange={handlePopupClose} />
+      <PopupCoordinationWrapper
+        popupType="wallet-generic"
+        isOpen={activePopup === "wallet"}
+        onClose={handlePopupClose}
+      >
+        <WalletPopup open={activePopup === "wallet"} onOpenChange={handlePopupClose} />
+      </PopupCoordinationWrapper>
       <AutopilotPopup open={activePopup === "autopilot"} onOpenChange={handlePopupClose} />
       <CreateContentPopup isOpen={activePopup === "create-content"} onClose={handlePopupClose} />
       <CreateEventPopup isOpen={activePopup === "create-event"} onClose={handlePopupClose} />

@@ -10,6 +10,8 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
 import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionPopup";
+import { PopupCoordinationWrapper } from "@/components/payment/PopupCoordinationWrapper";
+import { usePopupCoordination } from "@/hooks/usePopupCoordination";
 import { StakeTokensPopup } from "@/components/wallet/popups/StakeTokensPopup";
 import { AddFundsPopup } from "@/components/wallet/popups/AddFundsPopup";
 import { BuyCreditsPopup } from "@/components/wallet/popups/BuyCreditsPopup";
@@ -87,9 +89,10 @@ export default function Wallet() {
   const [activeTab, setActiveTab] = useState("balance-overview");
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
   const { user } = useAuth();
+  const { requestPopup, clearPopup } = usePopupCoordination();
 
   // Handle opening specific wallet actions
-  const handleWalletAction = (actionType: string, currency?: string) => {
+  const handleWalletAction = async (actionType: string, currency?: string) => {
     switch (actionType) {
       case 'stake-tokens':
         setStakeTokensOpen(true);
@@ -119,18 +122,27 @@ export default function Wallet() {
         break;
       case 'exchange':
         // Exchange-only: open master action popup directly to exchange step
-        setSelectedCurrency(currency || '');
-        setSelectedCurrencyForExchange(currency as 'USD' | 'VTN' | 'CREDITS');
-        setExchangeStep('exchange');
-        setMasterActionOpen(true);
+        const exchangeSuccess = await requestPopup('wallet-master');
+        if (exchangeSuccess) {
+          setSelectedCurrency(currency || '');
+          setSelectedCurrencyForExchange(currency as 'USD' | 'VTN' | 'CREDITS');
+          setExchangeStep('exchange');
+          setMasterActionOpen(true);
+        }
         break;
       case 'exchange-and-send':
         // Combined exchange & send functionality
-        setSelectedCurrency(currency || '');
-        setExchangeAndSendOpen(true);
+        const exchangeSendSuccess = await requestPopup('wallet-master');
+        if (exchangeSendSuccess) {
+          setSelectedCurrency(currency || '');
+          setExchangeAndSendOpen(true);
+        }
         break;
       default:
-        setMasterActionOpen(true);
+        const defaultSuccess = await requestPopup('wallet-master');
+        if (defaultSuccess) {
+          setMasterActionOpen(true);
+        }
         break;
     }
   };
@@ -465,18 +477,30 @@ export default function Wallet() {
           </SplitBarContent>
         </SplitBar>
 
-        <WalletMasterActionPopup 
-          open={masterActionOpen}
-          onOpenChange={(open) => {
-            setMasterActionOpen(open);
-            if (!open) {
-              setExchangeStep('menu');
-              setSelectedCurrencyForExchange(undefined);
-            }
+        <PopupCoordinationWrapper
+          popupType="wallet-master"
+          isOpen={masterActionOpen}
+          onClose={() => {
+            setMasterActionOpen(false);
+            clearPopup('wallet-master');
+            setExchangeStep('menu');
+            setSelectedCurrencyForExchange(undefined);
           }}
-          initialStep={exchangeStep}
-          selectedCurrency={selectedCurrencyForExchange}
-        />
+        >
+          <WalletMasterActionPopup 
+            open={masterActionOpen}
+            onOpenChange={(open) => {
+              setMasterActionOpen(open);
+              if (!open) {
+                clearPopup('wallet-master');
+                setExchangeStep('menu');
+                setSelectedCurrencyForExchange(undefined);
+              }
+            }}
+            initialStep={exchangeStep}
+            selectedCurrency={selectedCurrencyForExchange}
+          />
+        </PopupCoordinationWrapper>
 
         <StakeTokensPopup 
           open={stakeTokensOpen}
