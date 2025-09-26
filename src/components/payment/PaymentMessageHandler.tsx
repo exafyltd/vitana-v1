@@ -437,9 +437,14 @@ export function PaymentMessageHandler({
                   </Button>
                 </div>
               </div>
-              {walletError && (
+              {walletError && walletError.includes('authenticated') && (
                 <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
-                  Wallet Error: {walletError}
+                  Authentication Required: Please sign in to view balance
+                </div>
+              )}
+              {walletError && walletError.includes('permission') && (
+                <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
+                  Permission Error: Unable to access wallet data
                 </div>
               )}
             </div>

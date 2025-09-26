@@ -38,6 +38,7 @@ export function useWallet() {
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   // Fetch user balances
   const fetchBalances = async () => {
@@ -71,7 +72,7 @@ export function useWallet() {
         .eq('user_id', user.id);
 
       const balanceTimeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Balance fetch timeout')), 5000)
+        setTimeout(() => reject(new Error('Balance fetch timeout')), 10000)
       );
 
       let result: any = await Promise.race([balancePromise, balanceTimeoutPromise]);
@@ -84,7 +85,7 @@ export function useWallet() {
         console.log('ℹ️ No wallet rows found. Initializing once...');
         const init = supabase.rpc('initialize_user_wallet', { user_id_param: user.id });
         const initTimeout = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Wallet init timeout')), 4000)
+          setTimeout(() => reject(new Error('Wallet init timeout')), 8000)
         );
         await Promise.race([init, initTimeout]);
 
@@ -102,7 +103,17 @@ export function useWallet() {
       }
     } catch (err) {
       console.error('❌ Error fetching balances:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch balances');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch balances';
+      
+      // Only set critical errors that block operations (like auth failures)
+      // Don't show timeout or fetch errors as they don't prevent wallet operations
+      if (errorMessage.includes('authenticated') || errorMessage.includes('permission')) {
+        setError(errorMessage);
+      } else {
+        console.warn('Non-critical wallet error (silently handled):', errorMessage);
+        // Clear error for non-critical issues to prevent UI warnings
+        setError(null);
+      }
       // Do not overwrite with zero defaults; keep last known balances
     }
   };
@@ -125,7 +136,7 @@ export function useWallet() {
         .limit(10);
 
       const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('Transaction fetch timeout')), 5000)
+        setTimeout(() => reject(new Error('Transaction fetch timeout')), 10000)
       );
 
       const result = await Promise.race([transactionPromise, timeoutPromise]);
@@ -143,7 +154,15 @@ export function useWallet() {
       setTransactions(mappedTransactions as TransactionData[]);
     } catch (err) {
       console.error('Error fetching transactions:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch transactions');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch transactions';
+      
+      // Only show critical errors, not timeout/fetch errors
+      if (errorMessage.includes('authenticated') || errorMessage.includes('permission')) {
+        setError(errorMessage);
+      } else {
+        console.warn('Non-critical transaction fetch error (silently handled):', errorMessage);
+      }
+      
       // Set empty transactions to prevent infinite loading  
       setTransactions([]);
     }
@@ -366,13 +385,22 @@ export function useWallet() {
         // Add overall timeout for initialization
         const initPromise = Promise.all([fetchBalances(), fetchTransactions()]);
         const overallTimeout = new Promise<never>((_, reject) => 
-          setTimeout(() => reject(new Error('Wallet initialization timeout')), 10000)
+          setTimeout(() => reject(new Error('Wallet initialization timeout')), 15000)
         );
         
         await Promise.race([initPromise, overallTimeout]);
       } catch (error) {
         console.error('Wallet initialization failed:', error);
-        setError(error instanceof Error ? error.message : 'Failed to initialize wallet');
+        const errorMessage = error instanceof Error ? error.message : 'Failed to initialize wallet';
+        
+        // Only show critical initialization errors
+        if (errorMessage.includes('authenticated') || errorMessage.includes('permission')) {
+          setError(errorMessage);
+        } else {
+          console.warn('Non-critical wallet initialization error (silently handled):', errorMessage);
+          // Don't block UI for timeout errors during initialization
+          setError(null);
+        }
       } finally {
         setLoading(false);
       }
@@ -392,13 +420,21 @@ export function useWallet() {
         fetchTransactions()
       ]);
       const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('Refresh timeout')), 8000)
+        setTimeout(() => reject(new Error('Refresh timeout')), 12000)
       );
       
       await Promise.race([refreshPromise, timeoutPromise]);
     } catch (error) {
       console.error('Error refreshing wallet data:', error);
-      setError(error instanceof Error ? error.message : 'Failed to refresh wallet data');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to refresh wallet data';
+      
+      // Only show critical errors during refresh, not timeout errors
+      if (errorMessage.includes('authenticated') || errorMessage.includes('permission')) {
+        setError(errorMessage);
+      } else {
+        console.warn('Non-critical refresh error (silently handled):', errorMessage);
+        // Don't update error state for timeout/refresh failures
+      }
     } finally {
       setLoading(false);
     }
