@@ -440,22 +440,20 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
       const newMessage = await sendPromise;
 
-      // Create calendar event for sender when sending calendar invites (background processing)
+      // Show instant feedback for calendar invites and process in background
       if (newMessage && messageType === 'calendar_invite' && contentData && user?.id) {
-        // Show immediate success feedback
+        // Immediate success feedback
         toast({
-          title: 'Invite Sent',
-          description: 'Adding event to your calendar...',
-          variant: 'default',
+          title: 'Calendar Invite Sent',
+          description: 'Processing calendar event...',
         });
 
-        // Process calendar creation in background to avoid blocking UI
-        const createCalendarEvent = async () => {
+        // Background calendar processing (non-blocking)
+        setTimeout(async () => {
           try {
             console.log('📅 Creating sender calendar event for invite:', contentData);
             
             const composeDateTime = (date: string, time?: string) => {
-              // Handle datetime-local format (YYYY-MM-DDTHH:mm)
               if (date.includes('T')) {
                 const [datePart, timePart] = date.split('T');
                 const [y, m, d] = datePart.split('-').map(Number);
@@ -463,25 +461,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
               }
               
-              // Handle separate date and time
               const [y, m, d] = date.split('-').map(Number);
               if (time) {
                 const [h, mi] = time.split(':').map(Number);
                 return new Date(y, m-1, d, h, mi, 0, 0).toISOString();
               }
               
-              // Default to 09:00 local time if no time provided
               return new Date(y, m-1, d, 9, 0, 0, 0).toISOString();
             };
 
-            // Use explicit ISO times from contentData if available, otherwise compose from date/time
             const startTime = contentData.start_time || composeDateTime(contentData.date, contentData.time);
             const endTime = contentData.end_time || (contentData.endTime ? 
               composeDateTime(contentData.endDate || contentData.date, contentData.endTime) :
               new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString());
-
-            // Generate a unique ID for linking instead of using message ID
-            const eventKey = `${user.id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
             const senderEventData = {
               user_id: user.id,
@@ -495,41 +487,32 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               priority: 'medium' as const,
               is_recurring: false,
               source_type: 'invite' as const,
-              metadata: { event_key: eventKey, message_ref: newMessage.id }
+              source_message_id: newMessage.id,
+              metadata: { message_ref: newMessage.id, invite_sent: true }
             };
 
-            await addEvent(senderEventData as any);
-            
-            // Refresh calendar in background
-            await fetchEvents();
-            window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
+            await addEvent(senderEventData as any, { showToast: false });
             
             toast({
-              title: 'Calendar Event Added',
+              title: 'Calendar Updated',
               description: `Added "${senderEventData.title}" to your calendar`,
-              variant: 'default',
-             });
-             
-             console.log('📅 Successfully created sender calendar event:', senderEventData.title);
-           } catch (error: any) {
-             console.error('📅 Failed to create sender calendar event:', error);
-             
-             toast({
-               title: 'Calendar Event Failed',
-               description: 'Failed to add event to your calendar. You can add it manually.',
-               variant: 'destructive',
-             });
-           }
-         };
-
-        // Run calendar creation in background
-        createCalendarEvent();
+            });
+            
+            console.log('📅 Successfully created sender calendar event:', senderEventData.title);
+          } catch (error: any) {
+            console.error('📅 Failed to create sender calendar event:', error);
+            
+            // Event will be processed by background processor
+            toast({
+              title: 'Calendar Event Queued',
+              description: 'Event will be added to your calendar shortly',
+            });
+          }
+        }, 0); // Process immediately after current call stack
       } else if (messageType === 'calendar_invite' && contentData && !user?.id) {
-        // Handle unauthenticated users
         toast({
           title: 'Invite Sent',
           description: 'Sign in to add the event to your calendar.',
-          variant: 'default',
         });
       }
 

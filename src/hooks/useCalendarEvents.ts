@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
@@ -70,6 +70,16 @@ export function useCalendarEvents() {
   const { toast } = useToast();
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
 
+  // Debounced refresh event dispatcher
+  const debouncedRefreshDispatch = useCallback(() => {
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+    debounceTimeoutRef.current = setTimeout(() => {
+      window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
+    }, 200);
+  }, []);
+
   // Fetch user's calendar events
   const fetchEvents = async () => {
     try {
@@ -101,7 +111,7 @@ export function useCalendarEvents() {
     }
   };
 
-  // Add a new calendar event (with auth check and idempotency)
+  // Add a new calendar event (optimized with caching and smart idempotency)
   const addEvent = async (eventData: Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>, options?: { showToast?: boolean }) => {
     try {
       const authUser = (await supabase.auth.getUser()).data.user;
@@ -109,8 +119,19 @@ export function useCalendarEvents() {
         throw new Error('User not authenticated');
       }
 
-      // Idempotency: if source_message_id provided, return existing
+      // Smart idempotency: check local state first (faster)
       if (eventData.source_message_id) {
+        const existingInState = events.find(event => 
+          event.source_message_id === eventData.source_message_id && 
+          event.user_id === authUser.id
+        );
+        
+        if (existingInState) {
+          console.log('📅 Event already exists locally:', eventData.source_message_id);
+          return existingInState;
+        }
+
+        // Quick database check only if not in local state
         const { data: existing } = await supabase
           .from('calendar_events')
           .select('*')
@@ -118,12 +139,15 @@ export function useCalendarEvents() {
           .eq('source_message_id', eventData.source_message_id)
           .limit(1)
           .maybeSingle();
+          
         if (existing) {
-          return existing as any;
+          console.log('📅 Event exists in database, adding to local state:', eventData.source_message_id);
+          setEvents(prev => [existing as CalendarEvent, ...prev.filter(e => e.id !== existing.id)]);
+          return existing;
         }
       }
 
-      // Try to insert - handle unique constraint violation gracefully
+      // Create the event
       let data: any;
       try {
         const result = await supabase
@@ -138,9 +162,9 @@ export function useCalendarEvents() {
         if (result.error) throw result.error;
         data = result.data;
       } catch (insertError: any) {
-        // Handle unique constraint violation (23505) - event already exists
+        // Handle unique constraint violation gracefully
         if (insertError?.code === '23505' && eventData.source_message_id) {
-          console.log('📅 Event already exists, returning existing event');
+          console.log('📅 Concurrent insert detected, fetching existing event');
           const { data: existing } = await supabase
             .from('calendar_events')
             .select('*')
@@ -150,13 +174,15 @@ export function useCalendarEvents() {
             .single();
           
           if (existing) {
+            setEvents(prev => [existing as CalendarEvent, ...prev.filter(e => e.id !== existing.id)]);
             return existing;
           }
         }
         throw insertError;
       }
 
-      setEvents(prev => [...prev, data as CalendarEvent]);
+      // Optimistic update - add to local state immediately
+      setEvents(prev => [data as CalendarEvent, ...prev]);
       
       if (options?.showToast !== false) {
         toast({
@@ -165,8 +191,8 @@ export function useCalendarEvents() {
         });
       }
 
-      // Dispatch global refresh event
-      window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
+      // Debounced global refresh to avoid spam
+      debouncedRefreshDispatch();
 
       return data;
     } catch (err) {

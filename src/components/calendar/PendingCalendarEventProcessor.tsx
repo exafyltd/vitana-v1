@@ -19,79 +19,106 @@ export default function PendingCalendarEventProcessor() {
     const processQueue = async () => {
       if (!user?.id || processingRef.current) return;
       processingRef.current = true;
+      
       try {
         const pending = listPendingSenderEvents();
         if (pending.length === 0) return;
 
-        for (const item of pending) {
-          try {
-            // Idempotency: if source_message_id exists and is valid UUID, check if already inserted by THIS user
-            if (item.source_message_id) {
-              // Check if it's a valid UUID before querying
-              const isValidUUID = (uuid: string) => {
-                const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-                return uuidRegex.test(uuid);
-              };
+        console.log(`Processing ${pending.length} pending calendar events`);
 
-              if (isValidUUID(item.source_message_id)) {
-                const { data: existing } = await supabase
-                  .from('calendar_events')
-                  .select('id')
-                  .eq('user_id', user.id)
-                  .eq('source_message_id', item.source_message_id)
-                  .limit(1)
-                  .maybeSingle();
-                if (existing?.id) {
-                  dequeueBySourceMessageId(item.source_message_id);
-                  continue;
+        // Batch process events in parallel for better performance
+        const batchSize = 3; // Process 3 events at a time
+        for (let i = 0; i < pending.length; i += batchSize) {
+          const batch = pending.slice(i, i + batchSize);
+          
+          await Promise.allSettled(
+            batch.map(async (item) => {
+              try {
+                // Quick UUID validation and cleanup
+                if (item.source_message_id) {
+                  const isValidUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(item.source_message_id);
+                  
+                  if (isValidUUID) {
+                    // Quick check for existing event
+                    const { data: existing } = await supabase
+                      .from('calendar_events')
+                      .select('id')
+                      .eq('user_id', user.id)
+                      .eq('source_message_id', item.source_message_id)
+                      .limit(1)
+                      .maybeSingle();
+                      
+                    if (existing?.id) {
+                      dequeueBySourceMessageId(item.source_message_id);
+                      return;
+                    }
+                  } else {
+                    console.warn('Invalid source_message_id, cleaning up:', item.source_message_id);
+                    item.source_message_id = undefined;
+                  }
                 }
-              } else {
-                // Invalid UUID, remove source_message_id to avoid database errors
-                console.warn('Invalid source_message_id in pending event, removing:', item.source_message_id);
-                item.source_message_id = undefined;
+
+                // Create the calendar event
+                await addEvent({
+                  title: item.title,
+                  description: item.description ?? undefined,
+                  start_time: item.start_time,
+                  end_time: item.end_time ?? undefined,
+                  location: item.location ?? undefined,
+                  event_type: (item.event_type ?? 'personal'),
+                  status: (item.status ?? 'confirmed'),
+                  priority: (item.priority ?? 'medium'),
+                  is_recurring: !!item.is_recurring,
+                  source_type: (item.source_type ?? 'invite'),
+                  source_message_id: item.source_message_id ?? undefined,
+                  attendees_count: 0,
+                  has_rewards: false,
+                  metadata: { queued: true },
+                  recurring_pattern: undefined,
+                } as any);
+
+                // Remove from queue on success
+                if (item.source_message_id) {
+                  dequeueBySourceMessageId(item.source_message_id);
+                }
+
+                console.log(`Successfully processed: ${item.title}`);
+              } catch (err) {
+                console.error(`Failed to process pending event "${item.title}":`, err);
+                // Event stays in queue for retry
               }
-            }
+            })
+          );
 
-            await addEvent({
-              title: item.title,
-              description: item.description ?? undefined,
-              start_time: item.start_time,
-              end_time: item.end_time ?? undefined,
-              location: item.location ?? undefined,
-              event_type: (item.event_type ?? 'personal'),
-              status: (item.status ?? 'confirmed'),
-              priority: (item.priority ?? 'medium'),
-              is_recurring: !!item.is_recurring,
-              source_type: (item.source_type ?? 'invite'),
-              source_message_id: item.source_message_id ?? undefined,
-              attendees_count: 0,
-              has_rewards: false,
-              metadata: { queued: true },
-              recurring_pattern: undefined,
-            } as any);
-
-            if (item.source_message_id) {
-              dequeueBySourceMessageId(item.source_message_id);
-            }
-
-            toast({
-              title: 'Calendar Updated',
-              description: `Added "${item.title}" to your calendar`,
-            });
-          } catch (err) {
-            // Keep in queue on failure, proceed with next
-            console.error('Pending calendar event processing failed:', err);
+          // Small delay between batches to avoid overwhelming the database
+          if (i + batchSize < pending.length) {
+            await new Promise(resolve => setTimeout(resolve, 100));
           }
         }
 
-        await fetchEvents();
-        window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
+        // Single consolidated toast for all processed events
+        const remainingPending = listPendingSenderEvents();
+        const processedCount = pending.length - remainingPending.length;
+        
+        if (processedCount > 0) {
+          toast({
+            title: 'Calendar Updated',
+            description: `Added ${processedCount} event${processedCount > 1 ? 's' : ''} to your calendar`,
+          });
+
+          // Smart refresh - only if we actually processed events
+          await fetchEvents();
+          window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
+        }
+
       } finally {
         processingRef.current = false;
       }
     };
 
-    processQueue();
+    // Small delay to let the UI settle before processing
+    const timeoutId = setTimeout(processQueue, 100);
+    return () => clearTimeout(timeoutId);
   }, [user?.id, addEvent, fetchEvents, toast]);
 
   return null;
