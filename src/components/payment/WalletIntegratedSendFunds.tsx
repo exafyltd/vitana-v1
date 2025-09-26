@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '@/hooks/useWallet';
+import { useRecipientData } from '@/hooks/useRecipientData';
 import { Send, Loader2 } from 'lucide-react';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 
@@ -17,7 +18,7 @@ interface WalletIntegratedSendFundsProps {
   onSendMessage: (content: string, messageType?: string, contentData?: any) => Promise<void>;
   recipient: {
     id: string;
-    name: string;
+    name?: string;
     avatar?: string;
   };
 }
@@ -35,6 +36,18 @@ export default function WalletIntegratedSendFunds({
   
   const { toast } = useToast();
   const { getBalance, transferFunds, refreshData, loading } = useWallet();
+  
+  // Fetch recipient data if name is not provided
+  const { recipient: fetchedRecipient, loading: recipientLoading } = useRecipientData(
+    recipient.name ? null : recipient.id,
+    null
+  );
+  
+  // Use fetched data if original recipient doesn't have a name
+  const effectiveRecipient = {
+    ...recipient,
+    name: recipient.name || fetchedRecipient?.name || 'Loading recipient...'
+  };
 
   const currencies = CURRENCY_CONFIGS;
 
@@ -117,11 +130,11 @@ export default function WalletIntegratedSendFunds({
           {/* Recipient Info */}
           <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
             <Avatar className="w-8 h-8">
-              <AvatarImage src={recipient.avatar} alt={recipient.name} />
-              <AvatarFallback>{recipient.name.charAt(0).toUpperCase()}</AvatarFallback>
+              <AvatarImage src={effectiveRecipient.avatar} alt={effectiveRecipient.name} />
+              <AvatarFallback>{effectiveRecipient.name.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium text-sm">{recipient.name}</p>
+              <p className="font-medium text-sm">{effectiveRecipient.name}</p>
               <p className="text-xs text-muted-foreground">Recipient</p>
             </div>
           </div>

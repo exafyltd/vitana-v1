@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useWallet } from "@/hooks/useWallet";
+import { useRecipientData } from "@/hooks/useRecipientData";
 import { Send } from "lucide-react";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
 
@@ -19,7 +20,7 @@ interface WalletIntegratedPaymentRequestProps {
   onSendMessage: (content: string, messageType: string, contentData: any) => Promise<void>;
   recipient?: {
     id: string;
-    name: string;
+    name?: string;
     avatar?: string;
   };
   initialAmount?: string;
@@ -43,6 +44,18 @@ export default function WalletIntegratedPaymentRequest({
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
   const { balances } = useWallet();
+  
+  // Fetch recipient data if name is not provided
+  const { recipient: fetchedRecipient, loading: recipientLoading } = useRecipientData(
+    recipient?.name ? null : recipient?.id,
+    null
+  );
+  
+  // Use fetched data if original recipient doesn't have a name
+  const effectiveRecipient = recipient ? {
+    ...recipient,
+    name: recipient.name || fetchedRecipient?.name || 'Loading recipient...'
+  } : null;
 
   const handleSendRequest = async () => {
     if (!amount || !description || !recipient) {
@@ -104,17 +117,17 @@ export default function WalletIntegratedPaymentRequest({
 
         <div className="space-y-4">
           {/* Recipient */}
-          {recipient && (
+          {effectiveRecipient && (
             <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
               <Avatar className="w-8 h-8">
-                <AvatarImage src={recipient.avatar} />
+                <AvatarImage src={effectiveRecipient.avatar} />
                 <AvatarFallback>
-                  {recipient.name ? recipient.name[0]?.toUpperCase() : 'U'}
+                  {effectiveRecipient.name ? effectiveRecipient.name[0]?.toUpperCase() : 'U'}
                 </AvatarFallback>
               </Avatar>
               <div>
                 <p className="font-medium text-sm">
-                  {recipient.name}
+                  {effectiveRecipient.name}
                 </p>
                 <p className="text-xs text-muted-foreground">Will receive your request</p>
               </div>
@@ -213,7 +226,7 @@ export default function WalletIntegratedPaymentRequest({
             <Button 
               onClick={handleSendRequest} 
               className="flex-1"
-              disabled={isProcessing || !recipient}
+              disabled={isProcessing || !effectiveRecipient}
             >
               {isProcessing ? (
                 <>
