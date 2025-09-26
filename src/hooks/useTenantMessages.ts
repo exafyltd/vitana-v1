@@ -3,6 +3,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { useTenant } from "./useTenant";
 import { supabase } from "@/integrations/supabase/client";
+import { useCalendarEvents } from "./useCalendarEvents";
 import type { MessageKind, SendMessageArgs } from './useHybridMessages';
 
 export interface TenantMessage {
@@ -48,6 +49,7 @@ export function useTenantMessages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
   const { activeTenantId } = useTenant();
+  const { addEvent } = useCalendarEvents();
   const [messages, setMessages] = useState<TenantMessage[]>([]);
   const [threads, setThreads] = useState<TenantMessageThread[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -316,6 +318,57 @@ export function useTenantMessages() {
             : msg
         )
       );
+
+      // Auto-add calendar event for sender if this is a calendar invite
+      if (messageType === 'calendar_invite' || (messageType === 'system' && contentData?.eventType === 'calendar_invite')) {
+        try {
+          const eventTitle = contentData?.title || (body.includes(':') ? body.split(':')[1]?.trim() : 'Calendar Event');
+          const eventDate = contentData?.date;
+          const eventTime = contentData?.time || '09:00';
+          const eventEndDate = contentData?.endDate || eventDate;
+          const eventEndTime = contentData?.endTime || '10:00';
+          
+          let eventStartTime, eventEndDateTime;
+          if (contentData?.start_time) {
+            eventStartTime = new Date(contentData.start_time);
+          } else if (eventDate) {
+            eventStartTime = new Date(`${eventDate} ${eventTime}`);
+          } else {
+            eventStartTime = new Date();
+          }
+          
+          if (contentData?.end_time) {
+            eventEndDateTime = new Date(contentData.end_time);
+          } else if (eventEndDate) {
+            eventEndDateTime = new Date(`${eventEndDate} ${eventEndTime}`);
+          } else {
+            eventEndDateTime = new Date(eventStartTime.getTime() + 60 * 60 * 1000); // 1 hour later
+          }
+
+          await addEvent({
+            user_id: user.id,
+            title: eventTitle,
+            description: contentData?.description,
+            location: contentData?.location,
+            start_time: eventStartTime,
+            end_time: eventEndDateTime,
+            event_type: 'personal',
+            status: 'confirmed',
+            priority: 'medium',
+            is_recurring: false,
+            source_type: 'invite',
+            source_message_id: data.id,
+            metadata: {
+              auto_created: true,
+              invite_message_type: messageType,
+              created_by_client: true
+            }
+          });
+        } catch (calendarError) {
+          // Don't break message sending if calendar creation fails
+          console.warn('Failed to auto-create calendar event for sender:', calendarError);
+        }
+      }
 
       const now = new Date().toISOString();
 
