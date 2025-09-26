@@ -432,8 +432,7 @@ export function useGlobalMessages() {
         return [updatedThread, ...otherThreads];
       });
 
-      // Background refresh for consistency (non-blocking)
-      setTimeout(() => fetchThreads(), 100);
+      // Real-time updates will handle thread consistency - no aggressive refetch needed
 
       return data;
     } catch (error) {

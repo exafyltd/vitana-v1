@@ -74,18 +74,14 @@ export function PaymentMessageHandler({
   const isCurrentUser = message.sender_id === user?.id;
   const messageType = message.message_type;
 
+  // Remove excessive wallet refresh from payment handlers
   // Force refresh wallet data when payment modal is opened
   useEffect(() => {
     if (!isCurrentUser && messageType === 'payment_request') {
-      console.log('🔄 Payment request opened, refreshing wallet data...');
+      // Single refresh only, no excessive polling
       refreshData();
-      const t = setTimeout(() => {
-        console.log('⏱️ Second-pass wallet refresh');
-        refreshData();
-      }, 500);
-      return () => clearTimeout(t);
     }
-  }, [message.id, isCurrentUser, messageType, refreshData]);
+  }, [message.id, isCurrentUser, messageType]); // Remove refreshData from deps to prevent loops
 
   const getCurrencyIcon = (currency: string) => {
     switch (currency?.toUpperCase()) {
@@ -151,19 +147,38 @@ export function PaymentMessageHandler({
     setIsLocked(true);
     setIsProcessing(true);
     setIsCompleted(true); // Immediately disable UI
+    
+    const { amount, currency, description } = paymentData;
+    
+    // Show instant success feedback
+    toast({
+      title: "Payment Completed! ✅",
+      description: `${formatCurrency(amount, currency)} sent successfully`,
+      duration: 5000
+    });
+    
+    // Send confirmation message immediately
     try {
-      const { amount, currency, description } = paymentData;
-      
+      await onSendReply?.(
+        `✅ Payment completed: ${formatCurrency(amount, currency)} - ${description}`,
+        'payment_confirmation',
+        {
+          ...paymentData,
+          status: 'completed',
+          completedBy: user?.id,
+          completedAt: new Date().toISOString()
+        }
+      );
+    } catch (error) {
+      console.error('Error sending confirmation message:', error);
+    }
+
+    try {
       if (!canAfford(amount, currency)) {
-        toast({
-          title: "Insufficient Balance",
-          description: `You don't have enough ${currency} to complete this payment`,
-          variant: "destructive"
-        });
-        return;
+        throw new Error(`Insufficient ${currency} balance`);
       }
 
-      // Perform the atomic transfer
+      // Perform the atomic transfer in background
       const result = await transferFunds(
         message.sender_id, 
         currency.toUpperCase() as "USD" | "VTN" | "CREDITS", 
@@ -171,35 +186,13 @@ export function PaymentMessageHandler({
       );
 
       if (result) {
-        // Refresh wallet data to show updated balances
-        await refreshData();
-        
-        // Update the original message status
+        // Update the original message status with transaction ID
         await onUpdateMessage?.(message.id, {
           content_data: {
             ...paymentData,
             status: 'completed',
             transactionId: result.id
           }
-        });
-
-        // Send confirmation message
-        await onSendReply?.(
-          `✅ Payment completed: ${formatCurrency(amount, currency)} - ${description}`,
-          'payment_confirmation',
-          {
-            ...paymentData,
-            status: 'completed',
-            completedBy: user?.id,
-            completedAt: new Date().toISOString(),
-            transactionId: result.id
-          }
-        );
-
-        toast({
-          title: "Payment Completed! ✅",
-          description: `${formatCurrency(amount, currency)} sent successfully`,
-          duration: 5000
         });
       }
 
@@ -297,6 +290,33 @@ export function PaymentMessageHandler({
     setIsLocked(true);
     setIsProcessing(true);
     setIsCompleted(true); // Immediately disable UI
+    
+    const { fromAmount, fromCurrency, toCurrency, description, exchangeRate, toUserId } = paymentData;
+    
+    // Show instant success feedback
+    const convertedAmount = fromAmount * exchangeRate;
+    toast({
+      title: "Exchange & Send Successful! ✨",
+      description: `Converted and sent ${convertedAmount.toLocaleString()} ${toCurrency}`,
+      duration: 6000
+    });
+    
+    // Send confirmation message immediately
+    try {
+      await onSendReply?.(
+        `✅ Exchange & Send completed: ${formatCurrency(convertedAmount, toCurrency)} - ${description}`,
+        'payment_confirmation',
+        {
+          ...paymentData,
+          status: 'completed',
+          completedBy: user?.id,
+          completedAt: new Date().toISOString()
+        }
+      );
+    } catch (error) {
+      console.error('Error sending confirmation message:', error);
+    }
+
     try {
       const { 
         originalAmount, 

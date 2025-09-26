@@ -424,8 +424,46 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       setSendError(null);
       if (!threadId) {
         console.error('No thread ID available for sending message');
+        setSendError('Thread not found');
         return;
       }
+
+      // Create optimistic message for instant feedback
+      const optimisticMessage = {
+        id: `temp-${Date.now()}`,
+        body: content,
+        message_type: messageType || 'text',
+        content_data: contentData,
+        sender_id: user?.id,
+        thread_id: threadId,
+        created_at: new Date().toISOString(),
+        parent_message_id: parentMessageId,
+        action_buttons: actionButtons,
+        sent_at: new Date().toISOString(),
+        delivered_at: null,
+        read_at: null,
+        updated_at: new Date().toISOString(),
+        optimistic: true,
+        sender: {
+          user_id: user?.id || '',
+          display_name: user?.email || 'You',
+          avatar_url: null 
+        }
+      };
+
+      // Add optimistic message immediately for instant feedback
+      if (paginatedMessages.shouldUsePagination) {
+        paginatedMessages.addNewMessage(optimisticMessage);
+      }
+
+      // Scroll to show new message immediately
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          scrollToBottom(true);
+        });
+      }, 50);
+
+      const messageContext = context;
 
       const sendPromise = sendMessage({
         context: messageContext,

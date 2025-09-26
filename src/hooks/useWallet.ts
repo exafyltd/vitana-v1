@@ -271,7 +271,7 @@ export function useWallet() {
     }
   };
 
-  // Transfer funds to another user
+  // Transfer funds to another user with optimistic updates
   const transferFunds = async (
     toUserId: string,
     currency: 'USD' | 'VTN' | 'CREDITS',
@@ -279,7 +279,25 @@ export function useWallet() {
   ): Promise<any> => {
     if (!user?.id) return null;
     
+    // Optimistic balance update
+    const currentBalance = getBalance(currency);
+    const optimisticBalance = Math.max(0, currentBalance - amount);
+    
+    // Update balance immediately for instant feedback
+    setBalances(prev => prev.map(b => 
+      b.currency_type === currency.toUpperCase() 
+        ? { ...b, balance: optimisticBalance }
+        : b
+    ));
+    
+    // Show success toast immediately
+    toast({
+      title: "Transfer Successful! 💸",
+      description: `${amount.toLocaleString()} ${currency} sent successfully`
+    });
+    
     try {
+      // Process actual transfer in background
       const { data, error } = await supabase.rpc('process_wallet_transfer', {
         p_from_user_id: user.id,
         p_to_user_id: toUserId,
@@ -291,13 +309,15 @@ export function useWallet() {
 
       const result = data?.[0];
       if (result) {
-        toast({
-          title: "Transfer Successful! 💸",
-          description: `${amount.toLocaleString()} ${currency} sent successfully`
-        });
+        // Update with actual balance from server
+        setBalances(prev => prev.map(b => 
+          b.currency_type === currency.toUpperCase() 
+            ? { ...b, balance: result.from_balance }
+            : b
+        ));
         
-        // Refresh data to show updated balances
-        await refreshData();
+        // Refresh transactions in background
+        fetchTransactions();
         
         return {
           id: result.transaction_id,
@@ -309,6 +329,14 @@ export function useWallet() {
       return null;
     } catch (error) {
       console.error('Transfer error:', error);
+      
+      // Rollback optimistic update on error
+      setBalances(prev => prev.map(b => 
+        b.currency_type === currency.toUpperCase() 
+          ? { ...b, balance: currentBalance }
+          : b
+      ));
+      
       toast({
         title: "Transfer Failed",
         description: error.message || "Please try again",
@@ -318,7 +346,7 @@ export function useWallet() {
     }
   };
 
-  // Atomic exchange and send operation
+  // Atomic exchange and send operation with optimistic updates
   const exchangeAndSend = async (
     toUserId: string,
     fromCurrency: "USD" | "VTN" | "CREDITS",
@@ -328,7 +356,27 @@ export function useWallet() {
   ) => {
     if (!user?.id) return null;
     
+    // Optimistic balance update
+    const currentBalance = getBalance(fromCurrency);
+    const optimisticBalance = Math.max(0, currentBalance - amount);
+    const convertedAmount = amount * exchangeRate;
+    
+    // Update balance immediately for instant feedback
+    setBalances(prev => prev.map(b => 
+      b.currency_type === fromCurrency.toUpperCase() 
+        ? { ...b, balance: optimisticBalance }
+        : b
+    ));
+    
+    // Show success toast immediately
+    toast({
+      title: "Exchange & Send Successful! ✨",
+      description: `Converted and sent ${convertedAmount.toLocaleString()} ${toCurrency}`,
+      duration: 6000
+    });
+    
     try {
+      // Process actual exchange and send in background
       const { data, error } = await supabase.rpc('process_wallet_exchange_and_send', {
         p_from_user_id: user.id,
         p_to_user_id: toUserId,
@@ -342,14 +390,15 @@ export function useWallet() {
 
       const result = data?.[0];
       if (result) {
-        toast({
-          title: "Exchange & Send Successful! ✨",
-          description: `Converted and sent ${result.net_converted_amount.toLocaleString()} ${toCurrency}`,
-          duration: 6000
-        });
+        // Update with actual balance from server
+        setBalances(prev => prev.map(b => 
+          b.currency_type === fromCurrency.toUpperCase() 
+            ? { ...b, balance: result.from_balance }
+            : b
+        ));
         
-        // Refresh data to show updated balances
-        await refreshData();
+        // Refresh transactions in background
+        fetchTransactions();
         
         return {
           exchangeTransactionId: result.exchange_transaction_id,
@@ -363,6 +412,14 @@ export function useWallet() {
       return null;
     } catch (error) {
       console.error('Exchange and send error:', error);
+      
+      // Rollback optimistic update on error
+      setBalances(prev => prev.map(b => 
+        b.currency_type === fromCurrency.toUpperCase() 
+          ? { ...b, balance: currentBalance }
+          : b
+      ));
+      
       toast({
         title: "Exchange & Send Failed",
         description: error.message || "Please try again",
