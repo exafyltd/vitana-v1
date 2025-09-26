@@ -76,17 +76,14 @@ export function usePopupCoordination() {
 
   const requestPopup = useCallback((
     type: PopupType, 
-    context?: PopupState['context'],
-    options?: { delay?: number }
+    context?: PopupState['context']
   ): boolean => {
-    if (options?.delay) {
-      timeoutRef.current = setTimeout(() => {
-        popupCoordinator.setPopup(type, context);
-      }, options.delay);
-      return true;
-    } else {
-      return popupCoordinator.setPopup(type, context);
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
+    // Always request popup immediately for better UX
+    return popupCoordinator.setPopup(type, context);
   }, []);
 
   const clearPopup = useCallback((type: PopupType) => {

@@ -122,25 +122,41 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Compute full recipient object for direct conversations using threads directly
   const effectiveRecipient = React.useMemo(() => {
     const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
+    
+    // Debug logging for participant data
+    console.log('🔍 effectiveRecipient debug:', {
+      threadId,
+      recipientId,
+      hasCurrentThread: !!currentThread,
+      participants: currentThread?.participants,
+      participantCount: currentThread?.participants?.length,
+      userId: user?.id,
+      recipientData
+    });
 
     // Helper to compose a recipient object with robust fallbacks
     const composeRecipient = (userId: string, participant?: any) => {
-      return {
-        id: userId,
-        name:
-          participant?.display_name ||
-          participant?.full_name ||
-          participant?.name ||
-          participant?.user?.name ||
-          (recipientData?.display_name as string | undefined) ||
-          (recipientData?.full_name as string | undefined) ||
-          getConversationDisplayTitle(currentThread, user?.id),
-        avatar:
-          participant?.avatar_url ||
-          participant?.avatar ||
-          participant?.user?.avatar_url ||
-          getConversationDisplayAvatar(currentThread, user?.id),
-      };
+      const name = participant?.display_name ||
+        participant?.full_name ||
+        participant?.name ||
+        participant?.user?.display_name ||
+        participant?.user?.full_name ||
+        participant?.user?.name ||
+        (recipientData?.display_name as string | undefined) ||
+        (recipientData?.full_name as string | undefined) ||
+        getConversationDisplayTitle(currentThread, user?.id) ||
+        'User';
+
+      const avatar = participant?.avatar_url ||
+        participant?.avatar ||
+        participant?.user?.avatar_url ||
+        participant?.user?.avatar ||
+        (recipientData?.avatar_url as string | undefined) ||
+        getConversationDisplayAvatar(currentThread, user?.id);
+
+      console.log('🎯 Composed recipient:', { userId, name, avatar, participant });
+      
+      return { id: userId, name, avatar };
     };
     
     if (recipientId && currentThread?.participants) {
@@ -163,11 +179,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (recipientData) {
       const fallbackId = (recipientId as string | undefined) || (recipientData as any)?.user_id || null;
       if (fallbackId) {
-        return {
-          id: fallbackId,
-          name: (recipientData as any)?.display_name || (recipientData as any)?.full_name || undefined,
-          avatar: (recipientData as any)?.avatar_url,
-        };
+        return composeRecipient(fallbackId, recipientData);
       }
     }
     

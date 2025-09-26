@@ -149,12 +149,14 @@ export function AttachmentMenu({
     threadId
   );
 
-  // For wallet components, ensure name is always present from passed recipient
-  const walletRecipient = recipient ? {
+  // For wallet components, ensure recipient data is complete
+  const walletRecipient = recipient && recipient.name ? {
     id: recipient.id,
-    name: recipient.name || 'Recipient',
+    name: recipient.name,
     avatar: recipient.avatar
-  } : { id: recipientIdHint || '', name: 'Recipient', avatar: undefined };
+  } : null;
+
+  console.log('💰 AttachmentMenu walletRecipient:', { recipient, walletRecipient, hasRecipientContext });
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -182,12 +184,12 @@ export function AttachmentMenu({
             variant="ghost"
             className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
             onClick={() => {
-              // For 1:1 conversations, always use integrated popup
-              if (hasRecipientContext) {
+              // Only use integrated popup if we have proper recipient data
+              if (walletRecipient) {
                 requestPopup('wallet-integrated', { recipient: walletRecipient });
                 setShowSendFunds(true);
               } else {
-                // Only use global for group chats or no context
+                // Fallback to global for incomplete recipient data
                 setShowGlobalSendFunds(true);
               }
             }}
@@ -202,12 +204,12 @@ export function AttachmentMenu({
             variant="ghost"
             className="w-full justify-start h-10 px-3"
             onClick={() => {
-              // For 1:1 conversations, always use integrated popup
-              if (hasRecipientContext) {
+              // Only use integrated popup if we have proper recipient data
+              if (walletRecipient) {
                 requestPopup('wallet-integrated', { recipient: walletRecipient });
                 setShowPaymentRequest(true);
               } else {
-                // Only use global for group chats or no context
+                // Fallback to global for incomplete recipient data
                 setShowGlobalPaymentRequest(true);
               }
             }}
@@ -229,8 +231,8 @@ export function AttachmentMenu({
           </Button>
         </div>
         
-        {/* Wallet Integration Dialogs - Show for any recipient context */}
-        {hasRecipientContext && (
+        {/* Wallet Integration Dialogs - Show only with valid recipient */}
+        {walletRecipient && (
           <>
             <WalletIntegratedSendFunds
               isOpen={showSendFunds}
