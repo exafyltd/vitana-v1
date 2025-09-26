@@ -76,9 +76,16 @@ export function useCalendarEvents() {
       setLoading(true);
       setError(null);
 
+      const authUser = (await supabase.auth.getUser()).data.user;
+      if (!authUser) {
+        setEvents([]);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('calendar_events')
         .select('*')
+        .eq('user_id', authUser.id)
         .order('start_time', { ascending: true });
 
       if (error) throw error;
@@ -469,7 +476,8 @@ export function useCalendarEvents() {
   };
 
   useEffect(() => {
-    fetchEvents();
+    let eventsChannel: any;
+    let responsesChannel: any;
 
     // Debounced fetch events for global refresh event bus
     const debouncedFetchEvents = () => {
@@ -478,7 +486,7 @@ export function useCalendarEvents() {
       }
       debounceTimeoutRef.current = setTimeout(() => {
         fetchEvents();
-      }, 150); // 150ms debounce to prevent burst refreshes
+      }, 150);
     };
 
     // Global refresh event listener
@@ -488,39 +496,49 @@ export function useCalendarEvents() {
 
     window.addEventListener(CALENDAR_REFRESH_EVENT, handleGlobalRefresh);
 
-    // Set up real-time subscription for calendar events
-    const eventsChannel = supabase
-      .channel('calendar-events-changes')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'calendar_events'
-      }, (payload) => {
-        console.log('📅 Calendar event change detected:', payload);
-        fetchEvents(); // Refresh events list
-      })
-      .subscribe();
+    const init = async () => {
+      await fetchEvents();
+      const authUser = (await supabase.auth.getUser()).data.user;
+      const userId = authUser?.id;
+      if (!userId) return;
 
-    // Set up real-time subscription for invite responses 
-    const responsesChannel = supabase
-      .channel('calendar-responses-changes')
-      .on('postgres_changes', {
-        event: '*', 
-        schema: 'public',
-        table: 'calendar_invite_responses'
-      }, (payload) => {
-        console.log('📨 Calendar invite response change detected:', payload);
-        // This will trigger updates in CalendarInviteStatus components
-      })
-      .subscribe();
+      // Real-time subscription scoped to current user
+      eventsChannel = supabase
+        .channel('calendar-events-changes')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'calendar_events',
+          filter: `user_id=eq.${userId}`
+        }, (payload) => {
+          console.log('📅 Calendar event change detected:', payload);
+          fetchEvents();
+        })
+        .subscribe();
+
+      // Invite responses scoped to current user
+      responsesChannel = supabase
+        .channel('calendar-responses-changes')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'calendar_invite_responses',
+          filter: `user_id=eq.${userId}`
+        }, (payload) => {
+          console.log('📨 Calendar invite response change detected:', payload);
+        })
+        .subscribe();
+    };
+
+    init();
 
     return () => {
       window.removeEventListener(CALENDAR_REFRESH_EVENT, handleGlobalRefresh);
       if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current);
+        clearTimeout(debounceTimeoutRef.current as any);
       }
-      supabase.removeChannel(eventsChannel);
-      supabase.removeChannel(responsesChannel);
+      if (eventsChannel) supabase.removeChannel(eventsChannel);
+      if (responsesChannel) supabase.removeChannel(responsesChannel);
     };
   }, []);
 
