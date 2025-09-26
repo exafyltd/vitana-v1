@@ -151,11 +151,11 @@ Please respond to confirm your attendance!`;
         has_rewards: false,
         source_type: 'invite' as const, // Mark as invite from the start
         source_message_id: sentMessage.id, // Link to the message immediately
-        user_id: '', // Will be set by addEvent hook
+        user_id: '', // Will be overridden by addEvent hook
       };
 
       const createdEvent = await addEvent(senderEventData);
-      console.log('Sender event created:', createdEvent);
+      console.log('✅ Sender calendar event created:', createdEvent);
 
       toast({
         title: 'Event Created!',

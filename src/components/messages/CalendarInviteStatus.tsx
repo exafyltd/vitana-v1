@@ -160,6 +160,13 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
               ''
             }
             onClick={async () => {
+              console.log('📅 Calendar invite action clicked:', { 
+                action: button.action, 
+                label: button.label, 
+                messageId, 
+                messageData 
+              });
+              
               setIsSubmitting(true);
               try {
                 await onActionClick?.({
@@ -167,6 +174,10 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
                   messageData,
                   messageId
                 });
+                
+                console.log('✅ Calendar invite action completed successfully');
+              } catch (error) {
+                console.error('❌ Calendar invite action failed:', error);
               } finally {
                 setIsSubmitting(false);
               }
