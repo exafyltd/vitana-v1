@@ -4,6 +4,7 @@ import { useRole } from "./useRole";
 import { useTenant } from "./useTenant";
 import { supabase } from "@/integrations/supabase/client";
 import { useCalendarEvents } from "./useCalendarEvents";
+import { messageCache } from "./messageCache";
 import type { MessageKind, SendMessageArgs } from './useHybridMessages';
 
 export interface TenantMessage {
@@ -67,39 +68,77 @@ export function useTenantMessages() {
     }
 
     try {
-      // Clear messages immediately when switching threads
-      setMessages([]);
-      setIsLoading(true);
+      const cacheKey = threadId || `direct:${recipientId}`;
       
-      let query = supabase
-        .from('messages')
-        .select('*')
-        .eq('tenant_id', activeTenantId)
-        .order('created_at', { ascending: true });
-
-      if (threadId) {
-        query = query.eq('thread_id', threadId);
-      } else if (recipientId) {
-        query = query.or(`and(sender_id.eq.${user.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${user.id})`);
+      // Check cache first
+      const cached = messageCache.get<TenantMessage>(cacheKey, 'tenant', activeTenantId);
+      if (cached) {
+        setMessages(cached);
+        setIsLoading(false);
+        
+        // Start background refresh if stale
+        if (messageCache.isStale(cacheKey, 'tenant', activeTenantId)) {
+          // Continue with background fetch without clearing messages
+        } else {
+          return; // Fresh cache, no need to fetch
+        }
+      } else {
+        // No cache, show loading
+        setIsLoading(true);
       }
 
-      // Fetch messages with manual join for sender profile
-      const { data: messagesData, error } = await query;
-      if (error) throw error;
+      // Check for in-flight request
+      const inFlight = messageCache.getInFlight(cacheKey, 'tenant', activeTenantId);
+      if (inFlight) {
+        await inFlight;
+        return;
+      }
+      
+      // Mark as in-flight
+      const fetchPromise = (async () => {
+        let query = supabase
+          .from('messages')
+          .select('*')
+          .eq('tenant_id', activeTenantId)
+          .order('created_at', { ascending: true });
 
-      // Get sender profiles separately
-      const senderIds = messagesData?.map(m => m.sender_id) || [];
-      const { data: senderProfiles } = await supabase
-        .from('profiles')
-        .select('user_id, full_name, display_name, avatar_url')
-        .in('user_id', senderIds);
+        if (threadId) {
+          query = query.eq('thread_id', threadId);
+        } else if (recipientId) {
+          query = query.or(`and(sender_id.eq.${user.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${user.id})`);
+        }
 
-      // Combine messages with sender data
-      const messagesWithSenders = messagesData?.map(message => ({
-        ...message,
-        sender: senderProfiles?.find(p => p.user_id === message.sender_id) || null
-      })) || [];
+        // Parallel fetch of messages and profiles
+        const [messagesResponse, profilesResponse] = await Promise.all([
+          query,
+          supabase
+            .from('profiles')
+            .select('user_id, full_name, display_name, avatar_url')
+            .eq('tenant_id', activeTenantId) // Optimize by filtering profiles to tenant
+        ]);
 
+        if (messagesResponse.error) throw messagesResponse.error;
+        
+        const messagesData = messagesResponse.data || [];
+        const senderIds = messagesData.map(m => m.sender_id);
+        
+        // Filter profiles to only needed senders
+        const senderProfiles = profilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
+
+        // Combine messages with sender data
+        const messagesWithSenders = messagesData.map(message => ({
+          ...message,
+          sender: senderProfiles.find(p => p.user_id === message.sender_id) || null
+        }));
+
+        return messagesWithSenders;
+      })();
+
+      messageCache.setInFlight(cacheKey, 'tenant', fetchPromise, activeTenantId);
+      const messagesWithSenders = await fetchPromise;
+
+      // Cache the results
+      messageCache.set(cacheKey, 'tenant', messagesWithSenders, activeTenantId);
       setMessages(messagesWithSenders);
     } catch (error) {
       console.error('Error fetching tenant messages:', error);
@@ -289,6 +328,10 @@ export function useTenantMessages() {
       // Add optimistic message immediately
       setMessages(prev => [...prev, optimisticMessage]);
 
+      // Update cache with optimistic message
+      const optimisticCacheKey = threadId || `direct:${recipientId}`;
+      messageCache.addMessage(optimisticCacheKey, 'tenant', optimisticMessage, activeTenantId);
+
       const { data, error } = await supabase
         .from('messages')
         .insert({
@@ -320,6 +363,10 @@ export function useTenantMessages() {
             : msg
         )
       );
+
+      // Update cache with real message
+      const realCacheKey = threadId || `direct:${recipientId}`;
+      messageCache.updateMessage(realCacheKey, 'tenant', optimisticMessage.id, { ...data, sender: userProfile }, activeTenantId);
 
       // Auto-add calendar event for sender if this is a calendar invite
       if (messageType === 'calendar_invite' || (messageType === 'system' && contentData?.eventType === 'calendar_invite')) {

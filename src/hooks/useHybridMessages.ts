@@ -2,6 +2,7 @@ import { useRole } from "./useRole";
 import { useGlobalMessages } from "./useGlobalMessages";
 import { useTenantMessages } from "./useTenantMessages";
 import { useTypingIndicators } from "./useTypingIndicators";
+import { prefetchMessages } from "./messageCache";
 
 export type MessageKind = "text" | "image" | "file" | "system";
 
@@ -46,10 +47,28 @@ export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?:
     }
   };
 
+  // Prefetch messages for a given thread (for hover prefetching)
+  const prefetchThreadMessages = async (threadId: string) => {
+    if (isGlobalContext) {
+      return prefetchMessages(
+        threadId, 
+        'global', 
+        globalMessages.fetchMessages
+      );
+    } else {
+      return prefetchMessages(
+        threadId, 
+        'tenant', 
+        tenantMessages.fetchMessages
+      );
+    }
+  };
+
   if (isGlobalContext) {
     return {
       ...globalMessages,
       sendMessage,
+      prefetchThreadMessages,
       typingUsers,
       startTyping,
       stopTyping,
@@ -59,6 +78,7 @@ export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?:
     return {
       ...tenantMessages,
       sendMessage,
+      prefetchThreadMessages,
       typingUsers,
       startTyping,
       stopTyping,

@@ -3,6 +3,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
 import { useCalendarEvents } from "./useCalendarEvents";
+import { messageCache } from "./messageCache";
 import type { MessageKind, SendMessageArgs } from './useHybridMessages';
 
 export interface GlobalMessage {
@@ -113,57 +114,88 @@ export function useGlobalMessages() {
     }
 
     try {
-      // Clear messages immediately when switching threads
-      setMessages([]);
-      setIsLoading(true);
-      
-      let query = supabase
-        .from('global_messages')
-        .select('*')
-        .order('created_at', { ascending: true });
-
-      if (threadId) {
-        query = query.eq('thread_id', threadId);
+      // Check cache first
+      const cached = messageCache.get<GlobalMessage>(threadId || 'general', 'global');
+      if (cached) {
+        setMessages(cached);
+        setIsLoading(false);
+        
+        // Start background refresh if stale
+        if (messageCache.isStale(threadId || 'general', 'global')) {
+          // Continue with background fetch without clearing messages
+        } else {
+          return; // Fresh cache, no need to fetch
+        }
+      } else {
+        // No cache, show loading
+        setIsLoading(true);
       }
 
-      // Fetch messages with manual join for sender profile
-      const { data: messagesData, error } = await query;
-      if (error) throw error;
-
-      // Get sender profiles separately with fallback to main profiles
-      const senderIds = messagesData?.map(m => m.sender_id) || [];
+      // Check for in-flight request
+      const inFlight = messageCache.getInFlight(threadId || 'general', 'global');
+      if (inFlight) {
+        await inFlight;
+        return;
+      }
       
-      // First try global community profiles
-      const { data: globalProfiles } = await supabase
-        .from('global_community_profiles')
-        .select('user_id, display_name, avatar_url')
-        .in('user_id', senderIds);
+      // Mark as in-flight
+      const fetchPromise = (async () => {
+        let query = supabase
+          .from('global_messages')
+          .select('*')
+          .order('created_at', { ascending: true });
 
-      // Fallback to main profiles for missing data
-      const { data: mainProfiles } = await supabase
-        .from('profiles')
-        .select('user_id, display_name, full_name, avatar_url')
-        .in('user_id', senderIds);
+        if (threadId) {
+          query = query.eq('thread_id', threadId);
+        }
 
-      // Create profile map with fallback logic
-      const profileMap: Record<string, any> = {};
-      senderIds.forEach(userId => {
-        const globalProfile = globalProfiles?.find(p => p.user_id === userId);
-        const mainProfile = mainProfiles?.find(p => p.user_id === userId);
+        const [messagesResponse, globalProfilesResponse, mainProfilesResponse] = await Promise.all([
+          query,
+          // Parallel profile fetches - get all profiles first, then filter
+          supabase
+            .from('global_community_profiles')
+            .select('user_id, display_name, avatar_url'),
+          supabase
+            .from('profiles')
+            .select('user_id, display_name, full_name, avatar_url')
+        ]);
+
+        if (messagesResponse.error) throw messagesResponse.error;
         
-        profileMap[userId] = {
-          user_id: userId,
-          display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
-          avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
-        };
-      });
+        const messagesData = messagesResponse.data || [];
+        const senderIds = messagesData.map(m => m.sender_id);
 
-      // Combine messages with sender data
-      const messagesWithSenders = messagesData?.map(message => ({
-        ...message,
-        sender: profileMap[message.sender_id] || null
-      })) || [];
+        // Filter profiles to only needed ones
+        const globalProfiles = globalProfilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
+        const mainProfiles = mainProfilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
 
+        // Create profile map with fallback logic
+        const profileMap: Record<string, any> = {};
+        senderIds.forEach(userId => {
+          const globalProfile = globalProfiles.find(p => p.user_id === userId);
+          const mainProfile = mainProfiles.find(p => p.user_id === userId);
+          
+          profileMap[userId] = {
+            user_id: userId,
+            display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
+            avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
+          };
+        });
+
+        // Combine messages with sender data
+        const messagesWithSenders = messagesData.map(message => ({
+          ...message,
+          sender: profileMap[message.sender_id] || null
+        }));
+
+        return messagesWithSenders;
+      })();
+
+      messageCache.setInFlight(threadId || 'general', 'global', fetchPromise);
+      const messagesWithSenders = await fetchPromise;
+
+      // Cache the results
+      messageCache.set(threadId || 'general', 'global', messagesWithSenders);
       setMessages(messagesWithSenders);
     } catch (error) {
       console.error('Error fetching global messages:', error);
@@ -338,6 +370,9 @@ export function useGlobalMessages() {
       // Add optimistic message immediately
       setMessages(prev => [...prev, optimisticMessage]);
 
+      // Update cache with optimistic message
+      messageCache.addMessage(threadId || 'general', 'global', optimisticMessage);
+
       const { data, error } = await supabase
         .from('global_messages')
         .insert({
@@ -359,7 +394,7 @@ export function useGlobalMessages() {
         throw error;
       }
 
-      // Replace optimistic message with real message
+      // Update optimistic message with real message
       setMessages(prev => 
         prev.map(msg => 
           msg.id === optimisticMessage.id 
@@ -367,6 +402,9 @@ export function useGlobalMessages() {
             : msg
         )
       );
+
+      // Update cache with real message
+      messageCache.updateMessage(threadId || 'general', 'global', optimisticMessage.id, { ...data, sender: userProfile });
 
       // Note: Sender calendar event creation is handled by CreateEventPopup.tsx
       // to avoid race conditions and ensure proper data structure

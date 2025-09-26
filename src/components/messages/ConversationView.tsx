@@ -222,16 +222,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   useEffect(() => {
     if (threadId !== previousThreadId.current) {
       console.log('🔄 Thread switching detected:', { from: previousThreadId.current, to: threadId });
-      setIsThreadSwitching(true);
       setIsThreadDataLoaded(false); // Reset thread data loaded state
       previousThreadId.current = threadId;
       
-      // Clear switching state after a short delay
-      const timer = setTimeout(() => {
-        setIsThreadSwitching(false);
-      }, 300);
-      
-      return () => clearTimeout(timer);
+      // Remove artificial delay - let cache handle instant display
+      setIsThreadSwitching(false);
     }
   }, [threadId]);
 
@@ -927,10 +922,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     setReplyingTo(null);
   };
 
-  // Simple loading check - only show loading if we have no data at all or switching threads
+  // Simple loading check - only show loading if we have no data at all
   const isLoadingConversation = (!threadId && !recipientId) || 
-    (threadId && threads.length === 0 && messages.length === 0) ||
-    isThreadSwitching;
+    (threadId && threads.length === 0 && messages.length === 0);
 
   console.log('ConversationView: Loading state check', {
     threadId,

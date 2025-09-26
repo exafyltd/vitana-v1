@@ -25,7 +25,8 @@ const messagesSubItems = [
 
 export default function Direct() {
   const { user } = useAuth();
-  const { threads, isLoading, context } = useHybridMessages();
+  const hybridMessages = useHybridMessages();
+  const { threads, isLoading, context } = hybridMessages;
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
 
@@ -132,6 +133,10 @@ export default function Direct() {
                       onClick={() => {
                         setSelectedThreadId(thread.id);
                         setSelectedRecipientId(null);
+                      }}
+                      onMouseEnter={() => {
+                        // Prefetch messages on hover for instant switching
+                        hybridMessages.prefetchThreadMessages?.(thread.id);
                       }}
                     >
                       <div className="flex items-center gap-3">
