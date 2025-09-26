@@ -192,6 +192,8 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
                           console.log('Calendar invite:', title, date);
                         }}
                         recipient={recipient}
+                        recipientIdHint={recipientId}
+                        threadId={threadId}
                         disabled={disabled}
                         className="hover:bg-muted"
                       />

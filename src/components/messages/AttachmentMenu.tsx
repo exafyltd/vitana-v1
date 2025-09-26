@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -139,11 +139,12 @@ export function AttachmentMenu({
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   const [showGlobalSendFunds, setShowGlobalSendFunds] = useState(false);
   const [showGlobalPaymentRequest, setShowGlobalPaymentRequest] = useState(false);
+  const [pendingAction, setPendingAction] = useState<'send' | 'request' | null>(null);
   
   const { requestPopup, clearPopup, isPopupActive } = usePopupCoordination();
 
   // Create effective recipient for direct conversations using actual profile data
-  const { recipient: fetchedRecipient } = useRecipientData(recipient?.id ?? recipientIdHint ?? null, threadId);
+  const { recipient: fetchedRecipient, loading } = useRecipientData(recipient?.id ?? recipientIdHint ?? null, threadId);
 
   const effectiveRecipient = recipient || fetchedRecipient || (recipientIdHint ? {
     id: recipientIdHint,
@@ -151,7 +152,35 @@ export function AttachmentMenu({
     avatar: recipient?.avatar
   } : undefined);
 
-  console.log('AttachmentMenu render:', { recipientProp: recipient, recipientIdHint, fetchedRecipient, effectiveRecipient });
+  const hasResolvableContext = !!(threadId || recipientIdHint);
+
+  // Handle pending actions when loading completes
+  useEffect(() => {
+    if (!loading && pendingAction && hasResolvableContext) {
+      if (effectiveRecipient) {
+        // Open integrated popup
+        if (pendingAction === 'send') {
+          requestPopup('wallet-integrated', { recipient: effectiveRecipient }).then(success => {
+            if (success) setShowSendFunds(true);
+          });
+        } else if (pendingAction === 'request') {
+          requestPopup('wallet-integrated', { recipient: effectiveRecipient }).then(success => {
+            if (success) setShowPaymentRequest(true);
+          });
+        }
+      } else {
+        // Fall back to global popup
+        if (pendingAction === 'send') {
+          setShowGlobalSendFunds(true);
+        } else if (pendingAction === 'request') {
+          setShowGlobalPaymentRequest(true);
+        }
+      }
+      setPendingAction(null);
+    }
+  }, [loading, pendingAction, effectiveRecipient, hasResolvableContext, requestPopup]);
+
+  const isLoadingRecipient = loading && hasResolvableContext;
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -178,45 +207,49 @@ export function AttachmentMenu({
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
+            disabled={isLoadingRecipient}
             onClick={async () => {
-              console.log('AttachmentMenu: Send Funds clicked', { recipient, recipientIdHint, effectiveRecipient });
               if (effectiveRecipient) {
-                console.log('AttachmentMenu: Using recipient-specific send funds');
                 const success = await requestPopup('wallet-integrated', { recipient: effectiveRecipient });
                 if (success) {
                   setShowSendFunds(true);
                 }
+              } else if (isLoadingRecipient) {
+                setPendingAction('send');
               } else {
-                console.log('AttachmentMenu: Using global send funds');
                 setShowGlobalSendFunds(true);
               }
             }}
             title="Send funds to anyone"
           >
             <Send className="w-5 h-5 mr-3 text-green-600" />
-            <span className="text-sm font-medium">Send Funds</span>
+            <span className="text-sm font-medium">
+              {isLoadingRecipient ? 'Loading...' : 'Send Funds'}
+            </span>
           </Button>
           
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3"
+            disabled={isLoadingRecipient}
             onClick={async () => {
-              console.log('AttachmentMenu: Request Payment clicked', { recipient, recipientIdHint, effectiveRecipient });
               if (effectiveRecipient) {
-                console.log('AttachmentMenu: Using recipient-specific payment request');
                 const success = await requestPopup('wallet-integrated', { recipient: effectiveRecipient });
                 if (success) {
                   setShowPaymentRequest(true);
                 }
+              } else if (isLoadingRecipient) {
+                setPendingAction('request');
               } else {
-                console.log('AttachmentMenu: Using global payment request');
                 setShowGlobalPaymentRequest(true);
               }
             }}
             title="Request payment from anyone"
           >
             <DollarSign className="w-5 h-5 mr-3 text-green-500" />
-            <span className="text-sm">Request Payment</span>
+            <span className="text-sm">
+              {isLoadingRecipient ? 'Loading...' : 'Request Payment'}
+            </span>
           </Button>
           
           <CalendarDialog onCalendarInvite={onCalendarInvite} />
