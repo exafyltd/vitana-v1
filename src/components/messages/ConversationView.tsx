@@ -797,7 +797,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       return `${participantCount} ${participantCount === 1 ? 'member' : 'members'}`;
     }
     
-    return messageContext === 'global' ? 'Global Community' : 'Professional Network';
+    // For direct messages, show user status or empty string instead of message context
+    // This prevents showing "Global Community" for direct messages
+    return '';
   };
 
   const isGroupChat = () => {
