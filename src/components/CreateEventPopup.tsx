@@ -90,7 +90,7 @@ Please respond to confirm your attendance!`;
         context: 'global' as const,
         threadId: '', // This will be handled by the messaging system
         content: messageContent,
-        type: 'system',
+        type: 'calendar_invite' as any,
         contentData: {
           eventType: 'calendar_invite',
           ...formData

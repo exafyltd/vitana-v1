@@ -431,8 +431,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
     const actionButtons = [
       { label: 'Accept', variant: 'default', action: 'calendar_accept', data: eventData },
-      { label: 'Decline', variant: 'outline', action: 'calendar_decline' },
-      { label: 'Maybe', variant: 'secondary', action: 'calendar_maybe' }
+      { label: 'Decline', variant: 'outline', action: 'calendar_decline', data: eventData },
+      { label: 'Maybe', variant: 'secondary', action: 'calendar_maybe', data: eventData }
     ];
 
     const timeStr = time ? ` at ${time}` : '';

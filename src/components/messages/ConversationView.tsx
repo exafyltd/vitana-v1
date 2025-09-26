@@ -621,45 +621,45 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               return dt.toISOString();
             };
 
-            const start_time = response === 'accepted' && eventData
+            const shouldCreate = (response === 'accepted' || response === 'maybe') && !!eventData;
+            const start_time = shouldCreate
               ? composeIso(eventData.date, eventData.time)
               : undefined;
 
-            const end_time = response === 'accepted' && eventData
+            const end_time = shouldCreate
               ? (eventData.endDate || eventData.endTime ? composeIso(eventData.endDate || eventData.date, eventData.endTime) : undefined)
               : undefined;
 
-            // Respond to the invite (this will create the event if accepted)
+            // Build payload for accepted or maybe (tentative)
+            const payload = shouldCreate ? {
+              title: eventData.title || 'Calendar Event',
+              description: eventData.description,
+              start_time: start_time || new Date().toISOString(),
+              end_time,
+              location: eventData.location,
+              event_type: (eventData.type as any) || 'personal',
+              status: response === 'accepted' ? ('confirmed' as const) : ('pending' as const),
+              priority: (eventData.priority as any) || 'medium',
+              is_recurring: false,
+              attendees_count: eventData.attendees || 0,
+              has_rewards: !!eventData.hasRewards,
+              metadata: { originalMessage: eventData },
+              source_type: 'invite' as const,
+              user_id: '' // Will be overridden by the hook
+            } : undefined;
+
+            // Validate message id before responding
             const isValidUUID = (v?: string) => !!v && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
             const safeMessageId = action.messageId;
             if (!isValidUUID(safeMessageId)) {
-              toast({
-                title: 'Please wait',
-                description: 'Still syncing this message. Try again in a moment.',
-                variant: 'default',
-              });
+              toast({ title: 'Please wait', description: 'Still syncing this message. Try again in a moment.', variant: 'default' });
               return;
             }
 
             const result = await respondToInvite(
               safeMessageId,
               response,
-              response === 'accepted' && eventData ? {
-                title: eventData.title || 'Calendar Event',
-                description: eventData.description,
-                start_time: start_time || new Date().toISOString(),
-                end_time,
-                location: eventData.location,
-                event_type: (eventData.type as any) || 'personal',
-                status: 'confirmed',
-                priority: (eventData.priority as any) || 'medium',
-                is_recurring: false,
-                attendees_count: eventData.attendees || 0,
-                has_rewards: !!eventData.hasRewards,
-                metadata: { originalMessage: eventData },
-                source_type: 'invite',
-                user_id: '' // Will be overridden by the hook
-              } : undefined
+              payload
             );
             
             // Send confirmation message
