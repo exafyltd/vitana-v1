@@ -879,9 +879,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 </div>
               ) : (
                 <Avatar className="shrink-0">
-                  <AvatarImage src={getConversationDisplayAvatar(threads.find(t => t.id === threadId), user?.id) || undefined} />
+                  <AvatarImage src={getConversationAvatar() || undefined} />
                   <AvatarFallback>
-                    {getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)[0]?.toUpperCase() || 'U'}
+                    {getConversationTitle()[0]?.toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
               )}
@@ -890,7 +890,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 className={cn("min-w-0 flex-1", isGroupChat() ? "cursor-pointer" : "")}
                 onClick={isGroupChat() ? () => setShowMembersModal(true) : undefined}
               >
-                <h2 className="text-base font-semibold truncate">{getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}</h2>
+                <h2 className="text-base font-semibold truncate">{getConversationTitle()}</h2>
                 <p className="text-sm text-muted-foreground truncate">{getConversationSubtitle()}</p>
               </div>
             </div>
