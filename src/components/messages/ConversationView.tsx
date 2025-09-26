@@ -105,47 +105,58 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [threadParticipants, setThreadParticipants] = useState<any[]>([]);
   const [currentUserRole, setCurrentUserRole] = useState<string>('member');
 
-  // Compute effective recipient ID for direct conversations
+  // Compute effective recipient ID for direct conversations using threads directly
   const effectiveRecipientId = React.useMemo(() => {
     if (recipientId) return recipientId;
     
-    // For direct conversations, find the other participant
-    if (threadParticipants.length === 2) {
-      const otherParticipant = threadParticipants.find(p => p.user_id !== user?.id);
+    // Get current thread from threads array (immediate data)
+    const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
+    if (currentThread?.participants) {
+      const otherParticipant = currentThread.participants.find((p: any) => p.user_id !== user?.id);
       return otherParticipant?.user_id || null;
     }
     
     return null;
-  }, [recipientId, threadParticipants, user?.id]);
+  }, [recipientId, threadId, threads, user?.id]);
 
-  // Compute full recipient object for direct conversations  
+  // Compute full recipient object for direct conversations using threads directly
   const effectiveRecipient = React.useMemo(() => {
-    if (recipientId) {
-      // Find recipient in threadParticipants
-      const recipientParticipant = threadParticipants.find(p => p.user_id === recipientId);
+    const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
+    
+    if (recipientId && currentThread?.participants) {
+      // Find specific recipient in thread participants
+      const recipientParticipant = currentThread.participants.find((p: any) => p.user_id === recipientId);
       if (recipientParticipant) {
         return {
           id: recipientId,
-          name: recipientParticipant.name || recipientParticipant.user?.name || recipientParticipant.display_name || 'User',
-          avatar: recipientParticipant.avatar || recipientParticipant.user?.avatar_url
+          name: recipientParticipant.display_name || recipientParticipant.full_name || 
+                recipientParticipant.name || recipientParticipant.user?.name || 
+                getConversationDisplayTitle(currentThread, user?.id),
+          avatar: recipientParticipant.avatar_url || recipientParticipant.avatar || 
+                  recipientParticipant.user?.avatar_url || 
+                  getConversationDisplayAvatar(currentThread, user?.id)
         };
       }
     }
     
     // For direct conversations, find the other participant
-    if (threadParticipants.length === 2) {
-      const otherParticipant = threadParticipants.find(p => p.user_id !== user?.id);
+    if (currentThread?.participants) {
+      const otherParticipant = currentThread.participants.find((p: any) => p.user_id !== user?.id);
       if (otherParticipant) {
         return {
           id: otherParticipant.user_id,
-          name: otherParticipant.name || otherParticipant.user?.name || otherParticipant.display_name || 'User',
-          avatar: otherParticipant.avatar || otherParticipant.user?.avatar_url
+          name: otherParticipant.display_name || otherParticipant.full_name || 
+                otherParticipant.name || otherParticipant.user?.name || 
+                getConversationDisplayTitle(currentThread, user?.id),
+          avatar: otherParticipant.avatar_url || otherParticipant.avatar || 
+                  otherParticipant.user?.avatar_url || 
+                  getConversationDisplayAvatar(currentThread, user?.id)
         };
       }
     }
     
     return null;
-  }, [recipientId, threadParticipants, user?.id]);
+  }, [recipientId, threadId, threads, user?.id]);
 
   // Reply state management
   const [replyingTo, setReplyingTo] = useState<any>(null);

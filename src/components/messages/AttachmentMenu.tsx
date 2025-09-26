@@ -155,19 +155,15 @@ export function AttachmentMenu({
     threadId
   );
 
-  // Use the passed recipient prop directly if available, fallback to fetching only if needed
-  const effectiveRecipient = recipient || fetchedRecipient || (recipientIdHint ? {
-    id: recipientIdHint,
-    name: 'User',
-    avatar: undefined
-  } : undefined);
+  // Use the passed recipient prop directly if available, only fetch if no recipient provided
+  const effectiveRecipient = recipient || fetchedRecipient;
   
-  // Ensure we have a proper recipient object with required name field for wallet components
+  // For wallet components, ensure name is always present
   const walletRecipient = effectiveRecipient ? {
     id: effectiveRecipient.id,
-    name: effectiveRecipient.name || 'User',
+    name: effectiveRecipient.name || 'Loading...',
     avatar: effectiveRecipient.avatar
-  } : { id: recipientIdHint || '', name: 'User', avatar: undefined };
+  } : { id: recipientIdHint || '', name: 'Unknown', avatar: undefined };
   return (
     <Popover>
       <PopoverTrigger asChild>
