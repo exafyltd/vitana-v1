@@ -154,13 +154,38 @@ Please respond to confirm your attendance!`;
         user_id: '', // Will be overridden by addEvent hook
       };
 
-      const createdEvent = await addEvent(senderEventData);
-      console.log('✅ Sender calendar event created:', createdEvent);
+      try {
+        const createdEvent = await addEvent(senderEventData);
+        console.log('✅ Sender calendar event created:', createdEvent);
 
-      toast({
-        title: 'Event Created!',
-        description: 'Your calendar invite has been sent successfully.',
-      });
+        toast({
+          title: 'Event Created!',
+          description: 'Your calendar invite has been sent successfully.',
+        });
+      } catch (addEventError) {
+        console.error('❌ Failed to add sender event to calendar:', addEventError);
+        
+        // Fallback: enqueue for later processing
+        try {
+          const { enqueuePendingSenderEvent } = await import('@/lib/calendarPendingQueue');
+          await enqueuePendingSenderEvent({
+            ...senderEventData,
+            source_message_id: sentMessage.id,
+          });
+          
+          toast({
+            title: 'Event Queued',
+            description: 'Event will be added to your calendar shortly.',
+          });
+        } catch (queueError) {
+          console.error('❌ Failed to queue sender event:', queueError);
+          toast({
+            title: 'Partial Success', 
+            description: 'Invite sent but failed to add to your calendar. You can add it manually.',
+            variant: 'destructive',
+          });
+        }
+      }
 
       if (formData.isPaid && formData.price && parseFloat(formData.price) > 0) {
         setShowPaymentDemo(true);

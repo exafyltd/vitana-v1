@@ -291,8 +291,8 @@ export function useCalendarEvents() {
 
       let eventId: string | undefined;
 
-      // If accepting the invite, create the calendar event
-      if (normalized === 'accepted' && eventData) {
+      // If accepting or maybe responding to the invite, create the calendar event
+      if ((normalized === 'accepted' || normalized === 'maybe') && eventData) {
         try {
           console.log('📝 Creating calendar event for accepted invite:', eventData);
           
@@ -305,7 +305,7 @@ export function useCalendarEvents() {
             // Ensure required fields have defaults
             title: eventData.title || 'Calendar Event',
             event_type: (eventData as any).event_type || 'personal',
-            status: (eventData as any).status || 'confirmed',
+            status: normalized === 'accepted' ? 'confirmed' : 'pending', // Set status based on response
             priority: (eventData as any).priority || 'medium',
             is_recurring: !!eventData.is_recurring,
           } as any;
