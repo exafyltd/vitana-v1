@@ -114,7 +114,7 @@ export default function WalletIntegratedPaymentRequest({
               </Avatar>
               <div>
                 <p className="font-medium text-sm">
-                  {recipient.name || 'Loading recipient...'}
+                  {recipient.name}
                 </p>
                 <p className="text-xs text-muted-foreground">Will receive your request</p>
               </div>

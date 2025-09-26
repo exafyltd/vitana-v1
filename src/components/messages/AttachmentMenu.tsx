@@ -161,9 +161,9 @@ export function AttachmentMenu({
   // For wallet components, ensure name is always present
   const walletRecipient = effectiveRecipient ? {
     id: effectiveRecipient.id,
-    name: effectiveRecipient.name || 'Loading...',
+    name: effectiveRecipient.name || '',
     avatar: effectiveRecipient.avatar
-  } : { id: recipientIdHint || '', name: 'Unknown', avatar: undefined };
+  } : { id: recipientIdHint || '', name: '', avatar: undefined };
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -212,9 +212,13 @@ export function AttachmentMenu({
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3"
+            disabled={loading && hasRecipientContext}
             onClick={async () => {
-              // For 1:1 conversations, always use integrated popup
+              // For 1:1 conversations, check if data is loaded first
               if (hasRecipientContext) {
+                if (loading || !effectiveRecipient?.name) {
+                  return; // Don't open dialog if still loading or no name
+                }
                 const success = await requestPopup('wallet-integrated', { recipient: walletRecipient });
                 if (success) {
                   setShowPaymentRequest(true);
@@ -226,8 +230,17 @@ export function AttachmentMenu({
             }}
             title="Request payment"
           >
-            <DollarSign className="w-5 h-5 mr-3 text-green-500" />
-            <span className="text-sm">Request Payment</span>
+            {loading && hasRecipientContext ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-3"></div>
+                <span className="text-sm">Loading...</span>
+              </>
+            ) : (
+              <>
+                <DollarSign className="w-5 h-5 mr-3 text-green-500" />
+                <span className="text-sm">Request Payment</span>
+              </>
+            )}
           </Button>
           
           <CalendarDialog onCalendarInvite={onCalendarInvite} />
