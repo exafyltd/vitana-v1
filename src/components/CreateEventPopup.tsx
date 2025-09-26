@@ -163,7 +163,7 @@ Please respond to confirm your attendance!`;
 
       try {
         console.log('📅 Creating sender calendar event. Message ID:', sentMessage.id, 'Valid UUID:', isValidUuid(sentMessage.id));
-        const createdEvent = await addEvent(senderEventData);
+        const createdEvent = await addEvent(senderEventData, { showToast: false });
         console.log('✅ Sender calendar event created:', createdEvent);
 
         // Refresh calendar events
@@ -171,31 +171,17 @@ Please respond to confirm your attendance!`;
 
         toast({
           title: 'Event Created!',
-          description: 'Your calendar invite has been sent successfully.',
+          description: 'Your calendar invite has been sent and added to your calendar.',
         });
       } catch (addEventError) {
         console.error('❌ Failed to add sender event to calendar:', addEventError);
         
-        // Fallback: enqueue for later processing
-        try {
-          const { enqueuePendingSenderEvent } = await import('@/lib/calendarPendingQueue');
-          await enqueuePendingSenderEvent({
-            ...senderEventData,
-            source_message_id: sentMessage.id,
-          });
-          
-          toast({
-            title: 'Event Queued',
-            description: 'Event will be added to your calendar shortly.',
-          });
-        } catch (queueError) {
-          console.error('❌ Failed to queue sender event:', queueError);
-          toast({
-            title: 'Partial Success', 
-            description: 'Invite sent but failed to add to your calendar. You can add it manually.',
-            variant: 'destructive',
-          });
-        }
+        toast({
+          title: 'Error',
+          description: 'Failed to create event. Please try again.',
+          variant: 'destructive',
+        });
+        return;
       }
 
       if (formData.isPaid && formData.price && parseFloat(formData.price) > 0) {

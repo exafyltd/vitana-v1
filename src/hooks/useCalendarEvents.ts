@@ -102,7 +102,7 @@ export function useCalendarEvents() {
   };
 
   // Add a new calendar event (with auth check and idempotency)
-  const addEvent = async (eventData: Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>) => {
+  const addEvent = async (eventData: Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>, options?: { showToast?: boolean }) => {
     try {
       const authUser = (await supabase.auth.getUser()).data.user;
       if (!authUser) {
@@ -158,10 +158,12 @@ export function useCalendarEvents() {
 
       setEvents(prev => [...prev, data as CalendarEvent]);
       
-      toast({
-        title: 'Event Added',
-        description: `"${eventData.title}" has been added to your calendar`,
-      });
+      if (options?.showToast !== false) {
+        toast({
+          title: 'Event Added',
+          description: `"${eventData.title}" has been added to your calendar`,
+        });
+      }
 
       // Dispatch global refresh event
       window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
@@ -402,7 +404,7 @@ export function useCalendarEvents() {
               throw new Error('Invalid start_time format');
             }
 
-            const newEvent = await addEvent(cleanEventData);
+            const newEvent = await addEvent(cleanEventData, { showToast: false });
             eventId = newEvent.id;
 
             // Update the invite response with the event ID
