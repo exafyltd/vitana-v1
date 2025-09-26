@@ -196,6 +196,26 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   // Use hybrid messages directly from the hook - no local state needed
   const messages = hybridMessagesFromHook || [];
+  
+  // Clear messages immediately when switching threads to prevent stale data
+  const [isThreadSwitching, setIsThreadSwitching] = useState(false);
+  const previousThreadId = useRef<string | null>(null);
+  
+  useEffect(() => {
+    if (threadId !== previousThreadId.current) {
+      console.log('🔄 Thread switching detected:', { from: previousThreadId.current, to: threadId });
+      setIsThreadSwitching(true);
+      setIsThreadDataLoaded(false); // Reset thread data loaded state
+      previousThreadId.current = threadId;
+      
+      // Clear switching state after a short delay
+      const timer = setTimeout(() => {
+        setIsThreadSwitching(false);
+      }, 300);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [threadId]);
 
   // Debug logging for thread/recipient changes
   useEffect(() => {
@@ -889,9 +909,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     setReplyingTo(null);
   };
 
-  // Simple loading check - only show loading if we have no data at all
+  // Simple loading check - only show loading if we have no data at all or switching threads
   const isLoadingConversation = (!threadId && !recipientId) || 
-    (threadId && threads.length === 0 && messages.length === 0);
+    (threadId && threads.length === 0 && messages.length === 0) ||
+    isThreadSwitching;
 
   console.log('ConversationView: Loading state check', {
     threadId,

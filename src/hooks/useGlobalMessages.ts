@@ -113,6 +113,8 @@ export function useGlobalMessages() {
     }
 
     try {
+      // Clear messages immediately when switching threads
+      setMessages([]);
       setIsLoading(true);
       
       let query = supabase

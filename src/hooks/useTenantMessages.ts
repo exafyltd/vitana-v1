@@ -67,6 +67,8 @@ export function useTenantMessages() {
     }
 
     try {
+      // Clear messages immediately when switching threads
+      setMessages([]);
       setIsLoading(true);
       
       let query = supabase

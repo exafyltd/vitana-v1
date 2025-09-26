@@ -110,6 +110,9 @@ export function useConversationRealtime(
       return;
     }
 
+    // Clear messages immediately when threadId changes
+    setMessages([]);
+    
     // Fetch initial messages
     fetchThreadMessages();
 
