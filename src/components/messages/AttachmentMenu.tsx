@@ -17,7 +17,7 @@ import {
   Send
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useRecipientData } from '@/hooks/useRecipientData';
+
 interface AttachmentMenuProps {
   onFileAttach: () => void;
   onSendMessage: (content: string, messageType?: string, contentData?: any) => Promise<void>;
@@ -142,12 +142,6 @@ export function AttachmentMenu({
   
   const { requestPopup, clearPopup, isPopupActive } = usePopupCoordination();
 
-  // Create effective recipient for direct conversations using actual profile data
-  const { recipient: fetchedRecipient, loading } = useRecipientData(
-    recipient ? null : recipientIdHint, 
-    recipient ? null : threadId
-  );
-
   // Determine if this is a 1:1 conversation context (has recipient info)
   const hasRecipientContext = !!(
     recipient?.id || 
@@ -155,15 +149,12 @@ export function AttachmentMenu({
     threadId
   );
 
-  // Use the passed recipient prop directly if available, only fetch if no recipient provided
-  const effectiveRecipient = recipient || fetchedRecipient;
-  
-  // For wallet components, ensure name is always present
-  const walletRecipient = effectiveRecipient ? {
-    id: effectiveRecipient.id,
-    name: effectiveRecipient.name || '',
-    avatar: effectiveRecipient.avatar
-  } : { id: recipientIdHint || '', name: '', avatar: undefined };
+  // For wallet components, ensure name is always present from passed recipient
+  const walletRecipient = recipient ? {
+    id: recipient.id,
+    name: recipient.name || 'Recipient',
+    avatar: recipient.avatar
+  } : { id: recipientIdHint || '', name: 'Recipient', avatar: undefined };
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -190,13 +181,11 @@ export function AttachmentMenu({
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
-            onClick={async () => {
+            onClick={() => {
               // For 1:1 conversations, always use integrated popup
               if (hasRecipientContext) {
-                const success = await requestPopup('wallet-integrated', { recipient: walletRecipient });
-                if (success) {
-                  setShowSendFunds(true);
-                }
+                requestPopup('wallet-integrated', { recipient: walletRecipient });
+                setShowSendFunds(true);
               } else {
                 // Only use global for group chats or no context
                 setShowGlobalSendFunds(true);
@@ -212,13 +201,11 @@ export function AttachmentMenu({
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3"
-            onClick={async () => {
+            onClick={() => {
               // For 1:1 conversations, always use integrated popup
               if (hasRecipientContext) {
-                const success = await requestPopup('wallet-integrated', { recipient: walletRecipient });
-                if (success) {
-                  setShowPaymentRequest(true);
-                }
+                requestPopup('wallet-integrated', { recipient: walletRecipient });
+                setShowPaymentRequest(true);
               } else {
                 // Only use global for group chats or no context
                 setShowGlobalPaymentRequest(true);

@@ -78,19 +78,15 @@ export function usePopupCoordination() {
     type: PopupType, 
     context?: PopupState['context'],
     options?: { delay?: number }
-  ): Promise<boolean> => {
-    return new Promise((resolve) => {
-      const trySetPopup = () => {
-        const success = popupCoordinator.setPopup(type, context);
-        resolve(success);
-      };
-
-      if (options?.delay) {
-        timeoutRef.current = setTimeout(trySetPopup, options.delay);
-      } else {
-        trySetPopup();
-      }
-    });
+  ): boolean => {
+    if (options?.delay) {
+      timeoutRef.current = setTimeout(() => {
+        popupCoordinator.setPopup(type, context);
+      }, options.delay);
+      return true;
+    } else {
+      return popupCoordinator.setPopup(type, context);
+    }
   }, []);
 
   const clearPopup = useCallback((type: PopupType) => {
