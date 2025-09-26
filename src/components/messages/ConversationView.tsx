@@ -136,27 +136,45 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
     // Helper to compose a recipient object with robust fallbacks
     const composeRecipient = (userId: string, participant?: any) => {
-      const name = participant?.display_name ||
+      // Try multiple participant data structures and nested profile objects
+      let name = participant?.display_name ||
         participant?.full_name ||
         participant?.name ||
         participant?.user?.display_name ||
         participant?.user?.full_name ||
         participant?.user?.name ||
+        participant?.profile?.display_name ||
+        participant?.profile?.full_name ||
+        participant?.profile?.name ||
+        participant?.global_community_profile?.display_name ||
+        participant?.global_community_profiles?.display_name ||
         (recipientData?.display_name as string | undefined) ||
-        (recipientData?.full_name as string | undefined) ||
-        getConversationDisplayTitle(currentThread, user?.id) ||
-        'User';
+        (recipientData?.full_name as string | undefined);
+      
+      // If still no name, try the conversation display title as fallback
+      if (!name) {
+        name = getConversationDisplayTitle(currentThread, user?.id);
+      }
+      
+      // Final fallback - but ensure we always return a string
+      if (!name || name.trim() === '') {
+        name = 'User';
+      }
 
       const avatar = participant?.avatar_url ||
         participant?.avatar ||
         participant?.user?.avatar_url ||
         participant?.user?.avatar ||
+        participant?.profile?.avatar_url ||
+        participant?.profile?.avatar ||
+        participant?.global_community_profile?.avatar_url ||
+        participant?.global_community_profiles?.avatar_url ||
         (recipientData?.avatar_url as string | undefined) ||
         getConversationDisplayAvatar(currentThread, user?.id);
 
-      console.log('🎯 Composed recipient:', { userId, name, avatar, participant });
+      console.log('🎯 Composed recipient:', { userId, name, avatar, participant, recipientData });
       
-      return { id: userId, name, avatar };
+      return { id: userId, name: name.trim(), avatar };
     };
     
     if (recipientId && currentThread?.participants) {

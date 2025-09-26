@@ -150,7 +150,8 @@ export function AttachmentMenu({
   );
 
   // For wallet components, ensure recipient data is complete
-  const walletRecipient = recipient && recipient.name ? {
+  // More lenient check - accept if we have an ID and any valid name (even if just "User")
+  const walletRecipient = recipient && recipient.id && recipient.name && recipient.name.trim() !== '' ? {
     id: recipient.id,
     name: recipient.name,
     avatar: recipient.avatar
