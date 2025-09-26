@@ -139,76 +139,29 @@ export function AttachmentMenu({
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   const [showGlobalSendFunds, setShowGlobalSendFunds] = useState(false);
   const [showGlobalPaymentRequest, setShowGlobalPaymentRequest] = useState(false);
-  const [pendingAction, setPendingAction] = useState<'send' | 'request' | null>(null);
-  const [isTimeout, setIsTimeout] = useState(false);
   
   const { requestPopup, clearPopup, isPopupActive } = usePopupCoordination();
 
   // Create effective recipient for direct conversations using actual profile data
   const { recipient: fetchedRecipient, loading } = useRecipientData(recipient?.id ?? recipientIdHint ?? null, threadId);
 
-  const effectiveRecipient = recipient || fetchedRecipient || (recipientIdHint ? {
-    id: recipientIdHint,
-    name: recipient?.name ?? '',
-    avatar: recipient?.avatar
-  } : undefined);
-
-  // Fix logic to check for valid, non-empty string values
-  const hasResolvableContext = !!(
-    (threadId && typeof threadId === 'string' && threadId.trim() !== '') || 
-    (recipientIdHint && typeof recipientIdHint === 'string' && recipientIdHint.trim() !== '')
+  // Determine if this is a 1:1 conversation context (has recipient info)
+  const hasRecipientContext = !!(
+    recipient?.id || 
+    recipientIdHint || 
+    threadId
   );
 
-  // Add debug logging
-  console.log('AttachmentMenu Debug:', {
-    threadId,
-    recipientIdHint,
-    hasResolvableContext,
-    loading,
-    effectiveRecipient: effectiveRecipient?.id,
-    isTimeout
-  });
-
-  // Add timeout mechanism to prevent indefinite loading
-  useEffect(() => {
-    if (loading && hasResolvableContext) {
-      const timeout = setTimeout(() => {
-        console.log('AttachmentMenu: Loading timeout reached');
-        setIsTimeout(true);
-      }, 3000);
-      return () => clearTimeout(timeout);
-    } else {
-      setIsTimeout(false);
-    }
-  }, [loading, hasResolvableContext]);
-
-  // Handle pending actions when loading completes
-  useEffect(() => {
-    if (!loading && pendingAction && hasResolvableContext) {
-      if (effectiveRecipient) {
-        // Open integrated popup
-        if (pendingAction === 'send') {
-          requestPopup('wallet-integrated', { recipient: effectiveRecipient }).then(success => {
-            if (success) setShowSendFunds(true);
-          });
-        } else if (pendingAction === 'request') {
-          requestPopup('wallet-integrated', { recipient: effectiveRecipient }).then(success => {
-            if (success) setShowPaymentRequest(true);
-          });
-        }
-      } else {
-        // Fall back to global popup
-        if (pendingAction === 'send') {
-          setShowGlobalSendFunds(true);
-        } else if (pendingAction === 'request') {
-          setShowGlobalPaymentRequest(true);
-        }
-      }
-      setPendingAction(null);
-    }
-  }, [loading, pendingAction, effectiveRecipient, hasResolvableContext, requestPopup]);
-
-  const isLoadingRecipient = loading && hasResolvableContext && !isTimeout;
+  // For 1:1 conversations, prioritize immediate recipient or create one from hint
+  const effectiveRecipient = hasRecipientContext ? (
+    recipient || 
+    fetchedRecipient || 
+    (recipientIdHint ? {
+      id: recipientIdHint,
+      name: '',
+      avatar: undefined
+    } : undefined)
+  ) : undefined;
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -231,53 +184,48 @@ export function AttachmentMenu({
         className="w-56 p-2 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
       >
         <div className="grid gap-1">
-          {/* Send Funds - Always Enabled */}
+          {/* Send Funds */}
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
-            disabled={isLoadingRecipient}
             onClick={async () => {
-              if (effectiveRecipient) {
+              // For 1:1 conversations, always use integrated popup
+              if (hasRecipientContext) {
                 const success = await requestPopup('wallet-integrated', { recipient: effectiveRecipient });
                 if (success) {
                   setShowSendFunds(true);
                 }
-              } else if (isLoadingRecipient) {
-                setPendingAction('send');
               } else {
+                // Only use global for group chats or no context
                 setShowGlobalSendFunds(true);
               }
             }}
-            title="Send funds to anyone"
+            title="Send funds"
           >
             <Send className="w-5 h-5 mr-3 text-green-600" />
-            <span className="text-sm font-medium">
-              {isLoadingRecipient ? 'Loading...' : isTimeout ? 'Send Funds (retry)' : 'Send Funds'}
-            </span>
+            <span className="text-sm font-medium">Send Funds</span>
           </Button>
           
+          {/* Request Payment */}
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3"
-            disabled={isLoadingRecipient}
             onClick={async () => {
-              if (effectiveRecipient) {
+              // For 1:1 conversations, always use integrated popup
+              if (hasRecipientContext) {
                 const success = await requestPopup('wallet-integrated', { recipient: effectiveRecipient });
                 if (success) {
                   setShowPaymentRequest(true);
                 }
-              } else if (isLoadingRecipient) {
-                setPendingAction('request');
               } else {
+                // Only use global for group chats or no context
                 setShowGlobalPaymentRequest(true);
               }
             }}
-            title="Request payment from anyone"
+            title="Request payment"
           >
             <DollarSign className="w-5 h-5 mr-3 text-green-500" />
-            <span className="text-sm">
-              {isLoadingRecipient ? 'Loading...' : isTimeout ? 'Request Payment (retry)' : 'Request Payment'}
-            </span>
+            <span className="text-sm">Request Payment</span>
           </Button>
           
           <CalendarDialog onCalendarInvite={onCalendarInvite} />
@@ -292,8 +240,8 @@ export function AttachmentMenu({
           </Button>
         </div>
         
-        {/* Wallet Integration Dialogs */}
-        {effectiveRecipient && (
+        {/* Wallet Integration Dialogs - Show for any recipient context */}
+        {hasRecipientContext && (
           <>
             <WalletIntegratedSendFunds
               isOpen={showSendFunds}
@@ -302,7 +250,7 @@ export function AttachmentMenu({
                 clearPopup('wallet-integrated');
               }}
               onSendMessage={onSendMessage}
-              recipient={effectiveRecipient}
+              recipient={effectiveRecipient || { id: recipientIdHint || '', name: '', avatar: undefined }}
             />
             <WalletIntegratedPaymentRequest
               isOpen={showPaymentRequest}
@@ -311,7 +259,7 @@ export function AttachmentMenu({
                 clearPopup('wallet-integrated');
               }}
               onSendMessage={onSendMessage}
-              recipient={effectiveRecipient}
+              recipient={effectiveRecipient || { id: recipientIdHint || '', name: '', avatar: undefined }}
             />
           </>
         )}
