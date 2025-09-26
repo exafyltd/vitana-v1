@@ -75,12 +75,6 @@ export default function WalletIntegratedPaymentRequest({
         paymentData
       );
 
-      toast({
-        title: "Payment Request Sent! 💸",
-        description: `Request for ${paymentData.currency === 'USD' ? '$' + amount : amount + ' ' + paymentData.currency} sent to ${recipient.name}`,
-        duration: 5000
-      });
-
       onClose();
       setAmount('');
       setDescription('');

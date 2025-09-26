@@ -301,11 +301,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
         return newProgress;
       });
       
-      toast({
-        title: "File uploaded",
-        description: `${file.name} uploaded successfully`
-      });
-      
     } catch (error) {
       console.error('Upload error:', error);
       toast({
@@ -364,11 +359,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
       );
 
       setShowVoiceRecorder(false);
-      
-      toast({
-        title: "Voice message sent",
-        description: "Your voice message has been sent successfully",
-      });
 
     } catch (error) {
       console.error('Voice message error:', error);

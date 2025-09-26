@@ -84,12 +84,6 @@ export default function WalletIntegratedSendFunds({
         // Optionally refresh, though transferFunds already refreshes
         await refreshData();
 
-        toast({
-          title: "💸 Funds Sent Successfully!",
-          description: `${amount} ${currency} sent to ${recipient.name}`,
-          duration: 5000,
-        });
-
         // Reset form and close
         setAmount('');
         setDescription('');

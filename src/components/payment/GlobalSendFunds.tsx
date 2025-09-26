@@ -135,11 +135,6 @@ export default function GlobalSendFunds({
           transactionId: result.transactionId
         });
 
-        toast({
-          title: "💰 Funds Sent!",
-          description: `${numericAmount.toLocaleString()} ${currency} sent to ${selectedRecipient.display_name}`,
-        });
-
         onClose();
       }
     } catch (error) {

@@ -136,11 +136,6 @@ export default function GlobalPaymentRequest({
         status: 'pending'
       });
 
-      toast({
-        title: "💳 Payment Request Sent!",
-        description: `Request for ${numericAmount.toLocaleString()} ${currency} sent to ${selectedRecipient.display_name}`,
-      });
-
       onClose();
     } catch (error) {
       console.error('Request error:', error);
