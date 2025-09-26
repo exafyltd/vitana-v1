@@ -158,8 +158,8 @@ export function AttachmentMenu({
     fetchedRecipient || 
     (recipientIdHint ? {
       id: recipientIdHint,
-      name: '',
-      avatar: undefined
+      name: fetchedRecipient?.name || '',
+      avatar: fetchedRecipient?.avatar
     } : undefined)
   ) : undefined;
   return (

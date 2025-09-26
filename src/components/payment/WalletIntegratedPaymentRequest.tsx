@@ -108,10 +108,14 @@ export default function WalletIntegratedPaymentRequest({
             <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
               <Avatar className="w-8 h-8">
                 <AvatarImage src={recipient.avatar} />
-                <AvatarFallback>{recipient.name[0]}</AvatarFallback>
+                <AvatarFallback>
+                  {recipient.name ? recipient.name[0]?.toUpperCase() : 'U'}
+                </AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-medium text-sm">{recipient.name}</p>
+                <p className="font-medium text-sm">
+                  {recipient.name || `User ${recipient.id.slice(-4)}`}
+                </p>
                 <p className="text-xs text-muted-foreground">Will receive your request</p>
               </div>
             </div>
