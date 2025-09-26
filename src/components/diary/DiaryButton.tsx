@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Mic, NotebookPen } from "lucide-react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 interface DiaryEntry {
   id: string;
@@ -15,6 +15,7 @@ type Status = "idle" | "recording" | "stopping";
 export default function DiaryButton() {
   const [status, setStatus] = useState<Status>("idle");
   const [isSupported, setIsSupported] = useState(true);
+  const { toast } = useToast();
   
   const recognitionRef = useRef<any>(null);
   const transcriptRef = useRef<string>("");
@@ -50,7 +51,11 @@ export default function DiaryButton() {
     
     if (!SR) {
       setIsSupported(false);
-      toast("Voice dictation isn't supported in this browser.");
+      toast({
+        title: "Not Supported",
+        description: "Voice dictation isn't supported in this browser.",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -93,7 +98,11 @@ export default function DiaryButton() {
         ? "No speech detected."
         : "Recording issue.";
       
-      toast(msg);
+      toast({
+        title: "Recording Error",
+        description: msg,
+        variant: "destructive"
+      });
     };
 
     r.onend = () => {
@@ -110,7 +119,11 @@ export default function DiaryButton() {
           { label: "Undo", onClick: () => undoLastDiary() }
         ]);
       } else {
-        toast("No speech detected. Try again closer to the mic.");
+        toast({
+          title: "No Speech",
+          description: "No speech detected. Try again closer to the mic.",
+          variant: "destructive"
+        });
       }
     };
 
@@ -176,31 +189,37 @@ export default function DiaryButton() {
       (window as any).lastDiaryEntryId = entry.id;
     } catch (error) {
       console.error("Error saving diary entry:", error);
-      toast("Failed to save diary entry");
+      toast({
+        title: "Error",
+        description: "Failed to save diary entry",
+        variant: "destructive"
+      });
     }
   }
 
   function toastWithActions(message: string, actions: Array<{ label: string; onClick: () => void }>) {
-    // Show main toast with first action
-    toast.success(message, {
+    // Show main toast with first action  
+    toast({
+      title: message,
       description: new Date().toLocaleTimeString(),
-      action: actions[0] ? {
-        label: actions[0].label,
-        onClick: actions[0].onClick
-      } : undefined,
-      duration: 10000
+      action: actions[0] ? (
+        <button onClick={actions[0].onClick} className="inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+          {actions[0].label}
+        </button>
+      ) : undefined,
     });
 
     // Show undo option after 1 second
     if (actions[1]) {
       setTimeout(() => {
-        toast("Undo available", {
+        toast({
+          title: "Undo available",
           description: "Delete the last diary entry",
-          action: {
-            label: actions[1].label,
-            onClick: actions[1].onClick
-          },
-          duration: 5000
+          action: (
+            <button onClick={actions[1].onClick} className="inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+              {actions[1].label}
+            </button>
+          )
         });
       }, 1000);
     }
@@ -215,11 +234,18 @@ export default function DiaryButton() {
       const filteredEntries = existingEntries.filter((entry: DiaryEntry) => entry.id !== entryId);
       localStorage.setItem('diary_entries', JSON.stringify(filteredEntries));
       
-      toast.success("Diary entry deleted");
+      toast({
+        title: "Success",
+        description: "Diary entry deleted"
+      });
       (window as any).lastDiaryEntryId = null;
     } catch (error) {
       console.error("Error deleting diary entry:", error);
-      toast("Failed to delete diary entry");
+      toast({
+        title: "Error", 
+        description: "Failed to delete diary entry",
+        variant: "destructive"
+      });
     }
   }
 

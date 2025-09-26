@@ -13,13 +13,14 @@ import { ShowcaseDrawer } from "@/components/profile/drawers/ShowcaseDrawer";
 import { VisibilityDrawer } from "@/components/profile/drawers/VisibilityDrawer";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 export default function EditProfilePage() {
   const navigate = useNavigate();
   const { profile: contextProfile } = useProfile();
   const [viewAs, setViewAs] = useState<ViewAsMode>("me");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const { toast } = useToast();
   const [identityDrawerOpen, setIdentityDrawerOpen] = useState(false);
   const [aboutDrawerOpen, setAboutDrawerOpen] = useState(false);
   const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);
@@ -83,9 +84,9 @@ export default function EditProfilePage() {
   const handleSave = () => {
     // TODO: Save profile changes
     setHasUnsavedChanges(false);
-    toast.success("Profile updated successfully! Your changes are now live.", {
-      description: "Your VITANA profile looks amazing.",
-      duration: 4000,
+    toast({
+      title: "Profile updated successfully!",
+      description: "Your changes are now live. Your VITANA profile looks amazing."
     });
     console.log('Saving profile changes...');
   };

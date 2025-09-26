@@ -39,6 +39,12 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
     isPaid: false
   });
 
+  // Helper function to validate UUID
+  const isValidUuid = (str: string) => {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(str);
+  };
+
   const resetForm = () => {
     setFormData({
       title: "",
@@ -150,13 +156,18 @@ Please respond to confirm your attendance!`;
         attendees_count: formData.capacity ? parseInt(formData.capacity) : undefined,
         has_rewards: false,
         source_type: 'invite' as const, // Mark as invite from the start
-        source_message_id: sentMessage.id, // Link to the message immediately
         user_id: '', // Will be overridden by addEvent hook
+        // Only set source_message_id if the message ID is a valid UUID
+        source_message_id: isValidUuid(sentMessage.id) ? sentMessage.id : undefined,
       };
 
       try {
+        console.log('📅 Creating sender calendar event. Message ID:', sentMessage.id, 'Valid UUID:', isValidUuid(sentMessage.id));
         const createdEvent = await addEvent(senderEventData);
         console.log('✅ Sender calendar event created:', createdEvent);
+
+        // Refresh calendar events
+        window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
 
         toast({
           title: 'Event Created!',

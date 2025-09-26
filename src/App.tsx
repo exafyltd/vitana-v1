@@ -1,5 +1,4 @@
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
@@ -140,7 +139,6 @@ const App = () => (
   <RTLProvider>
       <TooltipProvider>
         <Toaster />
-        <Sonner />
         <PresenceDebugPanel />
         <BrowserRouter>
           <TenantDetector />

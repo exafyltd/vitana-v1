@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, X, Globe, Users, Lock } from "lucide-react";
 import { Visibility } from "@/types/profile";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 interface LinkItem {
   id: string;
@@ -25,6 +25,7 @@ export function AboutForm() {
   const [locationVisibility, setLocationVisibility] = useState<Visibility>("public");
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
+  const { toast } = useToast();
 
   const addLink = () => {
     const newLink: LinkItem = {
@@ -138,7 +139,10 @@ Examples:
         <AutopilotSuggestions 
           type="bio" 
           onSuggestionClick={(suggestion) => {
-            toast.success(`Autopilot suggestion: ${suggestion}`);
+            toast({
+              title: "Autopilot suggestion",
+              description: suggestion
+            });
             // TODO: Implement actual AI suggestions
           }} 
         />

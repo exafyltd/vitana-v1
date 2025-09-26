@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 interface User {
   user_id: string;
@@ -39,6 +39,7 @@ export default function NewConversationPopup({
   const { user } = useAuth();
   const { currentRole } = useRole();
   const { activeTenantId } = useTenant();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [selectedRecipients, setSelectedRecipients] = useState<User[]>([]);
@@ -82,7 +83,11 @@ export default function NewConversationPopup({
       } else {
         // Use secure RPC function for tenant directory search
         if (!activeTenantId) {
-          toast.error('No tenant context available');
+          toast({
+            title: "Error",
+            description: "No tenant context available",
+            variant: "destructive"
+          });
           return;
         }
 
@@ -96,7 +101,11 @@ export default function NewConversationPopup({
       }
     } catch (error) {
       console.error('Error searching users:', error);
-      toast.error('Failed to search users');
+      toast({
+        title: "Error",
+        description: "Failed to search users",
+        variant: "destructive"
+      });
     } finally {
       setIsSearching(false);
     }
@@ -120,14 +129,22 @@ export default function NewConversationPopup({
     if (isGroupMode) {
       // Create group chat
       if (!groupName.trim() || selectedRecipients.length === 0) {
-        toast.error('Group name and recipients are required');
+        toast({
+          title: "Error",
+          description: "Group name and recipients are required",
+          variant: "destructive"
+        });
         return;
       }
       return createGroup();
     } else {
       // Create direct message
       if (selectedRecipients.length !== 1) {
-        toast.error('Select exactly one recipient for direct message');
+        toast({
+          title: "Error",
+          description: "Select exactly one recipient for direct message",
+          variant: "destructive"
+        });
         return;
       }
       return createDirectMessage(selectedRecipients[0].user_id);
@@ -145,7 +162,11 @@ export default function NewConversationPopup({
 
     if (!user) {
       console.error('❌ No authenticated user found');
-      toast.error('Authentication required');
+      toast({
+        title: "Error", 
+        description: "Authentication required",
+        variant: "destructive"
+      });
       return;
     }
     
@@ -226,7 +247,10 @@ export default function NewConversationPopup({
         onConversationCreated?.(threadId, recipientId);
       }
 
-      toast.success('Conversation started!');
+      toast({
+        title: "Success",
+        description: "Conversation started!"
+      });
       resetForm();
     } catch (error: any) {
       console.error('💥 Full error details:', {
@@ -249,7 +273,11 @@ export default function NewConversationPopup({
         errorMessage = error.message;
       }
       
-      toast.error(errorMessage);
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive"
+      });
     } finally {
       setIsCreating(false);
     }
@@ -329,12 +357,19 @@ export default function NewConversationPopup({
         .from(effectiveContext === 'global' ? 'global_messages' : 'messages')
         .insert(messageData);
 
-      toast.success(`Group "${groupName}" created successfully!`);
+      toast({
+        title: "Success",
+        description: `Group "${groupName}" created successfully!`
+      });
       onGroupCreated?.(thread.id);
       resetForm();
     } catch (error) {
       console.error('Error creating group:', error);
-      toast.error('Failed to create group');
+      toast({
+        title: "Error",
+        description: "Failed to create group",
+        variant: "destructive"
+      });
     } finally {
       setIsCreating(false);
     }

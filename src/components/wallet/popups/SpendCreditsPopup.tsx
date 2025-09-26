@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useWallet } from '@/hooks/useWallet';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 
 interface SpendCreditsPopupProps {
   open: boolean;
@@ -54,6 +54,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [customAmount, setCustomAmount] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
   
   const { getBalance, updateBalance } = useWallet();
   const creditsBalance = getBalance('CREDITS') || 0;
@@ -72,12 +73,20 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
     const amount = parseInt(customAmount);
     
     if (!amount || amount <= 0) {
-      toast.error('Please enter a valid amount');
+      toast({
+        title: "Error",
+        description: "Please enter a valid amount",
+        variant: "destructive"
+      });
       return;
     }
 
     if (amount > creditsBalance) {
-      toast.error('Insufficient credits balance');
+      toast({
+        title: "Error", 
+        description: "Insufficient credits balance",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -86,17 +95,23 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
     try {
       await updateBalance('CREDITS', amount, 'subtract');
       
-      toast.success(selectedItem 
-        ? `Successfully purchased ${selectedItem.name}!` 
-        : `Successfully spent ${amount} credits!`
-      );
+      toast({
+        title: "Success",
+        description: selectedItem 
+          ? `Successfully purchased ${selectedItem.name}!` 
+          : `Successfully spent ${amount} credits!`
+      });
       
       onOpenChange(false);
       setSelectedItem(null);
       setCustomAmount('');
       setSelectedCategory(null);
     } catch (error) {
-      toast.error('Failed to process spending. Please try again.');
+      toast({
+        title: "Error",
+        description: "Failed to process spending. Please try again.",
+        variant: "destructive"
+      });
     } finally {
       setIsProcessing(false);
     }
