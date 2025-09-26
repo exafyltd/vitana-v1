@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+
 import { useWallet } from "@/hooks/useWallet";
 import { Send } from "lucide-react";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
@@ -41,7 +41,7 @@ export default function WalletIntegratedPaymentRequest({
   const [description, setDescription] = useState(initialDescription);
   const [dueDate, setDueDate] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const { toast } = useToast();
+  
   const { balances } = useWallet();
   
   // Use preloaded recipient data directly - no loading needed
@@ -52,11 +52,6 @@ export default function WalletIntegratedPaymentRequest({
 
   const handleSendRequest = async () => {
     if (!amount || !description || !recipient) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in amount and description",
-        variant: "destructive"
-      });
       return;
     }
 
@@ -87,18 +82,8 @@ export default function WalletIntegratedPaymentRequest({
       `💰 Payment Request: ${currencyStr === 'USD' ? '$' : ''}${amountStr} ${currencyStr === 'USD' ? '' : currencyStr} - ${descriptionStr}`,
       'payment_request',
       paymentData
-    ).then(() => {
-      toast({
-        title: "Payment Request Sent",
-        description: `Request for ${amountStr} ${currencyStr} sent successfully`,
-      });
-    }).catch((error) => {
+    ).catch((error) => {
       console.error('Error sending payment request:', error);
-      toast({
-        title: "Error",  
-        description: "Failed to send payment request. Please try again.",
-        variant: "destructive"
-      });
     });
   };
 

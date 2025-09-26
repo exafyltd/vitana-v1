@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useToast } from '@/hooks/use-toast';
+
 import { useWallet } from '@/hooks/useWallet';
 import { Send, Loader2 } from 'lucide-react';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
@@ -33,7 +33,7 @@ export default function WalletIntegratedSendFunds({
   const [description, setDescription] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   
-  const { toast } = useToast();
+  
   const { getBalance, transferFunds, refreshData, loading } = useWallet();
   
   // Use preloaded recipient data directly - no loading needed
@@ -48,39 +48,18 @@ export default function WalletIntegratedSendFunds({
   const canAfford = parseFloat(amount || '0') <= userBalance;
 
   const handleSend = async () => {
-    if (!amount || !recipient.id || parseFloat(amount) <= 0) {
-      toast({
-        title: "Invalid Input",
-        description: "Please enter a valid amount",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (!canAfford) {
-      toast({
-        title: "Insufficient Funds",
-        description: `You don't have enough ${currency} to send this amount`,
-        variant: "destructive"
-      });
+    if (!amount || !recipient.id || parseFloat(amount) <= 0 || !canAfford) {
       return;
     }
 
     // Store values before reset
     const numericAmount = parseFloat(amount);
-    const recipientName = effectiveRecipient.name;
     const desc = description;
     
     // Reset form and close immediately
     setAmount('');
     setDescription('');
     onClose();
-
-    // Show progress toast
-    toast({
-      title: "Sending Funds",
-      description: `Sending ${numericAmount.toLocaleString()} ${currency} to ${recipientName}...`,
-    });
 
     // Process transfer in background
     try {
@@ -103,21 +82,9 @@ export default function WalletIntegratedSendFunds({
         ).catch((error) => {
           console.error('Error sending confirmation message:', error);
         });
-
-        toast({
-          title: "Funds Sent Successfully",
-          description: `${numericAmount.toLocaleString()} ${currency} sent to ${recipientName}`,
-        });
-      } else {
-        throw new Error('Transfer failed');
       }
     } catch (error: any) {
       console.error('Transfer error:', error);
-      toast({
-        title: "Transfer Failed",
-        description: error.message || "Failed to send funds. Please try again.",
-        variant: "destructive"
-      });
     }
   };
 

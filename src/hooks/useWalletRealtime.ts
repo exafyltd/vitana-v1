@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+
 import { useAuth } from '@/context/AuthProvider';
 
 interface UseWalletRealtimeProps {
@@ -10,7 +10,6 @@ interface UseWalletRealtimeProps {
 
 export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseWalletRealtimeProps) {
   const { user } = useAuth();
-  const { toast } = useToast();
 
   useEffect(() => {
     if (!user?.id) return;
@@ -29,22 +28,6 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
         (payload) => {
           console.log('Balance updated:', payload);
           onBalanceUpdate();
-          
-          // Show notification for balance increases (received payments)
-          if (payload.new && payload.old) {
-            const newBalance = Number(payload.new.balance);
-            const oldBalance = Number(payload.old.balance);
-            const currency = payload.new.currency_type;
-            
-            if (newBalance > oldBalance) {
-              const increase = newBalance - oldBalance;
-              toast({
-                title: "💰 Payment Received!",
-                description: `+${increase.toLocaleString()} ${currency} added to your wallet`,
-                duration: 5000,
-              });
-            }
-          }
         }
       )
       .subscribe();
@@ -71,5 +54,5 @@ export function useWalletRealtime({ onBalanceUpdate, onTransactionUpdate }: UseW
       supabase.removeChannel(balanceChannel);
       supabase.removeChannel(transactionChannel);
     };
-  }, [user?.id, onBalanceUpdate, onTransactionUpdate, toast]);
+  }, [user?.id, onBalanceUpdate, onTransactionUpdate]);
 }
