@@ -122,20 +122,32 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Compute full recipient object for direct conversations using threads directly
   const effectiveRecipient = React.useMemo(() => {
     const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
+
+    // Helper to compose a recipient object with robust fallbacks
+    const composeRecipient = (userId: string, participant?: any) => {
+      return {
+        id: userId,
+        name:
+          participant?.display_name ||
+          participant?.full_name ||
+          participant?.name ||
+          participant?.user?.name ||
+          (recipientData?.display_name as string | undefined) ||
+          (recipientData?.full_name as string | undefined) ||
+          getConversationDisplayTitle(currentThread, user?.id),
+        avatar:
+          participant?.avatar_url ||
+          participant?.avatar ||
+          participant?.user?.avatar_url ||
+          getConversationDisplayAvatar(currentThread, user?.id),
+      };
+    };
     
     if (recipientId && currentThread?.participants) {
       // Find specific recipient in thread participants
       const recipientParticipant = currentThread.participants.find((p: any) => p.user_id === recipientId);
       if (recipientParticipant) {
-        return {
-          id: recipientId,
-          name: recipientParticipant.display_name || recipientParticipant.full_name || 
-                recipientParticipant.name || recipientParticipant.user?.name || 
-                getConversationDisplayTitle(currentThread, user?.id),
-          avatar: recipientParticipant.avatar_url || recipientParticipant.avatar || 
-                  recipientParticipant.user?.avatar_url || 
-                  getConversationDisplayAvatar(currentThread, user?.id)
-        };
+        return composeRecipient(recipientId, recipientParticipant);
       }
     }
     
@@ -143,20 +155,24 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (currentThread?.participants) {
       const otherParticipant = currentThread.participants.find((p: any) => p.user_id !== user?.id);
       if (otherParticipant) {
+        return composeRecipient(otherParticipant.user_id, otherParticipant);
+      }
+    }
+
+    // Fallback to recipient data fetched separately if available
+    if (recipientData) {
+      const fallbackId = (recipientId as string | undefined) || (recipientData as any)?.user_id || null;
+      if (fallbackId) {
         return {
-          id: otherParticipant.user_id,
-          name: otherParticipant.display_name || otherParticipant.full_name || 
-                otherParticipant.name || otherParticipant.user?.name || 
-                getConversationDisplayTitle(currentThread, user?.id),
-          avatar: otherParticipant.avatar_url || otherParticipant.avatar || 
-                  otherParticipant.user?.avatar_url || 
-                  getConversationDisplayAvatar(currentThread, user?.id)
+          id: fallbackId,
+          name: (recipientData as any)?.display_name || (recipientData as any)?.full_name || undefined,
+          avatar: (recipientData as any)?.avatar_url,
         };
       }
     }
     
     return null;
-  }, [recipientId, threadId, threads, user?.id]);
+  }, [recipientId, threadId, threads, user?.id, recipientData]);
 
   // Reply state management
   const [replyingTo, setReplyingTo] = useState<any>(null);
