@@ -107,6 +107,7 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
   const [currentWeek, setCurrentWeek] = useState(new Date());
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
   
   // Form states for quick add
   const [newEventTitle, setNewEventTitle] = useState("");
@@ -204,6 +205,18 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
           View Suggestions
         </Button>
       )
+    });
+  };
+
+  const toggleDayExpanded = (dayKey: string) => {
+    setExpandedDays(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dayKey)) {
+        newSet.delete(dayKey);
+      } else {
+        newSet.add(dayKey);
+      }
+      return newSet;
     });
   };
 
@@ -425,6 +438,9 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
                   {weekDays.map((day, index) => {
                     const dayEvents = getEventsForWeekDay(day);
                     const isCurrentDay = isToday(day);
+                    const dayKey = format(day, 'yyyy-MM-dd');
+                    const isExpanded = expandedDays.has(dayKey);
+                    const visibleEvents = isExpanded ? dayEvents : dayEvents.slice(0, 3);
                     
                     return (
                       <div key={index} className={cn(
@@ -443,11 +459,11 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
                           </p>
                         </div>
                         <div className="space-y-1">
-                          {dayEvents.slice(0, 3).map((event) => (
+                          {visibleEvents.map((event) => (
                             <div
                               key={event.id}
                               className={cn(
-                                "text-xs p-1 rounded border-l-2 cursor-pointer hover:bg-white/50",
+                                "text-xs p-1 rounded border-l-2 cursor-pointer hover:bg-white/50 transition-colors",
                                 getTypeColor(event.event_type).split(' ')[0]
                               )}
                               onClick={() => setEditingEvent(event)}
@@ -459,9 +475,17 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
                             </div>
                           ))}
                           {dayEvents.length > 3 && (
-                            <p className="text-xs text-muted-foreground text-center">
-                              +{dayEvents.length - 3} more
-                            </p>
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              className="text-xs text-muted-foreground hover:text-foreground h-auto p-1 w-full transition-colors"
+                              onClick={() => toggleDayExpanded(dayKey)}
+                            >
+                              {isExpanded 
+                                ? `Show less` 
+                                : `+${dayEvents.length - 3} more`
+                              }
+                            </Button>
                           )}
                         </div>
                       </div>
@@ -479,7 +503,7 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
                   mode="single"
                   selected={selectedDate}
                   onSelect={(date) => date && setSelectedDate(date)}
-                  className="rounded-md border"
+                  className="rounded-md border pointer-events-auto"
                   disabled={false}
                 />
               </div>
@@ -492,19 +516,26 @@ export function EnhancedCalendarPopup({ open, onOpenChange }: EnhancedCalendarPo
                   </CardHeader>
                   <CardContent>
                     {getEventsForDate(selectedDate).length > 0 ? (
-                      <div className="space-y-2">
-                        {getEventsForDate(selectedDate).map((event) => (
-                          <div key={event.id} className="flex items-center gap-2 p-2 rounded border">
-                            <div className={cn("w-3 h-3 rounded-full", getTypeColor(event.event_type).split(' ')[0])} />
-                            <div className="flex-1">
-                              <p className="font-medium text-sm">{event.title}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {formatEventTime(event.start_time, event.end_time)}
-                              </p>
+                      <ScrollArea className="h-[350px]">
+                        <div className="space-y-2 pr-4">
+                          {getEventsForDate(selectedDate).map((event) => (
+                            <div 
+                              key={event.id} 
+                              className="flex items-center gap-2 p-2 rounded border cursor-pointer hover:bg-muted/50 transition-colors"
+                              onClick={() => setEditingEvent(event)}
+                            >
+                              <div className={cn("w-3 h-3 rounded-full", getTypeColor(event.event_type).split(' ')[0])} />
+                              <div className="flex-1">
+                                <p className="font-medium text-sm">{event.title}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {formatEventTime(event.start_time, event.end_time)}
+                                </p>
+                              </div>
+                              {getStatusIcon(event.status)}
                             </div>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
                     ) : (
                       <p className="text-sm text-muted-foreground">No events scheduled</p>
                     )}
