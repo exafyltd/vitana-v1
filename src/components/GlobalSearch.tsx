@@ -141,8 +141,13 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
         return displayName.toLowerCase().includes(searchQuery.toLowerCase());
       });
       if (member) {
-        // Navigate to member profile - assuming we use user_id for routing
-        navigate(`/u/${member.user_id}`);
+        // Navigate to member profile - use handle if available, fallback to user_id
+        const memberHandle = member.handle;
+        if (memberHandle) {
+          navigate(`/u/@${memberHandle}`);
+        } else {
+          navigate(`/u/${member.user_id}`);
+        }
         setQuery('');
         setShowSuggestions(false);
         inputRef.current?.blur();
@@ -159,8 +164,13 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
 
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
     if (suggestion.type === 'person') {
-      // Navigate to member profile using user_id
-      navigate(`/u/${suggestion.id}`);
+      // Find the member to get their handle
+      const member = members.find(m => m.user_id === suggestion.id);
+      if (member && member.handle) {
+        navigate(`/u/@${member.handle}`);
+      } else {
+        navigate(`/u/${suggestion.id}`);
+      }
     } else {
       navigate(`/search?q=${encodeURIComponent(suggestion.title)}&type=${suggestion.type}`);
     }

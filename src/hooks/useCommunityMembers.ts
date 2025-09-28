@@ -27,10 +27,15 @@ export function useCommunityMembers() {
 
       if (search && search.trim()) {
         console.log('useCommunityMembers: Performing search for:', search.trim());
-        // Search visible global community profiles by display name only (RLS-safe)
+        // Search visible global community profiles with profile data including handle
         const { data, error } = await supabase
           .from('global_community_profiles')
-          .select('user_id, display_name, avatar_url')
+          .select(`
+            user_id, 
+            display_name, 
+            avatar_url,
+            profiles!inner(handle, full_name, email)
+          `)
           .eq('is_visible', true)
           .ilike('display_name', `%${search.trim()}%`)
           .order('display_name', { ascending: true })
@@ -43,10 +48,10 @@ export function useCommunityMembers() {
           .filter((p: any) => !user || p.user_id !== user.id)
           .map((p: any) => ({
             user_id: p.user_id,
-            full_name: null,
-            email: null,
+            full_name: p.profiles?.full_name || null,
+            email: p.profiles?.email || null,
             display_name: p.display_name,
-            handle: null,
+            handle: p.profiles?.handle || null,
             avatar_url: p.avatar_url
           }));
 
@@ -54,10 +59,15 @@ export function useCommunityMembers() {
         setMembers(transformedData);
       } else {
         console.log('useCommunityMembers: Fetching default members');
-        // Fetch default visible community profiles
+        // Fetch default visible community profiles with profile data including handle
         const { data, error } = await supabase
           .from('global_community_profiles')
-          .select('user_id, display_name, avatar_url')
+          .select(`
+            user_id, 
+            display_name, 
+            avatar_url,
+            profiles!inner(handle, full_name, email)
+          `)
           .eq('is_visible', true)
           .order('display_name', { ascending: true })
           .limit(20);
@@ -69,10 +79,10 @@ export function useCommunityMembers() {
           .filter((p: any) => !user || p.user_id !== user.id)
           .map((p: any) => ({
             user_id: p.user_id,
-            full_name: null,
-            email: null,
+            full_name: p.profiles?.full_name || null,
+            email: p.profiles?.email || null,
             display_name: p.display_name,
-            handle: null,
+            handle: p.profiles?.handle || null,
             avatar_url: p.avatar_url
           }));
 

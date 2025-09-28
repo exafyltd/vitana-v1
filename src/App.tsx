@@ -449,7 +449,7 @@ const App = () => (
               <Search />
             </AuthGuard>
           } />
-          <Route path="/u/:handle" element={<PublicProfilePage />} />
+          <Route path="/u/:identifier" element={<PublicProfilePage />} />
 
           {/* New module routes */}
           <Route path="/wallet" element={

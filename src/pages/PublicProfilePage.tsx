@@ -2,112 +2,104 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
-import { UserProfile } from "@/types/profile";
+import { supabase } from "@/integrations/supabase/client";
 import { ProfileLayout } from "@/components/profile/shared/ProfileLayout";
 import { getScope } from "@/lib/profileScope";
+import { UserProfile } from "@/types/profile";
 
-// Mock data - replace with real API calls
-const mockUsers: Record<string, UserProfile> = {
-  'sarahwellness': {
-    id: '1',
-    name: 'Sarah Miller',
-    handle: 'sarahwellness',
-    avatarUrl: '/lovable-uploads/sarah-miller-avatar.jpg',
-    roles: ['community', 'professional'],
-    membershipTier: 'vip',
-    bio: 'Passionate about helping others find inner peace through mindful movement and breathing techniques. Certified yoga instructor with 8+ years of experience in holistic wellness.',
-    location: 'San Francisco, CA',
-    links: [
-      { label: 'Website', url: 'https://sarahwellness.com' },
-      { label: 'Instagram', url: 'https://instagram.com/sarahwellness' }
-    ],
-    languages: ['English', 'Spanish'],
-    stats: {
-      posts: 142,
-      followers: 1250,
-      following: 380,
-      mediaUploads: 24,
-      groupsJoined: 8
-    },
-    vitanaIndex: 784,
-    vitanaPercentile: 85,
-    longevityArchetype: 'The Mindful Mover',
-    offerings: [
-      {
-        id: '1',
-        title: 'Mindful Movement Session',
-        durationMin: 60,
-        priceCents: 8000,
-        currency: 'USD',
-        nextTimes: ['2024-01-15T14:00:00Z', '2024-01-16T10:00:00Z'],
-        status: 'published'
-      }
-    ],
-    compliance: {
-      isProfessional: true,
-      licenseVerified: true,
-      specialties: ['Yoga Therapy', 'Mindfulness', 'Stress Management']
-    },
-    visibility: {
-      about: 'public',
-      links: 'public',
-      location: 'public',
-      showcase: 'public',
-      indexPublic: true,
-      healthShareConsent: true
-    }
-  },
-  'dr-roberts': {
-    id: '2',
-    name: 'Dr. Roberts',
-    handle: 'drroberts_md',
-    avatarUrl: '/lovable-uploads/dr-roberts-avatar.jpg',
-    roles: ['professional', 'community'],
-    bio: 'Board-certified physician specializing in preventive medicine and holistic wellness.',
-    location: 'Austin, TX',
-    stats: {
-      posts: 89,
-      followers: 2150,
-      following: 156,
-      mediaUploads: 15,
-      groupsJoined: 5
-    },
-    vitanaIndex: 896,
-    vitanaPercentile: 95,
-    compliance: {
-      isProfessional: true,
-      licenseVerified: true,
-      specialties: ['Preventive Medicine', 'Cardiology']
-    },
-    visibility: {
-      about: 'public',
-      links: 'public',
-      location: 'public',
-      showcase: 'public',
-      indexPublic: true,
-      healthShareConsent: true
-    }
-  }
-};
+interface DatabaseProfile {
+  user_id: string;
+  display_name: string;
+  full_name: string;
+  handle: string;
+  avatar_url: string;
+  cover_url: string;
+  bio: string;
+  email: string;
+  location: string;
+  created_at: string;
+}
 
 export default function PublicProfilePage() {
-  const { handle } = useParams<{ handle: string }>();
+  const { identifier } = useParams<{ identifier: string }>();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (handle) {
-      // Simulate API call
-      setTimeout(() => {
-        const foundProfile = mockUsers[handle];
-        setProfile(foundProfile || null);
-        setLoading(false);
-      }, 100);
+    if (identifier) {
+      fetchProfile(identifier);
     } else {
       setLoading(false);
+      setError("No profile identifier provided");
     }
-  }, [handle]);
+  }, [identifier]);
+
+  const fetchProfile = async (id: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Clean identifier (remove @ if present)
+      const cleanId = id.startsWith('@') ? id.slice(1) : id;
+      
+      console.log('PublicProfilePage: Fetching profile for identifier:', cleanId);
+      
+      const { data, error: dbError } = await supabase
+        .rpc('get_user_profile_by_identifier', { identifier: cleanId });
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+        setError('Failed to load profile');
+        setProfile(null);
+      } else if (!data || data.length === 0) {
+        console.log('No profile found for identifier:', cleanId);
+        setProfile(null);
+      } else {
+        const dbProfile = data[0] as DatabaseProfile;
+        console.log('Found profile:', dbProfile);
+        
+        // Transform database profile to UserProfile format
+        const transformedProfile: UserProfile = {
+          id: dbProfile.user_id,
+          name: dbProfile.display_name || dbProfile.full_name || 'Unknown User',
+          handle: dbProfile.handle || '',
+          avatarUrl: dbProfile.avatar_url || '',
+          coverUrl: dbProfile.cover_url || '',
+          bio: dbProfile.bio || '',
+          location: dbProfile.location || '',
+          roles: ['community'],
+          membershipTier: 'standard',
+          links: [],
+          languages: ['English'],
+          stats: {
+            posts: 0,
+            followers: 0,
+            following: 0,
+            mediaUploads: 0,
+            groupsJoined: 0
+          },
+          visibility: {
+            about: 'public',
+            links: 'public',
+            location: 'public',
+            showcase: 'public',
+            indexPublic: true,
+            healthShareConsent: true
+          }
+        };
+        
+        setProfile(transformedProfile);
+      }
+    } catch (err) {
+      console.error('Error fetching profile:', err);
+      setError('An unexpected error occurred');
+      setProfile(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -120,12 +112,14 @@ export default function PublicProfilePage() {
     );
   }
 
-  if (!profile) {
+  if (error || !profile) {
     return (
       <AppLayout>
         <div className="p-6 text-center">
           <h1 className="text-2xl font-bold mb-4">User Not Found</h1>
-          <p className="text-muted-foreground mb-4">The profile you're looking for doesn't exist.</p>
+          <p className="text-muted-foreground mb-4">
+            {error || "The profile you're looking for doesn't exist."}
+          </p>
           <button 
             onClick={() => navigate('/')}
             className="text-primary hover:underline"

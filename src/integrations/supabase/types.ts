@@ -1465,6 +1465,14 @@ export type Database = {
         Args: { p_recipient_id: string; p_tenant_id: string }
         Returns: string
       }
+      generate_unique_handle: {
+        Args: {
+          p_display_name?: string
+          p_email?: string
+          p_full_name?: string
+        }
+        Returns: string
+      }
       get_message_reactions: {
         Args: { message_id_param: string }
         Returns: {
@@ -1538,6 +1546,21 @@ export type Database = {
       get_user_balance: {
         Args: { currency_param: string; user_id_param: string }
         Returns: number
+      }
+      get_user_profile_by_identifier: {
+        Args: { identifier: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          cover_url: string
+          created_at: string
+          display_name: string
+          email: string
+          full_name: string
+          handle: string
+          location: string
+          user_id: string
+        }[]
       }
       initialize_user_wallet: {
         Args: { user_id_param: string }
