@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/AuthProvider';
 
 export interface CommunityMember {
   user_id: string;
@@ -16,6 +17,7 @@ export function useCommunityMembers() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
+  const { user, loading: authLoading } = useAuth();
 
   const fetchMembers = async (search?: string) => {
     try {
@@ -103,13 +105,23 @@ export function useCommunityMembers() {
   };
 
   useEffect(() => {
-    fetchMembers();
-  }, []);
+    // Only fetch members when user is authenticated
+    if (!authLoading && user) {
+      fetchMembers();
+    } else if (!authLoading && !user) {
+      // User is not authenticated, clear members and set loading to false
+      setMembers([]);
+      setLoading(false);
+    }
+  }, [user, authLoading]);
 
   const searchMembers = (term: string) => {
     console.log('useCommunityMembers: searchMembers called with term:', term);
     setSearchTerm(term);
-    fetchMembers(term);
+    // Only search if user is authenticated
+    if (user) {
+      fetchMembers(term);
+    }
   };
 
   const getDisplayName = (member: CommunityMember): string => {
@@ -127,11 +139,15 @@ export function useCommunityMembers() {
 
   return {
     members,
-    loading,
+    loading: loading || authLoading,
     searchTerm,
     searchMembers,
     getDisplayName,
     getInitials,
-    refreshMembers: () => fetchMembers(searchTerm)
+    refreshMembers: () => {
+      if (user) {
+        fetchMembers(searchTerm);
+      }
+    }
   };
 }
