@@ -10,7 +10,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/hooks/useMessages";
-import { CreditCard, Coins, DollarSign, Send, CheckCircle, AlertCircle, Wallet } from "lucide-react";
+import { useCommunityMembers } from "@/hooks/useCommunityMembers";
+import { useWallet } from "@/hooks/useWallet";
+import { CreditCard, Coins, DollarSign, Send, CheckCircle, AlertCircle, Wallet, Search, Users } from "lucide-react";
 import { getCurrencyIcon } from "@/lib/currencies";
 
 interface MakePaymentPopupProps {
@@ -38,24 +40,35 @@ export default function MakePaymentPopup({
   const [currency, setCurrency] = useState('CREDITS');
   const [description, setDescription] = useState(initialDescription);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedRecipient, setSelectedRecipient] = useState(recipient || null);
+  const [searchTerm, setSearchTerm] = useState('');
+  
   const { toast } = useToast();
   const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
-
-  // Mock user balance - in real app this would come from a hook
-  const userBalance = {
-    credits: 2450,
-    usd: 150,
-    vtn: 320
-  };
+  const { members, loading: membersLoading, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
+  const { transferFunds, balances } = useWallet();
 
   const canAfford = () => {
     const paymentAmount = parseFloat(amount) || 0;
-    switch (currency.toUpperCase()) {
-      case 'CREDITS': return userBalance.credits >= paymentAmount;
-      case 'USD': return userBalance.usd >= paymentAmount;
-      case 'VTN': return userBalance.vtn >= paymentAmount;
-      default: return false;
+    const balance = balances.find(b => b.currency_type === currency.toUpperCase());
+    return balance ? balance.balance >= paymentAmount : false;
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    if (value.trim()) {
+      searchMembers(value);
     }
+  };
+
+  const handleRecipientSelect = (member: any) => {
+    const recipientData = {
+      id: member.user_id,
+      name: getDisplayName(member),
+      avatar: member.avatar_url
+    };
+    setSelectedRecipient(recipientData);
+    setSearchTerm(getDisplayName(member));
   };
 
   const handleMakePayment = async () => {
@@ -63,6 +76,15 @@ export default function MakePaymentPopup({
       toast({
         title: "Missing Information",
         description: "Please fill in amount and description",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!selectedRecipient) {
+      toast({
+        title: "No Recipient Selected",
+        description: "Please select who to send the payment to",
         variant: "destructive"
       });
       return;
@@ -80,43 +102,34 @@ export default function MakePaymentPopup({
     setIsProcessing(true);
 
     try {
-      // Create payment confirmation message
-      const paymentData = {
-        amount: parseFloat(amount),
-        currency: currency.toUpperCase(),
-        description,
-        paymentType,
-        paidBy: "current_user", // This would be the actual user
-        status: "completed",
-        transactionId: `txn_${Date.now()}`
-      };
+      // Perform actual wallet transfer
+      await transferFunds(selectedRecipient.id, currency.toUpperCase() as 'CREDITS' | 'USD' | 'VTN', parseFloat(amount));
 
-      const actionButtons = [
-        {
-          label: "View Receipt",
-          action: "payment_receipt",
-          variant: "outline"
-        }
-      ];
-
+      // Send notification message
       await sendMessage(
-        `💸 Payment sent: ${currency === 'credits' ? amount + ' credits' : '$' + amount} - ${description}`,
-        recipient?.id,
+        `💸 Payment sent: ${currency === 'CREDITS' ? amount + ' credits' : '$' + amount} - ${description}`,
+        selectedRecipient.id,
         'payment_confirmation',
-        paymentData,
-        undefined,
-        actionButtons
+        {
+          amount: parseFloat(amount),
+          currency: currency.toUpperCase(),
+          description,
+          paymentType,
+          status: "completed"
+        }
       );
 
       toast({
         title: "Payment Sent! ✅",
-        description: `${currency === 'credits' ? amount + ' credits' : '$' + amount} sent to ${recipient?.name || 'recipient'}`,
+        description: `${currency === 'CREDITS' ? amount + ' credits' : '$' + amount} sent to ${selectedRecipient.name}`,
         duration: 5000
       });
 
       onClose();
       setAmount('');
       setDescription('');
+      setSelectedRecipient(null);
+      setSearchTerm('');
     } catch (error) {
       console.error('Error making payment:', error);
       toast({
@@ -128,8 +141,6 @@ export default function MakePaymentPopup({
       setIsProcessing(false);
     }
   };
-
-  // Use centralized currency icon configuration
 
   const formatBalance = (bal: number) => {
     return bal.toLocaleString();
@@ -146,19 +157,76 @@ export default function MakePaymentPopup({
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Recipient */}
-          {recipient && (
-            <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src={recipient.avatar} />
-                <AvatarFallback>{recipient.name[0]}</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-medium text-sm">{recipient.name}</p>
-                <p className="text-xs text-muted-foreground">Payment recipient</p>
+          {/* Recipient Selection */}
+          <div>
+            <Label htmlFor="recipient">Send To</Label>
+            {selectedRecipient ? (
+              <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
+                <Avatar className="w-8 h-8">
+                  <AvatarImage src={selectedRecipient.avatar} />
+                  <AvatarFallback>{selectedRecipient.name[0]?.toUpperCase()}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <p className="font-medium text-sm">{selectedRecipient.name}</p>
+                  <p className="text-xs text-muted-foreground">Payment recipient</p>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => {
+                    setSelectedRecipient(null);
+                    setSearchTerm('');
+                  }}
+                >
+                  Change
+                </Button>
               </div>
-            </div>
-          )}
+            ) : (
+              <>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <Input
+                    id="recipient"
+                    placeholder="Search for a community member..."
+                    value={searchTerm}
+                    onChange={(e) => handleSearchChange(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                
+                {searchTerm && (
+                  <div className="mt-2 max-h-40 overflow-y-auto border rounded-md bg-background">
+                    {membersLoading ? (
+                      <div className="p-3 text-center text-sm text-muted-foreground">
+                        Searching...
+                      </div>
+                    ) : members.length > 0 ? (
+                      members.map((member) => (
+                        <div
+                          key={member.user_id}
+                          className="flex items-center gap-3 p-3 hover:bg-muted cursor-pointer border-b last:border-b-0"
+                          onClick={() => handleRecipientSelect(member)}
+                        >
+                          <Avatar className="w-8 h-8">
+                            <AvatarImage src={member.avatar_url || ''} />
+                            <AvatarFallback>{getInitials(member)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium text-sm">{getDisplayName(member)}</p>
+                            <p className="text-xs text-muted-foreground">Community member</p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-3 text-center text-sm text-muted-foreground">
+                        No members found
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
 
           {/* Balance Display */}
           <Card>
@@ -166,18 +234,12 @@ export default function MakePaymentPopup({
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Your Balance:</span>
                 <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1">
-                    {getCurrencyIcon('CREDITS', 'w-3 h-3')}
-                    {formatBalance(userBalance.credits)}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    {getCurrencyIcon('USD', 'w-3 h-3')}
-                    {formatBalance(userBalance.usd)}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    {getCurrencyIcon('VTN', 'w-3 h-3')}
-                    {formatBalance(userBalance.vtn)}
-                  </span>
+                  {balances.map((balance) => (
+                    <span key={balance.currency_type} className="flex items-center gap-1">
+                      {getCurrencyIcon(balance.currency_type, 'w-3 h-3')}
+                      {formatBalance(balance.balance)}
+                    </span>
+                  ))}
                 </div>
               </div>
             </CardContent>
@@ -275,7 +337,7 @@ export default function MakePaymentPopup({
             <Button 
               onClick={handleMakePayment} 
               className="flex-1" 
-              disabled={!canAfford() || isProcessing}
+              disabled={!selectedRecipient || !canAfford() || isProcessing}
             >
               {isProcessing ? (
                 <>
