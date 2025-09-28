@@ -29,15 +29,10 @@ export function useCommunityMembers() {
 
       if (search && search.trim()) {
         console.log('useCommunityMembers: Performing search for:', search.trim());
-        // Search visible global community profiles with profile data including handle
+        // Search visible global community profiles
         const { data, error } = await supabase
           .from('global_community_profiles')
-          .select(`
-            user_id, 
-            display_name, 
-            avatar_url,
-            profiles!inner(handle, full_name, email)
-          `)
+          .select('user_id, display_name, avatar_url')
           .eq('is_visible', true)
           .ilike('display_name', `%${search.trim()}%`)
           .order('display_name', { ascending: true })
@@ -50,10 +45,10 @@ export function useCommunityMembers() {
           .filter((p: any) => !user || p.user_id !== user.id)
           .map((p: any) => ({
             user_id: p.user_id,
-            full_name: p.profiles?.full_name || null,
-            email: p.profiles?.email || null,
+            full_name: null,
+            email: null,
             display_name: p.display_name,
-            handle: p.profiles?.handle || null,
+            handle: null,
             avatar_url: p.avatar_url
           }));
 
@@ -61,15 +56,10 @@ export function useCommunityMembers() {
         setMembers(transformedData);
       } else {
         console.log('useCommunityMembers: Fetching default members');
-        // Fetch default visible community profiles with profile data including handle
+        // Fetch default visible community profiles
         const { data, error } = await supabase
           .from('global_community_profiles')
-          .select(`
-            user_id, 
-            display_name, 
-            avatar_url,
-            profiles!inner(handle, full_name, email)
-          `)
+          .select('user_id, display_name, avatar_url')
           .eq('is_visible', true)
           .order('display_name', { ascending: true })
           .limit(20);
@@ -81,10 +71,10 @@ export function useCommunityMembers() {
           .filter((p: any) => !user || p.user_id !== user.id)
           .map((p: any) => ({
             user_id: p.user_id,
-            full_name: p.profiles?.full_name || null,
-            email: p.profiles?.email || null,
+            full_name: null,
+            email: null,
             display_name: p.display_name,
-            handle: p.profiles?.handle || null,
+            handle: null,
             avatar_url: p.avatar_url
           }));
 
@@ -94,9 +84,11 @@ export function useCommunityMembers() {
 
     } catch (error) {
       console.error('Error fetching community members:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Error details:', errorMessage);
       toast({
         title: 'Failed to load members',
-        description: 'Could not fetch community members',
+        description: `Could not fetch community members: ${errorMessage}`,
         variant: 'destructive'
       });
     } finally {
@@ -125,7 +117,7 @@ export function useCommunityMembers() {
   };
 
   const getDisplayName = (member: CommunityMember): string => {
-    return member.display_name || member.full_name || member.handle || member.email || 'Unknown User';
+    return member.display_name || 'Unknown User';
   };
 
   const getInitials = (member: CommunityMember): string => {

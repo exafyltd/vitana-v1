@@ -81,7 +81,9 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
 
   const handleInputClick = () => {
     if (!open) {
-      // Can't control sidebar from here, just focus input
+      // Navigate to search page when sidebar is collapsed
+      navigate('/search');
+    } else {
       inputRef.current?.focus();
     }
   };
