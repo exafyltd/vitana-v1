@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import SEO from "@/components/SEO";
 import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
 const providers = [
   {
@@ -55,7 +56,7 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider.toLowerCase() as any,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: getEmailRedirectUrl('/dashboard')
         }
       });
       if (error) throw error;
@@ -81,7 +82,7 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
             data: {
               full_name: name,
             },
-            emailRedirectTo: `${window.location.origin}/auth/confirmed`
+            emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.auth)
           }
         });
         if (error) throw error;

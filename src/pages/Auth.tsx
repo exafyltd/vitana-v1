@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function Auth() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/confirmed`,
+          emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.auth),
           data: {
             full_name: fullName,
           },

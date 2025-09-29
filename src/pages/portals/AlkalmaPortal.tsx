@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, BookOpen, Users, Stethoscope, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
 const AlkalmaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -95,7 +96,7 @@ const AlkalmaPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/alkalma/confirmed`,
+          emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.alkalma),
           data: {
             full_name: fullName,
             tenant_slug: "alkalma",

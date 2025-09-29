@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Heart, Users, Stethoscope, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -86,7 +87,7 @@ const MaxinaPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/maxina/confirmed`,
+          emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.maxina),
           data: {
             full_name: fullName,
             tenant_slug: "maxina",

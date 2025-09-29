@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, Users, Heart, BookOpen, Leaf } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
 const CommunityPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -60,7 +61,7 @@ const CommunityPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/community/confirmed`,
+          emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.community),
           data: {
             full_name: fullName,
             tenant_slug: selectedTenant,

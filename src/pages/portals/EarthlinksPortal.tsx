@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Leaf, Users, Stethoscope, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
 const EarthlinksPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -95,7 +96,7 @@ const EarthlinksPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/earthlinks/confirmed`,
+          emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.earthlinks),
           data: {
             full_name: fullName,
             tenant_slug: "earthlinks",
