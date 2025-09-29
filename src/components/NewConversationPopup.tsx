@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Search, User, Users, X } from "lucide-react";
+import { Search, User, Users, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
+import { debounce } from "@/utils/performanceOptimization";
 
 interface User {
   user_id: string;
@@ -64,6 +65,21 @@ export default function NewConversationPopup({
       setGroupName('');
     }
   }, [selectedRecipients, isGroupMode, groupName]);
+
+  // Debounced search function
+  const debouncedSearchUsers = useMemo(
+    () => debounce(searchUsers, 300),
+    [searchQuery, user, effectiveContext, activeTenantId]
+  );
+
+  // Auto-search when query changes
+  useEffect(() => {
+    if (searchQuery.trim().length >= 2) {
+      debouncedSearchUsers();
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery, debouncedSearchUsers]);
 
   const searchUsers = async () => {
     if (!searchQuery.trim() || !user) return;
@@ -450,23 +466,23 @@ export default function NewConversationPopup({
             </Label>
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              {isSearching && (
+                <Loader2 className="absolute right-3 top-3 h-4 w-4 text-muted-foreground animate-spin" />
+              )}
               <Input
                 id="search"
                 placeholder="Enter name or email to search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && searchUsers()}
-                className="pl-10"
+                className="pl-10 pr-10"
               />
             </div>
-            <Button 
-              onClick={searchUsers} 
-              disabled={!searchQuery.trim() || isSearching}
-              variant="outline"
-              size="sm"
-            >
-              {isSearching ? 'Searching...' : 'Search'}
-            </Button>
+            {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
+              <p className="text-sm text-muted-foreground">
+                Type at least 2 characters to search
+              </p>
+            )}
           </div>
 
           {searchResults.length > 0 && (
