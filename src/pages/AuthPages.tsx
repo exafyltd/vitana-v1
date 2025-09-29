@@ -81,7 +81,7 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
             data: {
               full_name: name,
             },
-            emailRedirectTo: `${window.location.origin}/dashboard`
+            emailRedirectTo: `${window.location.origin}/auth/confirmed`
           }
         });
         if (error) throw error;

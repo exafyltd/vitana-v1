@@ -60,7 +60,7 @@ const CommunityPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/`,
+          emailRedirectTo: `${window.location.origin}/community/confirmed`,
           data: {
             full_name: fullName,
             tenant_slug: selectedTenant,

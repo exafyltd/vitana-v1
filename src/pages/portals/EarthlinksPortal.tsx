@@ -95,7 +95,7 @@ const EarthlinksPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/earthlinks`,
+          emailRedirectTo: `${window.location.origin}/earthlinks/confirmed`,
           data: {
             full_name: fullName,
             tenant_slug: "earthlinks",

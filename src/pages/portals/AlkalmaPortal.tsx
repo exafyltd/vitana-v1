@@ -95,7 +95,7 @@ const AlkalmaPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/alkalma`,
+          emailRedirectTo: `${window.location.origin}/alkalma/confirmed`,
           data: {
             full_name: fullName,
             tenant_slug: "alkalma",

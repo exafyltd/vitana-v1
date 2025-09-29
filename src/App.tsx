@@ -30,6 +30,13 @@ import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
+
+// Email confirmation pages
+import EmailConfirmed from "./pages/auth/EmailConfirmed";
+import MaxinaConfirmed from "./pages/portals/MaxinaConfirmed";
+import AlkalmaConfirmed from "./pages/portals/AlkalmaConfirmed";
+import EarthlinksConfirmed from "./pages/portals/EarthlinksConfirmed";
+import CommunityConfirmed from "./pages/portals/CommunityConfirmed";
 import PublicProfilePage from "./pages/PublicProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import Wallet from "./pages/Wallet";
@@ -147,6 +154,13 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Navigate to="/auth" replace />} />
           <Route path="/register" element={<Navigate to="/auth" replace />} />
+          
+          {/* Email Confirmation Routes */}
+          <Route path="/auth/confirmed" element={<EmailConfirmed />} />
+          <Route path="/maxina/confirmed" element={<MaxinaConfirmed />} />
+          <Route path="/alkalma/confirmed" element={<AlkalmaConfirmed />} />
+          <Route path="/earthlinks/confirmed" element={<EarthlinksConfirmed />} />
+          <Route path="/community/confirmed" element={<CommunityConfirmed />} />
           
           {/* Portal Routes */}
           <Route path="/exafy-admin" element={<ExafyAdminPortal />} />

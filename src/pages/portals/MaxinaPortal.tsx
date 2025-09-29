@@ -86,7 +86,7 @@ const MaxinaPortal = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/maxina`,
+          emailRedirectTo: `${window.location.origin}/maxina/confirmed`,
           data: {
             full_name: fullName,
             tenant_slug: "maxina",
