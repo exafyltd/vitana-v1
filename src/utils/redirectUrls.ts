@@ -1,42 +1,34 @@
 /**
- * Utility for generating environment-aware redirect URLs for email confirmations
+ * Utility for generating hardcoded redirect URLs for email confirmations
  */
 
 /**
+ * Hardcoded base URL for all email redirects
+ */
+export const PUBLIC_BASE_URL = "https://vitana-v1.lovable.app";
+
+/**
  * Get the production URL for email redirects
- * This ensures email confirmation links work correctly regardless of where they're sent from
+ * Always returns the hardcoded public URL to ensure email links work from any device
  */
 export function getProductionUrl(): string {
-  // In development, we still want to use localhost for testing
-  if (import.meta.env.DEV) {
-    return window.location.origin;
-  }
-  
-  // For production, we need to determine the correct Lovable project URL
-  // If we're already on a .lovableproject.com domain, use that
-  if (window.location.hostname.includes('lovableproject.com')) {
-    return window.location.origin;
-  }
-  
-  // If we're on a custom domain or other production environment, use current origin
-  return window.location.origin;
+  return PUBLIC_BASE_URL;
 }
 
 /**
  * Generate email redirect URL for specific confirmation pages
  */
 export function getEmailRedirectUrl(confirmationPath: string): string {
-  const baseUrl = getProductionUrl();
-  return `${baseUrl}${confirmationPath}`;
+  return new URL(confirmationPath, PUBLIC_BASE_URL).toString();
 }
 
 /**
  * Predefined confirmation paths for each portal
  */
 export const CONFIRMATION_PATHS = {
-  auth: '/auth/confirmed',
-  maxina: '/maxina/confirmed',
-  alkalma: '/alkalma/confirmed',
-  earthlinks: '/earthlinks/confirmed',
-  community: '/community/confirmed'
+  auth: '/',
+  community: '/',
+  maxina: '/maxina',
+  alkalma: '/alkalma',
+  earthlinks: '/earthlinks'
 } as const;
