@@ -66,21 +66,6 @@ export default function NewConversationPopup({
     }
   }, [selectedRecipients, isGroupMode, groupName]);
 
-  // Debounced search function
-  const debouncedSearchUsers = useMemo(
-    () => debounce(searchUsers, 300),
-    [searchQuery, user, effectiveContext, activeTenantId]
-  );
-
-  // Auto-search when query changes
-  useEffect(() => {
-    if (searchQuery.trim().length >= 2) {
-      debouncedSearchUsers();
-    } else {
-      setSearchResults([]);
-    }
-  }, [searchQuery, debouncedSearchUsers]);
-
   const searchUsers = async () => {
     if (!searchQuery.trim() || !user) return;
     
@@ -126,6 +111,21 @@ export default function NewConversationPopup({
       setIsSearching(false);
     }
   };
+
+  // Debounced search function
+  const debouncedSearchUsers = useMemo(
+    () => debounce(searchUsers, 300),
+    [searchQuery, user, effectiveContext, activeTenantId]
+  );
+
+  // Auto-search when query changes
+  useEffect(() => {
+    if (searchQuery.trim().length >= 2) {
+      debouncedSearchUsers();
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery, debouncedSearchUsers]);
 
   const addRecipient = (recipient: User) => {
     if (!selectedRecipients.find(r => r.user_id === recipient.user_id)) {
