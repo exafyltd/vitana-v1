@@ -137,6 +137,11 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   };
 
   const setTenantBySlug = async (slug: string) => {
+    // Skip tenant switching if no authenticated user
+    if (!user) {
+      return;
+    }
+    
     try {
       // Use the database function to properly switch tenant context
       const { error } = await supabase.rpc('switch_to_tenant_by_slug', {
