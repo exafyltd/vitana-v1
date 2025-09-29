@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthProvider';
+import { debounce } from '@/utils/performanceOptimization';
 
 export interface CommunityMember {
   user_id: string;
@@ -18,9 +19,25 @@ export function useCommunityMembers() {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
+  
+  // Cache for search results (5 minutes)
+  const searchCache = useRef<Map<string, {data: CommunityMember[], timestamp: number}>>(new Map());
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-  const fetchMembers = async (search?: string) => {
+  const fetchMembers = useCallback(async (search?: string) => {
     try {
+      // Check cache first
+      const cacheKey = search?.trim() || 'default';
+      const cachedResult = searchCache.current.get(cacheKey);
+      const now = Date.now();
+      
+      if (cachedResult && (now - cachedResult.timestamp) < CACHE_DURATION) {
+        console.log('useCommunityMembers: Using cached results for:', cacheKey);
+        setMembers(cachedResult.data);
+        setLoading(false);
+        return;
+      }
+      
       setLoading(true);
       console.log('useCommunityMembers: fetchMembers called with search:', search);
       
@@ -54,6 +71,12 @@ export function useCommunityMembers() {
 
         console.log('useCommunityMembers: Transformed search results:', transformedData);
         setMembers(transformedData);
+        
+        // Cache the results
+        searchCache.current.set(cacheKey, {
+          data: transformedData,
+          timestamp: now
+        });
       } else {
         console.log('useCommunityMembers: Fetching default members');
         // Fetch default visible community profiles
@@ -80,6 +103,12 @@ export function useCommunityMembers() {
 
         console.log('useCommunityMembers: Transformed default results:', transformedData);
         setMembers(transformedData);
+        
+        // Cache the results
+        searchCache.current.set(cacheKey, {
+          data: transformedData,
+          timestamp: now
+        });
       }
 
     } catch (error) {
@@ -94,7 +123,7 @@ export function useCommunityMembers() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // Only fetch members when user is authenticated
@@ -107,14 +136,29 @@ export function useCommunityMembers() {
     }
   }, [user, authLoading]);
 
-  const searchMembers = (term: string) => {
+  // Debounced search function
+  const debouncedFetchMembers = useCallback(
+    debounce((term: string) => {
+      if (user && term.length >= 2) {
+        fetchMembers(term);
+      } else if (user && term.length === 0) {
+        fetchMembers();
+      }
+    }, 300),
+    [user, fetchMembers]
+  );
+
+  const searchMembers = useCallback((term: string) => {
     console.log('useCommunityMembers: searchMembers called with term:', term);
     setSearchTerm(term);
-    // Only search if user is authenticated
+    
+    // Only search if user is authenticated and term is long enough
     if (user) {
-      fetchMembers(term);
+      if (term.trim().length >= 2 || term.trim().length === 0) {
+        debouncedFetchMembers(term);
+      }
     }
-  };
+  }, [user, debouncedFetchMembers]);
 
   const getDisplayName = (member: CommunityMember): string => {
     return member.display_name || 'Unknown User';

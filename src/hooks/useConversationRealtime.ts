@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import type { GlobalMessage } from './useGlobalMessages';
@@ -16,11 +16,26 @@ export function useConversationRealtime(
   const { user } = useAuth();
   const [messages, setMessages] = useState<(GlobalMessage | TenantMessage)[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Cache for thread messages (2 minutes)
+  const messageCache = useRef<Map<string, {data: any[], timestamp: number}>>(new Map());
+  const CACHE_DURATION = 2 * 60 * 1000; // 2 minutes
 
   // Fetch messages for specific thread with proper filtering
   const fetchThreadMessages = useCallback(async () => {
     if (!threadId || !user) {
       setMessages([]);
+      return;
+    }
+
+    // Check cache first
+    const cacheKey = `${threadId}_${context}_${activeTenantId || ''}`;
+    const cachedResult = messageCache.current.get(cacheKey);
+    const now = Date.now();
+    
+    if (cachedResult && (now - cachedResult.timestamp) < CACHE_DURATION) {
+      console.log('useConversationRealtime: Using cached messages for thread:', threadId);
+      setMessages(cachedResult.data);
       return;
     }
 
@@ -67,6 +82,12 @@ export function useConversationRealtime(
         })) || [];
 
         setMessages(messagesWithSenders);
+        
+        // Cache the results
+        messageCache.current.set(cacheKey, {
+          data: messagesWithSenders,
+          timestamp: now
+        });
 
       } else {
         // Tenant context
@@ -94,6 +115,12 @@ export function useConversationRealtime(
         })) || [];
 
         setMessages(messagesWithSenders);
+        
+        // Cache the results
+        messageCache.current.set(cacheKey, {
+          data: messagesWithSenders,
+          timestamp: now
+        });
       }
     } catch (error) {
       console.error('Error fetching thread messages:', error);

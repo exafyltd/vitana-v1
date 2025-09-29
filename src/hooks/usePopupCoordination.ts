@@ -1,4 +1,5 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import { debounce } from '@/utils/performanceOptimization';
 
 type PopupType = 'wallet-generic' | 'wallet-integrated' | 'wallet-master' | null;
 
@@ -20,11 +21,18 @@ const POPUP_PRIORITIES = {
 class PopupCoordinator {
   private currentPopup: PopupState | null = null;
   private listeners = new Set<() => void>();
+  private popupQueue: Array<{type: PopupType, context?: PopupState['context']}> = [];
+  
+  // Debounced notification to prevent excessive re-renders
+  private debouncedNotify = debounce(() => {
+    this.listeners.forEach(callback => callback());
+  }, 50);
 
   setPopup(type: PopupType, context?: PopupState['context']): boolean {
     if (!type) {
       this.currentPopup = null;
-      this.notifyListeners();
+      this.processQueue();
+      this.debouncedNotify();
       return true;
     }
 
@@ -33,11 +41,22 @@ class PopupCoordinator {
     // Allow if no popup is active or new popup has higher priority
     if (!this.currentPopup || priority >= this.currentPopup.priority) {
       this.currentPopup = { type, priority, context };
-      this.notifyListeners();
+      this.debouncedNotify();
       return true;
     }
 
-    return false; // Popup blocked by higher priority popup
+    // Queue lower priority popups instead of blocking them
+    this.popupQueue.push({ type, context });
+    return false;
+  }
+  
+  private processQueue(): void {
+    if (this.popupQueue.length > 0 && !this.currentPopup) {
+      const next = this.popupQueue.shift();
+      if (next) {
+        this.setPopup(next.type, next.context);
+      }
+    }
   }
 
   getCurrentPopup(): PopupState | null {
@@ -47,7 +66,8 @@ class PopupCoordinator {
   clearPopup(type: PopupType): void {
     if (this.currentPopup?.type === type) {
       this.currentPopup = null;
-      this.notifyListeners();
+      this.processQueue();
+      this.debouncedNotify();
     }
   }
 
@@ -57,7 +77,7 @@ class PopupCoordinator {
   }
 
   private notifyListeners(): void {
-    this.listeners.forEach(callback => callback());
+    this.debouncedNotify();
   }
 }
 
@@ -93,8 +113,8 @@ export function usePopupCoordination() {
     popupCoordinator.clearPopup(type);
   }, []);
 
-  const getCurrentPopup = useCallback(() => {
-    return popupCoordinator.getCurrentPopup();
+  const getCurrentPopup = useMemo(() => {
+    return () => popupCoordinator.getCurrentPopup();
   }, []);
 
   const isPopupActive = useCallback((type: PopupType) => {

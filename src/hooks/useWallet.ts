@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthProvider';
 import { useWalletRealtime } from './useWalletRealtime';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
+import { useRequestDeduplication } from './usePerformanceOptimization';
 
 export interface UserBalance {
   currency_type: 'USD' | 'VTN' | 'CREDITS';
@@ -39,9 +40,16 @@ export function useWallet() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const { deduplicateRequest } = useRequestDeduplication();
+  
+  // Background refresh queue
+  const backgroundTasks = useRef<Set<Promise<any>>>(new Set());
 
-  // Fetch user balances
-  const fetchBalances = async () => {
+  // Fetch user balances with deduplication
+  const fetchBalances = useCallback(async () => {
+    if (!user?.id) return;
+    
+    return deduplicateRequest('fetchBalances', async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       console.log('🔍 Fetching balances for user:', user?.id);
@@ -116,10 +124,14 @@ export function useWallet() {
       }
       // Do not overwrite with zero defaults; keep last known balances
     }
-  };
+    });
+  }, [user?.id, deduplicateRequest]);
 
-  // Fetch user transactions with user profiles
-  const fetchTransactions = async () => {
+  // Fetch user transactions with user profiles and deduplication
+  const fetchTransactions = useCallback(async () => {
+    if (!user?.id) return;
+    
+    return deduplicateRequest('fetchTransactions', async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -166,7 +178,8 @@ export function useWallet() {
       // Set empty transactions to prevent infinite loading  
       setTransactions([]);
     }
-  };
+    });
+  }, [user?.id, deduplicateRequest]);
 
   const getBalance = (currency: 'USD' | 'VTN' | 'CREDITS'): number | null => {
     const normalizedCurrency = currency.toUpperCase();
@@ -252,8 +265,10 @@ export function useWallet() {
         duration: 5000
       });
       
-      // Refresh data
-      await Promise.all([fetchBalances(), fetchTransactions()]);
+      // Background refresh - don't block user experience
+      const refreshTask = Promise.all([fetchBalances(), fetchTransactions()]);
+      backgroundTasks.current.add(refreshTask);
+      refreshTask.finally(() => backgroundTasks.current.delete(refreshTask));
       
       return {
         id: result.transaction_id,
@@ -316,8 +331,10 @@ export function useWallet() {
             : b
         ));
         
-        // Refresh transactions in background
-        fetchTransactions();
+        // Background refresh - don't block user experience
+        const refreshTask = fetchTransactions();
+        backgroundTasks.current.add(refreshTask);
+        refreshTask.finally(() => backgroundTasks.current.delete(refreshTask));
         
         return {
           id: result.transaction_id,
@@ -397,8 +414,10 @@ export function useWallet() {
             : b
         ));
         
-        // Refresh transactions in background
-        fetchTransactions();
+        // Background refresh - don't block user experience
+        const refreshTask = fetchTransactions();
+        backgroundTasks.current.add(refreshTask);
+        refreshTask.finally(() => backgroundTasks.current.delete(refreshTask));
         
         return {
           exchangeTransactionId: result.exchange_transaction_id,
