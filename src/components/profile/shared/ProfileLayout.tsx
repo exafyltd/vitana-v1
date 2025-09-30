@@ -153,7 +153,7 @@ export function ProfileLayout({
         
         {/* Main Profile Content - Unified spacing container */}
         <div className="px-6 mt-8">
-          <div className="max-w-7xl mx-auto flex flex-col gap-y-6">
+          <div className="max-w-7xl mx-auto flex flex-col gap-y-3">
             {/* Split Screen Content */}
             <ProfileSplitNavigation
               profile={profile}
