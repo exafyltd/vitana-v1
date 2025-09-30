@@ -24,7 +24,7 @@ export function RewardDot({
   const dotElement = (
     <div
       className={cn(
-        "absolute rounded-full bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg z-50",
+        "absolute rounded-full bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg z-[9999]",
         {
           // Size variants
           "w-2 h-2": size === "sm",
