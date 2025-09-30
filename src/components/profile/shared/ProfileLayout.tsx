@@ -178,7 +178,7 @@ export function ProfileLayout({
         
         {/* Navigation Bar - Sticky, full width, directly under social stats */}
         <div className="w-full border-b bg-background/95 backdrop-blur sticky top-0 z-10">
-          <div className="flex items-center justify-center gap-1 overflow-x-auto py-3 px-6">
+          <div className="flex items-center justify-evenly overflow-x-auto py-3 px-6">
             {navItems.map((item) => (
               <button
                 key={item.id}
