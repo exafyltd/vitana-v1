@@ -39,7 +39,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-3xl mx-auto space-y-6">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold mb-2">Professional Services</h2>
         <p className="text-muted-foreground">

@@ -56,7 +56,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
   };
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="w-full max-w-3xl mx-auto grid gap-4 md:grid-cols-2">
       {mockCommunities.map((community) => (
         <Card key={community.id} className="p-6 hover:shadow-md transition-shadow">
           <div className="space-y-4">

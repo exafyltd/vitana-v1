@@ -314,7 +314,7 @@ export function ProfileSplitNavigation({
     <SplitScreen
       leftPanel={renderLeftPanel()}
       rightPanel={renderRightPanel()}
-      defaultLeftSize={60}
+      defaultLeftSize={65}
       className="min-h-[800px]"
     />
   );

@@ -38,7 +38,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout }: Profi
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="w-full max-w-3xl mx-auto space-y-4">
       {/* About Section */}
       {profile.bio && (
         <Card className="p-6">

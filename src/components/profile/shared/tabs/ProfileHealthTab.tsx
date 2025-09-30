@@ -67,7 +67,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
   };
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-3xl mx-auto space-y-6">
       {/* Privacy Settings */}
       {editMode && onEditVisibility && (
         <Card className="p-6 border-2 border-dashed border-muted-foreground/20">

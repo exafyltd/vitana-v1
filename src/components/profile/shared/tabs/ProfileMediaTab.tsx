@@ -60,7 +60,7 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
   };
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="w-full max-w-3xl mx-auto grid gap-4 md:grid-cols-2">
       {mockMedia.map((item) => (
         <Card key={item.id} className="group cursor-pointer hover:shadow-md transition-shadow">
           <div className="relative">
