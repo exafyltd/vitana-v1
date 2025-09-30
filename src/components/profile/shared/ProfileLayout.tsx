@@ -147,7 +147,7 @@ export function ProfileLayout({
           />
         </div>
         
-        <div className="mt-4">
+        <div className="mt-2">
           <ProfileStats profile={profile} />
         </div>
         

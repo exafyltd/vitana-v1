@@ -18,7 +18,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
   return (
     <div className="relative pt-20">
       {/* Profile Info */}
-      <div className="px-6 pb-6 relative">
+      <div className="px-6 pb-3 relative">
         {/* Centered Avatar */}
         <div className="flex justify-center mb-4">
           <div className="relative">
