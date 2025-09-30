@@ -11,7 +11,7 @@ import PageHeader from "@/components/PageHeader";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Star, Zap } from "lucide-react";
+import { Star } from "lucide-react";
 import { CommunityImpactWidget } from "../community/CommunityImpactWidget";
 import { SuccessStoryCarousel } from "../community/SuccessStoryCarousel";
 import { CompatibilityIndicator } from "../engagement/CompatibilityIndicator";
@@ -202,32 +202,6 @@ export function ProfileLayout({
             />
           </div>
         </div>
-        
-        {/* Floating Autopilot Button - Always visible during edit mode */}
-        {editMode && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  size="icon"
-                  className="fixed bottom-6 right-6 h-12 w-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 bg-primary hover:bg-primary/90 z-50"
-                  onClick={() => {
-                    // Trigger the autopilot popup
-                    const autopilotElement = document.querySelector('[data-autopilot-trigger]') as HTMLElement;
-                    if (autopilotElement) {
-                      autopilotElement.click();
-                    }
-                  }}
-                >
-                  <Zap className="h-5 w-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p>Autopilot Assist</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
 
         {/* Credential Upload Popup */}
         <CredentialUploadPopup
