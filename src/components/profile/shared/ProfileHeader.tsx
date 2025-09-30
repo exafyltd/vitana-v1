@@ -109,7 +109,19 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
 
           {/* Action Buttons - Centered */}
           <div className="flex items-center justify-center gap-2">
-            {!isOwner && (
+            {isOwner ? (
+              <>
+                <Button variant="ghost" className="rounded-full">
+                  <Share className="h-4 w-4" />
+                </Button>
+                {editMode && onEdit && (
+                  <Button variant="outline" onClick={onEdit}>
+                    <Edit3 className="h-4 w-4 mr-2" />
+                    Edit Identity
+                  </Button>
+                )}
+              </>
+            ) : (
               <>
                 <Button className="rounded-full">
                   <UserPlus className="h-4 w-4 mr-2" />
@@ -123,12 +135,6 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
                   <Share className="h-4 w-4" />
                 </Button>
               </>
-            )}
-            {editMode && onEdit && (
-              <Button variant="outline" onClick={onEdit}>
-                <Edit3 className="h-4 w-4 mr-2" />
-                Edit Identity
-              </Button>
             )}
           </div>
         </div>
