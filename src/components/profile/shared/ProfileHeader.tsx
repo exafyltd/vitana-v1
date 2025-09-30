@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { UserPlus, MessageSquare, Share, Star, Edit3 } from "lucide-react";
+import { UserPlus, MessageSquare, ExternalLink, Star, Edit3 } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 
@@ -112,7 +112,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
             {isOwner ? (
               <>
                 <Button variant="ghost" className="rounded-full">
-                  <Share className="h-4 w-4" />
+                  <ExternalLink className="h-4 w-4" />
                 </Button>
                 {editMode && onEdit && (
                   <Button variant="outline" onClick={onEdit}>
@@ -132,7 +132,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
                   Message
                 </Button>
                 <Button variant="ghost" className="rounded-full">
-                  <Share className="h-4 w-4" />
+                  <ExternalLink className="h-4 w-4" />
                 </Button>
               </>
             )}
