@@ -16,7 +16,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
   const isOwner = scope === 'owner';
   
   return (
-    <div className="relative">
+    <div className="relative pt-20">
       {/* Profile Info */}
       <div className="px-6 pb-6 relative">
         {/* Avatar and Badge Layout - Flexbox for proper alignment */}
