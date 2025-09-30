@@ -151,9 +151,10 @@ export function ProfileLayout({
           <ProfileStats profile={profile} />
         </div>
         
-        {/* Split Screen Content - Immediately after stats */}
-        <div className="px-6 mt-8 mb-4">
-          <div className="max-w-7xl mx-auto">
+        {/* Main Profile Content - Unified spacing container */}
+        <div className="px-6 mt-8">
+          <div className="max-w-7xl mx-auto flex flex-col gap-y-6">
+            {/* Split Screen Content */}
             <ProfileSplitNavigation
               profile={profile}
               scope={scope}
@@ -167,13 +168,9 @@ export function ProfileLayout({
               onGoLive={() => setShowGoLive(true)}
               onUploadCredentials={() => setShowCredentialUpload(true)}
             />
-          </div>
-        </div>
-        
-        {/* Showcase Section - Single unified location */}
-        {effectiveEditMode && onEditShowcase && (
-          <div className="px-6 mt-8 mb-4">
-            <div className="max-w-7xl mx-auto">
+            
+            {/* Showcase Section - Single unified location */}
+            {effectiveEditMode && onEditShowcase && (
               <div className="bg-background rounded-lg border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold">Showcase</h3>
@@ -186,27 +183,19 @@ export function ProfileLayout({
                   Select posts and content to feature at the top of your profile
                 </p>
               </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Autopilot Suggestions - Positioned after Showcase */}
-        {effectiveEditMode && (
-          <div className="px-6 mt-8 mb-4">
-            <div className="max-w-7xl mx-auto">
+            )}
+            
+            {/* Autopilot Suggestions - Positioned after Showcase */}
+            {effectiveEditMode && (
               <AutopilotSuggestions
                 type="profile-section"
                 onSuggestionClick={(suggestion) => {
                   console.log('Autopilot suggestion clicked:', suggestion);
                 }}
               />
-            </div>
-          </div>
-        )}
-        
-        {/* View Mode Intelligence */}
-        <div className="px-6 mt-8 mb-4">
-          <div className="max-w-7xl mx-auto">
+            )}
+            
+            {/* View Mode Intelligence */}
             <ViewModeIntelligence
               isOwnProfile={isOwnProfile}
               viewerCompatibility={92}
