@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { SplitScreen } from "@/components/ui/split-screen";
@@ -15,13 +14,13 @@ import { CompatibilityIndicator } from "../engagement/CompatibilityIndicator";
 import { ContextualCTAs } from "../engagement/ContextualCTAs";
 import { ProfessionalCTAs } from "./ProfessionalCTAs";
 import { ProfileProgressCard } from "../editor/ProfileProgressCard";
-import { shouldShowField } from "@/lib/profileScope";
 
 interface ProfileSplitNavigationProps {
   profile: UserProfile;
   scope: Scope;
   editMode?: boolean;
   isOwnProfile?: boolean;
+  activeTab: string;
   onEditAbout?: () => void;
   onEditServices?: () => void;
   onEditCompliance?: () => void;
@@ -36,6 +35,7 @@ export function ProfileSplitNavigation({
   scope,
   editMode,
   isOwnProfile = false,
+  activeTab,
   onEditAbout,
   onEditServices,
   onEditCompliance,
@@ -44,29 +44,6 @@ export function ProfileSplitNavigation({
   onGoLive,
   onUploadCredentials,
 }: ProfileSplitNavigationProps) {
-  const [activeTab, setActiveTab] = useState("posts");
-
-  // Determine which tabs to show
-  const showHealthTab = profile.visibility.healthShareConsent && 
-    shouldShowField('public', scope);
-  
-  const showServicesTab = profile.offerings && 
-    profile.offerings.some(offering => offering.status === 'published');
-
-  const navItems = [
-    { id: 'posts', name: 'Posts', path: '#posts' },
-    { id: 'media', name: 'Media', path: '#media' },
-    { id: 'groups', name: 'Groups', path: '#groups' },
-    { id: 'events', name: 'Events', path: '#events' },
-  ];
-
-  if (showHealthTab) {
-    navItems.push({ id: 'health', name: 'Health Snapshot', path: '#health' });
-  }
-  
-  if (showServicesTab) {
-    navItems.push({ id: 'services', name: 'Services', path: '#services' });
-  }
 
   const renderLeftPanel = () => {
     switch (activeTab) {
@@ -155,32 +132,11 @@ export function ProfileSplitNavigation({
   };
 
   return (
-    <div className="space-y-0">
-      <div className="border-b bg-background/95 backdrop-blur sticky top-0 z-10">
-        <div className="px-6 py-3">
-          <div className="flex items-center gap-1 overflow-x-auto">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-all shadow-sm hover:bg-muted hover:shadow-md ${
-                  activeTab === item.id
-                    ? 'bg-muted text-foreground shadow-md'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      <SplitScreen
-        leftPanel={renderLeftPanel()}
-        rightPanel={renderRightPanel()}
-        defaultLeftSize={60}
-        className="min-h-[800px]"
-      />
-    </div>
+    <SplitScreen
+      leftPanel={renderLeftPanel()}
+      rightPanel={renderRightPanel()}
+      defaultLeftSize={60}
+      className="min-h-[800px]"
+    />
   );
 }
