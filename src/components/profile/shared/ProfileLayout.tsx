@@ -53,9 +53,6 @@ export function ProfileLayout({
   const [editHistory, setEditHistory] = useState<UserProfile[]>([profile]);
   const [historyIndex, setHistoryIndex] = useState(0);
   
-  // Navigation state
-  const [activeTab, setActiveTab] = useState("posts");
-  
   // Popup states
   const [showCredentialUpload, setShowCredentialUpload] = useState(false);
   const [showGoLive, setShowGoLive] = useState(false);
@@ -117,28 +114,6 @@ export function ProfileLayout({
 
   const effectiveEditMode = editMode && !isPreviewMode;
 
-  // Determine which tabs to show
-  const showHealthTab = profile.visibility.healthShareConsent && 
-    shouldShowField('public', scope);
-  
-  const showServicesTab = profile.offerings && 
-    profile.offerings.some(offering => offering.status === 'published');
-
-  const navItems = [
-    { id: 'posts', name: 'Posts', path: '#posts' },
-    { id: 'media', name: 'Media', path: '#media' },
-    { id: 'groups', name: 'Groups', path: '#groups' },
-    { id: 'events', name: 'Events', path: '#events' },
-  ];
-
-  if (showHealthTab) {
-    navItems.push({ id: 'health', name: 'Health Snapshot', path: '#health' });
-  }
-  
-  if (showServicesTab) {
-    navItems.push({ id: 'services', name: 'Services', path: '#services' });
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
       {/* Smart Editing Toolbar */}
@@ -174,25 +149,6 @@ export function ProfileLayout({
         
         <div className="mt-4">
           <ProfileStats profile={profile} />
-        </div>
-        
-        {/* Navigation Bar - Sticky, full width, directly under social stats */}
-        <div className="w-full border-b bg-background/95 backdrop-blur sticky top-0 z-10">
-          <div className="flex items-center justify-evenly overflow-x-auto py-3 px-6">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-all shadow-sm hover:bg-muted hover:shadow-md ${
-                  activeTab === item.id
-                    ? 'bg-muted text-foreground shadow-md'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
         </div>
         
         {/* Showcase Section - Single unified location */}
@@ -247,7 +203,6 @@ export function ProfileLayout({
               scope={scope}
               editMode={effectiveEditMode}
               isOwnProfile={isOwnProfile}
-              activeTab={activeTab}
               onEditAbout={onEditAbout}
               onEditServices={onEditServices}
               onEditCompliance={onEditCompliance}
