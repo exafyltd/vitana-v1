@@ -6,7 +6,7 @@ import { ProfessionalCredentialsStrip } from "./ProfessionalCredentialsStrip";
 import { ProfessionalCTAs } from "./ProfessionalCTAs";
 import { CredentialUploadPopup } from "./CredentialUploadPopup";
 import { GoLivePopup } from "@/components/GoLivePopup";
-import { ProfileTabs } from "./ProfileTabs";
+import { ProfileSplitNavigation } from "./ProfileSplitNavigation";
 import PageHeader from "@/components/PageHeader";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { Button } from "@/components/ui/button";
@@ -137,7 +137,7 @@ export function ProfileLayout({
       )}
 
       <div className="space-y-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto px-6">
           <ProfileHeader 
             profile={profile}
             scope={scope}
@@ -147,89 +147,6 @@ export function ProfileLayout({
         </div>
         
         <ProfileStats profile={profile} />
-        
-        <ProfessionalCredentialsStrip 
-          credentials={profile.professionalCredentials}
-          isOwnProfile={isOwnProfile}
-          onUploadCredentials={() => setShowCredentialUpload(true)}
-        />
-
-        {/* Community Impact + Success Story + Engagement (Public social proof) */}
-        <div className="px-6">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <CommunityImpactWidget 
-                vitanaIndex={profile.vitanaIndex ?? 0}
-                communityStats={{
-                  posts: profile.stats.posts,
-                  helpedUsers: 12,
-                  featuredStories: 3,
-                  influenceScore: 85
-                }}
-              />
-              <SuccessStoryCarousel />
-            </div>
-            
-            {/* Engagement Sidebar */}
-            <div className="space-y-4">
-              {effectiveEditMode ? (
-                <>
-                  <ProfileProgressCard
-                    profile={profile}
-                    onSectionClick={handleSectionClick}
-                  />
-                  <div className="mt-4">
-                    <ProfessionalCTAs 
-                      credentials={profile.professionalCredentials}
-                      isOwnProfile={true}
-                      onGoLive={() => setShowGoLive(true)}
-                      onJoinLive={() => {
-                        console.log('Joining live session');
-                      }}
-                      onBookSession={() => {
-                        console.log('Booking session');
-                      }}
-                      onMessage={() => {
-                        console.log('Sending message');
-                      }}
-                    />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <CompatibilityIndicator 
-                    isOwnProfile={isOwnProfile}
-                    mutualConnections={5}
-                  />
-                  <ProfessionalCTAs 
-                    credentials={profile.professionalCredentials}
-                    isOwnProfile={isOwnProfile}
-                    onGoLive={() => setShowGoLive(true)}
-                    onJoinLive={() => {
-                      // Handle joining live session
-                      console.log('Joining live session');
-                    }}
-                    onBookSession={() => {
-                      // Handle booking session
-                      console.log('Booking session');
-                    }}
-                    onMessage={() => {
-                      // Handle messaging
-                      console.log('Sending message');
-                    }}
-                  />
-                  <ContextualCTAs 
-                    isOwnProfile={isOwnProfile}
-                    profileType="coach"
-                    hasActiveChallenge={true}
-                    isServiceProvider={true}
-                    compatibilityScore={92}
-                  />
-                </>
-              )}
-            </div>
-          </div>
-        </div>
         
         {/* Showcase Section - Single unified location */}
         {effectiveEditMode && onEditShowcase && (
@@ -275,17 +192,21 @@ export function ProfileLayout({
           </div>
         </div>
         
+        {/* Split Screen Navigation with Content */}
         <div className="px-6">
           <div className="max-w-6xl mx-auto">
-            <ProfileTabs
-              profile={profile} 
-              scope={scope} 
+            <ProfileSplitNavigation
+              profile={profile}
+              scope={scope}
               editMode={effectiveEditMode}
               isOwnProfile={isOwnProfile}
               onEditAbout={onEditAbout}
               onEditServices={onEditServices}
               onEditCompliance={onEditCompliance}
               onEditVisibility={onEditVisibility}
+              onSectionClick={handleSectionClick}
+              onGoLive={() => setShowGoLive(true)}
+              onUploadCredentials={() => setShowCredentialUpload(true)}
             />
           </div>
         </div>

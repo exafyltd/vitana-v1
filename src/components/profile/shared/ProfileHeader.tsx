@@ -17,34 +17,10 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
   
   return (
     <div className="relative">
-      {/* Cover Image */}
-      <div className="aspect-[16/5] bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-t-2xl relative overflow-hidden">
-        {profile.coverUrl && (
-          <img 
-            src={profile.coverUrl} 
-            alt="Cover" 
-            className="w-full h-full object-cover"
-          />
-        )}
-        {editMode && onEdit && (
-          <Button
-            size="sm"
-            variant="outline"
-            className="absolute top-4 left-4 bg-background/80 backdrop-blur-sm"
-            onClick={onEdit}
-          >
-            <Edit3 className="h-4 w-4 mr-1" />
-            Edit Cover
-          </Button>
-        )}
-        
-      
-      </div>
-
       {/* Profile Info */}
       <div className="px-6 pb-6 relative">
         {/* Avatar and Badge Layout - Flexbox for proper alignment */}
-        <div className="flex items-start -mt-32 mb-4">
+        <div className="flex items-start mb-4">
           {/* Left spacer */}
           <div className="flex-1"></div>
           
