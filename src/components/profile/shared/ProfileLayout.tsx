@@ -152,7 +152,7 @@ export function ProfileLayout({
         </div>
         
         {/* Split Screen Content - Immediately after stats */}
-        <div className="px-6 mt-6">
+        <div className="px-6 mt-8 mb-4">
           <div className="max-w-7xl mx-auto">
             <ProfileSplitNavigation
               profile={profile}
@@ -172,7 +172,7 @@ export function ProfileLayout({
         
         {/* Showcase Section - Single unified location */}
         {effectiveEditMode && onEditShowcase && (
-          <div className="px-6 mt-10">
+          <div className="px-6 mt-8 mb-4">
             <div className="max-w-7xl mx-auto">
               <div className="bg-background rounded-lg border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
@@ -192,7 +192,7 @@ export function ProfileLayout({
         
         {/* Autopilot Suggestions - Positioned after Showcase */}
         {effectiveEditMode && (
-          <div className="px-6 mt-10">
+          <div className="px-6 mt-8 mb-4">
             <div className="max-w-7xl mx-auto">
               <AutopilotSuggestions
                 type="profile-section"
@@ -205,7 +205,7 @@ export function ProfileLayout({
         )}
         
         {/* View Mode Intelligence */}
-        <div className="px-6 mt-10">
+        <div className="px-6 mt-8 mb-4">
           <div className="max-w-7xl mx-auto">
             <ViewModeIntelligence
               isOwnProfile={isOwnProfile}
