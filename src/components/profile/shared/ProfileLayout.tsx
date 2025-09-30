@@ -136,7 +136,7 @@ export function ProfileLayout({
         />
       )}
 
-      <div className="space-y-8">
+      <div className="space-y-0">
         <div className="max-w-6xl mx-auto px-6">
           <ProfileHeader 
             profile={profile}
@@ -146,11 +146,13 @@ export function ProfileLayout({
           />
         </div>
         
-        <ProfileStats profile={profile} />
+        <div className="mt-4">
+          <ProfileStats profile={profile} />
+        </div>
         
         {/* Showcase Section - Single unified location */}
         {effectiveEditMode && onEditShowcase && (
-          <div className="px-6">
+          <div className="px-6 mt-6">
             <div className="max-w-6xl mx-auto">
               <div className="bg-background rounded-lg border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
@@ -170,7 +172,7 @@ export function ProfileLayout({
         
         {/* Autopilot Suggestions - Positioned after Showcase */}
         {effectiveEditMode && (
-          <div className="px-6">
+          <div className="px-6 mt-6">
             <div className="max-w-6xl mx-auto">
               <AutopilotSuggestions 
                 type="profile-section"
@@ -183,7 +185,7 @@ export function ProfileLayout({
         )}
         
         {/* View Mode Intelligence */}
-        <div className="px-6">
+        <div className="px-6 mt-6">
           <div className="max-w-6xl mx-auto">
             <ViewModeIntelligence 
               isOwnProfile={isOwnProfile}
@@ -192,23 +194,21 @@ export function ProfileLayout({
           </div>
         </div>
         
-        {/* Split Screen Navigation with Content */}
-        <div className="px-6">
-          <div className="max-w-6xl mx-auto">
-            <ProfileSplitNavigation
-              profile={profile}
-              scope={scope}
-              editMode={effectiveEditMode}
-              isOwnProfile={isOwnProfile}
-              onEditAbout={onEditAbout}
-              onEditServices={onEditServices}
-              onEditCompliance={onEditCompliance}
-              onEditVisibility={onEditVisibility}
-              onSectionClick={handleSectionClick}
-              onGoLive={() => setShowGoLive(true)}
-              onUploadCredentials={() => setShowCredentialUpload(true)}
-            />
-          </div>
+        {/* Split Screen Navigation with Content - Full Width, 2cm spacing from stats */}
+        <div className="mt-20">
+          <ProfileSplitNavigation
+            profile={profile}
+            scope={scope}
+            editMode={effectiveEditMode}
+            isOwnProfile={isOwnProfile}
+            onEditAbout={onEditAbout}
+            onEditServices={onEditServices}
+            onEditCompliance={onEditCompliance}
+            onEditVisibility={onEditVisibility}
+            onSectionClick={handleSectionClick}
+            onGoLive={() => setShowGoLive(true)}
+            onUploadCredentials={() => setShowCredentialUpload(true)}
+          />
         </div>
         
         {/* Floating Autopilot Button - Always visible during edit mode */}
