@@ -65,70 +65,249 @@ export function ProfileSplitNavigation({
   };
 
   const renderRightPanel = () => {
-    return (
-      <div className="space-y-6 p-6">
-        {/* Professional Credentials */}
-        <ProfessionalCredentialsStrip 
-          credentials={profile.professionalCredentials}
-          isOwnProfile={isOwnProfile}
-          onUploadCredentials={onUploadCredentials}
+    // Base content that appears in edit mode across all tabs
+    const editModeContent = editMode ? (
+      <>
+        <ProfileProgressCard
+          profile={profile}
+          onSectionClick={onSectionClick || (() => {})}
         />
+        <ProfessionalCTAs 
+          credentials={profile.professionalCredentials}
+          isOwnProfile={true}
+          onGoLive={onGoLive || (() => {})}
+          onJoinLive={() => console.log('Joining live session')}
+          onBookSession={() => console.log('Booking session')}
+          onMessage={() => console.log('Sending message')}
+        />
+      </>
+    ) : null;
 
-        {/* Community Impact and Success Stories */}
-        <div className="space-y-6">
-          <CommunityImpactWidget 
-            vitanaIndex={profile.vitanaIndex ?? 0}
-            communityStats={{
-              posts: profile.stats.posts,
-              helpedUsers: 12,
-              featuredStories: 3,
-              influenceScore: 85
-            }}
-          />
-          <SuccessStoryCarousel />
-        </div>
+    // Render content based on active tab
+    switch (activeTab) {
+      case 'posts':
+        return (
+          <div className="space-y-6 p-6">
+            <CommunityImpactWidget 
+              vitanaIndex={profile.vitanaIndex ?? 0}
+              communityStats={{
+                posts: profile.stats.posts,
+                helpedUsers: 12,
+                featuredStories: 3,
+                influenceScore: 85
+              }}
+            />
+            <SuccessStoryCarousel />
+            {editMode ? (
+              editModeContent
+            ) : (
+              <>
+                <CompatibilityIndicator 
+                  isOwnProfile={isOwnProfile}
+                  mutualConnections={5}
+                />
+                <ContextualCTAs 
+                  isOwnProfile={isOwnProfile}
+                  profileType="coach"
+                  hasActiveChallenge={true}
+                  isServiceProvider={true}
+                  compatibilityScore={92}
+                />
+              </>
+            )}
+          </div>
+        );
 
-        {/* Engagement Section */}
-        {editMode ? (
-          <>
-            <ProfileProgressCard
-              profile={profile}
-              onSectionClick={onSectionClick || (() => {})}
-            />
-            <ProfessionalCTAs 
-              credentials={profile.professionalCredentials}
-              isOwnProfile={true}
-              onGoLive={onGoLive || (() => {})}
-              onJoinLive={() => console.log('Joining live session')}
-              onBookSession={() => console.log('Booking session')}
-              onMessage={() => console.log('Sending message')}
-            />
-          </>
-        ) : (
-          <>
-            <CompatibilityIndicator 
-              isOwnProfile={isOwnProfile}
-              mutualConnections={5}
-            />
-            <ProfessionalCTAs 
+      case 'media':
+        return (
+          <div className="space-y-6 p-6">
+            <ProfessionalCredentialsStrip 
               credentials={profile.professionalCredentials}
               isOwnProfile={isOwnProfile}
-              onGoLive={onGoLive || (() => {})}
-              onJoinLive={() => console.log('Joining live session')}
-              onBookSession={() => console.log('Booking session')}
-              onMessage={() => console.log('Sending message')}
+              onUploadCredentials={onUploadCredentials}
             />
-            <ContextualCTAs 
+            {editMode ? (
+              editModeContent
+            ) : (
+              <>
+                <ProfessionalCTAs 
+                  credentials={profile.professionalCredentials}
+                  isOwnProfile={isOwnProfile}
+                  onGoLive={onGoLive || (() => {})}
+                  onJoinLive={() => console.log('Joining live session')}
+                  onBookSession={() => console.log('Booking session')}
+                  onMessage={() => console.log('Sending message')}
+                />
+                <ContextualCTAs 
+                  isOwnProfile={isOwnProfile}
+                  profileType="coach"
+                  hasActiveChallenge={true}
+                  isServiceProvider={true}
+                  compatibilityScore={92}
+                />
+              </>
+            )}
+          </div>
+        );
+
+      case 'groups':
+        return (
+          <div className="space-y-6 p-6">
+            <CommunityImpactWidget 
+              vitanaIndex={profile.vitanaIndex ?? 0}
+              communityStats={{
+                posts: profile.stats.posts,
+                helpedUsers: 12,
+                featuredStories: 3,
+                influenceScore: 85
+              }}
+            />
+            {editMode ? (
+              editModeContent
+            ) : (
+              <>
+                <CompatibilityIndicator 
+                  isOwnProfile={isOwnProfile}
+                  mutualConnections={5}
+                />
+                <ContextualCTAs 
+                  isOwnProfile={isOwnProfile}
+                  profileType="coach"
+                  hasActiveChallenge={true}
+                  isServiceProvider={true}
+                  compatibilityScore={92}
+                />
+              </>
+            )}
+          </div>
+        );
+
+      case 'events':
+        return (
+          <div className="space-y-6 p-6">
+            {editMode ? (
+              editModeContent
+            ) : (
+              <>
+                <CompatibilityIndicator 
+                  isOwnProfile={isOwnProfile}
+                  mutualConnections={5}
+                />
+                <ProfessionalCTAs 
+                  credentials={profile.professionalCredentials}
+                  isOwnProfile={isOwnProfile}
+                  onGoLive={onGoLive || (() => {})}
+                  onJoinLive={() => console.log('Joining live session')}
+                  onBookSession={() => console.log('Booking session')}
+                  onMessage={() => console.log('Sending message')}
+                />
+                <ContextualCTAs 
+                  isOwnProfile={isOwnProfile}
+                  profileType="coach"
+                  hasActiveChallenge={true}
+                  isServiceProvider={true}
+                  compatibilityScore={92}
+                />
+              </>
+            )}
+          </div>
+        );
+
+      case 'health':
+        return (
+          <div className="space-y-6 p-6">
+            <ProfessionalCredentialsStrip 
+              credentials={profile.professionalCredentials}
               isOwnProfile={isOwnProfile}
-              profileType="coach"
-              hasActiveChallenge={true}
-              isServiceProvider={true}
-              compatibilityScore={92}
+              onUploadCredentials={onUploadCredentials}
             />
-          </>
-        )}
-      </div>
-    );
+            {editMode ? (
+              editModeContent
+            ) : (
+              <>
+                <ProfessionalCTAs 
+                  credentials={profile.professionalCredentials}
+                  isOwnProfile={isOwnProfile}
+                  onGoLive={onGoLive || (() => {})}
+                  onJoinLive={() => console.log('Joining live session')}
+                  onBookSession={() => console.log('Booking session')}
+                  onMessage={() => console.log('Sending message')}
+                />
+                <ContextualCTAs 
+                  isOwnProfile={isOwnProfile}
+                  profileType="coach"
+                  hasActiveChallenge={true}
+                  isServiceProvider={true}
+                  compatibilityScore={92}
+                />
+              </>
+            )}
+          </div>
+        );
+
+      case 'services':
+        return (
+          <div className="space-y-6 p-6">
+            <ProfessionalCredentialsStrip 
+              credentials={profile.professionalCredentials}
+              isOwnProfile={isOwnProfile}
+              onUploadCredentials={onUploadCredentials}
+            />
+            {editMode ? (
+              editModeContent
+            ) : (
+              <>
+                <ProfessionalCTAs 
+                  credentials={profile.professionalCredentials}
+                  isOwnProfile={isOwnProfile}
+                  onGoLive={onGoLive || (() => {})}
+                  onJoinLive={() => console.log('Joining live session')}
+                  onBookSession={() => console.log('Booking session')}
+                  onMessage={() => console.log('Sending message')}
+                />
+                <CompatibilityIndicator 
+                  isOwnProfile={isOwnProfile}
+                  mutualConnections={5}
+                />
+                <SuccessStoryCarousel />
+              </>
+            )}
+          </div>
+        );
+
+      default:
+        return (
+          <div className="space-y-6 p-6">
+            <CommunityImpactWidget 
+              vitanaIndex={profile.vitanaIndex ?? 0}
+              communityStats={{
+                posts: profile.stats.posts,
+                helpedUsers: 12,
+                featuredStories: 3,
+                influenceScore: 85
+              }}
+            />
+            <SuccessStoryCarousel />
+            {editMode ? (
+              editModeContent
+            ) : (
+              <>
+                <CompatibilityIndicator 
+                  isOwnProfile={isOwnProfile}
+                  mutualConnections={5}
+                />
+                <ContextualCTAs 
+                  isOwnProfile={isOwnProfile}
+                  profileType="coach"
+                  hasActiveChallenge={true}
+                  isServiceProvider={true}
+                  compatibilityScore={92}
+                />
+              </>
+            )}
+          </div>
+        );
+    }
   };
 
   return (
