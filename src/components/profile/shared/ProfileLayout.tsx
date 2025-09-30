@@ -177,23 +177,21 @@ export function ProfileLayout({
         </div>
         
         {/* Navigation Bar - Sticky, full width, directly under social stats */}
-        <div className="border-b bg-background/95 backdrop-blur sticky top-0 z-10">
-          <div className="max-w-6xl mx-auto px-6 py-3">
-            <div className="flex items-center gap-1 overflow-x-auto">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-all shadow-sm hover:bg-muted hover:shadow-md ${
-                    activeTab === item.id
-                      ? 'bg-muted text-foreground shadow-md'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {item.name}
-                </button>
-              ))}
-            </div>
+        <div className="w-full border-b bg-background/95 backdrop-blur sticky top-0 z-10">
+          <div className="flex items-center justify-center gap-1 overflow-x-auto py-3 px-6">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-all shadow-sm hover:bg-muted hover:shadow-md ${
+                  activeTab === item.id
+                    ? 'bg-muted text-foreground shadow-md'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {item.name}
+              </button>
+            ))}
           </div>
         </div>
         
