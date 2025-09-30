@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotAction, AutopilotPriority } from "@/types/autopilot";
 import { 
+  Plane,
   Zap, 
   Clock, 
   ChevronRight, 
@@ -152,7 +153,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
-              <Zap className="w-4 h-4 text-red-500" />
+              <Plane className="w-4 h-4 text-red-500" />
             </div>
             <span>Autopilot Actions</span>
             <Badge variant="outline" className="ml-2">
@@ -168,7 +169,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           <div className="py-8">
             <div className="text-center mb-4">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
-                <Zap className="w-6 h-6 text-red-500 animate-pulse" />
+                <Plane className="w-6 h-6 text-red-500 animate-pulse" />
               </div>
               <h3 className="font-medium mb-2">Executing Actions...</h3>
               <p className="text-sm text-muted-foreground">Please wait while AI handles your requests</p>

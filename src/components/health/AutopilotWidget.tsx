@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { RewardDot } from "@/components/ui/reward-dot";
-import { Zap, Brain, Settings } from "lucide-react";
+import { Plane, Brain, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { withCardId } from "@/lib/withCardId";
 interface AutopilotWidgetProps {
@@ -25,7 +25,7 @@ function AutopilotWidgetBase({
 }: AutopilotWidgetProps) {
   if (variant === "mini") {
     return <div className="flex items-center gap-2 p-2 rounded-lg bg-gradient-to-r from-calendar-primary/10 to-calendar-secondary/10 border border-calendar-primary/20">
-        <Zap className="w-4 h-4 text-calendar-primary" />
+        <Plane className="w-4 h-4 text-calendar-primary" />
         <span className="text-sm font-medium text-foreground">Autopilot</span>
         <Switch checked={isEnabled} onCheckedChange={onToggle} />
       </div>;
@@ -44,7 +44,7 @@ function AutopilotWidgetBase({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
+              <Plane className="w-4 h-4 text-white" />
             </div>
             <div>
               <CardTitle className="text-lg">Autopilot ⚡</CardTitle>

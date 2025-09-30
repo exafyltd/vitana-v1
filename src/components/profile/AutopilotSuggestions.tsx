@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Zap, TrendingUp, Star } from "lucide-react";
+import { Sparkles, Plane, TrendingUp, Star } from "lucide-react";
 import { AutopilotProfilePopup } from "./AutopilotProfilePopup";
 
 interface AutopilotSuggestionsProps {
@@ -22,7 +22,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             <p className="text-xs text-muted-foreground">Get AI-powered suggestions to make your profile more engaging and complete.</p>
           </div>
           <Button size="sm" variant="outline">
-            <Zap className="h-3 w-3 mr-1" />
+            <Plane className="h-3 w-3 mr-1" />
             Enable
           </Button>
         </div>
@@ -135,7 +135,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             <div className="flex items-center gap-4">
               <div className="flex-shrink-0">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <Zap className="h-6 w-6 text-primary" />
+                  <Plane className="h-6 w-6 text-primary" />
                 </div>
               </div>
               <div className="flex-1">
