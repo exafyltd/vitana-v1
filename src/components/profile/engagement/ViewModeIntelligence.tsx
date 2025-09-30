@@ -81,7 +81,7 @@ export function ViewModeIntelligence({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-3 gap-6 mb-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-[hsl(var(--sys-vitana-accent))]">
                 {insights.viewsThisWeek}
@@ -128,7 +128,7 @@ export function ViewModeIntelligence({
         )}
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {profiles.slice(0, 3).map((profile) => (
             <div key={profile.id} className="flex items-center justify-between p-3 rounded-lg border bg-background/50">
               <div className="flex items-center gap-3">
