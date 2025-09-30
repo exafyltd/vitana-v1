@@ -151,6 +151,25 @@ export function ProfileLayout({
           <ProfileStats profile={profile} />
         </div>
         
+        {/* Split Screen Content - Immediately after stats */}
+        <div className="px-6 mt-6">
+          <div className="max-w-7xl mx-auto">
+            <ProfileSplitNavigation
+              profile={profile}
+              scope={scope}
+              editMode={effectiveEditMode}
+              isOwnProfile={isOwnProfile}
+              onEditAbout={onEditAbout}
+              onEditServices={onEditServices}
+              onEditCompliance={onEditCompliance}
+              onEditVisibility={onEditVisibility}
+              onSectionClick={handleSectionClick}
+              onGoLive={() => setShowGoLive(true)}
+              onUploadCredentials={() => setShowCredentialUpload(true)}
+            />
+          </div>
+        </div>
+        
         {/* Showcase Section - Single unified location */}
         {effectiveEditMode && onEditShowcase && (
           <div className="px-6 mt-10">
@@ -191,25 +210,6 @@ export function ProfileLayout({
             <ViewModeIntelligence
               isOwnProfile={isOwnProfile}
               viewerCompatibility={92}
-            />
-          </div>
-        </div>
-        
-        {/* Split Screen Content - Contained Width */}
-        <div className="px-6 mt-10">
-          <div className="max-w-7xl mx-auto">
-            <ProfileSplitNavigation
-              profile={profile}
-              scope={scope}
-              editMode={effectiveEditMode}
-              isOwnProfile={isOwnProfile}
-              onEditAbout={onEditAbout}
-              onEditServices={onEditServices}
-              onEditCompliance={onEditCompliance}
-              onEditVisibility={onEditVisibility}
-              onSectionClick={handleSectionClick}
-              onGoLive={() => setShowGoLive(true)}
-              onUploadCredentials={() => setShowCredentialUpload(true)}
             />
           </div>
         </div>
