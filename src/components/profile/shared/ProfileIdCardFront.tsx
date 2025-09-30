@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { UserPlus, MessageSquare, ExternalLink, Star, Edit3 } from "lucide-react";
+import { UserPlus, MessageSquare, ExternalLink, Star, Edit3, Share2 } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 
@@ -124,8 +124,9 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                 <MessageSquare className="h-4 w-4 mr-2" />
                 Message
               </Button>
-              <Button variant="ghost" className="rounded-full">
-                <ExternalLink className="h-4 w-4" />
+              <Button variant="ghost">
+                <Share2 className="h-4 w-4 mr-2" />
+                Share
               </Button>
             </>
           )}
