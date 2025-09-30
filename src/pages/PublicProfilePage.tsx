@@ -61,6 +61,11 @@ export default function PublicProfilePage() {
         console.log('Found profile:', dbProfile);
         
         // Transform database profile to UserProfile format
+        // Generate a consistent VITANA Index score based on user_id for demo purposes
+        const userIdHash = dbProfile.user_id.split('-')[0];
+        const hashValue = parseInt(userIdHash.substring(0, 8), 16);
+        const vitanaScore = 500 + (hashValue % 400); // Range: 500-899
+        
         const transformedProfile: UserProfile = {
           id: dbProfile.user_id,
           name: dbProfile.display_name || dbProfile.full_name || 'Unknown User',
@@ -73,6 +78,8 @@ export default function PublicProfilePage() {
           membershipTier: 'standard',
           links: [],
           languages: ['English'],
+          vitanaIndex: vitanaScore,
+          vitanaPercentile: Math.min(95, Math.floor((vitanaScore / 999) * 100)),
           stats: {
             posts: 0,
             followers: 0,
