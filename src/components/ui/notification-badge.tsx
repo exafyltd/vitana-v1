@@ -37,10 +37,10 @@ export function NotificationBadge({
   
   return (
     <Badge 
-      variant="destructive" 
+      variant="default" 
       className={cn(
         "absolute top-0 right-0 p-0 flex items-center justify-center rounded-full",
-        "bg-destructive text-destructive-foreground font-bold leading-none",
+        "bg-primary text-primary-foreground font-bold leading-none",
         "pointer-events-none",
         // Responsive sizing based on sidebar state
         collapsed 
