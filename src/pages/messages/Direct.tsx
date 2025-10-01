@@ -14,6 +14,7 @@ import { getConversationDisplayTitle, getConversationDisplayAvatar, getOtherPart
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
 import ConversationListSkeleton from "@/components/messages/ConversationListSkeleton";
+import { useLocation } from "react-router-dom";
 
 const messagesSubItems = [
   { id: "overview", name: "Overview", path: "/inbox" },
@@ -25,6 +26,7 @@ const messagesSubItems = [
 
 export default function Direct() {
   const { user } = useAuth();
+  const location = useLocation();
   const hybridMessages = useHybridMessages();
   const { threads, isLoading, context } = hybridMessages;
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
@@ -34,6 +36,17 @@ export default function Direct() {
   const directThreads = useMemo(() => {
     return threads.filter(thread => thread.type === 'direct');
   }, [threads]);
+
+  // Handle incoming navigation state from profile cards
+  useEffect(() => {
+    const state = location.state as { selectedThreadId?: string } | null;
+    if (state?.selectedThreadId) {
+      setSelectedThreadId(state.selectedThreadId);
+      setSelectedRecipientId(null);
+      // Clear the state so it doesn't persist on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Auto-select the first (latest) conversation when threads load
   useEffect(() => {

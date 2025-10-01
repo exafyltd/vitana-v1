@@ -4,6 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { UserPlus, MessageSquare, ExternalLink, Star, Edit3, Share2 } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
+import { useNavigate } from "react-router-dom";
+import { useHybridMessages } from "@/hooks/useHybridMessages";
+import { useAuth } from "@/context/AuthProvider";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 interface ProfileIdCardFrontProps {
   profile: UserProfile;
@@ -14,6 +19,38 @@ interface ProfileIdCardFrontProps {
 
 export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: ProfileIdCardFrontProps) {
   const isOwner = scope === 'owner';
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { createThread } = useHybridMessages('global');
+  const { toast } = useToast();
+  const [isCreatingThread, setIsCreatingThread] = useState(false);
+
+  const handleMessageClick = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to send messages",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsCreatingThread(true);
+    try {
+      const thread = await createThread([profile.id]);
+      if (thread?.id) {
+        navigate('/inbox/direct', { state: { selectedThreadId: thread.id } });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to open conversation. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsCreatingThread(false);
+    }
+  };
   
   return (
     <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
@@ -120,9 +157,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                 <UserPlus className="h-4 w-4 mr-2" />
                 Follow
               </Button>
-              <Button variant="outline" className="rounded-full">
+              <Button 
+                variant="outline" 
+                className="rounded-full" 
+                onClick={handleMessageClick}
+                disabled={isCreatingThread}
+              >
                 <MessageSquare className="h-4 w-4 mr-2" />
-                Message
+                {isCreatingThread ? "Opening..." : "Message"}
               </Button>
               <Button variant="outline" className="rounded-full">
                 <Share2 className="h-4 w-4 mr-2" />
