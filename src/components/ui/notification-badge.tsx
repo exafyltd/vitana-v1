@@ -7,7 +7,6 @@ interface NotificationBadgeProps {
   collapsed?: boolean;
   className?: string;
   ariaLabel?: string;
-  label?: string;
 }
 
 /**
@@ -30,8 +29,7 @@ export function NotificationBadge({
   count, 
   collapsed = false,
   className,
-  ariaLabel,
-  label 
+  ariaLabel 
 }: NotificationBadgeProps) {
   if (count === 0) return null;
   
@@ -41,18 +39,17 @@ export function NotificationBadge({
     <Badge 
       variant="default" 
       className={cn(
-        "absolute flex items-center justify-center rounded-full whitespace-nowrap",
+        "absolute top-0 right-0 p-0 flex items-center justify-center rounded-full",
         "bg-blue-500 text-white font-bold leading-none",
         "pointer-events-none",
-        "z-10",
+        // Responsive sizing based on sidebar state
         collapsed 
-          ? "top-[2px] right-[2px] h-[18px] min-w-[18px] px-[3px] text-[11px]" 
-          : "top-1 right-1 h-[18px] min-w-[18px] px-1 text-xs",
+          ? "h-3 w-3 text-[8px] min-w-[12px]" 
+          : "h-4 w-4 text-[10px] min-w-[16px]",
         className
       )}
-      aria-label={ariaLabel || `${label ? `${label}: ` : ''}${count} notification${count !== 1 ? 's' : ''}`}
+      aria-label={ariaLabel || `${count} notification${count !== 1 ? 's' : ''}`}
       role="status"
-      title={label ? `${label} • ${count}` : undefined}
     >
       {formattedCount}
     </Badge>
