@@ -1,5 +1,5 @@
 import { UserProfile } from "@/types/profile";
-import { Instagram, Linkedin, Youtube, Twitter, ExternalLink } from "lucide-react";
+import { Instagram, Linkedin, Youtube, Twitter, ExternalLink, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ProfileIdCardBackProps {
@@ -75,7 +75,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
               { icon: <Instagram className="h-6 w-6" />, name: 'Instagram' },
               { icon: <Linkedin className="h-6 w-6" />, name: 'LinkedIn' },
               { icon: <Youtube className="h-6 w-6" />, name: 'YouTube' },
-              { icon: <Twitter className="h-6 w-6" />, name: 'Twitter' },
+              { icon: <X className="h-6 w-6" />, name: 'X' },
             ].map((placeholder, index) => (
               <div
                 key={placeholder.name}
