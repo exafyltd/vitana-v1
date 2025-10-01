@@ -15,6 +15,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { useSidebar } from '@/components/ui/sidebar';
+import { useFollow } from '@/hooks/useFollow';
 
 interface Notification {
   id: string;
@@ -46,6 +47,7 @@ const getNotificationIcon = (type: string) => {
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [followStatuses, setFollowStatuses] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
   const { open } = useSidebar();
 
@@ -88,6 +90,22 @@ export default function NotificationBell() {
 
       setNotifications(data || []);
       setUnreadCount(data?.filter(n => !n.is_read).length || 0);
+
+      // Fetch follow statuses for follow notifications
+      const followNotifications = data?.filter(n => n.type === 'follow') || [];
+      const statuses: Record<string, boolean> = {};
+      
+      for (const notif of followNotifications) {
+        const followerData = notif.data as { follower_id?: string; follower_name?: string } | null;
+        if (followerData?.follower_id) {
+          const { data: followStatus } = await supabase.rpc('get_follow_status', {
+            target_user_id: followerData.follower_id
+          });
+          statuses[followerData.follower_id] = followStatus || false;
+        }
+      }
+      
+      setFollowStatuses(statuses);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
@@ -126,12 +144,33 @@ export default function NotificationBell() {
         navigate('/calendar');
         break;
       case 'follow':
-        if (notification.data?.follower_id) {
-          navigate(`/profile/${notification.data.follower_id}`);
+        const followerData = notification.data as { follower_id?: string; follower_name?: string } | null;
+        if (followerData?.follower_id) {
+          navigate(`/profile/${followerData.follower_id}`);
         }
         break;
       default:
         break;
+    }
+  };
+
+  const handleFollowBack = async (e: React.MouseEvent, followerId: string) => {
+    e.stopPropagation();
+    
+    try {
+      const { data, error } = await supabase.rpc('follow_user', {
+        target_user_id: followerId
+      });
+
+      if (error) throw error;
+
+      // Update local follow status
+      setFollowStatuses(prev => ({
+        ...prev,
+        [followerId]: true
+      }));
+    } catch (error) {
+      console.error('Error following user:', error);
     }
   };
 
@@ -187,6 +226,19 @@ export default function NotificationBell() {
                     {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                   </span>
                 </div>
+                {notification.type === 'follow' && (() => {
+                  const followerData = notification.data as { follower_id?: string; follower_name?: string } | null;
+                  return followerData?.follower_id && !followStatuses[followerData.follower_id] && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="shrink-0"
+                      onClick={(e) => handleFollowBack(e, followerData.follower_id!)}
+                    >
+                      Follow Back
+                    </Button>
+                  );
+                })()}
               </div>
             </DropdownMenuItem>
           ))
