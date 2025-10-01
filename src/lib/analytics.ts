@@ -190,6 +190,33 @@ class AnalyticsService {
   clearStoredEvents(): void {
     localStorage.removeItem('vitana_analytics_events');
   }
+
+  // Track share events for profiles
+  trackShare(
+    eventName: 'share_opened' | 'share_completed',
+    channel: 'sheet' | 'copy_link' | 'x' | 'linkedin' | 'whatsapp' | 'email' | 'web_share',
+    profileId: string,
+    handle: string
+  ): void {
+    const payload: AnalyticsPayload = {
+      template_id: 'profile_share',
+      version: '1.0',
+      screen_route: this.getScreenRoute(),
+      session_id: this.sessionId,
+      tenant_id: this.tenantId,
+      user_role: this.userRole,
+      system_card_id: profileId,
+      item_id: handle,
+      timestamp: Date.now()
+    };
+
+    const event: AnalyticsEvent = {
+      event_name: eventName,
+      payload
+    };
+
+    this.dispatch(event);
+  }
 }
 
 export const analytics = new AnalyticsService();

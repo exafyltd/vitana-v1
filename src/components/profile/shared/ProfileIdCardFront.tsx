@@ -10,6 +10,14 @@ import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { useFollow } from "@/hooks/useFollow";
+import { useProfileShare } from "@/hooks/useProfileShare";
+import { ProfileShareSheet } from "./ProfileShareSheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ProfileIdCardFrontProps {
   profile: UserProfile;
@@ -26,6 +34,16 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const { toast } = useToast();
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
+
+  // Determine if profile is public
+  const isPublicProfile = profile.visibility?.indexPublic !== false;
+
+  const shareHook = useProfileShare({
+    handle: profile.handle,
+    name: profile.name,
+    profileId: profile.id,
+    isPublic: isPublicProfile
+  });
 
   const handleMessageClick = async () => {
     if (!user) {
@@ -173,10 +191,42 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                 <MessageSquare className="h-4 w-4 mr-2" />
                 {isCreatingThread ? "Opening..." : "Message"}
               </Button>
-              <Button variant="outline" className="rounded-full">
-                <Share2 className="h-4 w-4 mr-2" />
-                Share
-              </Button>
+              
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <ProfileShareSheet
+                        isOpen={shareHook.isShareOpen}
+                        onOpenChange={shareHook.setIsShareOpen}
+                        onCopyLink={shareHook.copyLink}
+                        onShareToX={shareHook.shareToX}
+                        onShareToLinkedIn={shareHook.shareToLinkedIn}
+                        onShareToWhatsApp={shareHook.shareToWhatsApp}
+                        onShareViaEmail={shareHook.shareViaEmail}
+                        onShareNative={shareHook.shareNative}
+                        canUseNativeShare={shareHook.canUseNativeShare}
+                        trigger={
+                          <Button 
+                            variant="outline" 
+                            className="rounded-full"
+                            onClick={shareHook.openShare}
+                            disabled={!shareHook.isPublic}
+                          >
+                            <Share2 className="h-4 w-4 mr-2" />
+                            Share
+                          </Button>
+                        }
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  {!shareHook.isPublic && (
+                    <TooltipContent>
+                      <p>Profile must be public to share</p>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
             </>
           )}
         </div>
