@@ -179,7 +179,7 @@ function AppSidebar({
           </button>
           {/* Utility Icons - only show when sidebar is open */}
           {open && (
-            <div className="flex items-center space-x-1 ml-4">
+            <div className="flex items-center space-x-1 ml-4 pr-2">
               {/* Calendar Button - Today's Overview */}
               <div 
                 className="relative shrink-0 transition-all duration-200"
@@ -221,7 +221,7 @@ function AppSidebar({
                 {pendingCount > 0 && (
                   <Badge 
                     variant="destructive" 
-                    className="absolute -top-1 -right-1 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
+                    className="absolute -top-0.5 -right-0.5 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
                   >
                     {pendingCount > 9 ? '9+' : pendingCount}
                   </Badge>
