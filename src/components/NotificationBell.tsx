@@ -252,19 +252,18 @@ export default function NotificationBell() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="relative">
+        <div className="relative h-10 w-10 flex items-center justify-center">
           <Button 
             variant="ghost" 
             className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
-            title={`Notifications • ${unreadCount} unread`}
-            aria-label={`${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
+            aria-label={`Notifications: ${unreadCount} unread`}
           >
             <Bell className="h-4 w-4 text-white" />
           </Button>
           <NotificationBadge 
             count={unreadCount} 
             collapsed={!open}
-            ariaLabel={`${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
+            label="Notifications"
           />
         </div>
       </DropdownMenuTrigger>
