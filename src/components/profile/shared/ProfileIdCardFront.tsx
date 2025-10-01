@@ -124,7 +124,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                 <MessageSquare className="h-4 w-4 mr-2" />
                 Message
               </Button>
-              <Button variant="ghost">
+              <Button variant="outline" className="rounded-full">
                 <Share2 className="h-4 w-4 mr-2" />
                 Share
               </Button>
