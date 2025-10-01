@@ -19,11 +19,11 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
   const socialLinks: SocialLink[] = [];
   
   const platformPatterns = [
-    { name: 'Instagram', pattern: /instagram\.com/i, icon: <Instagram className="h-6 w-6" />, color: 'hover:text-pink-600' },
-    { name: 'TikTok', pattern: /tiktok\.com/i, icon: <ExternalLink className="h-6 w-6" />, color: 'hover:text-gray-900' },
-    { name: 'LinkedIn', pattern: /linkedin\.com/i, icon: <Linkedin className="h-6 w-6" />, color: 'hover:text-blue-600' },
-    { name: 'YouTube', pattern: /youtube\.com|youtu\.be/i, icon: <Youtube className="h-6 w-6" />, color: 'hover:text-red-600' },
-    { name: 'X', pattern: /twitter\.com|x\.com/i, icon: <XIcon className="h-6 w-6" />, color: 'hover:text-gray-900' },
+    { name: 'Instagram', pattern: /instagram\.com/i, icon: <Instagram className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-pink-600' },
+    { name: 'TikTok', pattern: /tiktok\.com/i, icon: <ExternalLink className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-gray-900' },
+    { name: 'LinkedIn', pattern: /linkedin\.com/i, icon: <Linkedin className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-blue-600' },
+    { name: 'YouTube', pattern: /youtube\.com|youtu\.be/i, icon: <Youtube className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-red-600' },
+    { name: 'X', pattern: /twitter\.com|x\.com/i, icon: <XIcon className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-gray-900' },
   ];
 
   if (profile.links) {
@@ -70,27 +70,27 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-8 animate-fade-in">
-          <div className="grid grid-cols-2 gap-4 w-full max-w-xs mb-6">
+        <div className="flex flex-col items-center justify-center py-8 animate-fade-in">
+          <div className="grid grid-cols-2 gap-4 w-full max-w-xs mb-4">
             {[
-              { icon: <Instagram className="h-6 w-6" />, name: 'Instagram' },
-              { icon: <Linkedin className="h-6 w-6" />, name: 'LinkedIn' },
-              { icon: <Youtube className="h-6 w-6" />, name: 'YouTube' },
-              { icon: <XIcon className="h-6 w-6" />, name: 'X' },
+              { icon: <Instagram className="h-6 w-6" strokeWidth={1.5} />, name: 'Instagram' },
+              { icon: <Linkedin className="h-6 w-6" strokeWidth={1.5} />, name: 'LinkedIn' },
+              { icon: <Youtube className="h-6 w-6" strokeWidth={1.5} />, name: 'YouTube' },
+              { icon: <XIcon className="h-6 w-6" strokeWidth={1.5} />, name: 'X' },
             ].map((placeholder, index) => (
               <div
                 key={placeholder.name}
-                className="h-20 flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-muted-foreground/30 bg-muted/20 animate-pulse"
+                className="group h-20 flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-muted-foreground/30 bg-muted/20 animate-pulse hover:border-muted-foreground/50 hover:bg-muted/30 hover:scale-105 transition-all duration-300 cursor-pointer hover:shadow-md"
                 style={{ animationDelay: `${index * 150}ms`, animationDuration: '3s' }}
               >
-                <div className="text-muted-foreground/40">
+                <div className="text-muted-foreground/40 transition-all duration-300 group-hover:text-muted-foreground/60 group-hover:scale-110">
                   {placeholder.icon}
                 </div>
-                <span className="text-xs text-muted-foreground/50">{placeholder.name}</span>
+                <span className="text-xs text-muted-foreground/50 transition-colors duration-300 group-hover:text-muted-foreground/70">{placeholder.name}</span>
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground/70 font-medium">
+          <p className="text-sm text-muted-foreground/70 font-medium text-center mt-2">
             Add your social links to connect
           </p>
         </div>
