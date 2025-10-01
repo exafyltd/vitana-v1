@@ -40,7 +40,7 @@ export function NotificationBadge({
       variant="default" 
       className={cn(
         "absolute top-0 right-0 p-0 flex items-center justify-center rounded-full",
-        "bg-primary text-primary-foreground font-bold leading-none",
+        "bg-blue-500 text-white font-bold leading-none",
         "pointer-events-none",
         // Responsive sizing based on sidebar state
         collapsed 
