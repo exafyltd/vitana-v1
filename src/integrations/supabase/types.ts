@@ -614,6 +614,13 @@ export type Database = {
             referencedRelation: "lab_tests"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "lab_test_orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       lab_test_results: {
@@ -654,6 +661,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "lab_test_orders"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lab_test_results_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -935,6 +949,20 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "messages_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+          {
             foreignKeyName: "messages_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
@@ -1044,7 +1072,15 @@ export type Database = {
           type?: Database["public"]["Enums"]["notification_type"]
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -1114,6 +1150,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -1246,6 +1289,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "fk_thread_participants_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+          {
             foreignKeyName: "thread_participants_thread_id_fkey"
             columns: ["thread_id"]
             isOneToOne: false
@@ -1320,6 +1370,42 @@ export type Database = {
           },
         ]
       }
+      user_follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_follows_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "user_follows_following_id_fkey"
+            columns: ["following_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       user_wallets: {
         Row: {
           balance: number
@@ -1380,6 +1466,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "wallet_credits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       wallet_transactions: {
@@ -1432,7 +1525,14 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_follow_counts: {
+        Row: {
+          followers_count: number | null
+          following_count: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       bootstrap_admin_user: {
@@ -1465,6 +1565,10 @@ export type Database = {
         Args: { p_recipient_id: string; p_tenant_id: string }
         Returns: string
       }
+      follow_user: {
+        Args: { target_user_id: string }
+        Returns: Json
+      }
       generate_unique_handle: {
         Args: {
           p_display_name?: string
@@ -1472,6 +1576,10 @@ export type Database = {
           p_full_name?: string
         }
         Returns: string
+      }
+      get_follow_status: {
+        Args: { target_user_id: string }
+        Returns: boolean
       }
       get_message_reactions: {
         Args: { message_id_param: string }
@@ -1546,6 +1654,10 @@ export type Database = {
       get_user_balance: {
         Args: { currency_param: string; user_id_param: string }
         Returns: number
+      }
+      get_user_follow_counts: {
+        Args: { user_id_param: string }
+        Returns: Json
       }
       get_user_profile_by_identifier: {
         Args: { identifier: string }
@@ -1632,6 +1744,10 @@ export type Database = {
           transaction_id: string
         }[]
       }
+      refresh_follow_counts: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       search_global_directory: {
         Args: { search_term: string }
         Returns: {
@@ -1677,6 +1793,10 @@ export type Database = {
       toggle_message_reaction_text: {
         Args: { emoji_param: string; message_id_param: string }
         Returns: boolean
+      }
+      unfollow_user: {
+        Args: { target_user_id: string }
+        Returns: Json
       }
       update_user_balance: {
         Args: {
