@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Mic, NotebookPen } from "lucide-react";
+import { FileText, Pen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface DiaryEntry {
@@ -287,10 +287,10 @@ export default function DiaryButton() {
         background: isRecording ? "var(--brand-live)" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
       }}
     >
-      {/* stacked mic + pen */}
-      <span className="relative inline-block" aria-hidden="true">
-        <Mic className="h-4 w-4 absolute -left-0.5 -top-0.5 opacity-95" />
-        <NotebookPen className="h-4 w-4 translate-x-2 translate-y-2 opacity-95" />
+      {/* paper with pen */}
+      <span className="flex items-center gap-1" aria-hidden="true">
+        <FileText className="h-4 w-4" />
+        <Pen className="h-3.5 w-3.5" />
       </span>
     </button>
   );
