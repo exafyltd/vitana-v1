@@ -290,7 +290,7 @@ export default function DiaryButton() {
       {/* unified paper with pen icon */}
       <span className="relative inline-block w-5 h-5" aria-hidden="true">
         <FileText className="h-5 w-5" strokeWidth={1.5} />
-        <Pen className="h-3 w-3 absolute -right-0.5 bottom-0 rotate-[-35deg]" strokeWidth={2} />
+        <Pen className="h-3.5 w-3.5 absolute -right-1 -bottom-0.5 rotate-[-40deg]" strokeWidth={2.2} />
       </span>
     </button>
   );
