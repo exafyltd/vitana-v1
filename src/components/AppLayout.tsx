@@ -9,6 +9,7 @@ import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDa
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
+import NotificationBell from "@/components/NotificationBell";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useProfile } from "@/context/ProfileProvider";
@@ -192,6 +193,11 @@ function AppSidebar({
                   showConflictIndicator={true}
                   showText={false}
                 />
+              </div>
+              
+              {/* Notification Bell */}
+              <div className="relative shrink-0 transition-all duration-200">
+                <NotificationBell />
               </div>
               
               {/* Wallet Button */}
