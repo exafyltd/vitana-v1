@@ -7,6 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Bell } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { formatDistanceToNow } from "date-fns";
 
 const messagesSubItems = [
   { id: "overview", name: "Overview", path: "/inbox" },
@@ -16,14 +20,20 @@ const messagesSubItems = [
   { id: "archived", name: "Archived", path: "/inbox/archived" },
 ];
 
+interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+  data?: any;
+}
+
 export default function Notifications() {
-  const notifications = [
-    { id: 1, type: "appointment", title: "Upcoming Appointment", message: "Dr. Wilson session in 30 minutes", time: "30m", read: false },
-    { id: 2, type: "challenge", title: "Weekly Challenge", message: "Complete your hydration goal!", time: "2h", read: false },
-    { id: 3, type: "community", title: "New Group Message", message: "Wellness Warriors: Great workout session!", time: "4h", read: true },
-    { id: 4, type: "health", title: "Health Reminder", message: "Time for your evening medication", time: "6h", read: true },
-    { id: 5, type: "achievement", title: "Goal Achieved!", message: "You've reached your step goal for today!", time: "1d", read: true },
-  ];
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const { toast } = useToast();
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
@@ -32,9 +42,146 @@ export default function Notifications() {
       case 'community': return '👥';
       case 'health': return '💊';
       case 'achievement': return '🎉';
+      case 'message': return '💬';
+      case 'follow': return '👤';
       default: return '🔔';
     }
   };
+
+  const fetchNotifications = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching notifications:', error);
+      return;
+    }
+
+    if (data) {
+      setNotifications(data);
+      setUnreadCount(data.filter(n => !n.is_read).length);
+    }
+  };
+
+  const markAllAsRead = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { error } = await supabase
+      .from('notifications')
+      .update({ is_read: true })
+      .eq('user_id', user.id)
+      .eq('is_read', false);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to mark notifications as read",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Update local state
+    setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+    setUnreadCount(0);
+
+    toast({
+      title: "Success",
+      description: "All notifications marked as read",
+    });
+  };
+
+  const markAsRead = async (notificationId: string) => {
+    const notification = notifications.find(n => n.id === notificationId);
+    if (!notification || notification.is_read) return;
+
+    const { error } = await supabase
+      .from('notifications')
+      .update({ is_read: true })
+      .eq('id', notificationId);
+
+    if (error) {
+      console.error('Error marking notification as read:', error);
+      return;
+    }
+
+    // Update local state
+    setNotifications(prev => 
+      prev.map(n => n.id === notificationId ? { ...n, is_read: true } : n)
+    );
+    setUnreadCount(prev => Math.max(0, prev - 1));
+  };
+
+  useEffect(() => {
+    const initializeNotifications = async () => {
+      await fetchNotifications();
+
+      // Mark all unread notifications as read when page is visited
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('user_id', user.id)
+        .eq('is_read', false);
+
+      // Subscribe to real-time updates
+      const channel = supabase
+        .channel('notifications-page')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            const newNotification = payload.new as Notification;
+            setNotifications(prev => [newNotification, ...prev]);
+            setUnreadCount(prev => prev + 1);
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            const updatedNotification = payload.new as Notification;
+            setNotifications(prev =>
+              prev.map(n => n.id === updatedNotification.id ? updatedNotification : n)
+            );
+            fetchNotifications(); // Refresh to update unread count
+          }
+        )
+        .subscribe();
+
+      return channel;
+    };
+
+    let channelCleanup: any;
+    initializeNotifications().then(channel => {
+      channelCleanup = channel;
+    });
+
+    return () => {
+      if (channelCleanup) {
+        supabase.removeChannel(channelCleanup);
+      }
+    };
+  }, []);
 
   return (
     <AppLayout>
@@ -57,21 +204,41 @@ export default function Notifications() {
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   <Bell className="h-4 w-4" />
                   All Notifications
-                  <Badge variant="secondary" className="ml-auto">5</Badge>
+                  {notifications.length > 0 && (
+                    <Badge variant="secondary" className="ml-auto">{notifications.length}</Badge>
+                  )}
                 </Button>
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   📅 Appointments
-                  <Badge variant="secondary" className="ml-auto">1</Badge>
+                  {notifications.filter(n => n.type === 'appointment').length > 0 && (
+                    <Badge variant="secondary" className="ml-auto">
+                      {notifications.filter(n => n.type === 'appointment').length}
+                    </Badge>
+                  )}
                 </Button>
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   🏆 Challenges
-                  <Badge variant="secondary" className="ml-auto">1</Badge>
+                  {notifications.filter(n => n.type === 'challenge').length > 0 && (
+                    <Badge variant="secondary" className="ml-auto">
+                      {notifications.filter(n => n.type === 'challenge').length}
+                    </Badge>
+                  )}
                 </Button>
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   👥 Community
+                  {notifications.filter(n => n.type === 'community').length > 0 && (
+                    <Badge variant="secondary" className="ml-auto">
+                      {notifications.filter(n => n.type === 'community').length}
+                    </Badge>
+                  )}
                 </Button>
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   💊 Health Reminders
+                  {notifications.filter(n => n.type === 'health').length > 0 && (
+                    <Badge variant="secondary" className="ml-auto">
+                      {notifications.filter(n => n.type === 'health').length}
+                    </Badge>
+                  )}
                 </Button>
               </div>
             </CardHeader>
@@ -82,32 +249,49 @@ export default function Notifications() {
             <CardHeader className="border-b">
               <div className="flex items-center justify-between">
                 <h3 className="font-medium">All Notifications</h3>
-                <Button variant="ghost" size="sm">Mark all as read</Button>
+                {unreadCount > 0 && (
+                  <Button variant="ghost" size="sm" onClick={markAllAsRead}>
+                    Mark all as read
+                  </Button>
+                )}
               </div>
             </CardHeader>
             
             <CardContent className="flex-1 overflow-y-auto p-0">
-              {notifications.map((notification) => (
-                <div key={notification.id} className={`p-4 border-b hover:bg-muted/50 cursor-pointer transition-colors ${!notification.read ? 'bg-primary/5' : ''}`}>
-                  <div className="flex items-start gap-3">
-                    <div className="text-2xl">{getNotificationIcon(notification.type)}</div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className={`font-medium ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
-                          {notification.title}
-                        </p>
-                        <span className="text-xs text-muted-foreground">{notification.time}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{notification.message}</p>
-                      {!notification.read && (
-                        <div className="mt-2">
-                          <div className="h-2 w-2 bg-primary rounded-full"></div>
+              {notifications.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+                  <Bell className="h-12 w-12 text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground">No notifications yet</p>
+                </div>
+              ) : (
+                notifications.map((notification) => (
+                  <div 
+                    key={notification.id} 
+                    className={`p-4 border-b hover:bg-muted/50 cursor-pointer transition-colors ${!notification.is_read ? 'bg-primary/5' : ''}`}
+                    onClick={() => markAsRead(notification.id)}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="text-2xl">{getNotificationIcon(notification.type)}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <p className={`font-medium ${!notification.is_read ? 'text-foreground' : 'text-muted-foreground'}`}>
+                            {notification.title}
+                          </p>
+                          <span className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                          </span>
                         </div>
-                      )}
+                        <p className="text-sm text-muted-foreground">{notification.message}</p>
+                        {!notification.is_read && (
+                          <div className="mt-2">
+                            <div className="h-2 w-2 bg-primary rounded-full"></div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </CardContent>
           </Card>
 
