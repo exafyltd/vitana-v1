@@ -8,14 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, MoreHorizontal, Archive, FolderOpen } from "lucide-react";
-
-const messagesSubItems = [
-  { id: "overview", name: "Overview", path: "/inbox" },
-  { id: "direct", name: "Direct Messages", path: "/inbox/direct" },
-  { id: "group", name: "Group Chats", path: "/inbox/group" },
-  { id: "notifications", name: "Notifications", path: "/inbox/notifications" },
-  { id: "archived", name: "Archived", path: "/inbox/archived" },
-];
+import { messagesNavigation } from "@/config/navigation";
 
 export default function Archived() {
   const archivedChats = [
@@ -31,7 +24,7 @@ export default function Archived() {
   return (
     <AppLayout>
       <SEO title="Archived | Messages" description="View archived conversations and messages" canonical={window.location.href} />
-      <SubNavigation items={messagesSubItems} />
+      <SubNavigation items={messagesNavigation} />
       
       <div className="p-6">
         <StandardHeader 

@@ -98,9 +98,6 @@ import DailySummary from "./pages/ai/DailySummary";
 import Companion from "./pages/ai/Companion";
 
 // Messages sub-pages
-import Direct from "./pages/messages/Direct";
-import Group from "./pages/messages/Group";
-import MessagesNotifications from "./pages/messages/Notifications";
 import Archived from "./pages/messages/Archived";
 import Reminder from "./pages/messages/Reminder";
 import Inspiration from "./pages/messages/Inspiration";
@@ -374,21 +371,6 @@ const App = () => (
           <Route path="/inbox" element={
             <AuthGuard>
               <Messages />
-            </AuthGuard>
-          } />
-          <Route path="/inbox/direct" element={
-            <AuthGuard>
-              <Direct />
-            </AuthGuard>
-          } />
-          <Route path="/inbox/group" element={
-            <AuthGuard>
-              <Group />
-            </AuthGuard>
-          } />
-          <Route path="/inbox/notifications" element={
-            <AuthGuard>
-              <MessagesNotifications />
             </AuthGuard>
           } />
           <Route path="/inbox/archived" element={

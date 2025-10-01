@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, Check, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,11 +12,12 @@ import {
 import { NotificationBadge } from '@/components/ui/notification-badge';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useFollow } from '@/hooks/useFollow';
+import { useToast } from '@/hooks/use-toast';
 
 interface Notification {
   id: string;
@@ -55,8 +56,8 @@ export default function NotificationBell() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [followStatuses, setFollowStatuses] = useState<Record<string, boolean>>({});
   const [followerProfiles, setFollowerProfiles] = useState<Record<string, FollowerProfile>>({});
-  const navigate = useNavigate();
   const { open } = useSidebar();
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchNotifications();
@@ -150,28 +151,81 @@ export default function NotificationBell() {
     }
   };
 
-  const handleNotificationClick = async (notification: Notification) => {
-    if (!notification.is_read) {
-      await markAsRead(notification.id);
-    }
+  const deleteNotification = async (notificationId: string) => {
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('id', notificationId);
 
-    // Navigate based on notification type
-    switch (notification.type) {
-      case 'test_results':
-        navigate('/health/insights/biomarker-results');
-        break;
-      case 'appointment_reminder':
-        // Appointments handled by universal calendar popup
-        navigate('/calendar');
-        break;
-      case 'follow':
-        const followerData = notification.data as { follower_id?: string; follower_name?: string } | null;
-        if (followerData?.follower_id) {
-          navigate(`/profile/${followerData.follower_id}`);
-        }
-        break;
-      default:
-        break;
+      if (error) throw error;
+
+      setNotifications(prev => prev.filter(n => n.id !== notificationId));
+      setUnreadCount(prev => Math.max(0, prev - 1));
+      
+      toast({
+        title: "Notification deleted",
+        description: "The notification has been removed",
+      });
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete notification",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { error } = await supabase
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('user_id', user.id)
+        .eq('is_read', false);
+
+      if (error) throw error;
+
+      setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+      setUnreadCount(0);
+      
+      toast({
+        title: "All notifications marked as read",
+      });
+    } catch (error) {
+      console.error('Error marking all as read:', error);
+    }
+  };
+
+  const clearAllNotifications = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { error } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      setNotifications([]);
+      setUnreadCount(0);
+      
+      toast({
+        title: "All notifications cleared",
+      });
+    } catch (error) {
+      console.error('Error clearing notifications:', error);
+      toast({
+        title: "Error",
+        description: "Failed to clear notifications",
+        variant: "destructive",
+      });
     }
   };
 
@@ -214,82 +268,109 @@ export default function NotificationBell() {
           />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-80" align="end">
-        <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        
-        {notifications.length === 0 ? (
-          <div className="p-4 text-center text-muted-foreground">
-            No notifications yet
+      <DropdownMenuContent className="w-96" align="end">
+        <div className="flex items-center justify-between px-3 py-2 border-b">
+          <h3 className="font-semibold">Notifications</h3>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">{unreadCount} new</Badge>
+            {notifications.length > 0 && (
+              <>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={markAllAsRead}
+                  className="h-7 text-xs"
+                >
+                  <Check className="h-3 w-3 mr-1" />
+                  Mark all read
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={clearAllNotifications}
+                  className="h-7 text-xs text-destructive hover:text-destructive"
+                >
+                  <Trash2 className="h-3 w-3 mr-1" />
+                  Clear all
+                </Button>
+              </>
+            )}
           </div>
-        ) : (
-          notifications.map((notification) => {
-            const isFollowNotification = notification.type === 'follow';
-            const followerData = isFollowNotification 
-              ? notification.data as { follower_id?: string; follower_name?: string } | null 
-              : null;
-            const followerProfile = followerData?.follower_id 
-              ? followerProfiles[followerData.follower_id] 
-              : null;
-            const showFollowBack = isFollowNotification && 
-              followerData?.follower_id && 
-              !followStatuses[followerData.follower_id];
+        </div>
+        <ScrollArea className="h-[400px]">
+          {notifications.length === 0 ? (
+            <div className="px-4 py-12 text-center text-muted-foreground">
+              <Bell className="h-12 w-12 mx-auto mb-3 opacity-20" />
+              <p className="text-sm">No notifications yet</p>
+            </div>
+          ) : (
+            <div className="py-1">
+              {notifications.map((notification) => {
+                const isFollowNotification = notification.type === 'follow';
+                const followerData = isFollowNotification 
+                  ? notification.data as { follower_id?: string; follower_name?: string } | null 
+                  : null;
+                const followerProfile = followerData?.follower_id 
+                  ? followerProfiles[followerData.follower_id] 
+                  : null;
+                const showFollowBack = isFollowNotification && 
+                  followerData?.follower_id && 
+                  !followStatuses[followerData.follower_id];
 
-            return (
-              <DropdownMenuItem
-                key={notification.id}
-                className="flex flex-col items-start p-3 cursor-pointer"
-                onClick={() => handleNotificationClick(notification)}
-              >
-                <div className="flex items-start gap-3 w-full">
-                  {isFollowNotification && followerProfile ? (
-                    <Avatar className="h-10 w-10 shrink-0">
-                      <AvatarImage src={followerProfile.avatar_url || undefined} />
-                      <AvatarFallback>
-                        {followerProfile.display_name?.charAt(0).toUpperCase() || '?'}
-                      </AvatarFallback>
-                    </Avatar>
-                  ) : (
-                    <span className="text-lg">{getNotificationIcon(notification.type)}</span>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-foreground line-clamp-2">
-                      {notification.message}
-                    </p>
-                    <span className="text-xs text-muted-foreground mt-1">
-                      {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                    </span>
-                    {!notification.is_read && (
-                      <Badge variant="secondary" className="h-2 w-2 p-0 rounded-full ml-2" />
+                return (
+                  <div
+                    key={notification.id}
+                    className={`flex items-start gap-3 p-3 hover:bg-muted/50 transition-colors border-b last:border-b-0 ${
+                      !notification.is_read ? 'bg-muted/20' : ''
+                    }`}
+                  >
+                    {isFollowNotification && followerProfile ? (
+                      <Avatar className="h-10 w-10 flex-shrink-0">
+                        <AvatarImage src={followerProfile.avatar_url || undefined} />
+                        <AvatarFallback>
+                          {followerProfile.display_name?.charAt(0).toUpperCase() || '?'}
+                        </AvatarFallback>
+                      </Avatar>
+                    ) : (
+                      <span className="text-2xl flex-shrink-0">{getNotificationIcon(notification.type)}</span>
                     )}
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <p className={`text-sm ${!notification.is_read ? 'font-semibold' : ''}`}>
+                        {notification.message}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                      </p>
+                      {showFollowBack && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="mt-2 h-7"
+                          onClick={(e) => handleFollowBack(e, followerData.follower_id!)}
+                        >
+                          Follow Back
+                        </Button>
+                      )}
+                    </div>
+                    <div className="flex flex-col items-end gap-2">
+                      {!notification.is_read && (
+                        <div className="h-2 w-2 rounded-full bg-primary flex-shrink-0" />
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0"
+                        onClick={() => deleteNotification(notification.id)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
                   </div>
-                  {showFollowBack && (
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      className="shrink-0"
-                      onClick={(e) => handleFollowBack(e, followerData.follower_id!)}
-                    >
-                      Follow Back
-                    </Button>
-                  )}
-                </div>
-              </DropdownMenuItem>
-            );
-          })
-        )}
-        
-        {notifications.length > 0 && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem 
-              className="text-center text-primary cursor-pointer"
-              onClick={() => navigate('/inbox/notifications')}
-            >
-              View all notifications
-            </DropdownMenuItem>
-          </>
-        )}
+                );
+              })}
+            </div>
+          )}
+        </ScrollArea>
       </DropdownMenuContent>
     </DropdownMenu>
   );
