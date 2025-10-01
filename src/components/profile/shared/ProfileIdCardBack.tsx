@@ -40,7 +40,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
   }
 
   return (
-    <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-lg shadow-lg">
+    <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
       <div className="text-center mb-6">
         <h2 className="text-xl font-bold text-foreground mb-2">Connect With Me</h2>
         <p className="text-sm text-muted-foreground">Follow on social media</p>
@@ -69,8 +69,29 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
           ))}
         </div>
       ) : (
-        <div className="text-center text-muted-foreground text-sm py-8">
-          <p>No social media links available</p>
+        <div className="text-center py-8 animate-fade-in">
+          <div className="grid grid-cols-2 gap-4 w-full max-w-xs mb-6">
+            {[
+              { icon: <Instagram className="h-6 w-6" />, name: 'Instagram' },
+              { icon: <Linkedin className="h-6 w-6" />, name: 'LinkedIn' },
+              { icon: <Youtube className="h-6 w-6" />, name: 'YouTube' },
+              { icon: <Twitter className="h-6 w-6" />, name: 'Twitter' },
+            ].map((placeholder, index) => (
+              <div
+                key={placeholder.name}
+                className="h-20 flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-muted-foreground/30 bg-muted/20 animate-pulse"
+                style={{ animationDelay: `${index * 150}ms`, animationDuration: '3s' }}
+              >
+                <div className="text-muted-foreground/40">
+                  {placeholder.icon}
+                </div>
+                <span className="text-xs text-muted-foreground/50">{placeholder.name}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-muted-foreground/70 font-medium">
+            Add your social links to connect
+          </p>
         </div>
       )}
 

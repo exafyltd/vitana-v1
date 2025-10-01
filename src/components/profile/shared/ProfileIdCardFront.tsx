@@ -16,7 +16,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const isOwner = scope === 'owner';
   
   return (
-    <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-lg shadow-lg">
+    <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
       {/* Avatar */}
       <div className="relative mb-4">
         <Avatar className="h-32 w-32 border-4 border-background shadow-xl drop-shadow-2xl"
