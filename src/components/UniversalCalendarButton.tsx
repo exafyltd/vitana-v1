@@ -50,7 +50,7 @@ export function UniversalCalendarButton({
         {showEventCount && upcomingEvents.length > 0 && (
           <Badge 
             variant="secondary" 
-            className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-blue-500 text-white hover:bg-blue-600"
+            className="absolute -top-2 -right-2 h-6 w-6 p-0 flex items-center justify-center text-xs bg-blue-500 text-white hover:bg-blue-600"
           >
             {upcomingEvents.length > 9 ? '9+' : upcomingEvents.length}
           </Badge>

@@ -39,13 +39,10 @@ export function NotificationBadge({
     <Badge 
       variant="default" 
       className={cn(
-        "absolute top-0 right-0 p-0 flex items-center justify-center rounded-full",
+        "absolute -top-2 -right-2 p-0 flex items-center justify-center rounded-full",
         "bg-blue-500 text-white font-bold leading-none",
         "pointer-events-none",
-        // Responsive sizing based on sidebar state
-        collapsed 
-          ? "h-3 w-3 text-[8px] min-w-[12px]" 
-          : "h-4 w-4 text-[10px] min-w-[16px]",
+        "h-6 w-6 text-xs min-w-[24px]",
         className
       )}
       aria-label={ariaLabel || `${count} notification${count !== 1 ? 's' : ''}`}
