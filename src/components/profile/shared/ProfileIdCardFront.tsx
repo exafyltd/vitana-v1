@@ -156,7 +156,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
           ) : (
             <>
               <Button 
-                variant={isFollowing ? "secondary" : "outline"} 
+                variant={isFollowing ? "secondary" : "default"} 
                 className="rounded-full"
                 onClick={isFollowing ? unfollowUser : followUser}
                 disabled={followLoading}
