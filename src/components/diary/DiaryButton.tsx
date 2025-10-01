@@ -287,10 +287,10 @@ export default function DiaryButton() {
         background: isRecording ? "var(--brand-live)" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
       }}
     >
-      {/* paper with pen */}
-      <span className="flex items-center gap-1" aria-hidden="true">
-        <FileText className="h-4 w-4" />
-        <Pen className="h-3.5 w-3.5" />
+      {/* unified paper with pen icon */}
+      <span className="relative inline-block w-5 h-5" aria-hidden="true">
+        <FileText className="h-5 w-5" strokeWidth={1.5} />
+        <Pen className="h-3 w-3 absolute -right-0.5 bottom-0 rotate-[-35deg]" strokeWidth={2} />
       </span>
     </button>
   );
