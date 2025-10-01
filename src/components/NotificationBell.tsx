@@ -16,7 +16,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 interface Notification {
   id: string;
-  type: 'test_results' | 'appointment_reminder' | 'test_reminder' | 'critical_alert';
+  type: 'test_results' | 'appointment_reminder' | 'test_reminder' | 'critical_alert' | 'follow';
   title: string;
   message: string;
   data: any;
@@ -34,6 +34,8 @@ const getNotificationIcon = (type: string) => {
       return '⏰';
     case 'critical_alert':
       return '🚨';
+    case 'follow':
+      return '👤';
     default:
       return '🔔';
   }
@@ -119,6 +121,11 @@ export default function NotificationBell() {
       case 'appointment_reminder':
         // Appointments handled by universal calendar popup
         navigate('/calendar');
+        break;
+      case 'follow':
+        if (notification.data?.follower_id) {
+          navigate(`/profile/${notification.data.follower_id}`);
+        }
         break;
       default:
         break;
