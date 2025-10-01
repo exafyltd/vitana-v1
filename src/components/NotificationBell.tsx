@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { NotificationBadge } from '@/components/ui/notification-badge';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
@@ -25,6 +26,11 @@ interface Notification {
   data: any;
   is_read: boolean;
   created_at: string;
+}
+
+interface FollowerProfile {
+  avatar_url: string | null;
+  display_name: string | null;
 }
 
 const getNotificationIcon = (type: string) => {
@@ -48,6 +54,7 @@ export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [followStatuses, setFollowStatuses] = useState<Record<string, boolean>>({});
+  const [followerProfiles, setFollowerProfiles] = useState<Record<string, FollowerProfile>>({});
   const navigate = useNavigate();
   const { open } = useSidebar();
 
@@ -91,21 +98,35 @@ export default function NotificationBell() {
       setNotifications(data || []);
       setUnreadCount(data?.filter(n => !n.is_read).length || 0);
 
-      // Fetch follow statuses for follow notifications
+      // Fetch follow statuses and profiles for follow notifications
       const followNotifications = data?.filter(n => n.type === 'follow') || [];
       const statuses: Record<string, boolean> = {};
+      const profiles: Record<string, FollowerProfile> = {};
       
       for (const notif of followNotifications) {
         const followerData = notif.data as { follower_id?: string; follower_name?: string } | null;
         if (followerData?.follower_id) {
+          // Check if current user is following this person back
           const { data: followStatus } = await supabase.rpc('get_follow_status', {
             target_user_id: followerData.follower_id
           });
           statuses[followerData.follower_id] = followStatus || false;
+
+          // Fetch follower profile data
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('avatar_url, display_name')
+            .eq('user_id', followerData.follower_id)
+            .single();
+          
+          if (profileData) {
+            profiles[followerData.follower_id] = profileData;
+          }
         }
       }
       
       setFollowStatuses(statuses);
+      setFollowerProfiles(profiles);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
@@ -202,33 +223,47 @@ export default function NotificationBell() {
             No notifications yet
           </div>
         ) : (
-          notifications.map((notification) => (
-            <DropdownMenuItem
-              key={notification.id}
-              className="flex flex-col items-start p-3 cursor-pointer"
-              onClick={() => handleNotificationClick(notification)}
-            >
-              <div className="flex items-start gap-2 w-full">
-                <span className="text-lg">{getNotificationIcon(notification.type)}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm truncate">
-                      {notification.title}
+          notifications.map((notification) => {
+            const isFollowNotification = notification.type === 'follow';
+            const followerData = isFollowNotification 
+              ? notification.data as { follower_id?: string; follower_name?: string } | null 
+              : null;
+            const followerProfile = followerData?.follower_id 
+              ? followerProfiles[followerData.follower_id] 
+              : null;
+            const showFollowBack = isFollowNotification && 
+              followerData?.follower_id && 
+              !followStatuses[followerData.follower_id];
+
+            return (
+              <DropdownMenuItem
+                key={notification.id}
+                className="flex flex-col items-start p-3 cursor-pointer"
+                onClick={() => handleNotificationClick(notification)}
+              >
+                <div className="flex items-start gap-3 w-full">
+                  {isFollowNotification && followerProfile ? (
+                    <Avatar className="h-10 w-10 shrink-0">
+                      <AvatarImage src={followerProfile.avatar_url || undefined} />
+                      <AvatarFallback>
+                        {followerProfile.display_name?.charAt(0).toUpperCase() || '?'}
+                      </AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <span className="text-lg">{getNotificationIcon(notification.type)}</span>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-foreground line-clamp-2">
+                      {notification.message}
+                    </p>
+                    <span className="text-xs text-muted-foreground mt-1">
+                      {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                     </span>
                     {!notification.is_read && (
-                      <Badge variant="secondary" className="h-2 w-2 p-0 rounded-full" />
+                      <Badge variant="secondary" className="h-2 w-2 p-0 rounded-full ml-2" />
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
-                    {notification.message}
-                  </p>
-                  <span className="text-xs text-muted-foreground mt-1">
-                    {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                  </span>
-                </div>
-                {notification.type === 'follow' && (() => {
-                  const followerData = notification.data as { follower_id?: string; follower_name?: string } | null;
-                  return followerData?.follower_id && !followStatuses[followerData.follower_id] && (
+                  {showFollowBack && (
                     <Button
                       size="sm"
                       variant="secondary"
@@ -237,11 +272,11 @@ export default function NotificationBell() {
                     >
                       Follow Back
                     </Button>
-                  );
-                })()}
-              </div>
-            </DropdownMenuItem>
-          ))
+                  )}
+                </div>
+              </DropdownMenuItem>
+            );
+          })
         )}
         
         {notifications.length > 0 && (
