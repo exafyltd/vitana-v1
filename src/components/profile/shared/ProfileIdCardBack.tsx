@@ -1,6 +1,7 @@
 import { UserProfile } from "@/types/profile";
-import { Instagram, Linkedin, Youtube, Twitter, ExternalLink, X } from "lucide-react";
+import { Instagram, Linkedin, Youtube, Twitter, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import xLogo from "@/assets/x-logo.png";
 
 interface ProfileIdCardBackProps {
   profile: UserProfile;
@@ -22,7 +23,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     { name: 'TikTok', pattern: /tiktok\.com/i, icon: <ExternalLink className="h-6 w-6" />, color: 'hover:text-gray-900' },
     { name: 'LinkedIn', pattern: /linkedin\.com/i, icon: <Linkedin className="h-6 w-6" />, color: 'hover:text-blue-600' },
     { name: 'YouTube', pattern: /youtube\.com|youtu\.be/i, icon: <Youtube className="h-6 w-6" />, color: 'hover:text-red-600' },
-    { name: 'Twitter', pattern: /twitter\.com|x\.com/i, icon: <Twitter className="h-6 w-6" />, color: 'hover:text-sky-500' },
+    { name: 'X', pattern: /twitter\.com|x\.com/i, icon: <img src={xLogo} alt="X" className="h-6 w-6" />, color: 'hover:opacity-80' },
   ];
 
   if (profile.links) {
@@ -75,7 +76,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
               { icon: <Instagram className="h-6 w-6" />, name: 'Instagram' },
               { icon: <Linkedin className="h-6 w-6" />, name: 'LinkedIn' },
               { icon: <Youtube className="h-6 w-6" />, name: 'YouTube' },
-              { icon: <X className="h-6 w-6" />, name: 'X' },
+              { icon: <img src={xLogo} alt="X" className="h-6 w-6" />, name: 'X' },
             ].map((placeholder, index) => (
               <div
                 key={placeholder.name}
