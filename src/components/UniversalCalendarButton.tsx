@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { NotificationBadge } from "@/components/ui/notification-badge";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
+import { useSidebar } from "@/components/ui/sidebar";
 
 interface UniversalCalendarButtonProps {
   variant?: "default" | "outline" | "ghost" | "secondary";
@@ -24,6 +25,7 @@ export function UniversalCalendarButton({
 }: UniversalCalendarButtonProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const { events, getUpcomingEvents } = useCalendarEvents();
+  const { open } = useSidebar();
   
   const upcomingEvents = getUpcomingEvents(10);
   const conflictCount = events.filter(e => e.status === 'conflict').length;
@@ -48,12 +50,11 @@ export function UniversalCalendarButton({
         
         {/* Event count badge */}
         {showEventCount && upcomingEvents.length > 0 && (
-          <Badge 
-            variant="secondary" 
-            className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-blue-500 text-white hover:bg-blue-600"
-          >
-            {upcomingEvents.length > 9 ? '9+' : upcomingEvents.length}
-          </Badge>
+          <NotificationBadge
+            count={upcomingEvents.length}
+            collapsed={!open}
+            ariaLabel={`${upcomingEvents.length} upcoming event${upcomingEvents.length !== 1 ? 's' : ''}`}
+          />
         )}
         
         {/* Conflict indicator */}

@@ -39,13 +39,13 @@ export function NotificationBadge({
     <Badge 
       variant="default" 
       className={cn(
-        "absolute top-0 right-0 p-0 flex items-center justify-center rounded-full",
+        "absolute -top-1 -right-1 p-0 flex items-center justify-center rounded-full",
         "bg-blue-500 text-white font-bold leading-none",
-        "pointer-events-none",
-        // Responsive sizing based on sidebar state
+        "pointer-events-none whitespace-nowrap",
+        // Consistent sizing for all sidebar badges
         collapsed 
-          ? "h-3 w-3 text-[8px] min-w-[12px]" 
-          : "h-4 w-4 text-[10px] min-w-[16px]",
+          ? "h-4 w-4 text-[9px] min-w-[16px] px-0.5" 
+          : "h-5 w-5 text-[10px] min-w-[20px] px-1",
         className
       )}
       aria-label={ariaLabel || `${count} notification${count !== 1 ? 's' : ''}`}
