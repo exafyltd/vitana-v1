@@ -19,12 +19,12 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
     <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
       {/* Avatar */}
       <div className="relative mb-4">
-        <Avatar className="h-32 w-32 border-4 border-background shadow-xl drop-shadow-2xl"
+        <Avatar className="h-40 w-40 border-4 border-background shadow-xl drop-shadow-2xl"
                 style={{
                   filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
                 }}>
           <AvatarImage src={profile.avatarUrl} alt={profile.name} />
-          <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+          <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
             {profile.name.split(' ').map(n => n[0]).join('')}
           </AvatarFallback>
         </Avatar>
