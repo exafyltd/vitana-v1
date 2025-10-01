@@ -10,6 +10,7 @@ import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
 import NotificationBell from "@/components/NotificationBell";
+import { NotificationBadge } from "@/components/ui/notification-badge";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useProfile } from "@/context/ProfileProvider";
@@ -211,22 +212,22 @@ function AppSidebar({
               </Button>
               
               {/* Autopilot Button */}
-              <Button 
-                variant="ghost" 
-                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
-                title={`${pendingCount} Autopilot suggestions`}
-                onClick={() => setAutopilotPopupOpen(true)}
-              >
-                <Plane className="h-4 w-4 text-white" />
-                {pendingCount > 0 && (
-                  <Badge 
-                    variant="destructive" 
-                    className="absolute -top-0.5 -right-0.5 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
-                  >
-                    {pendingCount > 9 ? '9+' : pendingCount}
-                  </Badge>
-                )}
-              </Button>
+              <div className="relative">
+                <Button 
+                  variant="ghost" 
+                  className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+                  title={`Autopilot • ${pendingCount} suggestion${pendingCount !== 1 ? 's' : ''}`}
+                  onClick={() => setAutopilotPopupOpen(true)}
+                  aria-label={`Autopilot with ${pendingCount} pending suggestion${pendingCount !== 1 ? 's' : ''}`}
+                >
+                  <Plane className="h-4 w-4 text-white" />
+                </Button>
+                <NotificationBadge 
+                  count={pendingCount} 
+                  collapsed={!open}
+                  ariaLabel={`${pendingCount} Autopilot suggestion${pendingCount !== 1 ? 's' : ''}`}
+                />
+              </div>
             </div>
           )}
           

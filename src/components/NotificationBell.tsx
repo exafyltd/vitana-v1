@@ -9,10 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { NotificationBadge } from '@/components/ui/notification-badge';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
+import { useSidebar } from '@/components/ui/sidebar';
 
 interface Notification {
   id: string;
@@ -45,6 +47,7 @@ export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
+  const { open } = useSidebar();
 
   useEffect(() => {
     fetchNotifications();
@@ -135,21 +138,21 @@ export default function NotificationBell() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
-          title={`${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
-        >
-          <Bell className="h-4 w-4 text-white" />
-          {unreadCount > 0 && (
-            <Badge 
-              variant="destructive" 
-              className="absolute -top-0.5 -right-0.5 p-0 text-xs font-bold leading-none flex items-center justify-center rounded-full bg-destructive text-destructive-foreground h-4 w-4 text-[10px] min-w-[16px]"
-            >
-              {unreadCount > 9 ? '9+' : unreadCount}
-            </Badge>
-          )}
-        </Button>
+        <div className="relative">
+          <Button 
+            variant="ghost" 
+            className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+            title={`Notifications • ${unreadCount} unread`}
+            aria-label={`${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
+          >
+            <Bell className="h-4 w-4 text-white" />
+          </Button>
+          <NotificationBadge 
+            count={unreadCount} 
+            collapsed={!open}
+            ariaLabel={`${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
+          />
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80" align="end">
         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
