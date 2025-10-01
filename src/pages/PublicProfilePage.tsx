@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ProfileLayout } from "@/components/profile/shared/ProfileLayout";
 import { getScope } from "@/lib/profileScope";
 import { UserProfile } from "@/types/profile";
+import { useAuth } from "@/context/AuthProvider";
 
 interface DatabaseProfile {
   user_id: string;
@@ -23,9 +24,11 @@ interface DatabaseProfile {
 export default function PublicProfilePage() {
   const { identifier } = useParams<{ identifier: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isFollower, setIsFollower] = useState(false);
 
   useEffect(() => {
     if (identifier) {
@@ -34,7 +37,7 @@ export default function PublicProfilePage() {
       setLoading(false);
       setError("No profile identifier provided");
     }
-  }, [identifier]);
+  }, [identifier, user]);
 
   const fetchProfile = async (id: string) => {
     try {
@@ -98,6 +101,13 @@ export default function PublicProfilePage() {
         };
         
         setProfile(transformedProfile);
+
+        // Fetch follow status if user is authenticated
+        if (user && transformedProfile.id !== user.id) {
+          const { data: followStatus } = await supabase
+            .rpc('get_follow_status', { target_user_id: transformedProfile.id });
+          setIsFollower(followStatus || false);
+        }
       }
     } catch (err) {
       console.error('Error fetching profile:', err);
@@ -139,8 +149,8 @@ export default function PublicProfilePage() {
   }
 
   const scopeContext = {
-    isOwner: false, // TODO: Check if current user owns this profile
-    isFollower: false, // TODO: Check if current user follows this profile
+    isOwner: user?.id === profile.id,
+    isFollower: isFollower,
     editMode: false
   };
 

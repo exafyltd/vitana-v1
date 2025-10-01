@@ -9,6 +9,7 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { useFollow } from "@/hooks/useFollow";
 
 interface ProfileIdCardFrontProps {
   profile: UserProfile;
@@ -24,6 +25,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const { createThread } = useHybridMessages('global');
   const { toast } = useToast();
   const [isCreatingThread, setIsCreatingThread] = useState(false);
+  const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
 
   const handleMessageClick = async () => {
     if (!user) {
@@ -153,9 +155,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
             </>
           ) : (
             <>
-              <Button className="rounded-full">
+              <Button 
+                variant={isFollowing ? "secondary" : "outline"} 
+                className="rounded-full"
+                onClick={isFollowing ? unfollowUser : followUser}
+                disabled={followLoading}
+              >
                 <UserPlus className="h-4 w-4 mr-2" />
-                Follow
+                {followLoading ? "..." : isFollowing ? "Following" : "Follow"}
               </Button>
               <Button 
                 variant="outline" 

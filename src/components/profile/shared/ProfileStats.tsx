@@ -1,10 +1,13 @@
 import { UserProfile } from "@/types/profile";
+import { useFollow } from "@/hooks/useFollow";
 
 interface ProfileStatsProps {
   profile: UserProfile;
 }
 
 export function ProfileStats({ profile }: ProfileStatsProps) {
+  const { followersCount, followingCount } = useFollow(profile.id);
+  
   return (
     <div className="flex items-center justify-center gap-8 md:gap-12 pt-2 pb-6 border-y border-border/50">
       <div className="text-center">
@@ -15,13 +18,13 @@ export function ProfileStats({ profile }: ProfileStatsProps) {
       </div>
       <div className="text-center">
         <div className="text-2xl md:text-3xl font-bold text-foreground">
-          {profile.stats.followers.toLocaleString()}
+          {followersCount.toLocaleString()}
         </div>
         <div className="text-sm text-muted-foreground">Followers</div>
       </div>
       <div className="text-center">
         <div className="text-2xl md:text-3xl font-bold text-foreground">
-          {profile.stats.following.toLocaleString()}
+          {followingCount.toLocaleString()}
         </div>
         <div className="text-sm text-muted-foreground">Following</div>
       </div>
