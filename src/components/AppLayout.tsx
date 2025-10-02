@@ -24,6 +24,9 @@ import { getRoleNavigation } from "@/config/role-navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
+import { cn } from "@/lib/utils";
+import { useCalendarEvents } from "@/hooks/useCalendarEvents";
+import { useWallet } from "@/hooks/useWallet";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -55,9 +58,55 @@ function AppSidebar({
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { signOut, user } = useAuth();
+  const { events, getUpcomingEvents } = useCalendarEvents();
+  const { getBalance } = useWallet();
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Get dynamic navigation based on current role
   const sidebarCategories = getRoleNavigation(currentRole);
+  
+  // Quick actions data
+  const upcomingEvents = getUpcomingEvents(10);
+  const currentBalance = getBalance('VTN') || 0;
+  
+  // Fetch notification count
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data, error } = await supabase
+          .from('notifications')
+          .select('id', { count: 'exact', head: false })
+          .eq('user_id', user.id)
+          .eq('is_read', false);
+
+        if (!error && data) {
+          setUnreadCount(data.length);
+        }
+      } catch (error) {
+        console.error('Error fetching unread count:', error);
+      }
+    };
+
+    fetchUnreadCount();
+
+    // Set up real-time subscription
+    const channel = supabase
+      .channel('notification-count')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'notifications' },
+        () => {
+          fetchUnreadCount();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   // Check if current path matches category (including subpages)
   const isActivePath = (categoryPath: string) => {
@@ -231,58 +280,103 @@ function AppSidebar({
             </Tooltip>
           </TooltipProvider>
           
-          {/* Utility Icons - only show when sidebar is open */}
-          {open && (
-            <div className="flex items-center space-x-1 ml-4 pr-2">
-              {/* Calendar Button - Today's Overview */}
-              <div 
-                className="relative shrink-0 transition-all duration-200"
-                title="Calendar & Events - Today's overview"
-              >
-                <UniversalCalendarButton 
-                  variant="ghost" 
-                  size="sm"
-                  className="h-8 w-8 p-0 text-white group-hover:text-primary transition-colors"
-                  showEventCount={true}
-                  showConflictIndicator={true}
-                  showText={false}
-                />
-              </div>
+          {/* Quick Actions - always visible with proper spacing */}
+          <TooltipProvider>
+            <div className="flex items-center justify-end gap-2 ml-auto">
+              {/* Calendar Button */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="relative">
+                    <UniversalCalendarButton 
+                      variant="ghost" 
+                      size="sm"
+                      className={cn(
+                        "rounded-full p-0 transition-all duration-200 hover:bg-sidebar-accent/80",
+                        open ? "h-10 w-10" : "h-8 w-8"
+                      )}
+                      iconClassName={cn(
+                        open ? "h-5 w-5" : "h-4 w-4"
+                      )}
+                      showEventCount={true}
+                      showConflictIndicator={true}
+                      showText={false}
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  Calendar • {upcomingEvents.length} event{upcomingEvents.length !== 1 ? 's' : ''}
+                </TooltipContent>
+              </Tooltip>
               
               {/* Notification Bell */}
-              <div className="relative shrink-0 transition-all duration-200">
-                <NotificationBell />
-              </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="relative">
+                    <NotificationBell 
+                      buttonClassName={cn(
+                        open ? "h-10 w-10" : "h-8 w-8"
+                      )}
+                      iconClassName={cn(
+                        open ? "h-5 w-5" : "h-4 w-4"
+                      )}
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  Notifications • {unreadCount} unread
+                </TooltipContent>
+              </Tooltip>
               
               {/* Wallet Button */}
-              <Button 
-                variant="ghost" 
-                className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
-                title="Digital Wallet"
-                onClick={() => setWalletPopupOpen(true)}
-              >
-                <Wallet className="h-4 w-4 text-white" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="relative">
+                    <Button 
+                      variant="ghost" 
+                      className={cn(
+                        "relative rounded-full p-0 transition-all duration-200 hover:bg-sidebar-accent/80 flex items-center justify-center",
+                        open ? "h-10 w-10" : "h-8 w-8"
+                      )}
+                      onClick={() => setWalletPopupOpen(true)}
+                      aria-label="Digital Wallet"
+                    >
+                      <Wallet className={cn("text-white", open ? "h-5 w-5" : "h-4 w-4")} />
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  Wallet • {currentBalance.toLocaleString()} VTN
+                </TooltipContent>
+              </Tooltip>
               
               {/* Autopilot Button */}
-              <div className="relative">
-                <Button 
-                  variant="ghost" 
-                  className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
-                  title={`Autopilot • ${pendingCount} suggestion${pendingCount !== 1 ? 's' : ''}`}
-                  onClick={() => setAutopilotPopupOpen(true)}
-                  aria-label={`Autopilot with ${pendingCount} pending suggestion${pendingCount !== 1 ? 's' : ''}`}
-                >
-                  <Plane className="h-4 w-4 text-white" />
-                </Button>
-                <NotificationBadge 
-                  count={pendingCount} 
-                  collapsed={!open}
-                  ariaLabel={`${pendingCount} Autopilot suggestion${pendingCount !== 1 ? 's' : ''}`}
-                />
-              </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="relative">
+                    <Button 
+                      variant="ghost" 
+                      className={cn(
+                        "relative rounded-full p-0 transition-all duration-200 hover:bg-sidebar-accent/80 flex items-center justify-center",
+                        open ? "h-10 w-10" : "h-8 w-8"
+                      )}
+                      onClick={() => setAutopilotPopupOpen(true)}
+                      aria-label={`Autopilot with ${pendingCount} pending suggestion${pendingCount !== 1 ? 's' : ''}`}
+                    >
+                      <Plane className={cn("text-white", open ? "h-5 w-5" : "h-4 w-4")} />
+                    </Button>
+                    <NotificationBadge 
+                      count={pendingCount} 
+                      collapsed={!open}
+                      ariaLabel={`${pendingCount} Autopilot suggestion${pendingCount !== 1 ? 's' : ''}`}
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  Autopilot • {pendingCount} suggestion{pendingCount !== 1 ? 's' : ''}
+                </TooltipContent>
+              </Tooltip>
             </div>
-          )}
+          </TooltipProvider>
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
