@@ -18,7 +18,6 @@ import { formatDistanceToNow } from 'date-fns';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useFollow } from '@/hooks/useFollow';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 
 interface Notification {
   id: string;
@@ -52,13 +51,7 @@ const getNotificationIcon = (type: string) => {
   }
 };
 
-interface NotificationBellProps {
-  className?: string;
-  buttonClassName?: string;
-  iconClassName?: string;
-}
-
-export default function NotificationBell({ className, buttonClassName, iconClassName }: NotificationBellProps = {}) {
+export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [followStatuses, setFollowStatuses] = useState<Record<string, boolean>>({});
@@ -259,16 +252,14 @@ export default function NotificationBell({ className, buttonClassName, iconClass
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className={cn("relative", className)}>
+        <div className="relative">
           <Button 
             variant="ghost" 
-            className={cn(
-              "relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent/80 flex items-center justify-center rounded-full p-0",
-              buttonClassName
-            )}
+            className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+            title={`Notifications • ${unreadCount} unread`}
             aria-label={`${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
           >
-            <Bell className={cn("text-white", iconClassName)} />
+            <Bell className="h-4 w-4 text-white" />
           </Button>
           <NotificationBadge 
             count={unreadCount} 

@@ -5,13 +5,11 @@ import { NotificationBadge } from "@/components/ui/notification-badge";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useSidebar } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
 
 interface UniversalCalendarButtonProps {
   variant?: "default" | "outline" | "ghost" | "secondary";
   size?: "default" | "sm" | "lg";
   className?: string;
-  iconClassName?: string;
   showEventCount?: boolean;
   showConflictIndicator?: boolean;
   showText?: boolean;
@@ -21,7 +19,6 @@ export function UniversalCalendarButton({
   variant = "outline",
   size = "sm",
   className = "",
-  iconClassName,
   showEventCount = true,
   showConflictIndicator = true,
   showText = true
@@ -45,16 +42,9 @@ export function UniversalCalendarButton({
           size={size} 
           variant={variant}
           onClick={() => setCalendarOpen(true)} 
-          className={cn(
-            "p-0 flex items-center justify-center",
-            className
-          )}
-          aria-label={`${upcomingEvents.length} upcoming event${upcomingEvents.length !== 1 ? 's' : ''}`}
+          className={className}
         >
-          <Calendar className={cn(
-            showText ? "mr-2" : "",
-            iconClassName || "w-4 h-4"
-          )} />
+          <Calendar className={`w-4 h-4 ${showText ? 'mr-2' : ''}`} />
           {showText && 'Calendar'}
         </Button>
         
