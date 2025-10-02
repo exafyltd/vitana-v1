@@ -23,7 +23,6 @@ import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
-import { CalendarRibbon } from "@/components/calendar/CalendarRibbon";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
 
 // Dynamic navigation based on user role - removed static sidebar categories
@@ -425,7 +424,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
           <SidebarInset className="flex flex-col w-full">
             <div className="flex flex-col min-h-screen bg-background rounded-tl-2xl">
               <PendingCalendarEventProcessor />
-              <CalendarRibbon />
               <main className="flex-1">
                 {children}
               </main>
