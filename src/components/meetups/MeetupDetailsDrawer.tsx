@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import {
   Drawer,
   DrawerContent,
@@ -63,23 +62,9 @@ export function MeetupDetailsDrawer({
   hasNext,
   isMobile = false,
 }: MeetupDetailsDrawerProps) {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-
-  // Update URL when drawer opens/closes
-  useEffect(() => {
-    if (open && event) {
-      const newPath = `/comm/meetups/${event.id}`;
-      if (location.pathname !== newPath) {
-        navigate(newPath, { replace: true });
-      }
-    } else if (!open && location.pathname.includes('/comm/meetups/')) {
-      navigate('/comm/meetups', { replace: true });
-    }
-  }, [open, event, navigate, location.pathname]);
 
   // Keyboard navigation
   useEffect(() => {
