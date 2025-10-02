@@ -80,6 +80,8 @@ export function MeetupDetailsDrawer({
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowLoading, setIsFollowLoading] = useState(false);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -335,21 +337,82 @@ export function MeetupDetailsDrawer({
                 {event.title}
               </h2>
               
-              {/* Host Chip with Follow Button */}
-              <div className="flex items-center gap-2 mt-3">
-                <div className="flex items-center gap-2 bg-background/95 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg">
-                  <Avatar className="h-8 w-8 border-2 border-primary">
+              {/* Unified Host Bar */}
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 mt-3">
+                {/* Identity Chip - Clickable to profile */}
+                <button
+                  onClick={() => {
+                    toast({
+                      title: "Opening profile",
+                      description: `Viewing ${event.author?.name || 'host'}'s profile`,
+                    });
+                  }}
+                  aria-label={`${event.author?.name || 'Community Host'}, Host — open profile`}
+                  className={cn(
+                    "group flex items-center gap-2 h-11 sm:h-11 px-2 rounded-full",
+                    "bg-background/95 backdrop-blur-sm shadow-lg",
+                    "hover:bg-background/100 hover:scale-[1.02] active:scale-[0.98]",
+                    "transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    prefersReducedMotion && "transition-none hover:scale-100 active:scale-100"
+                  )}
+                >
+                  <Avatar className="h-7 w-7 ring-1 ring-white/50">
                     <AvatarImage src={event.author?.avatar} />
-                    <AvatarFallback>{event.author?.name?.[0] || 'H'}</AvatarFallback>
+                    <AvatarFallback className="text-xs">{event.author?.name?.[0] || 'H'}</AvatarFallback>
                   </Avatar>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-medium">{event.author?.name || 'Community Host'}</span>
-                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                  <div className="flex items-center gap-1.5 pr-2">
+                    <span className="text-sm font-semibold max-w-[120px] sm:max-w-[160px] truncate">
+                      {event.author?.name || 'Community Host'}
+                    </span>
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
+                      Host
+                    </span>
                   </div>
-                </div>
-                <Button variant="outline" size="sm" className="rounded-full h-10 gap-1.5 bg-background/95 backdrop-blur-sm shadow-lg">
-                  <UserPlus className="h-4 w-4" />
-                  Follow host
+                </button>
+
+                {/* Follow Button - Same height as chip */}
+                <Button
+                  onClick={async () => {
+                    setIsFollowLoading(true);
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                    setIsFollowing(!isFollowing);
+                    setIsFollowLoading(false);
+                    toast({
+                      title: isFollowing ? "Unfollowed" : "Following!",
+                      description: isFollowing 
+                        ? `You unfollowed ${event.author?.name || 'the host'}` 
+                        : `You're now following ${event.author?.name || 'the host'}`,
+                    });
+                  }}
+                  disabled={isFollowLoading}
+                  aria-label={`Follow ${event.author?.name || 'host'}`}
+                  aria-pressed={isFollowing}
+                  variant={isFollowing ? "secondary" : "outline"}
+                  className={cn(
+                    "h-11 sm:h-11 rounded-full gap-1.5 px-4",
+                    "bg-background/95 backdrop-blur-sm shadow-lg",
+                    "hover:scale-[1.02] active:scale-[0.98] transition-all duration-200",
+                    prefersReducedMotion && "transition-none hover:scale-100 active:scale-100",
+                    isFollowing && "bg-muted/50"
+                  )}
+                >
+                  {isFollowLoading ? (
+                    <>
+                      <Loader2 className="h-[18px] w-[18px] animate-spin" />
+                      <span className="text-sm">Following…</span>
+                    </>
+                  ) : isFollowing ? (
+                    <>
+                      <Check className="h-[18px] w-[18px]" />
+                      <span className="text-sm">Following</span>
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="h-[18px] w-[18px]" />
+                      <span className="text-sm">Follow</span>
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
