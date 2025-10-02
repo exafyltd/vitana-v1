@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { RTLProvider } from "@/components/RTLProvider";
+import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -141,6 +142,7 @@ import UserManagement from "./pages/admin/UserManagement";
 
 const App = () => (
   <RTLProvider>
+    <MeetupSelectionProvider>
       <TooltipProvider>
         <Toaster />
         <PresenceDebugPanel />
@@ -778,6 +780,7 @@ const App = () => (
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
+    </MeetupSelectionProvider>
   </RTLProvider>
 );
 

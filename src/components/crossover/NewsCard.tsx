@@ -8,6 +8,7 @@ import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, Play
 import { useEventParticipation } from "@/hooks/useEventParticipation";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
+import { useMeetupSelection } from "@/context/MeetupSelectionContext";
 
 interface NewsCardProps {
   title: string;
@@ -62,6 +63,9 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     eventId,
     "data-event-id": dataEventId
   }, ref) => {
+    // Always call the hook, but only use it for event cards
+    const { selectedMeetupId } = useMeetupSelection();
+    const isSelected = category === 'event' && dataEventId ? selectedMeetupId === dataEventId : false;
     
     const categoryStyles = {
       event: "bg-primary/20 text-primary border-primary/30",
@@ -178,6 +182,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         ref={ref}
         className={cn(
           "group relative cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-0 h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+          isSelected && "ring-2 ring-primary ring-offset-2",
           className
         )}
         onClick={onClick}
@@ -185,6 +190,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         tabIndex={0}
         role="button"
         aria-label={`View ${title} details`}
+        aria-selected={isSelected}
         onKeyDown={(e) => {
           // Handle Enter and Space keys for accessibility
           if ((e.key === 'Enter' || e.key === ' ') && onClick) {

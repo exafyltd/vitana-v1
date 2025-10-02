@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
+import { useMeetupSelection } from "@/context/MeetupSelectionContext";
 import { cn } from "@/lib/utils";
 import happyCoffeeGroup from '@/assets/happy-coffee-group.jpg';
 import { 
@@ -430,11 +431,10 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
 const Meetups = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { selectedMeetupId, selectMeetup, clearSelection } = useMeetupSelection();
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedMeetup, setSelectedMeetup] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
   
@@ -492,55 +492,35 @@ const {
   useEffect(() => {
     const meetupId = searchParams.get('meetup');
     if (meetupId) {
-      const allEvents = [...todayList, ...upcomingList];
-      const event = allEvents.find(e => e.id === meetupId);
-      if (event) {
-        setSelectedMeetup(event);
-        setDrawerOpen(true);
-        setFocusedCardId(meetupId);
-        // Scroll card into view and add spotlight
-        setTimeout(() => {
-          const card = document.querySelector(`[data-event-id="${meetupId}"]`) as HTMLElement;
-          if (card) {
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            card.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
-          }
-        }, 100);
-      }
+      selectMeetup(meetupId);
+      setFocusedCardId(meetupId);
+      // Scroll card into view
+      setTimeout(() => {
+        const card = document.querySelector(`[data-event-id="${meetupId}"]`) as HTMLElement;
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
     } else {
-      // Clear drawer if no query param
-      if (drawerOpen) {
-        setDrawerOpen(false);
-        setSelectedMeetup(null);
+      // Clear selection if no query param
+      if (selectedMeetupId) {
+        clearSelection();
       }
     }
-  }, [searchParams, todayList, upcomingList]);
+  }, [searchParams, selectMeetup, clearSelection, selectedMeetupId]);
 
-  // Remove spotlight when drawer closes and restore focus
+  // Restore focus when drawer closes
   useEffect(() => {
-    if (!drawerOpen) {
-      document.querySelectorAll('[data-event-id]').forEach(card => {
-        card.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
-      });
-      
-      // Restore focus to the card that was clicked
-      if (focusedCardId) {
-        setTimeout(() => {
-          const card = document.querySelector(`[data-event-id="${focusedCardId}"]`) as HTMLElement;
-          if (card) {
-            card.focus();
-          }
-          setFocusedCardId(null);
-        }, 100);
-      }
-    } else if (selectedMeetup?.id) {
-      // Add spotlight to current card
-      const card = document.querySelector(`[data-event-id="${selectedMeetup.id}"]`);
-      if (card) {
-        card.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
-      }
+    if (!selectedMeetupId && focusedCardId) {
+      setTimeout(() => {
+        const card = document.querySelector(`[data-event-id="${focusedCardId}"]`) as HTMLElement;
+        if (card) {
+          card.focus();
+        }
+        setFocusedCardId(null);
+      }, 100);
     }
-  }, [drawerOpen, selectedMeetup, focusedCardId]);
+  }, [selectedMeetupId, focusedCardId]);
 
   const handleEditEvent = (event: any) => {
     setSelectedEvent(event);
@@ -548,46 +528,48 @@ const {
   };
 
   const handleCardClick = (event: any) => {
-    setSelectedMeetup(event);
-    setDrawerOpen(true);
-    setFocusedCardId(event.id);
-    // Update URL with query param
-    setSearchParams({ meetup: event.id });
+    const eventId = event.id;
+    // Toggle selection if clicking the same card
+    if (selectedMeetupId === eventId) {
+      clearSelection();
+      setSearchParams({});
+    } else {
+      selectMeetup(eventId);
+      setFocusedCardId(eventId);
+      setSearchParams({ meetup: eventId });
+    }
   };
 
   const handleDrawerClose = () => {
-    setDrawerOpen(false);
-    setSelectedMeetup(null);
-    // Remove query param
+    clearSelection();
     setSearchParams({});
   };
 
   const handleNavigatePrev = () => {
     const allEvents = [...todayList, ...upcomingList];
-    const currentIndex = allEvents.findIndex(e => e.id === selectedMeetup?.id);
+    const currentIndex = allEvents.findIndex(e => e.id === selectedMeetupId);
     if (currentIndex > 0) {
       const prevEvent = allEvents[currentIndex - 1];
-      setSelectedMeetup(prevEvent);
+      selectMeetup(prevEvent.id);
       setFocusedCardId(prevEvent.id);
-      // Update URL with new meetup ID
       setSearchParams({ meetup: prevEvent.id });
     }
   };
 
   const handleNavigateNext = () => {
     const allEvents = [...todayList, ...upcomingList];
-    const currentIndex = allEvents.findIndex(e => e.id === selectedMeetup?.id);
+    const currentIndex = allEvents.findIndex(e => e.id === selectedMeetupId);
     if (currentIndex < allEvents.length - 1) {
       const nextEvent = allEvents[currentIndex + 1];
-      setSelectedMeetup(nextEvent);
+      selectMeetup(nextEvent.id);
       setFocusedCardId(nextEvent.id);
-      // Update URL with new meetup ID
       setSearchParams({ meetup: nextEvent.id });
     }
   };
 
   const allEvents = [...todayList, ...upcomingList];
-  const currentIndex = allEvents.findIndex(e => e.id === selectedMeetup?.id);
+  const selectedMeetup = allEvents.find(e => e.id === selectedMeetupId);
+  const currentIndex = allEvents.findIndex(e => e.id === selectedMeetupId);
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < allEvents.length - 1;
 
@@ -651,6 +633,22 @@ const {
             setSelectedEvent(null);
           }}
           event={selectedEvent}
+        />
+      )}
+
+      {/* Meetup Details Drawer */}
+      {selectedMeetup && (
+        <MeetupDetailsDrawer
+          event={selectedMeetup}
+          open={!!selectedMeetupId}
+          onOpenChange={(open) => {
+            if (!open) {
+              handleDrawerClose();
+            }
+          }}
+          onNavigatePrev={hasPrev ? handleNavigatePrev : undefined}
+          onNavigateNext={hasNext ? handleNavigateNext : undefined}
+          isMobile={isMobile}
         />
       )}
     </AppLayout>
