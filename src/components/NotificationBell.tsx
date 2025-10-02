@@ -444,7 +444,7 @@ export default function NotificationBell() {
         {/* Footer */}
         <div className="sticky bottom-0 z-10 bg-background border-t">
           <button
-            onClick={() => navigate('/settings')}
+            onClick={() => navigate('/settings?tab=notifications')}
             className="w-full px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center justify-center gap-2 group"
           >
             <span>Manage your notifications</span>

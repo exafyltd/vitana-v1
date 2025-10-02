@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Settings as SettingsIcon, Shield, Bell, Smartphone, CreditCard, HelpCircle, Users, Languages, Mail, Moon } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useRTL } from "@/components/RTLProvider";
 import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -23,7 +23,9 @@ import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 function Settings() {
   const navigate = useNavigate();
   const { isRTL, toggleRTL } = useRTL();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') === 'notifications' ? 'categories' : 'overview';
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
 
   const categoryCards = [
