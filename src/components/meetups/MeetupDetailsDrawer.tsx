@@ -331,9 +331,11 @@ export function MeetupDetailsDrawer({
 
             {/* Title Overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
-              <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[85%]" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
-                {event.title}
-              </h2>
+              <div className="bg-gradient-to-t from-black/30 to-transparent pt-8 -mt-8 -mx-6 px-6">
+                <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[85%]" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}>
+                  {event.title}
+                </h2>
+              </div>
               
               {/* Host Chip with Follow Button */}
               <div className="flex items-center gap-2 mt-3">
