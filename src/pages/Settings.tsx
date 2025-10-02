@@ -6,7 +6,10 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
-import { Plus, Settings as SettingsIcon, Shield, Bell, Smartphone, CreditCard, HelpCircle, Users, Languages } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, Settings as SettingsIcon, Shield, Bell, Smartphone, CreditCard, HelpCircle, Users, Languages, Mail, Moon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRTL } from "@/components/RTLProvider";
@@ -105,7 +108,7 @@ function Settings() {
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
               <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
-              <SplitBarTrigger value="categories">Categories</SplitBarTrigger>
+              <SplitBarTrigger value="categories">Notifications</SplitBarTrigger>
               <SplitBarTrigger value="shortcuts">Quick Actions</SplitBarTrigger>
             </SplitBarList>
 
@@ -230,86 +233,190 @@ function Settings() {
 
             <SplitBarContent value="categories">
               <div className="grid grid-cols-12 gap-4">
-                {/* Row 1: Single Full Row (12) */}
+                {/* Email Notifications */}
                 <div className="col-span-12">
-                  <StandardCard
-                    title="Settings Categories"
-                    subtitle="Organize Your Configuration"
-                    icon={SettingsIcon}
-                    content={
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {categoryCards.map((card) => (
-                          <div 
-                            key={card.id}
-                            className="cursor-pointer p-4 border rounded-lg hover:shadow-md transition-all"
-                            onClick={() => navigate(card.path)}
-                          >
-                            <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center mb-3`}>
-                              <card.icon className="w-5 h-5 text-gray-700" />
-                            </div>
-                            <h4 className="font-medium mb-1">{card.title}</h4>
-                            <p className="text-xs text-muted-foreground">{card.description}</p>
-                          </div>
-                        ))}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Mail className="w-5 h-5" />
+                        Email Notifications
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Community Events</h4>
+                          <p className="text-sm text-muted-foreground">Get notified about new events and meetups</p>
+                        </div>
+                        <Switch defaultChecked />
                       </div>
-                    }
-                  />
+                      
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Appointment Reminders</h4>
+                          <p className="text-sm text-muted-foreground">Reminders for upcoming appointments</p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">AI Tips & Insights</h4>
+                          <p className="text-sm text-muted-foreground">Personalized health and wellness tips</p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Weekly Reports</h4>
+                          <p className="text-sm text-muted-foreground">Summary of your weekly progress</p>
+                        </div>
+                        <Switch />
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
 
-                {/* Row 2: Motivational Banner */}
+                {/* Push Notifications */}
                 <div className="col-span-12">
-                  <MotivationalBanner variant="guidance" />
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Smartphone className="w-5 h-5" />
+                        Push Notifications
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Group Messages</h4>
+                          <p className="text-sm text-muted-foreground">New messages in your groups</p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Goal Reminders</h4>
+                          <p className="text-sm text-muted-foreground">Daily reminders for your wellness goals</p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Friend Activity</h4>
+                          <p className="text-sm text-muted-foreground">When friends complete challenges or milestones</p>
+                        </div>
+                        <Switch />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Breaking News</h4>
+                          <p className="text-sm text-muted-foreground">Important health and wellness updates</p>
+                        </div>
+                        <Switch />
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
 
-                {/* Row 3: Big + Small + Small (6+3+3) */}
-                <div className="col-span-12 md:col-span-6">
-                  <StandardCard
-                    title="Most Used Settings"
-                    subtitle="Popular Configurations"
-                    icon={Users}
-                    content={
-                      <div className="space-y-3 text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>Privacy Controls (95% of users configure)</span>
+                {/* In-App Notifications */}
+                <div className="col-span-12">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Bell className="w-5 h-5" />
+                        In-App Notifications
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Real-time Messages</h4>
+                          <p className="text-sm text-muted-foreground">Show message notifications while using the app</p>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span>Notification Settings (89% of users)</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                          <span>App Integrations (76% of users)</span>
-                        </div>
+                        <Switch defaultChecked />
                       </div>
-                    }
-                  />
+                      
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">System Updates</h4>
+                          <p className="text-sm text-muted-foreground">App updates and maintenance notifications</p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Achievement Alerts</h4>
+                          <p className="text-sm text-muted-foreground">Celebrate when you reach milestones</p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-                <div className="col-span-12 md:col-span-3">
-                  <StandardCard
-                    title="Categories"
-                    subtitle="Available"
-                    icon={SettingsIcon}
-                    content={
-                      <div className="space-y-2">
-                        <div className="text-2xl font-bold text-blue-600">7</div>
-                        <div className="text-xs text-muted-foreground">Setting groups</div>
+
+                {/* Quiet Hours */}
+                <div className="col-span-12">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Moon className="w-5 h-5" />
+                        Quiet Hours
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Enable Quiet Hours</h4>
+                          <p className="text-sm text-muted-foreground">Pause non-urgent notifications during specified times</p>
+                        </div>
+                        <Switch />
                       </div>
-                    }
-                  />
-                </div>
-                <div className="col-span-12 md:col-span-3">
-                  <StandardCard
-                    title="Completion"
-                    subtitle="Setup Progress"
-                    icon={Shield}
-                    content={
-                      <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">85%</div>
-                        <div className="text-xs text-muted-foreground">Settings complete</div>
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">Start Time</label>
+                          <Select>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="21:00">9:00 PM</SelectItem>
+                              <SelectItem value="22:00">10:00 PM</SelectItem>
+                              <SelectItem value="23:00">11:00 PM</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">End Time</label>
+                          <Select>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="06:00">6:00 AM</SelectItem>
+                              <SelectItem value="07:00">7:00 AM</SelectItem>
+                              <SelectItem value="08:00">8:00 AM</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
-                    }
-                  />
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">Weekend Quiet Hours</h4>
+                          <p className="text-sm text-muted-foreground">Apply different quiet hours on weekends</p>
+                        </div>
+                        <Switch />
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
               </div>
             </SplitBarContent>
