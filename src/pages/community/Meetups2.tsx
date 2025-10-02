@@ -14,8 +14,11 @@ import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthProvider";
+import { useParams, useNavigate } from "react-router-dom";
+import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
+import { cn } from "@/lib/utils";
 import happyCoffeeGroup from '@/assets/happy-coffee-group.jpg';
 import { 
   CalendarDays, 
@@ -212,7 +215,7 @@ const sanitizeUrl = (url?: string) => {
 };
 
 // Transform event data to NewsCard format
-const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (event: any) => void) => {
+const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void) => {
   const rawImage = event.image_url || event.imageUrl;
   const safeImage = sanitizeUrl(rawImage);
   const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
@@ -243,6 +246,8 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
     attendees: event.participant_count || 0,
     timestamp: formatEventTime(event.start_time),
     showSmartAction: true,
+    onClick: onClick ? () => onClick(event) : undefined,
+    'data-event-id': event.id,
     ...(String(event.id || '').startsWith('dummy')
       ? {
           onActionClick: () => {
@@ -316,7 +321,7 @@ const formatEventTime = (dateString: string) => {
   });
 };
 
-const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event: any) => void) => {
+const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void) => {
   if (events.length === 0) {
     return (
       <div className="text-center py-12">
@@ -342,16 +347,22 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
             <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
-                {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit)}
-                className="h-full min-h-[320px] md:min-h-[360px]"
+                {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick)}
+                className={cn(
+                  "h-full min-h-[320px] md:min-h-[360px] transition-all duration-200 cursor-pointer",
+                  onClick && "hover:ring-2 hover:ring-primary"
+                )}
               />
             </div>
             {rowEvents[1] && (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit)}
-                  className="h-full min-h-[280px]"
+                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick)}
+                  className={cn(
+                    "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )}
                 />
               </div>
             )}
@@ -359,8 +370,11 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit)}
-                  className="h-full min-h-[280px]"
+                  {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick)}
+                  className={cn(
+                    "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )}
                 />
               </div>
             )}
@@ -372,8 +386,11 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-0`}
-                  {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit)}
-                  className="h-full min-h-[280px]"
+                  {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick)}
+                  className={cn(
+                    "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )}
                 />
               </div>
             )}
@@ -381,8 +398,11 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit)}
-                  className="h-full min-h-[280px]"
+                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick)}
+                  className={cn(
+                    "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
+                    onClick && "hover:ring-2 hover:ring-primary"
+                  )}
                 />
               </div>
             )}
@@ -390,8 +410,11 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-6">
               <NewsCard
                 key={`${i}-2`}
-                {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit)}
-                className="h-full min-h-[320px] md:min-h-[360px]"
+                {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick)}
+                className={cn(
+                  "h-full min-h-[320px] md:min-h-[360px] transition-all duration-200 cursor-pointer",
+                  onClick && "hover:ring-2 hover:ring-primary"
+                )}
               />
               </div>
             )}
@@ -408,6 +431,11 @@ const Meetups = () => {
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedMeetup, setSelectedMeetup] = useState<any>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const params = useParams();
+  const navigate = useNavigate();
   
   
 const { 
@@ -423,9 +451,64 @@ const {
   const { user } = useAuth();
   const currentUserId = user?.id || null;
 
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Handle deep linking
+  useEffect(() => {
+    if (params.id) {
+      const allEvents = [...todayList, ...upcomingList];
+      const event = allEvents.find(e => e.id === params.id);
+      if (event) {
+        setSelectedMeetup(event);
+        setDrawerOpen(true);
+        // Scroll card into view and add spotlight
+        setTimeout(() => {
+          const card = document.querySelector(`[data-event-id="${params.id}"]`);
+          if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+          }
+        }, 100);
+      }
+    }
+  }, [params.id]);
+
+  // Remove spotlight when drawer closes
+  useEffect(() => {
+    if (!drawerOpen) {
+      document.querySelectorAll('[data-event-id]').forEach(card => {
+        card.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+      });
+    } else if (selectedMeetup?.id) {
+      // Add spotlight to current card
+      const card = document.querySelector(`[data-event-id="${selectedMeetup.id}"]`);
+      if (card) {
+        card.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+      }
+    }
+  }, [drawerOpen, selectedMeetup]);
+
   const handleEditEvent = (event: any) => {
     setSelectedEvent(event);
     setEditMeetupOpen(true);
+  };
+
+  const handleCardClick = (event: any) => {
+    setSelectedMeetup(event);
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+    navigate('/comm/meetups', { replace: true });
   };
 
   // Build a list with at least 12 items prioritizing primary, then secondary, then featured
@@ -453,6 +536,27 @@ const {
 
   const todayList = buildPaddedList(todayEvents, upcomingEvents, featuredTodayEvents);
   const upcomingList = buildPaddedList(upcomingEvents, todayEvents, featuredUpcomingEvents);
+
+  const handleNavigatePrev = () => {
+    const allEvents = [...todayList, ...upcomingList];
+    const currentIndex = allEvents.findIndex(e => e.id === selectedMeetup?.id);
+    if (currentIndex > 0) {
+      setSelectedMeetup(allEvents[currentIndex - 1]);
+    }
+  };
+
+  const handleNavigateNext = () => {
+    const allEvents = [...todayList, ...upcomingList];
+    const currentIndex = allEvents.findIndex(e => e.id === selectedMeetup?.id);
+    if (currentIndex < allEvents.length - 1) {
+      setSelectedMeetup(allEvents[currentIndex + 1]);
+    }
+  };
+
+  const allEvents = [...todayList, ...upcomingList];
+  const currentIndex = allEvents.findIndex(e => e.id === selectedMeetup?.id);
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex < allEvents.length - 1;
 
   return (
     <AppLayout>

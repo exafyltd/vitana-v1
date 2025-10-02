@@ -34,6 +34,7 @@ interface NewsCardProps {
   rewardDescription?: string;
   showReward?: boolean;
   eventId?: string; // For event participation
+  "data-event-id"?: string; // For deep linking
 }
 
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
@@ -58,7 +59,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     rewardPoints,
     rewardDescription = "Earn credits",
     showReward = false,
-    eventId
+    eventId,
+    "data-event-id": dataEventId
   }, ref) => {
     
     const categoryStyles = {
@@ -179,6 +181,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           className
         )}
         onClick={onClick}
+        data-event-id={dataEventId}
       >
         {/* Reward Dot */}
         {showReward && rewardPoints && (
