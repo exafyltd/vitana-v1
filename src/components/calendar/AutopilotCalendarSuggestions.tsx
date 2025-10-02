@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Zap, Target, AlertTriangle, Check, X, Clock } from "lucide-react";
+import { Plane, Target, AlertTriangle, Check, X, Clock } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -61,7 +61,7 @@ export function AutopilotCalendarSuggestions({
   return (
     <div className="space-y-3 mb-6">
       <div className="flex items-center gap-2 mb-2">
-        <Zap className="h-4 w-4 text-sys-autopilot-accent" />
+        <Plane className="h-4 w-4 text-sys-autopilot-accent" />
         <h3 className="text-sm font-semibold">Autopilot Suggestions</h3>
         <Badge variant="secondary" className="text-xs ml-auto">{visibleSuggestions.length}</Badge>
       </div>
@@ -93,7 +93,7 @@ export function AutopilotCalendarSuggestions({
                     <h5 className="text-sm font-semibold">{suggestion.title}</h5>
                     {suggestion.accepted && (
                       <Badge variant="secondary" className="text-xs bg-sys-autopilot-tint text-sys-autopilot-accent border border-sys-autopilot-accent/20">
-                        <Zap className="h-3 w-3 mr-1" />
+                        <Plane className="h-3 w-3 mr-1" />
                         Autopilot
                       </Badge>
                     )}
