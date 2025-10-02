@@ -56,10 +56,7 @@ const getNotificationIcon = (type: string) => {
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [followStatuses, setFollowStatuses] = useState<Record<string, boolean>>({});
   const [followerProfiles, setFollowerProfiles] = useState<Record<string, FollowerProfile>>({});
-  const [followingInProgress, setFollowingInProgress] = useState<Record<string, boolean>>({});
-  const [followSuccessful, setFollowSuccessful] = useState<Record<string, boolean>>({});
   const { open } = useSidebar();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -100,15 +97,6 @@ export default function NotificationBell() {
                   }
                 }));
               }
-
-              // Fetch follow status for new follower
-              const { data: status } = await supabase.rpc('get_follow_status', {
-                target_user_id: followerId
-              });
-              setFollowStatuses(prev => ({
-                ...prev,
-                [followerId]: Boolean(status)
-              }));
             }
           }
         }
@@ -160,17 +148,6 @@ export default function NotificationBell() {
           ])
         );
         setFollowerProfiles(profiles);
-
-        // Fetch follow statuses in parallel
-        const statusEntries = await Promise.all(
-          followerIds.map(async (id) => {
-            const { data: s } = await supabase.rpc('get_follow_status', {
-              target_user_id: id
-            });
-            return [id, Boolean(s)] as const;
-          })
-        );
-        setFollowStatuses(Object.fromEntries(statusEntries));
       }
     } catch (error) {
       console.error('Error fetching notifications:', error);
@@ -273,55 +250,6 @@ export default function NotificationBell() {
     }
   };
 
-  const handleFollowBack = async (e: React.MouseEvent, followerId: string, notificationId: string, actorName: string) => {
-    e.stopPropagation();
-    
-    // Analytics: clicked
-    console.log('Analytics:', { event: 'notif_follow_back_clicked', actorUserId: followerId });
-    
-    // Set loading state
-    setFollowingInProgress(prev => ({ ...prev, [followerId]: true }));
-    
-    // Optimistic update
-    setFollowStatuses(prev => ({ ...prev, [followerId]: true }));
-    
-    try {
-      const { data, error } = await supabase.rpc('follow_user', {
-        target_user_id: followerId
-      });
-
-      if (error) throw error;
-
-      // Mark notification as read
-      await markAsRead(notificationId);
-      
-      // Set success state
-      setFollowSuccessful(prev => ({ ...prev, [followerId]: true }));
-      
-      // Analytics: success
-      console.log('Analytics:', { event: 'notif_follow_back_success', actorUserId: followerId });
-      
-      toast({
-        title: "Success",
-        description: `You are now following ${actorName}`,
-      });
-    } catch (error) {
-      console.error('Error following user:', error);
-      
-      // Revert optimistic update
-      setFollowStatuses(prev => ({ ...prev, [followerId]: false }));
-      
-      toast({
-        title: "Error",
-        description: "Failed to follow user. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      // Clear loading state
-      setFollowingInProgress(prev => ({ ...prev, [followerId]: false }));
-    }
-  };
-
   const handleNotificationClick = async (notification: Notification) => {
     // Mark as read
     if (!notification.is_read) {
@@ -410,9 +338,6 @@ export default function NotificationBell() {
                 const followerProfile = followerData?.follower_id 
                   ? followerProfiles[followerData.follower_id] 
                   : null;
-                const showFollowBack = isFollowNotification && 
-                  followerData?.follower_id && 
-                  !followStatuses[followerData.follower_id];
 
                 const actorName = followerData?.follower_name || followerProfile?.display_name || 'Someone';
 
@@ -458,47 +383,22 @@ export default function NotificationBell() {
                     )}
 
                     {/* Content Block */}
-                    <div className="flex-1 min-w-0 space-y-0.5 md:flex md:items-center md:gap-2">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm leading-relaxed">
-                          {isFollowNotification ? (
-                            <>
-                              <span className="font-semibold">{actorName}</span>
-                              <span className="text-muted-foreground"> started following you</span>
-                            </>
-                          ) : (
-                            <span className={!notification.is_read ? 'font-medium' : ''}>
-                              {notification.message}
-                            </span>
-                          )}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true }).replace('about ', '')}
-                        </p>
-                      </div>
-                      {showFollowBack && (
-                        <Button
-                          size="sm"
-                          variant={followSuccessful[followerData.follower_id!] ? "outline" : "default"}
-                          className="mt-2 h-8 text-xs w-full md:w-auto md:mt-0"
-                          onClick={(e) => handleFollowBack(e, followerData.follower_id!, notification.id, actorName)}
-                          disabled={followingInProgress[followerData.follower_id!] || followSuccessful[followerData.follower_id!]}
-                          aria-label={`Follow back ${actorName}`}
-                          aria-busy={followingInProgress[followerData.follower_id!] || undefined}
-                          aria-disabled={followSuccessful[followerData.follower_id!] || undefined}
-                        >
-                          {followingInProgress[followerData.follower_id!] ? (
-                            <>
-                              <span className="animate-spin mr-2">⟳</span>
-                              Following...
-                            </>
-                          ) : followSuccessful[followerData.follower_id!] ? (
-                            'Following'
-                          ) : (
-                            'Follow Back'
-                          )}
-                        </Button>
-                      )}
+                    <div className="flex-1 min-w-0 space-y-0.5">
+                      <p className="text-sm leading-relaxed">
+                        {isFollowNotification ? (
+                          <>
+                            <span className="font-semibold">{actorName}</span>
+                            <span className="text-muted-foreground"> started following you</span>
+                          </>
+                        ) : (
+                          <span className={!notification.is_read ? 'font-medium' : ''}>
+                            {notification.message}
+                          </span>
+                        )}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true }).replace('about ', '')}
+                      </p>
                     </div>
 
                     {/* Dismiss Button */}
