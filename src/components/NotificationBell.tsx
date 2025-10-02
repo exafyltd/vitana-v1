@@ -58,7 +58,6 @@ export default function NotificationBell() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [followStatuses, setFollowStatuses] = useState<Record<string, boolean>>({});
   const [followerProfiles, setFollowerProfiles] = useState<Record<string, FollowerProfile>>({});
-  const [imageLoading, setImageLoading] = useState<Record<string, boolean>>({});
   const { open } = useSidebar();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -346,7 +345,6 @@ export default function NotificationBell() {
                   !followStatuses[followerData.follower_id];
 
                 const actorName = followerData?.follower_name || followerProfile?.display_name || 'Someone';
-                const isLoading = followerData?.follower_id && imageLoading[followerData.follower_id];
 
                 return (
                   <div
@@ -371,20 +369,15 @@ export default function NotificationBell() {
                     {/* Avatar */}
                     {isFollowNotification ? (
                       <div className="flex-shrink-0">
-                        {isLoading ? (
-                          <Skeleton className="h-10 w-10 rounded-full" />
-                        ) : (
-                          <Avatar className="h-10 w-10">
-                            <AvatarImage 
-                              src={followerProfile?.avatar_url || undefined}
-                              onLoadStart={() => followerData?.follower_id && setImageLoading(prev => ({ ...prev, [followerData.follower_id!]: true }))}
-                              onLoad={() => followerData?.follower_id && setImageLoading(prev => ({ ...prev, [followerData.follower_id!]: false }))}
-                            />
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                              {getInitials(actorName)}
-                            </AvatarFallback>
-                          </Avatar>
-                        )}
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage 
+                            src={followerProfile?.avatar_url || undefined}
+                            alt={actorName}
+                          />
+                          <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                            {getInitials(actorName)}
+                          </AvatarFallback>
+                        </Avatar>
                       </div>
                     ) : (
                       <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-muted">
