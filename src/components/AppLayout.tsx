@@ -163,46 +163,50 @@ function AppSidebar({
   return (
     <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
       <SidebarHeader className="border-b border-sidebar-border rounded-tr-2xl">
-        <div className="px-2 py-1 text-lg font-bold tracking-wide flex items-center justify-between">
-          <button 
-            onClick={handleLogoClick}
-            className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors text-left"
-          >
-            <div className="flex flex-col">
-              <span className="text-lg font-bold tracking-wide">
-                {open ? "VITANA" : "V"}
-              </span>
-              {open && (
-                <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1">
-                  {getTenantDisplayName()}
+        {/* Two-Row Header Layout */}
+        <div className="flex flex-col">
+          {/* Row 1: Logo + Chevron Toggle */}
+          <div className="px-2 py-1 flex items-center justify-between">
+            <button 
+              onClick={handleLogoClick}
+              className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors text-left"
+            >
+              <div className="flex flex-col">
+                <span className="text-lg font-bold tracking-wide">
+                  {open ? "VITANA" : "V"}
                 </span>
-              )}
-            </div>
-          </button>
-          
-          {/* Chevron Toggle Button - Always visible */}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="h-8 w-8 p-0 hover:bg-sidebar-accent text-white rounded-lg transition-colors ml-2"
-                  onClick={() => onSidebarOpenChange(!open)}
-                  aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
-                >
-                  {open ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>{open ? "Collapse" : "Expand"} sidebar (⌘/Ctrl+B)</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          
-          {/* Utility Icons - only show when sidebar is open */}
+                {open && (
+                  <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1">
+                    {getTenantDisplayName()}
+                  </span>
+                )}
+              </div>
+            </button>
+            
+            {/* Chevron Toggle Button - Always visible */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="h-8 w-8 p-0 hover:bg-sidebar-accent text-white rounded-lg transition-colors"
+                    onClick={() => onSidebarOpenChange(!open)}
+                    aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
+                  >
+                    {open ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>{open ? "Collapse" : "Expand"} sidebar (⌘/Ctrl+B)</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
+          {/* Row 2: Quick Actions - only show when sidebar is open */}
           {open && (
-            <div className="flex items-center space-x-1 ml-4 pr-2">
+            <div className="flex items-center justify-end px-2 pb-2 space-x-1">
               {/* Calendar Button - Today's Overview */}
               <div 
                 className="relative shrink-0 transition-all duration-200"
