@@ -70,11 +70,44 @@ export default function NotificationBell() {
       .channel('notifications')
       .on('postgres_changes', 
         { event: 'INSERT', schema: 'public', table: 'notifications' },
-        (payload) => {
+        async (payload) => {
           const newNotification = payload.new as Notification;
           setNotifications(prev => [newNotification, ...prev]);
           if (!newNotification.is_read) {
             setUnreadCount(prev => prev + 1);
+          }
+
+          // Fetch profile for new follow notification
+          if (newNotification.type === 'follow') {
+            const followerId = (newNotification.data as { follower_id?: string } | null)?.follower_id;
+            if (followerId) {
+              // Fetch global profile for new follower
+              const { data: globalProfile } = await supabase
+                .from('global_community_profiles')
+                .select('user_id, display_name, avatar_url')
+                .eq('user_id', followerId)
+                .eq('is_visible', true)
+                .single();
+
+              if (globalProfile) {
+                setFollowerProfiles(prev => ({
+                  ...prev,
+                  [followerId]: {
+                    display_name: globalProfile.display_name ?? null,
+                    avatar_url: globalProfile.avatar_url ?? null
+                  }
+                }));
+              }
+
+              // Fetch follow status for new follower
+              const { data: status } = await supabase.rpc('get_follow_status', {
+                target_user_id: followerId
+              });
+              setFollowStatuses(prev => ({
+                ...prev,
+                [followerId]: Boolean(status)
+              }));
+            }
           }
         }
       )
@@ -104,33 +137,39 @@ export default function NotificationBell() {
 
       // Fetch follow statuses and profiles for follow notifications
       const followNotifications = data?.filter(n => n.type === 'follow') || [];
-      const statuses: Record<string, boolean> = {};
-      const profiles: Record<string, FollowerProfile> = {};
-      
-      for (const notif of followNotifications) {
-        const followerData = notif.data as { follower_id?: string; follower_name?: string } | null;
-        if (followerData?.follower_id) {
-          // Check if current user is following this person back
-          const { data: followStatus } = await supabase.rpc('get_follow_status', {
-            target_user_id: followerData.follower_id
-          });
-          statuses[followerData.follower_id] = followStatus || false;
+      const followerIds = [...new Set(
+        followNotifications
+          .map(n => (n.data as { follower_id?: string } | null)?.follower_id)
+          .filter(Boolean)
+      )] as string[];
 
-          // Fetch follower profile data
-          const { data: profileData } = await supabase
-            .from('profiles')
-            .select('avatar_url, display_name')
-            .eq('user_id', followerData.follower_id)
-            .single();
-          
-          if (profileData) {
-            profiles[followerData.follower_id] = profileData;
-          }
-        }
+      if (followerIds.length > 0) {
+        // Batch fetch from global_community_profiles (public, minimal profile)
+        const { data: globalProfiles } = await supabase
+          .from('global_community_profiles')
+          .select('user_id, display_name, avatar_url')
+          .in('user_id', followerIds)
+          .eq('is_visible', true);
+
+        const profiles = Object.fromEntries(
+          (globalProfiles || []).map(p => [
+            p.user_id,
+            { display_name: p.display_name ?? null, avatar_url: p.avatar_url ?? null }
+          ])
+        );
+        setFollowerProfiles(profiles);
+
+        // Fetch follow statuses in parallel
+        const statusEntries = await Promise.all(
+          followerIds.map(async (id) => {
+            const { data: s } = await supabase.rpc('get_follow_status', {
+              target_user_id: id
+            });
+            return [id, Boolean(s)] as const;
+          })
+        );
+        setFollowStatuses(Object.fromEntries(statusEntries));
       }
-      
-      setFollowStatuses(statuses);
-      setFollowerProfiles(profiles);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
@@ -373,6 +412,8 @@ export default function NotificationBell() {
                           <AvatarImage 
                             src={followerProfile?.avatar_url || undefined}
                             alt={actorName}
+                            loading="lazy"
+                            onError={(e) => (e.currentTarget.src = '')}
                           />
                           <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                             {getInitials(actorName)}
