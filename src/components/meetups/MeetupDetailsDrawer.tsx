@@ -299,7 +299,7 @@ export function MeetupDetailsDrawer({
                   "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
                   "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
                   "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  "opacity-0 hover:opacity-100 focus-visible:opacity-100",
+                  "opacity-20 hover:opacity-100 focus-visible:opacity-100",
                   !hasPrev && "pointer-events-none"
                 )}
                 onClick={onNavigatePrev}
@@ -316,7 +316,7 @@ export function MeetupDetailsDrawer({
                   "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
                   "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
                   "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  "opacity-0 hover:opacity-100 focus-visible:opacity-100",
+                  "opacity-20 hover:opacity-100 focus-visible:opacity-100",
                   !hasNext && "pointer-events-none"
                 )}
                 onClick={onNavigateNext}
