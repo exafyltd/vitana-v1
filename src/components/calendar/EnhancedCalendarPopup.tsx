@@ -631,49 +631,51 @@ export function EnhancedCalendarPopup({
                     </div>
                   </div>
 
-                  <div className="relative">
-                    <CalendarComponent
-                      mode="single"
-                      selected={selectedMonthDay}
-                      onSelect={(date) => {
-                        if (date) {
-                          setSelectedMonthDay(date);
-                          // Check for double-click
-                          const now = Date.now();
-                          const lastClick = (window as any).__calendarLastClick || 0;
-                          if (now - lastClick < 300) {
-                            setShowQuickAdd(true);
+                  <ScrollArea className="h-[calc(80vh-280px)]">
+                    <div className="relative pb-4">
+                      <CalendarComponent
+                        mode="single"
+                        selected={selectedMonthDay}
+                        onSelect={(date) => {
+                          if (date) {
+                            setSelectedMonthDay(date);
+                            // Check for double-click
+                            const now = Date.now();
+                            const lastClick = (window as any).__calendarLastClick || 0;
+                            if (now - lastClick < 300) {
+                              setShowQuickAdd(true);
+                            }
+                            (window as any).__calendarLastClick = now;
                           }
-                          (window as any).__calendarLastClick = now;
+                        }}
+                        month={currentMonth}
+                        onMonthChange={setCurrentMonth}
+                        className="rounded-lg border pointer-events-auto"
+                        modifiers={{
+                          hasEvents: (date) => getEventsForDate(date).length > 0
+                        }}
+                        modifiersClassNames={{
+                          hasEvents: 'has-events'
+                        }}
+                      />
+                      <style>{`
+                        .has-events {
+                          position: relative;
                         }
-                      }}
-                      month={currentMonth}
-                      onMonthChange={setCurrentMonth}
-                      className="rounded-lg border pointer-events-auto"
-                      modifiers={{
-                        hasEvents: (date) => getEventsForDate(date).length > 0
-                      }}
-                      modifiersClassNames={{
-                        hasEvents: 'has-events'
-                      }}
-                    />
-                    <style>{`
-                      .has-events {
-                        position: relative;
-                      }
-                      .has-events::after {
-                        content: '';
-                        position: absolute;
-                        bottom: 2px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        width: 4px;
-                        height: 4px;
-                        border-radius: 50%;
-                        background-color: hsl(var(--primary));
-                      }
-                    `}</style>
-                  </div>
+                        .has-events::after {
+                          content: '';
+                          position: absolute;
+                          bottom: 2px;
+                          left: 50%;
+                          transform: translateX(-50%);
+                          width: 4px;
+                          height: 4px;
+                          border-radius: 50%;
+                          background-color: hsl(var(--primary));
+                        }
+                      `}</style>
+                    </div>
+                  </ScrollArea>
                 </div>
 
                 {/* Selected Day Agenda */}
