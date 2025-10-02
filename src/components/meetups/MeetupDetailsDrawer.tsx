@@ -283,12 +283,13 @@ export function MeetupDetailsDrawer({
               alt={event.title}
               className={cn(
                 "w-full h-full object-cover transition-opacity duration-300",
+                "saturate-110 contrast-105 brightness-105",
                 isImageLoaded ? "opacity-100" : "opacity-0"
               )}
               onLoad={() => setIsImageLoaded(true)}
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/95 dark:from-background via-background/50 dark:via-background/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/85 dark:from-background/90 via-background/40 dark:via-background/50 to-transparent" />
             
             {/* Floating Navigation Arrows */}
             <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
