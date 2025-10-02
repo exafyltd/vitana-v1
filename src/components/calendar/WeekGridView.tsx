@@ -20,6 +20,84 @@ const HOURS = Array.from({ length: 24 }, (_, i) => i);
 const PIXELS_PER_HOUR = 60; // 60px per hour = 15 min grid (4 segments)
 const MIN_EVENT_HEIGHT = 30;
 
+// Helper functions for overlap detection
+function eventsOverlap(event1: CalendarEvent, event2: CalendarEvent): boolean {
+  const start1 = new Date(event1.start_time).getTime();
+  const end1 = event1.end_time ? new Date(event1.end_time).getTime() : start1 + 3600000;
+  const start2 = new Date(event2.start_time).getTime();
+  const end2 = event2.end_time ? new Date(event2.end_time).getTime() : start2 + 3600000;
+  
+  return start1 < end2 && start2 < end1;
+}
+
+interface EventLayoutInfo {
+  event: CalendarEvent;
+  column: number;
+  totalColumns: number;
+  top: number;
+  height: number;
+}
+
+function calculateEventColumns(events: CalendarEvent[]): EventLayoutInfo[] {
+  if (events.length === 0) return [];
+  
+  // Sort events by start time
+  const sortedEvents = [...events].sort((a, b) => 
+    new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+  );
+  
+  const columns: CalendarEvent[][] = [];
+  const eventToColumn = new Map<string, number>();
+  
+  sortedEvents.forEach(event => {
+    // Find the first column where this event doesn't overlap with any existing event
+    let placed = false;
+    for (let i = 0; i < columns.length; i++) {
+      const column = columns[i];
+      const hasOverlap = column.some(e => eventsOverlap(e, event));
+      if (!hasOverlap) {
+        column.push(event);
+        eventToColumn.set(event.id, i);
+        placed = true;
+        break;
+      }
+    }
+    
+    // If no suitable column found, create a new one
+    if (!placed) {
+      columns.push([event]);
+      eventToColumn.set(event.id, columns.length - 1);
+    }
+  });
+  
+  // Calculate layout info for each event
+  return sortedEvents.map(event => {
+    const column = eventToColumn.get(event.id) || 0;
+    
+    // Find how many columns this event group actually needs
+    const overlappingEvents = sortedEvents.filter(e => 
+      eventsOverlap(e, event) || e.id === event.id
+    );
+    const maxColumn = Math.max(...overlappingEvents.map(e => eventToColumn.get(e.id) || 0));
+    const totalColumns = maxColumn + 1;
+    
+    const start = new Date(event.start_time);
+    const end = event.end_time ? new Date(event.end_time) : addMinutes(start, 60);
+    const startOfDayDate = startOfDay(start);
+    
+    const top = differenceInMinutes(start, startOfDayDate) / 60 * PIXELS_PER_HOUR;
+    const height = Math.max(MIN_EVENT_HEIGHT, differenceInMinutes(end, start) / 60 * PIXELS_PER_HOUR);
+    
+    return {
+      event,
+      column,
+      totalColumns,
+      top,
+      height
+    };
+  });
+}
+
 export function WeekGridView({ 
   weekDays, 
   events, 
@@ -71,17 +149,6 @@ export function WeekGridView({
     return events
       .filter(event => isSameDay(new Date(event.start_time), day))
       .filter(event => activeFilters.length === 0 || activeFilters.includes(event.event_type));
-  };
-
-  const calculateEventPosition = (event: CalendarEvent) => {
-    const start = new Date(event.start_time);
-    const end = event.end_time ? new Date(event.end_time) : addMinutes(start, 60);
-    const startOfDayDate = startOfDay(start);
-    
-    const top = differenceInMinutes(start, startOfDayDate) / 60 * PIXELS_PER_HOUR;
-    const height = Math.max(MIN_EVENT_HEIGHT, differenceInMinutes(end, start) / 60 * PIXELS_PER_HOUR);
-    
-    return { top, height };
   };
 
   const handleGridClick = (day: Date, hour: number) => {
@@ -190,40 +257,55 @@ export function WeekGridView({
                     ))}
 
                     {/* Events */}
-                    {dayEvents.map((event) => {
-                      const { top, height } = calculateEventPosition(event);
+                    {calculateEventColumns(dayEvents).map(({ event, column, totalColumns, top, height }) => {
+                      const widthPercent = (100 / totalColumns);
+                      const leftPercent = column * widthPercent;
+                      const isNarrow = widthPercent < 50;
+                      const isVeryNarrow = widthPercent < 33;
                       
                       return (
                         <div
                           key={event.id}
-                          className="absolute left-0 right-0 mx-0.5 px-2 py-1 rounded group cursor-pointer hover:shadow-md transition-all animate-scale-in overflow-hidden"
+                          className={cn(
+                            "absolute rounded group cursor-pointer hover:shadow-md hover:z-10 transition-all duration-120 animate-scale-in overflow-hidden border-r border-background",
+                            isNarrow ? "px-1 py-0.5" : "px-2 py-1"
+                          )}
                           style={{
                             top: `${top}px`,
                             height: `${height}px`,
+                            left: `${leftPercent}%`,
+                            width: `calc(${widthPercent}% - 2px)`,
                             backgroundColor: `${getCategoryColor(event.event_type)}20`,
                             borderLeft: `3px solid ${getCategoryColor(event.event_type)}`,
                           }}
                           onClick={() => onEventClick(event)}
                         >
                           <div className="flex flex-col h-full">
-                            <p className="text-xs font-semibold truncate mb-0.5">
-                              {event.title}
+                            <p className={cn(
+                              "font-semibold truncate",
+                              isVeryNarrow ? "text-[10px] mb-0" : "text-xs mb-0.5"
+                            )}>
+                              {isVeryNarrow ? format(new Date(event.start_time), 'h:mm') : event.title}
                             </p>
-                            <p className="text-[10px] text-muted-foreground">
-                              {format(new Date(event.start_time), 'h:mm a')}
-                            </p>
+                            {!isVeryNarrow && (
+                              <p className="text-[10px] text-muted-foreground">
+                                {format(new Date(event.start_time), 'h:mm a')}
+                              </p>
+                            )}
                             
                             {/* Hover Actions */}
-                            <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-0.5">
-                              {event.attendees_count && event.attendees_count > 0 && (
+                            {!isVeryNarrow && (
+                              <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-0.5">
+                                {event.attendees_count && event.attendees_count > 0 && (
+                                  <Button size="sm" variant="ghost" className="h-5 w-5 p-0 bg-background/80">
+                                    <MessageCircle className="h-3 w-3" />
+                                  </Button>
+                                )}
                                 <Button size="sm" variant="ghost" className="h-5 w-5 p-0 bg-background/80">
-                                  <MessageCircle className="h-3 w-3" />
+                                  <Edit className="h-3 w-3" />
                                 </Button>
-                              )}
-                              <Button size="sm" variant="ghost" className="h-5 w-5 p-0 bg-background/80">
-                                <Edit className="h-3 w-3" />
-                              </Button>
-                            </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       );
