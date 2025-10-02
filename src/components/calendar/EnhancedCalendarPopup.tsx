@@ -13,7 +13,8 @@ import {
   isSameMonth,
   isWithinInterval,
   getHours,
-  getMinutes
+  getMinutes,
+  setHours
 } from "date-fns";
 import {
   Dialog,
@@ -49,6 +50,9 @@ import { useCalendarEvents, CalendarEvent } from '@/hooks/useCalendarEvents';
 import { EventDetailsPanel } from "./EventDetailsPanel";
 import { NaturalLanguageInput } from "./NaturalLanguageInput";
 import { CalendarListSkeleton } from "./CalendarSkeleton";
+import { CalendarFilters } from "./CalendarFilters";
+import { WeekGridView } from "./WeekGridView";
+import { AutopilotCalendarSuggestions, AutopilotSuggestion } from "./AutopilotCalendarSuggestions";
 
 interface EnhancedCalendarPopupProps {
   open: boolean;
@@ -112,6 +116,16 @@ export function EnhancedCalendarPopup({
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedMonthDay, setSelectedMonthDay] = useState<Date>(new Date());
   const [lastSyncTime, setLastSyncTime] = useState<Date>(new Date());
+  const [activeFilters, setActiveFilters] = useState<CalendarEvent['event_type'][]>([]);
+  const [autopilotSuggestions, setAutopilotSuggestions] = useState<AutopilotSuggestion[]>([
+    {
+      id: '1',
+      type: 'focus-block',
+      title: 'Recommend focus block',
+      description: 'You have a 90-minute window available. Perfect for deep work.',
+      suggestedTime: 'Tomorrow 9:00 AM - 10:30 AM',
+    }
+  ]);
   
   const todayEvents = getEventsForDate(new Date()).sort((a, b) => 
     new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
@@ -200,6 +214,52 @@ export function EnhancedCalendarPopup({
     newMonth.setMonth(newMonth.getMonth() + months);
     setCurrentMonth(newMonth);
   };
+
+  const handleToggleFilter = (filter: CalendarEvent['event_type']) => {
+    setActiveFilters(prev => 
+      prev.includes(filter) 
+        ? prev.filter(f => f !== filter)
+        : [...prev, filter]
+    );
+  };
+
+  const handleCreateEventAtTime = (date: Date, hour: number) => {
+    const eventDate = setHours(date, hour);
+    handleEventCreate({
+      title: 'New Event',
+      start_time: eventDate.toISOString(),
+      end_time: addMinutes(eventDate, 60).toISOString(),
+      event_type: 'personal',
+    });
+  };
+
+  const handleAcceptSuggestion = (id: string) => {
+    setAutopilotSuggestions(prev =>
+      prev.map(s => s.id === id ? { ...s, accepted: true } : s)
+    );
+    toast({
+      title: "Suggestion accepted",
+      description: "Autopilot has updated your calendar",
+    });
+  };
+
+  const handleDismissSuggestion = (id: string) => {
+    setAutopilotSuggestions(prev => prev.filter(s => s.id !== id));
+  };
+
+  const handleUndoSuggestion = (id: string) => {
+    setAutopilotSuggestions(prev =>
+      prev.map(s => s.id === id ? { ...s, accepted: false } : s)
+    );
+    toast({
+      title: "Suggestion undone",
+      description: "Changes have been reverted",
+    });
+  };
+
+  const filteredEvents = activeFilters.length === 0 
+    ? events 
+    : events.filter(event => activeFilters.includes(event.event_type));
 
   const formatEventTime = (startTime: string, endTime?: string | null) => {
     const start = new Date(startTime);
@@ -348,12 +408,22 @@ export function EnhancedCalendarPopup({
 
             {/* Today View - Agenda */}
             <TabsContent value="today" className="flex-1 overflow-hidden m-0">
-              <ScrollArea className="h-[calc(80vh-280px)]">
+              <ScrollArea className="h-[calc(80vh-340px)]">
                 <div className="px-6 py-4">
                   {loading ? (
                     <CalendarListSkeleton />
                   ) : (
                     <>
+                      {/* Autopilot Suggestions */}
+                      {autopilotSuggestions.length > 0 && (
+                        <AutopilotCalendarSuggestions
+                          suggestions={autopilotSuggestions}
+                          onAccept={handleAcceptSuggestion}
+                          onDismiss={handleDismissSuggestion}
+                          onUndo={handleUndoSuggestion}
+                        />
+                      )}
+
                       {/* Now Indicator */}
                       {ongoingEvent && (
                         <div className="mb-4 px-4 py-2.5 bg-sys-ai-tint border border-sys-ai-accent/30 rounded-lg">
@@ -462,16 +532,24 @@ export function EnhancedCalendarPopup({
               </ScrollArea>
             </TabsContent>
 
-            {/* Week View */}
+            {/* Week View - Enhanced Grid */}
             <TabsContent value="week" className="flex-1 overflow-hidden m-0">
               <div className="px-6 py-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-semibold">
-                    {format(weekStart, 'MMM d')}–{format(weekEnd, 'MMM d, yyyy')}
-                  </h3>
+                  <div>
+                    <h3 className="text-sm font-semibold">
+                      {format(weekStart, 'MMM d')}–{format(weekEnd, 'MMM d, yyyy')}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Click any slot to create an event • Drag to reschedule
+                    </p>
+                  </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={() => handleNavigateWeek('prev')}>
                       <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => setCurrentWeek(new Date())}>
+                      <Clock className="h-4 w-4" />
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => handleNavigateWeek('next')}>
                       <ChevronRight className="h-4 w-4" />
@@ -479,76 +557,41 @@ export function EnhancedCalendarPopup({
                   </div>
                 </div>
 
-                <ScrollArea className="h-[calc(80vh-280px)]">
-                  {loading ? (
-                    <CalendarListSkeleton />
-                  ) : (
-                    <div className="grid grid-cols-7 gap-2 pb-4">
-                      {weekDays.map((day) => {
-                        const dayEvents = getEventsForDate(day).sort((a, b) => 
-                          new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
-                        );
-                        const isTodayDate = isToday(day);
+                {/* Day Headers */}
+                <div className="grid grid-cols-7 gap-px mb-2 ml-14">
+                  {weekDays.map((day) => {
+                    const isTodayDate = isToday(day);
+                    return (
+                      <div key={format(day, 'yyyy-MM-dd')} className="text-center">
+                        <p className={cn(
+                          "text-xs font-medium mb-0.5",
+                          isTodayDate && "text-primary"
+                        )}>
+                          {format(day, 'EEE')}
+                        </p>
+                        <p className={cn(
+                          "text-xl font-bold",
+                          isTodayDate && "text-primary"
+                        )}>
+                          {format(day, 'd')}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
 
-                        return (
-                          <div 
-                            key={format(day, 'yyyy-MM-dd')} 
-                            className={cn(
-                              "min-h-[120px] rounded-lg border p-2",
-                              isTodayDate && "border-primary bg-primary/5"
-                            )}
-                          >
-                            <div className="mb-2">
-                              <p className={cn(
-                                "text-xs font-medium",
-                                isTodayDate && "text-primary"
-                              )}>
-                                {format(day, 'EEE')}
-                              </p>
-                              <p className={cn(
-                                "text-lg font-semibold",
-                                isTodayDate && "text-primary"
-                              )}>
-                                {format(day, 'd')}
-                              </p>
-                            </div>
-
-                            <div className="space-y-1">
-                              {dayEvents.slice(0, 4).map((event) => (
-                                <div
-                                  key={event.id}
-                                  className="px-2 py-1.5 rounded text-xs cursor-pointer hover:bg-muted/80 transition-colors"
-                                  style={{ 
-                                    borderLeft: `3px solid ${getCategoryColor(event.event_type)}`,
-                                    backgroundColor: `${getCategoryColor(event.event_type)}15`
-                                  }}
-                                  onClick={() => setDetailsPanelEvent(event)}
-                                >
-                                  <p className="font-medium truncate text-[11px] leading-tight mb-0.5">
-                                    {event.title}
-                                  </p>
-                                  <p className="text-[10px] text-muted-foreground">
-                                    {format(new Date(event.start_time), 'h:mm a')}
-                                  </p>
-                                </div>
-                              ))}
-                              {dayEvents.length > 4 && (
-                                <p className="text-[10px] text-muted-foreground px-2">
-                                  +{dayEvents.length - 4} more
-                                </p>
-                              )}
-                              {dayEvents.length === 0 && (
-                                <p className="text-[10px] text-muted-foreground px-2 py-1">
-                                  No events
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </ScrollArea>
+                {loading ? (
+                  <CalendarListSkeleton />
+                ) : (
+                  <WeekGridView
+                    weekDays={weekDays}
+                    events={filteredEvents}
+                    onEventClick={setDetailsPanelEvent}
+                    onCreateEvent={handleCreateEventAtTime}
+                    getCategoryColor={getCategoryColor}
+                    activeFilters={activeFilters}
+                  />
+                )}
               </div>
             </TabsContent>
 
@@ -571,14 +614,49 @@ export function EnhancedCalendarPopup({
                     </div>
                   </div>
 
-                  <CalendarComponent
-                    mode="single"
-                    selected={selectedMonthDay}
-                    onSelect={(date) => date && setSelectedMonthDay(date)}
-                    month={currentMonth}
-                    onMonthChange={setCurrentMonth}
-                    className="rounded-lg border pointer-events-auto"
-                  />
+                  <div className="relative">
+                    <CalendarComponent
+                      mode="single"
+                      selected={selectedMonthDay}
+                      onSelect={(date) => {
+                        if (date) {
+                          setSelectedMonthDay(date);
+                          // Check for double-click
+                          const now = Date.now();
+                          const lastClick = (window as any).__calendarLastClick || 0;
+                          if (now - lastClick < 300) {
+                            setShowQuickAdd(true);
+                          }
+                          (window as any).__calendarLastClick = now;
+                        }
+                      }}
+                      month={currentMonth}
+                      onMonthChange={setCurrentMonth}
+                      className="rounded-lg border pointer-events-auto"
+                      modifiers={{
+                        hasEvents: (date) => getEventsForDate(date).length > 0
+                      }}
+                      modifiersClassNames={{
+                        hasEvents: 'has-events'
+                      }}
+                    />
+                    <style>{`
+                      .has-events {
+                        position: relative;
+                      }
+                      .has-events::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 2px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 4px;
+                        height: 4px;
+                        border-radius: 50%;
+                        background-color: hsl(var(--primary));
+                      }
+                    `}</style>
+                  </div>
                 </div>
 
                 {/* Selected Day Agenda */}
