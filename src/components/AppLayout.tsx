@@ -5,8 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane, Calendar } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
@@ -161,76 +160,24 @@ function AppSidebar({
   const buttonIcon = isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />;
 
   return (
-    <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg transition-all duration-200 ease-out">
+    <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
       <SidebarHeader className="border-b border-sidebar-border rounded-tr-2xl">
         <div className="px-2 py-1 text-lg font-bold tracking-wide flex items-center justify-between">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button 
-                  onClick={() => {
-                    if (!open) {
-                      onSidebarOpenChange(true);
-                    } else {
-                      handleLogoClick();
-                    }
-                  }}
-                  className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors text-left"
-                  aria-label={open ? "Sign out" : "Expand sidebar"}
-                >
-                  <div className="flex flex-col">
-                    <span className="text-lg font-bold tracking-wide">
-                      {open ? "VITANA" : "V"}
-                    </span>
-                    {open && (
-                      <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1">
-                        {getTenantDisplayName()}
-                      </span>
-                    )}
-                  </div>
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                {open ? "Sign out" : "Expand sidebar"}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          
-          {/* Toggle button - always visible */}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 w-8 p-0 shrink-0 ml-2"
-                  onClick={() => {
-                    const newState = !open;
-                    onSidebarOpenChange(newState);
-                    // Focus first interactive element when opening
-                    if (newState) {
-                      setTimeout(() => {
-                        const firstLink = document.querySelector('nav a, nav button') as HTMLElement;
-                        firstLink?.focus();
-                      }, 200);
-                    }
-                  }}
-                  aria-expanded={open}
-                  aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
-                >
-                  {open ? (
-                    <ChevronLeft className="h-4 w-4" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4" />
-                  )}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                {open ? "Collapse" : "Expand"} sidebar ⌘/Ctrl+B
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          
+          <button 
+            onClick={handleLogoClick}
+            className="rounded-lg p-2 hover:bg-sidebar-accent transition-colors text-left"
+          >
+            <div className="flex flex-col">
+              <span className="text-lg font-bold tracking-wide">
+                {open ? "VITANA" : "V"}
+              </span>
+              {open && (
+                <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1">
+                  {getTenantDisplayName()}
+                </span>
+              )}
+            </div>
+          </button>
           {/* Utility Icons - only show when sidebar is open */}
           {open && (
             <div className="flex items-center space-x-1 ml-4 pr-2">
@@ -283,6 +230,9 @@ function AppSidebar({
               </div>
             </div>
           )}
+          
+          {/* Sidebar trigger - only show when sidebar is open */}
+          {open && <SidebarTrigger />}
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
@@ -413,29 +363,25 @@ export default function AppLayout({ children }: AppLayoutProps) {
   
   // Controlled sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
-    // Check if mobile
-    const isMobile = window.innerWidth < 768;
-    const stored = localStorage.getItem("sidebarOpen");
-    return stored !== null ? stored === "true" : !isMobile;
+    const stored = getLocalStorageItem(tenant?.id || "global", "sidebar", "open");
+    return stored === "true";
   });
 
   // Persist sidebar state changes to localStorage
   const handleSidebarOpenChange = (open: boolean) => {
     setSidebarOpen(open);
-    localStorage.setItem("sidebarOpen", open.toString());
+    setLocalStorageItem(tenant?.id || "global", "sidebar", "open", open.toString());
   };
 
-  // Keyboard shortcut ⌘/Ctrl+B to toggle sidebar
+  // Initialize sidebar state from localStorage on mount
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'b') {
-        e.preventDefault();
-        handleSidebarOpenChange(!sidebarOpen);
+    if (tenant?.id) {
+      const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
+      if (stored !== null) {
+        setSidebarOpen(stored === "true");
       }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [sidebarOpen]);
+    }
+  }, [tenant?.id]);
 
   return (
     <div>
