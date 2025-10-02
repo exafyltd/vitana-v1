@@ -451,6 +451,32 @@ const {
   const { user } = useAuth();
   const currentUserId = user?.id || null;
 
+  // Build a list with at least 12 items prioritizing primary, then secondary, then featured
+  const buildPaddedList = (primary: any[], secondary: any[], featured: any[]) => {
+    const byId = new Set<string>();
+    const result: any[] = [];
+
+    const pushUnique = (arr: any[]) => {
+      for (const e of arr) {
+        const id = e.id || `${e.title}-${e.start_time}`;
+        if (!byId.has(id)) {
+          byId.add(id);
+          result.push(e);
+        }
+        if (result.length >= 12) break;
+      }
+    };
+
+    pushUnique(primary);
+    if (result.length < 12) pushUnique(secondary);
+    if (result.length < 12) pushUnique(featured);
+
+    return result;
+  };
+
+  const todayList = buildPaddedList(todayEvents, upcomingEvents, featuredTodayEvents);
+  const upcomingList = buildPaddedList(upcomingEvents, todayEvents, featuredUpcomingEvents);
+
   // Detect mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -479,7 +505,7 @@ const {
         }, 100);
       }
     }
-  }, [params.id]);
+  }, [params.id, todayList, upcomingList]);
 
   // Remove spotlight when drawer closes
   useEffect(() => {
@@ -510,32 +536,6 @@ const {
     setDrawerOpen(false);
     navigate('/comm/meetups', { replace: true });
   };
-
-  // Build a list with at least 12 items prioritizing primary, then secondary, then featured
-  const buildPaddedList = (primary: any[], secondary: any[], featured: any[]) => {
-    const byId = new Set<string>();
-    const result: any[] = [];
-
-    const pushUnique = (arr: any[]) => {
-      for (const e of arr) {
-        const id = e.id || `${e.title}-${e.start_time}`;
-        if (!byId.has(id)) {
-          byId.add(id);
-          result.push(e);
-        }
-        if (result.length >= 12) break;
-      }
-    };
-
-    pushUnique(primary);
-    if (result.length < 12) pushUnique(secondary);
-    if (result.length < 12) pushUnique(featured);
-
-    return result;
-  };
-
-  const todayList = buildPaddedList(todayEvents, upcomingEvents, featuredTodayEvents);
-  const upcomingList = buildPaddedList(upcomingEvents, todayEvents, featuredUpcomingEvents);
 
   const handleNavigatePrev = () => {
     const allEvents = [...todayList, ...upcomingList];
