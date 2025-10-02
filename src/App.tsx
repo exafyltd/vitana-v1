@@ -330,11 +330,6 @@ const App = () => (
               <Meetups />
             </AuthGuard>
           } />
-          <Route path="/comm/meetups/:id" element={
-            <AuthGuard>
-              <Meetups />
-            </AuthGuard>
-          } />
           
           {/* Redirect old community routes */}
           <Route path="/community/my-groups" element={<Navigate to="/comm/my-groups" replace />} />

@@ -177,11 +177,21 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       <Card 
         ref={ref}
         className={cn(
-          "group relative cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-0 h-full",
+          "group relative cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-0 h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
           className
         )}
         onClick={onClick}
         data-event-id={dataEventId}
+        tabIndex={0}
+        role="button"
+        aria-label={`View ${title} details`}
+        onKeyDown={(e) => {
+          // Handle Enter and Space keys for accessibility
+          if ((e.key === 'Enter' || e.key === ' ') && onClick) {
+            e.preventDefault();
+            onClick();
+          }
+        }}
       >
         {/* Reward Dot */}
         {showReward && rewardPoints && (
@@ -205,11 +215,11 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           />
           
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 pointer-events-none" />
           
           {/* Media Play Icon Overlay */}
           {MediaIcon && (
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
               <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 border-2 border-white/30 group-hover:scale-110 transition-transform duration-300">
                 <MediaIcon className="w-8 h-8 text-white" />
               </div>

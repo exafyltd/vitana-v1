@@ -16,7 +16,7 @@ import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { cn } from "@/lib/utils";
 import happyCoffeeGroup from '@/assets/happy-coffee-group.jpg';
@@ -428,17 +428,18 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
 };
 
 const Meetups = () => {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedMeetup, setSelectedMeetup] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const params = useParams();
-  const navigate = useNavigate();
+  const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
   
   
-const { 
+const {
     events,
     todayEvents,
     upcomingEvents,
@@ -487,32 +488,51 @@ const {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Handle deep linking
+  // Handle deep linking with query params
   useEffect(() => {
-    if (params.id) {
+    const meetupId = searchParams.get('meetup');
+    if (meetupId) {
       const allEvents = [...todayList, ...upcomingList];
-      const event = allEvents.find(e => e.id === params.id);
+      const event = allEvents.find(e => e.id === meetupId);
       if (event) {
         setSelectedMeetup(event);
         setDrawerOpen(true);
+        setFocusedCardId(meetupId);
         // Scroll card into view and add spotlight
         setTimeout(() => {
-          const card = document.querySelector(`[data-event-id="${params.id}"]`);
+          const card = document.querySelector(`[data-event-id="${meetupId}"]`) as HTMLElement;
           if (card) {
             card.scrollIntoView({ behavior: 'smooth', block: 'center' });
             card.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
           }
         }, 100);
       }
+    } else {
+      // Clear drawer if no query param
+      if (drawerOpen) {
+        setDrawerOpen(false);
+        setSelectedMeetup(null);
+      }
     }
-  }, [params.id, todayList, upcomingList]);
+  }, [searchParams, todayList, upcomingList]);
 
-  // Remove spotlight when drawer closes
+  // Remove spotlight when drawer closes and restore focus
   useEffect(() => {
     if (!drawerOpen) {
       document.querySelectorAll('[data-event-id]').forEach(card => {
         card.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
       });
+      
+      // Restore focus to the card that was clicked
+      if (focusedCardId) {
+        setTimeout(() => {
+          const card = document.querySelector(`[data-event-id="${focusedCardId}"]`) as HTMLElement;
+          if (card) {
+            card.focus();
+          }
+          setFocusedCardId(null);
+        }, 100);
+      }
     } else if (selectedMeetup?.id) {
       // Add spotlight to current card
       const card = document.querySelector(`[data-event-id="${selectedMeetup.id}"]`);
@@ -520,7 +540,7 @@ const {
         card.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
       }
     }
-  }, [drawerOpen, selectedMeetup]);
+  }, [drawerOpen, selectedMeetup, focusedCardId]);
 
   const handleEditEvent = (event: any) => {
     setSelectedEvent(event);
@@ -530,18 +550,27 @@ const {
   const handleCardClick = (event: any) => {
     setSelectedMeetup(event);
     setDrawerOpen(true);
+    setFocusedCardId(event.id);
+    // Update URL with query param
+    setSearchParams({ meetup: event.id });
   };
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
-    navigate('/comm/meetups', { replace: true });
+    setSelectedMeetup(null);
+    // Remove query param
+    setSearchParams({});
   };
 
   const handleNavigatePrev = () => {
     const allEvents = [...todayList, ...upcomingList];
     const currentIndex = allEvents.findIndex(e => e.id === selectedMeetup?.id);
     if (currentIndex > 0) {
-      setSelectedMeetup(allEvents[currentIndex - 1]);
+      const prevEvent = allEvents[currentIndex - 1];
+      setSelectedMeetup(prevEvent);
+      setFocusedCardId(prevEvent.id);
+      // Update URL with new meetup ID
+      setSearchParams({ meetup: prevEvent.id });
     }
   };
 
@@ -549,7 +578,11 @@ const {
     const allEvents = [...todayList, ...upcomingList];
     const currentIndex = allEvents.findIndex(e => e.id === selectedMeetup?.id);
     if (currentIndex < allEvents.length - 1) {
-      setSelectedMeetup(allEvents[currentIndex + 1]);
+      const nextEvent = allEvents[currentIndex + 1];
+      setSelectedMeetup(nextEvent);
+      setFocusedCardId(nextEvent.id);
+      // Update URL with new meetup ID
+      setSearchParams({ meetup: nextEvent.id });
     }
   };
 
@@ -594,10 +627,10 @@ const {
               <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
             </SplitBarList>
             <SplitBarContent value="today" className="mt-6">
-              {renderEventGrid(todayList, currentUserId, handleEditEvent)}
+              {renderEventGrid(todayList, currentUserId, handleEditEvent, handleCardClick)}
             </SplitBarContent>
             <SplitBarContent value="upcoming" className="mt-6">
-              {renderEventGrid(upcomingList, currentUserId, handleEditEvent)}
+              {renderEventGrid(upcomingList, currentUserId, handleEditEvent, handleCardClick)}
             </SplitBarContent>
           </SplitBar>
         )}
