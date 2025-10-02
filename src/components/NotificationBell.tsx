@@ -260,7 +260,7 @@ export default function NotificationBell() {
     if (notification.type === 'follow') {
       const followerData = notification.data as { follower_id?: string } | null;
       if (followerData?.follower_id) {
-        navigate(`/profile/${followerData.follower_id}`);
+        navigate(`/u/${followerData.follower_id}`);
       }
     }
     // Add more navigation logic for other notification types as needed
