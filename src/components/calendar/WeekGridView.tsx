@@ -210,18 +210,40 @@ export function WeekGridView({
               />
             )))}
 
-            {/* Now Line */}
-            {isToday(weekDays.find(d => isToday(d)) || new Date()) && (
-              <div
-                className="absolute w-full z-20 pointer-events-none"
-                style={{ top: `${nowPosition}px` }}
-              >
-                <div className="flex items-center">
-                  <div className="w-2 h-2 rounded-full bg-sys-ai-accent animate-pulse" />
-                  <div className="flex-1 h-[2px] bg-sys-ai-accent" />
+            {/* Vertical Now Line on Today */}
+            {weekDays.map((day, idx) => {
+              if (!isToday(day)) return null;
+              
+              return (
+                <div
+                  key="now-line"
+                  className="absolute z-20 pointer-events-none"
+                  style={{ 
+                    left: `${(100 / 7) * idx}%`,
+                    width: `${100 / 7}%`,
+                    height: '100%',
+                    top: 0
+                  }}
+                >
+                  <div 
+                    className="absolute w-full flex items-center"
+                    style={{ top: `${nowPosition}px` }}
+                  >
+                    <div className="w-full h-[2px] bg-sys-ai-accent opacity-30" />
+                  </div>
+                  <div 
+                    className="absolute h-full border-l-2 border-sys-ai-accent"
+                    style={{ 
+                      left: '50%',
+                      top: `${nowPosition}px`,
+                      height: `calc(100% - ${nowPosition}px)`
+                    }}
+                  >
+                    <div className="absolute -top-1.5 -left-1.5 w-3 h-3 rounded-full bg-sys-ai-accent animate-pulse" />
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })}
 
             {/* Day Columns */}
             <div className="grid grid-cols-7 gap-px" style={{ minHeight: `${24 * PIXELS_PER_HOUR}px` }}>

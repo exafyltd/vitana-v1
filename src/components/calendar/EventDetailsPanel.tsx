@@ -1,9 +1,11 @@
+import React from "react";
 import { format } from "date-fns";
-import { Clock, MapPin, Users, Video, MessageSquare, UserPlus, Edit, Trash2, X, Share2, Zap } from "lucide-react";
+import { Clock, MapPin, Users, Video, MessageSquare, UserPlus, Edit, Trash2, X, Share2, Zap, Bell, Tag, Paperclip, Calendar as CalendarIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { cn } from "@/lib/utils";
 
@@ -15,16 +17,20 @@ interface EventDetailsPanelProps {
   onDelete?: (eventId: string) => void;
   onInvite?: (event: CalendarEvent) => void;
   onShare?: (event: CalendarEvent) => void;
+  onJoin?: (event: CalendarEvent) => void;
+  onMessage?: (event: CalendarEvent) => void;
+  onReschedule?: (event: CalendarEvent) => void;
 }
 
 const getTypeColor = (type: CalendarEvent['event_type']) => {
   switch (type) {
-    case 'personal': return 'bg-blue-500/20 text-blue-600 border-blue-200';
-    case 'community': return 'bg-purple-500/20 text-purple-600 border-purple-200';
-    case 'professional': return 'bg-green-500/20 text-green-600 border-green-200';
-    case 'health': return 'bg-red-500/20 text-red-600 border-red-200';
-    case 'workout': return 'bg-orange-500/20 text-orange-600 border-orange-200';
-    default: return 'bg-gray-500/20 text-gray-600 border-gray-200';
+    case 'personal': return 'bg-sys-vitana-tint text-sys-vitana-accent border-sys-vitana-accent/20';
+    case 'community': return 'bg-domain-community-tint text-domain-community-accent border-domain-community-accent/20';
+    case 'professional': return 'bg-pill-exercise-tint text-pill-exercise-accent border-pill-exercise-accent/20';
+    case 'health': return 'bg-pill-mental-tint text-pill-mental-accent border-pill-mental-accent/20';
+    case 'workout': return 'bg-pill-exercise-tint text-pill-exercise-accent border-pill-exercise-accent/20';
+    case 'nutrition': return 'bg-pill-nutrition-tint text-pill-nutrition-accent border-pill-nutrition-accent/20';
+    default: return 'bg-util-calendar-tint text-util-calendar-accent border-util-calendar-accent/20';
   }
 };
 
@@ -35,9 +41,23 @@ export function EventDetailsPanel({
   onEdit,
   onDelete,
   onInvite,
-  onShare
+  onShare,
+  onJoin,
+  onMessage,
+  onReschedule
 }: EventDetailsPanelProps) {
   if (!event) return null;
+
+  // Close panel on ESC key
+  React.useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) {
+        onOpenChange(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [open, onOpenChange]);
 
   const formatEventTime = (startTime: string, endTime?: string | null) => {
     const start = new Date(startTime);
@@ -47,120 +67,183 @@ export function EventDetailsPanel({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle className="flex items-start justify-between gap-2">
-            <span className="flex-1">{event.title}</span>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 shrink-0"
-              onClick={() => onOpenChange(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </SheetTitle>
-          <SheetDescription>
-            <Badge className={cn("text-xs", getTypeColor(event.event_type))}>
-              {event.event_type}
-            </Badge>
-            {event.has_rewards && (
-              <Badge variant="outline" className="ml-2 text-xs border-yellow-300 text-yellow-600">
-                <Zap className="h-2.5 w-2.5 mr-0.5" />
-                +10 Credits
-              </Badge>
-            )}
-          </SheetDescription>
+      <SheetContent className="sm:max-w-lg" side="right">
+        <SheetHeader className="pb-4 border-b">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 space-y-2">
+              <SheetTitle className="text-xl">{event.title}</SheetTitle>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge className={cn("text-xs", getTypeColor(event.event_type))}>
+                  {event.event_type}
+                </Badge>
+                {event.has_rewards && (
+                  <Badge variant="outline" className="text-xs border-yellow-300 text-yellow-600">
+                    <Zap className="h-2.5 w-2.5 mr-0.5" />
+                    +10 Credits
+                  </Badge>
+                )}
+              </div>
+            </div>
+          </div>
         </SheetHeader>
 
-        <div className="space-y-4 mt-6">
-          {/* Time */}
-          <div className="flex items-start gap-3">
-            <Clock className="h-4 w-4 text-muted-foreground mt-0.5" />
-            <div className="flex-1 space-y-1">
-              <p className="text-sm font-medium">
-                {format(new Date(event.start_time), 'EEEE, MMMM d')}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {formatEventTime(event.start_time, event.end_time)}
-              </p>
+        <ScrollArea className="h-[calc(100vh-180px)] mt-6">
+          <div className="space-y-5 pr-4">
+            {/* Primary Actions */}
+            <div className="flex gap-2">
+              {onJoin && (
+                <Button className="flex-1 gap-2" onClick={() => onJoin(event)}>
+                  <Video className="h-4 w-4" />
+                  Join
+                </Button>
+              )}
+              {onMessage && (
+                <Button variant="outline" className="flex-1 gap-2" onClick={() => onMessage(event)}>
+                  <MessageSquare className="h-4 w-4" />
+                  Message
+                </Button>
+              )}
             </div>
-          </div>
 
-          {/* Location */}
-          {event.location && (
+            <Separator />
+
+            {/* Time */}
             <div className="flex items-start gap-3">
-              <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm">{event.location}</p>
+              <Clock className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
+              <div className="flex-1 space-y-1">
+                <p className="text-sm font-semibold">
+                  {format(new Date(event.start_time), 'EEEE, MMMM d, yyyy')}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {formatEventTime(event.start_time, event.end_time)}
+                </p>
               </div>
             </div>
-          )}
 
-          {/* Attendees */}
-          {event.attendees_count && event.attendees_count > 0 && (
-            <div className="flex items-start gap-3">
-              <Users className="h-4 w-4 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm">{event.attendees_count} attendees</p>
+            {/* Location */}
+            {event.location && (
+              <div className="flex items-start gap-3">
+                <MapPin className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm">{event.location}</p>
+                  <Button variant="link" className="h-auto p-0 text-xs text-muted-foreground" asChild>
+                    <a href={`https://maps.google.com/?q=${encodeURIComponent(event.location)}`} target="_blank" rel="noopener noreferrer">
+                      Open in Maps →
+                    </a>
+                  </Button>
+                </div>
               </div>
-            </div>
-          )}
-
-          {/* Description */}
-          {event.description && (
-            <>
-              <Separator />
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Description</p>
-                <p className="text-sm text-muted-foreground">{event.description}</p>
-              </div>
-            </>
-          )}
-
-          <Separator />
-
-          {/* Actions */}
-          <div className="space-y-2">
-            <Button className="w-full justify-start" variant="outline" onClick={() => onInvite?.(event)}>
-              <UserPlus className="h-4 w-4 mr-2" />
-              Invite Followers
-            </Button>
-
-            <Button className="w-full justify-start" variant="outline" onClick={() => onShare?.(event)}>
-              <Share2 className="h-4 w-4 mr-2" />
-              Share to Group
-            </Button>
-
-            <Button className="w-full justify-start" variant="outline">
-              <MessageSquare className="h-4 w-4 mr-2" />
-              Message Attendees
-            </Button>
-
-            <Separator className="my-2" />
-
-            {onEdit && (
-              <Button className="w-full justify-start" variant="outline" onClick={() => onEdit(event)}>
-                <Edit className="h-4 w-4 mr-2" />
-                Edit Event
-              </Button>
             )}
 
-            {onDelete && (
-              <Button 
-                className="w-full justify-start text-red-600 hover:text-red-700" 
-                variant="outline"
-                onClick={() => {
-                  onDelete(event.id);
-                  onOpenChange(false);
-                }}
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete Event
-              </Button>
+            {/* Attendees */}
+            {event.attendees_count && event.attendees_count > 0 && (
+              <div className="flex items-start gap-3">
+                <Users className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium">{event.attendees_count} attendees</p>
+                  <p className="text-xs text-muted-foreground">Including you</p>
+                </div>
+              </div>
             )}
+
+            {/* Description/Notes */}
+            {event.description && (
+              <>
+                <Separator />
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold flex items-center gap-2">
+                    <CalendarIcon className="h-4 w-4" />
+                    Notes
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
+                </div>
+              </>
+            )}
+
+            {/* Reminders */}
+            <div className="space-y-2">
+              <p className="text-sm font-semibold flex items-center gap-2">
+                <Bell className="h-4 w-4" />
+                Reminders
+              </p>
+              <div className="text-sm text-muted-foreground">
+                <p>• 15 minutes before</p>
+              </div>
+            </div>
+
+            {/* Tags */}
+            <div className="space-y-2">
+              <p className="text-sm font-semibold flex items-center gap-2">
+                <Tag className="h-4 w-4" />
+                Tags
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                <Badge variant="secondary" className="text-xs">{event.event_type}</Badge>
+                {event.priority && (
+                  <Badge variant="secondary" className="text-xs capitalize">{event.priority} priority</Badge>
+                )}
+              </div>
+            </div>
+
+            {/* Attachments placeholder */}
+            <div className="space-y-2">
+              <p className="text-sm font-semibold flex items-center gap-2">
+                <Paperclip className="h-4 w-4" />
+                Attachments
+              </p>
+              <p className="text-xs text-muted-foreground">No attachments</p>
+            </div>
+
+            <Separator />
+
+            {/* Secondary Actions */}
+            <div className="space-y-2">
+              {onInvite && (
+                <Button className="w-full justify-start" variant="outline" onClick={() => onInvite(event)}>
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Invite
+                </Button>
+              )}
+
+              {onReschedule && (
+                <Button className="w-full justify-start" variant="outline" onClick={() => onReschedule(event)}>
+                  <Clock className="h-4 w-4 mr-2" />
+                  Reschedule
+                </Button>
+              )}
+
+              {onShare && (
+                <Button className="w-full justify-start" variant="outline" onClick={() => onShare(event)}>
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Share
+                </Button>
+              )}
+
+              <Separator className="my-2" />
+
+              {onEdit && (
+                <Button className="w-full justify-start" variant="outline" onClick={() => onEdit(event)}>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Event
+                </Button>
+              )}
+
+              {onDelete && (
+                <Button 
+                  className="w-full justify-start text-destructive hover:text-destructive" 
+                  variant="outline"
+                  onClick={() => {
+                    onDelete(event.id);
+                    onOpenChange(false);
+                  }}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Event
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
+        </ScrollArea>
       </SheetContent>
     </Sheet>
   );

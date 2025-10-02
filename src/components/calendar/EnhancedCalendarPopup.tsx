@@ -257,6 +257,16 @@ export function EnhancedCalendarPopup({
     });
   };
 
+  const handleSnoozeSuggestion = (id: string, until: 'later-today' | 'tomorrow') => {
+    setAutopilotSuggestions(prev =>
+      prev.map(s => s.id === id ? { ...s, snoozed: true, snoozeUntil: until } : s)
+    );
+    toast({
+      title: "Suggestion snoozed",
+      description: `Reminder set for ${until === 'later-today' ? 'later today' : 'tomorrow'}`,
+    });
+  };
+
   const filteredEvents = activeFilters.length === 0 
     ? events 
     : events.filter(event => activeFilters.includes(event.event_type));
@@ -387,23 +397,31 @@ export function EnhancedCalendarPopup({
               <TabsList className="h-11 bg-transparent p-0 gap-1">
                 <TabsTrigger 
                   value="today" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
+                  className="data-[state=active]:border-b-[3px] data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
                 >
                   Today
                 </TabsTrigger>
                 <TabsTrigger 
                   value="week"
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
+                  className="data-[state=active]:border-b-[3px] data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
                 >
                   Week
                 </TabsTrigger>
                 <TabsTrigger 
                   value="month"
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
+                  className="data-[state=active]:border-b-[3px] data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
                 >
                   Month
                 </TabsTrigger>
               </TabsList>
+
+              {/* Filters below tabs */}
+              <div className="py-3">
+                <CalendarFilters 
+                  activeFilters={activeFilters}
+                  onToggleFilter={handleToggleFilter}
+                />
+              </div>
             </div>
 
             {/* Today View - Agenda */}
@@ -415,14 +433,13 @@ export function EnhancedCalendarPopup({
                   ) : (
                     <>
                       {/* Autopilot Suggestions */}
-                      {autopilotSuggestions.length > 0 && (
-                        <AutopilotCalendarSuggestions
-                          suggestions={autopilotSuggestions}
-                          onAccept={handleAcceptSuggestion}
-                          onDismiss={handleDismissSuggestion}
-                          onUndo={handleUndoSuggestion}
-                        />
-                      )}
+                      <AutopilotCalendarSuggestions
+                        suggestions={autopilotSuggestions}
+                        onAccept={handleAcceptSuggestion}
+                        onDismiss={handleDismissSuggestion}
+                        onUndo={handleUndoSuggestion}
+                        onSnooze={handleSnoozeSuggestion}
+                      />
 
                       {/* Now Indicator */}
                       {ongoingEvent && (
@@ -734,9 +751,11 @@ export function EnhancedCalendarPopup({
 
           {/* Sticky Footer */}
           <div className="sticky bottom-0 z-10 bg-background border-t px-6 py-3 flex items-center justify-between">
-            <p className="text-xs text-muted-foreground">
-              Last synced {getTimeSinceSync()}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-muted-foreground" title={`Last synced ${format(lastSyncTime, 'PPpp')}`}>
+                Last synced {getTimeSinceSync()}
+              </p>
+            </div>
             <Button variant="secondary" onClick={() => onOpenChange(false)}>
               Close
             </Button>
@@ -750,9 +769,27 @@ export function EnhancedCalendarPopup({
         onOpenChange={(open) => !open && setDetailsPanelEvent(null)}
         event={detailsPanelEvent}
         onDelete={handleDeleteEvent}
+        onJoin={(event) => {
+          toast({
+            title: "Joining event",
+            description: "Opening video call...",
+          });
+        }}
+        onMessage={(event) => {
+          toast({
+            title: "Message attendees",
+            description: "Feature coming soon",
+          });
+        }}
         onInvite={(event) => {
           toast({
             title: "Invite followers",
+            description: "Feature coming soon",
+          });
+        }}
+        onReschedule={(event) => {
+          toast({
+            title: "Reschedule event",
             description: "Feature coming soon",
           });
         }}

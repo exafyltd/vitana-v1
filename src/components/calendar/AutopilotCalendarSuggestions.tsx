@@ -1,24 +1,21 @@
-import { Card } from "@/components/ui/card";
+import React, { useState } from "react";
+import { Zap, Target, AlertTriangle, Check, X, Clock } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Sparkles, 
-  CalendarClock, 
-  AlertCircle, 
-  Focus,
-  X,
-  Undo2
-} from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 export interface AutopilotSuggestion {
   id: string;
-  type: 'fit-into-day' | 'resolve-conflict' | 'focus-block';
+  type: 'focus-block' | 'conflict-resolution' | 'fit-event';
   title: string;
   description: string;
   suggestedTime?: string;
-  conflictWith?: string;
+  conflictsWith?: string;
   accepted?: boolean;
+  snoozed?: boolean;
+  snoozeUntil?: string;
 }
 
 interface AutopilotCalendarSuggestionsProps {
@@ -26,61 +23,65 @@ interface AutopilotCalendarSuggestionsProps {
   onAccept: (id: string) => void;
   onDismiss: (id: string) => void;
   onUndo: (id: string) => void;
+  onSnooze?: (id: string, until: 'later-today' | 'tomorrow') => void;
 }
 
 const getSuggestionIcon = (type: AutopilotSuggestion['type']) => {
   switch (type) {
-    case 'fit-into-day':
-      return CalendarClock;
-    case 'resolve-conflict':
-      return AlertCircle;
+    case 'fit-event':
+      return Clock;
+    case 'conflict-resolution':
+      return AlertTriangle;
     case 'focus-block':
-      return Focus;
+      return Target;
   }
 };
 
 const getSuggestionColor = (type: AutopilotSuggestion['type']) => {
   switch (type) {
-    case 'fit-into-day':
+    case 'fit-event':
       return 'bg-sys-autopilot-tint text-sys-autopilot-accent border-sys-autopilot-accent/20';
-    case 'resolve-conflict':
+    case 'conflict-resolution':
       return 'bg-sys-noti-accent/10 text-sys-noti-accent border-sys-noti-accent/20';
     case 'focus-block':
       return 'bg-pill-mental-tint text-pill-mental-accent border-pill-mental-accent/20';
   }
 };
 
-export function AutopilotCalendarSuggestions({
-  suggestions,
-  onAccept,
+export function AutopilotCalendarSuggestions({ 
+  suggestions, 
+  onAccept, 
   onDismiss,
-  onUndo
+  onUndo,
+  onSnooze
 }: AutopilotCalendarSuggestionsProps) {
-  if (suggestions.length === 0) return null;
+  const visibleSuggestions = suggestions.filter(s => !s.snoozed);
+  if (visibleSuggestions.length === 0) return null;
 
   return (
-    <div className="space-y-2 pb-3">
+    <div className="space-y-3 mb-6">
       <div className="flex items-center gap-2 mb-2">
-        <Sparkles className="h-4 w-4 text-sys-autopilot-accent" />
-        <h4 className="text-xs font-semibold text-sys-autopilot-accent">Autopilot Suggestions</h4>
+        <Zap className="h-4 w-4 text-sys-autopilot-accent" />
+        <h3 className="text-sm font-semibold">Autopilot Suggestions</h3>
+        <Badge variant="secondary" className="text-xs ml-auto">{visibleSuggestions.length}</Badge>
       </div>
 
-      {suggestions.map((suggestion) => {
+      {visibleSuggestions.map((suggestion) => {
         const Icon = getSuggestionIcon(suggestion.type);
         
         return (
           <Card
             key={suggestion.id}
             className={cn(
-              "p-3 border transition-all animate-fade-in",
+              "p-4 border transition-all animate-fade-in",
               suggestion.accepted 
                 ? "bg-sys-autopilot-tint/50 border-sys-autopilot-accent/30" 
-                : "bg-background hover:bg-muted/30"
+                : "bg-background hover:bg-muted/30 hover:shadow-md"
             )}
           >
             <div className="flex items-start gap-3">
               <div className={cn(
-                "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border",
+                "w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border",
                 getSuggestionColor(suggestion.type)
               )}>
                 <Icon className="h-4 w-4" />
@@ -91,59 +92,85 @@ export function AutopilotCalendarSuggestions({
                   <div className="flex items-center gap-2 flex-wrap">
                     <h5 className="text-sm font-semibold">{suggestion.title}</h5>
                     {suggestion.accepted && (
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 bg-sys-autopilot-tint text-sys-autopilot-accent border-sys-autopilot-accent/30">
-                        <Sparkles className="h-2.5 w-2.5 mr-0.5" />
-                        Applied
+                      <Badge variant="secondary" className="text-xs bg-sys-autopilot-tint text-sys-autopilot-accent border border-sys-autopilot-accent/20">
+                        <Zap className="h-3 w-3 mr-1" />
+                        Autopilot
                       </Badge>
                     )}
                   </div>
-                  {!suggestion.accepted && (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="h-6 w-6 p-0 shrink-0"
-                      onClick={() => onDismiss(suggestion.id)}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  )}
                 </div>
 
-                <p className="text-xs text-muted-foreground mb-2">
+                <p className="text-xs text-muted-foreground mb-3">
                   {suggestion.description}
                 </p>
 
                 {suggestion.suggestedTime && (
-                  <p className="text-xs text-sys-autopilot-accent mb-2">
-                    ⏰ {suggestion.suggestedTime}
+                  <p className="text-xs text-sys-autopilot-accent mb-2 flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {suggestion.suggestedTime}
                   </p>
                 )}
 
-                {suggestion.conflictWith && (
-                  <p className="text-xs text-sys-noti-accent mb-2">
-                    ⚠️ Conflicts with: {suggestion.conflictWith}
+                {suggestion.conflictsWith && (
+                  <p className="text-xs text-sys-noti-accent mb-2 flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" />
+                    Conflicts with: {suggestion.conflictsWith}
                   </p>
                 )}
 
-                {suggestion.accepted ? (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => onUndo(suggestion.id)}
-                    className="h-7 text-xs gap-1"
-                  >
-                    <Undo2 className="h-3 w-3" />
-                    Undo
-                  </Button>
+                {!suggestion.accepted ? (
+                  <div className="flex gap-2">
+                    <Button 
+                      size="sm" 
+                      onClick={() => onAccept(suggestion.id)}
+                      className="gap-1.5"
+                    >
+                      <Check className="h-3.5 w-3.5" />
+                      Accept
+                    </Button>
+                    {onSnooze && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            className="gap-1.5"
+                          >
+                            <Clock className="h-3.5 w-3.5" />
+                            Snooze
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => onSnooze(suggestion.id, 'later-today')}>
+                            Later today
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => onSnooze(suggestion.id, 'tomorrow')}>
+                            Tomorrow
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
+                    <Button 
+                      size="sm" 
+                      variant="ghost"
+                      onClick={() => onDismiss(suggestion.id)}
+                      className="gap-1.5"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                      Dismiss
+                    </Button>
+                  </div>
                 ) : (
-                  <Button
-                    size="sm"
-                    onClick={() => onAccept(suggestion.id)}
-                    className="h-7 text-xs gap-1"
-                  >
-                    <Sparkles className="h-3 w-3" />
-                    Accept
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => onUndo(suggestion.id)}
+                      className="gap-1.5 h-7 text-xs"
+                    >
+                      Undo
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>

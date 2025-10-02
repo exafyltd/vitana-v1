@@ -1,3 +1,4 @@
+import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { Briefcase, Heart, Dumbbell, Coffee, Users } from "lucide-react";
@@ -65,6 +66,23 @@ const FILTER_CONFIG: Array<{
 ];
 
 export function CalendarFilters({ activeFilters, onToggleFilter }: CalendarFiltersProps) {
+  // Load saved filters from session storage on mount
+  React.useEffect(() => {
+    const saved = sessionStorage.getItem('calendarFilters');
+    if (saved) {
+      try {
+        const filters = JSON.parse(saved);
+        filters.forEach((f: string) => onToggleFilter(f as any));
+      } catch (e) {
+        console.error('Failed to load saved filters', e);
+      }
+    }
+  }, []);
+
+  // Save filters to session storage whenever they change
+  React.useEffect(() => {
+    sessionStorage.setItem('calendarFilters', JSON.stringify(activeFilters));
+  }, [activeFilters]);
   return (
     <div className="flex items-center gap-2 flex-wrap">
       {FILTER_CONFIG.map(({ type, label, icon: Icon, color, bgClass, textClass, borderClass }) => {
