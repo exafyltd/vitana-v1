@@ -82,6 +82,38 @@ export function MeetupDetailsDrawer({
   const [isSaved, setIsSaved] = useState(false);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [previousEventId, setPreviousEventId] = useState<string | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Check for reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Track event changes for transitions
+  useEffect(() => {
+    if (event?.id && event.id !== previousEventId) {
+      if (previousEventId) {
+        setIsTransitioning(true);
+        const timer = setTimeout(() => {
+          setIsTransitioning(false);
+        }, prefersReducedMotion ? 0 : 300);
+        return () => clearTimeout(timer);
+      }
+      setPreviousEventId(event.id);
+    }
+  }, [event?.id, previousEventId, prefersReducedMotion]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -201,10 +233,46 @@ export function MeetupDetailsDrawer({
     avatar: `https://images.unsplash.com/photo-${1500000000000 + i * 1000000}?w=40&h=40&fit=crop`,
   }));
 
+  // Swipe handlers
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && hasNext && onNavigateNext) {
+      onNavigateNext();
+    } else if (isRightSwipe && hasPrev && onNavigatePrev) {
+      onNavigatePrev();
+    }
+  };
+
   const content = (
-    <div className="flex flex-col h-full">
+    <div 
+      className="flex flex-col h-full"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       <ScrollArea className="flex-1 pb-20">
-        <div className="relative">
+        <div 
+          className={cn(
+            "transition-opacity duration-300",
+            isTransitioning && !prefersReducedMotion && "opacity-40"
+          )}
+        >
           {/* Hero Image - Edge to edge 16:9 */}
           <div className="relative w-full aspect-video bg-muted overflow-hidden">
             {!isImageLoaded && (
@@ -223,32 +291,40 @@ export function MeetupDetailsDrawer({
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
             
             {/* Floating Navigation Arrows */}
-            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
               <Button
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "rounded-full bg-background/90 backdrop-blur-sm shadow-lg pointer-events-auto",
+                  "rounded-full bg-background/80 dark:bg-background/90 backdrop-blur-md shadow-lg pointer-events-auto",
+                  "border-border/50 hover:bg-background/95 hover:scale-110 active:scale-95",
+                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  "opacity-60 hover:opacity-100 focus-visible:opacity-100",
                   !hasPrev && "opacity-0 pointer-events-none"
                 )}
                 onClick={onNavigatePrev}
                 disabled={!hasPrev}
-                aria-label="Previous meetup"
+                aria-label="Previous meetup (← key)"
+                title="Previous meetup (← key)"
               >
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeft className="h-5 w-5" />
               </Button>
               <Button
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "rounded-full bg-background/90 backdrop-blur-sm shadow-lg pointer-events-auto",
+                  "rounded-full bg-background/80 dark:bg-background/90 backdrop-blur-md shadow-lg pointer-events-auto",
+                  "border-border/50 hover:bg-background/95 hover:scale-110 active:scale-95",
+                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  "opacity-60 hover:opacity-100 focus-visible:opacity-100",
                   !hasNext && "opacity-0 pointer-events-none"
                 )}
                 onClick={onNavigateNext}
                 disabled={!hasNext}
-                aria-label="Next meetup"
+                aria-label="Next meetup (→ key)"
+                title="Next meetup (→ key)"
               >
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="h-5 w-5" />
               </Button>
             </div>
 

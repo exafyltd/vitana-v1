@@ -648,6 +648,8 @@ const {
           }}
           onNavigatePrev={hasPrev ? handleNavigatePrev : undefined}
           onNavigateNext={hasNext ? handleNavigateNext : undefined}
+          hasPrev={hasPrev}
+          hasNext={hasNext}
           isMobile={isMobile}
         />
       )}
