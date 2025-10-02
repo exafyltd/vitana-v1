@@ -5,7 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane, Calendar } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
@@ -178,6 +179,27 @@ function AppSidebar({
               )}
             </div>
           </button>
+          
+          {/* Chevron Toggle Button - Always visible */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="h-8 w-8 p-0 hover:bg-sidebar-accent text-white rounded-lg transition-colors ml-2"
+                  onClick={() => onSidebarOpenChange(!open)}
+                  aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
+                >
+                  {open ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>{open ? "Collapse" : "Expand"} sidebar (⌘/Ctrl+B)</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          
           {/* Utility Icons - only show when sidebar is open */}
           {open && (
             <div className="flex items-center space-x-1 ml-4 pr-2">
@@ -230,9 +252,6 @@ function AppSidebar({
               </div>
             </div>
           )}
-          
-          {/* Sidebar trigger - only show when sidebar is open */}
-          {open && <SidebarTrigger />}
         </div>
         {/* Global Search Bar */}
         <div className="px-2 pb-2">
