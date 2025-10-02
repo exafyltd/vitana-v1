@@ -1,17 +1,27 @@
-import React, { useState } from "react";
-import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isToday } from "date-fns";
+import React, { useState, useEffect } from "react";
+import { 
+  format, 
+  startOfWeek, 
+  endOfWeek, 
+  eachDayOfInterval, 
+  isSameDay, 
+  isToday,
+  startOfMonth,
+  endOfMonth,
+  eachWeekOfInterval,
+  addMinutes,
+  isSameMonth,
+  isWithinInterval,
+  getHours,
+  getMinutes
+} from "date-fns";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from '@/hooks/use-toast';
 import { 
@@ -20,25 +30,25 @@ import {
   ChevronRight, 
   ChevronLeft,
   Plus,
-  AlertTriangle,
   Users,
   MapPin,
-  Zap,
-  CheckCircle,
-  Bell,
+  Briefcase,
   Heart,
   Dumbbell,
   Coffee,
-  Loader2,
   CheckCircle2,
-  RefreshCw
+  RefreshCw,
+  Edit,
+  Trash2,
+  MessageCircle,
+  X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { useCalendarEvents, CalendarEvent } from '@/hooks/useCalendarEvents';
 import { EventDetailsPanel } from "./EventDetailsPanel";
 import { NaturalLanguageInput } from "./NaturalLanguageInput";
-import { CalendarSkeleton, CalendarListSkeleton } from "./CalendarSkeleton";
+import { CalendarListSkeleton } from "./CalendarSkeleton";
 
 interface EnhancedCalendarPopupProps {
   open: boolean;
@@ -47,45 +57,40 @@ interface EnhancedCalendarPopupProps {
   initialView?: 'today' | 'week' | 'month';
 }
 
-const getTypeColor = (type: CalendarEvent['event_type']) => {
+// Category color mapping using design tokens
+const getCategoryColor = (type: CalendarEvent['event_type']) => {
   switch (type) {
-    case 'personal': return 'bg-blue-500/20 text-blue-600 border-blue-200';
-    case 'community': return 'bg-purple-500/20 text-purple-600 border-purple-200';
-    case 'professional': return 'bg-green-500/20 text-green-600 border-green-200';
-    case 'health': return 'bg-red-500/20 text-red-600 border-red-200';
-    case 'workout': return 'bg-orange-500/20 text-orange-600 border-orange-200';
-    case 'nutrition': return 'bg-emerald-500/20 text-emerald-600 border-emerald-200';
-    default: return 'bg-gray-500/20 text-gray-600 border-gray-200';
+    case 'professional': return 'hsl(var(--pill-exercise-accent))'; // Work = Exercise gray
+    case 'health': return 'hsl(var(--pill-mental-accent))'; // Health = Mental pink
+    case 'workout': return 'hsl(var(--pill-exercise-accent))'; // Workout = Exercise
+    case 'nutrition': return 'hsl(var(--pill-nutrition-accent))'; // Nutrition green
+    case 'community': return 'hsl(var(--domain-community-accent))'; // Community pink
+    case 'personal': return 'hsl(var(--sys-vitana-accent))'; // Personal = Vitana teal
+    default: return 'hsl(var(--util-calendar-accent))'; // Default calendar gray
   }
 };
 
-const getTypeIcon = (type: CalendarEvent['event_type']) => {
+const getCategoryIcon = (type: CalendarEvent['event_type']) => {
   switch (type) {
-    case 'personal': return <Heart className="h-3 w-3" />;
-    case 'community': return <Users className="h-3 w-3" />;
-    case 'professional': return <Users className="h-3 w-3" />;
-    case 'health': return <Heart className="h-3 w-3" />;
-    case 'workout': return <Dumbbell className="h-3 w-3" />;
-    case 'nutrition': return <Coffee className="h-3 w-3" />;
-    default: return <Calendar className="h-3 w-3" />;
+    case 'professional': return Briefcase;
+    case 'health': return Heart;
+    case 'workout': return Dumbbell;
+    case 'nutrition': return Coffee;
+    case 'community': return Users;
+    case 'personal': return Heart;
+    default: return Calendar;
   }
 };
 
-const getStatusIcon = (status: CalendarEvent['status']) => {
-  switch (status) {
-    case 'conflict': return <AlertTriangle className="h-3 w-3 text-amber-500" />;
-    case 'pending': return <Clock className="h-3 w-3 text-blue-500" />;
-    case 'confirmed': return <CheckCircle className="h-3 w-3 text-green-500" />;
-    default: return null;
-  }
-};
-
-const getPriorityColor = (priority: CalendarEvent['priority']) => {
-  switch (priority) {
-    case 'high': return 'border-l-red-500';
-    case 'medium': return 'border-l-yellow-500';
-    case 'low': return 'border-l-gray-400';
-    default: return 'border-l-gray-300';
+const getCategoryBadge = (type: CalendarEvent['event_type']) => {
+  switch (type) {
+    case 'professional': return 'bg-pill-exercise-tint text-pill-exercise-accent border-pill-exercise-accent/20';
+    case 'health': return 'bg-pill-mental-tint text-pill-mental-accent border-pill-mental-accent/20';
+    case 'workout': return 'bg-pill-exercise-tint text-pill-exercise-accent border-pill-exercise-accent/20';
+    case 'nutrition': return 'bg-pill-nutrition-tint text-pill-nutrition-accent border-pill-nutrition-accent/20';
+    case 'community': return 'bg-domain-community-tint text-domain-community-accent border-domain-community-accent/20';
+    case 'personal': return 'bg-sys-vitana-tint text-sys-vitana-accent border-sys-vitana-accent/20';
+    default: return 'bg-util-calendar-tint text-util-calendar-accent border-util-calendar-accent/20';
   }
 };
 
@@ -96,7 +101,7 @@ export function EnhancedCalendarPopup({
   initialView = 'today'
 }: EnhancedCalendarPopupProps) {
   const { toast } = useToast();
-  const { events, loading, addEvent, removeEvent, getEventsForDate, getUpcomingEvents, fetchEvents } = useCalendarEvents();
+  const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = useCalendarEvents();
   
   const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
   const [activeTab, setActiveTab] = useState<'today' | 'week' | 'month'>(initialView);
@@ -104,18 +109,24 @@ export function EnhancedCalendarPopup({
   const [detailsPanelEvent, setDetailsPanelEvent] = useState<CalendarEvent | null>(null);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [currentWeek, setCurrentWeek] = useState(new Date());
-  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedMonthDay, setSelectedMonthDay] = useState<Date>(new Date());
+  const [lastSyncTime, setLastSyncTime] = useState<Date>(new Date());
   
-  const upcomingEvents = getUpcomingEvents(6);
-  const todayEvents = getEventsForDate(new Date());
-  const conflictCount = events.filter(e => e.status === 'conflict').length;
+  const todayEvents = getEventsForDate(new Date()).sort((a, b) => 
+    new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+  );
   const weekStart = startOfWeek(currentWeek);
   const weekEnd = endOfWeek(currentWeek);
   const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
-
-  const getEventsForWeekDay = (date: Date) => {
-    return getEventsForDate(date);
-  };
+  
+  // Check if there's an ongoing event
+  const now = new Date();
+  const ongoingEvent = todayEvents.find(event => {
+    const start = new Date(event.start_time);
+    const end = event.end_time ? new Date(event.end_time) : addMinutes(start, 60);
+    return now >= start && now <= end;
+  });
 
   const handleEventCreate = async (event: Partial<CalendarEvent>) => {
     try {
@@ -163,12 +174,19 @@ export function EnhancedCalendarPopup({
   };
 
   const handleSyncExternal = () => {
+    setSyncStatus('needs-sync');
     toast({
-      title: "External Sync",
-      description: "Syncing with external calendars...",
+      title: "Syncing...",
+      description: "Syncing with external calendars",
     });
-    // Simulate sync
-    setSyncStatus('synced');
+    setTimeout(() => {
+      setSyncStatus('synced');
+      setLastSyncTime(new Date());
+      toast({
+        title: "Synced",
+        description: "Calendar is up to date",
+      });
+    }, 1500);
   };
 
   const handleNavigateWeek = (direction: 'prev' | 'next') => {
@@ -176,96 +194,128 @@ export function EnhancedCalendarPopup({
     setCurrentWeek(new Date(currentWeek.getTime() + days * 24 * 60 * 60 * 1000));
   };
 
-  const toggleDayExpanded = (dayKey: string) => {
-    setExpandedDays(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(dayKey)) {
-        newSet.delete(dayKey);
-      } else {
-        newSet.add(dayKey);
-      }
-      return newSet;
-    });
+  const handleNavigateMonth = (direction: 'prev' | 'next') => {
+    const months = direction === 'next' ? 1 : -1;
+    const newMonth = new Date(currentMonth);
+    newMonth.setMonth(newMonth.getMonth() + months);
+    setCurrentMonth(newMonth);
   };
 
   const formatEventTime = (startTime: string, endTime?: string | null) => {
     const start = new Date(startTime);
-    const end = endTime ? new Date(endTime) : new Date(start.getTime() + 60 * 60 * 1000);
-    return `${format(start, 'h:mm a')} - ${format(end, 'h:mm a')}`;
+    const end = endTime ? new Date(endTime) : addMinutes(start, 60);
+    return `${format(start, 'h:mm a')}–${format(end, 'h:mm a')}`;
   };
 
-  React.useEffect(() => {
+  const getTimeSinceSync = () => {
+    const diff = Math.floor((now.getTime() - lastSyncTime.getTime()) / 1000);
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    return `${Math.floor(diff / 3600)}h ago`;
+  };
+
+  useEffect(() => {
     if (open) {
       fetchEvents();
       if (initialDate) setSelectedDate(initialDate);
       if (initialView) setActiveTab(initialView);
     }
-  }, [open, fetchEvents, initialDate, initialView]);
+  }, [open, initialDate, initialView]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    if (!open) return;
+    
+    const handleKeyboard = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey) return;
+      
+      switch (e.key.toLowerCase()) {
+        case 'n':
+          e.preventDefault();
+          setShowQuickAdd(true);
+          break;
+        case 't':
+          e.preventDefault();
+          setActiveTab('today');
+          break;
+        case 'w':
+          e.preventDefault();
+          setActiveTab('week');
+          break;
+        case 'm':
+          e.preventDefault();
+          setActiveTab('month');
+          break;
+        case 'arrowleft':
+          if (activeTab === 'week') handleNavigateWeek('prev');
+          if (activeTab === 'month') handleNavigateMonth('prev');
+          break;
+        case 'arrowright':
+          if (activeTab === 'week') handleNavigateWeek('next');
+          if (activeTab === 'month') handleNavigateMonth('next');
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyboard);
+    return () => window.removeEventListener('keydown', handleKeyboard);
+  }, [open, activeTab]);
 
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-4xl max-h-[85vh] overflow-hidden flex flex-col p-0">
-          {/* Header with Actions */}
-          <DialogHeader className="px-6 pt-6 pb-3 space-y-3 border-b">
-            <div className="flex items-center justify-between">
-              <DialogTitle className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-primary" />
+        <DialogContent className="max-w-[920px] max-h-[80vh] overflow-hidden flex flex-col p-0 gap-0 rounded-[20px] shadow-2xl">
+          {/* Sticky Header */}
+          <div className="sticky top-0 z-10 bg-background border-b px-6 py-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-util-calendar-tint flex items-center justify-center border border-util-calendar-accent/20">
+                  <Calendar className="w-4 h-4 text-util-calendar-accent" />
                 </div>
-                <span>Smart Calendar</span>
-              </DialogTitle>
+                <h2 className="text-lg font-semibold">Smart Calendar</h2>
+              </div>
               
               <div className="flex items-center gap-2">
-                {/* Add Event Button */}
                 <Button
                   size="sm"
                   onClick={() => setShowQuickAdd(!showQuickAdd)}
-                  className="gap-1"
+                  className="gap-1.5 h-9"
                 >
-                  <Plus className="h-3 w-3" />
+                  <Plus className="h-4 w-4" />
                   Add Event
                 </Button>
 
-                {/* Sync Status */}
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleSyncExternal}
-                  className="gap-2"
+                  className="gap-2 h-9"
                 >
                   {syncStatus === 'synced' ? (
                     <>
-                      <CheckCircle2 className="h-3 w-3 text-green-600" />
-                      <span className="hidden sm:inline">Synced</span>
+                      <CheckCircle2 className="h-4 w-4 text-pill-nutrition-accent" />
+                      <span className="text-xs">Synced</span>
                     </>
                   ) : (
                     <>
-                      <RefreshCw className="h-3 w-3 text-amber-600" />
-                      <span className="hidden sm:inline">Sync</span>
+                      <RefreshCw className="h-4 w-4 text-sys-autopilot-accent animate-spin" />
+                      <span className="text-xs">Syncing</span>
                     </>
                   )}
                 </Button>
               </div>
             </div>
 
-            {conflictCount > 0 && (
-              <Badge variant="destructive" className="w-fit bg-amber-500 hover:bg-amber-600">
-                <AlertTriangle className="h-3 w-3 mr-1" />
-                {conflictCount} Conflicts
-              </Badge>
+            {/* Quick Add Input */}
+            {showQuickAdd && (
+              <div className="pt-3 border-t">
+                <NaturalLanguageInput
+                  onEventCreate={handleEventCreate}
+                  onCancel={() => setShowQuickAdd(false)}
+                />
+              </div>
             )}
-          </DialogHeader>
-
-          {/* Quick Add Section */}
-          {showQuickAdd && (
-            <div className="px-6 py-3 border-b bg-muted/30">
-              <NaturalLanguageInput
-                onEventCreate={handleEventCreate}
-                onCancel={() => setShowQuickAdd(false)}
-              />
-            </div>
-          )}
+          </div>
 
           {/* Tabs */}
           <Tabs 
@@ -273,211 +323,329 @@ export function EnhancedCalendarPopup({
             onValueChange={(value) => setActiveTab(value as 'today' | 'week' | 'month')} 
             className="flex-1 flex flex-col overflow-hidden"
           >
-            <TabsList className="mx-6 mt-3 grid w-auto grid-cols-3">
-              <TabsTrigger value="today">Today</TabsTrigger>
-              <TabsTrigger value="week">Week</TabsTrigger>
-              <TabsTrigger value="month">Month</TabsTrigger>
-            </TabsList>
+            <div className="border-b px-6">
+              <TabsList className="h-11 bg-transparent p-0 gap-1">
+                <TabsTrigger 
+                  value="today" 
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
+                >
+                  Today
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="week"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
+                >
+                  Week
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="month"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
+                >
+                  Month
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
-            {/* Today View */}
-            <TabsContent value="today" className="flex-1 overflow-hidden mt-3">
-              <ScrollArea className="h-[450px] px-6">
-                <div className="space-y-3 pb-4">
+            {/* Today View - Agenda */}
+            <TabsContent value="today" className="flex-1 overflow-hidden m-0">
+              <ScrollArea className="h-[calc(80vh-280px)]">
+                <div className="px-6 py-4">
                   {loading ? (
-                    <CalendarSkeleton />
-                  ) : todayEvents.length > 0 ? (
-                    todayEvents.map((event) => (
-                      <Card 
-                        key={event.id} 
-                        className={cn(
-                          "p-3 border-l-4 cursor-pointer hover:shadow-md transition-shadow",
-                          getPriorityColor(event.priority)
-                        )}
-                        onClick={() => setDetailsPanelEvent(event)}
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex-1 space-y-2 min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <Badge className={cn("text-xs px-2 py-0.5 gap-1", getTypeColor(event.event_type))}>
-                                {getTypeIcon(event.event_type)}
-                                <span className="capitalize">{event.event_type}</span>
-                              </Badge>
-                              {event.has_rewards && (
-                                <Badge variant="outline" className="text-xs px-1.5 py-0.5 border-yellow-300 text-yellow-600">
-                                  <Zap className="h-2.5 w-2.5 mr-0.5" />
-                                  +10
-                                </Badge>
-                              )}
-                              {getStatusIcon(event.status)}
-                            </div>
-                            <h4 className="font-medium truncate">{event.title}</h4>
-                            <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
-                              <span className="flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                {formatEventTime(event.start_time, event.end_time)}
-                              </span>
-                              {event.location && (
-                                <span className="flex items-center gap-1 truncate">
-                                  <MapPin className="h-3 w-3 shrink-0" />
-                                  <span className="truncate">{event.location}</span>
-                                </span>
-                              )}
-                              {event.attendees_count && event.attendees_count > 0 && (
-                                <span className="flex items-center gap-1">
-                                  <Users className="h-3 w-3" />
-                                  {event.attendees_count}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    ))
+                    <CalendarListSkeleton />
                   ) : (
-                    <div className="text-center py-12 text-muted-foreground">
-                      <Calendar className="h-16 w-16 mx-auto mb-4 opacity-20" />
-                      <p className="text-lg font-medium mb-1">No events today</p>
-                      <p className="text-sm mb-4">Try Quick Add or let Autopilot plan your day</p>
-                      <Button variant="outline" size="sm" onClick={() => setShowQuickAdd(true)}>
-                        <Plus className="h-3 w-3 mr-1" />
-                        Add Event
-                      </Button>
-                    </div>
+                    <>
+                      {/* Now Indicator */}
+                      {ongoingEvent && (
+                        <div className="mb-4 px-4 py-2.5 bg-sys-ai-tint border border-sys-ai-accent/30 rounded-lg">
+                          <p className="text-xs font-medium text-sys-ai-accent flex items-center gap-2">
+                            <span className="relative flex h-2 w-2">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sys-ai-accent opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-sys-ai-accent"></span>
+                            </span>
+                            Now: {ongoingEvent.title}
+                          </p>
+                        </div>
+                      )}
+
+                      {todayEvents.length > 0 ? (
+                        <div className="space-y-1">
+                          {todayEvents.map((event) => {
+                            const CategoryIcon = getCategoryIcon(event.event_type);
+                            return (
+                              <div
+                                key={event.id}
+                                className="group flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted/50 transition-all cursor-pointer border border-transparent hover:border-border"
+                                onClick={() => setDetailsPanelEvent(event)}
+                              >
+                                {/* Color Dot */}
+                                <div 
+                                  className="w-2 h-2 rounded-full shrink-0"
+                                  style={{ backgroundColor: getCategoryColor(event.event_type) }}
+                                />
+
+                                {/* Time */}
+                                <div className="text-sm text-muted-foreground min-w-[140px]">
+                                  {formatEventTime(event.start_time, event.end_time)}
+                                </div>
+
+                                {/* Title & Details */}
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-0.5">
+                                    <h4 className="font-semibold text-sm truncate">{event.title}</h4>
+                                  </div>
+                                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                    {event.location && (
+                                      <span className="flex items-center gap-1 truncate">
+                                        <MapPin className="h-3 w-3 shrink-0" />
+                                        {event.location}
+                                      </span>
+                                    )}
+                                    <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0 h-5 border", getCategoryBadge(event.event_type))}>
+                                      <CategoryIcon className="h-3 w-3 mr-0.5" />
+                                      {event.event_type}
+                                    </Badge>
+                                  </div>
+                                </div>
+
+                                {/* Quick Actions */}
+                                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  {event.attendees_count && event.attendees_count > 0 && (
+                                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0">
+                                      <MessageCircle className="h-3.5 w-3.5" />
+                                    </Button>
+                                  )}
+                                  <Button 
+                                    size="sm" 
+                                    variant="ghost" 
+                                    className="h-7 w-7 p-0"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setDetailsPanelEvent(event);
+                                    }}
+                                  >
+                                    <Edit className="h-3.5 w-3.5" />
+                                  </Button>
+                                  <Button 
+                                    size="sm" 
+                                    variant="ghost" 
+                                    className="h-7 w-7 p-0 text-destructive"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteEvent(event.id);
+                                    }}
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                  </Button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className="text-center py-16">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/30 flex items-center justify-center">
+                            <Calendar className="h-8 w-8 text-muted-foreground/40" />
+                          </div>
+                          <h3 className="text-base font-semibold mb-1">Nothing scheduled</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Try Quick Add or let Autopilot plan your day
+                          </p>
+                          <Button variant="outline" size="sm" onClick={() => setShowQuickAdd(true)}>
+                            <Plus className="h-4 w-4 mr-1.5" />
+                            Add Event
+                          </Button>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               </ScrollArea>
             </TabsContent>
 
             {/* Week View */}
-            <TabsContent value="week" className="flex-1 overflow-hidden mt-3">
-              <div className="space-y-3 px-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">
-                    {format(weekStart, 'MMM d')} - {format(weekEnd, 'MMM d, yyyy')}
+            <TabsContent value="week" className="flex-1 overflow-hidden m-0">
+              <div className="px-6 py-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-semibold">
+                    {format(weekStart, 'MMM d')}–{format(weekEnd, 'MMM d, yyyy')}
                   </h3>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={() => handleNavigateWeek('prev')}>
-                      <ChevronLeft className="h-3 w-3" />
+                      <ChevronLeft className="h-4 w-4" />
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => handleNavigateWeek('next')}>
-                      <ChevronRight className="h-3 w-3" />
+                      <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
 
-                <ScrollArea className="h-[400px]">
-                  <div className="space-y-2 pb-4">
-                    {weekDays.map((day) => {
-                      const dayKey = format(day, 'yyyy-MM-dd');
-                      const dayEvents = getEventsForWeekDay(day);
-                      const isExpanded = expandedDays.has(dayKey);
-                      const isTodayDate = isToday(day);
+                <ScrollArea className="h-[calc(80vh-280px)]">
+                  {loading ? (
+                    <CalendarListSkeleton />
+                  ) : (
+                    <div className="grid grid-cols-7 gap-2 pb-4">
+                      {weekDays.map((day) => {
+                        const dayEvents = getEventsForDate(day).sort((a, b) => 
+                          new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+                        );
+                        const isTodayDate = isToday(day);
 
-                      return (
-                        <Card key={dayKey} className={cn("overflow-hidden", isTodayDate && "border-primary")}>
-                          <button
-                            onClick={() => toggleDayExpanded(dayKey)}
-                            className="w-full p-3 text-left hover:bg-muted/50 transition-colors"
+                        return (
+                          <div 
+                            key={format(day, 'yyyy-MM-dd')} 
+                            className={cn(
+                              "min-h-[120px] rounded-lg border p-2",
+                              isTodayDate && "border-primary bg-primary/5"
+                            )}
                           >
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <p className={cn("font-medium", isTodayDate && "text-primary")}>
-                                  {format(day, 'EEEE, MMM d')}
-                                </p>
-                                {dayEvents.length > 0 && (
-                                  <p className="text-xs text-muted-foreground mt-0.5">
-                                    {dayEvents.length} event{dayEvents.length !== 1 ? 's' : ''}
-                                  </p>
-                                )}
-                              </div>
-                              <ChevronRight 
-                                className={cn(
-                                  "h-4 w-4 transition-transform",
-                                  isExpanded && "rotate-90"
-                                )} 
-                              />
+                            <div className="mb-2">
+                              <p className={cn(
+                                "text-xs font-medium",
+                                isTodayDate && "text-primary"
+                              )}>
+                                {format(day, 'EEE')}
+                              </p>
+                              <p className={cn(
+                                "text-lg font-semibold",
+                                isTodayDate && "text-primary"
+                              )}>
+                                {format(day, 'd')}
+                              </p>
                             </div>
-                          </button>
 
-                          {isExpanded && (
-                            <div className="px-3 pb-3 space-y-2 border-t">
-                              {dayEvents.length > 0 ? (
-                                dayEvents.map((event) => (
-                                  <div
-                                    key={event.id}
-                                    onClick={() => setDetailsPanelEvent(event)}
-                                    className="flex items-center gap-2 p-2 rounded hover:bg-muted cursor-pointer"
-                                  >
-                                    <div className={cn(
-                                      "w-2 h-2 rounded-full shrink-0",
-                                      getTypeColor(event.event_type).split(' ')[0]
-                                    )} />
-                                    <div className="flex-1 min-w-0">
-                                      <p className="text-sm font-medium truncate">{event.title}</p>
-                                      <p className="text-xs text-muted-foreground">
-                                        {formatEventTime(event.start_time, event.end_time)}
-                                      </p>
-                                    </div>
-                                    {getStatusIcon(event.status)}
-                                  </div>
-                                ))
-                              ) : (
-                                <p className="text-xs text-muted-foreground py-2">No events</p>
+                            <div className="space-y-1">
+                              {dayEvents.slice(0, 4).map((event) => (
+                                <div
+                                  key={event.id}
+                                  className="px-2 py-1.5 rounded text-xs cursor-pointer hover:bg-muted/80 transition-colors"
+                                  style={{ 
+                                    borderLeft: `3px solid ${getCategoryColor(event.event_type)}`,
+                                    backgroundColor: `${getCategoryColor(event.event_type)}15`
+                                  }}
+                                  onClick={() => setDetailsPanelEvent(event)}
+                                >
+                                  <p className="font-medium truncate text-[11px] leading-tight mb-0.5">
+                                    {event.title}
+                                  </p>
+                                  <p className="text-[10px] text-muted-foreground">
+                                    {format(new Date(event.start_time), 'h:mm a')}
+                                  </p>
+                                </div>
+                              ))}
+                              {dayEvents.length > 4 && (
+                                <p className="text-[10px] text-muted-foreground px-2">
+                                  +{dayEvents.length - 4} more
+                                </p>
+                              )}
+                              {dayEvents.length === 0 && (
+                                <p className="text-[10px] text-muted-foreground px-2 py-1">
+                                  No events
+                                </p>
                               )}
                             </div>
-                          )}
-                        </Card>
-                      );
-                    })}
-                  </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </ScrollArea>
               </div>
             </TabsContent>
 
             {/* Month View */}
-            <TabsContent value="month" className="flex-1 overflow-hidden mt-3">
-              <div className="px-6 space-y-3">
-                <CalendarComponent
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={(date) => date && setSelectedDate(date)}
-                  className="rounded-md border pointer-events-auto"
-                />
+            <TabsContent value="month" className="flex-1 overflow-hidden m-0">
+              <div className="px-6 py-4 flex gap-6">
+                {/* Calendar Grid */}
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-semibold">
+                      {format(currentMonth, 'MMMM yyyy')}
+                    </h3>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" onClick={() => handleNavigateMonth('prev')}>
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleNavigateMonth('next')}>
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
 
-                <Separator />
+                  <CalendarComponent
+                    mode="single"
+                    selected={selectedMonthDay}
+                    onSelect={(date) => date && setSelectedMonthDay(date)}
+                    month={currentMonth}
+                    onMonthChange={setCurrentMonth}
+                    className="rounded-lg border pointer-events-auto"
+                  />
+                </div>
 
-                <div className="space-y-2">
-                  <h4 className="text-sm font-medium">
-                    Events on {format(selectedDate, 'MMMM d, yyyy')}
+                {/* Selected Day Agenda */}
+                <div className="w-80 border-l pl-6">
+                  <h4 className="text-sm font-semibold mb-3">
+                    {format(selectedMonthDay, 'EEEE, MMM d')}
                   </h4>
-                  <ScrollArea className="h-[200px]">
+
+                  <ScrollArea className="h-[calc(80vh-320px)]">
                     {loading ? (
                       <CalendarListSkeleton />
                     ) : (() => {
-                      const selectedDateEvents = getEventsForDate(selectedDate);
-                      return selectedDateEvents.length > 0 ? (
+                      const dayEvents = getEventsForDate(selectedMonthDay).sort((a, b) => 
+                        new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+                      );
+
+                      return dayEvents.length > 0 ? (
                         <div className="space-y-2 pb-4">
-                          {selectedDateEvents.map((event) => (
+                          {dayEvents.map((event) => (
                             <div
                               key={event.id}
+                              className="group flex items-start gap-2 p-2.5 rounded-lg hover:bg-muted/50 cursor-pointer border border-transparent hover:border-border transition-all"
                               onClick={() => setDetailsPanelEvent(event)}
-                              className="flex items-center gap-2 p-2 rounded hover:bg-muted cursor-pointer"
                             >
-                              <div className={cn(
-                                "w-2 h-2 rounded-full shrink-0",
-                                getTypeColor(event.event_type).split(' ')[0]
-                              )} />
+                              <div 
+                                className="w-2 h-2 rounded-full shrink-0 mt-1.5"
+                                style={{ backgroundColor: getCategoryColor(event.event_type) }}
+                              />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">{event.title}</p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-sm font-semibold truncate mb-0.5">{event.title}</p>
+                                <p className="text-xs text-muted-foreground mb-1">
                                   {formatEventTime(event.start_time, event.end_time)}
                                 </p>
+                                {event.location && (
+                                  <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
+                                    <MapPin className="h-3 w-3 shrink-0" />
+                                    {event.location}
+                                  </p>
+                                )}
                               </div>
+                              <Button 
+                                size="sm" 
+                                variant="ghost" 
+                                className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setDetailsPanelEvent(event);
+                                }}
+                              >
+                                <ChevronRight className="h-3.5 w-3.5" />
+                              </Button>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-muted-foreground py-4">No events on this date</p>
+                        <div className="text-center py-8">
+                          <p className="text-sm text-muted-foreground">No events on this date</p>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="mt-3"
+                            onClick={() => setShowQuickAdd(true)}
+                          >
+                            <Plus className="h-3 w-3 mr-1" />
+                            Add Event
+                          </Button>
+                        </div>
                       );
                     })()}
                   </ScrollArea>
@@ -486,9 +654,12 @@ export function EnhancedCalendarPopup({
             </TabsContent>
           </Tabs>
 
-          {/* Footer */}
-          <div className="px-6 py-3 border-t flex justify-end">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
+          {/* Sticky Footer */}
+          <div className="sticky bottom-0 z-10 bg-background border-t px-6 py-3 flex items-center justify-between">
+            <p className="text-xs text-muted-foreground">
+              Last synced {getTimeSinceSync()}
+            </p>
+            <Button variant="secondary" onClick={() => onOpenChange(false)}>
               Close
             </Button>
           </div>
