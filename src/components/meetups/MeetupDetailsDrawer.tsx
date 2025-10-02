@@ -288,7 +288,7 @@ export function MeetupDetailsDrawer({
               onLoad={() => setIsImageLoaded(true)}
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/95 dark:from-background via-background/50 dark:via-background/60 to-transparent" />
             
             {/* Floating Navigation Arrows */}
             <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
@@ -296,11 +296,11 @@ export function MeetupDetailsDrawer({
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "rounded-full bg-background/80 dark:bg-background/90 backdrop-blur-md shadow-lg pointer-events-auto",
-                  "border-border/50 hover:bg-background/95 hover:scale-110 active:scale-95",
-                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                  "opacity-60 hover:opacity-100 focus-visible:opacity-100",
-                  !hasPrev && "opacity-0 pointer-events-none"
+                  "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
+                  "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
+                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                  "opacity-0 hover:opacity-100 focus-visible:opacity-100",
+                  !hasPrev && "pointer-events-none"
                 )}
                 onClick={onNavigatePrev}
                 disabled={!hasPrev}
@@ -313,11 +313,11 @@ export function MeetupDetailsDrawer({
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "rounded-full bg-background/80 dark:bg-background/90 backdrop-blur-md shadow-lg pointer-events-auto",
-                  "border-border/50 hover:bg-background/95 hover:scale-110 active:scale-95",
-                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                  "opacity-60 hover:opacity-100 focus-visible:opacity-100",
-                  !hasNext && "opacity-0 pointer-events-none"
+                  "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
+                  "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
+                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                  "opacity-0 hover:opacity-100 focus-visible:opacity-100",
+                  !hasNext && "pointer-events-none"
                 )}
                 onClick={onNavigateNext}
                 disabled={!hasNext}
@@ -330,20 +330,26 @@ export function MeetupDetailsDrawer({
 
             {/* Title Overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
-              <h2 className="text-3xl font-bold tracking-tight text-white drop-shadow-lg mb-2">
+              <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[85%]" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
                 {event.title}
               </h2>
               
-              {/* Host Chip */}
-              <div className="flex items-center gap-2 bg-background/95 backdrop-blur-sm rounded-full px-3 py-2 w-fit shadow-lg">
-                <Avatar className="h-8 w-8 border-2 border-primary">
-                  <AvatarImage src={event.author?.avatar} />
-                  <AvatarFallback>{event.author?.name?.[0] || 'H'}</AvatarFallback>
-                </Avatar>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-medium">{event.author?.name || 'Community Host'}</span>
-                  <CheckCircle2 className="h-4 w-4 text-primary" />
+              {/* Host Chip with Follow Button */}
+              <div className="flex items-center gap-2 mt-3">
+                <div className="flex items-center gap-2 bg-background/95 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg">
+                  <Avatar className="h-8 w-8 border-2 border-primary">
+                    <AvatarImage src={event.author?.avatar} />
+                    <AvatarFallback>{event.author?.name?.[0] || 'H'}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-medium">{event.author?.name || 'Community Host'}</span>
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                  </div>
                 </div>
+                <Button variant="outline" size="sm" className="rounded-full h-10 gap-1.5 bg-background/95 backdrop-blur-sm shadow-lg">
+                  <UserPlus className="h-4 w-4" />
+                  Follow host
+                </Button>
               </div>
             </div>
           </div>
@@ -367,56 +373,76 @@ export function MeetupDetailsDrawer({
               )}
             </div>
 
-            {/* Social Proof */}
+            {/* Social Proof - Compact People Going Banner */}
             {followersGoing.length > 0 && (
-              <div className="flex items-center justify-between gap-3 p-4 bg-accent/50 rounded-2xl border">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {followersGoing.map((follower, i) => (
-                      <Avatar key={i} className="h-9 w-9 border-2 border-background ring-1 ring-accent">
-                        <AvatarImage src={follower.avatar} />
-                        <AvatarFallback>{follower.name[0]}</AvatarFallback>
-                      </Avatar>
-                    ))}
-                  </div>
-                  <p className="text-sm font-medium">
-                    People you follow are going
-                  </p>
+              <button 
+                className="flex items-center gap-3 p-3 bg-accent/30 hover:bg-accent/40 rounded-2xl border-0 transition-colors w-full text-left cursor-pointer"
+                onClick={() => {
+                  const attendeesSection = document.querySelector('[data-section="attendees"]');
+                  attendeesSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                <div className="flex -space-x-2">
+                  {followersGoing.slice(0, 4).map((follower, i) => (
+                    <Avatar key={i} className="h-6 w-6 border-2 border-background">
+                      <AvatarImage src={follower.avatar} />
+                      <AvatarFallback className="text-xs">{follower.name[0]}</AvatarFallback>
+                    </Avatar>
+                  ))}
+                  {followersGoing.length > 4 && (
+                    <div className="flex items-center justify-center h-6 w-6 rounded-full bg-accent border-2 border-background text-[10px] font-semibold">
+                      +{followersGoing.length - 4}
+                    </div>
+                  )}
                 </div>
-                <Button variant="ghost" size="sm" className="gap-1.5">
-                  <UserPlus className="h-4 w-4" />
-                  Follow
-                </Button>
-              </div>
+                <p className="text-sm font-medium flex-1">
+                  People you follow are going
+                </p>
+              </button>
             )}
 
             {/* When & Where */}
-            <div className="space-y-4 p-4 bg-muted/30 rounded-2xl">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-lg">When & Where</h3>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => setShowLocalTime(!showLocalTime)}
-                  className="text-xs"
-                >
-                  {showLocalTime ? 'Show UTC' : 'Show Local'}
-                </Button>
+            <div className="space-y-4 p-5 bg-muted/30 rounded-2xl">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="font-semibold text-[17px]">When & Where</h3>
+                </div>
+                <div className="flex items-center gap-1 p-1 bg-background/50 rounded-full">
+                  <button
+                    onClick={() => setShowLocalTime(true)}
+                    className={cn(
+                      "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                      showLocalTime ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    Local
+                  </button>
+                  <button
+                    onClick={() => setShowLocalTime(false)}
+                    className={cn(
+                      "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                      !showLocalTime ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    UTC
+                  </button>
+                </div>
               </div>
               
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium">{format(startDate, 'EEEE, MMMM d, yyyy')}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-medium text-[15px]">{format(startDate, 'EEEE, MMMM d, yyyy')}</p>
+                    <p className="text-[14px] text-muted-foreground">
                       {format(startDate, 'h:mm a')} {endDate && `- ${format(endDate, 'h:mm a')}`}
-                      {showLocalTime && ' (Local)'}
+                      {!showLocalTime && ' UTC'}
                     </p>
                     {showCountdown && (
-                      <div className="flex items-center gap-1.5 mt-1 text-xs text-primary">
-                        <Timer className="h-3 w-3" />
-                        <span>Starts {formatDistanceToNow(startDate, { addSuffix: true })}</span>
+                      <div className="flex items-center gap-1.5 mt-1.5 px-2 py-1 bg-primary/10 rounded-full w-fit">
+                        <Timer className="h-3 w-3 text-primary" />
+                        <span className="text-xs font-medium text-primary">Starts {formatDistanceToNow(startDate, { addSuffix: true })}</span>
                       </div>
                     )}
                   </div>
@@ -425,7 +451,7 @@ export function MeetupDetailsDrawer({
                 <div className="flex items-start gap-3">
                   <Clock className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                   <div>
-                    <p className="font-medium">{duration} minutes</p>
+                    <p className="font-medium text-[15px]">{duration} minutes</p>
                   </div>
                 </div>
 
@@ -433,8 +459,8 @@ export function MeetupDetailsDrawer({
                   <div className="flex items-start gap-3">
                     <Globe className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium">Virtual Event</p>
-                      <Button variant="link" className="h-auto p-0 text-primary text-sm" asChild>
+                      <p className="font-medium text-[15px]">Virtual Event</p>
+                      <Button variant="link" className="h-auto p-0 text-primary text-[13px]" asChild>
                         <a href={event.virtual_link} target="_blank" rel="noopener noreferrer">
                           Join link · Opens 5 min before
                         </a>
@@ -442,14 +468,21 @@ export function MeetupDetailsDrawer({
                     </div>
                   </div>
                 ) : event.location && (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3">
                     <div className="flex items-start gap-3">
                       <MapPin className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium">{event.location}</p>
+                        <a 
+                          href={`https://maps.google.com/?q=${encodeURIComponent(event.location)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-[15px] text-primary hover:underline"
+                        >
+                          {event.location}
+                        </a>
                         <Button 
                           variant="link" 
-                          className="h-auto p-0 text-primary text-sm gap-1"
+                          className="h-auto p-0 text-muted-foreground text-[13px] gap-1 hover:text-primary"
                           onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(event.location)}`, '_blank')}
                         >
                           <Navigation className="h-3 w-3" />
@@ -458,7 +491,7 @@ export function MeetupDetailsDrawer({
                       </div>
                     </div>
                     {/* Mini map placeholder */}
-                    <div className="w-full h-32 bg-muted rounded-xl flex items-center justify-center">
+                    <div className="w-full h-32 bg-muted rounded-xl flex items-center justify-center overflow-hidden">
                       <MapPinned className="h-8 w-8 text-muted-foreground" />
                     </div>
                   </div>
@@ -510,24 +543,33 @@ export function MeetupDetailsDrawer({
             </div>
 
             {/* About */}
-            <div className="space-y-3 pt-2 border-t">
-              <h3 className="font-semibold text-lg">About</h3>
-              <p className="text-muted-foreground leading-relaxed">
+            <div className="space-y-3 pt-5 border-t border-border/50">
+              <div className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-muted-foreground" />
+                <h3 className="font-semibold text-[17px]">About</h3>
+              </div>
+              <p className="text-[14px] text-muted-foreground leading-relaxed">
                 {event.description || 'No description provided.'}
               </p>
             </div>
 
             {/* Agenda */}
             {event.agenda && (
-              <div className="space-y-3 pt-2 border-t">
-                <h3 className="font-semibold text-lg">Agenda</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{event.agenda}</p>
+              <div className="space-y-3 pt-5 border-t border-border/50">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="font-semibold text-[17px]">Agenda</h3>
+                </div>
+                <p className="text-[14px] text-muted-foreground leading-relaxed">{event.agenda}</p>
               </div>
             )}
 
             {/* Host */}
-            <div className="space-y-3 pt-2 border-t">
-              <h3 className="font-semibold text-lg">Host</h3>
+            <div className="space-y-4 pt-5 border-t border-border/50">
+              <div className="flex items-center gap-2">
+                <UserPlus className="h-4 w-4 text-muted-foreground" />
+                <h3 className="font-semibold text-[17px]">Host</h3>
+              </div>
               <div className="flex items-center gap-3 p-4 bg-muted/40 rounded-2xl">
                 <Avatar className="h-14 w-14 border-2 border-primary">
                   <AvatarImage src={event.author?.avatar} />
@@ -535,10 +577,10 @@ export function MeetupDetailsDrawer({
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
-                    <p className="font-semibold">{event.author?.name || 'Community Host'}</p>
+                    <p className="font-semibold text-[15px]">{event.author?.name || 'Community Host'}</p>
                     <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
                   </div>
-                  <p className="text-sm text-muted-foreground">Organizer</p>
+                  <p className="text-[13px] text-muted-foreground">Organizer</p>
                 </div>
                 <Button variant="outline" size="sm" className="gap-1.5">
                   <MessageCircle className="h-4 w-4" />
@@ -549,8 +591,11 @@ export function MeetupDetailsDrawer({
 
             {/* Attendees */}
             {attendees.length > 0 && (
-              <div className="space-y-3 pt-2 border-t">
-                <h3 className="font-semibold text-lg">Attendees ({current})</h3>
+              <div className="space-y-4 pt-5 border-t border-border/50" data-section="attendees">
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="font-semibold text-[17px]">Attendees ({current})</h3>
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {attendees.map((attendee, i) => (
                     <Avatar key={i} className="h-11 w-11 border-2 border-background ring-1 ring-muted hover:ring-primary transition-all cursor-pointer">
@@ -569,18 +614,21 @@ export function MeetupDetailsDrawer({
 
             {/* Policies */}
             {(event.requirements || event.cancellation_policy) && (
-              <div className="space-y-3 pt-2 border-t">
-                <h3 className="font-semibold text-lg">Policies</h3>
+              <div className="space-y-4 pt-5 border-t border-border/50">
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="font-semibold text-[17px]">Policies</h3>
+                </div>
                 {event.requirements && (
-                  <div>
-                    <h4 className="font-medium mb-1.5 text-sm">Requirements</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{event.requirements}</p>
+                  <div className="p-4 bg-muted/30 rounded-2xl">
+                    <h4 className="font-medium mb-1.5 text-[14px]">Requirements</h4>
+                    <p className="text-[13px] text-muted-foreground leading-relaxed">{event.requirements}</p>
                   </div>
                 )}
                 {event.cancellation_policy && (
-                  <div>
-                    <h4 className="font-medium mb-1.5 text-sm">Cancellation</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{event.cancellation_policy}</p>
+                  <div className="p-4 bg-muted/30 rounded-2xl">
+                    <h4 className="font-medium mb-1.5 text-[14px]">Cancellation</h4>
+                    <p className="text-[13px] text-muted-foreground leading-relaxed">{event.cancellation_policy}</p>
                   </div>
                 )}
               </div>
@@ -590,10 +638,10 @@ export function MeetupDetailsDrawer({
       </ScrollArea>
 
       {/* Sticky Action Bar */}
-      <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg p-4">
+      <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center gap-2">
           <Button
-            className="flex-1 h-11 font-semibold"
+            className="flex-1 h-12 font-semibold text-[15px]"
             onClick={handleJoin}
             disabled={isJoining || isJoined}
           >
@@ -608,13 +656,19 @@ export function MeetupDetailsDrawer({
                 Joined
               </>
             ) : (
-              'Join'
+              'Join Meetup'
             )}
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="h-11 w-11 shrink-0">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-12 w-12 shrink-0"
+                title="Add to calendar"
+                aria-label="Add to calendar"
+              >
                 <Calendar className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -638,7 +692,13 @@ export function MeetupDetailsDrawer({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="h-11 w-11 shrink-0">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-12 w-12 shrink-0"
+                title="Share meetup"
+                aria-label="Share meetup"
+              >
                 <Share2 className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -670,8 +730,10 @@ export function MeetupDetailsDrawer({
           <Button
             variant="outline"
             size="icon"
-            className={cn("h-11 w-11 shrink-0", isSaved && "bg-accent")}
+            className={cn("h-12 w-12 shrink-0", isSaved && "bg-accent")}
             onClick={handleSave}
+            title={isSaved ? "Remove from saved" : "Save for later"}
+            aria-label={isSaved ? "Remove from saved" : "Save for later"}
           >
             <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
           </Button>
