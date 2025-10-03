@@ -378,6 +378,36 @@ export function useCalendarEvents() {
 
       // If accepting or maybe responding to the invite, upsert the calendar event
       if ((normalized === 'accepted' || normalized === 'maybe') && eventData) {
+        // OPTIMISTIC UPDATE: Add event to UI immediately (<100ms)
+        const optimisticId = `optimistic-${Date.now()}-${Math.random()}`;
+        const desiredStatus = normalized === 'accepted' ? ('confirmed' as const) : ('pending' as const);
+        
+        const optimisticEvent: CalendarEvent = {
+          id: optimisticId,
+          user_id: user.id,
+          title: eventData.title || 'Calendar Event',
+          description: eventData.description || null,
+          start_time: eventData.start_time,
+          end_time: eventData.end_time || null,
+          location: eventData.location || null,
+          event_type: (eventData as any).event_type || 'personal',
+          status: desiredStatus,
+          priority: (eventData as any).priority || 'medium',
+          is_recurring: eventData.is_recurring || false,
+          recurring_pattern: eventData.recurring_pattern || null,
+          attendees_count: eventData.attendees_count || null,
+          has_rewards: eventData.has_rewards || null,
+          metadata: eventData.metadata || null,
+          source_message_id: validMessageId || null,
+          source_type: 'invite',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+
+        // Add optimistic event to state immediately
+        setEvents(prev => [optimisticEvent, ...prev]);
+        console.log('⚡ Optimistic event added to UI:', optimisticEvent.title);
+
         try {
           // Check if event already exists for idempotency (only if we have valid message ID)
           let existingEvent = null;
@@ -392,8 +422,6 @@ export function useCalendarEvents() {
             existingEvent = data;
           }
 
-          const desiredStatus = normalized === 'accepted' ? ('confirmed' as const) : ('pending' as const);
-
           if (existingEvent) {
             // Only update status if needed
             if (existingEvent.status !== desiredStatus) {
@@ -405,8 +433,14 @@ export function useCalendarEvents() {
                 .single();
               if (updErr) throw updErr;
               eventId = updated.id;
+              
+              // Replace optimistic with real event
+              setEvents(prev => prev.map(e => e.id === optimisticId ? (updated as CalendarEvent) : e));
             } else {
               eventId = existingEvent.id;
+              
+              // Replace optimistic with existing event
+              setEvents(prev => prev.map(e => e.id === optimisticId ? (existingEvent as CalendarEvent) : e));
             }
 
             // Update invite response with event ID
@@ -416,7 +450,6 @@ export function useCalendarEvents() {
               .eq('message_id', messageId)
               .eq('user_id', user.id);
 
-            await fetchEvents();
             window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
           } else {
             console.log('📝 Creating calendar event for invite:', eventData);
@@ -424,13 +457,12 @@ export function useCalendarEvents() {
             // Validate and clean event data
             const rawEventData = {
               ...eventData,
-              user_id: user.id, // Ensure user_id is set correctly
+              user_id: user.id,
               source_message_id: messageId,
               source_type: 'invite' as const,
-              // Ensure required fields have defaults
               title: eventData.title || 'Calendar Event',
               event_type: (eventData as any).event_type || 'personal',
-              status: desiredStatus, // Set status based on response
+              status: desiredStatus,
               priority: (eventData as any).priority || 'medium',
               is_recurring: !!eventData.is_recurring,
             } as any;
@@ -452,6 +484,10 @@ export function useCalendarEvents() {
             const newEvent = await addEvent(cleanEventData, { showToast: false });
             eventId = newEvent.id;
 
+            // Replace optimistic event with real event from database
+            setEvents(prev => prev.map(e => e.id === optimisticId ? newEvent : e));
+            console.log('✅ Optimistic event replaced with real event:', newEvent.id);
+
             // Update the invite response with the event ID
             const { error: updateError } = await supabase
               .from('calendar_invite_responses')
@@ -461,11 +497,7 @@ export function useCalendarEvents() {
 
             if (updateError) {
               console.error('⚠️ Failed to update invite response with event ID:', updateError);
-              // Don't throw here - the event was created successfully
             }
-
-            // Refresh events list to show the new event immediately
-            await fetchEvents();
 
             // Dispatch global refresh event for other components
             window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
@@ -473,6 +505,10 @@ export function useCalendarEvents() {
 
         } catch (eventError) {
           console.error('❌ Failed to upsert calendar event:', eventError);
+          
+          // ROLLBACK: Remove optimistic event on error
+          setEvents(prev => prev.filter(e => e.id !== optimisticId));
+          console.log('🔄 Optimistic event removed due to error');
           
           // Event creation failed, but response was already recorded
           toast({
