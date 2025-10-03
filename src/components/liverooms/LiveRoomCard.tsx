@@ -76,13 +76,23 @@ export function LiveRoomCard({
   return (
     <Card
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
+      tabIndex={0}
       className={cn(
         "group relative overflow-hidden cursor-pointer rounded-2xl border shadow-sm",
         "hover:shadow-lg hover:border-primary/30 transition-all duration-200",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "flex flex-col h-full",
         className
       )}
       data-room-id={room.id}
+      role="button"
+      aria-label={`${room.title} - ${room.isLive ? "Live now" : "Scheduled"}`}
     >
       {/* Hero Image or Gradient Background */}
       <div
@@ -118,8 +128,8 @@ export function LiveRoomCard({
           </div>
         )}
 
-        {/* Gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+        {/* Stronger gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
 
         {/* Top-left badges */}
         <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
@@ -161,8 +171,16 @@ export function LiveRoomCard({
           ) : null}
         </div>
 
-        {/* Bottom overlay content - Fixed height for alignment */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 z-10 min-h-[140px] flex flex-col justify-end">
+        {/* Bottom overlay content - Fixed structure with margin-top auto */}
+        <div 
+          className={cn(
+            "absolute inset-0 z-10 flex flex-col justify-end p-4",
+            isFeatured ? "min-h-[180px]" : "min-h-[150px]"
+          )}
+        >
+          {/* Spacer to push content to bottom */}
+          <div className="flex-1" />
+          
           {/* Title */}
           <h3 className="font-bold text-white text-base line-clamp-2 mb-1 drop-shadow-lg pointer-events-none">
             {room.title}
@@ -175,8 +193,8 @@ export function LiveRoomCard({
             </p>
           )}
 
-          {/* Meta row: avatars + location */}
-          <div className="flex items-center justify-between gap-2 mb-3 pointer-events-none">
+          {/* Meta row: avatars + location - Fixed height */}
+          <div className="flex items-center justify-between gap-2 mb-3 h-6 pointer-events-none">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 <Avatar className="h-6 w-6 ring-2 ring-white/50">
@@ -206,31 +224,33 @@ export function LiveRoomCard({
             )}
           </div>
 
-          {/* CTA row - right-aligned inside overlay */}
-          <div className="flex items-center justify-end gap-2 pointer-events-auto">
+          {/* CTA row - right-aligned inside overlay - Fixed height 40px */}
+          <div className="flex items-center justify-end gap-2 h-10 pointer-events-auto">
             {room.isLive ? (
               <>
                 <Button
                   size="sm"
-                  className="rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
+                  className="h-10 min-w-[88px] rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
                   onClick={(e) => {
                     e.stopPropagation();
                     onJoinClick?.(e);
                   }}
+                  aria-label="Join live room"
                 >
                   Join
                 </Button>
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="rounded-full text-white hover:bg-white/20 hover:text-white"
+                  className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
                   onClick={(e) => {
                     e.stopPropagation();
                     onShareClick?.(e);
                   }}
-                  aria-label="Share"
+                  aria-label="Share room"
+                  title="Share"
                 >
-                  <Share2 className="w-4 h-4" />
+                  <Share2 className="w-[18px] h-[18px]" />
                 </Button>
               </>
             ) : isScheduled ? (
@@ -239,28 +259,30 @@ export function LiveRoomCard({
                   size="sm"
                   variant={isNotifying ? "secondary" : "ghost"}
                   className={cn(
-                    "gap-1.5 rounded-full",
+                    "h-10 min-w-[88px] gap-1.5 rounded-full",
                     !isNotifying && "text-white hover:bg-white/20 hover:text-white"
                   )}
                   onClick={(e) => {
                     e.stopPropagation();
                     onNotifyClick?.(e);
                   }}
+                  aria-label={isNotifying ? "Turn off notifications" : "Get notified when room starts"}
                 >
-                  <Bell className={cn("w-4 h-4", isNotifying && "fill-current")} />
+                  <Bell className={cn("w-[18px] h-[18px]", isNotifying && "fill-current")} />
                   {isNotifying ? "Notifying" : "Notify me"}
                 </Button>
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="rounded-full text-white hover:bg-white/20 hover:text-white"
+                  className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
                   onClick={(e) => {
                     e.stopPropagation();
                     onShareClick?.(e);
                   }}
-                  aria-label="Share"
+                  aria-label="Share room"
+                  title="Share"
                 >
-                  <Share2 className="w-4 h-4" />
+                  <Share2 className="w-[18px] h-[18px]" />
                 </Button>
               </>
             ) : null}

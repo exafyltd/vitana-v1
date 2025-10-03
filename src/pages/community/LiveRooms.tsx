@@ -389,7 +389,7 @@ export default function LiveRooms() {
         canonical={window.location.href}
       />
       <SubNavigation items={communityNavigation} />
-      <div className="p-6">
+      <div className="p-6 pb-24 md:pb-32 scroll-smooth" style={{ scrollPaddingBottom: "96px" }}>
         <StandardHeader
           title="Live Rooms"
           description="Join live audio and video discussions with community members."
