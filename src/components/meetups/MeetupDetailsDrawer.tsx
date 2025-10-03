@@ -332,7 +332,7 @@ export function MeetupDetailsDrawer({
                   "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
                   "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
                   "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  "opacity-20 hover:opacity-100 focus-visible:opacity-100",
+                  "opacity-75 hover:opacity-100 focus-visible:opacity-100",
                   !hasPrev && "pointer-events-none"
                 )}
                 onClick={onNavigatePrev}
@@ -349,7 +349,7 @@ export function MeetupDetailsDrawer({
                   "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
                   "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
                   "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  "opacity-20 hover:opacity-100 focus-visible:opacity-100",
+                  "opacity-75 hover:opacity-100 focus-visible:opacity-100",
                   !hasNext && "pointer-events-none"
                 )}
                 onClick={onNavigateNext}
@@ -363,7 +363,7 @@ export function MeetupDetailsDrawer({
 
             {/* Title Overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
-              <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[85%]" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}>
+              <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}>
                 {event.title}
               </h2>
               
@@ -448,7 +448,7 @@ export function MeetupDetailsDrawer({
             </div>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className="p-5 space-y-5">
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary">{event.pillar || 'Community'}</Badge>
