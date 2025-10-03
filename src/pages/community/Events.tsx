@@ -5,6 +5,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Button } from "@/components/ui/button";
 import { CreateEventPopup } from '@/components/CreateEventPopup';
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { communityNavigation } from "@/config/navigation";
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
@@ -459,6 +460,12 @@ const Events = () => {
 
             <div className="flex items-center gap-3 flex-wrap">
               <ExpandableSearchButton />
+              <UniversalCalendarButton 
+                variant="outline" 
+                size="sm" 
+                showEventCount={true} 
+                showConflictIndicator={true} 
+              />
               <Button size="sm" onClick={() => setCreateEventOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Create Event
