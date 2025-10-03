@@ -1,120 +1,238 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { Search, Plus, Plane } from "lucide-react";
-import { useState } from "react";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { Plus, Plane } from "lucide-react";
+import { useState, useEffect } from "react";
 import { GoLivePopup } from "@/components/GoLivePopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
-import LiveRoomDirectory from "@/components/community/LiveRoomDirectory";
-import LiveRoomViewer from "@/components/community/LiveRoomViewer";
+import { LiveRoomCard } from "@/components/liverooms/LiveRoomCard";
+import { LiveRoomDrawer } from "@/components/liverooms/LiveRoomDrawer";
+import type { LiveRoom } from "@/components/liverooms/LiveRoomCard";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-
 import { communityNavigation } from "@/config/navigation";
+import { toast } from "@/hooks/use-toast";
+
+// Mock data for live rooms
+const mockLiveRooms: LiveRoom[] = [
+  {
+    id: "live-1",
+    title: "Morning Wellness Chat ☀️",
+    description: "Join us for a casual conversation about wellness, health tips, and community support",
+    host: {
+      id: "host-1",
+      name: "Dr. Sarah Johnson",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100",
+    },
+    isLive: true,
+    participants: 24,
+    maxParticipants: 50,
+    tags: ["Wellness", "Community", "Health"],
+    type: "audio",
+    isPremium: false,
+  },
+  {
+    id: "live-2",
+    title: "Fitness Q&A with Coach Mike",
+    description: "Ask anything about fitness, nutrition, and building healthy habits",
+    host: {
+      id: "host-2",
+      name: "Coach Mike",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100",
+    },
+    isLive: true,
+    participants: 18,
+    maxParticipants: 30,
+    tags: ["Fitness", "Q&A", "Coaching"],
+    type: "video",
+    isPremium: true,
+  },
+  {
+    id: "live-3",
+    title: "Mental Health Support Circle",
+    description: "A safe space to share experiences and support each other",
+    host: {
+      id: "host-3",
+      name: "Emma Thompson",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100",
+    },
+    isLive: true,
+    participants: 12,
+    maxParticipants: 20,
+    tags: ["Mental Health", "Support", "Community"],
+    type: "audio",
+    isPremium: false,
+  },
+];
+
+const mockScheduledRooms: LiveRoom[] = [
+  {
+    id: "scheduled-1",
+    title: "Evening Meditation Session",
+    description: "Guided meditation to wind down your day and prepare for restful sleep",
+    host: {
+      id: "host-4",
+      name: "Zen Master Li",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
+    },
+    isLive: false,
+    scheduledTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+    participants: 0,
+    maxParticipants: 100,
+    tags: ["Meditation", "Wellness", "Sleep"],
+    type: "audio",
+    isPremium: false,
+  },
+  {
+    id: "scheduled-2",
+    title: "Nutrition Workshop: Meal Prep 101",
+    description: "Learn how to prepare healthy meals for the week ahead",
+    host: {
+      id: "host-5",
+      name: "Chef Maria",
+      avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=100",
+    },
+    isLive: false,
+    scheduledTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    participants: 8,
+    maxParticipants: 25,
+    tags: ["Nutrition", "Cooking", "Workshop"],
+    type: "video",
+    isPremium: true,
+  },
+];
 
 export default function LiveRooms() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
-  const [viewingRoom, setViewingRoom] = useState<string | null>(null);
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   
   const latestActions = getLatestActions(2);
 
-  const handleJoinRoom = (room: any) => {
-    console.log("Joining room:", room.id);
-    setViewingRoom(room.id);
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Handle deep linking
+  useEffect(() => {
+    const liveId = searchParams.get("live");
+    if (liveId) {
+      setSelectedRoomId(liveId);
+    } else {
+      setSelectedRoomId(null);
+    }
+  }, [searchParams]);
+
+  const handleCardClick = (roomId: string) => {
+    setSelectedRoomId(roomId);
+    setSearchParams({ live: roomId });
   };
 
-  const handleLeaveRoom = () => {
-    setViewingRoom(null);
+  const handleDrawerClose = () => {
+    setSelectedRoomId(null);
+    setSearchParams({});
   };
 
-  if (viewingRoom) {
-    return <LiveRoomViewer roomId={viewingRoom} onLeave={handleLeaveRoom} />;
-  }
+  const handleNavigatePrev = () => {
+    const allRooms = [...mockLiveRooms, ...mockScheduledRooms];
+    const currentIndex = allRooms.findIndex((r) => r.id === selectedRoomId);
+    if (currentIndex > 0) {
+      const prevRoom = allRooms[currentIndex - 1];
+      setSelectedRoomId(prevRoom.id);
+      setSearchParams({ live: prevRoom.id });
+    }
+  };
+
+  const handleNavigateNext = () => {
+    const allRooms = [...mockLiveRooms, ...mockScheduledRooms];
+    const currentIndex = allRooms.findIndex((r) => r.id === selectedRoomId);
+    if (currentIndex < allRooms.length - 1) {
+      const nextRoom = allRooms[currentIndex + 1];
+      setSelectedRoomId(nextRoom.id);
+      setSearchParams({ live: nextRoom.id });
+    }
+  };
+
+  const handleJoinRoom = (roomId: string) => {
+    toast({
+      title: "Joining room...",
+      description: "Preparing audio/video connection",
+    });
+    // In real implementation, this would navigate to the LiveRoomViewer
+  };
+
+  const handleNotifyClick = (roomId: string) => {
+    setNotifyingRooms((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(roomId)) {
+        newSet.delete(roomId);
+      } else {
+        newSet.add(roomId);
+      }
+      return newSet;
+    });
+    toast({
+      title: notifyingRooms.has(roomId) ? "Notifications off" : "You'll be notified!",
+      description: notifyingRooms.has(roomId)
+        ? "You won't receive notifications for this room"
+        : "We'll notify you when the room goes live",
+    });
+  };
+
+  const handleShareClick = (roomId: string) => {
+    const url = `${window.location.origin}/comm/live-rooms?live=${roomId}`;
+    navigator.clipboard.writeText(url);
+    toast({
+      title: "Link copied",
+      description: "Room link copied to clipboard",
+    });
+  };
+
+  const allRooms = [...mockLiveRooms, ...mockScheduledRooms];
+  const selectedRoom = allRooms.find((r) => r.id === selectedRoomId);
+  const currentIndex = allRooms.findIndex((r) => r.id === selectedRoomId);
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex < allRooms.length - 1;
 
   return (
     <AppLayout>
-      <SEO title="Live Rooms | Community" description="Join live conversations and discussions" canonical={window.location.href} />
+      <SEO
+        title="Live Rooms | Community"
+        description="Join live conversations and discussions"
+        canonical={window.location.href}
+      />
       <SubNavigation items={communityNavigation} />
-      <div className="p-6 bg-gradient-to-br from-domain-community-tint via-background to-domain-community-tint/50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header Section with Perfect Symmetry - Three Cards Layout */}
-          <div className="flex flex-col lg:flex-row gap-4 mb-8">
-            {/* Welcome Message */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Join the conversation live! 🎙️</h1>
-                <p className="text-muted-foreground">Join live audio and video discussions with community members.</p>
-              </div>
-            </div>
-            
-            {/* Autopilot Card with Live Badge Counter */}
-            <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
-              onClick={() => setAutopilotOpen(true)}
-              onMouseEnter={() => setShowPreview(true)}
-              onMouseLeave={() => setShowPreview(false)}
-            >
-              {pendingCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
-                >
-                  {pendingCount}
-                </Badge>
-              )}
-              <div className="flex flex-col items-center justify-center h-full space-y-3">
-                <div>
-                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
-                </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
-              </div>
-              
-              {/* Hover Preview */}
-              {showPreview && pendingCount > 0 && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
-                  {latestActions.map((action, index) => (
-                    <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
-                      <span>{action.icon}</span>
-                      <span className="truncate">{action.title}</span>
-                    </div>
-                  ))}
-                  {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-            
-            {/* Vitana Index Card - Circle with 742 */}
-            <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-              onClick={() => navigate('/health-tracker/vitana-index')}
-            >
-              <div className="flex items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600">742</span>
-                </div>
-              </div>
-          </div>
-        </div>
+      <div className="p-6">
+        <StandardHeader
+          title="Live Rooms"
+          description="Join live audio and video discussions with community members."
+          emoji="🎙️"
+        />
 
-        {/* Action Buttons Utility Bar */}
+        {/* Utility Action Button */}
         <UtilityActionButton>
-          <ExpandableSearchButton 
+          <ExpandableSearchButton
             placeholder="Search Live Rooms…"
-            onSearch={(query) => console.log('Search Live Rooms:', query)}
+            onSearch={(query) => console.log("Search Live Rooms:", query)}
           />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
@@ -123,20 +241,128 @@ export default function LiveRooms() {
           </Button>
         </UtilityActionButton>
 
-        <LiveRoomDirectory onJoinRoom={handleJoinRoom} />
+        {/* Split Bar for Live/Scheduled */}
+        <SplitBar defaultValue="live" className="mt-6">
+          <SplitBarList className="grid w-full grid-cols-2">
+            <SplitBarTrigger value="live">Live</SplitBarTrigger>
+            <SplitBarTrigger value="scheduled">Scheduled</SplitBarTrigger>
+          </SplitBarList>
+
+          <SplitBarContent value="live" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {mockLiveRooms.map((room) => (
+                <LiveRoomCard
+                  key={room.id}
+                  room={room}
+                  onClick={() => handleCardClick(room.id)}
+                  onJoinClick={(e) => {
+                    e.stopPropagation();
+                    handleJoinRoom(room.id);
+                  }}
+                  onShareClick={(e) => {
+                    e.stopPropagation();
+                    handleShareClick(room.id);
+                  }}
+                />
+              ))}
+            </div>
+          </SplitBarContent>
+
+          <SplitBarContent value="scheduled" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {mockScheduledRooms.map((room) => (
+                <LiveRoomCard
+                  key={room.id}
+                  room={room}
+                  onClick={() => handleCardClick(room.id)}
+                  onNotifyClick={(e) => {
+                    e.stopPropagation();
+                    handleNotifyClick(room.id);
+                  }}
+                  onShareClick={(e) => {
+                    e.stopPropagation();
+                    handleShareClick(room.id);
+                  }}
+                  isNotifying={notifyingRooms.has(room.id)}
+                />
+              ))}
+            </div>
+          </SplitBarContent>
+        </SplitBar>
+
+        {/* Autopilot & Vitana Cards */}
+        <div className="flex gap-4 mt-6">
+          <div
+            className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
+            onClick={() => setAutopilotOpen(true)}
+            onMouseEnter={() => setShowPreview(true)}
+            onMouseLeave={() => setShowPreview(false)}
+          >
+            {pendingCount > 0 && (
+              <Badge
+                variant="destructive"
+                className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
+              >
+                {pendingCount}
+              </Badge>
+            )}
+            <div className="flex flex-col items-center justify-center h-full space-y-3">
+              <Plane className="w-10 h-10 text-red-400" />
+              <span className="text-sm font-medium text-red-400">Autopilot</span>
+            </div>
+
+            {showPreview && pendingCount > 0 && (
+              <div className="absolute top-full left-0 mt-2 w-64 bg-card/95 backdrop-blur-sm border rounded-lg shadow-xl p-3 z-10">
+                <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                {latestActions.map((action) => (
+                  <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                    <span>{action.icon}</span>
+                    <span className="truncate">{action.title}</span>
+                  </div>
+                ))}
+                {pendingCount > 2 && (
+                  <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                    +{pendingCount - 2} more actions
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div
+            className="w-32 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border cursor-pointer group transition-all duration-300 hover:shadow-xl"
+            onClick={() => navigate("/health-tracker/vitana-index")}
+          >
+            <div className="flex items-center justify-center h-full">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                <span className="text-xl font-bold text-green-600">742</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      
-      <GoLivePopup 
-        open={isGoLiveOpen} 
-        onOpenChange={setIsGoLiveOpen}
-        defaultTitle="Live Community Discussion"
-      />
-      
-      <AutopilotPopup 
-        open={autopilotOpen} 
-        onOpenChange={setAutopilotOpen}
-      />
+
+      <GoLivePopup open={isGoLiveOpen} onOpenChange={setIsGoLiveOpen} defaultTitle="Live Community Discussion" />
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+
+      {/* Live Room Drawer */}
+      {selectedRoom && (
+        <LiveRoomDrawer
+          room={selectedRoom}
+          open={!!selectedRoomId}
+          onOpenChange={(open) => {
+            if (!open) {
+              handleDrawerClose();
+            }
+          }}
+          onNavigatePrev={hasPrev ? handleNavigatePrev : undefined}
+          onNavigateNext={hasNext ? handleNavigateNext : undefined}
+          hasPrev={hasPrev}
+          hasNext={hasNext}
+          isMobile={isMobile}
+          onJoin={handleJoinRoom}
+        />
+      )}
     </AppLayout>
   );
 }
