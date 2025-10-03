@@ -61,6 +61,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
+import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 
 interface MeetupDetailsDrawerProps {
   event: any;
@@ -95,6 +96,8 @@ export function MeetupDetailsDrawer({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [previousEventId, setPreviousEventId] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  const { addEvent, removeEvent } = useCalendarEvents();
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -147,20 +150,61 @@ export function MeetupDetailsDrawer({
 
   const handleJoin = async () => {
     setIsJoining(true);
-    // Simulate join action
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsJoined(true);
-    setIsJoining(false);
     
-    toast({
-      title: "✓ Added to Smart Calendar",
-      description: `You're all set for ${event.title}`,
-      action: (
-        <Button variant="ghost" size="sm" onClick={() => setIsJoined(false)}>
-          Undo
-        </Button>
-      ),
-    });
+    try {
+      const calendarEvent = {
+        user_id: '', // Will be set by the hook from auth context
+        title: event.title,
+        description: event.description || '',
+        start_time: event.start_time,
+        end_time: event.end_time,
+        location: event.location || event.virtual_link || '',
+        event_type: 'community' as const,
+        status: 'confirmed' as const,
+        priority: 'medium' as const,
+        is_recurring: false,
+        source_type: 'manual' as const,
+        metadata: {
+          meetup_id: event.id,
+          meetup_slug: event.slug,
+        }
+      };
+      
+      const addedEvent = await addEvent(calendarEvent);
+      
+      setIsJoined(true);
+      setIsJoining(false);
+      
+      toast({
+        title: "Added to Smart Calendar ✓",
+        description: "Event saved. We'll remind you before it starts.",
+        duration: 5000,
+        action: addedEvent ? (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={async () => {
+              await removeEvent(addedEvent.id);
+              setIsJoined(false);
+              toast({
+                title: "Removed from calendar",
+                description: "You've left this meetup.",
+              });
+            }}
+          >
+            Undo
+          </Button>
+        ) : undefined,
+      });
+    } catch (error) {
+      console.error('Failed to add event to calendar:', error);
+      setIsJoining(false);
+      toast({
+        title: "Failed to add event",
+        description: "Please try again or check your calendar permissions.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSave = () => {
@@ -192,7 +236,7 @@ export function MeetupDetailsDrawer({
     }
   };
 
-  const handleAddToCalendar = (type: string) => {
+  const handleExportToCalendar = (type: string) => {
     const startDate = new Date(event.start_time);
     const endDate = event.end_time ? new Date(event.end_time) : new Date(startDate.getTime() + 60 * 60 * 1000);
     
@@ -205,37 +249,23 @@ export function MeetupDetailsDrawer({
     if (type === 'google') {
       const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(event.description || '')}&location=${encodeURIComponent(event.location || event.virtual_link || '')}`;
       window.open(url, '_blank');
+      toast({
+        title: "Opening calendar",
+        description: `Add the event to ${calendarName}`,
+      });
     } else if (type === 'outlook') {
       const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(event.title)}&startdt=${startDate.toISOString()}&enddt=${endDate.toISOString()}&body=${encodeURIComponent(event.description || '')}&location=${encodeURIComponent(event.location || event.virtual_link || '')}`;
       window.open(url, '_blank');
+      toast({
+        title: "Opening calendar",
+        description: `Add the event to ${calendarName}`,
+      });
     } else if (type === 'apple' || type === 'ics') {
       toast({
         title: "Calendar export",
         description: "iCal file downloaded",
       });
-      return; // Don't show success toast for ICS since we already showed one
     }
-
-    // Smart Calendar Success Toast with Undo
-    toast({
-      title: "Added to Smart Calendar ✓",
-      description: `Event added to ${calendarName}`,
-      duration: 5000,
-      action: (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => {
-            toast({
-              title: "Cancelled",
-              description: "Calendar event was not added",
-            });
-          }}
-        >
-          Undo
-        </Button>
-      ),
-    });
   };
 
   const capacity = event.max_participants || 30;
@@ -787,17 +817,17 @@ export function MeetupDetailsDrawer({
               </TooltipProvider>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => handleAddToCalendar('google')}>
+              <DropdownMenuItem onClick={() => handleExportToCalendar('google')}>
                 Google Calendar
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleAddToCalendar('outlook')}>
+              <DropdownMenuItem onClick={() => handleExportToCalendar('outlook')}>
                 Outlook
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleAddToCalendar('apple')}>
+              <DropdownMenuItem onClick={() => handleExportToCalendar('apple')}>
                 Apple Calendar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleAddToCalendar('ics')}>
+              <DropdownMenuItem onClick={() => handleExportToCalendar('ics')}>
                 <Download className="h-4 w-4 mr-2" />
                 Download ICS
               </DropdownMenuItem>
