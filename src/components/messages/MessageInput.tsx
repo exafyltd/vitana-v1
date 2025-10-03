@@ -42,10 +42,11 @@ interface MessageInputProps {
   recipientId?: string | null;
   effectiveRecipientId?: string | null;
   effectiveRecipient?: { id: string; name?: string; avatar?: string } | null;
-  activeThread?: { id: string } | null;
+  activeThread?: { id: string; type?: string } | null;
   replyingTo?: any;
   onCancelReply?: () => void;
   isSending?: boolean;
+  conversationType?: 'direct' | 'group' | null;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
@@ -62,7 +63,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
   activeThread,
   replyingTo,
   onCancelReply,
-  isSending = false
+  isSending = false,
+  conversationType
 }) => {
   const [message, setMessage] = useState('');
   const [isComposing, setIsComposing] = useState(false);
@@ -531,6 +533,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           recipientIdHint={effectiveRecipientId || recipientId}
           threadId={threadId}
           disabled={disabled || isUploading}
+          conversationType={conversationType}
         />
 
         {/* Hidden file input */}

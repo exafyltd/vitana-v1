@@ -31,6 +31,7 @@ interface AttachmentMenuProps {
   threadId?: string;
   disabled?: boolean;
   className?: string;
+  conversationType?: 'direct' | 'group' | null;
 }
 
 
@@ -133,7 +134,8 @@ export function AttachmentMenu({
   recipientIdHint,
   threadId,
   disabled = false,
-  className
+  className,
+  conversationType
 }: AttachmentMenuProps) {
   const [showSendFunds, setShowSendFunds] = useState(false);
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
@@ -149,11 +151,10 @@ export function AttachmentMenu({
     threadId
   );
 
-  // For wallet components, ensure recipient data is complete
-  // More lenient check - accept if we have an ID and any valid name (even if just "User")
-  const walletRecipient = recipient && recipient.id && recipient.name && recipient.name.trim() !== '' ? {
+  // For wallet components, use lenient validation - accept any ID with fallback name
+  const walletRecipient = recipient?.id ? {
     id: recipient.id,
-    name: recipient.name,
+    name: recipient.name?.trim() || 'User',
     avatar: recipient.avatar
   } : null;
 
@@ -185,12 +186,14 @@ export function AttachmentMenu({
             variant="ghost"
             className="w-full justify-start h-10 px-3 bg-gradient-to-r from-green-50/50 to-emerald-50/50 hover:from-green-100/50 hover:to-emerald-100/50 border border-green-200/30"
             onClick={() => {
-              // Only use integrated popup if we have proper recipient data
-              if (walletRecipient) {
-                requestPopup('wallet-integrated', { recipient: walletRecipient });
-                setShowSendFunds(true);
+              if (conversationType === 'direct') {
+                // Direct chat: ALWAYS use integrated popup, never global
+                if (walletRecipient) {
+                  requestPopup('wallet-integrated', { recipient: walletRecipient });
+                  setShowSendFunds(true);
+                }
               } else {
-                // Fallback to global for incomplete recipient data
+                // Group chat or no context: use global popup
                 setShowGlobalSendFunds(true);
               }
             }}
@@ -205,12 +208,14 @@ export function AttachmentMenu({
             variant="ghost"
             className="w-full justify-start h-10 px-3"
             onClick={() => {
-              // Only use integrated popup if we have proper recipient data
-              if (walletRecipient) {
-                requestPopup('wallet-integrated', { recipient: walletRecipient });
-                setShowPaymentRequest(true);
+              if (conversationType === 'direct') {
+                // Direct chat: ALWAYS use integrated popup, never global
+                if (walletRecipient) {
+                  requestPopup('wallet-integrated', { recipient: walletRecipient });
+                  setShowPaymentRequest(true);
+                }
               } else {
-                // Fallback to global for incomplete recipient data
+                // Group chat or no context: use global popup
                 setShowGlobalPaymentRequest(true);
               }
             }}

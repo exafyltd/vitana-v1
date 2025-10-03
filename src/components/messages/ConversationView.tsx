@@ -845,6 +845,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return currentThread?.type === 'group';
   };
 
+  // Compute conversation type for payment popups
+  const conversationType: 'direct' | 'group' | null = React.useMemo(() => {
+    const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
+    if (!currentThread) return null;
+    return currentThread.type === 'group' ? 'group' : 'direct';
+  }, [threadId, threads]);
+
   // Reply handlers
   const handleReply = (message: any) => {
     setReplyingTo(message);
@@ -1076,6 +1083,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
                 replyingTo={replyingTo}
                 onCancelReply={handleCancelReply}
+                conversationType={conversationType}
               />
             </div>
           </div>
