@@ -37,6 +37,9 @@ const mockLiveRooms: LiveRoom[] = [
     tags: ["Wellness", "Community", "Health"],
     type: "audio",
     isPremium: false,
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    category: "wellness",
+    location: "Virtual",
   },
   {
     id: "live-2",
@@ -53,6 +56,9 @@ const mockLiveRooms: LiveRoom[] = [
     tags: ["Fitness", "Q&A", "Coaching"],
     type: "video",
     isPremium: true,
+    imageUrl: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=600&fit=crop",
+    category: "fitness",
+    location: "Virtual",
   },
   {
     id: "live-3",
@@ -69,6 +75,9 @@ const mockLiveRooms: LiveRoom[] = [
     tags: ["Mental Health", "Support", "Community"],
     type: "audio",
     isPremium: false,
+    imageUrl: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&h=600&fit=crop",
+    category: "wellness",
+    location: "Virtual",
   },
 ];
 
@@ -89,6 +98,9 @@ const mockScheduledRooms: LiveRoom[] = [
     tags: ["Meditation", "Wellness", "Sleep"],
     type: "audio",
     isPremium: false,
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    category: "meditation",
+    location: "Virtual",
   },
   {
     id: "scheduled-2",
@@ -106,6 +118,9 @@ const mockScheduledRooms: LiveRoom[] = [
     tags: ["Nutrition", "Cooking", "Workshop"],
     type: "video",
     isPremium: true,
+    imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
+    category: "health",
+    location: "Virtual",
   },
 ];
 
@@ -213,6 +228,159 @@ export default function LiveRooms() {
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < allRooms.length - 1;
 
+  // Render mosaic grid with alternating 1+2 / 2+1 layout
+  const renderMosaicGrid = (rooms: LiveRoom[]) => {
+    const rows = [];
+    for (let i = 0; i < rooms.length; i += 3) {
+      const rowRooms = rooms.slice(i, i + 3);
+      const rowIndex = Math.floor(i / 3);
+      const isEvenRow = rowIndex % 2 === 0;
+
+      rows.push(
+        <div key={i} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-6 mb-6">
+          {isEvenRow ? (
+            // Pattern: Featured + Small + Small (1+2)
+            <>
+              {rowRooms[0] && (
+                <div className="md:col-span-2 xl:col-span-6">
+                  <LiveRoomCard
+                    room={rowRooms[0]}
+                    isFeatured
+                    onClick={() => handleCardClick(rowRooms[0].id)}
+                    onJoinClick={(e) => {
+                      e.stopPropagation();
+                      rowRooms[0].isLive && handleJoinRoom(rowRooms[0].id);
+                    }}
+                    onNotifyClick={(e) => {
+                      e.stopPropagation();
+                      !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
+                    }}
+                    onShareClick={(e) => {
+                      e.stopPropagation();
+                      handleShareClick(rowRooms[0].id);
+                    }}
+                    isNotifying={notifyingRooms.has(rowRooms[0].id)}
+                  />
+                </div>
+              )}
+              {rowRooms[1] && (
+                <div className="xl:col-span-3">
+                  <LiveRoomCard
+                    room={rowRooms[1]}
+                    onClick={() => handleCardClick(rowRooms[1].id)}
+                    onJoinClick={(e) => {
+                      e.stopPropagation();
+                      rowRooms[1].isLive && handleJoinRoom(rowRooms[1].id);
+                    }}
+                    onNotifyClick={(e) => {
+                      e.stopPropagation();
+                      !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
+                    }}
+                    onShareClick={(e) => {
+                      e.stopPropagation();
+                      handleShareClick(rowRooms[1].id);
+                    }}
+                    isNotifying={notifyingRooms.has(rowRooms[1].id)}
+                  />
+                </div>
+              )}
+              {rowRooms[2] && (
+                <div className="xl:col-span-3">
+                  <LiveRoomCard
+                    room={rowRooms[2]}
+                    onClick={() => handleCardClick(rowRooms[2].id)}
+                    onJoinClick={(e) => {
+                      e.stopPropagation();
+                      rowRooms[2].isLive && handleJoinRoom(rowRooms[2].id);
+                    }}
+                    onNotifyClick={(e) => {
+                      e.stopPropagation();
+                      !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
+                    }}
+                    onShareClick={(e) => {
+                      e.stopPropagation();
+                      handleShareClick(rowRooms[2].id);
+                    }}
+                    isNotifying={notifyingRooms.has(rowRooms[2].id)}
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            // Pattern: Small + Small + Featured (2+1)
+            <>
+              {rowRooms[0] && (
+                <div className="xl:col-span-3">
+                  <LiveRoomCard
+                    room={rowRooms[0]}
+                    onClick={() => handleCardClick(rowRooms[0].id)}
+                    onJoinClick={(e) => {
+                      e.stopPropagation();
+                      rowRooms[0].isLive && handleJoinRoom(rowRooms[0].id);
+                    }}
+                    onNotifyClick={(e) => {
+                      e.stopPropagation();
+                      !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
+                    }}
+                    onShareClick={(e) => {
+                      e.stopPropagation();
+                      handleShareClick(rowRooms[0].id);
+                    }}
+                    isNotifying={notifyingRooms.has(rowRooms[0].id)}
+                  />
+                </div>
+              )}
+              {rowRooms[1] && (
+                <div className="xl:col-span-3">
+                  <LiveRoomCard
+                    room={rowRooms[1]}
+                    onClick={() => handleCardClick(rowRooms[1].id)}
+                    onJoinClick={(e) => {
+                      e.stopPropagation();
+                      rowRooms[1].isLive && handleJoinRoom(rowRooms[1].id);
+                    }}
+                    onNotifyClick={(e) => {
+                      e.stopPropagation();
+                      !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
+                    }}
+                    onShareClick={(e) => {
+                      e.stopPropagation();
+                      handleShareClick(rowRooms[1].id);
+                    }}
+                    isNotifying={notifyingRooms.has(rowRooms[1].id)}
+                  />
+                </div>
+              )}
+              {rowRooms[2] && (
+                <div className="md:col-span-2 xl:col-span-6">
+                  <LiveRoomCard
+                    room={rowRooms[2]}
+                    isFeatured
+                    onClick={() => handleCardClick(rowRooms[2].id)}
+                    onJoinClick={(e) => {
+                      e.stopPropagation();
+                      rowRooms[2].isLive && handleJoinRoom(rowRooms[2].id);
+                    }}
+                    onNotifyClick={(e) => {
+                      e.stopPropagation();
+                      !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
+                    }}
+                    onShareClick={(e) => {
+                      e.stopPropagation();
+                      handleShareClick(rowRooms[2].id);
+                    }}
+                    isNotifying={notifyingRooms.has(rowRooms[2].id)}
+                  />
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      );
+    }
+    return rows;
+  };
+
   return (
     <AppLayout>
       <SEO
@@ -244,49 +412,42 @@ export default function LiveRooms() {
         {/* Split Bar for Live/Scheduled */}
         <SplitBar defaultValue="live" className="mt-6">
           <SplitBarList className="grid w-full grid-cols-2">
-            <SplitBarTrigger value="live">Live</SplitBarTrigger>
-            <SplitBarTrigger value="scheduled">Scheduled</SplitBarTrigger>
+            <SplitBarTrigger value="live">
+              Live
+              {mockLiveRooms.length > 0 && (
+                <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                  {mockLiveRooms.length}
+                </Badge>
+              )}
+            </SplitBarTrigger>
+            <SplitBarTrigger value="scheduled">
+              Scheduled
+              {mockScheduledRooms.length > 0 && (
+                <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                  {mockScheduledRooms.length}
+                </Badge>
+              )}
+            </SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="live" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockLiveRooms.map((room) => (
-                <LiveRoomCard
-                  key={room.id}
-                  room={room}
-                  onClick={() => handleCardClick(room.id)}
-                  onJoinClick={(e) => {
-                    e.stopPropagation();
-                    handleJoinRoom(room.id);
-                  }}
-                  onShareClick={(e) => {
-                    e.stopPropagation();
-                    handleShareClick(room.id);
-                  }}
-                />
-              ))}
-            </div>
+            {mockLiveRooms.length > 0 ? (
+              renderMosaicGrid(mockLiveRooms)
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No live rooms at the moment</p>
+              </div>
+            )}
           </SplitBarContent>
 
           <SplitBarContent value="scheduled" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockScheduledRooms.map((room) => (
-                <LiveRoomCard
-                  key={room.id}
-                  room={room}
-                  onClick={() => handleCardClick(room.id)}
-                  onNotifyClick={(e) => {
-                    e.stopPropagation();
-                    handleNotifyClick(room.id);
-                  }}
-                  onShareClick={(e) => {
-                    e.stopPropagation();
-                    handleShareClick(room.id);
-                  }}
-                  isNotifying={notifyingRooms.has(room.id)}
-                />
-              ))}
-            </div>
+            {mockScheduledRooms.length > 0 ? (
+              renderMosaicGrid(mockScheduledRooms)
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No scheduled rooms</p>
+              </div>
+            )}
           </SplitBarContent>
         </SplitBar>
 
