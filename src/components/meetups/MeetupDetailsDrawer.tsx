@@ -23,6 +23,12 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   X,
   Calendar,
   MapPin,
@@ -194,6 +200,8 @@ export function MeetupDetailsDrawer({
       return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     };
     
+    const calendarName = type === 'google' ? 'Google Calendar' : type === 'outlook' ? 'Outlook' : 'your calendar';
+    
     if (type === 'google') {
       const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(event.description || '')}&location=${encodeURIComponent(event.location || event.virtual_link || '')}`;
       window.open(url, '_blank');
@@ -205,7 +213,29 @@ export function MeetupDetailsDrawer({
         title: "Calendar export",
         description: "iCal file downloaded",
       });
+      return; // Don't show success toast for ICS since we already showed one
     }
+
+    // Smart Calendar Success Toast with Undo
+    toast({
+      title: "Added to Smart Calendar ✓",
+      description: `Event added to ${calendarName}`,
+      duration: 5000,
+      action: (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            toast({
+              title: "Cancelled",
+              description: "Calendar event was not added",
+            });
+          }}
+        >
+          Undo
+        </Button>
+      ),
+    });
   };
 
   const capacity = event.max_participants || 30;
@@ -291,7 +321,7 @@ export function MeetupDetailsDrawer({
               onLoad={() => setIsImageLoaded(true)}
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/85 dark:from-background/90 via-background/40 dark:via-background/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 dark:from-background/95 via-background/50 dark:via-background/60 to-transparent" />
             
             {/* Floating Navigation Arrows */}
             <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
@@ -440,7 +470,7 @@ export function MeetupDetailsDrawer({
             {/* Social Proof - Compact People Going Banner */}
             {followersGoing.length > 0 && (
               <button 
-                className="flex items-center gap-3 p-3 bg-accent/30 hover:bg-accent/40 rounded-2xl border-0 transition-colors w-full text-left cursor-pointer"
+                className="flex items-center gap-3 p-3 bg-muted/10 hover:bg-muted/20 rounded-2xl border-0 transition-colors w-full text-left cursor-pointer"
                 onClick={() => {
                   const attendeesSection = document.querySelector('[data-section="attendees"]');
                   attendeesSection?.scrollIntoView({ behavior: 'smooth' });
@@ -448,10 +478,20 @@ export function MeetupDetailsDrawer({
               >
                 <div className="flex -space-x-2">
                   {followersGoing.slice(0, 4).map((follower, i) => (
-                    <Avatar key={i} className="h-6 w-6 border-2 border-background">
-                      <AvatarImage src={follower.avatar} />
-                      <AvatarFallback className="text-xs">{follower.name[0]}</AvatarFallback>
-                    </Avatar>
+                    <div key={i} className="group relative">
+                      <Avatar className="h-6 w-6 border-2 border-background">
+                        <AvatarImage src={follower.avatar} />
+                        <AvatarFallback className="text-xs">{follower.name[0]}</AvatarFallback>
+                      </Avatar>
+                      {/* Follow back pill - shown on hover for first unfollowed user */}
+                      {i === 0 && (
+                        <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                          <div className="px-2 py-1 text-[11px] font-medium bg-primary text-primary-foreground rounded-full whitespace-nowrap shadow-lg">
+                            Follow back
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   ))}
                   {followersGoing.length > 4 && (
                     <div className="flex items-center justify-center h-6 w-6 rounded-full bg-accent border-2 border-background text-[10px] font-semibold">
@@ -472,11 +512,12 @@ export function MeetupDetailsDrawer({
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <h3 className="font-semibold text-[17px]">When & Where</h3>
                 </div>
-                <div className="flex items-center gap-1 p-1 bg-background/50 rounded-full">
+                <div className="flex items-center gap-0 p-1 bg-background/50 rounded-full">
                   <button
                     onClick={() => setShowLocalTime(true)}
+                    aria-pressed={showLocalTime}
                     className={cn(
-                      "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                      "px-3 py-1 rounded-full text-xs font-medium transition-all duration-200",
                       showLocalTime ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                     )}
                   >
@@ -484,8 +525,9 @@ export function MeetupDetailsDrawer({
                   </button>
                   <button
                     onClick={() => setShowLocalTime(false)}
+                    aria-pressed={!showLocalTime}
                     className={cn(
-                      "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                      "px-3 py-1 rounded-full text-xs font-medium transition-all duration-200",
                       !showLocalTime ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                     )}
                   >
@@ -726,15 +768,23 @@ export function MeetupDetailsDrawer({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="h-12 w-12 shrink-0"
-                title="Add to calendar"
-                aria-label="Add to calendar"
-              >
-                <Calendar className="h-4 w-4" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      className="h-12 w-12 shrink-0"
+                      aria-label="Add to calendar"
+                    >
+                      <Calendar className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Add to calendar</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => handleAddToCalendar('google')}>
@@ -756,15 +806,23 @@ export function MeetupDetailsDrawer({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="h-12 w-12 shrink-0"
-                title="Share meetup"
-                aria-label="Share meetup"
-              >
-                <Share2 className="h-4 w-4" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      className="h-12 w-12 shrink-0"
+                      aria-label="Share meetup"
+                    >
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Share event</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => handleShare()}>
@@ -791,16 +849,24 @@ export function MeetupDetailsDrawer({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button
-            variant="outline"
-            size="icon"
-            className={cn("h-12 w-12 shrink-0", isSaved && "bg-accent")}
-            onClick={handleSave}
-            title={isSaved ? "Remove from saved" : "Save for later"}
-            aria-label={isSaved ? "Remove from saved" : "Save for later"}
-          >
-            <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className={cn("h-12 w-12 shrink-0", isSaved && "bg-accent")}
+                  onClick={handleSave}
+                  aria-label={isSaved ? "Remove from saved" : "Save for later"}
+                >
+                  <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{isSaved ? "Remove from saved" : "Save for later"}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </div>
