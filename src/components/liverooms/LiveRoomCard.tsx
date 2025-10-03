@@ -94,13 +94,12 @@ export function LiveRoomCard({
       role="button"
       aria-label={`${room.title} - ${room.isLive ? "Live now" : "Scheduled"}`}
     >
-      {/* Hero Image or Gradient Background */}
+      {/* Hero Image or Gradient Background - Full bleed media container */}
       <div
         className={cn(
           "relative w-full overflow-hidden bg-gradient-to-br",
           aspectRatio,
-          gradientClass,
-          "transition-transform duration-300 motion-reduce:transform-none group-hover:scale-[1.02]"
+          gradientClass
         )}
       >
         {/* Skeleton loader */}
@@ -108,14 +107,14 @@ export function LiveRoomCard({
           <div className="absolute inset-0 bg-muted/50 animate-pulse" />
         )}
 
-        {/* Image */}
+        {/* Image - absolute positioned for true full-bleed */}
         {room.imageUrl && !imageError ? (
           <img
             src={room.imageUrl}
             alt={room.title}
             loading="lazy"
             className={cn(
-              "w-full h-full object-cover transition-opacity duration-300",
+              "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
               imageLoaded ? "opacity-100" : "opacity-0"
             )}
             onLoad={() => setImageLoaded(true)}
@@ -171,30 +170,36 @@ export function LiveRoomCard({
           ) : null}
         </div>
 
-        {/* Bottom overlay content - Fixed structure with margin-top auto */}
+        {/* Bottom overlay content - Grid structure for perfect baseline alignment */}
         <div 
           className={cn(
-            "absolute inset-0 z-10 flex flex-col justify-end p-4",
-            isFeatured ? "min-h-[180px]" : "min-h-[150px]"
+            "absolute left-0 right-0 bottom-0 z-10",
+            "grid gap-2 p-4",
+            isFeatured ? "min-h-[184px]" : "min-h-[160px]"
           )}
+          style={{
+            gridTemplateRows: '1fr auto auto auto auto'
+          }}
         >
-          {/* Spacer to push content to bottom */}
-          <div className="flex-1" />
+          {/* Spacer row - absorbs height variation */}
+          <div />
           
-          {/* Title */}
-          <h3 className="font-bold text-white text-base line-clamp-2 mb-1 drop-shadow-lg pointer-events-none">
+          {/* Title - Fixed height for 2 lines */}
+          <h3 className="font-bold text-white text-base line-clamp-2 h-10 drop-shadow-lg pointer-events-none">
             {room.title}
           </h3>
 
-          {/* Short blurb */}
-          {room.description && (
-            <p className="text-white/90 text-xs line-clamp-1 mb-2 drop-shadow pointer-events-none">
+          {/* Short blurb - Fixed height for 1 line */}
+          {room.description ? (
+            <p className="text-white/90 text-xs line-clamp-1 h-5 drop-shadow pointer-events-none">
               {room.description}
             </p>
+          ) : (
+            <div className="h-5" />
           )}
 
           {/* Meta row: avatars + location - Fixed height */}
-          <div className="flex items-center justify-between gap-2 mb-3 h-6 pointer-events-none">
+          <div className="flex items-center justify-between gap-2 h-6 pointer-events-none">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 <Avatar className="h-6 w-6 ring-2 ring-white/50">
@@ -224,7 +229,7 @@ export function LiveRoomCard({
             )}
           </div>
 
-          {/* CTA row - right-aligned inside overlay - Fixed height 40px */}
+          {/* CTA row - right-aligned - Fixed height 40px */}
           <div className="flex items-center justify-end gap-2 h-10 pointer-events-auto">
             {room.isLive ? (
               <>
