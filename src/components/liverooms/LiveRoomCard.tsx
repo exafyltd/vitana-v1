@@ -96,7 +96,8 @@ export function LiveRoomCard({
       {/* Hero Image or Gradient Background - Full bleed media container */}
       <div
         className={cn(
-          "relative w-full h-full overflow-hidden bg-gradient-to-br",
+          "relative w-full overflow-hidden bg-gradient-to-br",
+          aspectRatio,
           gradientClass
         )}
       >
