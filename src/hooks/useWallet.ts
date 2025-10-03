@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthProvider';
 import { useWalletRealtime } from './useWalletRealtime';
+import { useRealtimeConnection } from './useRealtimeConnection';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 import { useRequestDeduplication } from './usePerformanceOptimization';
 
@@ -521,6 +522,24 @@ export function useWallet() {
     onBalanceUpdate: fetchBalances,
     onTransactionUpdate: fetchTransactions,
   });
+
+  // Smart fallback polling when real-time is disconnected
+  const { isConnected } = useRealtimeConnection();
+
+  useEffect(() => {
+    if (isConnected || !user?.id) return; // Real-time working, no polling needed
+
+    console.warn('⚠️ Real-time disconnected, activating wallet fallback polling');
+
+    // Poll every 10 seconds when disconnected
+    const interval = setInterval(() => {
+      console.log('🔄 Polling wallet data (fallback mode)');
+      fetchBalances();
+      fetchTransactions();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [isConnected, user?.id, fetchBalances, fetchTransactions]);
 
   return {
     balances,

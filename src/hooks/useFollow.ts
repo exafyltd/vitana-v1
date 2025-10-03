@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
+import { useRealtimeConnection } from "./useRealtimeConnection";
 
 interface UseFollowReturn {
   isFollowing: boolean;
@@ -20,36 +21,37 @@ export function useFollow(targetUserId: string): UseFollowReturn {
   const [followingCount, setFollowingCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  // Fetch follow status and counts - extracted as reusable function
+  const fetchFollowData = useCallback(async () => {
+    if (!user || !targetUserId) return;
+    
+    try {
+      // Get follow status
+      const { data: statusData, error: statusError } = await supabase
+        .rpc('get_follow_status', { target_user_id: targetUserId });
+
+      if (statusError) throw statusError;
+      setIsFollowing(statusData || false);
+
+      // Get follow counts
+      const { data: countsData, error: countsError } = await supabase
+        .rpc('get_user_follow_counts', { user_id_param: targetUserId });
+
+      if (countsError) throw countsError;
+      if (countsData && typeof countsData === 'object' && countsData !== null) {
+        const counts = countsData as { followers_count: number; following_count: number };
+        setFollowersCount(counts.followers_count || 0);
+        setFollowingCount(counts.following_count || 0);
+      }
+    } catch (error) {
+      console.error('Error fetching follow data:', error);
+    }
+  }, [user, targetUserId]);
+
   // Fetch initial follow status and counts
   useEffect(() => {
-    if (!user || !targetUserId) return;
-
-    const fetchFollowData = async () => {
-      try {
-        // Get follow status
-        const { data: statusData, error: statusError } = await supabase
-          .rpc('get_follow_status', { target_user_id: targetUserId });
-
-        if (statusError) throw statusError;
-        setIsFollowing(statusData || false);
-
-        // Get follow counts
-        const { data: countsData, error: countsError } = await supabase
-          .rpc('get_user_follow_counts', { user_id_param: targetUserId });
-
-        if (countsError) throw countsError;
-        if (countsData && typeof countsData === 'object' && countsData !== null) {
-          const counts = countsData as { followers_count: number; following_count: number };
-          setFollowersCount(counts.followers_count || 0);
-          setFollowingCount(counts.following_count || 0);
-        }
-      } catch (error) {
-        console.error('Error fetching follow data:', error);
-      }
-    };
-
     fetchFollowData();
-  }, [user, targetUserId]);
+  }, [fetchFollowData]);
 
   // Real-time subscriptions for follow changes
   useEffect(() => {
@@ -134,6 +136,23 @@ export function useFollow(targetUserId: string): UseFollowReturn {
       supabase.removeChannel(currentUserFollowingChannel);
     };
   }, [user, targetUserId]);
+
+  // Smart fallback polling when real-time is disconnected
+  const { isConnected } = useRealtimeConnection();
+
+  useEffect(() => {
+    if (isConnected || !user || !targetUserId) return; // Real-time working, no polling needed
+
+    console.warn('⚠️ Real-time disconnected, activating follow fallback polling');
+
+    // Poll every 10 seconds when disconnected
+    const interval = setInterval(() => {
+      console.log('🔄 Polling follow data (fallback mode)');
+      fetchFollowData();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [isConnected, user, targetUserId, fetchFollowData]);
 
   const followUser = async () => {
     if (!user) {

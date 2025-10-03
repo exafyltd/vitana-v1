@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useRealtimeConnection } from './useRealtimeConnection';
 import { z } from 'zod';
 
 // Global event bus constant
@@ -692,6 +693,23 @@ export function useCalendarEvents() {
       if (responsesChannel) supabase.removeChannel(responsesChannel);
     };
   }, []);
+
+  // Smart fallback polling when real-time is disconnected
+  const { isConnected } = useRealtimeConnection();
+
+  useEffect(() => {
+    if (isConnected) return; // Real-time working, no polling needed
+
+    console.warn('⚠️ Real-time disconnected, activating calendar fallback polling');
+
+    // Poll every 10 seconds when disconnected
+    const interval = setInterval(() => {
+      console.log('🔄 Polling calendar data (fallback mode)');
+      fetchEvents();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [isConnected, fetchEvents]);
 
   return {
     events,
