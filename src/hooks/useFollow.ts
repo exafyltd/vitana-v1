@@ -51,12 +51,13 @@ export function useFollow(targetUserId: string): UseFollowReturn {
     fetchFollowData();
   }, [user, targetUserId]);
 
-  // Real-time subscription for follow changes
+  // Real-time subscriptions for follow changes
   useEffect(() => {
     if (!user || !targetUserId) return;
 
-    const channel = supabase
-      .channel(`follow-changes-${targetUserId}`)
+    // SUBSCRIPTION 1: Watch target user's followers (when OTHERS follow them)
+    const targetFollowersChannel = supabase
+      .channel(`target-followers-${targetUserId}`)
       .on(
         'postgres_changes',
         {
@@ -66,11 +67,8 @@ export function useFollow(targetUserId: string): UseFollowReturn {
           filter: `following_id=eq.${targetUserId}`,
         },
         async (payload) => {
-          // Refresh follow status and counts
-          const { data: statusData } = await supabase
-            .rpc('get_follow_status', { target_user_id: targetUserId });
-          setIsFollowing(statusData || false);
-
+          console.log('🔔 Target user follower change:', payload);
+          // Refresh follow counts for target user
           const { data: countsData } = await supabase
             .rpc('get_user_follow_counts', { user_id_param: targetUserId });
           if (countsData && typeof countsData === 'object' && countsData !== null) {
@@ -78,12 +76,62 @@ export function useFollow(targetUserId: string): UseFollowReturn {
             setFollowersCount(counts.followers_count || 0);
             setFollowingCount(counts.following_count || 0);
           }
+          
+          // Also refresh follow status if current user was involved
+          const newFollowerId = (payload.new as any)?.follower_id;
+          const oldFollowerId = (payload.old as any)?.follower_id;
+          if (newFollowerId === user.id || oldFollowerId === user.id) {
+            const { data: statusData } = await supabase
+              .rpc('get_follow_status', { target_user_id: targetUserId });
+            setIsFollowing(statusData || false);
+          }
+        }
+      )
+      .subscribe();
+
+    // SUBSCRIPTION 2: Watch current user's following list (when YOU follow someone)
+    const currentUserFollowingChannel = supabase
+      .channel(`current-user-following-${user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_follows',
+          filter: `follower_id=eq.${user.id}`,
+        },
+        async (payload) => {
+          console.log('🔔 You followed/unfollowed someone:', payload);
+          
+          // Only update if this change is relevant to the current target user
+          const newFollowingId = (payload.new as any)?.following_id;
+          const oldFollowingId = (payload.old as any)?.following_id;
+          const isRelevant = 
+            newFollowingId === targetUserId || 
+            oldFollowingId === targetUserId;
+          
+          if (isRelevant) {
+            // Refresh follow status immediately
+            const { data: statusData } = await supabase
+              .rpc('get_follow_status', { target_user_id: targetUserId });
+            setIsFollowing(statusData || false);
+            
+            // Refresh counts
+            const { data: countsData } = await supabase
+              .rpc('get_user_follow_counts', { user_id_param: targetUserId });
+            if (countsData && typeof countsData === 'object' && countsData !== null) {
+              const counts = countsData as { followers_count: number; following_count: number };
+              setFollowersCount(counts.followers_count || 0);
+              setFollowingCount(counts.following_count || 0);
+            }
+          }
         }
       )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(targetFollowersChannel);
+      supabase.removeChannel(currentUserFollowingChannel);
     };
   }, [user, targetUserId]);
 
