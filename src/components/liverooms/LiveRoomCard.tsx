@@ -84,10 +84,9 @@ export function LiveRoomCard({
       }}
       tabIndex={0}
       className={cn(
-        "group relative overflow-hidden cursor-pointer rounded-2xl border shadow-sm",
-        "hover:shadow-lg hover:border-primary/30 transition-all duration-200",
+        "group relative overflow-hidden cursor-pointer rounded-2xl border shadow-sm h-full",
+        "hover:shadow-lg hover:border-primary/30 transition-all duration-200 motion-reduce:transform-none motion-reduce:hover:scale-100",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "flex flex-col h-full",
         className
       )}
       data-room-id={room.id}

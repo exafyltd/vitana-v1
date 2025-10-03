@@ -237,7 +237,7 @@ export default function LiveRooms() {
       const isEvenRow = rowIndex % 2 === 0;
 
       rows.push(
-        <div key={i} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-6 mb-6">
+        <div key={i} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-6 mb-6 items-stretch">
           {isEvenRow ? (
             // Pattern: Featured + Small + Small (1+2)
             <>
