@@ -409,52 +409,8 @@ export default function LiveRooms() {
           </Button>
         </UtilityActionButton>
 
-        {/* Insights Rail - Separate from content grid */}
-        <div className="border-t pt-6 mt-8">
-          <h2 className="text-lg font-semibold mb-4">Insights</h2>
-          <div className="flex gap-4">
-            <div
-              className="flex-1 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
-              onClick={() => setAutopilotOpen(true)}
-              onMouseEnter={() => setShowPreview(true)}
-              onMouseLeave={() => setShowPreview(false)}
-            >
-              {pendingCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10"
-                >
-                  {pendingCount}
-                </Badge>
-              )}
-              <div className="flex items-center gap-4">
-                <Plane className="w-10 h-10 text-red-400 flex-shrink-0" />
-                <div>
-                  <span className="text-sm font-medium text-red-400 block">Autopilot</span>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {pendingCount > 0 ? `${pendingCount} pending actions` : "Active"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1 bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-lg font-bold text-primary">V</span>
-                </div>
-                <div>
-                  <span className="text-sm font-medium block">VITANA Index</span>
-                  <p className="text-2xl font-bold">8.4</p>
-                  <p className="text-xs text-muted-foreground">Community engagement</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Split Bar for Live/Scheduled */}
-        <SplitBar defaultValue="live" className="mt-8">
+        <SplitBar defaultValue="live" className="mt-6">
           <SplitBarList className="grid w-full grid-cols-2">
             <SplitBarTrigger value="live">
               Live
