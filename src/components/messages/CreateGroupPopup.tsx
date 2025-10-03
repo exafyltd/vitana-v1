@@ -10,6 +10,7 @@ import { Search, X, Users, Camera } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
+import { v4 as uuidv4 } from 'uuid';
 
 interface User {
   user_id: string;
@@ -158,46 +159,61 @@ export default function CreateGroupPopup({
         return;
       }
 
+      // Pre-generate thread ID to avoid SELECT after INSERT (RLS issue)
+      const threadId = uuidv4();
+
       // Create the group thread
       const threadData = context === 'global' 
-        ? { created_by: user?.id, type: 'group', name: groupName }
+        ? { id: threadId, created_by: user?.id, type: 'group', name: groupName }
         : { 
+            id: threadId,
             tenant_id: user?.user_metadata?.active_tenant_id,
             created_by: user?.id, 
             type: 'group', 
             name: groupName 
           };
 
-      const { data: thread, error: threadError } = await supabase
+      const { error: threadError } = await supabase
         .from(context === 'global' ? 'global_message_threads' : 'message_threads')
-        .insert(threadData)
-        .select()
-        .single();
+        .insert(threadData);
 
-      if (threadError) throw threadError;
+      if (threadError) {
+        console.error('Thread creation error:', threadError);
+        throw threadError;
+      }
 
       const participantsTable = context === 'global' ? 'global_thread_participants' : 'thread_participants';
       
-      // Add current user as admin
-      const participants = [
-        { thread_id: thread.id, user_id: user?.id, role: 'admin' },
-        ...memberIds.map(userId => ({
-          thread_id: thread.id,
-          user_id: userId,
-          role: 'member'
-        }))
-      ];
+      // Add current user as admin FIRST
+      const { error: adminError } = await supabase
+        .from(participantsTable)
+        .insert({ thread_id: threadId, user_id: user?.id, role: 'admin' });
+
+      if (adminError) {
+        console.error('Admin participant error:', adminError);
+        throw adminError;
+      }
+
+      // Then add other members
+      const memberParticipants = memberIds.map(userId => ({
+        thread_id: threadId,
+        user_id: userId,
+        role: 'member'
+      }));
 
       const { error: participantsError } = await supabase
         .from(participantsTable)
-        .insert(participants);
+        .insert(memberParticipants);
 
-      if (participantsError) throw participantsError;
+      if (participantsError) {
+        console.error('Members insert error:', participantsError);
+        throw participantsError;
+      }
 
       // Send system message for group creation
       const messageData = context === 'global'
         ? {
-            thread_id: thread.id,
+            thread_id: threadId,
             sender_id: user?.id,
             body: `${user?.email} created the group`,
             message_type: 'system',
@@ -208,7 +224,7 @@ export default function CreateGroupPopup({
             }
           }
         : {
-            thread_id: thread.id,
+            thread_id: threadId,
             tenant_id: user?.user_metadata?.active_tenant_id,
             sender_id: user?.id,
             recipient_id: null,
@@ -230,7 +246,7 @@ export default function CreateGroupPopup({
         description: `"${groupName}" has been created successfully.`
       });
 
-      onGroupCreated?.(thread.id);
+      onGroupCreated?.(threadId);
       onOpenChange(false);
       
       // Reset form
@@ -240,8 +256,14 @@ export default function CreateGroupPopup({
       setSearchTerm("");
       setSearchResults([]);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating group:', error);
+      console.error('Error details:', {
+        message: error?.message,
+        details: error?.details,
+        hint: error?.hint,
+        code: error?.code
+      });
       toast({
         title: "Failed to create group",
         description: "Please try again.",
