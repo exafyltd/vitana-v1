@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { ConnectionStatus } from "./ui/ConnectionStatus";
 
 interface SubNavItem {
   id: string;
@@ -42,11 +43,10 @@ export default function SubNavigation({ items, className, rightActions }: SubNav
               </NavLink>
             ))}
           </div>
-          {rightActions && (
-            <div className="flex items-center gap-2 ml-4">
-              {rightActions}
-            </div>
-          )}
+          <div className="flex items-center gap-3 ml-4">
+            <ConnectionStatus />
+            {rightActions && rightActions}
+          </div>
         </div>
       </div>
     </nav>

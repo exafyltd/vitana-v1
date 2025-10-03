@@ -6,6 +6,7 @@ import { useWalletRealtime } from './useWalletRealtime';
 import { useRealtimeConnection } from './useRealtimeConnection';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 import { useRequestDeduplication } from './usePerformanceOptimization';
+import { measurePerformance } from '@/utils/performanceLogger';
 
 export interface UserBalance {
   currency_type: 'USD' | 'VTN' | 'CREDITS';
@@ -293,6 +294,8 @@ export function useWallet() {
     currency: 'USD' | 'VTN' | 'CREDITS',
     amount: number
   ): Promise<any> => {
+    const perf = measurePerformance('transferFunds');
+    
     if (!user?.id) return null;
     
     // Optimistic balance update
@@ -337,6 +340,8 @@ export function useWallet() {
         backgroundTasks.current.add(refreshTask);
         refreshTask.finally(() => backgroundTasks.current.delete(refreshTask));
         
+        perf.end({ currency, amount, success: true });
+        
         return {
           id: result.transaction_id,
           fromBalance: result.from_balance,
@@ -344,6 +349,7 @@ export function useWallet() {
         };
       }
       
+      perf.end({ currency, amount, success: false });
       return null;
     } catch (error) {
       console.error('Transfer error:', error);
@@ -360,6 +366,8 @@ export function useWallet() {
         description: error.message || "Please try again",
         variant: "destructive"
       });
+      
+      perf.end({ currency, amount, success: false, error: error.message });
       return null;
     }
   };

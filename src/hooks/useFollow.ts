@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeConnection } from "./useRealtimeConnection";
+import { measurePerformance } from "@/utils/performanceLogger";
 
 interface UseFollowReturn {
   isFollowing: boolean;
@@ -155,12 +156,15 @@ export function useFollow(targetUserId: string): UseFollowReturn {
   }, [isConnected, user, targetUserId, fetchFollowData]);
 
   const followUser = async () => {
+    const perf = measurePerformance('followUser');
+    
     if (!user) {
       toast({
         title: "Authentication required",
         description: "Please sign in to follow users",
         variant: "destructive",
       });
+      perf.end({ success: false, reason: 'not_authenticated' });
       return;
     }
 
@@ -170,6 +174,7 @@ export function useFollow(targetUserId: string): UseFollowReturn {
         description: "You cannot follow yourself",
         variant: "destructive",
       });
+      perf.end({ success: false, reason: 'self_follow' });
       return;
     }
 
@@ -193,6 +198,8 @@ export function useFollow(targetUserId: string): UseFollowReturn {
         title: "Success",
         description: "You are now following this user",
       });
+      
+      perf.end({ success: true, targetUserId });
     } catch (error: any) {
       // Rollback optimistic update
       setIsFollowing(false);
@@ -203,6 +210,8 @@ export function useFollow(targetUserId: string): UseFollowReturn {
         description: error.message || "Failed to follow user",
         variant: "destructive",
       });
+      
+      perf.end({ success: false, error: error.message });
     } finally {
       setLoading(false);
     }

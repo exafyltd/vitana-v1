@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useRealtimeConnection } from './useRealtimeConnection';
+import { measurePerformance } from '@/utils/performanceLogger';
 import { z } from 'zod';
 
 // Global event bus constant
@@ -274,6 +275,8 @@ export function useCalendarEvents() {
     response: 'accepted' | 'declined' | 'maybe' | 'accept' | 'decline',
     eventData?: Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>
   ) => {
+    const perf = measurePerformance('respondToInvite');
+    
     try {
       const user = (await supabase.auth.getUser()).data.user;
       if (!user) throw new Error('User not authenticated');
@@ -526,6 +529,7 @@ export function useCalendarEvents() {
       // Dispatch global refresh event after successful invite response
       window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
 
+      perf.end({ response: normalized, hasEvent: !!eventId, success: true });
       return { eventId, response: normalized };
     } catch (err) {
       console.error('❌ Failed to respond to invite:', err);
@@ -535,6 +539,8 @@ export function useCalendarEvents() {
         description: errorMessage,
         variant: 'destructive',
       });
+      
+      perf.end({ response, success: false, error: errorMessage });
       throw err;
     }
   };
