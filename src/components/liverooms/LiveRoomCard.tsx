@@ -77,7 +77,7 @@ export function LiveRoomCard({
     <Card
       onClick={onClick}
       className={cn(
-        "group relative overflow-hidden cursor-pointer",
+        "group relative overflow-hidden cursor-pointer rounded-2xl border shadow-sm",
         "hover:shadow-lg hover:border-primary/30 transition-all duration-200",
         "flex flex-col h-full",
         className
@@ -89,7 +89,8 @@ export function LiveRoomCard({
         className={cn(
           "relative w-full overflow-hidden bg-gradient-to-br",
           aspectRatio,
-          gradientClass
+          gradientClass,
+          "transition-transform duration-300 motion-reduce:transform-none group-hover:scale-[1.02]"
         )}
       >
         {/* Skeleton loader */}
@@ -160,22 +161,22 @@ export function LiveRoomCard({
           ) : null}
         </div>
 
-        {/* Bottom overlay content */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 z-10 pointer-events-none">
+        {/* Bottom overlay content - Fixed height for alignment */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 z-10 min-h-[140px] flex flex-col justify-end">
           {/* Title */}
-          <h3 className="font-bold text-white text-base line-clamp-2 mb-2 drop-shadow-lg">
+          <h3 className="font-bold text-white text-base line-clamp-2 mb-1 drop-shadow-lg pointer-events-none">
             {room.title}
           </h3>
 
           {/* Short blurb */}
           {room.description && (
-            <p className="text-white/90 text-xs line-clamp-1 mb-2 drop-shadow">
+            <p className="text-white/90 text-xs line-clamp-1 mb-2 drop-shadow pointer-events-none">
               {room.description}
             </p>
           )}
 
-          {/* Host avatars and info */}
-          <div className="flex items-center justify-between gap-2">
+          {/* Meta row: avatars + location */}
+          <div className="flex items-center justify-between gap-2 mb-3 pointer-events-none">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 <Avatar className="h-6 w-6 ring-2 ring-white/50">
@@ -204,64 +205,67 @@ export function LiveRoomCard({
               </Badge>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* CTA Row - positioned at card bottom with pointer-events */}
-      <div className="flex items-center gap-2 p-3 bg-card border-t pointer-events-auto">
-        {room.isLive ? (
-          <>
-            <Button
-              size="sm"
-              className="flex-1 rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
-              onClick={(e) => {
-                e.stopPropagation();
-                onJoinClick?.(e);
-              }}
-            >
-              Join
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="rounded-full"
-              onClick={(e) => {
-                e.stopPropagation();
-                onShareClick?.(e);
-              }}
-              aria-label="Share"
-            >
-              <Share2 className="w-4 h-4" />
-            </Button>
-          </>
-        ) : isScheduled ? (
-          <>
-            <Button
-              size="sm"
-              variant={isNotifying ? "secondary" : "outline"}
-              className="flex-1 gap-1.5 rounded-full"
-              onClick={(e) => {
-                e.stopPropagation();
-                onNotifyClick?.(e);
-              }}
-            >
-              <Bell className={cn("w-4 h-4", isNotifying && "fill-current")} />
-              {isNotifying ? "Notifying" : "Notify me"}
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="rounded-full"
-              onClick={(e) => {
-                e.stopPropagation();
-                onShareClick?.(e);
-              }}
-              aria-label="Share"
-            >
-              <Share2 className="w-4 h-4" />
-            </Button>
-          </>
-        ) : null}
+          {/* CTA row - right-aligned inside overlay */}
+          <div className="flex items-center justify-end gap-2 pointer-events-auto">
+            {room.isLive ? (
+              <>
+                <Button
+                  size="sm"
+                  className="rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onJoinClick?.(e);
+                  }}
+                >
+                  Join
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="rounded-full text-white hover:bg-white/20 hover:text-white"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onShareClick?.(e);
+                  }}
+                  aria-label="Share"
+                >
+                  <Share2 className="w-4 h-4" />
+                </Button>
+              </>
+            ) : isScheduled ? (
+              <>
+                <Button
+                  size="sm"
+                  variant={isNotifying ? "secondary" : "ghost"}
+                  className={cn(
+                    "gap-1.5 rounded-full",
+                    !isNotifying && "text-white hover:bg-white/20 hover:text-white"
+                  )}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNotifyClick?.(e);
+                  }}
+                >
+                  <Bell className={cn("w-4 h-4", isNotifying && "fill-current")} />
+                  {isNotifying ? "Notifying" : "Notify me"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="rounded-full text-white hover:bg-white/20 hover:text-white"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onShareClick?.(e);
+                  }}
+                  aria-label="Share"
+                >
+                  <Share2 className="w-4 h-4" />
+                </Button>
+              </>
+            ) : null}
+          </div>
+        </div>
       </div>
     </Card>
   );
