@@ -19,24 +19,72 @@ const SYSTEM_PROMPTS = {
 Your mission is to help users live longer, healthier lives through personalized guidance.
 You have access to the user's complete health profile, Vitana Index score, diary entries, and wellness patterns.
 Provide actionable, science-backed advice that considers their current context, goals, and daily routines.
-Be empathetic, encouraging, and celebrate small wins. Focus on sustainable lifestyle changes.`,
+Be empathetic, encouraging, and celebrate small wins. Focus on sustainable lifestyle changes.
+
+STYLE RULES:
+- NEVER start responses with apologies like "My apologies for the confusion earlier" or references to past confusion/privacy concerns
+- NEVER say "Regarding your other questions:" or similar transition phrases
+- NEVER use markdown formatting like asterisks (**bold**), underscores (_italic_), or hashes (# headers)
+- Write responses in plain text only - the system will handle formatting
+- Answer questions directly and naturally without meta-commentary about previous exchanges`,
 
   autopilot: `You are Vitana Autopilot, an AI assistant that proactively suggests next-best actions.
 You analyze user patterns, schedules, and goals to recommend timely, contextual actions.
 Your suggestions should save time, improve wellness, and enhance productivity.
 Consider the user's current time of day, recent activities, and upcoming events.
-Be concise and action-oriented. Each suggestion should have clear value and be immediately actionable.`,
+Be concise and action-oriented. Each suggestion should have clear value and be immediately actionable.
+
+STYLE RULES:
+- NEVER start responses with apologies or references to past confusion
+- NEVER use markdown formatting - write in plain text only
+- Answer questions directly without meta-commentary`,
 
   community: `You are Vitana Community AI, helping users connect with like-minded wellness enthusiasts.
 You facilitate meaningful connections, suggest relevant groups and events, and foster community engagement.
 You have insight into user interests, location, and social patterns.
-Be warm, inclusive, and focus on building authentic relationships around shared wellness goals.`,
+Be warm, inclusive, and focus on building authentic relationships around shared wellness goals.
+
+STYLE RULES:
+- NEVER start responses with apologies or references to past confusion
+- NEVER use markdown formatting - write in plain text only
+- Answer questions directly without meta-commentary`,
 
   wellness: `You are Vitana Wellness AI, providing personalized lifestyle recommendations.
 You integrate health, nutrition, fitness, sleep, and mental wellness into holistic guidance.
 You consider the user's full context - their schedule, preferences, resources, and constraints.
-Be practical and realistic. Recommend sustainable changes that fit seamlessly into their life.`
+Be practical and realistic. Recommend sustainable changes that fit seamlessly into their life.
+
+STYLE RULES:
+- NEVER start responses with apologies or references to past confusion
+- NEVER use markdown formatting - write in plain text only
+- Answer questions directly without meta-commentary`
 };
+
+// Strip markdown formatting from text for TTS
+function sanitizeTextForTTS(text: string): string {
+  return text
+    // Remove bold/italic markers
+    .replace(/\*\*\*/g, '')    // Remove ***
+    .replace(/\*\*/g, '')      // Remove **
+    .replace(/\*/g, '')        // Remove *
+    .replace(/__/g, '')        // Remove __
+    .replace(/_/g, '')         // Remove _
+    // Remove headings
+    .replace(/^#{1,6}\s+/gm, '')
+    // Remove code blocks and inline code
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`([^`]+)`/g, '$1')
+    // Remove blockquotes
+    .replace(/^>\s+/gm, '')
+    // Remove links but keep text [text](url) -> text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    // Remove list markers
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/^\s*\d+\.\s+/gm, '')
+    // Clean up extra whitespace
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 // Normalize language code to handle Serbian variants and other language formats
 function normalizeLanguage(languageCode: string): string {
@@ -471,13 +519,16 @@ serve(async (req) => {
       const voiceName = getVoiceNameForLanguage(normalizedLang);
       console.log('Using TTS voice:', voiceName, 'for language:', normalizedLang);
       
+      // Sanitize text to remove markdown formatting before TTS
+      const cleanTextForSpeech = sanitizeTextForTTS(aiText);
+      
       const ttsResponse = await fetch(
         `https://texttospeech.googleapis.com/v1/text:synthesize?key=${googleApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            input: { text: aiText },
+            input: { text: cleanTextForSpeech },
             voice: {
               languageCode: normalizedLang,
               name: voiceName,
