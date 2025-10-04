@@ -77,7 +77,7 @@ serve(async (req) => {
               sampleRateHertz: 48000,
               languageCode: 'de-DE', // Primary: German (Maxina)
               alternativeLanguageCodes: ['ar-XA', 'en-US', 'es-ES', 'ru-RU', 'zh-CN'],
-              model: 'chirp_3',
+              model: 'latest_long',
               enableAutomaticPunctuation: true,
             },
             audio: { content: audio },
@@ -149,7 +149,6 @@ Languages: German, English, Arabic, Spanish, Russian, Chinese.`;
         body: JSON.stringify({
           input: { text: aiText },
           voice: {
-            name: 'en-US-Journey-F',
             languageCode: detectedLanguage,
           },
           audioConfig: {
