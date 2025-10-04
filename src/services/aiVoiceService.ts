@@ -55,8 +55,16 @@ export class AIVoiceService {
     );
 
     console.log('Sending voice message to edge function...');
+    
+    // Get conversationId for persistent memory
+    let conversationId = localStorage.getItem('ai_conversation_id') || undefined;
+    
     const { data, error } = await supabase.functions.invoke('ai-chat', {
-      body: { audio: base64Audio },
+      body: { 
+        audio: base64Audio,
+        agentType: 'health',
+        conversationId
+      },
     });
 
     if (error) {
@@ -64,18 +72,37 @@ export class AIVoiceService {
       throw new Error(error.message);
     }
 
+    // Store conversationId for future messages
+    if (data.conversationId) {
+      localStorage.setItem('ai_conversation_id', data.conversationId);
+    }
+
     return data as AIChatResponse;
   }
 
   async sendTextMessage(text: string, language?: string): Promise<AIChatResponse> {
     console.log('Sending text message to edge function:', text, 'Language:', language);
+    
+    // Get or create conversationId from localStorage
+    let conversationId = localStorage.getItem('ai_conversation_id') || undefined;
+    
     const { data, error } = await supabase.functions.invoke('ai-chat', {
-      body: { text, language },
+      body: { 
+        text, 
+        language,
+        agentType: 'health', // Default to health agent
+        conversationId
+      },
     });
 
     if (error) {
       console.error('Edge function error:', error);
       throw new Error(error.message);
+    }
+
+    // Store conversationId for persistent memory across sessions
+    if (data.conversationId) {
+      localStorage.setItem('ai_conversation_id', data.conversationId);
     }
 
     return data as AIChatResponse;

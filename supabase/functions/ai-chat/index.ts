@@ -203,6 +203,16 @@ serve(async (req) => {
       console.log('Created new conversation:', conversationId);
     }
 
+    // Load conversation history (last 10 messages for context)
+    const { data: messageHistory } = await supabaseClient
+      .from('ai_messages')
+      .select('role, content')
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true })
+      .limit(10);
+
+    const conversationHistory = messageHistory || [];
+
     // Get Google Cloud API key
     let googleApiKey = Deno.env.get('GOOGLE_CLOUD_API_KEY');
     
@@ -376,6 +386,10 @@ serve(async (req) => {
             role: 'system',
             content: contextPrompt
           },
+          ...conversationHistory.map((msg: any) => ({
+            role: msg.role,
+            content: msg.content
+          })),
           {
             role: 'user',
             content: userMessage
@@ -409,37 +423,43 @@ serve(async (req) => {
     extractAndStoreInsights(supabaseClient, user.id, conversationId, userMessage, aiText)
       .catch(err => console.error('Failed to extract insights:', err));
 
-    // Convert to speech
-    const normalizedLang = normalizeLanguage(detectedLanguage);
-    const voiceName = getVoiceNameForLanguage(normalizedLang);
-    console.log('Using TTS voice:', voiceName, 'for language:', normalizedLang);
-    
-    const ttsResponse = await fetch(
-      `https://texttospeech.googleapis.com/v1/text:synthesize?key=${googleApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          input: { text: aiText },
-          voice: {
-            languageCode: normalizedLang,
-            name: voiceName,
-          },
-          audioConfig: {
-            audioEncoding: 'MP3',
-            pitch: 0,
-            speakingRate: 1.0,
-          },
-        }),
+    // Convert to speech (optional - graceful failure)
+    let base64Audio = null;
+    try {
+      const normalizedLang = normalizeLanguage(detectedLanguage);
+      const voiceName = getVoiceNameForLanguage(normalizedLang);
+      console.log('Using TTS voice:', voiceName, 'for language:', normalizedLang);
+      
+      const ttsResponse = await fetch(
+        `https://texttospeech.googleapis.com/v1/text:synthesize?key=${googleApiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            input: { text: aiText },
+            voice: {
+              languageCode: normalizedLang,
+              name: voiceName,
+            },
+            audioConfig: {
+              audioEncoding: 'MP3',
+              pitch: 0,
+              speakingRate: 1.0,
+            },
+          }),
+        }
+      );
+
+      if (ttsResponse.ok) {
+        const ttsData = await ttsResponse.json();
+        base64Audio = ttsData.audioContent;
+      } else {
+        console.error('TTS failed with status:', ttsResponse.status);
       }
-    );
-
-    if (!ttsResponse.ok) {
-      throw new Error('Text-to-speech failed');
+    } catch (ttsError) {
+      console.error('TTS conversion failed, returning text-only response:', ttsError);
+      // Continue without audio - text response is still valid
     }
-
-    const ttsData = await ttsResponse.json();
-    const base64Audio = ttsData.audioContent;
 
     return new Response(
       JSON.stringify({
@@ -460,7 +480,13 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in ai-chat function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        text: null,
+        audioContent: null,
+        conversationId: null
+      }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
