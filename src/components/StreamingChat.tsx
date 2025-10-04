@@ -1,10 +1,16 @@
 import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from "react"
-import { Mic, Video as VideoIcon, X, Send, Settings } from "lucide-react"
+import { Mic, Video as VideoIcon, X, Send, Settings, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DiaryButton from "@/components/diary/DiaryButton"
 import { aiVoiceService } from "@/services/aiVoiceService"
 import { useToast } from "@/hooks/use-toast"
 import { ApiKeySettingsModal } from "@/components/chat/ApiKeySettingsModal"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export interface StreamingChatRef {
   activateVideo: () => void
@@ -21,7 +27,19 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
   const [showApiKeyModal, setShowApiKeyModal] = useState(false)
+  const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(undefined)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
+
+  const languageOptions = [
+    { label: "Auto", value: undefined },
+    { label: "🇷🇸 Serbian", value: "sr-RS" },
+    { label: "🇩🇪 German", value: "de-DE" },
+    { label: "🇺🇸 English", value: "en-US" },
+    { label: "🇸🇦 Arabic", value: "ar-XA" },
+    { label: "🇪🇸 Spanish", value: "es-ES" },
+    { label: "🇷🇺 Russian", value: "ru-RU" },
+    { label: "���🇳 Chinese", value: "zh-CN" },
+  ]
   const { toast } = useToast()
 
   const isStreaming = isAudioActive || isVideoActive
@@ -95,7 +113,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     setIsProcessing(true)
     
     try {
-      const response = await aiVoiceService.sendTextMessage(userMessage)
+      const response = await aiVoiceService.sendTextMessage(userMessage, selectedLanguage)
       
       // Show AI response briefly
       setInputValue(response.text)
@@ -254,6 +272,30 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           >
             <VideoIcon className="h-5 w-5" />
           </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-accent rounded-full"
+                aria-label="Select language"
+              >
+                <Globe className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-40">
+              {languageOptions.map((option) => (
+                <DropdownMenuItem
+                  key={option.label}
+                  onClick={() => setSelectedLanguage(option.value)}
+                  className={selectedLanguage === option.value ? "bg-accent" : ""}
+                >
+                  {option.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <div className="flex-1 flex items-center gap-2">
             <input

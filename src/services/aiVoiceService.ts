@@ -67,10 +67,10 @@ export class AIVoiceService {
     return data as AIChatResponse;
   }
 
-  async sendTextMessage(text: string): Promise<AIChatResponse> {
-    console.log('Sending text message to edge function:', text);
+  async sendTextMessage(text: string, language?: string): Promise<AIChatResponse> {
+    console.log('Sending text message to edge function:', text, 'Language:', language);
     const { data, error } = await supabase.functions.invoke('ai-chat', {
-      body: { text },
+      body: { text, language },
     });
 
     if (error) {

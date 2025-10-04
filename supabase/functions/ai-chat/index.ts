@@ -13,12 +13,24 @@ const CRISIS_KEYWORDS = [
   'overdose', 'hopeless', 'give up', 'انتحار', 'إيذاء النفس', 'يائس'
 ];
 
-// Map language codes to Google Cloud Chirp HD voices
-function getVoiceNameForLanguage(languageCode: string): string {
-  // Normalize language code to uppercase format (e.g., en-us → en-US)
-  const normalized = languageCode.toLowerCase().replace(/([a-z]{2})-([a-z]{2})/, 
+// Normalize language code to handle Serbian variants and other language formats
+function normalizeLanguage(languageCode: string): string {
+  const lower = languageCode.toLowerCase();
+  
+  // Handle Serbian variants - all map to sr-RS
+  if (lower.startsWith('sr')) {
+    return 'sr-RS';
+  }
+  
+  // Normalize to standard format (e.g., en-us → en-US, de-de → de-DE)
+  const normalized = lower.replace(/([a-z]{2})-([a-z]{2})/, 
     (match, p1, p2) => `${p1}-${p2.toUpperCase()}`);
   
+  return normalized;
+}
+
+// Map language codes to Google Cloud voices
+function getVoiceNameForLanguage(languageCode: string): string {
   const voiceMap: Record<string, string> = {
     'de-DE': 'de-DE-Chirp-HD-F',      // German female
     'es-ES': 'es-ES-Chirp-HD-F',      // Spanish female
@@ -31,7 +43,7 @@ function getVoiceNameForLanguage(languageCode: string): string {
     'en-US': 'en-US-Chirp-HD-F',      // English female (default)
   };
   
-  return voiceMap[normalized] || 'en-US-Chirp-HD-F';  // Fallback to English
+  return voiceMap[languageCode] || 'en-US-Chirp-HD-F';  // Fallback to English
 }
 
 serve(async (req) => {
@@ -171,8 +183,10 @@ Languages: German, English, Arabic, Spanish, Russian, Chinese, Serbian.`;
     console.log('AI response:', aiText);
 
     // Step 4: Convert AI response to speech with TTS
-    const selectedVoice = getVoiceNameForLanguage(detectedLanguage);
-    console.log('Using TTS voice:', selectedVoice, 'for language:', detectedLanguage);
+    const normalizedLang = normalizeLanguage(detectedLanguage);
+    const voiceName = getVoiceNameForLanguage(normalizedLang);
+    console.log('Detected language:', detectedLanguage, '→ Normalized:', normalizedLang);
+    console.log('Using TTS voice:', voiceName, 'for language:', normalizedLang);
     console.log('Converting to speech with Google Cloud TTS...');
     const ttsResponse = await fetch(
       `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_CLOUD_API_KEY}`,
@@ -182,8 +196,8 @@ Languages: German, English, Arabic, Spanish, Russian, Chinese, Serbian.`;
         body: JSON.stringify({
           input: { text: aiText },
           voice: {
-            languageCode: detectedLanguage,
-            name: getVoiceNameForLanguage(detectedLanguage),
+            languageCode: normalizedLang,
+            name: voiceName,
           },
           audioConfig: {
             audioEncoding: 'MP3',
