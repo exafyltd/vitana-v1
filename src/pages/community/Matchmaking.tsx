@@ -9,6 +9,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MatchFiltersPopup } from "@/components/MatchFiltersPopup";
+import { MatchNotificationBadge } from "@/components/MatchNotificationBadge";
 
 // Import match-specific cards
 import { PeopleMatchCard } from "@/components/crossover/PeopleMatchCard";
@@ -29,11 +30,14 @@ export default function Matchmaking() {
       <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <StandardHeader 
-            title="Perfect matches for your journey!"
-            description="Discover compatible community members based on your interests and wellness goals."
-            emoji="💫"
-          />
+          <div className="flex items-center justify-between">
+            <StandardHeader 
+              title="Perfect matches for your journey!"
+              description="Discover compatible community members based on your interests and wellness goals."
+              emoji="💫"
+            />
+            <MatchNotificationBadge />
+          </div>
 
           {/* Utility Action Button */}
           <UtilityActionButton>

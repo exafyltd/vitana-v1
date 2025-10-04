@@ -8,3 +8,6 @@ verify_jwt = true
 
 [functions.generate-recommendations]
 verify_jwt = true
+
+[functions.process-match-interaction]
+verify_jwt = true

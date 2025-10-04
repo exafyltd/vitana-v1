@@ -1,11 +1,13 @@
 import { CrossoverCard } from "./CrossoverCard";
-import { Users, Heart, MessageCircle, Loader2 } from "lucide-react";
+import { Users, Heart, X, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface PeopleMatch {
   user_id: string;
@@ -22,8 +24,10 @@ interface PeopleMatchCardProps {
 
 function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [matches, setMatches] = useState<PeopleMatch[]>([]);
   const [loading, setLoading] = useState(true);
+  const [interacting, setInteracting] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -48,6 +52,47 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
 
     fetchRecommendations();
   }, []);
+
+  const handleInteraction = async (targetId: string, type: 'like' | 'pass') => {
+    try {
+      setInteracting(targetId);
+
+      const { data, error } = await supabase.functions.invoke('process-match-interaction', {
+        body: {
+          target_id: targetId,
+          target_type: 'user',
+          interaction_type: type
+        }
+      });
+
+      if (error) throw error;
+
+      // Remove the match from the list
+      setMatches(prev => prev.filter(m => m.user_id !== targetId));
+
+      if (data.match_created) {
+        toast({
+          title: "🎉 It's a Match!",
+          description: "You both liked each other. Start a conversation!",
+          duration: 5000,
+        });
+      } else if (type === 'like') {
+        toast({
+          title: "👍 Liked",
+          description: "They'll be notified if they like you back!",
+        });
+      }
+    } catch (error) {
+      console.error('Error processing interaction:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to process interaction. Please try again.",
+      });
+    } finally {
+      setInteracting(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -77,19 +122,38 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
         </div>
       ) : (
         matches.map((match) => (
-          <div key={match.user_id} className="flex items-center gap-3 p-2 bg-secondary/20 rounded-lg">
-            <Avatar className="w-8 h-8">
+          <div key={match.user_id} className="flex items-center gap-3 p-3 rounded-lg bg-accent/50 hover:bg-accent transition-colors">
+            <Avatar className="h-10 w-10">
               <AvatarImage src={match.avatar_url} />
               <AvatarFallback>{match.display_name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <p className="font-medium text-sm truncate">{match.display_name}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium truncate">{match.display_name}</p>
                 <Badge variant="secondary" className="text-xs">{match.compatibility_score}%</Badge>
               </div>
               <p className="text-xs text-muted-foreground truncate">{match.match_reason}</p>
             </div>
-            <MessageCircle className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => handleInteraction(match.user_id, 'pass')}
+                disabled={interacting === match.user_id}
+                className="h-8 w-8 p-0 hover:bg-destructive/10"
+              >
+                <X className="h-4 w-4 text-muted-foreground hover:text-destructive" />
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => handleInteraction(match.user_id, 'like')}
+                disabled={interacting === match.user_id}
+                className="h-8 w-8 p-0 hover:bg-primary/10"
+              >
+                <Heart className="h-4 w-4 text-muted-foreground hover:text-primary" />
+              </Button>
+            </div>
           </div>
         ))
       )}

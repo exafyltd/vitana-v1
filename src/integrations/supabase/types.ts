@@ -937,6 +937,38 @@ export type Database = {
         }
         Relationships: []
       }
+      match_notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean | null
+          match_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          match_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          match_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_notifications_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "user_matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memberships: {
         Row: {
           created_at: string
@@ -1691,6 +1723,72 @@ export type Database = {
           },
         ]
       }
+      user_match_interactions: {
+        Row: {
+          created_at: string
+          id: string
+          interaction_type: Database["public"]["Enums"]["match_interaction_type"]
+          metadata: Json | null
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          interaction_type: Database["public"]["Enums"]["match_interaction_type"]
+          metadata?: Json | null
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          interaction_type?: Database["public"]["Enums"]["match_interaction_type"]
+          metadata?: Json | null
+          target_id?: string
+          target_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_matches: {
+        Row: {
+          compatibility_score: number | null
+          conversation_started: boolean | null
+          id: string
+          is_active: boolean | null
+          match_reason: string | null
+          matched_at: string
+          metadata: Json | null
+          user_id_1: string
+          user_id_2: string
+        }
+        Insert: {
+          compatibility_score?: number | null
+          conversation_started?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          match_reason?: string | null
+          matched_at?: string
+          metadata?: Json | null
+          user_id_1: string
+          user_id_2: string
+        }
+        Update: {
+          compatibility_score?: number | null
+          conversation_started?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          match_reason?: string | null
+          matched_at?: string
+          metadata?: Json | null
+          user_id_1?: string
+          user_id_2?: string
+        }
+        Relationships: []
+      }
       user_wallets: {
         Row: {
           balance: number
@@ -1940,6 +2038,10 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_unread_match_count: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
       get_user_admin_status: {
         Args: { tenant_id_param: string; user_id_param: string }
         Returns: boolean
@@ -2115,6 +2217,7 @@ export type Database = {
         | "allergy"
         | "cancer"
         | "specialized"
+      match_interaction_type: "like" | "pass" | "block" | "report"
       notification_type:
         | "test_results"
         | "appointment_reminder"
@@ -2266,6 +2369,7 @@ export const Constants = {
         "cancer",
         "specialized",
       ],
+      match_interaction_type: ["like", "pass", "block", "report"],
       notification_type: [
         "test_results",
         "appointment_reminder",
