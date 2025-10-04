@@ -2,3 +2,6 @@ project_id = "inmkhvwdcuyhnxkgfvsb"
 
 [functions.ai-chat]
 verify_jwt = false
+
+[functions.fetch-user-context]
+verify_jwt = true

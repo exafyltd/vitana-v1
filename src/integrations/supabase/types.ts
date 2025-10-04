@@ -14,6 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_conversations: {
+        Row: {
+          agent_type: string
+          context_snapshot: Json | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          tenant_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_type: string
+          context_snapshot?: Json | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          tenant_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent_type?: string
+          context_snapshot?: Json | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          tenant_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_conversations_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      ai_memory: {
+        Row: {
+          confidence_score: number | null
+          content: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          memory_type: string
+          metadata: Json | null
+          source_conversation_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          content: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          memory_type: string
+          metadata?: Json | null
+          source_conversation_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          content?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          memory_type?: string
+          metadata?: Json | null
+          source_conversation_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_memory_source_conversation_id_fkey"
+            columns: ["source_conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_memory_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      ai_messages: {
+        Row: {
+          content: string
+          context_used: Json | null
+          conversation_id: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          role: string
+        }
+        Insert: {
+          content: string
+          context_used?: Json | null
+          conversation_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role: string
+        }
+        Update: {
+          content?: string
+          context_used?: Json | null
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_events: {
         Row: {
           created_at: string
@@ -46,6 +189,81 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      autopilot_actions: {
+        Row: {
+          category: string
+          context_snapshot: Json | null
+          created_at: string
+          executed_at: string | null
+          icon: string | null
+          id: string
+          image_url: string | null
+          metadata: Json | null
+          priority: string
+          reason: string | null
+          selected: boolean | null
+          status: string
+          tenant_id: string | null
+          time_estimate: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          context_snapshot?: Json | null
+          created_at?: string
+          executed_at?: string | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          metadata?: Json | null
+          priority: string
+          reason?: string | null
+          selected?: boolean | null
+          status?: string
+          tenant_id?: string | null
+          time_estimate?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          context_snapshot?: Json | null
+          created_at?: string
+          executed_at?: string | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          metadata?: Json | null
+          priority?: string
+          reason?: string | null
+          selected?: boolean | null
+          status?: string
+          tenant_id?: string | null
+          time_estimate?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "autopilot_actions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "autopilot_actions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -1405,6 +1623,38 @@ export type Database = {
           },
         ]
       }
+      user_context_cache: {
+        Row: {
+          cached_at: string
+          context_data: Json
+          expires_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          cached_at?: string
+          context_data: Json
+          expires_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          cached_at?: string
+          context_data?: Json
+          expires_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_context_cache_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       user_follows: {
         Row: {
           created_at: string
@@ -1572,6 +1822,14 @@ export type Database = {
     Functions: {
       bootstrap_admin_user: {
         Args: { p_user_email: string; p_user_id: string }
+        Returns: undefined
+      }
+      clean_expired_context_cache: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      clean_expired_memory: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       cleanup_abandoned_transactions: {
