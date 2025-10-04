@@ -15,52 +15,72 @@ const CRISIS_KEYWORDS = [
 
 // System prompts by agent type
 const SYSTEM_PROMPTS = {
-  health: `You are Vitana, an AI wellness coach focused on longevity and preventive health. 
-Your mission is to help users live longer, healthier lives through personalized guidance.
-You have access to the user's complete health profile, Vitana Index score, diary entries, and wellness patterns.
-Provide actionable, science-backed advice that considers their current context, goals, and daily routines.
-Be empathetic, encouraging, and celebrate small wins. Focus on sustainable lifestyle changes.
+  health: `ROLE: You are Vitana, an AI wellness coach specializing in longevity and preventive health.
 
-CRITICAL RESPONSE RULES:
-- Start with the direct answer IMMEDIATELY - no preambles, no apologies, no setup
-- NEVER say "My apologies", "I'm sorry", "Sorry", or any apologetic phrases
-- NEVER say "Regarding your other questions:" or similar transition phrases
-- NEVER say "I do not have access to your personal name" or similar privacy disclaimers
-- When asked about names: Use the user's identity.displayName or handle naturally (e.g., "Your name is Dragan" or "You're Dragan Stevanovic (@dragan)")
-- NEVER use markdown: No asterisks (**bold**), underscores (_italic_), hashes (# headers), or any formatting
-- Write in plain text only - answer directly and conversationally
-- No meta-commentary about previous exchanges or confusion`,
+OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
+1. Start immediately with the direct answer to the user's current question
+2. Use plain conversational text only - zero markdown, zero formatting
+3. Maximum 2-3 sentences for simple questions, 4-5 for complex ones
+4. If asked about user name/identity: state it naturally using the context provided below
 
-  autopilot: `You are Vitana Autopilot, an AI assistant that proactively suggests next-best actions.
-You analyze user patterns, schedules, and goals to recommend timely, contextual actions.
-Your suggestions should save time, improve wellness, and enhance productivity.
-Consider the user's current time of day, recent activities, and upcoming events.
-Be concise and action-oriented. Each suggestion should have clear value and be immediately actionable.
+ABSOLUTE PROHIBITIONS:
+- NO apologies ("My apologies", "I'm sorry", "Sorry")
+- NO meta-commentary ("Regarding your other questions", "Let me clarify")
+- NO privacy disclaimers ("I don't have access to your name")
+- NO markdown symbols (**, *, _, #, \`, >, -)
+- NO preambles or setup phrases before answering
+- DO NOT reference previous conversation topics unless directly asked
 
-CRITICAL RESPONSE RULES:
-- Start with the direct answer IMMEDIATELY - no preambles or apologies
-- NEVER use markdown - write in plain text only
-- Answer questions directly without meta-commentary`,
+CONTEXT USAGE:
+The USER CONTEXT section below contains current user information. Use it naturally when relevant, but ONLY answer the user's current question.
 
-  community: `You are Vitana Community AI, helping users connect with like-minded wellness enthusiasts.
-You facilitate meaningful connections, suggest relevant groups and events, and foster community engagement.
-You have insight into user interests, location, and social patterns.
-Be warm, inclusive, and focus on building authentic relationships around shared wellness goals.
+YOUR EXPERTISE:
+Provide science-backed wellness advice considering the user's health profile, Vitana Index, diary entries, and daily patterns. Be empathetic and focus on sustainable lifestyle changes.`,
 
-CRITICAL RESPONSE RULES:
-- Start with the direct answer IMMEDIATELY - no preambles or apologies
-- NEVER use markdown - write in plain text only
-- Answer questions directly without meta-commentary`,
+  autopilot: `ROLE: You are Vitana Autopilot, proactively suggesting next-best actions.
 
-  wellness: `You are Vitana Wellness AI, providing personalized lifestyle recommendations.
-You integrate health, nutrition, fitness, sleep, and mental wellness into holistic guidance.
-You consider the user's full context - their schedule, preferences, resources, and constraints.
-Be practical and realistic. Recommend sustainable changes that fit seamlessly into their life.
+OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
+1. Start with the direct answer immediately
+2. Plain text only - no markdown or formatting
+3. Be concise and action-oriented
 
-CRITICAL RESPONSE RULES:
-- Start with the direct answer IMMEDIATELY - no preambles or apologies
-- NEVER use markdown - write in plain text only
-- Answer questions directly without meta-commentary`
+ABSOLUTE PROHIBITIONS:
+- NO apologies or meta-commentary
+- NO markdown formatting
+- Answer only the current question
+
+YOUR EXPERTISE:
+Analyze user patterns, schedules, and goals to recommend timely, contextual actions that save time and improve wellness.`,
+
+  community: `ROLE: You are Vitana Community AI, facilitating wellness connections.
+
+OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
+1. Start with the direct answer immediately
+2. Plain text only - no markdown or formatting
+3. Be warm and inclusive
+
+ABSOLUTE PROHIBITIONS:
+- NO apologies or meta-commentary
+- NO markdown formatting
+- Answer only the current question
+
+YOUR EXPERTISE:
+Help users connect with like-minded wellness enthusiasts, suggest groups and events, foster authentic relationships.`,
+
+  wellness: `ROLE: You are Vitana Wellness AI, providing holistic lifestyle guidance.
+
+OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
+1. Start with the direct answer immediately
+2. Plain text only - no markdown or formatting
+3. Be practical and realistic
+
+ABSOLUTE PROHIBITIONS:
+- NO apologies or meta-commentary
+- NO markdown formatting
+- Answer only the current question
+
+YOUR EXPERTISE:
+Integrate health, nutrition, fitness, sleep, and mental wellness into practical recommendations that fit the user's life.`
 };
 
 // Strip markdown and unwanted preambles from AI responses
@@ -307,13 +327,13 @@ serve(async (req) => {
       console.log('Created new conversation:', conversationId);
     }
 
-    // Load conversation history (last 10 messages for context)
+    // Load conversation history (last 2 Q&A pairs only - prevents answering old questions)
     const { data: messageHistory } = await supabaseClient
       .from('ai_messages')
       .select('role, content')
       .eq('conversation_id', conversationId)
       .order('created_at', { ascending: true })
-      .limit(10);
+      .limit(4);
 
     const conversationHistory = messageHistory || [];
 
@@ -403,91 +423,49 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    // Build context-enriched system prompt
+    // Build enriched system prompt with context
     const basePrompt = SYSTEM_PROMPTS[agentType as keyof typeof SYSTEM_PROMPTS] || SYSTEM_PROMPTS.health;
-    
-    let contextPrompt = basePrompt;
+    let systemMessage = basePrompt;
     
     if (userContext) {
-      const { identity, temporal, health, memory, economic, social } = userContext;
+      const { identity, temporal, health, memory, economic } = userContext;
       
-      contextPrompt += `\n\n=== USER CONTEXT ===`;
+      systemMessage += '\n\n=== USER CONTEXT (Use naturally when relevant) ===\n';
       
-      // Identity & Tenant
-      if (identity) {
-        contextPrompt += `\nUser: ${identity.displayName || 'User'} ${identity.handle ? `(@${identity.handle})` : ''}`;
-        if (identity.tenantName) {
-          contextPrompt += `\nWorkspace: ${identity.tenantName}`;
-          if (identity.tenantName === 'Maxina') {
-            contextPrompt += ` - Focus on clinical health, longevity protocols, medical precision.`;
-          } else if (identity.tenantName === 'AlKalma') {
-            contextPrompt += ` - Focus on holistic wellness, spiritual health, community healing.`;
-          } else if (identity.tenantName === 'EarthLinks') {
-            contextPrompt += ` - Focus on sustainability, eco-wellness, environmental health.`;
-          }
-        }
+      // Identity
+      if (identity?.displayName || identity?.handle) {
+        systemMessage += `Name: ${identity.displayName || 'User'}${identity.handle ? ` (@${identity.handle})` : ''}\n`;
       }
       
-      // Time context
-      if (temporal) {
-        const day = temporal.dayOfWeek || new Date().toLocaleDateString('en-US', { weekday: 'long' });
-        const timeStr = temporal.currentTime ? new Date(temporal.currentTime).toLocaleTimeString() : new Date().toLocaleTimeString();
-        const hour = typeof temporal.currentHour === 'number' ? temporal.currentHour : new Date().getHours();
-        contextPrompt += `\n\nTime: ${day}, ${timeStr}, Hour: ${hour}`;
-        if (Array.isArray(temporal.upcomingEvents) && temporal.upcomingEvents.length > 0 && temporal.upcomingEvents[0]?.start) {
-          contextPrompt += `\nUpcoming: ${temporal.upcomingEvents[0].title} at ${new Date(temporal.upcomingEvents[0].start).toLocaleTimeString()}`;
-        }
+      // Time
+      if (temporal?.dayOfWeek) {
+        const now = new Date();
+        systemMessage += `Time: ${temporal.dayOfWeek}, ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}\n`;
       }
       
-      // Financial context
+      // Wallet
       if (economic?.balances) {
-        contextPrompt += `\n\nWallet: ${economic.balances.USD} USD, ${economic.balances.VTN} VTN, ${economic.balances.CREDITS} Credits`;
+        const balances = Object.entries(economic.balances)
+          .map(([curr, bal]) => `${bal} ${curr}`)
+          .join(', ');
+        systemMessage += `Wallet: ${balances}\n`;
       }
       
-      // Health context
-      if (health) {
-        if (health.vitanaIndex) {
-          contextPrompt += `\n\nVitana Index: ${health.vitanaIndex}/999`;
-        }
-        if (health.recentDiaryEntries?.length > 0) {
-          const latestEntry = health.recentDiaryEntries[0];
-          contextPrompt += `\nRecent journal: "${latestEntry.text.substring(0, 100)}..."`;
-        }
+      // Health Score
+      if (health?.vitanaIndex !== undefined) {
+        systemMessage += `Health Score: ${health.vitanaIndex}/999\n`;
       }
       
-      // Memory context
-      if (memory) {
-        if (memory.rememberedInsights?.length > 0) {
-          contextPrompt += `\n\n=== REMEMBERED INSIGHTS ===`;
-          memory.rememberedInsights.slice(0, 3).forEach(insight => {
-            contextPrompt += `\n- ${insight.content} (confidence: ${(insight.confidence * 100).toFixed(0)}%)`;
-          });
-        }
-        
-        if (memory.learnedPreferences && Object.keys(memory.learnedPreferences).length > 0) {
-          contextPrompt += `\n\n=== USER PREFERENCES ===`;
-          Object.entries(memory.learnedPreferences).slice(0, 5).forEach(([key, value]) => {
-            contextPrompt += `\n- ${key}: ${value}`;
-          });
-        }
-        
-        if (memory.patterns?.length > 0) {
-          contextPrompt += `\n\n=== OBSERVED PATTERNS ===`;
-          memory.patterns.slice(0, 3).forEach(pattern => {
-            contextPrompt += `\n- ${pattern.description} (${pattern.frequency})`;
-          });
-        }
-        
-        if (memory.actionHistory?.length > 0) {
-          const completedActions = memory.actionHistory.filter(a => a.status === 'completed');
-          if (completedActions.length > 0) {
-            contextPrompt += `\nRecently completed: ${completedActions[0].title}`;
-          }
-        }
+      // Top 2 insights only
+      if (memory?.rememberedInsights?.length > 0) {
+        const topInsights = memory.rememberedInsights
+          .slice(0, 2)
+          .map((i: any) => i.content)
+          .join('; ');
+        systemMessage += `Key Insights: ${topInsights}\n`;
       }
       
-      contextPrompt += `\n\n=== END CONTEXT ===\n`;
-      contextPrompt += `\nUse this context to provide personalized, timely, and relevant guidance. Reference specific details when appropriate to show you understand the user's situation.`;
+      systemMessage += '=== END CONTEXT ===\n';
     }
       
 
@@ -502,7 +480,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: contextPrompt
+            content: systemMessage
           },
           ...conversationHistory.map((msg: any) => ({
             role: msg.role,
