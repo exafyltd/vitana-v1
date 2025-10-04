@@ -57,9 +57,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         fadeTimeoutRef.current = setTimeout(() => {
           setInputValue("")
         }, 5000)
-        
-        setIsAudioActive(true)
-        setTimeout(() => setIsAudioActive(false), 3000)
       } catch (error) {
         console.error('Voice error:', error)
         toast({
@@ -75,7 +72,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       try {
         await aiVoiceService.startRecording()
         setIsRecording(true)
-        setIsAudioActive(true)
       } catch (error) {
         console.error('Recording error:', error)
         toast({
@@ -236,8 +232,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             onClick={handleMicToggle}
             disabled={isProcessing}
             className={
-              (isRecording || (isAudioActive && !isVideoActive))
+              isProcessing
                 ? "bg-ruby text-white hover:bg-ruby/90 rounded-full animate-pulse"
+                : isRecording
+                ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
                 : "hover:bg-accent rounded-full"
             }
             aria-pressed={isRecording}
