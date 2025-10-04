@@ -93,12 +93,22 @@ serve(async (req) => {
 
       const sttData = await sttResponse.json();
       if (!sttData.results || sttData.results.length === 0) {
-        throw new Error('No speech detected');
+        throw new Error('No speech detected. Please speak clearly and try again.');
       }
 
-      userMessage = sttData.results[0].alternatives[0].transcript;
+      const transcript = sttData.results[0].alternatives[0].transcript;
+      if (!transcript || transcript.trim() === '') {
+        throw new Error('No speech detected. Please speak clearly and try again.');
+      }
+
+      userMessage = transcript;
       detectedLanguage = sttData.results[0].languageCode || detectedLanguage;
       console.log('Transcribed:', userMessage, 'Language:', detectedLanguage);
+    }
+
+    // Validate userMessage exists before proceeding
+    if (!userMessage || userMessage.trim() === '') {
+      throw new Error('No message content provided');
     }
 
     // Step 2: Check for crisis keywords (AlKalma)
