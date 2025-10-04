@@ -27,6 +27,7 @@ function getVoiceNameForLanguage(languageCode: string): string {
     'zh-CN': 'cmn-CN-Chirp-HD-F',     // Alias for Chinese
     'fr-FR': 'fr-FR-Chirp-HD-F',      // French female
     'ru-RU': 'ru-RU-Chirp-HD-F',      // Russian female
+    'sr-RS': 'sr-RS-Chirp-HD-F',      // Serbian female
     'en-US': 'en-US-Chirp-HD-F',      // English female (default)
   };
   
@@ -96,7 +97,7 @@ serve(async (req) => {
               encoding: 'WEBM_OPUS',
               sampleRateHertz: 48000,
               languageCode: 'de-DE', // Primary: German (Maxina)
-              alternativeLanguageCodes: ['ar-XA', 'en-US', 'es-ES', 'ru-RU', 'zh-CN'],
+              alternativeLanguageCodes: ['ar-XA', 'en-US', 'es-ES', 'ru-RU', 'zh-CN', 'sr-RS'],
               model: 'latest_long',
               enableAutomaticPunctuation: true,
             },
@@ -142,7 +143,7 @@ serve(async (req) => {
 Respond in the same language as the user's message. 
 Be empathetic, supportive, and professional.
 Keep responses concise (2-3 sentences max).
-Languages: German, English, Arabic, Spanish, Russian, Chinese.`;
+Languages: German, English, Arabic, Spanish, Russian, Chinese, Serbian.`;
 
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
