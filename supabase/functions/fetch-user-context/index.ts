@@ -289,61 +289,33 @@ serve(async (req) => {
   }
 
   try {
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      throw new Error('Missing authorization header');
-    }
+    // Get userId from request body (when called from another edge function)
+    const body = await req.json();
+    const userId = body.userId;
+    
+    if (!userId) {
+      // If no userId in body, try to get from auth header
+      const authHeader = req.headers.get('Authorization');
+      if (!authHeader) {
+        throw new Error('Missing authorization header');
+      }
 
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
-    );
-
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-    if (userError || !user) {
-      throw new Error('Unauthorized');
-    }
-
-    // Check cache first
-    const { data: cachedContext } = await supabaseClient
-      .from('user_context_cache')
-      .select('context_data, expires_at')
-      .eq('user_id', user.id)
-      .single();
-
-    if (cachedContext && new Date(cachedContext.expires_at) > new Date()) {
-      console.log('Returning cached context for user:', user.id);
-      return new Response(
-        JSON.stringify({ 
-          context: cachedContext.context_data,
-          cached: true 
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      const supabaseClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        { global: { headers: { Authorization: authHeader } } }
       );
+
+      const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+      if (userError || !user) {
+        throw new Error('Unauthorized');
+      }
+      
+      return await fetchAndReturnContext(user.id);
     }
-
-    // Fetch fresh context
-    console.log('Fetching fresh context for user:', user.id);
-    const context = await fetchUserContext(supabaseClient, user.id);
-
-    // Update cache
-    await supabaseClient
-      .from('user_context_cache')
-      .upsert({
-        user_id: user.id,
-        context_data: context,
-        cached_at: new Date().toISOString(),
-        expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString() // 5 min cache
-      });
-
-    return new Response(
-      JSON.stringify({ 
-        context,
-        cached: false 
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    
+    // If userId provided, use it directly (from service role call)
+    return await fetchAndReturnContext(userId);
 
   } catch (error) {
     console.error('Error fetching user context:', error);
@@ -356,3 +328,50 @@ serve(async (req) => {
     );
   }
 });
+
+async function fetchAndReturnContext(userId: string) {
+  const supabaseClient = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  );
+
+  // Check cache first
+  const { data: cachedContext } = await supabaseClient
+    .from('user_context_cache')
+    .select('context_data, expires_at')
+    .eq('user_id', userId)
+    .single();
+
+  if (cachedContext && new Date(cachedContext.expires_at) > new Date()) {
+    console.log('Returning cached context for user:', userId);
+    return new Response(
+      JSON.stringify({ 
+        context: cachedContext.context_data,
+        cached: true 
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  // Fetch fresh context
+  console.log('Fetching fresh context for user:', userId);
+  const context = await fetchUserContext(supabaseClient, userId);
+
+  // Update cache
+  await supabaseClient
+    .from('user_context_cache')
+    .upsert({
+      user_id: userId,
+      context_data: context,
+      cached_at: new Date().toISOString(),
+      expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString() // 5 min cache
+    });
+
+  return new Response(
+    JSON.stringify({ 
+      context,
+      cached: false 
+    }),
+    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+  );
+}

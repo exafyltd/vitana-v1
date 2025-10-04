@@ -156,8 +156,16 @@ serve(async (req) => {
 
     // Fetch user context for personalization
     console.log('Fetching user context...');
-    const { data: contextData, error: contextError } = await supabaseClient.functions.invoke('fetch-user-context', {
-      headers: { Authorization: authHeader }
+    
+    // Create a service role client to invoke the function
+    const serviceClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    );
+    
+    const { data: contextData, error: contextError } = await serviceClient.functions.invoke('fetch-user-context', {
+      body: { userId: user.id }
     });
     
     let userContext = contextError ? null : contextData?.context;
@@ -327,21 +335,78 @@ serve(async (req) => {
       contextPrompt += `\n\n=== USER CONTEXT ===`;
       
       // Identity & Tenant
-      contextPrompt += `\nUser: ${identity.displayName} (@${identity.handle})`;
-      contextPrompt += `\nWorkspace: ${identity.tenantName}`;
-      if (identity.tenantName === 'Maxina') {
-        contextPrompt += ` - Focus on clinical health, longevity protocols, medical precision.`;
-      } else if (identity.tenantName === 'AlKalma') {
-        contextPrompt += ` - Focus on holistic wellness, spiritual health, community healing.`;
-      } else if (identity.tenantName === 'EarthLinks') {
-        contextPrompt += ` - Focus on sustainability, eco-wellness, environmental health.`;
+      if (identity) {
+        contextPrompt += `\nUser: ${identity.displayName || 'User'} ${identity.handle ? `(@${identity.handle})` : ''}`;
+        if (identity.tenantName) {
+          contextPrompt += `\nWorkspace: ${identity.tenantName}`;
+          if (identity.tenantName === 'Maxina') {
+            contextPrompt += ` - Focus on clinical health, longevity protocols, medical precision.`;
+          } else if (identity.tenantName === 'AlKalma') {
+            contextPrompt += ` - Focus on holistic wellness, spiritual health, community healing.`;
+          } else if (identity.tenantName === 'EarthLinks') {
+            contextPrompt += ` - Focus on sustainability, eco-wellness, environmental health.`;
+          }
+        }
       }
       
       // Time context
-      contextPrompt += `\n\nTime: ${temporal.dayOfWeek}, ${new Date(temporal.currentTime).toLocaleTimeString()}, Hour: ${temporal.currentHour}`;
-      if (temporal.upcomingEvents.length > 0) {
-        contextPrompt += `\nUpcoming: ${temporal.upcomingEvents[0].title} at ${new Date(temporal.upcomingEvents[0].start).toLocaleTimeString()}`;
+      if (temporal) {
+        contextPrompt += `\n\nTime: ${temporal.dayOfWeek}, ${new Date(temporal.currentTime).toLocaleTimeString()}, Hour: ${temporal.currentHour}`;
+        if (temporal.upcomingEvents?.length > 0) {
+          contextPrompt += `\nUpcoming: ${temporal.upcomingEvents[0].title} at ${new Date(temporal.upcomingEvents[0].start).toLocaleTimeString()}`;
+        }
       }
+      
+      // Financial context
+      if (economic?.balances) {
+        contextPrompt += `\n\nWallet: ${economic.balances.USD} USD, ${economic.balances.VTN} VTN, ${economic.balances.CREDITS} Credits`;
+      }
+      
+      // Health context
+      if (health) {
+        if (health.vitanaIndex) {
+          contextPrompt += `\n\nVitana Index: ${health.vitanaIndex}/999`;
+        }
+        if (health.recentDiaryEntries?.length > 0) {
+          const latestEntry = health.recentDiaryEntries[0];
+          contextPrompt += `\nRecent journal: "${latestEntry.text.substring(0, 100)}..."`;
+        }
+      }
+      
+      // Memory context
+      if (memory) {
+        if (memory.rememberedInsights?.length > 0) {
+          contextPrompt += `\n\n=== REMEMBERED INSIGHTS ===`;
+          memory.rememberedInsights.slice(0, 3).forEach(insight => {
+            contextPrompt += `\n- ${insight.content} (confidence: ${(insight.confidence * 100).toFixed(0)}%)`;
+          });
+        }
+        
+        if (memory.learnedPreferences && Object.keys(memory.learnedPreferences).length > 0) {
+          contextPrompt += `\n\n=== USER PREFERENCES ===`;
+          Object.entries(memory.learnedPreferences).slice(0, 5).forEach(([key, value]) => {
+            contextPrompt += `\n- ${key}: ${value}`;
+          });
+        }
+        
+        if (memory.patterns?.length > 0) {
+          contextPrompt += `\n\n=== OBSERVED PATTERNS ===`;
+          memory.patterns.slice(0, 3).forEach(pattern => {
+            contextPrompt += `\n- ${pattern.description} (${pattern.frequency})`;
+          });
+        }
+        
+        if (memory.actionHistory?.length > 0) {
+          const completedActions = memory.actionHistory.filter(a => a.status === 'completed');
+          if (completedActions.length > 0) {
+            contextPrompt += `\nRecently completed: ${completedActions[0].title}`;
+          }
+        }
+      }
+      
+      contextPrompt += `\n\n=== END CONTEXT ===\n`;
+      contextPrompt += `\nUse this context to provide personalized, timely, and relevant guidance. Reference specific details when appropriate to show you understand the user's situation.`;
+    }
       
       // Financial context
       if (economic.balances) {
