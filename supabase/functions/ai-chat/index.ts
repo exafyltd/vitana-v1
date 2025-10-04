@@ -156,19 +156,9 @@ serve(async (req) => {
 
     // Fetch user context for personalization
     console.log('Fetching user context...');
-    const contextResponse = await fetch(
-      `${Deno.env.get('SUPABASE_URL')}/functions/v1/fetch-user-context`,
-      {
-        headers: {
-          'Authorization': authHeader,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-
-    const { context: userContext } = contextResponse.ok 
-      ? await contextResponse.json() 
-      : { context: null };
+    const { data: contextData, error: contextError } = await supabaseClient.functions.invoke('fetch-user-context');
+    
+    const userContext = contextError ? null : contextData?.context;
 
     console.log('User context loaded:', {
       hasContext: !!userContext,
