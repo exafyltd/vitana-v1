@@ -351,8 +351,11 @@ serve(async (req) => {
       
       // Time context
       if (temporal) {
-        contextPrompt += `\n\nTime: ${temporal.dayOfWeek}, ${new Date(temporal.currentTime).toLocaleTimeString()}, Hour: ${temporal.currentHour}`;
-        if (temporal.upcomingEvents?.length > 0) {
+        const day = temporal.dayOfWeek || new Date().toLocaleDateString('en-US', { weekday: 'long' });
+        const timeStr = temporal.currentTime ? new Date(temporal.currentTime).toLocaleTimeString() : new Date().toLocaleTimeString();
+        const hour = typeof temporal.currentHour === 'number' ? temporal.currentHour : new Date().getHours();
+        contextPrompt += `\n\nTime: ${day}, ${timeStr}, Hour: ${hour}`;
+        if (Array.isArray(temporal.upcomingEvents) && temporal.upcomingEvents.length > 0 && temporal.upcomingEvents[0]?.start) {
           contextPrompt += `\nUpcoming: ${temporal.upcomingEvents[0].title} at ${new Date(temporal.upcomingEvents[0].start).toLocaleTimeString()}`;
         }
       }
@@ -408,52 +411,6 @@ serve(async (req) => {
       contextPrompt += `\nUse this context to provide personalized, timely, and relevant guidance. Reference specific details when appropriate to show you understand the user's situation.`;
     }
       
-      // Financial context
-      if (economic.balances) {
-        contextPrompt += `\n\nWallet: ${economic.balances.USD} USD, ${economic.balances.VTN} VTN, ${economic.balances.CREDITS} Credits`;
-      }
-      
-      // Health context
-      if (health.vitanaIndex) {
-        contextPrompt += `\n\nVitana Index: ${health.vitanaIndex}/999`;
-      }
-      if (health.recentDiaryEntries.length > 0) {
-        const latestEntry = health.recentDiaryEntries[0];
-        contextPrompt += `\nRecent journal: "${latestEntry.text.substring(0, 100)}..."`;
-      }
-      
-      // Memory context
-      if (memory.rememberedInsights.length > 0) {
-        contextPrompt += `\n\n=== REMEMBERED INSIGHTS ===`;
-        memory.rememberedInsights.slice(0, 3).forEach(insight => {
-          contextPrompt += `\n- ${insight.content} (confidence: ${(insight.confidence * 100).toFixed(0)}%)`;
-        });
-      }
-      
-      if (Object.keys(memory.learnedPreferences).length > 0) {
-        contextPrompt += `\n\n=== USER PREFERENCES ===`;
-        Object.entries(memory.learnedPreferences).slice(0, 5).forEach(([key, value]) => {
-          contextPrompt += `\n- ${key}: ${value}`;
-        });
-      }
-      
-      if (memory.patterns.length > 0) {
-        contextPrompt += `\n\n=== OBSERVED PATTERNS ===`;
-        memory.patterns.slice(0, 3).forEach(pattern => {
-          contextPrompt += `\n- ${pattern.description} (${pattern.frequency})`;
-        });
-      }
-      
-      if (memory.actionHistory.length > 0) {
-        const completedActions = memory.actionHistory.filter(a => a.status === 'completed');
-        if (completedActions.length > 0) {
-          contextPrompt += `\n\nRecently completed: ${completedActions[0].title}`;
-        }
-      }
-      
-      contextPrompt += `\n\n=== END CONTEXT ===\n`;
-      contextPrompt += `\nUse this context to provide personalized, timely, and relevant guidance. Reference specific details when appropriate to show you understand the user's situation.`;
-    }
 
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
