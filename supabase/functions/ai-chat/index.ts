@@ -21,12 +21,15 @@ You have access to the user's complete health profile, Vitana Index score, diary
 Provide actionable, science-backed advice that considers their current context, goals, and daily routines.
 Be empathetic, encouraging, and celebrate small wins. Focus on sustainable lifestyle changes.
 
-STYLE RULES:
-- NEVER start responses with apologies like "My apologies for the confusion earlier" or references to past confusion/privacy concerns
+CRITICAL RESPONSE RULES:
+- Start with the direct answer IMMEDIATELY - no preambles, no apologies, no setup
+- NEVER say "My apologies", "I'm sorry", "Sorry", or any apologetic phrases
 - NEVER say "Regarding your other questions:" or similar transition phrases
-- NEVER use markdown formatting like asterisks (**bold**), underscores (_italic_), or hashes (# headers)
-- Write responses in plain text only - the system will handle formatting
-- Answer questions directly and naturally without meta-commentary about previous exchanges`,
+- NEVER say "I do not have access to your personal name" or similar privacy disclaimers
+- When asked about names: Use the user's identity.displayName or handle naturally (e.g., "Your name is Dragan" or "You're Dragan Stevanovic (@dragan)")
+- NEVER use markdown: No asterisks (**bold**), underscores (_italic_), hashes (# headers), or any formatting
+- Write in plain text only - answer directly and conversationally
+- No meta-commentary about previous exchanges or confusion`,
 
   autopilot: `You are Vitana Autopilot, an AI assistant that proactively suggests next-best actions.
 You analyze user patterns, schedules, and goals to recommend timely, contextual actions.
@@ -34,9 +37,9 @@ Your suggestions should save time, improve wellness, and enhance productivity.
 Consider the user's current time of day, recent activities, and upcoming events.
 Be concise and action-oriented. Each suggestion should have clear value and be immediately actionable.
 
-STYLE RULES:
-- NEVER start responses with apologies or references to past confusion
-- NEVER use markdown formatting - write in plain text only
+CRITICAL RESPONSE RULES:
+- Start with the direct answer IMMEDIATELY - no preambles or apologies
+- NEVER use markdown - write in plain text only
 - Answer questions directly without meta-commentary`,
 
   community: `You are Vitana Community AI, helping users connect with like-minded wellness enthusiasts.
@@ -44,9 +47,9 @@ You facilitate meaningful connections, suggest relevant groups and events, and f
 You have insight into user interests, location, and social patterns.
 Be warm, inclusive, and focus on building authentic relationships around shared wellness goals.
 
-STYLE RULES:
-- NEVER start responses with apologies or references to past confusion
-- NEVER use markdown formatting - write in plain text only
+CRITICAL RESPONSE RULES:
+- Start with the direct answer IMMEDIATELY - no preambles or apologies
+- NEVER use markdown - write in plain text only
 - Answer questions directly without meta-commentary`,
 
   wellness: `You are Vitana Wellness AI, providing personalized lifestyle recommendations.
@@ -54,21 +57,24 @@ You integrate health, nutrition, fitness, sleep, and mental wellness into holist
 You consider the user's full context - their schedule, preferences, resources, and constraints.
 Be practical and realistic. Recommend sustainable changes that fit seamlessly into their life.
 
-STYLE RULES:
-- NEVER start responses with apologies or references to past confusion
-- NEVER use markdown formatting - write in plain text only
+CRITICAL RESPONSE RULES:
+- Start with the direct answer IMMEDIATELY - no preambles or apologies
+- NEVER use markdown - write in plain text only
 - Answer questions directly without meta-commentary`
 };
 
-// Strip markdown formatting from text for TTS
-function sanitizeTextForTTS(text: string): string {
-  return text
+// Strip markdown and unwanted preambles from AI responses
+function cleanAIResponse(text: string): string {
+  let cleaned = text;
+  
+  // Step 1: Remove markdown formatting
+  cleaned = cleaned
     // Remove bold/italic markers
-    .replace(/\*\*\*/g, '')    // Remove ***
-    .replace(/\*\*/g, '')      // Remove **
-    .replace(/\*/g, '')        // Remove *
-    .replace(/__/g, '')        // Remove __
-    .replace(/_/g, '')         // Remove _
+    .replace(/\*\*\*/g, '')
+    .replace(/\*\*/g, '')
+    .replace(/\*/g, '')
+    .replace(/__/g, '')
+    .replace(/_/g, '')
     // Remove headings
     .replace(/^#{1,6}\s+/gm, '')
     // Remove code blocks and inline code
@@ -80,10 +86,35 @@ function sanitizeTextForTTS(text: string): string {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     // Remove list markers
     .replace(/^\s*[-*+]\s+/gm, '')
-    .replace(/^\s*\d+\.\s+/gm, '')
-    // Clean up extra whitespace
+    .replace(/^\s*\d+\.\s+/gm, '');
+  
+  // Step 2: Remove unwanted preambles and boilerplate
+  const preamblePatterns = [
+    /^my apologies[^.!?]*[.!?]\s*/i,
+    /^i'm sorry[^.!?]*[.!?]\s*/i,
+    /^sorry[^.!?]*[.!?]\s*/i,
+    /^regarding your (other )?questions?:?\s*/i,
+    /^i do not have access to your (personal )?name[^.!?]*[.!?]\s*/i,
+    /^as vitana,?\s*i do not have access[^.!?]*[.!?]\s*/i,
+    /^my responses are based solely on[^.!?]*[.!?]\s*/i,
+    /^respecting your privacy[^.!?]*[.!?]\s*/i,
+  ];
+  
+  for (const pattern of preamblePatterns) {
+    cleaned = cleaned.replace(pattern, '');
+  }
+  
+  // Step 3: Clean up whitespace
+  cleaned = cleaned
     .replace(/\s+/g, ' ')
     .trim();
+  
+  return cleaned;
+}
+
+// Keep original function for backwards compatibility (just calls cleanAIResponse)
+function sanitizeTextForTTS(text: string): string {
+  return cleanAIResponse(text);
 }
 
 // Normalize language code to handle Serbian variants and other language formats
@@ -490,10 +521,14 @@ serve(async (req) => {
     }
 
     const aiData = await aiResponse.json();
-    const aiText = aiData.choices[0].message.content;
-    console.log('AI response:', aiText);
+    const rawAiText = aiData.choices[0].message.content;
+    console.log('AI response (raw):', rawAiText);
+    
+    // Clean the AI response: remove markdown and unwanted preambles
+    const aiText = cleanAIResponse(rawAiText);
+    console.log('AI response (cleaned):', aiText);
 
-    // Store AI response
+    // Store cleaned AI response
     await supabaseClient.from('ai_messages').insert({
       conversation_id: conversationId,
       role: 'assistant',
@@ -519,8 +554,8 @@ serve(async (req) => {
       const voiceName = getVoiceNameForLanguage(normalizedLang);
       console.log('Using TTS voice:', voiceName, 'for language:', normalizedLang);
       
-      // Sanitize text to remove markdown formatting before TTS
-      const cleanTextForSpeech = sanitizeTextForTTS(aiText);
+      // AI text is already cleaned, just use it for TTS
+      const cleanTextForSpeech = aiText;
       
       const ttsResponse = await fetch(
         `https://texttospeech.googleapis.com/v1/text:synthesize?key=${googleApiKey}`,
