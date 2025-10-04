@@ -101,9 +101,12 @@ interface UserContext {
 async function fetchUserContext(supabase: any, userId: string): Promise<UserContext> {
   const now = new Date();
   
-  // Parallel data fetching for performance
+  // First fetch profile to get tenant_id
+  const profileData = await supabase.from('profiles').select('*').eq('user_id', userId).single();
+  const profile = profileData.data || {};
+
+  // Now fetch tenant and other data in parallel
   const [
-    profileData,
     walletsData,
     calendarData,
     messagesData,
@@ -113,9 +116,6 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     actionsData,
     tenantData
   ] = await Promise.all([
-    // Profile
-    supabase.from('profiles').select('*').eq('user_id', userId).single(),
-    
     // Wallets
     supabase.from('user_wallets').select('*').eq('user_id', userId),
     
@@ -168,14 +168,12 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       .order('created_at', { ascending: false })
       .limit(20),
     
-    // Tenant info
-    supabase.from('tenants')
-      .select('id, name, slug')
-      .eq('id', profileData?.data?.tenant_id)
-      .single()
+    // Tenant info (using profile.tenant_id)
+    profile.tenant_id 
+      ? supabase.from('tenants').select('id, name, slug').eq('id', profile.tenant_id).single()
+      : Promise.resolve({ data: null })
   ]);
 
-  const profile = profileData.data || {};
   const wallets = walletsData.data || [];
   const events = calendarData.data || [];
   const messages = messagesData.data || [];

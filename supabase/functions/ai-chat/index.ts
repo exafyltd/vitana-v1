@@ -156,9 +156,36 @@ serve(async (req) => {
 
     // Fetch user context for personalization
     console.log('Fetching user context...');
-    const { data: contextData, error: contextError } = await supabaseClient.functions.invoke('fetch-user-context');
+    const { data: contextData, error: contextError } = await supabaseClient.functions.invoke('fetch-user-context', {
+      headers: { Authorization: authHeader }
+    });
     
-    const userContext = contextError ? null : contextData?.context;
+    let userContext = contextError ? null : contextData?.context;
+
+    // Fallback: if context fetch failed, get minimal profile data directly
+    if (!userContext || !userContext.identity?.displayName) {
+      console.log('Context fetch failed or incomplete, fetching profile directly...');
+      const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('display_name, handle, full_name, email')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (profile) {
+        userContext = {
+          identity: {
+            userId: user.id,
+            displayName: profile.display_name || profile.full_name || 'User',
+            handle: profile.handle || '',
+            email: profile.email || '',
+            tenantId: '',
+            tenantName: '',
+            roles: []
+          }
+        };
+        console.log('Using fallback profile data:', profile.display_name);
+      }
+    }
 
     console.log('User context loaded:', {
       hasContext: !!userContext,
