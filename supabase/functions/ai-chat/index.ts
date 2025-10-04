@@ -1,5 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.56.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,11 +20,44 @@ serve(async (req) => {
 
   try {
     const { audio, text, language } = await req.json();
-    const GOOGLE_CLOUD_API_KEY = Deno.env.get('GOOGLE_CLOUD_API_KEY');
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
-    if (!GOOGLE_CLOUD_API_KEY || !LOVABLE_API_KEY) {
-      throw new Error('API keys not configured');
+    if (!LOVABLE_API_KEY) {
+      throw new Error('LOVABLE_API_KEY not configured');
+    }
+
+    // Get authorization header
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      throw new Error('No authorization header');
+    }
+
+    // Initialize Supabase client
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+
+    // Get user from auth
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      throw new Error('Authentication failed');
+    }
+
+    // Try to get user's API key from database
+    const { data: apiKeyData, error: apiKeyError } = await supabase
+      .from('user_api_keys')
+      .select('api_key')
+      .eq('user_id', user.id)
+      .eq('service_name', 'google_cloud')
+      .maybeSingle();
+
+    // Use user's API key if available, otherwise fall back to env variable
+    const GOOGLE_CLOUD_API_KEY = apiKeyData?.api_key || Deno.env.get('GOOGLE_CLOUD_API_KEY');
+
+    if (!GOOGLE_CLOUD_API_KEY) {
+      throw new Error('Google Cloud API key not configured. Please add your API key in settings.');
     }
 
     let detectedLanguage = language || 'en-US';

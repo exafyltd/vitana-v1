@@ -1,9 +1,10 @@
 import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from "react"
-import { Mic, Video as VideoIcon, X, Send } from "lucide-react"
+import { Mic, Video as VideoIcon, X, Send, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DiaryButton from "@/components/diary/DiaryButton"
 import { aiVoiceService } from "@/services/aiVoiceService"
 import { useToast } from "@/hooks/use-toast"
+import { ApiKeySettingsModal } from "@/components/chat/ApiKeySettingsModal"
 
 export interface StreamingChatRef {
   activateVideo: () => void
@@ -19,6 +20,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isRecording, setIsRecording] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
   const { toast } = useToast()
 
@@ -221,6 +223,16 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           <Button
             variant="ghost"
             size="icon"
+            onClick={() => setShowApiKeyModal(true)}
+            className="hover:bg-accent rounded-full"
+            aria-label="API Settings"
+          >
+            <Settings className="h-5 w-5" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={handleMicToggle}
             disabled={isProcessing}
             className={
@@ -274,6 +286,11 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         
         <DiaryButton />
       </div>
+
+      <ApiKeySettingsModal 
+        open={showApiKeyModal} 
+        onOpenChange={setShowApiKeyModal} 
+      />
     </>
   )
 })
