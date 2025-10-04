@@ -1,7 +1,9 @@
-import { useState, useImperativeHandle, forwardRef } from "react"
-import { Mic, Video as VideoIcon, X } from "lucide-react"
+import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from "react"
+import { Mic, Video as VideoIcon, X, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DiaryButton from "@/components/diary/DiaryButton"
+import { aiVoiceService } from "@/services/aiVoiceService"
+import { useToast } from "@/hooks/use-toast"
 
 export interface StreamingChatRef {
   activateVideo: () => void
@@ -13,6 +15,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isAudioActive, setIsAudioActive] = useState(false)
   const [isVideoActive, setIsVideoActive] = useState(false)
   const [streamTime] = useState("9:51")
+  const [inputValue, setInputValue] = useState("")
+  const [isRecording, setIsRecording] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [showCrisisButton, setShowCrisisButton] = useState(false)
+  const fadeTimeoutRef = useRef<NodeJS.Timeout>()
+  const { toast } = useToast()
 
   const isStreaming = isAudioActive || isVideoActive
 
@@ -21,13 +29,121 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     setIsVideoActive(false)
   }
 
-  const handleMicToggle = () => {
-    setIsAudioActive((v) => !v)
+  const handleMicToggle = async () => {
+    if (isRecording) {
+      // Stop recording and send to AI
+      setIsRecording(false)
+      setIsProcessing(true)
+      
+      try {
+        const audioBlob = await aiVoiceService.stopRecording()
+        const response = await aiVoiceService.sendVoiceMessage(audioBlob)
+        
+        // Show AI response in input field
+        setInputValue(response.text)
+        
+        // Play audio response
+        await aiVoiceService.playAudio(response.audio)
+        
+        // Check for crisis
+        if (response.crisisDetected) {
+          setShowCrisisButton(true)
+        }
+        
+        // Auto-fade after 5 seconds
+        if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current)
+        fadeTimeoutRef.current = setTimeout(() => {
+          setInputValue("")
+        }, 5000)
+        
+        setIsAudioActive(true)
+        setTimeout(() => setIsAudioActive(false), 3000)
+      } catch (error) {
+        console.error('Voice error:', error)
+        toast({
+          title: "Voice Error",
+          description: error instanceof Error ? error.message : "Failed to process voice",
+          variant: "destructive",
+        })
+      } finally {
+        setIsProcessing(false)
+      }
+    } else {
+      // Start recording
+      try {
+        await aiVoiceService.startRecording()
+        setIsRecording(true)
+        setIsAudioActive(true)
+      } catch (error) {
+        console.error('Recording error:', error)
+        toast({
+          title: "Microphone Error",
+          description: "Could not access microphone",
+          variant: "destructive",
+        })
+      }
+    }
   }
 
   const handleVideoToggle = () => {
     setIsVideoActive((v) => !v)
   }
+
+  const handleSendText = async () => {
+    if (!inputValue.trim() || isProcessing) return
+    
+    const userMessage = inputValue.trim()
+    setInputValue("") // Clear immediately
+    setIsProcessing(true)
+    
+    try {
+      const response = await aiVoiceService.sendTextMessage(userMessage)
+      
+      // Show AI response briefly
+      setInputValue(response.text)
+      
+      // Play audio response
+      await aiVoiceService.playAudio(response.audio)
+      
+      // Check for crisis
+      if (response.crisisDetected) {
+        setShowCrisisButton(true)
+      }
+      
+      // Clear immediately after AI response
+      setInputValue("")
+    } catch (error) {
+      console.error('Text error:', error)
+      toast({
+        title: "Chat Error",
+        description: error instanceof Error ? error.message : "Failed to send message",
+        variant: "destructive",
+      })
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSendText()
+    }
+  }
+
+  const handleConnectToCareTeam = () => {
+    toast({
+      title: "Connecting to Care Team",
+      description: "A counselor will reach out to you shortly.",
+    })
+    setShowCrisisButton(false)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current)
+    }
+  }, [])
 
   useImperativeHandle(ref, () => ({
     activateVideo: () => {
@@ -48,6 +164,28 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   return (
     <>
+      {showCrisisButton && (
+        <div className="fixed bottom-32 left-1/2 -translate-x-1/2 bg-destructive text-destructive-foreground px-4 py-3 rounded-lg flex items-center gap-3 z-50 shadow-lg animate-in fade-in slide-in-from-bottom-4">
+          <span className="text-sm font-medium">We're here to help</span>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleConnectToCareTeam}
+            className="bg-background text-foreground hover:bg-background/90"
+          >
+            Connect to Care Team
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowCrisisButton(false)}
+            className="h-6 w-6 p-0 ml-2"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
       {isStreaming && (
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 bg-card text-card-foreground px-3 py-2 rounded-lg flex items-center gap-2 z-50 shadow">
           <span className="text-xs">Stream is live</span>
@@ -84,9 +222,14 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             variant="ghost"
             size="icon"
             onClick={handleMicToggle}
-            className={(isAudioActive && !isVideoActive) ? "bg-ruby text-white hover:bg-ruby/90 rounded-full" : "hover:bg-accent rounded-full"}
-            aria-pressed={isAudioActive}
-            aria-label="Toggle microphone"
+            disabled={isProcessing}
+            className={
+              (isRecording || (isAudioActive && !isVideoActive))
+                ? "bg-ruby text-white hover:bg-ruby/90 rounded-full animate-pulse"
+                : "hover:bg-accent rounded-full"
+            }
+            aria-pressed={isRecording}
+            aria-label={isRecording ? "Stop recording" : "Start recording"}
           >
             <Mic className="h-5 w-5" />
           </Button>
@@ -102,13 +245,30 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             <VideoIcon className="h-5 w-5" />
           </Button>
 
-          <div className={`flex-1 ${isAudioActive && !isVideoActive ? "bg-ruby/20 rounded-lg px-3 py-2" : ""}`}>
+          <div className="flex-1 flex items-center gap-2">
             <input
               type="text"
-              placeholder="Type something"
-              className={`w-full bg-transparent text-foreground placeholder:text-muted-foreground border-none outline-none text-sm`}
+              placeholder={isProcessing ? "Processing..." : isRecording ? "Recording..." : "Type or speak"}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={isProcessing || isRecording}
+              className={`flex-1 bg-transparent text-foreground placeholder:text-muted-foreground border-none outline-none text-sm ${
+                isRecording ? "opacity-50" : ""
+              }`}
               aria-label="Type a message"
             />
+            {inputValue && !isProcessing && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleSendText}
+                className="h-8 w-8 hover:bg-accent rounded-full"
+                aria-label="Send message"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         </div>
         
