@@ -13,6 +13,26 @@ const CRISIS_KEYWORDS = [
   'overdose', 'hopeless', 'give up', 'انتحار', 'إيذاء النفس', 'يائس'
 ];
 
+// Map language codes to Google Cloud Chirp HD voices
+function getVoiceNameForLanguage(languageCode: string): string {
+  // Normalize language code to uppercase format (e.g., en-us → en-US)
+  const normalized = languageCode.toLowerCase().replace(/([a-z]{2})-([a-z]{2})/, 
+    (match, p1, p2) => `${p1}-${p2.toUpperCase()}`);
+  
+  const voiceMap: Record<string, string> = {
+    'de-DE': 'de-DE-Chirp-HD-F',      // German female
+    'es-ES': 'es-ES-Chirp-HD-F',      // Spanish female
+    'ar-XA': 'ar-XA-Chirp-HD-F',      // Arabic female
+    'cmn-CN': 'cmn-CN-Chirp-HD-F',    // Chinese Mandarin female
+    'zh-CN': 'cmn-CN-Chirp-HD-F',     // Alias for Chinese
+    'fr-FR': 'fr-FR-Chirp-HD-F',      // French female
+    'ru-RU': 'ru-RU-Chirp-HD-F',      // Russian female
+    'en-US': 'en-US-Chirp-HD-F',      // English female (default)
+  };
+  
+  return voiceMap[normalized] || 'en-US-Chirp-HD-F';  // Fallback to English
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -150,6 +170,8 @@ Languages: German, English, Arabic, Spanish, Russian, Chinese.`;
     console.log('AI response:', aiText);
 
     // Step 4: Convert AI response to speech with TTS
+    const selectedVoice = getVoiceNameForLanguage(detectedLanguage);
+    console.log('Using TTS voice:', selectedVoice, 'for language:', detectedLanguage);
     console.log('Converting to speech with Google Cloud TTS...');
     const ttsResponse = await fetch(
       `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_CLOUD_API_KEY}`,
@@ -160,6 +182,7 @@ Languages: German, English, Arabic, Spanish, Russian, Chinese.`;
           input: { text: aiText },
           voice: {
             languageCode: detectedLanguage,
+            name: getVoiceNameForLanguage(detectedLanguage),
           },
           audioConfig: {
             audioEncoding: 'MP3',
