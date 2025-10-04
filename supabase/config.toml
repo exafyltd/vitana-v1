@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.fetch-user-context]
 verify_jwt = true
+
+[functions.generate-recommendations]
+verify_jwt = true
