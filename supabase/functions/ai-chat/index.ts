@@ -27,7 +27,7 @@ function getVoiceNameForLanguage(languageCode: string): string {
     'zh-CN': 'cmn-CN-Chirp-HD-F',     // Alias for Chinese
     'fr-FR': 'fr-FR-Chirp-HD-F',      // French female
     'ru-RU': 'ru-RU-Chirp-HD-F',      // Russian female
-    'sr-RS': 'sr-RS-Chirp-HD-F',      // Serbian female
+    'sr-RS': 'sr-RS-Standard-B',      // Serbian male
     'en-US': 'en-US-Chirp-HD-F',      // English female (default)
   };
   
