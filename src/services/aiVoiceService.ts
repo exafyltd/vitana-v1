@@ -2,7 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface AIChatResponse {
   text: string;
-  audio: string; // base64 encoded MP3
+  audio: string | null; // base64 encoded MP3, null if TTS failed
   language: string;
   crisisDetected: boolean;
   transcript?: string;
@@ -77,7 +77,14 @@ export class AIVoiceService {
       localStorage.setItem('ai_conversation_id', data.conversationId);
     }
 
-    return data as AIChatResponse;
+    // Map server response to client interface
+    return {
+      text: data.text,
+      audio: data.audioContent ?? null,
+      language: data.detectedLanguage ?? 'en-US',
+      crisisDetected: data.isCrisis ?? false,
+      transcript: data.transcript
+    };
   }
 
   async sendTextMessage(text: string, language?: string): Promise<AIChatResponse> {
@@ -105,7 +112,14 @@ export class AIVoiceService {
       localStorage.setItem('ai_conversation_id', data.conversationId);
     }
 
-    return data as AIChatResponse;
+    // Map server response to client interface
+    return {
+      text: data.text,
+      audio: data.audioContent ?? null,
+      language: data.detectedLanguage ?? 'en-US',
+      crisisDetected: data.isCrisis ?? false,
+      transcript: data.transcript
+    };
   }
 
   async playAudio(base64Audio: string): Promise<void> {

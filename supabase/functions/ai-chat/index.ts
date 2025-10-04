@@ -423,10 +423,12 @@ serve(async (req) => {
     extractAndStoreInsights(supabaseClient, user.id, conversationId, userMessage, aiText)
       .catch(err => console.error('Failed to extract insights:', err));
 
+    // Normalize language for TTS and response (before try block)
+    const normalizedLang = normalizeLanguage(detectedLanguage);
+
     // Convert to speech (optional - graceful failure)
     let base64Audio = null;
     try {
-      const normalizedLang = normalizeLanguage(detectedLanguage);
       const voiceName = getVoiceNameForLanguage(normalizedLang);
       console.log('Using TTS voice:', voiceName, 'for language:', normalizedLang);
       
