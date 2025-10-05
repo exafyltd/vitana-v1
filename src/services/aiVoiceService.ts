@@ -2,7 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface AIChatResponse {
   text: string;
-  audio: string | null; // base64 encoded MP3, null if TTS failed
+  audio: string | null;
   language: string;
   crisisDetected: boolean;
   transcript?: string;
@@ -11,6 +11,16 @@ export interface AIChatResponse {
 export class AIVoiceService {
   private mediaRecorder: MediaRecorder | null = null;
   private audioChunks: Blob[] = [];
+  private audioQueue: AudioBuffer[] = [];
+  private isPlaying: boolean = false;
+  private audioContext: AudioContext | null = null;
+
+  constructor() {
+    // Initialize audio context lazily
+    if (typeof window !== 'undefined') {
+      this.audioContext = new AudioContext();
+    }
+  }
 
   async startRecording(): Promise<void> {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -48,7 +58,6 @@ export class AIVoiceService {
   }
 
   async sendVoiceMessage(audioBlob: Blob): Promise<AIChatResponse> {
-    // Convert audio blob to base64
     const arrayBuffer = await audioBlob.arrayBuffer();
     const base64Audio = btoa(
       new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
@@ -56,14 +65,14 @@ export class AIVoiceService {
 
     console.log('Sending voice message to edge function...');
     
-    // Get conversationId for persistent memory
     let conversationId = localStorage.getItem('ai_conversation_id') || undefined;
     
     const { data, error } = await supabase.functions.invoke('ai-chat', {
       body: { 
         audio: base64Audio,
         agentType: 'health',
-        conversationId
+        conversationId,
+        stream: false // Use non-streaming for voice for now
       },
     });
 
@@ -72,12 +81,10 @@ export class AIVoiceService {
       throw new Error(error.message);
     }
 
-    // Store conversationId for future messages
     if (data.conversationId) {
       localStorage.setItem('ai_conversation_id', data.conversationId);
     }
 
-    // Map server response to client interface
     return {
       text: data.text,
       audio: data.audioContent ?? null,
@@ -87,39 +94,145 @@ export class AIVoiceService {
     };
   }
 
-  async sendTextMessage(text: string, language?: string): Promise<AIChatResponse> {
-    console.log('Sending text message to edge function:', text, 'Language:', language);
+  async sendTextMessage(
+    text: string, 
+    language?: string,
+    onTextChunk?: (chunk: string) => void,
+    onAudioChunk?: (audioData: string) => void
+  ): Promise<AIChatResponse> {
+    console.log('Sending text message with streaming:', text, 'Language:', language);
     
-    // Get or create conversationId from localStorage
     let conversationId = localStorage.getItem('ai_conversation_id') || undefined;
     
-    const { data, error } = await supabase.functions.invoke('ai-chat', {
-      body: { 
-        text, 
-        language,
-        agentType: 'health', // Default to health agent
-        conversationId
+    // Get Supabase URL and key for direct SSE call
+    const supabaseUrl = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlubWtodndkY3V5aG54a2dmdnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NjY2MzcsImV4cCI6MjA3MTQ0MjYzN30._-QX8ZFgDsKgLM7eDlyc64vi73F-Hwc4ttnDPHjZgVw';
+    
+    // Get auth token
+    const { data: { session } } = await supabase.auth.getSession();
+    const authToken = session?.access_token;
+    
+    if (!authToken) {
+      throw new Error('Not authenticated');
+    }
+
+    const response = await fetch(`${supabaseUrl}/functions/v1/ai-chat`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+        'apikey': supabaseKey,
       },
+      body: JSON.stringify({
+        text,
+        language,
+        agentType: 'health',
+        conversationId,
+        stream: true
+      }),
     });
 
-    if (error) {
-      console.error('Edge function error:', error);
-      throw new Error(error.message);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // Store conversationId for persistent memory across sessions
-    if (data.conversationId) {
-      localStorage.setItem('ai_conversation_id', data.conversationId);
+    let fullText = '';
+    let detectedLanguage = language || 'en-US';
+    let isCrisis = false;
+    let finalConversationId = conversationId;
+
+    // Process SSE stream
+    const reader = response.body!.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6);
+          try {
+            const event = JSON.parse(data);
+            
+            if (event.type === 'text') {
+              fullText += event.content;
+              if (onTextChunk) {
+                onTextChunk(event.content);
+              }
+            } else if (event.type === 'audio') {
+              console.log('Received audio chunk, queuing for playback');
+              if (onAudioChunk) {
+                onAudioChunk(event.content);
+              }
+              // Queue audio for playback
+              this.queueAudio(event.content);
+            } else if (event.type === 'done') {
+              detectedLanguage = event.detectedLanguage || detectedLanguage;
+              isCrisis = event.isCrisis || false;
+              finalConversationId = event.conversationId || conversationId;
+              
+              if (finalConversationId) {
+                localStorage.setItem('ai_conversation_id', finalConversationId);
+              }
+            }
+          } catch (e) {
+            console.error('Error parsing SSE event:', e);
+          }
+        }
+      }
     }
 
-    // Map server response to client interface
     return {
-      text: data.text,
-      audio: data.audioContent ?? null,
-      language: data.detectedLanguage ?? 'en-US',
-      crisisDetected: data.isCrisis ?? false,
-      transcript: data.transcript
+      text: fullText,
+      audio: null, // Audio is streamed via chunks
+      language: detectedLanguage,
+      crisisDetected: isCrisis,
+      transcript: text
     };
+  }
+
+  private async queueAudio(base64Audio: string): Promise<void> {
+    if (!this.audioContext) return;
+
+    try {
+      const audioBlob = this.base64ToBlob(base64Audio, 'audio/mp3');
+      const arrayBuffer = await audioBlob.arrayBuffer();
+      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      
+      this.audioQueue.push(audioBuffer);
+      
+      if (!this.isPlaying) {
+        this.playNextInQueue();
+      }
+    } catch (error) {
+      console.error('Error queuing audio:', error);
+    }
+  }
+
+  private playNextInQueue(): void {
+    if (this.audioQueue.length === 0 || !this.audioContext) {
+      this.isPlaying = false;
+      return;
+    }
+
+    this.isPlaying = true;
+    const audioBuffer = this.audioQueue.shift()!;
+    
+    const source = this.audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(this.audioContext.destination);
+    
+    source.onended = () => {
+      this.playNextInQueue();
+    };
+    
+    source.start(0);
   }
 
   async playAudio(base64Audio: string): Promise<void> {
@@ -148,6 +261,11 @@ export class AIVoiceService {
     }
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], { type: mimeType });
+  }
+
+  clearAudioQueue(): void {
+    this.audioQueue = [];
+    this.isPlaying = false;
   }
 }
 
