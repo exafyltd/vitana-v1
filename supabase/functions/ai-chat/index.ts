@@ -360,10 +360,9 @@ serve(async (req) => {
           body: JSON.stringify({
             config: {
               encoding: 'WEBM_OPUS',
-              sampleRateHertz: 48000,
-              languageCode: 'de-DE',
-              alternativeLanguageCodes: ['ar-XA', 'en-US', 'es-ES', 'ru-RU', 'zh-CN', 'sr-RS'],
-              model: 'latest_long',
+              languageCode: normalizeLanguage(language || detectedLanguage || 'en-US'),
+              alternativeLanguageCodes: ['ar-XA', 'de-DE', 'en-US', 'es-ES', 'ru-RU', 'zh-CN', 'sr-RS'],
+              model: 'latest_short',
               enableAutomaticPunctuation: true,
             },
             audio: { content: audio },
@@ -605,6 +604,13 @@ serve(async (req) => {
               }
             }).then(() => console.info('[stream] ✓ AI message stored'))
               .catch((err) => console.error('[stream] Error storing AI message:', err));
+            
+            // Wait for any pending TTS tasks to flush audio events before closing the stream
+            try {
+              await Promise.allSettled(pendingTTS);
+            } catch (e) {
+              console.error('[stream] Error awaiting TTS tasks:', e);
+            }
             
             // Send done event
             const doneEvent = `data: ${JSON.stringify({ 
