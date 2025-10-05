@@ -187,6 +187,9 @@ export class AIVoiceService {
               }
               // Queue audio for playback
               await this.queueAudio(event.content);
+            } else if (event.type === 'audio_error') {
+              console.warn('[streaming] ⚠️ TTS synthesis failed:', event.message);
+              // Continue with text-only response
             } else if (event.type === 'done') {
               console.info('[streaming] ✓ Stream done');
               detectedLanguage = event.detectedLanguage || detectedLanguage;
