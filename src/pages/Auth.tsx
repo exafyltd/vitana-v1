@@ -10,6 +10,65 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { z } from 'zod';
+
+// Input validation schemas
+const emailSchema = z.string()
+  .trim()
+  .email({ message: "Please enter a valid email address" })
+  .max(255, { message: "Email must be less than 255 characters" });
+
+const passwordSchema = z.string()
+  .min(6, { message: "Password must be at least 6 characters" })
+  .max(72, { message: "Password must be less than 72 characters" });
+
+const fullNameSchema = z.string()
+  .trim()
+  .min(2, { message: "Name must be at least 2 characters" })
+  .max(100, { message: "Name must be less than 100 characters" });
+
+// Friendly error message mapping
+const getAuthErrorMessage = (error: any): string => {
+  const errorMsg = error?.message || '';
+  
+  console.error('[Auth] Error:', errorMsg);
+  
+  // Network errors
+  if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
+    return 'Network error. Please check your internet connection and try again.';
+  }
+  
+  // Rate limiting
+  if (errorMsg.includes('rate limit') || errorMsg.includes('too many requests')) {
+    return 'Too many attempts. Please wait a moment and try again.';
+  }
+  
+  // Sign up errors
+  if (errorMsg.includes('User already registered')) {
+    return 'This email is already registered. Please sign in instead.';
+  }
+  
+  if (errorMsg.includes('Password should be at least')) {
+    return 'Password must be at least 6 characters long.';
+  }
+  
+  // Sign in errors
+  if (errorMsg.includes('Invalid login credentials') || errorMsg.includes('Invalid email or password')) {
+    return 'Invalid email or password. Please check your credentials and try again.';
+  }
+  
+  if (errorMsg.includes('Email not confirmed')) {
+    return 'Please verify your email address before signing in. Check your inbox for a confirmation link.';
+  }
+  
+  // General errors
+  if (errorMsg.includes('timeout')) {
+    return 'Request timed out. Please try again.';
+  }
+  
+  // Default fallback
+  return errorMsg || 'An unexpected error occurred. Please try again.';
+};
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -37,23 +96,52 @@ export default function Auth() {
     setError(null);
 
     try {
+      // Validate inputs
+      const emailValidation = emailSchema.safeParse(email);
+      if (!emailValidation.success) {
+        throw new Error(emailValidation.error.errors[0].message);
+      }
+
+      const passwordValidation = passwordSchema.safeParse(password);
+      if (!passwordValidation.success) {
+        throw new Error(passwordValidation.error.errors[0].message);
+      }
+
+      const nameValidation = fullNameSchema.safeParse(fullName);
+      if (!nameValidation.success) {
+        throw new Error(nameValidation.error.errors[0].message);
+      }
+
+      console.log('[Auth] Attempting sign up for:', email);
+
       const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
+        email: emailValidation.data,
+        password: passwordValidation.data,
         options: {
           emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.auth),
           data: {
-            full_name: fullName,
+            full_name: nameValidation.data,
           },
         },
       });
 
-      if (signUpError) throw signUpError;
+      if (signUpError) {
+        console.error('[Auth] Sign up error:', signUpError);
+        throw signUpError;
+      }
+
+      console.log('[Auth] Sign up successful');
 
       // Show success message for email verification
       setError('✅ Registration successful! Please check your email for a confirmation link to activate your account.');
+      
+      // Clear form fields
+      setEmail('');
+      setPassword('');
+      setFullName('');
+      
     } catch (err: any) {
-      setError(err.message || 'An error occurred during sign up');
+      setError(getAuthErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -65,22 +153,34 @@ export default function Auth() {
     setError(null);
 
     try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      // Validate inputs
+      const emailValidation = emailSchema.safeParse(email);
+      if (!emailValidation.success) {
+        throw new Error(emailValidation.error.errors[0].message);
+      }
+
+      const passwordValidation = passwordSchema.safeParse(password);
+      if (!passwordValidation.success) {
+        throw new Error(passwordValidation.error.errors[0].message);
+      }
+
+      console.log('[Auth] Attempting sign in for:', email);
+
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: emailValidation.data,
+        password: passwordValidation.data,
       });
 
-      if (signInError) throw signInError;
-
-      navigate('/home');
-    } catch (err: any) {
-      if (err.message?.includes('Invalid login credentials')) {
-        setError('Invalid email or password. Please check your credentials and try again.');
-      } else if (err.message?.includes('Email not confirmed')) {
-        setError('Please verify your email address before signing in. Check your inbox for a confirmation link.');
-      } else {
-        setError(err.message || 'An error occurred during sign in');
+      if (signInError) {
+        console.error('[Auth] Sign in error:', signInError);
+        throw signInError;
       }
+
+      console.log('[Auth] Sign in successful');
+      navigate('/home');
+      
+    } catch (err: any) {
+      setError(getAuthErrorMessage(err));
     } finally {
       setIsLoading(false);
     }

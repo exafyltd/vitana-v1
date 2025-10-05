@@ -44,11 +44,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
+      console.log('[AuthProvider] Signing out user');
       // Clear all toasts before signing out
       dismiss();
-      await supabase.auth.signOut();
-    } catch (error) {
-      console.log('Sign out completed (session may have already expired)');
+      
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('[AuthProvider] Sign out error:', error);
+        // Don't throw - user might already be signed out
+        // Just log and continue
+      } else {
+        console.log('[AuthProvider] Sign out successful');
+      }
+    } catch (error: any) {
+      console.error('[AuthProvider] Sign out exception:', error);
+      // Don't throw - allow sign out to complete even if there's an error
     }
   };
 
