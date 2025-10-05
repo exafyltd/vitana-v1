@@ -894,6 +894,7 @@ export type Database = {
           biomarkers: string[]
           category: Database["public"]["Enums"]["lab_test_category"]
           created_at: string
+          data_source: string | null
           description: string | null
           id: string
           is_active: boolean
@@ -909,6 +910,7 @@ export type Database = {
           biomarkers: string[]
           category: Database["public"]["Enums"]["lab_test_category"]
           created_at?: string
+          data_source?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
@@ -924,6 +926,7 @@ export type Database = {
           biomarkers?: string[]
           category?: Database["public"]["Enums"]["lab_test_category"]
           created_at?: string
+          data_source?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
@@ -1786,6 +1789,48 @@ export type Database = {
           metadata?: Json | null
           user_id_1?: string
           user_id_2?: string
+        }
+        Relationships: []
+      }
+      user_supplements: {
+        Row: {
+          category: string
+          created_at: string
+          dosage: string | null
+          frequency: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          notes: string | null
+          start_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          dosage?: string | null
+          frequency?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          notes?: string | null
+          start_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          dosage?: string | null
+          frequency?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          notes?: string | null
+          start_date?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
