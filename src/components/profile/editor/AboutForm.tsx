@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import { Plus, X, Globe, Users, Lock } from "lucide-react";
 import { Visibility } from "@/types/profile";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface LinkItem {
   id: string;
@@ -18,7 +19,16 @@ interface LinkItem {
   visibility: Visibility;
 }
 
-export function AboutForm() {
+interface AboutFormProps {
+  onDataChange?: (data: {
+    bio: string;
+    location: string;
+    links: Array<{ label: string; url: string }>;
+    languages: string[];
+  }) => void;
+}
+
+export function AboutForm({ onDataChange }: AboutFormProps) {
   const [bio, setBio] = useState("");
   const [bioVisibility, setBioVisibility] = useState<Visibility>("public");
   const [location, setLocation] = useState("");
@@ -26,6 +36,52 @@ export function AboutForm() {
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const { toast } = useToast();
+
+  // Load current profile data
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  // Notify parent of data changes
+  useEffect(() => {
+    if (onDataChange) {
+      onDataChange({
+        bio,
+        location,
+        links: links.map(l => ({ label: l.label, url: l.url })),
+        languages
+      });
+    }
+  }, [bio, location, links, languages, onDataChange]);
+
+  const loadProfile = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('bio, location, links, languages')
+        .eq('user_id', user.id)
+        .single();
+
+      if (profile) {
+        setBio(profile.bio || "");
+        setLocation(profile.location || "");
+        if (profile.links) {
+          setLinks(profile.links.map((l: any, i: number) => ({
+            id: Date.now().toString() + i,
+            label: l.label || '',
+            url: l.url || '',
+            visibility: 'public' as Visibility
+          })));
+        }
+        setLanguages(profile.languages || []);
+      }
+    } catch (error) {
+      console.error('Error loading profile:', error);
+    }
+  };
 
   const addLink = () => {
     const newLink: LinkItem = {
@@ -285,9 +341,6 @@ Examples:
         </Select>
       </div>
 
-      <div className="pt-4 border-t">
-        <Button className="w-full">Save Changes</Button>
-      </div>
     </div>
   );
 }

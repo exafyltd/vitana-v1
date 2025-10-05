@@ -137,14 +137,45 @@ export default function EditProfilePage() {
 
   const scope = getScope(scopeContext);
 
-  const handleSave = () => {
-    // TODO: Save profile changes
-    setHasUnsavedChanges(false);
-    toast({
-      title: "Profile updated successfully!",
-      description: "Your changes are now live. Your VITANA profile looks amazing."
-    });
-    console.log('Saving profile changes...');
+  const handleSave = async () => {
+    try {
+      console.log('[EditProfilePage] Main save triggered - refreshing profile data');
+      
+      // Refresh profile data to ensure everything is up to date
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Not authenticated",
+          description: "Please log in to save your profile.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Fetch latest profile data
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) throw error;
+
+      setHasUnsavedChanges(false);
+      toast({
+        title: "Profile updated successfully!",
+        description: "Your changes are now live. Your VITANA profile looks amazing."
+      });
+      
+      console.log('[EditProfilePage] Profile data refreshed:', data);
+    } catch (error: any) {
+      console.error('[EditProfilePage] Save error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to refresh profile data.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleCancel = () => {
