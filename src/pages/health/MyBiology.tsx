@@ -97,55 +97,6 @@ export default function MyBiology() {
     deleteSupplement 
   } = useUserSupplements();
 
-  useEffect(() => {
-    fetchResults();
-    setMockOmicsResults(getMockOmicsResults());
-  }, []);
-
-  const fetchResults = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setResults(getMockResults());
-        setIsLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('lab_test_results')
-        .select(`
-          *,
-          lab_test_orders!inner(
-            lab_tests(name, category, provider_name)
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('completed_at', { ascending: false });
-
-      if (error) throw error;
-
-      const formattedResults = data.map(result => ({
-        ...result,
-        lab_test: result.lab_test_orders.lab_tests
-      })) as TestResult[];
-
-      if (formattedResults.length === 0) {
-        setResults(getMockResults());
-      } else {
-        setResults(formattedResults);
-      }
-    } catch (error) {
-      console.error('Error fetching results:', error);
-      setResults(getMockResults());
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchSupplements = () => {
-    // Now handled by useUserSupplements hook
-  };
-
   const getMockOmicsResults = (): OmicsResult[] => {
     return [
       {
@@ -206,6 +157,52 @@ export default function MyBiology() {
       },
     ];
   };
+
+  useEffect(() => {
+    fetchResults();
+    setMockOmicsResults(getMockOmicsResults());
+  }, []);
+
+  const fetchResults = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setResults(getMockResults());
+        setIsLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('lab_test_results')
+        .select(`
+          *,
+          lab_test_orders!inner(
+            lab_tests(name, category, provider_name)
+          )
+        `)
+        .eq('user_id', user.id)
+        .order('completed_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedResults = data.map(result => ({
+        ...result,
+        lab_test: result.lab_test_orders.lab_tests
+      })) as TestResult[];
+
+      if (formattedResults.length === 0) {
+        setResults(getMockResults());
+      } else {
+        setResults(formattedResults);
+      }
+    } catch (error) {
+      console.error('Error fetching results:', error);
+      setResults(getMockResults());
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   const getMockResults = (): TestResult[] => [
     {
