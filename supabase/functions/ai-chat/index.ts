@@ -645,116 +645,147 @@ serve(async (req) => {
             const reader = aiResponse.body!.getReader();
             const decoder = new TextDecoder();
             let firstToken = true;
+            let sseBuffer = '';
             
             while (true) {
               const { done, value } = await reader.read();
               if (done) break;
               
-              const chunk = decoder.decode(value);
-              const lines = chunk.split('\n');
+              // Stream-safe decode and accumulate into buffer
+              const chunk = decoder.decode(value, { stream: true });
+              sseBuffer += chunk;
               
-              for (const line of lines) {
-                if (line.startsWith('data: ')) {
-                  const data = line.slice(6);
-                  if (data === '[DONE]') continue;
+              // Process complete lines only; keep the trailing partial line in buffer
+              while (true) {
+                const newlineIndex = sseBuffer.indexOf('\n');
+                if (newlineIndex === -1) break;
+                let line = sseBuffer.slice(0, newlineIndex);
+                sseBuffer = sseBuffer.slice(newlineIndex + 1);
+                if (line.endsWith('\r')) line = line.slice(0, -1);
+                if (!line || line.startsWith(':')) continue; // Skip comments/empties
+                
+                const match = line.match(/^data:\s*(.*)$/);
+                if (!match) continue;
+                const data = match[1];
+                if (data === '[DONE]') continue;
+                
+                // If JSON might be incomplete (cut across chunks), put it back and wait for more
+                let parsed: any;
+                try {
+                  parsed = JSON.parse(data);
+                } catch (_e) {
+                  // Re-buffer the line and wait for more data
+                  sseBuffer = line + '\n' + sseBuffer;
+                  break; // break inner loop to read more bytes
+                }
+                
+                const content = parsed.choices?.[0]?.delta?.content;
+                if (content) {
+                  if (firstToken) {
+                    console.info('[stream] ⚡ First token received');
+                    firstToken = false;
+                  }
                   
-                  try {
-                    const parsed = JSON.parse(data);
-                    const content = parsed.choices?.[0]?.delta?.content;
+                  fullText += content;
+                  currentSentence += content;
+                  
+                  // Buffer first sentence for preamble filtering
+                  if (isFirstSentence) {
+                    firstSentenceBuffer += content;
                     
-                    if (content) {
-                      if (firstToken) {
-                        console.info('[stream] ⚡ First token received');
-                        firstToken = false;
-                      }
+                    // Check if first sentence is complete
+                    if (/[.!?]\s*$/.test(firstSentenceBuffer)) {
+                      const originalFirst = firstSentenceBuffer.trim();
+                      const cleanedFirst = cleanAIResponse(originalFirst);
                       
-                      fullText += content;
-                      currentSentence += content;
+                      console.info(`[stream] 🔍 First sentence check - Original: "${originalFirst.substring(0, 50)}...", Cleaned: "${cleanedFirst.substring(0, 50) || '(EMPTY)'}..."`);
                       
-                      // Buffer first sentence for preamble filtering
-                      if (isFirstSentence) {
-                        firstSentenceBuffer += content;
+                      // If first sentence was just preamble (cleaned to empty), discard it
+                      if (cleanedFirst.length === 0) {
+                        console.info('[stream] 🗑️ Discarded preamble from first sentence');
+                        currentSentence = '';
+                        firstSentenceBuffer = '';
+                      } else {
+                        // First sentence has real content, emit the CLEANED version
+                        const textEvent = `data: ${JSON.stringify({ type: 'text', content: cleanedFirst })}\n\n`;
+                        safeEnqueue(encoder.encode(textEvent));
                         
-                        // Check if first sentence is complete
-                        if (/[.!?]\s*$/.test(firstSentenceBuffer)) {
-                          const originalFirst = firstSentenceBuffer.trim();
-                          const cleanedFirst = cleanAIResponse(originalFirst);
+                        // Process for TTS
+                        if (cleanedFirst.length > 8) {
+                          sentencesProcessed++;
+                          console.info(`[stream] 📝 First sentence complete (${cleanedFirst.length} chars) - triggering TTS`);
                           
-                          console.info(`[stream] 🔍 First sentence check - Original: "${originalFirst.substring(0, 50)}...", Cleaned: "${cleanedFirst.substring(0, 50) || '(EMPTY)'}..."`);
-                          
-                          // If first sentence was just preamble (cleaned to empty), discard it
-                          if (cleanedFirst.length === 0) {
-                            console.info('[stream] 🗑️ Discarded preamble from first sentence');
-                            currentSentence = '';
-                            firstSentenceBuffer = '';
-                          } else {
-                            // First sentence has real content, emit it
-                            const textEvent = `data: ${JSON.stringify({ type: 'text', content: originalFirst })}\n\n`;
-                            safeEnqueue(encoder.encode(textEvent));
-                            
-                            // Process for TTS
-                            if (cleanedFirst.length > 8) {
-                              sentencesProcessed++;
-                              console.info(`[stream] 📝 First sentence complete (${cleanedFirst.length} chars) - triggering TTS`);
-                              
-                              const p = synthesizeChunk(cleanedFirst, googleApiKey, normalizedLang).then(audioContent => {
-                                if (audioContent && isControllerOpen) {
-                                  console.info(`[stream] 🔊 Audio chunk ${sentencesProcessed} queued`);
-                                  const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
-                                  safeEnqueue(encoder.encode(audioEvent));
-                                }
-                              }).catch(err => console.error(`[stream] TTS error:`, err));
-                              pendingTTS.push(p);
+                          const p = synthesizeChunk(cleanedFirst, googleApiKey, normalizedLang).then(audioContent => {
+                            if (audioContent && isControllerOpen) {
+                              console.info(`[stream] 🔊 Audio chunk ${sentencesProcessed} queued`);
+                              const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
+                              safeEnqueue(encoder.encode(audioEvent));
                             }
-                            currentSentence = '';
-                          }
-                          
-                          isFirstSentence = false;
-                          firstSentenceBuffer = '';
+                          }).catch(err => console.error(`[stream] TTS error:`, err));
+                          pendingTTS.push(p);
                         }
-                        continue; // Don't emit tokens while buffering first sentence
+                        currentSentence = '';
                       }
                       
-                      // After first sentence, emit tokens immediately
-                      const textEvent = `data: ${JSON.stringify({ type: 'text', content })}\n\n`;
-                      safeEnqueue(encoder.encode(textEvent));
-                      
-                      // Check if sentence is complete for TTS
-                      if (/[.!?]\s*$/.test(currentSentence) && currentSentence.length > 8) {
-                        const sentence = cleanAIResponse(currentSentence.trim());
-                        sentencesProcessed++;
-                        
-                        console.info(`[stream] 📝 Sentence ${sentencesProcessed} complete (${sentence.length} chars) - triggering TTS`);
-                        
-                         // Synthesize audio for this sentence (non-blocking)
-                         const p = synthesizeChunk(sentence, googleApiKey, normalizedLang).then(audioContent => {
-                           if (audioContent && isControllerOpen) {
-                             console.info(`[stream] 🔊 Audio chunk ${sentencesProcessed} queued`);
-                             const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
-                             safeEnqueue(encoder.encode(audioEvent));
-                           } else if (!audioContent && isControllerOpen) {
-                             console.error(`[stream] ⚠️ TTS failed for sentence ${sentencesProcessed}`);
-                             const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'TTS synthesis failed' })}\n\n`;
-                             safeEnqueue(encoder.encode(errorEvent));
-                           }
-                         }).catch(err => {
-                           console.error(`[stream] TTS error for sentence ${sentencesProcessed}:`, err);
-                           if (isControllerOpen) {
-                             const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'TTS synthesis error' })}\n\n`;
-                             safeEnqueue(encoder.encode(errorEvent));
-                           }
-                         });
-                         pendingTTS.push(p);
-                         
-                         currentSentence = '';
-                      }
+                      isFirstSentence = false;
+                      firstSentenceBuffer = '';
                     }
-                  } catch (e) {
-                    // Ignore parse errors
+                    continue; // Don't emit tokens while buffering first sentence
+                  }
+                  
+                  // After first sentence, emit tokens immediately
+                  const textEvent = `data: ${JSON.stringify({ type: 'text', content })}\n\n`;
+                  safeEnqueue(encoder.encode(textEvent));
+                  
+                  // Check if sentence is complete for TTS
+                  if (/[.!?]\s*$/.test(currentSentence) && currentSentence.length > 8) {
+                    const sentence = cleanAIResponse(currentSentence.trim());
+                    sentencesProcessed++;
+                    
+                    console.info(`[stream] 📝 Sentence ${sentencesProcessed} complete (${sentence.length} chars) - triggering TTS`);
+                    
+                    // Synthesize audio for this sentence (non-blocking)
+                    const p = synthesizeChunk(sentence, googleApiKey, normalizedLang).then(audioContent => {
+                      if (audioContent && isControllerOpen) {
+                        console.info(`[stream] 🔊 Audio chunk ${sentencesProcessed} queued`);
+                        const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
+                        safeEnqueue(encoder.encode(audioEvent));
+                      } else if (!audioContent && isControllerOpen) {
+                        console.error(`[stream] ⚠️ TTS failed for sentence ${sentencesProcessed}`);
+                        const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'TTS synthesis failed' })}\n\n`;
+                        safeEnqueue(encoder.encode(errorEvent));
+                      }
+                    }).catch(err => {
+                      console.error(`[stream] TTS error for sentence ${sentencesProcessed}:`, err);
+                      if (isControllerOpen) {
+                        const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'TTS synthesis error' })}\n\n`;
+                        safeEnqueue(encoder.encode(errorEvent));
+                      }
+                    });
+                    pendingTTS.push(p);
+                    
+                    currentSentence = '';
                   }
                 }
               }
             }
+            
+            // Attempt to process any leftover buffered line (without trailing newline)
+            if (sseBuffer.trim().startsWith('data:')) {
+              const tailData = sseBuffer.trim().replace(/^data:\s*/, '');
+              try {
+                const parsed = JSON.parse(tailData);
+                const content = parsed.choices?.[0]?.delta?.content;
+                if (content) {
+                  fullText += content;
+                  currentSentence += content;
+                }
+              } catch (_e) {
+                console.warn('[stream] Incomplete tail data after stream end, skipping');
+              }
+            }
+            
+            // Process remaining sentence (safety check for minimum length)
             
             // Process remaining sentence (safety check for minimum length)
             if (currentSentence.trim() && currentSentence.trim().length > 3 && isControllerOpen) {
