@@ -1358,10 +1358,13 @@ export type Database = {
           instagram_interests: string[] | null
           instagram_synced_at: string | null
           instagram_url: string | null
+          languages: string[] | null
           linkedin_headline: string | null
           linkedin_summary: string | null
           linkedin_synced_at: string | null
           linkedin_url: string | null
+          links: Json | null
+          location: string | null
           medical_conditions: string[] | null
           medications: string[] | null
           phone: string | null
@@ -1407,10 +1410,13 @@ export type Database = {
           instagram_interests?: string[] | null
           instagram_synced_at?: string | null
           instagram_url?: string | null
+          languages?: string[] | null
           linkedin_headline?: string | null
           linkedin_summary?: string | null
           linkedin_synced_at?: string | null
           linkedin_url?: string | null
+          links?: Json | null
+          location?: string | null
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
@@ -1456,10 +1462,13 @@ export type Database = {
           instagram_interests?: string[] | null
           instagram_synced_at?: string | null
           instagram_url?: string | null
+          languages?: string[] | null
           linkedin_headline?: string | null
           linkedin_summary?: string | null
           linkedin_synced_at?: string | null
           linkedin_url?: string | null
+          links?: Json | null
+          location?: string | null
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null

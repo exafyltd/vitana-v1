@@ -60,23 +60,24 @@ export function AboutForm({ onDataChange }: AboutFormProps) {
       if (!user) return;
 
       const { data: profile } = await supabase
-        .from('profiles')
+        .from('profiles' as any)
         .select('bio, location, links, languages')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (profile) {
-        setBio(profile.bio || "");
-        setLocation(profile.location || "");
-        if (profile.links) {
-          setLinks(profile.links.map((l: any, i: number) => ({
+        const p: any = profile;
+        setBio(p.bio || "");
+        setLocation(p.location || "");
+        if (p.links) {
+          setLinks(p.links.map((l: any, i: number) => ({
             id: Date.now().toString() + i,
             label: l.label || '',
             url: l.url || '',
             visibility: 'public' as Visibility
           })));
         }
-        setLanguages(profile.languages || []);
+        setLanguages(p.languages || []);
       }
     } catch (error) {
       console.error('Error loading profile:', error);

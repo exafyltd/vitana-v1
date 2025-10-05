@@ -32,15 +32,15 @@ export function AboutDrawer({ open, onOpenChange }: AboutDrawerProps) {
       console.log('[AboutDrawer] Saving profile data:', formData);
 
       const { error, data } = await supabase
-        .from('profiles')
-        .update({
+        .from('profiles' as any)
+        .upsert({
+          user_id: user.id,
           bio: formData.bio,
           location: formData.location,
           links: formData.links,
           languages: formData.languages,
           updated_at: new Date().toISOString(),
-        })
-        .eq('user_id', user.id)
+        }, { onConflict: 'user_id' })
         .select();
 
       if (error) {
