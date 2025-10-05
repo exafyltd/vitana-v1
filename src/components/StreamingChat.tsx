@@ -80,7 +80,15 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       
       try {
         const audioBlob = await aiVoiceService.stopRecording()
-        const response = await aiVoiceService.sendVoiceMessage(audioBlob)
+        
+        // Check if using client-side STT for instant transcription
+        const clientTranscript = aiVoiceService.getClientTranscript();
+        
+        // Send message with instant transcript if available
+        const response = await aiVoiceService.sendVoiceMessage(
+          audioBlob, 
+          clientTranscript || undefined
+        )
         
         // Show AI response in input field
         setInputValue(response.text)
@@ -111,9 +119,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         setIsProcessing(false)
       }
     } else {
-      // Start recording
+      // Start recording with instant client-side STT
       try {
-        await aiVoiceService.startRecording()
+        await aiVoiceService.startRecording({
+          useClientSTT: true, // Enable instant transcription
+          language: selectedLanguage
+        })
         setIsRecording(true)
       } catch (error) {
         console.error('Recording error:', error)

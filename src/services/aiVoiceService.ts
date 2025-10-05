@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { ClientSTT } from "@/utils/clientSTT";
 
 export interface AIChatResponse {
   text: string;
@@ -8,6 +9,11 @@ export interface AIChatResponse {
   transcript?: string;
 }
 
+export interface RecordingOptions {
+  useClientSTT?: boolean; // Default: true - use instant client-side transcription
+  language?: string;
+}
+
 export class AIVoiceService {
   private mediaRecorder: MediaRecorder | null = null;
   private audioChunks: Blob[] = [];
@@ -15,6 +21,9 @@ export class AIVoiceService {
   private isPlaying: boolean = false;
   private audioContext: AudioContext | null = null;
   private firstAudioQueued: boolean = false;
+  private clientSTT: ClientSTT | null = null;
+  private currentTranscript: string = '';
+  private isRecordingWithClientSTT: boolean = false;
 
   constructor() {
     // Initialize audio context lazily
@@ -30,22 +39,66 @@ export class AIVoiceService {
     }
   }
 
-  async startRecording(): Promise<void> {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
-    this.audioChunks = [];
+  /**
+   * Start recording with optional client-side STT for instant transcription
+   * @param options - Recording configuration
+   */
+  async startRecording(options: RecordingOptions = {}): Promise<void> {
+    const useClientSTT = options.useClientSTT ?? true; // Default to instant STT
+    
+    if (useClientSTT && ClientSTT.isSupported()) {
+      console.log('[Recording] ⚡ Using instant client-side STT');
+      this.isRecordingWithClientSTT = true;
+      this.currentTranscript = '';
+      
+      // Start client-side STT for instant transcription
+      this.clientSTT = new ClientSTT({
+        language: options.language || 'en-US',
+        continuous: true,
+        interimResults: true,
+        onResult: (transcript, isFinal) => {
+          if (isFinal) {
+            this.currentTranscript = transcript;
+            console.log('[ClientSTT] Final transcript:', transcript);
+          }
+        },
+        onError: (error) => {
+          console.error('[ClientSTT] Error:', error);
+        },
+      });
+      
+      this.clientSTT.start();
+      console.log('[Recording] Started with instant STT');
+    } else {
+      console.log('[Recording] Using backend STT (fallback)');
+      this.isRecordingWithClientSTT = false;
+      
+      // Fallback to MediaRecorder for backend STT
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
+      this.audioChunks = [];
 
-    this.mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        this.audioChunks.push(event.data);
-      }
-    };
+      this.mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          this.audioChunks.push(event.data);
+        }
+      };
 
-    this.mediaRecorder.start();
-    console.log('Recording started');
+      this.mediaRecorder.start();
+      console.log('[Recording] Started with backend STT');
+    }
   }
 
-  async stopRecording(): Promise<Blob> {
+  async stopRecording(): Promise<Blob | null> {
+    if (this.isRecordingWithClientSTT) {
+      // Stop client STT
+      this.clientSTT?.stop();
+      this.clientSTT = null;
+      console.log('[Recording] Stopped client STT');
+      return null; // No audio blob needed
+    }
+    
+    // Stop MediaRecorder for backend STT
     return new Promise((resolve, reject) => {
       if (!this.mediaRecorder) {
         reject(new Error('No recording in progress'));
@@ -57,7 +110,7 @@ export class AIVoiceService {
         this.mediaRecorder?.stream.getTracks().forEach(track => track.stop());
         this.mediaRecorder = null;
         this.audioChunks = [];
-        console.log('Recording stopped, blob size:', audioBlob.size);
+        console.log('[Recording] Stopped, blob size:', audioBlob.size);
         resolve(audioBlob);
       };
 
@@ -65,13 +118,45 @@ export class AIVoiceService {
     });
   }
 
-  async sendVoiceMessage(audioBlob: Blob): Promise<AIChatResponse> {
+  /**
+   * Get the transcript from client-side STT (if used)
+   */
+  getClientTranscript(): string {
+    return this.currentTranscript;
+  }
+
+  /**
+   * Check if currently using client-side STT
+   */
+  isUsingClientSTT(): boolean {
+    return this.isRecordingWithClientSTT;
+  }
+
+  /**
+   * Send voice message - optimized for client-side STT
+   * @param audioBlob - Audio blob (null if using client STT)
+   * @param transcript - Pre-transcribed text from client STT (optional)
+   */
+  async sendVoiceMessage(audioBlob: Blob | null, transcript?: string): Promise<AIChatResponse> {
+    // If we have a client-side transcript, skip backend STT entirely
+    if (transcript && this.isRecordingWithClientSTT) {
+      console.log('[Voice] ⚡ Using instant client transcript, bypassing backend STT');
+      
+      // Send directly as text message (no audio transcription needed)
+      return this.sendTextMessage(transcript);
+    }
+    
+    // Fallback: use backend STT
+    if (!audioBlob) {
+      throw new Error('No audio blob and no transcript available');
+    }
+
     const arrayBuffer = await audioBlob.arrayBuffer();
     const base64Audio = btoa(
       new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
     );
 
-    console.log('Sending voice message to edge function...');
+    console.log('[Voice] Sending to backend for STT...');
     
     let conversationId = localStorage.getItem('ai_conversation_id') || undefined;
     
@@ -80,7 +165,7 @@ export class AIVoiceService {
         audio: base64Audio,
         agentType: 'health',
         conversationId,
-        stream: false // Use non-streaming for voice for now
+        stream: false
       },
     });
 
