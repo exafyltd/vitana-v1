@@ -34,13 +34,13 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   const languageOptions = [
     { label: "Auto", value: undefined },
-    { label: "🇷🇸 Serbian", value: "sr-RS" },
-    { label: "🇩🇪 German", value: "de-DE" },
-    { label: "🇺🇸 English", value: "en-US" },
-    { label: "🇸🇦 Arabic", value: "ar-XA" },
-    { label: "🇪🇸 Spanish", value: "es-ES" },
-    { label: "🇷🇺 Russian", value: "ru-RU" },
-    { label: "Chinese", value: "zh-CN" },
+    { label: "Serbian (SR)", value: "sr-RS" },
+    { label: "German (DE)", value: "de-DE" },
+    { label: "English (EN)", value: "en-US" },
+    { label: "Arabic (AR)", value: "ar-XA" },
+    { label: "Spanish (ES)", value: "es-ES" },
+    { label: "Russian (RU)", value: "ru-RU" },
+    { label: "Chinese (ZH)", value: "zh-CN" },
   ]
   const { toast } = useToast()
 
