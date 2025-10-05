@@ -21,6 +21,7 @@ export class AIVoiceService {
   private isPlaying: boolean = false;
   private audioContext: AudioContext | null = null;
   private firstAudioQueued: boolean = false;
+  private hasStartedAudioPlayback: boolean = false; // Track actual playback start
   private clientSTT: ClientSTT | null = null;
   private currentTranscript: string = '';
   private isRecordingWithClientSTT: boolean = false;
@@ -214,6 +215,7 @@ export class AIVoiceService {
   ): Promise<AIChatResponse> {
     console.info('[streaming] Sending text message:', text.substring(0, 50));
     this.firstAudioQueued = false;
+    this.hasStartedAudioPlayback = false; // Reset for new message
     
     let conversationId = localStorage.getItem('ai_conversation_id') || undefined;
     
@@ -471,9 +473,14 @@ export class AIVoiceService {
 
     this.isPlaying = true;
     const audioBuffer = this.audioQueue.shift()!;
-    const isFirstChunk = !this.firstAudioQueued;
+    const isFirstChunk = !this.hasStartedAudioPlayback;
     
-    console.info('[audio] ▶️ Starting audio playback', isFirstChunk ? '(first chunk with offset)' : '');
+    if (isFirstChunk) {
+      console.info('[audio] ▶️ Starting FIRST audio chunk with pre-roll delay');
+    } else {
+      console.info('[audio] ▶️ Starting audio chunk');
+    }
+    
     const source = this.audioContext.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(this.audioContext.destination);
@@ -483,9 +490,16 @@ export class AIVoiceService {
       this.playNextInQueue();
     };
     
-    // Add slight offset for first chunk to prevent clipping
-    const startOffset = isFirstChunk ? 0.03 : 0;
-    source.start(0, startOffset);
+    // Schedule first chunk slightly in the future to prevent clipping
+    // Don't skip content - just delay the start
+    if (isFirstChunk) {
+      const startTime = this.audioContext.currentTime + 0.06;
+      console.info(`[audio] Scheduling first chunk at ${startTime.toFixed(3)}s (current: ${this.audioContext.currentTime.toFixed(3)}s)`);
+      source.start(startTime); // Schedule in future, no offset
+      this.hasStartedAudioPlayback = true;
+    } else {
+      source.start(0); // Play immediately
+    }
   }
 
   async playAudio(base64Audio: string): Promise<void> {
