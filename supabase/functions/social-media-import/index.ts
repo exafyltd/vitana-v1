@@ -18,17 +18,25 @@ interface ParsedData {
 }
 
 serve(async (req) => {
+  console.log('[social-media-import] Function invoked');
+  
   if (req.method === 'OPTIONS') {
+    console.log('[social-media-import] CORS preflight request');
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { userId, platform, profileUrl, bioText }: ImportRequest = await req.json();
+    const body = await req.json();
+    console.log('[social-media-import] Request body:', JSON.stringify(body));
+    
+    const { userId, platform, profileUrl, bioText }: ImportRequest = body;
 
-    console.log(`Processing ${platform} import for user ${userId}`);
+    console.log(`[social-media-import] Processing ${platform} import for user ${userId}`);
 
     if (!userId || !platform || !profileUrl) {
-      throw new Error('Missing required fields: userId, platform, or profileUrl');
+      const errorMsg = 'Missing required fields: userId, platform, or profileUrl';
+      console.error('[social-media-import] Validation error:', errorMsg);
+      throw new Error(errorMsg);
     }
 
     const supabaseClient = createClient(
@@ -102,6 +110,8 @@ serve(async (req) => {
     }
 
     // Update profile in database
+    console.log('[social-media-import] Updating database with:', JSON.stringify(updateData));
+    
     const { data, error } = await supabaseClient
       .from('profiles')
       .update(updateData)
@@ -110,11 +120,11 @@ serve(async (req) => {
       .single();
 
     if (error) {
-      console.error(`${platform} import error:`, error);
+      console.error(`[social-media-import] Database update error for ${platform}:`, error);
       throw error;
     }
 
-    console.log(`${platform} import successful for user ${userId}`);
+    console.log(`[social-media-import] ${platform} import successful for user ${userId}`, data);
 
     return new Response(
       JSON.stringify({ success: true, data }),
@@ -122,9 +132,9 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Social media import error:', error);
+    console.error('[social-media-import] Fatal error:', error);
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error occurred' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

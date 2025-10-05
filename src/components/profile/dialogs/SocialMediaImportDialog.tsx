@@ -79,18 +79,33 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
     }
 
     setImporting(true);
+    console.log(`[SocialMediaImport] Starting ${platform} import for user ${profileId}`);
 
     try {
+      const requestBody = {
+        userId: profileId,
+        platform,
+        profileUrl: profileUrl.trim(),
+        bioText: bioText.trim()
+      };
+      
+      console.log('[SocialMediaImport] Request body:', requestBody);
+
       const { data, error } = await supabase.functions.invoke('social-media-import', {
-        body: {
-          userId: profileId,
-          platform,
-          profileUrl: profileUrl.trim(),
-          bioText: bioText.trim()
-        }
+        body: requestBody
       });
 
-      if (error) throw error;
+      console.log('[SocialMediaImport] Response:', { data, error });
+
+      if (error) {
+        console.error('[SocialMediaImport] Function error:', error);
+        throw new Error(error.message || 'Failed to invoke function');
+      }
+
+      if (data?.error) {
+        console.error('[SocialMediaImport] Data error:', data.error);
+        throw new Error(data.error);
+      }
 
       toast({
         title: 'Import Successful',
@@ -98,15 +113,17 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
       });
 
       onOpenChange(false);
+      setProfileUrl('');
+      setBioText('');
       
       // Reload to see updated profile
       setTimeout(() => window.location.reload(), 1000);
 
     } catch (error: any) {
-      console.error(`${platformName} import error:`, error);
+      console.error(`[SocialMediaImport] ${platformName} import error:`, error);
       toast({
         title: 'Import Failed',
-        description: error.message || `Failed to import ${platformName} profile`,
+        description: error.message || `Failed to import ${platformName} profile. Please try again.`,
         variant: 'destructive'
       });
     } finally {
