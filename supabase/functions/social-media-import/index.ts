@@ -201,7 +201,7 @@ function mapParsedData(platform: string, parsed: ParsedData): any {
     linkedin: {
       linkedin_headline: parsed.headline,
       linkedin_summary: parsed.summary,
-      linkedin_skills: parsed.skills
+      professional_skills: parsed.skills
     },
     instagram: {
       instagram_bio: parsed.bio,

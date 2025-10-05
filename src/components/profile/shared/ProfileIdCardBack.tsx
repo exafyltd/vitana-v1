@@ -139,6 +139,27 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
           })}
         </div>
 
+        {/* Display LinkedIn enriched data if available */}
+        {profile.linkedin_url && (profile.linkedin_headline || profile.linkedin_summary) && (
+          <div className="w-full max-w-md mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="flex items-center gap-2 mb-2">
+              <Linkedin className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">LinkedIn Profile Data</span>
+            </div>
+            {profile.linkedin_headline && (
+              <p className="text-sm font-medium text-foreground mb-1">{profile.linkedin_headline}</p>
+            )}
+            {profile.linkedin_summary && (
+              <p className="text-xs text-muted-foreground line-clamp-3">{profile.linkedin_summary}</p>
+            )}
+            {profile.linkedin_synced_at && (
+              <p className="text-xs text-muted-foreground/60 mt-2">
+                Synced {new Date(profile.linkedin_synced_at).toLocaleDateString()}
+              </p>
+            )}
+          </div>
+        )}
+
         <p className="text-xs text-muted-foreground/60 text-center mt-4 max-w-xs">
           Connect accounts to auto-import bio, photos, and professional info
         </p>
