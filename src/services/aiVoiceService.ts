@@ -57,9 +57,14 @@ export class AIVoiceService {
         continuous: true,
         interimResults: true,
         onResult: (transcript, isFinal) => {
-          if (isFinal) {
+          if (transcript && transcript.trim()) {
+            // Always keep the latest transcript (interim or final)
             this.currentTranscript = transcript;
+          }
+          if (isFinal) {
             console.log('[ClientSTT] Final transcript:', transcript);
+          } else {
+            console.log('[ClientSTT] Interim transcript:', transcript);
           }
         },
         onError: (error) => {
@@ -94,7 +99,9 @@ export class AIVoiceService {
       // Stop client STT
       this.clientSTT?.stop();
       this.clientSTT = null;
-      console.log('[Recording] Stopped client STT');
+      // Give a brief moment for final results to arrive
+      await new Promise((r) => setTimeout(r, 200));
+      console.log('[Recording] Stopped client STT (transcript chars):', this.currentTranscript.length);
       return null; // No audio blob needed
     }
     
@@ -138,15 +145,15 @@ export class AIVoiceService {
    * @param transcript - Pre-transcribed text from client STT (optional)
    */
   async sendVoiceMessage(audioBlob: Blob | null, transcript?: string): Promise<AIChatResponse> {
-    // If we have a client-side transcript, skip backend STT entirely
-    if (transcript && this.isRecordingWithClientSTT) {
-      console.log('[Voice] ⚡ Using instant client transcript, bypassing backend STT');
-      
+    // Prefer a client transcript if available (passed-in or captured)
+    const effectiveTranscript = (transcript ?? this.currentTranscript)?.trim();
+
+    if (effectiveTranscript) {
+      console.log('[Voice] ⚡ Using client transcript (length):', effectiveTranscript.length);
       // Reset flag AFTER using it
       this.isRecordingWithClientSTT = false;
-      
       // Send directly as text message (no audio transcription needed)
-      return this.sendTextMessage(transcript);
+      return this.sendTextMessage(effectiveTranscript);
     }
     
     // Reset flag for fallback case
@@ -154,7 +161,7 @@ export class AIVoiceService {
     
     // Fallback: use backend STT
     if (!audioBlob) {
-      throw new Error('No audio blob and no transcript available');
+      throw new Error('No audio or transcript captured. Please try again.');
     }
 
     const arrayBuffer = await audioBlob.arrayBuffer();

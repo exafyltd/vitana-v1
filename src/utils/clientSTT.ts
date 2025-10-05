@@ -164,6 +164,17 @@ export class ClientSTT {
   }
 
   private normalizeLanguage(languageCode: string): string {
+    const lower = languageCode.toLowerCase();
+
+    // Special-case mappings for non-standard codes
+    const specialCases: Record<string, string> = {
+      'ar-xa': 'ar-SA',
+    };
+
+    if (specialCases[lower]) {
+      return specialCases[lower];
+    }
+
     const normalizedMap: Record<string, string> = {
       'sr': 'sr-RS',
       'de': 'de-DE',
@@ -175,11 +186,11 @@ export class ClientSTT {
     };
 
     // Check if it's already in the correct format (e.g., 'en-US')
-    if (languageCode.includes('-')) {
+    if (lower.includes('-')) {
       return languageCode;
     }
 
-    return normalizedMap[languageCode] || languageCode;
+    return normalizedMap[lower] || languageCode;
   }
 
   isActive(): boolean {

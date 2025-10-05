@@ -83,11 +83,23 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         
         // Check if using client-side STT for instant transcription
         const clientTranscript = aiVoiceService.getClientTranscript();
+        const trimmedTranscript = (clientTranscript || '').trim();
+
+        // Guard: no audio and no transcript captured
+        if (!audioBlob && !trimmedTranscript) {
+          console.warn('No speech detected: empty transcript and no audio blob');
+          toast({
+            title: "No speech detected",
+            description: "Please try again or check your microphone.",
+            variant: "destructive",
+          })
+          return;
+        }
         
         // Send message with instant transcript if available
         const response = await aiVoiceService.sendVoiceMessage(
           audioBlob, 
-          clientTranscript || undefined
+          trimmedTranscript || undefined
         )
         
         // Show AI response in input field
