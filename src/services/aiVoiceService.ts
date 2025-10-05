@@ -464,6 +464,24 @@ export class AIVoiceService {
     }
   }
 
+  private async createSilentBuffer(durationMs: number = 50): Promise<AudioBuffer> {
+    if (!this.audioContext) {
+      throw new Error('AudioContext not initialized');
+    }
+    
+    const sampleRate = this.audioContext.sampleRate;
+    const numSamples = Math.floor((durationMs / 1000) * sampleRate);
+    const buffer = this.audioContext.createBuffer(1, numSamples, sampleRate);
+    
+    // Fill with zeros (silence)
+    const channelData = buffer.getChannelData(0);
+    for (let i = 0; i < numSamples; i++) {
+      channelData[i] = 0;
+    }
+    
+    return buffer;
+  }
+
   private playNextInQueue(): void {
     if (this.audioQueue.length === 0 || !this.audioContext) {
       this.isPlaying = false;
@@ -476,28 +494,45 @@ export class AIVoiceService {
     const isFirstChunk = !this.hasStartedAudioPlayback;
     
     if (isFirstChunk) {
-      console.info('[audio] ▶️ Starting FIRST audio chunk with pre-roll delay');
-    } else {
-      console.info('[audio] ▶️ Starting audio chunk');
-    }
-    
-    const source = this.audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(this.audioContext.destination);
-    
-    source.onended = () => {
-      console.info('[audio] Audio chunk ended');
-      this.playNextInQueue();
-    };
-    
-    // Schedule first chunk slightly in the future to prevent clipping
-    // Don't skip content - just delay the start
-    if (isFirstChunk) {
-      const startTime = this.audioContext.currentTime + 0.06;
+      console.info('[audio] ▶️ Starting FIRST audio chunk with warm-up + pre-roll');
+      
+      // Play silent buffer first to warm up pipeline
+      this.createSilentBuffer(50).then(silentBuffer => {
+        const silentSource = this.audioContext!.createBufferSource();
+        silentSource.buffer = silentBuffer;
+        silentSource.connect(this.audioContext!.destination);
+        silentSource.start(this.audioContext!.currentTime);
+        
+        console.info('[audio] 🔇 Silent warm-up buffer playing');
+      }).catch(err => console.warn('[audio] Failed to create silent buffer:', err));
+      
+      // Schedule actual content with increased pre-roll
+      const startTime = this.audioContext.currentTime + 0.14; // 140ms pre-roll
       console.info(`[audio] Scheduling first chunk at ${startTime.toFixed(3)}s (current: ${this.audioContext.currentTime.toFixed(3)}s)`);
-      source.start(startTime); // Schedule in future, no offset
+      
+      const source = this.audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(this.audioContext.destination);
+      
+      source.onended = () => {
+        console.info('[audio] Audio chunk ended');
+        this.playNextInQueue();
+      };
+      
+      source.start(startTime); // Schedule in future with no content offset
       this.hasStartedAudioPlayback = true;
     } else {
+      console.info('[audio] ▶️ Starting audio chunk');
+      
+      const source = this.audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(this.audioContext.destination);
+      
+      source.onended = () => {
+        console.info('[audio] Audio chunk ended');
+        this.playNextInQueue();
+      };
+      
       source.start(0); // Play immediately
     }
   }

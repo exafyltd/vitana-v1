@@ -22,15 +22,20 @@ OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
 4. If asked about user name/identity: state it naturally using the context provided below
 
 ABSOLUTE PROHIBITIONS:
+- NO greetings or acknowledgments ("Hello", "Hi", "Hey", "Yes", "Sure", "Of course", "Certainly")
+- NO self-identification ("I'm here", "I'm Vitana", "I am an AI", "As an AI", "As a computer program")
+- NO meta-statements about yourself ("I don't have an age", "I don't have a location", "I exist as a digital entity")
+- NO enumeration of capabilities ("I have access to", "I can see", "Besides knowing")
 - NO apologies ("My apologies", "I'm sorry", "Sorry")
 - NO meta-commentary ("Regarding your other questions", "Let me clarify")
 - NO privacy disclaimers ("I don't have access to your name")
 - NO markdown symbols (**, *, _, #, \`, >, -)
 - NO preambles or setup phrases before answering
 - DO NOT reference previous conversation topics unless directly asked
+- NEVER list what data you have about the user unless specifically asked
 
 CONTEXT USAGE:
-The USER CONTEXT section below contains current user information. Use it naturally when relevant, but ONLY answer the user's current question.
+The USER CONTEXT section below contains current user information. Use it naturally ONLY when directly relevant to answering the user's question. Do not volunteer information they didn't ask for.
 
 YOUR EXPERTISE:
 Provide science-backed wellness advice considering the user's health profile, Vitana Index, diary entries, and daily patterns. Be empathetic and focus on sustainable lifestyle changes.`,
@@ -43,6 +48,8 @@ OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
 3. Be concise and action-oriented
 
 ABSOLUTE PROHIBITIONS:
+- NO greetings ("Hello", "Hi", "Yes", "Sure")
+- NO self-identification ("I'm here", "As an AI")
 - NO apologies or meta-commentary
 - NO markdown formatting
 - Answer only the current question
@@ -58,6 +65,8 @@ OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
 3. Be warm and inclusive
 
 ABSOLUTE PROHIBITIONS:
+- NO greetings ("Hello", "Hi", "Yes", "Sure")
+- NO self-identification ("I'm here", "As an AI")
 - NO apologies or meta-commentary
 - NO markdown formatting
 - Answer only the current question
@@ -73,6 +82,8 @@ OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
 3. Be practical and realistic
 
 ABSOLUTE PROHIBITIONS:
+- NO greetings ("Hello", "Hi", "Yes", "Sure")
+- NO self-identification ("I'm here", "As an AI")
 - NO apologies or meta-commentary
 - NO markdown formatting
 - Answer only the current question
@@ -99,6 +110,24 @@ function cleanAIResponse(text: string): string {
     .replace(/^\s*\d+\.\s+/gm, '');
   
   const preamblePatterns = [
+    // Greetings and acknowledgments
+    /^\s*(hello|hi|hey)[^.!?]*[.!?]\s*/i,
+    /^\s*(yes|sure|certainly|of course)[,!\s]+/i,
+    
+    // Self-identification phrases
+    /^\s*i['']?\s*(am|m)\s+here[^.!?]*[.!?]\s*/i,
+    /^\s*i['']?\s*(am|m)\s+vitana[^.!?]*[.!?]\s*/i,
+    /^\s*(as an? ai|i am (an? )?ai|as a computer program)[^.!?]*[.!?]\s*/i,
+    /^\s*i['']?\s*(am|m)\s+(ready to|here to)\s+(help|assist)[^.!?]*[.!?]\s*/i,
+    
+    // Meta-statements about capabilities/limitations
+    /^\s*i\s+(don't|do not)\s+have\s+(an?\s+)?(age|location|physical\s+form)[^.!?]*[.!?]\s*/i,
+    /^\s*i\s+exist\s+as\s+a\s+digital\s+entity[^.!?]*[.!?]\s*/i,
+    /^\s*i\s+(cannot|can't)\s+(technically\s+)?(hear|speak)[^.!?]*[.!?]\s*/i,
+    /^\s*besides\s+knowing[^.!?]*[.!?]\s*/i,
+    /^\s*i\s+(also\s+)?have\s+access\s+to[^.!?]*[.!?]\s*/i,
+    
+    // Original patterns
     /^my apologies[^.!?]*[.!?]\s*/i,
     /^i'm sorry[^.!?]*[.!?]\s*/i,
     /^sorry[^.!?]*[.!?]\s*/i,
@@ -435,21 +464,28 @@ serve(async (req) => {
         const now = new Date();
         systemMessage += `Time: ${temporal.dayOfWeek}, ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}\n`;
       }
-      if (economic?.balances) {
+      
+      // Only include wallet/economic data if query mentions it
+      const economicKeywords = /(wallet|balance|currency|credits?|usd|vtn|money|pay|transfer|transaction)/i;
+      if (economic?.balances && economicKeywords.test(userMessage)) {
         const balances = Object.entries(economic.balances)
           .map(([curr, bal]) => `${bal} ${curr}`)
           .join(', ');
         systemMessage += `Wallet: ${balances}\n`;
       }
+      
       if (health?.vitanaIndex !== undefined) {
         systemMessage += `Health Score: ${health.vitanaIndex}/999\n`;
       }
-      if (memory?.rememberedInsights?.length > 0) {
+      
+      // Only include diary/insights if query mentions them
+      const diaryKeywords = /(diary|journal|note|wrote|entry|entries|recorded)/i;
+      if (memory?.rememberedInsights?.length > 0 && diaryKeywords.test(userMessage)) {
         const topInsights = memory.rememberedInsights
           .slice(0, 2)
           .map((i: any) => i.content)
           .join('; ');
-        systemMessage += `Key Insights: ${topInsights}\n`;
+        systemMessage += `Recent Diary Insights: ${topInsights}\n`;
       }
       
       // === CONDITIONAL COMMUNITY CONTEXT (only if query mentions community topics) ===
@@ -590,6 +626,8 @@ serve(async (req) => {
           let isControllerOpen = true;
           let sentencesProcessed = 0;
           let pendingTTS: Promise<void>[] = [];
+          let firstSentenceBuffer = ''; // Buffer for first sentence preamble filtering
+          let isFirstSentence = true;
           
           // Helper to safely enqueue
           const safeEnqueue = (data: Uint8Array) => {
@@ -633,11 +671,55 @@ serve(async (req) => {
                       fullText += content;
                       currentSentence += content;
                       
-                      // Send text token immediately for smooth UI
+                      // Buffer first sentence for preamble filtering
+                      if (isFirstSentence) {
+                        firstSentenceBuffer += content;
+                        
+                        // Check if first sentence is complete
+                        if (/[.!?]\s*$/.test(firstSentenceBuffer)) {
+                          const originalFirst = firstSentenceBuffer.trim();
+                          const cleanedFirst = cleanAIResponse(originalFirst);
+                          
+                          console.info(`[stream] 🔍 First sentence check - Original: "${originalFirst.substring(0, 50)}...", Cleaned: "${cleanedFirst.substring(0, 50) || '(EMPTY)'}..."`);
+                          
+                          // If first sentence was just preamble (cleaned to empty), discard it
+                          if (cleanedFirst.length === 0) {
+                            console.info('[stream] 🗑️ Discarded preamble from first sentence');
+                            currentSentence = '';
+                            firstSentenceBuffer = '';
+                          } else {
+                            // First sentence has real content, emit it
+                            const textEvent = `data: ${JSON.stringify({ type: 'text', content: originalFirst })}\n\n`;
+                            safeEnqueue(encoder.encode(textEvent));
+                            
+                            // Process for TTS
+                            if (cleanedFirst.length > 8) {
+                              sentencesProcessed++;
+                              console.info(`[stream] 📝 First sentence complete (${cleanedFirst.length} chars) - triggering TTS`);
+                              
+                              const p = synthesizeChunk(cleanedFirst, googleApiKey, normalizedLang).then(audioContent => {
+                                if (audioContent && isControllerOpen) {
+                                  console.info(`[stream] 🔊 Audio chunk ${sentencesProcessed} queued`);
+                                  const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
+                                  safeEnqueue(encoder.encode(audioEvent));
+                                }
+                              }).catch(err => console.error(`[stream] TTS error:`, err));
+                              pendingTTS.push(p);
+                            }
+                            currentSentence = '';
+                          }
+                          
+                          isFirstSentence = false;
+                          firstSentenceBuffer = '';
+                        }
+                        continue; // Don't emit tokens while buffering first sentence
+                      }
+                      
+                      // After first sentence, emit tokens immediately
                       const textEvent = `data: ${JSON.stringify({ type: 'text', content })}\n\n`;
                       safeEnqueue(encoder.encode(textEvent));
                       
-                      // Check if sentence is complete for TTS (reduced threshold for faster TTS)
+                      // Check if sentence is complete for TTS
                       if (/[.!?]\s*$/.test(currentSentence) && currentSentence.length > 8) {
                         const sentence = cleanAIResponse(currentSentence.trim());
                         sentencesProcessed++;
