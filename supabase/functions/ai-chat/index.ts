@@ -467,6 +467,22 @@ serve(async (req) => {
       
       systemMessage += '=== END CONTEXT ===\n';
     }
+    
+    // Add language instruction to system prompt
+    const languageMap: Record<string, string> = {
+      'sr-RS': 'Serbian',
+      'de-DE': 'German',
+      'en-US': 'English',
+      'ar-XA': 'Arabic',
+      'es-ES': 'Spanish',
+      'ru-RU': 'Russian',
+      'zh-CN': 'Chinese'
+    };
+    
+    const languageName = languageMap[detectedLanguage];
+    if (languageName && languageName !== 'English') {
+      systemMessage += `\n\n=== LANGUAGE INSTRUCTION ===\nIMPORTANT: Respond in ${languageName}. The user is communicating in ${languageName}, so all your responses must be in ${languageName}.\n=== END LANGUAGE INSTRUCTION ===\n`;
+    }
       
 
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
