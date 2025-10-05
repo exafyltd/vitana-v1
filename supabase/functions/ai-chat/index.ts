@@ -488,6 +488,7 @@ serve(async (req) => {
           let currentSentence = '';
           let isControllerOpen = true;
           let sentencesProcessed = 0;
+          let pendingTTS: Promise<void>[] = [];
           
           // Helper to safely enqueue
           const safeEnqueue = (data: Uint8Array) => {
@@ -542,26 +543,27 @@ serve(async (req) => {
                         
                         console.info(`[stream] 📝 Sentence ${sentencesProcessed} complete (${sentence.length} chars) - triggering TTS`);
                         
-                        // Synthesize audio for this sentence (non-blocking)
-                        synthesizeChunk(sentence, googleApiKey, normalizedLang).then(audioContent => {
-                          if (audioContent && isControllerOpen) {
-                            console.info(`[stream] 🔊 Audio chunk ${sentencesProcessed} queued`);
-                            const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
-                            safeEnqueue(encoder.encode(audioEvent));
-                          } else if (!audioContent && isControllerOpen) {
-                            console.error(`[stream] ⚠️ TTS failed for sentence ${sentencesProcessed}`);
-                            const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'TTS synthesis failed' })}\n\n`;
-                            safeEnqueue(encoder.encode(errorEvent));
-                          }
-                        }).catch(err => {
-                          console.error(`[stream] TTS error for sentence ${sentencesProcessed}:`, err);
-                          if (isControllerOpen) {
-                            const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'TTS synthesis error' })}\n\n`;
-                            safeEnqueue(encoder.encode(errorEvent));
-                          }
-                        });
-                        
-                        currentSentence = '';
+                         // Synthesize audio for this sentence (non-blocking)
+                         const p = synthesizeChunk(sentence, googleApiKey, normalizedLang).then(audioContent => {
+                           if (audioContent && isControllerOpen) {
+                             console.info(`[stream] 🔊 Audio chunk ${sentencesProcessed} queued`);
+                             const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
+                             safeEnqueue(encoder.encode(audioEvent));
+                           } else if (!audioContent && isControllerOpen) {
+                             console.error(`[stream] ⚠️ TTS failed for sentence ${sentencesProcessed}`);
+                             const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'TTS synthesis failed' })}\n\n`;
+                             safeEnqueue(encoder.encode(errorEvent));
+                           }
+                         }).catch(err => {
+                           console.error(`[stream] TTS error for sentence ${sentencesProcessed}:`, err);
+                           if (isControllerOpen) {
+                             const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'TTS synthesis error' })}\n\n`;
+                             safeEnqueue(encoder.encode(errorEvent));
+                           }
+                         });
+                         pendingTTS.push(p);
+                         
+                         currentSentence = '';
                       }
                     }
                   } catch (e) {
