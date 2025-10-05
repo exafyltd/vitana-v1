@@ -318,7 +318,7 @@ serve(async (req) => {
         .select('role, content')
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: true })
-        .limit(4)
+        .limit(12)
     ]);
 
     let userContext = contextResult.data?.context || null;
