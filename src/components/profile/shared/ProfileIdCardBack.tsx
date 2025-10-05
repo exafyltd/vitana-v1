@@ -97,6 +97,25 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     setDialogOpen(true);
   };
 
+  const getPlatformUrl = (platform: SocialPlatform): string | undefined => {
+    switch(platform) {
+      case 'linkedin': return profile.linkedin_url;
+      case 'instagram': return profile.instagram_url;
+      case 'tiktok': return profile.tiktok_url;
+      case 'youtube': return profile.youtube_url;
+      case 'facebook': return profile.facebook_url;
+      case 'x': return profile.x_url;
+      default: return undefined;
+    }
+  };
+
+  const handleOpenProfile = (platform: SocialPlatform) => {
+    const url = getPlatformUrl(platform);
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
     <>
       <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
@@ -112,7 +131,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
             return (
               <div
                 key={platform.name}
-                className={`group relative flex flex-col items-center justify-center gap-2 p-4 rounded-lg border transition-all ${platform.color}`}
+                className={`group relative flex flex-col items-center justify-center gap-2 p-4 rounded-lg border transition-all ${platform.color} ${connected ? 'cursor-pointer hover:shadow-md' : ''}`}
+                onClick={() => connected && handleOpenProfile(platform.platform)}
               >
                 <div className="text-muted-foreground">
                   {platform.icon}
@@ -129,7 +149,10 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     size="sm"
                     variant="outline"
                     className="h-7 text-xs px-3"
-                    onClick={() => handleConnect(platform)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleConnect(platform);
+                    }}
                   >
                     Connect
                   </Button>
