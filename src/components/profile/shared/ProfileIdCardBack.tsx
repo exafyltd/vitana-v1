@@ -1,4 +1,5 @@
 import { UserProfile } from "@/types/profile";
+import { useAuth } from "@/context/AuthProvider";
 import { Instagram, Linkedin, Youtube, Plus, Link as LinkIcon, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "@/components/icons/XIcon";
@@ -28,6 +29,7 @@ interface PlatformConfig {
 }
 
 export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
+  const { user } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
   
@@ -161,7 +163,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
           platform={selectedPlatform.platform}
           platformName={selectedPlatform.name}
           icon={selectedPlatform.icon}
-          profileId={profile.user_id || profile.id}
+          profileId={user?.id ?? profile.user_id ?? profile.id}
         />
       )}
     </>

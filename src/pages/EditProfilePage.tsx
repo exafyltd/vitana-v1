@@ -15,9 +15,12 @@ import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
 
+import { useAuth } from "@/context/AuthProvider";
+
 export default function EditProfilePage() {
   const navigate = useNavigate();
   const { profile: contextProfile } = useProfile();
+  const { user } = useAuth();
   const [viewAs, setViewAs] = useState<ViewAsMode>("me");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const { toast } = useToast();
@@ -31,6 +34,7 @@ export default function EditProfilePage() {
   // Profile data from context
   const [profile, setProfile] = useState<UserProfile>({
     id: 'current-user',
+    user_id: user?.id,
     name: contextProfile.displayName,
     handle: contextProfile.handle || 'user',
     avatarUrl: contextProfile.avatar,
@@ -66,11 +70,12 @@ export default function EditProfilePage() {
   useEffect(() => {
     setProfile(prev => ({
       ...prev,
+      user_id: user?.id,
       name: contextProfile.displayName,
       handle: contextProfile.handle || 'user',
       avatarUrl: contextProfile.avatar,
     }));
-  }, [contextProfile]);
+  }, [contextProfile, user]);
 
   const scopeContext = {
     isOwner: true,
