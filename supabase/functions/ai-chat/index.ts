@@ -163,7 +163,7 @@ async function synthesizeChunk(text: string, googleApiKey: string, language: str
         body: JSON.stringify({
           input: { text },
           voice: { languageCode: language, name: voiceName },
-          audioConfig: { audioEncoding: 'MP3', pitch: 0, speakingRate: 1.4 },
+          audioConfig: { audioEncoding: 'MP3', pitch: 0, speakingRate: 1.1 },
         }),
       }
     );
