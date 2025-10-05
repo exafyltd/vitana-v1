@@ -253,63 +253,16 @@ serve(async (req) => {
       throw new Error('User not authenticated');
     }
 
-    // Fetch user context for personalization
-    console.log('Fetching user context...');
-    
-    // Create a service role client to invoke the function
-    const serviceClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
-    );
-    
-    const { data: contextData, error: contextError } = await serviceClient.functions.invoke('fetch-user-context', {
-      body: { userId: user.id }
-    });
-    
-    let userContext = contextError ? null : contextData?.context;
-
-    // Fallback: if context fetch failed, get minimal profile data directly
-    if (!userContext || !userContext.identity?.displayName) {
-      console.log('Context fetch failed or incomplete, fetching profile directly...');
-      const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('display_name, handle, full_name, email')
-        .eq('user_id', user.id)
-        .single();
-      
-      if (profile) {
-        userContext = {
-          identity: {
-            userId: user.id,
-            displayName: profile.display_name || profile.full_name || 'User',
-            handle: profile.handle || '',
-            email: profile.email || '',
-            tenantId: '',
-            tenantName: '',
-            roles: []
-          }
-        };
-        console.log('Using fallback profile data:', profile.display_name);
-      }
-    }
-
-    console.log('User context loaded:', {
-      hasContext: !!userContext,
-      userName: userContext?.identity?.displayName,
-      tenantName: userContext?.identity?.tenantName
-    });
-
-    // Create or get conversation
+    // Create or get conversation ID early (needed for parallel fetch)
     let conversationId = existingConversationId;
     if (!conversationId) {
       const { data: newConversation, error: convError } = await supabaseClient
         .from('ai_conversations')
         .insert({
           user_id: user.id,
-          tenant_id: userContext?.identity?.tenantId,
+          tenant_id: null, // Will be updated with context
           agent_type: agentType,
-          context_snapshot: userContext || {},
+          context_snapshot: {},
           metadata: { 
             initiated_at: new Date().toISOString(),
             language: language || 'en'
@@ -327,15 +280,62 @@ serve(async (req) => {
       console.log('Created new conversation:', conversationId);
     }
 
-    // Load conversation history (last 2 Q&A pairs only - prevents answering old questions)
-    const { data: messageHistory } = await supabaseClient
-      .from('ai_messages')
-      .select('role, content')
-      .eq('conversation_id', conversationId)
-      .order('created_at', { ascending: true })
-      .limit(4);
+    // OPTIMIZATION: Parallelize user context and conversation history fetch
+    console.log('Fetching user context and conversation history in parallel...');
+    
+    const serviceClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    );
 
-    const conversationHistory = messageHistory || [];
+    const [contextResult, historyResult] = await Promise.all([
+      // Fetch user context
+      serviceClient.functions.invoke('fetch-user-context', {
+        body: { userId: user.id, forceRefresh: false }
+      }).catch(async (contextError) => {
+        console.error('Error fetching user context:', contextError);
+        // Fallback: fetch minimal profile data
+        const { data: profile } = await supabaseClient
+          .from('profiles')
+          .select('display_name, handle, full_name, email')
+          .eq('user_id', user.id)
+          .single();
+        
+        return {
+          data: profile ? {
+            context: {
+              identity: {
+                userId: user.id,
+                displayName: profile.display_name || profile.full_name || 'User',
+                handle: profile.handle || '',
+                email: profile.email || '',
+                tenantId: '',
+                tenantName: '',
+                roles: []
+              }
+            }
+          } : null
+        };
+      }),
+      
+      // Fetch conversation history
+      supabaseClient
+        .from('ai_messages')
+        .select('role, content')
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true })
+        .limit(4)
+    ]);
+
+    let userContext = contextResult.data?.context || null;
+    const conversationHistory = historyResult.data || [];
+
+    console.log('User context loaded:', {
+      hasContext: !!userContext,
+      userName: userContext?.identity?.displayName,
+      tenantName: userContext?.identity?.tenantName
+    });
 
     // Get Google Cloud API key
     let googleApiKey = Deno.env.get('GOOGLE_CLOUD_API_KEY');
@@ -403,8 +403,8 @@ serve(async (req) => {
       userMessage.toLowerCase().includes(keyword.toLowerCase())
     );
 
-    // Store user message
-    await supabaseClient.from('ai_messages').insert({
+    // OPTIMIZATION: Store user message (non-blocking)
+    supabaseClient.from('ai_messages').insert({
       conversation_id: conversationId,
       role: 'user',
       content: userMessage,
@@ -414,6 +414,10 @@ serve(async (req) => {
         has_audio: !!audio,
         timestamp: new Date().toISOString()
       }
+    }).then(() => {
+      console.log('User message stored');
+    }).catch((err) => {
+      console.error('Error storing user message:', err);
     });
 
     // Get AI response from Lovable AI with full context
@@ -522,8 +526,8 @@ serve(async (req) => {
     const aiText = cleanAIResponse(rawAiText);
     console.log('AI response (cleaned):', aiText);
 
-    // Store cleaned AI response
-    await supabaseClient.from('ai_messages').insert({
+    // OPTIMIZATION: Store AI response (non-blocking)
+    supabaseClient.from('ai_messages').insert({
       conversation_id: conversationId,
       role: 'assistant',
       content: aiText,
@@ -533,6 +537,10 @@ serve(async (req) => {
         context_used: !!userContext,
         timestamp: new Date().toISOString()
       }
+    }).then(() => {
+      console.log('AI message stored');
+    }).catch((err) => {
+      console.error('Error storing AI message:', err);
     });
 
     // Extract and store insights asynchronously (don't block response)
@@ -562,11 +570,11 @@ serve(async (req) => {
               languageCode: normalizedLang,
               name: voiceName,
             },
-            audioConfig: {
-              audioEncoding: 'MP3',
-              pitch: 0,
-              speakingRate: 1.0,
-            },
+      audioConfig: {
+        audioEncoding: 'MP3',
+        pitch: 0,
+        speakingRate: 1.2,
+      },
           }),
         }
       );

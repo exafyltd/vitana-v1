@@ -1,6 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
+// OPTIMIZATION: In-memory cache with 5-minute TTL
+const contextCache = new Map<string, { data: any, expiresAt: number }>();
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -289,9 +293,10 @@ serve(async (req) => {
   }
 
   try {
-    // Get userId from request body (when called from another edge function)
+    // Get userId and forceRefresh from request body
     const body = await req.json();
     const userId = body.userId;
+    const forceRefresh = body.forceRefresh || false;
     
     if (!userId) {
       // If no userId in body, try to get from auth header
@@ -311,11 +316,11 @@ serve(async (req) => {
         throw new Error('Unauthorized');
       }
       
-      return await fetchAndReturnContext(user.id);
+      return await fetchAndReturnContext(user.id, forceRefresh);
     }
     
     // If userId provided, use it directly (from service role call)
-    return await fetchAndReturnContext(userId);
+    return await fetchAndReturnContext(userId, forceRefresh);
 
   } catch (error) {
     console.error('Error fetching user context:', error);
@@ -329,43 +334,77 @@ serve(async (req) => {
   }
 });
 
-async function fetchAndReturnContext(userId: string) {
+async function fetchAndReturnContext(userId: string, forceRefresh: boolean = false) {
+  // OPTIMIZATION: Check in-memory cache first (fastest)
+  if (!forceRefresh) {
+    const memCached = contextCache.get(userId);
+    if (memCached && memCached.expiresAt > Date.now()) {
+      console.log('Returning in-memory cached context for user:', userId);
+      return new Response(
+        JSON.stringify({ 
+          context: memCached.data,
+          cached: true,
+          cacheType: 'memory'
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
   const supabaseClient = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
   );
 
-  // Check cache first
-  const { data: cachedContext } = await supabaseClient
-    .from('user_context_cache')
-    .select('context_data, expires_at')
-    .eq('user_id', userId)
-    .single();
+  // Check DB cache
+  if (!forceRefresh) {
+    const { data: cachedContext } = await supabaseClient
+      .from('user_context_cache')
+      .select('context_data, expires_at')
+      .eq('user_id', userId)
+      .single();
 
-  if (cachedContext && new Date(cachedContext.expires_at) > new Date()) {
-    console.log('Returning cached context for user:', userId);
-    return new Response(
-      JSON.stringify({ 
-        context: cachedContext.context_data,
-        cached: true 
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    if (cachedContext && new Date(cachedContext.expires_at) > new Date()) {
+      console.log('Returning DB cached context for user:', userId);
+      
+      // Store in memory cache too
+      contextCache.set(userId, {
+        data: cachedContext.context_data,
+        expiresAt: new Date(cachedContext.expires_at).getTime()
+      });
+      
+      return new Response(
+        JSON.stringify({ 
+          context: cachedContext.context_data,
+          cached: true,
+          cacheType: 'database'
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
   }
 
   // Fetch fresh context
   console.log('Fetching fresh context for user:', userId);
   const context = await fetchUserContext(supabaseClient, userId);
 
-  // Update cache
-  await supabaseClient
+  // Store in memory cache
+  contextCache.set(userId, {
+    data: context,
+    expiresAt: Date.now() + CACHE_TTL_MS
+  });
+
+  // Update DB cache (non-blocking)
+  supabaseClient
     .from('user_context_cache')
     .upsert({
       user_id: userId,
       context_data: context,
       cached_at: new Date().toISOString(),
-      expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString() // 5 min cache
-    });
+      expires_at: new Date(Date.now() + CACHE_TTL_MS).toISOString()
+    })
+    .then(() => console.log('DB cache updated'))
+    .catch(err => console.error('Failed to update DB cache:', err));
 
   return new Response(
     JSON.stringify({ 
