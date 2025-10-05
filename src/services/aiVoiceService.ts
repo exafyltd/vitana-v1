@@ -219,6 +219,8 @@ export class AIVoiceService {
   private async queueAudio(base64Audio: string): Promise<void> {
     if (!this.audioContext) return;
 
+    console.info('[audio] Received audio chunk to queue');
+    
     // Resume audio context if suspended (user gesture required)
     await this.resumeAudio();
 
@@ -250,6 +252,7 @@ export class AIVoiceService {
       const audioBlob = this.base64ToBlob(base64Audio, 'audio/mp3');
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
+      audio.volume = 1.0;
       
       audio.onended = () => URL.revokeObjectURL(audioUrl);
       audio.onerror = () => URL.revokeObjectURL(audioUrl);

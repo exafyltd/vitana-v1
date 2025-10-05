@@ -137,7 +137,9 @@ function getVoiceNameForLanguage(languageCode: string): string {
     'sr-RS': 'sr-RS-Standard-B',
     'en-US': 'en-US-Neural2-F',
   };
-  return voiceMap[languageCode] || 'en-US-Neural2-F';
+  const voice = voiceMap[languageCode] || 'en-US-Neural2-F';
+  console.log(`[tts] Selected voice: ${voice} for language: ${languageCode}`);
+  return voice;
 }
 
 // Split text into sentences for chunked TTS
@@ -533,8 +535,8 @@ serve(async (req) => {
                       const textEvent = `data: ${JSON.stringify({ type: 'text', content })}\n\n`;
                       safeEnqueue(encoder.encode(textEvent));
                       
-                      // Check if sentence is complete for TTS
-                      if (/[.!?]\s*$/.test(currentSentence) && currentSentence.length > 20) {
+                      // Check if sentence is complete for TTS (reduced threshold for faster TTS)
+                      if (/[.!?]\s*$/.test(currentSentence) && currentSentence.length > 8) {
                         const sentence = cleanAIResponse(currentSentence.trim());
                         sentencesProcessed++;
                         
@@ -569,8 +571,8 @@ serve(async (req) => {
               }
             }
             
-            // Process remaining sentence
-            if (currentSentence.trim() && isControllerOpen) {
+            // Process remaining sentence (safety check for minimum length)
+            if (currentSentence.trim() && currentSentence.trim().length > 3 && isControllerOpen) {
               const sentence = cleanAIResponse(currentSentence.trim());
               sentencesProcessed++;
               console.info(`[stream] 📝 Final sentence ${sentencesProcessed} (${sentence.length} chars) - triggering TTS`);

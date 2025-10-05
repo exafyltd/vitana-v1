@@ -51,6 +51,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }
 
   const handleMicToggle = async () => {
+    // Prime audio context on user gesture
+    await aiVoiceService.resumeAudio()
+    
     if (isRecording) {
       // Stop recording and send to AI
       setIsRecording(false)
@@ -111,6 +114,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const handleSendText = async () => {
     if (!inputValue.trim() || isProcessing) return
     
+    // Prime audio context on user gesture
+    await aiVoiceService.resumeAudio()
+    
     const userMessage = inputValue.trim()
     setInputValue("") // Clear immediately
     setAssistantStreamingText("") // Clear previous response
@@ -160,8 +166,20 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }
 
   useEffect(() => {
+    // One-time audio unlock on any user interaction
+    const unlockAudio = async () => {
+      await aiVoiceService.resumeAudio()
+      window.removeEventListener('click', unlockAudio)
+      window.removeEventListener('touchstart', unlockAudio)
+    }
+    
+    window.addEventListener('click', unlockAudio, { once: true })
+    window.addEventListener('touchstart', unlockAudio, { once: true })
+    
     return () => {
       if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current)
+      window.removeEventListener('click', unlockAudio)
+      window.removeEventListener('touchstart', unlockAudio)
     }
   }, [])
 
