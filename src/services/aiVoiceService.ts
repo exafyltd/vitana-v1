@@ -142,9 +142,15 @@ export class AIVoiceService {
     if (transcript && this.isRecordingWithClientSTT) {
       console.log('[Voice] ⚡ Using instant client transcript, bypassing backend STT');
       
+      // Reset flag AFTER using it
+      this.isRecordingWithClientSTT = false;
+      
       // Send directly as text message (no audio transcription needed)
       return this.sendTextMessage(transcript);
     }
+    
+    // Reset flag for fallback case
+    this.isRecordingWithClientSTT = false;
     
     // Fallback: use backend STT
     if (!audioBlob) {
