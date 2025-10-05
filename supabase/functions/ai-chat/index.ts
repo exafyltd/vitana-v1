@@ -163,7 +163,7 @@ async function synthesizeChunk(text: string, googleApiKey: string, language: str
         body: JSON.stringify({
           input: { text },
           voice: { languageCode: language, name: voiceName },
-          audioConfig: { audioEncoding: 'MP3', pitch: 0, speakingRate: 1.2 },
+          audioConfig: { audioEncoding: 'MP3', pitch: 0, speakingRate: 1.4 },
         }),
       }
     );
@@ -442,8 +442,11 @@ serve(async (req) => {
         systemMessage += `Key Insights: ${topInsights}\n`;
       }
       
-      // === COMMUNITY CONTEXT ===
-      if (community) {
+      // === CONDITIONAL COMMUNITY CONTEXT (only if query mentions community topics) ===
+      const communityKeywords = /event|group|match|meet|community|social|connect|friend|people|gathering|activity|rsvp|attend|join/i;
+      const includeCommunityContext = communityKeywords.test(userMessage);
+      
+      if (community && includeCommunityContext) {
         systemMessage += '\n=== COMMUNITY & SOCIAL CONTEXT ===\n';
         
         // Upcoming Events

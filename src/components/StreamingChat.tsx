@@ -5,6 +5,7 @@ import DiaryButton from "@/components/diary/DiaryButton"
 import { aiVoiceService } from "@/services/aiVoiceService"
 import { useToast } from "@/hooks/use-toast"
 import { ApiKeySettingsModal } from "@/components/chat/ApiKeySettingsModal"
+import { supabase } from "@/integrations/supabase/client"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,6 +45,24 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const { toast } = useToast()
 
   const isStreaming = isAudioActive || isVideoActive
+
+  // Pre-warm user context cache on component mount
+  useEffect(() => {
+    const prewarmCache = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.functions.invoke('fetch-user-context', {
+            body: { userId: user.id, forceRefresh: false }
+          });
+          console.log('✅ Context cache pre-warmed');
+        }
+      } catch (error) {
+        console.log('Context cache pre-warm failed (non-critical):', error);
+      }
+    };
+    prewarmCache();
+  }, []);
 
   const handleClose = () => {
     setIsAudioActive(false)
