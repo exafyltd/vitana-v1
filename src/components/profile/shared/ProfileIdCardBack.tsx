@@ -33,6 +33,19 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
   
+  // Check if platform is connected by checking dedicated URL columns
+  const isConnected = (platform: SocialPlatform): boolean => {
+    switch(platform) {
+      case 'linkedin': return !!profile.linkedin_url;
+      case 'instagram': return !!profile.instagram_url;
+      case 'tiktok': return !!profile.tiktok_url;
+      case 'youtube': return !!profile.youtube_url;
+      case 'facebook': return !!profile.facebook_url;
+      case 'x': return !!profile.x_url;
+      default: return false;
+    }
+  };
+  
   // Define all available platforms
   const allPlatforms: PlatformConfig[] = [
     { 
@@ -79,23 +92,6 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     }
   ];
 
-  // Parse links to identify connected social media platforms
-  const socialLinks: SocialLink[] = [];
-  
-  if (profile.links) {
-    profile.links.forEach(link => {
-      const matchedPlatform = allPlatforms.find(p => p.urlPattern.test(link.url));
-      if (matchedPlatform) {
-        socialLinks.push({
-          platform: matchedPlatform.name,
-          url: link.url,
-          icon: matchedPlatform.icon,
-          color: matchedPlatform.color,
-        });
-      }
-    });
-  }
-
   const handleConnect = (platform: PlatformConfig) => {
     setSelectedPlatform(platform);
     setDialogOpen(true);
@@ -111,7 +107,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
         <div className="grid grid-cols-2 gap-3 w-full max-w-md">
           {allPlatforms.map((platform) => {
-            const isConnected = socialLinks.some(s => s.platform === platform.name);
+            const connected = isConnected(platform.platform);
             
             return (
               <div
@@ -123,7 +119,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 </div>
                 <span className="text-xs font-medium text-foreground">{platform.name}</span>
                 
-                {isConnected ? (
+                {connected ? (
                   <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
                     <LinkIcon className="h-3 w-3" />
                     <span>Connected</span>

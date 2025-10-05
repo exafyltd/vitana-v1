@@ -79,6 +79,47 @@ export interface UserProfile {
   languages?: string[];
   location?: string;
 
+  // LinkedIn
+  linkedin_url?: string;
+  linkedin_synced_at?: string;
+  linkedin_headline?: string;
+  linkedin_summary?: string;
+  linkedin_skills?: string[];
+
+  // Instagram
+  instagram_url?: string;
+  instagram_synced_at?: string;
+  instagram_bio?: string;
+  instagram_followers_count?: number;
+  instagram_interests?: string[];
+
+  // TikTok
+  tiktok_url?: string;
+  tiktok_synced_at?: string;
+  tiktok_bio?: string;
+  tiktok_followers_count?: number;
+  tiktok_content_themes?: string[];
+
+  // YouTube
+  youtube_url?: string;
+  youtube_synced_at?: string;
+  youtube_description?: string;
+  youtube_subscribers_count?: number;
+  youtube_content_categories?: string[];
+
+  // Facebook
+  facebook_url?: string;
+  facebook_synced_at?: string;
+  facebook_bio?: string;
+  facebook_interests?: string[];
+
+  // X (Twitter)
+  x_url?: string;
+  x_synced_at?: string;
+  x_bio?: string;
+  x_followers_count?: number;
+  x_topics?: string[];
+
   stats: { posts: number; followers: number; following: number; mediaUploads: number; groupsJoined: number };
   vitanaIndex?: number;          // 0–999; present only if healthShareConsent=true
   vitanaPercentile?: number;     // optional for drawer
