@@ -1346,15 +1346,44 @@ export type Database = {
           email: string | null
           emergency_contact_name: string | null
           emergency_contact_phone: string | null
+          facebook_bio: string | null
+          facebook_interests: string[] | null
+          facebook_synced_at: string | null
+          facebook_url: string | null
           full_name: string | null
           handle: string | null
           id: string
+          instagram_bio: string | null
+          instagram_followers_count: number | null
+          instagram_interests: string[] | null
+          instagram_synced_at: string | null
+          instagram_url: string | null
+          linkedin_headline: string | null
+          linkedin_summary: string | null
+          linkedin_synced_at: string | null
+          linkedin_url: string | null
           medical_conditions: string[] | null
           medications: string[] | null
           phone: string | null
+          professional_skills: string[] | null
           tenant_id: string | null
+          tiktok_bio: string | null
+          tiktok_content_themes: string[] | null
+          tiktok_followers_count: number | null
+          tiktok_synced_at: string | null
+          tiktok_url: string | null
           updated_at: string
           user_id: string
+          x_bio: string | null
+          x_followers_count: number | null
+          x_synced_at: string | null
+          x_topics: string[] | null
+          x_url: string | null
+          youtube_content_categories: string[] | null
+          youtube_description: string | null
+          youtube_subscribers_count: number | null
+          youtube_synced_at: string | null
+          youtube_url: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -1366,15 +1395,44 @@ export type Database = {
           email?: string | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
+          facebook_bio?: string | null
+          facebook_interests?: string[] | null
+          facebook_synced_at?: string | null
+          facebook_url?: string | null
           full_name?: string | null
           handle?: string | null
           id?: string
+          instagram_bio?: string | null
+          instagram_followers_count?: number | null
+          instagram_interests?: string[] | null
+          instagram_synced_at?: string | null
+          instagram_url?: string | null
+          linkedin_headline?: string | null
+          linkedin_summary?: string | null
+          linkedin_synced_at?: string | null
+          linkedin_url?: string | null
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
+          professional_skills?: string[] | null
           tenant_id?: string | null
+          tiktok_bio?: string | null
+          tiktok_content_themes?: string[] | null
+          tiktok_followers_count?: number | null
+          tiktok_synced_at?: string | null
+          tiktok_url?: string | null
           updated_at?: string
           user_id: string
+          x_bio?: string | null
+          x_followers_count?: number | null
+          x_synced_at?: string | null
+          x_topics?: string[] | null
+          x_url?: string | null
+          youtube_content_categories?: string[] | null
+          youtube_description?: string | null
+          youtube_subscribers_count?: number | null
+          youtube_synced_at?: string | null
+          youtube_url?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -1386,15 +1444,44 @@ export type Database = {
           email?: string | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
+          facebook_bio?: string | null
+          facebook_interests?: string[] | null
+          facebook_synced_at?: string | null
+          facebook_url?: string | null
           full_name?: string | null
           handle?: string | null
           id?: string
+          instagram_bio?: string | null
+          instagram_followers_count?: number | null
+          instagram_interests?: string[] | null
+          instagram_synced_at?: string | null
+          instagram_url?: string | null
+          linkedin_headline?: string | null
+          linkedin_summary?: string | null
+          linkedin_synced_at?: string | null
+          linkedin_url?: string | null
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
+          professional_skills?: string[] | null
           tenant_id?: string | null
+          tiktok_bio?: string | null
+          tiktok_content_themes?: string[] | null
+          tiktok_followers_count?: number | null
+          tiktok_synced_at?: string | null
+          tiktok_url?: string | null
           updated_at?: string
           user_id?: string
+          x_bio?: string | null
+          x_followers_count?: number | null
+          x_synced_at?: string | null
+          x_topics?: string[] | null
+          x_url?: string | null
+          youtube_content_categories?: string[] | null
+          youtube_description?: string | null
+          youtube_subscribers_count?: number | null
+          youtube_synced_at?: string | null
+          youtube_url?: string | null
         }
         Relationships: [
           {

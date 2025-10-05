@@ -1,0 +1,233 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+interface ImportRequest {
+  userId: string;
+  platform: 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
+  profileUrl: string;
+  bioText?: string;
+}
+
+interface ParsedData {
+  [key: string]: any;
+}
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const { userId, platform, profileUrl, bioText }: ImportRequest = await req.json();
+
+    console.log(`Processing ${platform} import for user ${userId}`);
+
+    if (!userId || !platform || !profileUrl) {
+      throw new Error('Missing required fields: userId, platform, or profileUrl');
+    }
+
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    let updateData: any = {
+      [`${platform}_url`]: profileUrl,
+      [`${platform}_synced_at`]: new Date().toISOString(),
+    };
+
+    // If bioText provided, use AI to parse it
+    if (bioText && bioText.trim()) {
+      console.log(`Parsing ${platform} bio with AI`);
+      
+      const systemPrompts: Record<string, string> = {
+        linkedin: "You are a professional profile analyzer. Extract headline, summary, and skills from LinkedIn bios.",
+        instagram: "You are a social media analyzer. Extract bio, interests, and themes from Instagram profiles.",
+        tiktok: "You are a content analyzer. Extract bio, content themes, and personality traits from TikTok profiles.",
+        youtube: "You are a video content analyzer. Extract description, content categories, and expertise from YouTube channels.",
+        facebook: "You are a social profile analyzer. Extract bio, interests, and community involvement from Facebook profiles.",
+        x: "You are a micro-content analyzer. Extract bio, topics of interest, and communication style from X/Twitter profiles."
+      };
+
+      const userPrompt = `Analyze this ${platform} profile text and extract structured data:\n\n${bioText}`;
+
+      try {
+        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash',
+            messages: [
+              { role: 'system', content: systemPrompts[platform] },
+              { role: 'user', content: userPrompt }
+            ],
+            tools: [{
+              type: "function",
+              function: {
+                name: "extract_profile_data",
+                description: `Extract structured data from ${platform} profile`,
+                parameters: getPlatformSchema(platform)
+              }
+            }],
+            tool_choice: { type: "function", function: { name: "extract_profile_data" } }
+          }),
+        });
+
+        if (!aiResponse.ok) {
+          console.error(`AI parsing error: ${aiResponse.status}`);
+        } else {
+          const aiData = await aiResponse.json();
+          const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
+          
+          if (toolCall?.function?.arguments) {
+            const parsedData = JSON.parse(toolCall.function.arguments);
+            console.log('Parsed data:', parsedData);
+            
+            // Map parsed data to database columns
+            updateData = { ...updateData, ...mapParsedData(platform, parsedData) };
+          }
+        }
+      } catch (aiError) {
+        console.error('AI parsing error:', aiError);
+        // Continue with basic update even if AI parsing fails
+      }
+    }
+
+    // Update profile in database
+    const { data, error } = await supabaseClient
+      .from('profiles')
+      .update(updateData)
+      .eq('user_id', userId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(`${platform} import error:`, error);
+      throw error;
+    }
+
+    console.log(`${platform} import successful for user ${userId}`);
+
+    return new Response(
+      JSON.stringify({ success: true, data }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+
+  } catch (error) {
+    console.error('Social media import error:', error);
+    return new Response(
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+});
+
+function getPlatformSchema(platform: string): any {
+  const schemas: Record<string, any> = {
+    linkedin: {
+      type: "object",
+      properties: {
+        headline: { type: "string", description: "Professional headline" },
+        summary: { type: "string", description: "Professional summary" },
+        skills: { type: "array", items: { type: "string" }, description: "Professional skills" }
+      },
+      required: ["headline"],
+      additionalProperties: false
+    },
+    instagram: {
+      type: "object",
+      properties: {
+        bio: { type: "string", description: "Instagram bio" },
+        followers_count: { type: "integer", description: "Estimated follower count if mentioned" },
+        interests: { type: "array", items: { type: "string" }, description: "Interests and themes" }
+      },
+      required: ["bio"],
+      additionalProperties: false
+    },
+    tiktok: {
+      type: "object",
+      properties: {
+        bio: { type: "string", description: "TikTok bio" },
+        followers_count: { type: "integer", description: "Estimated follower count if mentioned" },
+        content_themes: { type: "array", items: { type: "string" }, description: "Content themes" }
+      },
+      required: ["bio"],
+      additionalProperties: false
+    },
+    youtube: {
+      type: "object",
+      properties: {
+        description: { type: "string", description: "Channel description" },
+        subscribers_count: { type: "integer", description: "Estimated subscriber count if mentioned" },
+        content_categories: { type: "array", items: { type: "string" }, description: "Content categories" }
+      },
+      required: ["description"],
+      additionalProperties: false
+    },
+    facebook: {
+      type: "object",
+      properties: {
+        bio: { type: "string", description: "Facebook bio" },
+        interests: { type: "array", items: { type: "string" }, description: "Interests" }
+      },
+      required: ["bio"],
+      additionalProperties: false
+    },
+    x: {
+      type: "object",
+      properties: {
+        bio: { type: "string", description: "X/Twitter bio" },
+        followers_count: { type: "integer", description: "Estimated follower count if mentioned" },
+        topics: { type: "array", items: { type: "string" }, description: "Topics of interest" }
+      },
+      required: ["bio"],
+      additionalProperties: false
+    }
+  };
+
+  return schemas[platform];
+}
+
+function mapParsedData(platform: string, parsed: ParsedData): any {
+  const mappings: Record<string, any> = {
+    linkedin: {
+      linkedin_headline: parsed.headline,
+      linkedin_summary: parsed.summary,
+      professional_skills: parsed.skills
+    },
+    instagram: {
+      instagram_bio: parsed.bio,
+      instagram_followers_count: parsed.followers_count,
+      instagram_interests: parsed.interests
+    },
+    tiktok: {
+      tiktok_bio: parsed.bio,
+      tiktok_followers_count: parsed.followers_count,
+      tiktok_content_themes: parsed.content_themes
+    },
+    youtube: {
+      youtube_description: parsed.description,
+      youtube_subscribers_count: parsed.subscribers_count,
+      youtube_content_categories: parsed.content_categories
+    },
+    facebook: {
+      facebook_bio: parsed.bio,
+      facebook_interests: parsed.interests
+    },
+    x: {
+      x_bio: parsed.bio,
+      x_followers_count: parsed.followers_count,
+      x_topics: parsed.topics
+    }
+  };
+
+  return mappings[platform] || {};
+}

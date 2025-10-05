@@ -11,3 +11,9 @@ verify_jwt = true
 
 [functions.process-match-interaction]
 verify_jwt = true
+
+[functions.social-media-import]
+verify_jwt = true
+
+[functions.linkedin-import]
+verify_jwt = true

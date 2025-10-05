@@ -1,10 +1,10 @@
 import { UserProfile } from "@/types/profile";
-import { Instagram, Linkedin, Youtube, Plus, Link as LinkIcon } from "lucide-react";
+import { Instagram, Linkedin, Youtube, Plus, Link as LinkIcon, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "@/components/icons/XIcon";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { useState } from "react";
-import { LinkedInImportDialog } from "@/components/profile/dialogs/LinkedInImportDialog";
+import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 
 interface ProfileIdCardBackProps {
   profile: UserProfile;
@@ -17,23 +17,72 @@ interface SocialLink {
   color: string;
 }
 
+type SocialPlatform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
+
+interface PlatformConfig {
+  name: string;
+  platform: SocialPlatform;
+  icon: React.ReactNode;
+  color: string;
+  urlPattern: RegExp;
+}
+
 export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
-  const [linkedInDialogOpen, setLinkedInDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
   
-  // Parse links to identify social media platforms
-  const socialLinks: SocialLink[] = [];
-  
-  const platformPatterns = [
-    { name: 'Instagram', pattern: /instagram\.com/i, icon: <Instagram className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-pink-600' },
-    { name: 'TikTok', pattern: /tiktok\.com/i, icon: <TikTokIcon className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-gray-900' },
-    { name: 'LinkedIn', pattern: /linkedin\.com/i, icon: <Linkedin className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-blue-600' },
-    { name: 'YouTube', pattern: /youtube\.com|youtu\.be/i, icon: <Youtube className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-red-600' },
-    { name: 'X', pattern: /twitter\.com|x\.com/i, icon: <XIcon className="h-6 w-6" strokeWidth={1.5} />, color: 'hover:text-gray-900' },
+  // Define all available platforms
+  const allPlatforms: PlatformConfig[] = [
+    { 
+      name: 'LinkedIn', 
+      platform: 'linkedin',
+      icon: <Linkedin className="h-5 w-5" />, 
+      color: 'hover:bg-blue-50 dark:hover:bg-blue-950',
+      urlPattern: /linkedin\.com/i
+    },
+    { 
+      name: 'Instagram', 
+      platform: 'instagram',
+      icon: <Instagram className="h-5 w-5" />, 
+      color: 'hover:bg-pink-50 dark:hover:bg-pink-950',
+      urlPattern: /instagram\.com/i
+    },
+    { 
+      name: 'X', 
+      platform: 'x',
+      icon: <XIcon className="h-5 w-5" />, 
+      color: 'hover:bg-gray-50 dark:hover:bg-gray-900',
+      urlPattern: /twitter\.com|x\.com/i
+    },
+    { 
+      name: 'TikTok', 
+      platform: 'tiktok',
+      icon: <TikTokIcon className="h-5 w-5" />, 
+      color: 'hover:bg-gray-50 dark:hover:bg-gray-900',
+      urlPattern: /tiktok\.com/i
+    },
+    { 
+      name: 'YouTube', 
+      platform: 'youtube',
+      icon: <Youtube className="h-5 w-5" />, 
+      color: 'hover:bg-red-50 dark:hover:bg-red-950',
+      urlPattern: /youtube\.com|youtu\.be/i
+    },
+    { 
+      name: 'Facebook', 
+      platform: 'facebook',
+      icon: <Facebook className="h-5 w-5" />, 
+      color: 'hover:bg-blue-50 dark:hover:bg-blue-950',
+      urlPattern: /facebook\.com/i
+    }
   ];
 
+  // Parse links to identify connected social media platforms
+  const socialLinks: SocialLink[] = [];
+  
   if (profile.links) {
     profile.links.forEach(link => {
-      const matchedPlatform = platformPatterns.find(p => p.pattern.test(link.url));
+      const matchedPlatform = allPlatforms.find(p => p.urlPattern.test(link.url));
       if (matchedPlatform) {
         socialLinks.push({
           platform: matchedPlatform.name,
@@ -45,21 +94,9 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     });
   }
 
-  // Define all available platforms to show connect buttons
-  const allPlatforms = [
-    { name: 'LinkedIn', icon: <Linkedin className="h-5 w-5" />, color: 'hover:bg-blue-50 dark:hover:bg-blue-950', action: () => setLinkedInDialogOpen(true) },
-    { name: 'Instagram', icon: <Instagram className="h-5 w-5" />, color: 'hover:bg-pink-50 dark:hover:bg-pink-950' },
-    { name: 'X', icon: <XIcon className="h-5 w-5" />, color: 'hover:bg-gray-50 dark:hover:bg-gray-900' },
-    { name: 'TikTok', icon: <TikTokIcon className="h-5 w-5" />, color: 'hover:bg-gray-50 dark:hover:bg-gray-900' },
-    { name: 'YouTube', icon: <Youtube className="h-5 w-5" />, color: 'hover:bg-red-50 dark:hover:bg-red-950' },
-  ];
-
-  const handleConnect = (platform: string, action?: () => void) => {
-    if (action) {
-      action();
-    } else {
-      console.log(`Connect to ${platform} - Coming soon!`);
-    }
+  const handleConnect = (platform: PlatformConfig) => {
+    setSelectedPlatform(platform);
+    setDialogOpen(true);
   };
 
   return (
@@ -94,7 +131,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     size="sm"
                     variant="outline"
                     className="h-7 text-xs px-3"
-                    onClick={() => handleConnect(platform.name, platform.action)}
+                    onClick={() => handleConnect(platform)}
                   >
                     Connect
                   </Button>
@@ -117,11 +154,16 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
         </div>
       </div>
 
-      <LinkedInImportDialog 
-        open={linkedInDialogOpen} 
-        onOpenChange={setLinkedInDialogOpen}
-        profileId={profile.id}
-      />
+      {selectedPlatform && (
+        <SocialMediaImportDialog 
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          platform={selectedPlatform.platform}
+          platformName={selectedPlatform.name}
+          icon={selectedPlatform.icon}
+          profileId={profile.id}
+        />
+      )}
     </>
   );
 }
