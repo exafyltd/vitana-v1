@@ -40,7 +40,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     { label: "🇸🇦 Arabic", value: "ar-XA" },
     { label: "🇪🇸 Spanish", value: "es-ES" },
     { label: "🇷🇺 Russian", value: "ru-RU" },
-    { label: "���🇳 Chinese", value: "zh-CN" },
+    { label: "Chinese", value: "zh-CN" },
   ]
   const { toast } = useToast()
 
