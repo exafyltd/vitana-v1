@@ -416,7 +416,7 @@ serve(async (req) => {
     let systemMessage = basePrompt;
     
     if (userContext) {
-      const { identity, temporal, health, memory, economic } = userContext;
+      const { identity, temporal, health, memory, economic, community } = userContext;
       systemMessage += '\n\n=== USER CONTEXT (Use naturally when relevant) ===\n';
       if (identity?.displayName || identity?.handle) {
         systemMessage += `Name: ${identity.displayName || 'User'}${identity.handle ? ` (@${identity.handle})` : ''}\n`;
@@ -441,6 +441,88 @@ serve(async (req) => {
           .join('; ');
         systemMessage += `Key Insights: ${topInsights}\n`;
       }
+      
+      // === COMMUNITY CONTEXT ===
+      if (community) {
+        systemMessage += '\n=== COMMUNITY & SOCIAL CONTEXT ===\n';
+        
+        // Upcoming Events
+        if (community.upcomingEvents?.length > 0) {
+          systemMessage += `📅 Upcoming Events (next 30 days): ${community.upcomingEvents.length} available\n`;
+          const nearestEvents = community.upcomingEvents.slice(0, 3);
+          nearestEvents.forEach((e: any) => {
+            const date = new Date(e.startTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            const spots = e.maxParticipants ? `${e.participantCount}/${e.maxParticipants}` : `${e.participantCount}`;
+            const participating = e.isParticipating ? '✅' : '';
+            systemMessage += `  ${participating} ${e.title} (${e.type}) - ${date}, ${spots} attending${e.location ? `, ${e.location}` : ''}\n`;
+          });
+        }
+        
+        // User's Registered Events
+        if (community.myRegisteredEvents?.length > 0) {
+          systemMessage += `✅ Your Registered Events: ${community.myRegisteredEvents.length} events\n`;
+          community.myRegisteredEvents.slice(0, 3).forEach((e: any) => {
+            const date = new Date(e.startTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            systemMessage += `  - ${e.title} - ${date}\n`;
+          });
+        }
+        
+        // Groups
+        if (community.joinedGroups?.length > 0) {
+          systemMessage += `👥 Joined Groups: ${community.joinedGroups.length} groups\n`;
+          community.joinedGroups.slice(0, 5).forEach((g: any) => {
+            systemMessage += `  - ${g.name} (${g.category}) - ${g.memberCount} members, Role: ${g.role}\n`;
+          });
+        } else {
+          systemMessage += `👥 Groups: Not yet a member of any groups\n`;
+        }
+        
+        // Matches
+        if (community.activeMatches?.length > 0) {
+          systemMessage += `🤝 Active Matches: ${community.activeMatches.length} compatible users\n`;
+          const topMatches = community.activeMatches.slice(0, 3);
+          topMatches.forEach((m: any) => {
+            const status = m.conversationStarted ? '💬 Connected' : '👋 Not yet contacted';
+            const interests = m.sharedInterests?.length > 0 ? ` - Shared: ${m.sharedInterests.slice(0, 2).join(', ')}` : '';
+            systemMessage += `  - ${m.displayName} (${m.compatibilityScore}% compatible)${interests} - ${status}\n`;
+          });
+          
+          const uncontacted = community.activeMatches.filter((m: any) => !m.conversationStarted);
+          if (uncontacted.length > 0) {
+            systemMessage += `  ⚡ ${uncontacted.length} match${uncontacted.length > 1 ? 'es' : ''} waiting to connect!\n`;
+          }
+        } else {
+          systemMessage += `🤝 Matches: No active matches yet\n`;
+        }
+        
+        // Social Graph
+        systemMessage += `📊 Social: ${community.followers} followers, ${community.following} following\n`;
+        
+        // Interests & Location
+        if (community.userInterests?.length > 0) {
+          systemMessage += `❤️ Interests: ${community.userInterests.join(', ')}\n`;
+        }
+        if (community.userLocation) {
+          systemMessage += `📍 Location: ${community.userLocation}\n`;
+        }
+        
+        // Recent Activity
+        if (community.recentActivity?.length > 0) {
+          systemMessage += `⚡ Recent Activity: ${community.recentActivity.length} interactions in last 30 days\n`;
+        }
+        
+        // AI Proactive Guidance
+        systemMessage += '\n=== AI PROACTIVE GUIDANCE ===\n';
+        systemMessage += 'Based on the user\'s community context, be proactive in:\n';
+        systemMessage += '1. 🎉 Recommending relevant upcoming events based on their interests\n';
+        systemMessage += '2. 👥 Suggesting groups to join that align with their wellness goals\n';
+        systemMessage += '3. 🤝 Encouraging them to reach out to high-compatibility matches\n';
+        systemMessage += '4. 📈 Highlighting opportunities to grow their social network\n';
+        systemMessage += '5. 🎯 Nudging them toward community engagement (events, meetups, groups)\n';
+        systemMessage += '6. 🏆 Celebrating their community participation and milestones\n';
+        systemMessage += '7. 💡 Making personalized suggestions like "Want me to RSVP you?" or "Should I help you connect?"\n';
+      }
+      
       systemMessage += '=== END CONTEXT ===\n';
     }
     

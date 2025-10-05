@@ -96,6 +96,59 @@ interface UserContext {
       timestamp: string;
     }>;
   };
+  community: {
+    upcomingEvents: Array<{
+      id: string;
+      title: string;
+      description?: string;
+      type: string;
+      startTime: string;
+      endTime?: string;
+      location?: string;
+      virtualLink?: string;
+      participantCount: number;
+      maxParticipants?: number;
+      isParticipating: boolean;
+      createdBy: string;
+      category?: string;
+      imageUrl?: string;
+    }>;
+    myRegisteredEvents: Array<{
+      id: string;
+      title: string;
+      participantCount: number;
+      startTime: string;
+      status: string;
+    }>;
+    joinedGroups: Array<{
+      id: string;
+      name: string;
+      description?: string;
+      category: string;
+      memberCount: number;
+      role: string;
+      isPublic: boolean;
+    }>;
+    activeMatches: Array<{
+      userId: string;
+      displayName: string;
+      avatarUrl?: string;
+      compatibilityScore: number;
+      matchReason: string;
+      conversationStarted: boolean;
+      sharedInterests: string[];
+    }>;
+    following: number;
+    followers: number;
+    userInterests: string[];
+    userLocation?: string;
+    profileVisibility: boolean;
+    recentActivity: Array<{
+      type: string;
+      title: string;
+      timestamp: string;
+    }>;
+  };
   metadata: {
     cachedAt: string;
     dataFreshness: string;
@@ -118,7 +171,14 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     memoryData,
     conversationsData,
     actionsData,
-    tenantData
+    tenantData,
+    communityEventsData,
+    myEventParticipationsData,
+    myGroupMembershipsData,
+    userMatchesData,
+    communityProfileData,
+    followCountsData,
+    recentInteractionsData
   ] = await Promise.all([
     // Wallets
     supabase.from('user_wallets').select('*').eq('user_id', userId),
@@ -175,7 +235,58 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     // Tenant info (using profile.tenant_id)
     profile.tenant_id 
       ? supabase.from('tenants').select('id, name, slug').eq('id', profile.tenant_id).single()
-      : Promise.resolve({ data: null })
+      : Promise.resolve({ data: null }),
+    
+    // === COMMUNITY DATA ===
+    
+    // Upcoming community events (next 30 days)
+    supabase.from('global_community_events')
+      .select('id, title, description, type, start_time, end_time, location, virtual_link, participant_count, max_participants, created_by, category, image_url')
+      .gte('start_time', now.toISOString())
+      .lte('start_time', new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString())
+      .order('start_time', { ascending: true })
+      .limit(20),
+    
+    // Events user is participating in
+    supabase.from('global_event_participants')
+      .select('event_id, status')
+      .eq('user_id', userId)
+      .in('status', ['confirmed', 'pending']),
+    
+    // Groups user has joined
+    supabase.from('global_group_members')
+      .select('group_id, role, is_active, global_community_groups(id, name, description, category, member_count, is_public)')
+      .eq('user_id', userId)
+      .eq('is_active', true)
+      .limit(50),
+    
+    // User matches (active)
+    supabase.from('user_matches')
+      .select('id, user_id_1, user_id_2, compatibility_score, match_reason, conversation_started, metadata')
+      .or(`user_id_1.eq.${userId},user_id_2.eq.${userId}`)
+      .eq('is_active', true)
+      .order('compatibility_score', { ascending: false })
+      .limit(20),
+    
+    // User's global community profile
+    supabase.from('global_community_profiles')
+      .select('interests, location, is_visible')
+      .eq('user_id', userId)
+      .maybeSingle(),
+    
+    // Follow counts
+    supabase.from('user_follow_counts')
+      .select('followers_count, following_count')
+      .eq('user_id', userId)
+      .maybeSingle(),
+    
+    // Recent community interactions (last 30 days)
+    supabase.from('user_match_interactions')
+      .select('interaction_type, target_type, created_at, metadata')
+      .eq('user_id', userId)
+      .gte('created_at', new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString())
+      .order('created_at', { ascending: false })
+      .limit(30)
   ]);
 
   const wallets = walletsData.data || [];
@@ -186,6 +297,35 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
   const conversations = conversationsData.data || [];
   const actions = actionsData.data || [];
   const tenant = tenantData.data || {};
+  
+  // Community data
+  const communityEvents = communityEventsData.data || [];
+  const myEventParticipations = myEventParticipationsData.data || [];
+  const myGroupMemberships = myGroupMembershipsData.data || [];
+  const userMatches = userMatchesData.data || [];
+  const communityProfile = communityProfileData.data;
+  const followCounts = followCountsData.data;
+  const recentInteractions = recentInteractionsData.data || [];
+
+  // Build set of event IDs user is participating in
+  const participatingEventIds = new Set(
+    myEventParticipations.map((p: any) => p.event_id)
+  );
+
+  // Get IDs of matched users to fetch their profiles
+  const matchedUserIds = userMatches.map((m: any) => 
+    m.user_id_1 === userId ? m.user_id_2 : m.user_id_1
+  );
+
+  // Fetch profiles for matched users (if any)
+  let matchedProfiles: any[] = [];
+  if (matchedUserIds.length > 0) {
+    const { data: profilesData } = await supabase
+      .from('global_community_profiles')
+      .select('user_id, display_name, avatar_url')
+      .in('user_id', matchedUserIds);
+    matchedProfiles = profilesData || [];
+  }
 
   // Build context object
   const context: UserContext = {
@@ -196,7 +336,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       email: profile.email || '',
       tenantId: profile.tenant_id || '',
       tenantName: tenant.name || '',
-      roles: [], // TODO: Fetch from role_preferences
+      roles: [],
       membershipTier: profile.membership_tier
     },
     temporal: {
@@ -231,7 +371,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       pendingPayments: 0
     },
     health: {
-      vitanaIndex: undefined, // TODO: Calculate from health data
+      vitanaIndex: undefined,
       vitanaPercentile: undefined,
       recentDiaryEntries: diary.map((d: any) => ({
         text: d.text,
@@ -276,6 +416,70 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
         status: a.status,
         category: a.category,
         timestamp: a.created_at
+      }))
+    },
+    community: {
+      upcomingEvents: communityEvents.map((e: any) => ({
+        id: e.id,
+        title: e.title,
+        description: e.description,
+        type: e.type,
+        startTime: e.start_time,
+        endTime: e.end_time,
+        location: e.location,
+        virtualLink: e.virtual_link,
+        participantCount: e.participant_count || 0,
+        maxParticipants: e.max_participants,
+        isParticipating: participatingEventIds.has(e.id),
+        createdBy: e.created_by,
+        category: e.category,
+        imageUrl: e.image_url
+      })),
+      myRegisteredEvents: myEventParticipations
+        .map((p: any) => {
+          const event = communityEvents.find((e: any) => e.id === p.event_id);
+          return event ? {
+            id: event.id,
+            title: event.title,
+            participantCount: event.participant_count || 0,
+            startTime: event.start_time,
+            status: p.status
+          } : null;
+        })
+        .filter((e: any) => e !== null),
+      joinedGroups: myGroupMemberships
+        .filter((m: any) => m.global_community_groups)
+        .map((m: any) => ({
+          id: m.global_community_groups.id,
+          name: m.global_community_groups.name,
+          description: m.global_community_groups.description,
+          category: m.global_community_groups.category || 'general',
+          memberCount: m.global_community_groups.member_count || 0,
+          role: m.role || 'member',
+          isPublic: m.global_community_groups.is_public
+        })),
+      activeMatches: userMatches.map((m: any) => {
+        const otherUserId = m.user_id_1 === userId ? m.user_id_2 : m.user_id_1;
+        const matchedProfile = matchedProfiles.find((p: any) => p.user_id === otherUserId);
+        return {
+          userId: otherUserId,
+          displayName: matchedProfile?.display_name || 'Community Member',
+          avatarUrl: matchedProfile?.avatar_url,
+          compatibilityScore: m.compatibility_score || 0,
+          matchReason: m.match_reason || 'Shared interests',
+          conversationStarted: m.conversation_started || false,
+          sharedInterests: m.metadata?.shared_interests || []
+        };
+      }),
+      following: followCounts?.following_count || 0,
+      followers: followCounts?.followers_count || 0,
+      userInterests: communityProfile?.interests || [],
+      userLocation: communityProfile?.location,
+      profileVisibility: communityProfile?.is_visible !== false,
+      recentActivity: recentInteractions.map((i: any) => ({
+        type: i.interaction_type,
+        title: i.metadata?.title || 'Community activity',
+        timestamp: i.created_at
       }))
     },
     metadata: {
