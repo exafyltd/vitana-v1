@@ -449,7 +449,8 @@ serve(async (req) => {
       'ar-XA': 'Arabic', 'es-ES': 'Spanish', 'ru-RU': 'Russian', 'zh-CN': 'Chinese'
     };
     
-    const languageName = languageMap[detectedLanguage];
+    const normalizedForLookup = normalizeLanguage(detectedLanguage);
+    const languageName = languageMap[normalizedForLookup];
     if (languageName && languageName !== 'English') {
       systemMessage += `\n\n=== LANGUAGE INSTRUCTION ===\nIMPORTANT: Respond in ${languageName}. The user is communicating in ${languageName}, so all your responses must be in ${languageName}.\n=== END LANGUAGE INSTRUCTION ===\n`;
     }
