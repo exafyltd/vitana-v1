@@ -258,6 +258,9 @@ export class AIVoiceService {
     const reader = response.body!.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
+    
+    // Word buffering for smooth display
+    let textBuffer = '';
 
     while (true) {
       const { done, value } = await reader.read();
@@ -278,8 +281,24 @@ export class AIVoiceService {
                 console.info('[streaming] ⚡ First token received');
               }
               fullText += event.content;
+              
+              // Buffer tokens and emit only complete words
               if (onTextChunk) {
-                onTextChunk(event.content);
+                textBuffer += event.content;
+                
+                // Check for word boundaries (spaces, punctuation, newlines)
+                const wordBoundaryRegex = /[\s.!?,;:\n]+/;
+                if (wordBoundaryRegex.test(textBuffer)) {
+                  // Split by word boundaries but keep the delimiters
+                  const parts = textBuffer.split(/([\s.!?,;:\n]+)/);
+                  
+                  // Emit all complete parts except the last one (might be incomplete)
+                  if (parts.length > 1) {
+                    const completeText = parts.slice(0, -1).join('');
+                    onTextChunk(completeText);
+                    textBuffer = parts[parts.length - 1] || '';
+                  }
+                }
               }
             } else if (event.type === 'audio') {
               if (!this.firstAudioQueued) {
@@ -309,6 +328,12 @@ export class AIVoiceService {
           }
         }
       }
+    }
+
+    // Flush any remaining buffered text
+    if (textBuffer && onTextChunk) {
+      console.info('[streaming] Flushing remaining buffer:', textBuffer);
+      onTextChunk(textBuffer);
     }
 
     return {
