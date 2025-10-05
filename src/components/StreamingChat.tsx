@@ -115,29 +115,20 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     setIsProcessing(true)
     
     try {
-      let streamedText = ""
-      
-      const response = await aiVoiceService.sendTextMessage(
+      await aiVoiceService.sendTextMessage(
         userMessage, 
         selectedLanguage,
-        // onTextChunk callback
+        // onTextChunk callback - display in input as AI responds
         (chunk: string) => {
-          streamedText += chunk
-          setInputValue(streamedText)
+          setInputValue(prev => prev + chunk)
         },
         // onAudioChunk callback
         (audioData: string) => {
           // Audio is automatically queued and played by the service
-          console.log('Audio chunk received')
         }
       )
       
-      // Check for crisis
-      if (response.crisisDetected) {
-        setShowCrisisButton(true)
-      }
-      
-      // Clear after streaming completes
+      // Clear input after 3 seconds
       setTimeout(() => setInputValue(""), 3000)
     } catch (error) {
       console.error('Text error:', error)

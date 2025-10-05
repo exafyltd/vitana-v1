@@ -475,7 +475,19 @@ serve(async (req) => {
         async start(controller) {
           let fullText = '';
           let currentSentence = '';
-          const audioChunks: string[] = [];
+          let isControllerOpen = true;
+          
+          // Helper to safely enqueue
+          const safeEnqueue = (data: Uint8Array) => {
+            if (isControllerOpen) {
+              try {
+                controller.enqueue(data);
+              } catch (err) {
+                console.error('Failed to enqueue:', err);
+                isControllerOpen = false;
+              }
+            }
+          };
           
           try {
             const reader = aiResponse.body!.getReader();
@@ -503,7 +515,7 @@ serve(async (req) => {
                       
                       // Send text token immediately
                       const textEvent = `data: ${JSON.stringify({ type: 'text', content })}\n\n`;
-                      controller.enqueue(encoder.encode(textEvent));
+                      safeEnqueue(encoder.encode(textEvent));
                       
                       // Check if sentence is complete
                       if (/[.!?]\s*$/.test(currentSentence) && currentSentence.length > 20) {
@@ -512,9 +524,9 @@ serve(async (req) => {
                         
                         // Synthesize audio for this sentence (non-blocking)
                         synthesizeChunk(sentence, googleApiKey, normalizedLang).then(audioContent => {
-                          if (audioContent) {
+                          if (audioContent && isControllerOpen) {
                             const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
-                            controller.enqueue(encoder.encode(audioEvent));
+                            safeEnqueue(encoder.encode(audioEvent));
                           }
                         }).catch(err => console.error('TTS chunk error:', err));
                         
@@ -529,12 +541,12 @@ serve(async (req) => {
             }
             
             // Process remaining sentence
-            if (currentSentence.trim()) {
+            if (currentSentence.trim() && isControllerOpen) {
               const sentence = cleanAIResponse(currentSentence.trim());
               const audioContent = await synthesizeChunk(sentence, googleApiKey, normalizedLang);
               if (audioContent) {
                 const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
-                controller.enqueue(encoder.encode(audioEvent));
+                safeEnqueue(encoder.encode(audioEvent));
               }
             }
             
