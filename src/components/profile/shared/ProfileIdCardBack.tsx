@@ -161,7 +161,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
           platform={selectedPlatform.platform}
           platformName={selectedPlatform.name}
           icon={selectedPlatform.icon}
-          profileId={profile.id}
+          profileId={profile.user_id || profile.id}
         />
       )}
     </>

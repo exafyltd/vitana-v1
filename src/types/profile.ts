@@ -66,6 +66,7 @@ export interface ProfessionalCredentials {
 
 export interface UserProfile {
   id: string;
+  user_id?: string;
   name: string;
   handle: string;
   avatarUrl?: string;
