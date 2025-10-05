@@ -14,11 +14,19 @@ export class AIVoiceService {
   private audioQueue: AudioBuffer[] = [];
   private isPlaying: boolean = false;
   private audioContext: AudioContext | null = null;
+  private firstAudioQueued: boolean = false;
 
   constructor() {
     // Initialize audio context lazily
     if (typeof window !== 'undefined') {
       this.audioContext = new AudioContext();
+    }
+  }
+
+  async resumeAudio(): Promise<void> {
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      console.info('[audio] Resuming AudioContext');
+      await this.audioContext.resume();
     }
   }
 
@@ -100,7 +108,8 @@ export class AIVoiceService {
     onTextChunk?: (chunk: string) => void,
     onAudioChunk?: (audioData: string) => void
   ): Promise<AIChatResponse> {
-    console.log('Sending text message with streaming:', text, 'Language:', language);
+    console.info('[streaming] Sending text message:', text.substring(0, 50));
+    this.firstAudioQueued = false;
     
     let conversationId = localStorage.getItem('ai_conversation_id') || undefined;
     
@@ -161,18 +170,25 @@ export class AIVoiceService {
             const event = JSON.parse(data);
             
             if (event.type === 'text') {
+              if (!fullText) {
+                console.info('[streaming] ⚡ First token received');
+              }
               fullText += event.content;
               if (onTextChunk) {
                 onTextChunk(event.content);
               }
             } else if (event.type === 'audio') {
-              console.log('Received audio chunk, queuing for playback');
+              if (!this.firstAudioQueued) {
+                console.info('[streaming] 🔊 First audio chunk queued');
+                this.firstAudioQueued = true;
+              }
               if (onAudioChunk) {
                 onAudioChunk(event.content);
               }
               // Queue audio for playback
-              this.queueAudio(event.content);
+              await this.queueAudio(event.content);
             } else if (event.type === 'done') {
+              console.info('[streaming] ✓ Stream done');
               detectedLanguage = event.detectedLanguage || detectedLanguage;
               isCrisis = event.isCrisis || false;
               finalConversationId = event.conversationId || conversationId;
@@ -200,35 +216,64 @@ export class AIVoiceService {
   private async queueAudio(base64Audio: string): Promise<void> {
     if (!this.audioContext) return;
 
+    // Resume audio context if suspended (user gesture required)
+    await this.resumeAudio();
+
     try {
+      // Try AudioContext decoding first
       const audioBlob = this.base64ToBlob(base64Audio, 'audio/mp3');
       const arrayBuffer = await audioBlob.arrayBuffer();
-      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       
+      if (this.audioContext.state !== 'running') {
+        console.warn('[audio] AudioContext not running, using HTML Audio fallback');
+        await this.playAudioFallback(base64Audio);
+        return;
+      }
+      
+      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.audioQueue.push(audioBuffer);
       
       if (!this.isPlaying) {
         this.playNextInQueue();
       }
     } catch (error) {
-      console.error('Error queuing audio:', error);
+      console.error('[audio] Failed to queue audio, using fallback:', error);
+      await this.playAudioFallback(base64Audio);
+    }
+  }
+
+  private async playAudioFallback(base64Audio: string): Promise<void> {
+    try {
+      const audioBlob = this.base64ToBlob(base64Audio, 'audio/mp3');
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      
+      audio.onended = () => URL.revokeObjectURL(audioUrl);
+      audio.onerror = () => URL.revokeObjectURL(audioUrl);
+      
+      await audio.play();
+    } catch (err) {
+      console.error('[audio] Fallback playback failed:', err);
     }
   }
 
   private playNextInQueue(): void {
     if (this.audioQueue.length === 0 || !this.audioContext) {
       this.isPlaying = false;
+      console.info('[audio] ✓ Audio queue complete');
       return;
     }
 
     this.isPlaying = true;
     const audioBuffer = this.audioQueue.shift()!;
     
+    console.info('[audio] ▶️ Starting audio playback');
     const source = this.audioContext.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(this.audioContext.destination);
     
     source.onended = () => {
+      console.info('[audio] Audio chunk ended');
       this.playNextInQueue();
     };
     

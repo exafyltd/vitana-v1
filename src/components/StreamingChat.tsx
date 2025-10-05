@@ -23,6 +23,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isVideoActive, setIsVideoActive] = useState(false)
   const [streamTime] = useState("9:51")
   const [inputValue, setInputValue] = useState("")
+  const [assistantStreamingText, setAssistantStreamingText] = useState("")
   const [isRecording, setIsRecording] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
@@ -112,15 +113,16 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     
     const userMessage = inputValue.trim()
     setInputValue("") // Clear immediately
+    setAssistantStreamingText("") // Clear previous response
     setIsProcessing(true)
     
     try {
       await aiVoiceService.sendTextMessage(
         userMessage, 
         selectedLanguage,
-        // onTextChunk callback - display in input as AI responds
+        // onTextChunk callback - accumulate in dedicated streaming text
         (chunk: string) => {
-          setInputValue(prev => prev + chunk)
+          setAssistantStreamingText(prev => prev + chunk)
         },
         // onAudioChunk callback
         (audioData: string) => {
@@ -128,8 +130,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         }
       )
       
-      // Clear input after 3 seconds
-      setTimeout(() => setInputValue(""), 3000)
+      // Clear streaming text after completion
+      setTimeout(() => setAssistantStreamingText(""), 3000)
     } catch (error) {
       console.error('Text error:', error)
       toast({
@@ -201,6 +203,14 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           >
             <X className="h-4 w-4" />
           </Button>
+        </div>
+      )}
+
+      {assistantStreamingText && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 max-w-2xl w-full px-4 z-50">
+          <div className="bg-card text-card-foreground px-4 py-3 rounded-lg shadow-lg border">
+            <p className="text-sm">{assistantStreamingText}</p>
+          </div>
         </div>
       )}
 

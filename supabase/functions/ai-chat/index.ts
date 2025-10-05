@@ -476,6 +476,7 @@ serve(async (req) => {
           let fullText = '';
           let currentSentence = '';
           let isControllerOpen = true;
+          let sentencesProcessed = 0;
           
           // Helper to safely enqueue
           const safeEnqueue = (data: Uint8Array) => {
@@ -483,7 +484,7 @@ serve(async (req) => {
               try {
                 controller.enqueue(data);
               } catch (err) {
-                console.error('Failed to enqueue:', err);
+                console.error('[stream] Failed to enqueue:', err);
                 isControllerOpen = false;
               }
             }
@@ -492,6 +493,7 @@ serve(async (req) => {
           try {
             const reader = aiResponse.body!.getReader();
             const decoder = new TextDecoder();
+            let firstToken = true;
             
             while (true) {
               const { done, value } = await reader.read();
@@ -510,25 +512,33 @@ serve(async (req) => {
                     const content = parsed.choices?.[0]?.delta?.content;
                     
                     if (content) {
+                      if (firstToken) {
+                        console.info('[stream] ⚡ First token received');
+                        firstToken = false;
+                      }
+                      
                       fullText += content;
                       currentSentence += content;
-                      
-                      // Send text token immediately
-                      const textEvent = `data: ${JSON.stringify({ type: 'text', content })}\n\n`;
-                      safeEnqueue(encoder.encode(textEvent));
                       
                       // Check if sentence is complete
                       if (/[.!?]\s*$/.test(currentSentence) && currentSentence.length > 20) {
                         const sentence = cleanAIResponse(currentSentence.trim());
-                        console.log('Complete sentence, synthesizing TTS:', sentence.substring(0, 50) + '...');
+                        sentencesProcessed++;
+                        
+                        console.info(`[stream] 📝 Sentence ${sentencesProcessed} complete (${sentence.length} chars)`);
+                        
+                        // Send text event only when sentence is complete
+                        const textEvent = `data: ${JSON.stringify({ type: 'text', content: sentence })}\n\n`;
+                        safeEnqueue(encoder.encode(textEvent));
                         
                         // Synthesize audio for this sentence (non-blocking)
                         synthesizeChunk(sentence, googleApiKey, normalizedLang).then(audioContent => {
                           if (audioContent && isControllerOpen) {
+                            console.info(`[stream] 🔊 Audio synthesized for sentence ${sentencesProcessed}`);
                             const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
                             safeEnqueue(encoder.encode(audioEvent));
                           }
-                        }).catch(err => console.error('TTS chunk error:', err));
+                        }).catch(err => console.error('[stream] TTS error:', err));
                         
                         currentSentence = '';
                       }
@@ -543,8 +553,16 @@ serve(async (req) => {
             // Process remaining sentence
             if (currentSentence.trim() && isControllerOpen) {
               const sentence = cleanAIResponse(currentSentence.trim());
+              sentencesProcessed++;
+              console.info(`[stream] 📝 Final sentence ${sentencesProcessed} (${sentence.length} chars)`);
+              
+              // Send final text event
+              const textEvent = `data: ${JSON.stringify({ type: 'text', content: sentence })}\n\n`;
+              safeEnqueue(encoder.encode(textEvent));
+              
               const audioContent = await synthesizeChunk(sentence, googleApiKey, normalizedLang);
               if (audioContent) {
+                console.info(`[stream] 🔊 Audio synthesized for final sentence`);
                 const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
                 safeEnqueue(encoder.encode(audioEvent));
               }
@@ -562,8 +580,8 @@ serve(async (req) => {
                 context_used: !!userContext,
                 timestamp: new Date().toISOString()
               }
-            }).then(() => console.log('AI message stored'))
-              .catch((err) => console.error('Error storing AI message:', err));
+            }).then(() => console.info('[stream] ✓ AI message stored'))
+              .catch((err) => console.error('[stream] Error storing AI message:', err));
             
             // Send done event
             const doneEvent = `data: ${JSON.stringify({ 
@@ -572,7 +590,11 @@ serve(async (req) => {
               isCrisis,
               detectedLanguage: normalizedLang
             })}\n\n`;
-            controller.enqueue(encoder.encode(doneEvent));
+            safeEnqueue(encoder.encode(doneEvent));
+            console.info('[stream] ✓ Done event sent');
+            
+            // Mark controller as closed before actually closing
+            isControllerOpen = false;
             
             // Extract insights (non-blocking)
             extractAndStoreInsights(supabaseClient, user.id, conversationId, userMessage, cleanedFullText)
