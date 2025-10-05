@@ -29,11 +29,23 @@ import {
   TestTube,
   Pill,
   Upload,
-  Activity
+  Activity,
+  Filter
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { healthNavigation } from '@/config/navigation';
+import { useUserSupplements, UserSupplement } from '@/hooks/useUserSupplements';
+import { AddSupplementDialog } from '@/components/supplements/AddSupplementDialog';
+import { SupplementCard } from '@/components/supplements/SupplementCard';
+import { getAllCategories } from '@/components/supplements/supplementCategories';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface TestResult {
   id: string;
@@ -57,13 +69,13 @@ interface BiomarkerItem {
   status: 'normal' | 'high' | 'low' | 'critical';
 }
 
-interface Supplement {
+interface OmicsResult {
   id: string;
   name: string;
   category: string;
-  dosage: string;
-  frequency: string;
-  isActive: boolean;
+  provider: string;
+  date: string;
+  description: string;
 }
 
 export default function MyBiology() {
@@ -72,11 +84,22 @@ export default function MyBiology() {
   const [isLoading, setIsLoading] = useState(true);
   const [biomarkerActionsOpen, setBiomarkerActionsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("medical");
-  const [supplements, setSupplements] = useState<Supplement[]>([]);
+  const [supplementDialogOpen, setSupplementDialogOpen] = useState(false);
+  const [editingSupplement, setEditingSupplement] = useState<UserSupplement | null>(null);
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [mockOmicsResults, setMockOmicsResults] = useState<OmicsResult[]>([]);
+  
+  const { 
+    supplements, 
+    isLoading: supplementsLoading,
+    createSupplement, 
+    updateSupplement, 
+    deleteSupplement 
+  } = useUserSupplements();
 
   useEffect(() => {
     fetchResults();
-    fetchSupplements();
+    setMockOmicsResults(getMockOmicsResults());
   }, []);
 
   const fetchResults = async () => {
@@ -119,13 +142,69 @@ export default function MyBiology() {
     }
   };
 
-  const fetchSupplements = async () => {
-    // Mock supplements for now
-    setSupplements([
-      { id: '1', name: 'Vitamin D3', category: 'Immunity', dosage: '5000 IU', frequency: 'Daily', isActive: true },
-      { id: '2', name: 'Omega-3', category: 'Cholesterol & Heart', dosage: '1000mg', frequency: 'Daily', isActive: true },
-      { id: '3', name: 'Magnesium', category: 'Sleep', dosage: '400mg', frequency: 'Evening', isActive: true },
-    ]);
+  const fetchSupplements = () => {
+    // Now handled by useUserSupplements hook
+  };
+
+  const getMockOmicsResults = (): OmicsResult[] => {
+    return [
+      {
+        id: '1',
+        name: 'Whole Genome Sequencing',
+        category: 'Genomics',
+        provider: '23andMe',
+        date: '2024-01-15',
+        description: 'Complete DNA analysis with ancestry and health insights',
+      },
+      {
+        id: '2',
+        name: 'Metabolic Panel',
+        category: 'Metabolomics',
+        provider: 'Viome',
+        date: '2024-02-10',
+        description: 'Comprehensive metabolite analysis',
+      },
+      {
+        id: '3',
+        name: 'Gut Microbiome Analysis',
+        category: 'Microbiome',
+        provider: 'Thorne',
+        date: '2024-01-28',
+        description: 'Bacterial diversity and gut health assessment',
+      },
+      {
+        id: '4',
+        name: 'Proteomics Analysis',
+        category: 'Proteomics',
+        provider: 'SomaLogic',
+        date: '2023-12-15',
+        description: 'Protein biomarker profiling',
+      },
+      {
+        id: '5',
+        name: 'DNA Methylation Test',
+        category: 'Epigenomics',
+        provider: 'TruDiagnostic',
+        date: '2024-01-05',
+        description: 'Biological age and epigenetic markers',
+      },
+      {
+        id: '6',
+        name: 'Skin Microbiome Analysis',
+        category: 'Skin Microbiome',
+        provider: 'uBiome',
+        date: '2023-11-20',
+        description: 'Skin bacteria and fungi diversity assessment',
+      },
+      {
+        id: '7',
+        name: 'Environmental Microbiome',
+        category: 'Environmental Microbiome',
+        provider: 'BiomeSense',
+        date: '2023-10-15',
+        description: 'Home and workplace microbial environment analysis',
+      },
+    ];
   };
 
   const getMockResults = (): TestResult[] => [
@@ -222,8 +301,35 @@ export default function MyBiology() {
     }
   };
 
+  const handleSupplementSubmit = async (data: any) => {
+    if (editingSupplement) {
+      await updateSupplement(editingSupplement.id, data);
+      setEditingSupplement(null);
+    } else {
+      await createSupplement(data);
+    }
+  };
+
+  const handleEditSupplement = (supplement: UserSupplement) => {
+    setEditingSupplement(supplement);
+    setSupplementDialogOpen(true);
+  };
+
+  const handleDeleteSupplement = async (id: string) => {
+    await deleteSupplement(id);
+  };
+
+  const allCategories = getAllCategories();
+  const filteredSupplements = categoryFilter === "all" 
+    ? supplements 
+    : supplements.filter(s => s.category === categoryFilter);
+
+  const activeCategoryCount = supplements.reduce((acc, supp) => {
+    acc[supp.category] = (acc[supp.category] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
   const medicalResults = results.filter(r => r.lab_test.category === 'medical');
-  const omicsResults = results.filter(r => ['genomics', 'metabolomics', 'microbiome', 'proteomics'].includes(r.lab_test.category));
 
   return (
     <AppLayout>
@@ -384,49 +490,43 @@ export default function MyBiology() {
                       Omics Biomarkers
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Genomics, Epigenomics, Microbiome, Metabolomics, Proteomics
+                      Genomics, Epigenomics, Metabolomics, Microbiome, Proteomics, and more
                     </p>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       <Button variant="outline" size="sm">
                         <FileText className="w-4 h-4 mr-2" />
-                        Upload PDF Report
+                        Upload Results
                       </Button>
                       <Button variant="outline" size="sm">
                         <Activity className="w-4 h-4 mr-2" />
-                        Connect Partner API
+                        Connect API
                       </Button>
                     </div>
 
                     <div className="space-y-3">
-                      {omicsResults.length > 0 ? (
-                        omicsResults.map((result) => (
-                          <Card key={result.id}>
-                            <CardContent className="p-4">
-                              <div className="flex items-center justify-between">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <h3 className="font-semibold">{result.lab_test.name}</h3>
-                                    <Badge variant="outline" className="capitalize">
-                                      {result.lab_test.category}
-                                    </Badge>
-                                  </div>
-                                  <p className="text-sm text-muted-foreground">{result.lab_test.provider_name}</p>
+                      {mockOmicsResults.map((result) => (
+                        <Card key={result.id}>
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h3 className="font-semibold">{result.name}</h3>
+                                  <Badge variant="outline" className="capitalize">
+                                    {result.category}
+                                  </Badge>
                                 </div>
-                                <div className="text-sm text-muted-foreground">
-                                  {format(new Date(result.completed_at), 'MMM dd, yyyy')}
-                                </div>
+                                <p className="text-sm text-muted-foreground mb-1">{result.provider}</p>
+                                <p className="text-xs text-muted-foreground">{result.description}</p>
                               </div>
-                            </CardContent>
-                          </Card>
-                        ))
-                      ) : (
-                        <div className="text-center py-12 text-muted-foreground">
-                          <Dna className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                          <p>No omics data yet. Upload your first report above.</p>
-                        </div>
-                      )}
+                              <div className="text-sm text-muted-foreground">
+                                {format(new Date(result.date), 'MMM dd, yyyy')}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -443,42 +543,86 @@ export default function MyBiology() {
                       My Supplements
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Track your supplement regimen and categories
+                      Track your supplement regimen across 40+ categories
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <Button variant="outline" size="sm" className="mb-4">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Supplement
-                    </Button>
+                    <div className="flex gap-3 mb-4">
+                      <Button 
+                        variant="default" 
+                        size="sm"
+                        onClick={() => {
+                          setEditingSupplement(null);
+                          setSupplementDialogOpen(true);
+                        }}
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Supplement
+                      </Button>
+                      
+                      <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                        <SelectTrigger className="w-[200px]">
+                          <Filter className="w-4 h-4 mr-2" />
+                          <SelectValue placeholder="Filter by category" />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-[300px]">
+                          <SelectItem value="all">
+                            All Categories ({supplements.length})
+                          </SelectItem>
+                          {allCategories.map((category) => (
+                            <SelectItem key={category} value={category}>
+                              {category} ({activeCategoryCount[category] || 0})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
                     <div className="space-y-2">
-                      {supplements.map((supplement) => (
-                        <Card key={supplement.id}>
-                          <CardContent className="p-4">
-                            <div className="flex items-center justify-between">
-                              <div className="flex-1">
-                                <h3 className="font-semibold">{supplement.name}</h3>
-                                <p className="text-sm text-muted-foreground">{supplement.category}</p>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm font-medium">{supplement.dosage}</div>
-                                <div className="text-xs text-muted-foreground">{supplement.frequency}</div>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                      {supplementsLoading ? (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <p>Loading supplements...</p>
+                        </div>
+                      ) : filteredSupplements.length > 0 ? (
+                        filteredSupplements.map((supplement) => (
+                          <SupplementCard
+                            key={supplement.id}
+                            supplement={supplement}
+                            onEdit={handleEditSupplement}
+                            onDelete={handleDeleteSupplement}
+                          />
+                        ))
+                      ) : (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <Pill className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                          <p>
+                            {categoryFilter === "all" 
+                              ? "No supplements added yet. Click 'Add Supplement' to get started."
+                              : `No supplements in ${categoryFilter} category.`}
+                          </p>
+                        </div>
+                      )}
                     </div>
 
-                    <div className="mt-6 p-4 bg-muted/20 rounded-lg">
-                      <h4 className="font-semibold mb-2">Supplement Categories</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {['Immunity', 'Anti-aging', 'Sleep', 'Cholesterol & Heart', 'Digestion', 'Memory & Concentration', 'Stress', 'Vitality'].map(cat => (
-                          <Badge key={cat} variant="secondary">{cat}</Badge>
-                        ))}
+                    {supplements.length > 0 && (
+                      <div className="mt-6 p-4 bg-muted/20 rounded-lg">
+                        <h4 className="font-semibold mb-3">Your Active Categories</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {Object.entries(activeCategoryCount)
+                            .sort((a, b) => b[1] - a[1])
+                            .map(([category, count]) => (
+                              <Badge 
+                                key={category} 
+                                variant="secondary"
+                                className="cursor-pointer hover:bg-secondary/80"
+                                onClick={() => setCategoryFilter(category)}
+                              >
+                                {category} ({count})
+                              </Badge>
+                            ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
@@ -490,6 +634,25 @@ export default function MyBiology() {
       <BiomarkersMasterActionPopup
         open={biomarkerActionsOpen}
         onOpenChange={setBiomarkerActionsOpen}
+      />
+
+      <AddSupplementDialog
+        open={supplementDialogOpen}
+        onOpenChange={(open) => {
+          setSupplementDialogOpen(open);
+          if (!open) setEditingSupplement(null);
+        }}
+        onSubmit={handleSupplementSubmit}
+        initialData={editingSupplement ? {
+          name: editingSupplement.name,
+          category: editingSupplement.category,
+          dosage: editingSupplement.dosage || '',
+          frequency: editingSupplement.frequency || '',
+          notes: editingSupplement.notes || '',
+          start_date: editingSupplement.start_date || '',
+          is_active: editingSupplement.is_active,
+        } : undefined}
+        mode={editingSupplement ? 'edit' : 'add'}
       />
     </AppLayout>
   );
