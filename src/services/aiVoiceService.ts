@@ -258,9 +258,11 @@ export class AIVoiceService {
     const reader = response.body!.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
+    let lineBuffer = ''; // For handling incomplete JSON lines
     
     // Word buffering for smooth display
     let textBuffer = '';
+    let textEventCount = 0; // Debug counter
 
     while (true) {
       const { done, value } = await reader.read();
@@ -270,13 +272,35 @@ export class AIVoiceService {
       const lines = buffer.split('\n');
       buffer = lines.pop() || '';
 
-      for (const line of lines) {
+      for (let line of lines) {
+        // Handle CRLF
+        if (line.endsWith('\r')) {
+          line = line.slice(0, -1);
+        }
+        
+        // Skip SSE comments and empty lines
+        if (line.startsWith(':') || line.trim() === '') {
+          continue;
+        }
+        
         if (line.startsWith('data: ')) {
-          const data = line.slice(6);
+          const data = line.slice(6).trim();
+          
+          // Skip [DONE] marker
+          if (data === '[DONE]') {
+            continue;
+          }
+          
           try {
+            // Try to parse JSON - if it fails, it might be incomplete
             const event = JSON.parse(data);
+            lineBuffer = ''; // Clear line buffer on successful parse
             
             if (event.type === 'text') {
+              textEventCount++;
+              if (textEventCount <= 3) {
+                console.info(`[streaming] Text event #${textEventCount}, length: ${event.content?.length || 0}, content:`, JSON.stringify(event.content));
+              }
               if (!fullText) {
                 console.info('[streaming] ⚡ First token received');
               }
@@ -324,7 +348,53 @@ export class AIVoiceService {
               }
             }
           } catch (e) {
-            console.error('Error parsing SSE event:', e);
+            // JSON parse failed - might be incomplete, buffer it
+            if (lineBuffer) {
+              // We already had a buffered line, this is probably corrupted
+              console.warn('[streaming] Failed to parse after buffering:', data.substring(0, 50));
+              lineBuffer = '';
+            } else {
+              // First failure - buffer the line
+              lineBuffer = data;
+              console.info('[streaming] Buffering incomplete JSON line');
+            }
+          }
+        } else if (lineBuffer) {
+          // Try to combine buffered line with this line
+          try {
+            const combined = lineBuffer + line;
+            const event = JSON.parse(combined);
+            console.info('[streaming] ✓ Successfully parsed buffered line');
+            lineBuffer = '';
+            
+            // Process the event (same logic as above)
+            if (event.type === 'text') {
+              textEventCount++;
+              if (textEventCount <= 3) {
+                console.info(`[streaming] Text event #${textEventCount} (buffered), length: ${event.content?.length || 0}`);
+              }
+              if (!fullText) {
+                console.info('[streaming] ⚡ First token received (from buffer)');
+              }
+              fullText += event.content;
+              
+              if (onTextChunk) {
+                textBuffer += event.content;
+                const wordBoundaryRegex = /[\s.!?,;:\n]+/;
+                if (wordBoundaryRegex.test(textBuffer)) {
+                  const parts = textBuffer.split(/([\s.!?,;:\n]+)/);
+                  if (parts.length > 1) {
+                    const completeText = parts.slice(0, -1).join('');
+                    onTextChunk(completeText);
+                    textBuffer = parts[parts.length - 1] || '';
+                  }
+                }
+              }
+            }
+          } catch (e) {
+            // Combined line still failed
+            console.warn('[streaming] Combined line parse failed');
+            lineBuffer = '';
           }
         }
       }
@@ -401,8 +471,9 @@ export class AIVoiceService {
 
     this.isPlaying = true;
     const audioBuffer = this.audioQueue.shift()!;
+    const isFirstChunk = !this.firstAudioQueued;
     
-    console.info('[audio] ▶️ Starting audio playback');
+    console.info('[audio] ▶️ Starting audio playback', isFirstChunk ? '(first chunk with offset)' : '');
     const source = this.audioContext.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(this.audioContext.destination);
@@ -412,7 +483,9 @@ export class AIVoiceService {
       this.playNextInQueue();
     };
     
-    source.start(0);
+    // Add slight offset for first chunk to prevent clipping
+    const startOffset = isFirstChunk ? 0.03 : 0;
+    source.start(0, startOffset);
   }
 
   async playAudio(base64Audio: string): Promise<void> {
