@@ -1,0 +1,133 @@
+import { useState } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { Loader2, Linkedin } from "lucide-react";
+
+interface LinkedInImportDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  profileId: string;
+}
+
+export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedInImportDialogProps) {
+  const [linkedinUrl, setLinkedinUrl] = useState("");
+  const [bioText, setBioText] = useState("");
+  const [importing, setImporting] = useState(false);
+  const { toast } = useToast();
+
+  const handleImport = async () => {
+    if (!linkedinUrl.trim()) {
+      toast({
+        title: "LinkedIn URL Required",
+        description: "Please enter your LinkedIn profile URL",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setImporting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('linkedin-import', {
+        body: {
+          userId: profileId,
+          linkedinUrl: linkedinUrl.trim(),
+          bioText: bioText.trim() || null,
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "LinkedIn Data Imported",
+        description: "Your profile has been enriched with LinkedIn data",
+      });
+
+      onOpenChange(false);
+      setLinkedinUrl("");
+      setBioText("");
+      
+      // Refresh the page to show updated profile
+      window.location.reload();
+    } catch (error) {
+      console.error('LinkedIn import error:', error);
+      toast({
+        title: "Import Failed",
+        description: error instanceof Error ? error.message : "Failed to import LinkedIn data",
+        variant: "destructive",
+      });
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <div className="flex items-center gap-2">
+            <Linkedin className="h-5 w-5 text-blue-600" />
+            <DialogTitle>Import from LinkedIn</DialogTitle>
+          </div>
+          <DialogDescription>
+            Import your professional profile to enrich your Vitana profile
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="linkedin-url">LinkedIn Profile URL *</Label>
+            <Input
+              id="linkedin-url"
+              placeholder="https://linkedin.com/in/yourname"
+              value={linkedinUrl}
+              onChange={(e) => setLinkedinUrl(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="bio-text">About Section (Optional)</Label>
+            <Textarea
+              id="bio-text"
+              placeholder="Paste your LinkedIn 'About' section here for AI to parse and enrich your profile..."
+              value={bioText}
+              onChange={(e) => setBioText(e.target.value)}
+              rows={6}
+              className="resize-none"
+            />
+            <p className="text-xs text-muted-foreground">
+              Copy your LinkedIn bio for AI-powered parsing of skills, experience, and headline
+            </p>
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-3">
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={importing}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleImport}
+            disabled={importing}
+          >
+            {importing ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Importing...
+              </>
+            ) : (
+              'Import Profile'
+            )}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
