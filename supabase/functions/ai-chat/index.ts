@@ -444,7 +444,12 @@ serve(async (req) => {
       
       // === CONDITIONAL COMMUNITY CONTEXT (only if query mentions community topics) ===
       const communityKeywords = /event|group|match|meet|community|social|connect|friend|people|gathering|activity|rsvp|attend|join/i;
-      const includeCommunityContext = communityKeywords.test(userMessage);
+      // Check current message AND recent conversation history (last 4 messages)
+      const recentConversation = [
+        userMessage,
+        ...conversationHistory.slice(-4).map(m => m.content)
+      ].join(' ');
+      const includeCommunityContext = communityKeywords.test(recentConversation);
       
       if (community && includeCommunityContext) {
         systemMessage += '\n=== COMMUNITY & SOCIAL CONTEXT ===\n';
