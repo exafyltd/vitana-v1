@@ -24,6 +24,7 @@ export class AIVoiceService {
   private clientSTT: ClientSTT | null = null;
   private currentTranscript: string = '';
   private isRecordingWithClientSTT: boolean = false;
+  private currentLanguage: string = 'en-US'; // Store language for client-side STT
 
   constructor() {
     // Initialize audio context lazily
@@ -45,6 +46,10 @@ export class AIVoiceService {
    */
   async startRecording(options: RecordingOptions = {}): Promise<void> {
     const useClientSTT = options.useClientSTT ?? true; // Default to instant STT
+    
+    // Store language for later use
+    this.currentLanguage = options.language || 'en-US';
+    console.log('[Recording] Language set to:', this.currentLanguage);
     
     if (useClientSTT && ClientSTT.isSupported()) {
       console.log('[Recording] ⚡ Using instant client-side STT');
@@ -150,10 +155,11 @@ export class AIVoiceService {
 
     if (effectiveTranscript) {
       console.log('[Voice] ⚡ Using client transcript (length):', effectiveTranscript.length);
+      console.log('[Voice] Sending with language:', this.currentLanguage);
       // Reset flag AFTER using it
       this.isRecordingWithClientSTT = false;
-      // Send directly as text message (no audio transcription needed)
-      return this.sendTextMessage(effectiveTranscript);
+      // Send directly as text message with language parameter
+      return this.sendTextMessage(effectiveTranscript, this.currentLanguage);
     }
     
     // Reset flag for fallback case

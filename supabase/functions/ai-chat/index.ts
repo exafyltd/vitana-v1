@@ -347,11 +347,14 @@ serve(async (req) => {
       }
     }
 
+    // Use the language parameter from the frontend, fallback to en-US
     let detectedLanguage = language || 'en-US';
+    console.log(`[language] Received language parameter: ${language}, using: ${detectedLanguage}`);
+    
     let userMessage = text;
 
     if (audio) {
-      console.log('Transcribing audio...');
+      console.log('[audio] Transcribing audio with server-side STT...');
       const sttResponse = await fetch(
         `https://speech.googleapis.com/v1/speech:recognize?key=${googleApiKey}`,
         {
@@ -380,8 +383,15 @@ serve(async (req) => {
       }
 
       userMessage = sttData.results[0].alternatives[0].transcript;
-      detectedLanguage = sttData.results[0].languageCode || detectedLanguage;
-      console.log('Transcribed:', userMessage, 'Language:', detectedLanguage);
+      // Only override language if STT detected a different one
+      const sttLanguage = sttData.results[0].languageCode;
+      if (sttLanguage) {
+        console.log(`[language] STT detected language: ${sttLanguage}, overriding: ${detectedLanguage}`);
+        detectedLanguage = sttLanguage;
+      }
+      console.log('[audio] Transcribed:', userMessage, 'Language:', detectedLanguage);
+    } else {
+      console.log('[language] No audio transcription, using selected language for TTS:', detectedLanguage);
     }
 
     if (!userMessage || userMessage.trim() === '') {
@@ -569,6 +579,7 @@ serve(async (req) => {
       }
 
       const normalizedLang = normalizeLanguage(detectedLanguage);
+      console.log(`[language] Normalized language for TTS: ${normalizedLang} (from ${detectedLanguage})`);
       
       // Create SSE stream
       const encoder = new TextEncoder();
