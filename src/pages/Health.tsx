@@ -70,7 +70,8 @@ export default withScreenId(function Health() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [healthActionsOpen, setHealthActionsOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [activeHealthTab, setActiveHealthTab] = useState("today");
+  const [vitanaScore] = useState(742);
+  const [selectedPillar, setSelectedPillar] = useState("overview");
   
   const latestActions = getLatestActions(2);
 
@@ -165,25 +166,61 @@ export default withScreenId(function Health() {
             </Button>
           </UtilityActionButton>
 
-          <SplitBar value={activeHealthTab} onValueChange={setActiveHealthTab} className="w-full">
-            <SplitBarList>
-              <SplitBarTrigger value="today">Today</SplitBarTrigger>
-              <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
-            </SplitBarList>
+          {/* Vitana Index Overview */}
+          <Card className="mb-6 bg-gradient-to-br from-green-50 to-blue-50">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground">Vitana Index</h3>
+                  <p className="text-sm text-muted-foreground">Your overall health score</p>
+                </div>
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
+                  <span className="text-3xl font-bold text-green-600">{vitanaScore}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-            <SplitBarContent value="today" className="space-y-6">
-              {/* Today's Health Overview */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {newsItems.slice(0, 6).map((item, index) => (
-                  <NewsCard key={index} {...item} />
+          {/* 5 Pillars of Health */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>5 Pillars of Health</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                {[
+                  { name: 'Nutrition', icon: '🥗', score: 85, color: 'from-green-400 to-emerald-500' },
+                  { name: 'Hydration', icon: '💧', score: 72, color: 'from-blue-400 to-cyan-500' },
+                  { name: 'Exercise', icon: '🏃', score: 68, color: 'from-orange-400 to-red-500' },
+                  { name: 'Sleep', icon: '😴', score: 90, color: 'from-purple-400 to-pink-500' },
+                  { name: 'Mental', icon: '🧠', score: 78, color: 'from-indigo-400 to-violet-500' }
+                ].map(pillar => (
+                  <Card key={pillar.name} className="cursor-pointer hover:shadow-lg transition-all">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-4xl mb-2">{pillar.icon}</div>
+                      <div className="text-lg font-semibold mb-1">{pillar.name}</div>
+                      <div className={`text-2xl font-bold bg-gradient-to-r ${pillar.color} bg-clip-text text-transparent`}>
+                        {pillar.score}%
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
-              
-              {/* Today's AI Health Insights */}
-              <StackedCardList
-                title="Today's AI Health Insights"
-                items={smartSuggestions.map((suggestion, index) => ({
-                  id: `insight-${index}`,
+            </CardContent>
+          </Card>
+
+          {/* Actions Section */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Today's Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  📋 Today's Actions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <StackedCardList items={smartSuggestions.slice(0, 3).map((suggestion, index) => ({
+                  id: `action-${index}`,
                   icon: suggestion.type === "action" ? Target : 
                         suggestion.type === "insight" ? Moon : 
                         Sparkles,
@@ -193,92 +230,85 @@ export default withScreenId(function Health() {
                     label: suggestion.priority,
                     variant: suggestion.priority === "high" ? "destructive" : 
                             suggestion.priority === "medium" ? "secondary" : "success"
-                  },
-                  cta: suggestion.action ? {
-                    label: suggestion.action,
-                    onClick: () => {
-                      if (suggestion.title.includes("Annual Physical")) {
-                        console.log("Booking appointment...");
-                      } else if (suggestion.title.includes("Sleep")) {
-                        console.log("Opening sleep help...");
-                      } else if (suggestion.title.includes("Nutrition")) {
-                        navigate("/community/groups/mediterranean");
-                      }
-                    }
-                  } : undefined
-                }))}
-              />
-              
-              {/* Today's Community Activity */}
-              <Card className="bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="w-5 h-5 text-calendar-primary" />
-                    Today's Health Community
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                      <span className="text-sm">Mediterranean Diet Challenge</span>
-                      <span className="text-xs text-muted-foreground">Starting today</span>
+                  }
+                }))} />
+              </CardContent>
+            </Card>
+
+            {/* Upcoming Health */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  📅 Upcoming Schedule
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {[
+                    { title: 'Annual Physical', date: 'Feb 15, 2025', type: 'Appointment' },
+                    { title: 'Lab Results Review', date: 'Feb 18, 2025', type: 'Follow-up' },
+                    { title: 'Wellness Check', date: 'Mar 01, 2025', type: 'Appointment' }
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                      <div>
+                        <div className="font-medium">{item.title}</div>
+                        <div className="text-sm text-muted-foreground">{item.type}</div>
+                      </div>
+                      <div className="text-sm text-muted-foreground">{item.date}</div>
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                      <span className="text-sm">Morning Yoga Session</span>
-                      <span className="text-xs text-muted-foreground">7:00 AM</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                      <span className="text-sm">Wellness Workshop</span>
-                      <span className="text-xs text-muted-foreground">6:00 PM</span>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* AI Health Insights */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>AI Health Insights</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <StackedCardList items={smartSuggestions.slice(3, 6).map((suggestion, index) => ({
+                id: `insight-${index}`,
+                icon: suggestion.type === "action" ? Target : 
+                      suggestion.type === "insight" ? Moon : 
+                      Sparkles,
+                title: suggestion.title,
+                subtext: suggestion.description,
+                pill: {
+                  label: suggestion.priority,
+                  variant: suggestion.priority === "high" ? "destructive" : 
+                          suggestion.priority === "medium" ? "secondary" : "success"
+                }
+              }))} />
+            </CardContent>
+          </Card>
+
+          {/* Community Activity */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                👥 Community Activity
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {[
+                  { user: 'Sarah M.', activity: 'completed 5K run', time: '2 hours ago' },
+                  { user: 'Mike T.', activity: 'shared healthy recipe', time: '4 hours ago' },
+                  { user: 'Lisa K.', activity: 'achieved sleep goal', time: '6 hours ago' }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 bg-muted/20 rounded-lg">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500" />
+                    <div className="flex-1">
+                      <div className="font-medium">{item.user} {item.activity}</div>
+                      <div className="text-sm text-muted-foreground">{item.time}</div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </SplitBarContent>
-
-            <SplitBarContent value="upcoming" className="space-y-6">
-              {/* Upcoming Health Events */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {newsItems.slice(3, 9).map((item, index) => (
-                  <NewsCard key={index} {...item} />
                 ))}
               </div>
-              
-              {/* Upcoming Appointments & Events */}
-              <Card className="bg-gradient-to-br from-calendar-accent/5 to-calendar-secondary/5 border-calendar-accent/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5 text-calendar-accent" />
-                    Upcoming Health Schedule
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                      <span className="text-sm">Annual Physical Exam</span>
-                      <span className="text-xs text-muted-foreground">Next week</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                      <span className="text-sm">Lab Results Review</span>
-                      <span className="text-xs text-muted-foreground">March 20</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-background/50">
-                      <span className="text-sm">Nutrition Consultation</span>
-                      <span className="text-xs text-muted-foreground">March 25</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Upcoming Autopilot Suggestions */}
-              <AutopilotWidget 
-                sectionName="Upcoming Health"
-                suggestions={["Schedule overdue screening", "Book nutrition consult", "Join fitness challenge"]}
-                isEnabled={true}
-                variant="card"
-              />
-            </SplitBarContent>
-          </SplitBar>
+            </CardContent>
+          </Card>
         </div>
       </div>
       
