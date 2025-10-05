@@ -75,6 +75,7 @@ import HealthWellnessServices from "./pages/health/WellnessServices";
 import ConditionsRisks from "./pages/health/ConditionsRisks";
 import EducationResources from "./pages/health/EducationResources";
 import BiomarkerResults from "./pages/health/BiomarkerResults";
+import MyBiology from "./pages/health/MyBiology";
 
 // Health Tracker sub-pages - REMOVED (redirected to /health/my-health-tracker)
 
@@ -258,7 +259,7 @@ const App = () => (
           } />
           <Route path="/health/my-biology" element={
             <AuthGuard>
-              <BiomarkerResults />
+              <MyBiology />
             </AuthGuard>
           } />
           {/* Redirect old routes to new structure */}
