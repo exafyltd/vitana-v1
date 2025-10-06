@@ -24,9 +24,11 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
+import { useScheduledPosts } from "@/hooks/useScheduledPosts";
 import { useChannels, type DistributionChannel } from "@/hooks/useChannels";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
+import { ScheduleDialog } from "./ScheduleDialog";
 
 const CHANNEL_ICONS: Record<string, any> = {
   email: Mail,
@@ -44,9 +46,12 @@ export function BlastCenter() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
+  const [showScheduleDialog, setShowScheduleDialog] = useState(false);
+  const [pendingPostId, setPendingPostId] = useState<string | null>(null);
   const { toast } = useToast();
   
   const { createPost, blastNow } = useDistributionPosts();
+  const { schedulePost } = useScheduledPosts();
   const { channels, isLoading: channelsLoading } = useChannels();
   
   useEffect(() => {
@@ -164,6 +169,83 @@ export function BlastCenter() {
       channels: channelTypes,
       status: "draft",
     });
+  };
+
+  const handleScheduleClick = async () => {
+    if (!userId) {
+      toast({
+        title: "Not authenticated",
+        description: "Please log in to schedule posts.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!title || !description) {
+      toast({
+        title: "Missing fields",
+        description: "Please fill in title and description.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (selectedChannels.size === 0) {
+      toast({
+        title: "No channels selected",
+        description: "Please select at least one channel.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const channelTypes = Array.from(selectedChannels)
+      .map(id => channels?.find(c => c.id === id)?.channel_type)
+      .filter(Boolean) as Database["public"]["Enums"]["channel_type"][];
+
+    createPost.mutate(
+      {
+        user_id: userId,
+        title,
+        content: description,
+        description,
+        entity_type: entityType,
+        channels: channelTypes,
+        status: "draft",
+      },
+      {
+        onSuccess: (post) => {
+          setPendingPostId(post.id);
+          setShowScheduleDialog(true);
+        },
+      }
+    );
+  };
+
+  const handleScheduleConfirm = async (scheduledFor: Date) => {
+    if (!pendingPostId || !userId) return;
+
+    const channelTypes = Array.from(selectedChannels)
+      .map(id => channels?.find(c => c.id === id)?.channel_type)
+      .filter(Boolean) as Database["public"]["Enums"]["channel_type"][];
+
+    schedulePost.mutate(
+      {
+        post_id: pendingPostId,
+        user_id: userId,
+        scheduled_for: scheduledFor.toISOString(),
+        channels: channelTypes,
+      },
+      {
+        onSuccess: () => {
+          setTitle("");
+          setDescription("");
+          setSelectedChannels(new Set());
+          setPendingPostId(null);
+          setShowScheduleDialog(false);
+        },
+      }
+    );
   };
 
   return (
@@ -291,8 +373,17 @@ export function BlastCenter() {
             )}
             Blast Now
           </Button>
-          <Button variant="outline" size="lg" disabled>
-            <CalendarIcon className="w-4 h-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="lg"
+            onClick={handleScheduleClick}
+            disabled={createPost.isPending}
+          >
+            {createPost.isPending ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <CalendarIcon className="w-4 h-4 mr-2" />
+            )}
             Schedule
           </Button>
           <Button 
@@ -309,6 +400,13 @@ export function BlastCenter() {
           </Button>
         </div>
       </CardContent>
+
+      <ScheduleDialog
+        open={showScheduleDialog}
+        onOpenChange={setShowScheduleDialog}
+        onConfirm={handleScheduleConfirm}
+        isLoading={schedulePost.isPending}
+      />
     </Card>
   );
 }
