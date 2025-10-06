@@ -426,14 +426,16 @@ serve(async (req) => {
   }
 
   try {
+    const body = await req.json();
     const { 
       audio, 
       text, 
       language,
       agentType = 'health',
       conversationId: existingConversationId,
-      stream = true // Enable streaming by default
-    } = await req.json();
+      stream = true, // Enable streaming by default
+      isVoiceInput = false // Track if input is from voice (even with client-side STT)
+    } = body;
     
     console.log('Received request:', { 
       hasAudio: !!audio, 
