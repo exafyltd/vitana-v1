@@ -168,7 +168,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 style={connected ? {
                   boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}1F`,
                 } as React.CSSProperties : {
-                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)',
+                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.05)',
                 } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   if (connected) {
@@ -190,26 +190,55 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 {/* Icon - fixed size, centered */}
                 <div className="flex items-center justify-center h-[30px] mb-2">
                   <div 
-                    className={`relative ${connected ? 'transition-all duration-300 ease-out group-hover:scale-110' : ''} ${
-                      platform.platform === 'x' && connected 
-                        ? 'dark:text-white' 
-                        : !connected 
-                        ? 'text-neutral-400 dark:text-neutral-600'
-                        : ''
-                    }`}
-                    style={connected && platform.platform === 'instagram' ? {
-                      filter: 'drop-shadow(0 0 12px rgba(221, 42, 123, 0.12))'
-                    } : connected && platform.platform !== 'instagram' ? { 
-                      color: platform.brandColor,
-                      filter: `drop-shadow(0 0 12px ${platform.brandColor}1F)`
-                    } : undefined}
+                    className={`relative flex items-center justify-center ${connected ? 'transition-all duration-300 ease-out group-hover:scale-110' : ''}`}
                   >
-                    {/* Render custom icon or lucide icon based on connection state */}
-                    {platform.platform === 'instagram' ? (
-                      <InstagramIcon className="h-[28px] w-[28px]" connected={connected} />
-                    ) : (
-                      platform.icon
+                    {/* Gradient background for connected logos */}
+                    {connected && (
+                      <div 
+                        className="absolute inset-0 rounded-lg -m-1.5"
+                        style={{
+                          background: platform.platform === 'instagram' 
+                            ? 'linear-gradient(45deg, #F58529 0%, #FEDA77 25%, #DD2A7B 50%, #8134AF 75%, #515BD4 100%)'
+                            : platform.platform === 'linkedin'
+                            ? 'linear-gradient(135deg, #0A66C2 0%, #0077B5 100%)'
+                            : platform.platform === 'facebook'
+                            ? 'linear-gradient(135deg, #1877F2 0%, #0C63D4 100%)'
+                            : platform.platform === 'youtube'
+                            ? 'linear-gradient(135deg, #FF0000 0%, #CC0000 100%)'
+                            : platform.platform === 'x'
+                            ? 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)'
+                            : platform.platform === 'tiktok'
+                            ? 'linear-gradient(135deg, #000000 0%, #00f2ea 100%)'
+                            : `linear-gradient(135deg, ${platform.brandColor} 0%, ${platform.brandColor}CC 100%)`,
+                          opacity: 0.08,
+                        }}
+                      />
                     )}
+                    
+                    <div 
+                      className={`relative z-10 ${
+                        platform.platform === 'x' && connected 
+                          ? 'dark:text-white' 
+                          : !connected 
+                          ? ''
+                          : ''
+                      }`}
+                      style={connected && platform.platform !== 'instagram' ? { 
+                        color: platform.brandColor,
+                        filter: `drop-shadow(0 0 12px ${platform.brandColor}1F)`
+                      } : connected && platform.platform === 'instagram' ? {
+                        filter: 'drop-shadow(0 0 12px rgba(221, 42, 123, 0.12))'
+                      } : {
+                        color: '#A0A0A0'
+                      }}
+                    >
+                      {/* Render custom icon or lucide icon based on connection state */}
+                      {platform.platform === 'instagram' ? (
+                        <InstagramIcon className="h-[28px] w-[28px]" connected={connected} />
+                      ) : (
+                        platform.icon
+                      )}
+                    </div>
                   </div>
                 </div>
                 
