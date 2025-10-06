@@ -113,7 +113,29 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
         if (error) throw error;
       }
     },
+    onMutate: async (variables) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["knowledge-base", filter] });
+
+      // Snapshot the previous value
+      const previousData = queryClient.getQueryData(["knowledge-base", filter]);
+
+      // Optimistically update by removing the item
+      queryClient.setQueryData(["knowledge-base", filter], (old: any) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page: any) => ({
+            ...page,
+            items: page.items.filter((item: KnowledgeItem) => item.id !== variables.id),
+          })),
+        };
+      });
+
+      return { previousData };
+    },
     onSuccess: (data, variables) => {
+      // Refetch to ensure consistency
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       toast({
         title: "Knowledge deleted",
@@ -132,7 +154,11 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
         }
       });
     },
-    onError: (error: Error) => {
+    onError: (error: Error, variables, context) => {
+      // Rollback on error
+      if (context?.previousData) {
+        queryClient.setQueryData(["knowledge-base", filter], context.previousData);
+      }
       toast({
         title: "Error deleting knowledge",
         description: error.message,
