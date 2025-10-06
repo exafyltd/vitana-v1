@@ -162,24 +162,28 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 key={platform.name}
                 className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all duration-300 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                   connected 
-                    ? `bg-card border-border cursor-pointer hover:-translate-y-1 shadow-inner` 
-                    : `bg-card border-border shadow-inner`
+                    ? `bg-card border-border cursor-pointer hover:-translate-y-1` 
+                    : `bg-card border-border`
                 }`}
                 style={connected ? {
-                  boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}1F`,
+                  boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`,
                 } as React.CSSProperties : {
-                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.05)',
+                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06)',
                 } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   if (connected) {
                     e.currentTarget.style.borderColor = platform.brandColor;
-                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 24px ${platform.brandColor}30, 0 0 0 1px ${platform.brandColor}20`;
+                    e.currentTarget.style.boxShadow = `inset 0 0 40px ${platform.brandColor}08, inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 24px ${platform.brandColor}30, 0 0 0 1px ${platform.brandColor}20`;
+                  } else {
+                    e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.08)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (connected) {
                     e.currentTarget.style.borderColor = '';
-                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}1F`;
+                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`;
+                  } else {
+                    e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06)';
                   }
                 }}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
@@ -190,7 +194,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 {/* Icon - fixed size, centered */}
                 <div className="flex items-center justify-center h-[30px] mb-2">
                   <div 
-                    className={`relative flex items-center justify-center ${connected ? 'transition-all duration-300 ease-out group-hover:scale-110' : ''}`}
+                    className={`relative flex items-center justify-center ${connected ? 'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-105' : ''}`}
                   >
                     {/* Gradient background for connected logos */}
                     {connected && (
