@@ -199,6 +199,12 @@ export function useFollow(targetUserId: string): UseFollowReturn {
         description: "You are now following this user",
       });
       
+      // Log follow activity
+      import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+        const { logFollow } = useCommunityLogger();
+        logFollow(targetUserId, 'User');
+      });
+      
       perf.end({ success: true, targetUserId });
     } catch (error: any) {
       // Rollback optimistic update
@@ -246,6 +252,12 @@ export function useFollow(targetUserId: string): UseFollowReturn {
       toast({
         title: "Success",
         description: "You have unfollowed this user",
+      });
+      
+      // Log unfollow activity
+      import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+        const { logUnfollow } = useCommunityLogger();
+        logUnfollow(targetUserId, 'User');
       });
     } catch (error: any) {
       // Rollback optimistic update

@@ -149,6 +149,21 @@ export default function Search() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Log search activity
+    import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+      const { logSearch, logSearchMember, logSearchGroup } = useCommunityLogger();
+      const resultsCount = results.filter(r => activeTab === 'all' || r.type === activeTab).length;
+      
+      if (activeTab === 'people') {
+        logSearchMember(query, resultsCount);
+      } else if (activeTab === 'groups') {
+        logSearchGroup(query, resultsCount);
+      } else {
+        logSearch(query, activeTab, resultsCount);
+      }
+    });
+    
     setSearchParams({ q: query, type: activeTab });
   };
 

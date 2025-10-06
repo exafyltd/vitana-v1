@@ -137,6 +137,12 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
 
   const handleSearch = (searchQuery: string = query) => {
     if (searchQuery.trim()) {
+      // Log search activity
+      import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+        const { logSearch } = useCommunityLogger();
+        logSearch(searchQuery, 'all', filteredSuggestions.length);
+      });
+      
       // First try to find as community member
       const member = members.find(m => {
         const displayName = m.display_name || m.full_name || 'Unknown User';
@@ -165,6 +171,16 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   };
 
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
+    // Log specific search type
+    import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+      const { logSearchMember, logSearchGroup } = useCommunityLogger();
+      if (suggestion.type === 'person') {
+        logSearchMember(suggestion.title, 1);
+      } else if (suggestion.type === 'group') {
+        logSearchGroup(suggestion.title, 1);
+      }
+    });
+    
     if (suggestion.type === 'person') {
       // Find the member to get their handle
       const member = members.find(m => m.user_id === suggestion.id);

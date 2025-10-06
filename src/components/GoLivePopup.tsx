@@ -59,6 +59,16 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
     setIsLoading(true);
     // Simulate going live
     setTimeout(() => {
+      // Log live activity
+      import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+        const { logLiveCreate, logLiveStart } = useCommunityLogger();
+        if (scheduleDate) {
+          logLiveCreate(title, streamType || 'Audio', true);
+        } else {
+          logLiveStart(title, streamType || 'Audio');
+        }
+      });
+      
       setIsLoading(false);
       onOpenChange(false);
       // Reset form

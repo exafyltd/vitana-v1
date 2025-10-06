@@ -405,6 +405,12 @@ export function useGlobalMessages() {
 
       // Update cache with real message
       messageCache.updateMessage(threadId || 'general', 'global', optimisticMessage.id, { ...data, sender: userProfile });
+      
+      // Log message send activity
+      import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+        const { logMessageSend } = useCommunityLogger();
+        logMessageSend(threadId, messageType, 'global');
+      });
 
       // Note: Sender calendar event creation is handled by CreateEventPopup.tsx
       // to avoid race conditions and ensure proper data structure
@@ -492,6 +498,16 @@ export function useGlobalMessages() {
         .single();
 
       if (threadError) throw threadError;
+      
+      // Log conversation start or group chat creation
+      import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+        const { logConversationStart, logGroupChatCreate } = useCommunityLogger();
+        if (type === 'direct') {
+          logConversationStart(participantIds[0], 'global');
+        } else {
+          logGroupChatCreate(thread.id, participantIds.length + 1);
+        }
+      });
 
       // Add participants
       const participantsToAdd = [user.id, ...participantIds.filter(id => id !== user.id)];

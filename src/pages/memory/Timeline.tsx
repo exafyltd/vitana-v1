@@ -283,6 +283,13 @@ function Timeline() {
               >
                 🩺 Health
               </Button>
+              <Button 
+                variant={activityFilter === "community" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("community")}
+              >
+                👥 Community
+              </Button>
             </div>
 
             <div className="max-w-7xl mx-auto">

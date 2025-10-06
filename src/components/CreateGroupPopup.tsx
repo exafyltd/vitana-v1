@@ -38,6 +38,12 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
   };
 
   const handleSubmit = () => {
+    // Log group creation activity
+    import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
+      const { logGroupCreate } = useCommunityLogger();
+      logGroupCreate(formData.name, formData.category, formData.privacy);
+    });
+    
     toast({
       title: "Group Created! 🎉",
       description: `${formData.name} has been created successfully.`

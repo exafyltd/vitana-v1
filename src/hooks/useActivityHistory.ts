@@ -51,6 +51,56 @@ export const ACTIVITY_TYPE_CONFIG: Record<string, { icon: string; tagColor: stri
   'autopilot.action.execute': { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Action Executed' },
   'autopilot.action.dismiss': { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Action Dismissed' },
   
+  // Community - Events
+  'community.event.view': { icon: '👁️', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Event Viewed' },
+  'community.event.join': { icon: '✅', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Joined Event' },
+  'community.event.leave': { icon: '❌', tagColor: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700', label: 'Left Event' },
+  'community.event.share': { icon: '🔗', tagColor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700', label: 'Shared Event' },
+  
+  // Community - Groups
+  'community.group.create': { icon: '🎉', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Group Created' },
+  'community.group.join': { icon: '➕', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Joined Group' },
+  'community.group.leave': { icon: '➖', tagColor: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700', label: 'Left Group' },
+  'community.group.view': { icon: '👀', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Viewed Group' },
+  'community.group.update': { icon: '✏️', tagColor: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700', label: 'Updated Group' },
+  'community.group.invite': { icon: '📨', tagColor: 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 border-pink-300 dark:border-pink-700', label: 'Invited to Group' },
+  
+  // Community - Live Rooms
+  'community.live.create': { icon: '🎬', tagColor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700', label: 'Live Session Created' },
+  'community.live.start': { icon: '🔴', tagColor: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700', label: 'Went Live' },
+  'community.live.join': { icon: '🎙️', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Joined Live Room' },
+  'community.live.leave': { icon: '👋', tagColor: 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700', label: 'Left Live Room' },
+  'community.live.cohost_invite': { icon: '🎤', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Co-Host Invited' },
+  'community.live.cohost_accept': { icon: '✅', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Co-Host Accepted' },
+  'community.live.cohost_decline': { icon: '❌', tagColor: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700', label: 'Co-Host Declined' },
+  'community.live.poll_vote': { icon: '🗳️', tagColor: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700', label: 'Poll Voted' },
+  'community.live.remind': { icon: '⏰', tagColor: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-700', label: 'Reminder Set' },
+  
+  // Community - Following & Social
+  'community.follow': { icon: '👥', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Followed User' },
+  'community.unfollow': { icon: '👤', tagColor: 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700', label: 'Unfollowed User' },
+  'community.profile.view': { icon: '👁️', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Profile Viewed' },
+  
+  // Discover
+  'discover.service.view': { icon: '🔍', tagColor: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700', label: 'Service Viewed' },
+  'discover.service.bookmark': { icon: '🔖', tagColor: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700', label: 'Service Bookmarked' },
+  'discover.service.share': { icon: '🔗', tagColor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700', label: 'Service Shared' },
+  'discover.provider.contact': { icon: '📞', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Provider Contacted' },
+  'discover.offer.view': { icon: '🎁', tagColor: 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 border-pink-300 dark:border-pink-700', label: 'Offer Viewed' },
+  
+  // Community - Messaging
+  'community.message.send': { icon: '💬', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Message Sent' },
+  'community.conversation.start': { icon: '🆕', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Conversation Started' },
+  'community.conversation.view': { icon: '👁️', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Conversation Opened' },
+  'community.group_chat.create': { icon: '💬', tagColor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700', label: 'Group Chat Created' },
+  'community.group_chat.join': { icon: '➕', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Joined Group Chat' },
+  
+  // Community - Search
+  'community.search': { icon: '🔍', tagColor: 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700', label: 'Search Performed' },
+  'community.search.member': { icon: '👥', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Member Search' },
+  'community.search.group': { icon: '🏘️', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Group Search' },
+  'community.search.event': { icon: '📅', tagColor: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-700', label: 'Event Search' },
+  
   // Health - Biomarkers
   'health.biomarker.view': { icon: '🩺', tagColor: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700', label: 'Biomarker Viewed' },
   'health.biomarker.upload_pdf': { icon: '📄', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Lab PDF Uploaded' },
@@ -112,6 +162,92 @@ function formatActivityContent(log: any): string {
       return `Executed: ${activity_data.title}`;
     case 'autopilot.action.dismiss':
       return `Dismissed autopilot suggestion`;
+    
+    // Community - Events
+    case 'community.event.view':
+      return `Viewed event: ${activity_data.eventTitle}`;
+    case 'community.event.join':
+      return `Joined event: ${activity_data.eventTitle}`;
+    case 'community.event.leave':
+      return `Left event: ${activity_data.eventTitle}`;
+    case 'community.event.share':
+      return `Shared event: ${activity_data.eventTitle} on ${activity_data.platform}`;
+    
+    // Community - Groups
+    case 'community.group.create':
+      return `Created group: ${activity_data.groupName} (${activity_data.category})`;
+    case 'community.group.join':
+      return `Joined group: ${activity_data.groupName}`;
+    case 'community.group.leave':
+      return `Left group: ${activity_data.groupName}`;
+    case 'community.group.view':
+      return `Viewed group: ${activity_data.groupName}`;
+    case 'community.group.update':
+      return `Updated group: ${activity_data.groupName}`;
+    case 'community.group.invite':
+      return `Invited someone to a group`;
+    
+    // Community - Live Rooms
+    case 'community.live.create':
+      return `Created live session: ${activity_data.title} (${activity_data.streamType})`;
+    case 'community.live.start':
+      return `Went live: ${activity_data.title}`;
+    case 'community.live.join':
+      return `Joined live room: ${activity_data.roomTitle}`;
+    case 'community.live.leave':
+      return `Left live room: ${activity_data.roomTitle} after ${Math.round(activity_data.duration / 60)}m`;
+    case 'community.live.cohost_invite':
+      return `Invited someone to co-host`;
+    case 'community.live.cohost_accept':
+      return `Accepted co-host invitation`;
+    case 'community.live.cohost_decline':
+      return `Declined co-host invitation`;
+    case 'community.live.poll_vote':
+      return `Voted in poll: "${activity_data.pollQuestion}"`;
+    case 'community.live.remind':
+      return `Set reminder for: ${activity_data.roomTitle}`;
+    
+    // Community - Following & Social
+    case 'community.follow':
+      return `Followed ${activity_data.targetName}`;
+    case 'community.unfollow':
+      return `Unfollowed ${activity_data.targetName}`;
+    case 'community.profile.view':
+      return `Viewed profile: ${activity_data.targetName}`;
+    
+    // Discover
+    case 'discover.service.view':
+      return `Viewed service: ${activity_data.serviceName} (${activity_data.category})`;
+    case 'discover.service.bookmark':
+      return `Bookmarked service: ${activity_data.serviceName}`;
+    case 'discover.service.share':
+      return `Shared service: ${activity_data.serviceName}`;
+    case 'discover.provider.contact':
+      return `Contacted provider: ${activity_data.providerName}`;
+    case 'discover.offer.view':
+      return `Viewed offer: ${activity_data.offerTitle}`;
+    
+    // Community - Messaging
+    case 'community.message.send':
+      return `Sent ${activity_data.messageType} message (${activity_data.context})`;
+    case 'community.conversation.start':
+      return `Started conversation (${activity_data.context})`;
+    case 'community.conversation.view':
+      return `Opened conversation (${activity_data.context})`;
+    case 'community.group_chat.create':
+      return `Created group chat with ${activity_data.participantCount} members`;
+    case 'community.group_chat.join':
+      return `Joined group chat: ${activity_data.threadName}`;
+    
+    // Community - Search
+    case 'community.search':
+      return `Searched for: "${activity_data.query}" (${activity_data.resultsCount} results)`;
+    case 'community.search.member':
+      return `Searched members: "${activity_data.query}" (${activity_data.resultsCount} found)`;
+    case 'community.search.group':
+      return `Searched groups: "${activity_data.query}" (${activity_data.resultsCount} found)`;
+    case 'community.search.event':
+      return `Searched events: "${activity_data.query}" (${activity_data.resultsCount} found)`;
     
     // Health activities
     case 'health.biomarker.view':
