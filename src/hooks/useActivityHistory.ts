@@ -22,6 +22,15 @@ export interface ActivityHistoryItem {
   tagColor?: string;
 }
 
+export interface ConversationExchange {
+  id: string;
+  userMessage: ActivityHistoryItem;
+  assistantMessage?: ActivityHistoryItem;
+  conversationId: string;
+  createdAt: string;
+}
+
+
 export const ACTIVITY_TYPE_CONFIG: Record<string, { icon: string; tagColor: string; label: string }> = {
   'conversation': { icon: '💬', tagColor: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700', label: 'Conversation' },
   'chat.message': { icon: '💬', tagColor: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700', label: 'Chat' },
@@ -94,15 +103,14 @@ export function useActivityHistory(filterType?: string) {
 
       const promises = [];
 
-      // Fetch ai_messages (chat history) - only if no filter or filter matches
+      // Fetch ai_messages (chat history) - fetch BOTH user and assistant messages
       if (!filterType || filterType === 'all' || filterType === 'chat') {
         promises.push(
           supabase
             .from("ai_messages")
             .select("*")
-            .eq("role", "user")
             .order("created_at", { ascending: false })
-            .range(pageParam * ITEMS_PER_PAGE, (pageParam + 1) * ITEMS_PER_PAGE - 1)
+            .range(pageParam * ITEMS_PER_PAGE * 2, (pageParam + 1) * ITEMS_PER_PAGE * 2 - 1) // Fetch more to account for pairs
         );
       } else {
         promises.push(Promise.resolve({ data: [], error: null }));
@@ -127,7 +135,7 @@ export function useActivityHistory(filterType?: string) {
       if (messagesResult.error) throw messagesResult.error;
       if (logsResult.error) throw logsResult.error;
 
-      // Transform ai_messages
+      // Transform ai_messages into activities
       const messageActivities: ActivityHistoryItem[] = (messagesResult.data || []).map((msg) => ({
         id: msg.id,
         content: msg.content,
@@ -139,6 +147,35 @@ export function useActivityHistory(filterType?: string) {
         icon: ACTIVITY_TYPE_CONFIG['conversation'].icon,
         tagColor: ACTIVITY_TYPE_CONFIG['conversation'].tagColor,
       }));
+
+      // Group messages by conversation_id to create Q&A pairs
+      const conversationMap = new Map<string, { user?: ActivityHistoryItem; assistant?: ActivityHistoryItem }>();
+      
+      messageActivities.forEach((msg) => {
+        if (!msg.conversationId) return;
+        
+        const existing = conversationMap.get(msg.conversationId) || {};
+        if (msg.role === 'user') {
+          existing.user = msg;
+        } else if (msg.role === 'assistant') {
+          existing.assistant = msg;
+        }
+        conversationMap.set(msg.conversationId, existing);
+      });
+
+      // Convert to ConversationExchange array
+      const conversationExchanges: ConversationExchange[] = [];
+      conversationMap.forEach((pair, conversationId) => {
+        if (pair.user) {
+          conversationExchanges.push({
+            id: pair.user.id,
+            userMessage: pair.user,
+            assistantMessage: pair.assistant,
+            conversationId,
+            createdAt: pair.user.createdAt,
+          });
+        }
+      });
 
       // Transform user_activity_log
       const logActivities: ActivityHistoryItem[] = (logsResult.data || []).map((log) => ({
@@ -152,21 +189,25 @@ export function useActivityHistory(filterType?: string) {
         tagColor: ACTIVITY_TYPE_CONFIG[log.activity_type]?.tagColor || 'bg-gray-100 dark:bg-gray-800',
       }));
 
-      // Merge and sort by timestamp
-      const activities = [...messageActivities, ...logActivities]
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
       return {
-        activities,
-        nextPage: activities.length === ITEMS_PER_PAGE ? pageParam + 1 : undefined,
+        conversationExchanges,
+        logActivities,
+        nextPage: (conversationExchanges.length + logActivities.length) >= ITEMS_PER_PAGE ? pageParam + 1 : undefined,
       };
     },
     getNextPageParam: (lastPage) => lastPage.nextPage,
     initialPageParam: 0,
   });
 
-  // Flatten all pages into single array
-  const activities = data?.pages.flatMap((page) => page.activities) || [];
+  // Flatten all pages into arrays
+  const conversationExchanges = data?.pages.flatMap((page) => page.conversationExchanges) || [];
+  const logActivities = data?.pages.flatMap((page) => page.logActivities) || [];
+
+  // Merge and sort all items by timestamp for display
+  const allItems = [
+    ...conversationExchanges.map(ex => ({ ...ex, itemType: 'exchange' as const })),
+    ...logActivities.map(log => ({ ...log, itemType: 'activity' as const }))
+  ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   if (error) {
     toast({
@@ -177,7 +218,9 @@ export function useActivityHistory(filterType?: string) {
   }
 
   return {
-    activities,
+    allItems,
+    conversationExchanges,
+    logActivities,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,

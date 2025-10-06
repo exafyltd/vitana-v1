@@ -10,6 +10,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { TimelineMasterActionPopup } from "@/components/memory/TimelineMasterActionPopup";
 import { ActivityCard } from "@/components/memory/ActivityCard";
+import { ConversationCard } from "@/components/memory/ConversationCard";
 import { KnowledgeCard } from "@/components/memory/KnowledgeCard";
 import { PromoteToKnowledgeDialog } from "@/components/memory/PromoteToKnowledgeDialog";
 import { memoryNavigation } from "@/config/navigation";
@@ -35,7 +36,9 @@ function Timeline() {
 
   // Activity History hook
   const {
-    activities,
+    allItems,
+    conversationExchanges,
+    logActivities,
     fetchNextPage: fetchNextActivity,
     hasNextPage: hasNextActivity,
     isFetchingNextPage: isFetchingNextActivity,
@@ -121,15 +124,21 @@ function Timeline() {
     setEditDialogOpen(true);
   };
 
-  const handlePromoteToKnowledge = (activityId: string) => {
-    const activity = activities.find((a) => a.id === activityId);
-    if (activity) {
+  const handlePromoteToKnowledge = (itemId: string) => {
+    // Check if it's an exchange or activity
+    const exchange = conversationExchanges.find((ex) => ex.id === itemId);
+    const activity = logActivities.find((a) => a.id === itemId);
+    
+    if (exchange) {
+      setPromotingActivity(exchange.userMessage);
+      setPromoteDialogOpen(true);
+    } else if (activity) {
       setPromotingActivity(activity);
       setPromoteDialogOpen(true);
     }
   };
 
-  const groupActivitiesByDate = (activities: any[]) => {
+  const groupItemsByDate = (items: any[]) => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const yesterday = new Date(today);
@@ -144,18 +153,18 @@ function Timeline() {
       Older: [],
     };
 
-    activities.forEach((activity) => {
-      const activityDate = new Date(activity.createdAt);
-      const activityDay = new Date(activityDate.getFullYear(), activityDate.getMonth(), activityDate.getDate());
+    items.forEach((item) => {
+      const itemDate = new Date(item.createdAt);
+      const itemDay = new Date(itemDate.getFullYear(), itemDate.getMonth(), itemDate.getDate());
 
-      if (activityDay.getTime() === today.getTime()) {
-        groups.Today.push(activity);
-      } else if (activityDay.getTime() === yesterday.getTime()) {
-        groups.Yesterday.push(activity);
-      } else if (activityDate >= weekAgo) {
-        groups["This Week"].push(activity);
+      if (itemDay.getTime() === today.getTime()) {
+        groups.Today.push(item);
+      } else if (itemDay.getTime() === yesterday.getTime()) {
+        groups.Yesterday.push(item);
+      } else if (itemDate >= weekAgo) {
+        groups["This Week"].push(item);
       } else {
-        groups.Older.push(activity);
+        groups.Older.push(item);
       }
     });
 
@@ -267,7 +276,7 @@ function Timeline() {
                 <div className="flex items-center justify-center py-12">
                   <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
                 </div>
-              ) : activities.length === 0 ? (
+              ) : allItems.length === 0 ? (
                 <Card>
                   <CardContent className="p-12 text-center">
                     <p className="text-muted-foreground">
@@ -277,17 +286,25 @@ function Timeline() {
                 </Card>
               ) : (
                 <div className="space-y-6">
-                  {Object.entries(groupActivitiesByDate(activities)).map(([dateGroup, items]) => (
+                  {Object.entries(groupItemsByDate(allItems)).map(([dateGroup, items]) => (
                     <div key={dateGroup} className="space-y-3">
                       <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
                         {dateGroup}
                       </h3>
-                      {items.map((activity) => (
-                        <ActivityCard 
-                          key={activity.id} 
-                          activity={activity}
-                          onPromote={handlePromoteToKnowledge}
-                        />
+                      {items.map((item) => (
+                        item.itemType === 'exchange' ? (
+                          <ConversationCard
+                            key={item.id}
+                            exchange={item}
+                            onPromote={handlePromoteToKnowledge}
+                          />
+                        ) : (
+                          <ActivityCard 
+                            key={item.id} 
+                            activity={item}
+                            onPromote={handlePromoteToKnowledge}
+                          />
+                        )
                       ))}
                     </div>
                   ))}
@@ -300,7 +317,7 @@ function Timeline() {
                     </div>
                   )}
 
-                  {!hasNextActivity && activities.length > 0 && (
+                  {!hasNextActivity && allItems.length > 0 && (
                     <p className="text-center text-sm text-muted-foreground py-8">
                       You've reached the beginning of your activity history 📜
                     </p>
