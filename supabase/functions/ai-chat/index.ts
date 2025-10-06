@@ -554,7 +554,6 @@ serve(async (req) => {
     console.log(`[language] Received language parameter: ${language}, using: ${detectedLanguage}`);
     
     let userMessage = text;
-    const { isVoiceInput } = body;
     let inputMethod: 'voice' | 'text' = isVoiceInput ? 'voice' : 'text';
 
     // Only transcribe audio if provided AND no text is available (server-side STT)
