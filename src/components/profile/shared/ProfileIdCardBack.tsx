@@ -57,7 +57,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     { 
       name: 'LinkedIn', 
       platform: 'linkedin',
-      icon: <Linkedin className="h-7 w-7" />, 
+      icon: <Linkedin className="h-6 w-6" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(10,102,194,0.15)]',
       urlPattern: /linkedin\.com/i,
       brandColor: '#0A66C2',
@@ -67,7 +67,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     { 
       name: 'Instagram', 
       platform: 'instagram',
-      icon: <Instagram className="h-7 w-7" />, 
+      icon: <Instagram className="h-6 w-6" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(228,64,95,0.15)]',
       urlPattern: /instagram\.com/i,
       brandColor: '#E4405F',
@@ -77,7 +77,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     { 
       name: 'X', 
       platform: 'x',
-      icon: <XIcon className="h-7 w-7" />, 
+      icon: <XIcon className="h-6 w-6" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(15,20,25,0.15)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]',
       urlPattern: /twitter\.com|x\.com/i,
       brandColor: '#0F1419',
@@ -87,7 +87,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     { 
       name: 'TikTok', 
       platform: 'tiktok',
-      icon: <TikTokIcon className="h-7 w-7" />, 
+      icon: <TikTokIcon className="h-6 w-6" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(0,242,234,0.15)]',
       urlPattern: /tiktok\.com/i,
       brandColor: '#000000',
@@ -97,7 +97,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     { 
       name: 'YouTube', 
       platform: 'youtube',
-      icon: <Youtube className="h-7 w-7" />, 
+      icon: <Youtube className="h-6 w-6" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(255,0,0,0.15)]',
       urlPattern: /youtube\.com|youtu\.be/i,
       brandColor: '#FF0000',
@@ -107,7 +107,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     { 
       name: 'Facebook', 
       platform: 'facebook',
-      icon: <Facebook className="h-7 w-7" />, 
+      icon: <Facebook className="h-6 w-6" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(24,119,242,0.15)]',
       urlPattern: /facebook\.com/i,
       brandColor: '#1877F2',
@@ -142,7 +142,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
+      <div className="relative h-full flex flex-col items-center justify-center p-6 bg-card border rounded-2xl shadow-lg">
         <div className="text-center mb-6">
           <h2 className="text-xl font-bold text-foreground mb-2">
             {isOwnProfile ? 'Connect Social Media' : 'Social Media Profiles'}
@@ -152,14 +152,14 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 w-full max-w-md">
+        <div className="grid grid-cols-2 gap-2 w-full max-w-md">
           {allPlatforms.map((platform) => {
             const connected = isConnected(platform.platform);
             
             return (
               <div
                 key={platform.name}
-                className={`group relative flex flex-col items-center justify-center gap-3 p-5 rounded-2xl border transition-all ${
+                className={`group relative flex flex-col items-center justify-center gap-2 p-3 rounded-2xl border transition-all ${
                   connected 
                     ? `${platform.brandTint} ${platform.brandBorder} border-t-4 cursor-pointer hover:shadow-lg hover:-translate-y-0.5` 
                     : `bg-card border-border ${platform.hoverHalo}`
