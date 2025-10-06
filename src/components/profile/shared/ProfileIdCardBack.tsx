@@ -30,6 +30,8 @@ interface PlatformConfig {
   urlPattern: RegExp;
   brandColor: string;
   brandTint: string;
+  brandTintHex: string;
+  brandTintHexDark: string;
   brandBorder: string;
 }
 
@@ -64,6 +66,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
       urlPattern: /linkedin\.com/i,
       brandColor: '#0A66C2',
       brandTint: 'bg-[#0A66C2]/[0.04] dark:bg-[#0A66C2]/[0.06]',
+      brandTintHex: '#E9F2FB',
+      brandTintHexDark: '#0A4580',
       brandBorder: 'border-t-[#0A66C2]'
     },
     { 
@@ -72,8 +76,10 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
       icon: <InstagramIcon className="h-[28px] w-[28px]" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(221,42,123,0.12)]',
       urlPattern: /instagram\.com/i,
-      brandColor: '#DD2A7B', // Mid-gradient pink for glow
+      brandColor: '#DD2A7B',
       brandTint: 'bg-[#E4405F]/[0.04] dark:bg-[#E4405F]/[0.06]',
+      brandTintHex: '#FCEBF6',
+      brandTintHexDark: '#9C1C55',
       brandBorder: 'border-t-[#E4405F]'
     },
     { 
@@ -84,6 +90,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
       urlPattern: /twitter\.com|x\.com/i,
       brandColor: '#0F1419',
       brandTint: 'bg-[#0F1419]/[0.04] dark:bg-white/[0.06]',
+      brandTintHex: '#F2F3F5',
+      brandTintHexDark: '#2C2F33',
       brandBorder: 'border-t-[#0F1419] dark:border-t-white'
     },
     { 
@@ -92,8 +100,10 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
       icon: <TikTokIcon className="h-[30px] w-[30px]" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(0,242,234,0.15)]',
       urlPattern: /tiktok\.com/i,
-      brandColor: '#000000',
+      brandColor: '#00f2ea',
       brandTint: 'bg-[#00f2ea]/[0.04] dark:bg-[#00f2ea]/[0.06]',
+      brandTintHex: '#EAF7F9',
+      brandTintHexDark: '#00A39E',
       brandBorder: 'border-t-[#00f2ea]'
     },
     { 
@@ -104,6 +114,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
       urlPattern: /youtube\.com|youtu\.be/i,
       brandColor: '#FF0000',
       brandTint: 'bg-[#FF0000]/[0.04] dark:bg-[#FF0000]/[0.06]',
+      brandTintHex: '#FBEAEA',
+      brandTintHexDark: '#B30000',
       brandBorder: 'border-t-[#FF0000]'
     },
     { 
@@ -114,6 +126,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
       urlPattern: /facebook\.com/i,
       brandColor: '#1877F2',
       brandTint: 'bg-[#1877F2]/[0.04] dark:bg-[#1877F2]/[0.06]',
+      brandTintHex: '#EAF0FE',
+      brandTintHexDark: '#1057B8',
       brandBorder: 'border-t-[#1877F2]'
     }
   ];
@@ -168,19 +182,22 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                   className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-xl border transition-all duration-300 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                     connected 
                       ? `bg-card border-border cursor-pointer hover:-translate-y-1` 
-                      : `${platform.brandTint} border-border/60`
+                      : `border-border/60 hover:scale-[1.02] hover:-translate-y-0.5`
                   }`}
                 style={connected ? {
                   boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`,
                 } as React.CSSProperties : {
-                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06)',
+                  backgroundColor: platform.brandTintHex,
+                  boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.04)',
+                  borderColor: `${platform.brandColor}20`,
                 } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   if (connected) {
                     e.currentTarget.style.borderColor = platform.brandColor;
                     e.currentTarget.style.boxShadow = `inset 0 0 40px ${platform.brandColor}08, inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 24px ${platform.brandColor}30, 0 0 0 1px ${platform.brandColor}20`;
                   } else {
-                    e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.08)';
+                    e.currentTarget.style.borderColor = `${platform.brandColor}80`;
+                    e.currentTarget.style.boxShadow = `inset 0 1px 2px rgba(0,0,0,0.03), 0 2px 12px ${platform.brandColor}14`;
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -188,7 +205,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     e.currentTarget.style.borderColor = '';
                     e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`;
                   } else {
-                    e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06)';
+                    e.currentTarget.style.borderColor = `${platform.brandColor}20`;
+                    e.currentTarget.style.boxShadow = 'inset 0 1px 2px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.04)';
                   }
                 }}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
@@ -237,7 +255,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                         filter: 'drop-shadow(0 0 12px rgba(221, 42, 123, 0.12))'
                       } : {
                         color: platform.brandColor,
-                        opacity: 0.4
+                        filter: 'grayscale(0.15)',
+                        opacity: 0.7
                       }}
                     >
                       {/* Render custom icon or lucide icon based on connection state */}
@@ -320,7 +339,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     {cardContent}
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Invite user to link profile</p>
+                    <p>User hasn't connected this account</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (
