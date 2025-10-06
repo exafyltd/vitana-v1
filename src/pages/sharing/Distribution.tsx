@@ -2,10 +2,14 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Zap, BarChart3, Palette } from "lucide-react";
+import { Zap, BarChart3, Palette, Plus } from "lucide-react";
 
 export default withScreenId(function Distribution() {
   return (
@@ -23,6 +27,21 @@ export default withScreenId(function Distribution() {
             title="Distribution Tooling 🛠️"
             description="Configure automation rules, templates, and analyze performance"
           />
+
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search automation rules, templates..."
+            />
+            <UniversalCalendarButton />
+            <Button size="sm" variant="default">
+              <Plus className="w-4 h-4 mr-2" />
+              Create Rule
+            </Button>
+            <Button size="sm" variant="outline">
+              <Plus className="w-4 h-4 mr-2" />
+              New Template
+            </Button>
+          </UtilityActionButton>
 
           {/* Three Split Screens: 40/30/30 */}
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">

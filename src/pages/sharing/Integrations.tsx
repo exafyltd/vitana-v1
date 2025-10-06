@@ -2,10 +2,14 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Plug, Store } from "lucide-react";
+import { Plug, Store, Plus } from "lucide-react";
 
 export default withScreenId(function Integrations() {
   return (
@@ -23,6 +27,17 @@ export default withScreenId(function Integrations() {
             title="Integrations 🔌"
             description="Connect with external platforms and services"
           />
+
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search integrations, connections..."
+            />
+            <UniversalCalendarButton />
+            <Button size="sm" variant="default">
+              <Plus className="w-4 h-4 mr-2" />
+              Connect Channel
+            </Button>
+          </UtilityActionButton>
 
           {/* Two Split Screens: 50/50 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

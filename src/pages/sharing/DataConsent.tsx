@@ -2,10 +2,14 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Shield, AlertCircle, Database, Package } from "lucide-react";
+import { Shield, AlertCircle, Database, Package, Plus } from "lucide-react";
 
 export default withScreenId(function DataConsent() {
   return (
@@ -23,6 +27,21 @@ export default withScreenId(function DataConsent() {
             title="Data & Consent 🔐"
             description="Control who has access to your data and manage permissions"
           />
+
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search permissions, packages..."
+            />
+            <UniversalCalendarButton />
+            <Button size="sm" variant="default">
+              <Plus className="w-4 h-4 mr-2" />
+              Grant Access
+            </Button>
+            <Button size="sm" variant="outline">
+              <Plus className="w-4 h-4 mr-2" />
+              Create Package
+            </Button>
+          </UtilityActionButton>
 
           {/* Four Split Screens: 30/30/20/20 */}
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
