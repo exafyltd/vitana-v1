@@ -2,6 +2,7 @@ import { UserProfile } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
 import { Linkedin, Youtube, Plus, Link as LinkIcon, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { XIcon } from "@/components/icons/XIcon";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { InstagramIcon } from "@/components/icons/InstagramIcon";
@@ -143,7 +144,10 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div className="relative h-full flex flex-col items-center justify-center p-6 bg-card border rounded-2xl shadow-lg">
+      <div className="relative h-full flex flex-col items-center justify-center p-6 bg-card border rounded-2xl shadow-lg overflow-hidden">
+        {/* Faint top gradient bar for visual anchoring */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20" />
+        
         <div className="text-center mb-6">
           <h2 className="text-xl font-bold text-foreground mb-2">
             {isOwnProfile ? 'Connect Social Media' : 'Social Media Profiles'}
@@ -154,17 +158,18 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
         </div>
 
         <div className="grid grid-cols-2 gap-2 w-full max-w-md">
-          {allPlatforms.map((platform) => {
-            const connected = isConnected(platform.platform);
-            
-            return (
-              <div
-                key={platform.name}
-                className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all duration-300 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
-                  connected 
-                    ? `bg-card border-border cursor-pointer hover:-translate-y-1` 
-                    : `bg-card border-border`
-                }`}
+          <TooltipProvider delayDuration={200}>
+            {allPlatforms.map((platform) => {
+              const connected = isConnected(platform.platform);
+              
+              const cardContent = (
+                <div
+                  key={platform.name}
+                  className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-xl border transition-all duration-300 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
+                    connected 
+                      ? `bg-card border-border cursor-pointer hover:-translate-y-1` 
+                      : `${platform.brandTint} border-border/60`
+                  }`}
                 style={connected ? {
                   boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`,
                 } as React.CSSProperties : {
@@ -223,8 +228,6 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                       className={`relative z-10 ${
                         platform.platform === 'x' && connected 
                           ? 'dark:text-white' 
-                          : !connected 
-                          ? ''
                           : ''
                       }`}
                       style={connected && platform.platform !== 'instagram' ? { 
@@ -233,7 +236,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                       } : connected && platform.platform === 'instagram' ? {
                         filter: 'drop-shadow(0 0 12px rgba(221, 42, 123, 0.12))'
                       } : {
-                        color: '#A0A0A0'
+                        color: platform.brandColor,
+                        opacity: 0.4
                       }}
                     >
                       {/* Render custom icon or lucide icon based on connection state */}
@@ -302,11 +306,28 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     >
                       Connect
                     </Button>
-                  ) : null}
+                  ) : (
+                    <span className="text-xs text-muted-foreground">Not connected</span>
+                  )}
                 </div>
               </div>
-            );
-          })}
+              );
+              
+              // Wrap with tooltip only for unconnected platforms when viewing other users
+              return !connected && !isOwnProfile ? (
+                <Tooltip key={platform.name}>
+                  <TooltipTrigger asChild>
+                    {cardContent}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Invite user to link profile</p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                cardContent
+              );
+            })}
+          </TooltipProvider>
         </div>
 
         {/* Display LinkedIn enriched data if available */}
