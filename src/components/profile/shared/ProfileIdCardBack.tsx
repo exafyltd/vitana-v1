@@ -26,6 +26,9 @@ interface PlatformConfig {
   icon: React.ReactNode;
   color: string;
   urlPattern: RegExp;
+  connectedBg: string;
+  connectedIcon: string;
+  connectedBorder: string;
 }
 
 export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
@@ -56,42 +59,60 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
       platform: 'linkedin',
       icon: <Linkedin className="h-5 w-5" />, 
       color: 'hover:bg-blue-50 dark:hover:bg-blue-950',
-      urlPattern: /linkedin\.com/i
+      urlPattern: /linkedin\.com/i,
+      connectedBg: 'bg-[#0A66C2]',
+      connectedIcon: 'text-white',
+      connectedBorder: 'border-[#0A66C2]'
     },
     { 
       name: 'Instagram', 
       platform: 'instagram',
       icon: <Instagram className="h-5 w-5" />, 
       color: 'hover:bg-pink-50 dark:hover:bg-pink-950',
-      urlPattern: /instagram\.com/i
+      urlPattern: /instagram\.com/i,
+      connectedBg: 'bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500',
+      connectedIcon: 'text-white',
+      connectedBorder: 'border-purple-600'
     },
     { 
       name: 'X', 
       platform: 'x',
       icon: <XIcon className="h-5 w-5" />, 
       color: 'hover:bg-gray-50 dark:hover:bg-gray-900',
-      urlPattern: /twitter\.com|x\.com/i
+      urlPattern: /twitter\.com|x\.com/i,
+      connectedBg: 'bg-black',
+      connectedIcon: 'text-white',
+      connectedBorder: 'border-black'
     },
     { 
       name: 'TikTok', 
       platform: 'tiktok',
       icon: <TikTokIcon className="h-5 w-5" />, 
       color: 'hover:bg-gray-50 dark:hover:bg-gray-900',
-      urlPattern: /tiktok\.com/i
+      urlPattern: /tiktok\.com/i,
+      connectedBg: 'bg-black',
+      connectedIcon: 'text-[#00f2ea]',
+      connectedBorder: 'border-[#00f2ea]'
     },
     { 
       name: 'YouTube', 
       platform: 'youtube',
       icon: <Youtube className="h-5 w-5" />, 
       color: 'hover:bg-red-50 dark:hover:bg-red-950',
-      urlPattern: /youtube\.com|youtu\.be/i
+      urlPattern: /youtube\.com|youtu\.be/i,
+      connectedBg: 'bg-[#FF0000]',
+      connectedIcon: 'text-white',
+      connectedBorder: 'border-[#FF0000]'
     },
     { 
       name: 'Facebook', 
       platform: 'facebook',
       icon: <Facebook className="h-5 w-5" />, 
       color: 'hover:bg-blue-50 dark:hover:bg-blue-950',
-      urlPattern: /facebook\.com/i
+      urlPattern: /facebook\.com/i,
+      connectedBg: 'bg-[#1877F2]',
+      connectedIcon: 'text-white',
+      connectedBorder: 'border-[#1877F2]'
     }
   ];
 
@@ -138,16 +159,20 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
             return (
               <div
                 key={platform.name}
-                className={`group relative flex flex-col items-center justify-center gap-2 p-4 rounded-lg border transition-all ${platform.color} ${connected ? 'cursor-pointer hover:shadow-md' : ''}`}
+                className={`group relative flex flex-col items-center justify-center gap-2 p-4 rounded-lg border transition-all ${
+                  connected 
+                    ? `${platform.connectedBg} ${platform.connectedBorder} cursor-pointer hover:shadow-lg hover:scale-105` 
+                    : `${platform.color} bg-card`
+                }`}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
               >
-                <div className="text-muted-foreground">
+                <div className={connected ? platform.connectedIcon : 'text-muted-foreground'}>
                   {platform.icon}
                 </div>
-                <span className="text-xs font-medium text-foreground">{platform.name}</span>
+                <span className={`text-xs font-medium ${connected ? 'text-white' : 'text-foreground'}`}>{platform.name}</span>
                 
                 {connected ? (
-                  <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
+                  <div className="flex items-center gap-1 text-xs text-white/90">
                     <LinkIcon className="h-3 w-3" />
                     <span>Connected</span>
                   </div>
