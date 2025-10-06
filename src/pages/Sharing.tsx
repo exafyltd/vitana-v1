@@ -14,6 +14,7 @@ import { GrowthKPIs } from "@/components/sharing/GrowthKPIs";
 import { AutopilotNudge } from "@/components/sharing/AutopilotNudge";
 import { NextScheduledPosts } from "@/components/sharing/NextScheduledPosts";
 import { ChannelConnector } from "@/components/sharing/ChannelConnector";
+import { AnalyticsDashboard } from "@/components/sharing/AnalyticsDashboard";
 
 export default withScreenId(function Sharing() {
   return (
@@ -62,6 +63,12 @@ export default withScreenId(function Sharing() {
               <GrowthKPIs />
               <NextScheduledPosts />
             </div>
+          </div>
+
+          {/* Analytics Dashboard */}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold mb-4">Performance Analytics</h2>
+            <AnalyticsDashboard />
           </div>
         </div>
       </div>
