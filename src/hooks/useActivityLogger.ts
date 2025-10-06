@@ -16,9 +16,9 @@ export function useActivityLogger() {
       const { data: session } = await supabase.auth.getSession();
       if (!session.session?.user?.id) return;
 
-      const sessionId = sessionStorage.getItem("session_id") || crypto.randomUUID();
-      if (!sessionStorage.getItem("session_id")) {
-        sessionStorage.setItem("session_id", sessionId);
+      const sessionId = sessionStorage.getItem("vitana_session_id") || crypto.randomUUID();
+      if (!sessionStorage.getItem("vitana_session_id")) {
+        sessionStorage.setItem("vitana_session_id", sessionId);
       }
 
       const { error } = await supabase.from("user_activity_log").insert({

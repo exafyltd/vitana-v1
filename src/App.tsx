@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
@@ -141,16 +142,27 @@ import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
 import UserManagement from "./pages/admin/UserManagement";
 
-const App = () => (
-  <RTLProvider>
-    <MeetupSelectionProvider>
-      <EventSelectionProvider>
-        <TooltipProvider>
-          <Toaster />
-          <PresenceDebugPanel />
-          <BrowserRouter>
-            <TenantDetector />
-            <Routes>
+const App = () => {
+  // Initialize session ID for activity logging
+  useEffect(() => {
+    let sessionId = sessionStorage.getItem('vitana_session_id');
+    if (!sessionId) {
+      sessionId = crypto.randomUUID();
+      sessionStorage.setItem('vitana_session_id', sessionId);
+      console.log('[Session] Created new session:', sessionId);
+    }
+  }, []);
+
+  return (
+    <RTLProvider>
+      <MeetupSelectionProvider>
+        <EventSelectionProvider>
+          <TooltipProvider>
+            <Toaster />
+            <PresenceDebugPanel />
+            <BrowserRouter>
+              <TenantDetector />
+              <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Navigate to="/auth" replace />} />
@@ -783,6 +795,7 @@ const App = () => (
       </EventSelectionProvider>
     </MeetupSelectionProvider>
   </RTLProvider>
-);
+  );
+};
 
 export default App;

@@ -7,6 +7,7 @@ import { useRealtimeConnection } from './useRealtimeConnection';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 import { useRequestDeduplication } from './usePerformanceOptimization';
 import { measurePerformance } from '@/utils/performanceLogger';
+import { useActivityLogger } from '@/hooks/useActivityLogger';
 
 export interface UserBalance {
   currency_type: 'USD' | 'VTN' | 'CREDITS';
@@ -43,6 +44,7 @@ export function useWallet() {
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   const { deduplicateRequest } = useRequestDeduplication();
+  const { logActivity } = useActivityLogger();
   
   // Background refresh queue
   const backgroundTasks = useRef<Set<Promise<any>>>(new Set());
@@ -267,6 +269,27 @@ export function useWallet() {
         duration: 5000
       });
       
+      // Log activity
+      logActivity({
+        activityType: 'wallet.exchange',
+        activityData: {
+          amount: amount,
+          from_currency: fromCurrency,
+          to_currency: toCurrency,
+          exchange_rate: exchangeRate,
+          converted_amount: convertedAmount,
+          transaction_id: result.transaction_id,
+          new_from_balance: result.from_balance,
+          new_to_balance: result.to_balance
+        },
+        contextData: {
+          transaction_id: result.transaction_id,
+          from_currency: normalizedFromCurrency,
+          to_currency: normalizedToCurrency
+        },
+        dedupeKey: `exchange-${result.transaction_id}`
+      });
+      
       // Background refresh - don't block user experience
       const refreshTask = Promise.all([fetchBalances(), fetchTransactions()]);
       backgroundTasks.current.add(refreshTask);
@@ -334,6 +357,24 @@ export function useWallet() {
             ? { ...b, balance: result.from_balance }
             : b
         ));
+        
+        // Log activity
+        logActivity({
+          activityType: 'wallet.transfer',
+          activityData: {
+            amount: amount,
+            currency: currency,
+            to_user_id: toUserId.substring(0, 8) + '...',
+            transaction_id: result.transaction_id,
+            new_balance: result.from_balance
+          },
+          contextData: {
+            transaction_id: result.transaction_id,
+            from_currency: currency.toUpperCase(),
+            to_currency: currency.toUpperCase()
+          },
+          dedupeKey: `transfer-${result.transaction_id}`
+        });
         
         // Background refresh - don't block user experience
         const refreshTask = fetchTransactions();
@@ -422,6 +463,42 @@ export function useWallet() {
             ? { ...b, balance: result.from_balance }
             : b
         ));
+        
+        // Log exchange activity
+        logActivity({
+          activityType: 'wallet.exchange',
+          activityData: {
+            amount: amount,
+            from_currency: fromCurrency,
+            to_currency: toCurrency,
+            exchange_rate: exchangeRate,
+            converted_amount: convertedAmount,
+            transaction_id: result.exchange_transaction_id
+          },
+          contextData: {
+            transaction_id: result.exchange_transaction_id,
+            from_currency: fromCurrency.toUpperCase(),
+            to_currency: toCurrency.toUpperCase()
+          },
+          dedupeKey: `exchange-${result.exchange_transaction_id}`
+        });
+        
+        // Log transfer activity
+        logActivity({
+          activityType: 'wallet.transfer',
+          activityData: {
+            amount: convertedAmount,
+            currency: toCurrency,
+            to_user_id: toUserId.substring(0, 8) + '...',
+            transaction_id: result.transfer_transaction_id
+          },
+          contextData: {
+            transaction_id: result.transfer_transaction_id,
+            from_currency: toCurrency.toUpperCase(),
+            to_currency: toCurrency.toUpperCase()
+          },
+          dedupeKey: `transfer-${result.transfer_transaction_id}`
+        });
         
         // Background refresh - don't block user experience
         const refreshTask = fetchTransactions();

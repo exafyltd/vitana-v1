@@ -612,8 +612,29 @@ serve(async (req) => {
         has_audio: !!audio,
         timestamp: new Date().toISOString()
       }
-    }).then(() => console.log('User message stored'))
-      .catch((err) => console.error('Error storing user message:', err));
+    }).then((result) => {
+      console.log('User message stored');
+      // Log activity
+      supabaseClient.from('user_activity_log').insert({
+        user_id: user.id,
+        activity_type: 'chat.message',
+        activity_data: {
+          role: 'user',
+          content: userMessage.substring(0, 200),
+          conversation_id: conversationId,
+          agent_type: agentType,
+          message_length: userMessage.length,
+          has_audio: !!audio
+        },
+        context_data: {
+          conversation_id: conversationId,
+          message_id: result.data?.[0]?.id,
+          agent_type: agentType,
+          language: detectedLanguage
+        },
+        dedupe_key: result.data?.[0]?.id ? `chat-user-${result.data[0].id}` : undefined
+      }).catch(err => console.error('[activity] Failed to log user message:', err));
+    }).catch((err) => console.error('Error storing user message:', err));
 
     console.log('Getting AI response from Lovable AI...');
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
@@ -1010,8 +1031,27 @@ serve(async (req) => {
                 context_used: !!userContext,
                 timestamp: new Date().toISOString()
               }
-            }).then(() => console.info('[stream] ✓ AI message stored'))
-              .catch((err) => console.error('[stream] Error storing AI message:', err));
+            }).then((result) => {
+              console.info('[stream] ✓ AI message stored');
+              // Log activity
+              supabaseClient.from('user_activity_log').insert({
+                user_id: user.id,
+                activity_type: 'chat.message',
+                activity_data: {
+                  role: 'assistant',
+                  content: cleanedFullText.substring(0, 200),
+                  conversation_id: conversationId,
+                  agent_type: agentType,
+                  message_length: cleanedFullText.length
+                },
+                context_data: {
+                  conversation_id: conversationId,
+                  message_id: result.data?.[0]?.id,
+                  agent_type: agentType
+                },
+                dedupe_key: result.data?.[0]?.id ? `chat-ai-${result.data[0].id}` : undefined
+              }).catch(err => console.error('[activity] Failed to log AI message:', err));
+            }).catch((err) => console.error('[stream] Error storing AI message:', err));
             
             // Wait for any pending TTS tasks to flush audio events before closing the stream
             try {
@@ -1090,8 +1130,27 @@ serve(async (req) => {
         context_used: !!userContext,
         timestamp: new Date().toISOString()
       }
-    }).then(() => console.log('AI message stored'))
-      .catch((err) => console.error('Error storing AI message:', err));
+    }).then((result) => {
+      console.log('AI message stored');
+      // Log activity
+      supabaseClient.from('user_activity_log').insert({
+        user_id: user.id,
+        activity_type: 'chat.message',
+        activity_data: {
+          role: 'assistant',
+          content: aiText.substring(0, 200),
+          conversation_id: conversationId,
+          agent_type: agentType,
+          message_length: aiText.length
+        },
+        context_data: {
+          conversation_id: conversationId,
+          message_id: result.data?.[0]?.id,
+          agent_type: agentType
+        },
+        dedupe_key: result.data?.[0]?.id ? `chat-ai-${result.data[0].id}` : undefined
+      }).catch(err => console.error('[activity] Failed to log AI message:', err));
+    }).catch((err) => console.error('Error storing AI message:', err));
 
     extractAndStoreInsights(supabaseClient, user.id, conversationId, userMessage, aiText)
       .catch(err => console.error('Failed to extract insights:', err));

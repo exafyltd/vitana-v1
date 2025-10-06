@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useActivityLogger } from "@/hooks/useActivityLogger";
 
 export interface KnowledgeItem {
   id: string;
@@ -19,6 +20,7 @@ const ITEMS_PER_PAGE = 20;
 export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { logActivity } = useActivityLogger();
 
   const {
     data,
@@ -111,11 +113,23 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
         if (error) throw error;
       }
     },
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       toast({
         title: "Knowledge deleted",
         description: "The item has been removed from your knowledge base.",
+      });
+      // Log activity
+      logActivity({
+        activityType: 'memory.delete',
+        activityData: {
+          source: variables.source,
+          memory_id: variables.id
+        },
+        contextData: {
+          knowledge_item_id: variables.id,
+          source: variables.source
+        }
       });
     },
     onError: (error: Error) => {
@@ -153,11 +167,24 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
         if (error) throw error;
       }
     },
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       toast({
         title: "Knowledge updated",
         description: "Your changes have been saved.",
+      });
+      // Log activity
+      logActivity({
+        activityType: 'memory.update',
+        activityData: {
+          content: (variables as any).content?.substring(0, 100),
+          memory_type: (variables as any).memoryType,
+          source: (variables as any).source
+        },
+        contextData: {
+          knowledge_item_id: (variables as any).id,
+          source: (variables as any).source
+        }
       });
     },
     onError: (error: Error) => {
@@ -194,11 +221,25 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
         if (error) throw error;
       }
     },
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       toast({
         title: "Knowledge created",
         description: "New item added to your knowledge base.",
+      });
+      // Log activity
+      logActivity({
+        activityType: 'memory.create',
+        activityData: {
+          content: (variables as any).content?.substring(0, 100),
+          memory_type: (variables as any).memoryType || 'general',
+          source: (variables as any).source || 'manual',
+          confidence_score: (variables as any).confidenceScore,
+          has_tags: !!((variables as any).tags?.length)
+        },
+        contextData: {
+          source: (variables as any).source
+        }
       });
     },
     onError: (error: Error) => {
