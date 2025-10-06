@@ -75,7 +75,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   return (
     <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
       {/* Avatar */}
-      <div className="relative mb-3">
+      <div className="relative mb-2">
         {/* Ambient glow behind avatar */}
         <div 
           className="absolute inset-0 rounded-full blur-3xl"
@@ -85,7 +85,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
             transform: 'scale(1.15)'
           }}
         />
-        <Avatar className="relative h-42 w-42 border-4 border-background shadow-xl drop-shadow-2xl"
+        <Avatar className="relative h-38 w-38 border-4 border-background shadow-xl drop-shadow-2xl"
                 style={{
                   filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
                 }}>
