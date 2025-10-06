@@ -76,10 +76,18 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
     <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
       {/* Avatar */}
       <div className="relative mb-4">
-        <Avatar className="h-40 w-40 border-4 border-background shadow-xl drop-shadow-2xl"
-                style={{
-                  filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
-                }}>
+        <Avatar 
+          className="h-40 w-40 border-4 border-background shadow-xl drop-shadow-2xl transition-all duration-200 ease-out cursor-pointer hover:scale-[1.02]"
+          style={{
+            filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.filter = 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.08))';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.filter = 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))';
+          }}
+        >
           <AvatarImage src={profile.avatarUrl} alt={profile.name} />
           <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
             {profile.name.split(' ').map(n => n[0]).join('')}
@@ -106,14 +114,30 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
           )}
           {/* VITANA Index Badge */}
           {profile.vitanaIndex && (
-            <div className="relative flex items-center">
+            <div 
+              className="relative flex items-center transition-all duration-300 cursor-pointer"
+              onMouseEnter={(e) => {
+                const badge = e.currentTarget.querySelector('.vitana-badge') as HTMLElement;
+                if (badge) {
+                  badge.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 0 12px rgba(0, 210, 180, 0.25)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                const badge = e.currentTarget.querySelector('.vitana-badge') as HTMLElement;
+                if (badge) {
+                  badge.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)';
+                }
+              }}
+            >
               <div className="absolute inset-0 w-14 h-14 rounded-full bg-white/40 blur-lg animate-pulse"></div>
               
-              <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-xl border border-gray-300/60 flex flex-col items-center justify-center animate-pulse"
-                   style={{
-                     background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)',
-                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)'
-                   }}>
+              <div 
+                className="vitana-badge relative w-14 h-14 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-xl border border-gray-300/60 flex flex-col items-center justify-center animate-pulse transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)',
+                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)'
+                }}
+              >
                 <div className="flex flex-col items-center justify-center text-center">
                   <div className="text-lg font-bold leading-none" style={{color: '#006D5B'}}>{profile.vitanaIndex}</div>
                   <div className="text-[6px] font-medium leading-tight mt-0.5" style={{color: '#2C2C2C'}}>
@@ -134,7 +158,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
         </div>
         
         <div className="flex items-center justify-center gap-2 mb-3">
-          <p className="text-base text-muted-foreground">@{profile.handle}</p>
+          <p className="text-base" style={{ color: '#5B6B8C' }}>@{profile.handle}</p>
           {profile.longevityArchetype && (
             <>
               <span className="text-muted-foreground">•</span>

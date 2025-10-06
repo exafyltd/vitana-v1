@@ -143,7 +143,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div className="relative h-full flex flex-col items-center justify-center p-6 bg-card border rounded-2xl shadow-lg">
+      <div className="relative h-full flex flex-col items-center justify-center p-6 bg-card border rounded-2xl" style={{ boxShadow: '0 4px 14px rgba(0,0,0,0.04)' }}>
         <div className="text-center mb-6">
           <h2 className="text-xl font-bold text-foreground mb-2">
             {isOwnProfile ? 'Connect Social Media' : 'Social Media Profiles'}
@@ -160,36 +160,56 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
             return (
               <div
                 key={platform.name}
-                className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all duration-300 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
+                className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all duration-200 ease-out focus-within:ring-2 focus-within:ring-primary/20 focus-within:ring-offset-2 ${
                   connected 
-                    ? `bg-card border-border cursor-pointer hover:-translate-y-1` 
+                    ? `bg-card cursor-pointer hover:-translate-y-0.5` 
                     : `bg-card border-border`
                 }`}
                 style={connected ? {
-                  boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`,
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.04)',
+                  borderImage: platform.platform === 'instagram' 
+                    ? 'linear-gradient(45deg, #F58529, #DD2A7B, #8134AF) 1'
+                    : `linear-gradient(135deg, ${platform.brandColor}99, ${platform.brandColor}66) 1`,
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
                 } as React.CSSProperties : {
-                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06)',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.04)',
+                  borderColor: 'hsl(var(--border))'
                 } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   if (connected) {
-                    e.currentTarget.style.borderColor = platform.brandColor;
-                    e.currentTarget.style.boxShadow = `inset 0 0 40px ${platform.brandColor}08, inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 24px ${platform.brandColor}30, 0 0 0 1px ${platform.brandColor}20`;
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.06)';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
                   } else {
-                    e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.08)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.06)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (connected) {
-                    e.currentTarget.style.borderColor = '';
-                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`;
+                    e.currentTarget.style.boxShadow = '0 4px 14px rgba(0,0,0,0.04)';
+                    e.currentTarget.style.transform = '';
                   } else {
-                    e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06)';
+                    e.currentTarget.style.boxShadow = '0 4px 14px rgba(0,0,0,0.04)';
                   }
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.outline = '2px solid hsl(var(--primary))';
+                  e.currentTarget.style.outlineOffset = '2px';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.outline = '';
+                  e.currentTarget.style.outlineOffset = '';
                 }}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
                 tabIndex={connected ? 0 : -1}
                 role={connected ? "link" : undefined}
                 aria-label={connected ? `Open ${platform.name} profile` : undefined}
+                onKeyDown={(e) => {
+                  if (connected && (e.key === 'Enter' || e.key === ' ')) {
+                    e.preventDefault();
+                    handleOpenProfile(platform.platform);
+                  }
+                }}
               >
                 {/* Icon - fixed size, centered */}
                 <div className="flex items-center justify-center h-[30px] mb-2">
@@ -271,15 +291,28 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-7 text-xs px-3 w-full transition-colors duration-200 hover:underline"
+                          className="h-7 text-xs px-3 w-full transition-all duration-200 hover:underline"
                           style={{
                             '--hover-color': platform.brandColor,
+                            transition: 'all 0.15s ease-out'
                           } as React.CSSProperties}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.color = platform.brandColor;
+                            e.currentTarget.style.transform = 'scale(1.0)';
+                            e.currentTarget.style.boxShadow = `0 0 0 4px ${platform.brandColor}1A`;
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.color = '';
+                            e.currentTarget.style.transform = '';
+                            e.currentTarget.style.boxShadow = '';
+                          }}
+                          onFocus={(e) => {
+                            e.currentTarget.style.outline = '2px solid hsl(var(--primary))';
+                            e.currentTarget.style.outlineOffset = '2px';
+                          }}
+                          onBlur={(e) => {
+                            e.currentTarget.style.outline = '';
+                            e.currentTarget.style.outlineOffset = '';
                           }}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -290,11 +323,30 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                         </Button>
                       )}
                     </>
-                  ) : isOwnProfile ? (
+                   ) : isOwnProfile ? (
                     <Button
                       size="sm"
                       variant="outline"
-                      className="h-8 text-xs px-4 w-full border-2 font-semibold hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+                      className="h-8 text-xs px-4 w-full border-2 font-semibold transition-all duration-200 hover:scale-[0.98]"
+                      style={{
+                        transition: 'all 0.15s ease-out'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.0)';
+                        e.currentTarget.style.boxShadow = '0 0 0 4px rgba(0,102,255,0.10)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = '';
+                        e.currentTarget.style.boxShadow = '';
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.outline = '2px solid hsl(var(--primary))';
+                        e.currentTarget.style.outlineOffset = '2px';
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.outline = '';
+                        e.currentTarget.style.outlineOffset = '';
+                      }}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleConnect(platform);
