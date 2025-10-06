@@ -11,6 +11,7 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { TimelineMasterActionPopup } from "@/components/memory/TimelineMasterActionPopup";
 import { ActivityCard } from "@/components/memory/ActivityCard";
 import { KnowledgeCard } from "@/components/memory/KnowledgeCard";
+import { PromoteToKnowledgeDialog } from "@/components/memory/PromoteToKnowledgeDialog";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useActivityHistory } from "@/hooks/useActivityHistory";
@@ -22,8 +23,11 @@ import { MemoryEditDialog } from "@/components/memory/MemoryEditDialog";
 function Timeline() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [promoteDialogOpen, setPromoteDialogOpen] = useState(false);
   const [editingKnowledge, setEditingKnowledge] = useState<any>(null);
+  const [promotingActivity, setPromotingActivity] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<"activity" | "knowledge">("activity");
+  const [activityFilter, setActivityFilter] = useState<string>("all");
   const [knowledgeFilter, setKnowledgeFilter] = useState<"all" | "insights" | "diary">("all");
   
   const activityLoadMoreRef = useRef<HTMLDivElement>(null);
@@ -36,7 +40,7 @@ function Timeline() {
     hasNextPage: hasNextActivity,
     isFetchingNextPage: isFetchingNextActivity,
     isLoading: isLoadingActivity,
-  } = useActivityHistory();
+  } = useActivityHistory(activityFilter);
 
   // Knowledge Base hook
   const {
@@ -117,6 +121,54 @@ function Timeline() {
     setEditDialogOpen(true);
   };
 
+  const handlePromoteToKnowledge = (activityId: string) => {
+    const activity = activities.find((a) => a.id === activityId);
+    if (activity) {
+      setPromotingActivity(activity);
+      setPromoteDialogOpen(true);
+    }
+  };
+
+  const groupActivitiesByDate = (activities: any[]) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const weekAgo = new Date(today);
+    weekAgo.setDate(weekAgo.getDate() - 7);
+
+    const groups: Record<string, any[]> = {
+      Today: [],
+      Yesterday: [],
+      "This Week": [],
+      Older: [],
+    };
+
+    activities.forEach((activity) => {
+      const activityDate = new Date(activity.createdAt);
+      const activityDay = new Date(activityDate.getFullYear(), activityDate.getMonth(), activityDate.getDate());
+
+      if (activityDay.getTime() === today.getTime()) {
+        groups.Today.push(activity);
+      } else if (activityDay.getTime() === yesterday.getTime()) {
+        groups.Yesterday.push(activity);
+      } else if (activityDate >= weekAgo) {
+        groups["This Week"].push(activity);
+      } else {
+        groups.Older.push(activity);
+      }
+    });
+
+    // Remove empty groups
+    Object.keys(groups).forEach((key) => {
+      if (groups[key].length === 0) {
+        delete groups[key];
+      }
+    });
+
+    return groups;
+  };
+
   return (
     <AppLayout>
       <SEO 
@@ -164,6 +216,52 @@ function Timeline() {
               </p>
             </div>
 
+            {/* Activity Filter Buttons */}
+            <div className="flex gap-2 mb-4 flex-wrap">
+              <Button 
+                variant={activityFilter === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("all")}
+              >
+                All
+              </Button>
+              <Button 
+                variant={activityFilter === "chat" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("chat")}
+              >
+                💬 Chat
+              </Button>
+              <Button 
+                variant={activityFilter === "memory" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("memory")}
+              >
+                🧠 Memory
+              </Button>
+              <Button 
+                variant={activityFilter === "wallet" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("wallet")}
+              >
+                💰 Wallet
+              </Button>
+              <Button 
+                variant={activityFilter === "discover" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("discover")}
+              >
+                ❤️ Discover
+              </Button>
+              <Button 
+                variant={activityFilter === "calendar" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("calendar")}
+              >
+                📅 Calendar
+              </Button>
+            </div>
+
             <div className="max-w-7xl mx-auto">
               {isLoadingActivity ? (
                 <div className="flex items-center justify-center py-12">
@@ -178,9 +276,20 @@ function Timeline() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="space-y-4">
-                  {activities.map((activity) => (
-                    <ActivityCard key={activity.id} activity={activity} />
+                <div className="space-y-6">
+                  {Object.entries(groupActivitiesByDate(activities)).map(([dateGroup, items]) => (
+                    <div key={dateGroup} className="space-y-3">
+                      <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
+                        {dateGroup}
+                      </h3>
+                      {items.map((activity) => (
+                        <ActivityCard 
+                          key={activity.id} 
+                          activity={activity}
+                          onPromote={handlePromoteToKnowledge}
+                        />
+                      ))}
+                    </div>
                   ))}
 
                   {hasNextActivity && (
@@ -292,6 +401,12 @@ function Timeline() {
           memory={editingKnowledge}
           onSave={handleSaveKnowledge}
           isSaving={isUpdating || isCreating}
+        />
+
+        <PromoteToKnowledgeDialog
+          activity={promotingActivity}
+          open={promoteDialogOpen}
+          onOpenChange={setPromoteDialogOpen}
         />
       </div>
     </AppLayout>

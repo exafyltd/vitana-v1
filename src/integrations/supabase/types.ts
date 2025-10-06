@@ -1719,6 +1719,86 @@ export type Database = {
           },
         ]
       }
+      user_activity_log: {
+        Row: {
+          activity_data: Json
+          activity_type: string
+          context_data: Json
+          created_at: string
+          dedupe_key: string | null
+          id: string
+          ingested_at: string
+          session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_data: Json
+          activity_type: string
+          context_data?: Json
+          created_at?: string
+          dedupe_key?: string | null
+          id?: string
+          ingested_at?: string
+          session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_data?: Json
+          activity_type?: string
+          context_data?: Json
+          created_at?: string
+          dedupe_key?: string | null
+          id?: string
+          ingested_at?: string
+          session_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_activity_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      user_activity_log_archive: {
+        Row: {
+          activity_data: Json
+          activity_type: string
+          context_data: Json
+          created_at: string
+          dedupe_key: string | null
+          id: string
+          ingested_at: string
+          session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_data: Json
+          activity_type: string
+          context_data?: Json
+          created_at?: string
+          dedupe_key?: string | null
+          id?: string
+          ingested_at?: string
+          session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_data?: Json
+          activity_type?: string
+          context_data?: Json
+          created_at?: string
+          dedupe_key?: string | null
+          id?: string
+          ingested_at?: string
+          session_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_api_keys: {
         Row: {
           api_key: string
@@ -2062,6 +2142,10 @@ export type Database = {
       }
     }
     Functions: {
+      archive_old_activity_logs: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       bootstrap_admin_user: {
         Args: { p_user_email: string; p_user_id: string }
         Returns: undefined
