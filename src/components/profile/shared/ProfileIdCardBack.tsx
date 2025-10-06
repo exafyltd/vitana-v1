@@ -159,11 +159,26 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
             return (
               <div
                 key={platform.name}
-                className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
+                className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all duration-200 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                   connected 
-                    ? `${platform.brandTint} ${platform.brandBorder} border-t-4 border-border cursor-pointer hover:shadow-lg hover:-translate-y-0.5 ${platform.hoverHalo}` 
-                    : `bg-card border-border ${platform.hoverHalo}`
+                    ? `bg-card border-border cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.08)]` 
+                    : `bg-card border-border`
                 }`}
+                style={connected ? {
+                  '--hover-border-color': platform.brandColor,
+                } as React.CSSProperties : undefined}
+                onMouseEnter={(e) => {
+                  if (connected) {
+                    e.currentTarget.style.borderColor = platform.brandColor;
+                    e.currentTarget.style.boxShadow = `0 0 20px ${platform.brandColor}15`;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (connected) {
+                    e.currentTarget.style.borderColor = '';
+                    e.currentTarget.style.boxShadow = '';
+                  }
+                }}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
                 tabIndex={connected ? 0 : -1}
                 role={connected ? "link" : undefined}
@@ -172,7 +187,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 {/* Icon - fixed size, centered */}
                 <div className="flex items-center justify-center h-[30px] mb-2">
                   <div 
-                    className={`relative ${connected ? 'transition-transform group-hover:scale-110' : 'text-neutral-400 dark:text-neutral-600'} ${
+                    className={`relative ${connected ? 'transition-transform duration-200 ease-out group-hover:scale-105' : 'text-neutral-400 dark:text-neutral-600'} ${
                       platform.platform === 'instagram' && connected 
                         ? 'before:absolute before:inset-[-2px] before:rounded-full before:bg-gradient-to-br before:from-[#833AB4] before:via-[#FD1D1D] before:to-[#F77737] before:p-[2px] before:-z-10' 
                         : ''
@@ -193,7 +208,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 </span>
                 
                 {/* Connected pill and actions - baseline aligned */}
-                <div className="flex flex-col items-center gap-1.5 w-full min-h-[28px]">
+                <div className="flex flex-col items-center gap-2.5 w-full min-h-[28px]">
                   {connected ? (
                     <>
                       <div className="inline-flex items-center gap-1.5 px-3 h-7 rounded-full bg-background/60 border text-xs">
@@ -206,7 +221,16 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-7 text-xs px-3 w-full"
+                          className="h-7 text-xs px-3 w-full transition-colors duration-200 hover:underline"
+                          style={{
+                            '--hover-color': platform.brandColor,
+                          } as React.CSSProperties}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = platform.brandColor;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = '';
+                          }}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleConnect(platform);
