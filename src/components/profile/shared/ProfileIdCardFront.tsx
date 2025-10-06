@@ -75,7 +75,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   return (
     <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
       {/* Avatar */}
-      <div className="relative mb-5">
+      <div className="relative mb-3">
         {/* Ambient glow behind avatar */}
         <div 
           className="absolute inset-0 rounded-full blur-3xl"
@@ -85,12 +85,12 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
             transform: 'scale(1.15)'
           }}
         />
-        <Avatar className="relative h-50 w-50 border-4 border-background shadow-xl drop-shadow-2xl"
+        <Avatar className="relative h-42 w-42 border-4 border-background shadow-xl drop-shadow-2xl"
                 style={{
                   filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
                 }}>
           <AvatarImage src={profile.avatarUrl} alt={profile.name} />
-          <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+          <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
             {profile.name.split(' ').map(n => n[0]).join('')}
           </AvatarFallback>
         </Avatar>
