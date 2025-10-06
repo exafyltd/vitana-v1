@@ -396,6 +396,124 @@ export type Database = {
         }
         Relationships: []
       }
+      distribution_channels: {
+        Row: {
+          channel_name: string
+          channel_type: Database["public"]["Enums"]["channel_type"]
+          connection_data: Json | null
+          created_at: string | null
+          daily_limit: number | null
+          daily_sent: number | null
+          id: string
+          is_active: boolean | null
+          is_connected: boolean | null
+          last_reset_at: string | null
+          metadata: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          channel_name: string
+          channel_type: Database["public"]["Enums"]["channel_type"]
+          connection_data?: Json | null
+          created_at?: string | null
+          daily_limit?: number | null
+          daily_sent?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_connected?: boolean | null
+          last_reset_at?: string | null
+          metadata?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          channel_name?: string
+          channel_type?: Database["public"]["Enums"]["channel_type"]
+          connection_data?: Json | null
+          created_at?: string | null
+          daily_limit?: number | null
+          daily_sent?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_connected?: boolean | null
+          last_reset_at?: string | null
+          metadata?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "distribution_channels_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      distribution_posts: {
+        Row: {
+          blast_count: number | null
+          channels: Database["public"]["Enums"]["channel_type"][] | null
+          content: string
+          created_at: string | null
+          description: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          metadata: Json | null
+          published_at: string | null
+          scheduled_for: string | null
+          status: Database["public"]["Enums"]["post_status"] | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          blast_count?: number | null
+          channels?: Database["public"]["Enums"]["channel_type"][] | null
+          content: string
+          created_at?: string | null
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metadata?: Json | null
+          published_at?: string | null
+          scheduled_for?: string | null
+          status?: Database["public"]["Enums"]["post_status"] | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          blast_count?: number | null
+          channels?: Database["public"]["Enums"]["channel_type"][] | null
+          content?: string
+          created_at?: string | null
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metadata?: Json | null
+          published_at?: string | null
+          scheduled_for?: string | null
+          status?: Database["public"]["Enums"]["post_status"] | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "distribution_posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       event_attendees: {
         Row: {
           created_at: string
@@ -1421,6 +1539,72 @@ export type Database = {
           },
         ]
       }
+      post_analytics: {
+        Row: {
+          channel_type: Database["public"]["Enums"]["channel_type"]
+          clicked_count: number | null
+          created_at: string | null
+          delivered_count: number | null
+          failed_count: number | null
+          id: string
+          metadata: Json | null
+          opened_count: number | null
+          post_id: string
+          responded_count: number | null
+          revenue: number | null
+          sent_count: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          channel_type: Database["public"]["Enums"]["channel_type"]
+          clicked_count?: number | null
+          created_at?: string | null
+          delivered_count?: number | null
+          failed_count?: number | null
+          id?: string
+          metadata?: Json | null
+          opened_count?: number | null
+          post_id: string
+          responded_count?: number | null
+          revenue?: number | null
+          sent_count?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          channel_type?: Database["public"]["Enums"]["channel_type"]
+          clicked_count?: number | null
+          created_at?: string | null
+          delivered_count?: number | null
+          failed_count?: number | null
+          id?: string
+          metadata?: Json | null
+          opened_count?: number | null
+          post_id?: string
+          responded_count?: number | null
+          revenue?: number | null
+          sent_count?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_analytics_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "distribution_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_analytics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -1663,6 +1847,66 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      scheduled_posts: {
+        Row: {
+          channels: Database["public"]["Enums"]["channel_type"][]
+          created_at: string | null
+          error_message: string | null
+          id: string
+          last_attempt_at: string | null
+          metadata: Json | null
+          post_id: string
+          retry_count: number | null
+          scheduled_for: string
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          channels: Database["public"]["Enums"]["channel_type"][]
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          last_attempt_at?: string | null
+          metadata?: Json | null
+          post_id: string
+          retry_count?: number | null
+          scheduled_for: string
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          channels?: Database["public"]["Enums"]["channel_type"][]
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          last_attempt_at?: string | null
+          metadata?: Json | null
+          post_id?: string
+          retry_count?: number | null
+          scheduled_for?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scheduled_posts_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "distribution_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scheduled_posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -2530,6 +2774,14 @@ export type Database = {
       }
     }
     Enums: {
+      channel_type:
+        | "email"
+        | "sms"
+        | "whatsapp"
+        | "push"
+        | "slack"
+        | "discord"
+        | "telegram"
       collection_method: "home_kit" | "lab_facility"
       lab_test_category:
         | "blood_markers"
@@ -2553,6 +2805,7 @@ export type Database = {
         | "processing"
         | "completed"
         | "cancelled"
+      post_status: "draft" | "scheduled" | "published" | "failed"
       tenant_role: "community" | "patient" | "professional" | "staff" | "admin"
     }
     CompositeTypes: {
@@ -2681,6 +2934,15 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      channel_type: [
+        "email",
+        "sms",
+        "whatsapp",
+        "push",
+        "slack",
+        "discord",
+        "telegram",
+      ],
       collection_method: ["home_kit", "lab_facility"],
       lab_test_category: [
         "blood_markers",
@@ -2707,6 +2969,7 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      post_status: ["draft", "scheduled", "published", "failed"],
       tenant_role: ["community", "patient", "professional", "staff", "admin"],
     },
   },
