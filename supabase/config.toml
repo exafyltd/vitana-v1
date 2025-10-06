@@ -17,3 +17,9 @@ verify_jwt = true
 
 [functions.linkedin-import]
 verify_jwt = true
+
+[functions.search-memories]
+verify_jwt = true
+
+[functions.reinforce-memory]
+verify_jwt = true

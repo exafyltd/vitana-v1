@@ -565,6 +565,42 @@ serve(async (req) => {
       userMessage.toLowerCase().includes(keyword.toLowerCase())
     );
 
+    // === PHASE 3: SEMANTIC MEMORY SEARCH ===
+    // Search for relevant memories based on user query
+    let relevantMemories: any[] = [];
+    let hasContradictions = false;
+    let contradictions: any[] = [];
+
+    try {
+      console.log('[memory] Searching for relevant memories...');
+      const memorySearchResult = await serviceClient.functions.invoke('search-memories', {
+        body: { query: userMessage, userId: user.id }
+      });
+
+      if (memorySearchResult.data) {
+        relevantMemories = memorySearchResult.data.relevant_memories || [];
+        hasContradictions = memorySearchResult.data.has_contradictions || false;
+        contradictions = memorySearchResult.data.contradictions || [];
+        
+        console.log(`[memory] Found ${relevantMemories.length} relevant memories`);
+        
+        if (hasContradictions) {
+          console.log(`[memory] ⚠️ Detected contradictions in memories`);
+        }
+
+        // Reinforce referenced memories (boost confidence)
+        if (relevantMemories.length > 0) {
+          const memoryIds = relevantMemories.map(m => m.id);
+          serviceClient.functions.invoke('reinforce-memory', {
+            body: { memoryIds, action: 'reference' }
+          }).catch(err => console.error('[memory] Failed to reinforce:', err));
+        }
+      }
+    } catch (memoryError) {
+      console.error('[memory] Memory search failed:', memoryError);
+      // Continue without memory search
+    }
+
     // Store user message (non-blocking)
     supabaseClient.from('ai_messages').insert({
       conversation_id: conversationId,
@@ -709,6 +745,29 @@ serve(async (req) => {
         systemMessage += '5. 🎯 Nudging them toward community engagement (events, meetups, groups)\n';
         systemMessage += '6. 🏆 Celebrating their community participation and milestones\n';
         systemMessage += '7. 💡 Making personalized suggestions like "Want me to RSVP you?" or "Should I help you connect?"\n';
+      }
+      
+      // === RELEVANT MEMORIES (Semantic Search Results) ===
+      if (relevantMemories.length > 0) {
+        systemMessage += '\n=== RELEVANT MEMORIES (Query-Specific) ===\n';
+        systemMessage += 'The following memories are directly relevant to the user\'s current question:\n';
+        
+        relevantMemories.forEach((mem: any) => {
+          const emoji = mem.type === 'fact' ? '📌' : mem.type === 'preference' ? '❤️' : mem.type === 'goal' ? '🎯' : '💡';
+          systemMessage += `${emoji} [${mem.type}] ${mem.content} (confidence: ${(mem.confidence * 100).toFixed(0)}%)\n`;
+        });
+
+        // Contradiction warning
+        if (hasContradictions && contradictions.length > 0) {
+          systemMessage += '\n⚠️ CONTRADICTION DETECTED ⚠️\n';
+          systemMessage += 'The following memories seem to contradict each other:\n';
+          contradictions.forEach((c: any, i: number) => {
+            systemMessage += `${i + 1}. "${c.memory1.content}" vs "${c.memory2.content}"\n`;
+          });
+          systemMessage += 'INSTRUCTION: Ask the user to clarify which information is correct before proceeding.\n';
+        }
+        
+        systemMessage += '\nIMPORTANT: Use these memories naturally when answering. They are specifically relevant to the current question.\n';
       }
       
       systemMessage += '=== END CONTEXT ===\n';

@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Edit2, Trash2, Brain, Mic, Image as ImageIcon, FileText, Clock, Star, MessageCircle } from "lucide-react";
+import { Edit2, Trash2, Brain, Mic, Image as ImageIcon, FileText, Clock, Star, MessageCircle, Check, X } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
+import { useMemoryReinforce } from "@/hooks/useMemoryReinforce";
 
 interface MemoryCardProps {
   id: string;
@@ -42,6 +43,15 @@ export function MemoryCard({
   className
 }: MemoryCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const { reinforceMemory } = useMemoryReinforce();
+
+  const handleConfirm = () => {
+    reinforceMemory({ memoryIds: [id], action: 'confirm' });
+  };
+
+  const handleContradict = () => {
+    reinforceMemory({ memoryIds: [id], action: 'contradict' });
+  };
 
   const getSourceIcon = () => {
     if (source === "conversation") {
@@ -130,15 +140,38 @@ export function MemoryCard({
             "flex gap-1 transition-opacity duration-200",
             isHovered ? "opacity-100" : "opacity-0"
           )}>
-            {onEdit && (
+            {onEdit && source !== "conversation" && (
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={() => onEdit(id)}
                 className="h-7 w-7 p-0"
+                title="Edit memory"
               >
                 <Edit2 className="w-3.5 h-3.5" />
               </Button>
+            )}
+            {source !== "conversation" && (
+              <>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleConfirm}
+                  className="h-7 w-7 p-0 text-green-600 hover:text-green-700"
+                  title="Confirm (increases confidence)"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleContradict}
+                  className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
+                  title="Mark as incorrect (decreases confidence)"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </Button>
+              </>
             )}
             {onDelete && (
               <Button
