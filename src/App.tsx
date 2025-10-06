@@ -120,11 +120,9 @@ import Subscriptions from "./pages/wallet/Subscriptions";
 import Rewards from "./pages/wallet/Rewards";
 
 // Sharing sub-pages
-import Consent from "./pages/sharing/Consent";
-import Packages from "./pages/sharing/Packages";
-import SmartPackage from "./pages/sharing/SmartPackage";
-import Marketplace from "./pages/sharing/Marketplace";
-import Logs from "./pages/sharing/Logs";
+import Distribution from "./pages/sharing/Distribution";
+import DataConsent from "./pages/sharing/DataConsent";
+import Integrations from "./pages/sharing/Integrations";
 
 // Memory sub-pages
 import Timeline from "./pages/memory/Timeline";
@@ -488,29 +486,19 @@ const App = () => {
               <Sharing />
             </AuthGuard>
           } />
-          <Route path="/sharing/consent" element={
+          <Route path="/sharing/distribution" element={
             <AuthGuard>
-              <Consent />
+              <Distribution />
             </AuthGuard>
           } />
-          <Route path="/sharing/packages" element={
+          <Route path="/sharing/data-consent" element={
             <AuthGuard>
-              <Packages />
+              <DataConsent />
             </AuthGuard>
           } />
-          <Route path="/sharing/smart-package" element={
+          <Route path="/sharing/integrations" element={
             <AuthGuard>
-              <SmartPackage />
-            </AuthGuard>
-          } />
-          <Route path="/sharing/marketplace" element={
-            <AuthGuard>
-              <Marketplace />
-            </AuthGuard>
-          } />
-          <Route path="/sharing/logs" element={
-            <AuthGuard>
-              <Logs />
+              <Integrations />
             </AuthGuard>
           } />
 

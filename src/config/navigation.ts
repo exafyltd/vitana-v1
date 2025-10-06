@@ -62,11 +62,9 @@ export const walletNavigation = [
 
 export const sharingNavigation = [
   { id: "overview", name: "Overview", path: "/sharing" },
-  { id: "consent", name: "Consent Dashboard", path: "/sharing/consent" },
-  { id: "packages", name: "Data Packages", path: "/sharing/packages" },
-  { id: "smart-package", name: "Smart Package Creator", path: "/sharing/smart-package" },
-  { id: "marketplace", name: "Integration Marketplace", path: "/sharing/marketplace" },
-  { id: "logs", name: "Logs & Revocation", path: "/sharing/logs" },
+  { id: "distribution", name: "Distribution", path: "/sharing/distribution" },
+  { id: "data-consent", name: "Data & Consent", path: "/sharing/data-consent" },
+  { id: "integrations", name: "Integrations", path: "/sharing/integrations" },
 ];
 
 export const memoryNavigation = [

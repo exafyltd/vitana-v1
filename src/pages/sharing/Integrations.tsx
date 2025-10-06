@@ -1,0 +1,63 @@
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { sharingNavigation } from "@/config/navigation";
+import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { Plug, Store } from "lucide-react";
+
+export default withScreenId(function Integrations() {
+  return (
+    <AppLayout>
+      <SEO
+        title="Integrations | VITANA"
+        description="Connect and manage third-party integrations"
+        canonical={window.location.href}
+      />
+      <SubNavigation items={sharingNavigation} />
+
+      <div className="p-6 min-h-screen pb-24">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <StandardHeader
+            title="Integrations 🔌"
+            description="Connect with external platforms and services"
+          />
+
+          {/* Two Split Screens: 50/50 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left: My Connections */}
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Plug className="w-5 h-5" />
+                  My Connections
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Coming soon: Manage connected channels and services
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Right: Marketplace */}
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Store className="w-5 h-5" />
+                  Marketplace
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Coming soon: Discover and connect new integrations
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}, SCREEN_IDS.SHARING_OVERVIEW);
