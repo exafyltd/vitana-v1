@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Edit2, Trash2, Brain, Mic, Image as ImageIcon, FileText, Clock, Star } from "lucide-react";
+import { Edit2, Trash2, Brain, Mic, Image as ImageIcon, FileText, Clock, Star, MessageCircle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 
 interface MemoryCardProps {
   id: string;
   content: string;
-  source: "ai" | "diary";
+  source: "ai" | "diary" | "conversation";
   memoryType?: string; // For AI: insight, pattern, preference, goal, fact
   sourceType?: string; // For diary: voice, text, image
   tags?: string[];
@@ -17,6 +17,8 @@ interface MemoryCardProps {
   duration?: number;
   createdAt: string;
   metadata?: any;
+  conversationId?: string;
+  role?: "user" | "assistant";
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
   className?: string;
@@ -33,6 +35,8 @@ export function MemoryCard({
   duration,
   createdAt,
   metadata,
+  conversationId,
+  role,
   onEdit,
   onDelete,
   className
@@ -40,6 +44,9 @@ export function MemoryCard({
   const [isHovered, setIsHovered] = useState(false);
 
   const getSourceIcon = () => {
+    if (source === "conversation") {
+      return role === "user" ? <MessageCircle className="w-4 h-4" /> : <Brain className="w-4 h-4" />;
+    }
     if (source === "ai") return <Brain className="w-4 h-4" />;
     if (sourceType === "voice") return <Mic className="w-4 h-4" />;
     if (sourceType === "image") return <ImageIcon className="w-4 h-4" />;
@@ -47,10 +54,21 @@ export function MemoryCard({
   };
 
   const getSourceColor = () => {
+    if (source === "conversation") {
+      return role === "user" 
+        ? "bg-blue-500/10 text-blue-600 border-blue-200" 
+        : "bg-purple-500/10 text-purple-600 border-purple-200";
+    }
     if (source === "ai") return "bg-purple-500/10 text-purple-600 border-purple-200";
     if (sourceType === "voice") return "bg-blue-500/10 text-blue-600 border-blue-200";
     if (sourceType === "image") return "bg-pink-500/10 text-pink-600 border-pink-200";
     return "bg-gray-500/10 text-gray-600 border-gray-200";
+  };
+
+  const getSourceLabel = () => {
+    if (source === "conversation") return role === "user" ? "You" : "AI Response";
+    if (source === "ai") return memoryType || "AI Insight";
+    return sourceType || "Diary Entry";
   };
 
   const renderConfidence = () => {
@@ -88,7 +106,7 @@ export function MemoryCard({
             <Badge variant="outline" className={cn("gap-1.5", getSourceColor())}>
               {getSourceIcon()}
               <span className="text-xs font-medium">
-                {source === "ai" ? memoryType : sourceType}
+                {getSourceLabel()}
               </span>
             </Badge>
 
@@ -100,6 +118,10 @@ export function MemoryCard({
                   </Badge>
                 ))}
               </div>
+            )}
+
+            {conversationId && (
+              <span className="text-xs text-muted-foreground">• Conversation</span>
             )}
           </div>
 
@@ -132,9 +154,20 @@ export function MemoryCard({
         </div>
 
         {/* Content */}
-        <p className="text-sm text-foreground line-clamp-3 leading-relaxed">
-          {content}
-        </p>
+        {source === "conversation" ? (
+          <div className={cn(
+            "pl-3 border-l-2",
+            role === "user" ? "border-blue-400" : "border-purple-400"
+          )}>
+            <p className="text-sm text-foreground line-clamp-3 leading-relaxed">
+              {content}
+            </p>
+          </div>
+        ) : (
+          <p className="text-sm text-foreground line-clamp-3 leading-relaxed">
+            {content}
+          </p>
+        )}
 
         {/* Footer Row */}
         <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">

@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 interface TimelineMemory {
   id: string;
   content: string;
-  source: "ai" | "diary";
+  source: "ai" | "diary" | "conversation";
   memoryType?: string;
   sourceType?: string;
   tags?: string[];
@@ -13,11 +13,13 @@ interface TimelineMemory {
   duration?: number;
   createdAt: string;
   metadata?: any;
+  conversationId?: string;
+  role?: "user" | "assistant";
 }
 
 const ITEMS_PER_PAGE = 20;
 
-export function useMemoryTimeline() {
+export function useMemoryTimeline(filter: "all" | "insights" | "conversations" = "all") {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -30,48 +32,76 @@ export function useMemoryTimeline() {
     isLoading,
     error
   } = useInfiniteQuery({
-    queryKey: ["memory-timeline"],
+    queryKey: ["memory-timeline", filter],
     queryFn: async ({ pageParam = 0 }) => {
-      // Fetch AI memories
-      const { data: aiMemories, error: aiError } = await supabase
-        .from("ai_memory")
-        .select("id, content, memory_type, confidence_score, metadata, created_at, updated_at")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false })
-        .range(pageParam, pageParam + ITEMS_PER_PAGE - 1);
+      const combined: TimelineMemory[] = [];
 
-      if (aiError) throw aiError;
+      // Fetch AI memories and diary entries if insights are needed
+      if (filter === "all" || filter === "insights") {
+        const { data: aiMemories, error: aiError } = await supabase
+          .from("ai_memory")
+          .select("id, content, memory_type, confidence_score, metadata, created_at, updated_at")
+          .eq("is_active", true)
+          .order("created_at", { ascending: false })
+          .range(pageParam, pageParam + ITEMS_PER_PAGE - 1);
 
-      // Fetch diary entries
-      const { data: diaryEntries, error: diaryError } = await supabase
-        .from("diary_entries")
-        .select("id, text, source, tags, duration, created_at, updated_at")
-        .order("created_at", { ascending: false })
-        .range(pageParam, pageParam + ITEMS_PER_PAGE - 1);
+        if (aiError) throw aiError;
 
-      if (diaryError) throw diaryError;
+        const { data: diaryEntries, error: diaryError } = await supabase
+          .from("diary_entries")
+          .select("id, text, source, tags, duration, created_at, updated_at")
+          .order("created_at", { ascending: false })
+          .range(pageParam, pageParam + ITEMS_PER_PAGE - 1);
 
-      // Combine and sort
-      const combined: TimelineMemory[] = [
-        ...(aiMemories || []).map(m => ({
-          id: m.id,
-          content: m.content,
-          source: "ai" as const,
-          memoryType: m.memory_type,
-          confidenceScore: m.confidence_score,
-          createdAt: m.created_at,
-          metadata: m.metadata
-        })),
-        ...(diaryEntries || []).map(d => ({
-          id: d.id,
-          content: d.text,
-          source: "diary" as const,
-          sourceType: d.source,
-          tags: d.tags || [],
-          duration: d.duration,
-          createdAt: d.created_at
-        }))
-      ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        if (diaryError) throw diaryError;
+
+        combined.push(
+          ...(aiMemories || []).map(m => ({
+            id: m.id,
+            content: m.content,
+            source: "ai" as const,
+            memoryType: m.memory_type,
+            confidenceScore: m.confidence_score,
+            createdAt: m.created_at,
+            metadata: m.metadata
+          })),
+          ...(diaryEntries || []).map(d => ({
+            id: d.id,
+            content: d.text,
+            source: "diary" as const,
+            sourceType: d.source,
+            tags: d.tags || [],
+            duration: d.duration,
+            createdAt: d.created_at
+          }))
+        );
+      }
+
+      // Fetch conversation messages if needed
+      if (filter === "all" || filter === "conversations") {
+        const { data: conversations, error: convError } = await supabase
+          .from("ai_messages")
+          .select("id, conversation_id, role, content, created_at, metadata")
+          .order("created_at", { ascending: false })
+          .range(pageParam, pageParam + ITEMS_PER_PAGE - 1);
+
+        if (convError) throw convError;
+
+        combined.push(
+          ...(conversations || []).map(c => ({
+            id: c.id,
+            content: c.content,
+            source: "conversation" as const,
+            conversationId: c.conversation_id,
+            role: c.role as "user" | "assistant",
+            createdAt: c.created_at,
+            metadata: c.metadata
+          }))
+        );
+      }
+
+      // Sort by date
+      combined.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
       return {
         memories: combined,
@@ -84,10 +114,17 @@ export function useMemoryTimeline() {
 
   // Delete mutation
   const deleteMutation = useMutation({
-    mutationFn: async ({ id, source }: { id: string; source: "ai" | "diary" }) => {
-      const table = source === "ai" ? "ai_memory" : "diary_entries";
-      const { error } = await supabase.from(table).delete().eq("id", id);
-      if (error) throw error;
+    mutationFn: async ({ id, source }: { id: string; source: "ai" | "diary" | "conversation" }) => {
+      if (source === "ai") {
+        const { error } = await supabase.from("ai_memory").delete().eq("id", id);
+        if (error) throw error;
+      } else if (source === "diary") {
+        const { error } = await supabase.from("diary_entries").delete().eq("id", id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("ai_messages").delete().eq("id", id);
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memory-timeline"] });

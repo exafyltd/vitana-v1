@@ -18,6 +18,7 @@ import { Card, CardContent } from "@/components/ui/card";
 function Timeline() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [filter, setFilter] = useState<"all" | "insights" | "conversations">("all");
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -27,7 +28,7 @@ function Timeline() {
     isFetchingNextPage,
     isLoading,
     deleteMemory
-  } = useMemoryTimeline();
+  } = useMemoryTimeline(filter);
 
   // Infinite scroll observer
   useEffect(() => {
@@ -53,7 +54,7 @@ function Timeline() {
     console.log("Edit memory:", id);
   };
 
-  const handleDelete = (id: string, source: "ai" | "diary") => {
+  const handleDelete = (id: string, source: "ai" | "diary" | "conversation") => {
     if (confirm("Are you sure you want to delete this memory? This action cannot be undone.")) {
       deleteMemory({ id, source });
     }
@@ -82,6 +83,31 @@ function Timeline() {
             Record Moment
           </Button>
         </UtilityActionButton>
+
+        {/* Filter Buttons */}
+        <div className="flex gap-2 mt-4">
+          <Button 
+            variant={filter === "all" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilter("all")}
+          >
+            All
+          </Button>
+          <Button 
+            variant={filter === "insights" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilter("insights")}
+          >
+            Insights Only
+          </Button>
+          <Button 
+            variant={filter === "conversations" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilter("conversations")}
+          >
+            Conversations Only
+          </Button>
+        </div>
 
         {/* Timeline Content */}
         <div className="mt-6 max-w-7xl mx-auto">
