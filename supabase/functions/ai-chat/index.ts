@@ -38,7 +38,20 @@ CONTEXT USAGE:
 The USER CONTEXT section below contains current user information. Use it naturally ONLY when directly relevant to answering the user's question. Do not volunteer information they didn't ask for.
 
 YOUR EXPERTISE:
-Provide science-backed wellness advice considering the user's health profile, Vitana Index, diary entries, and daily patterns. Be empathetic and focus on sustainable lifestyle changes.`,
+Provide science-backed wellness advice considering the user's health profile, Vitana Index, diary entries, and daily patterns. Be empathetic and focus on sustainable lifestyle changes.
+
+FINANCIAL CONTEXT:
+You have access to the user's Vitana wallet system with three currencies:
+- USD (US Dollars): Traditional currency for payments and purchases
+- VTN (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
+- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTN
+
+When asked about wallet/money/finances:
+1. Show ALL three balances clearly
+2. Explain what each currency is used for in Vitana
+3. If transaction history is available, summarize recent activity
+4. If exchange rates are favorable or user has conversion opportunities, mention them
+5. Always respond in the user's language (detect from their question)`,
 
   autopilot: `ROLE: You are Vitana Autopilot, proactively suggesting next-best actions.
 
@@ -55,7 +68,15 @@ ABSOLUTE PROHIBITIONS:
 - Answer only the current question
 
 YOUR EXPERTISE:
-Analyze user patterns, schedules, and goals to recommend timely, contextual actions that save time and improve wellness.`,
+Analyze user patterns, schedules, and goals to recommend timely, contextual actions that save time and improve wellness.
+
+FINANCIAL CONTEXT:
+You have access to the user's Vitana wallet system with three currencies:
+- USD (US Dollars): Traditional currency for payments and purchases
+- VTN (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
+- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTN
+
+When asked about wallet/money/finances, show all three balances and explain currency purposes. Respond in the user's language.`,
 
   community: `ROLE: You are Vitana Community AI, facilitating wellness connections.
 
@@ -72,7 +93,15 @@ ABSOLUTE PROHIBITIONS:
 - Answer only the current question
 
 YOUR EXPERTISE:
-Help users connect with like-minded wellness enthusiasts, suggest groups and events, foster authentic relationships.`,
+Help users connect with like-minded wellness enthusiasts, suggest groups and events, foster authentic relationships.
+
+FINANCIAL CONTEXT:
+You have access to the user's Vitana wallet system with three currencies:
+- USD (US Dollars): Traditional currency for payments and purchases
+- VTN (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
+- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTN
+
+When asked about wallet/money/finances, show all three balances and explain currency purposes. Respond in the user's language.`,
 
   wellness: `ROLE: You are Vitana Wellness AI, providing holistic lifestyle guidance.
 
@@ -89,7 +118,15 @@ ABSOLUTE PROHIBITIONS:
 - Answer only the current question
 
 YOUR EXPERTISE:
-Integrate health, nutrition, fitness, sleep, and mental wellness into practical recommendations that fit the user's life.`
+Integrate health, nutrition, fitness, sleep, and mental wellness into practical recommendations that fit the user's life.
+
+FINANCIAL CONTEXT:
+You have access to the user's Vitana wallet system with three currencies:
+- USD (US Dollars): Traditional currency for payments and purchases
+- VTN (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
+- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTN
+
+When asked about wallet/money/finances, show all three balances and explain currency purposes. Respond in the user's language.`
 };
 
 function cleanAIResponse(text: string): string {
@@ -656,13 +693,42 @@ serve(async (req) => {
         systemMessage += `Time: ${temporal.dayOfWeek}, ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}\n`;
       }
       
-      // Only include wallet/economic data if query mentions it
-      const economicKeywords = /(wallet|balance|currency|credits?|usd|vtn|money|pay|transfer|transaction)/i;
-      if (economic?.balances && economicKeywords.test(userMessage)) {
+      // ALWAYS include wallet balances (lightweight, always relevant)
+      if (economic?.balances) {
         const balances = Object.entries(economic.balances)
           .map(([curr, bal]) => `${bal} ${curr}`)
           .join(', ');
         systemMessage += `Wallet: ${balances}\n`;
+        
+        // Expanded multilingual economic keywords
+        const economicKeywords = /(wallet|balance|currency|credits?|usd|vtn|money|pay|transfer|transaction|exchange|convert|rate|financial|funds?|account|новац|новчаник|салдо|токени|долари|кредити|средства|плаћање|трансфер|размена|курс|how much|do i have|колико|имам)/i;
+        
+        // Include transaction history if query is wallet-related
+        if (economicKeywords.test(userMessage) && economic?.recentTransactions?.length > 0) {
+          systemMessage += `\n=== WALLET ACTIVITY (Last 30 days) ===\n`;
+          systemMessage += `Recent Transactions: ${economic.recentTransactions.length} total\n`;
+          
+          const recentTx = economic.recentTransactions.slice(0, 5);
+          recentTx.forEach((tx: any) => {
+            const direction = tx.isIncoming ? '⬇️ Received' : '⬆️ Sent';
+            const date = new Date(tx.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            systemMessage += `  ${direction}: ${tx.amount} ${tx.currency} - ${tx.type} (${tx.status}) - ${date}\n`;
+          });
+          
+          if (economic.pendingPayments > 0) {
+            systemMessage += `⏳ Pending: ${economic.pendingPayments} transaction(s)\n`;
+          }
+        }
+        
+        // Include exchange rates if query mentions conversion/exchange
+        if (/exchange|convert|rate|курс|размена|conversion/i.test(userMessage) && economic?.exchangeRates?.length > 0) {
+          systemMessage += `\n=== EXCHANGE RATES ===\n`;
+          economic.exchangeRates.forEach((rate: any) => {
+            const trend = rate.trend === 'up' ? '📈' : rate.trend === 'down' ? '📉' : '➡️';
+            const change = rate.change24h > 0 ? `+${rate.change24h}%` : `${rate.change24h}%`;
+            systemMessage += `  ${rate.from} → ${rate.to}: ${rate.rate} ${trend} (${change} 24h)\n`;
+          });
+        }
       }
       
       if (health?.vitanaIndex !== undefined) {

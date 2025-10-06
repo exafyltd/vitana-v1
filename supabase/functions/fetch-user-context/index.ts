@@ -178,7 +178,9 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     userMatchesData,
     communityProfileData,
     followCountsData,
-    recentInteractionsData
+    recentInteractionsData,
+    walletTransactionsData,
+    exchangeRatesData
   ] = await Promise.all([
     // Wallets
     supabase.from('user_wallets').select('*').eq('user_id', userId),
@@ -286,7 +288,21 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       .eq('user_id', userId)
       .gte('created_at', new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString())
       .order('created_at', { ascending: false })
-      .limit(30)
+      .limit(30),
+    
+    // Recent wallet transactions (last 30 days)
+    supabase.from('wallet_transactions')
+      .select('transaction_type, amount, from_currency, to_currency, status, created_at, metadata, from_user_id, to_user_id')
+      .or(`from_user_id.eq.${userId},to_user_id.eq.${userId}`)
+      .gte('created_at', new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString())
+      .order('created_at', { ascending: false })
+      .limit(20),
+    
+    // Exchange rates
+    supabase.from('exchange_rates')
+      .select('from_currency, to_currency, rate, change_24h, trend')
+      .eq('is_active', true)
+      .limit(10)
   ]);
 
   const wallets = walletsData.data || [];
@@ -306,6 +322,8 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
   const communityProfile = communityProfileData.data;
   const followCounts = followCountsData.data;
   const recentInteractions = recentInteractionsData.data || [];
+  const walletTransactions = walletTransactionsData.data || [];
+  const exchangeRates = exchangeRatesData.data || [];
 
   // Build set of event IDs user is participating in
   const participatingEventIds = new Set(
@@ -367,8 +385,22 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
         VTN: wallets.find((w: any) => w.currency_type === 'VTN')?.balance || 0,
         CREDITS: wallets.find((w: any) => w.currency_type === 'CREDITS')?.balance || 0
       },
-      recentTransactions: [],
-      pendingPayments: 0
+      recentTransactions: walletTransactions.map((tx: any) => ({
+        type: tx.transaction_type,
+        amount: tx.amount,
+        currency: tx.from_currency || tx.to_currency,
+        timestamp: tx.created_at,
+        status: tx.status,
+        isIncoming: tx.to_user_id === userId
+      })),
+      pendingPayments: walletTransactions.filter((tx: any) => tx.status === 'pending').length,
+      exchangeRates: exchangeRates.map((rate: any) => ({
+        from: rate.from_currency,
+        to: rate.to_currency,
+        rate: rate.rate,
+        trend: rate.trend,
+        change24h: rate.change_24h
+      }))
     },
     health: {
       vitanaIndex: undefined,
