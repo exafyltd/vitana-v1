@@ -396,6 +396,53 @@ export type Database = {
         }
         Relationships: []
       }
+      event_attendees: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          invited_at: string
+          invited_by: string | null
+          metadata: Json | null
+          responded_at: string | null
+          response: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          invited_at?: string
+          invited_by?: string | null
+          metadata?: Json | null
+          responded_at?: string | null
+          response: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          invited_at?: string
+          invited_by?: string | null
+          metadata?: Json | null
+          responded_at?: string | null
+          response?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_attendees_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       exchange_rates: {
         Row: {
           change_24h: number | null
@@ -780,6 +827,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      invite_analytics: {
+        Row: {
+          channel: string
+          clicked_count: number
+          created_at: string
+          event_id: string
+          id: string
+          opened_count: number
+          response_count: number
+          sent_count: number
+          updated_at: string
+        }
+        Insert: {
+          channel: string
+          clicked_count?: number
+          created_at?: string
+          event_id: string
+          id?: string
+          opened_count?: number
+          response_count?: number
+          sent_count?: number
+          updated_at?: string
+        }
+        Update: {
+          channel?: string
+          clicked_count?: number
+          created_at?: string
+          event_id?: string
+          id?: string
+          opened_count?: number
+          response_count?: number
+          sent_count?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       lab_test_orders: {
         Row: {
