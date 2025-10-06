@@ -182,22 +182,29 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                   className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-xl border transition-all duration-300 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                     connected 
                       ? `bg-card border-border cursor-pointer hover:-translate-y-1` 
-                      : `border-border/60 hover:scale-[1.02] hover:-translate-y-0.5`
+                      : `hover:scale-[1.01] hover:-translate-y-0.5`
                   }`}
                 style={connected ? {
                   boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`,
                 } as React.CSSProperties : {
-                  backgroundColor: platform.brandTintHex,
-                  boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.04)',
-                  borderColor: `${platform.brandColor}20`,
+                  backgroundColor: 'rgba(250, 250, 250, 0.6)',
+                  boxShadow: 'inset 0 1px 1px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03)',
+                  borderColor: 'rgba(0, 0, 0, 0.05)',
                 } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   if (connected) {
                     e.currentTarget.style.borderColor = platform.brandColor;
                     e.currentTarget.style.boxShadow = `inset 0 0 40px ${platform.brandColor}08, inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 24px ${platform.brandColor}30, 0 0 0 1px ${platform.brandColor}20`;
                   } else {
-                    e.currentTarget.style.borderColor = `${platform.brandColor}80`;
-                    e.currentTarget.style.boxShadow = `inset 0 1px 2px rgba(0,0,0,0.03), 0 2px 12px ${platform.brandColor}14`;
+                    e.currentTarget.style.borderColor = platform.brandColor;
+                    e.currentTarget.style.boxShadow = `inset 0 1px 1px rgba(0,0,0,0.02), 0 2px 8px ${platform.brandColor}18, 0 0 0 1px ${platform.brandColor}40`;
+                    // Color the icon on hover
+                    const icon = e.currentTarget.querySelector('.unconnected-icon') as HTMLElement;
+                    if (icon) {
+                      icon.style.color = platform.brandColor;
+                      icon.style.opacity = '1';
+                      icon.style.filter = 'none';
+                    }
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -205,8 +212,15 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     e.currentTarget.style.borderColor = '';
                     e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`;
                   } else {
-                    e.currentTarget.style.borderColor = `${platform.brandColor}20`;
-                    e.currentTarget.style.boxShadow = 'inset 0 1px 2px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.04)';
+                    e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.05)';
+                    e.currentTarget.style.boxShadow = 'inset 0 1px 1px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03)';
+                    // Reset icon on hover leave
+                    const icon = e.currentTarget.querySelector('.unconnected-icon') as HTMLElement;
+                    if (icon) {
+                      icon.style.color = '#999';
+                      icon.style.opacity = '0.65';
+                      icon.style.filter = 'grayscale(0.3)';
+                    }
                   }
                 }}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
@@ -243,20 +257,20 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     )}
                     
                     <div 
-                      className={`relative z-10 ${
+                      className={`relative z-10 transition-all duration-300 ${
                         platform.platform === 'x' && connected 
                           ? 'dark:text-white' 
                           : ''
-                      }`}
+                      } ${!connected ? 'unconnected-icon' : ''}`}
                       style={connected && platform.platform !== 'instagram' ? { 
                         color: platform.brandColor,
                         filter: `drop-shadow(0 0 12px ${platform.brandColor}1F)`
                       } : connected && platform.platform === 'instagram' ? {
                         filter: 'drop-shadow(0 0 12px rgba(221, 42, 123, 0.12))'
                       } : {
-                        color: platform.brandColor,
-                        filter: 'grayscale(0.15)',
-                        opacity: 0.7
+                        color: '#999',
+                        filter: 'grayscale(0.3)',
+                        opacity: 0.65
                       }}
                     >
                       {/* Render custom icon or lucide icon based on connection state */}
@@ -270,7 +284,9 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 </div>
                 
                 {/* Platform name */}
-                <span className="text-sm font-medium text-foreground mb-2">
+                <span className={`text-sm font-medium mb-2 transition-colors duration-300 ${
+                  connected ? 'text-foreground' : 'text-muted-foreground/70'
+                }`}>
                   {platform.name}
                 </span>
                 
@@ -326,7 +342,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                       Connect
                     </Button>
                   ) : (
-                    <span className="text-xs text-muted-foreground">Not connected</span>
+                    <span className="text-xs text-muted-foreground/60">Not linked yet</span>
                   )}
                 </div>
               </div>
@@ -339,7 +355,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     {cardContent}
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>User hasn't connected this account</p>
+                    <p>Not connected yet</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (
