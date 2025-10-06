@@ -222,30 +222,164 @@ async function extractAndStoreInsights(
   aiResponse: string
 ) {
   try {
-    const insights: Array<{type: string, content: string, confidence: number}> = [];
-
-    if (userMessage.toLowerCase().includes('i prefer') || userMessage.toLowerCase().includes('i like')) {
-      insights.push({ type: 'preference', content: userMessage, confidence: 0.8 });
+    console.log('[insights] Starting AI-powered extraction...');
+    
+    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
+    if (!lovableApiKey) {
+      console.warn('[insights] LOVABLE_API_KEY not configured, skipping extraction');
+      return;
     }
 
-    if (userMessage.toLowerCase().includes('my goal') || userMessage.toLowerCase().includes('want to')) {
-      insights.push({ type: 'goal', content: userMessage, confidence: 0.85 });
+    // Use Lovable AI to extract structured insights
+    const extractionResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${lovableApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          {
+            role: 'system',
+            content: `Extract key information from this conversation that should be remembered. Focus on:
+- Personal facts (birthday, age, location, occupation, family)
+- Health data (conditions, medications, allergies, symptoms)
+- Preferences (foods, activities, sleep schedule)
+- Goals (health targets, lifestyle changes)
+- Important dates and events
+
+Return ONLY meaningful, memorable facts. Skip questions, commands, or temporary information.
+Each insight must have high confidence (0.7+). Be concise - extract the core fact only.`
+          },
+          {
+            role: 'user',
+            content: `User: ${userMessage}\nAI: ${aiResponse}`
+          }
+        ],
+        tools: [
+          {
+            type: 'function',
+            function: {
+              name: 'extract_insights',
+              description: 'Extract meaningful facts, preferences, goals, and patterns from the conversation',
+              parameters: {
+                type: 'object',
+                properties: {
+                  insights: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        type: {
+                          type: 'string',
+                          enum: ['fact', 'preference', 'goal', 'pattern', 'insight'],
+                          description: 'Type of memory'
+                        },
+                        content: {
+                          type: 'string',
+                          description: 'Concise fact or insight (e.g., "Birthday: March 15, 1990")'
+                        },
+                        confidence: {
+                          type: 'number',
+                          description: 'Confidence score (0.7-1.0)',
+                          minimum: 0.7,
+                          maximum: 1.0
+                        }
+                      },
+                      required: ['type', 'content', 'confidence']
+                    }
+                  }
+                },
+                required: ['insights']
+              }
+            }
+          }
+        ],
+        tool_choice: { type: 'function', function: { name: 'extract_insights' } }
+      }),
+    });
+
+    if (!extractionResponse.ok) {
+      const errorText = await extractionResponse.text();
+      console.error('[insights] Extraction failed:', extractionResponse.status, errorText);
+      return;
     }
 
+    const extractionData = await extractionResponse.json();
+    const toolCall = extractionData.choices?.[0]?.message?.tool_calls?.[0];
+    
+    if (!toolCall?.function?.arguments) {
+      console.log('[insights] No insights extracted');
+      return;
+    }
+
+    const { insights } = JSON.parse(toolCall.function.arguments);
+    
+    if (!insights || insights.length === 0) {
+      console.log('[insights] No insights found');
+      return;
+    }
+
+    console.log(`[insights] Extracted ${insights.length} insights, checking for duplicates...`);
+
+    // Deduplication: Check for similar existing memories
+    const storedCount = 0;
     for (const insight of insights) {
-      await supabase.from('ai_memory').insert({
+      // Quality filter: minimum confidence threshold
+      if (insight.confidence < 0.7) {
+        console.log(`[insights] Skipped low confidence: ${insight.content} (${insight.confidence})`);
+        continue;
+      }
+
+      // Check for duplicate by searching for similar content
+      const similarityKeywords = insight.content.toLowerCase().split(' ').filter(w => w.length > 3);
+      
+      if (similarityKeywords.length > 0) {
+        const { data: existingMemories } = await supabase
+          .from('ai_memory')
+          .select('id, content, confidence_score')
+          .eq('user_id', userId)
+          .eq('memory_type', insight.type)
+          .eq('is_active', true)
+          .limit(5);
+
+        // Simple deduplication: check if content is very similar
+        const isDuplicate = existingMemories?.some((existing: any) => {
+          const existingLower = existing.content.toLowerCase();
+          return similarityKeywords.some(keyword => existingLower.includes(keyword));
+        });
+
+        if (isDuplicate) {
+          console.log(`[insights] Skipped duplicate: ${insight.content}`);
+          continue;
+        }
+      }
+
+      // Store new insight
+      const { error: insertError } = await supabase.from('ai_memory').insert({
         user_id: userId,
         memory_type: insight.type,
         content: insight.content,
         confidence_score: insight.confidence,
         source_conversation_id: conversationId,
-        metadata: { extracted_at: new Date().toISOString() }
+        is_active: true,
+        metadata: { 
+          extracted_at: new Date().toISOString(),
+          extraction_method: 'ai_powered'
+        }
       });
+
+      if (insertError) {
+        console.error('[insights] Insert error:', insertError);
+      } else {
+        console.log(`[insights] ✓ Stored: ${insight.type} - ${insight.content} (${insight.confidence})`);
+      }
     }
 
-    console.log(`Stored ${insights.length} insights for user ${userId}`);
+    console.log(`[insights] Extraction complete`);
   } catch (error) {
-    console.error('Error extracting insights:', error);
+    console.error('[insights] Error extracting insights:', error);
   }
 }
 
