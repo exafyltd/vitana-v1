@@ -76,12 +76,22 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
     <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
       {/* Avatar */}
       <div className="relative mb-4">
-        <Avatar className="h-40 w-40 border-4 border-background shadow-xl drop-shadow-2xl"
+        {/* Ambient glow behind avatar */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-48 h-48 rounded-full" 
+               style={{
+                 backgroundColor: 'hsl(var(--accent))',
+                 opacity: 0.06,
+                 filter: 'blur(40px)'
+               }} />
+        </div>
+        
+        <Avatar className="relative h-48 w-48 border-4 border-background shadow-xl drop-shadow-2xl"
                 style={{
                   filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
                 }}>
           <AvatarImage src={profile.avatarUrl} alt={profile.name} />
-          <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+          <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
             {profile.name.split(' ').map(n => n[0]).join('')}
           </AvatarFallback>
         </Avatar>
@@ -165,7 +175,11 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                 <ExternalLink className="h-4 w-4" />
               </Button>
               {editMode && onEdit && (
-                <Button variant="outline" onClick={onEdit}>
+                <Button 
+                  variant="outline" 
+                  className="rounded-full bg-gradient-to-r from-background to-accent/5 hover:to-accent/10 border-accent/20"
+                  onClick={onEdit}
+                >
                   <Edit3 className="h-4 w-4 mr-2" />
                   Edit Identity
                 </Button>
