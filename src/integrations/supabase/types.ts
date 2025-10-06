@@ -126,6 +126,7 @@ export type Database = {
           conversation_id: string
           created_at: string
           id: string
+          input_method: string | null
           metadata: Json | null
           role: string
         }
@@ -135,6 +136,7 @@ export type Database = {
           conversation_id: string
           created_at?: string
           id?: string
+          input_method?: string | null
           metadata?: Json | null
           role: string
         }
@@ -144,6 +146,7 @@ export type Database = {
           conversation_id?: string
           created_at?: string
           id?: string
+          input_method?: string | null
           metadata?: Json | null
           role?: string
         }

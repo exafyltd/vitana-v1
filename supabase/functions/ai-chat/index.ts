@@ -638,43 +638,20 @@ serve(async (req) => {
       // Continue without memory search
     }
 
-    // Store user message (non-blocking)
+    // Store user message (non-blocking) - ai_messages is the source of truth
     supabaseClient.from('ai_messages').insert({
       conversation_id: conversationId,
       role: 'user',
       content: userMessage,
+      input_method: audio ? 'voice' : 'text',
       context_used: userContext,
       metadata: {
         language: detectedLanguage,
         has_audio: !!audio,
         timestamp: new Date().toISOString()
       }
-    }).then(async (result) => {
-      console.log('User message stored');
-      // Log activity with proper error handling
-      const { error: logError } = await supabaseClient.from('user_activity_log').insert({
-        user_id: user.id,
-        activity_type: 'chat.message',
-        activity_data: {
-          role: 'user',
-          content: userMessage.substring(0, 200),
-          conversation_id: conversationId,
-          agent_type: agentType,
-          message_length: userMessage.length,
-          has_audio: !!audio
-        },
-        context_data: {
-          conversation_id: conversationId,
-          message_id: result.data?.[0]?.id,
-          agent_type: agentType,
-          language: detectedLanguage
-        },
-        dedupe_key: result.data?.[0]?.id ? `chat-user-${result.data[0].id}` : undefined
-      });
-      
-      if (logError) {
-        console.error('[activity] Failed to log user message:', logError);
-      }
+    }).then(() => {
+      console.log('User message stored with input_method:', audio ? 'voice' : 'text');
     }).catch((err) => console.error('Error storing user message:', err));
 
     console.log('Getting AI response from Lovable AI...');

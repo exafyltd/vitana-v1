@@ -355,7 +355,11 @@ export function useActivityHistory(filterType?: string) {
         activityType: 'conversation' as const,
         role: msg.role as 'user' | 'assistant',
         createdAt: msg.created_at,
-        metadata: { ...msg.metadata, label: ACTIVITY_TYPE_CONFIG['conversation'].label },
+        metadata: { 
+          ...msg.metadata, 
+          label: ACTIVITY_TYPE_CONFIG['conversation'].label,
+          inputMethod: msg.input_method || 'text'
+        },
         conversationId: msg.conversation_id,
         icon: ACTIVITY_TYPE_CONFIG['conversation'].icon,
         tagColor: ACTIVITY_TYPE_CONFIG['conversation'].tagColor,

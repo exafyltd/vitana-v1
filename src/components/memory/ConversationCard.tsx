@@ -34,6 +34,11 @@ export function ConversationCard({ exchange, onPromote }: ConversationCardProps)
               <div className="flex items-center gap-2 mb-1">
                 <User className="w-3 h-3 text-blue-600 dark:text-blue-400" />
                 <span className="text-xs font-medium text-blue-700 dark:text-blue-300">You</span>
+                {exchange.userMessage.metadata?.inputMethod === 'voice' && (
+                  <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300">
+                    🎤 Voice
+                  </Badge>
+                )}
               </div>
               <p className="text-sm text-foreground/90 line-clamp-3">
                 {exchange.userMessage.content}

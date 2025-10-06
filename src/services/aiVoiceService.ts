@@ -159,8 +159,8 @@ export class AIVoiceService {
       console.log('[Voice] Sending with language:', this.currentLanguage);
       // Reset flag AFTER using it
       this.isRecordingWithClientSTT = false;
-      // Send directly as text message with language parameter
-      return this.sendTextMessage(effectiveTranscript, this.currentLanguage);
+      // Send as text message but mark as voice input
+      return this.sendTextMessage(effectiveTranscript, this.currentLanguage, undefined, undefined, true);
     }
     
     // Reset flag for fallback case
@@ -211,7 +211,8 @@ export class AIVoiceService {
     text: string, 
     language?: string,
     onTextChunk?: (chunk: string) => void,
-    onAudioChunk?: (audioData: string) => void
+    onAudioChunk?: (audioData: string) => void,
+    isVoiceInput?: boolean  // Track if this came from voice
   ): Promise<AIChatResponse> {
     console.info('[streaming] Sending text message:', text.substring(0, 50));
     this.firstAudioQueued = false;
@@ -231,6 +232,25 @@ export class AIVoiceService {
       throw new Error('Not authenticated');
     }
 
+    // If this is voice input, send a tiny silent audio blob to mark it as voice
+    const requestBody: any = {
+      text,
+      language,
+      agentType: 'health',
+      conversationId,
+      stream: true
+    };
+
+    if (isVoiceInput) {
+      // Create minimal silent audio to indicate voice input
+      const silentBlob = new Blob([new Uint8Array(100)], { type: 'audio/webm' });
+      const arrayBuffer = await silentBlob.arrayBuffer();
+      const base64Audio = btoa(
+        new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      requestBody.audio = base64Audio;
+    }
+
     const response = await fetch(`${supabaseUrl}/functions/v1/ai-chat`, {
       method: 'POST',
       headers: {
@@ -238,13 +258,7 @@ export class AIVoiceService {
         'Content-Type': 'application/json',
         'apikey': supabaseKey,
       },
-      body: JSON.stringify({
-        text,
-        language,
-        agentType: 'health',
-        conversationId,
-        stream: true
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
