@@ -1,9 +1,10 @@
 import { UserProfile } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
-import { Instagram, Linkedin, Youtube, Plus, Link as LinkIcon, Facebook } from "lucide-react";
+import { Linkedin, Youtube, Plus, Link as LinkIcon, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "@/components/icons/XIcon";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { useState } from "react";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 
@@ -67,10 +68,10 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     { 
       name: 'Instagram', 
       platform: 'instagram',
-      icon: <Instagram className="h-[30px] w-[30px]" />, 
-      hoverHalo: 'hover:shadow-[0_0_20px_rgba(228,64,95,0.15)]',
+      icon: <InstagramIcon className="h-[28px] w-[28px]" connected={true} />, 
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(221,42,123,0.12)]',
       urlPattern: /instagram\.com/i,
-      brandColor: '#E4405F',
+      brandColor: '#DD2A7B', // Mid-gradient pink for glow
       brandTint: 'bg-[#E4405F]/[0.04] dark:bg-[#E4405F]/[0.06]',
       brandBorder: 'border-t-[#E4405F]'
     },
@@ -165,7 +166,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     : `bg-card border-border shadow-inner`
                 }`}
                 style={connected ? {
-                  boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}15`,
+                  boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}1F`,
                 } as React.CSSProperties : {
                   boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)',
                 } as React.CSSProperties}
@@ -178,7 +179,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 onMouseLeave={(e) => {
                   if (connected) {
                     e.currentTarget.style.borderColor = '';
-                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}15`;
+                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}1F`;
                   }
                 }}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
@@ -189,24 +190,26 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 {/* Icon - fixed size, centered */}
                 <div className="flex items-center justify-center h-[30px] mb-2">
                   <div 
-                    className={`relative ${connected ? 'transition-all duration-300 ease-out group-hover:scale-110 group-hover:animate-bounce' : 'text-neutral-400 dark:text-neutral-600'} ${
-                      platform.platform === 'instagram' && connected 
-                        ? 'before:absolute before:inset-[-2px] before:rounded-full before:bg-gradient-to-br before:from-[#833AB4] before:via-[#FD1D1D] before:to-[#F77737] before:p-[2px] before:-z-10' 
-                        : ''
-                    } ${
+                    className={`relative ${connected ? 'transition-all duration-300 ease-out group-hover:scale-110' : ''} ${
                       platform.platform === 'x' && connected 
                         ? 'dark:text-white' 
+                        : !connected 
+                        ? 'text-neutral-400 dark:text-neutral-600'
                         : ''
                     }`}
-                    style={connected && platform.platform !== 'instagram' ? { 
+                    style={connected && platform.platform === 'instagram' ? {
+                      filter: 'drop-shadow(0 0 12px rgba(221, 42, 123, 0.12))'
+                    } : connected && platform.platform !== 'instagram' ? { 
                       color: platform.brandColor,
-                      filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.1))'
-                    } : connected && platform.platform === 'instagram' ? { 
-                      color: '#000000',
-                      filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.1))'
+                      filter: `drop-shadow(0 0 12px ${platform.brandColor}1F)`
                     } : undefined}
                   >
-                    {platform.icon}
+                    {/* Render custom icon or lucide icon based on connection state */}
+                    {platform.platform === 'instagram' ? (
+                      <InstagramIcon className="h-[28px] w-[28px]" connected={connected} />
+                    ) : (
+                      platform.icon
+                    )}
                   </div>
                 </div>
                 
