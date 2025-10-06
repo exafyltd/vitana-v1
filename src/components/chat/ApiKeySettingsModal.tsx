@@ -42,14 +42,28 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
         throw new Error("Not authenticated");
       }
 
+      // Encrypt the API key using the database function
+      const { data: encryptedKey, error: encryptError } = await supabase.rpc(
+        'encrypt_api_key',
+        { api_key_text: apiKey.trim() }
+      );
+
+      if (encryptError) {
+        // If encryption fails, it's likely the Vault key isn't set up
+        throw new Error(
+          "API key encryption not configured. Please contact support to set up secure key storage."
+        );
+      }
+
       const { error } = await supabase
         .from("user_api_keys")
-        .upsert({
+        .upsert([{
           user_id: user.id,
           service_name: "google_cloud",
-          api_key: apiKey.trim(),
+          api_key: "", // Deprecated - encrypted_key is now used
+          encrypted_key: encryptedKey as string,
           updated_at: new Date().toISOString(),
-        }, {
+        }], {
           onConflict: "user_id,service_name"
         });
 
@@ -57,7 +71,7 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
 
       toast({
         title: "Success",
-        description: "API key saved successfully",
+        description: "API key saved securely with encryption",
       });
       
       onOpenChange(false);

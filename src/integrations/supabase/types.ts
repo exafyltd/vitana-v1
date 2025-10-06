@@ -1723,6 +1723,7 @@ export type Database = {
         Row: {
           api_key: string
           created_at: string
+          encrypted_key: string | null
           id: string
           service_name: string
           updated_at: string
@@ -1731,6 +1732,7 @@ export type Database = {
         Insert: {
           api_key: string
           created_at?: string
+          encrypted_key?: string | null
           id?: string
           service_name: string
           updated_at?: string
@@ -1739,6 +1741,7 @@ export type Database = {
         Update: {
           api_key?: string
           created_at?: string
+          encrypted_key?: string | null
           id?: string
           service_name?: string
           updated_at?: string
@@ -2095,6 +2098,14 @@ export type Database = {
       }
       create_tenant_direct_thread: {
         Args: { p_recipient_id: string; p_tenant_id: string }
+        Returns: string
+      }
+      decrypt_api_key: {
+        Args: { encrypted_key_text: string }
+        Returns: string
+      }
+      encrypt_api_key: {
+        Args: { api_key_text: string }
         Returns: string
       }
       follow_user: {
