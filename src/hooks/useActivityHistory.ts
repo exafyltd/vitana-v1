@@ -281,8 +281,13 @@ function formatActivityContent(log: any): string {
     case 'health.supplement.delete':
       return `Removed supplement: ${activity_data.name}`;
     
+    case 'chat.message':
+      // Chat messages should come from ai_messages table, not activity log
+      return activity_data.content || activity_data.message || 'Chat message';
+    
     default:
-      return 'Activity recorded';
+      console.warn(`Unknown activity type: ${activity_type}`, activity_data);
+      return activity_data.content || activity_data.description || 'Activity recorded';
   }
 }
 
@@ -329,6 +334,9 @@ export function useActivityHistory(filterType?: string) {
         .range(pageParam * ITEMS_PER_PAGE, (pageParam + 1) * ITEMS_PER_PAGE - 1);
 
       // Apply filter if specified
+      // Exclude chat.message from logs since they're already in ai_messages
+      logQuery = logQuery.not('activity_type', 'like', 'chat.%');
+      
       if (filterType && filterType !== 'all' && filterType !== 'chat') {
         logQuery = logQuery.like("activity_type", `${filterType}.%`);
       }
@@ -347,7 +355,7 @@ export function useActivityHistory(filterType?: string) {
         activityType: 'conversation' as const,
         role: msg.role as 'user' | 'assistant',
         createdAt: msg.created_at,
-        metadata: msg.metadata,
+        metadata: { ...msg.metadata, label: ACTIVITY_TYPE_CONFIG['conversation'].label },
         conversationId: msg.conversation_id,
         icon: ACTIVITY_TYPE_CONFIG['conversation'].icon,
         tagColor: ACTIVITY_TYPE_CONFIG['conversation'].tagColor,
@@ -383,16 +391,25 @@ export function useActivityHistory(filterType?: string) {
       });
 
       // Transform user_activity_log
-      const logActivities: ActivityHistoryItem[] = (logsResult.data || []).map((log) => ({
-        id: log.id,
-        content: formatActivityContent(log),
-        activityType: log.activity_type,
-        createdAt: log.created_at,
-        activityData: log.activity_data,
-        contextData: log.context_data,
-        icon: ACTIVITY_TYPE_CONFIG[log.activity_type]?.icon || '📌',
-        tagColor: ACTIVITY_TYPE_CONFIG[log.activity_type]?.tagColor || 'bg-gray-100 dark:bg-gray-800',
-      }));
+      const logActivities: ActivityHistoryItem[] = (logsResult.data || []).map((log) => {
+        const config = ACTIVITY_TYPE_CONFIG[log.activity_type] || { 
+          icon: '📌', 
+          tagColor: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
+          label: 'Activity'
+        };
+        
+        return {
+          id: log.id,
+          content: formatActivityContent(log),
+          activityType: log.activity_type,
+          createdAt: log.created_at,
+          activityData: log.activity_data,
+          contextData: log.context_data,
+          icon: config.icon,
+          tagColor: config.tagColor,
+          metadata: { label: config.label },
+        };
+      });
 
       return {
         conversationExchanges,

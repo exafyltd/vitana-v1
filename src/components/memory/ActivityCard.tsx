@@ -25,7 +25,7 @@ export function ActivityCard({ activity, onPromote }: ActivityCardProps) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <Badge variant="outline" className={`text-xs ${activity.tagColor}`}>
-                {activity.icon} {activity.activityType === 'conversation' ? 'Conversation' : activity.tagColor?.split(' ').slice(-1)[0]}
+                {activity.icon} {activity.metadata?.label || 'Activity'}
               </Badge>
               <Badge variant="secondary" className="text-xs">
                 Read-only
