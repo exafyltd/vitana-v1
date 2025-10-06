@@ -24,11 +24,11 @@ interface PlatformConfig {
   name: string;
   platform: SocialPlatform;
   icon: React.ReactNode;
-  color: string;
+  hoverHalo: string;
   urlPattern: RegExp;
-  connectedBg: string;
-  connectedIcon: string;
-  connectedBorder: string;
+  brandColor: string;
+  brandTint: string;
+  brandBorder: string;
 }
 
 export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
@@ -52,67 +52,67 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     }
   };
   
-  // Define all available platforms
+  // Define all available platforms with subtle brand accents
   const allPlatforms: PlatformConfig[] = [
     { 
       name: 'LinkedIn', 
       platform: 'linkedin',
-      icon: <Linkedin className="h-5 w-5" />, 
-      color: 'hover:bg-blue-50 dark:hover:bg-blue-950',
+      icon: <Linkedin className="h-7 w-7" />, 
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(10,102,194,0.15)]',
       urlPattern: /linkedin\.com/i,
-      connectedBg: 'bg-[#0A66C2]',
-      connectedIcon: 'text-white',
-      connectedBorder: 'border-[#0A66C2]'
+      brandColor: '#0A66C2',
+      brandTint: 'bg-blue-50/50 dark:bg-blue-950/20',
+      brandBorder: 'border-t-[#0A66C2]'
     },
     { 
       name: 'Instagram', 
       platform: 'instagram',
-      icon: <Instagram className="h-5 w-5" />, 
-      color: 'hover:bg-pink-50 dark:hover:bg-pink-950',
+      icon: <Instagram className="h-7 w-7" />, 
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(228,64,95,0.15)]',
       urlPattern: /instagram\.com/i,
-      connectedBg: 'bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500',
-      connectedIcon: 'text-white',
-      connectedBorder: 'border-purple-600'
+      brandColor: '#E4405F',
+      brandTint: 'bg-pink-50/50 dark:bg-pink-950/20',
+      brandBorder: 'border-t-[#E4405F]'
     },
     { 
       name: 'X', 
       platform: 'x',
-      icon: <XIcon className="h-5 w-5" />, 
-      color: 'hover:bg-gray-50 dark:hover:bg-gray-900',
+      icon: <XIcon className="h-7 w-7" />, 
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(15,20,25,0.15)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]',
       urlPattern: /twitter\.com|x\.com/i,
-      connectedBg: 'bg-black',
-      connectedIcon: 'text-white',
-      connectedBorder: 'border-black'
+      brandColor: '#0F1419',
+      brandTint: 'bg-gray-50/50 dark:bg-gray-950/20',
+      brandBorder: 'border-t-[#0F1419] dark:border-t-white'
     },
     { 
       name: 'TikTok', 
       platform: 'tiktok',
-      icon: <TikTokIcon className="h-5 w-5" />, 
-      color: 'hover:bg-gray-50 dark:hover:bg-gray-900',
+      icon: <TikTokIcon className="h-7 w-7" />, 
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(0,242,234,0.15)]',
       urlPattern: /tiktok\.com/i,
-      connectedBg: 'bg-black',
-      connectedIcon: 'text-[#00f2ea]',
-      connectedBorder: 'border-[#00f2ea]'
+      brandColor: '#000000',
+      brandTint: 'bg-cyan-50/50 dark:bg-cyan-950/20',
+      brandBorder: 'border-t-[#00f2ea]'
     },
     { 
       name: 'YouTube', 
       platform: 'youtube',
-      icon: <Youtube className="h-5 w-5" />, 
-      color: 'hover:bg-red-50 dark:hover:bg-red-950',
+      icon: <Youtube className="h-7 w-7" />, 
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(255,0,0,0.15)]',
       urlPattern: /youtube\.com|youtu\.be/i,
-      connectedBg: 'bg-[#FF0000]',
-      connectedIcon: 'text-white',
-      connectedBorder: 'border-[#FF0000]'
+      brandColor: '#FF0000',
+      brandTint: 'bg-red-50/50 dark:bg-red-950/20',
+      brandBorder: 'border-t-[#FF0000]'
     },
     { 
       name: 'Facebook', 
       platform: 'facebook',
-      icon: <Facebook className="h-5 w-5" />, 
-      color: 'hover:bg-blue-50 dark:hover:bg-blue-950',
+      icon: <Facebook className="h-7 w-7" />, 
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(24,119,242,0.15)]',
       urlPattern: /facebook\.com/i,
-      connectedBg: 'bg-[#1877F2]',
-      connectedIcon: 'text-white',
-      connectedBorder: 'border-[#1877F2]'
+      brandColor: '#1877F2',
+      brandTint: 'bg-blue-50/50 dark:bg-blue-950/20',
+      brandBorder: 'border-t-[#1877F2]'
     }
   ];
 
@@ -159,28 +159,50 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
             return (
               <div
                 key={platform.name}
-                className={`group relative flex flex-col items-center justify-center gap-2 p-4 rounded-lg border transition-all ${
+                className={`group relative flex flex-col items-center justify-center gap-3 p-5 rounded-2xl border transition-all ${
                   connected 
-                    ? `${platform.connectedBg} ${platform.connectedBorder} cursor-pointer hover:shadow-lg hover:scale-105` 
-                    : `${platform.color} bg-card`
+                    ? `${platform.brandTint} ${platform.brandBorder} border-t-4 cursor-pointer hover:shadow-lg hover:-translate-y-0.5` 
+                    : `bg-card border-border ${platform.hoverHalo}`
                 }`}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
               >
-                <div className={connected ? platform.connectedIcon : 'text-muted-foreground'}>
+                <div 
+                  className={connected ? 'transition-transform group-hover:scale-110' : 'text-neutral-400 dark:text-neutral-600'}
+                  style={connected ? { color: platform.brandColor } : undefined}
+                >
                   {platform.icon}
                 </div>
-                <span className={`text-xs font-medium ${connected ? 'text-white' : 'text-foreground'}`}>{platform.name}</span>
+                <span className={`text-sm font-medium ${connected ? 'text-foreground' : 'text-foreground'}`}>
+                  {platform.name}
+                </span>
                 
                 {connected ? (
-                  <div className="flex items-center gap-1 text-xs text-white/90">
-                    <LinkIcon className="h-3 w-3" />
-                    <span>Connected</span>
+                  <div className="flex flex-col items-center gap-2 w-full">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/60 border text-xs">
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} style={{ color: platform.brandColor }}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-muted-foreground font-medium">Connected</span>
+                    </div>
+                    {isOwnProfile && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 text-xs px-3 w-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleConnect(platform);
+                        }}
+                      >
+                        Manage
+                      </Button>
+                    )}
                   </div>
                 ) : isOwnProfile ? (
                   <Button
                     size="sm"
-                    variant="outline"
-                    className="h-7 text-xs px-3"
+                    variant="default"
+                    className="h-8 text-xs px-4 w-full"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleConnect(platform);
