@@ -177,7 +177,6 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
               {editMode && onEdit && (
                 <Button 
                   variant="outline" 
-                  className="rounded-full bg-gradient-to-r from-background to-accent/5 hover:to-accent/10 border-accent/20"
                   onClick={onEdit}
                 >
                   <Edit3 className="h-4 w-4 mr-2" />
