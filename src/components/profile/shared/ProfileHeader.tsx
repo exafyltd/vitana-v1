@@ -15,7 +15,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
     <div className="relative pt-12 pb-6">
       <div className="container mx-auto px-6">
         {/* Two ID Cards Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {/* Front ID Card - Left */}
           <ProfileIdCardFront 
             profile={profile} 
@@ -24,15 +24,8 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
             onEdit={onEdit}
           />
           
-          {/* Back ID Card - Right with subtle backdrop */}
-          <div 
-            className="rounded-2xl p-0.5 transition-all duration-300"
-            style={{
-              background: 'linear-gradient(180deg, #FAFAFA 0%, #FDFDFD 100%)'
-            }}
-          >
-            <ProfileIdCardBack profile={profile} />
-          </div>
+          {/* Back ID Card - Right */}
+          <ProfileIdCardBack profile={profile} />
         </div>
       </div>
     </div>
