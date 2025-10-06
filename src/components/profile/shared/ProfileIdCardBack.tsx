@@ -52,66 +52,66 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     }
   };
   
-  // Define all available platforms with subtle brand accents
+  // Define all available platforms with precise brand styling
   const allPlatforms: PlatformConfig[] = [
     { 
       name: 'LinkedIn', 
       platform: 'linkedin',
-      icon: <Linkedin className="h-6 w-6" />, 
+      icon: <Linkedin className="h-[30px] w-[30px]" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(10,102,194,0.15)]',
       urlPattern: /linkedin\.com/i,
       brandColor: '#0A66C2',
-      brandTint: 'bg-blue-50/50 dark:bg-blue-950/20',
+      brandTint: 'bg-[#0A66C2]/[0.04] dark:bg-[#0A66C2]/[0.06]',
       brandBorder: 'border-t-[#0A66C2]'
     },
     { 
       name: 'Instagram', 
       platform: 'instagram',
-      icon: <Instagram className="h-6 w-6" />, 
+      icon: <Instagram className="h-[30px] w-[30px]" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(228,64,95,0.15)]',
       urlPattern: /instagram\.com/i,
       brandColor: '#E4405F',
-      brandTint: 'bg-pink-50/50 dark:bg-pink-950/20',
+      brandTint: 'bg-[#E4405F]/[0.04] dark:bg-[#E4405F]/[0.06]',
       brandBorder: 'border-t-[#E4405F]'
     },
     { 
       name: 'X', 
       platform: 'x',
-      icon: <XIcon className="h-6 w-6" />, 
+      icon: <XIcon className="h-[30px] w-[30px]" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(15,20,25,0.15)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]',
       urlPattern: /twitter\.com|x\.com/i,
       brandColor: '#0F1419',
-      brandTint: 'bg-gray-50/50 dark:bg-gray-950/20',
+      brandTint: 'bg-[#0F1419]/[0.04] dark:bg-white/[0.06]',
       brandBorder: 'border-t-[#0F1419] dark:border-t-white'
     },
     { 
       name: 'TikTok', 
       platform: 'tiktok',
-      icon: <TikTokIcon className="h-6 w-6" />, 
+      icon: <TikTokIcon className="h-[30px] w-[30px]" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(0,242,234,0.15)]',
       urlPattern: /tiktok\.com/i,
       brandColor: '#000000',
-      brandTint: 'bg-cyan-50/50 dark:bg-cyan-950/20',
+      brandTint: 'bg-[#00f2ea]/[0.04] dark:bg-[#00f2ea]/[0.06]',
       brandBorder: 'border-t-[#00f2ea]'
     },
     { 
       name: 'YouTube', 
       platform: 'youtube',
-      icon: <Youtube className="h-6 w-6" />, 
+      icon: <Youtube className="h-[30px] w-[30px]" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(255,0,0,0.15)]',
       urlPattern: /youtube\.com|youtu\.be/i,
       brandColor: '#FF0000',
-      brandTint: 'bg-red-50/50 dark:bg-red-950/20',
+      brandTint: 'bg-[#FF0000]/[0.04] dark:bg-[#FF0000]/[0.06]',
       brandBorder: 'border-t-[#FF0000]'
     },
     { 
       name: 'Facebook', 
       platform: 'facebook',
-      icon: <Facebook className="h-6 w-6" />, 
+      icon: <Facebook className="h-[30px] w-[30px]" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(24,119,242,0.15)]',
       urlPattern: /facebook\.com/i,
       brandColor: '#1877F2',
-      brandTint: 'bg-blue-50/50 dark:bg-blue-950/20',
+      brandTint: 'bg-[#1877F2]/[0.04] dark:bg-[#1877F2]/[0.06]',
       brandBorder: 'border-t-[#1877F2]'
     }
   ];
@@ -159,58 +159,77 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
             return (
               <div
                 key={platform.name}
-                className={`group relative flex flex-col items-center justify-center gap-2 p-3 rounded-2xl border transition-all ${
+                className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                   connected 
-                    ? `${platform.brandTint} ${platform.brandBorder} border-t-4 cursor-pointer hover:shadow-lg hover:-translate-y-0.5` 
+                    ? `${platform.brandTint} ${platform.brandBorder} border-t-4 border-border cursor-pointer hover:shadow-lg hover:-translate-y-0.5 ${platform.hoverHalo}` 
                     : `bg-card border-border ${platform.hoverHalo}`
                 }`}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
+                tabIndex={connected ? 0 : -1}
+                role={connected ? "link" : undefined}
+                aria-label={connected ? `Open ${platform.name} profile` : undefined}
               >
-                <div 
-                  className={connected ? 'transition-transform group-hover:scale-110' : 'text-neutral-400 dark:text-neutral-600'}
-                  style={connected ? { color: platform.brandColor } : undefined}
-                >
-                  {platform.icon}
+                {/* Icon - fixed size, centered */}
+                <div className="flex items-center justify-center h-[30px] mb-2">
+                  <div 
+                    className={`relative ${connected ? 'transition-transform group-hover:scale-110' : 'text-neutral-400 dark:text-neutral-600'} ${
+                      platform.platform === 'instagram' && connected 
+                        ? 'before:absolute before:inset-[-2px] before:rounded-full before:bg-gradient-to-br before:from-[#833AB4] before:via-[#FD1D1D] before:to-[#F77737] before:p-[2px] before:-z-10' 
+                        : ''
+                    } ${
+                      platform.platform === 'x' && connected 
+                        ? 'dark:text-white' 
+                        : ''
+                    }`}
+                    style={connected && platform.platform !== 'instagram' ? { color: platform.brandColor } : connected && platform.platform === 'instagram' ? { color: '#000000' } : undefined}
+                  >
+                    {platform.icon}
+                  </div>
                 </div>
-                <span className={`text-sm font-medium ${connected ? 'text-foreground' : 'text-foreground'}`}>
+                
+                {/* Platform name */}
+                <span className="text-sm font-medium text-foreground mb-2">
                   {platform.name}
                 </span>
                 
-                {connected ? (
-                  <div className="flex flex-col items-center gap-2 w-full">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/60 border text-xs">
-                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} style={{ color: platform.brandColor }}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-muted-foreground font-medium">Connected</span>
-                    </div>
-                    {isOwnProfile && (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="h-7 text-xs px-3 w-full"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleConnect(platform);
-                        }}
-                      >
-                        Manage
-                      </Button>
-                    )}
-                  </div>
-                ) : isOwnProfile ? (
-                  <Button
-                    size="sm"
-                    variant="default"
-                    className="h-8 text-xs px-4 w-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleConnect(platform);
-                    }}
-                  >
-                    Connect
-                  </Button>
-                ) : null}
+                {/* Connected pill and actions - baseline aligned */}
+                <div className="flex flex-col items-center gap-1.5 w-full min-h-[28px]">
+                  {connected ? (
+                    <>
+                      <div className="inline-flex items-center gap-1.5 px-3 h-7 rounded-full bg-background/60 border text-xs">
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} style={{ color: platform.brandColor }}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-muted-foreground font-medium">Connected</span>
+                      </div>
+                      {isOwnProfile && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-7 text-xs px-3 w-full"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleConnect(platform);
+                          }}
+                        >
+                          Manage
+                        </Button>
+                      )}
+                    </>
+                  ) : isOwnProfile ? (
+                    <Button
+                      size="sm"
+                      variant="default"
+                      className="h-8 text-xs px-4 w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleConnect(platform);
+                      }}
+                    >
+                      Connect
+                    </Button>
+                  ) : null}
+                </div>
               </div>
             );
           })}
