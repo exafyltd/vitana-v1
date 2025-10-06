@@ -649,10 +649,10 @@ serve(async (req) => {
         has_audio: !!audio,
         timestamp: new Date().toISOString()
       }
-    }).then((result) => {
+    }).then(async (result) => {
       console.log('User message stored');
-      // Log activity
-      supabaseClient.from('user_activity_log').insert({
+      // Log activity with proper error handling
+      const { error: logError } = await supabaseClient.from('user_activity_log').insert({
         user_id: user.id,
         activity_type: 'chat.message',
         activity_data: {
@@ -670,7 +670,11 @@ serve(async (req) => {
           language: detectedLanguage
         },
         dedupe_key: result.data?.[0]?.id ? `chat-user-${result.data[0].id}` : undefined
-      }).catch(err => console.error('[activity] Failed to log user message:', err));
+      });
+      
+      if (logError) {
+        console.error('[activity] Failed to log user message:', logError);
+      }
     }).catch((err) => console.error('Error storing user message:', err));
 
     console.log('Getting AI response from Lovable AI...');
@@ -1097,10 +1101,10 @@ serve(async (req) => {
                 context_used: !!userContext,
                 timestamp: new Date().toISOString()
               }
-            }).then((result) => {
+            }).then(async (result) => {
               console.info('[stream] ✓ AI message stored');
-              // Log activity
-              supabaseClient.from('user_activity_log').insert({
+              // Log activity with proper error handling
+              const { error: logError } = await supabaseClient.from('user_activity_log').insert({
                 user_id: user.id,
                 activity_type: 'chat.message',
                 activity_data: {
@@ -1116,7 +1120,11 @@ serve(async (req) => {
                   agent_type: agentType
                 },
                 dedupe_key: result.data?.[0]?.id ? `chat-ai-${result.data[0].id}` : undefined
-              }).catch(err => console.error('[activity] Failed to log AI message:', err));
+              });
+              
+              if (logError) {
+                console.error('[activity] Failed to log AI message:', logError);
+              }
             }).catch((err) => console.error('[stream] Error storing AI message:', err));
             
             // Wait for any pending TTS tasks to flush audio events before closing the stream
@@ -1196,10 +1204,10 @@ serve(async (req) => {
         context_used: !!userContext,
         timestamp: new Date().toISOString()
       }
-    }).then((result) => {
+    }).then(async (result) => {
       console.log('AI message stored');
-      // Log activity
-      supabaseClient.from('user_activity_log').insert({
+      // Log activity with proper error handling
+      const { error: logError } = await supabaseClient.from('user_activity_log').insert({
         user_id: user.id,
         activity_type: 'chat.message',
         activity_data: {
@@ -1215,7 +1223,11 @@ serve(async (req) => {
           agent_type: agentType
         },
         dedupe_key: result.data?.[0]?.id ? `chat-ai-${result.data[0].id}` : undefined
-      }).catch(err => console.error('[activity] Failed to log AI message:', err));
+      });
+      
+      if (logError) {
+        console.error('[activity] Failed to log AI message:', logError);
+      }
     }).catch((err) => console.error('Error storing AI message:', err));
 
     extractAndStoreInsights(supabaseClient, user.id, conversationId, userMessage, aiText)

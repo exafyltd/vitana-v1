@@ -269,6 +269,13 @@ function Timeline() {
               >
                 📅 Calendar
               </Button>
+              <Button 
+                variant={activityFilter === "autopilot" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("autopilot")}
+              >
+                🤖 Autopilot
+              </Button>
             </div>
 
             <div className="max-w-7xl mx-auto">

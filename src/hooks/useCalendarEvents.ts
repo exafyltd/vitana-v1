@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useRealtimeConnection } from './useRealtimeConnection';
 import { measurePerformance } from '@/utils/performanceLogger';
+import { useActivityLogger } from '@/hooks/useActivityLogger';
 import { z } from 'zod';
 
 // Global event bus constant
@@ -70,6 +71,7 @@ export function useCalendarEvents() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const { logActivity } = useActivityLogger();
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
 
   // Debounced refresh event dispatcher
@@ -193,6 +195,21 @@ export function useCalendarEvents() {
         });
       }
 
+      // Log activity
+      await logActivity({
+        activityType: 'calendar.create',
+        activityData: {
+          title: eventData.title,
+          date: eventData.start_time,
+          event_type: eventData.event_type,
+          has_location: !!eventData.location
+        },
+        contextData: {
+          event_id: data.id,
+          source_type: eventData.source_type
+        }
+      });
+
       // Debounced global refresh to avoid spam
       debouncedRefreshDispatch();
 
@@ -224,6 +241,19 @@ export function useCalendarEvents() {
         event.id === eventId ? { ...event, ...data } as CalendarEvent : event
       ));
 
+      // Log activity
+      await logActivity({
+        activityType: 'calendar.update',
+        activityData: {
+          title: (data as CalendarEvent).title,
+          updated_fields: Object.keys(updates),
+          event_type: (data as CalendarEvent).event_type
+        },
+        contextData: {
+          event_id: eventId
+        }
+      });
+
       // Dispatch global refresh event
       window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
 
@@ -249,12 +279,27 @@ export function useCalendarEvents() {
 
       if (error) throw error;
 
+      const deletedEvent = events.find(e => e.id === eventId);
       setEvents(prev => prev.filter(event => event.id !== eventId));
       
       toast({
         title: 'Event Removed',
         description: 'Event has been removed from your calendar',
       });
+
+      // Log activity
+      if (deletedEvent) {
+        await logActivity({
+          activityType: 'calendar.delete',
+          activityData: {
+            title: deletedEvent.title,
+            event_type: deletedEvent.event_type
+          },
+          contextData: {
+            event_id: eventId
+          }
+        });
+      }
 
       // Dispatch global refresh event
       window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
@@ -337,6 +382,18 @@ export function useCalendarEvents() {
 
       if (responseRecorded) {
         console.log('✅ Invite response recorded successfully');
+        
+        // Log response activity
+        await logActivity({
+          activityType: 'calendar.respond',
+          activityData: {
+            response: normalized,
+            has_event_data: !!eventData
+          },
+          contextData: {
+            message_id: validMessageId
+          }
+        });
       }
 
       let eventId: string | undefined;

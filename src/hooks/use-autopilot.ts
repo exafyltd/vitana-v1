@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { AutopilotAction, AutopilotState, AutopilotPriority, ExecutionResult, AutopilotActionStatus } from "@/types/autopilot";
+import { useActivityLogger } from "@/hooks/useActivityLogger";
 
 // Mock data generator with enhanced motivational actions
 const generateMockActions = (): AutopilotAction[] => [
@@ -84,6 +85,7 @@ const generateMockActions = (): AutopilotAction[] => [
 ];
 
 export function useAutopilot() {
+  const { logActivity } = useActivityLogger();
   const [state, setState] = useState<AutopilotState>({
     actions: generateMockActions(),
     isExecuting: false,
@@ -150,12 +152,34 @@ export function useAutopilot() {
           lastUpdate: new Date()
         }));
 
+        // Log execution activity for each action
+        results.forEach((result) => {
+          const action = state.actions.find(a => a.id === result.actionId);
+          if (action) {
+            logActivity({
+              activityType: 'autopilot.action.execute',
+              activityData: {
+                title: action.title,
+                category: action.category,
+                success: result.success,
+                priority: action.priority
+              },
+              contextData: {
+                action_id: action.id
+              }
+            });
+          }
+        });
+
         resolve(results);
       }, 2000); // 2 second execution time
     });
   };
 
   const toggleActionSelection = (actionId: string) => {
+    const action = state.actions.find(a => a.id === actionId);
+    const willBeSelected = action ? !action.selected : false;
+    
     setState(prev => ({
       ...prev,
       actions: prev.actions.map(action =>
@@ -164,9 +188,42 @@ export function useAutopilot() {
           : action
       )
     }));
+
+    // Log selection activity
+    if (action && willBeSelected) {
+      logActivity({
+        activityType: 'autopilot.action.select',
+        activityData: {
+          title: action.title,
+          category: action.category,
+          priority: action.priority
+        },
+        contextData: {
+          action_id: actionId
+        }
+      });
+    }
   };
 
   const dismissActions = (actionIds: string[]) => {
+    // Log dismiss activity for each action
+    actionIds.forEach(actionId => {
+      const action = state.actions.find(a => a.id === actionId);
+      if (action) {
+        logActivity({
+          activityType: 'autopilot.action.dismiss',
+          activityData: {
+            title: action.title,
+            category: action.category,
+            priority: action.priority
+          },
+          contextData: {
+            action_id: actionId
+          }
+        });
+      }
+    });
+
     setState(prev => ({
       ...prev,
       actions: prev.actions.map(action =>

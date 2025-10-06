@@ -45,7 +45,11 @@ export const ACTIVITY_TYPE_CONFIG: Record<string, { icon: string; tagColor: stri
   'discover.match': { icon: '❤️', tagColor: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-700', label: 'New Match' },
   'calendar.create': { icon: '📅', tagColor: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-700', label: 'Event Created' },
   'calendar.update': { icon: '📅', tagColor: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-700', label: 'Event Updated' },
+  'calendar.delete': { icon: '📅', tagColor: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-700', label: 'Event Deleted' },
   'calendar.respond': { icon: '📅', tagColor: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-700', label: 'Event Response' },
+  'autopilot.action.select': { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Action Selected' },
+  'autopilot.action.execute': { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Action Executed' },
+  'autopilot.action.dismiss': { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Action Dismissed' },
 };
 
 function formatActivityContent(log: any): string {
@@ -74,8 +78,16 @@ function formatActivityContent(log: any): string {
       return `Created event: ${activity_data.title}`;
     case 'calendar.update':
       return `Updated event: ${activity_data.title}`;
+    case 'calendar.delete':
+      return `Deleted event: ${activity_data.title}`;
     case 'calendar.respond':
       return `Responded to event: ${activity_data.response}`;
+    case 'autopilot.action.select':
+      return `Selected autopilot action: ${activity_data.title}`;
+    case 'autopilot.action.execute':
+      return `Executed: ${activity_data.title}`;
+    case 'autopilot.action.dismiss':
+      return `Dismissed autopilot suggestion`;
     default:
       return 'Activity recorded';
   }
