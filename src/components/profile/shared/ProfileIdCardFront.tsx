@@ -75,13 +75,22 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   return (
     <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
       {/* Avatar */}
-      <div className="relative mb-4">
-        <Avatar className="h-40 w-40 border-4 border-background shadow-xl drop-shadow-2xl"
+      <div className="relative mb-5">
+        {/* Ambient glow behind avatar */}
+        <div 
+          className="absolute inset-0 rounded-full blur-3xl"
+          style={{
+            backgroundColor: 'hsl(var(--accent))',
+            opacity: 0.07,
+            transform: 'scale(1.15)'
+          }}
+        />
+        <Avatar className="relative h-50 w-50 border-4 border-background shadow-xl drop-shadow-2xl"
                 style={{
                   filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
                 }}>
           <AvatarImage src={profile.avatarUrl} alt={profile.name} />
-          <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+          <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
             {profile.name.split(' ').map(n => n[0]).join('')}
           </AvatarFallback>
         </Avatar>
@@ -98,9 +107,9 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
       </div>
 
       {/* Name, Handle, VITANA Index */}
-      <div className="text-center mb-4 w-full">
+      <div className="text-center mb-5 w-full">
         <div className="flex items-center justify-center gap-3 mb-2">
-          <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
+          <h1 className="text-3xl font-bold text-foreground">{profile.name}</h1>
           {profile.roles.includes('professional') && (
             <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
           )}
@@ -133,8 +142,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
           )}
         </div>
         
-        <div className="flex items-center justify-center gap-2 mb-3">
-          <p className="text-base text-muted-foreground">@{profile.handle}</p>
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <p className="text-lg text-muted-foreground">@{profile.handle}</p>
           {profile.longevityArchetype && (
             <>
               <span className="text-muted-foreground">•</span>
@@ -165,8 +174,15 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                 <ExternalLink className="h-4 w-4" />
               </Button>
               {editMode && onEdit && (
-                <Button variant="outline" onClick={onEdit}>
-                  <Edit3 className="h-4 w-4 mr-2" />
+                <Button 
+                  onClick={onEdit}
+                  className="inline-flex items-center gap-1.5 px-4 h-9 rounded-full text-sm font-medium border-0 transition-all duration-200 hover:shadow-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.85) 100%)',
+                    color: 'hsl(var(--primary-foreground))'
+                  }}
+                >
+                  <Edit3 className="h-4 w-4" />
                   Edit Identity
                 </Button>
               )}
