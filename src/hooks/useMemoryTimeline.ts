@@ -142,6 +142,98 @@ export function useMemoryTimeline(filter: "all" | "insights" | "conversations" =
     }
   });
 
+  // Update mutation
+  const updateMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const { id, content, memoryType, confidenceScore, tags, source } = data;
+
+      if (source === "ai") {
+        const { error } = await supabase
+          .from("ai_memory")
+          .update({
+            content,
+            memory_type: memoryType,
+            confidence_score: confidenceScore / 100,
+            metadata: { tags },
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id);
+        if (error) throw error;
+      } else if (source === "diary") {
+        const { error } = await supabase
+          .from("diary_entries")
+          .update({
+            text: content,
+            tags,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["memory-timeline"] });
+      toast({
+        title: "Memory Updated",
+        description: "Your changes have been saved."
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Update Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  });
+
+  // Create mutation
+  const createMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const { content, memoryType, confidenceScore, tags, source } = data;
+
+      if (source === "ai") {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("User not authenticated");
+        
+        const { error } = await supabase.from("ai_memory").insert({
+          user_id: user.id,
+          content: content,
+          memory_type: memoryType,
+          confidence_score: confidenceScore / 100,
+          is_active: true,
+          metadata: { tags },
+        });
+        if (error) throw error;
+      } else if (source === "diary") {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("User not authenticated");
+        
+        const { error } = await supabase.from("diary_entries").insert({
+          user_id: user.id,
+          text: content,
+          tags,
+          source: "manual",
+        });
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["memory-timeline"] });
+      toast({
+        title: "Memory Created",
+        description: "Your new memory has been added."
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Create Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  });
+
   const allMemories = data?.pages.flatMap(page => page.memories) || [];
 
   return {
@@ -152,6 +244,10 @@ export function useMemoryTimeline(filter: "all" | "insights" | "conversations" =
     isLoading,
     error,
     deleteMemory: deleteMutation.mutate,
-    isDeleting: deleteMutation.isPending
+    isDeleting: deleteMutation.isPending,
+    updateMemory: updateMutation.mutate,
+    isUpdating: updateMutation.isPending,
+    createMemory: createMutation.mutate,
+    isCreating: createMutation.isPending,
   };
 }

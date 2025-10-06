@@ -14,10 +14,12 @@ import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useMemoryTimeline } from "@/hooks/useMemoryTimeline";
 import { Card, CardContent } from "@/components/ui/card";
+import { MemoryEditDialog } from "@/components/memory/MemoryEditDialog";
 
 function Timeline() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingMemory, setEditingMemory] = useState<any>(null);
   const [filter, setFilter] = useState<"all" | "insights" | "conversations">("all");
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +29,11 @@ function Timeline() {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    deleteMemory
+    deleteMemory,
+    updateMemory,
+    isUpdating,
+    createMemory,
+    isCreating,
   } = useMemoryTimeline(filter);
 
   // Infinite scroll observer
@@ -49,15 +55,32 @@ function Timeline() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleEdit = (id: string) => {
-    setEditingId(id);
-    // TODO: Open edit dialog
-    console.log("Edit memory:", id);
+    const memory = memories.find((m) => m.id === id);
+    if (memory) {
+      setEditingMemory(memory);
+      setEditDialogOpen(true);
+    }
   };
 
   const handleDelete = (id: string, source: "ai" | "diary" | "conversation") => {
     if (confirm("Are you sure you want to delete this memory? This action cannot be undone.")) {
       deleteMemory({ id, source });
     }
+  };
+
+  const handleSaveMemory = (data: any) => {
+    if (data.isNew) {
+      createMemory(data);
+    } else {
+      updateMemory(data);
+    }
+    setEditDialogOpen(false);
+    setEditingMemory(null);
+  };
+
+  const handleCreateNew = () => {
+    setEditingMemory(null);
+    setEditDialogOpen(true);
   };
 
   return (
@@ -78,9 +101,9 @@ function Timeline() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search timeline..." />
           <UniversalCalendarButton />
-          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+          <Button size="sm" onClick={handleCreateNew}>
             <Plus className="w-4 h-4 mr-2" />
-            Record Moment
+            New Memory
           </Button>
         </UtilityActionButton>
 
@@ -168,6 +191,14 @@ function Timeline() {
         <TimelineMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
+        />
+
+        <MemoryEditDialog
+          open={editDialogOpen}
+          onOpenChange={setEditDialogOpen}
+          memory={editingMemory}
+          onSave={handleSaveMemory}
+          isSaving={isUpdating || isCreating}
         />
       </div>
     </AppLayout>
