@@ -178,6 +178,13 @@ function Timeline() {
     return groups;
   };
 
+  // Hide deletion log entries from the activity view
+  const activityItems = allItems.filter((i: any) => {
+    if (i.itemType === 'activity') {
+      return i.activityType !== 'memory.delete';
+    }
+    return true;
+  });
   return (
     <AppLayout>
       <SEO 
@@ -297,7 +304,7 @@ function Timeline() {
                 <div className="flex items-center justify-center py-12">
                   <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
                 </div>
-              ) : allItems.length === 0 ? (
+              ) : activityItems.length === 0 ? (
                 <Card>
                   <CardContent className="p-12 text-center">
                     <p className="text-muted-foreground">
@@ -307,7 +314,7 @@ function Timeline() {
                 </Card>
               ) : (
                 <div className="space-y-6">
-                  {Object.entries(groupItemsByDate(allItems)).map(([dateGroup, items]) => (
+                  {Object.entries(groupItemsByDate(activityItems)).map(([dateGroup, items]) => (
                     <div key={dateGroup} className="space-y-3">
                       <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
                         {dateGroup}
@@ -338,7 +345,7 @@ function Timeline() {
                     </div>
                   )}
 
-                  {!hasNextActivity && allItems.length > 0 && (
+                  {!hasNextActivity && activityItems.length > 0 && (
                     <p className="text-center text-sm text-muted-foreground py-8">
                       You've reached the beginning of your activity history 📜
                     </p>
