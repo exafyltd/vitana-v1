@@ -552,44 +552,58 @@ serve(async (req) => {
     console.log(`[language] Received language parameter: ${language}, using: ${detectedLanguage}`);
     
     let userMessage = text;
+    const { isVoiceInput } = body;
+    let inputMethod: 'voice' | 'text' = isVoiceInput ? 'voice' : 'text';
 
-    if (audio) {
+    // Only transcribe audio if provided AND no text is available (server-side STT)
+    if (audio && !text) {
       console.log('[audio] Transcribing audio with server-side STT...');
-      const sttResponse = await fetch(
-        `https://speech.googleapis.com/v1/speech:recognize?key=${googleApiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            config: {
-              encoding: 'WEBM_OPUS',
-              languageCode: normalizeLanguage(language || detectedLanguage || 'en-US'),
-              alternativeLanguageCodes: ['ar-XA', 'de-DE', 'en-US', 'es-ES', 'ru-RU', 'zh-CN', 'sr-RS'],
-              model: 'latest_short',
-              enableAutomaticPunctuation: true,
-            },
-            audio: { content: audio },
-          }),
+      inputMethod = 'voice';
+      
+      try {
+        const sttResponse = await fetch(
+          `https://speech.googleapis.com/v1/speech:recognize?key=${googleApiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              config: {
+                encoding: 'WEBM_OPUS',
+                languageCode: normalizeLanguage(language || detectedLanguage || 'en-US'),
+                alternativeLanguageCodes: ['ar-XA', 'de-DE', 'en-US', 'es-ES', 'ru-RU', 'zh-CN', 'sr-RS'],
+                model: 'latest_short',
+                enableAutomaticPunctuation: true,
+              },
+              audio: { content: audio },
+            }),
+          }
+        );
+
+        if (!sttResponse.ok) {
+          const errorText = await sttResponse.text();
+          console.error('[audio] Google STT API error:', sttResponse.status, errorText);
+          throw new Error(`Speech recognition failed: ${sttResponse.status}`);
         }
-      );
 
-      if (!sttResponse.ok) {
-        throw new Error('Speech recognition failed');
-      }
+        const sttData = await sttResponse.json();
+        if (!sttData.results || sttData.results.length === 0) {
+          throw new Error('No speech detected');
+        }
 
-      const sttData = await sttResponse.json();
-      if (!sttData.results || sttData.results.length === 0) {
-        throw new Error('No speech detected');
+        userMessage = sttData.results[0].alternatives[0].transcript;
+        // Only override language if STT detected a different one
+        const sttLanguage = sttData.results[0].languageCode;
+        if (sttLanguage) {
+          console.log(`[language] STT detected language: ${sttLanguage}, overriding: ${detectedLanguage}`);
+          detectedLanguage = sttLanguage;
+        }
+        console.log('[audio] Transcribed:', userMessage, 'Language:', detectedLanguage);
+      } catch (error) {
+        console.error('[audio] Server-side STT error:', error);
+        throw new Error(`Speech recognition failed: ${error.message}`);
       }
-
-      userMessage = sttData.results[0].alternatives[0].transcript;
-      // Only override language if STT detected a different one
-      const sttLanguage = sttData.results[0].languageCode;
-      if (sttLanguage) {
-        console.log(`[language] STT detected language: ${sttLanguage}, overriding: ${detectedLanguage}`);
-        detectedLanguage = sttLanguage;
-      }
-      console.log('[audio] Transcribed:', userMessage, 'Language:', detectedLanguage);
+    } else if (audio && text) {
+      console.log('[audio] Text already provided (client-side STT), skipping server-side transcription');
     } else {
       console.log('[language] No audio transcription, using selected language for TTS:', detectedLanguage);
     }
@@ -643,7 +657,7 @@ serve(async (req) => {
       conversation_id: conversationId,
       role: 'user',
       content: userMessage,
-      input_method: audio ? 'voice' : 'text',
+      input_method: inputMethod,
       context_used: userContext,
       metadata: {
         language: detectedLanguage,

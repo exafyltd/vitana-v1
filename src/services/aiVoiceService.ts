@@ -232,24 +232,15 @@ export class AIVoiceService {
       throw new Error('Not authenticated');
     }
 
-    // If this is voice input, send a tiny silent audio blob to mark it as voice
+    // If this is voice input, send explicit flag
     const requestBody: any = {
       text,
       language,
       agentType: 'health',
       conversationId,
-      stream: true
+      stream: true,
+      isVoiceInput: isVoiceInput || false
     };
-
-    if (isVoiceInput) {
-      // Create minimal silent audio to indicate voice input
-      const silentBlob = new Blob([new Uint8Array(100)], { type: 'audio/webm' });
-      const arrayBuffer = await silentBlob.arrayBuffer();
-      const base64Audio = btoa(
-        new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
-      );
-      requestBody.audio = base64Audio;
-    }
 
     const response = await fetch(`${supabaseUrl}/functions/v1/ai-chat`, {
       method: 'POST',
