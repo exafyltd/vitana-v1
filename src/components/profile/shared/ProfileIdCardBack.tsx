@@ -159,24 +159,26 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
             return (
               <div
                 key={platform.name}
-                className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all duration-200 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
+                className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-2xl border transition-all duration-300 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                   connected 
-                    ? `bg-card border-border cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.08)]` 
-                    : `bg-card border-border`
+                    ? `bg-card border-border cursor-pointer hover:-translate-y-1 shadow-inner` 
+                    : `bg-card border-border shadow-inner`
                 }`}
                 style={connected ? {
-                  '--hover-border-color': platform.brandColor,
-                } as React.CSSProperties : undefined}
+                  boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}15`,
+                } as React.CSSProperties : {
+                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)',
+                } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   if (connected) {
                     e.currentTarget.style.borderColor = platform.brandColor;
-                    e.currentTarget.style.boxShadow = `0 0 20px ${platform.brandColor}15`;
+                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 24px ${platform.brandColor}30, 0 0 0 1px ${platform.brandColor}20`;
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (connected) {
                     e.currentTarget.style.borderColor = '';
-                    e.currentTarget.style.boxShadow = '';
+                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 0 20px ${platform.brandColor}15`;
                   }
                 }}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
@@ -187,7 +189,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 {/* Icon - fixed size, centered */}
                 <div className="flex items-center justify-center h-[30px] mb-2">
                   <div 
-                    className={`relative ${connected ? 'transition-transform duration-200 ease-out group-hover:scale-105' : 'text-neutral-400 dark:text-neutral-600'} ${
+                    className={`relative ${connected ? 'transition-all duration-300 ease-out group-hover:scale-110 group-hover:animate-bounce' : 'text-neutral-400 dark:text-neutral-600'} ${
                       platform.platform === 'instagram' && connected 
                         ? 'before:absolute before:inset-[-2px] before:rounded-full before:bg-gradient-to-br before:from-[#833AB4] before:via-[#FD1D1D] before:to-[#F77737] before:p-[2px] before:-z-10' 
                         : ''
@@ -196,7 +198,13 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                         ? 'dark:text-white' 
                         : ''
                     }`}
-                    style={connected && platform.platform !== 'instagram' ? { color: platform.brandColor } : connected && platform.platform === 'instagram' ? { color: '#000000' } : undefined}
+                    style={connected && platform.platform !== 'instagram' ? { 
+                      color: platform.brandColor,
+                      filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.1))'
+                    } : connected && platform.platform === 'instagram' ? { 
+                      color: '#000000',
+                      filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.1))'
+                    } : undefined}
                   >
                     {platform.icon}
                   </div>
@@ -211,11 +219,17 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 <div className="flex flex-col items-center gap-2.5 w-full min-h-[28px]">
                   {connected ? (
                     <>
-                      <div className="inline-flex items-center gap-1.5 px-3 h-7 rounded-full bg-background/60 border text-xs">
-                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} style={{ color: platform.brandColor }}>
+                      <div 
+                        className="inline-flex items-center gap-1.5 px-3 h-7 rounded-full text-xs font-medium border-0"
+                        style={{
+                          backgroundColor: `${platform.brandColor}18`,
+                          color: platform.brandColor
+                        }}
+                      >
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="text-muted-foreground font-medium">Connected</span>
+                        <span>Connected</span>
                       </div>
                       {isOwnProfile && (
                         <Button
@@ -243,8 +257,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                   ) : isOwnProfile ? (
                     <Button
                       size="sm"
-                      variant="default"
-                      className="h-8 text-xs px-4 w-full"
+                      variant="outline"
+                      className="h-8 text-xs px-4 w-full border-2 font-semibold hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleConnect(platform);
