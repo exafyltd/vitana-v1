@@ -13,6 +13,7 @@ import { BlastCenter } from "@/components/sharing/BlastCenter";
 import { GrowthKPIs } from "@/components/sharing/GrowthKPIs";
 import { AutopilotNudge } from "@/components/sharing/AutopilotNudge";
 import { NextScheduledPosts } from "@/components/sharing/NextScheduledPosts";
+import { ChannelConnector } from "@/components/sharing/ChannelConnector";
 
 export default withScreenId(function Sharing() {
   return (
@@ -57,6 +58,7 @@ export default withScreenId(function Sharing() {
 
             {/* Right: Growth Dashboard (40%) */}
             <div className="lg:col-span-2 space-y-6">
+              <ChannelConnector />
               <GrowthKPIs />
               <NextScheduledPosts />
             </div>
