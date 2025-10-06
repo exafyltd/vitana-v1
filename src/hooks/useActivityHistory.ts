@@ -50,6 +50,30 @@ export const ACTIVITY_TYPE_CONFIG: Record<string, { icon: string; tagColor: stri
   'autopilot.action.select': { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Action Selected' },
   'autopilot.action.execute': { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Action Executed' },
   'autopilot.action.dismiss': { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Action Dismissed' },
+  
+  // Health - Biomarkers
+  'health.biomarker.view': { icon: '🩺', tagColor: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700', label: 'Biomarker Viewed' },
+  'health.biomarker.upload_pdf': { icon: '📄', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Lab PDF Uploaded' },
+  'health.biomarker.upload_manual': { icon: '✍️', tagColor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700', label: 'Manual Entry' },
+  'health.biomarker.upload_device': { icon: '⌚', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Device Connected' },
+  'health.biomarker.connect_device': { icon: '⌚', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Device Connected' },
+  'health.biomarker.download': { icon: '⬇️', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Report Downloaded' },
+  'health.biomarker.share': { icon: '🔗', tagColor: 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 border-pink-300 dark:border-pink-700', label: 'Shared with Doctor' },
+  'health.biomarker.order_test': { icon: '🧪', tagColor: 'bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border-teal-300 dark:border-teal-700', label: 'Test Ordered' },
+  
+  // Health - Lab Reports
+  'health.lab_report.upload': { icon: '📤', tagColor: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700', label: 'Lab Report Uploaded' },
+  'health.lab_report.export': { icon: '📥', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Lab Report Exported' },
+  
+  // Health - Omics
+  'health.omics.upload': { icon: '🧬', tagColor: 'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 border-violet-300 dark:border-violet-700', label: 'Omics Data Uploaded' },
+  'health.omics.connect_api': { icon: '🔌', tagColor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700', label: 'Omics API Connected' },
+  'health.omics.view': { icon: '👁️', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Omics Data Viewed' },
+  
+  // Health - Supplements
+  'health.supplement.add': { icon: '💊', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Supplement Added' },
+  'health.supplement.update': { icon: '💊', tagColor: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700', label: 'Supplement Updated' },
+  'health.supplement.delete': { icon: '💊', tagColor: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700', label: 'Supplement Removed' },
 };
 
 function formatActivityContent(log: any): string {
@@ -88,6 +112,39 @@ function formatActivityContent(log: any): string {
       return `Executed: ${activity_data.title}`;
     case 'autopilot.action.dismiss':
       return `Dismissed autopilot suggestion`;
+    
+    // Health activities
+    case 'health.biomarker.view':
+      return `Viewed biomarkers: ${activity_data.testName}`;
+    case 'health.biomarker.upload_pdf':
+    case 'health.biomarker.upload_manual':
+    case 'health.biomarker.upload_device':
+      return `Uploaded lab data: ${activity_data.testName}`;
+    case 'health.biomarker.connect_device':
+      return `Connected device: ${activity_data.deviceType}`;
+    case 'health.biomarker.download':
+      return `Downloaded report: ${activity_data.testName}`;
+    case 'health.biomarker.share':
+      return `Shared ${activity_data.testName} with ${activity_data.recipient}`;
+    case 'health.biomarker.order_test':
+      return `Ordered test: ${activity_data.testName}`;
+    case 'health.lab_report.upload':
+      return 'Uploaded lab report';
+    case 'health.lab_report.export':
+      return 'Exported lab report';
+    case 'health.omics.upload':
+      return `Uploaded ${activity_data.type} data from ${activity_data.provider}`;
+    case 'health.omics.connect_api':
+      return `Connected ${activity_data.provider} API`;
+    case 'health.omics.view':
+      return `Viewed ${activity_data.type}: ${activity_data.name}`;
+    case 'health.supplement.add':
+      return `Added supplement: ${activity_data.name} (${activity_data.category})`;
+    case 'health.supplement.update':
+      return `Updated supplement: ${activity_data.name}`;
+    case 'health.supplement.delete':
+      return `Removed supplement: ${activity_data.name}`;
+    
     default:
       return 'Activity recorded';
   }

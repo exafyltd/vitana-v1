@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { FlaskConical, Upload, Download } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { RewardDot } from "@/components/ui/reward-dot";
+import { useHealthLogger } from "@/hooks/useHealthLogger";
 
 export function LabWalletCard() {
+  const { logLabReportUpload, logLabReportExport } = useHealthLogger();
+
   return (
     <Card className="relative">
       <RewardDot points={20} description="Upload lab results for rewards" />
@@ -39,11 +42,19 @@ export function LabWalletCard() {
         </div>
         
         <div className="flex gap-2">
-          <Button size="sm" className="flex-1 bg-cyan-500 hover:bg-cyan-600">
+          <Button 
+            size="sm" 
+            className="flex-1 bg-cyan-500 hover:bg-cyan-600"
+            onClick={logLabReportUpload}
+          >
             <Upload className="h-4 w-4 mr-1" />
             Upload
           </Button>
-          <Button size="sm" variant="outline">
+          <Button 
+            size="sm" 
+            variant="outline"
+            onClick={logLabReportExport}
+          >
             <Download className="h-4 w-4 mr-1" />
             Export
           </Button>

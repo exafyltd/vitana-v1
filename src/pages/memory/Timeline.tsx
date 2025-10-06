@@ -276,6 +276,13 @@ function Timeline() {
               >
                 🤖 Autopilot
               </Button>
+              <Button 
+                variant={activityFilter === "health" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActivityFilter("health")}
+              >
+                🩺 Health
+              </Button>
             </div>
 
             <div className="max-w-7xl mx-auto">

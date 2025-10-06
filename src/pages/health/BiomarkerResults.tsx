@@ -32,6 +32,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { healthNavigation } from '@/config/navigation';
+import { useHealthLogger } from '@/hooks/useHealthLogger';
 
 
 interface TestResult {
@@ -62,6 +63,7 @@ export default function BiomarkerResults() {
   const [isLoading, setIsLoading] = useState(true);
   const [biomarkerActionsOpen, setBiomarkerActionsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("new");
+  const { logBiomarkerView, logBiomarkerDownload, logBiomarkerShare } = useHealthLogger();
 
   useEffect(() => {
     fetchResults();
@@ -156,6 +158,12 @@ export default function BiomarkerResults() {
       newExpanded.delete(resultId);
     } else {
       newExpanded.add(resultId);
+      // Log biomarker view when expanding
+      const result = results.find(r => r.id === resultId);
+      if (result) {
+        const biomarkers = getMockBiomarkers(result.lab_test.name);
+        logBiomarkerView(result.lab_test.name, biomarkers.length);
+      }
     }
     setExpandedRows(newExpanded);
   };
@@ -407,11 +415,19 @@ export default function BiomarkerResults() {
 
                               {/* Action Buttons */}
                               <div className="flex items-center gap-3">
-                                <Button variant="outline" className="flex items-center gap-2">
+                                <Button 
+                                  variant="outline" 
+                                  className="flex items-center gap-2"
+                                  onClick={() => logBiomarkerDownload(result.lab_test.name)}
+                                >
                                   <Download className="h-4 w-4" />
                                   Download PDF
                                 </Button>
-                                <Button variant="outline" className="flex items-center gap-2">
+                                <Button 
+                                  variant="outline" 
+                                  className="flex items-center gap-2"
+                                  onClick={() => logBiomarkerShare(result.lab_test.name, 'Doctor')}
+                                >
                                   <Share2 className="h-4 w-4" />
                                   Share with Doctor
                                 </Button>

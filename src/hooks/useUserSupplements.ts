@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useHealthLogger } from './useHealthLogger';
 
 export interface UserSupplement {
   id: string;
@@ -20,6 +21,7 @@ export function useUserSupplements() {
   const [supplements, setSupplements] = useState<UserSupplement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { logSupplementAdd, logSupplementUpdate, logSupplementDelete } = useHealthLogger();
 
   const fetchSupplements = async () => {
     try {
@@ -63,6 +65,10 @@ export function useUserSupplements() {
       if (error) throw error;
 
       setSupplements(prev => [data, ...prev]);
+      
+      // Log supplement addition
+      await logSupplementAdd(data.name, data.category);
+      
       toast({
         title: "Success",
         description: "Supplement added successfully",
@@ -91,6 +97,10 @@ export function useUserSupplements() {
       if (error) throw error;
 
       setSupplements(prev => prev.map(s => s.id === id ? data : s));
+      
+      // Log supplement update
+      await logSupplementUpdate(data.name);
+      
       toast({
         title: "Success",
         description: "Supplement updated successfully",
@@ -109,6 +119,9 @@ export function useUserSupplements() {
 
   const deleteSupplement = async (id: string) => {
     try {
+      // Get supplement name before deleting
+      const supplement = supplements.find(s => s.id === id);
+      
       const { error } = await supabase
         .from('user_supplements')
         .delete()
@@ -117,6 +130,12 @@ export function useUserSupplements() {
       if (error) throw error;
 
       setSupplements(prev => prev.filter(s => s.id !== id));
+      
+      // Log supplement deletion
+      if (supplement) {
+        await logSupplementDelete(supplement.name);
+      }
+      
       toast({
         title: "Success",
         description: "Supplement deleted successfully",

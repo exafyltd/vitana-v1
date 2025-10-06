@@ -36,6 +36,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { healthNavigation } from '@/config/navigation';
 import { useUserSupplements, UserSupplement } from '@/hooks/useUserSupplements';
+import { useHealthLogger } from '@/hooks/useHealthLogger';
 import { AddSupplementDialog } from '@/components/supplements/AddSupplementDialog';
 import { SupplementCard } from '@/components/supplements/SupplementCard';
 import { getAllCategories } from '@/components/supplements/supplementCategories';
@@ -96,6 +97,16 @@ export default function MyBiology() {
     updateSupplement, 
     deleteSupplement 
   } = useUserSupplements();
+
+  const { 
+    logBiomarkerView, 
+    logBiomarkerUpload, 
+    logBiomarkerOrderTest,
+    logDeviceConnect,
+    logOmicsUpload,
+    logOmicsView,
+    logOmicsConnectAPI
+  } = useHealthLogger();
 
   const getMockOmicsResults = (): OmicsResult[] => {
     return [
@@ -249,6 +260,12 @@ export default function MyBiology() {
       newExpanded.delete(resultId);
     } else {
       newExpanded.add(resultId);
+      // Log biomarker view when expanding
+      const result = results.find(r => r.id === resultId);
+      if (result) {
+        const biomarkers = getMockBiomarkers(result.lab_test.name);
+        logBiomarkerView(result.lab_test.name, biomarkers.length);
+      }
     }
     setExpandedRows(newExpanded);
   };
@@ -389,19 +406,35 @@ export default function MyBiology() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-4 gap-3 mb-4">
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => logBiomarkerUpload('manual', 'Manual Entry')}
+                      >
                         <Upload className="w-4 h-4 mr-2" />
                         Manual Entry
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => logBiomarkerUpload('pdf', 'PDF Upload')}
+                      >
                         <FileText className="w-4 h-4 mr-2" />
                         Upload PDF
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => logDeviceConnect('Wearable Device')}
+                      >
                         <Activity className="w-4 h-4 mr-2" />
                         Connect Device
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => logBiomarkerOrderTest('Lab Test')}
+                      >
                         <TestTube className="w-4 h-4 mr-2" />
                         Order Test
                       </Button>
@@ -492,11 +525,19 @@ export default function MyBiology() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 gap-3 mb-4">
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => logOmicsUpload('Omics Data', 'Provider')}
+                      >
                         <FileText className="w-4 h-4 mr-2" />
                         Upload Results
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => logOmicsConnectAPI('API Provider')}
+                      >
                         <Activity className="w-4 h-4 mr-2" />
                         Connect API
                       </Button>
@@ -504,7 +545,11 @@ export default function MyBiology() {
 
                     <div className="space-y-3">
                       {mockOmicsResults.map((result) => (
-                        <Card key={result.id}>
+                        <Card 
+                          key={result.id}
+                          className="cursor-pointer hover:bg-muted/30 transition-colors"
+                          onClick={() => logOmicsView(result.category, result.name)}
+                        >
                           <CardContent className="p-4">
                             <div className="flex items-center justify-between">
                               <div className="flex-1">
