@@ -33,6 +33,9 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
   
+  // Check if this is the user's own profile
+  const isOwnProfile = user?.id === (profile.user_id || profile.id);
+  
   // Check if platform is connected by checking dedicated URL columns
   const isConnected = (platform: SocialPlatform): boolean => {
     switch(platform) {
@@ -120,8 +123,12 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
     <>
       <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
         <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-foreground mb-2">Connect Social Media</h2>
-          <p className="text-sm text-muted-foreground">Import your profiles to enrich Vitana</p>
+          <h2 className="text-xl font-bold text-foreground mb-2">
+            {isOwnProfile ? 'Connect Social Media' : 'Social Media Profiles'}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {isOwnProfile ? 'Import your profiles to enrich Vitana' : 'Connected social media accounts'}
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 w-full max-w-md">
@@ -144,7 +151,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     <LinkIcon className="h-3 w-3" />
                     <span>Connected</span>
                   </div>
-                ) : (
+                ) : isOwnProfile ? (
                   <Button
                     size="sm"
                     variant="outline"
@@ -156,7 +163,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                   >
                     Connect
                   </Button>
-                )}
+                ) : null}
               </div>
             );
           })}
@@ -183,9 +190,11 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground/60 text-center mt-4 max-w-xs">
-          Connect accounts to auto-import bio, photos, and professional info
-        </p>
+        {isOwnProfile && (
+          <p className="text-xs text-muted-foreground/60 text-center mt-4 max-w-xs">
+            Connect accounts to auto-import bio, photos, and professional info
+          </p>
+        )}
 
         {/* ID Card decorative elements */}
         <div className="absolute top-4 right-4 text-xs text-muted-foreground/50">
