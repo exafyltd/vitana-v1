@@ -9,13 +9,14 @@ interface StandardHeaderProps {
   title: string;
   description: string;
   emoji?: string;
+  syncTimestamp?: string | null;
 }
 
 /**
  * Standard 3-card header pattern for all major pages
  * Ensures consistent Welcome + Autopilot + Vitana Index layout
  */
-export default function StandardHeader({ title, description, emoji }: StandardHeaderProps) {
+export default function StandardHeader({ title, description, emoji, syncTimestamp }: StandardHeaderProps) {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -34,6 +35,11 @@ export default function StandardHeader({ title, description, emoji }: StandardHe
               {title} {emoji}
             </h1>
             <p className="text-muted-foreground truncate">{description}</p>
+            {syncTimestamp && (
+              <p className="text-[10px] text-muted-foreground/60 absolute bottom-2 right-3">
+                {syncTimestamp}
+              </p>
+            )}
           </div>
         </div>
         

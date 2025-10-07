@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Target } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -10,6 +11,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { LifeCompassPopup } from "@/components/memory/LifeCompassPopup";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -120,6 +122,10 @@ const diaryEntries = [
 export default withScreenId(function Memory() {
   const [activeTab, setActiveTab] = useState("overview");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const [compassPopupOpen, setCompassPopupOpen] = useState(false);
+  
+  // Mock sync timestamp - will be replaced with real data
+  const mockSyncTimestamp = formatDistanceToNow(new Date(Date.now() - 2 * 60 * 60 * 1000), { addSuffix: true });
 
   return (
     <AppLayout>
@@ -132,11 +138,20 @@ export default withScreenId(function Memory() {
           title="Memory Hub"
           description="Track and review your wellness journey through AI-driven insights."
           emoji="🧠"
+          syncTimestamp={`Last synced ${mockSyncTimestamp}`}
         />
 
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search memories, insights, or timeline..." />
           <UniversalCalendarButton />
+          <Button 
+            size="sm" 
+            variant="outline"
+            onClick={() => setCompassPopupOpen(true)}
+          >
+            <Target className="w-4 h-4 mr-2" />
+            Life Compass
+          </Button>
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Add Memory
@@ -301,6 +316,11 @@ export default withScreenId(function Memory() {
         <MemoryMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
+        />
+        
+        <LifeCompassPopup 
+          open={compassPopupOpen}
+          onOpenChange={setCompassPopupOpen}
         />
         </div>
       </div>
