@@ -665,8 +665,32 @@ serve(async (req) => {
         has_audio: !!audio,
         timestamp: new Date().toISOString()
       }
-    }).then(() => {
+    }).then(async (result) => {
       console.log('User message stored with input_method:', audio ? 'voice' : 'text');
+      
+      // Also log to activity log for timeline
+      const { error: logError } = await supabaseClient.from('user_activity_log').insert({
+        user_id: user.id,
+        activity_type: 'chat.message',
+        activity_data: {
+          role: 'user',
+          content: userMessage.substring(0, 200),
+          conversation_id: conversationId,
+          agent_type: agentType,
+          input_method: inputMethod,
+          message_length: userMessage.length
+        },
+        context_data: {
+          conversation_id: conversationId,
+          message_id: result.data?.[0]?.id,
+          agent_type: agentType
+        },
+        dedupe_key: result.data?.[0]?.id ? `chat-user-${result.data[0].id}` : undefined
+      });
+      
+      if (logError) {
+        console.error('[activity] Failed to log user message:', logError);
+      }
     }).catch((err) => console.error('Error storing user message:', err));
 
     console.log('Getting AI response from Lovable AI...');

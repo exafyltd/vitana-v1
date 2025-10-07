@@ -52,15 +52,34 @@ serve(async (req) => {
       .filter(w => w.length > 3)
       .filter(w => !['what', 'when', 'where', 'this', 'that', 'with', 'from', 'have'].includes(w));
 
+    // Synonym expansion for better matching
+    const synonyms: Record<string, string[]> = {
+      'age': ['birthday', 'born', 'birth', 'year', 'old'],
+      'birthday': ['age', 'born', 'birth', 'date'],
+      'live': ['location', 'address', 'city', 'country', 'residence'],
+      'food': ['eat', 'meal', 'diet', 'nutrition', 'prefer'],
+      'work': ['job', 'career', 'occupation', 'profession'],
+      'name': ['called', 'call'],
+    };
+    
+    // Expand query keywords with synonyms
+    const expandedKeywords = [...queryKeywords];
+    queryKeywords.forEach(keyword => {
+      if (synonyms[keyword]) {
+        expandedKeywords.push(...synonyms[keyword]);
+      }
+    });
+
     console.log(`[memory-search] Query keywords: ${queryKeywords.join(', ')}`);
+    console.log(`[memory-search] Expanded keywords: ${expandedKeywords.join(', ')}`);
 
     // Score each memory
     const scoredMemories = memories.map((memory: any) => {
       const contentLower = memory.content.toLowerCase();
       let score = 0;
 
-      // Keyword matching
-      queryKeywords.forEach(keyword => {
+      // Keyword matching (use expanded keywords)
+      expandedKeywords.forEach(keyword => {
         if (contentLower.includes(keyword)) {
           score += 2;
         }
@@ -76,9 +95,9 @@ serve(async (req) => {
       return { ...memory, relevance_score: score };
     });
 
-    // Filter and sort by relevance
+    // Filter and sort by relevance (lowered threshold to 0.5 for better recall)
     const relevantMemories = scoredMemories
-      .filter((m: any) => m.relevance_score > 0.7)
+      .filter((m: any) => m.relevance_score > 0.5)
       .sort((a: any, b: any) => b.relevance_score - a.relevance_score)
       .slice(0, 5);
 
