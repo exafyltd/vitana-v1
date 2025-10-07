@@ -1,3 +1,4 @@
+import React from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -12,6 +13,9 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Zap, BarChart3, Palette, Plus } from "lucide-react";
 
 export default withScreenId(function Distribution() {
+  const [rulePopupOpen, setRulePopupOpen] = React.useState(false);
+  const [templatePopupOpen, setTemplatePopupOpen] = React.useState(false);
+
   return (
     <AppLayout>
       <SEO
@@ -33,11 +37,11 @@ export default withScreenId(function Distribution() {
               placeholder="Search automation rules, templates..."
             />
             <UniversalCalendarButton />
-            <Button size="sm" variant="default">
+            <Button size="sm" variant="default" onClick={() => setRulePopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Create Rule
             </Button>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={() => setTemplatePopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               New Template
             </Button>
@@ -98,6 +102,32 @@ export default withScreenId(function Distribution() {
           </div>
         </div>
       </div>
+
+      {/* Create Rule Popup */}
+      {rulePopupOpen && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-lg shadow-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-semibold mb-4">Create Automation Rule</h2>
+            <p className="text-sm text-muted-foreground mb-4">Automation rule builder coming soon...</p>
+            <Button onClick={() => setRulePopupOpen(false)} className="w-full">
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* New Template Popup */}
+      {templatePopupOpen && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-lg shadow-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-semibold mb-4">Create Template</h2>
+            <p className="text-sm text-muted-foreground mb-4">Template builder coming soon...</p>
+            <Button onClick={() => setTemplatePopupOpen(false)} className="w-full">
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }, SCREEN_IDS.SHARING_OVERVIEW);

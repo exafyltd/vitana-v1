@@ -1,3 +1,4 @@
+import React from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -17,6 +18,8 @@ import { ChannelConnector } from "@/components/sharing/ChannelConnector";
 import { AnalyticsDashboard } from "@/components/sharing/AnalyticsDashboard";
 
 export default withScreenId(function Sharing() {
+  const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
+
   return (
     <AppLayout>
       <SEO
@@ -36,7 +39,7 @@ export default withScreenId(function Sharing() {
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search sharing activities..." />
             <UniversalCalendarButton />
-            <Button size="sm">
+            <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               New Campaign
             </Button>
@@ -72,6 +75,19 @@ export default withScreenId(function Sharing() {
           </div>
         </div>
       </div>
+
+      {/* Campaign Creation Popup */}
+      {campaignPopupOpen && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-lg shadow-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-semibold mb-4">Create New Campaign</h2>
+            <p className="text-sm text-muted-foreground mb-4">Campaign creation coming soon...</p>
+            <Button onClick={() => setCampaignPopupOpen(false)} className="w-full">
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }, SCREEN_IDS.SHARING_OVERVIEW);

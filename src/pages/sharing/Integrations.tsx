@@ -1,3 +1,4 @@
+import React from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -12,6 +13,8 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Plug, Store, Plus } from "lucide-react";
 
 export default withScreenId(function Integrations() {
+  const [connectPopupOpen, setConnectPopupOpen] = React.useState(false);
+
   return (
     <AppLayout>
       <SEO
@@ -33,7 +36,7 @@ export default withScreenId(function Integrations() {
               placeholder="Search integrations, connections..."
             />
             <UniversalCalendarButton />
-            <Button size="sm" variant="default">
+            <Button size="sm" variant="default" onClick={() => setConnectPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Connect Channel
             </Button>
@@ -73,6 +76,19 @@ export default withScreenId(function Integrations() {
           </div>
         </div>
       </div>
+
+      {/* Connect Channel Popup */}
+      {connectPopupOpen && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-lg shadow-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-semibold mb-4">Connect Channel</h2>
+            <p className="text-sm text-muted-foreground mb-4">Channel connection coming soon...</p>
+            <Button onClick={() => setConnectPopupOpen(false)} className="w-full">
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }, SCREEN_IDS.SHARING_OVERVIEW);
