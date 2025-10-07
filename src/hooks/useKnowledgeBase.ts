@@ -196,6 +196,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
+      queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
       toast({
         title: "Knowledge updated",
         description: "Your changes have been saved.",
