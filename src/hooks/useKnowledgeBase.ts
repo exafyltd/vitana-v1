@@ -134,7 +134,10 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
 
       return { previousData };
     },
-    onSuccess: (data, variables) => {
+    onSuccess: async (data, variables) => {
+      // Refresh metadata calculation
+      await supabase.functions.invoke('refresh-memory-metadata');
+      
       // Refetch to ensure consistency
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
@@ -194,7 +197,10 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
         if (error) throw error;
       }
     },
-    onSuccess: (data, variables) => {
+    onSuccess: async (data, variables) => {
+      // Refresh metadata calculation
+      await supabase.functions.invoke('refresh-memory-metadata');
+      
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
       toast({
@@ -269,7 +275,10 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
         }
       }
     },
-    onSuccess: (data, variables) => {
+    onSuccess: async (data, variables) => {
+      // Refresh metadata calculation
+      await supabase.functions.invoke('refresh-memory-metadata');
+      
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
       toast({

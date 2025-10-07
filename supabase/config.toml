@@ -3,6 +3,9 @@ project_id = "inmkhvwdcuyhnxkgfvsb"
 [functions.ai-chat]
 verify_jwt = false
 
+[functions.refresh-memory-metadata]
+verify_jwt = true
+
 [functions.fetch-user-context]
 verify_jwt = true
 
