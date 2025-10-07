@@ -253,7 +253,13 @@ export class AIVoiceService {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      if (response.status === 429) {
+        throw new Error('Rate limit exceeded. Please try again later.');
+      } else if (response.status === 402) {
+        throw new Error('Payment required. Please add credits to your workspace.');
+      }
+      throw new Error(`HTTP error! status: ${response.status}: ${errorText}`);
     }
 
     let fullText = '';

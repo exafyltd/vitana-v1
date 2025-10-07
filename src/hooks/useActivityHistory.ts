@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 export interface ActivityHistoryItem {
   id: string;
@@ -295,6 +296,31 @@ const ITEMS_PER_PAGE = 20;
 
 export function useActivityHistory(filterType?: string) {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Set up realtime subscription for ai_messages
+  useEffect(() => {
+    const channel = supabase
+      .channel('ai_messages_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'ai_messages'
+        },
+        (payload) => {
+          console.log('New AI message detected, refreshing timeline...');
+          // Invalidate queries to trigger refetch
+          queryClient.invalidateQueries({ queryKey: ['activity-history'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const {
     data,
@@ -443,8 +469,6 @@ export function useActivityHistory(filterType?: string) {
     });
   }
 
-  const queryClient = useQueryClient();
-
   // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: async ({ id, type }: { id: string; type: 'conversation' | 'activity' }) => {
@@ -492,5 +516,6 @@ export function useActivityHistory(filterType?: string) {
     isLoading,
     deleteActivity: deleteMutation.mutate,
     isDeleting: deleteMutation.isPending,
+    refetch: () => queryClient.invalidateQueries({ queryKey: ['activity-history', filterType] }),
   };
 }

@@ -165,7 +165,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     setIsProcessing(true)
     
     try {
-      await aiVoiceService.sendTextMessage(
+      const result = await aiVoiceService.sendTextMessage(
         userMessage, 
         selectedLanguage,
         // onTextChunk callback - accumulate in dedicated streaming text
@@ -178,13 +178,20 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         }
       )
       
+      // Show success toast
+      toast({
+        title: "Saved to history",
+        description: "Your conversation has been saved to the timeline.",
+        duration: 2000,
+      });
+      
       // Clear streaming text after completion
       setTimeout(() => setAssistantStreamingText(""), 3000)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Text error:', error)
       toast({
-        title: "Chat Error",
-        description: error instanceof Error ? error.message : "Failed to send message",
+        title: error.message?.includes('Rate limit') ? "Rate limit exceeded" : error.message?.includes('Payment') ? "Credits required" : "Chat Error",
+        description: error.message || "Failed to send message. Please try again.",
         variant: "destructive",
       })
     } finally {

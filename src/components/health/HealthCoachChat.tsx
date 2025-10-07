@@ -24,13 +24,22 @@ function HealthCoachChatBase({
   const [message, setMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      onSendMessage?.(message);
-      setMessage("");
-      setIsTyping(true);
-      // Simulate AI response
-      setTimeout(() => setIsTyping(false), 2000);
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+    
+    const userMessage = message.trim();
+    onSendMessage?.(userMessage);
+    setMessage("");
+    setIsTyping(true);
+    
+    try {
+      // Call the real AI backend
+      const { aiVoiceService } = await import("@/services/aiVoiceService");
+      await aiVoiceService.sendTextMessage(userMessage, 'en-US');
+      setIsTyping(false);
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      setIsTyping(false);
     }
   };
 

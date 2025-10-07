@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Plus, Loader2, Calendar as CalendarIcon, LayoutList, Grid3x3 } from "lucide-react";
+import { Plus, Loader2, Calendar as CalendarIcon, LayoutList, Grid3x3, RefreshCw } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -44,6 +44,7 @@ function Timeline() {
   const [promotingActivity, setPromotingActivity] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<"all" | "by-category">("all");
   const [expandedCategory, setExpandedCategory] = useState<string | undefined>(undefined);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   
   const allLoadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +58,14 @@ function Timeline() {
     isFetchingNextPage: isFetchingNextAll,
     isLoading: isLoadingAll,
     deleteActivity,
+    refetch,
   } = useActivityHistory("all");
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refetch();
+    setTimeout(() => setIsRefreshing(false), 500);
+  };
 
   // Category-specific hooks - only active when in "By Category" tab
   const chatData = useActivityHistory("chat");
@@ -269,6 +277,16 @@ function Timeline() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search activity..." />
           <UniversalCalendarButton />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            title="Refresh timeline"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          </Button>
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Manage History
