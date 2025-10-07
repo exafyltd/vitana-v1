@@ -137,6 +137,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
     onSuccess: (data, variables) => {
       // Refetch to ensure consistency
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
+      queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
       toast({
         title: "Knowledge deleted",
         description: "The item has been removed from your knowledge base.",
@@ -269,6 +270,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
+      queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
       toast({
         title: "Knowledge created",
         description: "New item added to your knowledge base.",

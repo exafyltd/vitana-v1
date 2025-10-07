@@ -19,18 +19,18 @@ interface AddMemoryDialogProps {
 type InputMode = "text" | "voice" | "photo";
 
 const MEMORY_CATEGORIES = [
-  "Personal Identity",
-  "Health & Wellness", 
-  "Relationships",
-  "Career & Goals",
-  "Values & Beliefs",
-  "Life Events",
-  "Skills & Knowledge",
-  "Preferences",
-  "Emotions & Mental State",
-  "Habits & Routines",
-  "Environment",
-  "Financial"
+  { id: "personal-identity", label: "Personal Identity" },
+  { id: "health-wellness", label: "Health & Wellness" },
+  { id: "network-relationships", label: "Relationships" },
+  { id: "business-projects", label: "Career & Goals" },
+  { id: "values-aspirations", label: "Values & Beliefs" },
+  { id: "lifestyle-routines", label: "Life Events" },
+  { id: "learning-knowledge", label: "Skills & Knowledge" },
+  { id: "personal-identity", label: "Preferences" },
+  { id: "health-wellness", label: "Emotions & Mental State" },
+  { id: "lifestyle-routines", label: "Habits & Routines" },
+  { id: "location-environment", label: "Environment" },
+  { id: "finance-assets", label: "Financial" },
 ];
 
 export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemoryDialogProps) {
@@ -210,12 +210,12 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
             <div className="flex flex-wrap gap-2">
               {MEMORY_CATEGORIES.map((cat) => (
                 <Badge
-                  key={cat}
-                  variant={selectedCategory === cat ? "default" : "outline"}
+                  key={cat.id}
+                  variant={selectedCategory === cat.id ? "default" : "outline"}
                   className="cursor-pointer"
-                  onClick={() => setSelectedCategory(cat === selectedCategory ? "" : cat)}
+                  onClick={() => setSelectedCategory(cat.id === selectedCategory ? "" : cat.id)}
                 >
-                  {cat}
+                  {cat.label}
                 </Badge>
               ))}
             </div>

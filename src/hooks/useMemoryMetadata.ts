@@ -123,6 +123,18 @@ export function useMemoryMetadata() {
         categoryMemories[category].totalConfidence += memory.confidence_score || 50;
       });
 
+      // Parse diary entry tags to extract categories
+      diaryEntries?.forEach((entry) => {
+        // Extract category from tags (first non-"diary" tag)
+        const categoryTag = entry.tags?.find(tag => tag !== "diary" && tag !== "voice" && tag !== "photo") || "personal-identity";
+        
+        if (!categoryMemories[categoryTag]) {
+          categoryMemories[categoryTag] = { count: 0, totalConfidence: 0 };
+        }
+        categoryMemories[categoryTag].count++;
+        categoryMemories[categoryTag].totalConfidence += 50; // Default confidence for diary entries
+      });
+
       // Calculate progress for each category
       Object.keys(CATEGORY_TARGETS).forEach((category) => {
         const memories = categoryMemories[category] || { count: 0, totalConfidence: 0 };
