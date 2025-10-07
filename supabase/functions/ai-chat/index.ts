@@ -394,23 +394,37 @@ Each insight must have high confidence (0.7+). Be concise - extract the core fac
       }
 
       // Store new insight
-      const { error: insertError } = await supabase.from('ai_memory').insert({
-        user_id: userId,
-        memory_type: insight.type,
-        content: insight.content,
-        confidence_score: insight.confidence,
-        source_conversation_id: conversationId,
-        is_active: true,
-        metadata: { 
-          extracted_at: new Date().toISOString(),
-          extraction_method: 'ai_powered'
-        }
-      });
+      const { data: newMemory, error: insertError } = await supabase
+        .from('ai_memory')
+        .insert({
+          user_id: userId,
+          memory_type: insight.type,
+          content: insight.content,
+          confidence_score: insight.confidence,
+          source_conversation_id: conversationId,
+          is_active: true,
+          metadata: { 
+            extracted_at: new Date().toISOString(),
+            extraction_method: 'ai_powered'
+          }
+        })
+        .select('id')
+        .single();
 
       if (insertError) {
         console.error('[insights] Insert error:', insertError);
       } else {
         console.log(`[insights] ✓ Stored: ${insight.type} - ${insight.content} (${insight.confidence})`);
+        
+        // Generate embedding asynchronously (don't block on this)
+        supabase.functions.invoke('generate-memory-embedding', {
+          body: { 
+            memoryId: newMemory.id, 
+            content: insight.content 
+          }
+        }).catch((embError) => {
+          console.error(`[insights] Embedding generation failed for memory ${newMemory.id}:`, embError);
+        });
       }
     }
 

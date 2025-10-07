@@ -60,6 +60,7 @@ export type Database = {
           confidence_score: number | null
           content: string
           created_at: string
+          embedding: string | null
           expires_at: string | null
           id: string
           is_active: boolean | null
@@ -73,6 +74,7 @@ export type Database = {
           confidence_score?: number | null
           content: string
           created_at?: string
+          embedding?: string | null
           expires_at?: string | null
           id?: string
           is_active?: boolean | null
@@ -86,6 +88,7 @@ export type Database = {
           confidence_score?: number | null
           content?: string
           created_at?: string
+          embedding?: string | null
           expires_at?: string | null
           id?: string
           is_active?: boolean | null
@@ -2619,6 +2622,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      binary_quantize: {
+        Args: { "": string } | { "": unknown }
+        Returns: unknown
+      }
       bootstrap_admin_user: {
         Args: { p_user_email: string; p_user_id: string }
         Returns: undefined
@@ -2778,6 +2785,38 @@ export type Database = {
           user_id: string
         }[]
       }
+      halfvec_avg: {
+        Args: { "": number[] }
+        Returns: unknown
+      }
+      halfvec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      halfvec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      halfvec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
+      hnsw_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_sparsevec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnswhandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
       initialize_user_wallet: {
         Args: { user_id_param: string }
         Returns: undefined
@@ -2798,10 +2837,48 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      ivfflat_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflat_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflathandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      l2_norm: {
+        Args: { "": unknown } | { "": unknown }
+        Returns: number
+      }
+      l2_normalize: {
+        Args: { "": string } | { "": unknown } | { "": unknown }
+        Returns: string
+      }
       list_roles_for_active_tenant: {
         Args: { p_tenant_id: string }
         Returns: {
           role: string
+        }[]
+      }
+      match_memories: {
+        Args: {
+          match_count?: number
+          match_threshold?: number
+          p_user_id?: string
+          query_embedding: string
+        }
+        Returns: {
+          confidence_score: number
+          content: string
+          created_at: string
+          id: string
+          memory_type: string
+          metadata: Json
+          similarity: number
+          user_id: string
         }[]
       }
       process_wallet_exchange: {
@@ -2882,6 +2959,18 @@ export type Database = {
         Args: { p_role: string; p_tenant_id: string }
         Returns: undefined
       }
+      sparsevec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      sparsevec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      sparsevec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
       switch_to_tenant_by_slug: {
         Args: { p_tenant_slug: string }
         Returns: undefined
@@ -2910,6 +2999,30 @@ export type Database = {
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }
         Returns: boolean
+      }
+      vector_avg: {
+        Args: { "": number[] }
+        Returns: string
+      }
+      vector_dims: {
+        Args: { "": string } | { "": unknown }
+        Returns: number
+      }
+      vector_norm: {
+        Args: { "": string }
+        Returns: number
+      }
+      vector_out: {
+        Args: { "": string }
+        Returns: unknown
+      }
+      vector_send: {
+        Args: { "": string }
+        Returns: string
+      }
+      vector_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
       }
     }
     Enums: {

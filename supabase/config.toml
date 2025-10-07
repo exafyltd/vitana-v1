@@ -29,3 +29,6 @@ verify_jwt = true
 
 [functions.extract-diary-insights]
 verify_jwt = true
+
+[functions.generate-memory-embedding]
+verify_jwt = true
