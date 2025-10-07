@@ -34,15 +34,32 @@ export function useFollow(targetUserId: string): UseFollowReturn {
       if (statusError) throw statusError;
       setIsFollowing(statusData || false);
 
-      // Get follow counts
-      const { data: countsData, error: countsError } = await supabase
-        .rpc('get_user_follow_counts', { user_id_param: targetUserId });
+      // Get follow counts with fallback
+      try {
+        const { data: countsData, error: countsError } = await supabase
+          .rpc('get_user_follow_counts', { user_id_param: targetUserId });
 
-      if (countsError) throw countsError;
-      if (countsData && typeof countsData === 'object' && countsData !== null) {
-        const counts = countsData as { followers_count: number; following_count: number };
-        setFollowersCount(counts.followers_count || 0);
-        setFollowingCount(counts.following_count || 0);
+        if (countsError) throw countsError;
+        if (countsData && typeof countsData === 'object' && countsData !== null) {
+          const counts = countsData as { followers_count: number; following_count: number };
+          setFollowersCount(counts.followers_count || 0);
+          setFollowingCount(counts.following_count || 0);
+        }
+      } catch (countsError) {
+        console.warn('RPC call failed, using direct query fallback:', countsError);
+        // Fallback: Query user_follows table directly
+        const { count: followersCount } = await supabase
+          .from('user_follows')
+          .select('*', { count: 'exact', head: true })
+          .eq('following_id', targetUserId);
+
+        const { count: followingCount } = await supabase
+          .from('user_follows')
+          .select('*', { count: 'exact', head: true })
+          .eq('follower_id', targetUserId);
+
+        setFollowersCount(followersCount || 0);
+        setFollowingCount(followingCount || 0);
       }
     } catch (error) {
       console.error('Error fetching follow data:', error);
