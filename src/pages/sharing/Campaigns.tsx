@@ -178,31 +178,6 @@ export default withScreenId(function Campaigns() {
                             {stats.drafts} drafts
                           </div>
                         </div>
-
-                        <div className="flex gap-2 pt-2 border-t">
-                          <Button
-                            size="sm"
-                            variant="default"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/sharing/campaigns/${campaign.id}`);
-                            }}
-                          >
-                            <Eye className="w-4 h-4 mr-1" />
-                            View Details
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleEditCampaign(campaign);
-                            }}
-                          >
-                            <Edit className="w-4 h-4 mr-1" />
-                            Edit
-                          </Button>
-                        </div>
                       </div>
                     </CardContent>
                   </Card>
