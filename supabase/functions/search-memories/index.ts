@@ -49,7 +49,7 @@ serve(async (req) => {
     const queryLower = query.toLowerCase();
     const queryKeywords = queryLower
       .split(/\s+/)
-      .filter(w => w.length > 3)
+      .filter(w => w.length >= 3)
       .filter(w => !['what', 'when', 'where', 'this', 'that', 'with', 'from', 'have'].includes(w));
 
     // Synonym expansion for better matching
