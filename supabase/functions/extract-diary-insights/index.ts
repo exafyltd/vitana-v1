@@ -194,8 +194,8 @@ Examples of BAD extractions (DO NOT EXTRACT):
         }
       }
 
-      // Store new insight
-      const { error: insertError } = await supabase.from('ai_memory').insert({
+      // Store new insight and get the inserted record
+      const { data: insertedMemory, error: insertError } = await supabase.from('ai_memory').insert({
         user_id: user.id,
         memory_type: insight.type,
         content: insight.content,
@@ -206,13 +206,27 @@ Examples of BAD extractions (DO NOT EXTRACT):
           diary_entry_id: diaryEntryId,
           extracted_at: new Date().toISOString()
         }
-      });
+      }).select().single();
 
       if (insertError) {
         console.error(`[diary-insights] Failed to store: ${insight.content}`, insertError);
       } else {
         console.log(`[diary-insights] ✓ Stored: ${insight.type} - ${insight.content} (${insight.confidence})`);
         storedCount++;
+        
+        // Generate embedding for the new insight
+        try {
+          const { error: embeddingError } = await supabase.functions.invoke('generate-memory-embedding', {
+            body: { memoryId: insertedMemory.id }
+          });
+          if (embeddingError) {
+            console.error(`[diary-insights] Failed to generate embedding for ${insertedMemory.id}:`, embeddingError);
+          } else {
+            console.log(`[diary-insights] ✓ Embedding generated for ${insertedMemory.id}`);
+          }
+        } catch (err) {
+          console.error(`[diary-insights] Error invoking generate-memory-embedding:`, err);
+        }
       }
     }
 

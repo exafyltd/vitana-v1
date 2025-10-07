@@ -718,7 +718,33 @@ serve(async (req) => {
     
     if (userContext) {
       const { identity, temporal, health, memory, economic, community } = userContext;
-      systemMessage += '\n\n=== USER CONTEXT (Use naturally when relevant) ===\n';
+      
+      // === MEMORY SNAPSHOT (High-Confidence Facts) ===
+      const memorySnapshot = memory?.aiMemoryHighlights || [];
+      const recentDiaryHighlights = memory?.diaryEntriesRecent?.slice(0, 3) || [];
+      
+      console.log('[snapshot] Injecting memory snapshot:', memorySnapshot.length, 'facts');
+      console.log('[snapshot] Injecting diary highlights:', recentDiaryHighlights.length, 'entries');
+      
+      systemMessage += '\n\n=== USER SNAPSHOT (High-Confidence Facts from Memory Garden) ===\n';
+      if (memorySnapshot.length > 0) {
+        memorySnapshot.forEach((m: any) => {
+          systemMessage += `• ${m.content} (${m.memory_type}, ${Math.round(m.confidence_score * 100)}% confidence)\n`;
+        });
+      } else {
+        systemMessage += '• No high-confidence facts yet\n';
+      }
+      
+      if (recentDiaryHighlights.length > 0) {
+        systemMessage += '\n=== RECENT DIARY HIGHLIGHTS ===\n';
+        recentDiaryHighlights.forEach((d: any) => {
+          const date = new Date(d.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          const preview = d.text.substring(0, 150);
+          systemMessage += `• ${date}: ${preview}...\n`;
+        });
+      }
+      
+      systemMessage += '\n=== USER CONTEXT (Use naturally when relevant) ===\n';
       if (identity?.displayName || identity?.handle) {
         systemMessage += `Name: ${identity.displayName || 'User'}${identity.handle ? ` (@${identity.handle})` : ''}\n`;
       }
@@ -872,14 +898,16 @@ serve(async (req) => {
         systemMessage += '7. 💡 Making personalized suggestions like "Want me to RSVP you?" or "Should I help you connect?"\n';
       }
       
-      // === RELEVANT MEMORIES (Semantic Search Results) ===
+      // === LONG-TERM MEMORY (Unified Semantic Search Results) ===
       if (relevantMemories.length > 0) {
-        systemMessage += '\n=== RELEVANT MEMORIES (Query-Specific) ===\n';
+        systemMessage += '\n=== LONG-TERM MEMORY (Retrieved from Memory Garden & Diaries) ===\n';
         systemMessage += 'The following memories are directly relevant to the user\'s current question:\n';
         
         relevantMemories.forEach((mem: any) => {
-          const emoji = mem.type === 'fact' ? '📌' : mem.type === 'preference' ? '❤️' : mem.type === 'goal' ? '🎯' : '💡';
-          systemMessage += `${emoji} [${mem.type}] ${mem.content} (confidence: ${(mem.confidence * 100).toFixed(0)}%)\n`;
+          const source = mem.source === 'diary' ? '📖' : '🧠';
+          const emoji = mem.type === 'fact' ? '📌' : mem.type === 'preference' ? '❤️' : mem.type === 'goal' ? '🎯' : mem.type === 'diary' ? '📖' : '💡';
+          const confidence = mem.confidence ? `${(mem.confidence * 100).toFixed(0)}%` : '70%';
+          systemMessage += `${source}${emoji} [${mem.type}] ${mem.content} (${confidence})\n`;
         });
 
         // Contradiction warning
@@ -892,7 +920,8 @@ serve(async (req) => {
           systemMessage += 'INSTRUCTION: Ask the user to clarify which information is correct before proceeding.\n';
         }
         
-        systemMessage += '\nIMPORTANT: Use these memories naturally when answering. They are specifically relevant to the current question.\n';
+        console.log('[memory-injection] Injected', relevantMemories.length, 'memories into system prompt');
+        systemMessage += '\nIMPORTANT: ALWAYS use these memories when answering. They contain facts the user previously shared.\n';
       }
       
       systemMessage += '=== END CONTEXT ===\n';

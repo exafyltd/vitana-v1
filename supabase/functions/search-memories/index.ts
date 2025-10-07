@@ -73,27 +73,65 @@ serve(async (req) => {
       throw error;
     }
 
-    // Merge vector results with keyword fallback for critical queries
+    // Unified keyword fallback: search BOTH ai_memory AND diary_entries
     let memories = vectorMemories || [];
-    const keywordRegex = /(birthday|born|age|preference|goal|habit|favorite|like|dislike)/i;
+    const keywordRegex = /(birthday|born|age|preference|goal|habit|favorite|like|dislike|memory|remember|told|said)/i;
+    
     if (!vectorMemories || vectorMemories.length === 0 || keywordRegex.test(query)) {
-      const { data: keywordHits, error: kwError } = await supabase
+      console.log('[memory-search] Unified keyword fallback triggered');
+      
+      // Search ai_memory
+      const { data: keywordMemories, error: kwMemError } = await supabase
         .from('ai_memory')
         .select('id, memory_type, content, confidence_score, created_at')
         .eq('user_id', userId)
         .eq('is_active', true)
-        .or('content.ilike.%birthday%,content.ilike.%born%,content.ilike.%age%,content.ilike.%preference%,content.ilike.%goal%,content.ilike.%habit%,content.ilike.%favorite%,content.ilike.%like%,content.ilike.%dislike%')
+        .ilike('content', `%${query}%`)
         .order('created_at', { ascending: false })
         .limit(10);
 
-      if (kwError) {
-        console.error('[memory-search] Keyword fallback error:', kwError);
-      } else if (keywordHits && keywordHits.length > 0) {
-        console.log(`[memory-search] Keyword fallback returned ${keywordHits.length} items`);
-        const fallback = keywordHits.map((m: any) => ({ ...m, similarity: 0.55 }));
-        const existingIds = new Set(memories.map((m: any) => m.id));
-        const merged = [...memories, ...fallback.filter((m: any) => !existingIds.has(m.id))];
-        memories = merged;
+      // Search diary_entries
+      const { data: keywordDiaries, error: kwDiaryError } = await supabase
+        .from('diary_entries')
+        .select('id, text, created_at, tags, source')
+        .eq('user_id', userId)
+        .ilike('text', `%${query}%`)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (kwMemError) {
+        console.error('[memory-search] Keyword ai_memory error:', kwMemError);
+      }
+      if (kwDiaryError) {
+        console.error('[memory-search] Keyword diary error:', kwDiaryError);
+      }
+
+      const existingIds = new Set(memories.map((m: any) => m.id));
+
+      // Merge ai_memory results
+      if (keywordMemories && keywordMemories.length > 0) {
+        console.log(`[memory-search] Keyword fallback: ${keywordMemories.length} ai_memory items`);
+        const fallback = keywordMemories
+          .filter((m: any) => !existingIds.has(m.id))
+          .map((m: any) => ({ ...m, similarity: 0.55, source: 'ai_memory' }));
+        memories = [...memories, ...fallback];
+      }
+
+      // Merge diary_entries (transform to memory-like structure)
+      if (keywordDiaries && keywordDiaries.length > 0) {
+        console.log(`[memory-search] Keyword fallback: ${keywordDiaries.length} diary items`);
+        const diaryMemories = keywordDiaries
+          .filter((d: any) => !existingIds.has(d.id))
+          .map((d: any) => ({
+            id: d.id,
+            memory_type: 'diary',
+            content: d.text,
+            confidence_score: 0.7,
+            created_at: d.created_at,
+            similarity: 0.60, // Boost diary slightly
+            source: 'diary'
+          }));
+        memories = [...memories, ...diaryMemories];
       }
     }
 

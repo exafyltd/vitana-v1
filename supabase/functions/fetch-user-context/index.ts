@@ -171,6 +171,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     messagesData,
     diaryData,
     memoryData,
+    aiMemoryHighConfDataResult,
     conversationsData,
     actionsData,
     tenantData,
@@ -219,6 +220,16 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       .eq('is_active', true)
       .order('confidence_score', { ascending: false })
       .limit(20),
+    
+    // High-confidence AI Memory for snapshot (≥70% confidence)
+    supabase.from('ai_memory')
+      .select('id, content, memory_type, confidence_score, created_at')
+      .eq('user_id', userId)
+      .eq('is_active', true)
+      .gte('confidence_score', 0.7)
+      .order('confidence_score', { ascending: false })
+      .order('created_at', { ascending: false })
+      .limit(10),
     
     // Recent conversations (last 7 days)
     supabase.from('ai_conversations')
@@ -312,6 +323,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
   const messages = messagesData.data || [];
   const diary = diaryData.data || [];
   const memory = memoryData.data || [];
+  const memoryHighlights = aiMemoryHighConfDataResult.data || [];
   const conversations = conversationsData.data || [];
   const actions = actionsData.data || [];
   const tenant = tenantData.data || {};
@@ -445,6 +457,8 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       healthMetrics: {}
     },
     memory: {
+      aiMemoryHighlights: memoryHighlights, // High-confidence facts for snapshot
+      diaryEntriesRecent: diary, // Recent diary entries
       recentConversations: conversations.map((c: any) => ({
         id: c.id,
         agentType: c.agent_type,
