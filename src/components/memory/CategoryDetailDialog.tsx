@@ -14,6 +14,21 @@ import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { EditMemoryDialog } from "./EditMemoryDialog";
 import { cn } from "@/lib/utils";
 
+const QUICK_CATEGORY_OPTIONS = [
+  { id: "personal-identity", label: "Personal Identity" },
+  { id: "health-wellness", label: "Health & Wellness" },
+  { id: "lifestyle-routines", label: "Lifestyle & Routines" },
+  { id: "relationships-social", label: "Relationships" },
+  { id: "career-education", label: "Career & Education" },
+  { id: "hobbies-interests", label: "Hobbies & Interests" },
+  { id: "finance-goals", label: "Finance & Goals" },
+  { id: "creativity-projects", label: "Creativity & Projects" },
+  { id: "travel-experiences", label: "Travel & Experiences" },
+  { id: "learning-growth", label: "Learning & Growth" },
+  { id: "environment-home", label: "Environment & Home" },
+  { id: "values-beliefs", label: "Values & Beliefs" },
+];
+
 interface CategoryDetailDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -35,7 +50,21 @@ export function CategoryDetailDialog({
 }: CategoryDetailDialogProps) {
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [editingMemory, setEditingMemory] = useState<any | null>(null);
-  const { knowledgeItems, deleteKnowledge, isLoading } = useKnowledgeBase("all");
+  const { knowledgeItems, deleteKnowledge, updateKnowledge, isLoading } = useKnowledgeBase("all");
+
+  const handleQuickCategorize = (memory: any, newCategoryId: string) => {
+    const updatedTags = memory.tags
+      .filter((tag: string) => tag !== "general")
+      .concat(newCategoryId);
+    
+    updateKnowledge({
+      id: memory.id,
+      source: memory.source,
+      updates: {
+        tags: updatedTags
+      }
+    });
+  };
 
   // Filter memories by category
   const categoryMemories = knowledgeItems.filter((item) => {
@@ -137,6 +166,23 @@ export function CategoryDetailDialog({
                             </Badge>
                           ))}
                         </div>
+                        {category.id === "general" && (
+                          <div className="mt-3 pt-3 border-t">
+                            <p className="text-xs text-muted-foreground mb-2">Quick categorize:</p>
+                            <div className="flex flex-wrap gap-1">
+                              {QUICK_CATEGORY_OPTIONS.map((cat) => (
+                                <Badge
+                                  key={cat.id}
+                                  variant="outline"
+                                  className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors text-xs"
+                                  onClick={() => handleQuickCategorize(memory, cat.id)}
+                                >
+                                  {cat.label}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         <p className="text-xs text-muted-foreground mt-2">
                           {new Date(memory.createdAt).toLocaleDateString()} •{" "}
                           {memory.source === "ai" ? "Insight" : "Diary"}
