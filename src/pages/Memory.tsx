@@ -13,7 +13,8 @@ import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
 import { LifeCompassPopup } from "@/components/memory/LifeCompassPopup";
 import { MemoryCategoryGrid } from "@/components/memory/MemoryCategoryGrid";
-import { NewsCard } from "@/components/crossover/NewsCard";
+import { MemoryTimelineTab } from "@/components/memory/MemoryTimelineTab";
+import { MemoryEducationTab } from "@/components/memory/MemoryEducationTab";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
@@ -121,7 +122,7 @@ const diaryEntries = [
 ];
 
 export default withScreenId(function Memory() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("categories");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [compassPopupOpen, setCompassPopupOpen] = useState(false);
   
@@ -161,113 +162,23 @@ export default withScreenId(function Memory() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
+            <SplitBarTrigger value="categories">Categories</SplitBarTrigger>
             <SplitBarTrigger value="timeline">Timeline</SplitBarTrigger>
-            <SplitBarTrigger value="diary">Diary</SplitBarTrigger>
+            <SplitBarTrigger value="education">Education</SplitBarTrigger>
           </SplitBarList>
 
-          <SplitBarContent value="overview">
+          <SplitBarContent value="categories">
             <div className="mt-6">
               <MemoryCategoryGrid />
             </div>
           </SplitBarContent>
 
           <SplitBarContent value="timeline">
-            <div className="mt-6">
-              {/* Row 1: Timeline Events (small + small + big) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={timelineEvents[0]?.title || ""}
-                    description={timelineEvents[0]?.description}
-                    imageUrl={timelineEvents[0]?.imageUrl || ""}
-                    category={timelineEvents[0]?.category}
-                    pillar={timelineEvents[0]?.pillar}
-                    author={timelineEvents[0]?.author}
-                    location={timelineEvents[0]?.location}
-                    timestamp={timelineEvents[0]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={timelineEvents[1]?.title || ""}
-                    description={timelineEvents[1]?.description}
-                    imageUrl={timelineEvents[1]?.imageUrl || ""}
-                    category={timelineEvents[1]?.category}
-                    pillar={timelineEvents[1]?.pillar}
-                    author={timelineEvents[1]?.author}
-                    location={timelineEvents[1]?.location}
-                    timestamp={timelineEvents[1]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-6">
-                  <NewsCard
-                    title={timelineEvents[2]?.title || ""}
-                    description={timelineEvents[2]?.description}
-                    imageUrl={timelineEvents[2]?.imageUrl || ""}
-                    category={timelineEvents[2]?.category}
-                    pillar={timelineEvents[2]?.pillar}
-                    author={timelineEvents[2]?.author}
-                    location={timelineEvents[2]?.location}
-                    timestamp={timelineEvents[2]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-              </div>
-
-              <MotivationalBanner variant="partnership" />
-            </div>
+            <MemoryTimelineTab />
           </SplitBarContent>
 
-          <SplitBarContent value="diary">
-            <div className="mt-6">
-              {/* Row 1: Diary Entries (big + small + small) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-6">
-                  <NewsCard
-                    title={diaryEntries[0]?.title || ""}
-                    description={diaryEntries[0]?.description}
-                    imageUrl={diaryEntries[0]?.imageUrl || ""}
-                    category={diaryEntries[0]?.category}
-                    pillar={diaryEntries[0]?.pillar}
-                    author={diaryEntries[0]?.author}
-                    location={diaryEntries[0]?.location}
-                    timestamp={diaryEntries[0]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={diaryEntries[1]?.title || ""}
-                    description={diaryEntries[1]?.description}
-                    imageUrl={diaryEntries[1]?.imageUrl || ""}
-                    category={diaryEntries[1]?.category}
-                    pillar={diaryEntries[1]?.pillar}
-                    author={diaryEntries[1]?.author}
-                    location={diaryEntries[1]?.location}
-                    timestamp={diaryEntries[1]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={diaryEntries[2]?.title || ""}
-                    description={diaryEntries[2]?.description}
-                    imageUrl={diaryEntries[2]?.imageUrl || ""}
-                    category={diaryEntries[2]?.category}
-                    pillar={diaryEntries[2]?.pillar}
-                    author={diaryEntries[2]?.author}
-                    location={diaryEntries[2]?.location}
-                    timestamp={diaryEntries[2]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-              </div>
-
-              <MotivationalBanner variant="guidance" />
-            </div>
+          <SplitBarContent value="education">
+            <MemoryEducationTab />
           </SplitBarContent>
         </SplitBar>
 
