@@ -8,6 +8,8 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AutomationRuleDialog } from "@/components/sharing/AutomationRuleDialog";
+import { TemplateDialog } from "@/components/sharing/TemplateDialog";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Zap, BarChart3, Palette, Plus } from "lucide-react";
