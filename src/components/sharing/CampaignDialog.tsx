@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +37,25 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   const [smartSchedulingEnabled, setSmartSchedulingEnabled] = useState(
     ((editingCampaign?.distribution_config as any)?.smart_scheduling_enabled as boolean) ?? true
   );
+
+  useEffect(() => {
+    if (!open) return;
+    if (editingCampaign) {
+      setName(editingCampaign.name || "");
+      setDescription(editingCampaign.description || "");
+      setSelectedChannels((editingCampaign.target_channels as Record<string, boolean>) || {});
+      setSelectedTemplate(((editingCampaign.distribution_config as any)?.template_id as string) || "custom");
+      setSmartSchedulingEnabled(((editingCampaign.distribution_config as any)?.smart_scheduling_enabled as boolean) ?? true);
+      setStep(1);
+    } else {
+      setName("");
+      setDescription("");
+      setSelectedChannels({});
+      setSelectedTemplate("custom");
+      setSmartSchedulingEnabled(true);
+      setStep(1);
+    }
+  }, [open, editingCampaign]);
 
   const isEditMode = !!editingCampaign;
   const totalSteps = 4;
@@ -135,21 +154,27 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog open={open} onOpenChange={(isOpen) => { if (isOpen) { onOpenChange(true); } else { handleClose(); } }}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {isEditMode ? "Edit Campaign" : "Create New Campaign"}
           </DialogTitle>
           <div className="flex items-center gap-2 mt-4">
-            {Array.from({ length: totalSteps }).map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 flex-1 rounded-full transition-colors ${
-                  i + 1 <= step ? "bg-primary" : "bg-muted"
-                }`}
-              />
-            ))}
+            {Array.from({ length: totalSteps }).map((_, i) => {
+              const current = i + 1;
+              const isActive = current <= step;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setStep(current)}
+                  className={`h-2 flex-1 rounded-full transition-colors focus:outline-none ${isActive ? "bg-primary" : "bg-muted"}`}
+                  aria-label={`Go to step ${current}`}
+                  title={`Go to step ${current}`}
+                />
+              );
+            })}
           </div>
           <p className="text-sm text-muted-foreground mt-2">
             Step {step} of {totalSteps}
