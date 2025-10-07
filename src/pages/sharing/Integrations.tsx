@@ -7,13 +7,16 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useChannels } from "@/hooks/useChannels";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Plug, Store, Plus } from "lucide-react";
 
 export default withScreenId(function Integrations() {
   const [connectPopupOpen, setConnectPopupOpen] = React.useState(false);
+  const { connectedChannels, disconnectChannel, toggleChannel } = useChannels();
 
   return (
     <AppLayout>
@@ -53,9 +56,37 @@ export default withScreenId(function Integrations() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Coming soon: Manage connected channels and services
-                </p>
+                {connectedChannels && connectedChannels.length > 0 ? (
+                  <div className="space-y-2">
+                    {connectedChannels.map((channel) => (
+                      <div key={channel.id} className="flex items-center justify-between p-2 border rounded">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{channel.channel_name}</span>
+                          <span className="text-xs text-muted-foreground">({channel.channel_type})</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Switch
+                            checked={channel.is_active}
+                            onCheckedChange={(checked) => 
+                              toggleChannel.mutate({ channelId: channel.id, isActive: checked })
+                            }
+                          />
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => disconnectChannel.mutate(channel.id)}
+                          >
+                            Disconnect
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    No connected channels yet. Click "Connect Channel" to get started.
+                  </p>
+                )}
               </CardContent>
             </Card>
 

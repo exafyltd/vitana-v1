@@ -103,31 +103,8 @@ export default withScreenId(function Distribution() {
         </div>
       </div>
 
-      {/* Create Rule Popup */}
-      {rulePopupOpen && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-card border border-border rounded-lg shadow-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-semibold mb-4">Create Automation Rule</h2>
-            <p className="text-sm text-muted-foreground mb-4">Automation rule builder coming soon...</p>
-            <Button onClick={() => setRulePopupOpen(false)} className="w-full">
-              Close
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* New Template Popup */}
-      {templatePopupOpen && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-card border border-border rounded-lg shadow-lg max-w-md w-full p-6">
-            <h2 className="text-xl font-semibold mb-4">Create Template</h2>
-            <p className="text-sm text-muted-foreground mb-4">Template builder coming soon...</p>
-            <Button onClick={() => setTemplatePopupOpen(false)} className="w-full">
-              Close
-            </Button>
-          </div>
-        </div>
-      )}
+      <AutomationRuleDialog open={rulePopupOpen} onOpenChange={setRulePopupOpen} />
+      <TemplateDialog open={templatePopupOpen} onOpenChange={setTemplatePopupOpen} />
     </AppLayout>
   );
 }, SCREEN_IDS.SHARING_OVERVIEW);
