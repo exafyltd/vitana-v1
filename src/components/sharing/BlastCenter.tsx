@@ -26,6 +26,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { useScheduledPosts } from "@/hooks/useScheduledPosts";
 import { useChannels, type DistributionChannel } from "@/hooks/useChannels";
+import { useCampaigns } from "@/hooks/useCampaigns";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import { ScheduleDialog } from "./ScheduleDialog";
@@ -45,6 +46,7 @@ export function BlastCenter() {
   const [entityType, setEntityType] = useState<string>("event");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [selectedCampaign, setSelectedCampaign] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null);
   const [showScheduleDialog, setShowScheduleDialog] = useState(false);
   const [pendingPostId, setPendingPostId] = useState<string | null>(null);
@@ -53,6 +55,7 @@ export function BlastCenter() {
   const { createPost, blastNow } = useDistributionPosts();
   const { schedulePost } = useScheduledPosts();
   const { channels, isLoading: channelsLoading } = useChannels();
+  const { campaigns } = useCampaigns();
   
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -125,6 +128,7 @@ export function BlastCenter() {
         entity_type: entityType,
         channels: channelTypes,
         status: "draft",
+        campaign_id: selectedCampaign || null,
       },
       {
         onSuccess: (post) => {
@@ -132,6 +136,7 @@ export function BlastCenter() {
           setTitle("");
           setDescription("");
           setSelectedChannels(new Set());
+          setSelectedCampaign("");
         },
       }
     );
@@ -168,6 +173,7 @@ export function BlastCenter() {
       entity_type: entityType,
       channels: channelTypes,
       status: "draft",
+      campaign_id: selectedCampaign || null,
     });
   };
 
@@ -212,6 +218,7 @@ export function BlastCenter() {
         entity_type: entityType,
         channels: channelTypes,
         status: "draft",
+        campaign_id: selectedCampaign || null,
       },
       {
         onSuccess: (post) => {
@@ -241,6 +248,7 @@ export function BlastCenter() {
           setTitle("");
           setDescription("");
           setSelectedChannels(new Set());
+          setSelectedCampaign("");
           setPendingPostId(null);
           setShowScheduleDialog(false);
         },
@@ -273,6 +281,24 @@ export function BlastCenter() {
               <SelectItem value="group">Group</SelectItem>
               <SelectItem value="live-room">Live Room</SelectItem>
               <SelectItem value="profile">Profile</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Campaign Selector */}
+        <div className="space-y-2">
+          <Label>Campaign (Optional)</Label>
+          <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
+            <SelectTrigger>
+              <SelectValue placeholder="No campaign" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">No campaign</SelectItem>
+              {campaigns?.map((campaign) => (
+                <SelectItem key={campaign.id} value={campaign.id}>
+                  {campaign.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

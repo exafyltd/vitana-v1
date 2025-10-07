@@ -123,6 +123,8 @@ import Rewards from "./pages/wallet/Rewards";
 import Distribution from "./pages/sharing/Distribution";
 import DataConsent from "./pages/sharing/DataConsent";
 import Integrations from "./pages/sharing/Integrations";
+import Campaigns from "./pages/sharing/Campaigns";
+import CampaignDetail from "./pages/sharing/CampaignDetail";
 
 // Memory sub-pages
 import Timeline from "./pages/memory/Timeline";
@@ -484,6 +486,16 @@ const App = () => {
           <Route path="/sharing" element={
             <AuthGuard>
               <Sharing />
+            </AuthGuard>
+          } />
+          <Route path="/sharing/campaigns" element={
+            <AuthGuard>
+              <Campaigns />
+            </AuthGuard>
+          } />
+          <Route path="/sharing/campaigns/:id" element={
+            <AuthGuard>
+              <CampaignDetail />
             </AuthGuard>
           } />
           <Route path="/sharing/distribution" element={

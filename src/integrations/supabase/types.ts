@@ -591,6 +591,7 @@ export type Database = {
       distribution_posts: {
         Row: {
           blast_count: number | null
+          campaign_id: string | null
           channels: Database["public"]["Enums"]["channel_type"][] | null
           content: string
           created_at: string | null
@@ -608,6 +609,7 @@ export type Database = {
         }
         Insert: {
           blast_count?: number | null
+          campaign_id?: string | null
           channels?: Database["public"]["Enums"]["channel_type"][] | null
           content: string
           created_at?: string | null
@@ -625,6 +627,7 @@ export type Database = {
         }
         Update: {
           blast_count?: number | null
+          campaign_id?: string | null
           channels?: Database["public"]["Enums"]["channel_type"][] | null
           content?: string
           created_at?: string | null
@@ -641,6 +644,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "distribution_posts_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "distribution_posts_user_id_fkey"
             columns: ["user_id"]
