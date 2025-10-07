@@ -200,7 +200,7 @@ export function CategoryDetailDialog({
                           size="icon"
                           variant="ghost"
                           className="h-8 w-8 text-destructive"
-                          onClick={() => deleteKnowledge(memory)}
+                          onClick={() => deleteKnowledge({ id: memory.id, source: memory.source })}
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>
