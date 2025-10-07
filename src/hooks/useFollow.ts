@@ -88,22 +88,31 @@ export function useFollow(targetUserId: string): UseFollowReturn {
         },
         async (payload) => {
           console.log('🔔 Target user follower change:', payload);
-          // Refresh follow counts for target user
-          const { data: countsData } = await supabase
-            .rpc('get_user_follow_counts', { user_id_param: targetUserId });
-          if (countsData && typeof countsData === 'object' && countsData !== null) {
-            const counts = countsData as { followers_count: number; following_count: number };
-            setFollowersCount(counts.followers_count || 0);
-            setFollowingCount(counts.following_count || 0);
-          }
           
-          // Also refresh follow status if current user was involved
-          const newFollowerId = (payload.new as any)?.follower_id;
-          const oldFollowerId = (payload.old as any)?.follower_id;
-          if (newFollowerId === user.id || oldFollowerId === user.id) {
-            const { data: statusData } = await supabase
-              .rpc('get_follow_status', { target_user_id: targetUserId });
-            setIsFollowing(statusData || false);
+          try {
+            // Refresh follow counts for target user
+            const { data: countsData, error } = await supabase
+              .rpc('get_user_follow_counts', { user_id_param: targetUserId });
+            
+            if (error) throw error;
+            
+            if (countsData && typeof countsData === 'object' && countsData !== null) {
+              const counts = countsData as { followers_count: number; following_count: number };
+              setFollowersCount(counts.followers_count || 0);
+              setFollowingCount(counts.following_count || 0);
+            }
+            
+            // Also refresh follow status if current user was involved
+            const newFollowerId = (payload.new as any)?.follower_id;
+            const oldFollowerId = (payload.old as any)?.follower_id;
+            if (newFollowerId === user.id || oldFollowerId === user.id) {
+              const { data: statusData } = await supabase
+                .rpc('get_follow_status', { target_user_id: targetUserId });
+              setIsFollowing(statusData || false);
+            }
+          } catch (error) {
+            console.warn('Error in real-time handler, refetching data:', error);
+            await fetchFollowData();
           }
         }
       )
@@ -131,18 +140,26 @@ export function useFollow(targetUserId: string): UseFollowReturn {
             oldFollowingId === targetUserId;
           
           if (isRelevant) {
-            // Refresh follow status immediately
-            const { data: statusData } = await supabase
-              .rpc('get_follow_status', { target_user_id: targetUserId });
-            setIsFollowing(statusData || false);
-            
-            // Refresh counts
-            const { data: countsData } = await supabase
-              .rpc('get_user_follow_counts', { user_id_param: targetUserId });
-            if (countsData && typeof countsData === 'object' && countsData !== null) {
-              const counts = countsData as { followers_count: number; following_count: number };
-              setFollowersCount(counts.followers_count || 0);
-              setFollowingCount(counts.following_count || 0);
+            try {
+              // Refresh follow status immediately
+              const { data: statusData } = await supabase
+                .rpc('get_follow_status', { target_user_id: targetUserId });
+              setIsFollowing(statusData || false);
+              
+              // Refresh counts
+              const { data: countsData, error } = await supabase
+                .rpc('get_user_follow_counts', { user_id_param: targetUserId });
+              
+              if (error) throw error;
+              
+              if (countsData && typeof countsData === 'object' && countsData !== null) {
+                const counts = countsData as { followers_count: number; following_count: number };
+                setFollowersCount(counts.followers_count || 0);
+                setFollowingCount(counts.following_count || 0);
+              }
+            } catch (error) {
+              console.warn('Error in real-time handler, refetching data:', error);
+              await fetchFollowData();
             }
           }
         }

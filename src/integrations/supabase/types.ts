@@ -2848,10 +2848,6 @@ export type Database = {
           transaction_id: string
         }[]
       }
-      refresh_follow_counts: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
       search_global_directory: {
         Args: { search_term: string }
         Returns: {
