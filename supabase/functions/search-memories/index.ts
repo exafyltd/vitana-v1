@@ -25,17 +25,47 @@ serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
-    console.log(`[memory-search] Searching memories for query: "${query}"`);
+    console.log(`[memory-search] Semantic search for query: "${query}"`);
 
-    // Fetch all active memories for the user
-    const { data: memories, error } = await supabase
-      .from('ai_memory')
-      .select('id, memory_type, content, confidence_score, created_at, metadata')
-      .eq('user_id', userId)
-      .eq('is_active', true)
-      .order('confidence_score', { ascending: false });
+    // Generate embedding for the query using Lovable AI
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (!LOVABLE_API_KEY) {
+      throw new Error('LOVABLE_API_KEY not configured');
+    }
 
-    if (error) throw error;
+    const embeddingResponse = await fetch('https://ai.gateway.lovable.dev/v1/embeddings', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'text-embedding-3-small',
+        input: query,
+      }),
+    });
+
+    if (!embeddingResponse.ok) {
+      throw new Error(`Embedding API error: ${embeddingResponse.status}`);
+    }
+
+    const embeddingData = await embeddingResponse.json();
+    const queryEmbedding = embeddingData.data[0].embedding;
+    
+    console.log(`[memory-search] Generated query embedding, length: ${queryEmbedding.length}`);
+
+    // Vector similarity search using pgvector
+    const { data: memories, error } = await supabase.rpc('match_memories', {
+      query_embedding: queryEmbedding,
+      match_threshold: 0.7,
+      match_count: 10,
+      p_user_id: userId
+    });
+
+    if (error) {
+      console.error('[memory-search] Vector search error:', error);
+      throw error;
+    }
 
     if (!memories || memories.length === 0) {
       console.log('[memory-search] No memories found');
@@ -45,65 +75,30 @@ serve(async (req) => {
       );
     }
 
-    // Simple keyword-based relevance scoring
-    const queryLower = query.toLowerCase();
-    const queryKeywords = queryLower
-      .split(/\s+/)
-      .filter(w => w.length >= 3)
-      .filter(w => !['what', 'when', 'where', 'this', 'that', 'with', 'from', 'have'].includes(w));
+    console.log(`[memory-search] Found ${memories.length} semantically similar memories`);
 
-    // Synonym expansion for better matching
-    const synonyms: Record<string, string[]> = {
-      'age': ['birthday', 'born', 'birth', 'year', 'old'],
-      'birthday': ['age', 'born', 'birth', 'date'],
-      'live': ['location', 'address', 'city', 'country', 'residence'],
-      'food': ['eat', 'meal', 'diet', 'nutrition', 'prefer'],
-      'work': ['job', 'career', 'occupation', 'profession'],
-      'name': ['called', 'call'],
-    };
-    
-    // Expand query keywords with synonyms
-    const expandedKeywords = [...queryKeywords];
-    queryKeywords.forEach(keyword => {
-      if (synonyms[keyword]) {
-        expandedKeywords.push(...synonyms[keyword]);
-      }
-    });
-
-    console.log(`[memory-search] Query keywords: ${queryKeywords.join(', ')}`);
-    console.log(`[memory-search] Expanded keywords: ${expandedKeywords.join(', ')}`);
-
-    // Score each memory
+    // Boost recent memories and high-confidence memories
     const scoredMemories = memories.map((memory: any) => {
-      const contentLower = memory.content.toLowerCase();
-      let score = 0;
+      let score = memory.similarity;
 
-      // Keyword matching (use expanded keywords)
-      expandedKeywords.forEach(keyword => {
-        if (contentLower.includes(keyword)) {
-          score += 2;
-        }
-      });
-
-      // Boost recent memories slightly
+      // Boost recent memories
       const daysSinceCreated = (Date.now() - new Date(memory.created_at).getTime()) / (1000 * 60 * 60 * 24);
-      if (daysSinceCreated < 7) score += 0.5;
+      if (daysSinceCreated < 7) score += 0.1;
 
       // Boost high-confidence memories
-      score += (memory.confidence_score || 0.5);
+      score += (memory.confidence_score || 0.5) * 0.1;
 
       return { ...memory, relevance_score: score };
     });
 
-    // Filter and sort by relevance (lowered threshold to 0.5 for better recall)
+    // Sort by final relevance score and take top 5
     const relevantMemories = scoredMemories
-      .filter((m: any) => m.relevance_score > 0.5)
       .sort((a: any, b: any) => b.relevance_score - a.relevance_score)
       .slice(0, 5);
 
-    console.log(`[memory-search] Found ${relevantMemories.length} relevant memories`);
+    console.log(`[memory-search] Returning top ${relevantMemories.length} memories`);
 
-    // Check for contradictions (simple content comparison)
+    // Detect contradictions using semantic similarity between memories
     let hasContradictions = false;
     const contradictions: any[] = [];
 
@@ -112,24 +107,15 @@ serve(async (req) => {
         const mem1 = relevantMemories[i];
         const mem2 = relevantMemories[j];
 
-        // Check if they're about the same topic but have different info
+        // Check if same topic but semantically different
         if (mem1.memory_type === mem2.memory_type) {
-          const sharedKeywords = queryKeywords.filter(kw =>
-            mem1.content.toLowerCase().includes(kw) &&
-            mem2.content.toLowerCase().includes(kw)
-          );
-
-          if (sharedKeywords.length > 0) {
-            // Simple heuristic: if content differs significantly, might be contradiction
-            const similarity = calculateSimilarity(mem1.content, mem2.content);
-            if (similarity < 0.3) {
-              hasContradictions = true;
-              contradictions.push({
-                memory1: { id: mem1.id, content: mem1.content },
-                memory2: { id: mem2.id, content: mem2.content },
-                shared_keywords: sharedKeywords
-              });
-            }
+          const similarity = calculateSimilarity(mem1.content, mem2.content);
+          if (similarity < 0.3) {
+            hasContradictions = true;
+            contradictions.push({
+              memory1: { id: mem1.id, content: mem1.content },
+              memory2: { id: mem2.id, content: mem2.content }
+            });
           }
         }
       }
