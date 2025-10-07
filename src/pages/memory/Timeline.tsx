@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Plus, Loader2, Calendar as CalendarIcon, LayoutList, Grid3x3 } from "lucide-react";
+import { Plus, Loader2, Calendar as CalendarIcon, LayoutList, Grid3x3, Settings } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { TimelineMasterActionPopup } from "@/components/memory/TimelineMasterActionPopup";
+import { HistoryMasterActionPopup } from "@/components/memory/HistoryMasterActionPopup";
 import { ActivityCard } from "@/components/memory/ActivityCard";
 import { ConversationCard } from "@/components/memory/ConversationCard";
 import { PromoteToKnowledgeDialog } from "@/components/memory/PromoteToKnowledgeDialog";
@@ -270,8 +270,8 @@ function Timeline() {
           <ExpandableSearchButton placeholder="Search activity..." />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Add Memory
+            <Settings className="w-4 h-4 mr-2" />
+            Manage History
           </Button>
         </UtilityActionButton>
 
@@ -454,7 +454,7 @@ function Timeline() {
           </TabsContent>
         </Tabs>
 
-        <TimelineMasterActionPopup 
+        <HistoryMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
         />
