@@ -106,7 +106,10 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
   const deleteMutation = useMutation({
     mutationFn: async ({ id, source }: { id: string; source: "ai" | "diary" }) => {
       if (source === "ai") {
-        const { error } = await supabase.from("ai_memory").delete().eq("id", id);
+        const { error } = await supabase
+          .from("ai_memory")
+          .update({ is_active: false, updated_at: new Date().toISOString() })
+          .eq("id", id);
         if (error) throw error;
       } else {
         const { error } = await supabase.from("diary_entries").delete().eq("id", id);
