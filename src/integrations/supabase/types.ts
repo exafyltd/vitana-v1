@@ -53,13 +53,6 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "ai_conversations_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       ai_memory: {
@@ -109,13 +102,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "ai_conversations"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ai_memory_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -241,15 +227,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "automation_rules_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       autopilot_actions: {
         Row: {
@@ -316,13 +294,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "autopilot_actions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -495,15 +466,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "campaigns_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       diary_entries: {
         Row: {
@@ -584,15 +547,7 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "distribution_channels_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       distribution_posts: {
         Row: {
@@ -657,13 +612,6 @@ export type Database = {
             referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "distribution_posts_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       event_attendees: {
@@ -703,15 +651,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "event_attendees_invited_by_fkey"
-            columns: ["invited_by"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       exchange_rates: {
         Row: {
@@ -1188,13 +1128,6 @@ export type Database = {
             referencedRelation: "lab_tests"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "lab_test_orders_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       lab_test_results: {
@@ -1235,13 +1168,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "lab_test_orders"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "lab_test_results_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -1336,15 +1262,7 @@ export type Database = {
           user_id?: string
           version?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "life_compass_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       life_compass_subgoals: {
         Row: {
@@ -1649,20 +1567,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "messages_recipient_id_fkey"
-            columns: ["recipient_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "messages_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-          {
             foreignKeyName: "messages_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
@@ -1772,15 +1676,7 @@ export type Database = {
           type?: Database["public"]["Enums"]["notification_type"]
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "notifications_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       post_analytics: {
         Row: {
@@ -1838,13 +1734,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "distribution_posts"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "post_analytics_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -2013,13 +1902,6 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "profiles_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       push_subscriptions: {
@@ -2144,13 +2026,6 @@ export type Database = {
             referencedRelation: "distribution_posts"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "scheduled_posts_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       templates: {
@@ -2199,15 +2074,7 @@ export type Database = {
           user_id?: string
           variables?: Json | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "templates_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       tenants: {
         Row: {
@@ -2265,13 +2132,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "message_threads"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_thread_participants_user_id"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "thread_participants_thread_id_fkey"
@@ -2382,15 +2242,7 @@ export type Database = {
           session_id?: string | null
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_activity_log_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       user_activity_log_archive: {
         Row: {
@@ -2456,15 +2308,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_api_keys_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       user_context_cache: {
         Row: {
@@ -2488,15 +2332,7 @@ export type Database = {
           id?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_context_cache_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       user_follows: {
         Row: {
@@ -2517,22 +2353,7 @@ export type Database = {
           following_id?: string
           id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_follows_follower_id_fkey"
-            columns: ["follower_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "user_follows_following_id_fkey"
-            columns: ["following_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       user_match_interactions: {
         Row: {
@@ -2628,15 +2449,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_memory_metadata_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       user_supplements: {
         Row: {
@@ -2739,13 +2552,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "wallet_credits_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_follow_counts"
-            referencedColumns: ["user_id"]
           },
         ]
       }
