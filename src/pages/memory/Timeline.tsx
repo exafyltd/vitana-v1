@@ -1,133 +1,146 @@
 import { useState, useRef, useEffect } from "react";
-import { Plus, Loader2, History, Brain } from "lucide-react";
+import { Plus, Loader2, Calendar as CalendarIcon, LayoutList, Grid3x3 } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { TimelineMasterActionPopup } from "@/components/memory/TimelineMasterActionPopup";
 import { ActivityCard } from "@/components/memory/ActivityCard";
 import { ConversationCard } from "@/components/memory/ConversationCard";
-import { KnowledgeCard } from "@/components/memory/KnowledgeCard";
 import { PromoteToKnowledgeDialog } from "@/components/memory/PromoteToKnowledgeDialog";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useActivityHistory } from "@/hooks/useActivityHistory";
-import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MemoryEditDialog } from "@/components/memory/MemoryEditDialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+// Category configuration
+const CATEGORIES = [
+  { filter: "chat", emoji: "💬", label: "Chat" },
+  { filter: "memory", emoji: "🧠", label: "Memory" },
+  { filter: "wallet", emoji: "💰", label: "Wallet" },
+  { filter: "discover", emoji: "❤️", label: "Discover" },
+  { filter: "calendar", emoji: "📅", label: "Calendar" },
+  { filter: "autopilot", emoji: "🤖", label: "Autopilot" },
+  { filter: "health", emoji: "🩺", label: "Health" },
+  { filter: "community", emoji: "👥", label: "Community" },
+];
 
 function Timeline() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [promoteDialogOpen, setPromoteDialogOpen] = useState(false);
-  const [editingKnowledge, setEditingKnowledge] = useState<any>(null);
   const [promotingActivity, setPromotingActivity] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<"activity" | "knowledge">("activity");
-  const [activityFilter, setActivityFilter] = useState<string>("all");
-  const [knowledgeFilter, setKnowledgeFilter] = useState<"all" | "insights" | "diary">("all");
+  const [activeTab, setActiveTab] = useState<"all" | "by-category">("all");
+  const [expandedCategory, setExpandedCategory] = useState<string | undefined>(undefined);
   
-  const activityLoadMoreRef = useRef<HTMLDivElement>(null);
-  const knowledgeLoadMoreRef = useRef<HTMLDivElement>(null);
+  const allLoadMoreRef = useRef<HTMLDivElement>(null);
 
-  // Activity History hook
+  // "All" tab - fetches all activities
   const {
-    allItems,
-    conversationExchanges,
-    logActivities,
-    fetchNextPage: fetchNextActivity,
-    hasNextPage: hasNextActivity,
-    isFetchingNextPage: isFetchingNextActivity,
-    isLoading: isLoadingActivity,
-  } = useActivityHistory(activityFilter);
+    allItems: allActivityItems,
+    conversationExchanges: allConversations,
+    logActivities: allLogActivities,
+    fetchNextPage: fetchNextAll,
+    hasNextPage: hasNextAll,
+    isFetchingNextPage: isFetchingNextAll,
+    isLoading: isLoadingAll,
+  } = useActivityHistory("all");
 
-  // Knowledge Base hook
-  const {
-    knowledgeItems,
-    fetchNextPage: fetchNextKnowledge,
-    hasNextPage: hasNextKnowledge,
-    isFetchingNextPage: isFetchingNextKnowledge,
-    isLoading: isLoadingKnowledge,
-    deleteKnowledge,
-    updateKnowledge,
-    createKnowledge,
-    isUpdating,
-    isCreating,
-  } = useKnowledgeBase(knowledgeFilter);
+  // Category-specific hooks - only active when in "By Category" tab
+  const chatData = useActivityHistory("chat");
+  const memoryData = useActivityHistory("memory");
+  const walletData = useActivityHistory("wallet");
+  const discoverData = useActivityHistory("discover");
+  const calendarData = useActivityHistory("calendar");
+  const autopilotData = useActivityHistory("autopilot");
+  const healthData = useActivityHistory("health");
+  const communityData = useActivityHistory("community");
 
-  // Infinite scroll for Activity History
+  const categoryHooks: Record<string, ReturnType<typeof useActivityHistory>> = {
+    chat: chatData,
+    memory: memoryData,
+    wallet: walletData,
+    discover: discoverData,
+    calendar: calendarData,
+    autopilot: autopilotData,
+    health: healthData,
+    community: communityData,
+  };
+
+  // Infinite scroll for "All" tab
   useEffect(() => {
+    if (activeTab !== "all") return;
+    
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextActivity && !isFetchingNextActivity) {
-          fetchNextActivity();
+        if (entries[0].isIntersecting && hasNextAll && !isFetchingNextAll) {
+          fetchNextAll();
         }
       },
       { threshold: 0.5 }
     );
 
-    if (activityLoadMoreRef.current) {
-      observer.observe(activityLoadMoreRef.current);
+    if (allLoadMoreRef.current) {
+      observer.observe(allLoadMoreRef.current);
     }
 
     return () => observer.disconnect();
-  }, [hasNextActivity, isFetchingNextActivity, fetchNextActivity]);
+  }, [activeTab, hasNextAll, isFetchingNextAll, fetchNextAll]);
 
-  // Infinite scroll for Knowledge Base
+  // Auto-expand most recent category on first load
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextKnowledge && !isFetchingNextKnowledge) {
-          fetchNextKnowledge();
+    if (activeTab === "by-category" && expandedCategory === undefined) {
+      const mostRecent = getMostRecentCategory();
+      setExpandedCategory(mostRecent || "");
+    }
+  }, [activeTab, expandedCategory]);
+
+  const getMostRecentCategory = () => {
+    let mostRecentDate = new Date(0);
+    let mostRecentCategory = "";
+
+    CATEGORIES.forEach(({ filter }) => {
+      const hookData = categoryHooks[filter];
+      if (hookData && hookData.allItems.length > 0) {
+        const latestItem = hookData.allItems[0];
+        const itemDate = new Date(latestItem.createdAt);
+        if (itemDate > mostRecentDate) {
+          mostRecentDate = itemDate;
+          mostRecentCategory = filter;
         }
-      },
-      { threshold: 0.5 }
-    );
+      }
+    });
 
-    if (knowledgeLoadMoreRef.current) {
-      observer.observe(knowledgeLoadMoreRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasNextKnowledge, isFetchingNextKnowledge, fetchNextKnowledge]);
-
-  const handleEditKnowledge = (id: string) => {
-    const knowledge = knowledgeItems.find((k) => k.id === id);
-    if (knowledge) {
-      setEditingKnowledge(knowledge);
-      setEditDialogOpen(true);
-    }
+    return mostRecentCategory;
   };
 
-  const handleDeleteKnowledge = (id: string, source: "ai" | "diary") => {
-    if (confirm("Are you sure you want to delete this knowledge? This action cannot be undone.")) {
-      deleteKnowledge({ id, source });
-    }
+  const getCountLast30Days = (items: any[]) => {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    return items.filter(item => new Date(item.createdAt) >= thirtyDaysAgo).length;
   };
 
-  const handleSaveKnowledge = (data: any) => {
-    if (data.isNew) {
-      createKnowledge(data);
-    } else {
-      updateKnowledge(data);
-    }
-    setEditDialogOpen(false);
-    setEditingKnowledge(null);
-  };
-
-  const handleCreateNew = () => {
-    setEditingKnowledge(null);
-    setEditDialogOpen(true);
+  const getLatestTimestamp = (items: any[]) => {
+    if (items.length === 0) return null;
+    return new Date(items[0].createdAt);
   };
 
   const handlePromoteToKnowledge = (itemId: string) => {
     // Check if it's an exchange or activity
-    const exchange = conversationExchanges.find((ex) => ex.id === itemId);
-    const activity = logActivities.find((a) => a.id === itemId);
+    const exchange = allConversations.find((ex) => ex.id === itemId);
+    const activity = allLogActivities.find((a) => a.id === itemId);
     
     if (exchange) {
       setPromotingActivity(exchange.userMessage);
@@ -179,256 +192,255 @@ function Timeline() {
   };
 
   // Hide deletion log entries from the activity view
-  const activityItems = allItems.filter((i: any) => {
+  const allItems = allActivityItems.filter((i: any) => {
     if (i.itemType === 'activity') {
       return i.activityType !== 'memory.delete';
     }
     return true;
   });
+
+  const renderActivityList = (items: any[], loadMoreRef?: React.RefObject<HTMLDivElement>, hasNext?: boolean, isFetchingNext?: boolean) => {
+    const groupedItems = groupItemsByDate(items);
+    
+    return (
+      <div className="space-y-6">
+        {Object.entries(groupedItems).map(([dateGroup, dateItems]) => (
+          <div key={dateGroup} className="space-y-3">
+            <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
+              {dateGroup}
+            </h3>
+            {dateItems.map((item) => (
+              item.itemType === 'exchange' ? (
+                <ConversationCard
+                  key={item.id}
+                  exchange={item}
+                  onPromote={handlePromoteToKnowledge}
+                />
+              ) : (
+                <ActivityCard 
+                  key={item.id} 
+                  activity={item}
+                  onPromote={handlePromoteToKnowledge}
+                />
+              )
+            ))}
+          </div>
+        ))}
+
+        {loadMoreRef && hasNext && (
+          <div ref={loadMoreRef} className="py-8 flex justify-center">
+            {isFetchingNext && (
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            )}
+          </div>
+        )}
+
+        {loadMoreRef && !hasNext && items.length > 0 && (
+          <p className="text-center text-sm text-muted-foreground py-8">
+            You've reached the beginning of your activity history 📜
+          </p>
+        )}
+      </div>
+    );
+  };
+
   return (
     <AppLayout>
       <SEO 
-        title="Memory Timeline | VITANA" 
-        description="View your complete memory timeline with AI insights and diary entries in chronological order." 
+        title="Activity Timeline | VITANA" 
+        description="Track your activity history across all system interactions in chronological order." 
       />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
         <StandardHeader 
-          title="Memory Systems"
-          description="Track your activity and manage your AI knowledge base"
-          emoji="🧠"
+          title="Activity Timeline"
+          description="Track your activity history across all system interactions"
+          emoji="📜"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search memories..." />
+          <ExpandableSearchButton placeholder="Search activity..." />
           <UniversalCalendarButton />
-          <Button size="sm" onClick={activeTab === "knowledge" ? handleCreateNew : () => setActionPopupOpen(true)}>
+          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            {activeTab === "knowledge" ? "New Knowledge" : "Add Memory"}
+            Add Memory
           </Button>
         </UtilityActionButton>
 
-        {/* Tabs for Activity History and Knowledge Base */}
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "activity" | "knowledge")} className="mt-6">
+        {/* Tabs for All and By Category */}
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "all" | "by-category")} className="mt-6">
           <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="activity" className="flex items-center gap-2">
-              <History className="w-4 h-4" />
-              Activity History
+            <TabsTrigger value="all" className="flex items-center gap-2">
+              <LayoutList className="w-4 h-4" />
+              All
             </TabsTrigger>
-            <TabsTrigger value="knowledge" className="flex items-center gap-2">
-              <Brain className="w-4 h-4" />
-              Knowledge Base
+            <TabsTrigger value="by-category" className="flex items-center gap-2">
+              <Grid3x3 className="w-4 h-4" />
+              By Category
             </TabsTrigger>
           </TabsList>
 
-          {/* Activity History Tab */}
-          <TabsContent value="activity" className="mt-6">
+          {/* All Tab */}
+          <TabsContent value="all" className="mt-6">
             <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
               <p className="text-sm text-blue-700 dark:text-blue-300">
                 📜 <strong>Activity History:</strong> A read-only chronological record of your system usage. This data is NOT used by AI for context.
               </p>
             </div>
 
-            {/* Activity Filter Buttons */}
-            <div className="flex gap-2 mb-4 flex-wrap">
-              <Button 
-                variant={activityFilter === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("all")}
-              >
-                All
-              </Button>
-              <Button 
-                variant={activityFilter === "chat" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("chat")}
-              >
-                💬 Chat
-              </Button>
-              <Button 
-                variant={activityFilter === "memory" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("memory")}
-              >
-                🧠 Memory
-              </Button>
-              <Button 
-                variant={activityFilter === "wallet" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("wallet")}
-              >
-                💰 Wallet
-              </Button>
-              <Button 
-                variant={activityFilter === "discover" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("discover")}
-              >
-                ❤️ Discover
-              </Button>
-              <Button 
-                variant={activityFilter === "calendar" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("calendar")}
-              >
-                📅 Calendar
-              </Button>
-              <Button 
-                variant={activityFilter === "autopilot" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("autopilot")}
-              >
-                🤖 Autopilot
-              </Button>
-              <Button 
-                variant={activityFilter === "health" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("health")}
-              >
-                🩺 Health
-              </Button>
-              <Button 
-                variant={activityFilter === "community" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActivityFilter("community")}
-              >
-                👥 Community
-              </Button>
-            </div>
-
             <div className="max-w-7xl mx-auto">
-              {isLoadingActivity ? (
+              {isLoadingAll ? (
                 <div className="flex items-center justify-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
                 </div>
-              ) : activityItems.length === 0 ? (
-                <Card>
+              ) : allItems.length === 0 ? (
+                <Card className="border-dashed">
                   <CardContent className="p-12 text-center">
-                    <p className="text-muted-foreground">
+                    <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
+                    <p className="text-muted-foreground mb-3">
                       No activity history yet. Start using the system to see your activity!
                     </p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="space-y-6">
-                  {Object.entries(groupItemsByDate(activityItems)).map(([dateGroup, items]) => (
-                    <div key={dateGroup} className="space-y-3">
-                      <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
-                        {dateGroup}
-                      </h3>
-                      {items.map((item) => (
-                        item.itemType === 'exchange' ? (
-                          <ConversationCard
-                            key={item.id}
-                            exchange={item}
-                            onPromote={handlePromoteToKnowledge}
-                          />
-                        ) : (
-                          <ActivityCard 
-                            key={item.id} 
-                            activity={item}
-                            onPromote={handlePromoteToKnowledge}
-                          />
-                        )
-                      ))}
-                    </div>
-                  ))}
-
-                  {hasNextActivity && (
-                    <div ref={activityLoadMoreRef} className="py-8 flex justify-center">
-                      {isFetchingNextActivity && (
-                        <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-                      )}
-                    </div>
-                  )}
-
-                  {!hasNextActivity && activityItems.length > 0 && (
-                    <p className="text-center text-sm text-muted-foreground py-8">
-                      You've reached the beginning of your activity history 📜
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
-          </TabsContent>
-
-          {/* Knowledge Base Tab */}
-          <TabsContent value="knowledge" className="mt-6">
-            <div className="mb-4 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
-              <p className="text-sm text-purple-700 dark:text-purple-300">
-                🧠 <strong>Knowledge Base:</strong> Curated facts and insights that AI uses to provide personalized answers. You can edit, delete, and manage these items.
-              </p>
-            </div>
-
-            {/* Knowledge Filter Buttons */}
-            <div className="flex gap-2 mb-4">
-              <Button 
-                variant={knowledgeFilter === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setKnowledgeFilter("all")}
-              >
-                All
-              </Button>
-              <Button 
-                variant={knowledgeFilter === "insights" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setKnowledgeFilter("insights")}
-              >
-                AI Insights
-              </Button>
-              <Button 
-                variant={knowledgeFilter === "diary" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setKnowledgeFilter("diary")}
-              >
-                Diary Entries
-              </Button>
-            </div>
-
-            <div className="max-w-7xl mx-auto">
-              {isLoadingKnowledge ? (
-                <div className="flex items-center justify-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
-                </div>
-              ) : knowledgeItems.length === 0 ? (
-                <Card>
-                  <CardContent className="p-12 text-center">
-                    <p className="text-muted-foreground mb-4">
-                      No knowledge items yet. Create your first knowledge entry!
-                    </p>
-                    <Button onClick={handleCreateNew}>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Knowledge
+                    <Button variant="outline" size="sm" onClick={() => setActionPopupOpen(true)}>
+                      Add Memory
                     </Button>
                   </CardContent>
                 </Card>
               ) : (
-                <div className="space-y-4">
-                  {knowledgeItems.map((item) => (
-                    <KnowledgeCard
-                      key={item.id}
-                      item={item}
-                      onEdit={handleEditKnowledge}
-                      onDelete={handleDeleteKnowledge}
-                    />
-                  ))}
-
-                  {hasNextKnowledge && (
-                    <div ref={knowledgeLoadMoreRef} className="py-8 flex justify-center">
-                      {isFetchingNextKnowledge && (
-                        <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
-                      )}
-                    </div>
-                  )}
-
-                  {!hasNextKnowledge && knowledgeItems.length > 0 && (
-                    <p className="text-center text-sm text-muted-foreground py-8">
-                      You've reached the end of your knowledge base 🎉
-                    </p>
-                  )}
-                </div>
+                renderActivityList(allItems, allLoadMoreRef, hasNextAll, isFetchingNextAll)
               )}
+            </div>
+          </TabsContent>
+
+          {/* By Category Tab */}
+          <TabsContent value="by-category" className="mt-6">
+            <div className="mb-4 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
+              <p className="text-sm text-purple-700 dark:text-purple-300">
+                📊 <strong>By Category:</strong> Browse your activity organized by system area. Expand any section to view details.
+              </p>
+            </div>
+
+            <div className="max-w-7xl mx-auto">
+              <Accordion 
+                type="single" 
+                collapsible 
+                value={expandedCategory}
+                onValueChange={setExpandedCategory}
+              >
+                {CATEGORIES.map((category) => {
+                  const hookData = categoryHooks[category.filter];
+                  const items = hookData?.allItems.filter((i: any) => {
+                    if (i.itemType === 'activity') {
+                      return i.activityType !== 'memory.delete';
+                    }
+                    return true;
+                  }) || [];
+                  const count = getCountLast30Days(items);
+                  const latestTimestamp = getLatestTimestamp(items);
+                  const isLoading = hookData?.isLoading;
+                  const hasNext = hookData?.hasNextPage;
+                  const isFetchingNext = hookData?.isFetchingNextPage;
+
+                  return (
+                    <AccordionItem key={category.filter} value={category.filter}>
+                      <AccordionTrigger className="hover:no-underline">
+                        <div className="flex items-center justify-between w-full pr-4">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{category.emoji}</span>
+                            <span className="font-medium">{category.label}</span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge variant="outline" className="text-xs">
+                              {count}
+                            </Badge>
+                            {latestTimestamp && (
+                              <span className="text-xs text-muted-foreground hidden sm:inline">
+                                {formatDistanceToNow(latestTimestamp, { addSuffix: true })}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="pt-4">
+                          {isLoading ? (
+                            <div className="flex items-center justify-center py-12">
+                              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                            </div>
+                          ) : items.length === 0 ? (
+                            <Card className="border-dashed">
+                              <CardContent className="p-8 text-center">
+                                <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
+                                <p className="text-muted-foreground mb-3">
+                                  No {category.label} activity yet
+                                </p>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => setActiveTab("all")}
+                                >
+                                  View All Activity
+                                </Button>
+                              </CardContent>
+                            </Card>
+                          ) : (
+                            <div className="space-y-6">
+                              {Object.entries(groupItemsByDate(items)).map(([dateGroup, dateItems]) => (
+                                <div key={dateGroup} className="space-y-3">
+                                  <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
+                                    {dateGroup}
+                                  </h3>
+                                  {dateItems.map((item) => (
+                                    item.itemType === 'exchange' ? (
+                                      <ConversationCard
+                                        key={item.id}
+                                        exchange={item}
+                                        onPromote={handlePromoteToKnowledge}
+                                      />
+                                    ) : (
+                                      <ActivityCard 
+                                        key={item.id} 
+                                        activity={item}
+                                        onPromote={handlePromoteToKnowledge}
+                                      />
+                                    )
+                                  ))}
+                                </div>
+                              ))}
+
+                              {hasNext && (
+                                <div className="py-8 flex justify-center">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => hookData?.fetchNextPage()}
+                                    disabled={isFetchingNext}
+                                  >
+                                    {isFetchingNext ? (
+                                      <>
+                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                        Loading...
+                                      </>
+                                    ) : (
+                                      'Load More'
+                                    )}
+                                  </Button>
+                                </div>
+                              )}
+
+                              {!hasNext && items.length > 0 && (
+                                <p className="text-center text-sm text-muted-foreground py-8">
+                                  You've reached the beginning 📜
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
             </div>
           </TabsContent>
         </Tabs>
@@ -436,14 +448,6 @@ function Timeline() {
         <TimelineMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
-        />
-
-        <MemoryEditDialog
-          open={editDialogOpen}
-          onOpenChange={setEditDialogOpen}
-          memory={editingKnowledge}
-          onSave={handleSaveKnowledge}
-          isSaving={isUpdating || isCreating}
         />
 
         <PromoteToKnowledgeDialog
