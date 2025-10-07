@@ -28,11 +28,15 @@ serve(async (req) => {
     // Get post details
     const { data: post, error: postError } = await supabaseClient
       .from('distribution_posts')
-      .select('*')
+      .select('*, campaign:campaigns(*)')
       .eq('id', postId)
       .single();
 
     if (postError) throw postError;
+
+    if (post.campaign) {
+      console.log('Part of campaign:', post.campaign.name);
+    }
 
     // Get connected channels for this user
     const { data: channels, error: channelsError } = await supabaseClient
@@ -69,6 +73,11 @@ serve(async (req) => {
           sent_count: 1,
           delivered_count: success ? 1 : 0,
           failed_count: success ? 0 : 1,
+          metadata: {
+            campaign_id: post.campaign_id,
+            campaign_name: post.campaign?.name,
+            distributed_at: new Date().toISOString(),
+          }
         }, {
           onConflict: 'post_id,channel_type',
         });
@@ -89,6 +98,10 @@ serve(async (req) => {
         success: true,
         results,
         message: `Post distributed to ${results.length} channels`,
+        campaign: post.campaign ? {
+          id: post.campaign.id,
+          name: post.campaign.name,
+        } : null,
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

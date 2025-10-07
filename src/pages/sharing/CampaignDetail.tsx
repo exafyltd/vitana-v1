@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
@@ -6,18 +7,43 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
-import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Trash2 } from "lucide-react";
+import { useCampaignActions } from "@/hooks/useCampaignActions";
+import { ActivateCampaignDialog } from "@/components/sharing/ActivateCampaignDialog";
+import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle, Archive } from "lucide-react";
 import { format } from "date-fns";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 function CampaignDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { campaigns, isLoading } = useCampaigns();
+  const { campaigns, isLoading, activateCampaign, pauseCampaign, completeCampaign } = useCampaigns();
   const { posts } = useDistributionPosts();
+  const { activateAllPosts } = useCampaignActions();
+  const [showActivateDialog, setShowActivateDialog] = useState(false);
 
   const campaign = campaigns?.find(c => c.id === id);
   const campaignPosts = posts?.filter(p => p.campaign_id === id) || [];
+  const draftPosts = campaignPosts.filter(p => p.status === 'draft');
+
+  const handleActivateCampaign = async (mode: "instant" | "scheduled") => {
+    if (!id) return;
+
+    if (mode === "instant") {
+      await activateAllPosts.mutateAsync(id);
+      await activateCampaign.mutateAsync(id);
+      setShowActivateDialog(false);
+    }
+  };
+
+  const handlePauseCampaign = async () => {
+    if (!id) return;
+    await pauseCampaign.mutateAsync(id);
+  };
+
+  const handleCompleteCampaign = async () => {
+    if (!id) return;
+    await completeCampaign.mutateAsync(id);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -25,6 +51,8 @@ function CampaignDetail() {
         return 'bg-green-500/10 text-green-600 border-green-500/20';
       case 'completed':
         return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
+      case 'paused':
+        return 'bg-orange-500/10 text-orange-600 border-orange-500/20';
       case 'published':
         return 'bg-green-500/10 text-green-600 border-green-500/20';
       case 'scheduled':
@@ -99,9 +127,51 @@ function CampaignDetail() {
               )}
             </div>
             <div className="flex gap-2">
+              {campaign.status === 'draft' && (
+                <Button 
+                  size="sm"
+                  onClick={() => setShowActivateDialog(true)}
+                  disabled={draftPosts.length === 0}
+                >
+                  <Rocket className="w-4 h-4 mr-2" />
+                  Activate Campaign
+                </Button>
+              )}
+              {campaign.status === 'active' && (
+                <>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={handlePauseCampaign}
+                    disabled={pauseCampaign.isPending}
+                  >
+                    <Pause className="w-4 h-4 mr-2" />
+                    Pause
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={handleCompleteCampaign}
+                    disabled={completeCampaign.isPending}
+                  >
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Complete
+                  </Button>
+                </>
+              )}
+              {campaign.status === 'paused' && (
+                <Button 
+                  size="sm"
+                  onClick={() => activateCampaign.mutate(id!)}
+                  disabled={activateCampaign.isPending}
+                >
+                  <Rocket className="w-4 h-4 mr-2" />
+                  Resume
+                </Button>
+              )}
               <Button variant="outline" size="sm">
                 <Edit className="w-4 h-4 mr-2" />
-                Edit Campaign
+                Edit
               </Button>
             </div>
           </div>
@@ -208,6 +278,15 @@ function CampaignDetail() {
           </Card>
         </div>
       </AppLayout>
+
+      <ActivateCampaignDialog
+        open={showActivateDialog}
+        onOpenChange={setShowActivateDialog}
+        onConfirm={handleActivateCampaign}
+        isLoading={activateAllPosts.isPending || activateCampaign.isPending}
+        postsCount={campaignPosts.length}
+        draftCount={draftPosts.length}
+      />
     </>
   );
 }

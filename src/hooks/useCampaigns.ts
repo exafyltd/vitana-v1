@@ -63,10 +63,76 @@ export function useCampaigns() {
     },
   });
 
+  const activateCampaign = useMutation({
+    mutationFn: async (id: string) => {
+      const { data, error } = await supabase
+        .from("campaigns")
+        .update({ status: "active" })
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      toast.success("Campaign activated");
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to activate campaign: ${error.message}`);
+    },
+  });
+
+  const pauseCampaign = useMutation({
+    mutationFn: async (id: string) => {
+      const { data, error } = await supabase
+        .from("campaigns")
+        .update({ status: "paused" })
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      toast.success("Campaign paused");
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to pause campaign: ${error.message}`);
+    },
+  });
+
+  const completeCampaign = useMutation({
+    mutationFn: async (id: string) => {
+      const { data, error } = await supabase
+        .from("campaigns")
+        .update({ status: "completed" })
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      toast.success("Campaign completed");
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to complete campaign: ${error.message}`);
+    },
+  });
+
   return {
     campaigns,
     isLoading,
     createCampaign,
     updateCampaign,
+    activateCampaign,
+    pauseCampaign,
+    completeCampaign,
   };
 }
