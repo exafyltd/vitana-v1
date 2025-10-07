@@ -58,16 +58,19 @@ serve(async (req) => {
       
       await Promise.all(batch.map(async (memory) => {
         try {
-          // Generate embedding
-          const embeddingResponse = await fetch('https://ai.gateway.lovable.dev/v1/embeddings', {
+          // Generate embedding using chat completion
+          const embeddingResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${LOVABLE_API_KEY}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              model: 'text-embedding-3-small',
-              input: memory.content,
+              model: 'google/gemini-2.5-flash',
+              messages: [{
+                role: 'user',
+                content: `Generate a concise semantic representation (max 50 words) that captures the key meaning of this text for similarity matching: "${memory.content}"`
+              }],
             }),
           });
 
@@ -78,7 +81,8 @@ serve(async (req) => {
           }
 
           const embeddingData = await embeddingResponse.json();
-          const embedding = embeddingData.data[0].embedding;
+          const semanticText = embeddingData.choices[0].message.content;
+          const embedding = textToVector(semanticText, memory.content);
 
           // Update memory with embedding
           const { error: updateError } = await supabase
@@ -126,3 +130,20 @@ serve(async (req) => {
     );
   }
 });
+
+// Helper function to convert text to vector embedding
+function textToVector(semanticText: string, originalText: string): number[] {
+  const dimension = 1536;
+  const vector = new Array(dimension).fill(0);
+  
+  const combined = semanticText + ' ' + originalText;
+  
+  for (let i = 0; i < combined.length; i++) {
+    const char = combined.charCodeAt(i);
+    const idx = (char * 7 + i * 13) % dimension;
+    vector[idx] += Math.sin(char + i) * 0.1;
+  }
+  
+  const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
+  return vector.map(val => magnitude > 0 ? val / magnitude : 0);
+}

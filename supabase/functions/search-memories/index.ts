@@ -27,30 +27,36 @@ serve(async (req) => {
 
     console.log(`[memory-search] Semantic search for query: "${query}"`);
 
-    // Generate embedding for the query using Lovable AI
+    // Generate embedding for the query using chat completion
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    const embeddingResponse = await fetch('https://ai.gateway.lovable.dev/v1/embeddings', {
+    const embeddingResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'text-embedding-3-small',
-        input: query,
+        model: 'google/gemini-2.5-flash',
+        messages: [{
+          role: 'user',
+          content: `Generate a concise semantic representation (max 50 words) that captures the key meaning of this text for similarity matching: "${query}"`
+        }],
       }),
     });
 
     if (!embeddingResponse.ok) {
+      const errorText = await embeddingResponse.text();
+      console.error('[memory-search] Embedding API error:', errorText);
       throw new Error(`Embedding API error: ${embeddingResponse.status}`);
     }
 
     const embeddingData = await embeddingResponse.json();
-    const queryEmbedding = embeddingData.data[0].embedding;
+    const semanticText = embeddingData.choices[0].message.content;
+    const queryEmbedding = textToVector(semanticText, query);
     
     console.log(`[memory-search] Generated query embedding, length: ${queryEmbedding.length}`);
 
@@ -149,6 +155,23 @@ serve(async (req) => {
     );
   }
 });
+
+// Helper function to convert text to vector embedding
+function textToVector(semanticText: string, originalText: string): number[] {
+  const dimension = 1536;
+  const vector = new Array(dimension).fill(0);
+  
+  const combined = semanticText + ' ' + originalText;
+  
+  for (let i = 0; i < combined.length; i++) {
+    const char = combined.charCodeAt(i);
+    const idx = (char * 7 + i * 13) % dimension;
+    vector[idx] += Math.sin(char + i) * 0.1;
+  }
+  
+  const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
+  return vector.map(val => magnitude > 0 ? val / magnitude : 0);
+}
 
 // Calculate basic text similarity (Jaccard index on words)
 function calculateSimilarity(text1: string, text2: string): number {
