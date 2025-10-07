@@ -203,12 +203,10 @@ function Timeline() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search memories..." />
           <UniversalCalendarButton />
-          {activeTab === "knowledge" && (
-            <Button size="sm" onClick={handleCreateNew}>
-              <Plus className="w-4 h-4 mr-2" />
-              New Knowledge
-            </Button>
-          )}
+          <Button size="sm" onClick={activeTab === "knowledge" ? handleCreateNew : () => setActionPopupOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            {activeTab === "knowledge" ? "New Knowledge" : "Add Memory"}
+          </Button>
         </UtilityActionButton>
 
         {/* Tabs for Activity History and Knowledge Base */}
