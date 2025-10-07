@@ -6,7 +6,7 @@ interface ProfileStatsProps {
 }
 
 export function ProfileStats({ profile }: ProfileStatsProps) {
-  const { followersCount, followingCount } = useFollow(profile.user_id);
+  const { followersCount, followingCount } = useFollow(profile.id);
   
   return (
     <div className="flex items-center justify-center gap-8 md:gap-12 pt-2 pb-6 border-y border-border/50">
