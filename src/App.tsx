@@ -131,6 +131,7 @@ import Timeline from "./pages/memory/Timeline";
 import Recall from "./pages/memory/Recall";
 import MemoryPermissions from "./pages/memory/Permissions";
 import Diary from "./pages/memory/Diary";
+import BackfillEmbeddings from "./pages/memory/BackfillEmbeddings";
 
 // Admin sub-pages
 import Queue from "./pages/admin/Queue";
@@ -537,6 +538,11 @@ const App = () => {
           <Route path="/memory/permissions" element={
             <AuthGuard>
               <MemoryPermissions />
+            </AuthGuard>
+          } />
+          <Route path="/memory/backfill" element={
+            <AuthGuard>
+              <BackfillEmbeddings />
             </AuthGuard>
           } />
           {/* Patient Role Routes */}
