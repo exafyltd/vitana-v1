@@ -473,21 +473,35 @@ export function useActivityHistory(filterType?: string) {
   const deleteMutation = useMutation({
     mutationFn: async ({ id, type }: { id: string; type: 'conversation' | 'activity' }) => {
       if (type === 'conversation') {
-        // Delete from ai_messages
-        const { error } = await supabase
+        // Delete both the user message (id) and its paired assistant reply (if any)
+        const exchange = conversationExchanges.find(ex => ex.id === id);
+        const idsToDelete = [
+          id,
+          ...(exchange?.assistantMessage?.id ? [exchange.assistantMessage.id] : []),
+        ];
+
+        const { data: deletedRows, error } = await supabase
           .from('ai_messages')
           .delete()
-          .eq('id', id);
-        
+          .in('id', idsToDelete)
+          .select('id');
+
         if (error) throw error;
+        if (!deletedRows || deletedRows.length === 0) {
+          throw new Error('No messages were deleted. You may not have permission.');
+        }
       } else {
         // Delete from user_activity_log
-        const { error } = await supabase
+        const { data: deletedRows, error } = await supabase
           .from('user_activity_log')
           .delete()
-          .eq('id', id);
+          .eq('id', id)
+          .select('id');
         
         if (error) throw error;
+        if (!deletedRows || deletedRows.length === 0) {
+          throw new Error('Nothing deleted.');
+        }
       }
     },
     onSuccess: () => {
