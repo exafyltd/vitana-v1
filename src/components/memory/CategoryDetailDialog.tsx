@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
+import { EditMemoryDialog } from "./EditMemoryDialog";
 import { cn } from "@/lib/utils";
 
 interface CategoryDetailDialogProps {
@@ -33,6 +34,7 @@ export function CategoryDetailDialog({
   onAddMemory,
 }: CategoryDetailDialogProps) {
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+  const [editingMemory, setEditingMemory] = useState<any | null>(null);
   const { knowledgeItems, deleteKnowledge, isLoading } = useKnowledgeBase("all");
 
   // Filter memories by category
@@ -145,10 +147,7 @@ export function CategoryDetailDialog({
                           size="icon"
                           variant="ghost"
                           className="h-8 w-8"
-                          onClick={() => {
-                            // TODO: Implement edit functionality
-                            console.log("Edit memory:", memory.id);
-                          }}
+                          onClick={() => setEditingMemory(memory)}
                         >
                           <Edit2 className="h-3 w-3" />
                         </Button>
@@ -169,6 +168,12 @@ export function CategoryDetailDialog({
           )}
         </ScrollArea>
       </DialogContent>
+
+      <EditMemoryDialog
+        open={!!editingMemory}
+        onOpenChange={(open) => !open && setEditingMemory(null)}
+        memory={editingMemory}
+      />
     </Dialog>
   );
 }

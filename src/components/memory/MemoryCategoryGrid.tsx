@@ -13,6 +13,7 @@ import {
   Settings,
   Sparkles,
   RefreshCw,
+  FolderOpen,
 } from "lucide-react";
 import { MemoryCategoryCard } from "./MemoryCategoryCard";
 import { AddMemoryDialog } from "./AddMemoryDialog";
@@ -34,6 +35,7 @@ const CATEGORY_SUBCATEGORIES: Record<string, string[]> = {
   "values-aspirations": ["Core Beliefs", "Definition of Success", "Legacy", "Spiritual Influences", "Causes", "Gratitude Journal", "Ethical Rules", "Reflections"],
   "autopilot-settings": ["Consent Levels", "Response Tone", "Decision Permissions", "Routine Check Frequency", "Data Visibility", "AI Trust Levels"],
   "future-plans": ["1-Year Goals", "5-Year Plan", "Lifetime Vision", "Bucket List", "Legacy Projects", "Pending Dreams", "AI-Coached Objectives"],
+  "general": ["Miscellaneous", "Needs Categorization"],
 };
 
 const MEMORY_CATEGORIES = [
@@ -132,6 +134,14 @@ const MEMORY_CATEGORIES = [
     gradient: "bg-gradient-to-br from-violet-500 to-purple-500",
     defaultInsight: "Designing your evolution",
     subcategories: CATEGORY_SUBCATEGORIES["future-plans"],
+  },
+  {
+    id: "general",
+    title: "Uncategorized",
+    icon: FolderOpen,
+    gradient: "bg-gradient-to-br from-gray-400 to-gray-600",
+    defaultInsight: "Memories awaiting categorization",
+    subcategories: CATEGORY_SUBCATEGORIES["general"],
   },
 ];
 

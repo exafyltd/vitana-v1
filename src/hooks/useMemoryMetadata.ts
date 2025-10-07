@@ -33,6 +33,7 @@ export const CATEGORY_TARGETS: Record<string, number> = {
   "values-aspirations": 10,
   "autopilot-settings": 5,
   "future-plans": 10,
+  "general": 10,
 };
 
 export function useMemoryMetadata() {
