@@ -1,126 +1,164 @@
 import { useState } from "react";
 import {
-  User,
   Heart,
+  Activity,
   Calendar,
   Briefcase,
   Users,
-  BookOpen,
+  GraduationCap,
   DollarSign,
   MapPin,
-  Globe,
-  Sparkles,
+  Wifi,
+  Target,
   Settings,
-  Sprout,
+  Sparkles,
+  RefreshCw,
 } from "lucide-react";
 import { MemoryCategoryCard } from "./MemoryCategoryCard";
-import { useMemoryMetadata } from "@/hooks/useMemoryMetadata";
-import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
 import { AddMemoryDialog } from "./AddMemoryDialog";
+import { CategoryDetailDialog } from "./CategoryDetailDialog";
+import { Button } from "@/components/ui/button";
+import { useMemoryMetadata } from "@/hooks/useMemoryMetadata";
+import { toast } from "sonner";
+
+const CATEGORY_SUBCATEGORIES: Record<string, string[]> = {
+  "personal-identity": ["Name", "Languages", "Personality", "Strengths", "Life Vision", "Values", "Goals", "Decision Style", "Roles"],
+  "health-wellness": ["Vitana Index", "Biomarkers", "Nutrition", "Sleep", "Exercise", "Hydration", "Stress", "Mental Health", "Doctors", "Supplements", "Preventive Goals"],
+  "lifestyle-routines": ["Morning Routine", "Evening Routine", "Fitness Schedule", "Nutrition Timing", "Travel Patterns", "Hobbies", "Ideal Day", "Environment Preferences"],
+  "business-projects": ["Company", "Role", "Projects", "Goals", "Collaborators", "Investors", "Achievements", "Work Preferences", "Future Opportunities"],
+  "network-relationships": ["Family", "Friends", "Mentors", "Partners", "Clients", "Community Members", "Contact History", "Communication Preferences", "Relationship Health"],
+  "learning-knowledge": ["Skills", "Courses", "Books", "Podcasts", "Knowledge Wishlist", "Inspirations", "Thought Leaders", "Notes", "Quotes"],
+  "finance-assets": ["Income Streams", "Investments", "Expenses", "Budgets", "Goals", "Donations", "Net Worth", "Advisors", "Tax Records", "Subscriptions"],
+  "location-environment": ["Homes", "Offices", "Travel Destinations", "Climate Preferences", "Mobility Profile", "Environmental Sensitivities", "Favorite Places"],
+  "digital-footprint": ["Connected Apps", "Permissions", "Privacy Settings", "API Integrations", "Screen Time", "Cloud Sync", "Forget Settings", "AI Audit Log"],
+  "values-aspirations": ["Core Beliefs", "Definition of Success", "Legacy", "Spiritual Influences", "Causes", "Gratitude Journal", "Ethical Rules", "Reflections"],
+  "autopilot-settings": ["Consent Levels", "Response Tone", "Decision Permissions", "Routine Check Frequency", "Data Visibility", "AI Trust Levels"],
+  "future-plans": ["1-Year Goals", "5-Year Plan", "Lifetime Vision", "Bucket List", "Legacy Projects", "Pending Dreams", "AI-Coached Objectives"],
+};
 
 const MEMORY_CATEGORIES = [
   {
     id: "personal-identity",
     title: "Personal Identity",
-    icon: User,
-    gradient: "bg-gradient-to-br from-purple-500/20 to-pink-500/20",
-    defaultInsight: "Build your personal profile and preferences",
+    icon: Heart,
+    gradient: "bg-gradient-to-br from-pink-500 to-rose-500",
+    defaultInsight: "Building your core identity profile",
+    subcategories: CATEGORY_SUBCATEGORIES["personal-identity"],
   },
   {
     id: "health-wellness",
     title: "Health & Wellness",
-    icon: Heart,
-    gradient: "bg-gradient-to-br from-green-500/20 to-emerald-500/20",
-    defaultInsight: "Track your health journey and wellness data",
+    icon: Activity,
+    gradient: "bg-gradient-to-br from-green-500 to-emerald-500",
+    defaultInsight: "Tracking your vitality and well-being",
+    subcategories: CATEGORY_SUBCATEGORIES["health-wellness"],
   },
   {
     id: "lifestyle-routines",
     title: "Lifestyle & Routines",
     icon: Calendar,
-    gradient: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20",
-    defaultInsight: "Document your daily habits and routines",
+    gradient: "bg-gradient-to-br from-blue-500 to-cyan-500",
+    defaultInsight: "Capturing your daily patterns",
+    subcategories: CATEGORY_SUBCATEGORIES["lifestyle-routines"],
   },
   {
     id: "business-projects",
     title: "Business & Projects",
     icon: Briefcase,
-    gradient: "bg-gradient-to-br from-orange-500/20 to-amber-500/20",
-    defaultInsight: "Manage your professional life and projects",
+    gradient: "bg-gradient-to-br from-purple-500 to-violet-500",
+    defaultInsight: "Mapping your professional journey",
+    subcategories: CATEGORY_SUBCATEGORIES["business-projects"],
   },
   {
     id: "network-relationships",
     title: "Network & Relationships",
     icon: Users,
-    gradient: "bg-gradient-to-br from-pink-500/20 to-rose-500/20",
-    defaultInsight: "Remember important people and connections",
+    gradient: "bg-gradient-to-br from-orange-500 to-amber-500",
+    defaultInsight: "Understanding your social ecosystem",
+    subcategories: CATEGORY_SUBCATEGORIES["network-relationships"],
   },
   {
     id: "learning-knowledge",
     title: "Learning & Knowledge",
-    icon: BookOpen,
-    gradient: "bg-gradient-to-br from-indigo-500/20 to-purple-500/20",
-    defaultInsight: "Store insights and learning experiences",
+    icon: GraduationCap,
+    gradient: "bg-gradient-to-br from-indigo-500 to-blue-500",
+    defaultInsight: "Growing your knowledge base",
+    subcategories: CATEGORY_SUBCATEGORIES["learning-knowledge"],
   },
   {
     id: "finance-assets",
     title: "Finance & Assets",
     icon: DollarSign,
-    gradient: "bg-gradient-to-br from-yellow-500/20 to-green-500/20",
-    defaultInsight: "Track financial goals and resources",
+    gradient: "bg-gradient-to-br from-yellow-500 to-orange-500",
+    defaultInsight: "Building financial clarity",
+    subcategories: CATEGORY_SUBCATEGORIES["finance-assets"],
   },
   {
     id: "location-environment",
     title: "Location & Environment",
     icon: MapPin,
-    gradient: "bg-gradient-to-br from-teal-500/20 to-cyan-500/20",
-    defaultInsight: "Remember places and environments you love",
+    gradient: "bg-gradient-to-br from-teal-500 to-green-500",
+    defaultInsight: "Mapping your physical world",
+    subcategories: CATEGORY_SUBCATEGORIES["location-environment"],
   },
   {
     id: "digital-footprint",
-    title: "Digital Footprint & Data",
-    icon: Globe,
-    gradient: "bg-gradient-to-br from-blue-500/20 to-indigo-500/20",
-    defaultInsight: "Organize your digital presence and data",
+    title: "Digital Footprint",
+    icon: Wifi,
+    gradient: "bg-gradient-to-br from-cyan-500 to-blue-500",
+    defaultInsight: "Managing your digital presence",
+    subcategories: CATEGORY_SUBCATEGORIES["digital-footprint"],
   },
   {
     id: "values-aspirations",
     title: "Values & Aspirations",
-    icon: Sparkles,
-    gradient: "bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20",
-    defaultInsight: "Define what matters most to you",
+    icon: Target,
+    gradient: "bg-gradient-to-br from-red-500 to-pink-500",
+    defaultInsight: "Defining your compass",
+    subcategories: CATEGORY_SUBCATEGORIES["values-aspirations"],
   },
   {
     id: "autopilot-settings",
     title: "Autopilot & Context",
     icon: Settings,
-    gradient: "bg-gradient-to-br from-gray-500/20 to-slate-500/20",
-    defaultInsight: "Configure AI behavior and preferences",
+    gradient: "bg-gradient-to-br from-gray-500 to-slate-500",
+    defaultInsight: "Configuring your AI companion",
+    subcategories: CATEGORY_SUBCATEGORIES["autopilot-settings"],
   },
   {
     id: "future-plans",
-    title: "Future Plans & Evolution",
-    icon: Sprout,
-    gradient: "bg-gradient-to-br from-lime-500/20 to-green-500/20",
-    defaultInsight: "Plan your growth and future goals",
+    title: "Future Plans",
+    icon: Sparkles,
+    gradient: "bg-gradient-to-br from-violet-500 to-purple-500",
+    defaultInsight: "Designing your evolution",
+    subcategories: CATEGORY_SUBCATEGORIES["future-plans"],
   },
 ];
 
 export function MemoryCategoryGrid() {
-  const { metadata, refreshMetadata, isRefreshing, getCategoryProgress } = useMemoryMetadata();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [addMemoryDialogOpen, setAddMemoryDialogOpen] = useState(false);
-  const [selectedCategoryForAdd, setSelectedCategoryForAdd] = useState<string>("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isCategoryDetailOpen, setIsCategoryDetailOpen] = useState(false);
+  const { metadata, isLoading, refreshMetadata, isRefreshing, getCategoryProgress } = useMemoryMetadata();
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategory(categoryId);
+    setIsCategoryDetailOpen(true);
   };
 
-  const handleAddMemory = (categoryId: string) => {
-    const category = MEMORY_CATEGORIES.find(c => c.id === categoryId);
-    setSelectedCategoryForAdd(category?.title || "");
-    setAddMemoryDialogOpen(true);
+  const handleAddMemory = () => {
+    setIsCategoryDetailOpen(false);
+    setIsAddDialogOpen(true);
   };
+
+  const handleRefresh = async () => {
+    await refreshMetadata();
+    toast.success("Memory garden updated!");
+  };
+
+  const selectedCategoryData = MEMORY_CATEGORIES.find(
+    (cat) => cat.id === selectedCategory
+  );
 
   return (
     <div className="space-y-4">
@@ -134,7 +172,7 @@ export function MemoryCategoryGrid() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => refreshMetadata()}
+          onClick={handleRefresh}
           disabled={isRefreshing}
           className="gap-2"
         >
@@ -146,30 +184,39 @@ export function MemoryCategoryGrid() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {MEMORY_CATEGORIES.map((category) => {
           const progress = getCategoryProgress(category.id);
+          const memoryCount = progress?.memoryCount || 0;
+
           return (
             <MemoryCategoryCard
               key={category.id}
               title={category.title}
               icon={category.icon}
               progress={progress?.progress || 0}
-              memoryCount={progress?.memoryCount || 0}
-              insight={
-                progress?.memoryCount
-                  ? `${progress.avgConfidence}% AI confidence · Last updated ${new Date(progress.lastUpdated).toLocaleDateString()}`
-                  : category.defaultInsight
+              memoryCount={memoryCount}
+              insight={progress?.lastUpdated 
+                ? `Last updated ${new Date(progress.lastUpdated).toLocaleDateString()}`
+                : category.defaultInsight
               }
               gradient={category.gradient}
               onClick={() => handleCategoryClick(category.id)}
-              onAdd={() => handleAddMemory(category.id)}
             />
           );
         })}
       </div>
 
+      {selectedCategoryData && (
+        <CategoryDetailDialog
+          open={isCategoryDetailOpen}
+          onOpenChange={setIsCategoryDetailOpen}
+          category={selectedCategoryData}
+          onAddMemory={handleAddMemory}
+        />
+      )}
+
       <AddMemoryDialog
-        open={addMemoryDialogOpen}
-        onOpenChange={setAddMemoryDialogOpen}
-        defaultCategory={selectedCategoryForAdd}
+        open={isAddDialogOpen}
+        onOpenChange={setIsAddDialogOpen}
+        defaultCategory={selectedCategory || undefined}
       />
     </div>
   );

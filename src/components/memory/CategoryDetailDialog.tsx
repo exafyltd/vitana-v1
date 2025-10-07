@@ -1,0 +1,174 @@
+import { useState } from "react";
+import { LucideIcon, Plus, Trash2, Edit2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
+import { cn } from "@/lib/utils";
+
+interface CategoryDetailDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  category: {
+    id: string;
+    title: string;
+    icon: LucideIcon;
+    gradient: string;
+    subcategories: string[];
+  };
+  onAddMemory: () => void;
+}
+
+export function CategoryDetailDialog({
+  open,
+  onOpenChange,
+  category,
+  onAddMemory,
+}: CategoryDetailDialogProps) {
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+  const { knowledgeItems, deleteKnowledge, isLoading } = useKnowledgeBase("all");
+
+  // Filter memories by category
+  const categoryMemories = knowledgeItems.filter((item) => {
+    const tags = item.tags || [];
+    return tags.includes(category.id);
+  });
+
+  // Filter by subcategory if selected
+  const filteredMemories = selectedSubcategory
+    ? categoryMemories.filter((item) => {
+        const tags = item.tags || [];
+        return tags.includes(selectedSubcategory);
+      })
+    : categoryMemories;
+
+  const Icon = category.icon;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0">
+        {/* Header */}
+        <div className={cn("relative overflow-hidden p-6", category.gradient)}>
+          <DialogHeader className="relative z-10">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 rounded-full bg-background/20 backdrop-blur-sm flex items-center justify-center">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <DialogTitle className="text-2xl">{category.title}</DialogTitle>
+                  <p className="text-sm opacity-90 mt-1">
+                    {filteredMemories.length} {filteredMemories.length === 1 ? "memory" : "memories"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={onAddMemory}
+                size="sm"
+                className="gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Add Memory
+              </Button>
+            </div>
+          </DialogHeader>
+        </div>
+
+        {/* Subcategories */}
+        <div className="px-6 py-4 border-b">
+          <div className="flex flex-wrap gap-2">
+            <Badge
+              variant={selectedSubcategory === null ? "default" : "outline"}
+              className="cursor-pointer"
+              onClick={() => setSelectedSubcategory(null)}
+            >
+              All ({categoryMemories.length})
+            </Badge>
+            {category.subcategories.map((sub) => {
+              const count = categoryMemories.filter((item) =>
+                (item.tags || []).includes(sub)
+              ).length;
+              return (
+                <Badge
+                  key={sub}
+                  variant={selectedSubcategory === sub ? "default" : "outline"}
+                  className="cursor-pointer"
+                  onClick={() => setSelectedSubcategory(sub)}
+                >
+                  {sub} ({count})
+                </Badge>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Memories List */}
+        <ScrollArea className="flex-1 px-6 py-4 max-h-[400px]">
+          {isLoading ? (
+            <div className="text-center text-muted-foreground py-8">
+              Loading memories...
+            </div>
+          ) : filteredMemories.length === 0 ? (
+            <div className="text-center text-muted-foreground py-8">
+              <p>No memories yet in this category.</p>
+              <p className="text-sm mt-2">Click "Add Memory" to get started.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {filteredMemories.map((memory) => (
+                <Card key={memory.id} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-start gap-4">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm">{memory.content}</p>
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {memory.tags?.map((tag) => (
+                            <Badge key={tag} variant="secondary" className="text-xs">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {new Date(memory.createdAt).toLocaleDateString()} •{" "}
+                          {memory.source === "ai" ? "Insight" : "Diary"}
+                        </p>
+                      </div>
+                      <div className="flex gap-1">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-8 w-8"
+                          onClick={() => {
+                            // TODO: Implement edit functionality
+                            console.log("Edit memory:", memory.id);
+                          }}
+                        >
+                          <Edit2 className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-8 w-8 text-destructive"
+                          onClick={() => deleteKnowledge(memory)}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+}

@@ -1,4 +1,4 @@
-import { LucideIcon, Plus } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,6 @@ interface MemoryCategoryCardProps {
   insight: string;
   gradient: string;
   onClick: () => void;
-  onAdd: () => void;
 }
 
 export function MemoryCategoryCard({
@@ -22,7 +21,6 @@ export function MemoryCategoryCard({
   insight,
   gradient,
   onClick,
-  onAdd,
 }: MemoryCategoryCardProps) {
   const circumference = 2 * Math.PI * 36; // radius = 36
   const strokeDashoffset = circumference - (progress / 100) * circumference;
@@ -31,23 +29,11 @@ export function MemoryCategoryCard({
     <Card 
       className={cn(
         "relative overflow-hidden cursor-pointer transition-all duration-300",
-        "hover:shadow-lg hover:scale-[1.02] group"
+        "hover:shadow-lg hover:scale-[1.02]"
       )}
       onClick={onClick}
     >
       <div className={cn("absolute inset-0 opacity-10", gradient)} />
-      
-      <Button
-        size="icon"
-        variant="ghost"
-        className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity z-10"
-        onClick={(e) => {
-          e.stopPropagation();
-          onAdd();
-        }}
-      >
-        <Plus className="h-4 w-4" />
-      </Button>
 
       <CardContent className="p-6 relative">
         <div className="flex items-start gap-4">
