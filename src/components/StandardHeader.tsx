@@ -36,7 +36,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
             </h1>
             <p className="text-muted-foreground truncate">{description}</p>
             {syncTimestamp && (
-              <p className="text-[10px] text-muted-foreground/60 absolute bottom-2 right-3">
+              <p className="text-[10px] text-muted-foreground/80 absolute bottom-2 right-3">
                 {syncTimestamp}
               </p>
             )}

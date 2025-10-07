@@ -144,6 +144,10 @@ export default withScreenId(function Memory() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search memories, insights, or timeline..." />
           <UniversalCalendarButton />
+          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Add Memory
+          </Button>
           <Button 
             size="sm" 
             variant="outline"
@@ -151,10 +155,6 @@ export default withScreenId(function Memory() {
           >
             <Target className="w-4 h-4 mr-2" />
             Life Compass
-          </Button>
-          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Add Memory
           </Button>
         </UtilityActionButton>
 
