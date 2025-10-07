@@ -14,6 +14,7 @@ import { useCommunityMembers } from "@/hooks/useCommunityMembers";
 import { useWallet } from "@/hooks/useWallet";
 import { CreditCard, Coins, DollarSign, Send, CheckCircle, AlertCircle, Wallet, Search, Users } from "lucide-react";
 import { getCurrencyIcon } from "@/lib/currencies";
+import { useActivityLogger } from "@/hooks/useActivityLogger";
 
 interface MakePaymentPopupProps {
   isOpen: boolean;
@@ -47,6 +48,7 @@ export default function MakePaymentPopup({
   const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
   const { members, loading: membersLoading, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
   const { transferFunds, balances } = useWallet();
+  const { logActivity } = useActivityLogger();
 
   const canAfford = () => {
     const paymentAmount = parseFloat(amount) || 0;
@@ -104,6 +106,20 @@ export default function MakePaymentPopup({
     try {
       // Perform actual wallet transfer
       await transferFunds(selectedRecipient.id, currency.toUpperCase() as 'CREDITS' | 'USD' | 'VTN', parseFloat(amount));
+
+      // Log wallet transfer activity
+      await logActivity({
+        activityType: 'wallet.transfer',
+        activityData: {
+          amount: parseFloat(amount),
+          currency: currency.toUpperCase(),
+          recipient_id: selectedRecipient.id,
+          recipient_name: selectedRecipient.name,
+          description,
+          paymentType,
+        },
+        dedupeKey: `wallet-transfer-${Date.now()}`,
+      });
 
       // Send notification message
       await sendMessage(

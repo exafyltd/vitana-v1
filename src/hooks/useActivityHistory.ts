@@ -360,8 +360,7 @@ export function useActivityHistory(filterType?: string) {
         .range(pageParam * ITEMS_PER_PAGE, (pageParam + 1) * ITEMS_PER_PAGE - 1);
 
       // Apply filter if specified
-      // Exclude chat.message from logs since they're already in ai_messages
-      logQuery = logQuery.not('activity_type', 'like', 'chat.%');
+      // Note: No longer excluding chat.% - let all activities through!
       
       if (filterType && filterType !== 'all' && filterType !== 'chat') {
         logQuery = logQuery.like("activity_type", `${filterType}.%`);
@@ -373,6 +372,8 @@ export function useActivityHistory(filterType?: string) {
 
       if (messagesResult.error) throw messagesResult.error;
       if (logsResult.error) throw logsResult.error;
+
+      console.log(`[ActivityHistory] Fetched ${messagesResult.data?.length || 0} AI messages, ${logsResult.data?.length || 0} activity logs`);
 
       // Transform ai_messages into activities
       const messageActivities: ActivityHistoryItem[] = (messagesResult.data || []).map((msg) => ({

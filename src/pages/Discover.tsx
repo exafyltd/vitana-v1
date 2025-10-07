@@ -39,6 +39,7 @@ import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { useActivityLogger } from "@/hooks/useActivityLogger";
 
 export default withScreenId(function Discover() {
   const navigate = useNavigate();
@@ -47,6 +48,16 @@ export default withScreenId(function Discover() {
   const [isOrderPopupOpen, setIsOrderPopupOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const { logActivity } = useActivityLogger();
+
+  // Log discover page view
+  useEffect(() => {
+    logActivity({
+      activityType: 'discover.view',
+      activityData: { page: 'overview' },
+      dedupeKey: `discover-view-${Date.now()}`,
+    });
+  }, []);
 
   useEffect(() => {
     fetchLabTests();
@@ -70,6 +81,17 @@ export default withScreenId(function Discover() {
   const handleOrderLabTest = (labTest) => {
     setSelectedLabTest(labTest);
     setIsOrderPopupOpen(true);
+    
+    // Log lab test order view
+    logActivity({
+      activityType: 'health.lab_test.view',
+      activityData: {
+        test_id: labTest.id,
+        test_name: labTest.name,
+        category: labTest.category,
+      },
+      dedupeKey: `lab-test-view-${labTest.id}-${Date.now()}`,
+    });
   };
 
   const filteredLabTests = labTests.filter(test => {

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useFollow } from "@/hooks/useFollow";
 import { useProfileShare } from "@/hooks/useProfileShare";
 import { ProfileShareSheet } from "./ProfileShareSheet";
+import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import {
   Tooltip,
   TooltipContent,
@@ -34,6 +35,17 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const { toast } = useToast();
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
+  const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
+
+  const handleFollowClick = async () => {
+    if (isFollowing) {
+      await unfollowUser();
+      logUnfollow(profile.id, profile.name);
+    } else {
+      await followUser();
+      logFollow(profile.id, profile.name);
+    }
+  };
 
   // Determine if profile is public
   const isPublicProfile = profile.visibility?.indexPublic !== false;
@@ -59,6 +71,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
     try {
       const thread = await createThread([profile.id]);
       if (thread?.id) {
+        logMessageSend(thread.id, 'direct', 'global');
         navigate('/inbox/direct', { state: { selectedThreadId: thread.id } });
       }
     } catch (error) {
@@ -189,7 +202,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
               <Button 
                 variant={isFollowing ? "secondary" : "default"} 
                 className="rounded-full"
-                onClick={isFollowing ? unfollowUser : followUser}
+                onClick={handleFollowClick}
                 disabled={followLoading}
               >
                 <UserPlus className="h-4 w-4 mr-2" />

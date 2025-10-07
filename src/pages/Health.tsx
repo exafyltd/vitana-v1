@@ -20,6 +20,7 @@ import AutopilotWidget from "@/components/health/AutopilotWidget";
 import { StackedCardList } from "@/components/ui/stacked-card-list";
 import HealthCoachChat from "@/components/health/HealthCoachChat";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
+import { useHealthLogger } from "@/hooks/useHealthLogger";
 
 import { healthNavigation } from "@/config/navigation";
 

@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/hooks/useMessages";
 import { ArrowRight, ArrowUpDown, Send, Zap, DollarSign, Coins, CreditCard } from "lucide-react";
 import { calculateExchange, formatCurrency, getCurrencySymbol } from "@/lib/exchangeRates";
+import { useActivityLogger } from "@/hooks/useActivityLogger";
 
 interface ExchangeAndSendPopupProps {
   isOpen: boolean;
@@ -41,6 +42,7 @@ export default function ExchangeAndSendPopup({
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
   const { sendMessage } = useMessages(undefined, false);
+  const { logActivity } = useActivityLogger();
 
   const currencies = [
     { value: 'USD', label: 'US Dollars', icon: DollarSign },
@@ -124,6 +126,20 @@ export default function ExchangeAndSendPopup({
         transactionId: `EXS_${Date.now()}`,
         type: "exchange_and_send"
       };
+
+      // Log exchange activity
+      await logActivity({
+        activityType: 'wallet.exchange',
+        activityData: {
+          from_amount: calculation.fromAmount,
+          from_currency: fromCurrency.toUpperCase(),
+          to_amount: calculation.total,
+          to_currency: toCurrency.toUpperCase(),
+          exchange_rate: calculation.rate,
+          fees: calculation.fees,
+        },
+        dedupeKey: `wallet-exchange-${Date.now()}`,
+      });
 
       await sendMessage(
         `💱➡️ Exchange & Send: ${formatCurrency(calculation.fromAmount, fromCurrency)} → ${formatCurrency(calculation.total, toCurrency)} - ${description}`,

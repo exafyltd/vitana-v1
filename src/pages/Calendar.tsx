@@ -2,12 +2,24 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar as CalendarIcon, Clock, Users, Bell, ChevronRight, AlertCircle, CheckCircle, Plus, Target, TrendingUp } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Calendar as CalendarIcon, Clock, Users, Bell, ChevronRight, AlertCircle, CheckCircle, Plus, Target, TrendingUp } from "lucide-react";
+import { useActivityLogger } from "@/hooks/useActivityLogger";
+import { useEffect } from "react";
 
 export default function Calendar() {
   const navigate = useNavigate();
+  const { logActivity } = useActivityLogger();
+
+  // Log calendar view on mount
+  useEffect(() => {
+    logActivity({
+      activityType: 'calendar.view',
+      activityData: { page: 'overview' },
+      dedupeKey: `calendar-view-${Date.now()}`,
+    });
+  }, []);
 
   const currentDate = new Date();
   const todayFormatted = currentDate.toLocaleDateString('en-US', { 

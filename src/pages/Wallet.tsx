@@ -33,6 +33,7 @@ import { walletNavigation } from "@/config/navigation";
 import { useWallet } from "@/hooks/useWallet";
 import { useAuth } from "@/context/AuthProvider";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
+import { useActivityLogger } from "@/hooks/useActivityLogger";
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -90,6 +91,7 @@ export default function Wallet() {
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
   const { user } = useAuth();
   const { requestPopup, clearPopup } = usePopupCoordination();
+  const { logActivity } = useActivityLogger();
 
   // Handle opening specific wallet actions
   const handleWalletAction = async (actionType: string, currency?: string) => {
