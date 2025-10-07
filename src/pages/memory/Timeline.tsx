@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Plus, Loader2, Calendar as CalendarIcon, LayoutList, Grid3x3, Settings } from "lucide-react";
+import { Plus, Loader2, Calendar as CalendarIcon, LayoutList, Grid3x3 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -270,7 +270,7 @@ function Timeline() {
           <ExpandableSearchButton placeholder="Search activity..." />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Settings className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 mr-2" />
             Manage History
           </Button>
         </UtilityActionButton>
