@@ -60,9 +60,8 @@ export function CategoryDetailDialog({
     updateKnowledge({
       id: memory.id,
       source: memory.source,
-      updates: {
-        tags: updatedTags
-      }
+      content: memory.content,
+      tags: updatedTags
     });
   };
 
