@@ -666,7 +666,7 @@ serve(async (req) => {
         timestamp: new Date().toISOString()
       }
     }).then(async (result) => {
-      console.log('User message stored with input_method:', audio ? 'voice' : 'text');
+      console.log('[activity] User message stored, logging to activity table');
       
       // Also log to activity log for timeline
       const { error: logError } = await supabaseClient.from('user_activity_log').insert({
