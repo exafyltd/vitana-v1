@@ -1144,6 +1144,97 @@ export type Database = {
         }
         Relationships: []
       }
+      life_compass: {
+        Row: {
+          ai_summary: string | null
+          alignment_score: number | null
+          category: string
+          confidence_score: number | null
+          created_at: string
+          id: string
+          is_active: boolean
+          primary_goal: string
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          ai_summary?: string | null
+          alignment_score?: number | null
+          category?: string
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          primary_goal: string
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          ai_summary?: string | null
+          alignment_score?: number | null
+          category?: string
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          primary_goal?: string
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "life_compass_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      life_compass_subgoals: {
+        Row: {
+          compass_id: string
+          created_at: string
+          description: string | null
+          id: string
+          priority: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          compass_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          priority?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          compass_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          priority?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "life_compass_subgoals_compass_id_fkey"
+            columns: ["compass_id"]
+            isOneToOne: false
+            referencedRelation: "life_compass"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       match_notifications: {
         Row: {
           created_at: string
@@ -2300,6 +2391,44 @@ export type Database = {
           user_id_2?: string
         }
         Relationships: []
+      }
+      user_memory_metadata: {
+        Row: {
+          category_progress: Json | null
+          created_at: string
+          id: string
+          last_ai_sync_at: string | null
+          total_memories_count: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category_progress?: Json | null
+          created_at?: string
+          id?: string
+          last_ai_sync_at?: string | null
+          total_memories_count?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category_progress?: Json | null
+          created_at?: string
+          id?: string
+          last_ai_sync_at?: string | null
+          total_memories_count?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_memory_metadata_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_follow_counts"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       user_supplements: {
         Row: {
