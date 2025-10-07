@@ -300,6 +300,39 @@ export function BlastCenter() {
               ))}
             </SelectContent>
           </Select>
+          
+          {/* Campaign Hints */}
+          {selectedCampaign && campaigns && (() => {
+            const campaign = campaigns.find(c => c.id === selectedCampaign);
+            if (!campaign) return null;
+            
+            const distributionConfig = campaign.distribution_config as any;
+            const targetChannels = campaign.target_channels as Record<string, boolean>;
+            const selectedChannelKeys = Object.entries(targetChannels || {})
+              .filter(([_, selected]) => selected)
+              .map(([key]) => key);
+            
+            return (
+              <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 space-y-2">
+                <p className="text-sm font-medium">📊 Campaign: {campaign.name}</p>
+                {distributionConfig?.frequency && (
+                  <p className="text-xs text-muted-foreground">
+                    Frequency: {distributionConfig.frequency}
+                  </p>
+                )}
+                {distributionConfig?.smart_scheduling_enabled && (
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <span>✨</span> Smart scheduling enabled
+                  </p>
+                )}
+                {selectedChannelKeys.length > 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    Channels: {selectedChannelKeys.join(", ")}
+                  </p>
+                )}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Content Editor */}

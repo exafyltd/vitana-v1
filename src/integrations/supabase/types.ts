@@ -456,36 +456,42 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          distribution_config: Json | null
           end_date: string | null
           id: string
           metadata: Json | null
           name: string
           start_date: string | null
           status: string
+          target_channels: Json | null
           updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
           description?: string | null
+          distribution_config?: Json | null
           end_date?: string | null
           id?: string
           metadata?: Json | null
           name: string
           start_date?: string | null
           status?: string
+          target_channels?: Json | null
           updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
           description?: string | null
+          distribution_config?: Json | null
           end_date?: string | null
           id?: string
           metadata?: Json | null
           name?: string
           start_date?: string | null
           status?: string
+          target_channels?: Json | null
           updated_at?: string
           user_id?: string
         }
