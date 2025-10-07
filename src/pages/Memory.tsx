@@ -12,6 +12,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
 import { LifeCompassPopup } from "@/components/memory/LifeCompassPopup";
+import { MemoryCategoryGrid } from "@/components/memory/MemoryCategoryGrid";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -167,50 +168,7 @@ export default withScreenId(function Memory() {
 
           <SplitBarContent value="overview">
             <div className="mt-6">
-              {/* Row 1: Recent Memories (big + small + small) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-6">
-                  <NewsCard
-                    title={recentMemories[0]?.title || ""}
-                    description={recentMemories[0]?.description}
-                    imageUrl={recentMemories[0]?.imageUrl || ""}
-                    category={recentMemories[0]?.category}
-                    pillar={recentMemories[0]?.pillar}
-                    author={recentMemories[0]?.author}
-                    location={recentMemories[0]?.location}
-                    timestamp={recentMemories[0]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={recentMemories[1]?.title || ""}
-                    description={recentMemories[1]?.description}
-                    imageUrl={recentMemories[1]?.imageUrl || ""}
-                    category={recentMemories[1]?.category}
-                    pillar={recentMemories[1]?.pillar}
-                    author={recentMemories[1]?.author}
-                    location={recentMemories[1]?.location}
-                    timestamp={recentMemories[1]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={recentMemories[2]?.title || ""}
-                    description={recentMemories[2]?.description}
-                    imageUrl={recentMemories[2]?.imageUrl || ""}
-                    category={recentMemories[2]?.category}
-                    pillar={recentMemories[2]?.pillar}
-                    author={recentMemories[2]?.author}
-                    location={recentMemories[2]?.location}
-                    timestamp={recentMemories[2]?.timestamp}
-                    className="h-full"
-                  />
-                </div>
-              </div>
-
-              <MotivationalBanner variant="encouragement" />
+              <MemoryCategoryGrid />
             </div>
           </SplitBarContent>
 
