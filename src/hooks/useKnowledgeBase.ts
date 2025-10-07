@@ -238,13 +238,33 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
         });
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("diary_entries").insert({
+        const { data: diaryEntry, error } = await supabase.from("diary_entries").insert({
           user_id: session.session.user.id,
           text: data.content,
           source: "manual",
           tags: data.tags || ["diary"],
-        });
+        }).select().single();
+        
         if (error) throw error;
+
+        // Auto-extract insights from diary entry (non-blocking)
+        if (diaryEntry?.id && data.content) {
+          console.log('[diary-insights] Triggering auto-extraction for diary entry:', diaryEntry.id);
+          supabase.functions.invoke('extract-diary-insights', {
+            body: {
+              diaryEntryId: diaryEntry.id,
+              content: data.content
+            }
+          }).then((result) => {
+            if (result.data?.success && result.data.insightsCount > 0) {
+              console.log(`[diary-insights] ✓ Auto-extracted ${result.data.insightsCount} insights`);
+              // Invalidate knowledge base to show new insights
+              queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
+            }
+          }).catch((err) => {
+            console.error('[diary-insights] Auto-extraction failed:', err);
+          });
+        }
       }
     },
     onSuccess: (data, variables) => {

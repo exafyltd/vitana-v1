@@ -23,3 +23,6 @@ verify_jwt = true
 
 [functions.reinforce-memory]
 verify_jwt = true
+
+[functions.extract-diary-insights]
+verify_jwt = true
