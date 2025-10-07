@@ -98,6 +98,7 @@ export function useFollow(targetUserId: string): UseFollowReturn {
             
             if (countsData && typeof countsData === 'object' && countsData !== null) {
               const counts = countsData as { followers_count: number; following_count: number };
+              console.log('📊 Updated follower counts:', counts);
               setFollowersCount(counts.followers_count || 0);
               setFollowingCount(counts.following_count || 0);
             }
@@ -111,12 +112,21 @@ export function useFollow(targetUserId: string): UseFollowReturn {
               setIsFollowing(statusData || false);
             }
           } catch (error) {
-            console.warn('Error in real-time handler, refetching data:', error);
+            console.warn('⚠️ Error in real-time handler, refetching data:', error);
             await fetchFollowData();
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('🔌 Target followers channel status:', status);
+        if (status === 'SUBSCRIBED') {
+          console.log('✅ Successfully subscribed to target followers updates');
+        } else if (status === 'TIMED_OUT') {
+          console.error('⏱️ Target followers subscription timed out');
+        } else if (status === 'CLOSED') {
+          console.log('🔴 Target followers subscription closed');
+        }
+      });
 
     // SUBSCRIPTION 2: Watch current user's following list (when YOU follow someone)
     const currentUserFollowingChannel = supabase
@@ -140,6 +150,7 @@ export function useFollow(targetUserId: string): UseFollowReturn {
             oldFollowingId === targetUserId;
           
           if (isRelevant) {
+            console.log('🎯 Change affects target user, updating...');
             try {
               // Refresh follow status immediately
               const { data: statusData } = await supabase
@@ -154,17 +165,27 @@ export function useFollow(targetUserId: string): UseFollowReturn {
               
               if (countsData && typeof countsData === 'object' && countsData !== null) {
                 const counts = countsData as { followers_count: number; following_count: number };
+                console.log('📊 Updated counts for target:', counts);
                 setFollowersCount(counts.followers_count || 0);
                 setFollowingCount(counts.following_count || 0);
               }
             } catch (error) {
-              console.warn('Error in real-time handler, refetching data:', error);
+              console.warn('⚠️ Error in real-time handler, refetching data:', error);
               await fetchFollowData();
             }
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('🔌 Current user following channel status:', status);
+        if (status === 'SUBSCRIBED') {
+          console.log('✅ Successfully subscribed to current user following updates');
+        } else if (status === 'TIMED_OUT') {
+          console.error('⏱️ Current user following subscription timed out');
+        } else if (status === 'CLOSED') {
+          console.log('🔴 Current user following subscription closed');
+        }
+      });
 
     return () => {
       supabase.removeChannel(targetFollowersChannel);
