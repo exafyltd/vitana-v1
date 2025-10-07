@@ -1,0 +1,385 @@
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { VoiceRecorder } from "@/components/ui/voice-recorder";
+import { Mic, Type, Camera, X, Loader2 } from "lucide-react";
+import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+
+interface AddMemoryDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  defaultCategory?: string;
+}
+
+type InputMode = "text" | "voice" | "photo";
+
+const MEMORY_CATEGORIES = [
+  "Personal Identity",
+  "Health & Wellness", 
+  "Relationships",
+  "Career & Goals",
+  "Values & Beliefs",
+  "Life Events",
+  "Skills & Knowledge",
+  "Preferences",
+  "Emotions & Mental State",
+  "Habits & Routines",
+  "Environment",
+  "Financial"
+];
+
+export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemoryDialogProps) {
+  const [inputMode, setInputMode] = useState<InputMode>("text");
+  const [content, setContent] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(defaultCategory || "");
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const { createKnowledge, isCreating } = useKnowledgeBase();
+  const { toast } = useToast();
+
+  const handleVoiceRecordingComplete = async (audioBlob: Blob, duration: number) => {
+    const file = new File([audioBlob], `voice-diary-${Date.now()}.webm`, {
+      type: audioBlob.type
+    });
+    setAudioFile(file);
+    setIsRecording(false);
+    
+    // Auto-generate content placeholder
+    setContent(`Voice recording (${Math.round(duration)}s) - Transcription pending...`);
+    
+    toast({
+      title: "Voice Recorded",
+      description: `${Math.round(duration)} seconds captured. Add details or save now.`
+    });
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid File",
+        description: "Please select an image file",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    setInputMode("photo");
+  };
+
+  const handleSubmit = async () => {
+    if (!content.trim() && !audioFile && !imageFile) {
+      toast({
+        title: "Empty Memory",
+        description: "Please add some content to your memory",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const tags = [selectedCategory || "general", "diary"];
+      
+      // If there's media, upload it first
+      if (audioFile || imageFile) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("Not authenticated");
+
+        const file = audioFile || imageFile!;
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+        const bucket = audioFile ? 'voice-diaries' : 'memory-photos';
+
+        const { error: uploadError } = await supabase.storage
+          .from(bucket)
+          .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from(bucket)
+          .getPublicUrl(fileName);
+
+        // Create memory with media reference
+        createKnowledge({
+          content: content || (audioFile ? "Voice diary entry" : "Photo memory"),
+          source: "diary",
+          tags: [...tags, audioFile ? "voice" : "photo"],
+          metadata: {
+            mediaUrl: publicUrl,
+            mediaType: audioFile ? "audio" : "image",
+            duration: audioFile ? undefined : null
+          }
+        });
+      } else {
+        // Text-only memory
+        createKnowledge({
+          content,
+          source: "diary",
+          tags
+        });
+      }
+
+      // Reset form
+      setContent("");
+      setSelectedCategory("");
+      setAudioFile(null);
+      setImageFile(null);
+      setImagePreview(null);
+      setInputMode("text");
+      onOpenChange(false);
+
+      toast({
+        title: "Memory Saved",
+        description: "Your memory has been added to your knowledge base"
+      });
+    } catch (error) {
+      console.error("Error saving memory:", error);
+      toast({
+        title: "Save Failed",
+        description: error instanceof Error ? error.message : "Failed to save memory",
+        variant: "destructive"
+      });
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold">Add Memory</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-6 py-4">
+          {/* Input Mode Selector */}
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant={inputMode === "text" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setInputMode("text")}
+              className="flex-1"
+            >
+              <Type className="w-4 h-4 mr-2" />
+              Text
+            </Button>
+            <Button
+              type="button"
+              variant={inputMode === "voice" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setInputMode("voice")}
+              className="flex-1"
+            >
+              <Mic className="w-4 h-4 mr-2" />
+              Voice
+            </Button>
+            <Button
+              type="button"
+              variant={inputMode === "photo" ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                setInputMode("photo");
+                document.getElementById('image-upload')?.click();
+              }}
+              className="flex-1"
+            >
+              <Camera className="w-4 h-4 mr-2" />
+              Photo
+            </Button>
+          </div>
+
+          {/* Category Selection */}
+          <div className="space-y-2">
+            <Label>Category (Optional)</Label>
+            <div className="flex flex-wrap gap-2">
+              {MEMORY_CATEGORIES.map((cat) => (
+                <Badge
+                  key={cat}
+                  variant={selectedCategory === cat ? "default" : "outline"}
+                  className="cursor-pointer"
+                  onClick={() => setSelectedCategory(cat === selectedCategory ? "" : cat)}
+                >
+                  {cat}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          {/* Input Area */}
+          {inputMode === "voice" && (
+            <div className="space-y-4">
+              {!isRecording && !audioFile && (
+                <div className="text-center py-8 border-2 border-dashed rounded-lg">
+                  <Mic className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Click below to start recording your voice diary
+                  </p>
+                  <Button onClick={() => setIsRecording(true)}>
+                    <Mic className="w-4 h-4 mr-2" />
+                    Start Recording
+                  </Button>
+                </div>
+              )}
+
+              {isRecording && (
+                <div className="border-2 border-primary rounded-lg p-4">
+                  <VoiceRecorder
+                    onRecordingComplete={handleVoiceRecordingComplete}
+                    onCancel={() => setIsRecording(false)}
+                  />
+                </div>
+              )}
+
+              {audioFile && (
+                <div className="flex items-center gap-2 p-4 bg-muted rounded-lg">
+                  <Mic className="w-5 h-5 text-primary" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{audioFile.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {(audioFile.size / 1024).toFixed(0)} KB
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setAudioFile(null);
+                      setContent("");
+                    }}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="voice-notes">Additional Notes (Optional)</Label>
+                <Textarea
+                  id="voice-notes"
+                  placeholder="Add context or details about this recording..."
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  rows={3}
+                />
+              </div>
+            </div>
+          )}
+
+          {inputMode === "photo" && (
+            <div className="space-y-4">
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
+              />
+
+              {!imagePreview ? (
+                <div className="text-center py-8 border-2 border-dashed rounded-lg">
+                  <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Click below to upload a photo memory
+                  </p>
+                  <Button onClick={() => document.getElementById('image-upload')?.click()}>
+                    <Camera className="w-4 h-4 mr-2" />
+                    Choose Photo
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <div className="relative">
+                    <img
+                      src={imagePreview}
+                      alt="Memory preview"
+                      className="w-full h-64 object-cover rounded-lg"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-2 right-2"
+                      onClick={() => {
+                        setImageFile(null);
+                        setImagePreview(null);
+                      }}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="photo-caption">Caption</Label>
+                    <Textarea
+                      id="photo-caption"
+                      placeholder="Describe this memory..."
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      rows={3}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {inputMode === "text" && (
+            <div className="space-y-2">
+              <Label htmlFor="text-content">Memory Content</Label>
+              <Textarea
+                id="text-content"
+                placeholder="Write your memory, reflection, or insight here..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                rows={8}
+                className="resize-none"
+              />
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-2 pt-4 border-t">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={isCreating}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={handleSubmit}
+              disabled={isCreating || (!content.trim() && !audioFile && !imageFile)}
+            >
+              {isCreating ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save Memory"
+              )}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

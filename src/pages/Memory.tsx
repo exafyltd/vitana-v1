@@ -10,7 +10,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
-import { MemoryMasterActionPopup } from "@/components/memory/MemoryMasterActionPopup";
+import { AddMemoryDialog } from "@/components/memory/AddMemoryDialog";
 import { LifeCompassPopup } from "@/components/memory/LifeCompassPopup";
 import { MemoryCategoryGrid } from "@/components/memory/MemoryCategoryGrid";
 import { MemoryTimelineTab } from "@/components/memory/MemoryTimelineTab";
@@ -182,7 +182,7 @@ export default withScreenId(function Memory() {
           </SplitBarContent>
         </SplitBar>
 
-        <MemoryMasterActionPopup 
+        <AddMemoryDialog 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
         />

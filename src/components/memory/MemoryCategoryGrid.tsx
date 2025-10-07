@@ -17,6 +17,7 @@ import { MemoryCategoryCard } from "./MemoryCategoryCard";
 import { useMemoryMetadata } from "@/hooks/useMemoryMetadata";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
+import { AddMemoryDialog } from "./AddMemoryDialog";
 
 const MEMORY_CATEGORIES = [
   {
@@ -108,15 +109,17 @@ const MEMORY_CATEGORIES = [
 export function MemoryCategoryGrid() {
   const { metadata, refreshMetadata, isRefreshing, getCategoryProgress } = useMemoryMetadata();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [addMemoryDialogOpen, setAddMemoryDialogOpen] = useState(false);
+  const [selectedCategoryForAdd, setSelectedCategoryForAdd] = useState<string>("");
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategory(categoryId);
-    // TODO: Open split-screen view
   };
 
   const handleAddMemory = (categoryId: string) => {
-    // TODO: Open focused popup for adding memory
-    console.log("Add memory to category:", categoryId);
+    const category = MEMORY_CATEGORIES.find(c => c.id === categoryId);
+    setSelectedCategoryForAdd(category?.title || "");
+    setAddMemoryDialogOpen(true);
   };
 
   return (
@@ -162,6 +165,12 @@ export function MemoryCategoryGrid() {
           );
         })}
       </div>
+
+      <AddMemoryDialog
+        open={addMemoryDialogOpen}
+        onOpenChange={setAddMemoryDialogOpen}
+        defaultCategory={selectedCategoryForAdd}
+      />
     </div>
   );
 }
