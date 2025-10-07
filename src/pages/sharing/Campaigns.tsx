@@ -103,14 +103,18 @@ export default withScreenId(function Campaigns() {
                 const template = DISTRIBUTION_TEMPLATES.find((t) => t.id === templateId);
                 const smartSchedulingEnabled = (campaign.distribution_config as any)?.smart_scheduling_enabled;
 
+                const frequency = template?.frequency || (campaign.distribution_config as any)?.frequency || "Custom";
+                const bestTimes = (campaign.distribution_config as any)?.best_times;
+                const hasBestTimes = bestTimes && Object.keys(bestTimes).length > 0;
+
                 return (
                   <Card
                     key={campaign.id}
                     className="hover:shadow-md transition-all cursor-pointer"
                     onClick={() => handleEditCampaign(campaign)}
                   >
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between gap-2">
                         <div className="space-y-2 flex-1">
                           <CardTitle className="flex items-center gap-2 flex-wrap">
                             {campaign.name}
@@ -123,61 +127,95 @@ export default withScreenId(function Campaigns() {
                             )}
                           </CardTitle>
                           {campaign.description && (
-                            <CardDescription>{campaign.description}</CardDescription>
-                          )}
-
-                          {/* Channel badges */}
-                          {selectedChannels.length > 0 && (
-                            <div className="flex flex-wrap gap-1">
-                              {selectedChannels.slice(0, 4).map((channelKey) => {
-                                const channelInfo = CHANNEL_INFO[channelKey];
-                                return channelInfo ? (
-                                  <Badge key={channelKey} variant="secondary" className="text-xs">
-                                    {channelInfo.name}
-                                  </Badge>
-                                ) : null;
-                              })}
-                              {selectedChannels.length > 4 && (
-                                <Badge variant="secondary" className="text-xs">
-                                  +{selectedChannels.length - 4} more
-                                </Badge>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Template badge */}
-                          {template && template.id !== "custom" && (
-                            <Badge variant="outline" className="w-fit">
-                              {template.icon} {template.name}
-                            </Badge>
+                            <CardDescription className="line-clamp-2">{campaign.description}</CardDescription>
                           )}
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {(campaign.start_date || campaign.end_date) && (
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="w-4 h-4" />
-                            {campaign.start_date && new Date(campaign.start_date).toLocaleDateString()}
-                            {campaign.start_date && campaign.end_date && " - "}
-                            {campaign.end_date && new Date(campaign.end_date).toLocaleDateString()}
-                          </div>
+                    <CardContent className="space-y-3">
+                      {/* Template & Frequency */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {template && (
+                          <Badge variant="outline" className="gap-1">
+                            {template.icon} {template.name}
+                          </Badge>
                         )}
+                        <Badge variant="secondary" className="text-xs">
+                          📊 {frequency}
+                        </Badge>
+                      </div>
 
-                        <div className="flex gap-4 text-sm">
-                          <div className="flex items-center gap-2">
-                            <FileText className="w-4 h-4 text-muted-foreground" />
-                            <span>{stats.total} posts</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Users className="w-4 h-4 text-muted-foreground" />
-                            <span>{stats.published} published</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            {stats.drafts} drafts
+                      {/* Target Channels */}
+                      {selectedChannels.length > 0 && (
+                        <div className="space-y-1">
+                          <p className="text-xs font-medium text-muted-foreground">Target Channels</p>
+                          <div className="flex flex-wrap gap-1">
+                            {selectedChannels.map((channelKey) => {
+                              const channelInfo = CHANNEL_INFO[channelKey];
+                              return channelInfo ? (
+                                <Badge key={channelKey} variant="secondary" className="text-xs">
+                                  {channelInfo.name}
+                                </Badge>
+                              ) : null;
+                            })}
                           </div>
                         </div>
+                      )}
+
+                      {/* Best Posting Times */}
+                      {hasBestTimes && (
+                        <div className="space-y-1">
+                          <p className="text-xs font-medium text-muted-foreground">Best Times</p>
+                          <div className="flex flex-wrap gap-1">
+                            {Object.entries(bestTimes).slice(0, 3).map(([channel, times]) => {
+                              const channelInfo = CHANNEL_INFO[channel];
+                              const timeArray = times as string[];
+                              return channelInfo && timeArray?.length > 0 ? (
+                                <Badge key={channel} variant="outline" className="text-xs">
+                                  {channelInfo.name}: {timeArray.slice(0, 2).join(", ")}
+                                </Badge>
+                              ) : null;
+                            })}
+                            {Object.keys(bestTimes).length > 3 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{Object.keys(bestTimes).length - 3} more
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Date Range */}
+                      {(campaign.start_date || campaign.end_date) && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Calendar className="w-4 h-4 flex-shrink-0" />
+                          <span className="truncate">
+                            {campaign.start_date && new Date(campaign.start_date).toLocaleDateString()}
+                            {campaign.start_date && campaign.end_date && " → "}
+                            {campaign.end_date && new Date(campaign.end_date).toLocaleDateString()}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Post Stats */}
+                      <div className="flex gap-4 text-sm pt-2 border-t">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-4 h-4 text-muted-foreground" />
+                          <span className="font-medium">{stats.total}</span>
+                          <span className="text-muted-foreground">posts</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4 text-muted-foreground" />
+                          <span className="font-medium text-green-600">{stats.published}</span>
+                          <span className="text-muted-foreground">live</span>
+                        </div>
+                        {stats.drafts > 0 && (
+                          <div className="flex items-center gap-2">
+                            <Edit className="w-4 h-4 text-muted-foreground" />
+                            <span className="font-medium">{stats.drafts}</span>
+                            <span className="text-muted-foreground">drafts</span>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
