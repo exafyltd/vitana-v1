@@ -1,16 +1,28 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, Sparkles } from "lucide-react";
+import { Clock, Sparkles, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { ActivityHistoryItem } from "@/hooks/useActivityHistory";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface ActivityCardProps {
   activity: ActivityHistoryItem;
   onPromote?: (activityId: string) => void;
+  onDelete?: (activityId: string, type: 'activity') => void;
 }
 
-export function ActivityCard({ activity, onPromote }: ActivityCardProps) {
+export function ActivityCard({ activity, onPromote, onDelete }: ActivityCardProps) {
   const canPromote = (activity.activityType === 'conversation' || activity.activityType === 'chat.message') 
     && activity.role === 'user';
 
@@ -44,17 +56,50 @@ export function ActivityCard({ activity, onPromote }: ActivityCardProps) {
                 </span>
               </div>
 
-              {canPromote && onPromote && (
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-7"
-                  onClick={() => onPromote(activity.id)}
-                >
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  Save as Knowledge
-                </Button>
-              )}
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                {canPromote && onPromote && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-xs h-7"
+                    onClick={() => onPromote(activity.id)}
+                  >
+                    <Sparkles className="w-3 h-3 mr-1" />
+                    Save as Knowledge
+                  </Button>
+                )}
+                
+                {onDelete && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-xs h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Activity</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete this activity? This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => onDelete(activity.id, 'activity')}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+              </div>
             </div>
           </div>
         </div>

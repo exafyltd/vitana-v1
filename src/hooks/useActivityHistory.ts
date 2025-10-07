@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -443,6 +443,45 @@ export function useActivityHistory(filterType?: string) {
     });
   }
 
+  const queryClient = useQueryClient();
+
+  // Delete mutation
+  const deleteMutation = useMutation({
+    mutationFn: async ({ id, type }: { id: string; type: 'conversation' | 'activity' }) => {
+      if (type === 'conversation') {
+        // Delete from ai_messages
+        const { error } = await supabase
+          .from('ai_messages')
+          .delete()
+          .eq('id', id);
+        
+        if (error) throw error;
+      } else {
+        // Delete from user_activity_log
+        const { error } = await supabase
+          .from('user_activity_log')
+          .delete()
+          .eq('id', id);
+        
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['activity-history'] });
+      toast({
+        title: "Activity deleted",
+        description: "The activity item has been removed from your history.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to delete activity",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   return {
     allItems,
     conversationExchanges,
@@ -451,5 +490,7 @@ export function useActivityHistory(filterType?: string) {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
+    deleteActivity: deleteMutation.mutate,
+    isDeleting: deleteMutation.isPending,
   };
 }

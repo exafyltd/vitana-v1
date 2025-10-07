@@ -1,16 +1,28 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, Sparkles, User, Bot } from "lucide-react";
+import { Clock, Sparkles, User, Bot, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { ConversationExchange } from "@/hooks/useActivityHistory";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface ConversationCardProps {
   exchange: ConversationExchange;
   onPromote?: (exchangeId: string) => void;
+  onDelete?: (exchangeId: string, type: 'conversation') => void;
 }
 
-export function ConversationCard({ exchange, onPromote }: ConversationCardProps) {
+export function ConversationCard({ exchange, onPromote, onDelete }: ConversationCardProps) {
   return (
     <Card className="border-border/50 hover:border-border transition-colors group">
       <CardContent className="p-4">
@@ -76,17 +88,50 @@ export function ConversationCard({ exchange, onPromote }: ConversationCardProps)
                 </span>
               </div>
 
-              {onPromote && (
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-7"
-                  onClick={() => onPromote(exchange.id)}
-                >
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  Save as Knowledge
-                </Button>
-              )}
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                {onPromote && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-xs h-7"
+                    onClick={() => onPromote(exchange.id)}
+                  >
+                    <Sparkles className="w-3 h-3 mr-1" />
+                    Save as Knowledge
+                  </Button>
+                )}
+                
+                {onDelete && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-xs h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Conversation</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete this conversation? This will remove both the user message and AI response. This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => onDelete(exchange.id, 'conversation')}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+              </div>
             </div>
           </div>
         </div>

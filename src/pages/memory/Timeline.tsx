@@ -56,6 +56,7 @@ function Timeline() {
     hasNextPage: hasNextAll,
     isFetchingNextPage: isFetchingNextAll,
     isLoading: isLoadingAll,
+    deleteActivity,
   } = useActivityHistory("all");
 
   // Category-specific hooks - only active when in "By Category" tab
@@ -151,6 +152,10 @@ function Timeline() {
     }
   };
 
+  const handleDeleteActivity = (itemId: string, type: 'conversation' | 'activity') => {
+    deleteActivity({ id: itemId, type });
+  };
+
   const groupItemsByDate = (items: any[]) => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -215,12 +220,14 @@ function Timeline() {
                   key={item.id}
                   exchange={item}
                   onPromote={handlePromoteToKnowledge}
+                  onDelete={handleDeleteActivity}
                 />
               ) : (
                 <ActivityCard 
                   key={item.id} 
                   activity={item}
                   onPromote={handlePromoteToKnowledge}
+                  onDelete={handleDeleteActivity}
                 />
               )
             ))}
@@ -396,12 +403,14 @@ function Timeline() {
                                         key={item.id}
                                         exchange={item}
                                         onPromote={handlePromoteToKnowledge}
+                                        onDelete={handleDeleteActivity}
                                       />
                                     ) : (
                                       <ActivityCard 
                                         key={item.id} 
                                         activity={item}
                                         onPromote={handlePromoteToKnowledge}
+                                        onDelete={handleDeleteActivity}
                                       />
                                     )
                                   ))}
