@@ -722,6 +722,10 @@ serve(async (req) => {
       if (identity?.displayName || identity?.handle) {
         systemMessage += `Name: ${identity.displayName || 'User'}${identity.handle ? ` (@${identity.handle})` : ''}\n`;
       }
+      if (identity?.birthDate || typeof identity?.ageYears === 'number') {
+        const ageText = typeof identity.ageYears === 'number' ? ` (Age: ${identity.ageYears})` : '';
+        systemMessage += `Birthday: ${identity.birthDate || 'unknown'}${ageText}\n`;
+      }
       if (temporal?.dayOfWeek) {
         const now = new Date();
         systemMessage += `Time: ${temporal.dayOfWeek}, ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}\n`;

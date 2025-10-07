@@ -20,6 +20,8 @@ interface UserContext {
     tenantName: string;
     roles: string[];
     membershipTier?: string;
+    birthDate?: string;
+    ageYears?: number;
   };
   temporal: {
     currentTime: string;
@@ -345,7 +347,32 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     matchedProfiles = profilesData || [];
   }
 
-  // Build context object
+  // Build context object - derive stable identity fields
+  // Derive birthDate and ageYears from profile or memory insights
+  const toISODate = (d: Date) => d.toISOString().slice(0, 10);
+  const computeAge = (iso: string) => {
+    const dob = new Date(iso);
+    if (isNaN(dob.getTime())) return undefined;
+    const diff = Date.now() - dob.getTime();
+    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+    return age >= 0 && age < 150 ? age : undefined;
+  };
+  let derivedBirthDate: string | undefined = profile.date_of_birth || undefined;
+  if (!derivedBirthDate) {
+    const birthdayMemory = memory.find((m: any) => typeof m.content === 'string' && /(birthday|born)/i.test(m.content));
+    if (birthdayMemory) {
+      const match = birthdayMemory.content.match(/(?:birthday\s*[:\-]?\s*)?([A-Za-z]+\s+\d{1,2},\s*\d{4}|\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4})/i);
+      if (match) {
+        const parsed = new Date(match[1]);
+        if (!isNaN(parsed.getTime())) {
+          derivedBirthDate = toISODate(parsed);
+          console.info('[context] Derived birthDate from memory:', derivedBirthDate);
+        }
+      }
+    }
+  }
+  const derivedAgeYears = derivedBirthDate ? computeAge(derivedBirthDate) : undefined;
+
   const context: UserContext = {
     identity: {
       userId,
@@ -355,7 +382,9 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       tenantId: profile.tenant_id || '',
       tenantName: tenant.name || '',
       roles: [],
-      membershipTier: profile.membership_tier
+      membershipTier: profile.membership_tier,
+      birthDate: derivedBirthDate,
+      ageYears: derivedAgeYears
     },
     temporal: {
       currentTime: now.toISOString(),

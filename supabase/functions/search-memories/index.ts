@@ -61,9 +61,9 @@ serve(async (req) => {
     console.log(`[memory-search] Generated query embedding, length: ${queryEmbedding.length}`);
 
     // Vector similarity search using pgvector
-    const { data: memories, error } = await supabase.rpc('match_memories', {
+    const { data: vectorMemories, error } = await supabase.rpc('match_memories', {
       query_embedding: queryEmbedding,
-      match_threshold: 0.7,
+      match_threshold: 0.5,
       match_count: 10,
       p_user_id: userId
     });
@@ -71,6 +71,30 @@ serve(async (req) => {
     if (error) {
       console.error('[memory-search] Vector search error:', error);
       throw error;
+    }
+
+    // Merge vector results with keyword fallback for critical queries
+    let memories = vectorMemories || [];
+    const keywordRegex = /(birthday|born|age|preference|goal|habit|favorite|like|dislike)/i;
+    if (!vectorMemories || vectorMemories.length === 0 || keywordRegex.test(query)) {
+      const { data: keywordHits, error: kwError } = await supabase
+        .from('ai_memory')
+        .select('id, memory_type, content, confidence_score, created_at')
+        .eq('user_id', userId)
+        .eq('is_active', true)
+        .or('content.ilike.%birthday%,content.ilike.%born%,content.ilike.%age%,content.ilike.%preference%,content.ilike.%goal%,content.ilike.%habit%,content.ilike.%favorite%,content.ilike.%like%,content.ilike.%dislike%')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (kwError) {
+        console.error('[memory-search] Keyword fallback error:', kwError);
+      } else if (keywordHits && keywordHits.length > 0) {
+        console.log(`[memory-search] Keyword fallback returned ${keywordHits.length} items`);
+        const fallback = keywordHits.map((m: any) => ({ ...m, similarity: 0.55 }));
+        const existingIds = new Set(memories.map((m: any) => m.id));
+        const merged = [...memories, ...fallback.filter((m: any) => !existingIds.has(m.id))];
+        memories = merged;
+      }
     }
 
     if (!memories || memories.length === 0) {
@@ -81,7 +105,7 @@ serve(async (req) => {
       );
     }
 
-    console.log(`[memory-search] Found ${memories.length} semantically similar memories`);
+    console.log(`[memory-search] Found ${memories.length} memories after retrieval`);
 
     // Boost recent memories and high-confidence memories
     const scoredMemories = memories.map((memory: any) => {
