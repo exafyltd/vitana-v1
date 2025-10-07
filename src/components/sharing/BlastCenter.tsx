@@ -288,12 +288,11 @@ export function BlastCenter() {
         {/* Campaign Selector */}
         <div className="space-y-2">
           <Label>Campaign (Optional)</Label>
-          <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
+          <Select value={selectedCampaign || undefined} onValueChange={setSelectedCampaign}>
             <SelectTrigger>
-              <SelectValue placeholder="No campaign" />
+              <SelectValue placeholder="No campaign selected" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">No campaign</SelectItem>
               {campaigns?.map((campaign) => (
                 <SelectItem key={campaign.id} value={campaign.id}>
                   {campaign.name}
