@@ -322,6 +322,30 @@ export function useActivityHistory(filterType?: string) {
     };
   }, [queryClient]);
 
+  // Set up realtime subscription for user_activity_log
+  useEffect(() => {
+    const channel = supabase
+      .channel('activity_log_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+          schema: 'public',
+          table: 'user_activity_log'
+        },
+        (payload) => {
+          console.log('Activity log change detected, refreshing timeline...', payload.eventType);
+          // Invalidate queries to trigger refetch
+          queryClient.invalidateQueries({ queryKey: ['activity-history'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   const {
     data,
     fetchNextPage,
