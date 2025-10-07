@@ -92,7 +92,7 @@ serve(async (req) => {
 
 // Helper function to convert text to vector embedding
 function textToVector(semanticText: string, originalText: string): number[] {
-  const dimension = 1536;
+  const dimension = 768; // Match database vector dimension
   const vector = new Array(dimension).fill(0);
   
   // Combine semantic and original text for better representation
