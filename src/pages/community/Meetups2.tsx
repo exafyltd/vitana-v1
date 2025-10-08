@@ -265,8 +265,8 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
           <TooltipTrigger asChild>
             <Button
               size="icon"
-              variant="secondary"
-              className="rounded-full h-9 w-9 p-0 bg-popover/70 text-popover-foreground ring-1 ring-border shadow-md backdrop-blur-sm hover:bg-popover/80"
+              variant="ghost"
+              className="h-8 w-8 p-0 text-white hover:bg-white/20"
               onClick={(e) => {
                 e.stopPropagation();
                 onEdit(event);
