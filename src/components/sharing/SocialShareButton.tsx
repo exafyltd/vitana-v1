@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,6 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
+import { getChannelIcon, getChannelColor, getChannelDisplayName } from "@/utils/channelHelpers";
 
 interface SocialShareButtonProps {
   type: 'service' | 'event' | 'referral';
@@ -46,10 +47,18 @@ export default function SocialShareButton({
   size = 'default'
 }: SocialShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showMoreChannels, setShowMoreChannels] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
   const { allPlatforms, loading } = useSocialPlatforms();
   const navigate = useNavigate();
+
+  // Reset showMoreChannels when dialog closes
+  useEffect(() => {
+    if (!isOpen) {
+      setShowMoreChannels(false);
+    }
+  }, [isOpen]);
 
   const getShareText = () => {
     switch (type) {
@@ -90,14 +99,27 @@ export default function SocialShareButton({
           twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`,
           linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareLink)}`,
           instagram: `https://www.instagram.com/`,
+          email: `mailto:?subject=${encodeURIComponent(data.title)}&body=${encodeURIComponent(shareText + '\n\n' + shareLink)}`,
+          sms: `sms:?body=${encodeURIComponent(shareText + '\n\n' + shareLink)}`,
+          whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + '\n\n' + shareLink)}`,
         };
         
         if (shareUrls[platform.id]) {
-          window.open(shareUrls[platform.id], '_blank', 'width=600,height=400');
+          if (platform.id === 'email' || platform.id === 'sms') {
+            window.location.href = shareUrls[platform.id];
+          } else {
+            window.open(shareUrls[platform.id], '_blank', 'width=600,height=400');
+          }
           toast({
             title: "Share opened",
             description: `Complete your share on ${platform.name}`,
           });
+        } else if (platform.id === 'slack') {
+          toast({
+            title: "Slack sharing",
+            description: "Copy the link and share it in your Slack workspace",
+          });
+          handleCopyLink();
         }
         return;
       }
@@ -179,6 +201,57 @@ export default function SocialShareButton({
     return [messenger, ...allPlatforms];
   }, [allPlatforms]);
 
+  // Additional communication channels
+  const moreChannels = useMemo(() => {
+    const channels: SocialPlatform[] = [
+      {
+        id: "email",
+        name: getChannelDisplayName("email"),
+        icon: getChannelIcon("email"),
+        color: getChannelColor("email"),
+        connected: false,
+        supportsDirectShare: true,
+        supportsAutomation: true,
+      },
+      {
+        id: "sms",
+        name: getChannelDisplayName("sms"),
+        icon: getChannelIcon("sms"),
+        color: getChannelColor("sms"),
+        connected: false,
+        supportsDirectShare: true,
+        supportsAutomation: true,
+      },
+      {
+        id: "whatsapp",
+        name: getChannelDisplayName("whatsapp"),
+        icon: getChannelIcon("whatsapp"),
+        color: getChannelColor("whatsapp"),
+        connected: false,
+        supportsDirectShare: true,
+        supportsAutomation: true,
+      },
+      {
+        id: "slack",
+        name: getChannelDisplayName("slack"),
+        icon: getChannelIcon("slack"),
+        color: getChannelColor("slack"),
+        connected: false,
+        supportsDirectShare: true,
+        supportsAutomation: true,
+      },
+    ];
+    return channels;
+  }, []);
+
+  // Combined channels - show first 7 or all based on state
+  const displayedOptions = useMemo(() => {
+    if (showMoreChannels) {
+      return [...shareOptions, ...moreChannels];
+    }
+    return shareOptions.slice(0, 7); // Show first 7 platforms
+  }, [shareOptions, moreChannels, showMoreChannels]);
+
   return (
     <>
       <Button
@@ -241,8 +314,8 @@ export default function SocialShareButton({
                     </AlertDescription>
                   </Alert>
                   
-                  <div className="grid grid-cols-2 gap-3">
-                    {shareOptions.map((option) => {
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    {displayedOptions.map((option) => {
                       const Icon = option.icon;
                       const isConnected = option.connected;
 
@@ -293,6 +366,23 @@ export default function SocialShareButton({
                         </div>
                       );
                     })}
+                    
+                    {/* More Channels Card */}
+                    {!showMoreChannels && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMoreChannels(true)}
+                        className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/30 p-3 transition-all hover:border-primary/50 hover:bg-accent/30"
+                      >
+                        <Plus className="h-6 w-6 text-muted-foreground" />
+                        <span className="text-xs font-medium text-muted-foreground">
+                          More
+                        </span>
+                        <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                          +4 channels
+                        </Badge>
+                      </button>
+                    )}
                   </div>
                 </>
               )}
