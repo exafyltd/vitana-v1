@@ -54,14 +54,37 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      // Save entry to database
+      // Upload photos to storage
+      const uploadedUrls: string[] = [];
+      for (const file of selectedFiles) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('diary-photos')
+          .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        // Get authenticated URL (valid for 1 year)
+        const { data } = await supabase.storage
+          .from('diary-photos')
+          .createSignedUrl(fileName, 31536000); // 1 year in seconds
+
+        if (data?.signedUrl) {
+          uploadedUrls.push(data.signedUrl);
+        }
+      }
+
+      // Save entry to database with photo URLs
       const { error } = await supabase
         .from('diary_entries')
         .insert({
           user_id: user.id,
           text: caption || "Photo entry",
           source: 'photo',
-          tags: ['diary', 'photo']
+          tags: ['diary', 'photo'],
+          attachments: uploadedUrls
         });
 
       if (error) throw error;

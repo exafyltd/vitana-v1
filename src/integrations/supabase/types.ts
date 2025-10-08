@@ -473,6 +473,7 @@ export type Database = {
       }
       diary_entries: {
         Row: {
+          attachments: Json | null
           created_at: string
           duration: number | null
           id: string
@@ -483,6 +484,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          attachments?: Json | null
           created_at?: string
           duration?: number | null
           id?: string
@@ -493,6 +495,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          attachments?: Json | null
           created_at?: string
           duration?: number | null
           id?: string

@@ -51,7 +51,7 @@ function Diary() {
           </SplitBarList>
 
           <SplitBarContent value="voice">
-            <div className="mt-6 space-y-6">
+            <div className="mt-6 space-y-6 pb-24">
               <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -72,7 +72,7 @@ function Diary() {
           </SplitBarContent>
 
           <SplitBarContent value="photos">
-            <div className="mt-6 space-y-6">
+            <div className="mt-6 space-y-6 pb-24">
               <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -93,7 +93,7 @@ function Diary() {
           </SplitBarContent>
 
           <SplitBarContent value="text">
-            <div className="mt-6 space-y-6">
+            <div className="mt-6 space-y-6 pb-24">
               <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">

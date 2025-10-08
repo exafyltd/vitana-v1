@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Mic, Image as ImageIcon, Type, Tag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,12 +6,15 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { ImageZoomModal } from "@/components/messages/ImageZoomModal";
 
 interface DiaryEntryListProps {
   entryType: "voice" | "photo" | "text";
 }
 
 export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
+  const [selectedImage, setSelectedImage] = useState<{ url: string; filename: string } | null>(null);
+
   const { data: entries, isLoading, refetch } = useQuery({
     queryKey: ['diary-entries', entryType],
     queryFn: async () => {
@@ -138,6 +141,25 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                       {entry.text}
                     </p>
 
+                    {/* Display photo attachments */}
+                    {entry.attachments && Array.isArray(entry.attachments) && entry.attachments.length > 0 && (
+                      <div className="grid grid-cols-3 gap-2 mb-3">
+                        {entry.attachments.map((url: string, idx: number) => (
+                          <div 
+                            key={idx} 
+                            className="relative aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                            onClick={() => setSelectedImage({ url, filename: `photo-${idx + 1}.jpg` })}
+                          >
+                            <img 
+                              src={url} 
+                              alt={`Photo ${idx + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
                     {entry.tags && entry.tags.length > 0 && (
                       <div className="flex items-center gap-2 flex-wrap">
                         <Tag className="w-3 h-3 text-muted-foreground" />
@@ -155,6 +177,13 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
           ))}
         </>
       )}
+
+      <ImageZoomModal
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+        imageUrl={selectedImage?.url || ""}
+        filename={selectedImage?.filename || ""}
+      />
     </div>
   );
 }
