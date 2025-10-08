@@ -2,18 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useState, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/hooks/useMessages";
+import { useNavigate } from "react-router-dom";
+import { useChannels } from "@/hooks/useChannels";
+import { getChannelIcon, getChannelColor } from "@/utils/channelHelpers";
 import { 
   Share2, 
   MessageCircle, 
   Copy, 
-  Facebook, 
-  Twitter, 
-  Linkedin,
-  Mail,
-  Send
+  Send,
+  Info,
+  Loader2
 } from "lucide-react";
 
 interface SocialShareButtonProps {
@@ -38,7 +40,9 @@ export default function SocialShareButton({
 }: SocialShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
-  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
+  const { sendMessage } = useMessages(undefined, false);
+  const navigate = useNavigate();
+  const { connectedChannels, isLoading } = useChannels();
 
   const getShareText = () => {
     switch (type) {
@@ -71,6 +75,7 @@ export default function SocialShareButton({
           });
           break;
           
+        case 'vitana_messenger':
         case 'messenger':
           // Share via internal messenger
           await sendMessage(
@@ -119,14 +124,36 @@ export default function SocialShareButton({
     }
   };
 
-  const shareOptions = [
-    { id: 'messenger', icon: MessageCircle, label: 'Vitana Messenger', color: 'text-blue-600' },
-    { id: 'copy', icon: Copy, label: 'Copy Link', color: 'text-gray-600' },
-    { id: 'facebook', icon: Facebook, label: 'Facebook', color: 'text-blue-700' },
-    { id: 'twitter', icon: Twitter, label: 'Twitter', color: 'text-sky-500' },
-    { id: 'linkedin', icon: Linkedin, label: 'LinkedIn', color: 'text-blue-800' },
-    { id: 'email', icon: Mail, label: 'Email', color: 'text-gray-600' }
-  ];
+  // Build share options dynamically from connected channels
+  const shareOptions = useMemo(() => {
+    const options: Array<{
+      id: string;
+      icon: React.ComponentType<any>;
+      label: string;
+      color: string;
+    }> = [
+      {
+        id: 'vitana_messenger',
+        icon: MessageCircle,
+        label: 'Vitana Messenger',
+        color: 'text-blue-600'
+      }
+    ];
+
+    // Add connected distribution channels
+    const distributionOptions = (connectedChannels || [])
+      .filter((c) => c.is_connected && c.is_active)
+      .map((channel) => ({
+        id: channel.channel_type,
+        icon: getChannelIcon(channel.channel_type) as React.ComponentType<any>,
+        label: channel.channel_name,
+        color: getChannelColor(channel.channel_type)
+      }));
+
+    options.push(...distributionOptions);
+
+    return options;
+  }, [connectedChannels]);
 
   return (
     <>
@@ -178,37 +205,52 @@ export default function SocialShareButton({
             </Card>
 
             {/* Share Options */}
-            <div className="grid grid-cols-2 gap-3">
-              {shareOptions.map((option) => {
-                const IconComponent = option.icon;
-                return (
+            {isLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : shareOptions.length === 1 ? (
+              <Alert className="border-blue-200 bg-blue-50/50 dark:border-blue-800/30 dark:bg-blue-950/20">
+                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <AlertDescription className="text-sm">
+                  <p className="mb-2">No distribution channels connected yet.</p>
                   <Button
-                    key={option.id}
-                    variant="outline"
-                    className="flex items-center gap-2 h-12 justify-start"
-                    onClick={() => handleShare(option.id)}
+                    variant="link"
+                    size="sm"
+                    className="h-auto p-0 text-blue-600 dark:text-blue-400"
+                    onClick={() => {
+                      setIsOpen(false);
+                      navigate("/sharing/integrations");
+                    }}
                   >
-                    <IconComponent className={`w-4 h-4 ${option.color}`} />
-                    <span className="text-sm">{option.label}</span>
+                    Connect channels now →
                   </Button>
-                );
-              })}
-            </div>
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                {shareOptions.map((option) => {
+                  const IconComponent = option.icon;
+                  return (
+                    <Button
+                      key={option.id}
+                      variant="outline"
+                      className="flex items-center gap-2 h-12 justify-start"
+                      onClick={() => handleShare(option.id)}
+                    >
+                      <IconComponent className={`w-4 h-4 ${option.color}`} />
+                      <span className="text-sm">{option.label}</span>
+                    </Button>
+                  );
+                })}
+              </div>
+            )}
 
-            {/* Quick Actions */}
-            <div className="flex gap-2 pt-2 border-t">
+            {/* Single Copy Link Action */}
+            <div className="pt-2 border-t">
               <Button 
-                size="sm" 
-                className="flex-1"
-                onClick={() => handleShare('messenger')}
-              >
-                <Send className="w-4 h-4 mr-2" />
-                Send Message
-              </Button>
-              <Button 
-                size="sm" 
                 variant="outline"
-                className="flex-1"
+                className="w-full"
                 onClick={() => handleShare('copy')}
               >
                 <Copy className="w-4 h-4 mr-2" />

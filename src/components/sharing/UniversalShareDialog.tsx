@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,19 +10,20 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
-  Facebook,
-  Linkedin,
-  Twitter,
-  Instagram,
-  Youtube,
   Send,
   Sparkles,
   Copy,
-  Mail,
+  MessageCircle,
+  Info,
+  Loader2,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { useChannels } from "@/hooks/useChannels";
+import { getChannelIcon, getChannelColor } from "@/utils/channelHelpers";
 
 interface ShareChannel {
   id: string;
@@ -52,19 +53,32 @@ export function UniversalShareDialog({
   content,
 }: UniversalShareDialogProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { connectedChannels, isLoading } = useChannels();
   const [message, setMessage] = useState("");
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [isSharing, setIsSharing] = useState(false);
 
-  // Mock connected channels - in real app, fetch from user's connected accounts
-  const channels: ShareChannel[] = [
-    { id: "facebook", name: "Facebook", icon: Facebook, connected: true },
-    { id: "linkedin", name: "LinkedIn", icon: Linkedin, connected: true },
-    { id: "twitter", name: "X (Twitter)", icon: Twitter, connected: false },
-    { id: "instagram", name: "Instagram", icon: Instagram, connected: true },
-    { id: "youtube", name: "YouTube", icon: Youtube, connected: false },
-    { id: "email", name: "Email", icon: Mail, connected: true },
-  ];
+  // Build dynamic channels array from database
+  const channels: ShareChannel[] = useMemo(() => {
+    const vitanaMessenger: ShareChannel = {
+      id: "vitana_messenger",
+      name: "Vitana Messenger",
+      icon: MessageCircle,
+      connected: true,
+    };
+
+    const distributionChannels: ShareChannel[] = (connectedChannels || [])
+      .filter((c) => c.is_connected && c.is_active)
+      .map((channel) => ({
+        id: channel.id,
+        name: channel.channel_name,
+        icon: getChannelIcon(channel.channel_type),
+        connected: true,
+      }));
+
+    return [vitanaMessenger, ...distributionChannels];
+  }, [connectedChannels]);
 
   const handleChannelToggle = (channelId: string) => {
     setSelectedChannels((prev) =>
@@ -75,10 +89,15 @@ export function UniversalShareDialog({
   };
 
   const handleBlastNow = async () => {
-    if (selectedChannels.length === 0) {
+    // Filter out vitana_messenger - it's internal only
+    const distributionChannels = selectedChannels.filter(
+      (id) => id !== "vitana_messenger"
+    );
+
+    if (distributionChannels.length === 0) {
       toast({
-        title: "No channels selected",
-        description: "Please select at least one channel to share",
+        title: "Select distribution channels",
+        description: "Please select at least one channel for distribution",
         variant: "destructive",
       });
       return;
@@ -98,7 +117,7 @@ export function UniversalShareDialog({
           user_id: user.id,
           status: "active",
           description: message || `Sharing ${content.type}: ${content.title}`,
-          target_channels: selectedChannels.reduce((acc, channel) => ({
+          target_channels: distributionChannels.reduce((acc, channel) => ({
             ...acc,
             [channel]: true,
           }), {}),
@@ -119,7 +138,7 @@ export function UniversalShareDialog({
 
       toast({
         title: "🚀 Blast Successful!",
-        description: `Your ${content.type} is being shared across ${selectedChannels.length} channel(s)`,
+        description: `Your ${content.type} is being shared across ${distributionChannels.length} channel(s)`,
       });
 
       onOpenChange(false);
@@ -206,41 +225,54 @@ export function UniversalShareDialog({
           {/* Channel Selection */}
           <div className="space-y-3">
             <Label>Select Channels</Label>
-            <div className="grid grid-cols-2 gap-3">
-              {channels.map((channel) => {
-                const Icon = channel.icon;
-                return (
-                  <div
-                    key={channel.id}
-                    className={`flex items-center gap-3 rounded-lg border p-3 transition-colors ${
-                      channel.connected
-                        ? "cursor-pointer hover:bg-accent"
-                        : "cursor-not-allowed opacity-50"
-                    } ${
-                      selectedChannels.includes(channel.id)
-                        ? "border-primary bg-primary/5"
-                        : "border-border"
-                    }`}
-                    onClick={() =>
-                      channel.connected && handleChannelToggle(channel.id)
-                    }
+            
+            {isLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : channels.length === 1 ? (
+              <Alert className="border-blue-200 bg-blue-50/50 dark:border-blue-800/30 dark:bg-blue-950/20">
+                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <AlertDescription className="text-sm">
+                  <p className="mb-2">No distribution channels connected yet.</p>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="h-auto p-0 text-blue-600 dark:text-blue-400"
+                    onClick={() => navigate("/sharing/integrations")}
                   >
-                    <Checkbox
-                      checked={selectedChannels.includes(channel.id)}
-                      disabled={!channel.connected}
-                      onCheckedChange={() => handleChannelToggle(channel.id)}
-                    />
-                    <Icon className="h-5 w-5" />
-                    <span className="text-sm font-medium">{channel.name}</span>
-                    {!channel.connected && (
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        Not connected
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                    Connect channels now →
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {channels.map((channel) => {
+                  const Icon = channel.icon;
+                  const iconColor = channel.id === "vitana_messenger" 
+                    ? "text-blue-600" 
+                    : getChannelColor(channel.id);
+                  
+                  return (
+                    <div
+                      key={channel.id}
+                      className={`flex items-center gap-3 rounded-lg border p-3 transition-colors cursor-pointer hover:bg-accent ${
+                        selectedChannels.includes(channel.id)
+                          ? "border-primary bg-primary/5"
+                          : "border-border"
+                      }`}
+                      onClick={() => handleChannelToggle(channel.id)}
+                    >
+                      <Checkbox
+                        checked={selectedChannels.includes(channel.id)}
+                      />
+                      <Icon className={`h-5 w-5 ${iconColor}`} />
+                      <span className="text-sm font-medium">{channel.name}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Actions */}
