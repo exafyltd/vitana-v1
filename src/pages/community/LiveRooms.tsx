@@ -135,8 +135,6 @@ export default function LiveRooms() {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
-  const [shareDialogOpen, setShareDialogOpen] = useState(false);
-  const [roomToShare, setRoomToShare] = useState<LiveRoom | null>(null);
   
   const latestActions = getLatestActions(2);
 
@@ -216,14 +214,6 @@ export default function LiveRooms() {
     });
   };
 
-  const handleShareClick = (roomId: string, e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    const room = allRooms.find(r => r.id === roomId);
-    if (room) {
-      setRoomToShare(room);
-      setShareDialogOpen(true);
-    }
-  };
 
   const allRooms = [...mockLiveRooms, ...mockScheduledRooms];
   const selectedRoom = allRooms.find((r) => r.id === selectedRoomId);
@@ -258,8 +248,19 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
                     }}
-                    onShareClick={(e) => handleShareClick(rowRooms[0].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
+                    shareButton={
+                      <SocialShareButton
+                        type="live_room"
+                        data={{
+                          title: rowRooms[0].title,
+                          description: rowRooms[0].description || `Join ${rowRooms[0].host.name}'s live session`,
+                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[0].id)}`
+                        }}
+                        variant="icon"
+                        size="sm"
+                      />
+                    }
                   />
                 </div>
               )}
@@ -276,8 +277,19 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
                     }}
-                    onShareClick={(e) => handleShareClick(rowRooms[1].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
+                    shareButton={
+                      <SocialShareButton
+                        type="live_room"
+                        data={{
+                          title: rowRooms[1].title,
+                          description: rowRooms[1].description || `Join ${rowRooms[1].host.name}'s live session`,
+                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[1].id)}`
+                        }}
+                        variant="icon"
+                        size="sm"
+                      />
+                    }
                   />
                 </div>
               )}
@@ -294,8 +306,19 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
                     }}
-                    onShareClick={(e) => handleShareClick(rowRooms[2].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
+                    shareButton={
+                      <SocialShareButton
+                        type="live_room"
+                        data={{
+                          title: rowRooms[2].title,
+                          description: rowRooms[2].description || `Join ${rowRooms[2].host.name}'s live session`,
+                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[2].id)}`
+                        }}
+                        variant="icon"
+                        size="sm"
+                      />
+                    }
                   />
                 </div>
               )}
@@ -316,8 +339,19 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
                     }}
-                    onShareClick={(e) => handleShareClick(rowRooms[0].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
+                    shareButton={
+                      <SocialShareButton
+                        type="live_room"
+                        data={{
+                          title: rowRooms[0].title,
+                          description: rowRooms[0].description || `Join ${rowRooms[0].host.name}'s live session`,
+                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[0].id)}`
+                        }}
+                        variant="icon"
+                        size="sm"
+                      />
+                    }
                   />
                 </div>
               )}
@@ -334,8 +368,19 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
                     }}
-                    onShareClick={(e) => handleShareClick(rowRooms[1].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
+                    shareButton={
+                      <SocialShareButton
+                        type="live_room"
+                        data={{
+                          title: rowRooms[1].title,
+                          description: rowRooms[1].description || `Join ${rowRooms[1].host.name}'s live session`,
+                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[1].id)}`
+                        }}
+                        variant="icon"
+                        size="sm"
+                      />
+                    }
                   />
                 </div>
               )}
@@ -353,8 +398,19 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
                     }}
-                    onShareClick={(e) => handleShareClick(rowRooms[2].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
+                    shareButton={
+                      <SocialShareButton
+                        type="live_room"
+                        data={{
+                          title: rowRooms[2].title,
+                          description: rowRooms[2].description || `Join ${rowRooms[2].host.name}'s live session`,
+                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[2].id)}`
+                        }}
+                        variant="icon"
+                        size="sm"
+                      />
+                    }
                   />
                 </div>
               )}
@@ -459,19 +515,6 @@ export default function LiveRooms() {
         />
       )}
 
-      {/* Share Dialog */}
-      {roomToShare && (
-        <SocialShareButton
-          type="live_room"
-          data={{
-            title: roomToShare.title,
-            description: roomToShare.description,
-            link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(roomToShare.id)}`
-          }}
-          variant="icon"
-          size="sm"
-        />
-      )}
     </AppLayout>
   );
 }

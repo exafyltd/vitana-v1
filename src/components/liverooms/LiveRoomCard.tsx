@@ -37,6 +37,7 @@ interface LiveRoomCardProps {
   isNotifying?: boolean;
   className?: string;
   isFeatured?: boolean;
+  shareButton?: React.ReactNode;
 }
 
 // Category-based fallback gradients
@@ -58,6 +59,7 @@ export function LiveRoomCard({
   isNotifying = false,
   className,
   isFeatured = false,
+  shareButton,
 }: LiveRoomCardProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -249,19 +251,21 @@ export function LiveRoomCard({
                   >
                     Join
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onShareClick?.(e);
-                    }}
-                    aria-label="Share room"
-                    title="Share"
-                  >
-                    <Share2 className="w-[18px] h-[18px]" />
-                  </Button>
+                  {shareButton || (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onShareClick?.(e);
+                      }}
+                      aria-label="Share room"
+                      title="Share"
+                    >
+                      <Share2 className="w-[18px] h-[18px]" />
+                    </Button>
+                  )}
                 </>
               ) : isScheduled ? (
                 <>
@@ -281,19 +285,21 @@ export function LiveRoomCard({
                     <Bell className={cn("w-[18px] h-[18px]", isNotifying && "fill-current")} />
                     {isNotifying ? "Notifying" : "Notify me"}
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onShareClick?.(e);
-                    }}
-                    aria-label="Share room"
-                    title="Share"
-                  >
-                    <Share2 className="w-[18px] h-[18px]" />
-                  </Button>
+                  {shareButton || (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onShareClick?.(e);
+                      }}
+                      aria-label="Share room"
+                      title="Share"
+                    >
+                      <Share2 className="w-[18px] h-[18px]" />
+                    </Button>
+                  )}
                 </>
               ) : null}
             </div>
