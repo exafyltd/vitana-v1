@@ -286,14 +286,11 @@ export default function DiaryButton() {
         "grid place-items-center transition-transform duration-150",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         !isSupported 
-          ? "text-white opacity-60 cursor-not-allowed" 
+          ? "bg-purple-600/60 text-white cursor-not-allowed" 
           : isRecording 
-            ? "text-white diary-pulse" 
-            : "text-white hover:scale-[1.03] active:scale-[0.98]"
+            ? "bg-red-600 text-white diary-pulse" 
+            : "bg-purple-600 hover:bg-purple-700 text-white hover:scale-[1.03] active:scale-[0.98]"
       ].join(" ")}
-      style={{
-        background: isRecording ? "var(--brand-live)" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
-      }}
     >
       <FileText className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
     </button>
