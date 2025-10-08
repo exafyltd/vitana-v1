@@ -234,7 +234,6 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
                     >
                       <Checkbox
                         checked={selectedChannels[key] || false}
-                        onCheckedChange={() => toggleChannel(key)}
                       />
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
