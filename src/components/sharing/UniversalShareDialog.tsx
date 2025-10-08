@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   MessageCircle,
@@ -19,18 +20,18 @@ import {
   Plus,
   Copy,
   Check,
+  ExternalLink,
+  CheckCircle2,
+  Link2,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
+import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { supabase } from "@/integrations/supabase/client";
 import { analytics } from "@/lib/analytics";
 import { useAuth } from "@/context/AuthProvider";
 
-interface ShareChannel {
-  id: string;
-  name: string;
-  icon: React.ElementType;
-  connected: boolean;
+interface ShareChannel extends SocialPlatform {
+  isVitanaMessenger?: boolean;
 }
 
 interface ShareableContent {
@@ -56,37 +57,72 @@ export function UniversalShareDialog({
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { connectedPlatforms, loading } = useSocialPlatforms();
+  const { allPlatforms, loading } = useSocialPlatforms();
   const [message, setMessage] = useState("");
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [isSharing, setIsSharing] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
 
-  // Build dynamic channels array from profile
+  // Build channels array with all platforms + Vitana Messenger
   const channels: ShareChannel[] = useMemo(() => {
     const vitanaMessenger: ShareChannel = {
       id: "vitana_messenger",
       name: "Vitana Messenger",
       icon: MessageCircle,
+      color: "text-blue-600",
       connected: true,
+      supportsDirectShare: false,
+      supportsAutomation: false,
+      isVitanaMessenger: true,
     };
 
-    const socialChannels: ShareChannel[] = connectedPlatforms.map((platform) => ({
-      id: platform.id,
-      name: platform.name,
-      icon: platform.icon,
-      connected: true,
-    }));
+    return [vitanaMessenger, ...allPlatforms];
+  }, [allPlatforms]);
 
-    return [vitanaMessenger, ...socialChannels];
-  }, [connectedPlatforms]);
+  const handleChannelClick = (channel: ShareChannel) => {
+    if (channel.connected) {
+      // Toggle selection for automated blast
+      setSelectedChannels((prev) =>
+        prev.includes(channel.id)
+          ? prev.filter((id) => id !== channel.id)
+          : [...prev, channel.id]
+      );
+    } else if (channel.supportsDirectShare) {
+      // Open native share dialog for unconnected platforms
+      openNativeShare(channel.id);
+    } else {
+      // Show connect prompt for platforms without direct share
+      toast({
+        title: "Connect account",
+        description: `Connect your ${channel.name} account to share content`,
+      });
+    }
+  };
 
-  const handleChannelToggle = (channelId: string) => {
-    setSelectedChannels((prev) =>
-      prev.includes(channelId)
-        ? prev.filter((id) => id !== channelId)
-        : [...prev, channelId]
-    );
+  const openNativeShare = (platformId: string) => {
+    const shareUrl = content.url || `${window.location.origin}/${content.type}/${content.id}`;
+    const shareText = `${content.title}${content.description ? '\n' + content.description : ''}`;
+    
+    const shareUrls: Record<string, string> = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+      instagram: `https://www.instagram.com/`, // Instagram doesn't support direct web sharing
+    };
+    
+    if (shareUrls[platformId]) {
+      window.open(shareUrls[platformId], '_blank', 'width=600,height=400');
+      analytics.trackShare('share_completed', 'universal', content.id, content.type);
+      toast({
+        title: "Share opened",
+        description: `Complete your share on ${platformId}`,
+      });
+    }
+  };
+
+  const handleConnectPlatform = (platformId: string) => {
+    onOpenChange(false);
+    navigate(`/profile/${user?.id}#social-connections`);
   };
 
   const handleBlastNow = async () => {
@@ -227,60 +263,90 @@ export function UniversalShareDialog({
 
           {/* Channel Selection */}
           <div className="space-y-3">
-            <Label htmlFor="channels" className="text-base font-semibold">
-              Select Channels
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="channels" className="text-base font-semibold">
+                Share Channels
+              </Label>
+              <Badge variant="secondary" className="text-xs">
+                {selectedChannels.length} selected
+              </Badge>
+            </div>
+            
             {loading ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
               </div>
-            ) : channels.length === 1 ? (
-              <Alert>
-                <Info className="h-4 w-4" />
-                <AlertDescription>
-                  No social accounts connected yet.{" "}
-                  <Button
-                    variant="link"
-                    size="sm"
-                    className="h-auto p-0 text-blue-600"
-                    onClick={() => {
-                      onOpenChange(false);
-                      navigate(`/profile/${user?.id}#social-connections`);
-                    }}
-                  >
-                    Connect social accounts on your profile →
-                  </Button>
-                </AlertDescription>
-              </Alert>
             ) : (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {channels.map((channel) => {
-                  const Icon = channel.icon;
-                  const isSelected = selectedChannels.includes(channel.id);
+              <>
+                <Alert className="bg-muted/50">
+                  <Info className="h-4 w-4" />
+                  <AlertDescription className="text-xs">
+                    <strong>Connected:</strong> Select for automated blast. <strong>Not connected:</strong> Click to share manually.
+                  </AlertDescription>
+                </Alert>
+                
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {channels.map((channel) => {
+                    const Icon = channel.icon;
+                    const isSelected = selectedChannels.includes(channel.id);
+                    const isConnected = channel.connected;
 
-                  return (
-                    <button
-                      key={channel.id}
-                      type="button"
-                      onClick={() => handleChannelToggle(channel.id)}
-                      disabled={!channel.connected}
-                      className={`flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition-all ${
-                        isSelected
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      } ${!channel.connected ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
-                    >
-                      <Icon className="h-6 w-6" />
-                      <span className="text-xs font-medium">{channel.name}</span>
-                      {!channel.connected && (
-                        <span className="text-xs text-muted-foreground">
-                          Not connected
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+                    return (
+                      <div key={channel.id} className="relative">
+                        <button
+                          type="button"
+                          onClick={() => handleChannelClick(channel)}
+                          className={`w-full flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition-all ${
+                            isSelected && isConnected
+                              ? "border-primary bg-primary/10 shadow-sm"
+                              : isConnected
+                              ? "border-border hover:border-primary/50 hover:bg-accent/50"
+                              : "border-dashed border-muted-foreground/30 hover:border-primary/50 hover:bg-accent/30"
+                          }`}
+                        >
+                          <div className="relative">
+                            <Icon className={`h-6 w-6 ${isConnected ? channel.color : "text-muted-foreground"}`} />
+                            {isConnected && (
+                              <CheckCircle2 className="absolute -top-1 -right-1 h-3.5 w-3.5 text-green-600 bg-background rounded-full" />
+                            )}
+                          </div>
+                          <span className={`text-xs font-medium text-center ${!isConnected && "text-muted-foreground"}`}>
+                            {channel.name}
+                          </span>
+                          {isConnected ? (
+                            <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                              Connected
+                            </Badge>
+                          ) : channel.supportsDirectShare ? (
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1">
+                              <ExternalLink className="h-2.5 w-2.5" />
+                              Share
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1">
+                              <Link2 className="h-2.5 w-2.5" />
+                              Connect
+                            </Badge>
+                          )}
+                        </button>
+                        
+                        {!isConnected && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleConnectPlatform(channel.id);
+                            }}
+                            className="absolute top-1 right-1 p-1 rounded bg-background/80 hover:bg-background border border-border hover:border-primary transition-colors"
+                            title={`Connect ${channel.name}`}
+                          >
+                            <Plus className="h-3 w-3 text-muted-foreground" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
             )}
           </div>
 

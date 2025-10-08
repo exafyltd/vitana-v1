@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Share2,
@@ -14,9 +15,13 @@ import {
   MessageCircle,
   Info,
   Loader2,
+  CheckCircle2,
+  ExternalLink,
+  Link2,
+  Plus,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
+import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 
@@ -43,7 +48,7 @@ export default function SocialShareButton({
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
-  const { connectedPlatforms, loading } = useSocialPlatforms();
+  const { allPlatforms, loading } = useSocialPlatforms();
   const navigate = useNavigate();
 
   const getShareText = () => {
@@ -63,65 +68,68 @@ export default function SocialShareButton({
     return data.link || `https://vitana.app/share/${type}/${data.title.toLowerCase().replace(/ /g, '-')}${data.referralCode ? '?ref=' + data.referralCode : ''}`;
   };
 
-  const handleShare = async (platform: string) => {
+  const handlePlatformClick = (platform: SocialPlatform) => {
     const shareText = getShareText();
     const shareLink = getShareLink();
     
     try {
-      switch (platform) {
-        case 'copy':
-          await navigator.clipboard.writeText(`${shareText}\n\n${shareLink}`);
-          toast({
-            title: "Copied to Clipboard! 📋",
-            description: "Share text and link copied successfully"
-          });
-          break;
-          
-        case 'messenger':
-          toast({
-            title: "Opening Messenger...",
-            description: "Share via Vitana Messenger"
-          });
-          navigate('/messenger');
-          break;
-          
-        case 'facebook':
-          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}&quote=${encodeURIComponent(shareText)}`, '_blank');
-          break;
-          
-        case 'twitter':
-          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`, '_blank');
-          break;
-          
-        case 'linkedin':
-          window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareLink)}`, '_blank');
-          break;
-          
-        case 'instagram':
-          toast({
-            title: "Instagram",
-            description: "Link copied! Open Instagram to share"
-          });
-          await navigator.clipboard.writeText(shareLink);
-          break;
-
-        case 'youtube':
-          toast({
-            title: "YouTube",
-            description: "Link copied! Share on YouTube"
-          });
-          await navigator.clipboard.writeText(shareLink);
-          break;
-
-        case 'tiktok':
-          toast({
-            title: "TikTok",
-            description: "Link copied! Share on TikTok"
-          });
-          await navigator.clipboard.writeText(shareLink);
-          break;
+      if (platform.id === 'messenger') {
+        toast({
+          title: "Opening Messenger...",
+          description: "Share via Vitana Messenger"
+        });
+        navigate('/messenger');
+        setIsOpen(false);
+        return;
       }
-      
+
+      if (!platform.connected && platform.supportsDirectShare) {
+        // Open native share for unconnected platforms
+        const shareUrls: Record<string, string> = {
+          facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}&quote=${encodeURIComponent(shareText)}`,
+          twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`,
+          linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareLink)}`,
+          instagram: `https://www.instagram.com/`,
+        };
+        
+        if (shareUrls[platform.id]) {
+          window.open(shareUrls[platform.id], '_blank', 'width=600,height=400');
+          toast({
+            title: "Share opened",
+            description: `Complete your share on ${platform.name}`,
+          });
+        }
+        return;
+      }
+
+      if (!platform.connected) {
+        toast({
+          title: "Connect account",
+          description: `Connect your ${platform.name} account to share content`,
+        });
+        return;
+      }
+
+      // Handle connected platforms (for future automation)
+      const handlers: Record<string, () => void> = {
+        facebook: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}&quote=${encodeURIComponent(shareText)}`, '_blank'),
+        twitter: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`, '_blank'),
+        linkedin: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareLink)}`, '_blank'),
+        instagram: async () => {
+          await navigator.clipboard.writeText(shareLink);
+          toast({ title: "Instagram", description: "Link copied! Open Instagram to share" });
+        },
+        youtube: async () => {
+          await navigator.clipboard.writeText(shareLink);
+          toast({ title: "YouTube", description: "Link copied! Share on YouTube" });
+        },
+        tiktok: async () => {
+          await navigator.clipboard.writeText(shareLink);
+          toast({ title: "TikTok", description: "Link copied! Share on TikTok" });
+        },
+      };
+
+      handlers[platform.id]?.();
       setIsOpen(false);
     } catch (error) {
       console.error('Share error:', error);
@@ -133,26 +141,43 @@ export default function SocialShareButton({
     }
   };
 
-  // Build share options dynamically from connected social platforms
+  const handleCopyLink = async () => {
+    try {
+      const shareText = getShareText();
+      const shareLink = getShareLink();
+      await navigator.clipboard.writeText(`${shareText}\n\n${shareLink}`);
+      toast({
+        title: "Copied to Clipboard! 📋",
+        description: "Share text and link copied successfully"
+      });
+    } catch (error) {
+      toast({
+        title: "Copy failed",
+        description: "Please try again",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleConnectPlatform = () => {
+    setIsOpen(false);
+    navigate(`/profile/${user?.id}#social-connections`);
+  };
+
+  // Build share options with all platforms
   const shareOptions = useMemo(() => {
-    const baseOptions = [
-      {
-        id: "messenger",
-        icon: MessageCircle,
-        label: "Vitana Messenger",
-        color: "text-blue-600",
-      },
-    ];
+    const messenger: SocialPlatform = {
+      id: "messenger",
+      name: "Vitana Messenger",
+      icon: MessageCircle,
+      color: "text-blue-600",
+      connected: true,
+      supportsDirectShare: false,
+      supportsAutomation: false,
+    };
 
-    const socialOptions = connectedPlatforms.map((platform) => ({
-      id: platform.id,
-      icon: platform.icon,
-      label: platform.name,
-      color: platform.color,
-    }));
-
-    return [...baseOptions, ...socialOptions];
-  }, [connectedPlatforms]);
+    return [messenger, ...allPlatforms];
+  }, [allPlatforms]);
 
   return (
     <>
@@ -207,41 +232,74 @@ export default function SocialShareButton({
                 <div className="flex items-center justify-center py-8">
                   <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                 </div>
-              ) : shareOptions.length === 1 ? (
-                <Alert>
-                  <Info className="h-4 w-4" />
-                  <AlertDescription>
-                    No social accounts connected yet.{" "}
-                    <Button
-                      variant="link"
-                      size="sm"
-                      className="h-auto p-0"
-                      onClick={() => {
-                        setIsOpen(false);
-                        navigate(`/profile/${user?.id}#social-connections`);
-                      }}
-                    >
-                      Connect on your profile →
-                    </Button>
-                  </AlertDescription>
-                </Alert>
               ) : (
-                <div className="grid grid-cols-2 gap-3">
-                  {shareOptions.map((option) => {
-                    const Icon = option.icon;
-                    return (
-                      <Button
-                        key={option.id}
-                        variant="outline"
-                        className="flex flex-col items-center gap-2 h-auto py-4"
-                        onClick={() => handleShare(option.id)}
-                      >
-                        <Icon className="h-6 w-6" />
-                        <span className="text-xs">{option.label}</span>
-                      </Button>
-                    );
-                  })}
-                </div>
+                <>
+                  <Alert className="bg-muted/50">
+                    <Info className="h-4 w-4" />
+                    <AlertDescription className="text-xs">
+                      <strong>Connected:</strong> Share with one click. <strong>Not connected:</strong> Opens share dialog.
+                    </AlertDescription>
+                  </Alert>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    {shareOptions.map((option) => {
+                      const Icon = option.icon;
+                      const isConnected = option.connected;
+
+                      return (
+                        <div key={option.id} className="relative">
+                          <Button
+                            variant="outline"
+                            className={`w-full flex flex-col items-center gap-2 h-auto py-4 ${
+                              isConnected 
+                                ? "hover:bg-accent hover:border-primary" 
+                                : "border-dashed border-muted-foreground/30"
+                            }`}
+                            onClick={() => handlePlatformClick(option)}
+                          >
+                            <div className="relative">
+                              <Icon className={`h-6 w-6 ${isConnected ? option.color : "text-muted-foreground"}`} />
+                              {isConnected && (
+                                <CheckCircle2 className="absolute -top-1 -right-1 h-3 w-3 text-green-600 bg-background rounded-full" />
+                              )}
+                            </div>
+                            <span className={`text-xs ${!isConnected && "text-muted-foreground"}`}>
+                              {option.name}
+                            </span>
+                            {isConnected ? (
+                              <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                                Connected
+                              </Badge>
+                            ) : option.supportsDirectShare ? (
+                              <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1">
+                                <ExternalLink className="h-2.5 w-2.5" />
+                                Share
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1">
+                                <Link2 className="h-2.5 w-2.5" />
+                                Connect
+                              </Badge>
+                            )}
+                          </Button>
+                          
+                          {!isConnected && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleConnectPlatform();
+                              }}
+                              className="absolute top-1 right-1 p-1 rounded bg-background/80 hover:bg-background border border-border hover:border-primary transition-colors"
+                              title={`Connect ${option.name}`}
+                            >
+                              <Plus className="h-3 w-3 text-muted-foreground" />
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
               )}
             </div>
 
@@ -250,7 +308,7 @@ export default function SocialShareButton({
               <Button 
                 variant="outline"
                 className="w-full"
-                onClick={() => handleShare('copy')}
+                onClick={handleCopyLink}
               >
                 <Copy className="w-4 h-4 mr-2" />
                 Copy Link
