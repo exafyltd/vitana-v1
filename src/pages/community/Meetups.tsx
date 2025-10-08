@@ -13,6 +13,8 @@ import { Apple, Droplets, Dumbbell, Brain, Moon, Plus, Search, Pencil } from "lu
 import { CreateMeetupPopup } from "@/components/CreateMeetupPopup";
 import { useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { usePermissions } from "@/hooks/usePermissions";
+import { useAuth } from "@/context/AuthProvider";
 
 // Mock data for meetup events with different pillar categories
 const todayEvents = [
@@ -407,7 +409,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                 location={rowEvents[0]?.location}
                 attendees={rowEvents[0]?.attendees}
                 timestamp={rowEvents[0]?.timestamp}
-                actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[0]?.title}`)} />}
+                utilityTopRight={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[0]?.title}`)} />}
                 className="h-full"
               />
             </div>
@@ -423,7 +425,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
-                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[1].title}`)} />}
+                  utilityTopRight={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[1].title}`)} />}
                   className="h-full"
                 />
               </div>
@@ -440,7 +442,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
-                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[2].title}`)} />}
+                  utilityTopRight={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[2].title}`)} />}
                   className="h-full"
                 />
               </div>
@@ -461,7 +463,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   location={rowEvents[0].location}
                   attendees={rowEvents[0].attendees}
                   timestamp={rowEvents[0].timestamp}
-                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[0].title}`)} />}
+                  utilityTopRight={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[0].title}`)} />}
                   className="h-full"
                 />
               </div>
@@ -478,7 +480,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
-                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[1].title}`)} />}
+                  utilityTopRight={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[1].title}`)} />}
                   className="h-full"
                 />
               </div>
@@ -490,7 +492,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   title={rowEvents[2].title}
                   description={rowEvents[2].description}
                   imageUrl={rowEvents[2].imageUrl}
-                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[2].title}`)} />}
+                  utilityTopRight={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[2].title}`)} />}
                   pillar={rowEvents[2].pillar}
                   author={rowEvents[2].author}
                   location={rowEvents[2].location}

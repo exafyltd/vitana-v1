@@ -29,6 +29,7 @@ interface NewsCardProps {
   className?: string;
   onClick?: () => void;
   actionButton?: React.ReactNode;
+  utilityTopRight?: React.ReactNode;
   showSmartAction?: boolean;
   onActionClick?: () => void;
   rewardPoints?: number;
@@ -55,6 +56,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     className, 
     onClick,
     actionButton,
+    utilityTopRight,
     showSmartAction = false,
     onActionClick,
     rewardPoints,
@@ -257,14 +259,20 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 )}
               </div>
               
-              {/* Timestamp (single line in upper right) */}
-              {timestamp && (
+              {timestamp && !utilityTopRight && (
                 <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
                   <Clock className="w-3 h-3" />
                   <span className="font-medium">{timestamp}</span>
                 </div>
               )}
             </div>
+
+            {/* Utility Top Right Slot */}
+            {utilityTopRight && (
+              <div className="absolute top-4 right-4 z-20 pointer-events-auto">
+                {utilityTopRight}
+              </div>
+            )}
 
             {/* Main Content Area - takes up remaining space */}
             <div className="flex-1 flex flex-col justify-end space-y-3 pb-14">
