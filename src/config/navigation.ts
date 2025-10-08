@@ -74,7 +74,6 @@ export const memoryNavigation = [
   { id: "diary", name: "Daily Diary", path: "/memory/diary" },
   { id: "recall", name: "Recall & Search", path: "/memory/recall" },
   { id: "permissions", name: "Permissions", path: "/memory/permissions" },
-  { id: "backfill", name: "⚡ Backfill", path: "/memory/backfill" },
 ];
 
 export const adminNavigation = [

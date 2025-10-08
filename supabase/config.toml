@@ -32,6 +32,3 @@ verify_jwt = true
 
 [functions.generate-memory-embedding]
 verify_jwt = true
-
-[functions.backfill-memory-embeddings]
-verify_jwt = true
