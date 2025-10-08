@@ -10,6 +10,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 
 export default function WellnessServices() {
   const navigate = useNavigate();

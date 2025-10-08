@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Droplets, Building2, Star } from 'lucide-react';
 import { withCardId } from '@/lib/withCardId';
+import { AddToCartButton } from '@/components/cart/AddToCartButton';
 
 interface LabTest {
   id: string;
@@ -103,13 +104,29 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
           </div>
         </div>
 
-        <div className="pt-2">
+        <div className="pt-2 flex gap-2">
+          <AddToCartButton
+            item={{
+              item_type: 'lab_test',
+              item_id: labTest.id,
+              item_name: labTest.name,
+              item_price: labTest.price,
+              item_metadata: {
+                category: labTest.category,
+                turnaround_days: labTest.turnaround_days,
+                biomarkers_count: labTest.biomarkers.length,
+              },
+            }}
+            variant="outline"
+            size="sm"
+            className="flex-1"
+          />
           <Button 
             onClick={() => onOrder(labTest)} 
-            className="w-full"
+            className="flex-1"
             size="sm"
           >
-            Order Test Kit
+            Order Now
           </Button>
         </div>
       </CardContent>

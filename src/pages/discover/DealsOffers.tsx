@@ -10,6 +10,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 
 export default function DealsOffers() {
   const navigate = useNavigate();
@@ -248,7 +249,26 @@ export default function DealsOffers() {
                         </div>
                       </div>
                       <p className="text-xs text-red-600 mb-2">{deal.timeLeft} left</p>
-                      <Button size="sm" className="w-full bg-red-500 hover:bg-red-600 text-xs">Claim Deal</Button>
+                      <div className="flex gap-2">
+                        <AddToCartButton
+                          item={{
+                            item_type: 'deal',
+                            item_id: deal.id.toString(),
+                            item_name: deal.title,
+                            item_price: parseFloat(deal.price.replace('$', '')),
+                            item_image_url: deal.image,
+                            item_metadata: {
+                              originalPrice: deal.originalPrice,
+                              discount: deal.discount,
+                              provider: deal.provider,
+                            },
+                          }}
+                          size="sm"
+                          className="flex-1 text-xs"
+                          showLabel={false}
+                        />
+                        <Button size="sm" className="flex-1 bg-red-500 hover:bg-red-600 text-xs">Claim Deal</Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
@@ -283,9 +303,28 @@ export default function DealsOffers() {
                         <MapPin className="h-3 w-3 text-muted-foreground" />
                         <span className="text-xs text-muted-foreground">{service.location}</span>
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between gap-2">
                         <span className="text-sm font-bold text-foreground">{service.price}</span>
-                        <Button size="sm" className="text-xs">Book Now</Button>
+                        <div className="flex gap-1">
+                          <AddToCartButton
+                            item={{
+                              item_type: 'wellness_service',
+                              item_id: service.id.toString(),
+                              item_name: service.title,
+                              item_price: parseFloat(service.price.replace('$', '')),
+                              item_image_url: service.image,
+                              item_metadata: {
+                                location: service.location,
+                                bookings: service.bookings,
+                                trend: service.trend,
+                              },
+                            }}
+                            size="sm"
+                            className="text-xs"
+                            showLabel={false}
+                          />
+                          <Button size="sm" className="text-xs">Book Now</Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -326,12 +365,31 @@ export default function DealsOffers() {
                           <span className="text-xs text-purple-700 font-medium">{match.reason}</span>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between gap-2">
                         <div className="flex items-baseline gap-1">
                           <span className="text-sm font-bold text-foreground">{match.price}</span>
                           {match.period && <span className="text-xs text-muted-foreground">{match.period}</span>}
                         </div>
-                        <Button size="sm" className="text-xs">Book</Button>
+                        <div className="flex gap-1">
+                          <AddToCartButton
+                            item={{
+                              item_type: 'wellness_service',
+                              item_id: match.id.toString(),
+                              item_name: match.title,
+                              item_price: parseFloat(match.price.replace('$', '')),
+                              item_image_url: match.image,
+                              item_metadata: {
+                                match: match.match,
+                                reason: match.reason,
+                                provider: match.provider,
+                              },
+                            }}
+                            size="sm"
+                            className="text-xs"
+                            showLabel={false}
+                          />
+                          <Button size="sm" className="text-xs">Book</Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>

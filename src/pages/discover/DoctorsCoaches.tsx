@@ -11,6 +11,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
@@ -328,6 +329,24 @@ export default function DoctorsCoaches() {
                   </div>
 
                   <div className="flex gap-2 mt-auto">
+                    <AddToCartButton
+                      item={{
+                        item_type: 'provider_session',
+                        item_id: provider.id.toString(),
+                        item_name: `Session with ${provider.name}`,
+                        item_price: parseFloat(provider.priceRange.split(' - ')[0].replace('$', '')),
+                        item_image_url: provider.image,
+                        item_metadata: {
+                          specialty: provider.specialty,
+                          experience: provider.experience,
+                          rating: provider.rating,
+                        },
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9"
+                      showLabel={false}
+                    />
                     <Button size="sm" className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9">View Profile</Button>
                     <Button size="sm" variant="outline" className="text-xs md:text-sm h-7 md:h-8 lg:h-9">Book Now</Button>
                   </div>
