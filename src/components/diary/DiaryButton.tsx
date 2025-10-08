@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { FileText, Pen } from "lucide-react";
+import { FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface DiaryEntry {
@@ -287,11 +287,7 @@ export default function DiaryButton() {
         background: isRecording ? "var(--brand-live)" : "radial-gradient(120% 120% at 30% 20%, #0f172a 0%, #0b1220 100%)"
       }}
     >
-      {/* unified paper with pen icon */}
-      <span className="relative inline-block w-5 h-5" aria-hidden="true">
-        <FileText className="h-5 w-5" strokeWidth={1.5} />
-        <Pen className="h-3.5 w-3.5 absolute -right-1 -bottom-0.5 rotate-[-40deg]" strokeWidth={2.2} />
-      </span>
+      <FileText className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
     </button>
   );
 }
