@@ -240,17 +240,6 @@ export function LiveRoomCard({
             <div className="flex items-center justify-end gap-2 h-10 pointer-events-auto">
               {room.isLive ? (
                 <>
-                  <Button
-                    size="sm"
-                    className="h-10 min-w-[88px] rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onJoinClick?.(e);
-                    }}
-                    aria-label="Join live room"
-                  >
-                    Join
-                  </Button>
                   {shareButton || (
                     <Button
                       size="sm"
@@ -266,9 +255,35 @@ export function LiveRoomCard({
                       <Share2 className="w-[18px] h-[18px]" />
                     </Button>
                   )}
+                  <Button
+                    size="sm"
+                    className="h-10 min-w-[88px] rounded-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] text-white border-0 hover:shadow-lg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onJoinClick?.(e);
+                    }}
+                    aria-label="Join live room"
+                  >
+                    Join
+                  </Button>
                 </>
               ) : isScheduled ? (
                 <>
+                  {shareButton || (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onShareClick?.(e);
+                      }}
+                      aria-label="Share room"
+                      title="Share"
+                    >
+                      <Share2 className="w-[18px] h-[18px]" />
+                    </Button>
+                  )}
                   <Button
                     size="sm"
                     variant={isNotifying ? "secondary" : "ghost"}
@@ -285,21 +300,6 @@ export function LiveRoomCard({
                     <Bell className={cn("w-[18px] h-[18px]", isNotifying && "fill-current")} />
                     {isNotifying ? "Notifying" : "Notify me"}
                   </Button>
-                  {shareButton || (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white p-0"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onShareClick?.(e);
-                      }}
-                      aria-label="Share room"
-                      title="Share"
-                    >
-                      <Share2 className="w-[18px] h-[18px]" />
-                    </Button>
-                  )}
                 </>
               ) : null}
             </div>
