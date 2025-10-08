@@ -659,6 +659,47 @@ export type Database = {
         }
         Relationships: []
       }
+      event_recommendations: {
+        Row: {
+          created_at: string
+          event_id: string
+          expires_at: string | null
+          id: string
+          is_dismissed: boolean | null
+          match_reasons: Json | null
+          match_score: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          expires_at?: string | null
+          id?: string
+          is_dismissed?: boolean | null
+          match_reasons?: Json | null
+          match_score?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          expires_at?: string | null
+          id?: string
+          is_dismissed?: boolean | null
+          match_reasons?: Json | null
+          match_score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_recommendations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       exchange_rates: {
         Row: {
           change_24h: number | null
@@ -1040,6 +1081,47 @@ export type Database = {
             columns: ["thread_id"]
             isOneToOne: false
             referencedRelation: "global_message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_recommendations: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          group_id: string
+          id: string
+          is_dismissed: boolean | null
+          match_reasons: Json | null
+          match_score: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          group_id: string
+          id?: string
+          is_dismissed?: boolean | null
+          match_reasons?: Json | null
+          match_score?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          group_id?: string
+          id?: string
+          is_dismissed?: boolean | null
+          match_reasons?: Json | null
+          match_score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_recommendations_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_groups"
             referencedColumns: ["id"]
           },
         ]
@@ -2358,6 +2440,39 @@ export type Database = {
           follower_id?: string
           following_id?: string
           id?: string
+        }
+        Relationships: []
+      }
+      user_interests: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          id: string
+          interest: string
+          metadata: Json | null
+          source: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          interest: string
+          metadata?: Json | null
+          source?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          interest?: string
+          metadata?: Json | null
+          source?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
