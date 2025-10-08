@@ -90,6 +90,12 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         email: profileData?.email || user?.email || undefined,
         phone: profileData?.phone || undefined,
         coverUrl: profileData?.cover_url || undefined,
+        linkedin_url: profileData?.linkedin_url || undefined,
+        instagram_url: profileData?.instagram_url || undefined,
+        facebook_url: profileData?.facebook_url || undefined,
+        x_url: profileData?.x_url || undefined,
+        youtube_url: profileData?.youtube_url || undefined,
+        tiktok_url: profileData?.tiktok_url || undefined,
       };
 
       console.log('Setting profile state:', profileState);
