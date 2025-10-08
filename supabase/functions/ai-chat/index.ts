@@ -15,6 +15,13 @@ const CRISIS_KEYWORDS = [
 const SYSTEM_PROMPTS = {
   health: `ROLE: You are Vitana, an AI wellness coach specializing in longevity and preventive health.
 
+=== MEMORY-FIRST POLICY (HARD RULE) ===
+1. You ALWAYS have access to the user's complete Memory Garden data (stats + catalog + retrieval)
+2. NEVER say "I don't know" about Memory Garden entries - consult MEMORY STATS and MEMORY CATALOG sections below
+3. When asked about counts/totals/numbers: answer DIRECTLY from MEMORY STATS (never guess)
+4. When asked about specific memories: cross-check MEMORY CATALOG first, then use retrieval if needed
+5. All Memory Garden data is deterministic and complete - use it with confidence
+
 OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
 1. Start immediately with the direct answer to the user's current question
 2. Use plain conversational text only - zero markdown, zero formatting
@@ -55,6 +62,9 @@ When asked about wallet/money/finances:
 
   autopilot: `ROLE: You are Vitana Autopilot, proactively suggesting next-best actions.
 
+=== MEMORY-FIRST POLICY (HARD RULE) ===
+You ALWAYS have complete Memory Garden access. NEVER claim ignorance about entries. Use MEMORY STATS for counts.
+
 OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
 1. Start with the direct answer immediately
 2. Plain text only - no markdown or formatting
@@ -80,6 +90,9 @@ When asked about wallet/money/finances, show all three balances and explain curr
 
   community: `ROLE: You are Vitana Community AI, facilitating wellness connections.
 
+=== MEMORY-FIRST POLICY (HARD RULE) ===
+You ALWAYS have complete Memory Garden access. NEVER claim ignorance about entries. Use MEMORY STATS for counts.
+
 OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
 1. Start with the direct answer immediately
 2. Plain text only - no markdown or formatting
@@ -104,6 +117,9 @@ You have access to the user's Vitana wallet system with three currencies:
 When asked about wallet/money/finances, show all three balances and explain currency purposes. Respond in the user's language.`,
 
   wellness: `ROLE: You are Vitana Wellness AI, providing holistic lifestyle guidance.
+
+=== MEMORY-FIRST POLICY (HARD RULE) ===
+You ALWAYS have complete Memory Garden access. NEVER claim ignorance about entries. Use MEMORY STATS for counts.
 
 OUTPUT FORMAT - YOU MUST FOLLOW THIS EXACTLY:
 1. Start with the direct answer immediately
@@ -716,8 +732,76 @@ serve(async (req) => {
     const basePrompt = SYSTEM_PROMPTS[agentType as keyof typeof SYSTEM_PROMPTS] || SYSTEM_PROMPTS.health;
     let systemMessage = basePrompt;
     
+    // === DETERMINISTIC COUNT QUESTION DETECTION ===
+    const countQuestionPattern = /(how many|total|count|across.*memory garden|number of.*entr)/i;
+    const isCountQuestion = countQuestionPattern.test(userMessage);
+    
     if (userContext) {
-      const { identity, temporal, health, memory, economic, community } = userContext;
+      const { identity, temporal, health, memory, economic, community, memoryStats, memoryHeaders } = userContext;
+      
+      // === MEMORY STATS (Always inject first) ===
+      if (memoryStats) {
+        console.info(`[ai-chat] Injecting MEMORY STATS: total=${memoryStats.totalCount}`);
+        systemMessage += '\n\n=== MEMORY STATS (Complete Memory Garden Data) ===\n';
+        systemMessage += `Total Entries: ${memoryStats.totalCount} (${memoryStats.aiCount} Insights + ${memoryStats.diaryCount} Diary)\n`;
+        systemMessage += `Last Updated: ${new Date(memoryStats.updatedAt).toLocaleString()}\n`;
+        
+        if (Object.keys(memoryStats.aiByType).length > 0) {
+          systemMessage += '\nInsights by Type:\n';
+          Object.entries(memoryStats.aiByType).forEach(([type, count]) => {
+            systemMessage += `  • ${type}: ${count}\n`;
+          });
+        }
+        
+        if (Object.keys(memoryStats.diaryByTag).length > 0) {
+          systemMessage += '\nDiary by Tag:\n';
+          Object.entries(memoryStats.diaryByTag).forEach(([tag, count]) => {
+            systemMessage += `  • ${tag}: ${count}\n`;
+          });
+        }
+        
+        // If this is a count question, answer it immediately
+        if (isCountQuestion) {
+          console.info('[ai-chat] Count question detected - answering from memoryStats');
+        }
+      }
+      
+      // === MEMORY CATALOG (Compact headers of all entries) ===
+      if (memoryHeaders && (memoryHeaders.aiHeaders.length > 0 || memoryHeaders.diaryHeaders.length > 0)) {
+        console.info(`[ai-chat] Injecting MEMORY CATALOG: ai=${memoryHeaders.aiHeaders.length}, diary=${memoryHeaders.diaryHeaders.length}`);
+        systemMessage += '\n=== MEMORY CATALOG (Complete Index) ===\n';
+        systemMessage += 'All Memory Garden entries (id | type/tag | date | preview):\n';
+        
+        // Include AI memory headers
+        if (memoryHeaders.aiHeaders.length > 0) {
+          systemMessage += '\nInsights:\n';
+          memoryHeaders.aiHeaders.slice(0, 50).forEach(h => {
+            const date = new Date(h.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const conf = h.confidence ? `${Math.round(h.confidence * 100)}%` : '';
+            systemMessage += `  ${h.id.slice(0, 8)} | ${h.type} ${conf} | ${date} | ${h.preview.slice(0, 80)}\n`;
+          });
+          if (memoryHeaders.aiHeaders.length > 50) {
+            systemMessage += `  ... and ${memoryHeaders.aiHeaders.length - 50} more insights (use retrieval for details)\n`;
+          }
+        }
+        
+        // Include diary headers
+        if (memoryHeaders.diaryHeaders.length > 0) {
+          systemMessage += '\nDiary Entries:\n';
+          memoryHeaders.diaryHeaders.slice(0, 50).forEach(h => {
+            const date = new Date(h.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const tags = h.tags.join(', ') || 'diary';
+            systemMessage += `  ${h.id.slice(0, 8)} | ${tags} | ${date} | ${h.preview.slice(0, 80)}\n`;
+          });
+          if (memoryHeaders.diaryHeaders.length > 50) {
+            systemMessage += `  ... and ${memoryHeaders.diaryHeaders.length - 50} more diary entries\n`;
+          }
+        }
+        
+        if (memoryHeaders.catalogTruncated) {
+          systemMessage += '\nNote: Diary catalog shows most recent entries. Older entries available via retrieval.\n';
+        }
+      }
       
       // === MEMORY SNAPSHOT (High-Confidence Facts) ===
       const memorySnapshot = memory?.aiMemoryHighlights || [];
@@ -1166,6 +1250,22 @@ serve(async (req) => {
               }
             }).then(async (result) => {
               console.info('[stream] ✓ AI message stored');
+              
+              // Sync memoryStats to user_memory_metadata
+              if (userContext?.memoryStats) {
+                const { totalCount, updatedAt } = userContext.memoryStats;
+                await supabaseClient.from('user_memory_metadata')
+                  .upsert({
+                    user_id: user.id,
+                    total_memories_count: totalCount,
+                    last_ai_sync_at: updatedAt
+                  }, {
+                    onConflict: 'user_id'
+                  })
+                  .then(() => console.info(`[ai-chat] memoryStats synced -> total=${totalCount}`))
+                  .catch(syncErr => console.error('[ai-chat] Failed to sync memoryStats:', syncErr));
+              }
+              
               // Log activity with proper error handling
               const { error: logError } = await supabaseClient.from('user_activity_log').insert({
                 user_id: user.id,
@@ -1269,6 +1369,22 @@ serve(async (req) => {
       }
     }).then(async (result) => {
       console.log('AI message stored');
+      
+      // Sync memoryStats to user_memory_metadata
+      if (userContext?.memoryStats) {
+        const { totalCount, updatedAt } = userContext.memoryStats;
+        await supabaseClient.from('user_memory_metadata')
+          .upsert({
+            user_id: user.id,
+            total_memories_count: totalCount,
+            last_ai_sync_at: updatedAt
+          }, {
+            onConflict: 'user_id'
+          })
+          .then(() => console.info(`[ai-chat] memoryStats synced -> total=${totalCount}`))
+          .catch(syncErr => console.error('[ai-chat] Failed to sync memoryStats:', syncErr));
+      }
+      
       // Log activity with proper error handling
       const { error: logError } = await supabaseClient.from('user_activity_log').insert({
         user_id: user.id,

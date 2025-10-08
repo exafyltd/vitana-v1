@@ -151,11 +151,24 @@ interface UserContext {
       timestamp: string;
     }>;
   };
-  metadata: {
-    cachedAt: string;
-    dataFreshness: string;
-  };
-}
+    metadata: {
+      cachedAt: string;
+      dataFreshness: string;
+    };
+    memoryStats?: {
+      aiCount: number;
+      diaryCount: number;
+      totalCount: number;
+      aiByType: Record<string, number>;
+      diaryByTag: Record<string, number>;
+      updatedAt: string;
+    };
+    memoryHeaders?: {
+      aiHeaders: Array<{id: string; type: string; confidence: number; created_at: string; preview: string}>;
+      diaryHeaders: Array<{id: string; created_at: string; tags: string[]; preview: string}>;
+      catalogTruncated: boolean;
+    };
+  }
 
 async function fetchUserContext(supabase: any, userId: string): Promise<UserContext> {
   const now = new Date();
@@ -172,6 +185,8 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     diaryData,
     memoryData,
     aiMemoryHighConfDataResult,
+    allAiMemoryData,
+    allDiaryEntriesData,
     conversationsData,
     actionsData,
     tenantData,
@@ -230,6 +245,19 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
       .order('confidence_score', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(10),
+    
+    // ALL AI Memory for catalog (active only)
+    supabase.from('ai_memory')
+      .select('id, memory_type, content, confidence_score, created_at')
+      .eq('user_id', userId)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false }),
+    
+    // ALL Diary Entries for catalog
+    supabase.from('diary_entries')
+      .select('id, text, tags, created_at')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false }),
     
     // Recent conversations (last 7 days)
     supabase.from('ai_conversations')
@@ -324,9 +352,70 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
   const diary = diaryData.data || [];
   const memory = memoryData.data || [];
   const memoryHighlights = aiMemoryHighConfDataResult.data || [];
+  const allAiMemory = allAiMemoryData.data || [];
+  const allDiaryEntries = allDiaryEntriesData.data || [];
   const conversations = conversationsData.data || [];
   const actions = actionsData.data || [];
   const tenant = tenantData.data || {};
+  
+  // === MEMORY STATS COMPUTATION ===
+  const aiCount = allAiMemory.length;
+  const diaryCount = allDiaryEntries.length;
+  const totalCount = aiCount + diaryCount;
+  
+  // Group AI memory by type
+  const aiByType: Record<string, number> = {};
+  for (const mem of allAiMemory) {
+    const type = mem.memory_type || 'unknown';
+    aiByType[type] = (aiByType[type] || 0) + 1;
+  }
+  
+  // Group diary entries by tag (best-effort)
+  const diaryByTag: Record<string, number> = {};
+  for (const entry of allDiaryEntries) {
+    const tags = entry.tags || [];
+    const meaningfulTag = tags.find((t: string) => !['diary', 'voice', 'photo'].includes(t.toLowerCase())) || 'diary';
+    diaryByTag[meaningfulTag] = (diaryByTag[meaningfulTag] || 0) + 1;
+  }
+  
+  const memoryStats = {
+    aiCount,
+    diaryCount,
+    totalCount,
+    aiByType,
+    diaryByTag,
+    updatedAt: now.toISOString()
+  };
+  
+  console.info(`[context] memoryStats computed: total=${totalCount}, ai=${aiCount}, diary=${diaryCount}`);
+  
+  // === MEMORY CATALOG (compact headers) ===
+  const aiHeaders = allAiMemory.map((m: any) => ({
+    id: m.id,
+    type: m.memory_type,
+    confidence: m.confidence_score,
+    created_at: m.created_at,
+    preview: (m.content || '').slice(0, 160)
+  }));
+  
+  // For diary, limit to most recent 500 if there are thousands
+  const MAX_DIARY_HEADERS = 500;
+  const diaryHeaders = allDiaryEntries.slice(0, MAX_DIARY_HEADERS).map((d: any) => ({
+    id: d.id,
+    created_at: d.created_at,
+    tags: d.tags || [],
+    preview: (d.text || '').slice(0, 160)
+  }));
+  
+  const catalogTruncated = allDiaryEntries.length > MAX_DIARY_HEADERS;
+  
+  const memoryHeaders = {
+    aiHeaders,
+    diaryHeaders,
+    catalogTruncated
+  };
+  
+  console.info(`[context] memoryHeaders built: ai=${aiHeaders.length}, diary=${diaryHeaders.length}, truncated=${catalogTruncated}`);
   
   // Community data
   const communityEvents = communityEventsData.data || [];
@@ -559,8 +648,10 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     },
     metadata: {
       cachedAt: now.toISOString(),
-      dataFreshness: '5min'
-    }
+      dataFreshness: 'real-time'
+    },
+    memoryStats,
+    memoryHeaders
   };
 
   return context;
