@@ -87,7 +87,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
         {/* Vitana Index Card - Circle with 742 */}
         <div 
           className="w-32 bg-card rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-2xl relative z-10"
-          onClick={() => navigate('/health/my-health-tracker')}
+          onClick={() => navigate('/health')}
         >
           <div className="flex items-center justify-center h-full">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
