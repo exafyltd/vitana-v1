@@ -38,6 +38,7 @@ import {
   Share2
 } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Featured dummy events for hybrid display
 const featuredTodayEvents = [
@@ -257,22 +258,31 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
         }
       : { eventId: String(event.id) }
     ),
+    // Top-right utility edit button (creators only)
+    utilityTopRight: canEdit && onEdit ? (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              size="icon"
+              variant="secondary"
+              className="rounded-full h-9 w-9 p-0 bg-popover/70 text-popover-foreground ring-1 ring-border shadow-md backdrop-blur-sm hover:bg-popover/80"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(event);
+              }}
+              aria-label="Edit meetup"
+            >
+              <Edit className="w-4 h-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent sideOffset={6}>Edit meetup</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    ) : undefined,
+    // Bottom row actions: only Share now
     actionButton: (
       <div className="flex items-center gap-2">
-        {canEdit && onEdit && (
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(event);
-            }}
-            aria-label="Edit meetup"
-          >
-            <Edit className="w-4 h-4 mr-1" />
-            Edit
-          </Button>
-        )}
         <SocialShareButton
           type="event"
           data={{
