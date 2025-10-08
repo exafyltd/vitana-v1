@@ -317,15 +317,10 @@ export function UniversalShareDialog({
                             <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
                               Connected
                             </Badge>
-                          ) : channel.supportsDirectShare ? (
+                          ) : (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1">
                               <ExternalLink className="h-2.5 w-2.5" />
                               Share
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1">
-                              <Link2 className="h-2.5 w-2.5" />
-                              Connect
                             </Badge>
                           )}
                         </button>
