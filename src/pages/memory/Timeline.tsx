@@ -340,128 +340,143 @@ function Timeline() {
             </div>
 
             <div className="max-w-7xl mx-auto">
-              <Accordion 
-                type="single" 
-                collapsible 
-                value={expandedCategory}
-                onValueChange={setExpandedCategory}
-              >
-                {CATEGORIES.map((category) => {
-                  const hookData = categoryHooks[category.filter];
-                  const items = hookData?.allItems.filter((i: any) => {
-                    if (i.itemType === 'activity') {
-                      return i.activityType !== 'memory.delete';
-                    }
-                    return true;
-                  }) || [];
-                  const count = getCountLast30Days(items);
-                  const latestTimestamp = getLatestTimestamp(items);
-                  const isLoading = hookData?.isLoading;
-                  const hasNext = hookData?.hasNextPage;
-                  const isFetchingNext = hookData?.isFetchingNextPage;
+              {/* Horizontal Category Menu */}
+              <div className="overflow-x-auto pb-4 mb-6">
+                <div className="flex gap-3 min-w-max">
+                  {CATEGORIES.map((category) => {
+                    const hookData = categoryHooks[category.filter];
+                    const items = hookData?.allItems.filter((i: any) => {
+                      if (i.itemType === 'activity') {
+                        return i.activityType !== 'memory.delete';
+                      }
+                      return true;
+                    }) || [];
+                    const count = getCountLast30Days(items);
+                    const latestTimestamp = getLatestTimestamp(items);
+                    const isActive = expandedCategory === category.filter;
 
-                  return (
-                    <AccordionItem key={category.filter} value={category.filter}>
-                      <AccordionTrigger className="hover:no-underline">
-                        <div className="flex items-center justify-between w-full pr-4">
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">{category.emoji}</span>
-                            <span className="font-medium">{category.label}</span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <Badge variant="outline" className="text-xs">
-                              {count}
-                            </Badge>
-                            {latestTimestamp && (
-                              <span className="text-xs text-muted-foreground hidden sm:inline">
-                                {formatDistanceToNow(latestTimestamp, { addSuffix: true })}
-                              </span>
-                            )}
-                          </div>
+                    return (
+                      <Button
+                        key={category.filter}
+                        variant={isActive ? "default" : "outline"}
+                        className="flex-shrink-0 h-auto py-3 px-4 flex flex-col items-start gap-1 min-w-[140px]"
+                        onClick={() => setExpandedCategory(category.filter)}
+                      >
+                        <div className="flex items-center gap-2 w-full">
+                          <span className="text-lg">{category.emoji}</span>
+                          <span className="font-medium text-sm">{category.label}</span>
                         </div>
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="pt-4">
-                          {isLoading ? (
-                            <div className="flex items-center justify-center py-12">
-                              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                            </div>
-                          ) : items.length === 0 ? (
-                            <Card className="border-dashed">
-                              <CardContent className="p-8 text-center">
-                                <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
-                                <p className="text-muted-foreground mb-3">
-                                  No {category.label} activity yet
-                                </p>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  onClick={() => setActiveTab("all")}
-                                >
-                                  View All Activity
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          ) : (
-                            <div className="space-y-6">
-                              {Object.entries(groupItemsByDate(items)).map(([dateGroup, dateItems]) => (
-                                <div key={dateGroup} className="space-y-3">
-                                  <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
-                                    {dateGroup}
-                                  </h3>
-                                  {dateItems.map((item) => (
-                                    item.itemType === 'exchange' ? (
-                                      <ConversationCard
-                                        key={item.id}
-                                        exchange={item}
-                                        onPromote={handlePromoteToKnowledge}
-                                        onDelete={handleDeleteActivity}
-                                      />
-                                    ) : (
-                                      <ActivityCard 
-                                        key={item.id} 
-                                        activity={item}
-                                        onPromote={handlePromoteToKnowledge}
-                                        onDelete={handleDeleteActivity}
-                                      />
-                                    )
-                                  ))}
-                                </div>
-                              ))}
-
-                              {hasNext && (
-                                <div className="py-8 flex justify-center">
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => hookData?.fetchNextPage()}
-                                    disabled={isFetchingNext}
-                                  >
-                                    {isFetchingNext ? (
-                                      <>
-                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                        Loading...
-                                      </>
-                                    ) : (
-                                      'Load More'
-                                    )}
-                                  </Button>
-                                </div>
-                              )}
-
-                              {!hasNext && items.length > 0 && (
-                                <p className="text-center text-sm text-muted-foreground py-8">
-                                  You've reached the beginning 📜
-                                </p>
-                              )}
-                            </div>
+                        <div className="flex items-center gap-2 w-full justify-between">
+                          <Badge variant={isActive ? "secondary" : "outline"} className="text-xs">
+                            {count}
+                          </Badge>
+                          {latestTimestamp && (
+                            <span className="text-xs opacity-70">
+                              {formatDistanceToNow(latestTimestamp, { addSuffix: true })}
+                            </span>
                           )}
                         </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  );
-                })}
-              </Accordion>
+                      </Button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Selected Category Content */}
+              {expandedCategory && (() => {
+                const category = CATEGORIES.find(c => c.filter === expandedCategory);
+                if (!category) return null;
+
+                const hookData = categoryHooks[category.filter];
+                const items = hookData?.allItems.filter((i: any) => {
+                  if (i.itemType === 'activity') {
+                    return i.activityType !== 'memory.delete';
+                  }
+                  return true;
+                }) || [];
+                const isLoading = hookData?.isLoading;
+                const hasNext = hookData?.hasNextPage;
+                const isFetchingNext = hookData?.isFetchingNextPage;
+
+                return (
+                  <div className="pt-4">
+                    {isLoading ? (
+                      <div className="flex items-center justify-center py-12">
+                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                      </div>
+                    ) : items.length === 0 ? (
+                      <Card className="border-dashed">
+                        <CardContent className="p-8 text-center">
+                          <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
+                          <p className="text-muted-foreground mb-3">
+                            No {category.label} activity yet
+                          </p>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => setActiveTab("all")}
+                          >
+                            View All Activity
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ) : (
+                      <div className="space-y-6">
+                        {Object.entries(groupItemsByDate(items)).map(([dateGroup, dateItems]) => (
+                          <div key={dateGroup} className="space-y-3">
+                            <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
+                              {dateGroup}
+                            </h3>
+                            {dateItems.map((item) => (
+                              item.itemType === 'exchange' ? (
+                                <ConversationCard
+                                  key={item.id}
+                                  exchange={item}
+                                  onPromote={handlePromoteToKnowledge}
+                                  onDelete={handleDeleteActivity}
+                                />
+                              ) : (
+                                <ActivityCard 
+                                  key={item.id} 
+                                  activity={item}
+                                  onPromote={handlePromoteToKnowledge}
+                                  onDelete={handleDeleteActivity}
+                                />
+                              )
+                            ))}
+                          </div>
+                        ))}
+
+                        {hasNext && (
+                          <div className="py-8 flex justify-center">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => hookData?.fetchNextPage()}
+                              disabled={isFetchingNext}
+                            >
+                              {isFetchingNext ? (
+                                <>
+                                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                  Loading...
+                                </>
+                              ) : (
+                                'Load More'
+                              )}
+                            </Button>
+                          </div>
+                        )}
+
+                        {!hasNext && items.length > 0 && (
+                          <p className="text-center text-sm text-muted-foreground py-8">
+                            You've reached the beginning 📜
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           </TabsContent>
         </Tabs>
