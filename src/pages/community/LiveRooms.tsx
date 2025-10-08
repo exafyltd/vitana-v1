@@ -259,6 +259,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
+                        className="text-white hover:bg-white/20 hover:text-white"
                       />
                     }
                   />
@@ -288,6 +289,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
+                        className="text-white hover:bg-white/20 hover:text-white"
                       />
                     }
                   />
@@ -317,6 +319,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
+                        className="text-white hover:bg-white/20 hover:text-white"
                       />
                     }
                   />
@@ -350,6 +353,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
+                        className="text-white hover:bg-white/20 hover:text-white"
                       />
                     }
                   />
@@ -379,6 +383,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
+                        className="text-white hover:bg-white/20 hover:text-white"
                       />
                     }
                   />
@@ -409,6 +414,7 @@ export default function LiveRooms() {
                         }}
                         variant="icon"
                         size="sm"
+                        className="text-white hover:bg-white/20 hover:text-white"
                       />
                     }
                   />

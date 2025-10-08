@@ -38,13 +38,15 @@ interface SocialShareButtonProps {
   };
   variant?: 'button' | 'icon';
   size?: 'sm' | 'default' | 'lg';
+  className?: string;
 }
 
 export default function SocialShareButton({ 
   type, 
   data, 
   variant = 'button',
-  size = 'default'
+  size = 'default',
+  className
 }: SocialShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showMoreChannels, setShowMoreChannels] = useState(false);
@@ -260,7 +262,7 @@ export default function SocialShareButton({
         variant={variant === 'icon' ? 'ghost' : 'outline'}
         size={size}
         onClick={() => setIsOpen(true)}
-        className={variant === 'icon' ? 'p-2' : ''}
+        className={variant === 'icon' ? `p-2 ${className || ''}` : className}
       >
         <Share2 className="w-4 h-4" />
         {variant === 'button' && <span className="ml-2">Share</span>}
