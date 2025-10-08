@@ -3,8 +3,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
-import { CartBadge } from "@/components/cart/CartBadge";
-import { CartSidebar } from "@/components/cart/CartSidebar";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -145,8 +143,6 @@ import Audit from "./pages/admin/Audit";
 import UserManagement from "./pages/admin/UserManagement";
 
 const App = () => {
-  const [cartOpen, setCartOpen] = useState(false);
-
   // Initialize session ID for activity logging
   useEffect(() => {
     let sessionId = sessionStorage.getItem('vitana_session_id');
@@ -166,8 +162,6 @@ const App = () => {
             <PresenceDebugPanel />
             <BrowserRouter>
               <TenantDetector />
-              <CartBadge onClick={() => setCartOpen(true)} />
-              <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
               <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />

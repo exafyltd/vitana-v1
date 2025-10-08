@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useRef, useState } from "react";
-import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane, Calendar, ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 import { GlobalSearch } from "@/components/GlobalSearch";
@@ -24,6 +24,8 @@ import { getRoleNavigation } from "@/config/role-navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
+import { useCart } from "@/hooks/useCart";
+import { CartSidebar } from "@/components/cart/CartSidebar";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -37,6 +39,8 @@ function AppSidebar({
   setAutopilotPopupOpen, 
   walletPopupOpen,
   setWalletPopupOpen,
+  cartOpen,
+  setCartOpen,
   onSidebarOpenChange 
 }: { 
   streamingChatRef: React.RefObject<StreamingChatRef>;
@@ -44,6 +48,8 @@ function AppSidebar({
   setAutopilotPopupOpen: (open: boolean) => void;
   walletPopupOpen: boolean;
   setWalletPopupOpen: (open: boolean) => void;
+  cartOpen: boolean;
+  setCartOpen: (open: boolean) => void;
   onSidebarOpenChange: (open: boolean) => void;
 }) {
   const [isStreaming, setIsStreaming] = useState(false);
@@ -55,6 +61,7 @@ function AppSidebar({
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { signOut, user } = useAuth();
+  const { cartCount } = useCart();
 
   // Get dynamic navigation based on current role
   const sidebarCategories = getRoleNavigation(currentRole);
@@ -254,6 +261,24 @@ function AppSidebar({
                   ariaLabel={`${pendingCount} Autopilot suggestion${pendingCount !== 1 ? 's' : ''}`}
                 />
               </div>
+
+              {/* Shopping Cart Button */}
+              <div className="relative">
+                <Button 
+                  variant="ghost" 
+                  className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
+                  title={`Shopping Cart • ${cartCount} item${cartCount !== 1 ? 's' : ''}`}
+                  onClick={() => setCartOpen(true)}
+                  aria-label={`Shopping cart with ${cartCount} item${cartCount !== 1 ? 's' : ''}`}
+                >
+                  <ShoppingCart className="h-4 w-4 text-white" />
+                </Button>
+                <NotificationBadge 
+                  count={cartCount} 
+                  collapsed={!open}
+                  ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -382,6 +407,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const streamingChatRef = useRef<StreamingChatRef>(null);
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const { tenant } = useTenant();
   
   // Controlled sidebar state with localStorage persistence
@@ -417,6 +443,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
               setAutopilotPopupOpen={setAutopilotPopupOpen}
               walletPopupOpen={walletPopupOpen}
               setWalletPopupOpen={setWalletPopupOpen}
+              cartOpen={cartOpen}
+              setCartOpen={setCartOpen}
               onSidebarOpenChange={handleSidebarOpenChange}
             />
           </div>
@@ -438,6 +466,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <WalletPopup 
         open={walletPopupOpen} 
         onOpenChange={setWalletPopupOpen} 
+      />
+      <CartSidebar 
+        open={cartOpen} 
+        onClose={() => setCartOpen(false)} 
       />
        <StreamingChat ref={streamingChatRef} />
        {/* Processes queued calendar events after sign-in */}
