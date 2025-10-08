@@ -128,7 +128,11 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
     }
 
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const { error } = await supabase.from('diary_entries').insert({
+        user_id: user.id,
         text: transcribedText,
         duration: recordingDuration,
         source: 'voice'
