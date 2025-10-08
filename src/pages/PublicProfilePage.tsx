@@ -19,6 +19,34 @@ interface DatabaseProfile {
   email: string;
   location: string;
   created_at: string;
+  linkedin_url: string;
+  linkedin_headline: string;
+  linkedin_summary: string;
+  linkedin_synced_at: string;
+  instagram_url: string;
+  instagram_bio: string;
+  instagram_followers_count: number;
+  instagram_synced_at: string;
+  instagram_interests: string[];
+  tiktok_url: string;
+  tiktok_bio: string;
+  tiktok_followers_count: number;
+  tiktok_synced_at: string;
+  tiktok_content_themes: string[];
+  youtube_url: string;
+  youtube_description: string;
+  youtube_subscribers_count: number;
+  youtube_synced_at: string;
+  youtube_content_categories: string[];
+  facebook_url: string;
+  facebook_bio: string;
+  facebook_synced_at: string;
+  facebook_interests: string[];
+  x_url: string;
+  x_bio: string;
+  x_followers_count: number;
+  x_synced_at: string;
+  x_topics: string[];
 }
 
 export default function PublicProfilePage() {
@@ -83,6 +111,40 @@ export default function PublicProfilePage() {
           languages: ['English'],
           vitanaIndex: vitanaScore,
           vitanaPercentile: Math.min(95, Math.floor((vitanaScore / 999) * 100)),
+          // LinkedIn
+          linkedin_url: dbProfile.linkedin_url || undefined,
+          linkedin_headline: dbProfile.linkedin_headline || undefined,
+          linkedin_summary: dbProfile.linkedin_summary || undefined,
+          linkedin_synced_at: dbProfile.linkedin_synced_at || undefined,
+          // Instagram
+          instagram_url: dbProfile.instagram_url || undefined,
+          instagram_bio: dbProfile.instagram_bio || undefined,
+          instagram_followers_count: dbProfile.instagram_followers_count || undefined,
+          instagram_synced_at: dbProfile.instagram_synced_at || undefined,
+          instagram_interests: dbProfile.instagram_interests || undefined,
+          // TikTok
+          tiktok_url: dbProfile.tiktok_url || undefined,
+          tiktok_bio: dbProfile.tiktok_bio || undefined,
+          tiktok_followers_count: dbProfile.tiktok_followers_count || undefined,
+          tiktok_synced_at: dbProfile.tiktok_synced_at || undefined,
+          tiktok_content_themes: dbProfile.tiktok_content_themes || undefined,
+          // YouTube
+          youtube_url: dbProfile.youtube_url || undefined,
+          youtube_description: dbProfile.youtube_description || undefined,
+          youtube_subscribers_count: dbProfile.youtube_subscribers_count || undefined,
+          youtube_synced_at: dbProfile.youtube_synced_at || undefined,
+          youtube_content_categories: dbProfile.youtube_content_categories || undefined,
+          // Facebook
+          facebook_url: dbProfile.facebook_url || undefined,
+          facebook_bio: dbProfile.facebook_bio || undefined,
+          facebook_synced_at: dbProfile.facebook_synced_at || undefined,
+          facebook_interests: dbProfile.facebook_interests || undefined,
+          // X (Twitter)
+          x_url: dbProfile.x_url || undefined,
+          x_bio: dbProfile.x_bio || undefined,
+          x_followers_count: dbProfile.x_followers_count || undefined,
+          x_synced_at: dbProfile.x_synced_at || undefined,
+          x_topics: dbProfile.x_topics || undefined,
           stats: {
             posts: 0,
             followers: 0,

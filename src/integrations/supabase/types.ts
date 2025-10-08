@@ -2779,10 +2779,38 @@ export type Database = {
           created_at: string
           display_name: string
           email: string
+          facebook_bio: string
+          facebook_interests: string[]
+          facebook_synced_at: string
+          facebook_url: string
           full_name: string
           handle: string
+          instagram_bio: string
+          instagram_followers_count: number
+          instagram_interests: string[]
+          instagram_synced_at: string
+          instagram_url: string
+          linkedin_headline: string
+          linkedin_summary: string
+          linkedin_synced_at: string
+          linkedin_url: string
           location: string
+          tiktok_bio: string
+          tiktok_content_themes: string[]
+          tiktok_followers_count: number
+          tiktok_synced_at: string
+          tiktok_url: string
           user_id: string
+          x_bio: string
+          x_followers_count: number
+          x_synced_at: string
+          x_topics: string[]
+          x_url: string
+          youtube_content_categories: string[]
+          youtube_description: string
+          youtube_subscribers_count: number
+          youtube_synced_at: string
+          youtube_url: string
         }[]
       }
       halfvec_avg: {
@@ -2855,7 +2883,7 @@ export type Database = {
       }
       l2_normalize: {
         Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: string
+        Returns: unknown
       }
       list_roles_for_active_tenant: {
         Args: { p_tenant_id: string }
