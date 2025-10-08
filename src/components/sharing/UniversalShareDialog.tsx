@@ -29,6 +29,7 @@ import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { supabase } from "@/integrations/supabase/client";
 import { analytics } from "@/lib/analytics";
 import { useAuth } from "@/context/AuthProvider";
+import { getChannelIcon, getChannelColor, getChannelDisplayName } from "@/utils/channelHelpers";
 
 interface ShareChannel extends SocialPlatform {
   isVitanaMessenger?: boolean;
@@ -62,6 +63,7 @@ export function UniversalShareDialog({
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [isSharing, setIsSharing] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [showMoreChannels, setShowMoreChannels] = useState(false);
 
   // Build channels array with all platforms + Vitana Messenger
   const channels: ShareChannel[] = useMemo(() => {
@@ -78,6 +80,56 @@ export function UniversalShareDialog({
 
     return [vitanaMessenger, ...allPlatforms];
   }, [allPlatforms]);
+
+  // Additional communication channels
+  const moreChannels: ShareChannel[] = useMemo(() => {
+    return [
+      {
+        id: "email",
+        name: getChannelDisplayName("email"),
+        icon: getChannelIcon("email"),
+        color: getChannelColor("email"),
+        connected: false,
+        supportsDirectShare: true,
+        supportsAutomation: true,
+      },
+      {
+        id: "sms",
+        name: getChannelDisplayName("sms"),
+        icon: getChannelIcon("sms"),
+        color: getChannelColor("sms"),
+        connected: false,
+        supportsDirectShare: true,
+        supportsAutomation: true,
+      },
+      {
+        id: "whatsapp",
+        name: getChannelDisplayName("whatsapp"),
+        icon: getChannelIcon("whatsapp"),
+        color: getChannelColor("whatsapp"),
+        connected: false,
+        supportsDirectShare: true,
+        supportsAutomation: true,
+      },
+      {
+        id: "slack",
+        name: getChannelDisplayName("slack"),
+        icon: getChannelIcon("slack"),
+        color: getChannelColor("slack"),
+        connected: false,
+        supportsDirectShare: true,
+        supportsAutomation: true,
+      },
+    ];
+  }, []);
+
+  // Combined channels - show first 7 or all based on state
+  const displayedChannels = useMemo(() => {
+    if (showMoreChannels) {
+      return [...channels, ...moreChannels];
+    }
+    return channels.slice(0, 7); // Show first 7 (Vitana + 6 social platforms)
+  }, [channels, moreChannels, showMoreChannels]);
 
   const handleChannelClick = (channel: ShareChannel) => {
     if (channel.connected) {
@@ -285,8 +337,8 @@ export function UniversalShareDialog({
                   </AlertDescription>
                 </Alert>
                 
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {channels.map((channel) => {
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {displayedChannels.map((channel) => {
                     const Icon = channel.icon;
                     const isSelected = selectedChannels.includes(channel.id);
                     const isConnected = channel.connected;
@@ -340,6 +392,23 @@ export function UniversalShareDialog({
                       </div>
                     );
                   })}
+                  
+                  {/* More Channels Card */}
+                  {!showMoreChannels && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMoreChannels(true)}
+                      className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/30 p-3 transition-all hover:border-primary/50 hover:bg-accent/30"
+                    >
+                      <Plus className="h-6 w-6 text-muted-foreground" />
+                      <span className="text-xs font-medium text-muted-foreground">
+                        More
+                      </span>
+                      <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                        +4 channels
+                      </Badge>
+                    </button>
+                  )}
                 </div>
               </>
             )}
