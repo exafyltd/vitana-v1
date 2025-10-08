@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Mic, Image, PenSquare } from "lucide-react";
+import { Plus, Mic, Image, PenSquare, LayoutGrid, List } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -14,13 +14,47 @@ import VoiceDiaryRecorder from "@/components/memory/VoiceDiaryRecorder";
 import { PhotoDiaryUploader } from "@/components/diary/PhotoDiaryUploader";
 import { TextDiaryEditor } from "@/components/diary/TextDiaryEditor";
 import { DiaryEntryList } from "@/components/diary/DiaryEntryList";
+import { PhotoGalleryGrid } from "@/components/diary/PhotoGalleryGrid";
+import { PhotoCarouselModal } from "@/components/diary/PhotoCarouselModal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+
+interface SelectedEntry {
+  images: string[];
+  caption: string;
+  tags: string[];
+  createdAt: string;
+  initialIndex: number;
+}
 
 function Diary() {
   const [activeTab, setActiveTab] = useState("voice");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const [photoViewMode, setPhotoViewMode] = useState<"list" | "gallery">("list");
+  const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
+
+  // Query for photo entries (used in gallery view)
+  const { data: photoEntries } = useQuery({
+    queryKey: ["diary-entries", "photo"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { data, error } = await supabase
+        .from("diary_entries")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("source", "photo")
+        .order("created_at", { ascending: false })
+        .limit(50);
+
+      if (error) throw error;
+      return data;
+    },
+  });
 
   return (
     <AppLayout>
@@ -75,20 +109,58 @@ function Diary() {
             <div className="mt-6 space-y-6 pb-24">
               <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Image className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                    Upload Today's Entry
-                  </CardTitle>
-                  <CardDescription>
-                    Capture and share your wellness moments through photos
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <Image className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                        Upload Today's Entry
+                      </CardTitle>
+                      <CardDescription>
+                        Capture and share your wellness moments through photos
+                      </CardDescription>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant={photoViewMode === "list" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setPhotoViewMode("list")}
+                      >
+                        <List className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant={photoViewMode === "gallery" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setPhotoViewMode("gallery")}
+                      >
+                        <LayoutGrid className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <PhotoDiaryUploader />
                 </CardContent>
               </Card>
 
-              <DiaryEntryList entryType="photo" />
+              {photoViewMode === "list" ? (
+                <DiaryEntryList entryType="photo" />
+              ) : (
+                <PhotoGalleryGrid
+                  entries={(photoEntries || []).map(entry => ({
+                    ...entry,
+                    attachments: Array.isArray(entry.attachments) ? entry.attachments as string[] : []
+                  }))}
+                  onEntryClick={(entry) => {
+                    setSelectedEntry({
+                      images: entry.attachments,
+                      caption: entry.text,
+                      tags: entry.tags || [],
+                      createdAt: entry.created_at,
+                      initialIndex: 0,
+                    });
+                  }}
+                />
+              )}
             </div>
           </SplitBarContent>
 
@@ -117,6 +189,16 @@ function Diary() {
         <DiaryMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
+        />
+
+        <PhotoCarouselModal
+          open={!!selectedEntry}
+          onOpenChange={(open) => !open && setSelectedEntry(null)}
+          images={selectedEntry?.images || []}
+          caption={selectedEntry?.caption}
+          tags={selectedEntry?.tags}
+          createdAt={selectedEntry?.createdAt}
+          initialIndex={selectedEntry?.initialIndex || 0}
         />
       </div>
     </AppLayout>

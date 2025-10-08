@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, startOfDay, parseISO, isToday, isYesterday, isThisWeek, format } from "date-fns";
 import { Mic, Image as ImageIcon, Type, Tag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { ImageZoomModal } from "@/components/messages/ImageZoomModal";
+import { PhotoEntryCard } from "./PhotoEntryCard";
+import { PhotoCarouselModal } from "./PhotoCarouselModal";
+import { DateGroupHeader } from "./DateGroupHeader";
 
 interface DiaryEntryListProps {
   entryType: "voice" | "photo" | "text";
 }
 
+interface SelectedEntry {
+  images: string[];
+  caption: string;
+  tags: string[];
+  createdAt: string;
+  initialIndex: number;
+}
+
 export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
-  const [selectedImage, setSelectedImage] = useState<{ url: string; filename: string } | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
 
   const { data: entries, isLoading, refetch } = useQuery({
     queryKey: ['diary-entries', entryType],
@@ -90,6 +100,21 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     }
   };
 
+  // Group entries by date
+  const groupedEntries = entries?.reduce((groups, entry) => {
+    const date = startOfDay(parseISO(entry.created_at));
+    const dateKey = date.toISOString();
+    if (!groups[dateKey]) {
+      groups[dateKey] = { date, entries: [] };
+    }
+    groups[dateKey].entries.push(entry);
+    return groups;
+  }, {} as Record<string, { date: Date; entries: typeof entries }>);
+
+  const sortedGroups = groupedEntries
+    ? Object.values(groupedEntries).sort((a, b) => b.date.getTime() - a.date.getTime())
+    : [];
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -100,90 +125,109 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     );
   }
 
+  if (!entries || entries.length === 0) {
+    return (
+      <Card>
+        <CardContent className="pt-6 text-center text-muted-foreground">
+          <div className={`w-12 h-12 rounded-full ${getIconBg()} flex items-center justify-center mx-auto mb-2`}>
+            {getIcon()}
+          </div>
+          <p>No {entryType} entries yet</p>
+          <p className="text-sm mt-1">Start recording your wellness journey</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <div className="space-y-4">
-      {entries && entries.length === 0 ? (
-        <Card>
-          <CardContent className="pt-6 text-center text-muted-foreground">
-            <div className={`w-12 h-12 rounded-full ${getIconBg()} flex items-center justify-center mx-auto mb-2`}>
-              {getIcon()}
-            </div>
-            <p>No {entryType} entries yet</p>
-            <p className="text-sm mt-1">Start recording your wellness journey</p>
-          </CardContent>
-        </Card>
-      ) : (
-        <>
-          {entries?.map((entry) => (
-            <Card key={entry.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0">
-                    <div className={`w-10 h-10 rounded-full ${getIconBg()} flex items-center justify-center`}>
-                      {getIcon()}
-                    </div>
-                  </div>
+    <>
+      <div className="space-y-6">
+        {sortedGroups.map(({ date, entries: groupEntries }) => (
+          <div key={date.toISOString()}>
+            <DateGroupHeader date={date} />
+            <div className="space-y-3">
+              {groupEntries.map((entry) => {
+                // Use PhotoEntryCard for photo entries
+                if (entry.source === "photo" && entry.attachments && Array.isArray(entry.attachments) && entry.attachments.length > 0) {
+                  return (
+                    <PhotoEntryCard
+                      key={entry.id}
+                      id={entry.id}
+                      text={entry.text}
+                      attachments={entry.attachments as string[]}
+                      tags={entry.tags || []}
+                      createdAt={entry.created_at}
+                      onThumbnailClick={() => {
+                        setSelectedEntry({
+                          images: entry.attachments as string[],
+                          caption: entry.text,
+                          tags: entry.tags || [],
+                          createdAt: entry.created_at,
+                          initialIndex: 0,
+                        });
+                      }}
+                    />
+                  );
+                }
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge variant="secondary">
-                        {getBadgeLabel()}
-                      </Badge>
-                      {entry.duration && (
-                        <Badge variant="outline">{Math.round(entry.duration)}s</Badge>
-                      )}
-                      <span className="text-xs text-muted-foreground ml-auto">
-                        {formatDistanceToNow(new Date(entry.created_at), { addSuffix: true })}
-                      </span>
-                    </div>
-
-                    <p className="text-sm text-foreground leading-relaxed mb-3">
-                      {entry.text}
-                    </p>
-
-                    {/* Display photo attachments */}
-                    {entry.attachments && Array.isArray(entry.attachments) && entry.attachments.length > 0 && (
-                      <div className="grid grid-cols-3 gap-2 mb-3">
-                        {entry.attachments.map((url: string, idx: number) => (
-                          <div 
-                            key={idx} 
-                            className="relative aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
-                            onClick={() => setSelectedImage({ url, filename: `photo-${idx + 1}.jpg` })}
-                          >
-                            <img 
-                              src={url} 
-                              alt={`Photo ${idx + 1}`}
-                              className="w-full h-full object-cover"
-                            />
+                // Regular card for voice and text entries
+                return (
+                  <Card key={entry.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="pt-6">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0">
+                          <div className={`w-10 h-10 rounded-full ${getIconBg()} flex items-center justify-center`}>
+                            {getIcon()}
                           </div>
-                        ))}
-                      </div>
-                    )}
+                        </div>
 
-                    {entry.tags && entry.tags.length > 0 && (
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <Tag className="w-3 h-3 text-muted-foreground" />
-                        {entry.tags.map((tag) => (
-                          <Badge key={tag} variant="outline" className="text-xs">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </>
-      )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="secondary">
+                              {getBadgeLabel()}
+                            </Badge>
+                            {entry.duration && (
+                              <Badge variant="outline">{Math.round(entry.duration)}s</Badge>
+                            )}
+                            <span className="text-xs text-muted-foreground ml-auto">
+                              {formatDistanceToNow(new Date(entry.created_at), { addSuffix: true })}
+                            </span>
+                          </div>
 
-      <ImageZoomModal
-        isOpen={!!selectedImage}
-        onClose={() => setSelectedImage(null)}
-        imageUrl={selectedImage?.url || ""}
-        filename={selectedImage?.filename || ""}
+                          <p className="text-sm text-foreground leading-relaxed mb-3">
+                            {entry.text}
+                          </p>
+
+                          {entry.tags && entry.tags.length > 0 && (
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <Tag className="w-3 h-3 text-muted-foreground" />
+                              {entry.tags.map((tag) => (
+                                <Badge key={tag} variant="outline" className="text-xs">
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <PhotoCarouselModal
+        open={!!selectedEntry}
+        onOpenChange={(open) => !open && setSelectedEntry(null)}
+        images={selectedEntry?.images || []}
+        caption={selectedEntry?.caption}
+        tags={selectedEntry?.tags}
+        createdAt={selectedEntry?.createdAt}
+        initialIndex={selectedEntry?.initialIndex || 0}
       />
-    </div>
+    </>
   );
 }
