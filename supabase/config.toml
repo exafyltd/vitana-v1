@@ -32,3 +32,9 @@ verify_jwt = true
 
 [functions.generate-memory-embedding]
 verify_jwt = true
+
+[functions.extract-user-interests]
+verify_jwt = true
+
+[functions.generate-enhanced-recommendations]
+verify_jwt = true

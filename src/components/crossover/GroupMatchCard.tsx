@@ -28,14 +28,85 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const { data, error } = await supabase.functions.invoke('generate-recommendations', {
-          body: { type: 'groups', limit: 3 }
-        });
+        // Fetch group recommendations with group details
+        const { data, error } = await supabase
+          .from('group_recommendations')
+          .select(`
+            match_score,
+            match_reasons,
+            global_community_groups (
+              id,
+              name,
+              description,
+              category,
+              member_count
+            )
+          `)
+          .eq('is_dismissed', false)
+          .gte('match_score', 0.5)
+          .order('match_score', { ascending: false })
+          .limit(3);
 
         if (error) throw error;
 
-        if (data?.recommendations) {
-          setGroups(data.recommendations);
+        if (data && data.length > 0) {
+          const mapped = data
+            .filter(r => r.global_community_groups)
+            .map(r => ({
+              id: r.global_community_groups.id,
+              name: r.global_community_groups.name,
+              description: r.global_community_groups.description || '',
+              category: r.global_community_groups.category || 'general',
+              member_count: r.global_community_groups.member_count,
+              compatibility_score: Math.round(r.match_score * 100),
+              match_reason: Array.isArray(r.match_reasons) && r.match_reasons.length > 0
+                ? (r.match_reasons as string[])[0]
+                : 'Great match for you'
+            }));
+          setGroups(mapped);
+        } else {
+          // Fallback: generate recommendations if none exist
+          const { data: generatedData, error: genError } = await supabase.functions.invoke('generate-enhanced-recommendations', {
+            body: { type: 'groups' }
+          });
+
+          if (!genError && generatedData?.recommendations) {
+            // Fetch again after generation
+            const { data: refreshData } = await supabase
+              .from('group_recommendations')
+              .select(`
+                match_score,
+                match_reasons,
+                global_community_groups (
+                  id,
+                  name,
+                  description,
+                  category,
+                  member_count
+                )
+              `)
+              .eq('is_dismissed', false)
+              .gte('match_score', 0.5)
+              .order('match_score', { ascending: false })
+              .limit(3);
+
+            if (refreshData) {
+              const mapped = refreshData
+                .filter(r => r.global_community_groups)
+                .map(r => ({
+                  id: r.global_community_groups.id,
+                  name: r.global_community_groups.name,
+                  description: r.global_community_groups.description || '',
+                  category: r.global_community_groups.category || 'general',
+                  member_count: r.global_community_groups.member_count,
+                  compatibility_score: Math.round(r.match_score * 100),
+                  match_reason: Array.isArray(r.match_reasons) && r.match_reasons.length > 0
+                    ? (r.match_reasons as string[])[0]
+                    : 'Great match for you'
+                }));
+              setGroups(mapped);
+            }
+          }
         }
       } catch (error) {
         console.error('Failed to fetch group recommendations:', error);

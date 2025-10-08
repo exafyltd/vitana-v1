@@ -677,7 +677,7 @@ export type Database = {
           id?: string
           is_dismissed?: boolean | null
           match_reasons?: Json | null
-          match_score?: number
+          match_score: number
           user_id: string
         }
         Update: {
@@ -1103,7 +1103,7 @@ export type Database = {
           id?: string
           is_dismissed?: boolean | null
           match_reasons?: Json | null
-          match_score?: number
+          match_score: number
           user_id: string
         }
         Update: {
