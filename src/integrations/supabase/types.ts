@@ -471,6 +471,87 @@ export type Database = {
         }
         Relationships: []
       }
+      cart_items: {
+        Row: {
+          created_at: string
+          id: string
+          item_id: string
+          item_image_url: string | null
+          item_metadata: Json | null
+          item_name: string
+          item_price: number
+          item_type: string
+          quantity: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_id: string
+          item_image_url?: string | null
+          item_metadata?: Json | null
+          item_name: string
+          item_price: number
+          item_type: string
+          quantity?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_id?: string
+          item_image_url?: string | null
+          item_metadata?: Json | null
+          item_name?: string
+          item_price?: number
+          item_type?: string
+          quantity?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      checkout_sessions: {
+        Row: {
+          cart_snapshot: Json
+          completed_at: string | null
+          created_at: string
+          id: string
+          payment_intent_id: string | null
+          status: string
+          stripe_session_id: string | null
+          total_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cart_snapshot: Json
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          payment_intent_id?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          total_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cart_snapshot?: Json
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          payment_intent_id?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       diary_entries: {
         Row: {
           attachments: Json | null
