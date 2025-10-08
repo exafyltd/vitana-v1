@@ -259,7 +259,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 )}
               </div>
               
-              {timestamp && !utilityTopRight && (
+              {timestamp && (
                 <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
                   <Clock className="w-3 h-3" />
                   <span className="font-medium">{timestamp}</span>
