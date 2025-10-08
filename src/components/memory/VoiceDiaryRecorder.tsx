@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Mic, MicOff, Square, Save, Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { Mic, Square, Save } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { ClientSTT } from "@/utils/clientSTT";
 
 interface VoiceDiaryRecorderProps {
   onRecordingChange?: (isRecording: boolean) => void;
@@ -13,13 +14,11 @@ interface VoiceDiaryRecorderProps {
 
 export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [transcribedText, setTranscribedText] = useState("");
+  const [interimText, setInterimText] = useState("");
   const [recordingDuration, setRecordingDuration] = useState(0);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
+  const sttRef = useRef<ClientSTT | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
 
@@ -34,39 +33,53 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
   };
 
   const startRecording = async () => {
+    if (!ClientSTT.isSupported()) {
+      toast({
+        title: "Not Supported",
+        description: "Speech recognition is not supported in this browser.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        audio: {
-          sampleRate: 24000,
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        } 
-      });
-      
-      mediaRecorderRef.current = new MediaRecorder(stream, {
-        mimeType: 'audio/webm;codecs=opus'
-      });
-      
-      audioChunksRef.current = [];
-      
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
+      // Initialize ClientSTT with real-time callbacks
+      sttRef.current = new ClientSTT({
+        language: 'en-US',
+        continuous: true,
+        interimResults: true,
+        onResult: (transcript, isFinal) => {
+          if (isFinal) {
+            // Append final transcription
+            setTranscribedText(prev => prev + (prev ? ' ' : '') + transcript);
+            setInterimText('');
+          } else {
+            // Show interim results
+            setInterimText(transcript);
+          }
+        },
+        onError: (error) => {
+          console.error('[Voice Diary] STT Error:', error);
+          toast({
+            title: "Recognition Error",
+            description: "Speech recognition encountered an error. Please try again.",
+            variant: "destructive",
+          });
+          stopRecording();
+        },
+        onEnd: () => {
+          if (isRecording) {
+            // Restart if it stops unexpectedly
+            sttRef.current?.start();
+          }
         }
-      };
-      
-      mediaRecorderRef.current.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        setAudioBlob(audioBlob);
-        transcribeAudio(audioBlob);
-        stream.getTracks().forEach(track => track.stop());
-      };
-      
-      mediaRecorderRef.current.start(1000); // Collect data every second
+      });
+
+      sttRef.current.start();
       setIsRecording(true);
       setRecordingDuration(0);
+      setTranscribedText('');
+      setInterimText('');
       
       // Start timer
       timerRef.current = setInterval(() => {
@@ -75,21 +88,22 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
       
       toast({
         title: "Recording Started",
-        description: "Speak clearly for the best transcription results",
+        description: "Speak clearly - you'll see your words appear in real-time",
       });
     } catch (error) {
       toast({
         title: "Recording Error",
-        description: "Could not access microphone. Please check permissions.",
+        description: "Could not start speech recognition. Please try again.",
         variant: "destructive",
       });
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
+    if (sttRef.current && isRecording) {
+      sttRef.current.stop();
       setIsRecording(false);
+      setInterimText('');
       
       if (timerRef.current) {
         clearInterval(timerRef.current);
@@ -98,45 +112,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
       
       toast({
         title: "Recording Stopped",
-        description: "Processing your voice entry...",
-      });
-    }
-  };
-
-  const transcribeAudio = async (audioBlob: Blob) => {
-    setIsProcessing(true);
-    
-    try {
-      // Convert blob to base64
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Audio = (reader.result as string).split(',')[1];
-        
-        // Call our Supabase edge function for transcription
-        const { data, error } = await supabase.functions.invoke('transcribe-voice-diary', {
-          body: { audio: base64Audio }
-        });
-        
-        if (error) {
-          throw error;
-        }
-        
-        setTranscribedText(data.text || "Transcription failed. Please try again.");
-        setIsProcessing(false);
-        
-        toast({
-          title: "Transcription Complete",
-          description: "Your voice has been converted to text. Review and save your entry.",
-        });
-      };
-      
-      reader.readAsDataURL(audioBlob);
-    } catch (error) {
-      setIsProcessing(false);
-      toast({
-        title: "Transcription Failed",
-        description: "Could not process your voice entry. Please try again.",
-        variant: "destructive",
+        description: "Review and edit your transcription before saving.",
       });
     }
   };
@@ -152,19 +128,16 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
     }
 
     try {
-      // Save to diary_entries table - using type assertion until types update
-      const { error } = await (supabase as any).from('diary_entries').insert({
-        content: transcribedText,
-        duration_seconds: recordingDuration,
-        entry_type: 'voice',
-        created_at: new Date().toISOString()
+      const { error } = await supabase.from('diary_entries').insert({
+        text: transcribedText,
+        duration: recordingDuration,
+        source: 'voice'
       });
 
       if (error) throw error;
 
       // Reset form
       setTranscribedText("");
-      setAudioBlob(null);
       setRecordingDuration(0);
       
       toast({
@@ -189,7 +162,6 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
             onClick={startRecording}
             size="lg"
             className="h-16 w-16 rounded-full bg-primary hover:bg-primary/90"
-            disabled={isProcessing}
           >
             <Mic className="h-8 w-8" />
           </Button>
@@ -233,42 +205,43 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
         </div>
       )}
 
-      {/* Processing State */}
-      {isProcessing && (
-        <Card>
-          <CardContent className="p-6 text-center">
-            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
-            <p className="text-muted-foreground">
-              Transcribing your voice entry...
-            </p>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Transcription Result */}
-      {transcribedText && (
+      {/* Real-time Transcription Display */}
+      {(isRecording || transcribedText) && (
         <Card>
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold">Your Voice Entry</h3>
-              <Badge variant="outline">
-                Duration: {formatDuration(recordingDuration)}
-              </Badge>
+              <h3 className="font-semibold">
+                {isRecording ? "Live Transcription" : "Your Voice Entry"}
+              </h3>
+              {!isRecording && (
+                <Badge variant="outline">
+                  Duration: {formatDuration(recordingDuration)}
+                </Badge>
+              )}
             </div>
             
             <Textarea
-              value={transcribedText}
-              onChange={(e) => setTranscribedText(e.target.value)}
-              placeholder="Edit your transcribed text here..."
+              value={transcribedText + (interimText ? ' ' + interimText : '')}
+              onChange={(e) => !isRecording && setTranscribedText(e.target.value)}
+              placeholder={isRecording ? "Start speaking..." : "Edit your transcribed text here..."}
               className="min-h-32"
+              disabled={isRecording}
             />
             
-            <div className="flex gap-2">
-              <Button onClick={saveDiaryEntry} className="flex-1">
-                <Save className="h-4 w-4 mr-2" />
-                Save Entry
-              </Button>
-            </div>
+            {interimText && isRecording && (
+              <p className="text-xs text-muted-foreground italic">
+                Interim text appears in gray until finalized...
+              </p>
+            )}
+            
+            {!isRecording && transcribedText && (
+              <div className="flex gap-2">
+                <Button onClick={saveDiaryEntry} className="flex-1">
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Entry
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
