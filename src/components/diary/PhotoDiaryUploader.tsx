@@ -60,21 +60,37 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
         const fileExt = file.name.split('.').pop();
         const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
         
+        console.log('Uploading file:', fileName);
         const { error: uploadError } = await supabase.storage
           .from('diary-photos')
           .upload(fileName, file);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw uploadError;
+        }
 
+        console.log('File uploaded successfully, creating signed URL...');
         // Get authenticated URL (valid for 1 year)
-        const { data } = await supabase.storage
+        const { data, error: signedUrlError } = await supabase.storage
           .from('diary-photos')
           .createSignedUrl(fileName, 31536000); // 1 year in seconds
 
-        if (data?.signedUrl) {
-          uploadedUrls.push(data.signedUrl);
+        if (signedUrlError) {
+          console.error('Signed URL error:', signedUrlError);
+          throw signedUrlError;
         }
+
+        if (!data?.signedUrl) {
+          console.error('No signed URL returned');
+          throw new Error('Failed to generate signed URL');
+        }
+
+        console.log('Signed URL created:', data.signedUrl);
+        uploadedUrls.push(data.signedUrl);
       }
+
+      console.log('All uploads complete. URLs:', uploadedUrls);
 
       // Save entry to database with photo URLs
       const { error } = await supabase
