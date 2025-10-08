@@ -4,6 +4,7 @@ import './index.css'
 import { TenantProvider } from './hooks/useTenant'
 import { AuthProvider } from './context/AuthProvider'
 import { ProfileProvider } from './context/ProfileProvider'
+import { LanguageProvider } from './contexts/LanguageContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -24,9 +25,11 @@ createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <ProfileProvider>
-        <TenantProvider>
-          <App />
-        </TenantProvider>
+        <LanguageProvider>
+          <TenantProvider>
+            <App />
+          </TenantProvider>
+        </LanguageProvider>
       </ProfileProvider>
     </AuthProvider>
   </QueryClientProvider>

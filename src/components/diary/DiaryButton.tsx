@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Status = "idle" | "recording" | "stopping";
 
@@ -9,6 +10,7 @@ export default function DiaryButton() {
   const [status, setStatus] = useState<Status>("idle");
   const [isSupported, setIsSupported] = useState(true);
   const { toast } = useToast();
+  const { selectedLanguage } = useLanguage();
   
   const recognitionRef = useRef<any>(null);
   const transcriptRef = useRef<string>("");
@@ -64,7 +66,7 @@ export default function DiaryButton() {
     recognitionRef.current = new SR();
     const r = recognitionRef.current;
     
-    r.lang = navigator.language || "en-US";
+    r.lang = selectedLanguage || navigator.language || "en-US";
     r.interimResults = false;
     r.continuous = false;
     r.maxAlternatives = 1;

@@ -7,6 +7,7 @@ import { Mic, Square, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface VoiceDiaryRecorderProps {
   onRecordingChange?: (isRecording: boolean) => void;
@@ -21,6 +22,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
   const sttRef = useRef<ClientSTT | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
+  const { selectedLanguage } = useLanguage();
 
   useEffect(() => {
     onRecordingChange?.(isRecording);
@@ -45,7 +47,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
     try {
       // Initialize ClientSTT with real-time callbacks
       sttRef.current = new ClientSTT({
-        language: 'en-US',
+        language: selectedLanguage || 'en-US',
         continuous: true,
         interimResults: true,
         onResult: (transcript, isFinal) => {

@@ -6,6 +6,7 @@ import { aiVoiceService } from "@/services/aiVoiceService"
 import { useToast } from "@/hooks/use-toast"
 import { ApiKeySettingsModal } from "@/components/chat/ApiKeySettingsModal"
 import { supabase } from "@/integrations/supabase/client"
+import { useLanguage } from "@/contexts/LanguageContext"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,19 +30,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
   const [showApiKeyModal, setShowApiKeyModal] = useState(false)
-  const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(undefined)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
 
-  const languageOptions = [
-    { label: "Auto", value: undefined },
-    { label: "Serbian (SR)", value: "sr-RS" },
-    { label: "German (DE)", value: "de-DE" },
-    { label: "English (EN)", value: "en-US" },
-    { label: "Arabic (AR)", value: "ar-XA" },
-    { label: "Spanish (ES)", value: "es-ES" },
-    { label: "Russian (RU)", value: "ru-RU" },
-    { label: "Chinese (ZH)", value: "zh-CN" },
-  ]
+  const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage()
   const { toast } = useToast()
 
   const isStreaming = isAudioActive || isVideoActive
