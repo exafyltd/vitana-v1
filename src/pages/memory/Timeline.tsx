@@ -359,23 +359,14 @@ function Timeline() {
                       <Button
                         key={category.filter}
                         variant={isActive ? "default" : "outline"}
-                        className="flex-shrink-0 h-auto py-3 px-4 flex flex-col items-start gap-1 min-w-[140px]"
+                        className="flex-shrink-0 h-auto py-2 px-3 flex flex-row items-center gap-2 min-w-fit"
                         onClick={() => setExpandedCategory(category.filter)}
                       >
-                        <div className="flex items-center gap-2 w-full">
-                          <span className="text-lg">{category.emoji}</span>
-                          <span className="font-medium text-sm">{category.label}</span>
-                        </div>
-                        <div className="flex items-center gap-2 w-full justify-between">
-                          <Badge variant={isActive ? "secondary" : "outline"} className="text-xs">
-                            {count}
-                          </Badge>
-                          {latestTimestamp && (
-                            <span className="text-xs opacity-70">
-                              {formatDistanceToNow(latestTimestamp, { addSuffix: true })}
-                            </span>
-                          )}
-                        </div>
+                        <span className="text-base">{category.emoji}</span>
+                        <span className="font-medium text-sm whitespace-nowrap">{category.label}</span>
+                        <Badge variant={isActive ? "secondary" : "outline"} className="text-xs ml-1">
+                          {count}
+                        </Badge>
                       </Button>
                     );
                   })}
