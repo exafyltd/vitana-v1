@@ -165,7 +165,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
           <Button 
             onClick={startRecording}
             size="lg"
-            className="h-16 w-16 rounded-full bg-purple-600 hover:bg-purple-700 text-white"
+            className="h-16 w-16 rounded-full bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/40 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300"
           >
             <Mic className="h-8 w-8" />
           </Button>
