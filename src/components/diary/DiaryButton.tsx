@@ -1,14 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-interface DiaryEntry {
-  id: string;
-  text: string;
-  source: string;
-  tags: string[];
-  created_at: string;
-}
+import { supabase } from "@/integrations/supabase/client";
 
 type Status = "idle" | "recording" | "stopping";
 
@@ -21,6 +14,7 @@ export default function DiaryButton() {
   const transcriptRef = useRef<string>("");
   const userStoppedRef = useRef<boolean>(false);
   const autoStopTimerRef = useRef<number | null>(null);
+  const lastEntryIdRef = useRef<string | null>(null);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -105,7 +99,7 @@ export default function DiaryButton() {
       });
     };
 
-    r.onend = () => {
+    r.onend = async () => {
       const text = (transcriptRef.current || "").trim();
       setStatus("idle");
       
@@ -113,7 +107,7 @@ export default function DiaryButton() {
       if (!userStoppedRef.current && !text) return;
       
       if (text) {
-        saveDiary({ text, source: "voice" });
+        await saveDiary({ text, source: "voice" });
         toastWithActions("Diary saved", [
           { label: "View", onClick: () => window.location.href = '/memory/diary' },
           { label: "Undo", onClick: () => undoLastDiary() }
@@ -153,17 +147,18 @@ export default function DiaryButton() {
     } catch {}
 
     // Fallback guard: if onend doesn't fire, finalize after 2s
-    setTimeout(() => {
+    setTimeout(async () => {
       // Check if we're still in stopping state
       setStatus(currentStatus => {
         if (currentStatus === "stopping") {
           const text = (transcriptRef.current || "").trim();
           if (text) {
-            saveDiary({ text, source: "voice" });
-            toastWithActions("Diary saved", [
-              { label: "View", onClick: () => window.location.href = '/memory/diary' },
-              { label: "Undo", onClick: () => undoLastDiary() }
-            ]);
+            saveDiary({ text, source: "voice" }).then(() => {
+              toastWithActions("Diary saved", [
+                { label: "View", onClick: () => window.location.href = '/memory/diary' },
+                { label: "Undo", onClick: () => undoLastDiary() }
+              ]);
+            });
           }
           return "idle";
         }
@@ -172,21 +167,31 @@ export default function DiaryButton() {
     }, 2000);
   }
 
-  function saveDiary({ text, source }: { text: string; source: string }) {
+  async function saveDiary({ text, source }: { text: string; source: string }) {
     try {
-      const entry: DiaryEntry = {
-        id: crypto.randomUUID(),
-        text,
-        source,
-        tags: ['voice', 'diary'],
-        created_at: new Date().toISOString()
-      };
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Not Authenticated",
+          description: "Please log in to save diary entries",
+          variant: "destructive"
+        });
+        return;
+      }
 
-      const existingEntries = JSON.parse(localStorage.getItem('diary_entries') || '[]');
-      const updatedEntries = [entry, ...existingEntries];
-      localStorage.setItem('diary_entries', JSON.stringify(updatedEntries));
+      const { data, error } = await supabase.from('diary_entries').insert({
+        user_id: user.id,
+        text,
+        duration: 0,
+        source: 'voice',
+        tags: ['voice', 'diary']
+      }).select().single();
+
+      if (error) throw error;
       
-      (window as any).lastDiaryEntryId = entry.id;
+      if (data) {
+        lastEntryIdRef.current = data.id;
+      }
     } catch (error) {
       console.error("Error saving diary entry:", error);
       toast({
@@ -225,20 +230,23 @@ export default function DiaryButton() {
     }
   }
 
-  function undoLastDiary() {
+  async function undoLastDiary() {
     try {
-      const entryId = (window as any).lastDiaryEntryId;
+      const entryId = lastEntryIdRef.current;
       if (!entryId) return;
 
-      const existingEntries = JSON.parse(localStorage.getItem('diary_entries') || '[]');
-      const filteredEntries = existingEntries.filter((entry: DiaryEntry) => entry.id !== entryId);
-      localStorage.setItem('diary_entries', JSON.stringify(filteredEntries));
+      const { error } = await supabase
+        .from('diary_entries')
+        .delete()
+        .eq('id', entryId);
+
+      if (error) throw error;
       
       toast({
         title: "Success",
         description: "Diary entry deleted"
       });
-      (window as any).lastDiaryEntryId = null;
+      lastEntryIdRef.current = null;
     } catch (error) {
       console.error("Error deleting diary entry:", error);
       toast({
