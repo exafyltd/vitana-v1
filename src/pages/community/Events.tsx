@@ -15,6 +15,7 @@ import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
 import { cn } from "@/lib/utils";
 import { Plus, Apple, Dumbbell, Droplets, Moon, Brain } from 'lucide-react';
+import SocialShareButton from "@/components/sharing/SocialShareButton";
 
 // Mock data for events with unique IDs
 const todayEvents = [
@@ -250,6 +251,18 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void) =>
     showSmartAction: true,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
+    actionButton: (
+      <SocialShareButton
+        type="event"
+        data={{
+          title: event.title,
+          description: event.description,
+          link: `${window.location.origin}/community/events?event=${encodeURIComponent(event.id)}`
+        }}
+        variant="icon"
+        size="sm"
+      />
+    ),
   };
 };
 

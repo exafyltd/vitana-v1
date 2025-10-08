@@ -27,7 +27,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { getChannelIcon, getChannelColor, getChannelDisplayName } from "@/utils/channelHelpers";
 
 interface SocialShareButtonProps {
-  type: 'service' | 'event' | 'referral';
+  type: 'service' | 'event' | 'referral' | 'live_room';
   data: {
     title: string;
     description: string;
@@ -68,6 +68,8 @@ export default function SocialShareButton({
         return `🎉 Join me at: ${data.title}\n${data.description}\n${data.price ? `Registration: ${data.currency === 'credits' ? data.price + ' credits' : '$' + data.price}` : 'Free event!'}`;
       case 'referral':
         return `💎 Join Vitana and get started with wellness!\nUse my referral code: ${data.referralCode}\n${data.description}`;
+      case 'live_room':
+        return `🎙️ Join this live discussion: ${data.title}\n${data.description}`;
       default:
         return `Check this out: ${data.title}`;
     }

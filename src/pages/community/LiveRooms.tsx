@@ -19,6 +19,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { communityNavigation } from "@/config/navigation";
 import { toast } from "@/hooks/use-toast";
+import SocialShareButton from "@/components/sharing/SocialShareButton";
 
 // Mock data for live rooms
 const mockLiveRooms: LiveRoom[] = [
@@ -134,6 +135,8 @@ export default function LiveRooms() {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [roomToShare, setRoomToShare] = useState<LiveRoom | null>(null);
   
   const latestActions = getLatestActions(2);
 
@@ -213,13 +216,13 @@ export default function LiveRooms() {
     });
   };
 
-  const handleShareClick = (roomId: string) => {
-    const url = `${window.location.origin}/comm/live-rooms?live=${roomId}`;
-    navigator.clipboard.writeText(url);
-    toast({
-      title: "Link copied",
-      description: "Room link copied to clipboard",
-    });
+  const handleShareClick = (roomId: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const room = allRooms.find(r => r.id === roomId);
+    if (room) {
+      setRoomToShare(room);
+      setShareDialogOpen(true);
+    }
   };
 
   const allRooms = [...mockLiveRooms, ...mockScheduledRooms];
@@ -255,10 +258,7 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
                     }}
-                    onShareClick={(e) => {
-                      e.stopPropagation();
-                      handleShareClick(rowRooms[0].id);
-                    }}
+                    onShareClick={(e) => handleShareClick(rowRooms[0].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
                   />
                 </div>
@@ -276,10 +276,7 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
                     }}
-                    onShareClick={(e) => {
-                      e.stopPropagation();
-                      handleShareClick(rowRooms[1].id);
-                    }}
+                    onShareClick={(e) => handleShareClick(rowRooms[1].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
                   />
                 </div>
@@ -297,10 +294,7 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
                     }}
-                    onShareClick={(e) => {
-                      e.stopPropagation();
-                      handleShareClick(rowRooms[2].id);
-                    }}
+                    onShareClick={(e) => handleShareClick(rowRooms[2].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
                   />
                 </div>
@@ -322,10 +316,7 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
                     }}
-                    onShareClick={(e) => {
-                      e.stopPropagation();
-                      handleShareClick(rowRooms[0].id);
-                    }}
+                    onShareClick={(e) => handleShareClick(rowRooms[0].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
                   />
                 </div>
@@ -343,10 +334,7 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
                     }}
-                    onShareClick={(e) => {
-                      e.stopPropagation();
-                      handleShareClick(rowRooms[1].id);
-                    }}
+                    onShareClick={(e) => handleShareClick(rowRooms[1].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
                   />
                 </div>
@@ -365,10 +353,7 @@ export default function LiveRooms() {
                       e.stopPropagation();
                       !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
                     }}
-                    onShareClick={(e) => {
-                      e.stopPropagation();
-                      handleShareClick(rowRooms[2].id);
-                    }}
+                    onShareClick={(e) => handleShareClick(rowRooms[2].id, e)}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
                   />
                 </div>
@@ -471,6 +456,20 @@ export default function LiveRooms() {
           hasNext={hasNext}
           isMobile={isMobile}
           onJoin={handleJoinRoom}
+        />
+      )}
+
+      {/* Share Dialog */}
+      {roomToShare && (
+        <SocialShareButton
+          type="live_room"
+          data={{
+            title: roomToShare.title,
+            description: roomToShare.description,
+            link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(roomToShare.id)}`
+          }}
+          variant="icon"
+          size="sm"
         />
       )}
     </AppLayout>
