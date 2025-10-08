@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,6 +30,23 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 export default function Profile() {
   const { profile, loading } = useProfile();
+  const location = useLocation();
+
+  // Scroll to social connections section if hash is present
+  useEffect(() => {
+    if (location.hash === '#social-connections') {
+      setTimeout(() => {
+        const element = document.getElementById('social-connections-section');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element.classList.add('ring-2', 'ring-primary', 'ring-offset-2', 'transition-all', 'duration-300');
+          setTimeout(() => {
+            element.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+          }, 2000);
+        }
+      }, 100);
+    }
+  }, [location.hash]);
 
   // Create a mock UserProfile object that matches ProfileStats component expectations
   const mockUserProfile = {

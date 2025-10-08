@@ -16,6 +16,12 @@ interface ProfileData {
   email?: string;
   phone?: string;
   coverUrl?: string;
+  linkedin_url?: string;
+  instagram_url?: string;
+  facebook_url?: string;
+  x_url?: string;
+  youtube_url?: string;
+  tiktok_url?: string;
 }
 
 interface ProfileContextValue {

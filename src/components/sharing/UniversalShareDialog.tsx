@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -7,23 +8,23 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
-  Send,
-  Sparkles,
-  Copy,
   MessageCircle,
   Info,
   Loader2,
+  Send,
+  Plus,
+  Copy,
+  Check,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
-import { useChannels } from "@/hooks/useChannels";
-import { getChannelIcon, getChannelColor } from "@/utils/channelHelpers";
+import { analytics } from "@/lib/analytics";
+import { useAuth } from "@/context/AuthProvider";
 
 interface ShareChannel {
   id: string;
@@ -54,12 +55,14 @@ export function UniversalShareDialog({
 }: UniversalShareDialogProps) {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { connectedChannels, isLoading } = useChannels();
+  const { user } = useAuth();
+  const { connectedPlatforms, loading } = useSocialPlatforms();
   const [message, setMessage] = useState("");
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [isSharing, setIsSharing] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
-  // Build dynamic channels array from database
+  // Build dynamic channels array from profile
   const channels: ShareChannel[] = useMemo(() => {
     const vitanaMessenger: ShareChannel = {
       id: "vitana_messenger",
@@ -68,17 +71,15 @@ export function UniversalShareDialog({
       connected: true,
     };
 
-    const distributionChannels: ShareChannel[] = (connectedChannels || [])
-      .filter((c) => c.is_connected && c.is_active)
-      .map((channel) => ({
-        id: channel.id,
-        name: channel.channel_name,
-        icon: getChannelIcon(channel.channel_type),
-        connected: true,
-      }));
+    const socialChannels: ShareChannel[] = connectedPlatforms.map((platform) => ({
+      id: platform.id,
+      name: platform.name,
+      icon: platform.icon,
+      connected: true,
+    }));
 
-    return [vitanaMessenger, ...distributionChannels];
-  }, [connectedChannels]);
+    return [vitanaMessenger, ...socialChannels];
+  }, [connectedPlatforms]);
 
   const handleChannelToggle = (channelId: string) => {
     setSelectedChannels((prev) =>
@@ -169,10 +170,12 @@ export function UniversalShareDialog({
   const handleCopyLink = () => {
     const shareUrl = content.url || `${window.location.origin}/${content.type}/${content.id}`;
     navigator.clipboard.writeText(shareUrl);
+    setLinkCopied(true);
     toast({
       title: "Link copied!",
       description: "Share link has been copied to clipboard",
     });
+    setTimeout(() => setLinkCopied(false), 2000);
   };
 
   return (
@@ -224,51 +227,57 @@ export function UniversalShareDialog({
 
           {/* Channel Selection */}
           <div className="space-y-3">
-            <Label>Select Channels</Label>
-            
-            {isLoading ? (
+            <Label htmlFor="channels" className="text-base font-semibold">
+              Select Channels
+            </Label>
+            {loading ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
               </div>
             ) : channels.length === 1 ? (
-              <Alert className="border-blue-200 bg-blue-50/50 dark:border-blue-800/30 dark:bg-blue-950/20">
-                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                <AlertDescription className="text-sm">
-                  <p className="mb-2">No distribution channels connected yet.</p>
+              <Alert>
+                <Info className="h-4 w-4" />
+                <AlertDescription>
+                  No social accounts connected yet.{" "}
                   <Button
                     variant="link"
                     size="sm"
-                    className="h-auto p-0 text-blue-600 dark:text-blue-400"
-                    onClick={() => navigate("/sharing/integrations")}
+                    className="h-auto p-0 text-blue-600"
+                    onClick={() => {
+                      onOpenChange(false);
+                      navigate(`/profile/${user?.id}#social-connections`);
+                    }}
                   >
-                    Connect channels now →
+                    Connect social accounts on your profile →
                   </Button>
                 </AlertDescription>
               </Alert>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {channels.map((channel) => {
                   const Icon = channel.icon;
-                  const iconColor = channel.id === "vitana_messenger" 
-                    ? "text-blue-600" 
-                    : getChannelColor(channel.id);
-                  
+                  const isSelected = selectedChannels.includes(channel.id);
+
                   return (
-                    <div
+                    <button
                       key={channel.id}
-                      className={`flex items-center gap-3 rounded-lg border p-3 transition-colors cursor-pointer hover:bg-accent ${
-                        selectedChannels.includes(channel.id)
-                          ? "border-primary bg-primary/5"
-                          : "border-border"
-                      }`}
+                      type="button"
                       onClick={() => handleChannelToggle(channel.id)}
+                      disabled={!channel.connected}
+                      className={`flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/50"
+                      } ${!channel.connected ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
                     >
-                      <Checkbox
-                        checked={selectedChannels.includes(channel.id)}
-                      />
-                      <Icon className={`h-5 w-5 ${iconColor}`} />
-                      <span className="text-sm font-medium">{channel.name}</span>
-                    </div>
+                      <Icon className="h-6 w-6" />
+                      <span className="text-xs font-medium">{channel.name}</span>
+                      {!channel.connected && (
+                        <span className="text-xs text-muted-foreground">
+                          Not connected
+                        </span>
+                      )}
+                    </button>
                   );
                 })}
               </div>
@@ -278,25 +287,49 @@ export function UniversalShareDialog({
           {/* Actions */}
           <div className="flex gap-3">
             <Button
+              type="button"
+              variant="outline"
               className="flex-1"
-              size="lg"
-              onClick={handleBlastNow}
-              disabled={isSharing || selectedChannels.length === 0}
+              onClick={handleCopyLink}
             >
-              <Send className="h-4 w-4 mr-2" />
-              {isSharing ? "Sharing..." : "Blast Now"}
+              {linkCopied ? (
+                <>
+                  <Check className="mr-2 h-4 w-4" />
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <Copy className="mr-2 h-4 w-4" />
+                  Copy Link
+                </>
+              )}
             </Button>
             <Button
+              type="button"
               variant="outline"
-              size="lg"
-              onClick={handleCreateCampaign}
               className="flex-1"
+              onClick={handleCreateCampaign}
             >
-              <Sparkles className="h-4 w-4 mr-2" />
+              <Plus className="mr-2 h-4 w-4" />
               Create Campaign
             </Button>
-            <Button variant="ghost" size="lg" onClick={handleCopyLink}>
-              <Copy className="h-4 w-4" />
+            <Button
+              type="button"
+              className="flex-1"
+              onClick={handleBlastNow}
+              disabled={selectedChannels.length === 0 || isSharing}
+            >
+              {isSharing ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Sharing...
+                </>
+              ) : (
+                <>
+                  <Send className="mr-2 h-4 w-4" />
+                  Blast Now
+                </>
+              )}
             </Button>
           </div>
         </div>

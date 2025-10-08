@@ -158,7 +158,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div className="relative h-full flex flex-col items-center justify-center p-6 bg-card border rounded-2xl shadow-lg overflow-hidden">
+      <div id="social-connections-section" className="relative h-full flex flex-col items-center justify-center p-6 bg-card border rounded-2xl shadow-lg overflow-hidden">
         {/* Faint top gradient bar for visual anchoring */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20" />
         

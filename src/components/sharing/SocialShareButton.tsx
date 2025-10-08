@@ -1,22 +1,24 @@
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useState, useMemo } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { useMessages } from "@/hooks/useMessages";
-import { useNavigate } from "react-router-dom";
-import { useChannels } from "@/hooks/useChannels";
-import { getChannelIcon, getChannelColor } from "@/utils/channelHelpers";
-import { 
-  Share2, 
-  MessageCircle, 
-  Copy, 
-  Send,
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Share2,
+  Copy,
+  MessageCircle,
   Info,
-  Loader2
+  Loader2,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthProvider";
 
 interface SocialShareButtonProps {
   type: 'service' | 'event' | 'referral';
@@ -40,9 +42,9 @@ export default function SocialShareButton({
 }: SocialShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
-  const { sendMessage } = useMessages(undefined, false);
+  const { user } = useAuth();
+  const { connectedPlatforms, loading } = useSocialPlatforms();
   const navigate = useNavigate();
-  const { connectedChannels, isLoading } = useChannels();
 
   const getShareText = () => {
     switch (type) {
@@ -75,25 +77,12 @@ export default function SocialShareButton({
           });
           break;
           
-        case 'vitana_messenger':
         case 'messenger':
-          // Share via internal messenger
-          await sendMessage(
-            `Sharing ${type}: ${data.title}`,
-            undefined, // Let user select recipient
-            'share',
-            {
-              type,
-              title: data.title,
-              description: data.description,
-              link: shareLink,
-              shareText
-            }
-          );
           toast({
-            title: "Shared via Messenger! 💬",
-            description: "Your share has been sent"
+            title: "Opening Messenger...",
+            description: "Share via Vitana Messenger"
           });
+          navigate('/messenger');
           break;
           
         case 'facebook':
@@ -108,8 +97,28 @@ export default function SocialShareButton({
           window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareLink)}`, '_blank');
           break;
           
-        case 'email':
-          window.open(`mailto:?subject=${encodeURIComponent(data.title)}&body=${encodeURIComponent(shareText + '\n\n' + shareLink)}`, '_blank');
+        case 'instagram':
+          toast({
+            title: "Instagram",
+            description: "Link copied! Open Instagram to share"
+          });
+          await navigator.clipboard.writeText(shareLink);
+          break;
+
+        case 'youtube':
+          toast({
+            title: "YouTube",
+            description: "Link copied! Share on YouTube"
+          });
+          await navigator.clipboard.writeText(shareLink);
+          break;
+
+        case 'tiktok':
+          toast({
+            title: "TikTok",
+            description: "Link copied! Share on TikTok"
+          });
+          await navigator.clipboard.writeText(shareLink);
           break;
       }
       
@@ -124,36 +133,26 @@ export default function SocialShareButton({
     }
   };
 
-  // Build share options dynamically from connected channels
+  // Build share options dynamically from connected social platforms
   const shareOptions = useMemo(() => {
-    const options: Array<{
-      id: string;
-      icon: React.ComponentType<any>;
-      label: string;
-      color: string;
-    }> = [
+    const baseOptions = [
       {
-        id: 'vitana_messenger',
+        id: "messenger",
         icon: MessageCircle,
-        label: 'Vitana Messenger',
-        color: 'text-blue-600'
-      }
+        label: "Vitana Messenger",
+        color: "text-blue-600",
+      },
     ];
 
-    // Add connected distribution channels
-    const distributionOptions = (connectedChannels || [])
-      .filter((c) => c.is_connected && c.is_active)
-      .map((channel) => ({
-        id: channel.channel_type,
-        icon: getChannelIcon(channel.channel_type) as React.ComponentType<any>,
-        label: channel.channel_name,
-        color: getChannelColor(channel.channel_type)
-      }));
+    const socialOptions = connectedPlatforms.map((platform) => ({
+      id: platform.id,
+      icon: platform.icon,
+      label: platform.name,
+      color: platform.color,
+    }));
 
-    options.push(...distributionOptions);
-
-    return options;
-  }, [connectedChannels]);
+    return [...baseOptions, ...socialOptions];
+  }, [connectedPlatforms]);
 
   return (
     <>
@@ -183,9 +182,7 @@ export default function SocialShareButton({
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <h4 className="font-semibold text-sm">{data.title}</h4>
-                    <Badge variant="outline" className="capitalize">
-                      {type}
-                    </Badge>
+                    <span className="text-xs capitalize text-muted-foreground">{type}</span>
                   </div>
                   <p className="text-sm text-muted-foreground line-clamp-2">
                     {data.description}
@@ -196,57 +193,59 @@ export default function SocialShareButton({
                     </div>
                   )}
                   {data.referralCode && (
-                    <Badge variant="secondary" className="text-xs">
+                    <div className="text-xs text-muted-foreground">
                       Code: {data.referralCode}
-                    </Badge>
+                    </div>
                   )}
                 </div>
               </CardContent>
             </Card>
 
             {/* Share Options */}
-            {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-              </div>
-            ) : shareOptions.length === 1 ? (
-              <Alert className="border-blue-200 bg-blue-50/50 dark:border-blue-800/30 dark:bg-blue-950/20">
-                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                <AlertDescription className="text-sm">
-                  <p className="mb-2">No distribution channels connected yet.</p>
-                  <Button
-                    variant="link"
-                    size="sm"
-                    className="h-auto p-0 text-blue-600 dark:text-blue-400"
-                    onClick={() => {
-                      setIsOpen(false);
-                      navigate("/sharing/integrations");
-                    }}
-                  >
-                    Connect channels now →
-                  </Button>
-                </AlertDescription>
-              </Alert>
-            ) : (
-              <div className="grid grid-cols-2 gap-3">
-                {shareOptions.map((option) => {
-                  const IconComponent = option.icon;
-                  return (
+            <div className="space-y-3">
+              {loading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : shareOptions.length === 1 ? (
+                <Alert>
+                  <Info className="h-4 w-4" />
+                  <AlertDescription>
+                    No social accounts connected yet.{" "}
                     <Button
-                      key={option.id}
-                      variant="outline"
-                      className="flex items-center gap-2 h-12 justify-start"
-                      onClick={() => handleShare(option.id)}
+                      variant="link"
+                      size="sm"
+                      className="h-auto p-0"
+                      onClick={() => {
+                        setIsOpen(false);
+                        navigate(`/profile/${user?.id}#social-connections`);
+                      }}
                     >
-                      <IconComponent className={`w-4 h-4 ${option.color}`} />
-                      <span className="text-sm">{option.label}</span>
+                      Connect on your profile →
                     </Button>
-                  );
-                })}
-              </div>
-            )}
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  {shareOptions.map((option) => {
+                    const Icon = option.icon;
+                    return (
+                      <Button
+                        key={option.id}
+                        variant="outline"
+                        className="flex flex-col items-center gap-2 h-auto py-4"
+                        onClick={() => handleShare(option.id)}
+                      >
+                        <Icon className="h-6 w-6" />
+                        <span className="text-xs">{option.label}</span>
+                      </Button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
-            {/* Single Copy Link Action */}
+            {/* Copy Link Action */}
             <div className="pt-2 border-t">
               <Button 
                 variant="outline"
