@@ -9,9 +9,10 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import { communityNavigation } from "@/config/navigation";
-import { Apple, Droplets, Dumbbell, Brain, Moon, Plus, Search } from "lucide-react";
+import { Apple, Droplets, Dumbbell, Brain, Moon, Plus, Search, Pencil } from "lucide-react";
 import { CreateMeetupPopup } from "@/components/CreateMeetupPopup";
 import { useState } from "react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Mock data for meetup events with different pillar categories
 const todayEvents = [
@@ -358,6 +359,30 @@ const upcomingEvents = [
   }
 ];
 
+// Edit button component with tooltip
+const EditButton = ({ onEdit }: { onEdit: () => void }) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          size="icon"
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit();
+          }}
+          className="h-10 w-10 rounded-full bg-background/10 hover:bg-background/20 text-white border border-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl"
+          aria-label="Edit meetup"
+        >
+          <Pencil className="h-4 w-4" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="left">
+        <p>Edit Meetup</p>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
+
 const renderEventGrid = (events: typeof todayEvents) => {
   const rows = [];
   
@@ -382,6 +407,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                 location={rowEvents[0]?.location}
                 attendees={rowEvents[0]?.attendees}
                 timestamp={rowEvents[0]?.timestamp}
+                actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[0]?.title}`)} />}
                 className="h-full"
               />
             </div>
@@ -397,6 +423,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
+                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[1].title}`)} />}
                   className="h-full"
                 />
               </div>
@@ -413,6 +440,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
+                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[2].title}`)} />}
                   className="h-full"
                 />
               </div>
@@ -433,6 +461,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   location={rowEvents[0].location}
                   attendees={rowEvents[0].attendees}
                   timestamp={rowEvents[0].timestamp}
+                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[0].title}`)} />}
                   className="h-full"
                 />
               </div>
@@ -449,6 +478,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
+                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[1].title}`)} />}
                   className="h-full"
                 />
               </div>
@@ -460,6 +490,7 @@ const renderEventGrid = (events: typeof todayEvents) => {
                   title={rowEvents[2].title}
                   description={rowEvents[2].description}
                   imageUrl={rowEvents[2].imageUrl}
+                  actionButton={<EditButton onEdit={() => console.log(`Edit: ${rowEvents[2].title}`)} />}
                   pillar={rowEvents[2].pillar}
                   author={rowEvents[2].author}
                   location={rowEvents[2].location}
