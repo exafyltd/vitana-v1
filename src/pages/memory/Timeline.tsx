@@ -19,12 +19,6 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useActivityHistory } from "@/hooks/useActivityHistory";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 // Category configuration
 const CATEGORIES = [
