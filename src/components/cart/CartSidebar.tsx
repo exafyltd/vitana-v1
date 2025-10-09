@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { CartItem } from "./CartItem";
-import { useCart } from "@/hooks/useCart";
+import { useLocalCart } from "@/hooks/useLocalCart";
 import { cn } from "@/lib/utils";
 
 interface CartSidebarProps {
@@ -21,7 +21,7 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
     clearCart,
     checkout,
     isLoading 
-  } = useCart();
+  } = useLocalCart();
 
   return (
     <>
