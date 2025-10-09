@@ -300,6 +300,42 @@ export type Database = {
           },
         ]
       }
+      bookmarked_items: {
+        Row: {
+          created_at: string | null
+          id: string
+          item_id: string
+          item_image_url: string | null
+          item_metadata: Json | null
+          item_name: string
+          item_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          item_id: string
+          item_image_url?: string | null
+          item_metadata?: Json | null
+          item_name: string
+          item_type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          item_id?: string
+          item_image_url?: string | null
+          item_metadata?: Json | null
+          item_name?: string
+          item_type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       calendar_events: {
         Row: {
           attendees_count: number | null

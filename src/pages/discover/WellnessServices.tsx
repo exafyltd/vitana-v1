@@ -17,6 +17,9 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverBookActionPopup } from "@/components/discover/DiscoverBookActionPopup";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+import { useBookmarks } from "@/hooks/useBookmarks";
+import { Bookmark } from "lucide-react";
 
 export default function WellnessServices() {
   const navigate = useNavigate();
@@ -25,6 +28,7 @@ export default function WellnessServices() {
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("categories");
+  const { getBookmarksByType, removeBookmark, isLoading: bookmarksLoading } = useBookmarks();
 
   const latestActions = getLatestActions(2);
 
@@ -182,14 +186,27 @@ export default function WellnessServices() {
             <SplitBarList>
               <SplitBarTrigger value="categories">📂 All Categories</SplitBarTrigger>
               <SplitBarTrigger value="recommended">💡 Recommended</SplitBarTrigger>
-              <SplitBarTrigger value="bookmarked">🔖 Bookmarked</SplitBarTrigger>
+              <SplitBarTrigger value="bookmarked">
+                🔖 Bookmarked {getBookmarksByType('wellness_service').length > 0 && `(${getBookmarksByType('wellness_service').length})`}
+              </SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="categories" className="space-y-6">
               {/* Categories Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {categories.map((category) => (
-              <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-white/20">
+              <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-white/20 relative">
+                <BookmarkButton
+                  item={{
+                    item_type: 'wellness_service',
+                    item_id: category.id.toString(),
+                    item_name: category.name,
+                    item_metadata: {
+                      description: category.description,
+                      featured: category.featured,
+                    },
+                  }}
+                />
                 <CardContent className="p-4 md:p-5 lg:p-6 flex-1 flex flex-col">
                   <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                     <div className={`${category.color} p-2 md:p-3 rounded-lg`}>
@@ -273,15 +290,46 @@ export default function WellnessServices() {
             </SplitBarContent>
 
             <SplitBarContent value="bookmarked" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                <CardContent className="p-12 text-center">
-                  <div className="text-6xl mb-4">🔖</div>
-                  <h3 className="text-xl font-semibold mb-2">No bookmarked services yet</h3>
-                  <p className="text-muted-foreground">
-                    Bookmark your favorite wellness services and upcoming bookings will appear here
-                  </p>
-                </CardContent>
-              </Card>
+              {bookmarksLoading ? (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">Loading bookmarks...</p>
+                </div>
+              ) : getBookmarksByType('wellness_service').length === 0 ? (
+                <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                  <CardContent className="p-12 text-center">
+                    <Bookmark className="h-16 w-16 mx-auto mb-4 text-yellow-400" />
+                    <h3 className="text-xl font-semibold mb-2">No bookmarked services yet</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Browse wellness services and bookmark your favorites
+                    </p>
+                    <Button onClick={() => setActiveTab('categories')}>
+                      Explore Services
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {getBookmarksByType('wellness_service').map((bookmark) => (
+                    <Card key={bookmark.id} className="group hover:shadow-lg transition-all bg-white/90 relative">
+                      <button
+                        onClick={() => removeBookmark('wellness_service', bookmark.item_id)}
+                        className="absolute top-2 right-2 bg-yellow-400 p-2 rounded-full hover:bg-yellow-500 transition-colors z-10"
+                      >
+                        <Bookmark className="h-4 w-4 fill-white text-white" />
+                      </button>
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold text-lg mb-2">{bookmark.item_name}</h3>
+                        {bookmark.item_metadata?.description && (
+                          <p className="text-sm text-muted-foreground mb-4">{bookmark.item_metadata.description}</p>
+                        )}
+                        <Button size="sm" className="w-full">
+                          Explore {bookmark.item_name}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </SplitBarContent>
           </SplitBar>
         </div>

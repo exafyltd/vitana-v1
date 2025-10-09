@@ -17,6 +17,9 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverBookActionPopup } from "@/components/discover/DiscoverBookActionPopup";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+import { useBookmarks } from "@/hooks/useBookmarks";
+import { Bookmark } from "lucide-react";
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
@@ -25,6 +28,7 @@ export default function DoctorsCoaches() {
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("find");
+  const { getBookmarksByType, removeBookmark, isLoading: bookmarksLoading } = useBookmarks();
 
   const latestActions = getLatestActions(2);
 
@@ -166,7 +170,9 @@ export default function DoctorsCoaches() {
             <SplitBarList>
               <SplitBarTrigger value="find">📂 Find Providers</SplitBarTrigger>
               <SplitBarTrigger value="matches">🏆 Best Matches</SplitBarTrigger>
-              <SplitBarTrigger value="myproviders">💛 My Providers</SplitBarTrigger>
+              <SplitBarTrigger value="myproviders">
+                💛 My Providers {getBookmarksByType('provider').length > 0 && `(${getBookmarksByType('provider').length})`}
+              </SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="find" className="space-y-6">
@@ -236,7 +242,21 @@ export default function DoctorsCoaches() {
           {/* Provider Results */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {providers.map((provider) => (
-              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-white/20">
+              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-white/20 relative">
+                <BookmarkButton
+                  item={{
+                    item_type: 'provider',
+                    item_id: provider.id.toString(),
+                    item_name: provider.name,
+                    item_image_url: provider.image,
+                    item_metadata: {
+                      specialty: provider.specialty,
+                      rating: provider.rating,
+                      location: provider.location,
+                      priceRange: provider.priceRange,
+                    },
+                  }}
+                />
                 <CardContent className="p-4 md:p-5 lg:p-6 flex-1 flex flex-col">
                   <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                     <div className="relative">
