@@ -25,9 +25,12 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import Supplements from "./pages/discover/Supplements";
+import ProductDetail from "./pages/discover/ProductDetail";
 import Health from "./pages/Health";
 import HealthTracker from "./pages/HealthTracker";
 import Calendar from "./pages/Calendar";
+import Cart from "./pages/Cart";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
 import Community from "./pages/Community";
 import AI from "./pages/AI";
 import Messages from "./pages/Messages";
@@ -246,6 +249,21 @@ const App = () => {
           <Route path="/discover/orders" element={
             <AuthGuard>
               <Orders />
+            </AuthGuard>
+          } />
+          <Route path="/discover/product/:id" element={
+            <AuthGuard>
+              <ProductDetail />
+            </AuthGuard>
+          } />
+          <Route path="/cart" element={
+            <AuthGuard>
+              <Cart />
+            </AuthGuard>
+          } />
+          <Route path="/checkout/success" element={
+            <AuthGuard>
+              <CheckoutSuccess />
             </AuthGuard>
           } />
           

@@ -36,6 +36,7 @@ import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
+import { UniversalShareButton } from '@/components/sharing/UniversalShareButton';
 
 export default withScreenId(function Discover() {
   const navigate = useNavigate();
@@ -294,7 +295,13 @@ export default withScreenId(function Discover() {
                               size="sm"
                               className="flex-1"
                             />
-                            <Button size="sm" className="flex-1">View</Button>
+                            <Button 
+                              size="sm" 
+                              className="flex-1"
+                              onClick={() => navigate(`/discover/product/${rec.id}`, { state: rec })}
+                            >
+                              View
+                            </Button>
                           </div>
                         </CardContent>
                       </Card>
@@ -421,10 +428,19 @@ export default withScreenId(function Discover() {
                             </p>
                           </div>
                           <div className="flex gap-2">
-                            <Button size="sm" variant="outline" className="flex-1">
-                              <Share2 className="h-3 w-3 mr-1" />
-                              Share
-                            </Button>
+                            <UniversalShareButton
+                              content={{
+                                type: "service",
+                                id: item.id.toString(),
+                                title: item.title,
+                                description: item.description,
+                                image_url: item.image,
+                                url: `${window.location.origin}/discover/product/${item.id}`
+                              }}
+                              variant="outline"
+                              size="sm"
+                              className="flex-1"
+                            />
                             <AddToCartButton
                               item={{
                                 item_type: 'product',
