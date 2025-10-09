@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, TrendingUp, Users, DollarSign, Download, Filter } from "lucide-react";
-import { adminDashboardNavigation } from "@/config/navigation";
+import { adminMonitoringNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 function Reports() {
   return (
     <AppLayout>
       <SEO title="Reports & KPIs | Admin" description="View system reports and key performance indicators" canonical={window.location.href} />
-      <SubNavigation items={adminDashboardNavigation} />
+      <SubNavigation items={adminMonitoringNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">

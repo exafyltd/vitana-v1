@@ -77,24 +77,44 @@ export const memoryNavigation = [
   { id: "permissions", name: "Permissions", path: "/memory/permissions" },
 ];
 
+// Admin Dashboard - landing page with high-level metrics
 export const adminDashboardNavigation = [
   { id: "overview", name: "Overview", path: "/admin" },
-  { id: "notifications", name: "Notifications", path: "/admin/notifications" },
-  { id: "bootstrap", name: "Admin Bootstrap", path: "/admin/bootstrap" },
-  { id: "queue", name: "Queue & Check-In", path: "/admin/queue" },
-  { id: "patient-records", name: "Patient Record Viewer", path: "/admin/patient-records" },
-  { id: "stream-supervision", name: "Stream Supervision", path: "/admin/stream-supervision" },
-  { id: "staff", name: "Staff Directory & Scheduling", path: "/admin/staff" },
-  { id: "reports", name: "Reports & KPIs", path: "/admin/reports" },
-  { id: "audit", name: "Audit Logs & Compliance", path: "/admin/audit" },
+  { id: "system-health", name: "System Health", path: "/admin/system-health" },
 ];
 
+// User Management - consolidated user/staff/audit
 export const adminUserManagementNavigation = [
   { id: "overview", name: "Overview", path: "/admin/user-management" },
+  { id: "staff", name: "Staff Management", path: "/admin/user-management/staff" },
+  { id: "audit", name: "User Audit Logs", path: "/admin/user-management/audit" },
 ];
 
+// Tenant Management - tenant config and audit
 export const adminTenantManagementNavigation = [
   { id: "overview", name: "Overview", path: "/admin/tenant-management" },
+  { id: "configuration", name: "Configuration", path: "/admin/tenant-management/config" },
+  { id: "audit", name: "Tenant Audit Logs", path: "/admin/tenant-management/audit" },
+];
+
+// System Administration - critical system-level tools
+export const adminSystemNavigation = [
+  { id: "bootstrap", name: "Super Admin Bootstrap", path: "/admin/system/bootstrap" },
+  { id: "config", name: "System Configuration", path: "/admin/system/config" },
+  { id: "security", name: "Security Settings", path: "/admin/system/security" },
+];
+
+// Clinical Operations - healthcare-specific (Alkalma/Earthlinks)
+export const adminClinicalNavigation = [
+  { id: "patient-records", name: "Patient Records", path: "/admin/clinical/patient-records" },
+  { id: "queue", name: "Queue & Check-In", path: "/admin/clinical/queue" },
+];
+
+// Monitoring & Compliance - oversight tools
+export const adminMonitoringNavigation = [
+  { id: "stream-supervision", name: "Stream Supervision", path: "/admin/monitoring/stream-supervision" },
+  { id: "reports", name: "Reports & KPIs", path: "/admin/monitoring/reports" },
+  { id: "notifications", name: "Notifications", path: "/admin/monitoring/notifications" },
 ];
 
 export const settingsNavigation = [

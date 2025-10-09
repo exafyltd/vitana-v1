@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { adminDashboardNavigation } from "@/config/navigation";
+import { adminMonitoringNavigation } from "@/config/navigation";
 import NotificationMonitor from "@/components/admin/NotificationMonitor";
 import CronHealthCard from "@/components/admin/CronHealthCard";
 import NotificationStats from "@/components/admin/NotificationStats";
@@ -16,7 +16,7 @@ export default function NotificationDashboard() {
         description="Monitor and manage the VITANA notification system" 
         canonical={window.location.href} 
       />
-      <SubNavigation items={adminDashboardNavigation} />
+      <SubNavigation items={adminMonitoringNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, FileText, Clock, Shield, Eye } from "lucide-react";
-import { adminDashboardNavigation } from "@/config/navigation";
+import { adminClinicalNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 const mockPatients = [
@@ -20,7 +20,7 @@ function PatientRecords() {
   return (
     <AppLayout>
       <SEO title="Patient Records | Admin" description="View and manage patient medical records" canonical={window.location.href} />
-      <SubNavigation items={adminDashboardNavigation} />
+      <SubNavigation items={adminClinicalNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">

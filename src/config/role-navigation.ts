@@ -68,15 +68,12 @@ export const staffNavigation: NavigationItem[] = [
 
 // Admin Role Navigation - System management focused
 export const adminNavigation: NavigationItem[] = [
-  { title: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
-  { title: "User Management", path: "/admin/users", icon: Users },
-  { title: "System Health", path: "/admin/system", icon: Activity },
-  { title: "Analytics", path: "/admin/analytics", icon: BarChart3 },
+  { title: "Dashboard", path: "/admin", icon: LayoutDashboard },
+  { title: "User Management", path: "/admin/user-management", icon: Users },
   { title: "Tenant Management", path: "/admin/tenant-management", icon: Shield },
-  { title: "Security", path: "/admin/security", icon: Shield },
-  { title: "Queue Management", path: "/admin/queue", icon: ClipboardList },
-  { title: "Audit Logs", path: "/admin/audit", icon: FileText },
-  { title: "System Settings", path: "/admin/settings", icon: Settings },
+  { title: "System Admin", path: "/admin/system/bootstrap", icon: Settings },
+  { title: "Clinical Ops", path: "/admin/clinical/patient-records", icon: Stethoscope },
+  { title: "Monitoring", path: "/admin/monitoring/reports", icon: Activity },
 ];
 
 // Function to get navigation based on user role

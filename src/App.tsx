@@ -147,6 +147,12 @@ import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
 import UserManagement from "./pages/admin/UserManagement";
 import NotificationDashboard from "./pages/admin/NotificationDashboard";
+import SystemHealth from "./pages/admin/SystemHealth";
+import UserAudit from "./pages/admin/UserAudit";
+import TenantConfig from "./pages/admin/TenantConfig";
+import TenantAudit from "./pages/admin/TenantAudit";
+import SystemConfig from "./pages/admin/SystemConfig";
+import SystemSecurity from "./pages/admin/SystemSecurity";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 
 const App = () => {
@@ -799,7 +805,8 @@ const App = () => {
             </AuthGuard>
           } />
 
-          {/* Admin Pages - Keep existing admin routes */}
+          {/* Admin Pages - Reorganized navigation structure */}
+          {/* Dashboard Section */}
           <Route path="/admin" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
@@ -807,13 +814,31 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
-          <Route path="/admin/bootstrap" element={
+          <Route path="/admin/system-health" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <Bootstrap />
+                <SystemHealth />
               </ProtectedRoute>
             </AuthGuard>
           } />
+          
+          {/* User Management Section */}
+          <Route path="/admin/user-management/staff" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <Staff />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/user-management/audit" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <UserAudit />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
+          {/* Tenant Management Section */}
           <Route path="/admin/tenant-management" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
@@ -821,13 +846,92 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
-          <Route path="/admin/notifications" element={
+          <Route path="/admin/tenant-management/config" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <TenantConfig />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/tenant-management/audit" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <TenantAudit />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
+          {/* System Administration Section */}
+          <Route path="/admin/system/bootstrap" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <Bootstrap />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/system/config" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <SystemConfig />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/system/security" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <SystemSecurity />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
+          {/* Clinical Operations Section */}
+          <Route path="/admin/clinical/patient-records" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <PatientRecords />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/clinical/queue" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <Queue />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
+          {/* Monitoring & Compliance Section */}
+          <Route path="/admin/monitoring/stream-supervision" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <StreamSupervision />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/monitoring/reports" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <Reports />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/monitoring/notifications" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
                 <NotificationDashboard />
               </ProtectedRoute>
             </AuthGuard>
           } />
+          
+          {/* Legacy redirects for backward compatibility */}
+          <Route path="/admin/bootstrap" element={<Navigate to="/admin/system/bootstrap" replace />} />
+          <Route path="/admin/staff" element={<Navigate to="/admin/user-management/staff" replace />} />
+          <Route path="/admin/queue" element={<Navigate to="/admin/clinical/queue" replace />} />
+          <Route path="/admin/patient-records" element={<Navigate to="/admin/clinical/patient-records" replace />} />
+          <Route path="/admin/stream-supervision" element={<Navigate to="/admin/monitoring/stream-supervision" replace />} />
+          <Route path="/admin/reports" element={<Navigate to="/admin/monitoring/reports" replace />} />
+          <Route path="/admin/notifications" element={<Navigate to="/admin/monitoring/notifications" replace />} />
+          <Route path="/admin/audit" element={<Navigate to="/admin/monitoring/reports" replace />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Video, Users, AlertTriangle, Shield, Eye, Play } from "lucide-react";
-import { adminDashboardNavigation } from "@/config/navigation";
+import { adminMonitoringNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 const mockStreams = [
@@ -20,7 +20,7 @@ function StreamSupervision() {
   return (
     <AppLayout>
       <SEO title="Stream Supervision | Admin" description="Monitor and moderate live streams and content" canonical={window.location.href} />
-      <SubNavigation items={adminDashboardNavigation} />
+      <SubNavigation items={adminMonitoringNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">

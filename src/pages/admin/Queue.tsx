@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, Users, UserCheck, AlertCircle, CheckCircle2 } from "lucide-react";
-import { adminDashboardNavigation } from "@/config/navigation";
+import { adminClinicalNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 const mockQueueData = {
@@ -26,7 +26,7 @@ function Queue() {
   return (
     <AppLayout>
       <SEO title="Queue & Check-In | Admin" description="Manage patient queue and check-in process" canonical={window.location.href} />
-      <SubNavigation items={adminDashboardNavigation} />
+      <SubNavigation items={adminClinicalNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
