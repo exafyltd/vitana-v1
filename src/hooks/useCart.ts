@@ -192,7 +192,13 @@ export function useCart() {
       if (error) throw error;
 
       if (data?.url) {
-        window.open(data.url, '_blank');
+        // Open Stripe checkout in a centered popup window
+        const width = 600;
+        const height = 800;
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+        const features = `width=${width},height=${height},left=${left},top=${top},toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes`;
+        window.open(data.url, 'stripe-checkout', features);
       } else {
         throw new Error('No checkout URL received');
       }
