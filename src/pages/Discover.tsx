@@ -25,11 +25,12 @@ import {
 import AppLayout from '@/components/AppLayout';
 import SEO from '@/components/SEO';
 import SubNavigation from '@/components/SubNavigation';
-import { Universal3CardHeader } from '@/components/Universal3CardHeader';
+import StandardHeader from '@/components/StandardHeader';
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
 import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { MasterActionPopup } from '@/components/MasterActionPopup';
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -192,15 +193,14 @@ export default withScreenId(function Discover() {
       />
       <SubNavigation items={discoverNavigation} />
       
-      <div className="min-h-screen">
-        <Universal3CardHeader
-          title="Discover Your Longevity Marketplace"
-          description="Personalized recommendations, browse categories, and earn rewards by sharing with your community"
-          emoji="🔍"
-        />
-        
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
+            <StandardHeader
+              title="Discover Your Longevity Marketplace"
+              description="Personalized recommendations, browse categories, and earn rewards by sharing with your community"
+              emoji="🔍"
+            />
+
             {/* Utility Action Buttons */}
             <UtilityActionButton>
               <ExpandableSearchButton 
@@ -225,25 +225,25 @@ export default withScreenId(function Discover() {
               </Button>
             </UtilityActionButton>
 
-          {/* Split-Screen Tabs Navigation */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
-              <TabsTrigger value="suggested" className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4" />
+          {/* Split Bar Navigation */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList>
+              <SplitBarTrigger value="suggested">
+                <Sparkles className="h-4 w-4 mr-2" />
                 💡 Suggested for You
-              </TabsTrigger>
-              <TabsTrigger value="categories" className="flex items-center gap-2">
-                <Grid3X3 className="h-4 w-4" />
+              </SplitBarTrigger>
+              <SplitBarTrigger value="categories">
+                <Grid3X3 className="h-4 w-4 mr-2" />
                 📂 Categories
-              </TabsTrigger>
-              <TabsTrigger value="share" className="flex items-center gap-2">
-                <Share2 className="h-4 w-4" />
+              </SplitBarTrigger>
+              <SplitBarTrigger value="share">
+                <Share2 className="h-4 w-4 mr-2" />
                 💰 Share & Earn
-              </TabsTrigger>
-            </TabsList>
+              </SplitBarTrigger>
+            </SplitBarList>
 
             {/* Tab 1: Suggested for You */}
-            <TabsContent value="suggested" className="space-y-6">
+            <SplitBarContent value="suggested" className="space-y-6">
               <Card className="bg-white/80 backdrop-blur-sm border-white/20">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
@@ -305,10 +305,10 @@ export default withScreenId(function Discover() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+            </SplitBarContent>
 
             {/* Tab 2: Categories */}
-            <TabsContent value="categories" className="space-y-6">
+            <SplitBarContent value="categories" className="space-y-6">
               <Card className="bg-white/80 backdrop-blur-sm border-white/20">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
@@ -345,10 +345,10 @@ export default withScreenId(function Discover() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+            </SplitBarContent>
 
             {/* Tab 3: Share & Earn */}
-            <TabsContent value="share" className="space-y-6">
+            <SplitBarContent value="share" className="space-y-6">
               <Card className="bg-white/80 backdrop-blur-sm border-white/20">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
@@ -447,9 +447,8 @@ export default withScreenId(function Discover() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
-          </div>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
       
