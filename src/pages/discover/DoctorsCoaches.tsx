@@ -399,15 +399,120 @@ export default function DoctorsCoaches() {
             </SplitBarContent>
 
             <SplitBarContent value="myproviders" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                <CardContent className="p-12 text-center">
-                  <div className="text-6xl mb-4">💛</div>
-                  <h3 className="text-xl font-semibold mb-2">No saved providers yet</h3>
-                  <p className="text-muted-foreground">
-                    Save your favorite providers and upcoming appointments will appear here
-                  </p>
-                </CardContent>
-              </Card>
+              {(() => {
+                const bookmarkedProviders = getBookmarksByType('provider');
+                
+                if (bookmarkedProviders.length === 0) {
+                  return (
+                    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                      <CardContent className="p-12 text-center">
+                        <div className="text-6xl mb-4">💛</div>
+                        <h3 className="text-xl font-semibold mb-2">No saved providers yet</h3>
+                        <p className="text-muted-foreground">
+                          Save your favorite providers and upcoming appointments will appear here
+                        </p>
+                      </CardContent>
+                    </Card>
+                  );
+                }
+
+                return (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {bookmarkedProviders.map((bookmark) => {
+                      const provider = providers.find(p => p.id.toString() === bookmark.item_id);
+                      
+                      if (!provider) return null;
+
+                      return (
+                        <Card key={bookmark.id} className="bg-white/80 backdrop-blur-sm border-white/20 overflow-hidden hover:shadow-lg transition-shadow relative">
+                          <BookmarkButton
+                            item={{
+                              item_type: 'provider',
+                              item_id: provider.id.toString(),
+                              item_name: provider.name,
+                              item_image_url: provider.image,
+                              item_metadata: {
+                                specialty: provider.specialty,
+                                rating: provider.rating,
+                                location: provider.location
+                              }
+                            }}
+                          />
+                          <CardContent className="p-6">
+                            <div className="flex items-start gap-4 mb-4">
+                              <div className="relative">
+                                <img 
+                                  src={provider.image} 
+                                  alt={provider.name}
+                                  className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
+                                />
+                                {provider.badges.includes("Verified") && (
+                                  <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1">
+                                    <Verified className="h-3 w-3 text-white" />
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-semibold text-lg mb-1 truncate">{provider.name}</h3>
+                                <p className="text-sm text-muted-foreground mb-2">{provider.title}</p>
+                                <div className="flex items-center gap-2 flex-wrap mb-2">
+                                  {provider.badges.map((badge) => (
+                                    <Badge 
+                                      key={badge} 
+                                      variant={badge === "Top Rated" ? "default" : "secondary"}
+                                      className="text-xs"
+                                    >
+                                      {badge === "Top Rated" && <Award className="h-3 w-3 mr-1" />}
+                                      {badge === "Trending" && <TrendingUp className="h-3 w-3 mr-1" />}
+                                      {badge === "Verified" && <Verified className="h-3 w-3 mr-1" />}
+                                      {badge}
+                                    </Badge>
+                                  ))}
+                                </div>
+                                <div className="flex items-center gap-1 text-sm">
+                                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                  <span className="font-semibold">{provider.rating}</span>
+                                  <span className="text-muted-foreground">({provider.reviews})</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="space-y-2 mb-4">
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <MapPin className="h-4 w-4" />
+                                <span>{provider.location}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-sm">
+                                <Clock className="h-4 w-4 text-green-500" />
+                                <span className="text-green-600">Available {provider.nextAvailable}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Users className="h-4 w-4" />
+                                <span>{provider.bookings.toLocaleString()} bookings</span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button 
+                                size="sm" 
+                                className="flex-1"
+                                onClick={() => console.log('Book', provider.name)}
+                              >
+                                Book Now
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => removeBookmark('provider', provider.id.toString())}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
             </SplitBarContent>
           </SplitBar>
         </div>
