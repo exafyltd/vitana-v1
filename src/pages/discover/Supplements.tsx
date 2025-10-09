@@ -127,7 +127,7 @@ export default function Supplements() {
       serving_size: '2 capsules',
       servings_per_container: 30,
       benefits: ['Better Sleep', 'Relaxation', 'Recovery'],
-      image_url: 'https://images.unsplash.com/photo-1541480601022-2308c0f02487?w=400',
+      image_url: 'https://images.unsplash.com/photo-1611532736579-6b16e2b50449?w=400',
       rating: 4.5,
       review_count: 543,
       in_stock: true,
@@ -175,7 +175,7 @@ export default function Supplements() {
       serving_size: '2 capsules',
       servings_per_container: 60,
       benefits: ['Brain Health', 'Memory', 'Focus'],
-      image_url: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400',
+      image_url: 'https://images.unsplash.com/photo-1602070197360-b9af45641e8f?w=400',
       rating: 4.8,
       review_count: 721,
       in_stock: true,
@@ -191,7 +191,7 @@ export default function Supplements() {
       serving_size: '1 softgel',
       servings_per_container: 60,
       benefits: ['Heart Health', 'Energy', 'Antioxidant'],
-      image_url: 'https://images.unsplash.com/photo-1550572017-4c6f13d06d4d?w=400',
+      image_url: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=400',
       rating: 4.6,
       review_count: 432,
       in_stock: true,
@@ -207,7 +207,7 @@ export default function Supplements() {
       serving_size: '2 capsules',
       servings_per_container: 90,
       benefits: ['Muscle Recovery', 'Sleep Quality', 'Stress Relief'],
-      image_url: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=400',
+      image_url: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400',
       rating: 4.9,
       review_count: 1543,
       in_stock: true,
@@ -223,7 +223,7 @@ export default function Supplements() {
       serving_size: '2 scoops',
       servings_per_container: 28,
       benefits: ['Skin Health', 'Hair Growth', 'Joint Support'],
-      image_url: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400',
+      image_url: 'https://images.unsplash.com/photo-1608839792555-13c3a44e1986?w=400',
       rating: 4.7,
       review_count: 2987,
       in_stock: true,
@@ -239,7 +239,7 @@ export default function Supplements() {
       serving_size: '1 softgel',
       servings_per_container: 60,
       benefits: ['Bone Health', 'Immune Support', 'Calcium Absorption'],
-      image_url: 'https://images.unsplash.com/photo-1550572017-4c6f13d06d4d?w=400',
+      image_url: 'https://images.unsplash.com/photo-1526641092449-4e0c7d68d0e9?w=400',
       rating: 4.8,
       review_count: 1234,
       in_stock: true,
@@ -360,7 +360,7 @@ export default function Supplements() {
       <SubNavigation items={discoverNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6 pb-32">
           <StandardHeader
             title="Supplements"
             description="Premium longevity supplements curated for your wellness journey"
