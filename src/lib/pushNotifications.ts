@@ -24,6 +24,7 @@ export interface PushSubscriptionData {
 class PushNotificationManager {
   private registration: ServiceWorkerRegistration | null = null;
   private isSupported = false;
+  private mutedThreads: string[] = [];
 
   constructor() {
     this.isSupported = 'serviceWorker' in navigator && 'PushManager' in window;
@@ -41,10 +42,14 @@ class PushNotificationManager {
     try {
       // Register service worker
       this.registration = await navigator.serviceWorker.register('/sw.js');
-      console.log('Service Worker registered:', this.registration);
+      console.log('✅ Service Worker registered:', this.registration);
+      
+      // Load existing subscription and muted threads
+      await this.loadExistingSubscription();
+      
       return true;
     } catch (error) {
-      console.error('Service Worker registration failed:', error);
+      console.error('❌ Service Worker registration failed:', error);
       return false;
     }
   }
@@ -169,6 +174,35 @@ class PushNotificationManager {
   }
 
   /**
+   * Load existing subscription from database
+   */
+  private async loadExistingSubscription(): Promise<void> {
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) return;
+
+      const { data, error } = await supabase
+        .from('push_subscriptions')
+        .select('endpoint, muted_threads, is_active')
+        .eq('user_id', user.user.id)
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (error) {
+        console.error('❌ Failed to load subscription:', error);
+        return;
+      }
+
+      if (data?.muted_threads) {
+        this.mutedThreads = data.muted_threads;
+        console.log('✅ Loaded muted threads:', this.mutedThreads.length);
+      }
+    } catch (error) {
+      console.error('❌ Failed to load subscription:', error);
+    }
+  }
+
+  /**
    * Save push subscription to database
    */
   private async saveSubscription(subscriptionData: PushSubscriptionData): Promise<void> {
@@ -176,11 +210,26 @@ class PushNotificationManager {
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) return;
 
-      console.log('Push subscription saved:', subscriptionData);
-      // Note: push_subscriptions table needs to be created
-      // await supabase.from('push_subscriptions').upsert({...})
+      const { error } = await supabase
+        .from('push_subscriptions')
+        .upsert({
+          user_id: user.user.id,
+          endpoint: subscriptionData.endpoint,
+          p256dh_key: subscriptionData.p256dh_key,
+          auth_key: subscriptionData.auth_key,
+          user_agent: subscriptionData.user_agent,
+          is_active: true,
+          muted_threads: this.mutedThreads,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id,endpoint'
+        });
+
+      if (error) throw error;
+      
+      console.log('✅ Push subscription saved to database');
     } catch (error) {
-      console.error('Failed to save subscription:', error);
+      console.error('❌ Failed to save subscription:', error);
     }
   }
 
@@ -192,11 +241,152 @@ class PushNotificationManager {
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) return;
 
-      console.log('Push subscription removed for user:', user.user.id);
-      // Note: push_subscriptions table needs to be created  
-      // await supabase.from('push_subscriptions').update({...})
+      const { error } = await supabase
+        .from('push_subscriptions')
+        .update({ 
+          is_active: false,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', user.user.id);
+
+      if (error) throw error;
+
+      console.log('✅ Push subscription removed from database');
     } catch (error) {
-      console.error('Failed to remove subscription:', error);
+      console.error('❌ Failed to remove subscription:', error);
+    }
+  }
+
+  /**
+   * Mute a thread (no notifications for this thread)
+   */
+  async muteThread(threadId: string): Promise<boolean> {
+    try {
+      if (this.mutedThreads.includes(threadId)) {
+        return true; // Already muted
+      }
+
+      this.mutedThreads.push(threadId);
+      await this.updateMutedThreads();
+      console.log('✅ Thread muted:', threadId);
+      return true;
+    } catch (error) {
+      console.error('❌ Failed to mute thread:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Unmute a thread
+   */
+  async unmuteThread(threadId: string): Promise<boolean> {
+    try {
+      this.mutedThreads = this.mutedThreads.filter(id => id !== threadId);
+      await this.updateMutedThreads();
+      console.log('✅ Thread unmuted:', threadId);
+      return true;
+    } catch (error) {
+      console.error('❌ Failed to unmute thread:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Check if a thread is muted
+   */
+  isThreadMuted(threadId: string): boolean {
+    return this.mutedThreads.includes(threadId);
+  }
+
+  /**
+   * Get all muted threads
+   */
+  getMutedThreads(): string[] {
+    return [...this.mutedThreads];
+  }
+
+  /**
+   * Update muted threads in database
+   */
+  private async updateMutedThreads(): Promise<void> {
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) return;
+
+      const { error } = await supabase
+        .from('push_subscriptions')
+        .update({ 
+          muted_threads: this.mutedThreads,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', user.user.id)
+        .eq('is_active', true);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('❌ Failed to update muted threads:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Check if we're in quiet hours
+   */
+  private async isQuietHours(): Promise<boolean> {
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) return false;
+
+      const { data: settings } = await supabase
+        .from('notification_settings')
+        .select('dnd_enabled, dnd_start_time, dnd_end_time')
+        .eq('user_id', user.user.id)
+        .maybeSingle();
+
+      if (!settings?.dnd_enabled || !settings.dnd_start_time || !settings.dnd_end_time) {
+        return false;
+      }
+
+      const now = new Date();
+      const currentTime = now.getHours() * 60 + now.getMinutes();
+
+      const [startHour, startMin] = settings.dnd_start_time.split(':').map(Number);
+      const [endHour, endMin] = settings.dnd_end_time.split(':').map(Number);
+      
+      const startTime = startHour * 60 + startMin;
+      const endTime = endHour * 60 + endMin;
+
+      // Handle overnight quiet hours (e.g., 22:00 to 07:00)
+      if (startTime > endTime) {
+        return currentTime >= startTime || currentTime < endTime;
+      }
+      
+      return currentTime >= startTime && currentTime < endTime;
+    } catch (error) {
+      console.error('❌ Failed to check quiet hours:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Check notification settings for a specific notification type
+   */
+  private async shouldNotify(notificationType: 'push_group_messages' | 'inapp_messages'): Promise<boolean> {
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) return false;
+
+      const { data: settings } = await supabase
+        .from('notification_settings')
+        .select(notificationType)
+        .eq('user_id', user.user.id)
+        .maybeSingle();
+
+      // Default to true if no settings found
+      return settings?.[notificationType] ?? true;
+    } catch (error) {
+      console.error('❌ Failed to check notification settings:', error);
+      return true; // Default to allowing notifications on error
     }
   }
 
@@ -236,6 +426,14 @@ class PushNotificationManager {
 export const pushNotificationManager = new PushNotificationManager();
 
 /**
+ * Thread muting exports for easy access
+ */
+export const muteThread = (threadId: string) => pushNotificationManager.muteThread(threadId);
+export const unmuteThread = (threadId: string) => pushNotificationManager.unmuteThread(threadId);
+export const isThreadMuted = (threadId: string) => pushNotificationManager.isThreadMuted(threadId);
+export const getMutedThreads = () => pushNotificationManager.getMutedThreads();
+
+/**
  * Initialize push notifications for the app
  */
 export async function initializePushNotifications(): Promise<void> {
@@ -265,7 +463,7 @@ export async function sendTestNotification(): Promise<void> {
 }
 
 /**
- * Notify user of new message
+ * Notify user of new message (respects settings and quiet hours)
  */
 export async function notifyNewMessage(
   senderName: string,
@@ -275,6 +473,25 @@ export async function notifyNewMessage(
 ): Promise<void> {
   // Don't show notification if page is visible and focused
   if (!document.hidden && document.hasFocus()) {
+    return;
+  }
+
+  // Check if thread is muted
+  if (pushNotificationManager.isThreadMuted(threadId)) {
+    console.log('🔇 Thread is muted, skipping notification');
+    return;
+  }
+
+  // Check if we're in quiet hours
+  if (await (pushNotificationManager as any).isQuietHours()) {
+    console.log('🌙 Quiet hours active, skipping notification');
+    return;
+  }
+
+  // Check user's notification preferences
+  const notificationType = isGroup ? 'push_group_messages' : 'push_group_messages';
+  if (!await (pushNotificationManager as any).shouldNotify(notificationType)) {
+    console.log('⚙️ Notifications disabled in settings');
     return;
   }
 
