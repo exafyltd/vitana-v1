@@ -32,7 +32,7 @@ export function BookmarkButton({ item, className }: BookmarkButtonProps) {
       size="icon"
       onClick={handleClick}
       className={cn(
-        "absolute top-2 right-2 z-10",
+        "absolute top-1 right-1 z-10",
         "transition-all duration-300",
         "hover:scale-110",
         isAnimating && "animate-bounce",
