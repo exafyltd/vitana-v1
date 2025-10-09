@@ -6,6 +6,11 @@ import { AdminActivityFeed } from "@/components/admin/AdminActivityFeed";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { useAdminAnalytics } from "@/hooks/useAdminAnalytics";
 import { useNavigate } from "react-router-dom";
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { adminNavigation } from "@/config/navigation";
 
 export default function AdminDashboard() {
   const { userAnalytics, systemHealth, tenantAnalytics, loading } = useAdminAnalytics();
@@ -48,13 +53,21 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <p className="text-muted-foreground">
-          Real-time system management and oversight center
-        </p>
-      </div>
+    <AppLayout>
+      <SEO 
+        title="Admin Dashboard | VITANA" 
+        description="Real-time system management and oversight center" 
+        canonical={window.location.href} 
+      />
+      <SubNavigation items={adminNavigation} />
+      
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <StandardHeader
+            title="Admin Dashboard"
+            description="Real-time system management and oversight center"
+            emoji="📊"
+          />
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -152,6 +165,8 @@ export default function AdminDashboard() {
           </div>
         </CardContent>
       </Card>
-    </div>
+        </div>
+      </div>
+    </AppLayout>
   );
 }
