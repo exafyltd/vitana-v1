@@ -271,6 +271,10 @@ function Timeline() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search activity..." />
           <UniversalCalendarButton />
+          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Manage History
+          </Button>
           <Button
             variant="ghost"
             size="icon"
@@ -280,10 +284,6 @@ function Timeline() {
             title="Refresh timeline"
           >
             <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          </Button>
-          <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Manage History
           </Button>
         </UtilityActionButton>
 

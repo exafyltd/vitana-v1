@@ -288,7 +288,6 @@ export default function Orders() {
             />
             <UniversalCalendarButton />
             <Button 
-              variant="outline" 
               size="sm"
               onClick={() => setMasterActionOpen(true)}
             >
@@ -296,12 +295,13 @@ export default function Orders() {
               Action
             </Button>
             <Button 
-              variant="outline" 
-              size="sm"
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
               onClick={() => window.location.reload()}
+              title="Refresh page"
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
+              <RefreshCw className="h-4 w-4" />
             </Button>
           </UtilityActionButton>
 

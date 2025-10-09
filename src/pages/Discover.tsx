@@ -201,29 +201,29 @@ export default withScreenId(function Discover() {
               emoji="🔍"
             />
 
-            {/* Utility Action Buttons */}
-            <UtilityActionButton>
-              <ExpandableSearchButton 
-                placeholder="Search marketplace products, services, and experiences…"
-              />
-              <UniversalCalendarButton />
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setMasterActionOpen(true)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Action
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => window.location.reload()}
-              >
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh
-              </Button>
-            </UtilityActionButton>
+          {/* Utility Action Buttons */}
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search marketplace products, services, and experiences…"
+            />
+            <UniversalCalendarButton />
+            <Button 
+              size="sm"
+              onClick={() => setMasterActionOpen(true)}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Action
+            </Button>
+            <Button 
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              onClick={() => window.location.reload()}
+              title="Refresh page"
+            >
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+          </UtilityActionButton>
 
           {/* Split Bar Navigation */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>

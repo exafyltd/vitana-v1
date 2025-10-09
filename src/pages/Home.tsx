@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search, Plus, Calendar } from "lucide-react";
+import { Search, Plus, Calendar, RefreshCw } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -290,6 +290,15 @@ export default function Home() {
           <Button size="sm" onClick={() => setMasterActionOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Action
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={() => window.location.reload()}
+            title="Refresh page"
+          >
+            <RefreshCw className="h-4 w-4" />
           </Button>
         </UtilityActionButton>
 

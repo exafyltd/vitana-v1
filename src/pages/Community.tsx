@@ -19,7 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Progress } from "@/components/ui/progress";
 import { useAutopilot } from '@/hooks/use-autopilot';
 import { withScreenId, SCREEN_IDS } from '@/lib/screen-id';
-import { Users, Calendar, Award, TrendingUp, Star, Trophy, Crown, Medal, Sparkles, Heart, MapPin, Clock, UserPlus, Search, Plus, Radio, Play, Music, Target, Brain, Apple, Droplets, Moon, Dumbbell } from 'lucide-react';
+import { Users, Calendar, Award, TrendingUp, Star, Trophy, Crown, Medal, Sparkles, Heart, MapPin, Clock, UserPlus, Search, Plus, Radio, Play, Music, Target, Brain, Apple, Droplets, Moon, Dumbbell, RefreshCw } from 'lucide-react';
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { communityNavigation } from "@/config/navigation";
 
@@ -607,6 +607,15 @@ export default withScreenId(function Community() {
             <Button size="sm" onClick={() => setCommunityFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Hub
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              onClick={() => window.location.reload()}
+              title="Refresh page"
+            >
+              <RefreshCw className="h-4 w-4" />
             </Button>
           </UtilityActionButton>
 
