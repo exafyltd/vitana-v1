@@ -6,17 +6,24 @@ export const useAppointmentNotifications = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const channel = supabase
-      .channel("appointment-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "provider_appointments",
-          filter: `user_id=eq.${supabase.auth.getUser().then(r => r.data.user?.id)}`,
-        },
-        async (payload) => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    
+    const setupSubscription = async () => {
+      // Get user ID first to avoid Promise in filter
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      channel = supabase
+        .channel("appointment-changes")
+        .on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "provider_appointments",
+            filter: `user_id=eq.${user.id}`,
+          },
+          async (payload) => {
           console.log("🆕 New appointment created:", payload.new);
           
           const appointment = payload.new as any;
@@ -46,7 +53,7 @@ export const useAppointmentNotifications = () => {
           event: "UPDATE",
           schema: "public",
           table: "provider_appointments",
-          filter: `user_id=eq.${supabase.auth.getUser().then(r => r.data.user?.id)}`,
+          filter: `user_id=eq.${user.id}`,
         },
         async (payload) => {
           console.log("📝 Appointment updated:", payload);
@@ -114,9 +121,14 @@ export const useAppointmentNotifications = () => {
         }
       )
       .subscribe();
+    };
+
+    setupSubscription();
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
     };
   }, [toast]);
 };

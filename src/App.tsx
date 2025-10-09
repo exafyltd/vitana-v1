@@ -146,6 +146,8 @@ import Bootstrap from "./pages/admin/Bootstrap";
 import Reports from "./pages/admin/Reports";
 import Audit from "./pages/admin/Audit";
 import UserManagement from "./pages/admin/UserManagement";
+import NotificationDashboard from "./pages/admin/NotificationDashboard";
+import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 
 const App = () => {
   // Initialize session ID for activity logging
@@ -157,6 +159,9 @@ const App = () => {
       console.log('[Session] Created new session:', sessionId);
     }
   }, []);
+
+  // Initialize appointment notifications globally
+  useAppointmentNotifications();
 
   return (
     <RTLProvider>
@@ -813,6 +818,13 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
                 <TenantManagement />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/notifications" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <NotificationDashboard />
               </ProtectedRoute>
             </AuthGuard>
           } />

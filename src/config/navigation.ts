@@ -81,6 +81,7 @@ export const adminNavigation = [
   { id: "overview", name: "Overview", path: "/admin" },
   { id: "user-management", name: "User Management", path: "/admin/user-management" },
   { id: "tenant-management", name: "Tenant Management", path: "/admin/tenant-management" },
+  { id: "notifications", name: "Notifications", path: "/admin/notifications" },
   { id: "bootstrap", name: "Admin Bootstrap", path: "/admin/bootstrap" },
   { id: "queue", name: "Queue & Check-In", path: "/admin/queue" },
   { id: "patient-records", name: "Patient Record Viewer", path: "/admin/patient-records" },
