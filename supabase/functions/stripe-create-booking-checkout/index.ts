@@ -13,13 +13,20 @@ serve(async (req) => {
   }
 
   try {
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? ""
-    );
-
     const authHeader = req.headers.get("Authorization")!;
     const token = authHeader.replace("Bearer ", "");
+    
+    // Create Supabase client with auth context for RLS
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+      {
+        global: {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      }
+    );
+
     const { data } = await supabaseClient.auth.getUser(token);
     const user = data.user;
 
@@ -114,10 +121,10 @@ serve(async (req) => {
       },
     });
 
-    // Update appointment with payment intent ID
+    // Update appointment with Stripe session ID
     await supabaseClient
       .from("provider_appointments")
-      .update({ payment_intent_id: session.id })
+      .update({ stripe_session_id: session.id })
       .eq("id", appointment.id);
 
     console.log("Stripe checkout session created:", session.id);

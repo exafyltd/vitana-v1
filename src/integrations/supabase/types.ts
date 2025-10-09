@@ -2287,12 +2287,14 @@ export type Database = {
           metadata: Json | null
           notes: string | null
           patient_notes: string | null
+          payment_intent_id: string | null
           provider_id: string
           provider_image_url: string | null
           provider_name: string
           provider_specialty: string | null
           start_time: string
           status: string
+          stripe_session_id: string | null
           total_amount: number | null
           updated_at: string
           user_id: string
@@ -2307,12 +2309,14 @@ export type Database = {
           metadata?: Json | null
           notes?: string | null
           patient_notes?: string | null
+          payment_intent_id?: string | null
           provider_id: string
           provider_image_url?: string | null
           provider_name: string
           provider_specialty?: string | null
           start_time: string
           status?: string
+          stripe_session_id?: string | null
           total_amount?: number | null
           updated_at?: string
           user_id: string
@@ -2327,12 +2331,14 @@ export type Database = {
           metadata?: Json | null
           notes?: string | null
           patient_notes?: string | null
+          payment_intent_id?: string | null
           provider_id?: string
           provider_image_url?: string | null
           provider_name?: string
           provider_specialty?: string | null
           start_time?: string
           status?: string
+          stripe_session_id?: string | null
           total_amount?: number | null
           updated_at?: string
           user_id?: string
