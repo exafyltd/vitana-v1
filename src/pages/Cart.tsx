@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,43 +5,16 @@ import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
-import { useCart } from "@/hooks/useCart";
+import { useLocalCart } from "@/hooks/useLocalCart";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const { cartItems, cartTotal, cartCount, updateQuantity, removeFromCart, clearCart, isLoading } = useCart();
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const { cartItems, cartTotal, cartCount, updateQuantity, removeFromCart, clearCart, checkout, isLoading } = useLocalCart();
 
   const handleCheckout = async () => {
-    setCheckoutLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: { items: cartItems }
-      });
-
-      if (error) throw error;
-
-      if (data?.url) {
-        window.open(data.url, '_blank');
-        toast({
-          title: "Redirecting to checkout",
-          description: "Opening Stripe checkout in a new tab...",
-        });
-      }
-    } catch (error: any) {
-      toast({
-        title: "Checkout error",
-        description: error.message || "Failed to create checkout session",
-        variant: "destructive",
-      });
-    } finally {
-      setCheckoutLoading(false);
-    }
+    await checkout();
   };
 
   return (
@@ -195,9 +167,9 @@ export default function Cart() {
                       className="w-full"
                       size="lg"
                       onClick={handleCheckout}
-                      disabled={checkoutLoading || isLoading}
+                      disabled={isLoading}
                     >
-                      {checkoutLoading ? "Processing..." : "Proceed to Checkout"}
+                      {isLoading ? "Processing..." : "Proceed to Checkout"}
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">

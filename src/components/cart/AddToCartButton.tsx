@@ -1,6 +1,6 @@
 import { ShoppingCart, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCart, CartItem } from "@/hooks/useCart";
+import { useLocalCart, CartItem } from "@/hooks/useLocalCart";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +26,7 @@ export function AddToCartButton({
   className,
   showLabel = true 
 }: AddToCartButtonProps) {
-  const { addToCart, cartItems } = useCart();
+  const { addToCart, cartItems } = useLocalCart();
   const [justAdded, setJustAdded] = useState(false);
 
   const isInCart = cartItems.some(

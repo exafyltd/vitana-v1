@@ -1,14 +1,14 @@
 import { ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/hooks/useCart";
+import { useLocalCart } from "@/hooks/useLocalCart";
 
 interface CartBadgeProps {
   onClick: () => void;
 }
 
 export function CartBadge({ onClick }: CartBadgeProps) {
-  const { cartCount } = useCart();
+  const { cartCount } = useLocalCart();
 
   if (cartCount === 0) return null;
 
