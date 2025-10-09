@@ -2276,6 +2276,105 @@ export type Database = {
           },
         ]
       }
+      provider_appointments: {
+        Row: {
+          appointment_type: string
+          created_at: string
+          duration_minutes: number | null
+          end_time: string | null
+          id: string
+          location: string | null
+          metadata: Json | null
+          notes: string | null
+          patient_notes: string | null
+          provider_id: string
+          provider_image_url: string | null
+          provider_name: string
+          provider_specialty: string | null
+          start_time: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointment_type: string
+          created_at?: string
+          duration_minutes?: number | null
+          end_time?: string | null
+          id?: string
+          location?: string | null
+          metadata?: Json | null
+          notes?: string | null
+          patient_notes?: string | null
+          provider_id: string
+          provider_image_url?: string | null
+          provider_name: string
+          provider_specialty?: string | null
+          start_time: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointment_type?: string
+          created_at?: string
+          duration_minutes?: number | null
+          end_time?: string | null
+          id?: string
+          location?: string | null
+          metadata?: Json | null
+          notes?: string | null
+          patient_notes?: string | null
+          provider_id?: string
+          provider_image_url?: string | null
+          provider_name?: string
+          provider_specialty?: string | null
+          start_time?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      provider_notes: {
+        Row: {
+          created_at: string
+          id: string
+          is_favorite: boolean | null
+          metadata: Json | null
+          note_text: string
+          provider_id: string
+          provider_name: string
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_favorite?: boolean | null
+          metadata?: Json | null
+          note_text: string
+          provider_id: string
+          provider_name: string
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_favorite?: boolean | null
+          metadata?: Json | null
+          note_text?: string
+          provider_id?: string
+          provider_name?: string
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       push_subscriptions: {
         Row: {
           auth_key: string

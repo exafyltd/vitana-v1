@@ -16,10 +16,16 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverBookActionPopup } from "@/components/discover/DiscoverBookActionPopup";
+import { VisitHistoryCard } from "@/components/discover/VisitHistoryCard";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { useBookmarks } from "@/hooks/useBookmarks";
-import { Bookmark } from "lucide-react";
+import { Bookmark, Calendar } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { differenceInDays, differenceInHours, format, addDays, subDays } from 'date-fns';
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
@@ -29,8 +35,42 @@ export default function DoctorsCoaches() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("find");
   const { getBookmarksByType, removeBookmark, isLoading: bookmarksLoading } = useBookmarks();
+  const queryClient = useQueryClient();
 
   const latestActions = getLatestActions(2);
+
+  // Fetch upcoming appointments
+  const { data: upcomingAppointments = [] } = useQuery({
+    queryKey: ['provider-appointments', 'upcoming'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('provider_appointments')
+        .select('*')
+        .eq('status', 'scheduled')
+        .gte('start_time', new Date().toISOString())
+        .order('start_time', { ascending: true });
+
+      if (error) throw error;
+      return data || [];
+    }
+  });
+
+  // Fetch visit history
+  const { data: visitHistory = [] } = useQuery({
+    queryKey: ['provider-appointments', 'history'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('provider_appointments')
+        .select('*')
+        .eq('status', 'completed')
+        .lt('start_time', new Date().toISOString())
+        .order('start_time', { ascending: false })
+        .limit(20);
+
+      if (error) throw error;
+      return data || [];
+    }
+  });
 
   const providers = [
     {
@@ -399,120 +439,218 @@ export default function DoctorsCoaches() {
             </SplitBarContent>
 
             <SplitBarContent value="myproviders" className="space-y-6">
-              {(() => {
-                const bookmarkedProviders = getBookmarksByType('provider');
-                
-                if (bookmarkedProviders.length === 0) {
-                  return (
-                    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                      <CardContent className="p-12 text-center">
-                        <div className="text-6xl mb-4">💛</div>
-                        <h3 className="text-xl font-semibold mb-2">No saved providers yet</h3>
-                        <p className="text-muted-foreground">
-                          Save your favorite providers and upcoming appointments will appear here
-                        </p>
-                      </CardContent>
-                    </Card>
-                  );
-                }
+              {/* Stats Dashboard */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <Card className="bg-blue-500/10 border-blue-500/20">
+                  <CardContent className="p-4 text-center">
+                    <div className="text-3xl font-bold text-blue-600">{upcomingAppointments.length}</div>
+                    <div className="text-sm text-muted-foreground">Upcoming</div>
+                  </CardContent>
+                </Card>
+                <Card className="bg-green-500/10 border-green-500/20">
+                  <CardContent className="p-4 text-center">
+                    <div className="text-3xl font-bold text-green-600">{visitHistory.length}</div>
+                    <div className="text-sm text-muted-foreground">Past Visits</div>
+                  </CardContent>
+                </Card>
+                <Card className="bg-purple-500/10 border-purple-500/20">
+                  <CardContent className="p-4 text-center">
+                    <div className="text-3xl font-bold text-purple-600">{getBookmarksByType('provider').length}</div>
+                    <div className="text-sm text-muted-foreground">Bookmarked</div>
+                  </CardContent>
+                </Card>
+              </div>
 
-                return (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {bookmarkedProviders.map((bookmark) => {
-                      const provider = providers.find(p => p.id.toString() === bookmark.item_id);
-                      
-                      if (!provider) return null;
+              <Tabs defaultValue="bookmarked" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="bookmarked">Bookmarked</TabsTrigger>
+                  <TabsTrigger value="upcoming">Upcoming ({upcomingAppointments.length})</TabsTrigger>
+                  <TabsTrigger value="history">History</TabsTrigger>
+                </TabsList>
 
+                {/* Bookmarked Tab */}
+                <TabsContent value="bookmarked" className="space-y-4">
+                  {(() => {
+                    const bookmarkedProviders = getBookmarksByType('provider');
+                    
+                    if (bookmarkedProviders.length === 0) {
                       return (
-                        <Card key={bookmark.id} className="bg-white/80 backdrop-blur-sm border-white/20 overflow-hidden hover:shadow-lg transition-shadow relative">
-                          <BookmarkButton
-                            item={{
-                              item_type: 'provider',
-                              item_id: provider.id.toString(),
-                              item_name: provider.name,
-                              item_image_url: provider.image,
-                              item_metadata: {
-                                specialty: provider.specialty,
-                                rating: provider.rating,
-                                location: provider.location
-                              }
-                            }}
-                          />
-                          <CardContent className="p-6">
-                            <div className="flex items-start gap-4 mb-4">
-                              <div className="relative">
-                                <img 
-                                  src={provider.image} 
-                                  alt={provider.name}
-                                  className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
-                                />
-                                {provider.badges.includes("Verified") && (
-                                  <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1">
-                                    <Verified className="h-3 w-3 text-white" />
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-semibold text-lg mb-1 truncate">{provider.name}</h3>
-                                <p className="text-sm text-muted-foreground mb-2">{provider.title}</p>
-                                <div className="flex items-center gap-2 flex-wrap mb-2">
-                                  {provider.badges.map((badge) => (
-                                    <Badge 
-                                      key={badge} 
-                                      variant={badge === "Top Rated" ? "default" : "secondary"}
-                                      className="text-xs"
-                                    >
-                                      {badge === "Top Rated" && <Award className="h-3 w-3 mr-1" />}
-                                      {badge === "Trending" && <TrendingUp className="h-3 w-3 mr-1" />}
-                                      {badge === "Verified" && <Verified className="h-3 w-3 mr-1" />}
-                                      {badge}
-                                    </Badge>
-                                  ))}
-                                </div>
-                                <div className="flex items-center gap-1 text-sm">
-                                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                  <span className="font-semibold">{provider.rating}</span>
-                                  <span className="text-muted-foreground">({provider.reviews})</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="space-y-2 mb-4">
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <MapPin className="h-4 w-4" />
-                                <span>{provider.location}</span>
-                              </div>
-                              <div className="flex items-center gap-2 text-sm">
-                                <Clock className="h-4 w-4 text-green-500" />
-                                <span className="text-green-600">Available {provider.nextAvailable}</span>
-                              </div>
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Users className="h-4 w-4" />
-                                <span>{provider.bookings.toLocaleString()} bookings</span>
-                              </div>
-                            </div>
-                            <div className="flex gap-2">
-                              <Button 
-                                size="sm" 
-                                className="flex-1"
-                                onClick={() => console.log('Book', provider.name)}
-                              >
-                                Book Now
-                              </Button>
-                              <Button 
-                                size="sm" 
-                                variant="outline"
-                                onClick={() => removeBookmark('provider', provider.id.toString())}
-                              >
-                                Remove
-                              </Button>
-                            </div>
+                        <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                          <CardContent className="p-12 text-center">
+                            <div className="text-6xl mb-4">💛</div>
+                            <h3 className="text-xl font-semibold mb-2">No saved providers yet</h3>
+                            <p className="text-muted-foreground">
+                              Save your favorite providers to access them quickly
+                            </p>
                           </CardContent>
                         </Card>
                       );
-                    })}
-                  </div>
-                );
-              })()}
+                    }
+
+                    return (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {bookmarkedProviders.map((bookmark) => {
+                          const provider = providers.find(p => p.id.toString() === bookmark.item_id);
+                          if (!provider) return null;
+
+                          return (
+                            <Card key={bookmark.id} className="bg-white/80 backdrop-blur-sm border-white/20 overflow-hidden hover:shadow-lg transition-shadow relative">
+                              <BookmarkButton
+                                item={{
+                                  item_type: 'provider',
+                                  item_id: provider.id.toString(),
+                                  item_name: provider.name,
+                                  item_image_url: provider.image,
+                                  item_metadata: {
+                                    specialty: provider.specialty,
+                                    rating: provider.rating,
+                                    location: provider.location
+                                  }
+                                }}
+                              />
+                              <CardContent className="p-6">
+                                <div className="flex items-start gap-4 mb-4">
+                                  <img 
+                                    src={provider.image} 
+                                    alt={provider.name}
+                                    className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
+                                  />
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="font-semibold text-lg mb-1 truncate">{provider.name}</h3>
+                                    <p className="text-sm text-muted-foreground mb-2">{provider.title}</p>
+                                    <div className="flex items-center gap-1 text-sm">
+                                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                      <span className="font-semibold">{provider.rating}</span>
+                                      <span className="text-muted-foreground">({provider.reviews})</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="space-y-2 mb-4">
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <MapPin className="h-4 w-4" />
+                                    <span>{provider.location}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <Clock className="h-4 w-4 text-green-500" />
+                                    <span className="text-green-600">Available {provider.nextAvailable}</span>
+                                  </div>
+                                </div>
+                                <div className="flex gap-2">
+                                  <Button size="sm" className="flex-1">Book Now</Button>
+                                  <Button size="sm" variant="outline" onClick={() => removeBookmark('provider', provider.id.toString())}>
+                                    Remove
+                                  </Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
+                </TabsContent>
+
+                {/* Upcoming Tab */}
+                <TabsContent value="upcoming" className="space-y-4">
+                  {upcomingAppointments.length === 0 ? (
+                    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                      <CardContent className="p-12 text-center">
+                        <div className="text-6xl mb-4">📅</div>
+                        <h3 className="text-xl font-semibold mb-2">No upcoming appointments</h3>
+                        <p className="text-muted-foreground">
+                          Book an appointment with a provider to see it here
+                        </p>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {upcomingAppointments.map((appointment: any) => {
+                        const now = new Date();
+                        const appointmentDate = new Date(appointment.start_time);
+                        const daysUntil = differenceInDays(appointmentDate, now);
+                        const hoursUntil = differenceInHours(appointmentDate, now);
+
+                        let countdownBadge;
+                        if (daysUntil > 7) {
+                          countdownBadge = <Badge variant="outline">{format(appointmentDate, 'MMM dd, yyyy')}</Badge>;
+                        } else if (daysUntil > 0) {
+                          countdownBadge = <Badge className="bg-blue-500">{daysUntil} days away</Badge>;
+                        } else if (hoursUntil > 0) {
+                          countdownBadge = <Badge className="bg-orange-500">Today - {hoursUntil}h away</Badge>;
+                        } else {
+                          countdownBadge = <Badge className="bg-red-500">Starting soon!</Badge>;
+                        }
+
+                        return (
+                          <Card key={appointment.id} className="bg-white/80 backdrop-blur-sm border-white/20">
+                            <CardContent className="p-6">
+                              <div className="flex justify-between items-start mb-4">
+                                <div className="flex gap-4">
+                                  <img
+                                    src={appointment.provider_image_url || "/placeholder.svg"}
+                                    alt={appointment.provider_name}
+                                    className="w-16 h-16 rounded-full object-cover"
+                                  />
+                                  <div>
+                                    <h3 className="font-semibold text-lg">{appointment.provider_name}</h3>
+                                    <p className="text-sm text-muted-foreground">{appointment.provider_specialty}</p>
+                                    {countdownBadge}
+                                  </div>
+                                </div>
+                                <Badge variant="outline">{appointment.appointment_type}</Badge>
+                              </div>
+
+                              <div className="space-y-2 mb-4">
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Calendar className="h-4 w-4" />
+                                  <span>{format(appointmentDate, 'EEEE, MMMM dd, yyyy')}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Clock className="h-4 w-4" />
+                                  <span>{format(appointmentDate, 'h:mm a')} - {appointment.duration_minutes} min</span>
+                                </div>
+                                {appointment.location && (
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <MapPin className="h-4 w-4" />
+                                    <span>{appointment.location}</span>
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="flex gap-2">
+                                <Button size="sm" variant="outline">Reschedule</Button>
+                                <Button size="sm" variant="outline">Cancel</Button>
+                                <Button size="sm" variant="outline">Add Notes</Button>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  )}
+                </TabsContent>
+
+                {/* History Tab */}
+                <TabsContent value="history" className="space-y-4">
+                  {visitHistory.length === 0 ? (
+                    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                      <CardContent className="p-12 text-center">
+                        <div className="text-6xl mb-4">📋</div>
+                        <h3 className="text-xl font-semibold mb-2">No visit history yet</h3>
+                        <p className="text-muted-foreground">
+                          Your completed appointments will appear here
+                        </p>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <div className="space-y-4">
+                      {visitHistory.map((visit: any) => (
+                        <VisitHistoryCard key={visit.id} visit={visit} />
+                      ))}
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
             </SplitBarContent>
           </SplitBar>
         </div>
