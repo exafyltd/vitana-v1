@@ -124,7 +124,7 @@ export default withScreenId(function Discover() {
       icon: TestTube2,
       description: 'Biomarker analysis and health diagnostics',
       count: 89,
-      path: '/discover/browse'
+      path: '/health/services-hub'
     },
     {
       id: 'doctors',
