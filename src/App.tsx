@@ -71,6 +71,7 @@ import AIFeed from "./pages/home/AIFeed";
 // Discover sub-pages
 import WellnessServices from "./pages/discover/WellnessServices";
 import DoctorsCoaches from "./pages/discover/DoctorsCoaches";
+import ProviderProfile from "./pages/discover/ProviderProfile";
 import DealsOffers from "./pages/discover/DealsOffers";
 import Orders from "./pages/discover/Orders";
 
@@ -239,6 +240,11 @@ const App = () => {
           <Route path="/discover/doctors-coaches" element={
             <AuthGuard>
               <DoctorsCoaches />
+            </AuthGuard>
+          } />
+          <Route path="/discover/provider/:id" element={
+            <AuthGuard>
+              <ProviderProfile />
             </AuthGuard>
           } />
           <Route path="/discover/deals-offers" element={

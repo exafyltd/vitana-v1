@@ -45,13 +45,15 @@ interface BookingPaymentFlowProps {
     credits: number;
     cash: number;
   };
+  onBookingComplete?: (bookingDetails: any) => Promise<void>;
 }
 
 export default function BookingPaymentFlow({ 
   isOpen, 
   onClose, 
   booking,
-  userBalance = { credits: 2450, cash: 150 }
+  userBalance = { credits: 2450, cash: 150 },
+  onBookingComplete
 }: BookingPaymentFlowProps) {
   const [paymentMethod, setPaymentMethod] = useState<'credits' | 'cash'>('credits');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -110,6 +112,15 @@ export default function BookingPaymentFlow({
         'service_booking',
         confirmationData
       );
+
+      // Call onBookingComplete if provided
+      if (onBookingComplete) {
+        await onBookingComplete({
+          type: 'consultation',
+          dateTime: new Date().toISOString(),
+          ...confirmationData
+        });
+      }
 
       toast({
         title: "Booking Confirmed! 🎉",

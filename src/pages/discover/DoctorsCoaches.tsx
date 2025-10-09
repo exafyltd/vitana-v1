@@ -26,9 +26,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { differenceInDays, differenceInHours, format, addDays, subDays } from 'date-fns';
+import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
+import { useToast } from "@/hooks/use-toast";
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -36,6 +39,8 @@ export default function DoctorsCoaches() {
   const [activeTab, setActiveTab] = useState("find");
   const { getBookmarksByType, removeBookmark, isLoading: bookmarksLoading } = useBookmarks();
   const queryClient = useQueryClient();
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [selectedProvider, setSelectedProvider] = useState<typeof providers[0] | null>(null);
 
   const latestActions = getLatestActions(2);
 
@@ -71,6 +76,61 @@ export default function DoctorsCoaches() {
       return data || [];
     }
   });
+
+  // Mutation for saving appointments
+  const saveAppointmentMutation = useMutation({
+    mutationFn: async (appointmentData: any) => {
+      const { data, error } = await supabase
+        .from('provider_appointments')
+        .insert([appointmentData])
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['provider-appointments', 'upcoming'] });
+      toast({
+        title: "Appointment Booked! 🎉",
+        description: "Your appointment has been confirmed"
+      });
+    },
+    onError: (error) => {
+      console.error('Error saving appointment:', error);
+      toast({
+        title: "Booking Failed",
+        description: "Please try again",
+        variant: "destructive"
+      });
+    }
+  });
+
+  // Booking handlers
+  const handleBookNow = (provider: typeof providers[0]) => {
+    setSelectedProvider(provider);
+    setBookingOpen(true);
+  };
+
+  const handleBookingComplete = async (bookingDetails: any) => {
+    if (!selectedProvider) return;
+    
+    const appointmentData = {
+      provider_id: selectedProvider.id.toString(),
+      provider_name: selectedProvider.name,
+      provider_specialty: selectedProvider.specialty,
+      provider_image_url: selectedProvider.image,
+      appointment_type: 'consultation',
+      status: 'scheduled',
+      start_time: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      duration_minutes: 30,
+      location: selectedProvider.location,
+    };
+    
+    await saveAppointmentMutation.mutateAsync(appointmentData);
+    setBookingOpen(false);
+    setSelectedProvider(null);
+  };
 
   const providers = [
     {
@@ -369,8 +429,21 @@ export default function DoctorsCoaches() {
                   </div>
 
                   <div className="flex gap-2 mt-auto">
-                    <Button size="sm" className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9">View Profile</Button>
-                    <Button size="sm" variant="default" className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9">Book Now</Button>
+                        <Button 
+                          size="sm" 
+                          className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9"
+                          onClick={() => navigate(`/discover/provider/${provider.id}`)}
+                        >
+                          View Profile
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="default" 
+                          className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9"
+                          onClick={() => handleBookNow(provider)}
+                        >
+                          Book Now
+                        </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -429,7 +502,13 @@ export default function DoctorsCoaches() {
                               <span className="text-xs text-green-600">Available {provider.nextAvailable}</span>
                             </div>
                           </div>
-                          <Button size="sm" className="w-full text-xs">Book Now</Button>
+                    <Button 
+                      size="sm" 
+                      className="w-full text-xs"
+                      onClick={() => handleBookNow(provider)}
+                    >
+                      Book Now
+                    </Button>
                         </CardContent>
                       </Card>
                     ))}
@@ -664,6 +743,37 @@ export default function DoctorsCoaches() {
         open={masterActionOpen}
         onOpenChange={setMasterActionOpen}
       />
+
+      {/* Booking Flow */}
+      {selectedProvider && (
+        <BookingPaymentFlow
+          isOpen={bookingOpen}
+          onClose={() => {
+            setBookingOpen(false);
+            setSelectedProvider(null);
+          }}
+          booking={{
+            id: selectedProvider.id.toString(),
+            title: `${selectedProvider.title} Session`,
+            description: `Book a session with ${selectedProvider.name}`,
+            price: parseInt(selectedProvider.priceRange.split('-')[0].replace(/\D/g, '')),
+            currency: 'usd',
+            provider: {
+              name: selectedProvider.name,
+              avatar: selectedProvider.image,
+              rating: selectedProvider.rating
+            },
+            schedule: {
+              date: 'Select Date',
+              time: 'Select Time',
+              duration: '30 min'
+            },
+            location: selectedProvider.location,
+            type: 'service'
+          }}
+          onBookingComplete={handleBookingComplete}
+        />
+      )}
     </AppLayout>
   );
 }
