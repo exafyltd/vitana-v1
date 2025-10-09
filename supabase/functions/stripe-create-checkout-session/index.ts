@@ -52,21 +52,28 @@ serve(async (req) => {
     }
 
     // Prepare line items for Stripe
-    const lineItems = cartItems.map(item => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.item_name,
-          images: item.item_image_url ? [item.item_image_url] : [],
-          metadata: {
-            item_type: item.item_type,
-            item_id: item.item_id,
+    const lineItems = cartItems.map(item => {
+      // Only include images that are valid absolute URLs
+      const isValidUrl = item.item_image_url && 
+        (item.item_image_url.startsWith('http://') || item.item_image_url.startsWith('https://'));
+      
+      return {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item.item_name,
+            // Only include images array if we have a valid absolute URL
+            ...(isValidUrl && { images: [item.item_image_url] }),
+            metadata: {
+              item_type: item.item_type,
+              item_id: item.item_id,
+            },
           },
+          unit_amount: Math.round(Number(item.item_price) * 100), // Convert to cents
         },
-        unit_amount: Math.round(Number(item.item_price) * 100), // Convert to cents
-      },
-      quantity: item.quantity,
-    }));
+        quantity: item.quantity,
+      };
+    });
 
     // Calculate total
     const totalAmount = cartItems.reduce(
