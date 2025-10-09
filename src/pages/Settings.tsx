@@ -556,7 +556,10 @@ function Settings() {
         </div>
       </div>
 
-      <QuickSetupPopup />
+      <QuickSetupPopup 
+        isOpen={actionPopupOpen}
+        onClose={() => setActionPopupOpen(false)}
+      />
     </AppLayout>
   );
 }
