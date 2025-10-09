@@ -151,39 +151,94 @@ export function useMessageNotifications() {
   }, [user]);
 }
 
+export interface NotificationSettings {
+  id?: string;
+  user_id?: string;
+  push_enabled: boolean;
+  dnd_enabled: boolean;
+  dnd_start_time: string | null;
+  dnd_end_time: string | null;
+  email_events: boolean;
+  email_appointments: boolean;
+  email_ai_tips: boolean;
+  email_weekly_reports: boolean;
+  push_group_messages: boolean;
+  push_goal_reminders: boolean;
+  push_friend_activity: boolean;
+  push_breaking_news: boolean;
+  inapp_messages: boolean;
+  inapp_system: boolean;
+  inapp_achievements: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
 /**
- * Hook to handle notification settings
+ * Hook to handle notification settings with database integration
  */
 export function useNotificationSettings() {
   const { user } = useAuth();
 
-  const updateNotificationSettings = async (settings: {
-    push_enabled?: boolean;
-    dnd_enabled?: boolean;
-    dnd_start_time?: string;
-    dnd_end_time?: string;
-  }) => {
-    if (!user) return;
+  const updateNotificationSettings = async (settings: Partial<NotificationSettings>) => {
+    if (!user) throw new Error('User not authenticated');
 
     try {
-      // Note: notification_settings table needs to be created
-      console.log('Notification settings update:', settings);
-      // await supabase.from('notification_settings').upsert({...})
+      const { error } = await supabase
+        .from('notification_settings')
+        .upsert({
+          user_id: user.id,
+          ...settings,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id'
+        });
+
+      if (error) throw error;
+      
+      console.log('✅ Notification settings updated successfully');
+      return true;
     } catch (error) {
-      console.error('Error updating notification settings:', error);
+      console.error('❌ Error updating notification settings:', error);
       throw error;
     }
   };
 
-  const getNotificationSettings = async () => {
+  const getNotificationSettings = async (): Promise<NotificationSettings | null> => {
     if (!user) return null;
 
     try {
-      // Note: notification_settings table needs to be created
-      console.log('Getting notification settings for user:', user.id);
-      return null; // await supabase.from('notification_settings').select(...)
+      const { data, error } = await supabase
+        .from('notification_settings')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      // Return data with defaults if no settings exist yet
+      if (!data) {
+        return {
+          push_enabled: false,
+          dnd_enabled: false,
+          dnd_start_time: null,
+          dnd_end_time: null,
+          email_events: true,
+          email_appointments: true,
+          email_ai_tips: true,
+          email_weekly_reports: false,
+          push_group_messages: true,
+          push_goal_reminders: true,
+          push_friend_activity: false,
+          push_breaking_news: false,
+          inapp_messages: true,
+          inapp_system: true,
+          inapp_achievements: true,
+        };
+      }
+
+      return data as NotificationSettings;
     } catch (error) {
-      console.error('Error getting notification settings:', error);
+      console.error('❌ Error getting notification settings:', error);
       return null;
     }
   };

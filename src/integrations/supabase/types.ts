@@ -1990,8 +1990,19 @@ export type Database = {
           dnd_enabled: boolean
           dnd_end_time: string | null
           dnd_start_time: string | null
+          email_ai_tips: boolean | null
+          email_appointments: boolean | null
+          email_events: boolean | null
+          email_weekly_reports: boolean | null
           id: string
+          inapp_achievements: boolean | null
+          inapp_messages: boolean | null
+          inapp_system: boolean | null
+          push_breaking_news: boolean | null
           push_enabled: boolean
+          push_friend_activity: boolean | null
+          push_goal_reminders: boolean | null
+          push_group_messages: boolean | null
           updated_at: string
           user_id: string
         }
@@ -2000,8 +2011,19 @@ export type Database = {
           dnd_enabled?: boolean
           dnd_end_time?: string | null
           dnd_start_time?: string | null
+          email_ai_tips?: boolean | null
+          email_appointments?: boolean | null
+          email_events?: boolean | null
+          email_weekly_reports?: boolean | null
           id?: string
+          inapp_achievements?: boolean | null
+          inapp_messages?: boolean | null
+          inapp_system?: boolean | null
+          push_breaking_news?: boolean | null
           push_enabled?: boolean
+          push_friend_activity?: boolean | null
+          push_goal_reminders?: boolean | null
+          push_group_messages?: boolean | null
           updated_at?: string
           user_id: string
         }
@@ -2010,8 +2032,19 @@ export type Database = {
           dnd_enabled?: boolean
           dnd_end_time?: string | null
           dnd_start_time?: string | null
+          email_ai_tips?: boolean | null
+          email_appointments?: boolean | null
+          email_events?: boolean | null
+          email_weekly_reports?: boolean | null
           id?: string
+          inapp_achievements?: boolean | null
+          inapp_messages?: boolean | null
+          inapp_system?: boolean | null
+          push_breaking_news?: boolean | null
           push_enabled?: boolean
+          push_friend_activity?: boolean | null
+          push_goal_reminders?: boolean | null
+          push_group_messages?: boolean | null
           updated_at?: string
           user_id?: string
         }
