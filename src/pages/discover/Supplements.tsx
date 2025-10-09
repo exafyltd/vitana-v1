@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+import { useBookmarks } from "@/hooks/useBookmarks";
 import { Star, Search, Filter, Plane, Plus, RefreshCw, Brain, Sparkles } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -41,6 +43,7 @@ interface Supplement {
 export default function Supplements() {
   const navigate = useNavigate();
   const { pendingCount } = useAutopilot();
+  const { getBookmarksByType } = useBookmarks();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("browse");
@@ -457,7 +460,22 @@ export default function Supplements() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredSupplements.map((supplement) => (
-                <Card key={supplement.id} className="group hover:shadow-lg transition-all duration-300 flex flex-col bg-white/80 backdrop-blur-sm border-white/20">
+                <Card key={supplement.id} className="relative group hover:shadow-lg transition-all duration-300 flex flex-col bg-white/80 backdrop-blur-sm border-white/20">
+                  <BookmarkButton
+                    item={{
+                      item_type: 'supplement',
+                      item_id: supplement.id,
+                      item_name: supplement.name,
+                      item_image_url: supplement.image_url || undefined,
+                      item_metadata: {
+                        brand: supplement.brand,
+                        category: supplement.category,
+                        price: supplement.price,
+                        benefits: supplement.benefits,
+                        rating: supplement.rating,
+                      },
+                    }}
+                  />
                   <div className="relative">
                     <img 
                       src={supplement.image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png'} 
@@ -592,15 +610,116 @@ export default function Supplements() {
             </SplitBarContent>
 
             <SplitBarContent value="stack" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                <CardContent className="p-12 text-center">
-                  <div className="text-6xl mb-4">💛</div>
-                  <h3 className="text-xl font-semibold mb-2">No saved supplements yet</h3>
-                  <p className="text-muted-foreground">
-                    Save your favorite supplements and track your supplement stack
-                  </p>
-                </CardContent>
-              </Card>
+              {(() => {
+                const bookmarkedSupplements = getBookmarksByType('supplement');
+                const bookmarkedSupplementsList = supplements.filter(supp => 
+                  bookmarkedSupplements.some(b => b.item_id === supp.id)
+                );
+
+                if (bookmarkedSupplementsList.length === 0) {
+                  return (
+                    <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                      <CardContent className="p-12 text-center">
+                        <div className="text-6xl mb-4">💛</div>
+                        <h3 className="text-xl font-semibold mb-2">No saved supplements yet</h3>
+                        <p className="text-muted-foreground">
+                          Save your favorite supplements and track your supplement stack
+                        </p>
+                      </CardContent>
+                    </Card>
+                  );
+                }
+
+                return (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {bookmarkedSupplementsList.map((supplement) => (
+                      <Card key={supplement.id} className="relative group hover:shadow-lg transition-all duration-300 flex flex-col bg-white/80 backdrop-blur-sm border-white/20">
+                        <BookmarkButton
+                          item={{
+                            item_type: 'supplement',
+                            item_id: supplement.id,
+                            item_name: supplement.name,
+                            item_image_url: supplement.image_url || undefined,
+                            item_metadata: {
+                              brand: supplement.brand,
+                              category: supplement.category,
+                              price: supplement.price,
+                              benefits: supplement.benefits,
+                              rating: supplement.rating,
+                            },
+                          }}
+                        />
+                        <div className="relative">
+                          <img 
+                            src={supplement.image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png'} 
+                            alt={supplement.name}
+                            className="w-full h-48 object-cover rounded-t-lg"
+                          />
+                          {!supplement.in_stock && (
+                            <Badge className="absolute top-2 right-2 bg-red-500">Out of Stock</Badge>
+                          )}
+                        </div>
+                        
+                        <CardContent className="flex-1 flex flex-col p-4">
+                          <div className="mb-2">
+                            <Badge variant="secondary" className="text-xs mb-2">{supplement.category}</Badge>
+                            <h3 className="font-semibold text-base line-clamp-2 group-hover:text-primary transition-colors">
+                              {supplement.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">{supplement.brand}</p>
+                          </div>
+                          
+                          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{supplement.description}</p>
+                          
+                          {supplement.benefits && supplement.benefits.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-3">
+                              {supplement.benefits.slice(0, 3).map((benefit, idx) => (
+                                <Badge key={idx} variant="outline" className="text-xs">
+                                  {benefit}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                          
+                          <div className="flex items-center gap-1 mb-3">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < Math.floor(supplement.rating || 0)
+                                    ? "fill-yellow-400 text-yellow-400"
+                                    : "fill-gray-200 text-gray-200"
+                                }`}
+                              />
+                            ))}
+                            <span className="text-sm text-muted-foreground ml-1">
+                              {supplement.rating} ({supplement.review_count?.toLocaleString()})
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center justify-between mt-auto">
+                            <span className="text-xl font-bold text-primary">${supplement.price}</span>
+                            <AddToCartButton
+                              item={{
+                                item_type: 'product',
+                                item_id: supplement.id,
+                                item_name: supplement.name,
+                                item_price: supplement.price,
+                                item_image_url: supplement.image_url,
+                                item_metadata: {
+                                  brand: supplement.brand,
+                                  category: supplement.category,
+                                },
+                              }}
+                              size="sm"
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                );
+              })()}
             </SplitBarContent>
           </SplitBar>
         </div>

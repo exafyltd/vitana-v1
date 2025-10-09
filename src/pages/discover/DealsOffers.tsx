@@ -5,6 +5,8 @@ import { discoverNavigation } from "@/config/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+import { useBookmarks } from "@/hooks/useBookmarks";
 import { Timer, Flame, Percent, Package, Star, MapPin, Clock, TrendingDown, TrendingUp, Heart, Brain, Target, Activity, Sparkles, Users, Plane, Plus, RefreshCw } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
@@ -21,6 +23,7 @@ import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/comp
 export default function DealsOffers() {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { getBookmarksByType } = useBookmarks();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -428,7 +431,22 @@ export default function DealsOffers() {
             <SplitBarContent value="flash" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {flashDeals.map((deal) => (
-                  <Card key={deal.id} className="group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                  <Card key={deal.id} className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                    <BookmarkButton
+                      item={{
+                        item_type: 'deal',
+                        item_id: deal.id.toString(),
+                        item_name: deal.title,
+                        item_image_url: deal.image,
+                        item_metadata: {
+                          provider: deal.provider,
+                          price: deal.price,
+                          originalPrice: deal.originalPrice,
+                          discount: deal.discount,
+                          category: deal.category,
+                        },
+                      }}
+                    />
                     <div className="relative">
                       <img
                         src={deal.image}
@@ -523,7 +541,21 @@ export default function DealsOffers() {
             <SplitBarContent value="trending" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {trendingServices.map((service) => (
-                  <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                  <Card key={service.id} className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                    <BookmarkButton
+                      item={{
+                        item_type: 'wellness_service',
+                        item_id: service.id.toString(),
+                        item_name: service.title,
+                        item_image_url: service.image,
+                        item_metadata: {
+                          provider: service.provider,
+                          price: service.price,
+                          location: service.location,
+                          description: service.description,
+                        },
+                      }}
+                    />
                     <div className="relative">
                       <img
                         src={service.image}
@@ -611,7 +643,21 @@ export default function DealsOffers() {
             <SplitBarContent value="ai" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {personalizedMatches.map((match) => (
-                  <Card key={match.id} className="group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col border-purple-200">
+                  <Card key={match.id} className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col border-purple-200">
+                    <BookmarkButton
+                      item={{
+                        item_type: 'wellness_service',
+                        item_id: match.id.toString(),
+                        item_name: match.title,
+                        item_image_url: match.image,
+                        item_metadata: {
+                          provider: match.provider,
+                          price: match.price,
+                          match: match.match,
+                          reason: match.reason,
+                        },
+                      }}
+                    />
                     <div className="relative">
                       <img
                         src={match.image}
@@ -694,7 +740,20 @@ export default function DealsOffers() {
             <SplitBarContent value="saved" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {savedProducts.map((product) => (
-                  <Card key={product.id} className="group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                  <Card key={product.id} className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                    <BookmarkButton
+                      item={{
+                        item_type: 'deal',
+                        item_id: product.id.toString(),
+                        item_name: product.title,
+                        item_image_url: product.image,
+                        item_metadata: {
+                          brand: product.brand,
+                          price: product.price,
+                          priceChange: product.priceChange,
+                        },
+                      }}
+                    />
                     <div className="relative">
                       <img
                         src={product.image}
@@ -707,13 +766,6 @@ export default function DealsOffers() {
                           Price Drop!
                         </div>
                       )}
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="absolute top-2 right-2 bg-white/90 hover:bg-white h-8 w-8"
-                      >
-                        <Heart className="h-4 w-4 fill-pink-500 text-pink-500" />
-                      </Button>
                     </div>
                     
                     <CardContent className="flex-1 flex flex-col p-4 space-y-3">
