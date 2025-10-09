@@ -24,7 +24,7 @@ import { getRoleNavigation } from "@/config/role-navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
-import { useLocalCart } from "@/hooks/useLocalCart";
+import { useCart } from "@/hooks/useCart";
 import { CartSidebar } from "@/components/cart/CartSidebar";
 
 // Dynamic navigation based on user role - removed static sidebar categories
@@ -61,7 +61,7 @@ function AppSidebar({
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { signOut, user } = useAuth();
-  const { cartCount } = useLocalCart();
+  const { cartCount } = useCart();
 
   // Get dynamic navigation based on current role
   const sidebarCategories = getRoleNavigation(currentRole);

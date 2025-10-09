@@ -1,6 +1,9 @@
 import { ShoppingCart, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLocalCart, CartItem } from "@/hooks/useLocalCart";
+import { useCart, CartItem } from "@/hooks/useCart";
+import { useAuth } from "@/context/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +29,10 @@ export function AddToCartButton({
   className,
   showLabel = true 
 }: AddToCartButtonProps) {
-  const { addToCart, cartItems } = useLocalCart();
+  const { addToCart, cartItems } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [justAdded, setJustAdded] = useState(false);
 
   const isInCart = cartItems.some(
@@ -35,6 +41,17 @@ export function AddToCartButton({
 
   const handleClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to add items to your cart",
+        variant: "destructive",
+      });
+      navigate('/auth');
+      return;
+    }
+    
     await addToCart(item);
     
     setJustAdded(true);

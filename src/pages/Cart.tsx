@@ -5,13 +5,22 @@ import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
-import { useLocalCart } from "@/hooks/useLocalCart";
+import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/context/AuthProvider";
+import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { cartItems, cartTotal, cartCount, updateQuantity, removeFromCart, clearCart, checkout, isLoading } = useLocalCart();
+  const { user, loading } = useAuth();
+  const { cartItems, cartTotal, cartCount, updateQuantity, removeFromCart, clearCart, checkout, isLoading } = useCart();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
 
   const handleCheckout = async () => {
     await checkout();
