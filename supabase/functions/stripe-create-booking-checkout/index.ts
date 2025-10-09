@@ -49,6 +49,24 @@ serve(async (req) => {
 
     console.log("Creating booking checkout for:", { providerId, providerName, price });
 
+    // Validate price
+    const numPrice = Number(price);
+    if (!Number.isFinite(numPrice) || numPrice <= 0) {
+      throw new Error(`Invalid price amount: ${price}`);
+    }
+
+    // Resolve provider image to absolute URL for Stripe
+    const origin = req.headers.get("origin") || Deno.env.get("PUBLIC_SITE_URL") || "";
+    let productImages: string[] = [];
+    if (providerImage) {
+      if (providerImage.startsWith("http")) {
+        productImages = [providerImage];
+      } else if (origin && providerImage.startsWith("/")) {
+        productImages = [`${origin}${providerImage}`];
+      }
+    }
+    console.log("Resolved product image URL:", productImages[0] || "(none)");
+
     // Initialize Stripe
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
@@ -102,9 +120,9 @@ serve(async (req) => {
             product_data: {
               name: bookingTitle,
               description: `Session with ${providerName}`,
-              images: providerImage ? [providerImage] : [],
+              ...(productImages.length > 0 ? { images: productImages } : {}),
             },
-            unit_amount: Math.round(price * 100), // Convert to cents
+            unit_amount: Math.round(numPrice * 100), // Convert to cents
           },
           quantity: 1,
         },
