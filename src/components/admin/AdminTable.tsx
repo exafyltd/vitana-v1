@@ -1,0 +1,155 @@
+import { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search, ArrowUpDown } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface Column<T> {
+  key: string;
+  label: string;
+  sortable?: boolean;
+  render?: (value: any, row: T) => React.ReactNode;
+}
+
+interface AdminTableProps<T> {
+  data: T[];
+  columns: Column<T>[];
+  loading?: boolean;
+  searchable?: boolean;
+  searchPlaceholder?: string;
+  onRowClick?: (row: T) => void;
+  emptyMessage?: string;
+}
+
+export function AdminTable<T extends Record<string, any>>({
+  data,
+  columns,
+  loading = false,
+  searchable = false,
+  searchPlaceholder = "Search...",
+  onRowClick,
+  emptyMessage = "No data available",
+}: AdminTableProps<T>) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: "asc" | "desc";
+  } | null>(null);
+
+  const handleSort = (key: string) => {
+    setSortConfig((current) => {
+      if (current?.key === key) {
+        return {
+          key,
+          direction: current.direction === "asc" ? "desc" : "asc",
+        };
+      }
+      return { key, direction: "asc" };
+    });
+  };
+
+  const filteredData = data.filter((row) => {
+    if (!searchTerm) return true;
+    return columns.some((column) => {
+      const value = row[column.key];
+      return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  });
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (!sortConfig) return 0;
+    const aValue = a[sortConfig.key];
+    const bValue = b[sortConfig.key];
+
+    if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+    if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  return (
+    <div className="space-y-4">
+      {searchable && (
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder={searchPlaceholder}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+      )}
+
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {columns.map((column) => (
+                <TableHead key={column.key}>
+                  {column.sortable ? (
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort(column.key)}
+                      className="flex items-center gap-1 px-0 hover:bg-transparent"
+                    >
+                      {column.label}
+                      <ArrowUpDown className="h-4 w-4" />
+                    </Button>
+                  ) : (
+                    column.label
+                  )}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                  {columns.map((column) => (
+                    <TableCell key={column.key}>
+                      <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : sortedData.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-muted-foreground"
+                >
+                  {emptyMessage}
+                </TableCell>
+              </TableRow>
+            ) : (
+              sortedData.map((row, i) => (
+                <TableRow
+                  key={i}
+                  onClick={() => onRowClick?.(row)}
+                  className={onRowClick ? "cursor-pointer" : ""}
+                >
+                  {columns.map((column) => (
+                    <TableCell key={column.key}>
+                      {column.render
+                        ? column.render(row[column.key], row)
+                        : row[column.key]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}

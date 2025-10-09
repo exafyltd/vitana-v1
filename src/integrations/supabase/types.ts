@@ -50,6 +50,13 @@ export type Database = {
             foreignKeyName: "ai_conversations_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
@@ -179,6 +186,13 @@ export type Database = {
             foreignKeyName: "audit_events_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "audit_events_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
@@ -291,6 +305,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "autopilot_actions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
           {
             foreignKeyName: "autopilot_actions_tenant_id_fkey"
             columns: ["tenant_id"]
@@ -1742,6 +1763,13 @@ export type Database = {
             foreignKeyName: "memberships_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "memberships_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
@@ -1937,6 +1965,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "messages"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
           },
           {
             foreignKeyName: "messages_tenant_id_fkey"
@@ -2304,6 +2339,13 @@ export type Database = {
             foreignKeyName: "profiles_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "profiles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
@@ -2479,6 +2521,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "role_preferences_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
           {
             foreignKeyName: "role_preferences_tenant_id_fkey"
             columns: ["tenant_id"]
@@ -2771,6 +2820,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "typing_indicators_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
           {
             foreignKeyName: "typing_indicators_tenant_id_fkey"
             columns: ["tenant_id"]
@@ -3162,6 +3218,13 @@ export type Database = {
             foreignKeyName: "wallet_credits_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "wallet_credits_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
@@ -3217,6 +3280,42 @@ export type Database = {
       }
     }
     Views: {
+      admin_system_health: {
+        Row: {
+          active_memberships: number | null
+          total_global_messages: number | null
+          total_global_threads: number | null
+          total_memberships: number | null
+          total_messages: number | null
+          total_tenants: number | null
+          total_threads: number | null
+        }
+        Relationships: []
+      }
+      admin_tenant_analytics: {
+        Row: {
+          active_users: number | null
+          admin_count: number | null
+          patient_count: number | null
+          professional_count: number | null
+          staff_count: number | null
+          tenant_id: string | null
+          tenant_name: string | null
+          tenant_slug: string | null
+          total_users: number | null
+        }
+        Relationships: []
+      }
+      admin_user_analytics: {
+        Row: {
+          active_users_24h: number | null
+          active_users_7d: number | null
+          new_users_30d: number | null
+          new_users_7d: number | null
+          total_users: number | null
+        }
+        Relationships: []
+      }
       user_follow_counts: {
         Row: {
           followers_count: number | null
@@ -3293,6 +3392,10 @@ export type Database = {
         }
         Returns: string
       }
+      get_active_users_count: {
+        Args: { hours_ago?: number }
+        Returns: number
+      }
       get_follow_status: {
         Args: { target_user_id: string }
         Returns: boolean
@@ -3335,10 +3438,29 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_recent_admin_activity: {
+        Args: { limit_count?: number }
+        Returns: {
+          created_at: string
+          event_data: Json
+          event_type: string
+          id: string
+          user_email: string
+          user_id: string
+        }[]
+      }
       get_role_preference: {
         Args: { p_tenant_id: string }
         Returns: {
           role: string
+        }[]
+      }
+      get_system_health: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          metric: string
+          status: string
+          value: string
         }[]
       }
       get_thread_participants: {
@@ -3378,6 +3500,14 @@ export type Database = {
       get_user_follow_counts: {
         Args: { user_id_param: string }
         Returns: Json
+      }
+      get_user_growth_trend: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          date: string
+          new_users: number
+          total_users: number
+        }[]
       }
       get_user_profile_by_identifier: {
         Args: { identifier: string }
