@@ -15,7 +15,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { MasterActionPopup } from "@/components/MasterActionPopup";
+import { DiscoverOrderActionPopup } from "@/components/discover/DiscoverOrderActionPopup";
 
 export default function Orders() {
   const navigate = useNavigate();
@@ -363,7 +363,7 @@ export default function Orders() {
         open={autopilotOpen}
         onOpenChange={setAutopilotOpen}
       />
-      <MasterActionPopup 
+      <DiscoverOrderActionPopup 
         open={masterActionOpen}
         onOpenChange={setMasterActionOpen}
       />

@@ -15,7 +15,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { MasterActionPopup } from "@/components/MasterActionPopup";
+import { DiscoverBookActionPopup } from "@/components/discover/DiscoverBookActionPopup";
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
@@ -313,7 +313,7 @@ export default function DoctorsCoaches() {
         open={autopilotOpen}
         onOpenChange={setAutopilotOpen}
       />
-      <MasterActionPopup 
+      <DiscoverBookActionPopup 
         open={masterActionOpen}
         onOpenChange={setMasterActionOpen}
       />

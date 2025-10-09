@@ -18,7 +18,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { MasterActionPopup } from "@/components/MasterActionPopup";
+import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActionPopup";
 
 interface Supplement {
   id: string;
@@ -286,7 +286,7 @@ export default function Supplements() {
         open={autopilotOpen}
         onOpenChange={setAutopilotOpen}
       />
-      <MasterActionPopup 
+      <DiscoverShopActionPopup 
         open={masterActionOpen}
         onOpenChange={setMasterActionOpen}
       />

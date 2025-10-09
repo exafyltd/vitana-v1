@@ -29,7 +29,7 @@ import StandardHeader from '@/components/StandardHeader';
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
 import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
-import { MasterActionPopup } from '@/components/MasterActionPopup';
+import { DiscoverMasterActionPopup } from '@/components/discover/DiscoverMasterActionPopup';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 
 import { discoverNavigation } from "@/config/navigation";
@@ -449,7 +449,7 @@ export default withScreenId(function Discover() {
         </div>
       </div>
       
-      <MasterActionPopup 
+      <DiscoverMasterActionPopup 
         open={masterActionOpen}
         onOpenChange={setMasterActionOpen}
       />
