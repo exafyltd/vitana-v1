@@ -18,11 +18,18 @@ import {
   TrendingUp,
   Users,
   Award,
-  DollarSign
+  DollarSign,
+  Plus,
+  RefreshCw
 } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import SEO from '@/components/SEO';
 import SubNavigation from '@/components/SubNavigation';
+import { Universal3CardHeader } from '@/components/Universal3CardHeader';
+import { UtilityActionButton } from '@/components/ui/utility-action-button';
+import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
+import { MasterActionPopup } from '@/components/MasterActionPopup';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -33,6 +40,7 @@ export default withScreenId(function Discover() {
   const navigate = useNavigate();
   const { logActivity } = useActivityLogger();
   const [activeTab, setActiveTab] = useState('suggested');
+  const [masterActionOpen, setMasterActionOpen] = useState(false);
 
   // Log discover page view
   useEffect(() => {
@@ -184,15 +192,38 @@ export default withScreenId(function Discover() {
       />
       <SubNavigation items={discoverNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Discover Your Longevity Marketplace 🔍</h1>
-            <p className="text-muted-foreground">
-              Personalized recommendations, browse categories, and earn rewards by sharing with your community
-            </p>
-          </div>
+      <div className="min-h-screen">
+        <Universal3CardHeader
+          title="Discover Your Longevity Marketplace"
+          description="Personalized recommendations, browse categories, and earn rewards by sharing with your community"
+          emoji="🔍"
+        />
+        
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+          <div className="max-w-7xl mx-auto space-y-6">
+            {/* Utility Action Buttons */}
+            <UtilityActionButton>
+              <ExpandableSearchButton 
+                placeholder="Search marketplace products, services, and experiences…"
+              />
+              <UniversalCalendarButton />
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setMasterActionOpen(true)}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Action
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => window.location.reload()}
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Refresh
+              </Button>
+            </UtilityActionButton>
 
           {/* Split-Screen Tabs Navigation */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -418,8 +449,14 @@ export default withScreenId(function Discover() {
               </Card>
             </TabsContent>
           </Tabs>
+          </div>
         </div>
       </div>
+      
+      <MasterActionPopup 
+        open={masterActionOpen}
+        onOpenChange={setMasterActionOpen}
+      />
     </AppLayout>
   );
 }, SCREEN_IDS.DISCOVER_OVERVIEW);
