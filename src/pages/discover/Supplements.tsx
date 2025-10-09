@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
-import { Star, Search, Filter, Plane, Plus, RefreshCw } from "lucide-react";
+import { Star, Search, Filter, Plane, Plus, RefreshCw, Brain, Sparkles } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActionPopup";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 
 interface Supplement {
   id: string;
@@ -42,6 +43,7 @@ export default function Supplements() {
   const { pendingCount } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("browse");
   
   const [supplements, setSupplements] = useState<Supplement[]>([]);
   const [loading, setLoading] = useState(true);
@@ -390,7 +392,15 @@ export default function Supplements() {
             </Button>
           </UtilityActionButton>
 
-          {/* Filters */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList>
+              <SplitBarTrigger value="browse">📂 Browse All</SplitBarTrigger>
+              <SplitBarTrigger value="picks">⭐ Top Picks</SplitBarTrigger>
+              <SplitBarTrigger value="stack">💛 My Stack</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="browse" className="space-y-6">
+              {/* Filters */}
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
             <div className="flex items-center gap-2 mb-4">
               <Filter className="h-5 w-5 text-primary" />
@@ -523,6 +533,76 @@ export default function Supplements() {
               ))}
             </div>
           )}
+            </SplitBarContent>
+
+            <SplitBarContent value="picks" className="space-y-6">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Brain className="h-6 w-6 text-purple-500" />
+                    <h2 className="text-2xl font-semibold">AI-Powered Top Picks</h2>
+                  </div>
+                  <p className="text-muted-foreground mb-6">Personalized supplement recommendations based on your health data</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {mockSupplements.slice(0, 6).map((supplement, index) => (
+                      <Card key={supplement.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
+                        <div className="relative">
+                          <img 
+                            src={supplement.image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png'} 
+                            alt={supplement.name}
+                            className="w-full h-32 object-cover rounded-t-lg"
+                          />
+                          <div className="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1">
+                            <span className="text-xs font-bold text-purple-600">{95 - index * 3}%</span>
+                          </div>
+                        </div>
+                        <CardContent className="p-4">
+                          <Badge variant="secondary" className="text-xs mb-2">{supplement.category}</Badge>
+                          <h3 className="font-semibold text-sm mb-1 line-clamp-2">{supplement.name}</h3>
+                          <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{supplement.description}</p>
+                          <div className="bg-purple-50 p-2 rounded-lg mb-3">
+                            <div className="flex items-center gap-1">
+                              <Sparkles className="h-3 w-3 text-purple-500" />
+                              <span className="text-xs text-purple-700">Great for your health goals</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-lg font-bold text-primary">${supplement.price}</span>
+                            <AddToCartButton
+                              item={{
+                                item_type: 'product',
+                                item_id: supplement.id,
+                                item_name: supplement.name,
+                                item_price: supplement.price,
+                                item_image_url: supplement.image_url,
+                                item_metadata: {
+                                  brand: supplement.brand,
+                                  category: supplement.category,
+                                },
+                              }}
+                              size="sm"
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+
+            <SplitBarContent value="stack" className="space-y-6">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <CardContent className="p-12 text-center">
+                  <div className="text-6xl mb-4">💛</div>
+                  <h3 className="text-xl font-semibold mb-2">No saved supplements yet</h3>
+                  <p className="text-muted-foreground">
+                    Save your favorite supplements and track your supplement stack
+                  </p>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
 

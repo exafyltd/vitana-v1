@@ -16,6 +16,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverBookActionPopup } from "@/components/discover/DiscoverBookActionPopup";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 
 export default function WellnessServices() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function WellnessServices() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("categories");
 
   const latestActions = getLatestActions(2);
 
@@ -176,7 +178,15 @@ export default function WellnessServices() {
             </Button>
           </UtilityActionButton>
 
-          {/* Categories Grid */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList>
+              <SplitBarTrigger value="categories">📂 All Categories</SplitBarTrigger>
+              <SplitBarTrigger value="recommended">💡 Recommended</SplitBarTrigger>
+              <SplitBarTrigger value="bookmarked">🔖 Bookmarked</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="categories" className="space-y-6">
+              {/* Categories Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {categories.map((category) => (
               <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-white/20">
@@ -217,6 +227,63 @@ export default function WellnessServices() {
               </Card>
             ))}
           </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="recommended" className="space-y-6">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Brain className="h-6 w-6 text-purple-500" />
+                    <h2 className="text-2xl font-semibold">AI-Recommended Services</h2>
+                  </div>
+                  <p className="text-muted-foreground mb-6">Personalized wellness service recommendations based on your health pillars</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {categories.slice(0, 6).map((category, index) => (
+                      <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
+                        <CardContent className="p-4">
+                          <div className="flex items-start gap-3 mb-3">
+                            <div className={`${category.color} p-2 rounded-lg`}>
+                              <category.icon className="h-5 w-5 text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between mb-1">
+                                <h3 className="font-semibold text-sm">{category.name}</h3>
+                                <div className="bg-white rounded-full px-2 py-1">
+                                  <span className="text-xs font-bold text-purple-600">{92 - index * 2}%</span>
+                                </div>
+                              </div>
+                              <p className="text-xs text-muted-foreground">{category.description}</p>
+                            </div>
+                          </div>
+                          <div className="bg-purple-50 p-2 rounded-lg mb-3">
+                            <div className="flex items-center gap-1">
+                              <Sparkles className="h-3 w-3 text-purple-500" />
+                              <span className="text-xs text-purple-700">Based on your health goals</span>
+                            </div>
+                          </div>
+                          <Button size="sm" className="w-full text-xs">
+                            Explore Services
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+
+            <SplitBarContent value="bookmarked" className="space-y-6">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <CardContent className="p-12 text-center">
+                  <div className="text-6xl mb-4">🔖</div>
+                  <h3 className="text-xl font-semibold mb-2">No bookmarked services yet</h3>
+                  <p className="text-muted-foreground">
+                    Bookmark your favorite wellness services and upcoming bookings will appear here
+                  </p>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
 

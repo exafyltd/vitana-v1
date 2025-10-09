@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { discoverNavigation } from "@/config/navigation";
-import { Star, MapPin, Clock, Users, Verified, Award, TrendingUp, Plane, Plus, RefreshCw } from "lucide-react";
+import { Star, MapPin, Clock, Users, Verified, Award, TrendingUp, Plane, Plus, RefreshCw, Brain, Sparkles } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -16,6 +16,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverBookActionPopup } from "@/components/discover/DiscoverBookActionPopup";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function DoctorsCoaches() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("find");
 
   const latestActions = getLatestActions(2);
 
@@ -160,7 +162,15 @@ export default function DoctorsCoaches() {
             </Button>
           </UtilityActionButton>
 
-          {/* Filters */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList>
+              <SplitBarTrigger value="find">📂 Find Providers</SplitBarTrigger>
+              <SplitBarTrigger value="matches">🏆 Best Matches</SplitBarTrigger>
+              <SplitBarTrigger value="myproviders">💛 My Providers</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="find" className="space-y-6">
+              {/* Filters */}
           <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-white/20 mb-8">
             <div className="flex flex-wrap gap-3">
               <Select>
@@ -306,10 +316,84 @@ export default function DoctorsCoaches() {
               </Card>
             ))}
           </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="matches" className="space-y-6">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Brain className="h-6 w-6 text-purple-500" />
+                    <h2 className="text-2xl font-semibold">AI-Matched Providers</h2>
+                  </div>
+                  <p className="text-muted-foreground mb-6">Providers matched to your health needs and preferences</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {providers.slice(0, 6).map((provider, index) => (
+                      <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
+                        <CardContent className="p-4">
+                          <div className="flex items-start gap-3 mb-3">
+                            <div className="relative">
+                              <img 
+                                src={provider.image} 
+                                alt={provider.name}
+                                className="w-12 h-12 rounded-full object-cover"
+                              />
+                              {provider.badges.includes("Verified") && (
+                                <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1">
+                                  <Verified className="h-2 w-2 text-white" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between mb-1">
+                                <h3 className="font-semibold text-sm">{provider.name}</h3>
+                                <div className="bg-white rounded-full px-2 py-1">
+                                  <span className="text-xs font-bold text-purple-600">{94 - index * 2}%</span>
+                                </div>
+                              </div>
+                              <p className="text-xs text-muted-foreground">{provider.title}</p>
+                            </div>
+                          </div>
+                          <div className="bg-purple-50 p-2 rounded-lg mb-3">
+                            <div className="flex items-center gap-1">
+                              <Sparkles className="h-3 w-3 text-purple-500" />
+                              <span className="text-xs text-purple-700">Perfect for your health goals</span>
+                            </div>
+                          </div>
+                          <div className="space-y-1 mb-3">
+                            <div className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3 text-muted-foreground" />
+                              <span className="text-xs text-muted-foreground">{provider.location}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3 text-green-500" />
+                              <span className="text-xs text-green-600">Available {provider.nextAvailable}</span>
+                            </div>
+                          </div>
+                          <Button size="sm" className="w-full text-xs">Book Now</Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+
+            <SplitBarContent value="myproviders" className="space-y-6">
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <CardContent className="p-12 text-center">
+                  <div className="text-6xl mb-4">💛</div>
+                  <h3 className="text-xl font-semibold mb-2">No saved providers yet</h3>
+                  <p className="text-muted-foreground">
+                    Save your favorite providers and upcoming appointments will appear here
+                  </p>
+                </CardContent>
+              </Card>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
 
-      <AutopilotPopup 
+      <AutopilotPopup
         open={autopilotOpen}
         onOpenChange={setAutopilotOpen}
       />

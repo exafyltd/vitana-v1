@@ -16,6 +16,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActionPopup";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 
 export default function DealsOffers() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function DealsOffers() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("flash");
 
   const latestActions = getLatestActions(2);
 
@@ -183,11 +185,17 @@ export default function DealsOffers() {
             </Button>
           </UtilityActionButton>
 
-          {/* 4-Panel Horizontal Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-[600px]">
-            
-            {/* Flash Deals Panel */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList>
+              <SplitBarTrigger value="flash">🔥 Flash Deals</SplitBarTrigger>
+              <SplitBarTrigger value="trending">⭐ Trending</SplitBarTrigger>
+              <SplitBarTrigger value="ai">💡 AI Picks</SplitBarTrigger>
+              <SplitBarTrigger value="saved">🔖 Saved</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="flash" className="space-y-6">
+              {/* Flash Deals Panel */}
+            <Card className="bg-white/80 backdrop-blur-sm border-white/20">
               <div className="flex items-center gap-2 mb-4">
                 <Flame className="h-5 w-5 text-red-500" />
                 <h3 className="text-lg font-semibold">Flash Deals</h3>
@@ -244,10 +252,12 @@ export default function DealsOffers() {
                   </Card>
                 ))}
               </div>
-            </div>
+            </Card>
+            </SplitBarContent>
 
-            {/* Trending Panel */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+            <SplitBarContent value="trending" className="space-y-6">
+              {/* Trending Panel */}
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="h-5 w-5 text-orange-500" />
                 <h3 className="text-lg font-semibold">Trending</h3>
@@ -301,10 +311,12 @@ export default function DealsOffers() {
                   </Card>
                 ))}
               </div>
-            </div>
+            </Card>
+            </SplitBarContent>
 
-            {/* AI Picks Panel */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+            <SplitBarContent value="ai" className="space-y-6">
+              {/* AI Picks Panel */}
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
               <div className="flex items-center gap-2 mb-4">
                 <Brain className="h-5 w-5 text-purple-500" />
                 <h3 className="text-lg font-semibold">AI Picks</h3>
@@ -366,10 +378,12 @@ export default function DealsOffers() {
                   </Card>
                 ))}
               </div>
-            </div>
+            </Card>
+            </SplitBarContent>
 
-            {/* Saved Items Panel */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+            <SplitBarContent value="saved" className="space-y-6">
+              {/* Saved Items Panel */}
+              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
               <div className="flex items-center gap-2 mb-4">
                 <Heart className="h-5 w-5 text-pink-500" />
                 <h3 className="text-lg font-semibold">Saved Items</h3>
@@ -415,8 +429,9 @@ export default function DealsOffers() {
                   </Card>
                 ))}
               </div>
-            </div>
-          </div>
+            </Card>
+            </SplitBarContent>
+          </SplitBar>
         </div>
       </div>
 
