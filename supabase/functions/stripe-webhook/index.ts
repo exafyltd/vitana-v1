@@ -47,72 +47,103 @@ serve(async (req) => {
       
       console.log('Processing completed session:', session.id);
 
-      // Update checkout session status
-      const { error: updateError } = await supabaseClient
-        .from('checkout_sessions')
-        .update({
-          status: 'completed',
-          payment_intent_id: session.payment_intent as string,
-          completed_at: new Date().toISOString(),
-        })
-        .eq('stripe_session_id', session.id);
-
-      if (updateError) {
-        console.error('Error updating checkout session:', updateError);
-        throw updateError;
-      }
-
-      // Clear user's cart
-      const { data: checkoutSession } = await supabaseClient
-        .from('checkout_sessions')
-        .select('user_id, id')
-        .eq('stripe_session_id', session.id)
-        .single();
-
-      if (checkoutSession) {
-        // Create CJ order in background for products from CJDropshipping
-        EdgeRuntime.waitUntil(
-          (async () => {
-            try {
-              console.log('Creating CJ order for checkout:', checkoutSession.id);
-              
-              const response = await fetch(
-                `${Deno.env.get('SUPABASE_URL')}/functions/v1/cj-create-order`,
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
-                  },
-                  body: JSON.stringify({
-                    checkoutSessionId: checkoutSession.id,
-                  }),
-                }
-              );
-
-              if (!response.ok) {
-                const error = await response.json();
-                console.error('Failed to create CJ order:', error);
-              } else {
-                const result = await response.json();
-                console.log('CJ order created successfully:', result);
+      // Check if this is a booking payment or cart payment
+      const bookingType = session.metadata?.booking_type;
+      
+      if (bookingType === 'provider_appointment') {
+        // Handle provider appointment booking
+        const appointmentId = session.metadata?.appointment_id;
+        
+        if (appointmentId) {
+          console.log('Processing provider appointment booking:', appointmentId);
+          
+          const { error: appointmentError } = await supabaseClient
+            .from('provider_appointments')
+            .update({
+              status: 'scheduled',
+              payment_intent_id: session.payment_intent as string,
+              metadata: {
+                stripe_session_id: session.id,
+                payment_completed_at: new Date().toISOString(),
               }
-            } catch (error) {
-              console.error('Error creating CJ order:', error);
-            }
-          })()
-        );
+            })
+            .eq('id', appointmentId);
 
-        // Clear cart
-        const { error: deleteError } = await supabaseClient
-          .from('cart_items')
-          .delete()
-          .eq('user_id', checkoutSession.user_id);
+          if (appointmentError) {
+            console.error('Error updating appointment status:', appointmentError);
+          } else {
+            console.log('Appointment status updated to scheduled:', appointmentId);
+          }
+        }
+      } else {
+        // Handle cart checkout (existing logic)
+        // Update checkout session status
+        const { error: updateError } = await supabaseClient
+          .from('checkout_sessions')
+          .update({
+            status: 'completed',
+            payment_intent_id: session.payment_intent as string,
+            completed_at: new Date().toISOString(),
+          })
+          .eq('stripe_session_id', session.id);
 
-        if (deleteError) {
-          console.error('Error clearing cart:', deleteError);
-        } else {
-          console.log('Cart cleared for user:', checkoutSession.user_id);
+        if (updateError) {
+          console.error('Error updating checkout session:', updateError);
+          throw updateError;
+        }
+
+        // Clear user's cart
+        const { data: checkoutSession } = await supabaseClient
+          .from('checkout_sessions')
+          .select('user_id, id')
+          .eq('stripe_session_id', session.id)
+          .single();
+
+        if (checkoutSession) {
+          // Create CJ order in background for products from CJDropshipping
+          EdgeRuntime.waitUntil(
+            (async () => {
+              try {
+                console.log('Creating CJ order for checkout:', checkoutSession.id);
+                
+                const response = await fetch(
+                  `${Deno.env.get('SUPABASE_URL')}/functions/v1/cj-create-order`,
+                  {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+                    },
+                    body: JSON.stringify({
+                      checkoutSessionId: checkoutSession.id,
+                    }),
+                  }
+                );
+
+                if (!response.ok) {
+                  const error = await response.json();
+                  console.error('Failed to create CJ order:', error);
+                } else {
+                  const result = await response.json();
+                  console.log('CJ order created successfully:', result);
+                }
+              } catch (error) {
+                console.error('Error creating CJ order:', error);
+              }
+            })()
+          );
+
+          // Clear cart
+          const { error: deleteError } = await supabaseClient
+            .from('cart_items')
+            .delete()
+            .eq('user_id', checkoutSession.user_id);
+
+          if (deleteError) {
+            console.error('Error clearing cart:', deleteError);
+          } else {
+            console.log('Cart cleared for user:', checkoutSession.user_id);
+          }
         }
       }
     }

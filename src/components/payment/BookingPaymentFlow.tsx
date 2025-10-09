@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/hooks/useMessages";
+import { supabase } from "@/integrations/supabase/client";
 import { 
   CreditCard, 
   Coins, 
@@ -91,51 +92,101 @@ export default function BookingPaymentFlow({
     setIsProcessing(true);
 
     try {
-      // Process payment and create booking
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate payment processing
+      if (paymentMethod === 'cash') {
+        // Create Stripe Checkout session for card payment
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("User not authenticated");
 
-      // Send confirmation message to provider
-      const confirmationData = {
-        bookingId: booking.id,
-        title: booking.title,
-        date: booking.schedule.date,
-        time: booking.schedule.time,
-        amount: getRequiredAmount(),
-        currency: paymentMethod,
-        customerName: "Current User", // This would be the actual user
-        paymentStatus: "completed"
-      };
+        const { data, error } = await supabase.functions.invoke(
+          "stripe-create-booking-checkout",
+          {
+            body: {
+              providerId: booking.id,
+              providerName: booking.provider.name,
+              providerImage: booking.provider.avatar,
+              providerSpecialty: booking.description || "Healthcare Professional",
+              bookingTitle: booking.title,
+              price: booking.price,
+              dateTime: new Date().toISOString(),
+              duration: booking.schedule.duration.replace(/\D/g, ''),
+              location: booking.location,
+              appointmentType: booking.type || 'consultation',
+            },
+          }
+        );
 
-      await sendMessage(
-        `New booking confirmed: ${booking.title} on ${booking.schedule.date} at ${booking.schedule.time}`,
-        'provider_' + booking.provider.name.toLowerCase().replace(' ', '_'),
-        'service_booking',
-        confirmationData
-      );
+        if (error) throw error;
 
-      // Call onBookingComplete if provided
-      if (onBookingComplete) {
-        await onBookingComplete({
-          type: 'consultation',
-          dateTime: new Date().toISOString(),
-          ...confirmationData
+        // Open Stripe Checkout in popup
+        const width = 600;
+        const height = 800;
+        const left = window.screen.width / 2 - width / 2;
+        const top = window.screen.height / 2 - height / 2;
+        
+        const popup = window.open(
+          data.url,
+          "stripe-checkout",
+          `width=${width},height=${height},left=${left},top=${top}`
+        );
+
+        if (!popup) {
+          throw new Error("Please allow popups to complete payment");
+        }
+
+        toast({
+          title: "Redirecting to Payment",
+          description: "Complete your payment in the popup window",
         });
+
+        setIsProcessing(false);
+        onClose();
+      } else {
+        // Process with credits (existing flow)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Send confirmation message to provider
+        const confirmationData = {
+          bookingId: booking.id,
+          title: booking.title,
+          date: booking.schedule.date,
+          time: booking.schedule.time,
+          amount: getRequiredAmount(),
+          currency: paymentMethod,
+          customerName: "Current User",
+          paymentStatus: "completed"
+        };
+
+        await sendMessage(
+          `New booking confirmed: ${booking.title} on ${booking.schedule.date} at ${booking.schedule.time}`,
+          'provider_' + booking.provider.name.toLowerCase().replace(' ', '_'),
+          'service_booking',
+          confirmationData
+        );
+
+        // Call onBookingComplete if provided
+        if (onBookingComplete) {
+          await onBookingComplete({
+            type: 'consultation',
+            dateTime: new Date().toISOString(),
+            ...confirmationData
+          });
+        }
+
+        toast({
+          title: "Booking Confirmed! 🎉",
+          description: `Your ${booking.type} has been booked and payment processed`
+        });
+
+        setIsProcessing(false);
+        onClose();
       }
-
-      toast({
-        title: "Booking Confirmed! 🎉",
-        description: `Your ${booking.type} has been booked and payment processed`
-      });
-
-      onClose();
     } catch (error) {
       console.error('Booking error:', error);
       toast({
         title: "Booking Failed",
-        description: "Please try again or contact support",
+        description: error.message || "Please try again or contact support",
         variant: "destructive"
       });
-    } finally {
       setIsProcessing(false);
     }
   };
