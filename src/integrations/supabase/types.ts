@@ -2293,6 +2293,7 @@ export type Database = {
           provider_specialty: string | null
           start_time: string
           status: string
+          total_amount: number | null
           updated_at: string
           user_id: string
         }
@@ -2312,6 +2313,7 @@ export type Database = {
           provider_specialty?: string | null
           start_time: string
           status?: string
+          total_amount?: number | null
           updated_at?: string
           user_id: string
         }
@@ -2331,6 +2333,7 @@ export type Database = {
           provider_specialty?: string | null
           start_time?: string
           status?: string
+          total_amount?: number | null
           updated_at?: string
           user_id?: string
         }
