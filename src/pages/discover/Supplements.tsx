@@ -207,7 +207,7 @@ export default function Supplements() {
       serving_size: '2 capsules',
       servings_per_container: 90,
       benefits: ['Muscle Recovery', 'Sleep Quality', 'Stress Relief'],
-      image_url: 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400',
+      image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400',
       rating: 4.9,
       review_count: 1543,
       in_stock: true,
