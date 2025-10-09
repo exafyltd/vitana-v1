@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, Calendar, Clock, UserPlus, Settings } from "lucide-react";
-import { adminNavigation } from "@/config/navigation";
+import { adminDashboardNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
 const mockStaff = [
@@ -20,7 +20,7 @@ function Staff() {
   return (
     <AppLayout>
       <SEO title="Staff Directory | Admin" description="Manage staff directory and scheduling" canonical={window.location.href} />
-      <SubNavigation items={adminNavigation} />
+      <SubNavigation items={adminDashboardNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">

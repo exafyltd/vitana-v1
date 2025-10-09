@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { adminNavigation } from "@/config/navigation";
+import { adminDashboardNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
 
 export default function Admin() {
@@ -23,7 +23,7 @@ export default function Admin() {
   return (
     <AppLayout>
       <SEO title="Admin | VITANA" description="VITANA Administration" canonical={window.location.href} />
-      <SubNavigation items={adminNavigation} />
+      <SubNavigation items={adminDashboardNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">

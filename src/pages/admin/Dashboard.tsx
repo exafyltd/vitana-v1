@@ -10,7 +10,7 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { adminNavigation } from "@/config/navigation";
+import { adminDashboardNavigation } from "@/config/navigation";
 
 export default function AdminDashboard() {
   const { userAnalytics, systemHealth, tenantAnalytics, loading } = useAdminAnalytics();
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
         description="Real-time system management and oversight center" 
         canonical={window.location.href} 
       />
-      <SubNavigation items={adminNavigation} />
+      <SubNavigation items={adminDashboardNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">

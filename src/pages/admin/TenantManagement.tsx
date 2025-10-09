@@ -12,7 +12,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
-import { adminNavigation } from "@/config/navigation";
+import { adminTenantManagementNavigation } from "@/config/navigation";
 
 const TENANT_CONFIGS = {
   maxina: { name: "Maxina", color: "bg-pink-100 text-pink-800" },
@@ -54,7 +54,7 @@ export default function TenantManagement() {
     return (
       <AppLayout>
         <SEO title="Tenant Management | Admin" description="Organization and tenant management" canonical={window.location.href} />
-        <SubNavigation items={adminNavigation} />
+        <SubNavigation items={adminTenantManagementNavigation} />
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
@@ -75,7 +75,7 @@ export default function TenantManagement() {
     return (
       <AppLayout>
         <SEO title="Tenant Management | Admin" description="Organization and tenant management" canonical={window.location.href} />
-        <SubNavigation items={adminNavigation} />
+        <SubNavigation items={adminTenantManagementNavigation} />
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
@@ -102,7 +102,7 @@ export default function TenantManagement() {
   return (
     <AppLayout>
       <SEO title="Tenant Management | Admin" description="Switch between organizations and manage tenant access" canonical={window.location.href} />
-      <SubNavigation items={adminNavigation} />
+      <SubNavigation items={adminTenantManagementNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
       <AdminHeader

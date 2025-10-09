@@ -5,7 +5,7 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { adminNavigation } from "@/config/navigation";
+import { adminUserManagementNavigation } from "@/config/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
@@ -289,7 +289,7 @@ export default function UserManagement() {
         description="Manage user roles and permissions across tenants" 
         canonical={window.location.href} 
       />
-      <SubNavigation items={adminNavigation} />
+      <SubNavigation items={adminUserManagementNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">

@@ -13,7 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { adminNavigation } from "@/config/navigation";
+import { adminDashboardNavigation } from "@/config/navigation";
 
 interface BootstrapResult {
   email: string;
@@ -224,7 +224,7 @@ export default function Bootstrap() {
   return (
     <AppLayout>
       <SEO title="Admin Bootstrap" description="Manage super administrator accounts" />
-      <SubNavigation items={adminNavigation} />
+      <SubNavigation items={adminDashboardNavigation} />
       
       <div className="p-6 space-y-6">
         <AdminHeader

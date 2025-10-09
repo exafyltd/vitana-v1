@@ -77,10 +77,8 @@ export const memoryNavigation = [
   { id: "permissions", name: "Permissions", path: "/memory/permissions" },
 ];
 
-export const adminNavigation = [
+export const adminDashboardNavigation = [
   { id: "overview", name: "Overview", path: "/admin" },
-  { id: "user-management", name: "User Management", path: "/admin/user-management" },
-  { id: "tenant-management", name: "Tenant Management", path: "/admin/tenant-management" },
   { id: "notifications", name: "Notifications", path: "/admin/notifications" },
   { id: "bootstrap", name: "Admin Bootstrap", path: "/admin/bootstrap" },
   { id: "queue", name: "Queue & Check-In", path: "/admin/queue" },
@@ -89,6 +87,14 @@ export const adminNavigation = [
   { id: "staff", name: "Staff Directory & Scheduling", path: "/admin/staff" },
   { id: "reports", name: "Reports & KPIs", path: "/admin/reports" },
   { id: "audit", name: "Audit Logs & Compliance", path: "/admin/audit" },
+];
+
+export const adminUserManagementNavigation = [
+  { id: "overview", name: "Overview", path: "/admin/user-management" },
+];
+
+export const adminTenantManagementNavigation = [
+  { id: "overview", name: "Overview", path: "/admin/tenant-management" },
 ];
 
 export const settingsNavigation = [
