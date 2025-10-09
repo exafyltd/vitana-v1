@@ -28,11 +28,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { differenceInDays, differenceInHours, format, addDays, subDays } from 'date-fns';
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useToast } from "@/hooks/use-toast";
+import { useWallet } from "@/hooks/useWallet";
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { getBalance } = useWallet();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -770,6 +772,11 @@ export default function DoctorsCoaches() {
             },
             location: selectedProvider.location,
             type: 'service'
+          }}
+          userBalance={{
+            credits: getBalance('CREDITS') || 0,
+            vtn: getBalance('VTN') || 0,
+            usd: getBalance('USD') || 0
           }}
           onBookingComplete={handleBookingComplete}
         />

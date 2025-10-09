@@ -8,6 +8,7 @@ import { Calendar, Clock, MapPin, Star, Users, Shield, CreditCard, MessageSquare
 import { useToast } from "@/hooks/use-toast";
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useState } from "react";
+import { useWallet } from "@/hooks/useWallet";
 
 interface ServiceProvider {
   id: string;
@@ -108,6 +109,7 @@ const mockServiceDetails: Record<string, ServiceDetail> = {
 export default function ServiceDetailDrawer({ service, open, onOpenChange }: ServiceDetailDrawerProps) {
   const { toast } = useToast();
   const [showBookingFlow, setShowBookingFlow] = useState(false);
+  const { getBalance } = useWallet();
 
   if (!service) return null;
 
@@ -335,6 +337,11 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           },
           location: serviceDetail.location || 'Healthcare Facility',
           type: 'service'
+        }}
+        userBalance={{
+          credits: getBalance('CREDITS') || 0,
+          vtn: getBalance('VTN') || 0,
+          usd: getBalance('USD') || 0
         }}
       />
     </Sheet>

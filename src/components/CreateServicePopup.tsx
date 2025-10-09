@@ -26,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/hooks/useMessages";
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
+import { useWallet } from "@/hooks/useWallet";
 
 interface CreateServicePopupProps {
   isOpen: boolean;
@@ -79,6 +80,7 @@ const availableTags = [
 export default function CreateServicePopup({ isOpen, onClose }: CreateServicePopupProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedServiceType, setSelectedServiceType] = useState<string>("");
+  const { getBalance } = useWallet();
   const [formData, setFormData] = useState({
     title: "",
     format: "",
@@ -505,6 +507,11 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
           },
           location: formData.location || 'Your location',
           type: 'service'
+        }}
+        userBalance={{
+          credits: getBalance('CREDITS') || 0,
+          vtn: getBalance('VTN') || 0,
+          usd: getBalance('USD') || 0
         }}
       />
     </Dialog>

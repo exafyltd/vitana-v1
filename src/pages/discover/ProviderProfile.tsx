@@ -16,6 +16,7 @@ import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useWallet } from "@/hooks/useWallet";
 
 export default function ProviderProfile() {
   const { id } = useParams<{ id: string }>();
@@ -23,6 +24,7 @@ export default function ProviderProfile() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [bookingOpen, setBookingOpen] = useState(false);
+  const { getBalance } = useWallet();
   
   // Mock provider data - matches DoctorsCoaches.tsx
   const providers = [
@@ -383,6 +385,11 @@ export default function ProviderProfile() {
           },
           location: provider.location,
           type: 'service'
+        }}
+        userBalance={{
+          credits: getBalance('CREDITS') || 0,
+          vtn: getBalance('VTN') || 0,
+          usd: getBalance('USD') || 0
         }}
         onBookingComplete={handleBookingComplete}
       />

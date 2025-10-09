@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/hooks/useMessages";
 import { supabase } from "@/integrations/supabase/client";
+import { useWallet } from "@/hooks/useWallet";
+import { getExchangeRate, calculateExchange, formatCurrency } from "@/lib/exchangeRates";
 import { 
   CreditCard, 
   Coins, 
@@ -17,7 +19,8 @@ import {
   Calendar,
   Star,
   Shield,
-  ArrowRight
+  ArrowRight,
+  DollarSign
 } from "lucide-react";
 
 interface BookingPaymentFlowProps {
@@ -44,7 +47,8 @@ interface BookingPaymentFlowProps {
   };
   userBalance?: {
     credits: number;
-    cash: number;
+    vtn: number;
+    usd: number;
   };
   onBookingComplete?: (bookingDetails: any) => Promise<void>;
 }
@@ -53,37 +57,55 @@ export default function BookingPaymentFlow({
   isOpen, 
   onClose, 
   booking,
-  userBalance = { credits: 2450, cash: 150 },
+  userBalance,
   onBookingComplete
 }: BookingPaymentFlowProps) {
-  const [paymentMethod, setPaymentMethod] = useState<'credits' | 'cash'>('credits');
+  const [paymentMethod, setPaymentMethod] = useState<'credits' | 'vtn' | 'usd' | 'cash'>('credits');
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
-  const { sendMessage } = useMessages(undefined, false); // Disable auto-fetch
+  const { sendMessage } = useMessages(undefined, false);
+  const { updateBalance, exchangeCurrency } = useWallet();
 
-  const canAfford = () => {
-    if (booking.currency === 'credits') {
-      return userBalance.credits >= booking.price;
+  // Calculate how much of each currency is needed for the booking (always priced in USD)
+  const getRequiredAmount = (currency: 'CREDITS' | 'VTN' | 'USD') => {
+    const bookingPriceUSD = booking.price;
+    
+    if (currency === 'USD') {
+      return bookingPriceUSD;
     }
-    return paymentMethod === 'credits' 
-      ? userBalance.credits >= booking.price * 20 // 1 USD = 20 credits conversion
-      : userBalance.cash >= booking.price;
+    
+    // Both Credits and VTN convert at 100:1 to USD
+    const rate = getExchangeRate(currency, 'USD');
+    if (!rate) return bookingPriceUSD * 100;
+    
+    return bookingPriceUSD / rate.rate; // e.g., $150 / 0.01 = 15,000 Credits/VTN
   };
 
-  const getRequiredAmount = () => {
-    if (booking.currency === 'credits' || paymentMethod === 'credits') {
-      return booking.currency === 'credits' 
-        ? booking.price 
-        : booking.price * 20;
+  const canAfford = () => {
+    if (!userBalance) return false;
+    
+    if (paymentMethod === 'cash') return true; // Stripe handles validation
+    
+    const required = getRequiredAmount(paymentMethod.toUpperCase() as 'CREDITS' | 'VTN' | 'USD');
+    
+    switch (paymentMethod) {
+      case 'credits':
+        return userBalance.credits >= required;
+      case 'vtn':
+        return userBalance.vtn >= required;
+      case 'usd':
+        return userBalance.usd >= required;
+      default:
+        return false;
     }
-    return booking.price;
   };
 
   const handleConfirmBooking = async () => {
     if (!canAfford()) {
+      const currencyLabel = paymentMethod === 'cash' ? 'USD' : paymentMethod.toUpperCase();
       toast({
         title: "Insufficient Balance",
-        description: `You need ${getRequiredAmount()} ${paymentMethod === 'credits' ? 'credits' : 'USD'} to complete this booking`,
+        description: `You need ${formatCurrency(getRequiredAmount(currencyLabel as any), currencyLabel)} to complete this booking`,
         variant: "destructive"
       });
       return;
@@ -141,19 +163,44 @@ export default function BookingPaymentFlow({
         setIsProcessing(false);
         onClose();
       } else {
-        // Process with credits (existing flow)
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        // Process wallet payment (Credits, VTN, or USD)
+        const bookingPriceUSD = booking.price;
+        const currencyUsed = paymentMethod.toUpperCase() as 'CREDITS' | 'VTN' | 'USD';
+        
+        if (paymentMethod === 'usd') {
+          // Direct USD payment
+          await updateBalance('USD', bookingPriceUSD, 'subtract');
+        } else {
+          // Exchange Credits or VTN to USD
+          const rate = getExchangeRate(currencyUsed, 'USD');
+          if (!rate) throw new Error("Exchange rate not available");
+          
+          const amountNeeded = getRequiredAmount(currencyUsed);
+          
+          await exchangeCurrency(
+            currencyUsed,
+            'USD',
+            amountNeeded,
+            rate.rate
+          );
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         // Send confirmation message to provider
+        const amountPaid = getRequiredAmount(currencyUsed);
+        
         const confirmationData = {
           bookingId: booking.id,
           title: booking.title,
           date: booking.schedule.date,
           time: booking.schedule.time,
-          amount: getRequiredAmount(),
-          currency: paymentMethod,
+          amount: amountPaid,
+          amountUSD: booking.price,
+          currency: currencyUsed,
           customerName: "Current User",
-          paymentStatus: "completed"
+          paymentStatus: "completed",
+          paymentMethod: "wallet"
         };
 
         await sendMessage(
@@ -172,9 +219,13 @@ export default function BookingPaymentFlow({
           });
         }
 
+        const conversionMsg = paymentMethod !== 'usd' 
+          ? ` Converted ${formatCurrency(amountPaid, currencyUsed)} to $${booking.price} USD.`
+          : '';
+
         toast({
           title: "Booking Confirmed! 🎉",
-          description: `Your ${booking.type} has been booked and payment processed`
+          description: `Your ${booking.type} has been booked and payment processed.${conversionMsg}`
         });
 
         setIsProcessing(false);
@@ -269,48 +320,91 @@ export default function BookingPaymentFlow({
                     <div>
                       <p className="font-medium">Credits</p>
                       <p className="text-sm text-muted-foreground">
-                        Balance: {userBalance.credits.toLocaleString()} credits
+                        Balance: {formatCurrency(userBalance?.credits || 0, 'CREDITS')}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">{getRequiredAmount()} credits</p>
-                    {booking.currency === 'usd' && (
-                      <p className="text-xs text-muted-foreground">~${booking.price}</p>
-                    )}
+                    <p className="font-medium">{formatCurrency(getRequiredAmount('CREDITS'), 'CREDITS')}</p>
+                    <p className="text-xs text-muted-foreground">≈ ${booking.price.toFixed(2)}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Cash Option (if USD service) */}
-              {booking.currency === 'usd' && (
-                <div 
-                  className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                    paymentMethod === 'cash' ? 'border-primary bg-primary/5' : 'border-border'
-                  }`}
-                  onClick={() => setPaymentMethod('cash')}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <CreditCard className="w-5 h-5 text-green-500" />
-                      <div>
-                        <p className="font-medium">Debit/Credit Card</p>
-                        <p className="text-sm text-muted-foreground">
-                          Balance: ${userBalance.cash}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium">${booking.price}</p>
+              {/* VTN Tokens Option */}
+              <div 
+                className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                  paymentMethod === 'vtn' ? 'border-primary bg-primary/5' : 'border-border'
+                }`}
+                onClick={() => setPaymentMethod('vtn')}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Coins className="w-5 h-5 text-blue-500" />
+                    <div>
+                      <p className="font-medium">VTN Tokens</p>
+                      <p className="text-sm text-muted-foreground">
+                        Balance: {formatCurrency(userBalance?.vtn || 0, 'VTN')}
+                      </p>
                     </div>
                   </div>
+                  <div className="text-right">
+                    <p className="font-medium">{formatCurrency(getRequiredAmount('VTN'), 'VTN')}</p>
+                    <p className="text-xs text-muted-foreground">≈ ${booking.price.toFixed(2)}</p>
+                  </div>
                 </div>
-              )}
+              </div>
+
+              {/* USD Wallet Option */}
+              <div 
+                className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                  paymentMethod === 'usd' ? 'border-primary bg-primary/5' : 'border-border'
+                }`}
+                onClick={() => setPaymentMethod('usd')}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <DollarSign className="w-5 h-5 text-green-500" />
+                    <div>
+                      <p className="font-medium">USD Wallet</p>
+                      <p className="text-sm text-muted-foreground">
+                        Balance: {formatCurrency(userBalance?.usd || 0, 'USD')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">${booking.price.toFixed(2)}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cash/Card Option (Stripe) */}
+              <div 
+                className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                  paymentMethod === 'cash' ? 'border-primary bg-primary/5' : 'border-border'
+                }`}
+                onClick={() => setPaymentMethod('cash')}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="w-5 h-5 text-purple-500" />
+                    <div>
+                      <p className="font-medium">Debit/Credit Card</p>
+                      <p className="text-sm text-muted-foreground">
+                        Pay with Stripe
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">${booking.price.toFixed(2)}</p>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
           {/* Balance Check */}
-          {!canAfford() && (
+          {!canAfford() && paymentMethod !== 'cash' && (
             <Card className="border-red-200 bg-red-50">
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 text-red-600">
@@ -318,7 +412,7 @@ export default function BookingPaymentFlow({
                   <span className="text-sm font-medium">Insufficient Balance</span>
                 </div>
                 <p className="text-sm text-red-600 mt-1">
-                  You need {getRequiredAmount() - (paymentMethod === 'credits' ? userBalance.credits : userBalance.cash)} more {paymentMethod === 'credits' ? 'credits' : 'USD'}
+                  Top up your wallet to complete this booking
                 </p>
               </CardContent>
             </Card>
@@ -330,9 +424,20 @@ export default function BookingPaymentFlow({
               <div className="flex items-center justify-between text-lg font-semibold">
                 <span>Total</span>
                 <span>
-                  {paymentMethod === 'credits' ? `${getRequiredAmount()} credits` : `$${booking.price}`}
+                  {paymentMethod === 'cash' 
+                    ? `$${booking.price.toFixed(2)}`
+                    : formatCurrency(
+                        getRequiredAmount(paymentMethod.toUpperCase() as 'CREDITS' | 'VTN' | 'USD'), 
+                        paymentMethod.toUpperCase()
+                      )
+                  }
                 </span>
               </div>
+              {paymentMethod !== 'cash' && paymentMethod !== 'usd' && (
+                <p className="text-sm text-muted-foreground text-right mt-1">
+                  Converts to ${booking.price.toFixed(2)} USD
+                </p>
+              )}
             </CardContent>
           </Card>
 
