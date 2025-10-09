@@ -4,7 +4,7 @@ import { usePermissions } from "@/hooks/usePermissions";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import AdminHeader from "@/components/admin/AdminHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -227,7 +227,7 @@ export default function Bootstrap() {
       <SubNavigation items={adminNavigation} />
       
       <div className="p-6 space-y-6">
-        <StandardHeader
+        <AdminHeader
           title="Admin Bootstrap"
           description="Elevate users to Exafy super administrators and manage admin accounts"
           emoji="🛡️"

@@ -8,7 +8,7 @@ import { useTenant } from "@/hooks/useTenant";
 import { useMemberships } from "@/hooks/useMemberships";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthProvider";
-import StandardHeader from "@/components/StandardHeader";
+import AdminHeader from "@/components/admin/AdminHeader";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -57,7 +57,7 @@ export default function TenantManagement() {
         <SubNavigation items={adminNavigation} />
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
-            <StandardHeader
+            <AdminHeader
               title="Tenant Management"
               description="Loading..."
               emoji="🏢"
@@ -78,7 +78,7 @@ export default function TenantManagement() {
         <SubNavigation items={adminNavigation} />
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
-            <StandardHeader
+            <AdminHeader
               title="Tenant Management"
               description="Organization and tenant management"
               emoji="🏢"
@@ -105,7 +105,7 @@ export default function TenantManagement() {
       <SubNavigation items={adminNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-      <StandardHeader
+      <AdminHeader
         title="Tenant Management"
         description="Switch between organizations and manage tenant access"
         emoji="🏢"

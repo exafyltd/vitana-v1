@@ -211,8 +211,8 @@ function AppSidebar({
             </TooltipProvider>
           </div>
 
-          {/* Row 2: Quick Actions - only show when sidebar is open */}
-          {open && (
+          {/* Row 2: Quick Actions - only show when sidebar is open and NOT on admin routes */}
+          {open && !location.pathname.startsWith('/admin') && (
             <div className="flex items-center justify-end px-2 pb-2 space-x-1">
               {/* Calendar Button - Today's Overview */}
               <div 

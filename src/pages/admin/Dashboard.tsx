@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import AdminHeader from "@/components/admin/AdminHeader";
 import { adminNavigation } from "@/config/navigation";
 
 export default function AdminDashboard() {
@@ -63,7 +63,7 @@ export default function AdminDashboard() {
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          <StandardHeader
+          <AdminHeader
             title="Admin Dashboard"
             description="Real-time system management and oversight center"
             emoji="📊"
@@ -130,41 +130,6 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common administrative tasks</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <Button
-              className="w-full justify-start"
-              variant="outline"
-              onClick={() => navigate("/admin/user-management")}
-            >
-              <Users className="mr-2 h-4 w-4" />
-              Manage Users
-            </Button>
-            <Button
-              className="w-full justify-start"
-              variant="outline"
-              onClick={() => navigate("/admin/tenant-management")}
-            >
-              <Building className="mr-2 h-4 w-4" />
-              Manage Workspaces
-            </Button>
-            <Button
-              className="w-full justify-start"
-              variant="outline"
-              onClick={() => navigate("/admin/reports")}
-            >
-              <TrendingUp className="mr-2 h-4 w-4" />
-              View Reports
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
         </div>
       </div>
     </AppLayout>

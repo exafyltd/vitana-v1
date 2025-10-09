@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import AdminHeader from "@/components/admin/AdminHeader";
 import { adminNavigation } from "@/config/navigation";
 import NotificationMonitor from "@/components/admin/NotificationMonitor";
 import CronHealthCard from "@/components/admin/CronHealthCard";
@@ -20,9 +20,10 @@ export default function NotificationDashboard() {
       
       <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          <StandardHeader
-            title="Notification Dashboard 📬"
+          <AdminHeader
+            title="Notification Dashboard"
             description="Monitor notification system health, view real-time logs, and manage notification rules"
+            emoji="📬"
           />
 
           {/* Top Row: Cron Health + Stats */}
