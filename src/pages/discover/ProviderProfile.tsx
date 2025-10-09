@@ -379,8 +379,8 @@ export default function ProviderProfile() {
             rating: provider.rating
           },
           schedule: {
-            date: 'Select Date',
-            time: 'Select Time',
+            date: undefined,
+            time: undefined,
             duration: '30 min'
           },
           location: provider.location,

@@ -4,12 +4,16 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/hooks/useMessages";
 import { supabase } from "@/integrations/supabase/client";
 import { useWallet } from "@/hooks/useWallet";
 import { getExchangeRate, calculateExchange, formatCurrency } from "@/lib/exchangeRates";
+import { format } from "date-fns";
 import { 
   CreditCard, 
   Coins, 
@@ -38,8 +42,8 @@ interface BookingPaymentFlowProps {
       rating?: number;
     };
     schedule: {
-      date: string;
-      time: string;
+      date?: string | Date;
+      time?: string;
       duration: string;
     };
     location: string;
@@ -62,9 +66,21 @@ export default function BookingPaymentFlow({
 }: BookingPaymentFlowProps) {
   const [paymentMethod, setPaymentMethod] = useState<'credits' | 'vtn' | 'usd' | 'cash'>('credits');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined);
   const { toast } = useToast();
   const { sendMessage } = useMessages(undefined, false);
   const { updateBalance, exchangeCurrency } = useWallet();
+
+  // Generate time slots from 9 AM to 5 PM in 30-minute intervals
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 9; hour <= 17; hour++) {
+      slots.push(`${hour.toString().padStart(2, '0')}:00`);
+      if (hour < 17) slots.push(`${hour.toString().padStart(2, '0')}:30`);
+    }
+    return slots;
+  };
 
   // Calculate how much of each currency is needed for the booking (always priced in USD)
   const getRequiredAmount = (currency: 'CREDITS' | 'VTN' | 'USD') => {
@@ -101,6 +117,16 @@ export default function BookingPaymentFlow({
   };
 
   const handleConfirmBooking = async () => {
+    // Validate date and time are selected
+    if (!selectedDate || !selectedTime) {
+      toast({
+        title: "Missing Information",
+        description: "Please select a date and time for your booking",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (!canAfford()) {
       const currencyLabel = paymentMethod === 'cash' ? 'USD' : paymentMethod.toUpperCase();
       toast({
@@ -114,6 +140,12 @@ export default function BookingPaymentFlow({
     setIsProcessing(true);
 
     try {
+      // Format booking date/time
+      const bookingDateTime = new Date(selectedDate);
+      const [hours, minutes] = selectedTime.split(':');
+      bookingDateTime.setHours(parseInt(hours), parseInt(minutes));
+      const formattedDate = format(selectedDate, 'PPP');
+      
       if (paymentMethod === 'cash') {
         // Create Stripe Checkout session for card payment
         const { data: { user } } = await supabase.auth.getUser();
@@ -129,7 +161,7 @@ export default function BookingPaymentFlow({
               providerSpecialty: booking.description || "Healthcare Professional",
               bookingTitle: booking.title,
               price: booking.price,
-              dateTime: new Date().toISOString(),
+              dateTime: bookingDateTime.toISOString(),
               duration: booking.schedule.duration.replace(/\D/g, ''),
               location: booking.location,
               appointmentType: booking.type || 'consultation',
@@ -193,8 +225,8 @@ export default function BookingPaymentFlow({
         const confirmationData = {
           bookingId: booking.id,
           title: booking.title,
-          date: booking.schedule.date,
-          time: booking.schedule.time,
+          date: formattedDate,
+          time: selectedTime,
           amount: amountPaid,
           amountUSD: booking.price,
           currency: currencyUsed,
@@ -204,7 +236,7 @@ export default function BookingPaymentFlow({
         };
 
         await sendMessage(
-          `New booking confirmed: ${booking.title} on ${booking.schedule.date} at ${booking.schedule.time}`,
+          `New booking confirmed: ${booking.title} on ${formattedDate} at ${selectedTime}`,
           'provider_' + booking.provider.name.toLowerCase().replace(' ', '_'),
           'service_booking',
           confirmationData
@@ -281,13 +313,47 @@ export default function BookingPaymentFlow({
 
               {/* Booking Details */}
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-muted-foreground" />
-                  <span>{booking.schedule.date}</span>
+                <div className="col-span-2">
+                  <label className="text-xs text-muted-foreground mb-1 block">Select Date</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        <Calendar className="mr-2 h-4 w-4" />
+                        {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <CalendarComponent
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={setSelectedDate}
+                        disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                        initialFocus
+                        className="pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-muted-foreground" />
-                  <span>{booking.schedule.time}</span>
+                <div className="col-span-2">
+                  <label className="text-xs text-muted-foreground mb-1 block">Select Time</label>
+                  <Select value={selectedTime} onValueChange={setSelectedTime}>
+                    <SelectTrigger className="w-full">
+                      <div className="flex items-center">
+                        <Clock className="mr-2 h-4 w-4" />
+                        <SelectValue placeholder="Pick a time" />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {generateTimeSlots().map((time) => (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-muted-foreground" />

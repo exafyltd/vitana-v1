@@ -765,11 +765,11 @@ export default function DoctorsCoaches() {
               avatar: selectedProvider.image,
               rating: selectedProvider.rating
             },
-            schedule: {
-              date: 'Select Date',
-              time: 'Select Time',
-              duration: '30 min'
-            },
+          schedule: {
+            date: undefined,
+            time: undefined,
+            duration: '30 min'
+          },
             location: selectedProvider.location,
             type: 'service'
           }}
