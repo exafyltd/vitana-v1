@@ -44,3 +44,21 @@ verify_jwt = true
 
 [functions.generate-enhanced-recommendations]
 verify_jwt = true
+
+[functions.cj-get-token]
+verify_jwt = false
+
+[functions.cj-search-products]
+verify_jwt = false
+
+[functions.cj-get-product-details]
+verify_jwt = false
+
+[functions.cj-create-order]
+verify_jwt = true
+
+[functions.cj-track-shipment]
+verify_jwt = true
+
+[functions.cj-webhook-handler]
+verify_jwt = false

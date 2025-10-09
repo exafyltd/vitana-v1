@@ -77,6 +77,10 @@ export function useCart() {
         // Update quantity
         await updateQuantity(existingItem.id, existingItem.quantity + (item.quantity || 1));
       } else {
+        // Extract external product info from metadata
+        const externalProductId = item.item_metadata?.external_product_id;
+        const externalSource = item.item_metadata?.external_source;
+
         // Add new item
         const { error } = await supabase.from('cart_items').insert({
           user_id: user.id,
@@ -87,6 +91,8 @@ export function useCart() {
           item_image_url: item.item_image_url,
           item_metadata: item.item_metadata || {},
           quantity: item.quantity || 1,
+          external_product_id: externalProductId,
+          external_source: externalSource,
         });
 
         if (error) throw error;

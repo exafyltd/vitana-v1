@@ -474,6 +474,8 @@ export type Database = {
       cart_items: {
         Row: {
           created_at: string
+          external_product_id: string | null
+          external_source: string | null
           id: string
           item_id: string
           item_image_url: string | null
@@ -487,6 +489,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          external_product_id?: string | null
+          external_source?: string | null
           id?: string
           item_id: string
           item_image_url?: string | null
@@ -500,6 +504,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          external_product_id?: string | null
+          external_source?: string | null
           id?: string
           item_id?: string
           item_image_url?: string | null
@@ -549,6 +555,167 @@ export type Database = {
           total_amount?: number
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      cj_orders: {
+        Row: {
+          carrier: string | null
+          checkout_session_id: string | null
+          cj_order_id: string | null
+          created_at: string | null
+          delivered_at: string | null
+          id: string
+          order_items: Json
+          shipped_at: string | null
+          shipping_address: Json
+          shipping_cost: number | null
+          status: string
+          total_amount: number
+          tracking_number: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          carrier?: string | null
+          checkout_session_id?: string | null
+          cj_order_id?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          id?: string
+          order_items: Json
+          shipped_at?: string | null
+          shipping_address: Json
+          shipping_cost?: number | null
+          status?: string
+          total_amount: number
+          tracking_number?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          carrier?: string | null
+          checkout_session_id?: string | null
+          cj_order_id?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          id?: string
+          order_items?: Json
+          shipped_at?: string | null
+          shipping_address?: Json
+          shipping_cost?: number | null
+          status?: string
+          total_amount?: number
+          tracking_number?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cj_orders_checkout_session_id_fkey"
+            columns: ["checkout_session_id"]
+            isOneToOne: false
+            referencedRelation: "checkout_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cj_products: {
+        Row: {
+          brand: string | null
+          category: string | null
+          cj_product_id: string
+          created_at: string | null
+          description: string | null
+          dimensions: Json | null
+          id: string
+          image_url: string | null
+          images: Json | null
+          inventory_count: number | null
+          is_active: boolean | null
+          last_synced_at: string | null
+          list_price: number | null
+          name: string
+          price: number
+          rating: number | null
+          review_count: number | null
+          shipping_info: Json | null
+          updated_at: string | null
+          variants: Json | null
+          weight: number | null
+        }
+        Insert: {
+          brand?: string | null
+          category?: string | null
+          cj_product_id: string
+          created_at?: string | null
+          description?: string | null
+          dimensions?: Json | null
+          id?: string
+          image_url?: string | null
+          images?: Json | null
+          inventory_count?: number | null
+          is_active?: boolean | null
+          last_synced_at?: string | null
+          list_price?: number | null
+          name: string
+          price: number
+          rating?: number | null
+          review_count?: number | null
+          shipping_info?: Json | null
+          updated_at?: string | null
+          variants?: Json | null
+          weight?: number | null
+        }
+        Update: {
+          brand?: string | null
+          category?: string | null
+          cj_product_id?: string
+          created_at?: string | null
+          description?: string | null
+          dimensions?: Json | null
+          id?: string
+          image_url?: string | null
+          images?: Json | null
+          inventory_count?: number | null
+          is_active?: boolean | null
+          last_synced_at?: string | null
+          list_price?: number | null
+          name?: string
+          price?: number
+          rating?: number | null
+          review_count?: number | null
+          shipping_info?: Json | null
+          updated_at?: string | null
+          variants?: Json | null
+          weight?: number | null
+        }
+        Relationships: []
+      }
+      cj_webhook_logs: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          event_type: string
+          id: string
+          payload: Json
+          processed: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          event_type: string
+          id?: string
+          payload: Json
+          processed?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          processed?: boolean | null
         }
         Relationships: []
       }

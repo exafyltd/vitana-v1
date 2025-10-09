@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
 import { Package, Clock, CheckCircle, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plane, Plus, RefreshCw } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
 import StandardHeader from "@/components/StandardHeader";
@@ -16,101 +16,92 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverOrderActionPopup } from "@/components/discover/DiscoverOrderActionPopup";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthProvider";
 
 export default function Orders() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [cjOrders, setCjOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const latestActions = getLatestActions(2);
 
-  const activeOrders = [
-    {
-      id: "ORD-2024-001",
-      title: "Deep Tissue Massage",
-      provider: "Zen Wellness Spa",
-      providerImage: "/lovable-uploads/tae-min-avatar.jpg",
-      date: "Today, 4:00 PM",
-      location: "123 Wellness Ave, Miami FL",
-      price: "$120",
-      status: "confirmed",
-      rating: 4.9,
-      type: "service",
-      orderDate: "Dec 28, 2024",
-      notes: "Please arrive 15 minutes early for intake"
-    },
-    {
-      id: "ORD-2024-002", 
-      title: "Adaptogenic Stress Relief Blend",
-      provider: "Vitana Supplements",
-      providerImage: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png",
-      trackingNumber: "VT123456789",
-      estimatedDelivery: "Dec 30, 2024",
-      price: "$49",
-      status: "shipped",
-      type: "product",
-      orderDate: "Dec 26, 2024",
-      shippingAddress: "456 Health St, Austin TX 78701"
-    },
-    {
-      id: "ORD-2024-003",
-      title: "Sleep Optimization Consultation",
-      provider: "Dr. Michael Roberts",
-      providerImage: "/lovable-uploads/dr-roberts-avatar.jpg", 
-      date: "Dec 31, 2024 at 2:00 PM",
-      location: "Virtual (Zoom link provided)",
-      price: "$180",
-      status: "confirmed",
-      rating: 4.8,
-      type: "service",
-      orderDate: "Dec 27, 2024",
-      notes: "Bring your sleep tracking data from the last 30 days"
+  useEffect(() => {
+    if (user) {
+      fetchCjOrders();
     }
-  ];
+  }, [user]);
 
-  const completedOrders = [
-    {
-      id: "ORD-2024-004",
-      title: "Cold Plunge Therapy Session", 
-      provider: "Recovery Lab",
-      providerImage: "/lovable-uploads/james-davis-avatar.jpg",
-      completedDate: "Dec 25, 2024",
-      price: "$75",
-      status: "completed",
-      rating: 5.0,
-      myRating: 5,
-      type: "service",
-      orderDate: "Dec 23, 2024"
-    },
-    {
-      id: "ORD-2024-005",
-      title: "Infrared Therapy Mat",
-      provider: "Wellness Tech Co", 
-      providerImage: "/lovable-uploads/murphy-avatar.jpg",
-      deliveredDate: "Dec 22, 2024",
-      price: "$399",
-      status: "delivered",
-      rating: 4.8,
-      myRating: 4,
-      type: "product",
-      orderDate: "Dec 18, 2024"
-    },
-    {
-      id: "ORD-2024-006",
-      title: "Nutrition Reset Consultation",
-      provider: "Luna Wellness Collective",
-      providerImage: "/lovable-uploads/lisa-chen-avatar.jpg",
-      completedDate: "Dec 20, 2024", 
-      price: "$149",
-      status: "completed",
-      rating: 4.9,
-      myRating: 5,
-      type: "service",
-      orderDate: "Dec 15, 2024"
+  const fetchCjOrders = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('cj_orders')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setCjOrders(data || []);
+    } catch (error) {
+      console.error('Error fetching CJ orders:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const handleTrackOrder = async (orderId: string) => {
+    try {
+      const { data, error } = await supabase.functions.invoke('cj-track-shipment', {
+        body: { orderId },
+      });
+
+      if (error) throw error;
+      
+      // Refresh orders to show updated tracking info
+      await fetchCjOrders();
+    } catch (error) {
+      console.error('Error tracking order:', error);
+    }
+  };
+
+  // Transform CJ orders to display format
+  const activeOrders = cjOrders
+    .filter(order => !['delivered', 'cancelled'].includes(order.status))
+    .map(order => ({
+      id: order.id,
+      title: order.order_items[0]?.item_name || 'CJ Product',
+      provider: 'CJDropshipping',
+      providerImage: order.order_items[0]?.item_image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png',
+      trackingNumber: order.tracking_number,
+      estimatedDelivery: 'Processing',
+      price: `$${order.total_amount}`,
+      status: order.status,
+      type: 'product',
+      orderDate: new Date(order.created_at).toLocaleDateString(),
+      shippingAddress: `${order.shipping_address?.city}, ${order.shipping_address?.state}`,
+      cjOrderId: order.cj_order_id,
+    }));
+
+  const completedOrders = cjOrders
+    .filter(order => ['delivered', 'cancelled'].includes(order.status))
+    .map(order => ({
+      id: order.id,
+      title: order.order_items[0]?.item_name || 'CJ Product',
+      provider: 'CJDropshipping',
+      providerImage: order.order_items[0]?.item_image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png',
+      deliveredDate: order.delivered_at ? new Date(order.delivered_at).toLocaleDateString() : 'N/A',
+      price: `$${order.total_amount}`,
+      status: order.status,
+      rating: 4.8,
+      myRating: null,
+      type: 'product',
+      orderDate: new Date(order.created_at).toLocaleDateString(),
+    }));
 
   const renderOrderCard = (order: any, isActive = true) => (
     <Card key={order.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-white/80 backdrop-blur-sm border-white/20">
@@ -227,9 +218,14 @@ export default function Orders() {
                       </Button>
                     </>
                   )}
-                  {order.type === 'product' && (
+                   {order.type === 'product' && (
                     <>
-                      <Button size="sm" variant="outline" className="flex-1">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="flex-1"
+                        onClick={() => handleTrackOrder(order.id)}
+                      >
                         <Truck className="h-3 w-3 mr-1" />
                         Track Package
                       </Button>

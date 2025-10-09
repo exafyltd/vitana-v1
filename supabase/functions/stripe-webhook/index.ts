@@ -65,11 +65,45 @@ serve(async (req) => {
       // Clear user's cart
       const { data: checkoutSession } = await supabaseClient
         .from('checkout_sessions')
-        .select('user_id')
+        .select('user_id, id')
         .eq('stripe_session_id', session.id)
         .single();
 
       if (checkoutSession) {
+        // Create CJ order in background for products from CJDropshipping
+        EdgeRuntime.waitUntil(
+          (async () => {
+            try {
+              console.log('Creating CJ order for checkout:', checkoutSession.id);
+              
+              const response = await fetch(
+                `${Deno.env.get('SUPABASE_URL')}/functions/v1/cj-create-order`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+                  },
+                  body: JSON.stringify({
+                    checkoutSessionId: checkoutSession.id,
+                  }),
+                }
+              );
+
+              if (!response.ok) {
+                const error = await response.json();
+                console.error('Failed to create CJ order:', error);
+              } else {
+                const result = await response.json();
+                console.log('CJ order created successfully:', result);
+              }
+            } catch (error) {
+              console.error('Error creating CJ order:', error);
+            }
+          })()
+        );
+
+        // Clear cart
         const { error: deleteError } = await supabaseClient
           .from('cart_items')
           .delete()

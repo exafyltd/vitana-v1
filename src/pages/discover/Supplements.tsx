@@ -68,19 +68,46 @@ export default function Supplements() {
 
   useEffect(() => {
     fetchSupplements();
-  }, []);
+  }, [searchQuery, selectedCategory]);
 
   const fetchSupplements = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('supplements')
-        .select('*')
-        .eq('is_active', true)
-        .eq('in_stock', true);
+      
+      // Fetch from CJDropshipping
+      const { data, error } = await supabase.functions.invoke('cj-search-products', {
+        body: {
+          query: searchQuery,
+          category: selectedCategory !== 'all' ? selectedCategory : '',
+          page: 1,
+          pageSize: 50,
+        },
+      });
 
-      if (error) throw error;
-      setSupplements(data || []);
+      if (error) {
+        console.error('Error fetching CJ products:', error);
+        throw error;
+      }
+
+      // Transform CJ products to supplement format
+      const cjProducts = (data?.products || []).map((p: any) => ({
+        id: p.id || p.cj_product_id,
+        name: p.name,
+        brand: p.brand || 'CJ',
+        description: p.description,
+        category: p.category,
+        price: p.price,
+        image_url: p.image_url,
+        benefits: [], // CJ doesn't provide benefits
+        rating: p.rating || 4.5,
+        review_count: p.review_count || 0,
+        in_stock: p.inventory_count > 0,
+        // Store external product info
+        external_product_id: p.cj_product_id,
+        external_source: 'cj',
+      }));
+
+      setSupplements(cjProducts);
     } catch (error) {
       console.error('Error fetching supplements:', error);
     } finally {
@@ -268,6 +295,8 @@ export default function Supplements() {
                             brand: supplement.brand,
                             category: supplement.category,
                             dosage: supplement.dosage,
+                            external_product_id: (supplement as any).external_product_id,
+                            external_source: (supplement as any).external_source,
                           },
                         }}
                         size="sm"
