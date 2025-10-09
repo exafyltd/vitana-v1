@@ -23,7 +23,6 @@ import {
 import AppLayout from '@/components/AppLayout';
 import SEO from '@/components/SEO';
 import SubNavigation from '@/components/SubNavigation';
-import { IntentRouter } from '@/pages/discover/IntentRouter';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -194,9 +193,6 @@ export default withScreenId(function Discover() {
               Personalized recommendations, browse categories, and earn rewards by sharing with your community
             </p>
           </div>
-
-          {/* Intent Router */}
-          <IntentRouter />
 
           {/* Split-Screen Tabs Navigation */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
