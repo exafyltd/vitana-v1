@@ -229,15 +229,12 @@ export default withScreenId(function Discover() {
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
               <SplitBarTrigger value="suggested">
-                <Sparkles className="h-4 w-4 mr-2" />
                 💡 Suggested for You
               </SplitBarTrigger>
               <SplitBarTrigger value="categories">
-                <Grid3X3 className="h-4 w-4 mr-2" />
                 📂 Categories
               </SplitBarTrigger>
               <SplitBarTrigger value="share">
-                <Share2 className="h-4 w-4 mr-2" />
                 💰 Share & Earn
               </SplitBarTrigger>
             </SplitBarList>
