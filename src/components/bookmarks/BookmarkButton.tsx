@@ -34,7 +34,9 @@ export function BookmarkButton({ item, className }: BookmarkButtonProps) {
         "transition-all duration-300",
         "hover:scale-125",
         "focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2",
-        "drop-shadow-lg",
+        bookmarked 
+          ? "bg-yellow-400/20 border border-yellow-400/50" 
+          : "bg-black/30 border border-white/30",
         isAnimating && "animate-bounce",
         className
       )}
@@ -45,8 +47,8 @@ export function BookmarkButton({ item, className }: BookmarkButtonProps) {
         className={cn(
           "h-6 w-6 transition-all duration-300",
           bookmarked 
-            ? "fill-yellow-400 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.6)]" 
-            : "fill-none text-white stroke-[2.5] drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+            ? "fill-yellow-400 text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.7)]" 
+            : "fill-none text-white stroke-[2.5] drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
         )}
       />
     </button>
