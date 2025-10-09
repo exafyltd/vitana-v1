@@ -453,7 +453,7 @@ export default function DealsOffers() {
                         alt={deal.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
+                      <div className="absolute top-2 right-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
                         {deal.discount}% OFF
                       </div>
                       <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
@@ -562,7 +562,7 @@ export default function DealsOffers() {
                         alt={service.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-2 bg-orange-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
+                      <div className="absolute top-2 right-12 bg-orange-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
                         <TrendingUp className="h-3 w-3" />
                         {service.trend}
                       </div>
@@ -664,7 +664,7 @@ export default function DealsOffers() {
                         alt={match.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-2 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">
+                      <div className="absolute top-2 right-12 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">
                         {match.match}% Match
                       </div>
                     </div>
