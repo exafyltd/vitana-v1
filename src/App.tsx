@@ -24,6 +24,7 @@ import CommunityPortal from "./pages/portals/CommunityPortal";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
+import Supplements from "./pages/discover/Supplements";
 import Health from "./pages/Health";
 import HealthTracker from "./pages/HealthTracker";
 import Calendar from "./pages/Calendar";
@@ -220,6 +221,11 @@ const App = () => {
           <Route path="/discover" element={
             <AuthGuard>
               <Discover />
+            </AuthGuard>
+          } />
+          <Route path="/discover/supplements" element={
+            <AuthGuard>
+              <Supplements />
             </AuthGuard>
           } />
           <Route path="/discover/wellness-services" element={

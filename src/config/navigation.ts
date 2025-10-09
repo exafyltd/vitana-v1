@@ -32,6 +32,7 @@ export const communityNavigation = [
 
 export const discoverNavigation = [
   { id: "overview", name: "Overview", path: "/discover" },
+  { id: "supplements", name: "Supplements", path: "/discover/supplements" },
   { id: "wellness-services", name: "Wellness Services", path: "/discover/wellness-services" },
   { id: "doctors-coaches", name: "Doctors/Coaches", path: "/discover/doctors-coaches" },
   { id: "deals-offers", name: "Deals & Offers", path: "/discover/deals-offers" },

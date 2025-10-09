@@ -2197,6 +2197,72 @@ export type Database = {
           },
         ]
       }
+      supplements: {
+        Row: {
+          benefits: string[] | null
+          brand: string | null
+          category: string
+          created_at: string | null
+          description: string | null
+          dosage: string | null
+          id: string
+          image_url: string | null
+          in_stock: boolean | null
+          ingredients: Json | null
+          is_active: boolean | null
+          metadata: Json | null
+          name: string
+          price: number
+          rating: number | null
+          review_count: number | null
+          serving_size: string | null
+          servings_per_container: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          benefits?: string[] | null
+          brand?: string | null
+          category: string
+          created_at?: string | null
+          description?: string | null
+          dosage?: string | null
+          id?: string
+          image_url?: string | null
+          in_stock?: boolean | null
+          ingredients?: Json | null
+          is_active?: boolean | null
+          metadata?: Json | null
+          name: string
+          price: number
+          rating?: number | null
+          review_count?: number | null
+          serving_size?: string | null
+          servings_per_container?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          benefits?: string[] | null
+          brand?: string | null
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          dosage?: string | null
+          id?: string
+          image_url?: string | null
+          in_stock?: boolean | null
+          ingredients?: Json | null
+          is_active?: boolean | null
+          metadata?: Json | null
+          name?: string
+          price?: number
+          rating?: number | null
+          review_count?: number | null
+          serving_size?: string | null
+          servings_per_container?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       templates: {
         Row: {
           category: string
