@@ -33,7 +33,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [showApiKeyModal, setShowApiKeyModal] = useState(false)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
 
-  const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage()
+  const { selectedLanguage, setSelectedLanguage, languageOptions, isLoading: languageLoading } = useLanguage()
   const { toast } = useToast()
   const { preferences } = useUserPreferences()
 
@@ -128,7 +128,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       try {
         await aiVoiceService.startRecording({
           useClientSTT: preferences?.stt_instant_enabled ?? true,
-          language: preferences?.stt_language || selectedLanguage
+          language: selectedLanguage
         })
         setIsRecording(true)
       } catch (error) {

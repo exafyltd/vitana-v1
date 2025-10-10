@@ -1,18 +1,19 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
+import { useUserPreferences } from '@/hooks/useUserPreferences';
 
 interface LanguageContextType {
-  selectedLanguage: string | undefined;
-  setSelectedLanguage: (language: string | undefined) => void;
-  languageOptions: Array<{ label: string; value: string | undefined }>;
+  selectedLanguage: string;
+  setSelectedLanguage: (language: string) => void;
+  languageOptions: Array<{ label: string; value: string }>;
+  isLoading: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const languageOptions = [
-  { label: "Auto", value: undefined },
+  { label: "English (EN)", value: "en-US" },
   { label: "Serbian (SR)", value: "sr-RS" },
   { label: "German (DE)", value: "de-DE" },
-  { label: "English (EN)", value: "en-US" },
   { label: "Arabic (AR)", value: "ar-XA" },
   { label: "Spanish (ES)", value: "es-ES" },
   { label: "Russian (RU)", value: "ru-RU" },
@@ -20,14 +21,21 @@ export const languageOptions = [
 ];
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(undefined);
+  const { preferences, updatePreferences, isLoading } = useUserPreferences();
+
+  const selectedLanguage = preferences?.stt_language || "en-US";
+
+  const setSelectedLanguage = (language: string) => {
+    updatePreferences({ stt_language: language });
+  };
 
   return (
     <LanguageContext.Provider 
       value={{ 
         selectedLanguage, 
         setSelectedLanguage, 
-        languageOptions 
+        languageOptions,
+        isLoading
       }}
     >
       {children}

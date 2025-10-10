@@ -83,17 +83,18 @@ export default function VoiceAISettings() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="en-US">English (US)</SelectItem>
-                        <SelectItem value="en-GB">English (UK)</SelectItem>
-                        <SelectItem value="es-ES">Spanish</SelectItem>
-                        <SelectItem value="fr-FR">French</SelectItem>
-                        <SelectItem value="de-DE">German</SelectItem>
-                        <SelectItem value="it-IT">Italian</SelectItem>
-                        <SelectItem value="pt-BR">Portuguese (Brazil)</SelectItem>
-                        <SelectItem value="ja-JP">Japanese</SelectItem>
-                        <SelectItem value="zh-CN">Chinese (Simplified)</SelectItem>
+                        <SelectItem value="en-US">English (EN)</SelectItem>
+                        <SelectItem value="sr-RS">Serbian (SR)</SelectItem>
+                        <SelectItem value="de-DE">German (DE)</SelectItem>
+                        <SelectItem value="ar-XA">Arabic (AR)</SelectItem>
+                        <SelectItem value="es-ES">Spanish (ES)</SelectItem>
+                        <SelectItem value="ru-RU">Russian (RU)</SelectItem>
+                        <SelectItem value="zh-CN">Chinese (ZH)</SelectItem>
                       </SelectContent>
                     </Select>
+                    <p className="text-xs text-muted-foreground">
+                      This language is also used by the globe icon in the communication dock
+                    </p>
                   </div>
 
                   <div className="flex items-center justify-between">

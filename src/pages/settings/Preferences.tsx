@@ -16,10 +16,12 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
 import { ResetDefaultsPopup } from "@/components/ResetDefaultsPopup";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function Preferences() {
   const [activeTab, setActiveTab] = useState("appearance");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage();
 
   return (
     <AppLayout>
@@ -219,18 +221,22 @@ function Preferences() {
                     content={
                       <div className="space-y-4">
                         <div>
-                          <label className="text-sm font-medium mb-2 block">Language</label>
-                          <Select>
+                          <label className="text-sm font-medium mb-2 block">Voice & AI Language</label>
+                          <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
                             <SelectTrigger>
                               <SelectValue placeholder="Select language" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="en">English</SelectItem>
-                              <SelectItem value="es">Español</SelectItem>
-                              <SelectItem value="fr">Français</SelectItem>
-                              <SelectItem value="de">Deutsch</SelectItem>
+                              {languageOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            This language is used for voice recognition and AI responses
+                          </p>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
