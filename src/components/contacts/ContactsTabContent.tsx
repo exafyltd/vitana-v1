@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Plus, Users, MessageSquare, Loader2 } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { useContacts } from "@/hooks/useContacts";
 import AddContactDialog from "./AddContactDialog";
@@ -53,9 +53,6 @@ export default function ContactsTabContent({ onStartConversation, messageContext
     setSearchQuery(query);
   }, []);
 
-  const handleImportFromConversations = useCallback(async () => {
-    await importFromConversations();
-  }, [importFromConversations]);
 
   // Filter contacts based on search
   const filteredPlatformContacts = searchQuery
@@ -81,19 +78,6 @@ export default function ContactsTabContent({ onStartConversation, messageContext
         <Button onClick={() => setShowAddContact(true)} className="flex-1">
           <Plus className="w-4 h-4 mr-2" />
           Add Contact
-        </Button>
-        <Button 
-          onClick={handleImportFromConversations} 
-          variant="outline"
-          size="icon"
-          disabled={isLoading}
-          title="Import from Conversations"
-        >
-          {isLoading ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <MessageSquare className="w-4 h-4" />
-          )}
         </Button>
         <ImportContactsButton onImport={handleImportContacts} />
       </div>
