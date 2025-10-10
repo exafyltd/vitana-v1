@@ -99,7 +99,9 @@ export function useContacts() {
       const { data: participants, error: fetchError } = await supabase
         .rpc('get_conversation_participants', { p_user_id: user.id });
       
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        throw new Error(`RPC Error: ${fetchError.message}`);
+      }
       
       if (!participants || participants.length === 0) {
         toast({
@@ -109,56 +111,132 @@ export function useContacts() {
         return;
       }
       
-      // Filter out existing contacts to avoid duplicates
-      const existingContactUserIds = contacts
-        .filter(c => c.contact_user_id)
-        .map(c => c.contact_user_id);
-      
-      const newParticipants = participants.filter(
-        (p: any) => !existingContactUserIds.includes(p.user_id)
+      // Build lookup maps for existing contacts
+      const existingByUserId = new Map(
+        contacts
+          .filter(c => c.contact_user_id)
+          .map(c => [c.contact_user_id!, c])
       );
       
-      if (newParticipants.length === 0) {
-        toast({
-          title: "Already Added",
-          description: "All conversation participants are already in your contacts.",
-        });
-        return;
+      const existingByEmail = new Map(
+        contacts
+          .filter(c => c.contact_email)
+          .map(c => [c.contact_email!.toLowerCase(), c])
+      );
+      
+      const existingByPhone = new Map(
+        contacts
+          .filter(c => c.contact_phone)
+          .map(c => [c.contact_phone!.replace(/\D/g, ''), c])
+      );
+      
+      // Categorize participants into updates vs new inserts
+      const toUpdate: Array<{ contactId: string; participant: any }> = [];
+      const toInsert: any[] = [];
+      
+      for (const p of participants) {
+        const normalizedEmail = p.email?.toLowerCase();
+        const normalizedPhone = p.phone?.replace(/\D/g, '');
+        
+        // Check if already exists by user_id, email, or phone
+        let existingContact = existingByUserId.get(p.user_id);
+        
+        if (!existingContact && normalizedEmail) {
+          existingContact = existingByEmail.get(normalizedEmail);
+        }
+        
+        if (!existingContact && normalizedPhone) {
+          existingContact = existingByPhone.get(normalizedPhone);
+        }
+        
+        if (existingContact) {
+          // Upgrade existing contact if not yet on platform
+          if (!existingContact.is_on_platform || !existingContact.contact_user_id) {
+            toUpdate.push({ contactId: existingContact.id, participant: p });
+          }
+        } else {
+          // Truly new contact
+          toInsert.push(p);
+        }
       }
       
-      // Bulk insert new contacts
-      const contactsToInsert = newParticipants.map((p: any) => ({
-        user_id: user.id,
-        contact_user_id: p.user_id,
-        contact_name: p.display_name || p.full_name || 'Unknown',
-        contact_phone: p.phone,
-        contact_email: p.email,
-        is_on_platform: true,
-        metadata: {
-          imported_from: 'conversations',
-          imported_at: new Date().toISOString(),
-          last_message_at: p.last_message_at
+      let updatedCount = 0;
+      let addedCount = 0;
+      
+      // Update existing contacts to mark them as on-platform
+      if (toUpdate.length > 0) {
+        for (const { contactId, participant } of toUpdate) {
+          const { error: updateError } = await supabase
+            .from('contacts')
+            .update({
+              is_on_platform: true,
+              contact_user_id: participant.user_id,
+              contact_name: participant.display_name || participant.full_name || 'Unknown',
+              metadata: {
+                imported_from: 'conversations',
+                imported_at: new Date().toISOString(),
+                last_message_at: participant.last_message_at,
+              },
+            })
+            .eq('id', contactId)
+            .eq('user_id', user.id);
+          
+          if (!updateError) {
+            updatedCount++;
+          }
         }
-      }));
+      }
       
-      const { error: insertError } = await supabase
-        .from('contacts')
-        .insert(contactsToInsert);
-      
-      if (insertError) throw insertError;
+      // Insert truly new contacts
+      if (toInsert.length > 0) {
+        const contactsToInsert = toInsert.map((p: any) => ({
+          user_id: user.id,
+          contact_user_id: p.user_id,
+          contact_name: p.display_name || p.full_name || 'Unknown',
+          contact_phone: p.phone,
+          contact_email: p.email,
+          is_on_platform: true,
+          metadata: {
+            imported_from: 'conversations',
+            imported_at: new Date().toISOString(),
+            last_message_at: p.last_message_at,
+          },
+        }));
+        
+        const { error: insertError } = await supabase
+          .from('contacts')
+          .insert(contactsToInsert);
+        
+        if (insertError) {
+          throw new Error(`Insert Error: ${insertError.message}`);
+        }
+        
+        addedCount = toInsert.length;
+      }
       
       // Refresh contacts list
       await fetchContacts();
       
-      toast({
-        title: "Contacts Imported",
-        description: `Added ${newParticipants.length} contact${newParticipants.length > 1 ? 's' : ''} from your conversations.`,
-      });
+      if (addedCount === 0 && updatedCount === 0) {
+        toast({
+          title: "Already Added",
+          description: "All conversation participants are already in your contacts.",
+        });
+      } else {
+        const parts = [];
+        if (addedCount > 0) parts.push(`${addedCount} added`);
+        if (updatedCount > 0) parts.push(`${updatedCount} updated`);
+        
+        toast({
+          title: "Contacts Imported",
+          description: parts.join(', ') + ' from your conversations.',
+        });
+      }
     } catch (error) {
       console.error('Error importing from conversations:', error);
       toast({
         title: "Import Failed",
-        description: "Could not import contacts from conversations.",
+        description: error instanceof Error ? error.message : "Could not import contacts from conversations.",
         variant: "destructive",
       });
     } finally {
