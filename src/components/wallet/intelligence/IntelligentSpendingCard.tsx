@@ -24,7 +24,7 @@ const mockInsights: SpendingInsight[] = [
   {
     id: "1",
     title: "Optimal Purchase Timing",
-    description: "Wait 3 days for 15% better VTN conversion rates",
+    description: "Wait 3 days for 15% better VTNA conversion rates",
     impact: "positive",
     category: "timing",
     actionable: true,
@@ -101,7 +101,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
             Spending Intelligence
           </CardTitle>
           <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            {totalSavings} VTN Savings Available
+            {totalSavings} VTNA Savings Available
           </Badge>
         </div>
       </CardHeader>
@@ -151,7 +151,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
                   {insight.savings && (
                     <div className="flex items-center gap-1 text-xs text-emerald-600">
                       <DollarSign className="h-3 w-3" />
-                      Save {insight.savings} VTN
+                      Save {insight.savings} VTNA
                     </div>
                   )}
                 </div>
@@ -167,7 +167,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
             <span className="text-sm font-medium">Market Timing Alert</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            VTN conversion rates are expected to increase by 12% in the next 48 hours
+            VTNA conversion rates are expected to increase by 12% in the next 48 hours
           </p>
           <Button size="sm" variant="outline" className="text-xs h-7">
             Set Reminder

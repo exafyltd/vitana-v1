@@ -18,7 +18,7 @@ export interface ExchangeCalculation {
   toCurrency: string;
 }
 
-// Vitana System exchange rates - VTNA is growing with system adoption
+// Vitana System exchange rates - VTNA tokens are growing with system adoption
 export const getCurrentExchangeRates = (): ExchangeRate[] => [
   {
     from: 'USD',

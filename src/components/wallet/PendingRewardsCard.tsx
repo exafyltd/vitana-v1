@@ -16,22 +16,22 @@ export function PendingRewardsCard() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="text-center py-2">
-          <div className="text-3xl font-bold text-amber-600 mb-1">487 VTN</div>
+          <div className="text-3xl font-bold text-amber-600 mb-1">487 VTNA</div>
           <div className="text-sm text-muted-foreground">≈ $24.35 value</div>
         </div>
         
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span>Health tracking</span>
-            <span className="text-amber-600">+125 VTN</span>
+            <span className="text-amber-600">+125 VTNA</span>
           </div>
           <div className="flex justify-between">
             <span>Data sharing</span>
-            <span className="text-amber-600">+200 VTN</span>
+            <span className="text-amber-600">+200 VTNA</span>
           </div>
           <div className="flex justify-between">
             <span>Community engagement</span>
-            <span className="text-amber-600">+162 VTN</span>
+            <span className="text-amber-600">+162 VTNA</span>
           </div>
         </div>
         

@@ -48,7 +48,7 @@ interface UserContext {
   economic: {
     balances: {
       USD: number;
-      VTN: number;
+      VTNA: number;
       CREDITS: number;
     };
     recentTransactions: Array<{

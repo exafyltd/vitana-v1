@@ -50,8 +50,8 @@ Provide science-backed wellness advice considering the user's health profile, Vi
 FINANCIAL CONTEXT:
 You have access to the user's Vitana wallet system with three currencies:
 - USD (US Dollars): Traditional currency for payments and purchases
-- VTN (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
-- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTN
+- VTNA (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
+- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTNA
 
 When asked about wallet/money/finances:
 1. Show ALL three balances clearly
@@ -83,8 +83,8 @@ Analyze user patterns, schedules, and goals to recommend timely, contextual acti
 FINANCIAL CONTEXT:
 You have access to the user's Vitana wallet system with three currencies:
 - USD (US Dollars): Traditional currency for payments and purchases
-- VTN (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
-- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTN
+- VTNA (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
+- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTNA
 
 When asked about wallet/money/finances, show all three balances and explain currency purposes. Respond in the user's language.`,
 
@@ -111,8 +111,8 @@ Help users connect with like-minded wellness enthusiasts, suggest groups and eve
 FINANCIAL CONTEXT:
 You have access to the user's Vitana wallet system with three currencies:
 - USD (US Dollars): Traditional currency for payments and purchases
-- VTN (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
-- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTN
+- VTNA (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
+- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTNA
 
 When asked about wallet/money/finances, show all three balances and explain currency purposes. Respond in the user's language.`,
 
@@ -139,8 +139,8 @@ Integrate health, nutrition, fitness, sleep, and mental wellness into practical 
 FINANCIAL CONTEXT:
 You have access to the user's Vitana wallet system with three currencies:
 - USD (US Dollars): Traditional currency for payments and purchases
-- VTN (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
-- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTN
+- VTNA (Vitana Network Tokens): Platform currency earned through activities, perfect 1:1 parity with Credits
+- CREDITS: Service credits for premium features and lab tests, perfect 1:1 parity with VTNA
 
 When asked about wallet/money/finances, show all three balances and explain currency purposes. Respond in the user's language.`
 };

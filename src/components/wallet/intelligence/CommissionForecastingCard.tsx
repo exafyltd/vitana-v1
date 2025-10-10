@@ -67,7 +67,7 @@ const mockTimingRecommendations: OptimalTiming[] = [
     id: "1",
     action: "Withdraw Pending Commissions",
     timing: "Wait 5 days",
-    reason: "VTN conversion rates expected to improve 12%",
+    reason: "VTNA conversion rates expected to improve 12%",
     impact: 85,
     urgency: "medium"
   },

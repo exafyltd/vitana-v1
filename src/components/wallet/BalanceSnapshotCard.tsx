@@ -25,8 +25,8 @@ export function BalanceSnapshotCard() {
             <span className="font-medium text-amber-600">$124.50</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">VTN Tokens</span>
-            <span className="font-medium text-purple-600">1,247 VTN</span>
+            <span className="text-sm text-muted-foreground">VTNA Tokens</span>
+            <span className="font-medium text-purple-600">1,247 VTNA</span>
           </div>
         </div>
         
