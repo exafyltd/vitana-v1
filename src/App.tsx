@@ -88,9 +88,7 @@ import MyBiology from "./pages/health/MyBiology";
 
 // Community sub-pages
 import MyGroups from "./pages/community/MyGroups";
-import Feed from "./pages/community/Feed";
-import CommunityEvents from "./pages/community/Events";
-import Meetups from "./pages/community/Meetups2";
+import EventsAndMeetups from "./pages/community/EventsAndMeetups";
 import MyBusiness from "./pages/community/MyBusinessRenamed";
 import MediaHub from "./pages/community/MediaHub";
 import LiveRooms from "./pages/community/LiveRooms";
@@ -360,16 +358,18 @@ const App = () => {
               <GroupDetail />
             </AuthGuard>
           } />
-          <Route path="/comm/feed" element={
+          {/* New consolidated Events & MeetUps route */}
+          <Route path="/comm/events-meetups" element={
             <AuthGuard>
-              <Feed />
+              <EventsAndMeetups />
             </AuthGuard>
           } />
-          <Route path="/comm/events" element={
-            <AuthGuard>
-              <CommunityEvents />
-            </AuthGuard>
-          } />
+          
+          {/* Redirect old routes to new consolidated route */}
+          <Route path="/comm/feed" element={<Navigate to="/comm/events-meetups?tab=following" replace />} />
+          <Route path="/comm/events" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />
+          <Route path="/comm/meetups" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />
+          
           <Route path="/comm/live-rooms" element={
             <AuthGuard>
               <LiveRooms />
@@ -390,16 +390,12 @@ const App = () => {
               <MyBusiness />
             </AuthGuard>
           } />
-          <Route path="/comm/meetups" element={
-            <AuthGuard>
-              <Meetups />
-            </AuthGuard>
-          } />
           
           {/* Redirect old community routes */}
           <Route path="/community/my-groups" element={<Navigate to="/comm/my-groups" replace />} />
-          <Route path="/community/feed" element={<Navigate to="/comm/feed" replace />} />
-          <Route path="/community/events" element={<Navigate to="/comm/events" replace />} />
+          <Route path="/community/feed" element={<Navigate to="/comm/events-meetups?tab=following" replace />} />
+          <Route path="/community/events" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />
+          <Route path="/community/meetups" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />
           <Route path="/community/live-rooms" element={<Navigate to="/comm/live-rooms" replace />} />
           <Route path="/community/media-hub" element={<Navigate to="/comm/media-hub" replace />} />
           <Route path="/community/my-business" element={<Navigate to="/comm/my-business" replace />} />
