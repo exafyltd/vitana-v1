@@ -445,7 +445,8 @@ const EventsAndMeetups = () => {
       {/* Create Event Popup */}
       <CreateEventPopup 
         isOpen={createEventOpen} 
-        onClose={() => setCreateEventOpen(false)} 
+        onClose={() => setCreateEventOpen(false)}
+        eventContext="community"
       />
 
       {/* Create MeetUp Popup */}

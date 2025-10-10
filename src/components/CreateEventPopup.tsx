@@ -8,22 +8,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
+import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { supabase } from "@/integrations/supabase/client";
-import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 
 interface CreateEventPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  threadId?: string;
+  eventContext?: 'personal' | 'community';
 }
 
-export function CreateEventPopup({ isOpen, onClose, threadId }: CreateEventPopupProps) {
+export function CreateEventPopup({ isOpen, onClose, eventContext }: CreateEventPopupProps) {
   const { toast } = useToast();
-  const { sendMessage } = useHybridMessages();
   const { addEvent } = useCalendarEvents();
-  const [showPaymentDemo, setShowPaymentDemo] = useState(false);
+  const { createEvent } = useCommunityEvents();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
@@ -123,6 +121,16 @@ export function CreateEventPopup({ isOpen, onClose, threadId }: CreateEventPopup
     setIsSubmitting(true);
     
     try {
+      // Create ISO datetime string
+      const startTime = new Date(`${formData.date}T${formData.time}`).toISOString();
+      
+      // Calculate end time if provided
+      let endTime: string | undefined = undefined;
+      if (formData.endTime) {
+        const endDate = formData.endDate || formData.date;
+        endTime = new Date(`${endDate}T${formData.endTime}`).toISOString();
+      }
+
       // Upload event image to Supabase Storage
       let uploadedImageUrl: string | undefined;
       if (selectedImage) {
@@ -158,228 +166,92 @@ export function CreateEventPopup({ isOpen, onClose, threadId }: CreateEventPopup
         }
       }
 
-      const messageContent = `📅 **Event Invitation**: ${formData.title}
+      // If community context: create in both tables (community + personal calendar)
+      if (eventContext === 'community') {
+        // 1. Create in global_community_events (visible to everyone)
+        const communityEventData = {
+          title: formData.title,
+          description: formData.description || undefined,
+          event_type: 'event',
+          location: formData.isVirtual ? undefined : formData.location || undefined,
+          virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
+          start_time: startTime,
+          end_time: endTime,
+          max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
+          image_url: uploadedImageUrl,
+        };
 
-${formData.description ? `${formData.description}\n` : ''}📍 **When**: ${formData.date}${formData.time ? ` at ${formData.time}` : ''}
-${formData.location ? `📍 **Where**: ${formData.location}\n` : ''}${formData.capacity ? `👥 **Capacity**: ${formData.capacity} people\n` : ''}${formData.isPaid ? `💰 **Price**: $${formData.price}\n` : ''}
-Please respond to confirm your attendance!`;
-
-      // Helper to create ISO date strings with robust time parsing
-      const composeIso = (dateStr: string, timeStr?: string) => {
-        const dt = new Date(dateStr);
-        if (timeStr) {
-          // Handle HH:mm or HH:mm:ss format
-          const timeParts = timeStr.split(':').map(Number);
-          if (timeParts.length >= 2) {
-            dt.setHours(timeParts[0], timeParts[1], timeParts[2] || 0, 0);
-          }
-        }
-        const isoString = dt.toISOString();
-        console.log(`📅 Composed ISO: ${dateStr} + ${timeStr} = ${isoString}`);
-        return isoString;
-      };
-
-      // Helper to validate UUID
-      const isValidUuid = (uuid?: string) => {
-        if (!uuid) return false;
-        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-        return uuidRegex.test(uuid);
-      };
-
-      let sentMessageId: string | undefined;
-
-      // Only send message if we have a valid threadId prop
-      if (threadId && isValidUuid(threadId)) {
-        try {
-          console.log('Creating calendar invite message...');
-          const sentMessage = await sendMessage({
-            context: 'global' as const,
-            threadId: threadId,
-            content: messageContent,
-            type: 'calendar_invite' as any,
-            contentData: {
-              eventType: 'calendar_invite',
-              ...formData
-            },
-            actionButtons: [
-              {
-                label: 'Accept',
-                action: 'calendar_accept',
-                data: {
-                  title: formData.title,
-                  description: formData.description,
-                  location: formData.location,
-                  start_time: composeIso(formData.date, formData.time),
-                  end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
-                  event_type: 'personal',
-                  status: 'confirmed',
-                  priority: 'medium'
-                }
-              },
-              {
-                label: 'Decline', 
-                action: 'calendar_decline',
-                data: {
-                  title: formData.title,
-                  description: formData.description,
-                  location: formData.location,
-                  start_time: composeIso(formData.date, formData.time),
-                  end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
-                  event_type: 'personal',
-                  status: 'confirmed',
-                  priority: 'medium'
-                }
-              },
-              {
-                label: 'Maybe',
-                action: 'calendar_maybe',
-                data: {
-                  title: formData.title,
-                  description: formData.description,
-                  location: formData.location,
-                  start_time: composeIso(formData.date, formData.time),
-                  end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
-                  event_type: 'personal',
-                  status: 'confirmed',
-                  priority: 'medium'
-                }
-              }
-            ]
+        const result = await createEvent(communityEventData);
+        
+        if (!result.success) {
+          toast({
+            title: "Error Creating Event",
+            description: "There was an issue creating your event. Please try again.",
+            variant: "destructive",
           });
-
-          if (sentMessage?.id && isValidUuid(sentMessage.id)) {
-            sentMessageId = sentMessage.id;
-            console.log('✅ Calendar invite message sent:', sentMessageId);
-          }
-        } catch (messageError) {
-          console.warn('⚠️ Failed to send calendar invite message:', messageError);
-          // Continue with event creation even if message fails
+          return;
         }
-      } else {
-        console.log('⚠️ No valid threadId provided, skipping message send');
-      }
 
-      // Now create the sender's calendar event
-      console.log('Creating sender calendar event...');
-      
-      // Sanitize attendees_count: convert to integer or null
-      const sanitizedAttendeesCount = formData.capacity
-        ? (parseInt(formData.capacity, 10) || null)
-        : null;
-      
-      // Build metadata only with available fields
-      const eventMetadata: Record<string, any> = {};
-      if (uploadedImageUrl) {
-        eventMetadata.image_url = uploadedImageUrl;
-      }
-      if (formData.category) {
-        eventMetadata.category = formData.category.trim();
-      }
-      
-      const senderEventData = {
-        title: formData.title,
-        description: formData.description || null,
-        start_time: composeIso(formData.date, formData.time),
-        end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : null,
-        location: formData.location || null,
-        event_type: 'personal' as const,
-        status: 'confirmed' as const,
-        priority: 'medium' as const,
-        is_recurring: false,
-        attendees_count: sanitizedAttendeesCount,
-        has_rewards: false,
-        source_type: sentMessageId ? ('invite' as const) : ('manual' as const),
-        user_id: '', // Will be overridden by addEvent hook
-        ...(sentMessageId && { source_message_id: sentMessageId }),
-        metadata: Object.keys(eventMetadata).length > 0 ? eventMetadata : null,
-      };
+        // 2. Also add to personal calendar (so creator sees it in their calendar)
+        const personalEventData = {
+          title: formData.title,
+          description: formData.description || null,
+          start_time: startTime,
+          end_time: endTime || null,
+          location: formData.location || null,
+          event_type: 'community' as const,
+          status: 'confirmed' as const,
+          priority: 'medium' as const,
+          is_recurring: false,
+          source_type: 'manual' as const,
+          user_id: '',
+          metadata: uploadedImageUrl ? { image_url: uploadedImageUrl } : null,
+        };
 
-      console.log('📅 Event payload:', JSON.stringify(senderEventData, null, 2));
+        try {
+          await addEvent(personalEventData, { showToast: false });
+        } catch (personalError) {
+          console.warn('⚠️ Failed to add event to personal calendar:', personalError);
+          // Continue even if personal calendar fails
+        }
 
-      try {
-        const createdEvent = await addEvent(senderEventData, { showToast: false });
-        console.log('✅ Sender calendar event created:', createdEvent);
+        toast({
+          title: "Event Created!",
+          description: "Your event is now visible to the community and added to your calendar.",
+        });
 
         // Refresh calendar events
         window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
 
+        onClose();
+        resetForm();
+      } else {
+        // Personal event: only add to calendar_events
+        const personalEventData = {
+          title: formData.title,
+          description: formData.description || null,
+          start_time: startTime,
+          end_time: endTime || null,
+          location: formData.location || null,
+          event_type: 'personal' as const,
+          status: 'confirmed' as const,
+          priority: 'medium' as const,
+          is_recurring: false,
+          source_type: 'manual' as const,
+          user_id: '',
+          metadata: uploadedImageUrl ? { image_url: uploadedImageUrl } : null,
+        };
+
+        await addEvent(personalEventData, { showToast: false });
+
         toast({
           title: 'Event Created!',
-          description: 'Your calendar invite has been sent and added to your calendar.',
+          description: 'Event has been added to your calendar.',
         });
-      } catch (addEventError: any) {
-        console.error('❌ Failed to add sender event to calendar:', addEventError);
-        
-        // Extract error details
-        const errorMessage = addEventError?.message || 'Unknown error';
-        const errorCode = addEventError?.code;
-        const errorDetails = addEventError?.details;
-        
-        console.log('❌ Supabase error details:', { errorMessage, errorCode, errorDetails });
-        
-        // Try fallback with minimal required fields
-        console.log('⚠️ Attempting fallback insert with minimal fields...');
-        try {
-          const { data: { user } } = await supabase.auth.getUser();
-          
-          if (!user) {
-            throw new Error('User not authenticated');
-          }
-          
-          const fallbackEventData = {
-            user_id: user.id,
-            title: formData.title,
-            start_time: composeIso(formData.date, formData.time),
-            event_type: 'personal',
-            status: 'confirmed',
-            priority: 'medium',
-            is_recurring: false,
-            location: formData.location || null,
-            description: formData.description || null,
-            attendees_count: null,
-            has_rewards: false,
-            metadata: null,
-          };
-          
-          console.log('📅 Fallback payload:', JSON.stringify(fallbackEventData, null, 2));
-          
-          const { data: fallbackEvent, error: fallbackError } = await supabase
-            .from('calendar_events')
-            .insert(fallbackEventData)
-            .select()
-            .single();
-          
-          if (fallbackError) {
-            throw fallbackError;
-          }
-          
-          console.log('✅ Fallback event created:', fallbackEvent);
-          
-          // Refresh calendar events
-          window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
-          
-          toast({
-            title: 'Event Created',
-            description: 'Event added with basic details. You can edit it later to add image/category.',
-          });
-        } catch (fallbackError: any) {
-          console.error('❌ Fallback insert also failed:', fallbackError);
-          
-          const fallbackErrorMessage = fallbackError?.message || 'Unknown error';
-          const fallbackErrorCode = fallbackError?.code;
-          
-          toast({
-            title: 'Failed to Create Event',
-            description: `Error: ${fallbackErrorMessage}${fallbackErrorCode ? ` (${fallbackErrorCode})` : ''}`,
-            variant: 'destructive',
-          });
-          return;
-        }
-      }
 
-      if (formData.isPaid && formData.price && parseFloat(formData.price) > 0) {
-        setShowPaymentDemo(true);
-      } else {
+        // Refresh calendar events
+        window.dispatchEvent(new CustomEvent('calendar-events:refresh'));
+
         onClose();
         resetForm();
       }
@@ -625,7 +497,7 @@ Please respond to confirm your attendance!`;
               Cancel
             </Button>
             <Button 
-              onClick={handleSubmit} 
+               onClick={handleSubmit} 
               className="flex-1"
               disabled={!formData.title || !formData.date || !formData.time || isSubmitting}
             >
@@ -634,18 +506,6 @@ Please respond to confirm your attendance!`;
           </div>
         </div>
       </DialogContent>
-      
-      {/* Demo Payment Request for Paid Events */}
-      <PaymentRequestPopup
-        isOpen={showPaymentDemo}
-        onClose={() => {
-          setShowPaymentDemo(false);
-          onClose();
-        }}
-        initialAmount={formData.price}
-        initialDescription={`Event registration: ${formData.title}`}
-        paymentType="event"
-      />
     </Dialog>
   );
 }
