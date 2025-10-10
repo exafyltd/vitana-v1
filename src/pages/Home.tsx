@@ -18,6 +18,7 @@ import { useProfile } from "@/context/ProfileProvider";
 import { useEnhancedMotivationalMessage } from "@/hooks/useEnhancedMotivationalMessage";
 import { homeNavigation } from "@/config/navigation";
 import { CommunityEventsCard } from "@/components/home/CommunityEventsCard";
+import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
 
 // Mock data for Today and Guide screens
 const todayScheduledEvents = [
@@ -279,6 +280,9 @@ export default function Home() {
           description="Your wellness journey starts today."
           emoji={emoji}
         />
+
+        {/* Priority of the Day Banner */}
+        <PriorityOfDayBanner />
 
         {/* Utility Action Button */}
         <UtilityActionButton>
