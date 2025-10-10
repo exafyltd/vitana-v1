@@ -353,6 +353,7 @@ export default function Home() {
                     showReward={true}
                     rewardPoints={3}
                     rewardDescription="Earn credits for completing meditation"
+                    rewardPosition="bottom-right"
                     featured={true}
                     className="h-full"
                   />

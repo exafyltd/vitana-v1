@@ -35,6 +35,7 @@ interface NewsCardProps {
   rewardPoints?: number;
   rewardDescription?: string;
   showReward?: boolean;
+  rewardPosition?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
   eventId?: string; // For event participation
   "data-event-id"?: string; // For deep linking
 }
@@ -62,6 +63,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     rewardPoints,
     rewardDescription = "Earn credits",
     showReward = false,
+    rewardPosition = "top-right",
     eventId,
     "data-event-id": dataEventId
   }, ref) => {
@@ -206,7 +208,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           <RewardDot 
             points={rewardPoints}
             description={rewardDescription}
-            position="bottom-right"
+            position={rewardPosition}
             size="md"
           />
         )}
