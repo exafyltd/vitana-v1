@@ -291,14 +291,15 @@ const EventsAndMeetups = () => {
   const canEdit = selectedEventData && user && selectedEventData.created_by === user.id;
 
   return (
-    <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+    <>
       <SEO 
         title="Events & MeetUps" 
         description="Discover and join community events and casual meetups"
       />
       <AppLayout>
         <SubNavigation items={communityNavigation} />
-        <div className="flex-1 overflow-hidden">
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="flex-1 overflow-hidden">
           <StandardHeader
             title="Events & MeetUps"
             description="Discover formal events and casual meetups in your community"
@@ -389,6 +390,7 @@ const EventsAndMeetups = () => {
             </SplitBar>
           </div>
         </div>
+        </div>
       </AppLayout>
 
       {/* Create Event Popup */}
@@ -432,7 +434,7 @@ const EventsAndMeetups = () => {
           isMobile={isMobile}
         />
       )}
-    </div>
+    </>
   );
 };
 
