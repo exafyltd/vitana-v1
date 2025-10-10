@@ -340,7 +340,7 @@ export default function Home() {
               </div>
 
               {/* Row 2: Media Content with Pulsing Highlight */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+              <div className="grid grid-cols-12 gap-4 mb-8 relative z-10">
                 <div className="col-span-3">
                   <PulsingHighlightCard
                     title={todayMediaContent[0]?.title || ""}
@@ -355,7 +355,7 @@ export default function Home() {
                     rewardDescription="Earn credits for completing meditation"
                     rewardPosition="bottom-right"
                     featured={true}
-                    className="h-full"
+                    className="h-[280px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -370,7 +370,7 @@ export default function Home() {
                     showReward={true}
                     rewardPoints={2}
                     rewardDescription="Earn credits for workout playlist"
-                    className="h-full"
+                    className="h-[280px]"
                   />
                 </div>
                 <div className="col-span-6">
@@ -385,7 +385,7 @@ export default function Home() {
                     showReward={true}
                     rewardPoints={4}
                     rewardDescription="Earn credits for cooking tutorial"
-                    className="h-full"
+                    className="h-[280px]"
                   />
                 </div>
               </div>
