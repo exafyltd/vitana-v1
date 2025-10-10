@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AutopilotAction, AutopilotState, AutopilotPriority, ExecutionResult, AutopilotActionStatus } from "@/types/autopilot";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 
 // Mock data generator with enhanced motivational actions
 const generateMockActions = (): AutopilotAction[] => [
@@ -86,13 +87,42 @@ const generateMockActions = (): AutopilotAction[] => [
 
 export function useAutopilot() {
   const { logActivity } = useActivityLogger();
+  const { preferences } = useUserPreferences();
   const [state, setState] = useState<AutopilotState>({
     actions: generateMockActions(),
     isExecuting: false,
     lastUpdate: new Date()
   });
 
-  const pendingActions = state.actions.filter(action => action.status === "pending");
+  // Filter actions based on user preferences
+  const filterActionsByPreferences = (actions: AutopilotAction[]) => {
+    if (!preferences?.autopilot_enabled) return [];
+    
+    let filtered = actions.filter(action => action.status === "pending");
+    
+    // Filter by enabled categories
+    if (preferences.autopilot_categories) {
+      filtered = filtered.filter(action => {
+        const categoryKey = action.category as keyof typeof preferences.autopilot_categories;
+        return preferences.autopilot_categories[categoryKey] ?? true;
+      });
+    }
+    
+    // Filter by priority
+    if (preferences.autopilot_priority_filter === 'high') {
+      filtered = filtered.filter(action => action.priority === 'high');
+    } else if (preferences.autopilot_priority_filter === 'high_medium') {
+      filtered = filtered.filter(action => action.priority === 'high' || action.priority === 'medium');
+    }
+    
+    // Respect max actions per day
+    const maxActions = preferences.autopilot_max_actions_per_day || 5;
+    filtered = filtered.slice(0, maxActions);
+    
+    return filtered;
+  };
+
+  const pendingActions = filterActionsByPreferences(state.actions);
   const pendingCount = pendingActions.length;
   const selectedActions = pendingActions.filter(action => action.selected);
 

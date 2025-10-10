@@ -5,6 +5,8 @@ import { RewardDot } from "@/components/ui/reward-dot";
 import { Plane, Brain, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { withCardId } from "@/lib/withCardId";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useNavigate } from "react-router-dom";
 interface AutopilotWidgetProps {
   title?: string;
   sectionName?: string;
@@ -23,11 +25,19 @@ function AutopilotWidgetBase({
   onAction,
   variant = "card"
 }: AutopilotWidgetProps) {
+  const { preferences } = useUserPreferences();
+  const navigate = useNavigate();
+  
+  // Filter suggestions based on user preferences
+  const filteredSuggestions = preferences?.autopilot_enabled 
+    ? suggestions 
+    : [];
+
   if (variant === "mini") {
     return <div className="flex items-center gap-2 p-2 rounded-lg bg-gradient-to-r from-calendar-primary/10 to-calendar-secondary/10 border border-calendar-primary/20">
         <Plane className="w-4 h-4 text-calendar-primary" />
         <span className="text-sm font-medium text-foreground">Autopilot</span>
-        <Switch checked={isEnabled} onCheckedChange={onToggle} />
+        <Switch checked={preferences?.autopilot_enabled ?? isEnabled} onCheckedChange={onToggle} />
       </div>;
   }
   if (variant === "inline") {
@@ -52,16 +62,24 @@ function AutopilotWidgetBase({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant={isEnabled ? "default" : "secondary"} className="text-xs">
-              {isEnabled ? "Active" : "Paused"}
+            <Badge variant={preferences?.autopilot_enabled ?? isEnabled ? "default" : "secondary"} className="text-xs">
+              {preferences?.autopilot_enabled ?? isEnabled ? "Active" : "Paused"}
             </Badge>
-            <Switch checked={isEnabled} onCheckedChange={onToggle} />
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              onClick={() => navigate('/settings/autopilot')}
+              className="h-8 w-8 p-0"
+            >
+              <Settings className="w-4 h-4" />
+            </Button>
+            <Switch checked={preferences?.autopilot_enabled ?? isEnabled} onCheckedChange={onToggle} />
           </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="space-y-2">
-          {suggestions.map((suggestion, index) => <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+          {filteredSuggestions.map((suggestion, index) => <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-background/50">
               <div className="flex items-center gap-2">
                 <Brain className="w-4 h-4 text-calendar-primary" />
                 <span className="text-sm text-foreground">{suggestion}</span>
@@ -71,9 +89,9 @@ function AutopilotWidgetBase({
               </Button>
             </div>)}
         </div>
-        {suggestions.length === 0 && <div className="text-center py-4 text-muted-foreground">
+        {filteredSuggestions.length === 0 && <div className="text-center py-4 text-muted-foreground">
             <Brain className="w-8 h-8 mx-auto mb-2 opacity-50" />
-            <p className="text-sm">All optimized! 🎯</p>
+            <p className="text-sm">{preferences?.autopilot_enabled ? "All optimized! 🎯" : "Enable Autopilot to see suggestions"}</p>
           </div>}
       </CardContent>
     </Card>;

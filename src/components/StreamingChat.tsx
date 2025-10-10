@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast"
 import { ApiKeySettingsModal } from "@/components/chat/ApiKeySettingsModal"
 import { supabase } from "@/integrations/supabase/client"
 import { useLanguage } from "@/contexts/LanguageContext"
+import { useUserPreferences } from "@/hooks/useUserPreferences"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +35,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage()
   const { toast } = useToast()
+  const { preferences } = useUserPreferences()
 
   const isStreaming = isAudioActive || isVideoActive
 
@@ -125,8 +127,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       // Start recording with instant client-side STT
       try {
         await aiVoiceService.startRecording({
-          useClientSTT: true, // Enable instant transcription
-          language: selectedLanguage
+          useClientSTT: preferences?.stt_instant_enabled ?? true,
+          language: preferences?.stt_language || selectedLanguage
         })
         setIsRecording(true)
       } catch (error) {

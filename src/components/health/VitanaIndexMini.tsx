@@ -5,6 +5,8 @@ import { TrendingUp, TrendingDown, Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { useVitanaIndexConfig } from "@/hooks/useVitanaIndexConfig";
+import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 
 interface VitanaIndexMiniProps {
   score?: number;
@@ -22,6 +24,7 @@ function VitanaIndexMiniBase({
   onClick
 }: VitanaIndexMiniProps) {
   const navigate = useNavigate();
+  const { config } = useVitanaIndexConfig();
   
   const handleClick = () => {
     if (onClick) {
@@ -32,16 +35,23 @@ function VitanaIndexMiniBase({
   };
 
   const getScoreColor = (score: number) => {
+    if (config?.scoring_tiers) {
+      const tier = config.scoring_tiers.find(t => score >= t.min && score <= t.max);
+      if (tier) return `from-[${tier.color}] to-[${tier.color}]/80`;
+    }
+    // Fallback to default logic
     if (score >= 80) return "from-calendar-success to-calendar-accent";
     if (score >= 60) return "from-calendar-accent to-calendar-secondary";
     return "from-calendar-secondary to-destructive";
   };
 
   const getScoreLabel = (score: number) => {
-    if (score >= 80) return "Excellent";
-    if (score >= 60) return "Good";
-    if (score >= 40) return "Fair";
-    return "Needs Attention";
+    if (config?.scoring_tiers) {
+      const tier = config.scoring_tiers.find(t => score >= t.min && score <= t.max);
+      if (tier) return tier.label;
+    }
+    // Fallback to default logic
+    return getVitanaIndexTier(score).label;
   };
 
   if (variant === "badge") {
