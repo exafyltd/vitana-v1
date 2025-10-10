@@ -49,7 +49,6 @@ import EditProfilePage from "./pages/EditProfilePage";
 import Wallet from "./pages/Wallet";
 import Sharing from "./pages/Sharing";
 import Memory from "./pages/Memory";
-import Admin from "./pages/Admin";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 // Role-specific dashboards
 import PatientDashboard from "./pages/patient/Dashboard";
@@ -823,13 +822,7 @@ const App = () => {
 
           {/* Admin Pages - Reorganized navigation structure */}
           {/* Dashboard Section */}
-          <Route path="/admin" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <Admin />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
+          <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="/admin/system-health" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
