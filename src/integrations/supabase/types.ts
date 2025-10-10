@@ -1837,6 +1837,119 @@ export type Database = {
           },
         ]
       }
+      media_analytics: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          media_id: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          media_id: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          media_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_analytics_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "media_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      media_uploads: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          duration: number | null
+          file_path: string
+          file_size: number
+          file_url: string
+          id: string
+          is_featured: boolean | null
+          is_public: boolean | null
+          likes_count: number | null
+          media_type: string
+          mime_type: string
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_notes: string | null
+          plays_count: number | null
+          status: string
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          views_count: number | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          file_path: string
+          file_size: number
+          file_url: string
+          id?: string
+          is_featured?: boolean | null
+          is_public?: boolean | null
+          likes_count?: number | null
+          media_type: string
+          mime_type: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
+          plays_count?: number | null
+          status?: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          views_count?: number | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          file_path?: string
+          file_size?: number
+          file_url?: string
+          id?: string
+          is_featured?: boolean | null
+          is_public?: boolean | null
+          likes_count?: number | null
+          media_type?: string
+          mime_type?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
+          plays_count?: number | null
+          status?: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          views_count?: number | null
+        }
+        Relationships: []
+      }
       memberships: {
         Row: {
           created_at: string
@@ -2096,6 +2209,41 @@ export type Database = {
           },
         ]
       }
+      music_metadata: {
+        Row: {
+          album_name: string | null
+          artist_name: string | null
+          bpm: number | null
+          genre: string | null
+          media_id: string
+          mood: string | null
+        }
+        Insert: {
+          album_name?: string | null
+          artist_name?: string | null
+          bpm?: number | null
+          genre?: string | null
+          media_id: string
+          mood?: string | null
+        }
+        Update: {
+          album_name?: string | null
+          artist_name?: string | null
+          bpm?: number | null
+          genre?: string | null
+          media_id?: string
+          mood?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "music_metadata_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: true
+            referencedRelation: "media_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_logs: {
         Row: {
           action: string
@@ -2224,6 +2372,41 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      podcast_metadata: {
+        Row: {
+          episode_number: number | null
+          guest_name: string | null
+          host_name: string | null
+          media_id: string
+          season_number: number | null
+          series_name: string | null
+        }
+        Insert: {
+          episode_number?: number | null
+          guest_name?: string | null
+          host_name?: string | null
+          media_id: string
+          season_number?: number | null
+          series_name?: string | null
+        }
+        Update: {
+          episode_number?: number | null
+          guest_name?: string | null
+          host_name?: string | null
+          media_id?: string
+          season_number?: number | null
+          series_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "podcast_metadata_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: true
+            referencedRelation: "media_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       post_analytics: {
         Row: {
@@ -3378,6 +3561,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      video_metadata: {
+        Row: {
+          has_captions: boolean | null
+          media_id: string
+          resolution: string | null
+          topic: string | null
+          video_type: string | null
+        }
+        Insert: {
+          has_captions?: boolean | null
+          media_id: string
+          resolution?: string | null
+          topic?: string | null
+          video_type?: string | null
+        }
+        Update: {
+          has_captions?: boolean | null
+          media_id?: string
+          resolution?: string | null
+          topic?: string | null
+          video_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_metadata_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: true
+            referencedRelation: "media_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vitana_index_config: {
         Row: {

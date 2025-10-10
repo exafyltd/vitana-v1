@@ -125,6 +125,15 @@ export const adminCommunityNavigation = [
   { id: "reported", name: "Reported Content", path: "/admin/community/reported" },
 ];
 
+// Media Management - content uploads and moderation
+export const adminMediaNavigation = [
+  { id: "overview", name: "Overview", path: "/admin/media" },
+  { id: "videos", name: "Videos", path: "/admin/media/videos" },
+  { id: "podcasts", name: "Podcasts", path: "/admin/media/podcasts" },
+  { id: "music", name: "Music", path: "/admin/media/music" },
+  { id: "analytics", name: "Analytics", path: "/admin/media/analytics" },
+];
+
 export const settingsNavigation = [
   { id: "overview", name: "Overview", path: "/settings" },
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },

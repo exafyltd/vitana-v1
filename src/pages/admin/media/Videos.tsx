@@ -1,0 +1,228 @@
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import { adminMediaNavigation } from "@/config/navigation";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Eye, ThumbsUp, CheckCircle, XCircle, Flag, Trash2, Star, Search } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
+import { format } from "date-fns";
+import { useSearchParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+
+export default function Videos() {
+  const [searchParams] = useSearchParams();
+  const { toast } = useToast();
+  const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const { data: videos, refetch } = useQuery({
+    queryKey: ['admin-videos', statusFilter],
+    queryFn: async () => {
+      let query = supabase
+        .from('media_uploads')
+        .select('*, video_metadata(*)')
+        .eq('media_type', 'video')
+        .order('created_at', { ascending: false });
+
+      if (statusFilter !== 'all') {
+        query = query.eq('status', statusFilter);
+      }
+
+      const { data } = await query;
+
+      // Fetch uploader profiles separately
+      if (data && data.length > 0) {
+        const userIds = [...new Set(data.map(v => v.user_id))];
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('user_id, display_name, avatar_url')
+          .in('user_id', userIds);
+
+        return data.map(video => ({
+          ...video,
+          uploader: profiles?.find(p => p.user_id === video.user_id)
+        }));
+      }
+
+      return data || [];
+    }
+  });
+
+  const updateStatus = async (id: string, newStatus: string) => {
+    const { error } = await supabase
+      .from('media_uploads')
+      .update({ 
+        status: newStatus,
+        moderated_at: new Date().toISOString(),
+      })
+      .eq('id', id);
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to update status", variant: "destructive" });
+    } else {
+      toast({ title: "Success", description: `Video ${newStatus}` });
+      refetch();
+    }
+  };
+
+  const deleteVideo = async (id: string) => {
+    const { error } = await supabase
+      .from('media_uploads')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to delete video", variant: "destructive" });
+    } else {
+      toast({ title: "Success", description: "Video deleted" });
+      refetch();
+    }
+  };
+
+  const filteredVideos = videos?.filter(video => 
+    searchQuery === '' || 
+    video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (video as any).uploader?.display_name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <AppLayout>
+      <SEO 
+        title="Videos | Media Management" 
+        description="Manage video content"
+        canonical={window.location.href}
+      />
+      <SubNavigation items={adminMediaNavigation} />
+      
+      <div className="p-6 space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Video Management</h1>
+          <p className="text-muted-foreground">Review and moderate video uploads</p>
+        </div>
+
+        {/* Filters */}
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search videos..." 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9"
+                  />
+                </div>
+              </div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                  <SelectItem value="flagged">Flagged</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Videos Table */}
+        <Card>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Video</TableHead>
+                  <TableHead>Uploader</TableHead>
+                  <TableHead>Duration</TableHead>
+                  <TableHead>Views</TableHead>
+                  <TableHead>Likes</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredVideos?.map((video) => (
+                  <TableRow key={video.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div className="w-16 h-10 bg-muted rounded overflow-hidden">
+                          {video.thumbnail_url && (
+                            <img src={video.thumbnail_url} alt="" className="w-full h-full object-cover" />
+                          )}
+                        </div>
+                        <div>
+                          <div className="font-medium">{video.title}</div>
+                          <div className="text-sm text-muted-foreground line-clamp-1">{video.description}</div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{(video as any).uploader?.display_name || 'Unknown'}</TableCell>
+                    <TableCell>{video.duration ? `${Math.floor(video.duration / 60)}:${(video.duration % 60).toString().padStart(2, '0')}` : 'N/A'}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <Eye className="w-4 h-4" />
+                        {video.views_count}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <ThumbsUp className="w-4 h-4" />
+                        {video.likes_count}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={
+                        video.status === 'approved' ? 'default' :
+                        video.status === 'pending' ? 'secondary' :
+                        video.status === 'flagged' ? 'destructive' : 'outline'
+                      }>
+                        {video.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{format(new Date(video.created_at), 'MMM d, yyyy')}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        {video.status !== 'approved' && (
+                          <Button size="sm" variant="ghost" onClick={() => updateStatus(video.id, 'approved')}>
+                            <CheckCircle className="w-4 h-4 text-green-600" />
+                          </Button>
+                        )}
+                        {video.status !== 'rejected' && (
+                          <Button size="sm" variant="ghost" onClick={() => updateStatus(video.id, 'rejected')}>
+                            <XCircle className="w-4 h-4 text-destructive" />
+                          </Button>
+                        )}
+                        {video.status !== 'flagged' && (
+                          <Button size="sm" variant="ghost" onClick={() => updateStatus(video.id, 'flagged')}>
+                            <Flag className="w-4 h-4 text-yellow-600" />
+                          </Button>
+                        )}
+                        <Button size="sm" variant="ghost" onClick={() => deleteVideo(video.id)}>
+                          <Trash2 className="w-4 h-4 text-destructive" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    </AppLayout>
+  );
+}
