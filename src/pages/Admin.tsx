@@ -1,25 +1,12 @@
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
-import { AutoPilotActionCard } from "@/components/crossover/AutoPilotActionCard";
-import { VitanaIndexCard } from "@/components/crossover/VitanaIndexCard";
-import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard";
 import { StandardCard } from "@/components/templates/StandardCard";
-import { Shield, Plane, Users, Settings2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
+import { Shield, Users, Settings2 } from "lucide-react";
 import { adminDashboardNavigation } from "@/config/navigation";
-import StandardHeader from "@/components/StandardHeader";
+import AdminHeader from "@/components/admin/AdminHeader";
 
 export default function Admin() {
-  const navigate = useNavigate();
-  const { pendingCount, getLatestActions } = useAutopilot();
-  const [showPreview, setShowPreview] = useState(false);
-  
-  const latestActions = getLatestActions(2);
-
   return (
     <AppLayout>
       <SEO title="Admin | VITANA" description="VITANA Administration" canonical={window.location.href} />
@@ -27,7 +14,7 @@ export default function Admin() {
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <StandardHeader
+          <AdminHeader
             title="Admin Dashboard"
             description="Manage platform settings and monitor system health."
             emoji="🛡️"
