@@ -16,9 +16,10 @@ import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 interface CreateEventPopupProps {
   isOpen: boolean;
   onClose: () => void;
+  threadId?: string;
 }
 
-export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
+export function CreateEventPopup({ isOpen, onClose, threadId }: CreateEventPopupProps) {
   const { toast } = useToast();
   const { sendMessage } = useHybridMessages();
   const { addEvent } = useCalendarEvents();
@@ -165,64 +166,87 @@ Please respond to confirm your attendance!`;
         return dt.toISOString();
       };
 
-      // Send message first to get message ID, then create event
-      console.log('Creating calendar invite message...');
-      const sentMessage = await sendMessage({
-        context: 'global' as const,
-        threadId: '', // This will be handled by the messaging system
-        content: messageContent,
-        type: 'calendar_invite' as any,
-        contentData: {
-          eventType: 'calendar_invite',
-          ...formData
-        },
-        actionButtons: [
-          {
-            label: 'Accept',
-            action: 'calendar_accept',
-            data: {
-              title: formData.title,
-              description: formData.description,
-              location: formData.location,
-              start_time: composeIso(formData.date, formData.time),
-              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
-              event_type: 'personal',
-              status: 'confirmed',
-              priority: 'medium'
-            }
-          },
-          {
-            label: 'Decline', 
-            action: 'calendar_decline',
-            data: {
-              title: formData.title,
-              description: formData.description,
-              location: formData.location,
-              start_time: composeIso(formData.date, formData.time),
-              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
-              event_type: 'personal',
-              status: 'confirmed',
-              priority: 'medium'
-            }
-          },
-          {
-            label: 'Maybe',
-            action: 'calendar_maybe',
-            data: {
-              title: formData.title,
-              description: formData.description,
-              location: formData.location,
-              start_time: composeIso(formData.date, formData.time),
-              end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
-              event_type: 'personal',
-              status: 'confirmed',
-              priority: 'medium'
-            }
-          }
-        ]
-      });
+      // Helper to validate UUID
+      const isValidUuid = (uuid?: string) => {
+        if (!uuid) return false;
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        return uuidRegex.test(uuid);
+      };
 
-      // Now create the sender's calendar event with the message ID
+      let sentMessageId: string | undefined;
+
+      // Only send message if we have a valid threadId prop
+      if (threadId && isValidUuid(threadId)) {
+        try {
+          console.log('Creating calendar invite message...');
+          const sentMessage = await sendMessage({
+            context: 'global' as const,
+            threadId: threadId,
+            content: messageContent,
+            type: 'calendar_invite' as any,
+            contentData: {
+              eventType: 'calendar_invite',
+              ...formData
+            },
+            actionButtons: [
+              {
+                label: 'Accept',
+                action: 'calendar_accept',
+                data: {
+                  title: formData.title,
+                  description: formData.description,
+                  location: formData.location,
+                  start_time: composeIso(formData.date, formData.time),
+                  end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
+                  event_type: 'personal',
+                  status: 'confirmed',
+                  priority: 'medium'
+                }
+              },
+              {
+                label: 'Decline', 
+                action: 'calendar_decline',
+                data: {
+                  title: formData.title,
+                  description: formData.description,
+                  location: formData.location,
+                  start_time: composeIso(formData.date, formData.time),
+                  end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
+                  event_type: 'personal',
+                  status: 'confirmed',
+                  priority: 'medium'
+                }
+              },
+              {
+                label: 'Maybe',
+                action: 'calendar_maybe',
+                data: {
+                  title: formData.title,
+                  description: formData.description,
+                  location: formData.location,
+                  start_time: composeIso(formData.date, formData.time),
+                  end_time: formData.endTime ? composeIso(formData.endDate || formData.date, formData.endTime) : undefined,
+                  event_type: 'personal',
+                  status: 'confirmed',
+                  priority: 'medium'
+                }
+              }
+            ]
+          });
+
+          if (sentMessage?.id && isValidUuid(sentMessage.id)) {
+            sentMessageId = sentMessage.id;
+            console.log('✅ Calendar invite message sent:', sentMessageId);
+          }
+        } catch (messageError) {
+          console.warn('⚠️ Failed to send calendar invite message:', messageError);
+          // Continue with event creation even if message fails
+        }
+      } else {
+        console.log('⚠️ No valid threadId provided, skipping message send');
+      }
+
+      // Now create the sender's calendar event
       console.log('Creating sender calendar event...');
       const senderEventData = {
         title: formData.title,
@@ -236,10 +260,9 @@ Please respond to confirm your attendance!`;
         is_recurring: false,
         attendees_count: formData.capacity ? parseInt(formData.capacity) : undefined,
         has_rewards: false,
-        source_type: 'invite' as const, // Mark as invite from the start
+        source_type: sentMessageId ? ('invite' as const) : ('manual' as const),
         user_id: '', // Will be overridden by addEvent hook
-        // Only set source_message_id if the message ID is a valid UUID
-        source_message_id: isValidUuid(sentMessage.id) ? sentMessage.id : undefined,
+        ...(sentMessageId && { source_message_id: sentMessageId }),
         metadata: {
           image_url: uploadedImageUrl,
           category: formData.category,
@@ -247,7 +270,7 @@ Please respond to confirm your attendance!`;
       };
 
       try {
-        console.log('📅 Creating sender calendar event. Message ID:', sentMessage.id, 'Valid UUID:', isValidUuid(sentMessage.id));
+        console.log('📅 Creating sender calendar event. Message ID:', sentMessageId, 'Valid UUID:', isValidUuid(sentMessageId));
         const createdEvent = await addEvent(senderEventData, { showToast: false });
         console.log('✅ Sender calendar event created:', createdEvent);
 
