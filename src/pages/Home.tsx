@@ -431,6 +431,8 @@ export default function Home() {
                 </div>
               </div>
 
+              <MotivationalBanner variant="achievement" />
+
               {/* Row 4: More Events & Meetups (big + small + small) */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
