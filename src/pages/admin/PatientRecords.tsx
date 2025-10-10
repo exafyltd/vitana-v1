@@ -23,7 +23,7 @@ function PatientRecords() {
       <SubNavigation items={adminClinicalNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title="Patient Record Viewer"
             description="Secure access to patient medical records and health data"

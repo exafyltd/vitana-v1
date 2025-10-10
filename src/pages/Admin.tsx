@@ -13,7 +13,7 @@ export default function Admin() {
       <SubNavigation items={adminDashboardNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title="Admin Dashboard"
             description="Manage platform settings and monitor system health."
