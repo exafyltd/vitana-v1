@@ -3888,6 +3888,18 @@ export type Database = {
         Args: { hours_ago?: number }
         Returns: number
       }
+      get_conversation_participants: {
+        Args: { p_user_id: string }
+        Returns: {
+          avatar_url: string
+          display_name: string
+          email: string
+          full_name: string
+          last_message_at: string
+          phone: string
+          user_id: string
+        }[]
+      }
       get_follow_status: {
         Args: { target_user_id: string }
         Returns: boolean

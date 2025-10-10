@@ -89,22 +89,101 @@ export function useContacts() {
     }
   }, [user?.id, toast]);
 
+  // Import contacts from conversation history
+  const importFromConversations = useCallback(async () => {
+    if (!user?.id) return;
+    
+    setIsLoading(true);
+    try {
+      // Get all conversation participants
+      const { data: participants, error: fetchError } = await supabase
+        .rpc('get_conversation_participants', { p_user_id: user.id });
+      
+      if (fetchError) throw fetchError;
+      
+      if (!participants || participants.length === 0) {
+        toast({
+          title: "No Conversations Found",
+          description: "You haven't messaged anyone yet.",
+        });
+        return;
+      }
+      
+      // Filter out existing contacts to avoid duplicates
+      const existingContactUserIds = contacts
+        .filter(c => c.contact_user_id)
+        .map(c => c.contact_user_id);
+      
+      const newParticipants = participants.filter(
+        (p: any) => !existingContactUserIds.includes(p.user_id)
+      );
+      
+      if (newParticipants.length === 0) {
+        toast({
+          title: "Already Added",
+          description: "All conversation participants are already in your contacts.",
+        });
+        return;
+      }
+      
+      // Bulk insert new contacts
+      const contactsToInsert = newParticipants.map((p: any) => ({
+        user_id: user.id,
+        contact_user_id: p.user_id,
+        contact_name: p.display_name || p.full_name || 'Unknown',
+        contact_phone: p.phone,
+        contact_email: p.email,
+        is_on_platform: true,
+        metadata: {
+          imported_from: 'conversations',
+          imported_at: new Date().toISOString(),
+          last_message_at: p.last_message_at
+        }
+      }));
+      
+      const { error: insertError } = await supabase
+        .from('contacts')
+        .insert(contactsToInsert);
+      
+      if (insertError) throw insertError;
+      
+      // Refresh contacts list
+      await fetchContacts();
+      
+      toast({
+        title: "Contacts Imported",
+        description: `Added ${newParticipants.length} contact${newParticipants.length > 1 ? 's' : ''} from your conversations.`,
+      });
+    } catch (error) {
+      console.error('Error importing from conversations:', error);
+      toast({
+        title: "Import Failed",
+        description: "Could not import contacts from conversations.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.id, toast, fetchContacts, contacts]);
+
   // Add a new contact
   const addContact = useCallback(async (
     contactData: {
       contact_name: string;
       contact_phone?: string;
       contact_email?: string;
+      contact_user_id?: string; // For platform users from search
     }
   ) => {
     if (!user?.id) return null;
 
     try {
-      // Check if phone is already on platform
-      let isOnPlatform = false;
-      let contactUserId: string | null = null;
+      // If contact_user_id is provided from search, it's already a platform user
+      let isOnPlatform = !!contactData.contact_user_id;
+      let contactUserId = contactData.contact_user_id || null;
 
-      if (contactData.contact_phone) {
+      // Otherwise check if phone matches a platform user
+      if (!isOnPlatform && contactData.contact_phone) {
         const { data: profileData } = await supabase
           .from("profiles")
           .select("user_id")
@@ -313,6 +392,7 @@ export function useContacts() {
     deleteContact,
     inviteContact,
     searchContacts,
+    importFromConversations,
     refetch: fetchContacts,
   };
 }
