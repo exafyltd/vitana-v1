@@ -42,18 +42,18 @@ export default function ContactListItem({
   const contactInfo = contact.contact_phone || contact.contact_email;
 
   return (
-    <Card className="p-4 hover:bg-muted/50 transition-colors">
+    <Card className="p-3 hover:bg-muted/50 transition-colors">
       <div className="flex items-center gap-3">
-        <Avatar className="w-12 h-12">
+        <Avatar className="w-10 h-10">
           <AvatarImage src={avatarUrl} />
-          <AvatarFallback className="bg-primary/10 text-primary font-medium">
+          <AvatarFallback className={contact.is_on_platform ? "bg-primary/10 text-primary font-medium" : "bg-muted text-muted-foreground font-medium"}>
             {displayName[0]?.toUpperCase() || "?"}
           </AvatarFallback>
         </Avatar>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-medium truncate">{displayName}</h4>
+            <h4 className="text-sm font-medium truncate">{displayName}</h4>
             {contact.is_on_platform && (
               <Badge variant="secondary" className="text-xs flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3" />
