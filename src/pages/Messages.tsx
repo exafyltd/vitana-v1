@@ -15,6 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Plus, Users, MessageSquareText } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
@@ -54,6 +55,7 @@ export default function Messages() {
   const [localThreads, setLocalThreads] = useState(threads);
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
   const [pinnedThreads, setPinnedThreads] = useState<Set<string>>(new Set());
+  const [conversationFilter, setConversationFilter] = useState<'all' | 'groups' | 'direct' | 'contacts'>('all');
 
   // Auto-select the most recent conversation (WhatsApp-style behavior)
   useEffect(() => {
@@ -222,147 +224,408 @@ export default function Messages() {
     return 57; // 57% on desktop - chat remains wider
   };
 
-  const renderConversationList = (threads: typeof localThreads) => (
-    <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
-      {threads.length === 0 ? (
-        <EmptyStateIllustration 
-          type="inbox"
-          context={messageContext}
-          threads={threads}
-          onAction={() => setShowNewConversation(true)}
-          onCreateGroup={() => setShowCreateGroup(true)}
-        />
-      ) : (
-        // De-duplicate direct threads by counterpart, keep most recent
-        [...threads]
-          .sort((a, b) => {
-            const ap = pinnedThreads.has(a.id) ? 1 : 0;
-            const bp = pinnedThreads.has(b.id) ? 1 : 0;
-            if (ap !== bp) return bp - ap;
-            const ad = new Date(a.updated_at).getTime();
-            const bd = new Date(b.updated_at).getTime();
-            return bd - ad;
-          })
-          .reduce((acc, thread) => {
-            if (thread.type === 'direct') {
-              // Find the other participant (not current user)
-              const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
-              const key = counterpart?.user_id || 'unknown';
-              
-              // Keep the thread with the most recent updated_at
-              const existing = acc.find(t => t._dedupeKey === key);
-              if (!existing || new Date(thread.updated_at) > new Date(existing.updated_at)) {
-                // Remove existing if found, add new one
-                const filtered = acc.filter(t => t._dedupeKey !== key);
-                filtered.push({ ...thread, _dedupeKey: key });
-                return filtered;
-              }
-              return acc;
-            } else {
-              // Keep group threads as-is
-              acc.push({ ...thread, _dedupeKey: thread.id });
-              return acc;
-            }
-          }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
-          .map((thread) => {
-            const isPinned = pinnedThreads.has(thread.id);
-            const isActive = selectedThreadId === thread.id;
-            const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
-            
-            return (
-              <Card
-                key={thread.id}
-                className={`${cardHeight} mr-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
-                  isActive 
-                    ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
-                    : 'hover:shadow-sm'
-                } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
-                onClick={() => {
-                  console.log('🎯 Messages.tsx: Thread clicked', { threadId: thread.id, unreadCount: thread.unread_count });
-                  setSelectedThreadId(thread.id);
-                  setSelectedRecipientId(null);
-                  // On mobile, this will switch to chat view
-                  if (thread.unread_count > 0) {
-                    handleConversationOpened(thread.id);
+  const getFilteredThreads = (threads: typeof localThreads, filter: typeof conversationFilter) => {
+    if (filter === 'all') return threads;
+    if (filter === 'groups') return threads.filter(t => t.type === 'group');
+    if (filter === 'direct') return threads.filter(t => t.type === 'direct');
+    return [];
+  };
+
+  const renderConversationList = (threads: typeof localThreads) => {
+    const filteredThreads = getFilteredThreads(threads, conversationFilter);
+
+    return (
+      <Tabs value={conversationFilter} onValueChange={(v) => setConversationFilter(v as any)} className="w-full">
+        <TabsList className="w-full justify-start rounded-none border-b bg-transparent p-0 h-auto mb-4">
+          <TabsTrigger 
+            value="all" 
+            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
+          >
+            All
+          </TabsTrigger>
+          <TabsTrigger 
+            value="groups" 
+            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
+          >
+            Groups
+          </TabsTrigger>
+          <TabsTrigger 
+            value="direct" 
+            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
+          >
+            Direct Messages
+          </TabsTrigger>
+          <TabsTrigger 
+            value="contacts" 
+            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
+          >
+            Contacts
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="all" className="mt-0">
+          <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
+            {filteredThreads.length === 0 ? (
+              <EmptyStateIllustration 
+                type="inbox"
+                context={messageContext}
+                threads={threads}
+                onAction={() => setShowNewConversation(true)}
+                onCreateGroup={() => setShowCreateGroup(true)}
+              />
+            ) : (
+              [...filteredThreads]
+                .sort((a, b) => {
+                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
+                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
+                  if (ap !== bp) return bp - ap;
+                  const ad = new Date(a.updated_at).getTime();
+                  const bd = new Date(b.updated_at).getTime();
+                  return bd - ad;
+                })
+                .reduce((acc, thread) => {
+                  if (thread.type === 'direct') {
+                    const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
+                    const key = counterpart?.user_id || 'unknown';
+                    const existing = acc.find(t => t._dedupeKey === key);
+                    if (!existing || new Date(thread.updated_at) > new Date(existing.updated_at)) {
+                      const filtered = acc.filter(t => t._dedupeKey !== key);
+                      filtered.push({ ...thread, _dedupeKey: key });
+                      return filtered;
+                    }
+                    return acc;
+                  } else {
+                    acc.push({ ...thread, _dedupeKey: thread.id });
+                    return acc;
                   }
-                }}
-              >
-                <div className="flex items-start space-x-3">
-                  <div className="relative">
-                    <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
-                      <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
-                      <AvatarFallback>
-                        {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
-                      </AvatarFallback>
-                    </Avatar>
-                    {/* Dynamic presence indicator */}
-                    <div className="absolute -bottom-0.5 -right-0.5">
-                      <PresenceIndicator 
-                        userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 
-                        context={context}
-                        size="sm"
-                      />
-                    </div>
-                  </div>
+                }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
+                .map((thread) => {
+                  const isPinned = pinnedThreads.has(thread.id);
+                  const isActive = selectedThreadId === thread.id;
+                  const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
                   
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
-                            {thread.name || 
-                             thread.participants?.find(p => p.user_id !== user?.id)?.display_name ||
-                             'Unknown'}
-                          </h3>
-                          {isPinned && (
-                            <div className="w-2 h-2 bg-domain-messages-accent rounded-full flex-shrink-0"></div>
-                          )}
+                  return (
+                    <Card
+                      key={thread.id}
+                      className={`${cardHeight} mr-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                        isActive 
+                          ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
+                          : 'hover:shadow-sm'
+                      } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
+                      onClick={() => {
+                        console.log('🎯 Messages.tsx: Thread clicked', { threadId: thread.id, unreadCount: thread.unread_count });
+                        setSelectedThreadId(thread.id);
+                        setSelectedRecipientId(null);
+                        if (thread.unread_count > 0) {
+                          handleConversationOpened(thread.id);
+                        }
+                      }}
+                    >
+                      <div className="flex items-start space-x-3">
+                        <div className="relative">
+                          <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
+                            <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
+                            <AvatarFallback>
+                              {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="absolute -bottom-0.5 -right-0.5">
+                            <PresenceIndicator 
+                              userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 
+                              context={context}
+                              size="sm"
+                            />
+                          </div>
                         </div>
                         
-                        {thread.last_message && (
-                          <p className={`text-muted-foreground truncate ${
-                            densityMode === 'compact' ? 'text-xs mt-0.5' : 'text-sm mt-1'
-                          }`}>
-                            {thread.last_message.body}
-                          </p>
-                        )}
-                        
-                        {densityMode === 'comfortable' && (
-                          <div className="flex items-center text-xs text-muted-foreground mt-1">
-                            <Users className="w-3 h-3 mr-1" />
-                            {thread.participants?.length || 0} participants
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
+                                  {thread.name || 
+                                   thread.participants?.find(p => p.user_id !== user?.id)?.display_name ||
+                                   'Unknown'}
+                                </h3>
+                                {isPinned && (
+                                  <div className="w-2 h-2 bg-domain-messages-accent rounded-full flex-shrink-0"></div>
+                                )}
+                              </div>
+                              
+                              {thread.last_message && (
+                                <p className={`text-muted-foreground truncate ${
+                                  densityMode === 'compact' ? 'text-xs mt-0.5' : 'text-sm mt-1'
+                                }`}>
+                                  {thread.last_message.body}
+                                </p>
+                              )}
+                              
+                              {densityMode === 'comfortable' && (
+                                <div className="flex items-center text-xs text-muted-foreground mt-1">
+                                  <Users className="w-3 h-3 mr-1" />
+                                  {thread.participants?.length || 0} participants
+                                </div>
+                              )}
+                            </div>
+                            
+                            <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
+                              <span className={`text-muted-foreground whitespace-nowrap ${
+                                densityMode === 'compact' ? 'text-xs' : 'text-xs'
+                              }`}>
+                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </span>
+                              
+                              {thread.unread_count > 0 && (
+                                <Badge 
+                                  variant="secondary" 
+                                  className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
+                                >
+                                  {thread.unread_count > 99 ? '99+' : thread.unread_count}
+                                </Badge>
+                              )}
+                            </div>
                           </div>
-                        )}
+                        </div>
                       </div>
-                      
-                      <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
-                        <span className={`text-muted-foreground whitespace-nowrap ${
-                          densityMode === 'compact' ? 'text-xs' : 'text-xs'
-                        }`}>
-                          {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric'
-                          })}
-                        </span>
+                    </Card>
+                  );
+                })
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="groups" className="mt-0">
+          <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
+            {filteredThreads.length === 0 ? (
+              <div className="text-center py-12">
+                <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                <h3 className="text-lg font-semibold mb-2">No Groups Yet</h3>
+                <p className="text-muted-foreground mb-4">Create a group to start collaborating</p>
+                <Button onClick={() => setShowCreateGroup(true)}>
+                  <Users className="w-4 h-4 mr-2" />
+                  Create Group
+                </Button>
+              </div>
+            ) : (
+              [...filteredThreads]
+                .sort((a, b) => {
+                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
+                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
+                  if (ap !== bp) return bp - ap;
+                  const ad = new Date(a.updated_at).getTime();
+                  const bd = new Date(b.updated_at).getTime();
+                  return bd - ad;
+                })
+                .map((thread) => {
+                  const isPinned = pinnedThreads.has(thread.id);
+                  const isActive = selectedThreadId === thread.id;
+                  const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
+                  
+                  return (
+                    <Card
+                      key={thread.id}
+                      className={`${cardHeight} mr-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                        isActive 
+                          ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
+                          : 'hover:shadow-sm'
+                      } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
+                      onClick={() => {
+                        setSelectedThreadId(thread.id);
+                        setSelectedRecipientId(null);
+                        if (thread.unread_count > 0) {
+                          handleConversationOpened(thread.id);
+                        }
+                      }}
+                    >
+                      <div className="flex items-start space-x-3">
+                        <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
+                          <AvatarFallback>
+                            {thread.name?.[0]?.toUpperCase() || '?'}
+                          </AvatarFallback>
+                        </Avatar>
                         
-                        {thread.unread_count > 0 && (
-                          <Badge 
-                            variant="secondary" 
-                            className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
-                          >
-                            {thread.unread_count > 99 ? '99+' : thread.unread_count}
-                          </Badge>
-                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
+                                  {thread.name || 'Unnamed Group'}
+                                </h3>
+                                {isPinned && (
+                                  <div className="w-2 h-2 bg-domain-messages-accent rounded-full flex-shrink-0"></div>
+                                )}
+                              </div>
+                              
+                              {thread.last_message && (
+                                <p className={`text-muted-foreground truncate ${
+                                  densityMode === 'compact' ? 'text-xs mt-0.5' : 'text-sm mt-1'
+                                }`}>
+                                  {thread.last_message.body}
+                                </p>
+                              )}
+                              
+                              <div className="flex items-center text-xs text-muted-foreground mt-1">
+                                <Users className="w-3 h-3 mr-1" />
+                                {thread.participants?.length || 0} members
+                              </div>
+                            </div>
+                            
+                            <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
+                              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </span>
+                              
+                              {thread.unread_count > 0 && (
+                                <Badge 
+                                  variant="secondary" 
+                                  className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
+                                >
+                                  {thread.unread_count > 99 ? '99+' : thread.unread_count}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            );
-          })
-      )}
-    </div>
-  );
+                    </Card>
+                  );
+                })
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="direct" className="mt-0">
+          <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
+            {filteredThreads.length === 0 ? (
+              <div className="text-center py-12">
+                <MessageSquareText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                <h3 className="text-lg font-semibold mb-2">No Direct Messages</h3>
+                <p className="text-muted-foreground mb-4">Start a conversation with someone</p>
+                <Button onClick={() => setShowNewConversation(true)}>
+                  <MessageSquareText className="w-4 h-4 mr-2" />
+                  New Message
+                </Button>
+              </div>
+            ) : (
+              [...filteredThreads]
+                .sort((a, b) => {
+                  const ap = pinnedThreads.has(a.id) ? 1 : 0;
+                  const bp = pinnedThreads.has(b.id) ? 1 : 0;
+                  if (ap !== bp) return bp - ap;
+                  const ad = new Date(a.updated_at).getTime();
+                  const bd = new Date(b.updated_at).getTime();
+                  return bd - ad;
+                })
+                .reduce((acc, thread) => {
+                  const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
+                  const key = counterpart?.user_id || 'unknown';
+                  const existing = acc.find(t => t._dedupeKey === key);
+                  if (!existing || new Date(thread.updated_at) > new Date(existing.updated_at)) {
+                    const filtered = acc.filter(t => t._dedupeKey !== key);
+                    filtered.push({ ...thread, _dedupeKey: key });
+                    return filtered;
+                  }
+                  return acc;
+                }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
+                .map((thread) => {
+                  const isPinned = pinnedThreads.has(thread.id);
+                  const isActive = selectedThreadId === thread.id;
+                  const cardHeight = densityMode === 'compact' ? 'p-3' : 'p-4';
+                  
+                  return (
+                    <Card
+                      key={thread.id}
+                      className={`${cardHeight} mr-3 cursor-pointer transition-all duration-200 hover:bg-muted/50 relative ${
+                        isActive 
+                          ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
+                          : 'hover:shadow-sm'
+                      } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
+                      onClick={() => {
+                        setSelectedThreadId(thread.id);
+                        setSelectedRecipientId(null);
+                        if (thread.unread_count > 0) {
+                          handleConversationOpened(thread.id);
+                        }
+                      }}
+                    >
+                      <div className="flex items-start space-x-3">
+                        <div className="relative">
+                          <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
+                            <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
+                            <AvatarFallback>
+                              {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="absolute -bottom-0.5 -right-0.5">
+                            <PresenceIndicator 
+                              userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 
+                              context={context}
+                              size="sm"
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1 min-w-0">
+                              <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
+                                {thread.participants?.find(p => p.user_id !== user?.id)?.display_name || 'Unknown'}
+                              </h3>
+                              
+                              {thread.last_message && (
+                                <p className={`text-muted-foreground truncate ${
+                                  densityMode === 'compact' ? 'text-xs mt-0.5' : 'text-sm mt-1'
+                                }`}>
+                                  {thread.last_message.body}
+                                </p>
+                              )}
+                            </div>
+                            
+                            <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
+                              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </span>
+                              
+                              {thread.unread_count > 0 && (
+                                <Badge 
+                                  variant="secondary" 
+                                  className="bg-domain-messages-accent text-white animate-in fade-in duration-200 text-xs px-1.5 py-0.5 min-w-[20px] h-5 flex items-center justify-center"
+                                >
+                                  {thread.unread_count > 99 ? '99+' : thread.unread_count}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="contacts" className="mt-0">
+          <div className="text-center py-12">
+            <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-lg font-semibold mb-2">Contacts Coming Soon</h3>
+            <p className="text-muted-foreground">
+              Contact management and phone verification features will be available soon
+            </p>
+          </div>
+        </TabsContent>
+      </Tabs>
+    );
+  };
 
   const renderConversationContent = () => {
     // Mobile layout - stack conversations and chat
