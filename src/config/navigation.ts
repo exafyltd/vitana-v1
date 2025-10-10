@@ -117,6 +117,14 @@ export const adminMonitoringNavigation = [
   { id: "notifications", name: "Notifications", path: "/admin/monitoring/notifications" },
 ];
 
+// Community Supervision - content moderation
+export const adminCommunityNavigation = [
+  { id: "overview", name: "Overview", path: "/admin/community" },
+  { id: "events", name: "Events", path: "/admin/community/events" },
+  { id: "groups", name: "Groups", path: "/admin/community/groups" },
+  { id: "reported", name: "Reported Content", path: "/admin/community/reported" },
+];
+
 export const settingsNavigation = [
   { id: "overview", name: "Overview", path: "/settings" },
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },

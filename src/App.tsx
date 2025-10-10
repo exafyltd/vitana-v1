@@ -155,6 +155,10 @@ import TenantConfig from "./pages/admin/TenantConfig";
 import TenantAudit from "./pages/admin/TenantAudit";
 import SystemConfig from "./pages/admin/SystemConfig";
 import SystemSecurity from "./pages/admin/SystemSecurity";
+import CommunitySupervision from "./pages/admin/CommunitySupervision";
+import EventsModeration from "./pages/admin/community/Events";
+import GroupsModeration from "./pages/admin/community/Groups";
+import ReportedContent from "./pages/admin/community/ReportedContent";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 
 const App = () => {
@@ -931,6 +935,36 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
                 <NotificationDashboard />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
+          {/* Community Supervision Section */}
+          <Route path="/admin/community" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <CommunitySupervision />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/community/events" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <EventsModeration />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/community/groups" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <GroupsModeration />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/community/reported" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <ReportedContent />
               </ProtectedRoute>
             </AuthGuard>
           } />

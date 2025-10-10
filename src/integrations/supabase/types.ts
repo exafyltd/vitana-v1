@@ -782,6 +782,54 @@ export type Database = {
         }
         Relationships: []
       }
+      content_reports: {
+        Row: {
+          action_taken: string | null
+          admin_notes: string | null
+          content_id: string
+          content_type: string
+          created_at: string
+          description: string | null
+          id: string
+          reason: string
+          reporter_user_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          action_taken?: string | null
+          admin_notes?: string | null
+          content_id: string
+          content_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          reason: string
+          reporter_user_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          action_taken?: string | null
+          admin_notes?: string | null
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          reason?: string
+          reporter_user_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       diary_entries: {
         Row: {
           attachments: Json | null
@@ -1055,6 +1103,9 @@ export type Database = {
           image_url: string | null
           location: string | null
           max_participants: number | null
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_notes: string | null
           participant_count: number
           start_time: string
           title: string
@@ -1071,6 +1122,9 @@ export type Database = {
           image_url?: string | null
           location?: string | null
           max_participants?: number | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
           participant_count?: number
           start_time: string
           title: string
@@ -1087,6 +1141,9 @@ export type Database = {
           image_url?: string | null
           location?: string | null
           max_participants?: number | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
           participant_count?: number
           start_time?: string
           title?: string
@@ -1094,6 +1151,38 @@ export type Database = {
           virtual_link?: string | null
         }
         Relationships: []
+      }
+      global_community_group_members: {
+        Row: {
+          group_id: string
+          id: string
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_community_group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       global_community_groups: {
         Row: {
@@ -1106,7 +1195,11 @@ export type Database = {
           id: string
           is_public: boolean
           member_count: number
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_notes: string | null
           name: string
+          status: string
           updated_at: string
         }
         Insert: {
@@ -1119,7 +1212,11 @@ export type Database = {
           id?: string
           is_public?: boolean
           member_count?: number
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
           name: string
+          status?: string
           updated_at?: string
         }
         Update: {
@@ -1132,7 +1229,11 @@ export type Database = {
           id?: string
           is_public?: boolean
           member_count?: number
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
           name?: string
+          status?: string
           updated_at?: string
         }
         Relationships: []
