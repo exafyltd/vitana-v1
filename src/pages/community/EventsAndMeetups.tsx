@@ -291,7 +291,7 @@ const EventsAndMeetups = () => {
   const canEdit = selectedEventData && user && selectedEventData.created_by === user.id;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
+    <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
       <SEO 
         title="Events & MeetUps" 
         description="Discover and join community events and casual meetups"
@@ -328,18 +328,18 @@ const EventsAndMeetups = () => {
 
           <div className="flex-1 overflow-y-auto">
             <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab}>
-              <SplitBarList className="grid w-full grid-cols-4 gap-0 rounded-none border-b bg-background p-0">
-                <SplitBarTrigger value="today" className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary">
-                  Today
+              <SplitBarList>
+                <SplitBarTrigger value="today">
+                  ☀️ Today
                 </SplitBarTrigger>
-                <SplitBarTrigger value="upcoming" className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary">
-                  Upcoming
+                <SplitBarTrigger value="upcoming">
+                  📅 Upcoming
                 </SplitBarTrigger>
-                <SplitBarTrigger value="following" className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary">
-                  Following
+                <SplitBarTrigger value="following">
+                  👥 Following
                 </SplitBarTrigger>
-                <SplitBarTrigger value="recommended" className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary">
-                  Recommended
+                <SplitBarTrigger value="recommended">
+                  ✨ Recommended
                 </SplitBarTrigger>
               </SplitBarList>
 
