@@ -67,7 +67,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
           await updateBalance('VTNA', 50, 'add');
           toast({
             title: '✅ Tokens Purchased!',
-            description: 'Added 50 VTN tokens to your wallet',
+            description: 'Added 50 VTNA tokens to your wallet',
           });
           break;
 
@@ -75,7 +75,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
           await updateBalance('VTNA', 25, 'add');
           toast({
             title: '✅ Rewards Claimed!',
-            description: 'Added 25 VTN rewards to your wallet',
+            description: 'Added 25 VTNA rewards to your wallet',
           });
           break;
 
@@ -115,7 +115,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 'exchange':
-        return <ExchangeStep onBack={handleBack} onClose={handleClose} initialCurrency={selectedCurrency} />;
+        return <ExchangeStep onBack={handleBack} onClose={handleClose} initialCurrency={selectedCurrency as 'USD' | 'VTNA' | 'CREDITS'} />;
       case 'send':
         return <SendStep onBack={handleBack} onClose={handleClose} />;
       case 'exchange-and-send':
@@ -168,10 +168,10 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
               ) : (
                 <Coins className="h-4 w-4" />
               )}
-              <div className="text-left">
-                <div className="font-medium">Buy Tokens</div>
-                <div className="text-xs text-muted-foreground">Add 50 VTN tokens</div>
-              </div>
+            <div className="text-left">
+              <div className="font-medium">Buy Tokens</div>
+              <div className="text-xs text-muted-foreground">Add 50 VTNA tokens</div>
+            </div>
             </Button>
           </div>
         </div>
@@ -202,7 +202,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
               <ArrowUpDown className="h-4 w-4" />
               <div className="text-left">
                 <div className="font-medium">Exchange Currency</div>
-                <div className="text-xs text-muted-foreground">Convert between Credits, VTN, USD</div>
+                <div className="text-xs text-muted-foreground">Convert between Credits, VTNA, USD</div>
               </div>
             </Button>
             
@@ -257,7 +257,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
               )}
               <div className="text-left">
                 <div className="font-medium">Claim Rewards</div>
-                <div className="text-xs text-muted-foreground">Claim 25 VTN pending rewards</div>
+                <div className="text-xs text-muted-foreground">Claim 25 VTNA pending rewards</div>
               </div>
               <Badge variant="secondary" className="ml-auto bg-green-100 text-green-700">Ready</Badge>
             </Button>

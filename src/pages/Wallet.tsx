@@ -76,7 +76,7 @@ const quickActionsData = [
 export default function Wallet() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [exchangeStep, setExchangeStep] = useState<'menu' | 'exchange'>('menu');
-  const [selectedCurrencyForExchange, setSelectedCurrencyForExchange] = useState<'USD' | 'VTN' | 'CREDITS' | undefined>();
+  const [selectedCurrencyForExchange, setSelectedCurrencyForExchange] = useState<'USD' | 'VTNA' | 'CREDITS' | undefined>();
   const [stakeTokensOpen, setStakeTokensOpen] = useState(false);
   const [addFundsOpen, setAddFundsOpen] = useState(false);
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
@@ -127,7 +127,7 @@ export default function Wallet() {
         const exchangeSuccess = await requestPopup('wallet-master');
         if (exchangeSuccess) {
           setSelectedCurrency(currency || '');
-          setSelectedCurrencyForExchange(currency as 'USD' | 'VTN' | 'CREDITS');
+          setSelectedCurrencyForExchange(currency as 'USD' | 'VTNA' | 'CREDITS');
           setExchangeStep('exchange');
           setMasterActionOpen(true);
         }
@@ -190,8 +190,8 @@ export default function Wallet() {
                 <div className="col-span-4">
                   <WalletBalanceCard
                     type="tokens"
-                    title="VTN Tokens"
-                    balance={getBalance('VTN') !== null ? `${getBalance('VTN')!.toLocaleString()} VTN` : "Loading..."}
+                    title="VTNA Tokens"
+                    balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
                     subBalance="Staked: 25%"
                     change="+5.7%"
                     changeType="increase"
@@ -208,22 +208,22 @@ export default function Wallet() {
                     secondaryActions={[
                       {
                         label: "Buy Tokens",
-                        onClick: () => handleWalletAction('buy-tokens', 'VTN'),
+                        onClick: () => handleWalletAction('buy-tokens', 'VTNA'),
                         icon: Coins
                       },
                       {
                         label: "Send",
-                        onClick: () => handleWalletAction('send', 'VTN'),
+                        onClick: () => handleWalletAction('send', 'VTNA'),
                         icon: Send
                       },
                       {
                         label: "Request",
-                        onClick: () => handleWalletAction('request', 'VTN'),
+                        onClick: () => handleWalletAction('request', 'VTNA'),
                         icon: CreditCard
                       },
                       {
                         label: "Exchange",
-                        onClick: () => handleWalletAction('exchange', 'VTN'),
+                        onClick: () => handleWalletAction('exchange', 'VTNA'),
                         icon: ArrowUpDown
                       }
                     ]}

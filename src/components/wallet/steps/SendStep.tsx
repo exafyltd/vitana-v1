@@ -26,7 +26,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
   const { members, loading: loadingMembers, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
   const [selectedRecipient, setSelectedRecipient] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [currency, setCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('CREDITS');
+  const [currency, setCurrency] = useState<'USD' | 'VTNA' | 'CREDITS'>('CREDITS');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);

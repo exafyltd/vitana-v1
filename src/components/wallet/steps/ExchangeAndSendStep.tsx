@@ -26,15 +26,15 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
   const { members, loading: loadingMembers, searchMembers, getDisplayName, getInitials } = useCommunityMembers();
   const [selectedRecipient, setSelectedRecipient] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [fromCurrency, setFromCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('CREDITS');
-  const [toCurrency, setToCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('VTN');
+  const [fromCurrency, setFromCurrency] = useState<'USD' | 'VTNA' | 'CREDITS'>('CREDITS');
+  const [toCurrency, setToCurrency] = useState<'USD' | 'VTNA' | 'CREDITS'>('VTNA');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
   const currencies = [
     { value: 'CREDITS', label: 'Credits', icon: CreditCard },
-    { value: 'VTN', label: 'VTN Tokens', icon: Coins },
+    { value: 'VTNA', label: 'VTNA Tokens', icon: Coins },
     { value: 'USD', label: 'USD', icon: DollarSign }
   ];
 
@@ -87,10 +87,10 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
 
     try {
       // Calculate exchange rate
-      const exchangeRate = fromCurrency === 'CREDITS' && toCurrency === 'VTN' ? 0.5 : 
-                          fromCurrency === 'VTN' && toCurrency === 'CREDITS' ? 2.0 :
-                          fromCurrency === 'USD' && toCurrency === 'VTN' ? 2.5 :
-                          fromCurrency === 'VTN' && toCurrency === 'USD' ? 0.4 : 1.0;
+      const exchangeRate = fromCurrency === 'CREDITS' && toCurrency === 'VTNA' ? 1.0 : 
+                          fromCurrency === 'VTNA' && toCurrency === 'CREDITS' ? 1.0 :
+                          fromCurrency === 'USD' && toCurrency === 'VTNA' ? 100 :
+                          fromCurrency === 'VTNA' && toCurrency === 'USD' ? 0.01 : 1.0;
 
       // Use atomic exchange and send operation
       const result = await exchangeAndSend(selectedRecipient, fromCurrency, toCurrency, exchangeAmount, exchangeRate);

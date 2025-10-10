@@ -187,8 +187,8 @@ function Balance() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <WalletBalanceCard
                   type="tokens"
-                  title="VTN Balance"
-                  balance={getBalance('VTN') !== null ? `${getBalance('VTN')!.toLocaleString()} VTN` : "Loading..."}
+                  title="VTNA Balance"
+                  balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
                   subBalance="Staked: 25%"
                   change="+5.7%"
                   changeType="increase"
@@ -199,8 +199,8 @@ function Balance() {
                 <WalletBalanceCard
                   type="tokens"
                   title="Staking Rewards"
-                  balance="45.50 VTN"
-                  description="Accumulated rewards from staking your VTN tokens"
+                  balance="45.50 VTNA"
+                  description="Accumulated rewards from staking your VTNA tokens"
                   status="Claimable"
                 />
               </div>
@@ -215,7 +215,7 @@ function Balance() {
 
               <div className="grid grid-cols-1 gap-4">
                 {loading && <div className="text-center py-4">Loading transactions...</div>}
-                {transactions.filter(t => t.from_currency === 'VTN' || t.to_currency === 'VTN').slice(0, 5).map((transaction) => (
+                {transactions.filter(t => t.from_currency === 'VTNA' || t.to_currency === 'VTNA').slice(0, 5).map((transaction) => (
                   <WalletTransactionCard
                     key={transaction.id}
                     id={transaction.id}
@@ -230,8 +230,8 @@ function Balance() {
                     onClick={() => console.log('Token transaction clicked:', transaction.id)}
                   />
                 ))}
-                {!loading && transactions.filter(t => t.from_currency === 'VTN' || t.to_currency === 'VTN').length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">No VTN transactions yet</div>
+                {!loading && transactions.filter(t => t.from_currency === 'VTNA' || t.to_currency === 'VTNA').length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">No VTNA transactions yet</div>
                 )}
               </div>
             </div>
@@ -339,9 +339,9 @@ function Balance() {
       <Dialog open={isTokensOpen} onOpenChange={setIsTokensOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Buy/Stake VTN Tokens</DialogTitle>
+            <DialogTitle>Buy/Stake VTNA Tokens</DialogTitle>
             <DialogDescription>
-              Purchase or stake VTN tokens for governance and staking rewards.
+              Purchase or stake VTNA tokens for governance and staking rewards.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">

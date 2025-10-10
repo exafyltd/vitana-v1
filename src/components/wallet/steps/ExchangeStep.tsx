@@ -14,7 +14,7 @@ import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 interface ExchangeStepProps {
   onBack: () => void;
   onClose: () => void;
-  initialCurrency?: 'USD' | 'VTN' | 'CREDITS';
+  initialCurrency?: 'USD' | 'VTNA' | 'CREDITS';
 }
 
 export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepProps) {
@@ -28,18 +28,18 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
   };
   
   const getInitialToCurrency = () => {
-    if (!initialCurrency) return 'VTN';
+    if (!initialCurrency) return 'VTNA';
     // If initial currency is set, default to a different currency
     switch (initialCurrency) {
-      case 'USD': return 'VTN';
-      case 'VTN': return 'CREDITS';
+      case 'USD': return 'VTNA';
+      case 'VTNA': return 'CREDITS';
       case 'CREDITS': return 'USD';
-      default: return 'VTN';
+      default: return 'VTNA';
     }
   };
   
-  const [fromCurrency, setFromCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>(getInitialFromCurrency());
-  const [toCurrency, setToCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>(getInitialToCurrency());
+  const [fromCurrency, setFromCurrency] = useState<'USD' | 'VTNA' | 'CREDITS'>(getInitialFromCurrency());
+  const [toCurrency, setToCurrency] = useState<'USD' | 'VTNA' | 'CREDITS'>(getInitialToCurrency());
   const [amount, setAmount] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 

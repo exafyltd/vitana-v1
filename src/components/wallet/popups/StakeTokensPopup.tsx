@@ -43,10 +43,10 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
       return;
     }
 
-    if (parseFloat(stakeAmount) > vtnBalance) {
+    if (parseFloat(stakeAmount) > vtnaBalance) {
       toast({
         title: '❌ Insufficient Balance',
-        description: 'You don\'t have enough VTN tokens to stake',
+        description: 'You don\'t have enough VTNA tokens to stake',
         variant: 'destructive'
       });
       return;
@@ -60,7 +60,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
       
       toast({
         title: '✅ Tokens Staked Successfully!',
-        description: `Staked ${stakeAmount} VTN for ${period} at ${apy} APY`,
+        description: `Staked ${stakeAmount} VTNA for ${period} at ${apy} APY`,
       });
       
       onOpenChange(false);
@@ -82,7 +82,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Coins className="h-5 w-5 text-purple-600" />
-            Stake VTN Tokens
+            Stake VTNA Tokens
           </DialogTitle>
         </DialogHeader>
         
@@ -90,8 +90,8 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
           {/* Current Balance */}
           <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-100">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Available VTN Balance</span>
-              <span className="font-semibold text-purple-700">{vtnBalance.toLocaleString()} VTN</span>
+              <span className="text-sm text-muted-foreground">Available VTNA Balance</span>
+              <span className="font-semibold text-purple-700">{vtnaBalance.toLocaleString()} VTNA</span>
             </div>
           </div>
 
@@ -101,37 +101,37 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
             <Input
               id="stakeAmount"
               type="number"
-              placeholder="Enter VTN amount"
+              placeholder="Enter VTNA amount"
               value={stakeAmount}
               onChange={(e) => setStakeAmount(e.target.value)}
-              max={vtnBalance}
+              max={vtnaBalance}
             />
             <div className="flex gap-2">
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setStakeAmount((vtnBalance * 0.25).toString())}
+                onClick={() => setStakeAmount((vtnaBalance * 0.25).toString())}
               >
                 25%
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setStakeAmount((vtnBalance * 0.5).toString())}
+                onClick={() => setStakeAmount((vtnaBalance * 0.5).toString())}
               >
                 50%
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setStakeAmount((vtnBalance * 0.75).toString())}
+                onClick={() => setStakeAmount((vtnaBalance * 0.75).toString())}
               >
                 75%
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setStakeAmount(vtnBalance.toString())}
+                onClick={() => setStakeAmount(vtnaBalance.toString())}
               >
                 MAX
               </Button>

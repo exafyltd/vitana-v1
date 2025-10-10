@@ -59,8 +59,8 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
       await updateBalance('VTNA', tokens + bonus, 'add');
       
       toast({
-        title: '✅ VTN Tokens Purchased Successfully!',
-        description: `Purchased ${tokens} VTN${bonus > 0 ? ` + ${bonus} bonus tokens` : ''} for $${cost}`,
+        title: '✅ VTNA Tokens Purchased Successfully!',
+        description: `Purchased ${tokens} VTNA${bonus > 0 ? ` + ${bonus} bonus tokens` : ''} for $${cost}`,
       });
       
       onOpenChange(false);
@@ -104,8 +104,8 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
       await updateBalance('VTNA', tokens, 'add');
       
       toast({
-        title: '✅ VTN Tokens Purchased Successfully!',
-        description: `Purchased ${tokens} VTN for $${cost}`,
+        title: '✅ VTNA Tokens Purchased Successfully!',
+        description: `Purchased ${tokens} VTNA for $${cost}`,
       });
       
       onOpenChange(false);
@@ -127,7 +127,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Coins className="h-5 w-5 text-purple-600" />
-            Buy VTN Tokens
+            Buy VTNA Tokens
           </DialogTitle>
         </DialogHeader>
         
@@ -135,7 +135,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
           {/* Current Balances */}
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-gradient-to-r from-purple-50 to-violet-50 rounded-lg border border-purple-100">
-              <div className="text-xs text-muted-foreground">Current VTN</div>
+              <div className="text-xs text-muted-foreground">Current VTNA</div>
               <div className="font-semibold text-purple-700">{currentTokens.toLocaleString()}</div>
             </div>
             <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
@@ -146,7 +146,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
 
           {/* Token Packages */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-muted-foreground">VTN Token Packages</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">VTNA Token Packages</h4>
             {tokenPackages.map((pkg, index) => (
               <Button
                 key={index}
@@ -161,15 +161,15 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
                   ) : (
                     <Coins className="h-4 w-4 text-purple-600" />
                   )}
-                  <div className="text-left">
-                    <div className="font-medium">
-                      {pkg.tokens.toLocaleString()} VTN
-                      {pkg.bonus > 0 && (
-                        <span className="text-green-600 ml-1">+ {pkg.bonus} Bonus</span>
-                      )}
-                    </div>
-                    <div className="text-xs text-muted-foreground">${pkg.cost}</div>
-                  </div>
+              <div className="text-left">
+                <div className="font-medium">
+                  {pkg.tokens.toLocaleString()} VTNA
+                  {pkg.bonus > 0 && (
+                    <span className="text-green-600 ml-1">+ {pkg.bonus} Bonus</span>
+                  )}
+                </div>
+                <div className="text-xs text-muted-foreground">${pkg.cost}</div>
+              </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {pkg.bonus > 0 && (
@@ -197,14 +197,14 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
             <Input
               id="tokenAmount"
               type="number"
-              placeholder="Enter number of VTN tokens"
+              placeholder="Enter number of VTNA tokens"
               value={tokenAmount}
               onChange={(e) => setTokenAmount(e.target.value)}
               min="1"
               step="0.1"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Rate: ${vtnPriceInUSD.toFixed(2)} per VTN</span>
+              <span>Rate: ${vtnPriceInUSD.toFixed(2)} per VTNA</span>
               {tokenAmount && (
                 <span>Cost: ${(parseFloat(tokenAmount) * vtnPriceInUSD).toFixed(2)}</span>
               )}
@@ -228,12 +228,12 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
           <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
             <div className="flex items-center gap-2 mb-2">
               <Coins className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-medium text-purple-700">VTN Token Benefits</span>
+              <span className="text-sm font-medium text-purple-700">VTNA Token Benefits</span>
             </div>
             <ul className="text-xs text-purple-600 space-y-1">
               <li>• Stake for passive income rewards</li>
               <li>• Governance voting rights on platform decisions</li>
-              <li>• Access to exclusive VTN holder features</li>
+              <li>• Access to exclusive VTNA holder features</li>
               <li>• Potential value appreciation over time</li>
             </ul>
           </div>
