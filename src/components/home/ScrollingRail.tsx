@@ -26,7 +26,7 @@ export function ScrollingRail({
   const duplicatedItems = [...items, ...items];
 
   return (
-    <div className={cn("relative overflow-hidden", className)}>
+    <div className={cn("relative overflow-hidden w-full max-w-full", className)}>
       <div 
         className={cn("flex gap-4 whitespace-nowrap will-change-transform", speedClass)}
         style={{ width: 'fit-content' }}

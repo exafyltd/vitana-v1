@@ -315,7 +315,7 @@ export default function Home() {
           <SplitBarContent value="today">
             <div className="mt-6">
               {/* Row 1: Scrolling Tracker - Continuous horizontal scroll */}
-              <div className="mb-8">
+              <div className="mb-6 overflow-x-hidden w-full">
                 <ScrollingRail
                   items={todayScheduledEvents.map((event, index) => ({
                     title: event.title,
@@ -335,7 +335,9 @@ export default function Home() {
               </div>
 
               {/* Priority of the Day Banner */}
-              <PriorityOfDayBanner />
+              <div className="my-6">
+                <PriorityOfDayBanner />
+              </div>
 
               {/* Row 2: Media Content with Pulsing Highlight */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
