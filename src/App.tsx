@@ -158,6 +158,11 @@ import CommunitySupervision from "./pages/admin/CommunitySupervision";
 import EventsModeration from "./pages/admin/community/Events";
 import GroupsModeration from "./pages/admin/community/Groups";
 import ReportedContent from "./pages/admin/community/ReportedContent";
+import MediaManagement from "./pages/admin/MediaManagement";
+import VideosManagement from "./pages/admin/media/Videos";
+import PodcastsManagement from "./pages/admin/media/Podcasts";
+import MusicManagement from "./pages/admin/media/Music";
+import AnalyticsManagement from "./pages/admin/media/Analytics";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 
 const App = () => {
@@ -958,6 +963,43 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
                 <ReportedContent />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
+          {/* Media Management Section */}
+          <Route path="/admin/media" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <MediaManagement />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/media/videos" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <VideosManagement />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/media/podcasts" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <PodcastsManagement />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/media/music" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <MusicManagement />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/media/analytics" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <AnalyticsManagement />
               </ProtectedRoute>
             </AuthGuard>
           } />
