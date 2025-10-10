@@ -87,7 +87,6 @@ import MyBiology from "./pages/health/MyBiology";
 // Calendar sub-pages - REMOVED (using universal popup system)
 
 // Community sub-pages
-import MyGroups from "./pages/community/MyGroups";
 import EventsAndMeetups from "./pages/community/EventsAndMeetups";
 import MyBusiness from "./pages/community/MyBusinessRenamed";
 import MediaHub from "./pages/community/MediaHub";
@@ -348,11 +347,6 @@ const App = () => {
               <Community />
             </AuthGuard>
           } />
-          <Route path="/comm/my-groups" element={
-            <AuthGuard>
-              <MyGroups />
-            </AuthGuard>
-          } />
           <Route path="/comm/my-groups/:id" element={
             <AuthGuard>
               <GroupDetail />
@@ -392,7 +386,8 @@ const App = () => {
           } />
           
           {/* Redirect old community routes */}
-          <Route path="/community/my-groups" element={<Navigate to="/comm/my-groups" replace />} />
+          <Route path="/community/my-groups" element={<Navigate to="/inbox" replace />} />
+          <Route path="/comm/my-groups" element={<Navigate to="/inbox" replace />} />
           <Route path="/community/feed" element={<Navigate to="/comm/events-meetups?tab=following" replace />} />
           <Route path="/community/events" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />
           <Route path="/community/meetups" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />

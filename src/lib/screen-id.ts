@@ -101,7 +101,6 @@ export const SCREEN_MAPPINGS: ScreenIdMapping[] = [
   { screenId: SCREEN_IDS.HEALTH_OVERVIEW, route: "/health", category: "main", pattern: "3-card-header" },
   
   // Community Sub-pages
-  { screenId: SCREEN_IDS.COMMUNITY_MY_GROUPS, route: "/community/my-groups", category: "community", pattern: "sub-page-header" },
   { screenId: SCREEN_IDS.COMMUNITY_FEED, route: "/community/feed", category: "community", pattern: "sub-page-header" },
   { screenId: SCREEN_IDS.COMMUNITY_EVENTS, route: "/community/events", category: "community", pattern: "sub-page-header" },
   { screenId: SCREEN_IDS.COMMUNITY_LIVE_ROOMS, route: "/community/live-rooms", category: "community", pattern: "sub-page-header" },
