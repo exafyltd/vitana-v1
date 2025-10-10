@@ -39,6 +39,7 @@ import TypingIndicator from '@/components/messages/TypingIndicator';
 import PresenceIndicator from '@/components/messages/PresenceIndicator';
 import GroupAvatarStack from '@/components/messages/GroupAvatarStack';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
+import ContactsTabContent from '@/components/contacts/ContactsTabContent';
 
 export default function Messages() {
   const { user } = useAuth();
@@ -647,13 +648,14 @@ export default function Messages() {
         </TabsContent>
 
         <TabsContent value="contacts" className="mt-0">
-          <div className="text-center py-12">
-            <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Contacts Coming Soon</h3>
-            <p className="text-muted-foreground">
-              Contact management and phone verification features will be available soon
-            </p>
-          </div>
+          <ContactsTabContent 
+            onStartConversation={(userId) => {
+              // Create or navigate to DM with this user
+              setSelectedRecipientId(userId);
+              setShowNewConversation(true);
+            }}
+            messageContext={messageContext}
+          />
         </TabsContent>
       </Tabs>
     );
