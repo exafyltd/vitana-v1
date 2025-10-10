@@ -68,7 +68,7 @@ export const staffNavigation: NavigationItem[] = [
 
 // Admin Role Navigation - System management focused
 export const adminNavigation: NavigationItem[] = [
-  { title: "Dashboard", path: "/admin", icon: LayoutDashboard },
+  { title: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
   { title: "User Management", path: "/admin/user-management", icon: Users },
   { title: "Community Supervision", path: "/admin/community", icon: Flag },
   { title: "Tenant Management", path: "/admin/tenant-management", icon: Shield },
