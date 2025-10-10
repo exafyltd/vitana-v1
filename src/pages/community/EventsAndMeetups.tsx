@@ -11,6 +11,7 @@ import { CreateSelectionDialog } from '@/components/CreateSelectionDialog';
 import { EditMeetupPopup } from '@/components/EditMeetupPopup';
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { communityNavigation } from "@/config/navigation";
+import { MotivationalBanner } from '@/components/MotivationalBanner';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { useState, useEffect, useMemo } from "react";
@@ -91,7 +92,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
                 key={`${i}-0`}
                 {...transformEventToNewsCard(rowEvents[0], onClick, canEdit, () => onEdit?.(rowEvents[0]))}
                 className={cn(
-                  "h-full min-h-[320px] md:min-h-[360px] transition-all duration-200 cursor-pointer",
+                  "h-full transition-all duration-200 cursor-pointer",
                   onClick && "hover:ring-2 hover:ring-primary"
                 )}
               />
@@ -102,7 +103,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
                   key={`${i}-1`}
                   {...transformEventToNewsCard(rowEvents[1], onClick, canEdit, () => onEdit?.(rowEvents[1]))}
                   className={cn(
-                    "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -114,7 +115,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
                   key={`${i}-2`}
                   {...transformEventToNewsCard(rowEvents[2], onClick, canEdit, () => onEdit?.(rowEvents[2]))}
                   className={cn(
-                    "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -129,7 +130,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
                   key={`${i}-0`}
                   {...transformEventToNewsCard(rowEvents[0], onClick, canEdit, () => onEdit?.(rowEvents[0]))}
                   className={cn(
-                    "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -141,7 +142,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
                   key={`${i}-1`}
                   {...transformEventToNewsCard(rowEvents[1], onClick, canEdit, () => onEdit?.(rowEvents[1]))}
                   className={cn(
-                    "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -153,7 +154,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
                   key={`${i}-2`}
                   {...transformEventToNewsCard(rowEvents[2], onClick, canEdit, () => onEdit?.(rowEvents[2]))}
                   className={cn(
-                    "h-full min-h-[320px] md:min-h-[360px] transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -344,7 +345,14 @@ const EventsAndMeetups = () => {
                     <p className="text-muted-foreground">Loading today's events...</p>
                   </div>
                 ) : (
-                  renderEventGrid(todayEvents, handleCardClick, true, handleEditEvent)
+                  <>
+                    {renderEventGrid(todayEvents, handleCardClick, true, handleEditEvent)}
+                    {todayEvents.length > 0 && (
+                      <div className="px-6 mb-8 mt-8">
+                        <MotivationalBanner variant="encouragement" />
+                      </div>
+                    )}
+                  </>
                 )}
               </SplitBarContent>
 
@@ -355,7 +363,14 @@ const EventsAndMeetups = () => {
                     <p className="text-muted-foreground">Loading upcoming events...</p>
                   </div>
                 ) : (
-                  renderEventGrid(upcomingEvents, handleCardClick, true, handleEditEvent)
+                  <>
+                    {renderEventGrid(upcomingEvents, handleCardClick, true, handleEditEvent)}
+                    {upcomingEvents.length > 0 && (
+                      <div className="px-6 mb-8 mt-8">
+                        <MotivationalBanner variant="achievement" />
+                      </div>
+                    )}
+                  </>
                 )}
               </SplitBarContent>
 
