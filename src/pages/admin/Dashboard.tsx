@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Shield, Activity, TrendingUp, MessageSquare, Building } from "lucide-react";
+import { Users, Shield, Activity, TrendingUp, MessageSquare, Building, Flag, Calendar, UsersRound } from "lucide-react";
 import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
 import { AdminActivityFeed } from "@/components/admin/AdminActivityFeed";
 import { AdminTable } from "@/components/admin/AdminTable";
@@ -106,6 +106,54 @@ export default function AdminDashboard() {
           icon={MessageSquare}
           loading={loading}
         />
+      </div>
+
+      {/* Quick Access */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4">Quick Access</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/community')}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                  <Flag className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">Community Supervision</CardTitle>
+                  <CardDescription>Moderate content, events & groups</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/users')}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                  <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">User Management</CardTitle>
+                  <CardDescription>Manage users & permissions</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/monitoring')}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <Activity className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">System Monitoring</CardTitle>
+                  <CardDescription>Track system health & metrics</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </div>
       </div>
 
       {/* Activity & Workspaces */}
