@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import AdminHeader from "@/components/admin/AdminHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Activity, Server, Database, Zap } from "lucide-react";
 import { adminDashboardNavigation } from "@/config/navigation";
@@ -18,7 +18,7 @@ export default function SystemHealth() {
       
       <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          <StandardHeader
+          <AdminHeader
             title="System Health"
             description="Monitor system performance, uptime, and resource usage"
             emoji="🏥"

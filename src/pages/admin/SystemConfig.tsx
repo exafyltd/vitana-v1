@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
+import AdminHeader from "@/components/admin/AdminHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Settings, Save, Database, Mail, Code, Activity, Bot } from "lucide-react";
@@ -56,7 +56,7 @@ export default function SystemConfig() {
       
       <div className="p-6 bg-gradient-subtle min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
-          <StandardHeader
+          <AdminHeader
             title="System Configuration"
             description="Configure global system settings, integrations, and API keys"
             emoji="⚙️"
