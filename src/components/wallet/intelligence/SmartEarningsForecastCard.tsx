@@ -99,7 +99,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
             Earning Forecast
           </CardTitle>
           <Badge variant="secondary" className="bg-primary/10 text-primary">
-            +{totalPotential} VTN Available
+            +{totalPotential} VTNA Available
           </Badge>
         </div>
       </CardHeader>
@@ -113,7 +113,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
           </div>
           <Progress value={completionProgress} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            On track to earn <span className="font-semibold text-primary">150 VTN</span> this week
+            On track to earn <span className="font-semibold text-primary">150 VTNA</span> this week
           </p>
         </div>
 
@@ -142,7 +142,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary" className="text-xs">
-                    +{opportunity.potential} VTN
+                    +{opportunity.potential} VTNA
                   </Badge>
                   {opportunity.urgency && (
                     <Badge variant="outline" className={`text-xs ${getUrgencyColor(opportunity.urgency)}`}>
