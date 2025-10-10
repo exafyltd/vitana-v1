@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { NewsCard, NewsCardProps } from '@/components/crossover/NewsCard';
 import { cn } from '@/lib/utils';
 
@@ -5,34 +6,55 @@ interface ScrollingRailProps {
   items: NewsCardProps[];
   speed?: 'slow' | 'medium' | 'fast';
   className?: string;
-  itemWidth?: number; // px
-  itemHeightClass?: string; // tailwind height class e.g. 'h-56'
 }
 
 export function ScrollingRail({ 
   items, 
   speed = 'medium',
   className = '',
-  itemWidth = 320,
-  itemHeightClass = 'h-56',
 }: ScrollingRailProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [cardWidth, setCardWidth] = useState(320);
+
   const speedClass = {
     slow: 'animate-scroll-slow',
     medium: 'animate-scroll-medium',
     fast: 'animate-scroll-fast'
   }[speed];
 
+  useEffect(() => {
+    const calculateCardWidth = () => {
+      if (!containerRef.current) return;
+      
+      const containerWidth = containerRef.current.offsetWidth;
+      const gap = 24; // gap-6 = 1.5rem = 24px
+      
+      // Match the 12-column grid system breakpoints
+      let columns = 1.2; // base: shows peek of next card
+      if (window.innerWidth >= 768) columns = 2; // md
+      if (window.innerWidth >= 1024) columns = 3; // lg
+      if (window.innerWidth >= 1280) columns = 4; // xl (matches col-span-3 x 4)
+      
+      const width = (containerWidth - gap * (columns - 1)) / columns;
+      setCardWidth(Math.floor(width));
+    };
+
+    calculateCardWidth();
+    window.addEventListener('resize', calculateCardWidth);
+    return () => window.removeEventListener('resize', calculateCardWidth);
+  }, []);
+
   // Duplicate items for seamless loop
   const duplicatedItems = [...items, ...items];
 
   return (
-    <div className={cn("relative overflow-hidden w-full max-w-full", className)}>
+    <div ref={containerRef} className={cn("relative overflow-hidden w-full max-w-full", className)}>
       <div 
-        className={cn("flex gap-4 whitespace-nowrap will-change-transform", speedClass)}
+        className={cn("flex gap-6 whitespace-nowrap will-change-transform transform-gpu", speedClass)}
         style={{ width: 'fit-content' }}
       >
         {duplicatedItems.map((item, index) => (
-          <div key={index} className={cn("flex-shrink-0", itemHeightClass)} style={{ width: `${itemWidth}px` }}>
+          <div key={index} className="flex-shrink-0 h-[280px]" style={{ width: `${cardWidth}px` }}>
             <NewsCard {...item} className="h-full" />
           </div>
         ))}
