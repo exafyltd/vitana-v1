@@ -6,10 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Clock, Users } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
+import { supabase } from "@/integrations/supabase/client";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 
 interface CreateEventPopupProps {
@@ -23,6 +24,8 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
   const { addEvent } = useCalendarEvents();
   const [showPaymentDemo, setShowPaymentDemo] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   
   const [formData, setFormData] = useState({
     title: "",
@@ -46,6 +49,11 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
   };
 
   const resetForm = () => {
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
+    }
+    setSelectedImage(null);
+    setImagePreviewUrl("");
     setFormData({
       title: "",
       description: "",
@@ -62,12 +70,85 @@ export function CreateEventPopup({ isOpen, onClose }: CreateEventPopupProps) {
     });
   };
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid File Type",
+          description: "Please select an image file (JPEG, PNG, WebP)",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File Too Large",
+          description: "Image must be smaller than 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setSelectedImage(file);
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreviewUrl(previewUrl);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
+    }
+    setSelectedImage(null);
+    setImagePreviewUrl("");
+  };
+
   const handleSubmit = async () => {
     if (!formData.title || !formData.date) return;
 
     setIsSubmitting(true);
     
     try {
+      // Upload event image to Supabase Storage
+      let uploadedImageUrl: string | undefined;
+      if (selectedImage) {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          const ext = selectedImage.name.split('.').pop() || 'jpg';
+          const fileName = `event-${Date.now()}.${ext}`;
+          const filePath = `${user?.id ?? 'public'}/${fileName}`;
+          
+          const { error: uploadError } = await supabase.storage
+            .from('covers')
+            .upload(filePath, selectedImage, {
+              upsert: true,
+              contentType: selectedImage.type,
+            });
+            
+          if (uploadError) throw uploadError;
+          
+          const { data: publicUrlData } = supabase.storage
+            .from('covers')
+            .getPublicUrl(filePath);
+            
+          uploadedImageUrl = publicUrlData.publicUrl;
+          
+          console.log('✅ Event image uploaded:', uploadedImageUrl);
+        } catch (e) {
+          console.error('❌ Image upload failed:', e);
+          toast({
+            title: "Image upload failed",
+            description: "Event will be created without an image.",
+            variant: "default",
+          });
+        }
+      }
+
       const messageContent = `📅 **Event Invitation**: ${formData.title}
 
 ${formData.description ? `${formData.description}\n` : ''}📍 **When**: ${formData.date}${formData.time ? ` at ${formData.time}` : ''}
@@ -159,6 +240,10 @@ Please respond to confirm your attendance!`;
         user_id: '', // Will be overridden by addEvent hook
         // Only set source_message_id if the message ID is a valid UUID
         source_message_id: isValidUuid(sentMessage.id) ? sentMessage.id : undefined,
+        metadata: {
+          image_url: uploadedImageUrl,
+          category: formData.category,
+        },
       };
 
       try {
@@ -240,6 +325,51 @@ Please respond to confirm your attendance!`;
                 />
               </div>
 
+              {/* Event Image Upload */}
+              <div>
+                <Label>Event Image (Optional)</Label>
+                <div className="mt-2">
+                  {imagePreviewUrl ? (
+                    <div className="relative">
+                      <img 
+                        src={imagePreviewUrl} 
+                        alt="Event preview" 
+                        className="w-full h-48 object-cover rounded-lg border-2 border-border"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="icon"
+                        className="absolute top-2 right-2"
+                        onClick={handleRemoveImage}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div 
+                      className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer"
+                      onClick={() => document.getElementById('event-image-upload')?.click()}
+                    >
+                      <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-sm text-muted-foreground mb-1">
+                        Click to upload event image
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        PNG, JPG, WebP up to 5MB
+                      </p>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    id="event-image-upload"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                  />
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="category">Category</Label>
@@ -248,12 +378,35 @@ Please respond to confirm your attendance!`;
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="fitness">Fitness</SelectItem>
-                      <SelectItem value="nutrition">Nutrition</SelectItem>
-                      <SelectItem value="mindfulness">Mindfulness</SelectItem>
-                      <SelectItem value="social">Social</SelectItem>
-                      <SelectItem value="workshop">Workshop</SelectItem>
-                      <SelectItem value="outdoor">Outdoor</SelectItem>
+                      {/* Health & Wellness */}
+                      <SelectItem value="longevity">🧬 Longevity & Anti-Aging</SelectItem>
+                      <SelectItem value="biohacking">⚡ Biohacking & Optimization</SelectItem>
+                      <SelectItem value="fitness">💪 Fitness & Movement</SelectItem>
+                      <SelectItem value="nutrition">🥗 Nutrition & Diet</SelectItem>
+                      <SelectItem value="sleep">😴 Sleep & Recovery</SelectItem>
+                      
+                      {/* Medical & Science */}
+                      <SelectItem value="medical">🏥 Medical & Clinical</SelectItem>
+                      <SelectItem value="research">🔬 Scientific Research</SelectItem>
+                      <SelectItem value="diagnostics">🩺 Diagnostics & Testing</SelectItem>
+                      <SelectItem value="preventive">🛡️ Preventive Medicine</SelectItem>
+                      
+                      {/* Mental & Cognitive */}
+                      <SelectItem value="mindfulness">🧘 Mindfulness & Meditation</SelectItem>
+                      <SelectItem value="cognitive">🧠 Cognitive Health</SelectItem>
+                      <SelectItem value="mental-health">💚 Mental Health</SelectItem>
+                      
+                      {/* Specialized */}
+                      <SelectItem value="regenerative">🔄 Regenerative Medicine</SelectItem>
+                      <SelectItem value="genomics">🧬 Genomics & Personalized Health</SelectItem>
+                      <SelectItem value="supplements">💊 Supplements & Protocols</SelectItem>
+                      <SelectItem value="technology">🤖 Health Technology</SelectItem>
+                      
+                      {/* Community & Education */}
+                      <SelectItem value="workshop">📚 Workshop & Training</SelectItem>
+                      <SelectItem value="seminar">🎓 Seminar & Conference</SelectItem>
+                      <SelectItem value="social">👥 Social & Networking</SelectItem>
+                      <SelectItem value="outdoor">🌳 Outdoor Activities</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
