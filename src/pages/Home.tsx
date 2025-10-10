@@ -318,7 +318,7 @@ export default function Home() {
           <SplitBarContent value="today">
             <div className="mt-6">
               {/* Row 1: Hero Carousel - Auto-rotating featured events */}
-              <div className="mb-8" style={{ minHeight: '400px' }}>
+              <div className="mb-8 h-[420px]">
                 <HeroCarousel
                   items={todayScheduledEvents.map((event, index) => ({
                     title: event.title,

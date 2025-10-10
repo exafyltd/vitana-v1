@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { NewsCard, NewsCardProps } from '@/components/crossover/NewsCard';
 import {
   Carousel,
@@ -23,11 +23,26 @@ export function HeroCarousel({
   const [api, setApi] = useState<any>();
   const [current, setCurrent] = useState(0);
 
-  const autoplayPlugin = Autoplay({ 
+  const autoplayPlugin = useMemo(() => Autoplay({ 
     delay: autoplayInterval,
     stopOnInteraction: true,
     stopOnMouseEnter: true 
-  });
+  }), [autoplayInterval]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setCurrent(api.selectedScrollSnap());
+    };
+
+    api.on('select', onSelect);
+    onSelect();
+
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api]);
 
   return (
     <div className={`relative ${className}`}>
@@ -44,7 +59,7 @@ export function HeroCarousel({
       >
         <CarouselContent>
           {items.map((item, index) => (
-            <CarouselItem key={index}>
+            <CarouselItem key={index} className="min-h-[420px]">
               <NewsCard
                 {...item}
                 className="h-full"
