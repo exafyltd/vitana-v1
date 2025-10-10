@@ -21,6 +21,9 @@ import { StackedCardList } from "@/components/ui/stacked-card-list";
 import HealthCoachChat from "@/components/health/HealthCoachChat";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { useHealthLogger } from "@/hooks/useHealthLogger";
+import CompactVitanaIndex from "@/components/health/CompactVitanaIndex";
+import MotivationalDataCard from "@/components/health/MotivationalDataCard";
+import NextBestActionCard from "@/components/health/NextBestActionCard";
 
 import { healthNavigation } from "@/config/navigation";
 
@@ -167,48 +170,33 @@ export default withScreenId(function Health() {
             </Button>
           </UtilityActionButton>
 
-          {/* Vitana Index Overview */}
-          <Card className="mb-6 bg-gradient-to-br from-green-50 to-blue-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-2xl font-bold text-foreground">Vitana Index</h3>
-                  <p className="text-sm text-muted-foreground">Your overall health score</p>
-                </div>
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
-                  <span className="text-3xl font-bold text-green-600">{vitanaScore}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* 5 Pillars of Health */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle>5 Pillars of Health</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                {[
-                  { name: 'Nutrition', icon: '🥗', score: 85, color: 'from-green-400 to-emerald-500' },
-                  { name: 'Hydration', icon: '💧', score: 72, color: 'from-blue-400 to-cyan-500' },
-                  { name: 'Exercise', icon: '🏃', score: 68, color: 'from-orange-400 to-red-500' },
-                  { name: 'Sleep', icon: '😴', score: 90, color: 'from-purple-400 to-pink-500' },
-                  { name: 'Mental', icon: '🧠', score: 78, color: 'from-indigo-400 to-violet-500' }
-                ].map(pillar => (
-                  <Card key={pillar.name} className="cursor-pointer hover:shadow-lg transition-all">
-                    <CardContent className="p-4 text-center">
-                      <div className="text-4xl mb-2">{pillar.icon}</div>
-                      <div className="text-lg font-semibold mb-1">{pillar.name}</div>
-                      <div className={`text-2xl font-bold bg-gradient-to-r ${pillar.color} bg-clip-text text-transparent`}>
-                        {pillar.score}%
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          {/* Three-Column Hero Section */}
+          <div className="grid md:grid-cols-3 gap-6 mb-6">
+            <CompactVitanaIndex 
+              score={vitanaScore}
+              trend="up"
+              pillars={{
+                nutrition: 85,
+                hydration: 72,
+                exercise: 68,
+                sleep: 90,
+                mental: 78
+              }}
+            />
+            
+            <MotivationalDataCard 
+              userName="Dragan"
+              dataCompleteness={45}
+            />
+            
+            <NextBestActionCard 
+              weakestPillar={{
+                name: "Exercise",
+                score: 68,
+                icon: "🏃"
+              }}
+            />
+          </div>
 
           {/* Actions Section */}
           <div className="grid md:grid-cols-2 gap-6 mb-6">
