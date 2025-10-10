@@ -1,0 +1,115 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+export interface UserPreferences {
+  id: string;
+  user_id: string;
+  // Autopilot settings
+  autopilot_enabled: boolean;
+  autopilot_max_actions_per_day: number;
+  autopilot_quiet_hours_start: string;
+  autopilot_quiet_hours_end: string;
+  autopilot_priority_filter: 'all' | 'high_medium' | 'high';
+  autopilot_categories: {
+    health: boolean;
+    community: boolean;
+    discovery: boolean;
+    memory: boolean;
+  };
+  // Voice STT settings
+  stt_language: string;
+  stt_instant_enabled: boolean;
+  stt_auto_punctuation: boolean;
+  stt_sensitivity: number;
+  // Voice TTS settings
+  tts_voice: string;
+  tts_gender: 'male' | 'female' | 'neutral';
+  tts_character: string;
+  tts_speed: number;
+  tts_pitch: number;
+  tts_volume: number;
+  // AI settings
+  ai_model: string;
+  ai_temperature: number;
+  ai_response_length: 'short' | 'medium' | 'long';
+  // Privacy
+  store_voice_recordings: boolean;
+  auto_delete_recordings_days: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export function useUserPreferences() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const { data: preferences, isLoading, error } = useQuery({
+    queryKey: ["user_preferences"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { data, error } = await supabase
+        .from("user_preferences")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      // If no preferences exist, create default ones
+      if (!data) {
+        const { data: newPrefs, error: insertError } = await supabase
+          .from("user_preferences")
+          .insert({ user_id: user.id })
+          .select()
+          .single();
+
+        if (insertError) throw insertError;
+        return newPrefs as UserPreferences;
+      }
+
+      return data as UserPreferences;
+    },
+  });
+
+  const updatePreferences = useMutation({
+    mutationFn: async (updates: Partial<UserPreferences>) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { data, error } = await supabase
+        .from("user_preferences")
+        .update(updates)
+        .eq("user_id", user.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data as UserPreferences;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user_preferences"] });
+      toast({
+        title: "Preferences updated",
+        description: "Your settings have been saved successfully.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error updating preferences",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  return {
+    preferences,
+    isLoading,
+    error,
+    updatePreferences: updatePreferences.mutate,
+    isUpdating: updatePreferences.isPending,
+  };
+}

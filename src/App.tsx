@@ -118,6 +118,8 @@ import ConnectedApps from "./pages/settings/ConnectedApps";
 import Billing from "./pages/settings/Billing";
 import Support from "./pages/settings/Support";
 import TenantRole from "./pages/settings/TenantRole";
+import AutopilotSettings from "./pages/settings/AutopilotSettings";
+import VoiceAISettings from "./pages/settings/VoiceAISettings";
 
 // Wallet sub-pages
 import Balance from "./pages/wallet/Balance";
@@ -486,6 +488,16 @@ const App = () => {
           <Route path="/settings/support" element={
             <AuthGuard>
               <Support />
+            </AuthGuard>
+          } />
+          <Route path="/settings/autopilot" element={
+            <AuthGuard>
+              <AutopilotSettings />
+            </AuthGuard>
+          } />
+          <Route path="/settings/voice-ai" element={
+            <AuthGuard>
+              <VoiceAISettings />
             </AuthGuard>
           } />
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />

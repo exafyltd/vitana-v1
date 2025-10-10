@@ -120,6 +120,8 @@ export const adminMonitoringNavigation = [
 export const settingsNavigation = [
   { id: "overview", name: "Overview", path: "/settings" },
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },
+  { id: "autopilot", name: "Autopilot & Automation", path: "/settings/autopilot" },
+  { id: "voice-ai", name: "Voice & AI", path: "/settings/voice-ai" },
   { id: "privacy", name: "Privacy", path: "/settings/privacy" },
   { id: "connected-apps", name: "Connected Apps & Integrations", path: "/settings/connected-apps" },
   { id: "billing", name: "Billing", path: "/settings/billing" },

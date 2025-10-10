@@ -204,11 +204,13 @@ export type Database = {
           action_type: string
           conditions: Json | null
           created_at: string
+          created_by: string | null
           description: string | null
           id: string
           is_active: boolean
           metadata: Json | null
           name: string
+          scope: string | null
           trigger_config: Json
           trigger_type: string
           updated_at: string
@@ -219,11 +221,13 @@ export type Database = {
           action_type: string
           conditions?: Json | null
           created_at?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           metadata?: Json | null
           name: string
+          scope?: string | null
           trigger_config?: Json
           trigger_type: string
           updated_at?: string
@@ -234,11 +238,13 @@ export type Database = {
           action_type?: string
           conditions?: Json | null
           created_at?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           metadata?: Json | null
           name?: string
+          scope?: string | null
           trigger_config?: Json
           trigger_type?: string
           updated_at?: string
@@ -3119,6 +3125,90 @@ export type Database = {
         }
         Relationships: []
       }
+      user_preferences: {
+        Row: {
+          ai_model: string | null
+          ai_response_length: string | null
+          ai_temperature: number | null
+          auto_delete_recordings_days: number | null
+          autopilot_categories: Json | null
+          autopilot_enabled: boolean | null
+          autopilot_max_actions_per_day: number | null
+          autopilot_priority_filter: string | null
+          autopilot_quiet_hours_end: string | null
+          autopilot_quiet_hours_start: string | null
+          created_at: string | null
+          id: string
+          store_voice_recordings: boolean | null
+          stt_auto_punctuation: boolean | null
+          stt_instant_enabled: boolean | null
+          stt_language: string | null
+          stt_sensitivity: number | null
+          tts_character: string | null
+          tts_gender: string | null
+          tts_pitch: number | null
+          tts_speed: number | null
+          tts_voice: string | null
+          tts_volume: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_model?: string | null
+          ai_response_length?: string | null
+          ai_temperature?: number | null
+          auto_delete_recordings_days?: number | null
+          autopilot_categories?: Json | null
+          autopilot_enabled?: boolean | null
+          autopilot_max_actions_per_day?: number | null
+          autopilot_priority_filter?: string | null
+          autopilot_quiet_hours_end?: string | null
+          autopilot_quiet_hours_start?: string | null
+          created_at?: string | null
+          id?: string
+          store_voice_recordings?: boolean | null
+          stt_auto_punctuation?: boolean | null
+          stt_instant_enabled?: boolean | null
+          stt_language?: string | null
+          stt_sensitivity?: number | null
+          tts_character?: string | null
+          tts_gender?: string | null
+          tts_pitch?: number | null
+          tts_speed?: number | null
+          tts_voice?: string | null
+          tts_volume?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_model?: string | null
+          ai_response_length?: string | null
+          ai_temperature?: number | null
+          auto_delete_recordings_days?: number | null
+          autopilot_categories?: Json | null
+          autopilot_enabled?: boolean | null
+          autopilot_max_actions_per_day?: number | null
+          autopilot_priority_filter?: string | null
+          autopilot_quiet_hours_end?: string | null
+          autopilot_quiet_hours_start?: string | null
+          created_at?: string | null
+          id?: string
+          store_voice_recordings?: boolean | null
+          stt_auto_punctuation?: boolean | null
+          stt_instant_enabled?: boolean | null
+          stt_language?: string | null
+          stt_sensitivity?: number | null
+          tts_character?: string | null
+          tts_gender?: string | null
+          tts_pitch?: number | null
+          tts_speed?: number | null
+          tts_voice?: string | null
+          tts_volume?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_supplements: {
         Row: {
           category: string
@@ -3185,6 +3275,42 @@ export type Database = {
           id?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      vitana_index_config: {
+        Row: {
+          algorithm_weights: Json | null
+          created_at: string | null
+          created_by: string | null
+          display_preferences: Json | null
+          id: string
+          is_active: boolean | null
+          scoring_tiers: Json | null
+          updated_at: string | null
+          version: number | null
+        }
+        Insert: {
+          algorithm_weights?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          display_preferences?: Json | null
+          id?: string
+          is_active?: boolean | null
+          scoring_tiers?: Json | null
+          updated_at?: string | null
+          version?: number | null
+        }
+        Update: {
+          algorithm_weights?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          display_preferences?: Json | null
+          id?: string
+          is_active?: boolean | null
+          scoring_tiers?: Json | null
+          updated_at?: string | null
+          version?: number | null
         }
         Relationships: []
       }
