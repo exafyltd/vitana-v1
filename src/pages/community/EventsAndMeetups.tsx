@@ -7,6 +7,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { Button } from "@/components/ui/button";
 import { CreateEventPopup } from '@/components/CreateEventPopup';
 import { CreateMeetupPopup } from '@/components/CreateMeetupPopup';
+import { CreateSelectionDialog } from '@/components/CreateSelectionDialog';
 import { EditMeetupPopup } from '@/components/EditMeetupPopup';
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { communityNavigation } from "@/config/navigation";
@@ -175,6 +176,7 @@ const EventsAndMeetups = () => {
   
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
+  const [createSelectionOpen, setCreateSelectionOpen] = useState(false);
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [activeTab, setActiveTab] = useState("today");
@@ -309,21 +311,12 @@ const EventsAndMeetups = () => {
             <ExpandableSearchButton placeholder="Search events and meetups..." />
             <UniversalCalendarButton />
             <Button 
-              onClick={() => setCreateEventOpen(true)}
+              onClick={() => setCreateSelectionOpen(true)}
               size="sm"
               className="gap-2"
             >
-              <CalendarIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Create Event</span>
-            </Button>
-            <Button 
-              onClick={() => setCreateMeetupOpen(true)}
-              size="sm"
-              variant="outline"
-              className="gap-2"
-            >
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">Create MeetUp</span>
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Create</span>
             </Button>
           </UtilityActionButton>
 
@@ -393,10 +386,24 @@ const EventsAndMeetups = () => {
         </div>
       </AppLayout>
 
+      {/* Create Selection Dialog */}
+      <CreateSelectionDialog
+        open={createSelectionOpen}
+        onOpenChange={setCreateSelectionOpen}
+        onSelectEvent={() => {
+          setCreateSelectionOpen(false);
+          setCreateEventOpen(true);
+        }}
+        onSelectMeetup={() => {
+          setCreateSelectionOpen(false);
+          setCreateMeetupOpen(true);
+        }}
+      />
+
       {/* Create Event Popup */}
-      <CreateEventPopup
-        isOpen={createEventOpen}
-        onClose={() => setCreateEventOpen(false)}
+      <CreateEventPopup 
+        isOpen={createEventOpen} 
+        onClose={() => setCreateEventOpen(false)} 
       />
 
       {/* Create MeetUp Popup */}
