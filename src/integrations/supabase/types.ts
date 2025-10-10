@@ -782,6 +782,48 @@ export type Database = {
         }
         Relationships: []
       }
+      contacts: {
+        Row: {
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          contact_user_id: string | null
+          created_at: string | null
+          id: string
+          invite_sent_at: string | null
+          is_on_platform: boolean | null
+          metadata: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_name: string
+          contact_phone?: string | null
+          contact_user_id?: string | null
+          created_at?: string | null
+          id?: string
+          invite_sent_at?: string | null
+          is_on_platform?: boolean | null
+          metadata?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          contact_email?: string | null
+          contact_name?: string
+          contact_phone?: string | null
+          contact_user_id?: string | null
+          created_at?: string | null
+          id?: string
+          invite_sent_at?: string | null
+          is_on_platform?: boolean | null
+          metadata?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       content_reports: {
         Row: {
           action_taken: string | null
@@ -3779,6 +3821,14 @@ export type Database = {
       bootstrap_admin_user: {
         Args: { p_user_email: string; p_user_id: string }
         Returns: undefined
+      }
+      check_phone_on_platform: {
+        Args: { phone_number: string }
+        Returns: {
+          avatar_url: string
+          display_name: string
+          user_id: string
+        }[]
       }
       clean_expired_context_cache: {
         Args: Record<PropertyKey, never>
