@@ -435,7 +435,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <div>
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
-        <div className="flex min-h-screen w-full">
+        <div className="flex min-h-screen w-full overflow-x-hidden">
           <div className="dark">
             <AppSidebar 
               streamingChatRef={streamingChatRef} 
@@ -449,7 +449,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             />
           </div>
 
-          <SidebarInset className="flex flex-col w-full">
+          <SidebarInset className="flex flex-col w-full overflow-x-hidden">
             <div className="flex flex-col min-h-screen bg-background rounded-tl-2xl">
               <PendingCalendarEventProcessor />
               <main className="flex-1">

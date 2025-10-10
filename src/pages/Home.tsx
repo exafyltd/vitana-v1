@@ -315,7 +315,7 @@ export default function Home() {
           <SplitBarContent value="today">
             <div className="mt-6">
               {/* Row 1: Scrolling Tracker - Continuous horizontal scroll */}
-              <div className="mb-6 overflow-x-hidden w-full">
+              <div className="mb-6 overflow-x-hidden w-full min-w-0">
                 <ScrollingRail
                   items={todayScheduledEvents.map((event, index) => ({
                     title: event.title,

@@ -27,10 +27,10 @@ export function ScrollingRail({
       if (!containerRef.current) return;
       
       const containerWidth = containerRef.current.offsetWidth;
-      const gap = 24; // gap-6 = 1.5rem = 24px
+      const gap = 16; // gap-4 = 1rem = 16px
       
-      // Match the 12-column grid system breakpoints
-      let columns = 1.2; // base: shows peek of next card
+      // Match the 12-column grid system breakpoints (no peek)
+      let columns = 1; // base: 1 column
       if (window.innerWidth >= 768) columns = 2; // md
       if (window.innerWidth >= 1024) columns = 3; // lg
       if (window.innerWidth >= 1280) columns = 4; // xl (matches col-span-3 x 4)
@@ -48,10 +48,13 @@ export function ScrollingRail({
   const duplicatedItems = [...items, ...items];
 
   return (
-    <div ref={containerRef} className={cn("relative overflow-hidden w-full max-w-full", className)}>
+    <div
+      ref={containerRef}
+      className={cn("relative overflow-hidden w-full max-w-full min-w-0 isolate", className)}
+      style={{ contain: 'layout paint' }}
+    >
       <div 
-        className={cn("flex gap-6 whitespace-nowrap will-change-transform transform-gpu", speedClass)}
-        style={{ width: 'fit-content' }}
+        className={cn("flex gap-4 whitespace-nowrap will-change-transform transform-gpu", speedClass)}
       >
         {duplicatedItems.map((item, index) => (
           <div key={index} className="flex-shrink-0 h-[280px]" style={{ width: `${cardWidth}px` }}>
