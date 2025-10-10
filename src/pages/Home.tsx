@@ -19,7 +19,7 @@ import { useEnhancedMotivationalMessage } from "@/hooks/useEnhancedMotivationalM
 import { homeNavigation } from "@/config/navigation";
 import { CommunityEventsCard } from "@/components/home/CommunityEventsCard";
 import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
-import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { ScrollingRail } from "@/components/home/ScrollingRail";
 import { PulsingHighlightCard } from "@/components/home/PulsingHighlightCard";
 
 // Mock data for Today and Guide screens
@@ -317,9 +317,9 @@ export default function Home() {
 
           <SplitBarContent value="today">
             <div className="mt-6">
-              {/* Row 1: Hero Carousel - Auto-rotating featured events */}
-              <div className="mb-8 h-[420px]">
-                <HeroCarousel
+              {/* Row 1: Scrolling Tracker - Continuous horizontal scroll */}
+              <div className="mb-8">
+                <ScrollingRail
                   items={todayScheduledEvents.map((event, index) => ({
                     title: event.title,
                     description: event.description,
@@ -333,7 +333,7 @@ export default function Home() {
                     rewardPoints: index === 0 ? 5 : index === 1 ? 4 : 8,
                     rewardDescription: index === 0 ? "Earn credits for attending" : index === 1 ? "Earn credits for learning" : "Earn credits for group participation"
                   }))}
-                  autoplayInterval={6000}
+                  speed="medium"
                 />
               </div>
 
