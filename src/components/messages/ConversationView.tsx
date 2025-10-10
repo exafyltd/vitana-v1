@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -12,8 +12,9 @@ import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
 import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
-  import { useCalendarEvents } from '@/hooks/useCalendarEvents';
+import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useToast } from '@/hooks/use-toast';
+import { useIsContactInList } from '@/hooks/useIsContactInList';
 import { supabase } from '@/integrations/supabase/client';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
 import { 
@@ -24,7 +25,8 @@ import {
   Info,
   Users,
   Settings,
-  Loader2
+  Loader2,
+  UserPlus
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import MessageSkeleton from './MessageSkeleton';
@@ -33,6 +35,7 @@ import ErrorMessage from './ErrorMessage';
 import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
+import AddContactDialog from '@/components/contacts/AddContactDialog';
 
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
@@ -102,6 +105,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [sendError, setSendError] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [showMembersModal, setShowMembersModal] = useState(false);
+  const [showAddContactDialog, setShowAddContactDialog] = useState(false);
   const [threadParticipants, setThreadParticipants] = useState<any[]>([]);
   const [currentUserRole, setCurrentUserRole] = useState<string>('member');
 
@@ -214,6 +218,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   // Use hybrid messages directly from the hook - no local state needed
   const messages = hybridMessagesFromHook || [];
+  
+  // Check if recipient is already in contacts
+  const isContactInList = useIsContactInList(effectiveRecipientId);
   
   // Clear messages immediately when switching threads to prevent stale data
   const [isThreadSwitching, setIsThreadSwitching] = useState(false);
@@ -845,6 +852,21 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     return currentThread?.type === 'group';
   };
 
+  // Determine if we should show "Add to Contacts" button
+  const shouldShowAddToContacts = useMemo(() => {
+    if (isGroupChat()) return false;
+    if (!effectiveRecipientId) return false;
+    if (effectiveRecipientId === user?.id) return false;
+    
+    const hasReceivedMessage = messages.some(
+      msg => msg.sender_id === effectiveRecipientId
+    );
+    if (!hasReceivedMessage) return false;
+    if (isContactInList) return false;
+    
+    return true;
+  }, [effectiveRecipientId, user?.id, messages, isContactInList, threadId, threads]);
+
   // Compute conversation type for payment popups
   const conversationType: 'direct' | 'group' | null = React.useMemo(() => {
     const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
@@ -950,6 +972,16 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               <Button size="sm" variant="ghost">
                 <Info className="w-4 h-4" />
               </Button>
+              {shouldShowAddToContacts && (
+                <Button 
+                  size="sm" 
+                  variant="ghost"
+                  onClick={() => setShowAddContactDialog(true)}
+                  title="Add to Contacts"
+                >
+                  <UserPlus className="w-4 h-4" />
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -1096,6 +1128,20 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         threadId={threadId || ''}
         context={messageContext}
         currentUserRole={currentUserRole}
+      />
+
+      <AddContactDialog
+        open={showAddContactDialog}
+        onOpenChange={setShowAddContactDialog}
+        prefilledUserId={effectiveRecipientId || undefined}
+        prefilledName={effectiveRecipient?.name}
+        onAdd={async (contact) => {
+          setShowAddContactDialog(false);
+          toast({
+            title: "Contact Added",
+            description: `${contact.contact_name} has been added to your contacts`,
+          });
+        }}
       />
     </>
   );

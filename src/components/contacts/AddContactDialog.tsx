@@ -29,6 +29,9 @@ interface AddContactDialogProps {
     contact_email?: string;
     contact_user_id?: string;
   }) => Promise<any>;
+  prefilledUserId?: string;
+  prefilledName?: string;
+  prefilledAvatar?: string;
 }
 
 // Debounce helper
@@ -40,7 +43,13 @@ function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (..
   };
 }
 
-export default function AddContactDialog({ open, onOpenChange, onAdd }: AddContactDialogProps) {
+export default function AddContactDialog({ 
+  open, 
+  onOpenChange, 
+  onAdd,
+  prefilledUserId,
+  prefilledName,
+}: AddContactDialogProps) {
   const { user } = useAuth();
   const { currentRole } = useRole();
   const { activeTenantId } = useTenant();
@@ -162,6 +171,65 @@ export default function AddContactDialog({ open, onOpenChange, onAdd }: AddConta
       resetForm();
     }
   }, [open]);
+
+  // Auto-search and pre-select user when prefilledUserId is provided
+  useEffect(() => {
+    const autoSearchUser = async () => {
+      if (open && prefilledUserId && !selectedUser) {
+        setIsSearching(true);
+        try {
+          const isGlobalContext = currentRole === 'community';
+          
+          if (isGlobalContext) {
+            const { data, error } = await supabase
+              .from('global_community_profiles')
+              .select('user_id, display_name, avatar_url, bio')
+              .eq('user_id', prefilledUserId)
+              .single();
+            
+            if (!error && data) {
+              const userResult: SearchResult = {
+                user_id: data.user_id,
+                display_name: data.display_name,
+                avatar_url: data.avatar_url,
+                bio: data.bio
+              };
+              setSelectedUser(userResult);
+              setSearchQuery(data.display_name || prefilledName || '');
+            }
+          } else {
+            if (!activeTenantId) return;
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('user_id, display_name, full_name, avatar_url, email')
+              .eq('user_id', prefilledUserId)
+              .single();
+            
+            if (!error && data) {
+              const userResult: SearchResult = {
+                user_id: data.user_id,
+                display_name: data.display_name,
+                full_name: data.full_name,
+                avatar_url: data.avatar_url,
+                email: data.email
+              };
+              setSelectedUser(userResult);
+              setSearchQuery(data.display_name || data.full_name || prefilledName || '');
+            }
+          }
+        } catch (error) {
+          console.error('Error auto-searching user:', error);
+          if (prefilledName) {
+            setSearchQuery(prefilledName);
+          }
+        } finally {
+          setIsSearching(false);
+        }
+      }
+    };
+
+    autoSearchUser();
+  }, [open, prefilledUserId, selectedUser, currentRole, activeTenantId, prefilledName]);
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
