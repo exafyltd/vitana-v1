@@ -37,6 +37,7 @@ import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import CreateGroupPopup from "@/components/messages/CreateGroupPopup";
 import TypingIndicator from '@/components/messages/TypingIndicator';
 import PresenceIndicator from '@/components/messages/PresenceIndicator';
+import GroupAvatarStack from '@/components/messages/GroupAvatarStack';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
 
 export default function Messages() {
@@ -398,15 +399,31 @@ export default function Messages() {
         </TabsContent>
 
         <TabsContent value="groups" className="mt-0">
+          {/* Create Group Header - only show when groups exist */}
+          {filteredThreads.length > 0 && (
+            <div className="mb-4 mr-3">
+              <Button 
+                onClick={() => setShowCreateGroup(true)}
+                variant="outline"
+                className="w-full justify-start"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create New Group
+              </Button>
+            </div>
+          )}
+
           <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
             {filteredThreads.length === 0 ? (
               <div className="text-center py-12">
                 <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                 <h3 className="text-lg font-semibold mb-2">No Groups Yet</h3>
-                <p className="text-muted-foreground mb-4">Create a group to start collaborating</p>
+                <p className="text-muted-foreground mb-4 max-w-sm mx-auto">
+                  Groups help you collaborate with multiple people at once. Perfect for teams, projects, or communities.
+                </p>
                 <Button onClick={() => setShowCreateGroup(true)}>
                   <Users className="w-4 h-4 mr-2" />
-                  Create Group
+                  Create Your First Group
                 </Button>
               </div>
             ) : (
@@ -415,6 +432,12 @@ export default function Messages() {
                   const ap = pinnedThreads.has(a.id) ? 1 : 0;
                   const bp = pinnedThreads.has(b.id) ? 1 : 0;
                   if (ap !== bp) return bp - ap;
+                  
+                  // Show unread groups before read groups
+                  const au = (a.unread_count || 0) > 0 ? 1 : 0;
+                  const bu = (b.unread_count || 0) > 0 ? 1 : 0;
+                  if (au !== bu) return bu - au;
+                  
                   const ad = new Date(a.updated_at).getTime();
                   const bd = new Date(b.updated_at).getTime();
                   return bd - ad;
@@ -441,16 +464,16 @@ export default function Messages() {
                       }}
                     >
                       <div className="flex items-start space-x-3">
-                        <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
-                          <AvatarFallback>
-                            {thread.name?.[0]?.toUpperCase() || '?'}
-                          </AvatarFallback>
-                        </Avatar>
+                        <GroupAvatarStack 
+                          participants={thread.participants || []}
+                          size={densityMode === 'compact' ? 'sm' : 'md'}
+                        />
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
+                                <Users className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
                                 <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
                                   {thread.name || 'Unnamed Group'}
                                 </h3>
@@ -463,13 +486,22 @@ export default function Messages() {
                                 <p className={`text-muted-foreground truncate ${
                                   densityMode === 'compact' ? 'text-xs mt-0.5' : 'text-sm mt-1'
                                 }`}>
+                                  {thread.last_message.sender_id !== user?.id && thread.last_message.sender_id && (
+                                    <span className="font-medium">
+                                      {thread.participants?.find(p => p.user_id === thread.last_message.sender_id)?.display_name || 'Someone'}
+                                      :{' '}
+                                    </span>
+                                  )}
                                   {thread.last_message.body}
                                 </p>
                               )}
                               
-                              <div className="flex items-center text-xs text-muted-foreground mt-1">
-                                <Users className="w-3 h-3 mr-1" />
-                                {thread.participants?.length || 0} members
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
+                                <div className="flex items-center">
+                                  <Badge variant="secondary" className="text-xs px-1.5 py-0">
+                                    {thread.participants?.length || 0} members
+                                  </Badge>
+                                </div>
                               </div>
                             </div>
                             
