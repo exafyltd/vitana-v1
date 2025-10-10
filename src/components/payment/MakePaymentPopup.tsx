@@ -105,7 +105,7 @@ export default function MakePaymentPopup({
 
     try {
       // Perform actual wallet transfer
-      await transferFunds(selectedRecipient.id, currency.toUpperCase() as 'CREDITS' | 'USD' | 'VTN', parseFloat(amount));
+      await transferFunds(selectedRecipient.id, currency.toUpperCase() as 'CREDITS' | 'USD' | 'VTNA', parseFloat(amount));
 
       // Log wallet transfer activity
       await logActivity({
@@ -292,10 +292,10 @@ export default function MakePaymentPopup({
                       USD
                     </div>
                   </SelectItem>
-                  <SelectItem value="VTN">
+                  <SelectItem value="VTNA">
                     <div className="flex items-center gap-2">
-                      {getCurrencyIcon('VTN', 'w-4 h-4')}
-                      VTN
+                      {getCurrencyIcon('VTNA', 'w-4 h-4')}
+                      VTNA
                     </div>
                   </SelectItem>
                 </SelectContent>

@@ -13,8 +13,8 @@ export const getRealExchangeRates = async (): Promise<ExchangeRate[]> => {
     if (error) throw error;
 
     return data.map(rate => ({
-      from: rate.from_currency as 'USD' | 'VTN' | 'CREDITS',
-      to: rate.to_currency as 'USD' | 'VTN' | 'CREDITS',
+      from: rate.from_currency as 'USD' | 'VTNA' | 'CREDITS',
+      to: rate.to_currency as 'USD' | 'VTNA' | 'CREDITS',
       rate: Number(rate.rate),
       trend: rate.trend as 'up' | 'down' | 'stable',
       change24h: Number(rate.change_24h),

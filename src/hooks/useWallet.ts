@@ -10,7 +10,7 @@ import { measurePerformance } from '@/utils/performanceLogger';
 import { useActivityLogger } from '@/hooks/useActivityLogger';
 
 export interface UserBalance {
-  currency_type: 'USD' | 'VTN' | 'CREDITS';
+  currency_type: 'USD' | 'VTNA' | 'CREDITS';
   balance: number;
   updated_at: string;
 }
@@ -185,7 +185,7 @@ export function useWallet() {
     });
   }, [user?.id, deduplicateRequest]);
 
-  const getBalance = (currency: 'USD' | 'VTN' | 'CREDITS'): number | null => {
+  const getBalance = (currency: 'USD' | 'VTNA' | 'CREDITS'): number | null => {
     const normalizedCurrency = currency.toUpperCase();
     const entry = balances.find(b => b.currency_type === normalizedCurrency);
     if (!entry) {
@@ -199,7 +199,7 @@ export function useWallet() {
 
   // Update balance for specific currency
   const updateBalance = async (
-    currency: 'USD' | 'VTN' | 'CREDITS',
+    currency: 'USD' | 'VTNA' | 'CREDITS',
     amount: number,
     operation: 'add' | 'subtract' = 'add'
   ): Promise<number> => {
@@ -236,8 +236,8 @@ export function useWallet() {
 
   // Process exchange transaction
   const exchangeCurrency = async (
-    fromCurrency: 'USD' | 'VTN' | 'CREDITS',
-    toCurrency: 'USD' | 'VTN' | 'CREDITS',
+    fromCurrency: 'USD' | 'VTNA' | 'CREDITS',
+    toCurrency: 'USD' | 'VTNA' | 'CREDITS',
     amount: number,
     exchangeRate: number
   ): Promise<any> => {
@@ -314,7 +314,7 @@ export function useWallet() {
   // Transfer funds to another user with optimistic updates
   const transferFunds = async (
     toUserId: string,
-    currency: 'USD' | 'VTN' | 'CREDITS',
+    currency: 'USD' | 'VTNA' | 'CREDITS',
     amount: number
   ): Promise<any> => {
     const perf = measurePerformance('transferFunds');
@@ -416,8 +416,8 @@ export function useWallet() {
   // Atomic exchange and send operation with optimistic updates
   const exchangeAndSend = async (
     toUserId: string,
-    fromCurrency: "USD" | "VTN" | "CREDITS",
-    toCurrency: "USD" | "VTN" | "CREDITS",
+    fromCurrency: "USD" | "VTNA" | "CREDITS",
+    toCurrency: "USD" | "VTNA" | "CREDITS",
     amount: number,
     exchangeRate: number
   ) => {

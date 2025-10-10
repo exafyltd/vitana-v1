@@ -87,7 +87,7 @@ export function PaymentMessageHandler({
     switch (currency?.toUpperCase()) {
       case 'USD': return <DollarSign className="w-4 h-4" />;
       case 'CREDITS': return <Coins className="w-4 h-4" />;
-      case 'VTN': return <CreditCard className="w-4 h-4" />;
+      case 'VTNA': return <CreditCard className="w-4 h-4" />;
       default: return <Coins className="w-4 h-4" />;
     }
   };
@@ -96,13 +96,13 @@ export function PaymentMessageHandler({
     switch (currency?.toUpperCase()) {
       case 'USD': return `$${amount.toLocaleString()}`;
       case 'CREDITS': return `${amount.toLocaleString()} Credits`;
-      case 'VTN': return `${amount.toLocaleString()} VTN`;
+      case 'VTNA': return `${amount.toLocaleString()} VTNA`;
       default: return `${amount} ${currency}`;
     }
   };
 
   const canAfford = (amount: number, currency: string) => {
-    const normalizedCurrency = (currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS';
+    const normalizedCurrency = (currency || '').toUpperCase() as 'USD' | 'VTNA' | 'CREDITS';
     const balance = walletGetBalance(normalizedCurrency);
     const canPay = typeof balance === 'number' ? balance >= amount : true; // unknown balance -> allow attempt
     console.log(`💰 Can afford ${amount} ${currency}? ${canPay} (current balance:`, balance, ')');
@@ -181,7 +181,7 @@ export function PaymentMessageHandler({
       // Perform the atomic transfer in background
       const result = await transferFunds(
         message.sender_id, 
-        currency.toUpperCase() as "USD" | "VTN" | "CREDITS", 
+        currency.toUpperCase() as "USD" | "VTNA" | "CREDITS", 
         amount
       );
 
@@ -339,8 +339,8 @@ export function PaymentMessageHandler({
       // Perform atomic exchange and send in one operation
       const result = await exchangeAndSend(
         message.sender_id,
-        originalCurrency.toUpperCase() as "USD" | "VTN" | "CREDITS",
-        exchangedCurrency.toUpperCase() as "USD" | "VTN" | "CREDITS", 
+        originalCurrency.toUpperCase() as "USD" | "VTNA" | "CREDITS",
+        exchangedCurrency.toUpperCase() as "USD" | "VTNA" | "CREDITS",
         originalAmount,
         exchangeRate
       );
@@ -413,7 +413,7 @@ export function PaymentMessageHandler({
 
   const renderPaymentRequest = () => {
   const { amount, currency, description, status = 'pending' } = paymentData;
-    const balanceVal = walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTN' | 'CREDITS');
+    const balanceVal = walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTNA' | 'CREDITS');
     const currentBalanceDisplay = balanceVal === null ? '—' : balanceVal.toLocaleString();
     const canPay = canAfford(amount, currency);
     const effectiveStatus = isDeclined ? 'declined' : isCompleted ? 'completed' : status;

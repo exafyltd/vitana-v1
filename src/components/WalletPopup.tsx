@@ -114,7 +114,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
   
   const { balances, loading, getBalance, exchangeCurrency } = useWallet();
   
-  const currentBalance = getBalance('VTN') || 0;
+  const currentBalance = getBalance('VTNA') || 0;
   const usdBalance = getBalance('USD') || 0;
   const creditsBalance = getBalance('CREDITS') || 0;
   const pendingRewards = 156;
@@ -149,7 +149,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             </div>
             <span>Digital Wallet</span>
             <Badge variant="outline" className="ml-auto text-green-600 border-green-200">
-              {loading ? '...' : currentBalance.toLocaleString()} VTN
+              {loading ? '...' : currentBalance.toLocaleString()} VTNA
             </Badge>
           </DialogTitle>
           <DialogDescription>
@@ -169,7 +169,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                   <div className="text-lg font-bold text-green-600">
                     {loading ? '...' : currentBalance.toLocaleString()}
                   </div>
-                  <div className="text-xs text-muted-foreground">VTN Balance</div>
+                  <div className="text-xs text-muted-foreground">VTNA Balance</div>
                   <div className="flex items-center justify-center gap-1 mt-1">
                     <TrendingUp className="h-3 w-3 text-green-500" />
                     <span className="text-xs text-green-600">+{monthlyTrend}%</span>
@@ -197,8 +197,8 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                 try {
                   const exchangeRate = toAmount / fromAmount;
                   await exchangeCurrency(
-                    fromCurrency as 'USD' | 'VTN' | 'CREDITS',
-                    toCurrency as 'USD' | 'VTN' | 'CREDITS',
+                    fromCurrency as 'USD' | 'VTNA' | 'CREDITS',
+                    toCurrency as 'USD' | 'VTNA' | 'CREDITS',
                     fromAmount,
                     exchangeRate
                   );
@@ -254,7 +254,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                     </div>
                     
                     <div className={cn("text-sm font-medium", getTransactionColor(transaction.type))}>
-                      {transaction.amount > 0 ? '+' : ''}{transaction.amount} VTN
+                      {transaction.amount > 0 ? '+' : ''}{transaction.amount} VTNA
                     </div>
                   </div>
                 </Card>

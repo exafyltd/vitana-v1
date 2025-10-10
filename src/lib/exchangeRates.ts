@@ -1,7 +1,7 @@
 // Exchange rate utilities and mock data
 export interface ExchangeRate {
-  from: 'USD' | 'VTN' | 'CREDITS';
-  to: 'USD' | 'VTN' | 'CREDITS';
+  from: 'USD' | 'VTNA' | 'CREDITS';
+  to: 'USD' | 'VTNA' | 'CREDITS';
   rate: number;
   trend: 'up' | 'down' | 'stable';
   change24h: number; // percentage
@@ -18,38 +18,38 @@ export interface ExchangeCalculation {
   toCurrency: string;
 }
 
-// Vitana System exchange rates - VTN is growing with system adoption
+// Vitana System exchange rates - VTNA is growing with system adoption
 export const getCurrentExchangeRates = (): ExchangeRate[] => [
   {
     from: 'USD',
-    to: 'VTN', 
-    rate: 100, // 1 USD = 100 VTN
+    to: 'VTNA', 
+    rate: 100, // 1 USD = 100 VTNA
     trend: 'up',
-    change24h: 2.5, // VTN growing due to system adoption
+    change24h: 2.5, // VTNA growing due to system adoption
     lastUpdated: new Date()
   },
   {
-    from: 'VTN',
+    from: 'VTNA',
     to: 'USD',
-    rate: 0.01, // 1 VTN = 0.01 USD
+    rate: 0.01, // 1 VTNA = 0.01 USD
     trend: 'up', 
-    change24h: 2.5, // VTN appreciating
+    change24h: 2.5, // VTNA appreciating
     lastUpdated: new Date()
   },
   {
-    from: 'VTN',
+    from: 'VTNA',
     to: 'CREDITS',
-    rate: 1.0, // 1 VTN = 1 Credit (perfect parity)
+    rate: 1.0, // 1 VTNA = 1 Credit (perfect parity)
     trend: 'up',
-    change24h: 1.8, // VTN trending up
+    change24h: 1.8, // VTNA trending up
     lastUpdated: new Date()
   },
   {
     from: 'CREDITS',
-    to: 'VTN', 
-    rate: 1.0, // 1 Credit = 1 VTN (perfect parity)
+    to: 'VTNA', 
+    rate: 1.0, // 1 Credit = 1 VTNA (perfect parity)
     trend: 'up',
-    change24h: 1.8, // Following VTN growth
+    change24h: 1.8, // Following VTNA growth
     lastUpdated: new Date()
   },
   {
@@ -107,8 +107,8 @@ export const formatCurrency = (amount: number, currency: string): string => {
   switch (currency.toUpperCase()) {
     case 'USD':
       return `$${amount.toFixed(2)}`;
-    case 'VTN':
-      return `${amount.toFixed(0)} VTN`; // Vitana Tokens
+    case 'VTNA':
+      return `${amount.toFixed(0)} VTNA`; // Vitana Tokens
     case 'CREDITS':
       return `${amount.toFixed(0)} Credits`;
     default:
@@ -119,7 +119,7 @@ export const formatCurrency = (amount: number, currency: string): string => {
 export const getCurrencySymbol = (currency: string): string => {
   switch (currency.toUpperCase()) {
     case 'USD': return '$';
-    case 'VTN': return 'VTN'; // Vitana Tokens
+    case 'VTNA': return 'VTNA'; // Vitana Tokens
     case 'CREDITS': return 'Credits';
     default: return currency;
   }

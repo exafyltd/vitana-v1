@@ -106,7 +106,7 @@ export default function PaymentRequestPopup({
     switch (currency.toUpperCase()) {
       case 'CREDITS': return <Coins className="w-4 h-4" />;
       case 'USD': return <DollarSign className="w-4 h-4" />;
-      case 'VTN': return <CreditCard className="w-4 h-4" />;
+      case 'VTNA': return <CreditCard className="w-4 h-4" />;
       default: return <Coins className="w-4 h-4" />;
     }
   };
@@ -167,10 +167,10 @@ export default function PaymentRequestPopup({
                       USD
                     </div>
                   </SelectItem>
-                  <SelectItem value="VTN">
+                  <SelectItem value="VTNA">
                     <div className="flex items-center gap-2">
                       <CreditCard className="w-4 h-4" />
-                      VTN
+                      VTNA
                     </div>
                   </SelectItem>
                 </SelectContent>

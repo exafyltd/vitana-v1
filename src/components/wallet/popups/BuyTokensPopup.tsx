@@ -26,11 +26,11 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
   const [tokenAmount, setTokenAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const currentTokens = getBalance('VTN') || 0;
+  const currentTokens = getBalance('VTNA') || 0;
   const usdBalance = getBalance('USD') || 0;
   
   // Get actual exchange rate: 1 USD = 100 VTN, so 1 VTN = $0.01
-  const exchangeRate = getExchangeRate('VTN', 'USD');
+  const exchangeRate = getExchangeRate('VTNA', 'USD');
   const vtnPriceInUSD = exchangeRate?.rate || 0.01; // Fallback to $0.01 per VTN
   
   // VTN token packages with correct market rate
@@ -56,7 +56,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
     try {
       // Deduct USD and add VTN tokens (including bonus)
       await updateBalance('USD', cost, 'subtract');
-      await updateBalance('VTN', tokens + bonus, 'add');
+      await updateBalance('VTNA', tokens + bonus, 'add');
       
       toast({
         title: '✅ VTN Tokens Purchased Successfully!',
@@ -101,7 +101,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
     
     try {
       await updateBalance('USD', cost, 'subtract');
-      await updateBalance('VTN', tokens, 'add');
+      await updateBalance('VTNA', tokens, 'add');
       
       toast({
         title: '✅ VTN Tokens Purchased Successfully!',

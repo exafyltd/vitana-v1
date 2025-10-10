@@ -33,7 +33,7 @@ export default function ExchangeAndSendPopup({
   recipient,
   initialAmount = "",
   initialFromCurrency = "USD",
-  initialToCurrency = "VTN"
+  initialToCurrency = "VTNA"
 }: ExchangeAndSendPopupProps) {
   const [amount, setAmount] = useState(initialAmount);
   const [fromCurrency, setFromCurrency] = useState(initialFromCurrency);
@@ -46,14 +46,14 @@ export default function ExchangeAndSendPopup({
 
   const currencies = [
     { value: 'USD', label: 'US Dollars', icon: DollarSign },
-    { value: 'VTN', label: 'VTN Tokens', icon: CreditCard },
+    { value: 'VTNA', label: 'VTNA Tokens', icon: CreditCard },
     { value: 'CREDITS', label: 'Credits', icon: Coins }
   ];
 
   // Mock user balance
   const userBalance = {
     USD: 2847.32,
-    VTN: 892,
+    VTNA: 892,
     CREDITS: 1547
   };
 
@@ -206,7 +206,7 @@ export default function ExchangeAndSendPopup({
                   </span>
                   <span className="flex items-center gap-1">
                     <CreditCard className="w-3 h-3" />
-                    {userBalance.VTN}
+                    {userBalance.VTNA}
                   </span>
                   <span className="flex items-center gap-1">
                     <Coins className="w-3 h-3" />
@@ -305,7 +305,7 @@ export default function ExchangeAndSendPopup({
                   Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency} • Fee: {formatCurrency(calculation.fees, fromCurrency)}
                 </div>
                 
-                {fromCurrency === 'VTN' && toCurrency === 'CREDITS' && (
+                {fromCurrency === 'VTNA' && toCurrency === 'CREDITS' && (
                   <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
                     🎉 +5% Bonus Applied
                   </Badge>

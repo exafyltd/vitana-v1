@@ -510,7 +510,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
         }}
         userBalance={{
           credits: getBalance('CREDITS') || 0,
-          vtn: getBalance('VTN') || 0,
+          vtna: getBalance('VTNA') || 0,
           usd: getBalance('USD') || 0
         }}
       />

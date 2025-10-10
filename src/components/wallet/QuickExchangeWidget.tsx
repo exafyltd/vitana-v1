@@ -24,7 +24,7 @@ export function QuickExchangeWidget({
 }: QuickExchangeWidgetProps) {
   const [fromAmount, setFromAmount] = useState('');
   const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('VTN');
+  const [toCurrency, setToCurrency] = useState('VTNA');
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 

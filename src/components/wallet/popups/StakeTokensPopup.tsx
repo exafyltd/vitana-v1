@@ -25,7 +25,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
   const [stakeAmount, setStakeAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const vtnBalance = getBalance('VTN') || 0;
+  const vtnaBalance = getBalance('VTNA') || 0;
   const stakingPeriods = [
     { period: '30 days', apy: '8%', multiplier: 1.2 },
     { period: '90 days', apy: '12%', multiplier: 1.5 },
@@ -56,7 +56,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
     
     try {
       // Simulate staking by deducting from balance
-      await updateBalance('VTN', parseFloat(stakeAmount), 'subtract');
+      await updateBalance('VTNA', parseFloat(stakeAmount), 'subtract');
       
       toast({
         title: '✅ Tokens Staked Successfully!',

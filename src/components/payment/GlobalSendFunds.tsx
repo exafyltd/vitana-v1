@@ -51,7 +51,7 @@ export default function GlobalSendFunds({
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<UserSearchResult[]>([]);
-  const [currency, setCurrency] = useState('VTN');
+  const [currency, setCurrency] = useState('VTNA');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -121,7 +121,7 @@ export default function GlobalSendFunds({
 
     setIsLoading(true);
     try {
-      const result = await transferFunds(selectedRecipient.user_id, currency as 'USD' | 'VTN' | 'CREDITS', numericAmount);
+      const result = await transferFunds(selectedRecipient.user_id, currency as 'USD' | 'VTNA' | 'CREDITS', numericAmount);
       
       if (result) {
         // Send confirmation message
@@ -251,7 +251,7 @@ export default function GlobalSendFunds({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="VTN">VTN Tokens</SelectItem>
+                <SelectItem value="VTNA">VTNA Tokens</SelectItem>
                 <SelectItem value="USD">USD</SelectItem>
                 <SelectItem value="CREDITS">Credits</SelectItem>
               </SelectContent>

@@ -50,7 +50,7 @@ export default function GlobalPaymentRequest({
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<UserSearchResult[]>([]);
-  const [currency, setCurrency] = useState('VTN');
+  const [currency, setCurrency] = useState('VTNA');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -249,7 +249,7 @@ export default function GlobalPaymentRequest({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="VTN">VTN Tokens</SelectItem>
+                <SelectItem value="VTNA">VTNA Tokens</SelectItem>
                 <SelectItem value="USD">USD</SelectItem>
                 <SelectItem value="CREDITS">Credits</SelectItem>
               </SelectContent>

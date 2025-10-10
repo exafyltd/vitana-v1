@@ -388,7 +388,7 @@ export default function ProviderProfile() {
         }}
         userBalance={{
           credits: getBalance('CREDITS') || 0,
-          vtn: getBalance('VTN') || 0,
+          vtna: getBalance('VTNA') || 0,
           usd: getBalance('USD') || 0
         }}
         onBookingComplete={handleBookingComplete}

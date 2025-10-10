@@ -35,7 +35,7 @@ export default function WalletIntegratedExchangeAndSend({
   recipient,
   initialAmount = "",
   initialFromCurrency = "USD",
-  initialToCurrency = "VTN"
+  initialToCurrency = "VTNA"
 }: WalletIntegratedExchangeAndSendProps) {
   const [amount, setAmount] = useState(initialAmount);
   const [fromCurrency, setFromCurrency] = useState(initialFromCurrency);
@@ -55,7 +55,7 @@ export default function WalletIntegratedExchangeAndSend({
 
   const canAfford = () => {
     const paymentAmount = parseFloat(amount) || 0;
-    return (getBalance(fromCurrency as "USD" | "VTN" | "CREDITS") || 0) >= paymentAmount;
+    return (getBalance(fromCurrency as "USD" | "VTNA" | "CREDITS") || 0) >= paymentAmount;
   };
 
   const handleSwapCurrencies = () => {
@@ -267,7 +267,7 @@ export default function WalletIntegratedExchangeAndSend({
                   Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency} • Fee: {formatCurrency(calculation.fees, fromCurrency)}
                 </div>
                 
-                {fromCurrency === 'VTN' && toCurrency === 'CREDITS' && (
+                {fromCurrency === 'VTNA' && toCurrency === 'CREDITS' && (
                   <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
                     🎉 +5% Bonus Applied
                   </Badge>

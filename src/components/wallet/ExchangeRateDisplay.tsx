@@ -12,10 +12,10 @@ interface ExchangeRateDisplayProps {
 export function ExchangeRateDisplay({ compact = false, className }: ExchangeRateDisplayProps) {
   const rates = getCurrentExchangeRates();
   
-  // Show key rates: USD->VTN and VTN->Credits
+  // Show key rates: USD->VTNA and VTNA->Credits
   const keyRates = rates.filter(rate => 
-    (rate.from === 'USD' && rate.to === 'VTN') ||
-    (rate.from === 'VTN' && rate.to === 'CREDITS')
+    (rate.from === 'USD' && rate.to === 'VTNA') ||
+    (rate.from === 'VTNA' && rate.to === 'CREDITS')
   );
 
   const getTrendIcon = (trend: string, change: number) => {
@@ -77,7 +77,7 @@ export function ExchangeRateDisplay({ compact = false, className }: ExchangeRate
                 1 {rate.from} = {rate.rate.toFixed(2)} {rate.to}
               </div>
               
-              {rate.from === 'VTN' && rate.to === 'CREDITS' && (
+              {rate.from === 'VTNA' && rate.to === 'CREDITS' && (
                 <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
                   +5% Bonus
                 </Badge>

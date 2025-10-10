@@ -32,7 +32,7 @@ interface WalletMasterActionPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialStep?: StepType;
-  selectedCurrency?: 'USD' | 'VTN' | 'CREDITS';
+  selectedCurrency?: 'USD' | 'VTNA' | 'CREDITS';
 }
 
 type StepType = 'menu' | 'exchange' | 'send' | 'exchange-and-send' | 'buy-credits' | 'buy-tokens';
@@ -64,7 +64,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
           break;
 
         case 'buy-tokens':
-          await updateBalance('VTN', 50, 'add');
+          await updateBalance('VTNA', 50, 'add');
           toast({
             title: '✅ Tokens Purchased!',
             description: 'Added 50 VTN tokens to your wallet',
@@ -72,7 +72,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
           break;
 
         case 'claim-rewards':
-          await updateBalance('VTN', 25, 'add');
+          await updateBalance('VTNA', 25, 'add');
           toast({
             title: '✅ Rewards Claimed!',
             description: 'Added 25 VTN rewards to your wallet',

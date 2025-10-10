@@ -2,7 +2,7 @@ import React from 'react';
 import { DollarSign, Coins, CreditCard } from 'lucide-react';
 
 export interface CurrencyConfig {
-  value: 'USD' | 'VTN' | 'CREDITS';
+  value: 'USD' | 'VTNA' | 'CREDITS';
   label: string;
   icon: typeof DollarSign;
   fullLabel: string;
@@ -16,10 +16,10 @@ export const CURRENCY_CONFIGS: CurrencyConfig[] = [
     fullLabel: 'US Dollars'
   },
   {
-    value: 'VTN',
-    label: 'VTN',
+    value: 'VTNA',
+    label: 'VTNA',
     icon: Coins,
-    fullLabel: 'VTN Tokens'
+    fullLabel: 'VTNA Tokens'
   },
   {
     value: 'CREDITS',

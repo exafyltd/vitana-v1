@@ -29,7 +29,7 @@ export default function WalletIntegratedSendFunds({
   recipient
 }: WalletIntegratedSendFundsProps) {
   const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState<'USD' | 'VTN' | 'CREDITS'>('USD');
+  const [currency, setCurrency] = useState<'USD' | 'VTNA' | 'CREDITS'>('USD');
   const [description, setDescription] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   
@@ -125,7 +125,7 @@ export default function WalletIntegratedSendFunds({
                 min="0"
                 step="0.01"
               />
-              <Select value={currency} onValueChange={(value: 'USD' | 'VTN' | 'CREDITS') => setCurrency(value)}>
+              <Select value={currency} onValueChange={(value: 'USD' | 'VTNA' | 'CREDITS') => setCurrency(value)}>
                 <SelectTrigger className="w-28">
                   <SelectValue />
                 </SelectTrigger>
