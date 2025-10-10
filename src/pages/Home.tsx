@@ -19,6 +19,8 @@ import { useEnhancedMotivationalMessage } from "@/hooks/useEnhancedMotivationalM
 import { homeNavigation } from "@/config/navigation";
 import { CommunityEventsCard } from "@/components/home/CommunityEventsCard";
 import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
+import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { PulsingHighlightCard } from "@/components/home/PulsingHighlightCard";
 
 // Mock data for Today and Guide screens
 const todayScheduledEvents = [
@@ -315,64 +317,32 @@ export default function Home() {
 
           <SplitBarContent value="today">
             <div className="mt-6">
-              {/* Row 1: Today Scheduled (big + small + small) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-6">
-                  <NewsCard
-                    title={todayScheduledEvents[0]?.title || ""}
-                    description={todayScheduledEvents[0]?.description}
-                    imageUrl={todayScheduledEvents[0]?.imageUrl || ""}
-                    pillar={todayScheduledEvents[0]?.pillar}
-                    author={todayScheduledEvents[0]?.author}
-                    location={todayScheduledEvents[0]?.location}
-                    attendees={todayScheduledEvents[0]?.attendees}
-                    timestamp={todayScheduledEvents[0]?.timestamp}
-                    showReward={true}
-                    rewardPoints={5}
-                    rewardDescription="Earn credits for attending"
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={todayScheduledEvents[1]?.title || ""}
-                    description={todayScheduledEvents[1]?.description}
-                    imageUrl={todayScheduledEvents[1]?.imageUrl || ""}
-                    pillar={todayScheduledEvents[1]?.pillar}
-                    author={todayScheduledEvents[1]?.author}
-                    location={todayScheduledEvents[1]?.location}
-                    attendees={todayScheduledEvents[1]?.attendees}
-                    timestamp={todayScheduledEvents[1]?.timestamp}
-                    showReward={true}
-                    rewardPoints={4}
-                    rewardDescription="Earn credits for learning"
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={todayScheduledEvents[2]?.title || ""}
-                    description={todayScheduledEvents[2]?.description}
-                    imageUrl={todayScheduledEvents[2]?.imageUrl || ""}
-                    pillar={todayScheduledEvents[2]?.pillar}
-                    author={todayScheduledEvents[2]?.author}
-                    location={todayScheduledEvents[2]?.location}
-                    attendees={todayScheduledEvents[2]?.attendees}
-                    timestamp={todayScheduledEvents[2]?.timestamp}
-                    showReward={true}
-                    rewardPoints={8}
-                    rewardDescription="Earn credits for group participation"
-                    className="h-full"
-                  />
-                </div>
+              {/* Row 1: Hero Carousel - Auto-rotating featured events */}
+              <div className="mb-8" style={{ minHeight: '400px' }}>
+                <HeroCarousel
+                  items={todayScheduledEvents.map((event, index) => ({
+                    title: event.title,
+                    description: event.description,
+                    imageUrl: event.imageUrl,
+                    pillar: event.pillar,
+                    author: event.author,
+                    location: event.location,
+                    attendees: event.attendees,
+                    timestamp: event.timestamp,
+                    showReward: true,
+                    rewardPoints: index === 0 ? 5 : index === 1 ? 4 : 8,
+                    rewardDescription: index === 0 ? "Earn credits for attending" : index === 1 ? "Earn credits for learning" : "Earn credits for group participation"
+                  }))}
+                  autoplayInterval={6000}
+                />
               </div>
 
               <MotivationalBanner variant="encouragement" />
 
-              {/* Row 2: Media Content (small + small + big) */}
+              {/* Row 2: Media Content with Pulsing Highlight */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-3">
-                  <NewsCard
+                  <PulsingHighlightCard
                     title={todayMediaContent[0]?.title || ""}
                     description={todayMediaContent[0]?.description}
                     imageUrl={todayMediaContent[0]?.imageUrl || ""}
@@ -383,6 +353,7 @@ export default function Home() {
                     showReward={true}
                     rewardPoints={3}
                     rewardDescription="Earn credits for completing meditation"
+                    featured={true}
                     className="h-full"
                   />
                 </div>
