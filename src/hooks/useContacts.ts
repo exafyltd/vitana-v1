@@ -56,24 +56,45 @@ export function useContacts() {
       // Fetch profiles for platform users
       let profilesMap: Record<string, any> = {};
       if (platformUserIds.length > 0) {
-        const { data: profilesData } = await supabase
+        const { data: profilesData, error: profilesError } = await supabase
           .from("profiles")
           .select("user_id, display_name, avatar_url, handle")
           .in("user_id", platformUserIds);
+
+        if (profilesError) {
+          console.error("❌ Error fetching profiles:", profilesError);
+        } else {
+          console.log("✅ Fetched profiles:", profilesData);
+        }
 
         profilesMap = (profilesData || []).reduce((acc, profile) => {
           acc[profile.user_id] = profile;
           return acc;
         }, {} as Record<string, any>);
+
+        console.log("📋 Profiles map:", profilesMap);
       }
 
       // Enrich contacts with profile data
-      const enrichedContacts = contactsData?.map(contact => ({
-        ...contact,
-        contact_profile: contact.contact_user_id && profilesMap[contact.contact_user_id]
-          ? profilesMap[contact.contact_user_id]
-          : undefined,
-      })) || [];
+      const enrichedContacts = contactsData?.map(contact => {
+        const enriched = {
+          ...contact,
+          contact_profile: contact.contact_user_id && profilesMap[contact.contact_user_id]
+            ? profilesMap[contact.contact_user_id]
+            : undefined,
+        };
+        
+        if (contact.is_on_platform) {
+          console.log("🔍 Enriched contact:", {
+            name: contact.contact_name,
+            contact_user_id: contact.contact_user_id,
+            has_profile: !!enriched.contact_profile,
+            avatar_url: enriched.contact_profile?.avatar_url
+          });
+        }
+        
+        return enriched;
+      }) || [];
 
       setContacts(enrichedContacts as Contact[]);
     } catch (err) {

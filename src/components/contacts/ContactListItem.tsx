@@ -39,6 +39,16 @@ export default function ContactListItem({
     ? contact.contact_profile.avatar_url
     : undefined;
 
+  // Debug logging
+  if (contact.is_on_platform) {
+    console.log("🎨 ContactListItem render:", {
+      name: displayName,
+      has_profile: !!contact.contact_profile,
+      avatar_url: avatarUrl,
+      is_on_platform: contact.is_on_platform
+    });
+  }
+
   const contactInfo = contact.contact_phone || contact.contact_email;
 
   return (
