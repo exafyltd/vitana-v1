@@ -283,9 +283,6 @@ export default function Home() {
           emoji={emoji}
         />
 
-        {/* Priority of the Day Banner */}
-        <PriorityOfDayBanner />
-
         {/* Utility Action Button */}
         <UtilityActionButton>
           <ExpandableSearchButton 
@@ -337,7 +334,8 @@ export default function Home() {
                 />
               </div>
 
-              <MotivationalBanner variant="encouragement" />
+              {/* Priority of the Day Banner */}
+              <PriorityOfDayBanner />
 
               {/* Row 2: Media Content with Pulsing Highlight */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>

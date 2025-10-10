@@ -72,13 +72,13 @@ export function MotivationalBanner({ variant = "encouragement", className }: Mot
   const Icon = config.icon;
 
   return (
-    <div className={`${config.gradient} ${config.border} border rounded-2xl p-6 mb-8 ${className}`}>
-      <div className="flex items-center space-x-4">
-        <div className={`${config.iconColor} bg-background/50 rounded-full p-3`}>
-          <Icon className="w-6 h-6" />
+    <div className={`${config.gradient} ${config.border} border rounded-xl p-4 mb-6 ${className}`}>
+      <div className="flex items-center space-x-3">
+        <div className={`${config.iconColor} bg-background/50 rounded-full p-2`}>
+          <Icon className="w-5 h-5" />
         </div>
         <div className="flex-1">
-          <p className="text-foreground font-medium text-lg leading-relaxed">
+          <p className="text-foreground font-medium text-base leading-snug">
             {personalizedMessage}
           </p>
         </div>
