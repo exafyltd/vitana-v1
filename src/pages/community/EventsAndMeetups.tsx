@@ -66,6 +66,15 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
   };
 };
 
+// Helper to chunk events into groups of 6 (2 rows of 3)
+const chunkEvents = (events: any[], chunkSize = 6) => {
+  const chunks = [];
+  for (let i = 0; i < events.length; i += chunkSize) {
+    chunks.push(events.slice(i, i + chunkSize));
+  }
+  return chunks;
+};
+
 const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit = false, onEdit?: (event: any) => void) => {
   if (events.length === 0) {
     return (
@@ -346,10 +355,19 @@ const EventsAndMeetups = () => {
                   </div>
                 ) : (
                   <>
-                    {renderEventGrid(todayEvents, handleCardClick, true, handleEditEvent)}
+                    {chunkEvents(todayEvents).map((chunk, chunkIndex) => (
+                      <div key={`today-chunk-${chunkIndex}`}>
+                        {renderEventGrid(chunk, handleCardClick, true, handleEditEvent)}
+                        {chunkIndex < chunkEvents(todayEvents).length - 1 && (
+                          <div className="px-6 mb-8 mt-8">
+                            <MotivationalBanner variant="encouragement" />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                     {todayEvents.length > 0 && (
                       <div className="px-6 mb-8 mt-8">
-                        <MotivationalBanner variant="encouragement" />
+                        <MotivationalBanner variant="partnership" />
                       </div>
                     )}
                   </>
@@ -364,10 +382,19 @@ const EventsAndMeetups = () => {
                   </div>
                 ) : (
                   <>
-                    {renderEventGrid(upcomingEvents, handleCardClick, true, handleEditEvent)}
+                    {chunkEvents(upcomingEvents).map((chunk, chunkIndex) => (
+                      <div key={`upcoming-chunk-${chunkIndex}`}>
+                        {renderEventGrid(chunk, handleCardClick, true, handleEditEvent)}
+                        {chunkIndex < chunkEvents(upcomingEvents).length - 1 && (
+                          <div className="px-6 mb-8 mt-8">
+                            <MotivationalBanner variant="achievement" />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                     {upcomingEvents.length > 0 && (
                       <div className="px-6 mb-8 mt-8">
-                        <MotivationalBanner variant="achievement" />
+                        <MotivationalBanner variant="guidance" />
                       </div>
                     )}
                   </>
