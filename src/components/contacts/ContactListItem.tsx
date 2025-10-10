@@ -55,7 +55,7 @@ export default function ContactListItem({
     <Card className="p-3 hover:bg-muted/50 transition-colors">
       <div className="flex items-center gap-3">
         <Avatar className="w-10 h-10">
-          <AvatarImage src={avatarUrl} />
+          <AvatarImage src={avatarUrl} alt={displayName} loading="lazy" />
           <AvatarFallback className={contact.is_on_platform ? "bg-primary/10 text-primary font-medium" : "bg-muted text-muted-foreground font-medium"}>
             {displayName[0]?.toUpperCase() || "?"}
           </AvatarFallback>

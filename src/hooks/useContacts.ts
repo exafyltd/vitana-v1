@@ -68,11 +68,48 @@ export function useContacts() {
         }
 
         profilesMap = (profilesData || []).reduce((acc, profile) => {
-          acc[profile.user_id] = profile;
+          acc[profile.user_id] = { ...profile, source: "profiles" };
           return acc;
         }, {} as Record<string, any>);
 
         console.log("📋 Profiles map:", profilesMap);
+
+        // Fetch missing profiles from global_community_profiles
+        const missingProfileIds = platformUserIds.filter(id => !profilesMap[id]);
+        
+        if (missingProfileIds.length > 0) {
+          const { data: globalProfiles, error: globalError } = await supabase
+            .from("global_community_profiles")
+            .select("user_id, display_name, avatar_url")
+            .in("user_id", missingProfileIds);
+
+          if (globalError) {
+            console.error("❌ Error fetching global profiles:", globalError);
+          } else {
+            console.log("🌍 Fetched global profiles:", globalProfiles);
+            
+            // Merge global profiles into profilesMap
+            (globalProfiles || []).forEach(gp => {
+              profilesMap[gp.user_id] = { ...gp, source: "global" };
+            });
+          }
+        }
+
+        // Fill missing avatar_urls from global profiles if needed
+        for (const userId of platformUserIds) {
+          if (profilesMap[userId] && !profilesMap[userId].avatar_url) {
+            const { data: globalProfile } = await supabase
+              .from("global_community_profiles")
+              .select("avatar_url")
+              .eq("user_id", userId)
+              .single();
+            
+            if (globalProfile?.avatar_url) {
+              profilesMap[userId].avatar_url = globalProfile.avatar_url;
+              console.log("🔄 Filled avatar from global for:", userId);
+            }
+          }
+        }
       }
 
       // Enrich contacts with profile data
@@ -89,7 +126,8 @@ export function useContacts() {
             name: contact.contact_name,
             contact_user_id: contact.contact_user_id,
             has_profile: !!enriched.contact_profile,
-            avatar_url: enriched.contact_profile?.avatar_url
+            avatar_url: enriched.contact_profile?.avatar_url,
+            source: enriched.contact_profile?.source || "none"
           });
         }
         
