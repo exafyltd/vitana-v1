@@ -366,10 +366,12 @@ export default function VoiceAISettings() {
                     </>
                   )}
 
-                  <Button onClick={handlePreviewVoice} className="w-full" disabled={isUpdating || isTesting}>
-                    <Volume2 className="w-4 h-4 mr-2" />
-                    {isTesting ? 'Speaking...' : 'Preview Voice'}
-                  </Button>
+                  <div className="pt-6 border-t">
+                    <Button onClick={handlePreviewVoice} className="w-full" disabled={isUpdating || isTesting}>
+                      <Volume2 className="w-4 h-4 mr-2" />
+                      {isTesting ? 'Speaking...' : 'Preview Voice'}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
