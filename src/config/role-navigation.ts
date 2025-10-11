@@ -73,6 +73,7 @@ export const adminNavigation: NavigationItem[] = [
   { title: "User Management", path: "/admin/user-management", icon: Users },
   { title: "Community Supervision", path: "/admin/community", icon: Flag },
   { title: "Media Management", path: "/admin/media", icon: Video },
+  { title: "AI Assistant", path: "/admin/ai-assistant", icon: Sparkles },
   { title: "Tenant Management", path: "/admin/tenant-management", icon: Shield },
   { title: "System Admin", path: "/admin/system/bootstrap", icon: Settings },
   { title: "Clinical Ops", path: "/admin/clinical/patient-records", icon: Stethoscope },
