@@ -1,52 +1,125 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Sparkles, Bot } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminAIAssistantNavigation } from "@/config/navigation";
+import SituationForm from "@/components/admin/automation/SituationForm";
+import AnalysisResults from "@/components/admin/automation/AnalysisResults";
+import { useToast } from "@/hooks/use-toast";
+import { useAutomationRules } from "@/hooks/useAutomationRules";
 
 export default function AISituationAnalyzer() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { createRule } = useAutomationRules();
+  
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isDeploying, setIsDeploying] = useState(false);
+  const [analysis, setAnalysis] = useState<any>(null);
+
+  const handleAnalyze = async (situation: string) => {
+    setIsAnalyzing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-situation', {
+        body: { situation }
+      });
+
+      if (error) throw error;
+
+      setAnalysis(data.analysis);
+      toast({
+        title: "Analysis Complete",
+        description: "AI has generated automation suggestions for your situation",
+      });
+    } catch (error: any) {
+      console.error('Analysis error:', error);
+      toast({
+        title: "Analysis Failed",
+        description: error.message || "Failed to analyze situation",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleDeploy = async () => {
+    if (!analysis) return;
+
+    setIsDeploying(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const result = analysis.analysis_result;
+      const primaryTrigger = result.suggestedTriggers[0];
+      const primaryAction = result.suggestedActions[0];
+
+      await createRule.mutateAsync({
+        name: `Auto: ${analysis.situation_description.substring(0, 50)}...`,
+        description: result.analysis,
+        trigger_type: primaryTrigger,
+        trigger_config: {},
+        conditions: result.suggestedConditions,
+        action_type: primaryAction.type,
+        action_config: primaryAction.config,
+        is_active: false,
+        user_id: user.id,
+      });
+
+      // Update analysis status
+      await supabase
+        .from('ai_situation_analyses')
+        .update({ status: 'deployed' })
+        .eq('id', analysis.id);
+
+      toast({
+        title: "Automation Deployed",
+        description: "The automation has been created (disabled). You can enable it from the builder.",
+      });
+
+      navigate('/admin/ai-assistant');
+    } catch (error: any) {
+      console.error('Deploy error:', error);
+      toast({
+        title: "Deployment Failed",
+        description: error.message || "Failed to deploy automation",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeploying(false);
+    }
+  };
+
   return (
     <AppLayout>
       <SEO 
         title="AI Situation Analyzer | AI Assistant | Admin" 
-        description="Let AI analyze situations and suggest automations" 
+        description="Analyze situations and get automation suggestions" 
         canonical={window.location.href} 
       />
       <SubNavigation items={adminAIAssistantNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-6">
           <AdminHeader
             title="AI Situation Analyzer"
-            description="Describe any situation and let AI suggest intelligent automations"
+            description="Describe scenarios and get intelligent automation suggestions"
             emoji="🧠"
-            rightAction={
-              <Button className="gap-2">
-                <Sparkles className="h-4 w-4" />
-                Analyze New Situation
-              </Button>
-            }
           />
 
-          <Card>
-            <CardHeader>
-              <CardTitle>AI-Powered Analysis</CardTitle>
-              <CardDescription>Coming in Phase 4</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-center h-64 border-2 border-dashed rounded-lg">
-                <div className="text-center space-y-2">
-                  <Bot className="h-12 w-12 mx-auto text-muted-foreground" />
-                  <p className="text-muted-foreground">
-                    AI Situation Analyzer will be implemented in Phase 4
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {!analysis ? (
+            <SituationForm onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
+          ) : (
+            <AnalysisResults 
+              analysis={analysis} 
+              onDeploy={handleDeploy}
+              isDeploying={isDeploying}
+            />
+          )}
         </div>
       </div>
     </AppLayout>

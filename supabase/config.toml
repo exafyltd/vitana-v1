@@ -74,3 +74,6 @@ verify_jwt = true
 
 [functions.cj-webhook-handler]
 verify_jwt = false
+
+[functions.analyze-situation]
+verify_jwt = true
