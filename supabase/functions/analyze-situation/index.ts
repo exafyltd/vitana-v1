@@ -29,9 +29,9 @@ serve(async (req) => {
     const { situation, contextFilters, constraints } = await req.json();
     console.log('Analyzing situation:', situation);
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    const GOOGLE_VERTEX_API_KEY = Deno.env.get('GOOGLE_VERTEX_API_KEY');
+    if (!GOOGLE_VERTEX_API_KEY) {
+      throw new Error('GOOGLE_VERTEX_API_KEY not configured');
     }
 
     const systemPrompt = `You are an automation expert analyzing healthcare scenarios to suggest automation rules.
@@ -68,34 +68,41 @@ Provide automation recommendations.`;
 
     const startTime = Date.now();
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const aiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
+        'x-goog-api-key': GOOGLE_VERTEX_API_KEY,
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-        response_format: { type: "json_object" }
+        contents: [{
+          role: 'user',
+          parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          responseMimeType: "application/json"
+        }
       }),
     });
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
-      console.error('AI API error:', aiResponse.status, errorText);
-      throw new Error(`AI API error: ${aiResponse.status}`);
+      console.error('Google Vertex AI error:', aiResponse.status, errorText);
+      throw new Error(`Google Vertex AI error: ${aiResponse.status} - ${errorText}`);
     }
 
     const aiData = await aiResponse.json();
     const analysisTime = Date.now() - startTime;
     
-    const content = aiData.choices[0].message.content;
-    console.log('AI response:', content);
+    // Extract content from Google Vertex AI response format
+    const content = aiData.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!content) {
+      console.error('Unexpected AI response structure:', JSON.stringify(aiData));
+      throw new Error('Invalid response from Google Vertex AI');
+    }
     
+    console.log('AI response:', content);
     const analysisResult = JSON.parse(content);
 
     // Store analysis in database
