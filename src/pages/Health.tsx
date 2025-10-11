@@ -12,7 +12,6 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { TrackerInsightsSplitScreen } from "@/components/ui/split-screen";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -171,142 +170,134 @@ export default withScreenId(function Health() {
             </Button>
           </UtilityActionButton>
 
-          <TrackerInsightsSplitScreen
-            leftTitle="Health Dashboard"
-            rightTitle="Activity & Insights"
-            leftContent={
-              <div className="space-y-6">
-                {/* Three-Column Hero Section */}
-                <div className="grid md:grid-cols-3 gap-6">
-                  <CompactVitanaIndex 
-                    score={vitanaScore}
-                    trend="up"
-                    pillars={{
-                      nutrition: 85,
-                      hydration: 72,
-                      exercise: 68,
-                      sleep: 90,
-                      mental: 78
-                    }}
-                  />
-                  
-                  <MotivationalDataCard 
-                    userName="Dragan"
-                    dataCompleteness={45}
-                  />
-                  
-                  <NextBestActionCard 
-                    weakestPillar={{
-                      name: "Exercise",
-                      score: 68,
-                      icon: "🏃"
-                    }}
-                  />
+          {/* Three-Column Hero Section */}
+          <div className="grid md:grid-cols-3 gap-6 mb-6">
+            <CompactVitanaIndex 
+              score={vitanaScore}
+              trend="up"
+              pillars={{
+                nutrition: 85,
+                hydration: 72,
+                exercise: 68,
+                sleep: 90,
+                mental: 78
+              }}
+            />
+            
+            <MotivationalDataCard 
+              userName="Dragan"
+              dataCompleteness={45}
+            />
+            
+            <NextBestActionCard 
+              weakestPillar={{
+                name: "Exercise",
+                score: 68,
+                icon: "🏃"
+              }}
+            />
+          </div>
+
+          {/* Actions Section */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Today's Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  📋 Today's Actions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <StackedCardList items={smartSuggestions.slice(0, 3).map((suggestion, index) => ({
+                  id: `action-${index}`,
+                  icon: suggestion.type === "action" ? Target : 
+                        suggestion.type === "insight" ? Moon : 
+                        Sparkles,
+                  title: suggestion.title,
+                  subtext: suggestion.description,
+                  pill: {
+                    label: suggestion.priority,
+                    variant: suggestion.priority === "high" ? "destructive" : 
+                            suggestion.priority === "medium" ? "secondary" : "success"
+                  }
+                }))} />
+              </CardContent>
+            </Card>
+
+            {/* Upcoming Health */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  📅 Upcoming Schedule
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {[
+                    { title: 'Annual Physical', date: 'Feb 15, 2025', type: 'Appointment' },
+                    { title: 'Lab Results Review', date: 'Feb 18, 2025', type: 'Follow-up' },
+                    { title: 'Wellness Check', date: 'Mar 01, 2025', type: 'Appointment' }
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                      <div>
+                        <div className="font-medium">{item.title}</div>
+                        <div className="text-sm text-muted-foreground">{item.type}</div>
+                      </div>
+                      <div className="text-sm text-muted-foreground">{item.date}</div>
+                    </div>
+                  ))}
                 </div>
+              </CardContent>
+            </Card>
+          </div>
 
-                {/* Today's Actions */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      📋 Today's Actions
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <StackedCardList items={smartSuggestions.slice(0, 3).map((suggestion, index) => ({
-                      id: `action-${index}`,
-                      icon: suggestion.type === "action" ? Target : 
-                            suggestion.type === "insight" ? Moon : 
-                            Sparkles,
-                      title: suggestion.title,
-                      subtext: suggestion.description,
-                      pill: {
-                        label: suggestion.priority,
-                        variant: suggestion.priority === "high" ? "destructive" : 
-                                suggestion.priority === "medium" ? "secondary" : "success"
-                      }
-                    }))} />
-                  </CardContent>
-                </Card>
-              </div>
-            }
-            rightContent={
-              <div className="space-y-6">
-                {/* Upcoming Schedule */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      📅 Upcoming Schedule
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {[
-                        { title: 'Annual Physical', date: 'Feb 15, 2025', type: 'Appointment' },
-                        { title: 'Lab Results Review', date: 'Feb 18, 2025', type: 'Follow-up' },
-                        { title: 'Wellness Check', date: 'Mar 01, 2025', type: 'Appointment' }
-                      ].map((item, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
-                          <div>
-                            <div className="font-medium">{item.title}</div>
-                            <div className="text-sm text-muted-foreground">{item.type}</div>
-                          </div>
-                          <div className="text-sm text-muted-foreground">{item.date}</div>
-                        </div>
-                      ))}
+          {/* AI Health Insights */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>AI Health Insights</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <StackedCardList items={smartSuggestions.slice(3, 6).map((suggestion, index) => ({
+                id: `insight-${index}`,
+                icon: suggestion.type === "action" ? Target : 
+                      suggestion.type === "insight" ? Moon : 
+                      Sparkles,
+                title: suggestion.title,
+                subtext: suggestion.description,
+                pill: {
+                  label: suggestion.priority,
+                  variant: suggestion.priority === "high" ? "destructive" : 
+                          suggestion.priority === "medium" ? "secondary" : "success"
+                }
+              }))} />
+            </CardContent>
+          </Card>
+
+          {/* Community Activity */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                👥 Community Activity
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {[
+                  { user: 'Sarah M.', activity: 'completed 5K run', time: '2 hours ago' },
+                  { user: 'Mike T.', activity: 'shared healthy recipe', time: '4 hours ago' },
+                  { user: 'Lisa K.', activity: 'achieved sleep goal', time: '6 hours ago' }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 bg-muted/20 rounded-lg">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500" />
+                    <div className="flex-1">
+                      <div className="font-medium">{item.user} {item.activity}</div>
+                      <div className="text-sm text-muted-foreground">{item.time}</div>
                     </div>
-                  </CardContent>
-                </Card>
-
-                {/* AI Health Insights */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>AI Health Insights</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <StackedCardList items={smartSuggestions.slice(3, 6).map((suggestion, index) => ({
-                      id: `insight-${index}`,
-                      icon: suggestion.type === "action" ? Target : 
-                            suggestion.type === "insight" ? Moon : 
-                            Sparkles,
-                      title: suggestion.title,
-                      subtext: suggestion.description,
-                      pill: {
-                        label: suggestion.priority,
-                        variant: suggestion.priority === "high" ? "destructive" : 
-                                suggestion.priority === "medium" ? "secondary" : "success"
-                      }
-                    }))} />
-                  </CardContent>
-                </Card>
-
-                {/* Community Activity */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      👥 Community Activity
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {[
-                        { user: 'Sarah M.', activity: 'completed 5K run', time: '2 hours ago' },
-                        { user: 'Mike T.', activity: 'shared healthy recipe', time: '4 hours ago' },
-                        { user: 'Lisa K.', activity: 'achieved sleep goal', time: '6 hours ago' }
-                      ].map((item, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 bg-muted/20 rounded-lg">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500" />
-                          <div className="flex-1">
-                            <div className="font-medium">{item.user} {item.activity}</div>
-                            <div className="text-sm text-muted-foreground">{item.time}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                ))}
               </div>
-            }
-          />
+            </CardContent>
+          </Card>
         </div>
       </div>
       
