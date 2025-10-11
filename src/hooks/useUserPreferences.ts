@@ -36,8 +36,10 @@ export interface UserPreferences {
   // Privacy
   store_voice_recordings: boolean;
   auto_delete_recordings_days: number;
-  // Auto-greeting
+  // Greeting settings
   auto_greeting_enabled: boolean;
+  greeting_frequency: 'session' | 'daily' | 'hourly' | 'off';
+  greeting_message_types: string[];
   created_at: string;
   updated_at: string;
 }

@@ -236,9 +236,9 @@ export default function VoiceAISettings() {
 
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label htmlFor="auto-greeting">Auto-Greeting on Health Screen</Label>
+                      <Label htmlFor="auto-greeting">Intelligent Auto-Greeting</Label>
                       <p className="text-xs text-muted-foreground">
-                        Vitana will welcome you when you open the Health page
+                        Vitana will welcome you with context-aware messages
                       </p>
                     </div>
                     <Switch
@@ -250,6 +250,72 @@ export default function VoiceAISettings() {
                       disabled={isUpdating}
                     />
                   </div>
+
+                  {preferences.auto_greeting_enabled && (
+                    <>
+                      <div className="space-y-2 pt-4 border-t">
+                        <Label htmlFor="greeting-frequency">Greeting Frequency</Label>
+                        <Select
+                          value={preferences.greeting_frequency || 'session'}
+                          onValueChange={(value: any) => updatePreferences({ greeting_frequency: value })}
+                          disabled={isUpdating}
+                        >
+                          <SelectTrigger id="greeting-frequency">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="session">Once per session (recommended)</SelectItem>
+                            <SelectItem value="daily">Once per day</SelectItem>
+                            <SelectItem value="hourly">Every 4 hours</SelectItem>
+                            <SelectItem value="off">Off</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          Controls how often Vitana greets you
+                        </p>
+                      </div>
+
+                      <div className="space-y-3 pt-4 border-t">
+                        <Label>Greeting Message Types</Label>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          Choose what types of messages Vitana can say
+                        </p>
+                        
+                        <div className="space-y-2">
+                          {[
+                            { value: 'welcome', label: 'Welcome Messages', description: 'Simple time-based greetings' },
+                            { value: 'reminder', label: 'Reminders', description: 'Appointments and pending actions' },
+                            { value: 'motivation', label: 'Motivational', description: 'Progress updates and achievements' },
+                            { value: 'recommendation', label: 'Recommendations', description: 'AI-powered suggestions' },
+                            { value: 'inspiration', label: 'Inspirational', description: 'Daily tips and quotes' },
+                          ].map((type) => {
+                            const currentTypes = (preferences.greeting_message_types || ['welcome', 'reminder', 'motivation']) as string[];
+                            const isChecked = currentTypes.includes(type.value);
+                            
+                            return (
+                              <div key={type.value} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                                <div className="space-y-0.5">
+                                  <Label htmlFor={`greeting-type-${type.value}`}>{type.label}</Label>
+                                  <p className="text-xs text-muted-foreground">{type.description}</p>
+                                </div>
+                                <Switch
+                                  id={`greeting-type-${type.value}`}
+                                  checked={isChecked}
+                                  onCheckedChange={(checked) => {
+                                    const updated = checked 
+                                      ? [...currentTypes, type.value]
+                                      : currentTypes.filter(t => t !== type.value);
+                                    updatePreferences({ greeting_message_types: updated });
+                                  }}
+                                  disabled={isUpdating}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   <Button onClick={handlePreviewVoice} className="w-full" disabled={isUpdating}>
                     <Volume2 className="w-4 h-4 mr-2" />

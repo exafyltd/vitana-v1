@@ -3585,6 +3585,8 @@ export type Database = {
           autopilot_quiet_hours_end: string | null
           autopilot_quiet_hours_start: string | null
           created_at: string | null
+          greeting_frequency: string | null
+          greeting_message_types: Json | null
           id: string
           store_voice_recordings: boolean | null
           stt_auto_punctuation: boolean | null
@@ -3613,6 +3615,8 @@ export type Database = {
           autopilot_quiet_hours_end?: string | null
           autopilot_quiet_hours_start?: string | null
           created_at?: string | null
+          greeting_frequency?: string | null
+          greeting_message_types?: Json | null
           id?: string
           store_voice_recordings?: boolean | null
           stt_auto_punctuation?: boolean | null
@@ -3641,6 +3645,8 @@ export type Database = {
           autopilot_quiet_hours_end?: string | null
           autopilot_quiet_hours_start?: string | null
           created_at?: string | null
+          greeting_frequency?: string | null
+          greeting_message_types?: Json | null
           id?: string
           store_voice_recordings?: boolean | null
           stt_auto_punctuation?: boolean | null

@@ -13,7 +13,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { NewsCard } from "@/components/crossover/NewsCard";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
@@ -24,10 +24,6 @@ import { useHealthLogger } from "@/hooks/useHealthLogger";
 import CompactVitanaIndex from "@/components/health/CompactVitanaIndex";
 import MotivationalDataCard from "@/components/health/MotivationalDataCard";
 import NextBestActionCard from "@/components/health/NextBestActionCard";
-import { useTextToSpeech } from "@/hooks/useTextToSpeech";
-import { useWelcomeGreeting } from "@/hooks/useWelcomeGreeting";
-import { useUserPreferences } from "@/hooks/useUserPreferences";
-import { supabase } from "@/integrations/supabase/client";
 
 import { healthNavigation } from "@/config/navigation";
 
@@ -82,13 +78,6 @@ export default withScreenId(function Health() {
   const [selectedPillar, setSelectedPillar] = useState("overview");
   
   const latestActions = getLatestActions(2);
-  
-  // Auto-greeting feature
-  const { preferences } = useUserPreferences();
-  const { speak, isSpeaking } = useTextToSpeech();
-  const [firstName, setFirstName] = useState<string>();
-  const { greeting } = useWelcomeGreeting(firstName);
-  const hasGreeted = useRef(false);
 
   const smartSuggestions = [
     {
@@ -124,33 +113,6 @@ export default withScreenId(function Health() {
     console.log("Health page using healthNavigation:", healthNavigation);
     console.log("Current path:", location.pathname);
   }, []);
-
-  // Get user's first name
-  useEffect(() => {
-    const getUserData = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user?.user_metadata?.first_name) {
-        setFirstName(user.user_metadata.first_name);
-      }
-    };
-    getUserData();
-  }, []);
-
-  // Auto-greeting on page load
-  useEffect(() => {
-    if (preferences?.auto_greeting_enabled && !hasGreeted.current && firstName) {
-      hasGreeted.current = true;
-      
-      // Small delay to ensure page is loaded
-      setTimeout(() => {
-        speak(greeting, {
-          onError: (error) => {
-            console.warn('Auto-greeting failed:', error);
-          }
-        });
-      }, 500);
-    }
-  }, [preferences?.auto_greeting_enabled, firstName, greeting, speak]);
 
   const newsItems = [
     {
@@ -339,14 +301,6 @@ export default withScreenId(function Health() {
         </div>
       </div>
 
-      {/* Visual feedback when Vitana is speaking */}
-      {isSpeaking && (
-        <div className="fixed bottom-4 right-4 bg-primary text-primary-foreground px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-pulse z-50">
-          <span className="text-lg">🔊</span>
-          <span className="text-sm font-medium">Vitana is speaking...</span>
-        </div>
-      )}
-      
       <AutopilotPopup
         open={autopilotOpen} 
         onOpenChange={setAutopilotOpen}

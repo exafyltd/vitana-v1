@@ -10,6 +10,7 @@ import AuthGuard from "@/components/AuthGuard";
 import { RTLProvider } from "@/components/RTLProvider";
 import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
 import { EventSelectionProvider } from "@/context/EventSelectionContext";
+import { IntelligentGreetingProvider } from "@/context/IntelligentGreetingProvider";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -180,12 +181,13 @@ const App = () => {
     <RTLProvider>
       <MeetupSelectionProvider>
         <EventSelectionProvider>
-          <TooltipProvider>
-            <Toaster />
-            <PresenceDebugPanel />
-            <BrowserRouter>
-              <TenantDetector />
-              <Routes>
+          <IntelligentGreetingProvider>
+            <TooltipProvider>
+              <Toaster />
+              <PresenceDebugPanel />
+              <BrowserRouter>
+                <TenantDetector />
+                <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Navigate to="/auth" replace />} />
@@ -1010,6 +1012,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
+          </IntelligentGreetingProvider>
       </EventSelectionProvider>
     </MeetupSelectionProvider>
   </RTLProvider>
