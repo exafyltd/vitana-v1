@@ -18,6 +18,8 @@ export const languageOptions = [
   { label: "Spanish (ES)", value: "es-ES" },
   { label: "Russian (RU)", value: "ru-RU" },
   { label: "Chinese (ZH)", value: "zh-CN" },
+  { label: "French (FR)", value: "fr-FR" },
+  { label: "Portuguese (PT)", value: "pt-PT" },
 ];
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

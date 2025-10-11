@@ -149,21 +149,37 @@ export default function VoiceAISettings() {
 
   if (!preferences) return null;
 
+  // Google Cloud TTS voices by language
+  const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {
+    'sr-RS': [
+      { name: 'sr-RS-Standard-A', label: 'Serbian Female (Standard)' },
+    ],
+    'ar-XA': [
+      { name: 'ar-XA-Standard-D', label: 'Arabic Female (Standard)' },
+      { name: 'ar-XA-Wavenet-D', label: 'Arabic Female (Wavenet)' },
+    ],
+    'fr-FR': [
+      { name: 'fr-FR-Standard-A', label: 'French Female (Standard)' },
+      { name: 'fr-FR-Wavenet-A', label: 'French Female (Wavenet)' },
+    ],
+    'pt-PT': [
+      { name: 'pt-PT-Standard-A', label: 'Portuguese Female (Standard)' },
+      { name: 'pt-PT-Wavenet-A', label: 'Portuguese Female (Wavenet)' },
+    ],
+  };
+
+  const getCloudVoicesForLanguage = (language: string) => {
+    return cloudVoices[language] || [];
+  };
+
   // STRICT filter: only voices matching the selected language (normalized)
   const filteredVoices = availableVoices.filter(voice => {
-    const langCode = baseLang(preferences.stt_language); // e.g., "sr" from "sr-RS" or "sr_RS"
+    const langCode = baseLang(preferences.stt_language);
     const voiceLang = baseLang(voice.lang);
-    const match = voiceLang === langCode;
-    
-    // Debug logging for Serbian
-    if (langCode === 'sr' || voiceLang === 'sr') {
-      console.log(`🔍 Voice filter - langCode: ${langCode}, voiceLang: ${voiceLang}, voice.lang: ${voice.lang}, voice.name: ${voice.name}, match: ${match}`);
-    }
-    
-    return match;
+    return voiceLang === langCode;
   });
   
-  console.log(`📋 Filtered voices for ${preferences.stt_language}:`, filteredVoices.map(v => ({ name: v.name, lang: v.lang })));
+  const currentCloudVoices = getCloudVoicesForLanguage(preferences.stt_language);
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
@@ -174,40 +190,71 @@ export default function VoiceAISettings() {
       'ar-XA': 'مرحبا، هذه معاينة لإعدادات الصوت المحددة.',
       'ru-RU': 'Привет, это предварительный просмотр выбранных настроек голоса.',
       'zh-CN': '您好，这是您所选语音设置的预览。',
+      'fr-FR': 'Bonjour, ceci est un aperçu de vos paramètres vocaux sélectionnés.',
+      'pt-PT': 'Olá, esta é uma prévia das configurações de voz selecionadas.',
     };
     return phrases[language] || phrases['en-US'];
   };
 
-  const handlePreviewVoice = () => {
-    window.speechSynthesis.cancel();
-    
+  const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
-    const utterance = new SpeechSynthesisUtterance(testPhrase);
-    utterance.rate = preferences.tts_speed;
-    utterance.pitch = preferences.tts_pitch;
-    utterance.volume = preferences.tts_volume / 100;
-    
-    // Find the selected voice from filtered list (strict match)
-    let selectedVoice = filteredVoices.find(v => v.name === preferences.tts_voice);
-    
-    // If not found or missing, pick preferred from filtered list
-    if (!selectedVoice && filteredVoices.length > 0) {
-      selectedVoice = pickPreferredVoice(filteredVoices);
+    const voiceName = preferences.tts_voice;
+    const isCloudVoice = voiceName?.includes('-Standard-') || voiceName?.includes('-Wavenet-');
+
+    setIsTesting(true);
+
+    try {
+      if (isCloudVoice) {
+        // Use Google Cloud TTS for preview
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
+          body: {
+            text: testPhrase,
+            voiceId: voiceName,
+            languageCode: preferences.stt_language || 'en-US',
+          },
+        });
+
+        if (error) throw error;
+        if (!data?.audioContent) throw new Error('No audio content received');
+
+        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+        audio.volume = preferences.tts_volume / 100;
+        audio.onended = () => setIsTesting(false);
+        audio.onerror = () => setIsTesting(false);
+        await audio.play();
+      } else {
+        // Use browser TTS for preview
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(testPhrase);
+        utterance.rate = preferences.tts_speed;
+        utterance.pitch = preferences.tts_pitch;
+        utterance.volume = preferences.tts_volume / 100;
+        
+        let selectedVoice = filteredVoices.find(v => v.name === voiceName);
+        
+        if (!selectedVoice && filteredVoices.length > 0) {
+          selectedVoice = pickPreferredVoice(filteredVoices);
+        }
+        
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+          utterance.lang = selectedVoice.lang;
+        } else {
+          utterance.lang = preferences.stt_language || 'en-US';
+        }
+        
+        utterance.onstart = () => setIsTesting(true);
+        utterance.onend = () => setIsTesting(false);
+        utterance.onerror = () => setIsTesting(false);
+        
+        window.speechSynthesis.speak(utterance);
+      }
+    } catch (error) {
+      console.error('Preview error:', error);
+      setIsTesting(false);
     }
-    
-    // Set both voice AND lang to match the voice's language
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-      utterance.lang = selectedVoice.lang;
-    } else {
-      utterance.lang = preferences.stt_language || 'en-US';
-    }
-    
-    utterance.onstart = () => setIsTesting(true);
-    utterance.onend = () => setIsTesting(false);
-    utterance.onerror = () => setIsTesting(false);
-    
-    window.speechSynthesis.speak(utterance);
   };
 
   return (
@@ -262,14 +309,16 @@ export default function VoiceAISettings() {
                           <SelectItem value="de-DE">German (DE)</SelectItem>
                           <SelectItem value="sr-RS">Serbian (RS)</SelectItem>
                           <SelectItem value="es-ES">Spanish (ES)</SelectItem>
-                          <SelectItem value="ar-SA">Arabic (SA)</SelectItem>
+                          <SelectItem value="ar-XA">Arabic (XA)</SelectItem>
                           <SelectItem value="ru-RU">Russian (RU)</SelectItem>
                           <SelectItem value="zh-CN">Chinese (CN)</SelectItem>
+                          <SelectItem value="fr-FR">French (FR)</SelectItem>
+                          <SelectItem value="pt-PT">Portuguese (PT)</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
-                    {/* Browser Voice */}
+                    {/* Voice Selection */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label>Voice</Label>
@@ -280,31 +329,64 @@ export default function VoiceAISettings() {
                           disabled={isUpdating}
                           className="h-7 text-xs"
                         >
-                          Refresh
+                          Refresh Browser Voices
                         </Button>
                       </div>
                       <Select
                         value={preferences.tts_voice}
                         onValueChange={(value) => updatePreferences({ tts_voice: value })}
-                        disabled={isUpdating || filteredVoices.length === 0}
+                        disabled={isUpdating}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder={filteredVoices.length === 0 ? "No voices available" : "Select a voice"} />
+                          <SelectValue placeholder="Select a voice" />
                         </SelectTrigger>
                         <SelectContent>
-                          {filteredVoices.map((voice) => (
-                            <SelectItem key={voice.name} value={voice.name}>
-                              {voice.name} ({voice.lang})
+                          {/* Google Cloud Voices */}
+                          {currentCloudVoices.length > 0 && (
+                            <>
+                              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                                Google Cloud Voices (High Quality)
+                              </div>
+                              {currentCloudVoices.map((voice) => (
+                                <SelectItem key={voice.name} value={voice.name}>
+                                  {voice.label}
+                                </SelectItem>
+                              ))}
+                            </>
+                          )}
+                          
+                          {/* Browser Voices */}
+                          {filteredVoices.length > 0 && (
+                            <>
+                              {currentCloudVoices.length > 0 && (
+                                <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-2 pt-2">
+                                  Browser Voices
+                                </div>
+                              )}
+                              {filteredVoices.map((voice) => (
+                                <SelectItem key={voice.name} value={voice.name}>
+                                  {voice.name}
+                                </SelectItem>
+                              ))}
+                            </>
+                          )}
+                          
+                          {/* No voices */}
+                          {filteredVoices.length === 0 && currentCloudVoices.length === 0 && (
+                            <SelectItem value="" disabled>
+                              No voices available
                             </SelectItem>
-                          ))}
+                          )}
                         </SelectContent>
                       </Select>
-                      {filteredVoices.length === 0 && (
-                        <p className="text-xs text-muted-foreground">
-                          No voices available for {baseLang(preferences.stt_language).toUpperCase()} on your system. 
-          Install a voice in your OS/browser settings and click Refresh.
-                        </p>
-                      )}
+                      <p className="text-xs text-muted-foreground">
+                        {currentCloudVoices.length > 0 
+                          ? 'Google Cloud voices provide superior quality and natural-sounding speech'
+                          : filteredVoices.length === 0
+                          ? `No voices available for ${baseLang(preferences.stt_language).toUpperCase()}. Install a voice in your OS/browser settings.`
+                          : 'Using browser-based voices'
+                        }
+                      </p>
                     </div>
 
                     {/* Speed */}
