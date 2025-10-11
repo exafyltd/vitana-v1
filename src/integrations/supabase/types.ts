@@ -156,6 +156,182 @@ export type Database = {
           },
         ]
       }
+      ai_recommendations: {
+        Row: {
+          actions: Json
+          admin_feedback: string | null
+          admin_rating: number | null
+          complexity_score: number | null
+          conditions: Json | null
+          confidence_score: number | null
+          created_at: string | null
+          created_by: string
+          deployed: boolean | null
+          deployed_at: string | null
+          deployed_by: string | null
+          deployed_rule_id: string | null
+          description: string
+          estimated_users_affected: number | null
+          id: string
+          impact_score: number | null
+          rationale: string | null
+          situation_id: string | null
+          tenant_id: string | null
+          title: string
+          trigger_config: Json
+          trigger_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          actions: Json
+          admin_feedback?: string | null
+          admin_rating?: number | null
+          complexity_score?: number | null
+          conditions?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          created_by: string
+          deployed?: boolean | null
+          deployed_at?: string | null
+          deployed_by?: string | null
+          deployed_rule_id?: string | null
+          description: string
+          estimated_users_affected?: number | null
+          id?: string
+          impact_score?: number | null
+          rationale?: string | null
+          situation_id?: string | null
+          tenant_id?: string | null
+          title: string
+          trigger_config: Json
+          trigger_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          actions?: Json
+          admin_feedback?: string | null
+          admin_rating?: number | null
+          complexity_score?: number | null
+          conditions?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          created_by?: string
+          deployed?: boolean | null
+          deployed_at?: string | null
+          deployed_by?: string | null
+          deployed_rule_id?: string | null
+          description?: string
+          estimated_users_affected?: number | null
+          id?: string
+          impact_score?: number | null
+          rationale?: string | null
+          situation_id?: string | null
+          tenant_id?: string | null
+          title?: string
+          trigger_config?: Json
+          trigger_type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_recommendations_deployed_rule_id_fkey"
+            columns: ["deployed_rule_id"]
+            isOneToOne: false
+            referencedRelation: "automation_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_recommendations_situation_id_fkey"
+            columns: ["situation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_situation_analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_recommendations_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "ai_recommendations_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_situation_analyses: {
+        Row: {
+          analysis_duration_ms: number | null
+          analysis_result: Json | null
+          constraints: Json | null
+          context_filters: Json | null
+          created_at: string | null
+          created_by: string
+          error_message: string | null
+          id: string
+          situation_description: string
+          status: string | null
+          suggested_actions: Json | null
+          suggested_conditions: Json | null
+          suggested_triggers: string[] | null
+          tenant_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          analysis_duration_ms?: number | null
+          analysis_result?: Json | null
+          constraints?: Json | null
+          context_filters?: Json | null
+          created_at?: string | null
+          created_by: string
+          error_message?: string | null
+          id?: string
+          situation_description: string
+          status?: string | null
+          suggested_actions?: Json | null
+          suggested_conditions?: Json | null
+          suggested_triggers?: string[] | null
+          tenant_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          analysis_duration_ms?: number | null
+          analysis_result?: Json | null
+          constraints?: Json | null
+          context_filters?: Json | null
+          created_at?: string | null
+          created_by?: string
+          error_message?: string | null
+          id?: string
+          situation_description?: string
+          status?: string | null
+          suggested_actions?: Json | null
+          suggested_conditions?: Json | null
+          suggested_triggers?: string[] | null
+          tenant_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_situation_analyses_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "ai_situation_analyses_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_events: {
         Row: {
           created_at: string
@@ -191,6 +367,73 @@ export type Database = {
           },
           {
             foreignKeyName: "audit_events_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      automation_executions: {
+        Row: {
+          actions_executed: Json | null
+          conditions_result: Json | null
+          created_at: string | null
+          error_message: string | null
+          execution_time_ms: number | null
+          id: string
+          metadata: Json | null
+          rule_id: string
+          status: string
+          tenant_id: string | null
+          trigger_data: Json | null
+          user_id: string
+        }
+        Insert: {
+          actions_executed?: Json | null
+          conditions_result?: Json | null
+          created_at?: string | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          metadata?: Json | null
+          rule_id: string
+          status: string
+          tenant_id?: string | null
+          trigger_data?: Json | null
+          user_id: string
+        }
+        Update: {
+          actions_executed?: Json | null
+          conditions_result?: Json | null
+          created_at?: string | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          metadata?: Json | null
+          rule_id?: string
+          status?: string
+          tenant_id?: string | null
+          trigger_data?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_executions_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "automation_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automation_executions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "automation_executions_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
@@ -249,6 +492,63 @@ export type Database = {
           trigger_type?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      autopilot_action_templates: {
+        Row: {
+          category: string
+          context_requirements: Json | null
+          created_at: string | null
+          created_by: string
+          description: string
+          icon: string
+          id: string
+          is_active: boolean | null
+          max_frequency_per_day: number | null
+          min_hours_between: number | null
+          name: string
+          personalization_fields: Json | null
+          priority: string | null
+          prompt_template: string
+          time_estimate: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          context_requirements?: Json | null
+          created_at?: string | null
+          created_by: string
+          description: string
+          icon?: string
+          id?: string
+          is_active?: boolean | null
+          max_frequency_per_day?: number | null
+          min_hours_between?: number | null
+          name: string
+          personalization_fields?: Json | null
+          priority?: string | null
+          prompt_template: string
+          time_estimate?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          context_requirements?: Json | null
+          created_at?: string | null
+          created_by?: string
+          description?: string
+          icon?: string
+          id?: string
+          is_active?: boolean | null
+          max_frequency_per_day?: number | null
+          min_hours_between?: number | null
+          name?: string
+          personalization_fields?: Json | null
+          priority?: string | null
+          prompt_template?: string
+          time_estimate?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -323,6 +623,44 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      autopilot_feedback: {
+        Row: {
+          action_id: string
+          comment: string | null
+          created_at: string | null
+          feedback_type: string | null
+          id: string
+          rating: number | null
+          user_id: string
+        }
+        Insert: {
+          action_id: string
+          comment?: string | null
+          created_at?: string | null
+          feedback_type?: string | null
+          id?: string
+          rating?: number | null
+          user_id: string
+        }
+        Update: {
+          action_id?: string
+          comment?: string | null
+          created_at?: string | null
+          feedback_type?: string | null
+          id?: string
+          rating?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "autopilot_feedback_action_id_fkey"
+            columns: ["action_id"]
+            isOneToOne: false
+            referencedRelation: "autopilot_actions"
             referencedColumns: ["id"]
           },
         ]
@@ -2472,6 +2810,94 @@ export type Database = {
           },
         ]
       }
+      pattern_discoveries: {
+        Row: {
+          conditions: Json | null
+          confidence_level: number | null
+          created_at: string | null
+          expected_impact: string | null
+          id: string
+          implemented_rule_id: string | null
+          occurrence_rate: number | null
+          pattern_description: string
+          pattern_name: string
+          pattern_type: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          sample_size: number
+          status: string | null
+          suggested_actions: Json | null
+          tenant_id: string | null
+          triggers: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          conditions?: Json | null
+          confidence_level?: number | null
+          created_at?: string | null
+          expected_impact?: string | null
+          id?: string
+          implemented_rule_id?: string | null
+          occurrence_rate?: number | null
+          pattern_description: string
+          pattern_name: string
+          pattern_type: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          sample_size: number
+          status?: string | null
+          suggested_actions?: Json | null
+          tenant_id?: string | null
+          triggers?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          conditions?: Json | null
+          confidence_level?: number | null
+          created_at?: string | null
+          expected_impact?: string | null
+          id?: string
+          implemented_rule_id?: string | null
+          occurrence_rate?: number | null
+          pattern_description?: string
+          pattern_name?: string
+          pattern_type?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          sample_size?: number
+          status?: string | null
+          suggested_actions?: Json | null
+          tenant_id?: string | null
+          triggers?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pattern_discoveries_implemented_rule_id_fkey"
+            columns: ["implemented_rule_id"]
+            isOneToOne: false
+            referencedRelation: "automation_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pattern_discoveries_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "pattern_discoveries_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       podcast_metadata: {
         Row: {
           episode_number: number | null
@@ -2919,6 +3345,78 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      recommendation_deployments: {
+        Row: {
+          avg_execution_time_ms: number | null
+          created_at: string | null
+          deactivated_at: string | null
+          deactivated_reason: string | null
+          deployed_by: string
+          failed_executions: number | null
+          id: string
+          is_active: boolean | null
+          negative_feedback_count: number | null
+          positive_feedback_count: number | null
+          recommendation_id: string
+          rule_id: string
+          successful_executions: number | null
+          total_executions: number | null
+          unique_users_affected: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_execution_time_ms?: number | null
+          created_at?: string | null
+          deactivated_at?: string | null
+          deactivated_reason?: string | null
+          deployed_by: string
+          failed_executions?: number | null
+          id?: string
+          is_active?: boolean | null
+          negative_feedback_count?: number | null
+          positive_feedback_count?: number | null
+          recommendation_id: string
+          rule_id: string
+          successful_executions?: number | null
+          total_executions?: number | null
+          unique_users_affected?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_execution_time_ms?: number | null
+          created_at?: string | null
+          deactivated_at?: string | null
+          deactivated_reason?: string | null
+          deployed_by?: string
+          failed_executions?: number | null
+          id?: string
+          is_active?: boolean | null
+          negative_feedback_count?: number | null
+          positive_feedback_count?: number | null
+          recommendation_id?: string
+          rule_id?: string
+          successful_executions?: number | null
+          total_executions?: number | null
+          unique_users_affected?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_deployments_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_deployments_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "automation_rules"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       role_preferences: {
         Row: {
