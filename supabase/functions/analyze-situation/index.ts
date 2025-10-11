@@ -1,6 +1,20 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { encode as base64Encode } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+
+// Base64url encoding helpers (no padding, URL-safe)
+function base64UrlEncodeBytes(bytes: Uint8Array): string {
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  const base64 = btoa(binary);
+  return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+function base64UrlEncodeString(str: string): string {
+  const encoder = new TextEncoder();
+  return base64UrlEncodeBytes(encoder.encode(str));
+}
 
 // Helper function to generate JWT for service account
 async function generateAccessToken(serviceAccountKey: any): Promise<string> {
@@ -21,8 +35,8 @@ async function generateAccessToken(serviceAccountKey: any): Promise<string> {
   };
 
   const encoder = new TextEncoder();
-  const headerB64 = base64Encode(encoder.encode(JSON.stringify(header))).replace(/=/g, '');
-  const claimB64 = base64Encode(encoder.encode(JSON.stringify(claim))).replace(/=/g, '');
+  const headerB64 = base64UrlEncodeString(JSON.stringify(header));
+  const claimB64 = base64UrlEncodeString(JSON.stringify(claim));
   const signatureInput = `${headerB64}.${claimB64}`;
 
   // Import private key
@@ -41,7 +55,7 @@ async function generateAccessToken(serviceAccountKey: any): Promise<string> {
     encoder.encode(signatureInput)
   );
 
-  const signatureB64 = base64Encode(new Uint8Array(signature)).replace(/=/g, '');
+  const signatureB64 = base64UrlEncodeBytes(new Uint8Array(signature));
   const jwt = `${signatureInput}.${signatureB64}`;
 
   // Exchange JWT for access token
@@ -53,8 +67,10 @@ async function generateAccessToken(serviceAccountKey: any): Promise<string> {
 
   const tokenData = await tokenResponse.json();
   if (!tokenData.access_token) {
+    console.error('Token exchange failed:', tokenResponse.status, tokenData);
     throw new Error(`Failed to get access token: ${JSON.stringify(tokenData)}`);
   }
+  console.log('Successfully obtained access token');
   return tokenData.access_token;
 }
 
