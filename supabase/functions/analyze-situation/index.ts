@@ -68,7 +68,7 @@ Provide automation recommendations.`;
 
     const startTime = Date.now();
 
-    const aiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent', {
+    const aiResponse = await fetch('https://europe-west1-aiplatform.googleapis.com/v1/projects/lovable-vitana-vers1/locations/europe-west1/publishers/google/models/gemini-2.5-flash-pro:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
