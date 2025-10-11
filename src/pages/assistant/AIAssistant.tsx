@@ -2,16 +2,14 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
-import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
-import { settingsNavigation } from "@/config/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { Loader2 } from "lucide-react";
 import VoiceSettingsPanel from "@/components/assistant/VoiceSettingsPanel";
 import AIModelSettingsPanel from "@/components/assistant/AIModelSettingsPanel";
 import ProactiveTalkingPanel from "@/components/assistant/ProactiveTalkingPanel";
-import AutopilotSettings from "@/pages/settings/AutopilotSettings";
+import AutopilotSettingsPanel from "@/components/assistant/AutopilotSettingsPanel";
 
 export default function AIAssistant() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,7 +40,6 @@ export default function AIAssistant() {
         description="Configure your AI assistant, voice settings, and automation preferences"
         canonical={window.location.href}
       />
-      <SubNavigation items={settingsNavigation} />
 
       <div className="p-6 bg-gradient-subtle min-h-screen pb-32 md:pb-40">
         <div className="max-w-7xl mx-auto space-y-6">
@@ -76,10 +73,12 @@ export default function AIAssistant() {
               />
             </TabsContent>
 
-            <TabsContent value="autopilot" className="mt-6">
-              <div className="-m-6">
-                <AutopilotSettings />
-              </div>
+            <TabsContent value="autopilot" className="space-y-4 mt-6">
+              <AutopilotSettingsPanel
+                preferences={preferences}
+                isUpdating={isUpdating}
+                updatePreferences={updatePreferences}
+              />
             </TabsContent>
 
             <TabsContent value="proactive" className="space-y-4 mt-6">

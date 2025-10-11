@@ -492,16 +492,8 @@ const App = () => {
               <Support />
             </AuthGuard>
           } />
-          <Route path="/settings/autopilot" element={
-            <AuthGuard>
-              <AutopilotSettings />
-            </AuthGuard>
-          } />
-          <Route path="/settings/voice-ai" element={
-            <AuthGuard>
-              <VoiceAISettings />
-            </AuthGuard>
-          } />
+          <Route path="/settings/autopilot" element={<Navigate to="/assistant?tab=autopilot" replace />} />
+          <Route path="/settings/voice-ai" element={<Navigate to="/assistant?tab=voice" replace />} />
           
           {/* AI Assistant - New unified section */}
           <Route path="/assistant" element={
@@ -509,10 +501,6 @@ const App = () => {
               <AIAssistant />
             </AuthGuard>
           } />
-          
-          {/* Redirects from old settings pages to AI Assistant */}
-          <Route path="/settings/voice-ai-legacy" element={<Navigate to="/assistant?tab=voice" replace />} />
-          <Route path="/settings/autopilot-legacy" element={<Navigate to="/assistant?tab=autopilot" replace />} />
           
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />
           <Route path="/profile/:id" element={<LegacyProfileRedirect />} />
