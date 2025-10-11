@@ -21,6 +21,9 @@ export default function VoiceAISettings() {
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
 
+  // Normalize and extract base language code (handles sr, sr-RS, sr_RS)
+  const baseLang = useCallback((l: string) => (l || '').toLowerCase().replace('_','-').split('-')[0], []);
+
   // Helper to pick the best voice from candidates - prefer female voices
   const pickPreferredVoice = useCallback((voices: SpeechSynthesisVoice[]) => {
     if (voices.length === 0) return null;
@@ -110,10 +113,10 @@ export default function VoiceAISettings() {
 
   if (!preferences) return null;
 
-  // STRICT filter: only voices matching the selected language
+  // STRICT filter: only voices matching the selected language (normalized)
   const filteredVoices = availableVoices.filter(voice => {
-    const langCode = preferences.stt_language.split('-')[0]; // e.g., "sr" from "sr-RS"
-    const voiceLang = voice.lang.split('-')[0]; // e.g., "sr" from voice.lang
+    const langCode = baseLang(preferences.stt_language); // e.g., "sr" from "sr-RS" or "sr_RS"
+    const voiceLang = baseLang(voice.lang);
     return voiceLang === langCode;
   });
 
@@ -122,14 +125,12 @@ export default function VoiceAISettings() {
     if (!preferences || availableVoices.length === 0) return;
     
     const currentVoice = availableVoices.find(v => v.name === preferences.tts_voice);
-    const currentVoiceLangCode = currentVoice?.lang.split('-')[0];
-    const selectedLangCode = preferences.stt_language.split('-')[0];
+    const currentVoiceLangCode = currentVoice ? baseLang(currentVoice.lang) : undefined;
+    const selectedLangCode = baseLang(preferences.stt_language);
     
     // If voice doesn't match language or no voice selected
     if (!currentVoice || currentVoiceLangCode !== selectedLangCode) {
-      const candidates = availableVoices.filter(v => 
-        v.lang.split('-')[0] === selectedLangCode
-      );
+      const candidates = availableVoices.filter(v => baseLang(v.lang) === selectedLangCode);
       
       const preferred = pickPreferredVoice(candidates);
       if (preferred && preferred.name !== preferences.tts_voice) {
@@ -140,9 +141,8 @@ export default function VoiceAISettings() {
 
   // Handle language change: auto-select matching voice
   const handleLanguageChange = useCallback((newLanguage: string) => {
-    const candidates = availableVoices.filter(v => 
-      v.lang.split('-')[0] === newLanguage.split('-')[0]
-    );
+    const newBase = baseLang(newLanguage);
+    const candidates = availableVoices.filter(v => baseLang(v.lang) === newBase);
     
     const preferred = pickPreferredVoice(candidates);
     
@@ -151,7 +151,7 @@ export default function VoiceAISettings() {
       stt_language: newLanguage,
       tts_voice: preferred?.name || ''
     });
-  }, [availableVoices, pickPreferredVoice, updatePreferences]);
+  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences]);
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
@@ -250,7 +250,7 @@ export default function VoiceAISettings() {
                           <SelectItem value="de-DE">German (DE)</SelectItem>
                           <SelectItem value="sr-RS">Serbian (RS)</SelectItem>
                           <SelectItem value="es-ES">Spanish (ES)</SelectItem>
-                          <SelectItem value="ar-XA">Arabic (XA)</SelectItem>
+                          <SelectItem value="ar-SA">Arabic (SA)</SelectItem>
                           <SelectItem value="ru-RU">Russian (RU)</SelectItem>
                           <SelectItem value="zh-CN">Chinese (CN)</SelectItem>
                         </SelectContent>
@@ -289,7 +289,7 @@ export default function VoiceAISettings() {
                       </Select>
                       {filteredVoices.length === 0 && (
                         <p className="text-xs text-muted-foreground">
-                          No voices available for {preferences.stt_language.split('-')[0].toUpperCase()} on your system. 
+                          No voices available for {baseLang(preferences.stt_language).toUpperCase()} on your system. 
           Install a voice in your OS/browser settings and click Refresh.
                         </p>
                       )}

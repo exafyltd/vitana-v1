@@ -45,51 +45,11 @@ export function useTextToSpeech() {
       const voices = window.speechSynthesis.getVoices();
       let selectedVoice = voices.find(v => v.name === preferences.tts_voice);
       
-      // Self-healing: if selected voice doesn't match language, find a better one
-      if (selectedVoice) {
-        const voiceLangCode = selectedVoice.lang.split('-')[0];
-        const prefLangCode = preferences.stt_language.split('-')[0];
-        
-        if (voiceLangCode !== prefLangCode) {
-          // Voice language mismatch - find a matching voice
-          const matchingVoices = voices.filter(v => v.lang.split('-')[0] === prefLangCode);
-          if (matchingVoices.length > 0) {
-            // Helper to check if voice is female
-            const isFemaleVoice = (voice: SpeechSynthesisVoice) => {
-              const name = voice.name.toLowerCase();
-              return name.includes('female') || 
-                     name.includes('woman') ||
-                     name.includes('zira') ||
-                     name.includes('samantha') ||
-                     name.includes('victoria') ||
-                     name.includes('kate') ||
-                     name.includes('helena') ||
-                     name.includes('steffi') ||
-                     name.includes('laura') ||
-                     name.includes('amelie') ||
-                     name.includes('anna');
-            };
-            
-            // Prefer female voices
-            const femaleVoices = matchingVoices.filter(isFemaleVoice);
-            if (femaleVoices.length > 0) {
-              selectedVoice = femaleVoices.find(v => v.name.toLowerCase().includes('google')) ||
-                             femaleVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
-                             femaleVoices.find(v => v.name.toLowerCase().includes('apple')) ||
-                             femaleVoices[0];
-            } else {
-              // Fallback to any voice
-              selectedVoice = matchingVoices.find(v => v.name.toLowerCase().includes('google')) ||
-                             matchingVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
-                             matchingVoices.find(v => v.name.toLowerCase().includes('apple')) ||
-                             matchingVoices[0];
-            }
-          }
-        }
-      } else {
-        // No voice selected - pick a preferred one for the language
-        const prefLangCode = preferences.stt_language.split('-')[0];
-        const matchingVoices = voices.filter(v => v.lang.split('-')[0] === prefLangCode);
+      // If no voice explicitly selected, pick a matching one for the language (prefer female)
+      const baseLang = (l: string) => (l || '').toLowerCase().replace('_','-').split('-')[0];
+      if (!selectedVoice) {
+        const prefLangCode = baseLang(preferences.stt_language);
+        const matchingVoices = voices.filter(v => baseLang(v.lang) === prefLangCode);
         if (matchingVoices.length > 0) {
           // Helper to check if voice is female
           const isFemaleVoice = (voice: SpeechSynthesisVoice) => {
