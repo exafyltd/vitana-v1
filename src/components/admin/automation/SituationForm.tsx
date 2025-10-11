@@ -26,7 +26,7 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
   };
 
   return (
-    <Card>
+    <Card className="mb-8">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary" />
