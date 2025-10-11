@@ -40,6 +40,7 @@ export function useTextToSpeech() {
       utterance.rate = preferences.tts_speed;
       utterance.pitch = preferences.tts_pitch;
       utterance.volume = preferences.tts_volume / 100;
+      utterance.lang = preferences.stt_language || 'en-US';
       
       utterance.onstart = () => {
         setIsSpeaking(true);
