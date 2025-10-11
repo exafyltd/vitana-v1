@@ -2415,6 +2415,63 @@ export type Database = {
         }
         Relationships: []
       }
+      patient_provider_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          notes: string | null
+          patient_id: string
+          provider_id: string
+          status: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          patient_id: string
+          provider_id: string
+          status?: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          provider_id?: string
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_provider_assignments_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "patient_provider_assignments_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       podcast_metadata: {
         Row: {
           episode_number: number | null
@@ -2508,6 +2565,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profile_privacy_settings: {
+        Row: {
+          created_at: string
+          searchable: boolean
+          show_email: boolean
+          show_full_name: boolean
+          show_medical_info: boolean
+          show_phone: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          searchable?: boolean
+          show_email?: boolean
+          show_full_name?: boolean
+          show_medical_info?: boolean
+          show_phone?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          searchable?: boolean
+          show_email?: boolean
+          show_full_name?: boolean
+          show_medical_info?: boolean
+          show_phone?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -2921,6 +3011,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      search_audit_log: {
+        Row: {
+          created_at: string
+          id: string
+          results_count: number
+          search_scope: string
+          search_term: string
+          searcher_id: string
+          tenant_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          results_count?: number
+          search_scope: string
+          search_term: string
+          searcher_id: string
+          tenant_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          results_count?: number
+          search_scope?: string
+          search_term?: string
+          searcher_id?: string
+          tenant_id?: string | null
+        }
+        Relationships: []
       }
       supplements: {
         Row: {
