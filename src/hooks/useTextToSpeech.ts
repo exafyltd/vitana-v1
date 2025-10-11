@@ -40,13 +40,45 @@ export function useTextToSpeech() {
       utterance.rate = preferences.tts_speed;
       utterance.pitch = preferences.tts_pitch;
       utterance.volume = preferences.tts_volume / 100;
-      utterance.lang = preferences.stt_language || 'en-US';
       
-      // Apply selected voice
+      // Get available voices
       const voices = window.speechSynthesis.getVoices();
-      const selectedVoice = voices.find(v => v.name === preferences.tts_voice);
+      let selectedVoice = voices.find(v => v.name === preferences.tts_voice);
+      
+      // Self-healing: if selected voice doesn't match language, find a better one
+      if (selectedVoice) {
+        const voiceLangCode = selectedVoice.lang.split('-')[0];
+        const prefLangCode = preferences.stt_language.split('-')[0];
+        
+        if (voiceLangCode !== prefLangCode) {
+          // Voice language mismatch - find a matching voice
+          const matchingVoices = voices.filter(v => v.lang.split('-')[0] === prefLangCode);
+          if (matchingVoices.length > 0) {
+            // Prefer Google > Microsoft > Apple > first
+            selectedVoice = matchingVoices.find(v => v.name.toLowerCase().includes('google')) ||
+                           matchingVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
+                           matchingVoices.find(v => v.name.toLowerCase().includes('apple')) ||
+                           matchingVoices[0];
+          }
+        }
+      } else {
+        // No voice selected - pick a preferred one for the language
+        const prefLangCode = preferences.stt_language.split('-')[0];
+        const matchingVoices = voices.filter(v => v.lang.split('-')[0] === prefLangCode);
+        if (matchingVoices.length > 0) {
+          selectedVoice = matchingVoices.find(v => v.name.toLowerCase().includes('google')) ||
+                         matchingVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
+                         matchingVoices.find(v => v.name.toLowerCase().includes('apple')) ||
+                         matchingVoices[0];
+        }
+      }
+      
+      // Set voice and CRITICAL: set lang to match the voice's actual language
       if (selectedVoice) {
         utterance.voice = selectedVoice;
+        utterance.lang = selectedVoice.lang;
+      } else {
+        utterance.lang = preferences.stt_language || 'en-US';
       }
       
       utterance.onstart = () => {

@@ -14,25 +14,58 @@ import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { Loader2, Volume2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function VoiceAISettings() {
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
 
-  // Load available voices
-  useEffect(() => {
-    const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      setAvailableVoices(voices);
-    };
+  // Helper to pick the best voice from candidates
+  const pickPreferredVoice = useCallback((voices: SpeechSynthesisVoice[]) => {
+    if (voices.length === 0) return null;
     
+    // Prefer Google > Microsoft > Apple > first available
+    const google = voices.find(v => v.name.toLowerCase().includes('google'));
+    if (google) return google;
+    
+    const microsoft = voices.find(v => v.name.toLowerCase().includes('microsoft'));
+    if (microsoft) return microsoft;
+    
+    const apple = voices.find(v => v.name.toLowerCase().includes('apple'));
+    if (apple) return apple;
+    
+    return voices[0];
+  }, []);
+
+  // Load available voices with polling for reliability
+  const loadVoices = useCallback(() => {
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      setAvailableVoices(voices);
+    }
+  }, []);
+
+  useEffect(() => {
     loadVoices();
+    
+    // Set up voice change listener
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
       window.speechSynthesis.onvoiceschanged = loadVoices;
     }
-  }, []);
+    
+    // Polling fallback for browsers that don't fire onvoiceschanged reliably
+    let pollCount = 0;
+    const pollInterval = setInterval(() => {
+      loadVoices();
+      pollCount++;
+      if (pollCount > 20 || window.speechSynthesis.getVoices().length > 0) {
+        clearInterval(pollInterval);
+      }
+    }, 100);
+    
+    return () => clearInterval(pollInterval);
+  }, [loadVoices]);
 
   if (isLoading) {
     return (
@@ -46,12 +79,48 @@ export default function VoiceAISettings() {
 
   if (!preferences) return null;
 
-  // Filter voices by selected language - use more flexible matching
+  // STRICT filter: only voices matching the selected language
   const filteredVoices = availableVoices.filter(voice => {
     const langCode = preferences.stt_language.split('-')[0]; // e.g., "sr" from "sr-RS"
-    const voiceLang = voice.lang.split('-')[0]; // e.g., "sr" from "sr-Latn-RS"
-    return voiceLang === langCode || voice.lang === preferences.stt_language;
+    const voiceLang = voice.lang.split('-')[0]; // e.g., "sr" from voice.lang
+    return voiceLang === langCode;
   });
+
+  // Self-healing: if selected voice doesn't match language, auto-correct
+  useEffect(() => {
+    if (!preferences || availableVoices.length === 0) return;
+    
+    const currentVoice = availableVoices.find(v => v.name === preferences.tts_voice);
+    const currentVoiceLangCode = currentVoice?.lang.split('-')[0];
+    const selectedLangCode = preferences.stt_language.split('-')[0];
+    
+    // If voice doesn't match language or no voice selected
+    if (!currentVoice || currentVoiceLangCode !== selectedLangCode) {
+      const candidates = availableVoices.filter(v => 
+        v.lang.split('-')[0] === selectedLangCode
+      );
+      
+      const preferred = pickPreferredVoice(candidates);
+      if (preferred && preferred.name !== preferences.tts_voice) {
+        updatePreferences({ tts_voice: preferred.name });
+      }
+    }
+  }, [availableVoices, preferences?.stt_language, preferences?.tts_voice, pickPreferredVoice, updatePreferences]);
+
+  // Handle language change: auto-select matching voice
+  const handleLanguageChange = useCallback((newLanguage: string) => {
+    const candidates = availableVoices.filter(v => 
+      v.lang.split('-')[0] === newLanguage.split('-')[0]
+    );
+    
+    const preferred = pickPreferredVoice(candidates);
+    
+    // Update both language and voice in one call
+    updatePreferences({ 
+      stt_language: newLanguage,
+      tts_voice: preferred?.name || ''
+    });
+  }, [availableVoices, pickPreferredVoice, updatePreferences]);
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
@@ -74,12 +143,21 @@ export default function VoiceAISettings() {
     utterance.rate = preferences.tts_speed;
     utterance.pitch = preferences.tts_pitch;
     utterance.volume = preferences.tts_volume / 100;
-    utterance.lang = preferences.stt_language || 'en-US';
     
-    // Apply selected voice
-    const selectedVoice = availableVoices.find(v => v.name === preferences.tts_voice);
+    // Find the selected voice from filtered list (strict match)
+    let selectedVoice = filteredVoices.find(v => v.name === preferences.tts_voice);
+    
+    // If not found or missing, pick preferred from filtered list
+    if (!selectedVoice && filteredVoices.length > 0) {
+      selectedVoice = pickPreferredVoice(filteredVoices);
+    }
+    
+    // Set both voice AND lang to match the voice's language
     if (selectedVoice) {
       utterance.voice = selectedVoice;
+      utterance.lang = selectedVoice.lang;
+    } else {
+      utterance.lang = preferences.stt_language || 'en-US';
     }
     
     utterance.onstart = () => setIsTesting(true);
@@ -130,7 +208,7 @@ export default function VoiceAISettings() {
                       <Label>Language</Label>
                       <Select
                         value={preferences.stt_language}
-                        onValueChange={(value) => updatePreferences({ stt_language: value })}
+                        onValueChange={handleLanguageChange}
                         disabled={isUpdating}
                       >
                         <SelectTrigger>
@@ -150,38 +228,39 @@ export default function VoiceAISettings() {
 
                     {/* Browser Voice */}
                     <div className="space-y-2">
-                      <Label>Voice</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Voice</Label>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={loadVoices}
+                          disabled={isUpdating}
+                          className="h-7 text-xs"
+                        >
+                          Refresh
+                        </Button>
+                      </div>
                       <Select
                         value={preferences.tts_voice}
                         onValueChange={(value) => updatePreferences({ tts_voice: value })}
-                        disabled={isUpdating}
+                        disabled={isUpdating || filteredVoices.length === 0}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a voice" />
+                          <SelectValue placeholder={filteredVoices.length === 0 ? "No voices available" : "Select a voice"} />
                         </SelectTrigger>
                         <SelectContent>
-                          {filteredVoices.length > 0 ? (
-                            filteredVoices.map((voice) => (
-                              <SelectItem key={voice.name} value={voice.name}>
-                                {voice.name} ({voice.lang})
-                              </SelectItem>
-                            ))
-                          ) : (
-                            <>
-                              <SelectItem value="__no_match" disabled>
-                                No voices match this language — showing all voices
-                              </SelectItem>
-                              {availableVoices.map((voice) => (
-                                <SelectItem key={voice.name} value={voice.name}>
-                                  {voice.name} ({voice.lang})
-                                </SelectItem>
-                              ))}
-                            </>
-                          )}
+                          {filteredVoices.map((voice) => (
+                            <SelectItem key={voice.name} value={voice.name}>
+                              {voice.name} ({voice.lang})
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       {filteredVoices.length === 0 && (
-                        <p className="text-xs text-muted-foreground">Your system has no Serbian-specific voices. We’re showing all available voices as a fallback.</p>
+                        <p className="text-xs text-muted-foreground">
+                          No voices available for {preferences.stt_language.split('-')[0].toUpperCase()} on your system. 
+          Install a voice in your OS/browser settings and click Refresh.
+                        </p>
                       )}
                     </div>
 
