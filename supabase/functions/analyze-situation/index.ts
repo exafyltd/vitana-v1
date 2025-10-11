@@ -134,14 +134,7 @@ serve(async (req) => {
     const { situation, contextFilters, constraints } = await req.json();
     console.log('Analyzing situation:', situation);
 
-    const GOOGLE_SERVICE_ACCOUNT_KEY = Deno.env.get('GOOGLE_SERVICE_ACCOUNT_KEY');
-    if (!GOOGLE_SERVICE_ACCOUNT_KEY) {
-      throw new Error('GOOGLE_SERVICE_ACCOUNT_KEY not configured');
-    }
-
-    const serviceAccountKey = JSON.parse(GOOGLE_SERVICE_ACCOUNT_KEY);
-    const accessToken = await generateAccessToken(serviceAccountKey);
-
+    // Use Lovable AI Gateway (no external secrets required)
     const systemPrompt = `You are an automation expert analyzing healthcare scenarios to suggest automation rules.
 
 Your task is to analyze the given situation and provide structured automation recommendations.
@@ -172,45 +165,58 @@ Situation: ${situation}
 ${contextFilters ? `Context: ${JSON.stringify(contextFilters)}` : ''}
 ${constraints ? `Constraints: ${JSON.stringify(constraints)}` : ''}
 
-Provide automation recommendations.`;
+Provide automation recommendations as strict JSON matching the specified schema.`;
 
     const startTime = Date.now();
 
-    const aiResponse = await fetch('https://europe-west1-aiplatform.googleapis.com/v1/projects/lovable-vitana-vers1/locations/europe-west1/publishers/google/models/gemini-2.5-flash-pro:generateContent', {
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (!LOVABLE_API_KEY) {
+      throw new Error('LOVABLE_API_KEY is not configured');
+    }
+
+    const aiResp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
-        contents: [{
-          role: 'user',
-          parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          responseMimeType: "application/json"
-        }
-      }),
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ]
+      })
     });
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('Google Vertex AI error:', aiResponse.status, errorText);
-      throw new Error(`Google Vertex AI error: ${aiResponse.status} - ${errorText}`);
+    if (!aiResp.ok) {
+      if (aiResp.status === 429) {
+        return new Response(JSON.stringify({ error: 'Rate limits exceeded, please try again later.' }), {
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      if (aiResp.status === 402) {
+        return new Response(JSON.stringify({ error: 'Payment required, please add funds to your Lovable AI workspace.' }), {
+          status: 402,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      const t = await aiResp.text();
+      console.error('AI gateway error:', aiResp.status, t);
+      throw new Error('AI gateway error');
     }
 
-    const aiData = await aiResponse.json();
+    const aiData = await aiResp.json();
     const analysisTime = Date.now() - startTime;
-    
-    // Extract content from Google Vertex AI response format
-    const content = aiData.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    const content = aiData?.choices?.[0]?.message?.content;
     if (!content) {
       console.error('Unexpected AI response structure:', JSON.stringify(aiData));
-      throw new Error('Invalid response from Google Vertex AI');
+      throw new Error('Invalid response from AI gateway');
     }
-    
-    console.log('AI response:', content);
+
+    console.log('AI response (raw):', content);
     const analysisResult = JSON.parse(content);
 
     // Store analysis in database
