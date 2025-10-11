@@ -57,11 +57,14 @@ export function useIntelligentGreeting() {
   const fetchGreetingContext = useCallback(async (): Promise<GreetingContext> => {
     const timeOfDay = getTimeOfDay();
     const firstName = user?.user_metadata?.first_name;
+    const language = preferences?.stt_language || 'en-US';
+    
+    console.log('🔍 fetchGreetingContext - preferences.stt_language:', preferences?.stt_language, 'final language:', language);
 
     const context: GreetingContext = {
       firstName,
       timeOfDay,
-      language: preferences?.stt_language || 'en-US'
+      language
     };
 
     // Fetch pending actions count (simple query)
@@ -93,7 +96,9 @@ export function useIntelligentGreeting() {
 
       const baseContext = await fetchGreetingContext();
       const context = { ...baseContext, suppressName };
+      console.log('🎯 About to generate greeting with context:', context);
       const greetingMessage = generateGreetingMessage(context);
+      console.log('📝 Generated greeting message:', greetingMessage);
 
       // Filter message types based on user preferences
       const allowedTypes = preferences?.greeting_message_types || ['welcome', 'reminder', 'motivation'];

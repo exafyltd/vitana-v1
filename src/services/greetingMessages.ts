@@ -191,6 +191,7 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
   const timeGreeting = getTimeGreeting(timeOfDay, language);
 
   console.log('🎭 Greeting generation - language:', language, 'firstName:', firstName, 'suppressName:', suppressName);
+  console.log('🔤 Language check - startsWith sr?', language.startsWith('sr'), 'startsWith en?', language.startsWith('en'));
 
   // Priority 1: Urgent appointments (within 24h)
   if (upcomingAppointments && upcomingAppointments.length > 0) {
