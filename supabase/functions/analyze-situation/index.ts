@@ -111,7 +111,16 @@ serve(async (req) => {
       { global: { headers: { Authorization: authHeader! } } }
     );
 
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    const token = authHeader?.replace(/^Bearer\s+/i, '') || '';
+    if (!token) {
+      console.error('Authentication failed: missing bearer token');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
     if (userError || !user) {
       console.error('Authentication failed:', userError?.message || 'No user found');
       return new Response(
