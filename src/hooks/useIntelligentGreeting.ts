@@ -59,7 +59,8 @@ export function useIntelligentGreeting() {
 
     const context: GreetingContext = {
       firstName,
-      timeOfDay
+      timeOfDay,
+      language: preferences?.stt_language || 'en-US'
     };
 
     // Fetch pending actions count (simple query)
@@ -88,12 +89,9 @@ export function useIntelligentGreeting() {
       // Filter message types based on user preferences
       const allowedTypes = preferences?.greeting_message_types || ['welcome', 'reminder', 'motivation'];
       if (!allowedTypes.includes(greetingMessage.type)) {
-        // Fallback to simple welcome if type not allowed
-        const simpleGreeting = {
-          text: `${context.firstName ? `Hello ${context.firstName}` : 'Hello'}! Welcome to Vitana.`,
-          type: 'welcome' as const,
-          priority: 'low' as const
-        };
+        // Fallback to simple welcome if type not allowed - regenerate with same context but force welcome type
+        const welcomeContext = { ...context, pendingActions: undefined, upcomingAppointments: undefined, healthScoreChange: undefined, achievements: undefined };
+        const simpleGreeting = generateGreetingMessage(welcomeContext);
         setLastGreeting(simpleGreeting);
         speak(simpleGreeting.text);
       } else {
