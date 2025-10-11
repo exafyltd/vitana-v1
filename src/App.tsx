@@ -162,6 +162,11 @@ import VideosManagement from "./pages/admin/media/Videos";
 import PodcastsManagement from "./pages/admin/media/Podcasts";
 import MusicManagement from "./pages/admin/media/Music";
 import AnalyticsManagement from "./pages/admin/media/Analytics";
+import AIAssistantOverview from "./pages/admin/AIAssistant";
+import AutomationBuilder from "./pages/admin/ai-assistant/AutomationBuilder";
+import AISituationAnalyzer from "./pages/admin/ai-assistant/AISituationAnalyzer";
+import PatternDiscovery from "./pages/admin/ai-assistant/PatternDiscovery";
+import AIAssistantAnalytics from "./pages/admin/ai-assistant/Analytics";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 
 const App = () => {
@@ -994,6 +999,43 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
                 <AnalyticsManagement />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
+          {/* AI Assistant Routes */}
+          <Route path="/admin/ai-assistant" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <AIAssistantOverview />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/ai-assistant/automation-builder" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <AutomationBuilder />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/ai-assistant/ai-analyzer" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <AISituationAnalyzer />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/ai-assistant/pattern-discovery" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <PatternDiscovery />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/ai-assistant/analytics" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <AIAssistantAnalytics />
               </ProtectedRoute>
             </AuthGuard>
           } />

@@ -112,6 +112,20 @@ export default function AdminDashboard() {
       <div>
         <h2 className="text-lg font-semibold mb-4">Quick Access</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/ai-assistant')}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-lg">
+                  <TrendingUp className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">AI Assistant</CardTitle>
+                  <CardDescription>Intelligent automation engine</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+
           <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/community')}>
             <CardHeader>
               <div className="flex items-center gap-3">
