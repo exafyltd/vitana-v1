@@ -98,7 +98,7 @@ export default function VoiceAISettings() {
       />
       <SubNavigation items={settingsNavigation} />
       
-      <div className="p-6 bg-gradient-subtle min-h-screen">
+      <div className="p-6 bg-gradient-subtle min-h-screen pb-32 md:pb-40">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title="Voice & AI Settings"
@@ -167,10 +167,22 @@ export default function VoiceAISettings() {
                               </SelectItem>
                             ))
                           ) : (
-                            <SelectItem value="default" disabled>No voices available for this language</SelectItem>
+                            <>
+                              <SelectItem value="__no_match" disabled>
+                                No voices match this language — showing all voices
+                              </SelectItem>
+                              {availableVoices.map((voice) => (
+                                <SelectItem key={voice.name} value={voice.name}>
+                                  {voice.name} ({voice.lang})
+                                </SelectItem>
+                              ))}
+                            </>
                           )}
                         </SelectContent>
                       </Select>
+                      {filteredVoices.length === 0 && (
+                        <p className="text-xs text-muted-foreground">Your system has no Serbian-specific voices. We’re showing all available voices as a fallback.</p>
+                      )}
                     </div>
 
                     {/* Speed */}

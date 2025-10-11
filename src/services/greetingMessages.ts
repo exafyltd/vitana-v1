@@ -16,6 +16,7 @@ export interface GreetingContext {
   healthScoreChange?: number;
   achievements?: string[];
   language?: string;
+  suppressName?: boolean;
 }
 
 export interface GreetingMessage {
@@ -154,8 +155,9 @@ const getLocalizedText = (key: string, language: string = 'en-US', params?: Reco
 };
 
 export const generateGreetingMessage = (context: GreetingContext): GreetingMessage => {
-  const { firstName, timeOfDay, pendingActions, upcomingAppointments, healthScoreChange, achievements, language = 'en-US' } = context;
+  const { firstName, timeOfDay, pendingActions, upcomingAppointments, healthScoreChange, achievements, language = 'en-US', suppressName } = context;
   const name = firstName || '';
+  const namePart = suppressName ? '' : (name ? ' ' + name : '');
   const timeGreeting = getTimeGreeting(timeOfDay, language);
 
   // Priority 1: Urgent appointments (within 24h)
@@ -163,7 +165,7 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
     const apt = upcomingAppointments[0];
     const appointmentText = getLocalizedText('appointment', language, { title: apt.title, time: apt.time });
     return {
-      text: `${timeGreeting}${name ? ' ' + name : ''}. ${appointmentText}`,
+      text: `${timeGreeting}${namePart}. ${appointmentText}`,
       type: 'reminder',
       priority: 'high'
     };
@@ -175,7 +177,7 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
     const actionSuffix = count === 1 ? getLocalizedText('action', language) : getLocalizedText('actions_plural', language);
     const actionsText = getLocalizedText('actions', language, { count, s: actionSuffix });
     return {
-      text: `${timeGreeting}${name ? ' ' + name : ''}! ${actionsText}`,
+      text: `${timeGreeting}${namePart}! ${actionsText}`,
       type: 'reminder',
       priority: 'medium'
     };
@@ -185,7 +187,7 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
   if (healthScoreChange && healthScoreChange > 0) {
     const scoreText = getLocalizedText('scoreImproved', language, { change: healthScoreChange });
     return {
-      text: `${timeGreeting}${name ? ' ' + name : ''}! ${scoreText}`,
+      text: `${timeGreeting}${namePart}! ${scoreText}`,
       type: 'motivation',
       priority: 'medium'
     };
@@ -195,16 +197,41 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
   if (achievements && achievements.length > 0) {
     const milestoneText = getLocalizedText('milestone', language, { achievement: achievements[0] });
     return {
-      text: `${timeGreeting}${name ? ' ' + name : ''}! ${milestoneText}`,
+      text: `${timeGreeting}${namePart}! ${milestoneText}`,
       type: 'celebration',
       priority: 'medium'
     };
   }
 
-  // Default: Simple welcome
+  // Default: Personalized welcome variants (only for selected languages)
+  if (language.startsWith('en')) {
+    const variants = [
+      'Welcome back {name},',
+      'Hi {name}, what can I do for you?',
+      "I’m always here {name}, just let me know what I can do for you",
+      "Let’s make today a special day {name}"
+    ];
+    const chosen = variants[Math.floor(Math.random() * variants.length)];
+    const text = suppressName ? chosen.replace(/\s?\{name\}[,]?/g, '') : chosen.replace('{name}', name);
+    return { text, type: 'welcome', priority: 'low' };
+  }
+
+  if (language.startsWith('sr')) {
+    const variants = [
+      'Dobrodošli nazad {name},',
+      'Zdravo {name}, kako mogu da pomognem?',
+      'Uvek sam tu, {name}, samo reci kako mogu da pomognem',
+      'Hajde da danas bude poseban dan {name}'
+    ];
+    const chosen = variants[Math.floor(Math.random() * variants.length)];
+    const text = suppressName ? chosen.replace(/\s?\{name\}[,]?/g, '') : chosen.replace('{name}', name);
+    return { text, type: 'welcome', priority: 'low' };
+  }
+
+  // Fallback: localized welcome with time greeting
   const welcomeText = getLocalizedText('welcome', language);
   return {
-    text: `${timeGreeting}${name ? ' ' + name : ''}! ${welcomeText}`,
+    text: `${timeGreeting}${namePart}! ${welcomeText}`,
     type: 'welcome',
     priority: 'low'
   };

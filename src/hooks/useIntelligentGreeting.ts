@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { useUserPreferences } from './useUserPreferences';
 import { useTextToSpeech } from './useTextToSpeech';
@@ -14,6 +14,7 @@ export function useIntelligentGreeting() {
   const { speak, isSpeaking } = useTextToSpeech();
   const [lastGreeting, setLastGreeting] = useState<GreetingMessage | null>(null);
   const [greetingHistory, setGreetingHistory] = useState<Array<{ message: string; time: string }>>([]);
+  const activationTimesRef = useRef<number[]>([]);
 
   const getTimeOfDay = (): 'morning' | 'afternoon' | 'evening' | 'night' => {
     const hour = new Date().getHours();
@@ -83,13 +84,20 @@ export function useIntelligentGreeting() {
     if (!shouldGreet()) return;
 
     try {
-      const context = await fetchGreetingContext();
+      // Track activations within 10 seconds
+      const now = Date.now();
+      const recent = activationTimesRef.current.filter((t) => now - t <= 10000);
+      recent.push(now);
+      activationTimesRef.current = recent;
+      const suppressName = recent.length > 2; // more than 2 times within 10s
+
+      const baseContext = await fetchGreetingContext();
+      const context = { ...baseContext, suppressName };
       const greetingMessage = generateGreetingMessage(context);
 
       // Filter message types based on user preferences
       const allowedTypes = preferences?.greeting_message_types || ['welcome', 'reminder', 'motivation'];
       if (!allowedTypes.includes(greetingMessage.type)) {
-        // Fallback to simple welcome if type not allowed - regenerate with same context but force welcome type
         const welcomeContext = { ...context, pendingActions: undefined, upcomingAppointments: undefined, healthScoreChange: undefined, achievements: undefined };
         const simpleGreeting = generateGreetingMessage(welcomeContext);
         setLastGreeting(simpleGreeting);
@@ -99,24 +107,29 @@ export function useIntelligentGreeting() {
         speak(greetingMessage.text);
       }
 
-      // Mark as greeted
       sessionStorage.setItem(SESSION_KEY, 'true');
       localStorage.setItem(LAST_GREETING_KEY, new Date().toISOString());
 
-      // Add to history
       const historyEntry = {
         message: greetingMessage.text,
         time: new Date().toISOString()
       };
-      setGreetingHistory(prev => [historyEntry, ...prev].slice(0, 10));
-
+      setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
     } catch (error) {
       console.error('Failed to trigger greeting:', error);
     }
   }, [shouldGreet, fetchGreetingContext, preferences, speak]);
 
   const manualGreeting = useCallback(async () => {
-    const context = await fetchGreetingContext();
+    // Track activations within 10 seconds
+    const now = Date.now();
+    const recent = activationTimesRef.current.filter((t) => now - t <= 10000);
+    recent.push(now);
+    activationTimesRef.current = recent;
+    const suppressName = recent.length > 2; // more than 2 times within 10s
+
+    const baseContext = await fetchGreetingContext();
+    const context = { ...baseContext, suppressName };
     const greetingMessage = generateGreetingMessage(context);
     setLastGreeting(greetingMessage);
     speak(greetingMessage.text);
@@ -125,7 +138,7 @@ export function useIntelligentGreeting() {
       message: greetingMessage.text,
       time: new Date().toISOString()
     };
-    setGreetingHistory(prev => [historyEntry, ...prev].slice(0, 10));
+    setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
   }, [fetchGreetingContext, speak]);
 
   const clearGreetingState = useCallback(() => {
