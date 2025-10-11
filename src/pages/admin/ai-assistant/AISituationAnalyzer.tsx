@@ -23,8 +23,17 @@ export default function AISituationAnalyzer() {
   const handleAnalyze = async (situation: string) => {
     setIsAnalyzing(true);
     try {
+      // Get current session to send JWT explicitly
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        throw new Error("Not authenticated");
+      }
+
       const { data, error } = await supabase.functions.invoke('analyze-situation', {
-        body: { situation }
+        body: { situation },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`
+        }
       });
 
       if (error) throw error;
