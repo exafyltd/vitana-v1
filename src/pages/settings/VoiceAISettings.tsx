@@ -76,6 +76,8 @@ export default function VoiceAISettings() {
   const loadVoices = useCallback(() => {
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
+      console.log('🔊 All available voices:', voices.map(v => ({ name: v.name, lang: v.lang })));
+      console.log('🔊 Serbian voices:', voices.filter(v => v.lang.toLowerCase().includes('sr')).map(v => ({ name: v.name, lang: v.lang })));
       setAvailableVoices(voices);
     }
   }, []);
@@ -151,8 +153,17 @@ export default function VoiceAISettings() {
   const filteredVoices = availableVoices.filter(voice => {
     const langCode = baseLang(preferences.stt_language); // e.g., "sr" from "sr-RS" or "sr_RS"
     const voiceLang = baseLang(voice.lang);
-    return voiceLang === langCode;
+    const match = voiceLang === langCode;
+    
+    // Debug logging for Serbian
+    if (langCode === 'sr' || voiceLang === 'sr') {
+      console.log(`🔍 Voice filter - langCode: ${langCode}, voiceLang: ${voiceLang}, voice.lang: ${voice.lang}, voice.name: ${voice.name}, match: ${match}`);
+    }
+    
+    return match;
   });
+  
+  console.log(`📋 Filtered voices for ${preferences.stt_language}:`, filteredVoices.map(v => ({ name: v.name, lang: v.lang })));
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {

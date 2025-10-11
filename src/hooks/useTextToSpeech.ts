@@ -45,6 +45,9 @@ export function useTextToSpeech() {
       const voices = window.speechSynthesis.getVoices();
       let selectedVoice = voices.find(v => v.name === preferences.tts_voice);
       
+      console.log('🎤 TTS - Selected voice from prefs:', preferences.tts_voice);
+      console.log('🎤 TTS - Found voice:', selectedVoice ? { name: selectedVoice.name, lang: selectedVoice.lang } : 'NOT FOUND');
+      
       // If no voice explicitly selected, pick a matching one for the language (prefer female)
       const baseLang = (l: string) => (l || '').toLowerCase().replace('_','-').split('-')[0];
       if (!selectedVoice) {
@@ -88,8 +91,10 @@ export function useTextToSpeech() {
       if (selectedVoice) {
         utterance.voice = selectedVoice;
         utterance.lang = selectedVoice.lang;
+        console.log('✅ TTS - Using voice:', selectedVoice.name, 'with lang:', selectedVoice.lang);
       } else {
         utterance.lang = preferences.stt_language || 'en-US';
+        console.warn('⚠️ TTS - No voice selected, using fallback lang:', utterance.lang);
       }
       
       utterance.onstart = () => {
