@@ -101,6 +101,40 @@ export default function VoiceAISettings() {
     return () => clearInterval(pollInterval);
   }, [loadVoices]);
 
+  // Self-healing: if selected voice doesn't match language, auto-correct
+  useEffect(() => {
+    if (!preferences || availableVoices.length === 0) return;
+    
+    const currentVoice = availableVoices.find(v => v.name === preferences.tts_voice);
+    const currentVoiceLangCode = currentVoice ? baseLang(currentVoice.lang) : undefined;
+    const selectedLangCode = baseLang(preferences.stt_language);
+    
+    // If voice doesn't match language or no voice selected
+    if (!currentVoice || currentVoiceLangCode !== selectedLangCode) {
+      const candidates = availableVoices.filter(v => baseLang(v.lang) === selectedLangCode);
+      
+      const preferred = pickPreferredVoice(candidates);
+      if (preferred && preferred.name !== preferences.tts_voice) {
+        updatePreferences({ tts_voice: preferred.name });
+      }
+    }
+  }, [availableVoices, preferences, baseLang, pickPreferredVoice, updatePreferences]);
+
+  // Handle language change: auto-select matching voice
+  const handleLanguageChange = useCallback((newLanguage: string) => {
+    if (!preferences) return;
+    const newBase = baseLang(newLanguage);
+    const candidates = availableVoices.filter(v => baseLang(v.lang) === newBase);
+    
+    const preferred = pickPreferredVoice(candidates);
+    
+    // Update both language and voice in one call
+    updatePreferences({ 
+      stt_language: newLanguage,
+      tts_voice: preferred?.name || ''
+    });
+  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
+
   if (isLoading) {
     return (
       <AppLayout>
@@ -119,39 +153,6 @@ export default function VoiceAISettings() {
     const voiceLang = baseLang(voice.lang);
     return voiceLang === langCode;
   });
-
-  // Self-healing: if selected voice doesn't match language, auto-correct
-  useEffect(() => {
-    if (!preferences || availableVoices.length === 0) return;
-    
-    const currentVoice = availableVoices.find(v => v.name === preferences.tts_voice);
-    const currentVoiceLangCode = currentVoice ? baseLang(currentVoice.lang) : undefined;
-    const selectedLangCode = baseLang(preferences.stt_language);
-    
-    // If voice doesn't match language or no voice selected
-    if (!currentVoice || currentVoiceLangCode !== selectedLangCode) {
-      const candidates = availableVoices.filter(v => baseLang(v.lang) === selectedLangCode);
-      
-      const preferred = pickPreferredVoice(candidates);
-      if (preferred && preferred.name !== preferences.tts_voice) {
-        updatePreferences({ tts_voice: preferred.name });
-      }
-    }
-  }, [availableVoices, preferences?.stt_language, preferences?.tts_voice, pickPreferredVoice, updatePreferences]);
-
-  // Handle language change: auto-select matching voice
-  const handleLanguageChange = useCallback((newLanguage: string) => {
-    const newBase = baseLang(newLanguage);
-    const candidates = availableVoices.filter(v => baseLang(v.lang) === newBase);
-    
-    const preferred = pickPreferredVoice(candidates);
-    
-    // Update both language and voice in one call
-    updatePreferences({ 
-      stt_language: newLanguage,
-      tts_voice: preferred?.name || ''
-    });
-  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences]);
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
