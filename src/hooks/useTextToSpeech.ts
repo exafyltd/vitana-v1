@@ -54,11 +54,36 @@ export function useTextToSpeech() {
           // Voice language mismatch - find a matching voice
           const matchingVoices = voices.filter(v => v.lang.split('-')[0] === prefLangCode);
           if (matchingVoices.length > 0) {
-            // Prefer Google > Microsoft > Apple > first
-            selectedVoice = matchingVoices.find(v => v.name.toLowerCase().includes('google')) ||
-                           matchingVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
-                           matchingVoices.find(v => v.name.toLowerCase().includes('apple')) ||
-                           matchingVoices[0];
+            // Helper to check if voice is female
+            const isFemaleVoice = (voice: SpeechSynthesisVoice) => {
+              const name = voice.name.toLowerCase();
+              return name.includes('female') || 
+                     name.includes('woman') ||
+                     name.includes('zira') ||
+                     name.includes('samantha') ||
+                     name.includes('victoria') ||
+                     name.includes('kate') ||
+                     name.includes('helena') ||
+                     name.includes('steffi') ||
+                     name.includes('laura') ||
+                     name.includes('amelie') ||
+                     name.includes('anna');
+            };
+            
+            // Prefer female voices
+            const femaleVoices = matchingVoices.filter(isFemaleVoice);
+            if (femaleVoices.length > 0) {
+              selectedVoice = femaleVoices.find(v => v.name.toLowerCase().includes('google')) ||
+                             femaleVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
+                             femaleVoices.find(v => v.name.toLowerCase().includes('apple')) ||
+                             femaleVoices[0];
+            } else {
+              // Fallback to any voice
+              selectedVoice = matchingVoices.find(v => v.name.toLowerCase().includes('google')) ||
+                             matchingVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
+                             matchingVoices.find(v => v.name.toLowerCase().includes('apple')) ||
+                             matchingVoices[0];
+            }
           }
         }
       } else {
@@ -66,10 +91,36 @@ export function useTextToSpeech() {
         const prefLangCode = preferences.stt_language.split('-')[0];
         const matchingVoices = voices.filter(v => v.lang.split('-')[0] === prefLangCode);
         if (matchingVoices.length > 0) {
-          selectedVoice = matchingVoices.find(v => v.name.toLowerCase().includes('google')) ||
-                         matchingVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
-                         matchingVoices.find(v => v.name.toLowerCase().includes('apple')) ||
-                         matchingVoices[0];
+          // Helper to check if voice is female
+          const isFemaleVoice = (voice: SpeechSynthesisVoice) => {
+            const name = voice.name.toLowerCase();
+            return name.includes('female') || 
+                   name.includes('woman') ||
+                   name.includes('zira') ||
+                   name.includes('samantha') ||
+                   name.includes('victoria') ||
+                   name.includes('kate') ||
+                   name.includes('helena') ||
+                   name.includes('steffi') ||
+                   name.includes('laura') ||
+                   name.includes('amelie') ||
+                   name.includes('anna');
+          };
+          
+          // Prefer female voices
+          const femaleVoices = matchingVoices.filter(isFemaleVoice);
+          if (femaleVoices.length > 0) {
+            selectedVoice = femaleVoices.find(v => v.name.toLowerCase().includes('google')) ||
+                           femaleVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
+                           femaleVoices.find(v => v.name.toLowerCase().includes('apple')) ||
+                           femaleVoices[0];
+          } else {
+            // Fallback to any voice
+            selectedVoice = matchingVoices.find(v => v.name.toLowerCase().includes('google')) ||
+                           matchingVoices.find(v => v.name.toLowerCase().includes('microsoft')) ||
+                           matchingVoices.find(v => v.name.toLowerCase().includes('apple')) ||
+                           matchingVoices[0];
+          }
         }
       }
       

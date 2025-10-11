@@ -21,11 +21,42 @@ export default function VoiceAISettings() {
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
 
-  // Helper to pick the best voice from candidates
+  // Helper to pick the best voice from candidates - prefer female voices
   const pickPreferredVoice = useCallback((voices: SpeechSynthesisVoice[]) => {
     if (voices.length === 0) return null;
     
-    // Prefer Google > Microsoft > Apple > first available
+    // Helper to check if voice is female
+    const isFemaleVoice = (voice: SpeechSynthesisVoice) => {
+      const name = voice.name.toLowerCase();
+      return name.includes('female') || 
+             name.includes('woman') ||
+             name.includes('zira') ||
+             name.includes('samantha') ||
+             name.includes('victoria') ||
+             name.includes('kate') ||
+             name.includes('helena') ||
+             name.includes('steffi') ||
+             name.includes('laura') ||
+             name.includes('amelie') ||
+             name.includes('anna');
+    };
+    
+    // First try to find female voices, prioritizing by provider
+    const femaleVoices = voices.filter(isFemaleVoice);
+    if (femaleVoices.length > 0) {
+      const googleFemale = femaleVoices.find(v => v.name.toLowerCase().includes('google'));
+      if (googleFemale) return googleFemale;
+      
+      const microsoftFemale = femaleVoices.find(v => v.name.toLowerCase().includes('microsoft'));
+      if (microsoftFemale) return microsoftFemale;
+      
+      const appleFemale = femaleVoices.find(v => v.name.toLowerCase().includes('apple'));
+      if (appleFemale) return appleFemale;
+      
+      return femaleVoices[0];
+    }
+    
+    // Fallback to any voice if no female voice found
     const google = voices.find(v => v.name.toLowerCase().includes('google'));
     if (google) return google;
     
