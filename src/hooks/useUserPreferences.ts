@@ -36,6 +36,8 @@ export interface UserPreferences {
   // Privacy
   store_voice_recordings: boolean;
   auto_delete_recordings_days: number;
+  // Auto-greeting
+  auto_greeting_enabled: boolean;
   created_at: string;
   updated_at: string;
 }

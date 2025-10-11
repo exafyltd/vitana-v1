@@ -234,6 +234,23 @@ export default function VoiceAISettings() {
                     />
                   </div>
 
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="auto-greeting">Auto-Greeting on Health Screen</Label>
+                      <p className="text-xs text-muted-foreground">
+                        Vitana will welcome you when you open the Health page
+                      </p>
+                    </div>
+                    <Switch
+                      id="auto-greeting"
+                      checked={preferences.auto_greeting_enabled}
+                      onCheckedChange={(checked) => 
+                        updatePreferences({ auto_greeting_enabled: checked })
+                      }
+                      disabled={isUpdating}
+                    />
+                  </div>
+
                   <Button onClick={handlePreviewVoice} className="w-full" disabled={isUpdating}>
                     <Volume2 className="w-4 h-4 mr-2" />
                     Preview Voice

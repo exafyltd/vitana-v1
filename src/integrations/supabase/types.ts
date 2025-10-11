@@ -3577,6 +3577,7 @@ export type Database = {
           ai_response_length: string | null
           ai_temperature: number | null
           auto_delete_recordings_days: number | null
+          auto_greeting_enabled: boolean | null
           autopilot_categories: Json | null
           autopilot_enabled: boolean | null
           autopilot_max_actions_per_day: number | null
@@ -3604,6 +3605,7 @@ export type Database = {
           ai_response_length?: string | null
           ai_temperature?: number | null
           auto_delete_recordings_days?: number | null
+          auto_greeting_enabled?: boolean | null
           autopilot_categories?: Json | null
           autopilot_enabled?: boolean | null
           autopilot_max_actions_per_day?: number | null
@@ -3631,6 +3633,7 @@ export type Database = {
           ai_response_length?: string | null
           ai_temperature?: number | null
           auto_delete_recordings_days?: number | null
+          auto_greeting_enabled?: boolean | null
           autopilot_categories?: Json | null
           autopilot_enabled?: boolean | null
           autopilot_max_actions_per_day?: number | null
