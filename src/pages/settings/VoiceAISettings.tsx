@@ -13,11 +13,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { Loader2, Volume2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState, useEffect } from "react";
 
 export default function VoiceAISettings() {
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
   const [isTesting, setIsTesting] = useState(false);
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+
+  // Load available voices
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      setAvailableVoices(voices);
+    };
+    
+    loadVoices();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, []);
 
   if (isLoading) {
     return (
@@ -30,6 +45,12 @@ export default function VoiceAISettings() {
   }
 
   if (!preferences) return null;
+
+  // Filter voices by selected language
+  const filteredVoices = availableVoices.filter(voice => 
+    voice.lang.startsWith(preferences.stt_language.split('-')[0]) || 
+    voice.lang === preferences.stt_language
+  );
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
@@ -54,6 +75,12 @@ export default function VoiceAISettings() {
     utterance.volume = preferences.tts_volume / 100;
     utterance.lang = preferences.stt_language || 'en-US';
     
+    // Apply selected voice
+    const selectedVoice = availableVoices.find(v => v.name === preferences.tts_voice);
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+    }
+    
     utterance.onstart = () => setIsTesting(true);
     utterance.onend = () => setIsTesting(false);
     utterance.onerror = () => setIsTesting(false);
@@ -71,17 +98,223 @@ export default function VoiceAISettings() {
       <SubNavigation items={settingsNavigation} />
       
       <div className="p-6 bg-gradient-subtle min-h-screen">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title="Voice & AI Settings"
             description="Customize your voice recognition and AI assistant experience"
             emoji="🎙️"
           />
 
+          {/* 2-Column TTS Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Card: TTS Voice Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Voice Output Settings</CardTitle>
+                <CardDescription>Configure how the AI speaks to you</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Language */}
+                <div className="space-y-2">
+                  <Label>Language</Label>
+                  <Select
+                    value={preferences.stt_language}
+                    onValueChange={(value) => updatePreferences({ stt_language: value })}
+                    disabled={isUpdating}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en-US">English (US)</SelectItem>
+                      <SelectItem value="de-DE">German (DE)</SelectItem>
+                      <SelectItem value="sr-RS">Serbian (RS)</SelectItem>
+                      <SelectItem value="es-ES">Spanish (ES)</SelectItem>
+                      <SelectItem value="ar-XA">Arabic (XA)</SelectItem>
+                      <SelectItem value="ru-RU">Russian (RU)</SelectItem>
+                      <SelectItem value="zh-CN">Chinese (CN)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Browser Voice */}
+                <div className="space-y-2">
+                  <Label>Voice</Label>
+                  <Select
+                    value={preferences.tts_voice}
+                    onValueChange={(value) => updatePreferences({ tts_voice: value })}
+                    disabled={isUpdating}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a voice" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {filteredVoices.length > 0 ? (
+                        filteredVoices.map((voice) => (
+                          <SelectItem key={voice.name} value={voice.name}>
+                            {voice.name} ({voice.lang})
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="default" disabled>No voices available</SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Speed */}
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <Label>Speed</Label>
+                    <span className="text-sm text-muted-foreground">{preferences.tts_speed.toFixed(1)}x</span>
+                  </div>
+                  <Slider
+                    value={[preferences.tts_speed]}
+                    onValueChange={([value]) => updatePreferences({ tts_speed: value })}
+                    min={0.5}
+                    max={2.0}
+                    step={0.1}
+                    disabled={isUpdating}
+                  />
+                </div>
+
+                {/* Pitch */}
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <Label>Pitch</Label>
+                    <span className="text-sm text-muted-foreground">{preferences.tts_pitch.toFixed(1)}</span>
+                  </div>
+                  <Slider
+                    value={[preferences.tts_pitch]}
+                    onValueChange={([value]) => updatePreferences({ tts_pitch: value })}
+                    min={0.5}
+                    max={2.0}
+                    step={0.1}
+                    disabled={isUpdating}
+                  />
+                </div>
+
+                {/* Volume */}
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <Label>Volume</Label>
+                    <span className="text-sm text-muted-foreground">{preferences.tts_volume}%</span>
+                  </div>
+                  <Slider
+                    value={[preferences.tts_volume]}
+                    onValueChange={([value]) => updatePreferences({ tts_volume: value })}
+                    min={0}
+                    max={100}
+                    step={5}
+                    disabled={isUpdating}
+                  />
+                </div>
+
+                {/* Preview Button */}
+                <div className="pt-6 border-t">
+                  <Button 
+                    onClick={handlePreviewVoice} 
+                    disabled={isTesting || isUpdating}
+                    className="w-full"
+                  >
+                    <Volume2 className="mr-2 h-4 w-4" />
+                    {isTesting ? "Playing..." : "Preview Voice"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Right Card: Proactive Speaking Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Proactive Speaking</CardTitle>
+                <CardDescription>Control when and how Vitana speaks to you</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Auto-Greeting */}
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Auto-Greeting</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Vitana will greet you automatically
+                    </p>
+                  </div>
+                  <Switch
+                    checked={preferences.auto_greeting_enabled}
+                    onCheckedChange={(checked) =>
+                      updatePreferences({ auto_greeting_enabled: checked })
+                    }
+                    disabled={isUpdating}
+                  />
+                </div>
+
+                {preferences.auto_greeting_enabled && (
+                  <>
+                    {/* Greeting Frequency */}
+                    <div className="space-y-2">
+                      <Label>Greeting Frequency</Label>
+                      <Select
+                        value={preferences.greeting_frequency}
+                        onValueChange={(value: 'session' | 'daily' | 'hourly' | 'off') =>
+                          updatePreferences({ greeting_frequency: value })
+                        }
+                        disabled={isUpdating}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="session">Once per session</SelectItem>
+                          <SelectItem value="daily">Once per day</SelectItem>
+                          <SelectItem value="hourly">Once per hour</SelectItem>
+                          <SelectItem value="off">Off</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Message Types */}
+                    <div className="space-y-3">
+                      <Label>Message Types</Label>
+                      <div className="space-y-3">
+                        {[
+                          { id: 'time_greeting', label: 'Time-based greetings (Good morning, etc.)' },
+                          { id: 'wellness_check', label: 'Wellness check-ins' },
+                          { id: 'motivational', label: 'Motivational messages' },
+                          { id: 'reminder', label: 'Action reminders' },
+                        ].map((type) => (
+                          <div key={type.id} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={type.id}
+                              checked={preferences.greeting_message_types?.includes(type.id)}
+                              onCheckedChange={(checked) => {
+                                const currentTypes = preferences.greeting_message_types || [];
+                                const newTypes = checked
+                                  ? [...currentTypes, type.id]
+                                  : currentTypes.filter((t) => t !== type.id);
+                                updatePreferences({ greeting_message_types: newTypes });
+                              }}
+                              disabled={isUpdating}
+                            />
+                            <label
+                              htmlFor={type.id}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {type.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Other Settings Tabs */}
           <Tabs defaultValue="stt" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="stt">Speech-to-Text</TabsTrigger>
-              <TabsTrigger value="tts">Text-to-Speech</TabsTrigger>
               <TabsTrigger value="ai">AI Models</TabsTrigger>
               <TabsTrigger value="privacy">Privacy</TabsTrigger>
             </TabsList>
@@ -163,218 +396,6 @@ export default function VoiceAISettings() {
               </Card>
             </TabsContent>
 
-            {/* Text-to-Speech Settings */}
-            <TabsContent value="tts" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Voice Output Settings</CardTitle>
-                  <CardDescription>
-                    Customize how the AI speaks to you
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="tts-language">Language</Label>
-                    <Select
-                      value={preferences.stt_language}
-                      onValueChange={(value) => updatePreferences({ stt_language: value })}
-                      disabled={isUpdating}
-                    >
-                      <SelectTrigger id="tts-language">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="en-US">English (EN)</SelectItem>
-                        <SelectItem value="sr-RS">Serbian (SR)</SelectItem>
-                        <SelectItem value="de-DE">German (DE)</SelectItem>
-                        <SelectItem value="ar-XA">Arabic (AR)</SelectItem>
-                        <SelectItem value="es-ES">Spanish (ES)</SelectItem>
-                        <SelectItem value="ru-RU">Russian (RU)</SelectItem>
-                        <SelectItem value="zh-CN">Chinese (ZH)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground">
-                      Select the language for voice output
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="tts-voice">Voice</Label>
-                    <Select
-                      value={preferences.tts_voice}
-                      onValueChange={(value) => updatePreferences({ tts_voice: value })}
-                      disabled={isUpdating}
-                    >
-                      <SelectTrigger id="tts-voice">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="alloy">Alloy</SelectItem>
-                        <SelectItem value="echo">Echo</SelectItem>
-                        <SelectItem value="fable">Fable</SelectItem>
-                        <SelectItem value="onyx">Onyx</SelectItem>
-                        <SelectItem value="nova">Nova</SelectItem>
-                        <SelectItem value="shimmer">Shimmer</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="tts-character">Voice Character</Label>
-                    <Select
-                      value={preferences.tts_character}
-                      onValueChange={(value) => updatePreferences({ tts_character: value })}
-                      disabled={isUpdating}
-                    >
-                      <SelectTrigger id="tts-character">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="professional">Professional</SelectItem>
-                        <SelectItem value="friendly">Friendly</SelectItem>
-                        <SelectItem value="casual">Casual</SelectItem>
-                        <SelectItem value="enthusiastic">Enthusiastic</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="tts-speed">Speech Speed: {preferences.tts_speed.toFixed(1)}x</Label>
-                    <Slider
-                      id="tts-speed"
-                      min={0.5}
-                      max={2.0}
-                      step={0.1}
-                      value={[preferences.tts_speed]}
-                      onValueChange={([value]) => 
-                        updatePreferences({ tts_speed: value })
-                      }
-                      disabled={isUpdating}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="tts-pitch">Pitch: {preferences.tts_pitch.toFixed(1)}</Label>
-                    <Slider
-                      id="tts-pitch"
-                      min={0.5}
-                      max={2.0}
-                      step={0.1}
-                      value={[preferences.tts_pitch]}
-                      onValueChange={([value]) => 
-                        updatePreferences({ tts_pitch: value })
-                      }
-                      disabled={isUpdating}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="tts-volume">Volume: {preferences.tts_volume}%</Label>
-                    <Slider
-                      id="tts-volume"
-                      min={0}
-                      max={100}
-                      step={5}
-                      value={[preferences.tts_volume]}
-                      onValueChange={([value]) => 
-                        updatePreferences({ tts_volume: value })
-                      }
-                      disabled={isUpdating}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="auto-greeting">Intelligent Auto-Greeting</Label>
-                      <p className="text-xs text-muted-foreground">
-                        Vitana will welcome you with context-aware messages
-                      </p>
-                    </div>
-                    <Switch
-                      id="auto-greeting"
-                      checked={preferences.auto_greeting_enabled}
-                      onCheckedChange={(checked) => 
-                        updatePreferences({ auto_greeting_enabled: checked })
-                      }
-                      disabled={isUpdating}
-                    />
-                  </div>
-
-                  {preferences.auto_greeting_enabled && (
-                    <>
-                      <div className="space-y-2 pt-4 border-t">
-                        <Label htmlFor="greeting-frequency">Greeting Frequency</Label>
-                        <Select
-                          value={preferences.greeting_frequency || 'session'}
-                          onValueChange={(value: any) => updatePreferences({ greeting_frequency: value })}
-                          disabled={isUpdating}
-                        >
-                          <SelectTrigger id="greeting-frequency">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="session">Once per session (recommended)</SelectItem>
-                            <SelectItem value="daily">Once per day</SelectItem>
-                            <SelectItem value="hourly">Every 4 hours</SelectItem>
-                            <SelectItem value="off">Off</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <p className="text-xs text-muted-foreground">
-                          Controls how often Vitana greets you
-                        </p>
-                      </div>
-
-                      <div className="space-y-3 pt-4 border-t">
-                        <Label>Greeting Message Types</Label>
-                        <p className="text-xs text-muted-foreground mb-2">
-                          Choose what types of messages Vitana can say
-                        </p>
-                        
-                        <div className="space-y-2">
-                          {[
-                            { value: 'welcome', label: 'Welcome Messages', description: 'Simple time-based greetings' },
-                            { value: 'reminder', label: 'Reminders', description: 'Appointments and pending actions' },
-                            { value: 'motivation', label: 'Motivational', description: 'Progress updates and achievements' },
-                            { value: 'recommendation', label: 'Recommendations', description: 'AI-powered suggestions' },
-                            { value: 'inspiration', label: 'Inspirational', description: 'Daily tips and quotes' },
-                          ].map((type) => {
-                            const currentTypes = (preferences.greeting_message_types || ['welcome', 'reminder', 'motivation']) as string[];
-                            const isChecked = currentTypes.includes(type.value);
-                            
-                            return (
-                              <div key={type.value} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
-                                <div className="space-y-0.5">
-                                  <Label htmlFor={`greeting-type-${type.value}`}>{type.label}</Label>
-                                  <p className="text-xs text-muted-foreground">{type.description}</p>
-                                </div>
-                                <Switch
-                                  id={`greeting-type-${type.value}`}
-                                  checked={isChecked}
-                                  onCheckedChange={(checked) => {
-                                    const updated = checked 
-                                      ? [...currentTypes, type.value]
-                                      : currentTypes.filter(t => t !== type.value);
-                                    updatePreferences({ greeting_message_types: updated });
-                                  }}
-                                  disabled={isUpdating}
-                                />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </>
-                  )}
-
-                  <div className="pt-6 border-t">
-                    <Button onClick={handlePreviewVoice} className="w-full" disabled={isUpdating || isTesting}>
-                      <Volume2 className="w-4 h-4 mr-2" />
-                      {isTesting ? 'Speaking...' : 'Preview Voice'}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             {/* AI Model Settings */}
             <TabsContent value="ai" className="space-y-4">

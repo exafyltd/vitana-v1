@@ -42,6 +42,13 @@ export function useTextToSpeech() {
       utterance.volume = preferences.tts_volume / 100;
       utterance.lang = preferences.stt_language || 'en-US';
       
+      // Apply selected voice
+      const voices = window.speechSynthesis.getVoices();
+      const selectedVoice = voices.find(v => v.name === preferences.tts_voice);
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
+      
       utterance.onstart = () => {
         setIsSpeaking(true);
         options?.onStart?.();
