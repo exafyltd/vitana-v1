@@ -1,5 +1,75 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { encode as base64Encode } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+
+// Helper function to generate JWT for service account
+async function generateAccessToken(serviceAccountKey: any): Promise<string> {
+  const header = {
+    alg: "RS256",
+    typ: "JWT",
+    kid: serviceAccountKey.private_key_id
+  };
+
+  const now = Math.floor(Date.now() / 1000);
+  const claim = {
+    iss: serviceAccountKey.client_email,
+    sub: serviceAccountKey.client_email,
+    aud: "https://oauth2.googleapis.com/token",
+    iat: now,
+    exp: now + 3600,
+    scope: "https://www.googleapis.com/auth/cloud-platform"
+  };
+
+  const encoder = new TextEncoder();
+  const headerB64 = base64Encode(encoder.encode(JSON.stringify(header))).replace(/=/g, '');
+  const claimB64 = base64Encode(encoder.encode(JSON.stringify(claim))).replace(/=/g, '');
+  const signatureInput = `${headerB64}.${claimB64}`;
+
+  // Import private key
+  const privateKey = await crypto.subtle.importKey(
+    "pkcs8",
+    pemToArrayBuffer(serviceAccountKey.private_key),
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  // Sign the JWT
+  const signature = await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    privateKey,
+    encoder.encode(signatureInput)
+  );
+
+  const signatureB64 = base64Encode(new Uint8Array(signature)).replace(/=/g, '');
+  const jwt = `${signatureInput}.${signatureB64}`;
+
+  // Exchange JWT for access token
+  const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`
+  });
+
+  const tokenData = await tokenResponse.json();
+  if (!tokenData.access_token) {
+    throw new Error(`Failed to get access token: ${JSON.stringify(tokenData)}`);
+  }
+  return tokenData.access_token;
+}
+
+function pemToArrayBuffer(pem: string): ArrayBuffer {
+  const b64 = pem
+    .replace(/-----BEGIN PRIVATE KEY-----/, "")
+    .replace(/-----END PRIVATE KEY-----/, "")
+    .replace(/\s/g, "");
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes.buffer;
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -29,10 +99,13 @@ serve(async (req) => {
     const { situation, contextFilters, constraints } = await req.json();
     console.log('Analyzing situation:', situation);
 
-    const GOOGLE_VERTEX_API_KEY = Deno.env.get('GOOGLE_VERTEX_API_KEY');
-    if (!GOOGLE_VERTEX_API_KEY) {
-      throw new Error('GOOGLE_VERTEX_API_KEY not configured');
+    const GOOGLE_SERVICE_ACCOUNT_KEY = Deno.env.get('GOOGLE_SERVICE_ACCOUNT_KEY');
+    if (!GOOGLE_SERVICE_ACCOUNT_KEY) {
+      throw new Error('GOOGLE_SERVICE_ACCOUNT_KEY not configured');
     }
+
+    const serviceAccountKey = JSON.parse(GOOGLE_SERVICE_ACCOUNT_KEY);
+    const accessToken = await generateAccessToken(serviceAccountKey);
 
     const systemPrompt = `You are an automation expert analyzing healthcare scenarios to suggest automation rules.
 
@@ -72,7 +145,7 @@ Provide automation recommendations.`;
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-goog-api-key': GOOGLE_VERTEX_API_KEY,
+        'Authorization': `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         contents: [{
