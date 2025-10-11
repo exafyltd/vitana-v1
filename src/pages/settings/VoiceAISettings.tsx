@@ -13,9 +13,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { Loader2, Volume2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 export default function VoiceAISettings() {
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
+  const [isTesting, setIsTesting] = useState(false);
 
   if (isLoading) {
     return (
@@ -29,11 +31,33 @@ export default function VoiceAISettings() {
 
   if (!preferences) return null;
 
+  const getTestPhrase = (language: string): string => {
+    const phrases: Record<string, string> = {
+      'en-US': 'Hello, this is a preview of your selected voice settings.',
+      'de-DE': 'Hallo, dies ist eine Vorschau Ihrer ausgewählten Spracheinstellungen.',
+      'sr-RS': 'Zdravo, ovo je pregled izabranih postavki glasa.',
+      'es-ES': 'Hola, esta es una vista previa de la configuración de voz seleccionada.',
+      'ar-XA': 'مرحبا، هذه معاينة لإعدادات الصوت المحددة.',
+      'ru-RU': 'Привет, это предварительный просмотр выбранных настроек голоса.',
+      'zh-CN': '您好，这是您所选语音设置的预览。',
+    };
+    return phrases[language] || phrases['en-US'];
+  };
+
   const handlePreviewVoice = () => {
-    const utterance = new SpeechSynthesisUtterance("Hello, this is a preview of your selected voice settings.");
+    window.speechSynthesis.cancel();
+    
+    const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
+    const utterance = new SpeechSynthesisUtterance(testPhrase);
     utterance.rate = preferences.tts_speed;
     utterance.pitch = preferences.tts_pitch;
     utterance.volume = preferences.tts_volume / 100;
+    utterance.lang = preferences.stt_language || 'en-US';
+    
+    utterance.onstart = () => setIsTesting(true);
+    utterance.onend = () => setIsTesting(false);
+    utterance.onerror = () => setIsTesting(false);
+    
     window.speechSynthesis.speak(utterance);
   };
 
@@ -149,6 +173,31 @@ export default function VoiceAISettings() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="tts-language">Language</Label>
+                    <Select
+                      value={preferences.stt_language}
+                      onValueChange={(value) => updatePreferences({ stt_language: value })}
+                      disabled={isUpdating}
+                    >
+                      <SelectTrigger id="tts-language">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en-US">English (EN)</SelectItem>
+                        <SelectItem value="sr-RS">Serbian (SR)</SelectItem>
+                        <SelectItem value="de-DE">German (DE)</SelectItem>
+                        <SelectItem value="ar-XA">Arabic (AR)</SelectItem>
+                        <SelectItem value="es-ES">Spanish (ES)</SelectItem>
+                        <SelectItem value="ru-RU">Russian (RU)</SelectItem>
+                        <SelectItem value="zh-CN">Chinese (ZH)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">
+                      Select the language for voice output
+                    </p>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="tts-voice">Voice</Label>
                     <Select
@@ -317,9 +366,9 @@ export default function VoiceAISettings() {
                     </>
                   )}
 
-                  <Button onClick={handlePreviewVoice} className="w-full" disabled={isUpdating}>
+                  <Button onClick={handlePreviewVoice} className="w-full" disabled={isUpdating || isTesting}>
                     <Volume2 className="w-4 h-4 mr-2" />
-                    Preview Voice
+                    {isTesting ? 'Speaking...' : 'Preview Voice'}
                   </Button>
                 </CardContent>
               </Card>
