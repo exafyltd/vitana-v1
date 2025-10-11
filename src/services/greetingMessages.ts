@@ -68,6 +68,18 @@ const getTimeGreeting = (timeOfDay: string, language: string = 'en-US'): string 
       afternoon: '下午好',
       evening: '晚上好',
       default: '你好'
+    },
+    'fr-FR': {
+      morning: 'Bonjour',
+      afternoon: 'Bon après-midi',
+      evening: 'Bonsoir',
+      default: 'Bonjour'
+    },
+    'pt-PT': {
+      morning: 'Bom dia',
+      afternoon: 'Boa tarde',
+      evening: 'Boa noite',
+      default: 'Olá'
     }
   };
 
@@ -139,6 +151,24 @@ const getLocalizedText = (key: string, language: string = 'en-US', params?: Reco
       welcome: `欢迎来到 Vitana。`,
       action: '个',
       actions_plural: '个'
+    },
+    'fr-FR': {
+      appointment: `N'oublie pas ton {title} à {time}.`,
+      actions: `Tu as {count} action{s} de santé prête{s} dans ton Autopilot.`,
+      scoreImproved: `Ton score Vitana s'est amélioré de {change} points depuis ta dernière visite.`,
+      milestone: `Félicitations pour avoir atteint un nouveau jalon: {achievement}.`,
+      welcome: `Bienvenue chez Vitana.`,
+      action: '',
+      actions_plural: 's'
+    },
+    'pt-PT': {
+      appointment: `Não te esqueças do teu {title} às {time}.`,
+      actions: `Tens {count} ação{s} de saúde pronta{s} no teu Autopilot.`,
+      scoreImproved: `A tua pontuação Vitana melhorou {change} pontos desde a tua última visita.`,
+      milestone: `Parabéns por atingir um novo marco: {achievement}.`,
+      welcome: `Bem-vindo ao Vitana.`,
+      action: '',
+      actions_plural: 's'
     }
   };
 
@@ -159,6 +189,8 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
   const name = firstName || '';
   const namePart = suppressName ? '' : (name ? ' ' + name : '');
   const timeGreeting = getTimeGreeting(timeOfDay, language);
+
+  console.log('🎭 Greeting generation - language:', language, 'firstName:', firstName, 'suppressName:', suppressName);
 
   // Priority 1: Urgent appointments (within 24h)
   if (upcomingAppointments && upcomingAppointments.length > 0) {
@@ -203,16 +235,56 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
     };
   }
 
-  // Default: Personalized welcome variants (only for selected languages)
+  // Default: Personalized welcome variants (language-specific)
   if (language.startsWith('en')) {
     const variants = [
       'Welcome back {name},',
       'Hi {name}, what can I do for you?',
-      "I’m always here {name}, just let me know what I can do for you",
-      "Let’s make today a special day {name}"
+      "I'm always here {name}, just let me know what I can do for you",
+      "Let's make today a special day {name}"
     ];
     const chosen = variants[Math.floor(Math.random() * variants.length)];
     const text = suppressName ? chosen.replace(/\s?\{name\}[,]?/g, '') : chosen.replace('{name}', name);
+    console.log('✅ Generated English greeting:', text);
+    return { text, type: 'welcome', priority: 'low' };
+  }
+
+  if (language.startsWith('de')) {
+    const variants = [
+      'Willkommen zurück {name},',
+      'Hallo {name}, was kann ich für dich tun?',
+      'Ich bin immer für dich da {name}, sag mir einfach, wie ich helfen kann',
+      'Lass uns heute zu einem besonderen Tag machen {name}'
+    ];
+    const chosen = variants[Math.floor(Math.random() * variants.length)];
+    const text = suppressName ? chosen.replace(/\s?\{name\}[,]?/g, '') : chosen.replace('{name}', name);
+    console.log('✅ Generated German greeting:', text);
+    return { text, type: 'welcome', priority: 'low' };
+  }
+
+  if (language.startsWith('fr')) {
+    const variants = [
+      'Bon retour {name},',
+      'Bonjour {name}, que puis-je faire pour toi?',
+      'Je suis toujours là {name}, dis-moi comment je peux t\'aider',
+      'Faisons de cette journée une journée spéciale {name}'
+    ];
+    const chosen = variants[Math.floor(Math.random() * variants.length)];
+    const text = suppressName ? chosen.replace(/\s?\{name\}[,]?/g, '') : chosen.replace('{name}', name);
+    console.log('✅ Generated French greeting:', text);
+    return { text, type: 'welcome', priority: 'low' };
+  }
+
+  if (language.startsWith('pt')) {
+    const variants = [
+      'Bem-vindo de volta {name},',
+      'Olá {name}, o que posso fazer por ti?',
+      'Estou sempre aqui {name}, diz-me como posso ajudar',
+      'Vamos fazer hoje um dia especial {name}'
+    ];
+    const chosen = variants[Math.floor(Math.random() * variants.length)];
+    const text = suppressName ? chosen.replace(/\s?\{name\}[,]?/g, '') : chosen.replace('{name}', name);
+    console.log('✅ Generated Portuguese greeting:', text);
     return { text, type: 'welcome', priority: 'low' };
   }
 
@@ -225,13 +297,16 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
     ];
     const chosen = variants[Math.floor(Math.random() * variants.length)];
     const text = suppressName ? chosen.replace(/\s?\{name\}[,]?/g, '') : chosen.replace('{name}', name);
+    console.log('✅ Generated Serbian greeting:', text);
     return { text, type: 'welcome', priority: 'low' };
   }
 
   // Fallback: localized welcome with time greeting
   const welcomeText = getLocalizedText('welcome', language);
+  const fallbackText = `${timeGreeting}${namePart}! ${welcomeText}`;
+  console.log('⚠️ Using fallback greeting for language:', language, '- text:', fallbackText);
   return {
-    text: `${timeGreeting}${namePart}! ${welcomeText}`,
+    text: fallbackText,
     type: 'welcome',
     priority: 'low'
   };
