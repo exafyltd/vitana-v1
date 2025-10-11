@@ -54,17 +54,40 @@ export function useIntelligentGreeting() {
     return !hasGreeted;
   }, [preferences, user]);
 
+  // Canonicalize language code (sr, sr-RS, sr_RS → sr-RS)
+  const canonicalizeLang = useCallback((l: string): string => {
+    if (!l) return '';
+    const normalized = l.toLowerCase().replace('_', '-');
+    const parts = normalized.split('-');
+    if (parts.length === 1) {
+      // Just language code like "sr" → "sr-RS" (use uppercase country code)
+      const countryMap: Record<string, string> = {
+        'sr': 'RS', 'ar': 'XA', 'en': 'US', 'de': 'DE', 'es': 'ES',
+        'ru': 'RU', 'zh': 'CN', 'fr': 'FR', 'pt': 'PT'
+      };
+      const country = countryMap[parts[0]] || parts[0].toUpperCase();
+      return `${parts[0]}-${country}`;
+    }
+    // Already has country code → normalize to xx-XX format
+    return `${parts[0]}-${parts[1].toUpperCase()}`;
+  }, []);
+
   const fetchGreetingContext = useCallback(async (): Promise<GreetingContext> => {
     const timeOfDay = getTimeOfDay();
     const firstName = user?.user_metadata?.first_name;
+    
+    // Extract language from voice
     const voiceLang = (() => {
       const v = preferences?.tts_voice || '';
       const m = v.match(/([a-z]{2}-[A-Z]{2})/);
       return m?.[1];
     })();
-    const language = preferences?.stt_language || voiceLang || 'en-US';
     
-    console.log('🔍 fetchGreetingContext - stt:', preferences?.stt_language, 'voice:', preferences?.tts_voice, 'voiceLang:', voiceLang, 'final language:', language);
+    // Canonicalize: prefer stt_language, fallback to voice language
+    const rawLanguage = preferences?.stt_language || voiceLang || 'en-US';
+    const language = canonicalizeLang(rawLanguage);
+    
+    console.log('🔍 fetchGreetingContext - stt:', preferences?.stt_language, 'voice:', preferences?.tts_voice, 'voiceLang:', voiceLang, 'canonical language:', language);
 
     const context: GreetingContext = {
       firstName,
@@ -105,8 +128,19 @@ export function useIntelligentGreeting() {
       const greetingMessage = generateGreetingMessage(context);
       console.log('📝 Generated greeting message:', greetingMessage);
 
-      // Filter message types based on user preferences
-      const allowedTypes = preferences?.greeting_message_types || ['welcome', 'reminder', 'motivation'];
+      // Map UI message types to generator types
+      const messageTypeMap: Record<string, string> = {
+        'time_greeting': 'welcome',
+        'motivational': 'motivation',
+        'reminder': 'reminder',
+        'wellness_check': 'recommendation',
+      };
+      
+      const rawTypes = preferences?.greeting_message_types || ['time_greeting', 'reminder', 'motivational'];
+      const allowedTypes = rawTypes.map((t: string) => messageTypeMap[t] || t);
+      
+      console.log('🎯 Allowed types:', allowedTypes, 'Generated type:', greetingMessage.type);
+      
       if (!allowedTypes.includes(greetingMessage.type)) {
         const welcomeContext = { ...context, pendingActions: undefined, upcomingAppointments: undefined, healthScoreChange: undefined, achievements: undefined };
         const simpleGreeting = generateGreetingMessage(welcomeContext);

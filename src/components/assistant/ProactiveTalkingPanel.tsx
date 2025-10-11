@@ -1,0 +1,182 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
+import { Play, RotateCcw, Info } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+interface ProactiveTalkingPanelProps {
+  preferences: any;
+  isUpdating: boolean;
+  updatePreferences: (updates: any) => void;
+}
+
+export default function ProactiveTalkingPanel({ preferences, isUpdating, updatePreferences }: ProactiveTalkingPanelProps) {
+  const { manualGreeting, clearGreetingState, lastGreeting, isSpeaking } = useIntelligentGreeting();
+
+  // Extract language from voice or use stt_language
+  const extractLanguageFromVoice = (voice: string): string | null => {
+    const match = voice.match(/([a-z]{2}-[A-Z]{2})/);
+    return match?.[1] || null;
+  };
+
+  const canonicalLang = preferences?.stt_language || extractLanguageFromVoice(preferences?.tts_voice || '') || 'en-US';
+  const voiceLangExtracted = extractLanguageFromVoice(preferences?.tts_voice || '');
+
+  // Map UI message types to generator types
+  const messageTypeMap: Record<string, string> = {
+    'time_greeting': 'welcome',
+    'motivational': 'motivation',
+    'reminder': 'reminder',
+    'wellness_check': 'recommendation',
+  };
+
+  const allowedGeneratorTypes = (preferences?.greeting_message_types || [])
+    .map((t: string) => messageTypeMap[t] || t);
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Proactive Speaking Settings</CardTitle>
+          <CardDescription>Control when and how Vitana speaks to you proactively</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label>Auto-Greeting</Label>
+              <p className="text-sm text-muted-foreground">
+                Vitana will greet you automatically
+              </p>
+            </div>
+            <Switch
+              checked={preferences?.auto_greeting_enabled}
+              onCheckedChange={(checked) =>
+                updatePreferences({ auto_greeting_enabled: checked })
+              }
+              disabled={isUpdating}
+            />
+          </div>
+
+          {preferences?.auto_greeting_enabled && (
+            <>
+              <div className="space-y-2">
+                <Label>Greeting Frequency</Label>
+                <Select
+                  value={preferences.greeting_frequency}
+                  onValueChange={(value: 'session' | 'daily' | 'hourly' | 'off') =>
+                    updatePreferences({ greeting_frequency: value })
+                  }
+                  disabled={isUpdating}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="session">Once per session</SelectItem>
+                    <SelectItem value="daily">Once per day</SelectItem>
+                    <SelectItem value="hourly">Once per hour</SelectItem>
+                    <SelectItem value="off">Off</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-3">
+                <Label>Message Types</Label>
+                <div className="space-y-3">
+                  {[
+                    { id: 'time_greeting', label: 'Time-based greetings (Good morning, etc.)' },
+                    { id: 'wellness_check', label: 'Wellness check-ins' },
+                    { id: 'motivational', label: 'Motivational messages' },
+                    { id: 'reminder', label: 'Action reminders' },
+                  ].map((type) => (
+                    <div key={type.id} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={type.id}
+                        checked={preferences.greeting_message_types?.includes(type.id)}
+                        onCheckedChange={(checked) => {
+                          const currentTypes = preferences.greeting_message_types || [];
+                          const newTypes = checked
+                            ? [...currentTypes, type.id]
+                            : currentTypes.filter((t: string) => t !== type.id);
+                          updatePreferences({ greeting_message_types: newTypes });
+                        }}
+                        disabled={isUpdating}
+                      />
+                      <label
+                        htmlFor={type.id}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {type.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Testing & Debugging</CardTitle>
+          <CardDescription>Test and debug proactive greeting functionality</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Alert>
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Language vs Voice:</strong> The "Language" setting controls what language text is generated in. 
+              The "Voice" setting controls which text-to-speech voice reads it aloud. They are auto-synced for convenience.
+            </AlertDescription>
+          </Alert>
+
+          <div className="space-y-2 p-4 bg-muted rounded-lg">
+            <h4 className="text-sm font-medium">Current Configuration</h4>
+            <div className="text-xs space-y-1 text-muted-foreground">
+              <p><strong>STT Language:</strong> {preferences?.stt_language || 'Not set'}</p>
+              <p><strong>TTS Voice:</strong> {preferences?.tts_voice || 'Not set'}</p>
+              <p><strong>Extracted from Voice:</strong> {voiceLangExtracted || 'None'}</p>
+              <p><strong>Final Language Used:</strong> {canonicalLang}</p>
+              <p><strong>Allowed Message Types:</strong> {allowedGeneratorTypes.join(', ') || 'None'}</p>
+            </div>
+          </div>
+
+          {lastGreeting && (
+            <div className="space-y-2 p-4 bg-muted rounded-lg">
+              <h4 className="text-sm font-medium">Last Greeting</h4>
+              <div className="text-xs space-y-1 text-muted-foreground">
+                <p><strong>Type:</strong> {lastGreeting.type}</p>
+                <p><strong>Text:</strong> "{lastGreeting.text}"</p>
+                <p><strong>Priority:</strong> {lastGreeting.priority}</p>
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-2">
+            <Button
+              onClick={manualGreeting}
+              disabled={isSpeaking || isUpdating}
+              className="flex-1"
+            >
+              <Play className="mr-2 h-4 w-4" />
+              {isSpeaking ? "Speaking..." : "Play Sample Greeting"}
+            </Button>
+            <Button
+              onClick={clearGreetingState}
+              variant="outline"
+              disabled={isUpdating}
+            >
+              <RotateCcw className="mr-2 h-4 w-4" />
+              Reset Session
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

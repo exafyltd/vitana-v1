@@ -61,6 +61,7 @@ import StaffDashboard from "./pages/staff/Dashboard";
 import StaffQueue from "./pages/staff/Queue";
 import AdminDashboard from "./pages/admin/Dashboard";
 import TenantManagement from "./pages/admin/TenantManagement";
+import AIAssistant from "./pages/assistant/AIAssistant";
 
 // Home sub-pages
 import Context from "./pages/home/Context";
@@ -501,6 +502,18 @@ const App = () => {
               <VoiceAISettings />
             </AuthGuard>
           } />
+          
+          {/* AI Assistant - New unified section */}
+          <Route path="/assistant" element={
+            <AuthGuard>
+              <AIAssistant />
+            </AuthGuard>
+          } />
+          
+          {/* Redirects from old settings pages to AI Assistant */}
+          <Route path="/settings/voice-ai-legacy" element={<Navigate to="/assistant?tab=voice" replace />} />
+          <Route path="/settings/autopilot-legacy" element={<Navigate to="/assistant?tab=autopilot" replace />} />
+          
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />
           <Route path="/profile/:id" element={<LegacyProfileRedirect />} />
           <Route path="/me/profile" element={
