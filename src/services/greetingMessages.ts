@@ -292,9 +292,10 @@ export const generateGreetingMessage = (context: GreetingContext): GreetingMessa
   if (language.startsWith('sr')) {
     const variants = [
       'Dobrodošli nazad {name},',
-      'Zdravo {name}, kako mogu da pomognem?',
-      'Uvek sam tu, {name}, samo reci kako mogu da pomognem',
-      'Hajde da danas bude poseban dan {name}'
+      'Zdravo {name}, šta mogu za tebe da uradim?',
+      'Uvek sam tu {name}, reci kako mogu da pomognem',
+      'Hajde da danas bude poseban dan {name}',
+      'Šta mogu za tebe da uradim {name}?'
     ];
     const chosen = variants[Math.floor(Math.random() * variants.length)];
     const text = suppressName ? chosen.replace(/\s?\{name\}[,]?/g, '') : chosen.replace('{name}', name);

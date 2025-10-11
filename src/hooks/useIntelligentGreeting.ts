@@ -57,9 +57,14 @@ export function useIntelligentGreeting() {
   const fetchGreetingContext = useCallback(async (): Promise<GreetingContext> => {
     const timeOfDay = getTimeOfDay();
     const firstName = user?.user_metadata?.first_name;
-    const language = preferences?.stt_language || 'en-US';
+    const voiceLang = (() => {
+      const v = preferences?.tts_voice || '';
+      const m = v.match(/([a-z]{2}-[A-Z]{2})/);
+      return m?.[1];
+    })();
+    const language = preferences?.stt_language || voiceLang || 'en-US';
     
-    console.log('🔍 fetchGreetingContext - preferences.stt_language:', preferences?.stt_language, 'final language:', language);
+    console.log('🔍 fetchGreetingContext - stt:', preferences?.stt_language, 'voice:', preferences?.tts_voice, 'voiceLang:', voiceLang, 'final language:', language);
 
     const context: GreetingContext = {
       firstName,
