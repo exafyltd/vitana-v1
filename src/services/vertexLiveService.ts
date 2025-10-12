@@ -58,10 +58,24 @@ export class VertexLiveService {
 
         ws.onmessage = async (event) => {
           try {
-            const data = JSON.parse(event.data);
-            await this.handleServerMessage(data);
+            // Check if this is binary audio data or JSON
+            if (event.data instanceof ArrayBuffer) {
+              // Handle binary audio data
+              console.log('📥 Received audio ArrayBuffer, size:', event.data.byteLength);
+              const audioBytes = new Uint8Array(event.data);
+              
+              if (this.audioContext) {
+                await playAudioData(this.audioContext, audioBytes);
+              }
+            } else if (typeof event.data === 'string') {
+              // Handle JSON messages
+              const data = JSON.parse(event.data);
+              await this.handleServerMessage(data);
+            } else {
+              console.warn('⚠️ Unknown message type:', typeof event.data);
+            }
           } catch (error) {
-            console.error('Error parsing server message:', error);
+            console.error('Error processing server message:', error);
           }
         };
 
