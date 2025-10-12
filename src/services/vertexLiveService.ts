@@ -25,8 +25,18 @@ export class VertexLiveService {
     try {
       this.audioContext = new AudioContext({ sampleRate: 24000 });
 
-      // Use the Supabase URL from environment and construct WebSocket URL
-      const wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.functions.supabase.co/vertex-live?token=${encodeURIComponent(token)}`;
+      // Build functions websocket URL from Supabase URL (robust across envs)
+      const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string | undefined;
+      let wsUrl: string;
+      try {
+        if (!supabaseUrl) throw new Error('Missing VITE_SUPABASE_URL');
+        const parsed = new URL(supabaseUrl);
+        const functionsHost = parsed.host.replace('.supabase.co', '.functions.supabase.co');
+        wsUrl = `wss://${functionsHost}/vertex-live?token=${encodeURIComponent(token)}`;
+      } catch {
+        // Fallback to known host
+        wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.functions.supabase.co/vertex-live?token=${encodeURIComponent(token)}`;
+      }
       console.log('🔗 Connecting to:', wsUrl);
       
       this.ws = new WebSocket(wsUrl);
