@@ -116,8 +116,8 @@ serve(async (req) => {
         const serviceAccount = JSON.parse(serviceAccountJson);
         const projectId = serviceAccount.project_id;
 
-        // Connect to Vertex Live WS (keep current auth style for now)
-        const vertexUrl = `wss://us-central1-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent?key=${access_token}`;
+        // Connect to Vertex Live WS using access_token
+        const vertexUrl = `wss://us-central1-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent?access_token=${access_token}`;
         console.log('🔗 Connecting to Vertex WS...');
         vertexSocket = new WebSocket(vertexUrl);
 

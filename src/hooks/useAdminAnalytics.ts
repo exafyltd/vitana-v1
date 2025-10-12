@@ -37,6 +37,7 @@ export function useAdminAnalytics() {
   const [tenantAnalytics, setTenantAnalytics] = useState<TenantAnalytics[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [systemHealthError, setSystemHealthError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAnalytics();
@@ -45,29 +46,42 @@ export function useAdminAnalytics() {
   }, []);
 
   const fetchAnalytics = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+    setLoading(true);
+    setError(null);
 
-      // Fetch user analytics
+    // Fetch panels independently with isolated error handling
+    // User Analytics
+    try {
       const { data: userData, error: userError } = await supabase
         .from("admin_user_analytics")
         .select("*")
-        .single();
+        .maybeSingle();
 
       if (userError) throw userError;
       setUserAnalytics(userData);
+    } catch (err: any) {
+      console.error("Error fetching user analytics:", err);
+      setError(err.message);
+    }
 
-      // Fetch system health
+    // System Health (with separate error tracking)
+    try {
       const { data: healthData, error: healthError } = await supabase
         .from("admin_system_health")
         .select("*")
-        .single();
+        .maybeSingle();
 
       if (healthError) throw healthError;
       setSystemHealth(healthData);
+      setSystemHealthError(null);
+    } catch (err: any) {
+      console.error("Error fetching system health:", err);
+      setSystemHealthError(err.message);
+      // Keep previous value if it exists
+    }
 
-      // Fetch tenant analytics
+    // Tenant Analytics
+    try {
       const { data: tenantData, error: tenantError } = await supabase
         .from("admin_tenant_analytics")
         .select("*")
@@ -76,11 +90,11 @@ export function useAdminAnalytics() {
       if (tenantError) throw tenantError;
       setTenantAnalytics(tenantData || []);
     } catch (err: any) {
-      console.error("Error fetching admin analytics:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      console.error("Error fetching tenant analytics:", err);
+      // Continue with empty array
     }
+
+    setLoading(false);
   };
 
   return {
@@ -89,6 +103,7 @@ export function useAdminAnalytics() {
     tenantAnalytics,
     loading,
     error,
+    systemHealthError,
     refetch: fetchAnalytics,
   };
 }

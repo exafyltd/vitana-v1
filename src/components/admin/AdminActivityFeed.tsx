@@ -35,10 +35,11 @@ const eventTypeLabels: Record<string, string> = {
 export function AdminActivityFeed() {
   const [activities, setActivities] = useState<ActivityEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchActivities();
-    const interval = setInterval(fetchActivities, 10000); // Refresh every 10s
+    const interval = setInterval(fetchActivities, 30000); // Refresh every 30s
     return () => clearInterval(interval);
   }, []);
 
@@ -50,8 +51,10 @@ export function AdminActivityFeed() {
 
       if (error) throw error;
       setActivities(data || []);
-    } catch (error) {
+      setError(null);
+    } catch (error: any) {
       console.error("Error fetching activities:", error);
+      setError(error.message || "Unable to load recent activity");
     } finally {
       setLoading(false);
     }
@@ -88,6 +91,10 @@ export function AdminActivityFeed() {
                   </div>
                 </div>
               ))}
+            </div>
+          ) : error ? (
+            <div className="flex h-full items-center justify-center">
+              <p className="text-sm text-destructive">{error}</p>
             </div>
           ) : activities.length === 0 ? (
             <div className="flex h-full items-center justify-center text-muted-foreground">
