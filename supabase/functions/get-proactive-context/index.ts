@@ -56,7 +56,8 @@ serve(async (req) => {
       recentActionsResult,
       upcomingEventsResult,
       engagementResult,
-      adminSettingsResult
+      adminSettingsResult,
+      recentDiaryResult
     ] = await Promise.all([
       // Profile with demographics
       supabaseClient
@@ -128,7 +129,16 @@ serve(async (req) => {
       // Admin proactive settings
       supabaseClient
         .from('admin_proactive_settings')
-        .select('setting_key, setting_value')
+        .select('setting_key, setting_value'),
+      
+      // Recent diary entries (last 7 days)
+      supabaseClient
+        .from('diary_entries')
+        .select('text, source, tags, created_at, attachments')
+        .eq('user_id', userId)
+        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+        .order('created_at', { ascending: false })
+        .limit(5)
     ]);
 
     // Compute engagement score
@@ -203,6 +213,15 @@ serve(async (req) => {
         acc[setting.setting_key] = setting.setting_value;
         return acc;
       }, {} as Record<string, any>),
+      diary_insights: {
+        recent_entries: (recentDiaryResult.data || []).map(e => ({
+          content: e.text.substring(0, 500), // Limit to 500 chars for context
+          source: e.source,
+          tags: e.tags,
+          date: e.created_at,
+          has_attachments: (e.attachments && e.attachments.length > 0)
+        }))
+      },
       computed_at: new Date().toISOString()
     };
 
