@@ -172,6 +172,7 @@ import VertexTesting from "./pages/admin/VertexTesting";
 import CommunityRoomsAdmin from "./pages/admin/CommunityRoomsAdmin";
 import TelemedicineSessions from "./pages/admin/TelemedicineSessions";
 import StreamSettings from "./pages/admin/StreamSettings";
+import ProactiveSettings from "./pages/admin/ProactiveSettings";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 
 const App = () => {
@@ -1041,6 +1042,13 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="admin">
                 <AIAssistantAnalytics />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/proactive-settings" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <ProactiveSettings />
               </ProtectedRoute>
             </AuthGuard>
           } />
