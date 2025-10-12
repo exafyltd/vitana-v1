@@ -86,27 +86,8 @@ serve(async (req) => {
         }
         console.log(`👤 Authenticated user: ${user.id}`);
 
-        // Create conversation
-        try {
-          const { data: conversation, error: convError } = await supabase
-            .from('ai_conversations')
-            .insert({
-              user_id: user.id,
-              agent_type: 'vertex_live',
-              metadata: { model: 'gemini-2.0-flash-live-preview-04-09' },
-            })
-            .select()
-            .single();
-
-          if (convError) {
-            console.warn('⚠️ Failed to create conversation:', convError);
-          } else {
-            conversationId = conversation.id;
-            console.log(`📝 Created conversation: ${conversationId}`);
-          }
-        } catch (e) {
-          console.warn('⚠️ Conversation creation error (non-fatal):', e);
-        }
+        // Conversation logging disabled due to database constraint issues
+        // conversationId remains null
 
         // Mint Google access token directly using service account (no external vertex-auth)
         const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
@@ -267,26 +248,43 @@ serve(async (req) => {
 
         vertexSocket.onmessage = async (event) => {
           try {
-            const data = JSON.parse(event.data);
-            console.log('📥 Vertex AI message type:', data.type || Object.keys(data)[0]);
-
-            // Forward all messages to client
-            clientSocket.send(event.data);
-
-            // Log assistant messages
-            if (conversationId && data.serverContent) {
-              const content = data.serverContent;
-              const parts = content.modelTurn?.parts || [];
-              const textParts = parts.filter((p: any) => p.text);
-              const audioParts = parts.filter((p: any) => p.inlineData?.mimeType?.includes('audio'));
-              if (textParts.length > 0 || audioParts.length > 0) {
-                await supabase.from('ai_messages').insert({
-                  conversation_id: conversationId,
-                  role: 'assistant',
-                  content: textParts.map((p: any) => p.text).join(' ') || '[Audio Response]',
-                  metadata: { has_audio: audioParts.length > 0, turn_complete: content.turnComplete || false },
-                });
+            // Check if message is JSON or Blob
+            if (typeof event.data === 'string') {
+              // Handle JSON messages
+              const data = JSON.parse(event.data);
+              console.log('📥 Vertex AI JSON message type:', data.type || Object.keys(data)[0]);
+              
+              // Forward JSON to client
+              clientSocket.send(event.data);
+              
+              // Log assistant messages if conversation tracking is enabled
+              if (conversationId && data.serverContent) {
+                const content = data.serverContent;
+                const parts = content.modelTurn?.parts || [];
+                const textParts = parts.filter((p: any) => p.text);
+                const audioParts = parts.filter((p: any) => p.inlineData?.mimeType?.includes('audio'));
+                if (textParts.length > 0 || audioParts.length > 0) {
+                  try {
+                    await supabase.from('ai_messages').insert({
+                      conversation_id: conversationId,
+                      role: 'assistant',
+                      content: textParts.map((p: any) => p.text).join(' ') || '[Audio Response]',
+                      metadata: { has_audio: audioParts.length > 0, turn_complete: content.turnComplete || false },
+                    });
+                  } catch (dbError) {
+                    console.warn('Failed to log message (non-fatal):', dbError);
+                  }
+                }
               }
+            } else if (event.data instanceof Blob) {
+              // Handle binary audio data
+              console.log('📥 Vertex AI audio Blob received, size:', event.data.size);
+              
+              // Forward audio Blob to client as ArrayBuffer
+              const arrayBuffer = await event.data.arrayBuffer();
+              clientSocket.send(arrayBuffer);
+            } else {
+              console.warn('⚠️ Unknown message type from Vertex AI:', typeof event.data);
             }
           } catch (error) {
             console.error('Error processing Vertex message:', error);
