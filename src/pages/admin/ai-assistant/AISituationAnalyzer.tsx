@@ -23,7 +23,6 @@ export default function AISituationAnalyzer() {
   const handleAnalyze = async (situation: string) => {
     setIsAnalyzing(true);
     try {
-      // Get current session to send JWT explicitly
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
         throw new Error("Not authenticated");
@@ -36,7 +35,28 @@ export default function AISituationAnalyzer() {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        // Handle specific error types
+        if (error.message?.includes('Rate limits exceeded')) {
+          toast({
+            title: "Rate Limit Reached",
+            description: "Too many requests. Please wait a moment and try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+        
+        if (error.message?.includes('Payment required')) {
+          toast({
+            title: "Credits Required",
+            description: "Please add credits to your Lovable AI workspace to continue.",
+            variant: "destructive",
+          });
+          return;
+        }
+        
+        throw error;
+      }
 
       setAnalysis(data.analysis);
       toast({
@@ -47,7 +67,7 @@ export default function AISituationAnalyzer() {
       console.error('Analysis error:', error);
       toast({
         title: "Analysis Failed",
-        description: error.message || "Failed to analyze situation",
+        description: error.message || "Failed to analyze situation. Please try again.",
         variant: "destructive",
       });
     } finally {
