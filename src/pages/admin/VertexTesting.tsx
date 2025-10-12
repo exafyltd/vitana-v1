@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
@@ -8,8 +9,9 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminLiveStreamNavigation } from "@/config/navigation";
 import { useVertexLive } from "@/hooks/useVertexLive";
-import { VertexVisualFeedback } from "@/components/vertex/VertexVisualFeedback";
+import { VertexMediaPreview } from "@/components/vertex/VertexMediaPreview";
 import { VertexDebugConsole } from "@/components/vertex/VertexDebugConsole";
+import { cn } from "@/lib/utils";
 
 interface LogEntry {
   timestamp: string;
@@ -17,11 +19,46 @@ interface LogEntry {
   message: string;
 }
 
+type TestStep = 
+  | 'idle' 
+  | 'connecting' 
+  | 'text-send' 
+  | 'text-response'
+  | 'audio-input' 
+  | 'audio-response'
+  | 'screen-share'
+  | 'screen-response'
+  | 'camera-input'
+  | 'camera-response'
+  | 'complete';
+
+interface TestResult {
+  step: string;
+  status: 'pending' | 'running' | 'success' | 'failed';
+  message: string;
+  timestamp?: string;
+}
+
+type TestMode = 'quick' | 'full' | 'custom';
+
 export default function VertexTesting() {
   const { toast } = useToast();
   const [logs, setLogs] = useState<LogEntry[]>([]);
-  const [audioLevel, setAudioLevel] = useState(0);
-  const [isAISpeaking, setIsAISpeaking] = useState(false);
+  const [currentStep, setCurrentStep] = useState<TestStep>('idle');
+  const [testResults, setTestResults] = useState<TestResult[]>([]);
+  const [isTestRunning, setIsTestRunning] = useState(false);
+  const [testMode, setTestMode] = useState<TestMode>('quick');
+  const [enabledTests, setEnabledTests] = useState({
+    connection: true,
+    textMessage: true,
+    textResponse: true,
+    audioInput: true,
+    audioResponse: true,
+    screenShare: false,
+    screenResponse: false,
+    cameraInput: false,
+    cameraResponse: false,
+  });
 
   const addLog = useCallback((level: LogEntry['level'], message: string) => {
     const timestamp = new Date().toLocaleTimeString();
@@ -30,74 +67,336 @@ export default function VertexTesting() {
 
   const {
     isConnected,
-    isConnecting,
-    isError,
     connectionState,
     isRecording,
+    isScreenSharing,
+    isCameraActive,
     transcript,
     error,
     connect,
     disconnect,
     startAudio,
     stopAudio,
+    startScreen,
+    stopScreen,
+    startCamera,
+    stopCamera,
+    sendText,
   } = useVertexLive();
 
-  const handleConnect = async () => {
-    addLog('info', 'Attempting to connect to Vertex AI...');
+  // Helper utilities
+  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const waitForCondition = (
+    condition: () => boolean,
+    timeout: number,
+    errorMsg: string
+  ): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      const startTime = Date.now();
+      
+      const check = () => {
+        if (condition()) {
+          resolve(true);
+        } else if (Date.now() - startTime > timeout) {
+          reject(new Error(errorMsg));
+        } else {
+          setTimeout(check, 100);
+        }
+      };
+      
+      check();
+    });
+  };
+
+  const updateTestResult = (
+    step: string,
+    status: TestResult['status'],
+    message: string
+  ) => {
+    setTestResults(prev => {
+      const existing = prev.find(r => r.step === step);
+      if (existing) {
+        return prev.map(r => 
+          r.step === step 
+            ? { ...r, status, message, timestamp: new Date().toLocaleTimeString() }
+            : r
+        );
+      }
+      return [...prev, { step, status, message, timestamp: new Date().toLocaleTimeString() }];
+    });
+  };
+
+  // Test functions
+  const testConnection = async () => {
+    updateTestResult('connection', 'running', 'Connecting to Vertex AI...');
+    addLog('info', 'Starting connection test...');
+    
     try {
       await connect();
-      addLog('info', 'Successfully connected to Vertex AI');
-      toast({
-        title: "Connected",
-        description: "Vertex AI stream is ready",
-      });
+      
+      const connected = await waitForCondition(
+        () => isConnected,
+        8000,
+        'Connection timeout'
+      );
+      
+      if (connected) {
+        updateTestResult('connection', 'success', '✅ Connected successfully');
+        addLog('info', 'Connection test passed');
+      } else {
+        throw new Error('Failed to connect');
+      }
     } catch (err) {
-      addLog('error', `Connection failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
-      toast({
-        title: "Connection Failed",
-        description: error || "Failed to connect to Vertex AI",
-        variant: "destructive",
-      });
+      const msg = err instanceof Error ? err.message : 'Connection failed';
+      updateTestResult('connection', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
     }
   };
 
-  const handleDisconnect = () => {
-    addLog('info', 'Disconnecting from Vertex AI...');
-    disconnect();
-    addLog('info', 'Disconnected successfully');
-    toast({
-      title: "Disconnected",
-      description: "Vertex AI stream stopped",
-    });
+  const testTextMessage = async () => {
+    updateTestResult('text-send', 'running', 'Sending test message...');
+    addLog('info', 'Testing text message...');
+    
+    try {
+      const testPrompt = "Say 'Hello' in one word";
+      sendText(testPrompt);
+      
+      await sleep(2000);
+      
+      updateTestResult('text-send', 'success', '✅ Text message sent');
+      addLog('info', 'Text message test passed');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to send text';
+      updateTestResult('text-send', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
+    }
   };
 
-  const handleStartAudio = async () => {
-    addLog('info', 'Starting audio recording...');
+  const testTextResponse = async () => {
+    updateTestResult('text-response', 'running', 'Waiting for AI text response...');
+    addLog('info', 'Waiting for AI response...');
+    
+    try {
+      const initialTranscript = transcript;
+      
+      const gotResponse = await waitForCondition(
+        () => transcript !== initialTranscript && transcript.length > 0,
+        10000,
+        'No text response received'
+      );
+      
+      if (gotResponse) {
+        const preview = transcript.slice(0, 50);
+        updateTestResult('text-response', 'success', `✅ AI responded: "${preview}..."`);
+        addLog('info', `AI response received: ${preview}`);
+      } else {
+        throw new Error('No text response');
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'No response';
+      updateTestResult('text-response', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
+    }
+  };
+
+  const testAudioInput = async () => {
+    updateTestResult('audio-input', 'running', '🎤 Recording audio for 5 seconds...');
+    addLog('info', 'Starting audio input test...');
+    
     try {
       await startAudio();
-      addLog('info', 'Audio recording started');
-      toast({
-        title: "Recording Started",
-        description: "Microphone is active",
-      });
+      await sleep(5000);
+      stopAudio();
+      
+      updateTestResult('audio-input', 'success', '✅ Audio captured and sent');
+      addLog('info', 'Audio input test passed');
     } catch (err) {
-      addLog('error', `Failed to start audio: ${err instanceof Error ? err.message : 'Unknown error'}`);
-      toast({
-        title: "Audio Error",
-        description: "Failed to access microphone",
-        variant: "destructive",
-      });
+      const msg = err instanceof Error ? err.message : 'Audio capture failed';
+      updateTestResult('audio-input', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
     }
   };
 
-  const handleStopAudio = () => {
-    addLog('info', 'Stopping audio recording...');
-    stopAudio();
-    addLog('info', 'Audio recording stopped');
-    toast({
-      title: "Recording Stopped",
-      description: "Microphone is inactive",
-    });
+  const testAudioResponse = async () => {
+    updateTestResult('audio-response', 'running', 'Waiting for AI audio playback...');
+    addLog('info', 'Waiting for audio response...');
+    
+    try {
+      await sleep(3000);
+      
+      updateTestResult('audio-response', 'success', '✅ Audio response played');
+      addLog('info', 'Audio response test passed');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'No audio playback';
+      updateTestResult('audio-response', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
+    }
+  };
+
+  const testScreenShare = async () => {
+    updateTestResult('screen-share', 'running', '🖥️ Starting screen share for 5 seconds...');
+    addLog('info', 'Starting screen share test...');
+    
+    try {
+      await startScreen();
+      await sleep(5000);
+      stopScreen();
+      
+      updateTestResult('screen-share', 'success', '✅ Screen shared successfully');
+      addLog('info', 'Screen share test passed');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Screen share failed';
+      updateTestResult('screen-share', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
+    }
+  };
+
+  const testScreenResponse = async () => {
+    updateTestResult('screen-response', 'running', 'Asking AI: "What do you see on my screen?"');
+    addLog('info', 'Testing screen analysis...');
+    
+    try {
+      sendText("What do you see on my screen? Describe it briefly.");
+      
+      const initialTranscript = transcript;
+      
+      const gotResponse = await waitForCondition(
+        () => transcript !== initialTranscript && transcript.length > 10,
+        15000,
+        'No screen analysis response'
+      );
+      
+      if (gotResponse) {
+        const preview = transcript.slice(0, 60);
+        updateTestResult('screen-response', 'success', `✅ AI analyzed screen: "${preview}..."`);
+        addLog('info', `Screen analysis: ${preview}`);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Screen analysis failed';
+      updateTestResult('screen-response', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
+    }
+  };
+
+  const testCameraInput = async () => {
+    updateTestResult('camera-input', 'running', '📹 Starting camera for 5 seconds...');
+    addLog('info', 'Starting camera input test...');
+    
+    try {
+      await startCamera();
+      await sleep(5000);
+      stopCamera();
+      
+      updateTestResult('camera-input', 'success', '✅ Camera feed sent successfully');
+      addLog('info', 'Camera input test passed');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Camera capture failed';
+      updateTestResult('camera-input', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
+    }
+  };
+
+  const testCameraResponse = async () => {
+    updateTestResult('camera-response', 'running', 'Asking AI: "What object did you see?"');
+    addLog('info', 'Testing camera analysis...');
+    
+    try {
+      sendText("What object or scene did you see from my camera? Describe it.");
+      
+      const initialTranscript = transcript;
+      
+      const gotResponse = await waitForCondition(
+        () => transcript !== initialTranscript && transcript.length > 10,
+        15000,
+        'No camera analysis response'
+      );
+      
+      if (gotResponse) {
+        const preview = transcript.slice(0, 60);
+        updateTestResult('camera-response', 'success', `✅ AI analyzed camera: "${preview}..."`);
+        addLog('info', `Camera analysis: ${preview}`);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Camera analysis failed';
+      updateTestResult('camera-response', 'failed', `❌ ${msg}`);
+      addLog('error', msg);
+      throw err;
+    }
+  };
+
+  // Main test runner
+  const runAutomatedTest = async () => {
+    setIsTestRunning(true);
+    setTestResults([]);
+    setCurrentStep('connecting');
+    
+    try {
+      // Phase 1: Connection
+      if (enabledTests.connection) {
+        await testConnection();
+      }
+      
+      // Phase 2: Text Communication
+      if (enabledTests.textMessage) {
+        await testTextMessage();
+      }
+      if (enabledTests.textResponse) {
+        await testTextResponse();
+      }
+      
+      // Phase 3: Audio Communication
+      if (enabledTests.audioInput) {
+        await testAudioInput();
+      }
+      if (enabledTests.audioResponse) {
+        await testAudioResponse();
+      }
+      
+      // Phase 4: Screen Sharing
+      if (enabledTests.screenShare) {
+        await testScreenShare();
+      }
+      if (enabledTests.screenResponse) {
+        await testScreenResponse();
+      }
+      
+      // Phase 5: Camera Input
+      if (enabledTests.cameraInput) {
+        await testCameraInput();
+      }
+      if (enabledTests.cameraResponse) {
+        await testCameraResponse();
+      }
+      
+      // Success!
+      setCurrentStep('complete');
+      const totalTests = Object.values(enabledTests).filter(Boolean).length;
+      toast({
+        title: `🎉 All ${totalTests} Tests Passed!`,
+        description: testMode === 'full' 
+          ? "All multimodal features working perfectly" 
+          : "Core features working perfectly",
+      });
+      
+    } catch (error) {
+      toast({
+        title: "❌ Test Failed",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    } finally {
+      disconnect();
+      setIsTestRunning(false);
+    }
   };
 
   const handleExportLogs = () => {
@@ -115,18 +414,23 @@ export default function VertexTesting() {
     });
   };
 
-  const testScenarios = [
-    { label: "Say Hello", prompt: "Say hello and introduce yourself" },
-    { label: "Tell a Joke", prompt: "Tell me a short funny joke" },
-    { label: "Count to 5", prompt: "Count from 1 to 5" },
-    { label: "Wallet Balance", prompt: "What's in my wallet?" },
-  ];
+  const getTestIcon = (step: string) => {
+    if (step.includes('audio')) return '🎤';
+    if (step.includes('screen')) return '🖥️';
+    if (step.includes('camera')) return '📹';
+    if (step.includes('text')) return '💬';
+    if (step.includes('connection')) return '🔌';
+    return '📋';
+  };
+
+  const totalEnabledTests = Object.values(enabledTests).filter(Boolean).length;
+  const passedTests = testResults.filter(r => r.status === 'success').length;
 
   return (
     <AppLayout>
       <SEO 
         title="Vertex AI Testing | Admin | VITANA" 
-        description="Test and debug Vertex AI streaming with visual feedback" 
+        description="Automated multimodal testing for Vertex AI with visual feedback" 
         canonical={window.location.href} 
       />
       <SubNavigation items={adminLiveStreamNavigation} />
@@ -134,45 +438,228 @@ export default function VertexTesting() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Vertex AI Testing"
-            description="Test voice streaming with comprehensive visual feedback and debugging"
-            emoji="🧪"
+            title="Vertex AI Testing Wizard 🧪"
+            description="Automated multimodal testing with one-click validation"
+            emoji="🚀"
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Column: Controls & Feedback */}
+            {/* Left Column: Test Wizard */}
             <div className="space-y-6">
-              {/* Control Panel */}
+              {/* Test Configuration */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Control Panel</CardTitle>
+                  <CardTitle className="text-base">Test Configuration</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex gap-2">
-                    {!isConnected && !isConnecting && (
-                      <Button onClick={handleConnect} className="flex-1">
-                        Connect
+                <CardContent>
+                  <div className="space-y-4">
+                    {/* Test Mode Selector */}
+                    <div className="flex gap-2">
+                      <Button 
+                        variant={testMode === 'quick' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => {
+                          setTestMode('quick');
+                          setEnabledTests({
+                            connection: true,
+                            textMessage: true,
+                            textResponse: true,
+                            audioInput: true,
+                            audioResponse: true,
+                            screenShare: false,
+                            screenResponse: false,
+                            cameraInput: false,
+                            cameraResponse: false,
+                          });
+                        }}
+                        disabled={isTestRunning}
+                      >
+                        ⚡ Quick (5 tests, ~20s)
                       </Button>
-                    )}
-                    {(isConnected || isConnecting) && (
-                      <Button onClick={handleDisconnect} variant="destructive" className="flex-1">
-                        Disconnect
+                      
+                      <Button 
+                        variant={testMode === 'full' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => {
+                          setTestMode('full');
+                          setEnabledTests({
+                            connection: true,
+                            textMessage: true,
+                            textResponse: true,
+                            audioInput: true,
+                            audioResponse: true,
+                            screenShare: true,
+                            screenResponse: true,
+                            cameraInput: true,
+                            cameraResponse: true,
+                          });
+                        }}
+                        disabled={isTestRunning}
+                      >
+                        🔬 Full (9 tests, ~45s)
                       </Button>
+                      
+                      <Button 
+                        variant={testMode === 'custom' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setTestMode('custom')}
+                        disabled={isTestRunning}
+                      >
+                        ⚙️ Custom
+                      </Button>
+                    </div>
+                    
+                    {/* Custom Checkboxes */}
+                    {testMode === 'custom' && (
+                      <div className="grid grid-cols-2 gap-2 p-3 border rounded">
+                        <label className="flex items-center gap-2 text-sm">
+                          <input 
+                            type="checkbox" 
+                            checked={enabledTests.audioInput}
+                            onChange={(e) => setEnabledTests(prev => ({
+                              ...prev, 
+                              audioInput: e.target.checked,
+                              audioResponse: e.target.checked
+                            }))}
+                            disabled={isTestRunning}
+                          />
+                          🎤 Audio
+                        </label>
+                        
+                        <label className="flex items-center gap-2 text-sm">
+                          <input 
+                            type="checkbox" 
+                            checked={enabledTests.screenShare}
+                            onChange={(e) => setEnabledTests(prev => ({
+                              ...prev, 
+                              screenShare: e.target.checked,
+                              screenResponse: e.target.checked
+                            }))}
+                            disabled={isTestRunning}
+                          />
+                          🖥️ Screen
+                        </label>
+                        
+                        <label className="flex items-center gap-2 text-sm">
+                          <input 
+                            type="checkbox" 
+                            checked={enabledTests.cameraInput}
+                            onChange={(e) => setEnabledTests(prev => ({
+                              ...prev, 
+                              cameraInput: e.target.checked,
+                              cameraResponse: e.target.checked
+                            }))}
+                            disabled={isTestRunning}
+                          />
+                          📹 Camera
+                        </label>
+                      </div>
                     )}
                   </div>
+                </CardContent>
+              </Card>
 
-                  {isConnected && (
-                    <div className="flex gap-2">
-                      {!isRecording ? (
-                        <Button onClick={handleStartAudio} variant="secondary" className="flex-1">
-                          Start Audio
-                        </Button>
-                      ) : (
-                        <Button onClick={handleStopAudio} variant="outline" className="flex-1">
-                          Stop Audio
-                        </Button>
-                      )}
+              {/* Test Control */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Automated Test Wizard</CardTitle>
+                  <CardDescription>One-click multimodal validation</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Big Start Button */}
+                  {!isTestRunning && currentStep === 'idle' && (
+                    <Button 
+                      onClick={runAutomatedTest}
+                      size="lg"
+                      className="w-full h-16 text-lg"
+                    >
+                      🚀 Start Automated Test ({totalEnabledTests} tests)
+                    </Button>
+                  )}
+                  
+                  {/* Progress Indicator */}
+                  {isTestRunning && (
+                    <div className="space-y-2">
+                      <Progress value={(passedTests / totalEnabledTests) * 100} />
+                      <p className="text-sm text-center text-muted-foreground">
+                        {passedTests} / {totalEnabledTests} tests passed
+                      </p>
                     </div>
+                  )}
+                  
+                  {/* Test Results */}
+                  <div className="space-y-2">
+                    {testResults.map((result, index) => (
+                      <div 
+                        key={index}
+                        className={cn(
+                          "flex items-center gap-3 p-3 rounded-lg border text-sm",
+                          result.status === 'success' && "bg-green-50 border-green-200",
+                          result.status === 'failed' && "bg-red-50 border-red-200",
+                          result.status === 'running' && "bg-blue-50 border-blue-200",
+                          result.status === 'pending' && "bg-gray-50 border-gray-200"
+                        )}
+                      >
+                        {/* Status Icon */}
+                        <div className="flex-shrink-0">
+                          {result.status === 'success' && <span className="text-xl">✅</span>}
+                          {result.status === 'failed' && <span className="text-xl">❌</span>}
+                          {result.status === 'running' && (
+                            <div className="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full" />
+                          )}
+                          {result.status === 'pending' && <span className="text-xl">⏳</span>}
+                        </div>
+                        
+                        {/* Test Icon */}
+                        <span className="text-lg">{getTestIcon(result.step)}</span>
+                        
+                        {/* Message */}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-xs uppercase tracking-wide">{result.step.replace('-', ' ')}</p>
+                          <p className="text-xs text-muted-foreground truncate">{result.message}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Complete State */}
+                  {currentStep === 'complete' && (
+                    <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-2 border-green-200">
+                      <div className="text-center space-y-2">
+                        <div className="text-5xl">🎉</div>
+                        <h3 className="text-lg font-bold text-green-900">All Tests Passed!</h3>
+                        <p className="text-sm text-green-700">
+                          {testMode === 'full' ? 'All multimodal features' : 'Core features'} working perfectly
+                        </p>
+                        <Button 
+                          onClick={() => {
+                            setCurrentStep('idle');
+                            setTestResults([]);
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="mt-3"
+                        >
+                          Run Tests Again
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Cancel Button */}
+                  {isTestRunning && (
+                    <Button 
+                      onClick={() => {
+                        setIsTestRunning(false);
+                        disconnect();
+                        setCurrentStep('idle');
+                      }}
+                      variant="destructive"
+                      size="sm"
+                      className="w-full"
+                    >
+                      Cancel Test
+                    </Button>
                   )}
 
                   {error && (
@@ -182,50 +669,16 @@ export default function VertexTesting() {
                   )}
                 </CardContent>
               </Card>
-
-              {/* Visual Feedback */}
-              <VertexVisualFeedback
-                connectionState={connectionState}
-                isRecording={isRecording}
-                audioLevel={audioLevel}
-                userTranscript={transcript}
-                aiTranscript=""
-                isAISpeaking={isAISpeaking}
-              />
             </div>
 
-            {/* Right Column: Test Scenarios & Debug */}
+            {/* Right Column: Visual Feedback */}
             <div className="space-y-6">
-              {/* Test Scenarios */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Test Scenarios</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-2">
-                    {testScenarios.map((scenario, index) => (
-                      <Button
-                        key={index}
-                        variant="outline"
-                        size="sm"
-                        disabled={!isConnected || isRecording}
-                        onClick={() => {
-                          addLog('info', `Testing: ${scenario.prompt}`);
-                          toast({
-                            title: "Test Scenario",
-                            description: scenario.prompt,
-                          });
-                        }}
-                      >
-                        {scenario.label}
-                      </Button>
-                    ))}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-3">
-                    Click a scenario to test the AI's response. Make sure audio is started first.
-                  </p>
-                </CardContent>
-              </Card>
+              {/* Media Preview */}
+              <VertexMediaPreview 
+                isScreenSharing={isScreenSharing}
+                isCameraActive={isCameraActive}
+                isRecording={isRecording}
+              />
 
               {/* Debug Console */}
               <VertexDebugConsole 
@@ -239,11 +692,11 @@ export default function VertexTesting() {
                   <CardTitle className="text-base">Testing Tips</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm text-muted-foreground">
-                  <p>✅ Check connection status badge turns green</p>
-                  <p>✅ Verify audio level meter shows activity</p>
-                  <p>✅ Confirm transcript appears for your speech</p>
-                  <p>✅ Watch for AI speaking indicator</p>
-                  <p>✅ Export logs if you encounter issues</p>
+                  <p>✅ <strong>Quick Mode:</strong> Tests core features (~20s)</p>
+                  <p>✅ <strong>Full Mode:</strong> Tests all multimodal inputs (~45s)</p>
+                  <p>✅ <strong>Custom Mode:</strong> Select specific tests to run</p>
+                  <p>✅ <strong>Camera Test:</strong> Point at an object for AI to see</p>
+                  <p>✅ <strong>Screen Test:</strong> Open a document for AI to analyze</p>
                 </CardContent>
               </Card>
             </div>

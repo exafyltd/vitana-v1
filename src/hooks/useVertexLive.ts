@@ -6,6 +6,7 @@ export const useVertexLive = () => {
   const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected' | 'error'>('disconnected');
   const [isRecording, setIsRecording] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
+  const [isCameraActive, setIsCameraActive] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
   
@@ -130,6 +131,21 @@ export const useVertexLive = () => {
     setIsScreenSharing(false);
   }, []);
 
+  const startCamera = useCallback(async () => {
+    try {
+      await serviceRef.current?.startCamera();
+      setIsCameraActive(true);
+    } catch (err) {
+      console.error('Failed to start camera:', err);
+      setError('Failed to start camera');
+    }
+  }, []);
+
+  const stopCamera = useCallback(() => {
+    serviceRef.current?.stopCamera();
+    setIsCameraActive(false);
+  }, []);
+
   const sendText = useCallback((text: string) => {
     serviceRef.current?.sendText(text);
   }, []);
@@ -141,6 +157,7 @@ export const useVertexLive = () => {
     connectionState,
     isRecording,
     isScreenSharing,
+    isCameraActive,
     transcript,
     error,
     connect,
@@ -149,6 +166,8 @@ export const useVertexLive = () => {
     stopAudio,
     startScreen,
     stopScreen,
+    startCamera,
+    stopCamera,
     sendText
   };
 };

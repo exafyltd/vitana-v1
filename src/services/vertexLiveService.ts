@@ -1,4 +1,4 @@
-import { AudioRecorder, ScreenRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue } from '@/utils/vertexAudio';
+import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue } from '@/utils/vertexAudio';
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
@@ -10,6 +10,7 @@ export class VertexLiveService {
   private ws: WebSocket | null = null;
   private audioRecorder: AudioRecorder | null = null;
   private screenRecorder: ScreenRecorder | null = null;
+  private cameraRecorder: CameraRecorder | null = null;
   private audioContext: AudioContext | null = null;
   private callbacks: VertexLiveCallbacks = {};
   private conversationId: string | null = null;
@@ -263,6 +264,42 @@ export class VertexLiveService {
     }
   }
 
+  async startCamera() {
+    if (!this.isSetupComplete) {
+      console.warn('⚠️ Setup not complete, waiting...');
+      return;
+    }
+
+    console.log('📹 Starting camera...');
+    
+    this.cameraRecorder = new CameraRecorder((frameData) => {
+      if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+
+      // Send camera frame to Vertex AI (1 FPS)
+      const message = {
+        realtimeInput: {
+          mediaChunks: [{
+            mimeType: "image/jpeg",
+            data: frameData
+          }]
+        }
+      };
+
+      this.ws.send(JSON.stringify(message));
+    });
+
+    await this.cameraRecorder.start();
+  }
+
+  stopCamera() {
+    console.log('🛑 Stopping camera...');
+    
+    if (this.cameraRecorder) {
+      this.cameraRecorder.stop();
+      this.cameraRecorder = null;
+    }
+  }
+
   sendText(text: string) {
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       console.warn('⚠️ WebSocket not connected');
@@ -294,6 +331,7 @@ export class VertexLiveService {
     
     this.stopAudio();
     this.stopScreen();
+    this.stopCamera();
 
     if (this.audioContext) {
       this.audioContext.close();

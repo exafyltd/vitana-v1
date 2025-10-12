@@ -302,3 +302,79 @@ export const clearAudioQueue = () => {
     audioQueueInstance.clear();
   }
 };
+
+// Camera recording for Vertex AI vision (1 FPS)
+export class CameraRecorder {
+  private stream: MediaStream | null = null;
+  private intervalId: number | null = null;
+  private canvas: HTMLCanvasElement | null = null;
+  private video: HTMLVideoElement | null = null;
+
+  constructor(private onFrame: (frameData: string) => void) {}
+
+  async start() {
+    try {
+      console.log('📹 Starting camera...');
+      
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        video: { 
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          facingMode: 'user' // Use front camera by default
+        }
+      });
+
+      this.video = document.createElement('video');
+      this.video.srcObject = this.stream;
+      this.video.play();
+
+      this.canvas = document.createElement('canvas');
+      const ctx = this.canvas.getContext('2d');
+
+      // Capture frames at 1 FPS (same as screen sharing)
+      this.intervalId = window.setInterval(() => {
+        if (!this.video || !this.canvas || !ctx) return;
+
+        this.canvas.width = this.video.videoWidth;
+        this.canvas.height = this.video.videoHeight;
+        
+        ctx.drawImage(this.video, 0, 0);
+        
+        // Convert to JPEG base64
+        this.canvas.toBlob((blob) => {
+          if (!blob) return;
+          
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64 = (reader.result as string).split(',')[1];
+            this.onFrame(base64);
+          };
+          reader.readAsDataURL(blob);
+        }, 'image/jpeg', 0.8);
+      }, 1000);
+
+      console.log('✅ Camera started');
+    } catch (error) {
+      console.error('❌ Error accessing camera:', error);
+      throw error;
+    }
+  }
+
+  stop() {
+    console.log('🛑 Stopping camera...');
+    
+    if (this.intervalId !== null) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+    if (this.stream) {
+      this.stream.getTracks().forEach(track => track.stop());
+      this.stream = null;
+    }
+    if (this.video) {
+      this.video.srcObject = null;
+      this.video = null;
+    }
+    this.canvas = null;
+  }
+}
