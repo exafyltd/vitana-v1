@@ -94,6 +94,17 @@ function AppSidebar({
     return () => clearInterval(interval);
   }, [isStreaming]);
 
+  useEffect(() => {
+    if (location.pathname.startsWith('/admin/ai-assistant')) {
+      const active = streamingChatRef.current?.isStreamingActive?.();
+      if (!active) {
+        console.log('🔁 Auto-starting Vertex Live on /admin/ai-assistant');
+        streamingChatRef.current?.activateVideo();
+      }
+    }
+    // Do not auto-start on other routes
+  }, [location.pathname]);
+
   const handleLogoClick = async () => {
     await signOut();
     // Redirect to tenant-specific portal page

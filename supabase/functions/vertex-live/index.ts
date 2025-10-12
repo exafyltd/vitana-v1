@@ -29,9 +29,19 @@ serve(async (req) => {
   }
 
   try {
-    // Extract token from URL query params
+    // Extract token from URL query params or Sec-WebSocket-Protocol header
     const url = new URL(req.url);
-    const token = url.searchParams.get('token');
+    let token = url.searchParams.get('token');
+
+    if (!token) {
+      const protoHeader = req.headers.get('sec-websocket-protocol') || '';
+      // Example values we support: "jwt.<token>", "bearer.<token>"
+      const parts = protoHeader.split(',').map(p => p.trim());
+      for (const p of parts) {
+        if (p.startsWith('jwt.')) token = p.slice(4);
+        else if (p.startsWith('bearer.')) token = p.slice(7);
+      }
+    }
     console.log('🔑 Token present:', !!token);
     
     if (!token) {
