@@ -40,6 +40,7 @@ import PresenceIndicator from '@/components/messages/PresenceIndicator';
 import GroupAvatarStack from '@/components/messages/GroupAvatarStack';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
 import ContactsTabContent from '@/components/contacts/ContactsTabContent';
+import { CallManager } from '@/components/CallManager';
 
 export default function Messages() {
   const { user } = useAuth();
@@ -831,6 +832,10 @@ export default function Messages() {
         onGroupCreated={handleGroupCreated}
         context={messageContext}
       />
+      
+      {user?.id && (
+        <CallManager userId={user.id} userName={user.email || 'User'} />
+      )}
     </AppLayout>
   );
 }

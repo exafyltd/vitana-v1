@@ -36,6 +36,7 @@ import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
 import AddContactDialog from '@/components/contacts/AddContactDialog';
+import { MessageThreadCallButtons } from '@/components/MessageThreadCallButtons';
 
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
@@ -963,12 +964,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             </div>
           
             <div className="flex items-center gap-1 shrink-0">
-              <Button size="sm" variant="ghost">
-                <Phone className="w-4 h-4" />
-              </Button>
-              <Button size="sm" variant="ghost">
-                <Video className="w-4 h-4" />
-              </Button>
+              {!isGroupChat() && effectiveRecipientId && user?.id && (
+                <MessageThreadCallButtons
+                  userId={user.id}
+                  recipientId={effectiveRecipientId}
+                  recipientName={getConversationTitle()}
+                />
+              )}
               <Button size="sm" variant="ghost">
                 <Info className="w-4 h-4" />
               </Button>
