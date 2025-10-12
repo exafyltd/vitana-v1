@@ -94,7 +94,7 @@ verify_jwt = true
 verify_jwt = true
 
 [functions.generate-proactive-message]
-verify_jwt = true
+verify_jwt = false
 
 [functions.analyze-visual-context]
 verify_jwt = true

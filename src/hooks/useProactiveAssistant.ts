@@ -31,19 +31,13 @@ export function useProactiveAssistant() {
   };
 
   const triggerProactiveMessage = useCallback(async () => {
-    // Check authentication first
+    // Try to get session (optional)
     const { data: { session } } = await supabase.auth.getSession();
-    
     if (!session) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to use the Proactive Assistant.",
-        variant: "destructive",
-      });
-      return;
+      console.log('No session detected, generating a generic proactive message (guest mode).');
+    } else {
+      console.log('🔐 User authenticated, session valid until:', new Date(session.expires_at! * 1000));
     }
-
-    console.log('🔐 User authenticated, session valid until:', new Date(session.expires_at! * 1000));
 
     // Rate limiting: max 1 message per 30 seconds
     if (lastMessageTime) {
@@ -100,27 +94,39 @@ export function useProactiveAssistant() {
 
     } catch (error) {
       console.error('Error generating proactive message:', error);
-      
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      
-      // Check if it's an auth error
-      if (errorMessage.includes('Authentication') || errorMessage.includes('JWT') || errorMessage.includes('auth')) {
+      const anyErr = error as any;
+      const serverMsg = anyErr?.context?.error || anyErr?.message || String(error);
+      const msg = typeof serverMsg === 'string' ? serverMsg : JSON.stringify(serverMsg);
+
+      if (msg.includes('Rate limits') || anyErr?.status === 429) {
         toast({
-          title: "Session expired",
-          description: "Please refresh the page and try again.",
-          variant: "destructive",
+          title: 'Rate limit reached',
+          description: 'Please wait a few seconds and try again.',
+          variant: 'destructive',
         });
-      } else if (errorMessage.includes('LOVABLE_API_KEY')) {
+      } else if (msg.includes('Payment required') || anyErr?.status === 402) {
         toast({
-          title: "Configuration error",
-          description: "AI service is not configured. Please contact support.",
-          variant: "destructive",
+          title: 'AI usage limit',
+          description: 'Please add credits to the Lovable AI workspace.',
+          variant: 'destructive',
+        });
+      } else if (msg.includes('Authentication') || msg.includes('JWT') || msg.toLowerCase().includes('auth')) {
+        toast({
+          title: 'Session not detected',
+          description: 'Log in for personalized tips. Showing generic guidance instead.',
+          variant: 'destructive',
+        });
+      } else if (msg.includes('LOVABLE_API_KEY')) {
+        toast({
+          title: 'Configuration error',
+          description: 'AI service is not configured. Please contact support.',
+          variant: 'destructive',
         });
       } else {
         toast({
-          title: "Unable to generate message",
-          description: errorMessage || "Please try again in a moment.",
-          variant: "destructive",
+          title: 'Unable to generate message',
+          description: msg || 'Please try again in a moment.',
+          variant: 'destructive',
         });
       }
     } finally {

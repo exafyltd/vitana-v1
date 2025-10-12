@@ -13,26 +13,25 @@ serve(async (req) => {
 
   try {
     const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'Missing Authorization header' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
 
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       {
         global: {
-          headers: { Authorization: authHeader },
+          headers: authHeader ? { Authorization: authHeader } : {},
         },
       }
     );
 
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    if (authError || !user) {
-      throw new Error('Authentication required');
+    let user: any = null;
+    try {
+      if (authHeader) {
+        const { data: { user: u } } = await supabaseClient.auth.getUser();
+        user = u ?? null;
+      }
+    } catch (_) {
+      // proceed as guest
     }
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
@@ -40,23 +39,34 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
-    // Get comprehensive user context with fallback
+    // Get comprehensive user context with fallback (guest-safe)
     let context: any;
-    const contextResponse = await supabaseClient.functions.invoke('get-proactive-context');
-    
-    if (contextResponse.error) {
-      console.warn('Failed to fetch user context:', contextResponse.error);
-      // Provide minimal fallback context
+    if (user) {
+      const contextResponse = await supabaseClient.functions.invoke('get-proactive-context', {
+        headers: authHeader ? { Authorization: authHeader } : {},
+      });
+      if (contextResponse.error) {
+        console.warn('Failed to fetch user context:', contextResponse.error);
+        context = {
+          user: { name: user.user_metadata?.name || 'there', language: { inferred: 'en' } },
+          journey: { experience_level: 'beginner', stage: 'onboarding', days_active: 1 },
+          engagement_metrics: { success_rate: 0.5 },
+          admin_settings: { system_personality: {} },
+          interests: [],
+          recent_activity: { upcoming_events: [], actions: [], diary_entries: [] }
+        };
+      } else {
+        context = contextResponse.data;
+      }
+    } else {
       context = {
-        user: { name: user.user_metadata?.name || 'there', language: { inferred: 'en' } },
+        user: { name: 'there', language: { inferred: 'en' } },
         journey: { experience_level: 'beginner', stage: 'onboarding', days_active: 1 },
         engagement_metrics: { success_rate: 0.5 },
         admin_settings: { system_personality: {} },
         interests: [],
         recent_activity: { upcoming_events: [], actions: [], diary_entries: [] }
       };
-    } else {
-      context = contextResponse.data;
     }
 
     // Get current time context
@@ -183,34 +193,54 @@ Generate a personalized ${messageType} message now based on the PRIORITY CONTEXT
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Lovable AI error:', response.status, errorText);
-      throw new Error(`Lovable AI request failed: ${response.status}`);
+      if (response.status === 429) {
+        return new Response(JSON.stringify({ error: 'Rate limits exceeded, please try again later.' }), {
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (response.status === 402) {
+        return new Response(JSON.stringify({ error: 'Payment required, please add credits to your Lovable AI workspace.' }), {
+          status: 402,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      return new Response(JSON.stringify({ error: 'AI gateway error' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const data = await response.json();
     const message = data.choices[0].message.content.trim();
 
-    console.log(`Generated ${messageType} message for user:`, user.id, message);
+    if (user?.id) {
+      console.log(`Generated ${messageType} message for user:`, user.id, message);
 
-    // Log engagement for analytics
-    await supabaseClient
-      .from('proactive_engagement')
-      .insert({
-        user_id: user.id,
-        engagement_type: messageType,
-        context_snapshot: {
-          time_of_day: timeOfDay,
-          journey_stage: context.journey.stage,
-          experience_level: context.journey.experience_level,
-          priority_context: priorityContext,
-          priority: priority
-        }
-      });
+      // Log engagement for analytics
+      await supabaseClient
+        .from('proactive_engagement')
+        .insert({
+          user_id: user.id,
+          engagement_type: messageType,
+          context_snapshot: {
+            time_of_day: timeOfDay,
+            journey_stage: context.journey.stage,
+            experience_level: context.journey.experience_level,
+            priority_context: priorityContext,
+            priority: priority
+          }
+        });
+    } else {
+      console.log(`Generated ${messageType} message (guest):`, message);
+    }
 
     return new Response(JSON.stringify({ 
       message, 
       messageType, 
       priority,
-      context 
+      context,
+      mode: user?.id ? 'user' : 'guest'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
