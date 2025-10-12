@@ -10,7 +10,7 @@ interface UserProfile {
   avatar_url: string | null;
 }
 
-interface CallData {
+export interface CallData {
   callId: string;
   callerId: string;
   recipientId: string;

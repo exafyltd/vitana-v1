@@ -41,6 +41,7 @@ import GroupAvatarStack from '@/components/messages/GroupAvatarStack';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
 import ContactsTabContent from '@/components/contacts/ContactsTabContent';
 import { CallManager } from '@/components/CallManager';
+import { CallProvider } from '@/context/CallContext';
 
 export default function Messages() {
   const { user } = useAuth();
@@ -757,15 +758,16 @@ export default function Messages() {
   };
 
   return (
-    <AppLayout>
-      <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
-      <SubNavigation items={messagesNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
-          <StandardHeader 
-            title="Messages"
-            description="Connect with your community and professional network"
-          />
+    <CallProvider userId={user?.id || ''} userName={user?.email || 'User'}>
+      <AppLayout>
+        <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
+        <SubNavigation items={messagesNavigation} />
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
+            <StandardHeader 
+              title="Messages"
+              description="Connect with your community and professional network"
+            />
 
           {/* Utility Action Button */}
           <UtilityActionButton>
@@ -833,9 +835,10 @@ export default function Messages() {
         context={messageContext}
       />
       
-      {user?.id && (
-        <CallManager userId={user.id} userName={user.email || 'User'} />
-      )}
-    </AppLayout>
+        {user?.id && (
+          <CallManager userId={user.id} userName={user.email || 'User'} />
+        )}
+      </AppLayout>
+    </CallProvider>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useCallState } from '@/hooks/useCallState';
+import { useCall } from '@/context/CallContext';
 import { MessengerCall } from './MessengerCall';
 import { IncomingCallModal } from './IncomingCallModal';
 import { useToast } from '@/hooks/use-toast';
@@ -12,7 +12,9 @@ interface CallManagerProps {
 
 export const CallManager = ({ userId, userName }: CallManagerProps) => {
   const { toast } = useToast();
-  const { activeCall, incomingCall, acceptCall, rejectCall, endCall } = useCallState(userId);
+  const { activeCall, incomingCall, acceptCall, rejectCall, endCall } = useCall();
+  
+  console.log('📱 CallManager: Rendered', { activeCall: activeCall?.state, incomingCall: !!incomingCall });
 
   // Handle incoming call - play ringtone and show notification
   useEffect(() => {
