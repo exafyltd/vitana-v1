@@ -177,23 +177,61 @@ export const useCallState = (userId: string) => {
       setActiveCall(callData);
       console.log('📞 Active call state set');
 
-      // Broadcast call to recipient
+      // Broadcast call to recipient with retry logic
       console.log('📡 Broadcasting call to recipient channel:', `user:${recipientId}:calls`);
       const channel = supabase.channel(`user:${recipientId}:calls`);
-      await channel.subscribe();
       
-      const broadcastResult = await channel.send({
-        type: 'broadcast',
-        event: 'incoming-call',
-        payload: callData,
+      // Wait for subscription to be ready
+      await new Promise<void>((resolve, reject) => {
+        const timeout = setTimeout(() => reject(new Error('Subscription timeout')), 5000);
+        channel.subscribe((status) => {
+          console.log('📡 Broadcast channel subscription status:', status);
+          if (status === 'SUBSCRIBED') {
+            clearTimeout(timeout);
+            resolve();
+          } else if (status === 'CHANNEL_ERROR') {
+            clearTimeout(timeout);
+            reject(new Error('Channel subscription failed'));
+          }
+        });
       });
       
-      console.log('✅ Call broadcast result:', broadcastResult);
+      console.log('✅ Channel subscribed, broadcasting...');
+      
+      // Retry broadcast up to 3 times with exponential backoff
+      let broadcastSuccess = false;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        console.log(`📡 Broadcast attempt ${attempt}/3...`);
+        const broadcastResult = await channel.send({
+          type: 'broadcast',
+          event: 'incoming-call',
+          payload: callData,
+        });
+        
+        console.log(`📡 Broadcast attempt ${attempt} result:`, broadcastResult);
+        
+        if (broadcastResult === 'ok') {
+          broadcastSuccess = true;
+          console.log('✅ Call broadcast successful');
+          break;
+        }
+        
+        if (attempt < 3) {
+          const delay = 500 * attempt;
+          console.warn(`⚠️ Broadcast attempt ${attempt} failed, retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
+      
+      if (!broadcastSuccess) {
+        throw new Error('Failed to broadcast call after 3 attempts');
+      }
+      
       console.log('✅ Call initiated successfully');
-
       return callId;
     } catch (error) {
       console.error('❌ Error starting call:', error);
+      setActiveCall(null); // Clear active call on error
       throw error;
     }
   }, [userId, fetchUserProfile]);

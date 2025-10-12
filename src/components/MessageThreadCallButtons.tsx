@@ -4,6 +4,7 @@ import { useCall } from '@/context/CallContext';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { callSounds } from '@/utils/callSounds';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MessageThreadCallButtonsProps {
   userId: string;
@@ -38,6 +39,39 @@ export const MessageThreadCallButtons = ({
     try {
       console.log('🎯 Audio call button clicked');
       setIsCalling(true);
+      
+      // Check Realtime connection health
+      const channelName = `connection-test-${Date.now()}`;
+      const testChannel = supabase.channel(channelName);
+      
+      const isConnected = await new Promise<boolean>((resolve) => {
+        const timeout = setTimeout(() => {
+          console.warn('⚠️ Connection test timeout');
+          resolve(false);
+        }, 3000);
+        
+        testChannel.subscribe((status) => {
+          console.log('📡 Connection test status:', status);
+          if (status === 'SUBSCRIBED') {
+            clearTimeout(timeout);
+            testChannel.unsubscribe();
+            resolve(true);
+          } else if (status === 'CHANNEL_ERROR') {
+            clearTimeout(timeout);
+            testChannel.unsubscribe();
+            resolve(false);
+          }
+        });
+      });
+      
+      if (!isConnected) {
+        toast({
+          title: "Connection issue",
+          description: "Unable to connect to call service. Please check your internet connection.",
+          variant: "destructive",
+        });
+        return;
+      }
       
       // Prime audio on first interaction
       if (!audioPrimed) {
@@ -77,6 +111,39 @@ export const MessageThreadCallButtons = ({
     try {
       console.log('🎯 Video call button clicked');
       setIsCalling(true);
+      
+      // Check Realtime connection health
+      const channelName = `connection-test-${Date.now()}`;
+      const testChannel = supabase.channel(channelName);
+      
+      const isConnected = await new Promise<boolean>((resolve) => {
+        const timeout = setTimeout(() => {
+          console.warn('⚠️ Connection test timeout');
+          resolve(false);
+        }, 3000);
+        
+        testChannel.subscribe((status) => {
+          console.log('📡 Connection test status:', status);
+          if (status === 'SUBSCRIBED') {
+            clearTimeout(timeout);
+            testChannel.unsubscribe();
+            resolve(true);
+          } else if (status === 'CHANNEL_ERROR') {
+            clearTimeout(timeout);
+            testChannel.unsubscribe();
+            resolve(false);
+          }
+        });
+      });
+      
+      if (!isConnected) {
+        toast({
+          title: "Connection issue",
+          description: "Unable to connect to call service. Please check your internet connection.",
+          variant: "destructive",
+        });
+        return;
+      }
       
       // Prime audio on first interaction
       if (!audioPrimed) {

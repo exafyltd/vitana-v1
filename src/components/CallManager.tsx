@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useCall } from '@/context/CallContext';
 import { MessengerCall } from './MessengerCall';
 import { IncomingCallModal } from './IncomingCallModal';
+import { CallingScreen } from './CallingScreen';
 import { useToast } from '@/hooks/use-toast';
 import { callSounds } from '@/utils/callSounds';
 
@@ -89,6 +90,16 @@ export const CallManager = ({ userId, userName }: CallManagerProps) => {
           isVideoCall={incomingCall.isVideoCall}
           onAccept={handleAcceptCall}
           onReject={handleRejectCall}
+        />
+      )}
+
+      {/* Calling Screen */}
+      {activeCall?.state === 'calling' && (
+        <CallingScreen
+          recipientName={activeCall.recipientName || 'Unknown User'}
+          recipientAvatar={activeCall.recipientAvatar}
+          isVideoCall={activeCall.isVideoCall}
+          onEndCall={handleEndCall}
         />
       )}
 
