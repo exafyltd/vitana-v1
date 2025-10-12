@@ -306,7 +306,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       setIsAudioActive(false);
     },
     isStreamingActive: () => {
-      const active = useVertexLiveMode ? vertexConnected : isVideoActive;
+      const active = useVertexLiveMode ? (vertexConnecting || vertexConnected) : isVideoActive;
       console.log('StreamingChat: isStreamingActive called, returning:', active);
       return active;
     },
