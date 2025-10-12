@@ -17,9 +17,9 @@ serve(async (req) => {
   }
 
   try {
-    // Get auth token from request
-    const authHeader = req.headers.get('authorization');
-    const token = authHeader?.replace('Bearer ', '');
+    // Extract token from URL query params
+    const url = new URL(req.url);
+    const token = url.searchParams.get('token');
     
     if (!token) {
       return new Response(JSON.stringify({ error: 'No authorization token' }), {

@@ -42,6 +42,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   // Vertex Live API integration
   const {
     isConnected: vertexConnected,
+    isConnecting: vertexConnecting,
+    isError: vertexIsError,
+    connectionState: vertexConnectionState,
     isRecording: vertexRecording,
     isScreenSharing: vertexScreenSharing,
     transcript: vertexTranscript,
@@ -265,24 +268,22 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       console.log('StreamingChat: activateVideo called, useVertexLive:', useVertexLiveMode);
       
       if (useVertexLiveMode) {
-        // Use Vertex Live API
         try {
+          setIsVideoActive(true); // Set immediately for UI feedback
           await vertexConnect();
           await vertexStartAudio();
           await vertexStartScreen();
-          setIsVideoActive(true);
-          setIsAudioActive(false);
           console.log('✅ Vertex Live activated');
         } catch (error) {
           console.error('❌ Failed to activate Vertex Live:', error);
+          setIsVideoActive(false); // Reset on error
           toast({
             title: "Failed to start Vertex AI Live",
-            description: "Please check your Google Cloud credentials",
+            description: "Please check your connection and try again",
             variant: "destructive",
           });
         }
       } else {
-        // Use existing video stream
         setIsVideoActive(true);
         setIsAudioActive(false);
       }
@@ -338,13 +339,27 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         </div>
       )}
 
-      {/* Vertex Live indicators */}
-      {useVertexLiveMode && vertexConnected && (
+      {/* Vertex Live connection indicators */}
+      {useVertexLiveMode && (
         <div className="fixed top-20 right-4 z-50 flex flex-col gap-2">
-          <div className="bg-emerald-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
-            <div className="w-2 h-2 bg-white rounded-full" />
-            <span className="text-xs font-medium">Live with Gemini</span>
-          </div>
+          {vertexConnectionState === 'connecting' && (
+            <div className="bg-amber-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              <span className="text-xs font-medium">Connecting to Gemini...</span>
+            </div>
+          )}
+          {vertexConnectionState === 'connected' && (
+            <div className="bg-emerald-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
+              <div className="w-2 h-2 bg-white rounded-full" />
+              <span className="text-xs font-medium">Live with Gemini</span>
+            </div>
+          )}
+          {vertexConnectionState === 'error' && (
+            <div className="bg-red-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
+              <X className="h-3 w-3" />
+              <span className="text-xs font-medium">Connection Error - Retrying...</span>
+            </div>
+          )}
           {vertexScreenSharing && (
             <div className="bg-blue-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
               <Monitor className="h-3 w-3" />

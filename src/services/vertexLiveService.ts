@@ -23,18 +23,15 @@ export class VertexLiveService {
     console.log('🔌 Connecting to Vertex AI Live API...');
 
     try {
-      // Initialize audio context for playback
       this.audioContext = new AudioContext({ sampleRate: 24000 });
 
-      // Connect to edge function WebSocket
-      const wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/vertex-live`;
+      // Pass token as query parameter for WebSocket auth
+      const wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/vertex-live?token=${encodeURIComponent(token)}`;
       this.ws = new WebSocket(wsUrl);
 
-      // Set auth header (send as first message after connection)
       this.ws.onopen = () => {
         console.log('✅ WebSocket connected to edge function');
-        // Send auth token as first message
-        this.ws!.send(JSON.stringify({ type: 'auth', token }));
+        // No need to send auth message - it's in the URL
       };
 
       this.ws.onmessage = async (event) => {

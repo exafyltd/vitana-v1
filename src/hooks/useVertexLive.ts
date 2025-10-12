@@ -3,20 +3,21 @@ import { VertexLiveService } from '@/services/vertexLiveService';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useVertexLive = () => {
-  const [isConnected, setIsConnected] = useState(false);
+  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected' | 'error'>('disconnected');
   const [isRecording, setIsRecording] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
   
   const serviceRef = useRef<VertexLiveService | null>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     // Initialize service
     serviceRef.current = new VertexLiveService({
       onConnectionChange: (connected) => {
         console.log('🔌 Connection status:', connected);
-        setIsConnected(connected);
+        setConnectionState(connected ? 'connected' : 'disconnected');
         if (!connected) {
           setIsRecording(false);
           setIsScreenSharing(false);
@@ -34,11 +35,23 @@ export const useVertexLive = () => {
       onError: (errorMsg) => {
         console.error('❌ Vertex Live error:', errorMsg);
         setError(errorMsg);
+        setConnectionState('error');
+        
+        // Auto-retry after 3 seconds
+        reconnectTimeoutRef.current = setTimeout(() => {
+          if (serviceRef.current) {
+            console.log('🔄 Attempting reconnect...');
+            connect();
+          }
+        }, 3000);
       }
     });
 
     // Cleanup on unmount
     return () => {
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
       if (serviceRef.current) {
         serviceRef.current.disconnect();
       }
@@ -48,6 +61,8 @@ export const useVertexLive = () => {
   const connect = useCallback(async () => {
     try {
       setError(null);
+      setConnectionState('connecting');
+      
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session?.access_token) {
@@ -58,6 +73,7 @@ export const useVertexLive = () => {
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to connect';
       setError(errorMsg);
+      setConnectionState('error');
       console.error('Failed to connect:', err);
     }
   }, []);
@@ -102,7 +118,10 @@ export const useVertexLive = () => {
   }, []);
 
   return {
-    isConnected,
+    isConnected: connectionState === 'connected',
+    isConnecting: connectionState === 'connecting',
+    isError: connectionState === 'error',
+    connectionState,
     isRecording,
     isScreenSharing,
     transcript,
