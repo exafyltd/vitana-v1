@@ -291,16 +291,21 @@ Generate a personalized ${messageType} message now based on the PRIORITY CONTEXT
     });
 
     let finalMessage = message1;
-    if (translateResp.ok) {
-      const tr = await translateResp.json();
-      const translated = tr.choices?.[0]?.message?.content?.trim();
-      if (translated) {
-        finalMessage = translated;
-        console.log('[PROACTIVE] Translation applied successfully');
-      }
-    } else {
-      console.warn('[PROACTIVE] Translation step failed with status', translateResp.status);
+    if (!translateResp.ok) {
+      // RULE 4: STRICT FAIL - no English fallback
+      console.warn('[PROACTIVE] RULE VIOLATION: Translation failed');
+      throw new Error(`Translation to ${languageName} failed`);
     }
+
+    const tr = await translateResp.json();
+    const translated = tr.choices?.[0]?.message?.content?.trim();
+    if (!translated) {
+      // RULE 4: STRICT FAIL
+      throw new Error(`Translation to ${languageName} produced no output`);
+    }
+    
+    finalMessage = translated;
+    console.log('[PROACTIVE] RULE: Translation complete');
 
     const message = finalMessage;
 

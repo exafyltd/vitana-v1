@@ -461,16 +461,28 @@ serve(async (req) => {
       audio, 
       text, 
       language,
+      override_language,  // RULE 1: Mandatory language override
       agentType = 'health',
       conversationId: existingConversationId,
-      stream = true, // Enable streaming by default
-      isVoiceInput = false // Track if input is from voice (even with client-side STT)
+      stream = true,
+      isVoiceInput = false
     } = body;
     
-    console.log('Received request:', { 
+    // RULE 1: Validate override_language against allowed set
+    const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT'];
+    const targetLanguage = override_language || language || 'en-US';
+    
+    if (!ALLOWED_LANGUAGES.includes(targetLanguage)) {
+      console.error('[ai-chat] RULE VIOLATION: Invalid language:', targetLanguage);
+      return new Response(
+        JSON.stringify({ error: `Invalid language: ${targetLanguage}. Allowed: ${ALLOWED_LANGUAGES.join(', ')}` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    console.log('[ai-chat] RULE: target_language=', targetLanguage, {
       hasAudio: !!audio, 
       hasText: !!text, 
-      language, 
       agentType,
       conversationId: existingConversationId,
       stream 
@@ -499,7 +511,8 @@ serve(async (req) => {
           context_snapshot: {},
           metadata: { 
             initiated_at: new Date().toISOString(),
-            language: language || 'en'
+            language: targetLanguage,
+            rule_based: true
           }
         })
         .select()
@@ -579,9 +592,9 @@ serve(async (req) => {
       }
     }
 
-    // Use the language parameter from the frontend, fallback to en-US
-    let detectedLanguage = language || 'en-US';
-    console.log(`[language] Received language parameter: ${language}, using: ${detectedLanguage}`);
+    // RULE 2: NO AUTO-DETECTION - use targetLanguage directly
+    let detectedLanguage = targetLanguage;
+    console.log(`[ai-chat] RULE: Using fixed language: ${detectedLanguage} (no detection)`);
     
     let userMessage = text;
     let inputMethod: 'voice' | 'text' = isVoiceInput ? 'voice' : 'text';
@@ -622,13 +635,8 @@ serve(async (req) => {
         }
 
         userMessage = sttData.results[0].alternatives[0].transcript;
-        // Only override language if STT detected a different one
-        const sttLanguage = sttData.results[0].languageCode;
-        if (sttLanguage) {
-          console.log(`[language] STT detected language: ${sttLanguage}, overriding: ${detectedLanguage}`);
-          detectedLanguage = sttLanguage;
-        }
-        console.log('[audio] Transcribed:', userMessage, 'Language:', detectedLanguage);
+        // RULE 2: Do NOT override language from STT - stick to targetLanguage
+        console.log('[audio] Transcribed:', userMessage, '| RULE: keeping language:', detectedLanguage);
       } catch (error) {
         console.error('[audio] Server-side STT error:', error);
         throw new Error(`Speech recognition failed: ${error.message}`);
@@ -1011,16 +1019,14 @@ serve(async (req) => {
       systemMessage += '=== END CONTEXT ===\n';
     }
     
-    const languageMap: Record<string, string> = {
-      'sr-RS': 'Serbian', 'de-DE': 'German', 'en-US': 'English',
-      'ar-XA': 'Arabic', 'es-ES': 'Spanish', 'ru-RU': 'Russian', 'zh-CN': 'Chinese'
+    const LANGUAGE_NAMES: Record<string, string> = {
+      'en-US': 'English', 'sr-RS': 'Serbian', 'de-DE': 'German',
+      'ar-XA': 'Arabic', 'es-ES': 'Spanish', 'ru-RU': 'Russian',
+      'zh-CN': 'Chinese', 'fr-FR': 'French', 'pt-PT': 'Portuguese'
     };
     
-    const normalizedForLookup = normalizeLanguage(detectedLanguage);
-    const languageName = languageMap[normalizedForLookup];
-    if (languageName && languageName !== 'English') {
-      systemMessage += `\n\n=== LANGUAGE INSTRUCTION ===\nIMPORTANT: Respond in ${languageName}. The user is communicating in ${languageName}, so all your responses must be in ${languageName}.\n=== END LANGUAGE INSTRUCTION ===\n`;
-    }
+    const targetLanguageName = LANGUAGE_NAMES[detectedLanguage] || 'English';
+    console.log('[ai-chat] RULE: Target language name=', targetLanguageName);
 
     // STREAMING IMPLEMENTATION
     if (stream) {
@@ -1201,42 +1207,84 @@ serve(async (req) => {
               }
             }
             
-            // Attempt to process any leftover buffered line (without trailing newline)
-            if (sseBuffer.trim().startsWith('data:')) {
-              const tailData = sseBuffer.trim().replace(/^data:\s*/, '');
-              try {
-                const parsed = JSON.parse(tailData);
-                const content = parsed.choices?.[0]?.delta?.content;
-                if (content) {
-                  fullText += content;
-                  currentSentence += content;
-                }
-              } catch (_e) {
-                console.warn('[stream] Incomplete tail data after stream end, skipping');
-              }
+            console.log(`[ai-chat] Phase 1 complete: ${fullText.length} chars collected`);
+            
+            // RULE 4: PHASE 2 - Deterministic translation pass
+            console.log(`[ai-chat] RULE: Translating to ${targetLanguageName} (temperature=0)`);
+            
+            const translateResp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${lovableApiKey}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                model: 'google/gemini-2.5-flash',
+                temperature: 0,  // RULE 4: Deterministic
+                max_tokens: 600,
+                messages: [
+                  {
+                    role: 'system',
+                    content: `You are a precise translator. Translate the user content to ${targetLanguageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.`
+                  },
+                  { role: 'user', content: fullText }
+                ]
+              }),
+            });
+
+            if (!translateResp.ok) {
+              // RULE 4: STRICT FAIL - no English fallback
+              console.error('[ai-chat] RULE VIOLATION: Translation failed');
+              const errorEvent = `data: ${JSON.stringify({
+                type: 'error',
+                message: `Translation to ${targetLanguageName} failed. Cannot proceed.`
+              })}\n\n`;
+              safeEnqueue(encoder.encode(errorEvent));
+              controller.close();
+              return;
             }
+
+            const translateData = await translateResp.json();
+            const translatedText = translateData.choices?.[0]?.message?.content?.trim();
+
+            if (!translatedText) {
+              // RULE 4: STRICT FAIL
+              console.error('[ai-chat] RULE VIOLATION: No translation output');
+              const errorEvent = `data: ${JSON.stringify({
+                type: 'error',
+                message: `Translation to ${targetLanguageName} produced no output.`
+              })}\n\n`;
+              safeEnqueue(encoder.encode(errorEvent));
+              controller.close();
+              return;
+            }
+
+            console.log(`[ai-chat] RULE: Translation complete (${translatedText.length} chars)`);
             
-            // Process remaining sentence (safety check for minimum length)
+            // PHASE 3: Re-stream translated text with TTS
+            fullText = translatedText;  // Replace with translated version
+            const sentences = splitIntoSentences(fullText);
             
-            // Process remaining sentence (safety check for minimum length)
-            if (currentSentence.trim() && currentSentence.trim().length > 3 && isControllerOpen) {
-              const sentence = cleanAIResponse(currentSentence.trim());
-              sentencesProcessed++;
-              console.info(`[stream] 📝 Final sentence ${sentencesProcessed} (${sentence.length} chars) - triggering TTS`);
+            for (const sentence of sentences) {
+              const cleaned = cleanAIResponse(sentence);
+              if (!cleaned || cleaned.length < 3) continue;
               
-              const audioContent = await synthesizeChunk(sentence, googleApiKey, normalizedLang);
-              if (audioContent) {
-                console.info(`[stream] 🔊 Final audio chunk queued`);
+              // Stream text
+              const textEvent = `data: ${JSON.stringify({ type: 'text', content: cleaned })}\n\n`;
+              safeEnqueue(encoder.encode(textEvent));
+              
+              // Generate TTS for translated text
+              sentencesProcessed++;
+              const audioContent = await synthesizeChunk(cleaned, googleApiKey, normalizedLang);
+              if (audioContent && isControllerOpen) {
+                console.info(`[stream] 🔊 Translated audio chunk ${sentencesProcessed} queued`);
                 const audioEvent = `data: ${JSON.stringify({ type: 'audio', content: audioContent })}\n\n`;
                 safeEnqueue(encoder.encode(audioEvent));
-              } else {
-                console.error(`[stream] ⚠️ TTS failed for final sentence`);
-                const errorEvent = `data: ${JSON.stringify({ type: 'audio_error', message: 'Final TTS synthesis failed' })}\n\n`;
-                safeEnqueue(encoder.encode(errorEvent));
               }
             }
             
-            // Store complete AI message (non-blocking)
+            
+            // Store complete AI message (rule-based, translated)
             const cleanedFullText = cleanAIResponse(fullText);
             supabaseClient.from('ai_messages').insert({
               conversation_id: conversationId,
@@ -1246,6 +1294,9 @@ serve(async (req) => {
                 model: 'google/gemini-2.5-flash',
                 agent_type: agentType,
                 context_used: !!userContext,
+                language: detectedLanguage,
+                rule_based: true,
+                translated: true,
                 timestamp: new Date().toISOString()
               }
             }).then(async (result) => {
@@ -1302,7 +1353,9 @@ serve(async (req) => {
               type: 'done', 
               conversationId, 
               isCrisis,
-              detectedLanguage: normalizedLang
+              detectedLanguage: normalizedLang,
+              rule_based: true,
+              translated: true
             })}\n\n`;
             safeEnqueue(encoder.encode(doneEvent));
             console.info('[stream] ✓ Done event sent');

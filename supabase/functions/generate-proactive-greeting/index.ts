@@ -12,6 +12,22 @@ serve(async (req) => {
   }
 
   try {
+    const body = await req.json();
+    const { override_language } = body;
+    
+    // RULE 1: Validate language
+    const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT'];
+    const targetLanguage = override_language || 'en-US';
+    
+    if (!ALLOWED_LANGUAGES.includes(targetLanguage)) {
+      return new Response(
+        JSON.stringify({ error: `Invalid language: ${targetLanguage}` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    console.log('[greeting] RULE: target_language=', targetLanguage);
+    
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
@@ -55,12 +71,8 @@ USER CONTEXT:
 - Name: ${context.user.name}
 - Experience Level: ${context.journey.experience_level}
 - Journey Stage: ${context.journey.stage}
-- Primary Language: ${context.user.language.inferred}
 - Time: ${timeOfDay}
 - Engagement Success Rate: ${(context.engagement_metrics.success_rate * 100).toFixed(0)}%
-
-PERSONALITY SETTINGS:
-${JSON.stringify(context.admin_settings.system_personality || {}, null, 2)}
 
 RECENT CONTEXT:
 ${context.recent_activity.upcoming_events.length > 0 ? `Upcoming Events: ${context.recent_activity.upcoming_events.map(e => `${e.title} at ${new Date(e.start_time).toLocaleString()}`).join(', ')}` : ''}
@@ -70,24 +82,15 @@ ${context.interests.length > 0 ? `Interests: ${context.interests.slice(0, 5).map
 IMPORTANT GUIDELINES:
 1. Generate a NATURAL, EMPATHETIC greeting that feels human and contextual
 2. Reference specific context when relevant (upcoming events, recent activities, interests)
-3. Vary your greetings - NEVER use generic robotic patterns like "Hello! How can I help you today?"
-4. Match the user's experience level:
-   - New users: Welcoming, orientation-focused
-   - Experienced users: Goal-oriented, advanced features
+3. Vary your greetings - NEVER use generic robotic patterns
+4. Match the user's experience level (new users: welcoming; experienced: goal-oriented)
 5. Adapt tone to time of day and user's recent engagement
 6. Keep it concise (1-2 sentences max)
-7. If the user primarily speaks ${context.user.language.inferred}, respond in that language
-8. Be genuinely helpful, not pushy
-9. If engagement success rate is low (<40%), be more subtle and respectful of user's space
-
-EXAMPLES OF GOOD GREETINGS:
-- "Hi ${context.user.name}! I noticed your meditation session is coming up in 30 minutes. Would you like me to prepare a calming playlist?"
-- "Welcome back! You've been making great progress with your fitness goals this week. Ready to continue?"
-- "Good ${timeOfDay}! I see you're interested in ${context.interests[0]?.name || 'wellness'}. I found some community events that might interest you."
+7. Be genuinely helpful, not pushy
 
 Generate a personalized greeting now.`;
 
-    // Call Lovable AI
+    // Call Lovable AI - Phase 1
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -100,7 +103,7 @@ Generate a personalized greeting now.`;
           { role: 'system', content: systemPrompt },
           { role: 'user', content: 'Generate a personalized proactive greeting for this user based on their context.' }
         ],
-        temperature: 0.9,
+        temperature: 0.4,
         max_tokens: 150
       }),
     });
@@ -112,9 +115,52 @@ Generate a personalized greeting now.`;
     }
 
     const data = await response.json();
-    const greeting = data.choices[0].message.content.trim();
+    const initialGreeting = data.choices[0].message.content.trim();
+    
+    console.log('[greeting] Phase 1 output:', initialGreeting.substring(0, 100));
 
-    console.log('Generated greeting for user:', user.id, greeting);
+    // RULE 4: Phase 2 - Translator pass
+    const LANGUAGE_NAMES: Record<string, string> = {
+      'en-US': 'English', 'sr-RS': 'Serbian', 'de-DE': 'German',
+      'ar-XA': 'Arabic', 'es-ES': 'Spanish', 'ru-RU': 'Russian',
+      'zh-CN': 'Chinese', 'fr-FR': 'French', 'pt-PT': 'Portuguese'
+    };
+    
+    const targetLanguageName = LANGUAGE_NAMES[targetLanguage] || 'English';
+    
+    const translateResp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        temperature: 0,
+        max_tokens: 200,
+        messages: [
+          {
+            role: 'system',
+            content: `You are a precise translator. Translate the user content to ${targetLanguageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.`
+          },
+          { role: 'user', content: initialGreeting }
+        ]
+      }),
+    });
+
+    if (!translateResp.ok) {
+      // RULE 4: STRICT FAIL
+      throw new Error(`Translation to ${targetLanguageName} failed`);
+    }
+
+    const translateData = await translateResp.json();
+    const greeting = translateData.choices?.[0]?.message?.content?.trim();
+
+    if (!greeting) {
+      throw new Error(`Translation to ${targetLanguageName} produced no output`);
+    }
+
+    console.log('[greeting] RULE: Translation complete:', greeting.substring(0, 100));
 
     // Log engagement for analytics
     await supabaseClient
@@ -125,11 +171,18 @@ Generate a personalized greeting now.`;
         context_snapshot: {
           time_of_day: timeOfDay,
           journey_stage: context.journey.stage,
-          experience_level: context.journey.experience_level
+          experience_level: context.journey.experience_level,
+          language: targetLanguage,
+          rule_based: true
         }
       });
 
-    return new Response(JSON.stringify({ greeting, context }), {
+    return new Response(JSON.stringify({ 
+      greeting, 
+      context,
+      resolved_language: targetLanguage,
+      resolved_language_name: targetLanguageName
+    }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
