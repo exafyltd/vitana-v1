@@ -1,14 +1,14 @@
 import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from "react"
-import { Mic, Video as VideoIcon, X, Send, Settings, Globe, Monitor } from "lucide-react"
+import { Mic, Video as VideoIcon, X, Send, Sparkles, Globe, Monitor, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DiaryButton from "@/components/diary/DiaryButton"
 import { aiVoiceService } from "@/services/aiVoiceService"
 import { useToast } from "@/hooks/use-toast"
-import { ApiKeySettingsModal } from "@/components/chat/ApiKeySettingsModal"
 import { supabase } from "@/integrations/supabase/client"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { useUserPreferences } from "@/hooks/useUserPreferences"
 import { useVertexLive } from "@/hooks/useVertexLive"
+import { useProactiveAssistant } from "@/hooks/useProactiveAssistant"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,7 +31,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isRecording, setIsRecording] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
-  const [showApiKeyModal, setShowApiKeyModal] = useState(false)
   const [useVertexLiveMode, setUseVertexLiveMode] = useState(true)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
   const errorToastAtRef = useRef<number>(0)
@@ -39,6 +38,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const { selectedLanguage, setSelectedLanguage, languageOptions, isLoading: languageLoading } = useLanguage()
   const { toast } = useToast()
   const { preferences } = useUserPreferences()
+  const { triggerProactiveMessage, isGenerating: isGeneratingMessage } = useProactiveAssistant()
   
   // Vertex Live API integration
   const {
@@ -415,11 +415,16 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setShowApiKeyModal(true)}
-            className="hover:bg-accent rounded-full"
-            aria-label="API Settings"
+            onClick={triggerProactiveMessage}
+            disabled={isGeneratingMessage}
+            className="hover:bg-accent rounded-full relative"
+            aria-label="Proactive Assistant"
           >
-            <Settings className="h-5 w-5" />
+            {isGeneratingMessage ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <Sparkles className="h-5 w-5" />
+            )}
           </Button>
 
           <Button
@@ -504,11 +509,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         
         <DiaryButton />
       </div>
-
-      <ApiKeySettingsModal 
-        open={showApiKeyModal} 
-        onOpenChange={setShowApiKeyModal} 
-      />
     </>
   )
 })
