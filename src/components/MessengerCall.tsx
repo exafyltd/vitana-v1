@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { useWebRTC } from '@/hooks/useWebRTC';
 import { Mic, MicOff, Video, VideoOff, PhoneOff, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface MessengerCallProps {
   callId: string;
@@ -24,7 +26,11 @@ export const MessengerCall = ({
   isVideoCall,
   onEndCall,
 }: MessengerCallProps) => {
+  const { toast } = useToast();
   const [callDuration, setCallDuration] = useState(0);
+  const [connectionStatus, setConnectionStatus] = useState<'initializing' | 'connecting' | 'connected' | 'failed'>('initializing');
+  const [otherUserReady, setOtherUserReady] = useState(false);
+  const connectionTimeoutRef = useRef<NodeJS.Timeout>();
   
   const {
     localStream,
@@ -47,11 +53,71 @@ export const MessengerCall = ({
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    joinRoom();
+    const setupConnection = async () => {
+      try {
+        console.log('🎥 Joining WebRTC room:', `room:${callId}`);
+        setConnectionStatus('initializing');
+        
+        await joinRoom();
+        
+        console.log('✅ WebRTC room joined, broadcasting ready signal');
+        setConnectionStatus('connecting');
+        
+        // Broadcast that we're ready
+        const channel = supabase.channel(`user:${recipientId}:calls`);
+        await channel.subscribe();
+        await channel.send({
+          type: 'broadcast',
+          event: 'webrtc-ready',
+          payload: {
+            call_id: callId,
+            from_user_id: userId
+          }
+        });
+        
+        // Listen for other user's ready signal
+        channel.on('broadcast', { event: 'webrtc-ready' }, ({ payload }) => {
+          if (payload.call_id === callId && payload.from_user_id === recipientId) {
+            console.log('✅ Received webrtc-ready from recipient');
+            setOtherUserReady(true);
+          }
+        });
+        
+        // Set timeout for connection
+        connectionTimeoutRef.current = setTimeout(() => {
+          if (peers.length === 0) {
+            console.error('⏱️ Connection timeout - no peer found');
+            setConnectionStatus('failed');
+            toast({
+              title: "Connection Failed",
+              description: "Could not establish connection. Please try again.",
+              variant: "destructive",
+            });
+            setTimeout(() => onEndCall(), 2000);
+          }
+        }, 15000);
+        
+      } catch (error) {
+        console.error('❌ Error setting up WebRTC:', error);
+        setConnectionStatus('failed');
+        toast({
+          title: "Connection Error",
+          description: error instanceof Error ? error.message : "Failed to connect",
+          variant: "destructive",
+        });
+        setTimeout(() => onEndCall(), 2000);
+      }
+    };
+    
+    setupConnection();
+    
     return () => {
+      if (connectionTimeoutRef.current) {
+        clearTimeout(connectionTimeoutRef.current);
+      }
       leaveRoom();
     };
-  }, [joinRoom, leaveRoom]);
+  }, [callId, userId, recipientId, joinRoom, leaveRoom, onEndCall, toast]);
 
   useEffect(() => {
     if (localVideoRef.current && localStream) {
@@ -62,17 +128,22 @@ export const MessengerCall = ({
   useEffect(() => {
     if (remoteVideoRef.current && peers[0]?.stream) {
       remoteVideoRef.current.srcObject = peers[0].stream;
+      console.log('🤝 Peer stream received, connection established');
+      setConnectionStatus('connected');
+      if (connectionTimeoutRef.current) {
+        clearTimeout(connectionTimeoutRef.current);
+      }
     }
   }, [peers]);
 
   useEffect(() => {
-    if (isConnected) {
+    if (connectionStatus === 'connected') {
       const interval = setInterval(() => {
         setCallDuration(prev => prev + 1);
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isConnected]);
+  }, [connectionStatus]);
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -109,7 +180,10 @@ export const MessengerCall = ({
             </Avatar>
             <h2 className="text-2xl font-semibold">{recipientName}</h2>
             <p className="text-muted-foreground">
-              {isConnected ? formatDuration(callDuration) : 'Connecting...'}
+              {connectionStatus === 'connected' ? formatDuration(callDuration) : 
+               connectionStatus === 'initializing' ? 'Initializing...' :
+               connectionStatus === 'connecting' ? 'Connecting...' :
+               connectionStatus === 'failed' ? 'Connection failed' : 'Connecting...'}
             </p>
           </div>
         )}
@@ -166,7 +240,7 @@ export const MessengerCall = ({
           </Button>
         </div>
 
-        {isConnected && (
+        {connectionStatus === 'connected' && (
           <p className="text-center text-sm text-muted-foreground mt-4">
             {formatDuration(callDuration)}
           </p>

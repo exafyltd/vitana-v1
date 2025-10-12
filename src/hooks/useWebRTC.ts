@@ -75,16 +75,27 @@ export const useWebRTC = (config: WebRTCConfig) => {
 
   const initializeLocalStream = useCallback(async () => {
     try {
+      console.log('🎤 Requesting media devices - video:', isVideoEnabled, 'audio:', isAudioEnabled);
       const stream = await navigator.mediaDevices.getUserMedia({
         video: isVideoEnabled,
         audio: isAudioEnabled
       });
       
+      console.log('✅ Media devices acquired');
       localStreamRef.current = stream;
       setLocalStream(stream);
       return stream;
     } catch (error) {
-      console.error('Error accessing media devices:', error);
+      console.error('❌ Error accessing media devices:', error);
+      if (error instanceof Error) {
+        if (error.name === 'NotAllowedError') {
+          throw new Error('Camera/microphone permission denied');
+        } else if (error.name === 'NotFoundError') {
+          throw new Error('No camera/microphone found');
+        } else if (error.name === 'NotReadableError') {
+          throw new Error('Camera/microphone already in use');
+        }
+      }
       throw error;
     }
   }, [isVideoEnabled, isAudioEnabled]);
@@ -155,14 +166,19 @@ export const useWebRTC = (config: WebRTCConfig) => {
   }, [createPeerConnection, config.userId]);
 
   const joinRoom = useCallback(async () => {
-    try {
-      await initializeLocalStream();
+    let retries = 0;
+    const maxRetries = 3;
+    
+    while (retries < maxRetries) {
+      try {
+        console.log(`📡 Attempting to join room (attempt ${retries + 1}/${maxRetries})`);
+        await initializeLocalStream();
 
-      const channel = supabase.channel(`room:${config.roomId}`, {
-        config: {
-          broadcast: { self: true }
-        }
-      });
+        const channel = supabase.channel(`room:${config.roomId}`, {
+          config: {
+            broadcast: { self: true }
+          }
+        });
 
       channel
         .on('broadcast', { event: 'offer' }, async ({ payload }) => {
@@ -181,20 +197,24 @@ export const useWebRTC = (config: WebRTCConfig) => {
           }
         })
         .on('presence', { event: 'join' }, ({ key, newPresences }) => {
+          console.log('👋 Peer joined:', newPresences);
           // Connect to newly joined peer
           newPresences.forEach((presence: any) => {
             if (presence.user_id !== config.userId) {
+              console.log('🤝 Connecting to peer:', presence.user_id);
               connectToPeer(presence.user_id);
             }
           });
         })
         .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+          console.log('👋 Peer left:', leftPresences);
           // Clean up disconnected peer
           leftPresences.forEach((presence: any) => {
             setPeers(prev => {
               const updated = new Map(prev);
               const peer = updated.get(presence.user_id);
               if (peer) {
+                console.log('🔌 Closing connection to:', presence.user_id);
                 peer.connection.close();
                 updated.delete(presence.user_id);
               }
@@ -204,15 +224,26 @@ export const useWebRTC = (config: WebRTCConfig) => {
         })
         .subscribe(async (status) => {
           if (status === 'SUBSCRIBED') {
+            console.log('✅ WebRTC channel subscribed, tracking presence');
             await channel.track({ user_id: config.userId, online_at: new Date().toISOString() });
             setIsConnected(true);
           }
         });
 
-      channelRef.current = channel;
-    } catch (error) {
-      console.error('Error joining room:', error);
-      throw error;
+        channelRef.current = channel;
+        return; // Success, exit retry loop
+        
+      } catch (error) {
+        retries++;
+        console.error(`❌ Error joining room (attempt ${retries}/${maxRetries}):`, error);
+        
+        if (retries >= maxRetries) {
+          throw error;
+        }
+        
+        // Wait before retry (2 seconds)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
     }
   }, [config.roomId, config.userId, initializeLocalStream, handleOffer, handleAnswer, handleIceCandidate, connectToPeer]);
 

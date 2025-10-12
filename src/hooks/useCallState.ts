@@ -93,6 +93,12 @@ export const useCallState = (userId: string) => {
     channelRef.current = channel;
 
     channel
+      .on('broadcast', { event: 'webrtc-ready' }, ({ payload }) => {
+        console.log('✅ Received webrtc-ready from:', payload.from_user_id, 'for call:', payload.call_id);
+      })
+      .on('broadcast', { event: 'webrtc-failed' }, ({ payload }) => {
+        console.error('❌ WebRTC connection failed from:', payload.from_user_id, payload.error);
+      })
       .on('broadcast', { event: 'incoming-call' }, ({ payload }) => {
         if (payload.recipientId === userId) {
           console.log('📞 Incoming call received:', payload);
