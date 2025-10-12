@@ -9,6 +9,7 @@ export const useVertexLive = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [lastEvent, setLastEvent] = useState<string>('');
   
   const serviceRef = useRef<VertexLiveService | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
@@ -23,10 +24,12 @@ export const useVertexLive = () => {
           if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
           retryCountRef.current = 0;
           setConnectionState('connected');
+          setLastEvent('connected');
         } else {
           setConnectionState('disconnected');
           setIsRecording(false);
           setIsScreenSharing(false);
+          setLastEvent('disconnected');
         }
       },
       onTranscript: (text, isFinal) => {
@@ -42,6 +45,7 @@ export const useVertexLive = () => {
         console.error('❌ Vertex Live error:', errorMsg);
         setError((prev) => (prev === errorMsg ? prev : errorMsg));
         setConnectionState('error');
+        setLastEvent('error: ' + errorMsg);
         
         // Exponential backoff with max 3 retries
         retryCountRef.current += 1;
@@ -56,6 +60,10 @@ export const useVertexLive = () => {
         } else {
           console.warn('🛑 Max reconnect attempts reached');
         }
+      },
+      onTrace: (message) => {
+        console.log('🔍 Trace:', message);
+        setLastEvent(message);
       }
     });
 
@@ -76,21 +84,27 @@ export const useVertexLive = () => {
       retryCountRef.current = 0;
       setError(null);
       setConnectionState('connecting');
+      setLastEvent('Checking authentication...');
       
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session?.access_token) {
-        throw new Error('No authentication token');
+        const errorMsg = 'No authentication token';
+        setError(errorMsg);
+        setConnectionState('error');
+        setLastEvent('auth_failed: no token');
+        throw new Error(errorMsg);
       }
 
+      setLastEvent('auth_ok');
       await serviceRef.current?.connect(session.access_token);
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to connect';
-      setError(errorMsg);
-      setConnectionState('error');
+      if (!error) setError(errorMsg);
+      if (connectionState !== 'error') setConnectionState('error');
       console.error('Failed to connect:', err);
     }
-  }, []);
+  }, [error, connectionState]);
 
   const disconnect = useCallback(() => {
     if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
@@ -160,6 +174,7 @@ export const useVertexLive = () => {
     isCameraActive,
     transcript,
     error,
+    lastEvent,
     connect,
     disconnect,
     startAudio,

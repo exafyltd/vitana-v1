@@ -12,6 +12,7 @@ import { useVertexLive } from "@/hooks/useVertexLive";
 import { VertexMediaPreview } from "@/components/vertex/VertexMediaPreview";
 import { VertexDebugConsole } from "@/components/vertex/VertexDebugConsole";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface LogEntry {
   timestamp: string;
@@ -73,6 +74,7 @@ export default function VertexTesting() {
     isCameraActive,
     transcript,
     error,
+    lastEvent,
     connect,
     disconnect,
     startAudio,
@@ -92,6 +94,10 @@ export default function VertexTesting() {
   useEffect(() => {
     if (error) addLog('error', `Vertex error: ${error}`);
   }, [error, addLog]);
+
+  useEffect(() => {
+    if (lastEvent) addLog('info', `Event: ${lastEvent}`);
+  }, [lastEvent, addLog]);
 
   // Helper utilities
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -138,34 +144,62 @@ export default function VertexTesting() {
 
   // Test functions
   const testConnection = async () => {
-    updateTestResult('connection', 'running', 'Connecting to Vertex AI...');
+    updateTestResult('connection', 'running', 'Checking authentication...');
     addLog('info', 'Starting connection test...');
+    
+    // Preflight: check auth before connecting
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) {
+      const msg = '❌ Not signed in (no authentication token)';
+      updateTestResult('connection', 'failed', msg);
+      addLog('error', msg);
+      throw new Error('Not signed in - please authenticate first');
+    }
+    addLog('info', '✅ Authentication token found');
+    updateTestResult('connection', 'running', 'Connecting to Vertex AI...');
     
     try {
       await connect();
       
-      // Progress updates during connection
+      // Progress updates with fail-fast detection
       const startTime = Date.now();
       const progressInterval = setInterval(() => {
         const elapsed = Math.floor((Date.now() - startTime) / 1000);
-        updateTestResult('connection', 'running', `Connecting... (${elapsed}s elapsed)`);
+        const status = lastEvent || connectionState;
+        updateTestResult('connection', 'running', `${status}... (${elapsed}s)`);
       }, 1000);
       
       try {
-        const connected = await waitForCondition(
-          () => isConnected || connectionState === 'connected',
-          15000,
-          'Connection timeout after 15 seconds'
-        );
+        await new Promise<void>((resolve, reject) => {
+          const checkConnection = () => {
+            const elapsed = Date.now() - startTime;
+            
+            // Fail fast on error state
+            if (connectionState === 'error') {
+              reject(new Error(error || 'Connection error'));
+              return;
+            }
+            
+            // Fail fast if disconnected within first 3s (transport failure)
+            if (connectionState === 'disconnected' && elapsed <= 3000) {
+              reject(new Error('WebSocket transport failed immediately'));
+              return;
+            }
+            
+            if (isConnected && connectionState === 'connected') {
+              resolve();
+            } else if (elapsed >= 15000) {
+              reject(new Error(`Timeout after 15s - State: ${connectionState}, Event: ${lastEvent}`));
+            } else {
+              setTimeout(checkConnection, 100);
+            }
+          };
+          checkConnection();
+        });
         
         clearInterval(progressInterval);
-        
-        if (connected) {
-          updateTestResult('connection', 'success', '✅ Connected successfully');
-          addLog('info', 'Connection test passed');
-        } else {
-          throw new Error('Failed to connect');
-        }
+        updateTestResult('connection', 'success', '✅ Connected successfully');
+        addLog('info', 'Connection test passed');
       } catch (timeoutErr) {
         clearInterval(progressInterval);
         throw timeoutErr;
@@ -177,6 +211,11 @@ export default function VertexTesting() {
       updateTestResult('connection', 'failed', `❌ ${msg} - ${stateInfo}`);
       addLog('error', `Connection test failed: ${msg} | ${errorDetails} | Check edge function logs`);
       throw err;
+    } finally {
+      // Only disconnect if we actually connected
+      if (connectionState === 'connected') {
+        disconnect();
+      }
     }
   };
 
@@ -609,17 +648,26 @@ export default function VertexTesting() {
                       <p className="text-sm text-center text-muted-foreground">
                         {passedTests} / {totalEnabledTests} tests passed
                       </p>
-                      <p className="text-xs text-center text-muted-foreground">
-                        Connection: {connectionState}
-                        {connectionState === 'connecting' && (
-                          <span className="ml-2 inline-block align-middle">
-                            <span className="inline-block h-3 w-3 animate-spin border-2 border-current border-t-transparent rounded-full" />
-                          </span>
+                      <div className="space-y-2">
+                        <p className="text-xs text-center text-muted-foreground">
+                          Connection: {connectionState}
+                          {connectionState === 'connecting' && (
+                            <span className="ml-2 inline-block align-middle">
+                              <span className="inline-block h-3 w-3 animate-spin border-2 border-current border-t-transparent rounded-full" />
+                            </span>
+                          )}
+                        </p>
+                        {lastEvent && (
+                          <p className="text-xs text-center font-mono text-muted-foreground">
+                            {lastEvent}
+                          </p>
                         )}
                         {error && (
-                          <span className="ml-2 text-destructive">• {error}</span>
+                          <p className="text-xs text-center text-destructive">
+                            ⚠️ {error}
+                          </p>
                         )}
-                      </p>
+                      </div>
                     </div>
                   )}
                   

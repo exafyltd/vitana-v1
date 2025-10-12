@@ -4,6 +4,7 @@ export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
   onTranscript?: (text: string, isFinal: boolean) => void;
   onError?: (error: string) => void;
+  onTrace?: (message: string) => void;
 }
 
 export class VertexLiveService {
@@ -22,6 +23,7 @@ export class VertexLiveService {
 
   async connect(token: string): Promise<void> {
     console.log('🔌 Connecting to Vertex AI Live API...');
+    this.callbacks.onTrace?.('Starting connection...');
 
     try {
       this.audioContext = new AudioContext({ sampleRate: 24000 });
@@ -46,14 +48,18 @@ export class VertexLiveService {
 
       let attempt = 0;
       const tryConnect = (url: string) => {
+        const urlDesc = attempt === 0 ? 'primary path' : 'fallback path';
         console.log('🔗 Connecting to:', url);
+        this.callbacks.onTrace?.(`Trying WebSocket ${urlDesc}...`);
         const ws = new WebSocket(url);
+        ws.binaryType = 'arraybuffer';
         let opened = false;
 
         ws.onopen = () => {
           opened = true;
           this.ws = ws;
           console.log('✅ WebSocket connected to edge function');
+          this.callbacks.onTrace?.('WebSocket open, waiting for connection_ready...');
           // No need to send auth message - it's in the URL
         };
 
@@ -106,13 +112,22 @@ export class VertexLiveService {
 
         ws.onclose = (ev) => {
           const e = ev as CloseEvent;
-          console.log('🔌 WebSocket closed', e?.code, e?.reason);
+          const reason = e?.reason || '';
+          console.log('🔌 WebSocket closed', e?.code, reason);
+          this.callbacks.onTrace?.(`WebSocket closed: ${e?.code} ${reason}`);
+          
           if (!opened && attempt === 0 && urls[1]) {
             attempt = 1;
             console.warn('↩️ Retrying with legacy WS path after close...');
             tryConnect(urls[1]);
             return;
           }
+          
+          // If we never got connection_ready, emit error
+          if (!this.conversationId) {
+            this.callbacks.onError?.(`WebSocket closed before ready (code ${e?.code}${reason ? ': ' + reason : ''})`);
+          }
+          
           this.callbacks.onConnectionChange?.(false);
           this.isSetupComplete = false;
         };
@@ -133,6 +148,7 @@ export class VertexLiveService {
     if (data.type === 'connection_ready') {
       this.conversationId = data.conversationId;
       console.log('✅ Connection ready, conversation ID:', this.conversationId);
+      this.callbacks.onTrace?.('Received connection_ready');
       this.callbacks.onConnectionChange?.(true);
       return;
     }
@@ -147,6 +163,7 @@ export class VertexLiveService {
     if (data.setupComplete) {
       this.isSetupComplete = true;
       console.log('✅ Vertex AI setup complete');
+      this.callbacks.onTrace?.('Setup complete');
       return;
     }
 
