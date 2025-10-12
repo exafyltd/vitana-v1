@@ -471,7 +471,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
               {languageOptions.map((option) => (
                 <DropdownMenuItem
                   key={option.label}
-                  onClick={() => setSelectedLanguage(option.value)}
+                  onClick={() => {
+                    console.log('[LANG-TIMING] 1️⃣ UI Click:', new Date().toISOString(), option.value);
+                    setSelectedLanguage(option.value);
+                  }}
                   className={selectedLanguage === option.value ? "bg-accent" : ""}
                 >
                   {option.label}

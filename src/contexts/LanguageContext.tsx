@@ -28,6 +28,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const selectedLanguage = preferences?.stt_language || "en-US";
 
   const setSelectedLanguage = (language: string) => {
+    console.log('[LANG-TIMING] 2️⃣ Context received:', new Date().toISOString(), language);
     updatePreferences({ stt_language: language });
   };
 

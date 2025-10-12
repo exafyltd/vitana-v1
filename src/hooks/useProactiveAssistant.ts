@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTextToSpeech } from './useTextToSpeech';
 import { useToast } from '@/hooks/use-toast';
@@ -18,6 +18,11 @@ export function useProactiveAssistant() {
   const { speak, isSpeaking } = useTextToSpeech();
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
+  
+  // Log when selectedLanguage changes
+  useEffect(() => {
+    console.log('[LANG-TIMING] 3️⃣ useProactiveAssistant hook updated:', new Date().toISOString(), selectedLanguage);
+  }, [selectedLanguage]);
   const getMessageIcon = (type: ProactiveMessage['type']) => {
     const icons = {
       greeting: '👋',
@@ -56,6 +61,7 @@ export function useProactiveAssistant() {
 
     try {
 const accessToken = session?.access_token;
+      console.log('[LANG-TIMING] 4️⃣ Sending to edge function:', new Date().toISOString(), selectedLanguage);
       const { data, error } = await supabase.functions.invoke('generate-proactive-message', {
         headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
         body: { override_language: selectedLanguage },
