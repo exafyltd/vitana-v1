@@ -167,6 +167,11 @@ import AutomationBuilder from "./pages/admin/ai-assistant/AutomationBuilder";
 import AISituationAnalyzer from "./pages/admin/ai-assistant/AISituationAnalyzer";
 import PatternDiscovery from "./pages/admin/ai-assistant/PatternDiscovery";
 import AIAssistantAnalytics from "./pages/admin/ai-assistant/Analytics";
+import LiveStreamOverview from "./pages/admin/LiveStreamOverview";
+import VertexTesting from "./pages/admin/VertexTesting";
+import CommunityRoomsAdmin from "./pages/admin/CommunityRoomsAdmin";
+import TelemedicineSessions from "./pages/admin/TelemedicineSessions";
+import StreamSettings from "./pages/admin/StreamSettings";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 
 const App = () => {

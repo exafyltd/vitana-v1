@@ -140,6 +140,15 @@ export const adminAIAssistantNavigation = [
   { id: "analytics", name: "Analytics & Performance", path: "/admin/ai-assistant/analytics" },
 ];
 
+// Live & Stream - streaming management
+export const adminLiveStreamNavigation = [
+  { id: "overview", name: "Overview", path: "/admin/live-stream" },
+  { id: "vertex-testing", name: "Vertex AI Testing", path: "/admin/live-stream/vertex-testing" },
+  { id: "community-rooms", name: "Community Rooms", path: "/admin/live-stream/community-rooms" },
+  { id: "telemedicine", name: "Telemedicine Sessions", path: "/admin/live-stream/telemedicine" },
+  { id: "settings", name: "Stream Settings", path: "/admin/live-stream/settings" },
+];
+
 export const settingsNavigation = [
   { id: "overview", name: "Overview", path: "/settings" },
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },

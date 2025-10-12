@@ -5,7 +5,7 @@ import {
   Heart, Wallet, Share2, Database, Settings, Shield,
   Stethoscope, TestTube, Target, BookOpen, Bell,
   ClipboardList, UserCheck, BarChart3, Clock,
-  MessageSquare, Search, Zap, Flag, Video, Sparkles
+  MessageSquare, Search, Zap, Flag, Video, Sparkles, Radio
 } from "lucide-react";
 
 interface NavigationItem {
@@ -74,6 +74,7 @@ export const adminNavigation: NavigationItem[] = [
   { title: "Community Supervision", path: "/admin/community", icon: Flag },
   { title: "Media Management", path: "/admin/media", icon: Video },
   { title: "AI Assistant", path: "/admin/ai-assistant", icon: Sparkles },
+  { title: "Live & Stream", path: "/admin/live-stream", icon: Radio },
   { title: "Tenant Management", path: "/admin/tenant-management", icon: Shield },
   { title: "System Admin", path: "/admin/system/bootstrap", icon: Settings },
   { title: "Clinical Ops", path: "/admin/clinical/patient-records", icon: Stethoscope },
