@@ -26,6 +26,8 @@ import { supabase } from "@/integrations/supabase/client";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
 import { useCart } from "@/hooks/useCart";
 import { CartSidebar } from "@/components/cart/CartSidebar";
+import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -411,6 +413,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { tenant } = useTenant();
+  const { preferences } = useUserPreferences();
+  const { triggerGreeting } = useIntelligentGreeting();
   
   // Controlled sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
@@ -433,6 +437,19 @@ export default function AppLayout({ children }: AppLayoutProps) {
       }
     }
   }, [tenant?.id]);
+
+  // Auto-trigger intelligent greeting based on user preferences
+  useEffect(() => {
+    // Only trigger if auto-greeting is enabled in preferences
+    if (preferences?.auto_greeting_enabled) {
+      // Small delay to ensure the app is fully loaded
+      const timeoutId = setTimeout(() => {
+        triggerGreeting();
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [preferences?.auto_greeting_enabled, triggerGreeting]);
 
   return (
     <div>
