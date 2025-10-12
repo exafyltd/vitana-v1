@@ -61,7 +61,12 @@ export function useProactiveAssistant() {
     setIsGenerating(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('generate-proactive-message');
+      const { data, error } = await supabase.functions.invoke('generate-proactive-message', {
+        headers: {
+          // Explicitly forward the current session token for verified functions
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+        },
+      });
 
       if (error) throw error;
 
