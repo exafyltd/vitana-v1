@@ -31,6 +31,20 @@ export function useProactiveAssistant() {
   };
 
   const triggerProactiveMessage = useCallback(async () => {
+    // Check authentication first
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to use the Proactive Assistant.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    console.log('🔐 User authenticated, session valid until:', new Date(session.expires_at! * 1000));
+
     // Rate limiting: max 1 message per 30 seconds
     if (lastMessageTime) {
       const secondsSinceLast = (Date.now() - lastMessageTime.getTime()) / 1000;
@@ -81,11 +95,29 @@ export function useProactiveAssistant() {
 
     } catch (error) {
       console.error('Error generating proactive message:', error);
-      toast({
-        title: "Unable to generate message",
-        description: "Please try again in a moment.",
-        variant: "destructive",
-      });
+      
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      // Check if it's an auth error
+      if (errorMessage.includes('Authentication') || errorMessage.includes('JWT') || errorMessage.includes('auth')) {
+        toast({
+          title: "Session expired",
+          description: "Please refresh the page and try again.",
+          variant: "destructive",
+        });
+      } else if (errorMessage.includes('LOVABLE_API_KEY')) {
+        toast({
+          title: "Configuration error",
+          description: "AI service is not configured. Please contact support.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Unable to generate message",
+          description: errorMessage || "Please try again in a moment.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsGenerating(false);
     }

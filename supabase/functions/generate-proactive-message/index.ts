@@ -32,12 +32,24 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
-    // Get comprehensive user context
+    // Get comprehensive user context with fallback
+    let context: any;
     const contextResponse = await supabaseClient.functions.invoke('get-proactive-context');
+    
     if (contextResponse.error) {
-      throw contextResponse.error;
+      console.warn('Failed to fetch user context:', contextResponse.error);
+      // Provide minimal fallback context
+      context = {
+        user: { name: user.user_metadata?.name || 'there', language: { inferred: 'en' } },
+        journey: { experience_level: 'beginner', stage: 'onboarding', days_active: 1 },
+        engagement_metrics: { success_rate: 0.5 },
+        admin_settings: { system_personality: {} },
+        interests: [],
+        recent_activity: { upcoming_events: [], actions: [], diary_entries: [] }
+      };
+    } else {
+      context = contextResponse.data;
     }
-    const context = contextResponse.data;
 
     // Get current time context
     const now = new Date();
