@@ -195,8 +195,8 @@ serve(async (req) => {
             return;
           }
 
-          // Connect to Vertex Live WS using access_token (Europe region)
-          const vertexUrl = `wss://europe-west1-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent?access_token=${access_token}`;
+          // Connect to Vertex Live WS using access_token (EU west4 region)
+          const vertexUrl = `wss://europe-west4-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent?access_token=${access_token}`;
           console.log('🔗 Connecting to Vertex WS...');
           vertexSocket = new WebSocket(vertexUrl);
         } catch (e) {
@@ -213,7 +213,7 @@ serve(async (req) => {
           // Send setup configuration
           const setupMessage = {
             setup: {
-              model: `projects/${projectId}/locations/europe-west1/publishers/google/models/gemini-2.0-flash-exp`,
+              model: `projects/${projectId}/locations/europe-west4/publishers/google/models/gemini-2.0-flash-001`,
               generation_config: {
                 response_modalities: ['AUDIO'],
                 speech_config: {
