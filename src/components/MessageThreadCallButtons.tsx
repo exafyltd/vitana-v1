@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { callSounds } from '@/utils/callSounds';
 import { supabase } from '@/integrations/supabase/client';
+import { useUserPresence } from '@/hooks/useUserPresence';
 
 interface MessageThreadCallButtonsProps {
   userId: string;
@@ -19,10 +20,14 @@ export const MessageThreadCallButtons = ({
 }: MessageThreadCallButtonsProps) => {
   const { startCall, activeCall } = useCall();
   const { toast } = useToast();
+  const { getUserPresence, getStatusColor } = useUserPresence();
   const [isCalling, setIsCalling] = useState(false);
   const [audioPrimed, setAudioPrimed] = useState(false);
   
-  console.log('📞 MessageThreadCallButtons: Rendered', { recipientId, activeCall: activeCall?.state });
+  const recipientPresence = getUserPresence(recipientId);
+  const isRecipientOnline = recipientPresence?.status === 'online';
+  
+  console.log('📞 MessageThreadCallButtons: Rendered', { recipientId, recipientPresence, activeCall: activeCall?.state });
 
   // Show notification when call times out (no answer)
   useEffect(() => {
@@ -186,10 +191,16 @@ export const MessageThreadCallButtons = ({
         size="sm"
         onClick={handleAudioCall}
         disabled={isCalling || !!activeCall}
-        className="gap-2"
+        className="gap-2 relative"
       >
         <Phone className="h-4 w-4" />
         {activeCall?.state === 'calling' ? 'Calling...' : 'Call'}
+        {recipientPresence && (
+          <span 
+            className={`absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(recipientPresence.status)}`}
+            title={isRecipientOnline ? 'Online' : 'Offline'}
+          />
+        )}
       </Button>
 
       <Button
@@ -197,10 +208,16 @@ export const MessageThreadCallButtons = ({
         size="sm"
         onClick={handleVideoCall}
         disabled={isCalling || !!activeCall}
-        className="gap-2"
+        className="gap-2 relative"
       >
         <Video className="h-4 w-4" />
         {activeCall?.state === 'calling' ? 'Calling...' : 'Video Call'}
+        {recipientPresence && (
+          <span 
+            className={`absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(recipientPresence.status)}`}
+            title={isRecipientOnline ? 'Online' : 'Offline'}
+          />
+        )}
       </Button>
     </div>
   );

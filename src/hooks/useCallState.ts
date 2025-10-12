@@ -84,7 +84,12 @@ export const useCallState = (userId: string) => {
 
   useEffect(() => {
     console.log('🔌 Setting up Supabase channel for user:', userId);
-    const channel = supabase.channel(`user:${userId}:calls`);
+    const channel = supabase.channel(`user:${userId}:calls`, {
+      config: { 
+        presence: { key: userId },
+        broadcast: { self: false }
+      }
+    });
     channelRef.current = channel;
 
     channel
@@ -127,10 +132,21 @@ export const useCallState = (userId: string) => {
           setIncomingCall(null);
         }
       })
-      .subscribe((status) => {
+      .on('presence', { event: 'sync' }, () => {
+        const state = channel.presenceState();
+        console.log('👥 Presence sync:', Object.keys(state).length, 'users online');
+      })
+      .subscribe(async (status) => {
         console.log('📡 Channel subscription status:', status);
         if (status === 'SUBSCRIBED') {
           console.log('✅ Successfully subscribed to calls channel');
+          // Track presence to make this user visible to others
+          await channel.track({
+            user_id: userId,
+            online: true,
+            timestamp: Date.now()
+          });
+          console.log('👤 Presence tracked for user:', userId);
         } else if (status === 'CHANNEL_ERROR') {
           console.error('❌ Channel subscription error');
         }
@@ -179,7 +195,12 @@ export const useCallState = (userId: string) => {
 
       // Broadcast call to recipient with retry logic
       console.log('📡 Broadcasting call to recipient channel:', `user:${recipientId}:calls`);
-      const channel = supabase.channel(`user:${recipientId}:calls`);
+      const channel = supabase.channel(`user:${recipientId}:calls`, {
+        config: { 
+          presence: { key: userId },
+          broadcast: { self: false }
+        }
+      });
       
       // Wait for subscription to be ready
       await new Promise<void>((resolve, reject) => {
@@ -196,9 +217,22 @@ export const useCallState = (userId: string) => {
         });
       });
       
-      console.log('✅ Channel subscribed, broadcasting...');
+      console.log('✅ Channel subscribed, checking recipient presence...');
       
-      // Retry broadcast up to 3 times with exponential backoff
+      // Check if recipient is online via presence
+      const presenceState = channel.presenceState();
+      const recipientPresent = Object.keys(presenceState).includes(recipientId);
+      console.log('👥 Recipient presence check:', { recipientId, present: recipientPresent, onlineUsers: Object.keys(presenceState) });
+      
+      if (!recipientPresent) {
+        console.warn('⚠️ Recipient not found in presence state, call may not be received');
+      }
+      
+      // Wait 500ms after subscription before broadcasting to ensure channel is fully ready
+      await new Promise(resolve => setTimeout(resolve, 500));
+      console.log('✅ Channel ready, starting broadcast attempts...');
+      
+      // Retry broadcast up to 3 times with longer delays (1s, 2s, 3s)
       let broadcastSuccess = false;
       for (let attempt = 1; attempt <= 3; attempt++) {
         console.log(`📡 Broadcast attempt ${attempt}/3...`);
@@ -217,7 +251,7 @@ export const useCallState = (userId: string) => {
         }
         
         if (attempt < 3) {
-          const delay = 500 * attempt;
+          const delay = 1000 * attempt; // 1s, 2s, 3s
           console.warn(`⚠️ Broadcast attempt ${attempt} failed, retrying in ${delay}ms...`);
           await new Promise(resolve => setTimeout(resolve, delay));
         }
