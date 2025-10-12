@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Phone, Video } from 'lucide-react';
 import { useCallState } from '@/hooks/useCallState';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 interface MessageThreadCallButtonsProps {
   userId: string;
@@ -13,14 +15,56 @@ export const MessageThreadCallButtons = ({
   recipientId,
   recipientName,
 }: MessageThreadCallButtonsProps) => {
-  const { startCall } = useCallState(userId);
+  const { startCall, activeCall } = useCallState(userId);
+  const { toast } = useToast();
+  const [isCalling, setIsCalling] = useState(false);
 
   const handleAudioCall = async () => {
-    await startCall(recipientId, false);
+    try {
+      setIsCalling(true);
+      console.log('🎯 Starting audio call:', { userId, recipientId, recipientName });
+      
+      toast({
+        title: "Calling...",
+        description: `Calling ${recipientName}`,
+      });
+      
+      await startCall(recipientId, false);
+      console.log('✅ Audio call started successfully');
+    } catch (error) {
+      console.error('❌ Error starting audio call:', error);
+      toast({
+        title: "Call failed",
+        description: "Unable to start the call. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCalling(false);
+    }
   };
 
   const handleVideoCall = async () => {
-    await startCall(recipientId, true);
+    try {
+      setIsCalling(true);
+      console.log('🎯 Starting video call:', { userId, recipientId, recipientName });
+      
+      toast({
+        title: "Calling...",
+        description: `Starting video call with ${recipientName}`,
+      });
+      
+      await startCall(recipientId, true);
+      console.log('✅ Video call started successfully');
+    } catch (error) {
+      console.error('❌ Error starting video call:', error);
+      toast({
+        title: "Call failed",
+        description: "Unable to start the video call. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCalling(false);
+    }
   };
 
   return (
@@ -29,20 +73,22 @@ export const MessageThreadCallButtons = ({
         variant="outline"
         size="sm"
         onClick={handleAudioCall}
+        disabled={isCalling || !!activeCall}
         className="gap-2"
       >
         <Phone className="h-4 w-4" />
-        Call
+        {activeCall?.state === 'calling' ? 'Calling...' : 'Call'}
       </Button>
 
       <Button
         variant="outline"
         size="sm"
         onClick={handleVideoCall}
+        disabled={isCalling || !!activeCall}
         className="gap-2"
       >
         <Video className="h-4 w-4" />
-        Video Call
+        {activeCall?.state === 'calling' ? 'Calling...' : 'Video Call'}
       </Button>
     </div>
   );
