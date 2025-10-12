@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_proactive_settings: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          setting_key: string
+          setting_value: Json
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          setting_key: string
+          setting_value: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       ai_conversations: {
         Row: {
           agent_type: string
@@ -2992,6 +3022,60 @@ export type Database = {
           },
         ]
       }
+      proactive_context_cache: {
+        Row: {
+          computed_at: string
+          context_data: Json
+          expires_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          computed_at?: string
+          context_data?: Json
+          expires_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          computed_at?: string
+          context_data?: Json
+          expires_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      proactive_engagement: {
+        Row: {
+          context_snapshot: Json | null
+          created_at: string
+          engagement_type: string
+          id: string
+          user_id: string
+          user_response: string | null
+          was_helpful: boolean | null
+        }
+        Insert: {
+          context_snapshot?: Json | null
+          created_at?: string
+          engagement_type: string
+          id?: string
+          user_id: string
+          user_response?: string | null
+          was_helpful?: boolean | null
+        }
+        Update: {
+          context_snapshot?: Json | null
+          created_at?: string
+          engagement_type?: string
+          id?: string
+          user_id?: string
+          user_response?: string | null
+          was_helpful?: boolean | null
+        }
+        Relationships: []
+      }
       profile_privacy_settings: {
         Row: {
           created_at: string
@@ -3027,6 +3111,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+          activity_level: string | null
+          age_range: string | null
           avatar_url: string | null
           bio: string | null
           cover_url: string | null
@@ -3041,8 +3127,10 @@ export type Database = {
           facebook_synced_at: string | null
           facebook_url: string | null
           full_name: string | null
+          gender: string | null
           handle: string | null
           id: string
+          inferred_language: string | null
           instagram_bio: string | null
           instagram_followers_count: number | null
           instagram_interests: string[] | null
@@ -3058,6 +3146,7 @@ export type Database = {
           medical_conditions: string[] | null
           medications: string[] | null
           phone: string | null
+          preferred_languages: Json | null
           professional_skills: string[] | null
           tenant_id: string | null
           tiktok_bio: string | null
@@ -3065,6 +3154,7 @@ export type Database = {
           tiktok_followers_count: number | null
           tiktok_synced_at: string | null
           tiktok_url: string | null
+          timezone: string | null
           updated_at: string
           user_id: string
           x_bio: string | null
@@ -3079,6 +3169,8 @@ export type Database = {
           youtube_url: string | null
         }
         Insert: {
+          activity_level?: string | null
+          age_range?: string | null
           avatar_url?: string | null
           bio?: string | null
           cover_url?: string | null
@@ -3093,8 +3185,10 @@ export type Database = {
           facebook_synced_at?: string | null
           facebook_url?: string | null
           full_name?: string | null
+          gender?: string | null
           handle?: string | null
           id?: string
+          inferred_language?: string | null
           instagram_bio?: string | null
           instagram_followers_count?: number | null
           instagram_interests?: string[] | null
@@ -3110,6 +3204,7 @@ export type Database = {
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
+          preferred_languages?: Json | null
           professional_skills?: string[] | null
           tenant_id?: string | null
           tiktok_bio?: string | null
@@ -3117,6 +3212,7 @@ export type Database = {
           tiktok_followers_count?: number | null
           tiktok_synced_at?: string | null
           tiktok_url?: string | null
+          timezone?: string | null
           updated_at?: string
           user_id: string
           x_bio?: string | null
@@ -3131,6 +3227,8 @@ export type Database = {
           youtube_url?: string | null
         }
         Update: {
+          activity_level?: string | null
+          age_range?: string | null
           avatar_url?: string | null
           bio?: string | null
           cover_url?: string | null
@@ -3145,8 +3243,10 @@ export type Database = {
           facebook_synced_at?: string | null
           facebook_url?: string | null
           full_name?: string | null
+          gender?: string | null
           handle?: string | null
           id?: string
+          inferred_language?: string | null
           instagram_bio?: string | null
           instagram_followers_count?: number | null
           instagram_interests?: string[] | null
@@ -3162,6 +3262,7 @@ export type Database = {
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
+          preferred_languages?: Json | null
           professional_skills?: string[] | null
           tenant_id?: string | null
           tiktok_bio?: string | null
@@ -3169,6 +3270,7 @@ export type Database = {
           tiktok_followers_count?: number | null
           tiktok_synced_at?: string | null
           tiktok_url?: string | null
+          timezone?: string | null
           updated_at?: string
           user_id?: string
           x_bio?: string | null
@@ -3973,6 +4075,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_journey: {
+        Row: {
+          created_at: string
+          days_active: number
+          engagement_score: number
+          experience_level: string
+          id: string
+          last_active_at: string | null
+          milestones: Json | null
+          onboarding_stage: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          days_active?: number
+          engagement_score?: number
+          experience_level?: string
+          id?: string
+          last_active_at?: string | null
+          milestones?: Json | null
+          onboarding_stage?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          days_active?: number
+          engagement_score?: number
+          experience_level?: string
+          id?: string
+          last_active_at?: string | null
+          milestones?: Json | null
+          onboarding_stage?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_match_interactions: {
         Row: {
           created_at: string
@@ -4753,7 +4894,7 @@ export type Database = {
       }
       l2_normalize: {
         Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: unknown
+        Returns: string
       }
       list_roles_for_active_tenant: {
         Args: { p_tenant_id: string }

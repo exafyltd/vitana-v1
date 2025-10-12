@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { useUserPreferences } from './useUserPreferences';
 import { useTextToSpeech } from './useTextToSpeech';
-import { generateGreetingMessage, GreetingContext, GreetingMessage } from '@/services/greetingMessages';
+import { generateGreetingMessage, GreetingContext, GreetingMessage, GreetingMessageType } from '@/services/greetingMessages';
 import { supabase } from '@/integrations/supabase/client';
 
 const SESSION_KEY = 'vitana_greeting_spoken';
@@ -115,74 +115,76 @@ export function useIntelligentGreeting() {
     if (!shouldGreet()) return;
 
     try {
-      // Track activations within 10 seconds
-      const now = Date.now();
-      const recent = activationTimesRef.current.filter((t) => now - t <= 10000);
-      recent.push(now);
-      activationTimesRef.current = recent;
-      const suppressName = recent.length > 2; // more than 2 times within 10s
-
-      const baseContext = await fetchGreetingContext();
-      const context = { ...baseContext, suppressName };
-      console.log('🎯 About to generate greeting with context:', context);
-      const greetingMessage = generateGreetingMessage(context);
-      console.log('📝 Generated greeting message:', greetingMessage);
-
-      // Map UI message types to generator types
-      const messageTypeMap: Record<string, string> = {
-        'time_greeting': 'welcome',
-        'motivational': 'motivation',
-        'reminder': 'reminder',
-        'wellness_check': 'recommendation',
-      };
+      console.log('🎯 Triggering AI-powered greeting...');
       
-      const rawTypes = preferences?.greeting_message_types || ['time_greeting', 'reminder', 'motivational'];
-      const allowedTypes = rawTypes.map((t: string) => messageTypeMap[t] || t);
+      // Call new AI-powered greeting generation
+      const { data, error } = await supabase.functions.invoke('generate-proactive-greeting');
       
-      console.log('🎯 Allowed types:', allowedTypes, 'Generated type:', greetingMessage.type);
-      
-      if (!allowedTypes.includes(greetingMessage.type)) {
-        const welcomeContext = { ...context, pendingActions: undefined, upcomingAppointments: undefined, healthScoreChange: undefined, achievements: undefined };
-        const simpleGreeting = generateGreetingMessage(welcomeContext);
-        setLastGreeting(simpleGreeting);
-        speak(simpleGreeting.text);
-      } else {
+      if (error) {
+        console.error('Error generating AI greeting:', error);
+        // Fallback to old method
+        const baseContext = await fetchGreetingContext();
+        const greetingMessage = generateGreetingMessage(baseContext);
         setLastGreeting(greetingMessage);
         speak(greetingMessage.text);
+      } else {
+        console.log('📝 Generated AI greeting:', data.greeting);
+        const greetingMessage = {
+          text: data.greeting,
+          type: 'ai_generated' as GreetingMessageType,
+          priority: 'medium' as const,
+          context: data.context
+        };
+        setLastGreeting(greetingMessage);
+        speak(data.greeting);
       }
 
       sessionStorage.setItem(SESSION_KEY, 'true');
       localStorage.setItem(LAST_GREETING_KEY, new Date().toISOString());
 
       const historyEntry = {
-        message: greetingMessage.text,
+        message: data?.greeting || 'Greeting generated',
         time: new Date().toISOString()
       };
       setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
     } catch (error) {
       console.error('Failed to trigger greeting:', error);
     }
-  }, [shouldGreet, fetchGreetingContext, preferences, speak]);
+  }, [shouldGreet, fetchGreetingContext, speak]);
 
   const manualGreeting = useCallback(async () => {
-    // Track activations within 10 seconds
-    const now = Date.now();
-    const recent = activationTimesRef.current.filter((t) => now - t <= 10000);
-    recent.push(now);
-    activationTimesRef.current = recent;
-    const suppressName = recent.length > 2; // more than 2 times within 10s
+    try {
+      console.log('🎯 Triggering manual AI greeting...');
+      
+      // Call AI-powered greeting generation
+      const { data, error } = await supabase.functions.invoke('generate-proactive-greeting');
+      
+      if (error) {
+        console.error('Error generating AI greeting:', error);
+        // Fallback
+        const baseContext = await fetchGreetingContext();
+        const greetingMessage = generateGreetingMessage(baseContext);
+        setLastGreeting(greetingMessage);
+        speak(greetingMessage.text);
+      } else {
+        const greetingMessage = {
+          text: data.greeting,
+          type: 'ai_generated' as GreetingMessageType,
+          priority: 'medium' as const,
+          context: data.context
+        };
+        setLastGreeting(greetingMessage);
+        speak(data.greeting);
+      }
 
-    const baseContext = await fetchGreetingContext();
-    const context = { ...baseContext, suppressName };
-    const greetingMessage = generateGreetingMessage(context);
-    setLastGreeting(greetingMessage);
-    speak(greetingMessage.text);
-
-    const historyEntry = {
-      message: greetingMessage.text,
-      time: new Date().toISOString()
-    };
-    setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
+      const historyEntry = {
+        message: data?.greeting || 'Greeting generated',
+        time: new Date().toISOString()
+      };
+      setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
+    } catch (error) {
+      console.error('Failed to trigger manual greeting:', error);
+    }
   }, [fetchGreetingContext, speak]);
 
   const clearGreetingState = useCallback(() => {

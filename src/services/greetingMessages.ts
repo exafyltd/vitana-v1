@@ -6,7 +6,8 @@ export type GreetingMessageType =
   | 'motivation'
   | 'recommendation'
   | 'inspiration'
-  | 'celebration';
+  | 'celebration'
+  | 'ai_generated';
 
 export interface GreetingContext {
   firstName?: string;

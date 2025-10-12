@@ -86,3 +86,9 @@ verify_jwt = true
 
 [functions.analyze-patterns]
 verify_jwt = true
+
+[functions.get-proactive-context]
+verify_jwt = true
+
+[functions.generate-proactive-greeting]
+verify_jwt = true
