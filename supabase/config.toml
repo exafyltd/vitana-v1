@@ -4,7 +4,7 @@ project_id = "inmkhvwdcuyhnxkgfvsb"
 verify_jwt = true
 
 [functions.vertex-live]
-verify_jwt = true
+verify_jwt = false
 
 [functions.google-cloud-tts]
 verify_jwt = true

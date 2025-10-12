@@ -25,8 +25,8 @@ export class VertexLiveService {
     try {
       this.audioContext = new AudioContext({ sampleRate: 24000 });
 
-      // Pass token as query parameter for WebSocket auth
-      const wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/vertex-live?token=${encodeURIComponent(token)}`;
+      // Pass token as query parameter for WebSocket auth (use functions subdomain for WS)
+      const wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.functions.supabase.co/vertex-live?token=${encodeURIComponent(token)}`;
       this.ws = new WebSocket(wsUrl);
 
       this.ws.onopen = () => {

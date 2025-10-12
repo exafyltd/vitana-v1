@@ -11,14 +11,19 @@ export const useVertexLive = () => {
   
   const serviceRef = useRef<VertexLiveService | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+  const retryCountRef = useRef(0);
 
   useEffect(() => {
     // Initialize service
     serviceRef.current = new VertexLiveService({
       onConnectionChange: (connected) => {
         console.log('🔌 Connection status:', connected);
-        setConnectionState(connected ? 'connected' : 'disconnected');
-        if (!connected) {
+        if (connected) {
+          if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+          retryCountRef.current = 0;
+          setConnectionState('connected');
+        } else {
+          setConnectionState('disconnected');
           setIsRecording(false);
           setIsScreenSharing(false);
         }
@@ -34,16 +39,22 @@ export const useVertexLive = () => {
       },
       onError: (errorMsg) => {
         console.error('❌ Vertex Live error:', errorMsg);
-        setError(errorMsg);
+        setError((prev) => (prev === errorMsg ? prev : errorMsg));
         setConnectionState('error');
         
-        // Auto-retry after 3 seconds
-        reconnectTimeoutRef.current = setTimeout(() => {
-          if (serviceRef.current) {
-            console.log('🔄 Attempting reconnect...');
-            connect();
-          }
-        }, 3000);
+        // Exponential backoff with max 3 retries
+        retryCountRef.current += 1;
+        if (retryCountRef.current <= 3) {
+          const delay = Math.min(15000, 2000 * Math.pow(2, retryCountRef.current - 1));
+          reconnectTimeoutRef.current = setTimeout(() => {
+            if (serviceRef.current) {
+              console.log('🔄 Attempting reconnect... (#' + retryCountRef.current + ')');
+              connect();
+            }
+          }, delay);
+        } else {
+          console.warn('🛑 Max reconnect attempts reached');
+        }
       }
     });
 
@@ -60,6 +71,8 @@ export const useVertexLive = () => {
 
   const connect = useCallback(async () => {
     try {
+      if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+      retryCountRef.current = 0;
       setError(null);
       setConnectionState('connecting');
       
@@ -79,8 +92,12 @@ export const useVertexLive = () => {
   }, []);
 
   const disconnect = useCallback(() => {
+    if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+    retryCountRef.current = 0;
     serviceRef.current?.disconnect();
     setTranscript('');
+    setError(null);
+    setConnectionState('disconnected');
   }, []);
 
   const startAudio = useCallback(async () => {

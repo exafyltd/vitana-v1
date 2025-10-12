@@ -34,6 +34,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [showApiKeyModal, setShowApiKeyModal] = useState(false)
   const [useVertexLiveMode, setUseVertexLiveMode] = useState(true)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
+  const errorToastAtRef = useRef<number>(0)
 
   const { selectedLanguage, setSelectedLanguage, languageOptions, isLoading: languageLoading } = useLanguage()
   const { toast } = useToast()
@@ -245,14 +246,18 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [])
 
-  // Show Vertex error toasts
+  // Show Vertex error toasts (throttled)
   useEffect(() => {
     if (vertexError) {
-      toast({
-        title: "Vertex AI Error",
-        description: vertexError,
-        variant: "destructive",
-      });
+      const now = Date.now();
+      if (!errorToastAtRef.current || now - errorToastAtRef.current > 10000) {
+        errorToastAtRef.current = now;
+        toast({
+          title: "Vertex AI Error",
+          description: vertexError,
+          variant: "destructive",
+        });
+      }
     }
   }, [vertexError, toast]);
 
