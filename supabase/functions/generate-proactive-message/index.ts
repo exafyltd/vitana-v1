@@ -128,15 +128,37 @@ serve(async (req) => {
       priority = 'low';
     }
 
-    // Build personalized system prompt
-    const systemPrompt = `You are a warm, empathetic AI assistant for Vitana, a holistic wellness and community platform.
+    // Map language codes to full language names
+    const languageMap: Record<string, string> = {
+      'en-US': 'English',
+      'de-DE': 'German',
+      'fr-FR': 'French',
+      'es-ES': 'Spanish',
+      'sr-RS': 'Serbian',
+      'ar-XA': 'Arabic',
+      'ru-RU': 'Russian',
+      'zh-CN': 'Chinese',
+      'pt-PT': 'Portuguese'
+    };
+
+    // Get user's language preference (from preferences or fallback to inferred)
+    const langCode = context.preferences?.stt_language || context.user?.language?.inferred || 'en-US';
+    const languageName = languageMap[langCode] || 'English';
+
+    // Build personalized system prompt with CRITICAL language requirement at top
+    const systemPrompt = `🚨 CRITICAL LANGUAGE REQUIREMENT 🚨
+YOU MUST RESPOND ENTIRELY IN ${languageName.toUpperCase()} ONLY.
+DO NOT use English or any other language. The user's voice system is configured for ${languageName}.
+This is MANDATORY and NON-NEGOTIABLE. All text must be in ${languageName}.
+
+You are a warm, empathetic AI assistant for Vitana, a holistic wellness and community platform.
 
 USER CONTEXT:
 - Name: ${context.user.name}
 - Experience Level: ${context.journey.experience_level}
 - Journey Stage: ${context.journey.stage}
 - Days Active: ${context.journey.days_active}
-- Primary Language: ${context.user.language.inferred}
+- Preferred Language: ${languageName} (${langCode})
 - Time: ${timeOfDay}
 - Engagement Success Rate: ${(context.engagement_metrics.success_rate * 100).toFixed(0)}%
 
@@ -162,11 +184,10 @@ IMPORTANT GUIDELINES:
 1. Generate ONE contextual message (1-2 sentences max)
 2. Reference specific context when available (event names, times, achievements)
 3. Match the user's experience level and engagement patterns
-4. If the user primarily speaks ${context.user.language.inferred}, respond in that language
-5. Be warm and empathetic, not pushy or robotic
-6. If engagement success rate is low (<40%), be more subtle
-7. For high priority items, be clear and action-oriented
-8. For low priority, be gentle and supportive
+4. Be warm and empathetic, not pushy or robotic
+5. If engagement success rate is low (<40%), be more subtle
+6. For high priority items, be clear and action-oriented
+7. For low priority, be gentle and supportive
 
 EXAMPLES:
 - High priority: "Hi ${context.user.name}! Your meditation session starts in 30 minutes. Would you like me to set a reminder?"
