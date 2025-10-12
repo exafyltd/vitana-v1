@@ -26,8 +26,7 @@ export class VertexLiveService {
       this.audioContext = new AudioContext({ sampleRate: 24000 });
 
       // Use the Supabase URL from environment and construct WebSocket URL
-      const supabaseUrl = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
-      const wsUrl = `${supabaseUrl.replace('https://', 'wss://')}/functions/v1/vertex-live?token=${encodeURIComponent(token)}`;
+      const wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.functions.supabase.co/vertex-live?token=${encodeURIComponent(token)}`;
       console.log('🔗 Connecting to:', wsUrl);
       
       this.ws = new WebSocket(wsUrl);
