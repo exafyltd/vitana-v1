@@ -137,6 +137,7 @@ export const adminAIAssistantNavigation = [
   { id: "automation-builder", name: "Automation Builder", path: "/admin/ai-assistant/automation-builder" },
   { id: "ai-analyzer", name: "AI Situation Analyzer", path: "/admin/ai-assistant/ai-analyzer" },
   { id: "pattern-discovery", name: "Pattern Discovery", path: "/admin/ai-assistant/pattern-discovery" },
+  { id: "proactive-settings", name: "Proactive Settings", path: "/admin/ai-assistant/proactive-settings" },
   { id: "analytics", name: "Analytics & Performance", path: "/admin/ai-assistant/analytics" },
 ];
 
