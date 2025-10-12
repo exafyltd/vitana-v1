@@ -108,19 +108,7 @@ serve(async (req) => {
           console.warn('⚠️ Conversation creation error (non-fatal):', e);
         }
 
-        // Get Vertex access token via edge function
-        const authResponse = await fetch(`${supabaseUrl}/functions/v1/vertex-auth`, {
-          headers: { Authorization: `Bearer ${token}`, apikey: supabaseKey },
-        });
-        if (!authResponse.ok) {
-          console.error('❌ vertex-auth failed:', authResponse.status);
-          clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex auth failed' }));
-          clientSocket.close(4002, 'vertex-auth-failed');
-          return;
-        }
-        const { access_token } = await authResponse.json();
-
-        // Get project id from service account
+        // Mint Google access token directly using service account (no external vertex-auth)
         const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
         if (!serviceAccountJson) {
           console.error('❌ Missing GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
@@ -128,13 +116,93 @@ serve(async (req) => {
           clientSocket.close(4500, 'config-missing');
           return;
         }
+
         const serviceAccount = JSON.parse(serviceAccountJson);
         const projectId = serviceAccount.project_id;
 
-        // Connect to Vertex Live WS using access_token
-        const vertexUrl = `wss://us-central1-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent?access_token=${access_token}`;
-        console.log('🔗 Connecting to Vertex WS...');
-        vertexSocket = new WebSocket(vertexUrl);
+        // Helper: base64url encode
+        const base64UrlEncode = (input: Uint8Array) => {
+          let str = '';
+          for (let i = 0; i < input.length; i++) str += String.fromCharCode(input[i]);
+          return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        };
+
+        // Helper: PEM to ArrayBuffer (PKCS8)
+        const pemToArrayBuffer = (pem: string): ArrayBuffer => {
+          const b64 = pem
+            .replace(/-----BEGIN PRIVATE KEY-----/g, '')
+            .replace(/-----END PRIVATE KEY-----/g, '')
+            .replace(/\s+/g, '');
+          const raw = atob(b64);
+          const buf = new Uint8Array(raw.length);
+          for (let i = 0; i < raw.length; i++) buf[i] = raw.charCodeAt(i);
+          return buf.buffer;
+        };
+
+        try {
+          const enc = new TextEncoder();
+          const header = { alg: 'RS256', typ: 'JWT' };
+          const iat = Math.floor(Date.now() / 1000);
+          const exp = iat + 3600; // 1 hour
+          const payload = {
+            iss: serviceAccount.client_email,
+            scope: 'https://www.googleapis.com/auth/cloud-platform',
+            aud: 'https://oauth2.googleapis.com/token',
+            iat,
+            exp,
+          };
+
+          const headerB64 = base64UrlEncode(enc.encode(JSON.stringify(header)));
+          const payloadB64 = base64UrlEncode(enc.encode(JSON.stringify(payload)));
+          const toSign = enc.encode(`${headerB64}.${payloadB64}`);
+
+          const keyData = pemToArrayBuffer(serviceAccount.private_key);
+          const privateKey = await crypto.subtle.importKey(
+            'pkcs8',
+            keyData,
+            { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+            false,
+            ['sign']
+          );
+
+          const signature = new Uint8Array(
+            await crypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, privateKey, toSign)
+          );
+          const signatureB64 = base64UrlEncode(signature);
+          const assertion = `${headerB64}.${payloadB64}.${signatureB64}`;
+
+          const tokenResp = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${encodeURIComponent(assertion)}`,
+          });
+
+          if (!tokenResp.ok) {
+            const errText = await tokenResp.text();
+            console.error('❌ Google OAuth token exchange failed:', tokenResp.status, errText);
+            clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex auth failed' }));
+            clientSocket.close(4002, 'vertex-auth-failed');
+            return;
+          }
+
+          const { access_token } = await tokenResp.json();
+          if (!access_token) {
+            console.error('❌ No access_token in token response');
+            clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex auth failed' }));
+            clientSocket.close(4002, 'vertex-auth-failed');
+            return;
+          }
+
+          // Connect to Vertex Live WS using access_token
+          const vertexUrl = `wss://us-central1-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent?access_token=${access_token}`;
+          console.log('🔗 Connecting to Vertex WS...');
+          vertexSocket = new WebSocket(vertexUrl);
+        } catch (e) {
+          console.error('❌ Error during Google token mint:', e);
+          clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex auth failed' }));
+          clientSocket.close(4002, 'vertex-auth-failed');
+          return;
+        }
 
         vertexSocket.onopen = () => {
           console.log('✅ Connected to Vertex AI Live API');
