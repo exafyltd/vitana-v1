@@ -1,5 +1,11 @@
 project_id = "inmkhvwdcuyhnxkgfvsb"
 
+[functions.vertex-auth]
+verify_jwt = true
+
+[functions.vertex-live]
+verify_jwt = true
+
 [functions.google-cloud-tts]
 verify_jwt = true
 

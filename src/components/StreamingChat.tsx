@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from "react"
-import { Mic, Video as VideoIcon, X, Send, Settings, Globe } from "lucide-react"
+import { Mic, Video as VideoIcon, X, Send, Settings, Globe, Monitor } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DiaryButton from "@/components/diary/DiaryButton"
 import { aiVoiceService } from "@/services/aiVoiceService"
@@ -8,6 +8,7 @@ import { ApiKeySettingsModal } from "@/components/chat/ApiKeySettingsModal"
 import { supabase } from "@/integrations/supabase/client"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { useUserPreferences } from "@/hooks/useUserPreferences"
+import { useVertexLive } from "@/hooks/useVertexLive"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,11 +32,27 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
   const [showApiKeyModal, setShowApiKeyModal] = useState(false)
+  const [useVertexLiveMode, setUseVertexLiveMode] = useState(false)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
 
   const { selectedLanguage, setSelectedLanguage, languageOptions, isLoading: languageLoading } = useLanguage()
   const { toast } = useToast()
   const { preferences } = useUserPreferences()
+  
+  // Vertex Live API integration
+  const {
+    isConnected: vertexConnected,
+    isRecording: vertexRecording,
+    isScreenSharing: vertexScreenSharing,
+    transcript: vertexTranscript,
+    error: vertexError,
+    connect: vertexConnect,
+    disconnect: vertexDisconnect,
+    startAudio: vertexStartAudio,
+    stopAudio: vertexStopAudio,
+    startScreen: vertexStartScreen,
+    stopScreen: vertexStopScreen,
+  } = useVertexLive()
 
   const isStreaming = isAudioActive || isVideoActive
 
@@ -225,20 +242,67 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [])
 
+  // Show Vertex error toasts
+  useEffect(() => {
+    if (vertexError) {
+      toast({
+        title: "Vertex AI Error",
+        description: vertexError,
+        variant: "destructive",
+      });
+    }
+  }, [vertexError, toast]);
+
+  // Update streaming text from Vertex transcript
+  useEffect(() => {
+    if (useVertexLiveMode && vertexTranscript) {
+      setAssistantStreamingText(vertexTranscript);
+    }
+  }, [useVertexLiveMode, vertexTranscript]);
+
   useImperativeHandle(ref, () => ({
-    activateVideo: () => {
-      console.log('StreamingChat: activateVideo called');
-      setIsVideoActive(true);
-      setIsAudioActive(false);
+    activateVideo: async () => {
+      console.log('StreamingChat: activateVideo called, useVertexLive:', useVertexLiveMode);
+      
+      if (useVertexLiveMode) {
+        // Use Vertex Live API
+        try {
+          await vertexConnect();
+          await vertexStartAudio();
+          await vertexStartScreen();
+          setIsVideoActive(true);
+          setIsAudioActive(false);
+          console.log('✅ Vertex Live activated');
+        } catch (error) {
+          console.error('❌ Failed to activate Vertex Live:', error);
+          toast({
+            title: "Failed to start Vertex AI Live",
+            description: "Please check your Google Cloud credentials",
+            variant: "destructive",
+          });
+        }
+      } else {
+        // Use existing video stream
+        setIsVideoActive(true);
+        setIsAudioActive(false);
+      }
     },
     deactivateVideo: () => {
       console.log('StreamingChat: deactivateVideo called');
+      
+      if (useVertexLiveMode) {
+        vertexStopAudio();
+        vertexStopScreen();
+        vertexDisconnect();
+      }
+      
       setIsVideoActive(false);
       setIsAudioActive(false);
     },
     isStreamingActive: () => {
-      console.log('StreamingChat: isStreamingActive called, returning:', isVideoActive);
-      return isVideoActive;
+      const active = useVertexLiveMode ? vertexConnected : isVideoActive;
+      console.log('StreamingChat: isStreamingActive called, returning:', active);
+      return active;
     },
   }))
 
@@ -271,6 +335,22 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           <div className="bg-card text-card-foreground px-4 py-3 rounded-lg shadow-lg border">
             <p className="text-sm">{assistantStreamingText}</p>
           </div>
+        </div>
+      )}
+
+      {/* Vertex Live indicators */}
+      {useVertexLiveMode && vertexConnected && (
+        <div className="fixed top-20 right-4 z-50 flex flex-col gap-2">
+          <div className="bg-emerald-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
+            <div className="w-2 h-2 bg-white rounded-full" />
+            <span className="text-xs font-medium">Live with Gemini</span>
+          </div>
+          {vertexScreenSharing && (
+            <div className="bg-blue-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
+              <Monitor className="h-3 w-3" />
+              <span className="text-xs font-medium">Screen Sharing Active</span>
+            </div>
+          )}
         </div>
       )}
 
