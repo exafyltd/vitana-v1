@@ -12,7 +12,10 @@ serve(async (req) => {
   }
 
   try {
-    const authHeader = req.headers.get('Authorization');
+    // Extract and validate auth token
+    const rawAuthHeader = req.headers.get('Authorization') || '';
+    const token = rawAuthHeader.startsWith('Bearer ') ? rawAuthHeader.slice(7).trim() : '';
+    const authHeader = token && token !== 'undefined' && token !== 'null' ? `Bearer ${token}` : null;
 
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
