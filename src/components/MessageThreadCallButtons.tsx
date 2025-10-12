@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Phone, Video } from 'lucide-react';
 import { useCallState } from '@/hooks/useCallState';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface MessageThreadCallButtonsProps {
   userId: string;
@@ -18,6 +18,17 @@ export const MessageThreadCallButtons = ({
   const { startCall, activeCall } = useCallState(userId);
   const { toast } = useToast();
   const [isCalling, setIsCalling] = useState(false);
+
+  // Show notification when call times out (no answer)
+  useEffect(() => {
+    if (activeCall?.state === 'no-answer') {
+      toast({
+        title: "No answer",
+        description: `${activeCall.recipientName || 'User'} didn't answer the call`,
+        variant: "destructive",
+      });
+    }
+  }, [activeCall?.state, activeCall?.recipientName, toast]);
 
   const handleAudioCall = async () => {
     try {
