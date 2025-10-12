@@ -32,7 +32,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
   const [showApiKeyModal, setShowApiKeyModal] = useState(false)
-  const [useVertexLiveMode, setUseVertexLiveMode] = useState(false)
+  const [useVertexLiveMode, setUseVertexLiveMode] = useState(true)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
 
   const { selectedLanguage, setSelectedLanguage, languageOptions, isLoading: languageLoading } = useLanguage()
