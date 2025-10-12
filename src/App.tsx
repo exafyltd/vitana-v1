@@ -1045,6 +1045,43 @@ const App = () => {
             </AuthGuard>
           } />
           
+          {/* Live & Stream Routes */}
+          <Route path="/admin/live-stream" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <LiveStreamOverview />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/live-stream/vertex-testing" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <VertexTesting />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/live-stream/community-rooms" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <CommunityRoomsAdmin />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/live-stream/telemedicine" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <TelemedicineSessions />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/live-stream/settings" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <StreamSettings />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
           {/* Legacy redirects for backward compatibility */}
           <Route path="/admin/bootstrap" element={<Navigate to="/admin/system/bootstrap" replace />} />
           <Route path="/admin/staff" element={<Navigate to="/admin/user-management/staff" replace />} />
