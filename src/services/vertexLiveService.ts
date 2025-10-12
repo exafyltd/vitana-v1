@@ -25,51 +25,77 @@ export class VertexLiveService {
     try {
       this.audioContext = new AudioContext({ sampleRate: 24000 });
 
-      // Build functions websocket URL from Supabase URL (robust across envs)
-      const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string | undefined;
-      let wsUrl: string;
-      try {
-        if (!supabaseUrl) throw new Error('Missing VITE_SUPABASE_URL');
-        const parsed = new URL(supabaseUrl);
-        const functionsHost = parsed.host.replace('.supabase.co', '.functions.supabase.co');
-        wsUrl = `wss://${functionsHost}/functions/v1/vertex-live?token=${encodeURIComponent(token)}`;
-      } catch {
-        // Fallback to known host
-        wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.functions.supabase.co/functions/v1/vertex-live?token=${encodeURIComponent(token)}`;
-      }
-      console.log('🔗 Connecting to:', wsUrl);
-      
-      this.ws = new WebSocket(wsUrl);
-
-      this.ws.onopen = () => {
-        console.log('✅ WebSocket connected to edge function');
-        // No need to send auth message - it's in the URL
-      };
-
-      this.ws.onmessage = async (event) => {
+      // Build candidate WebSocket URLs (try canonical first, then legacy)
+      const makeHosts = () => {
+        const fallbackHost = 'inmkhvwdcuyhnxkgfvsb.functions.supabase.co';
         try {
-          const data = JSON.parse(event.data);
-          await this.handleServerMessage(data);
-        } catch (error) {
-          console.error('Error parsing server message:', error);
+          const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string | undefined;
+          if (!supabaseUrl) throw new Error('Missing VITE_SUPABASE_URL');
+          const parsed = new URL(supabaseUrl);
+          return parsed.host.replace('.supabase.co', '.functions.supabase.co');
+        } catch {
+          return fallbackHost;
         }
       };
+      const functionsHost = makeHosts();
+      const urls = [
+        `wss://${functionsHost}/functions/v1/vertex-live?token=${encodeURIComponent(token)}`,
+        `wss://${functionsHost}/vertex-live?token=${encodeURIComponent(token)}`,
+      ];
 
-      this.ws.onerror = (error: Event) => {
-        console.error('❌ WebSocket error:', error);
-        const wsError = error as ErrorEvent;
-        const errorMsg = wsError.message || 'WebSocket connection error';
-        console.error('Error details:', errorMsg);
-        this.callbacks.onError?.(errorMsg);
+      let attempt = 0;
+      const tryConnect = (url: string) => {
+        console.log('🔗 Connecting to:', url);
+        const ws = new WebSocket(url);
+        let opened = false;
+
+        ws.onopen = () => {
+          opened = true;
+          this.ws = ws;
+          console.log('✅ WebSocket connected to edge function');
+          // No need to send auth message - it's in the URL
+        };
+
+        ws.onmessage = async (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            await this.handleServerMessage(data);
+          } catch (error) {
+            console.error('Error parsing server message:', error);
+          }
+        };
+
+        ws.onerror = (error: Event) => {
+          console.error('❌ WebSocket error:', error);
+          const wsError = error as ErrorEvent;
+          const errorMsg = wsError.message || 'WebSocket connection error';
+          console.error('Error details:', errorMsg);
+          // If first URL failed and not opened yet, try fallback once
+          if (!opened && attempt === 0 && urls[1]) {
+            attempt = 1;
+            console.warn('↩️ Retrying with legacy WS path...');
+            tryConnect(urls[1]);
+            return;
+          }
+          this.callbacks.onError?.(errorMsg);
+        };
+
+        ws.onclose = (ev) => {
+          const e = ev as CloseEvent;
+          console.log('🔌 WebSocket closed', e?.code, e?.reason);
+          if (!opened && attempt === 0 && urls[1]) {
+            attempt = 1;
+            console.warn('↩️ Retrying with legacy WS path after close...');
+            tryConnect(urls[1]);
+            return;
+          }
+          this.callbacks.onConnectionChange?.(false);
+          this.isSetupComplete = false;
+        };
       };
 
-      this.ws.onclose = (ev) => {
-        const e = ev as CloseEvent;
-        console.log('🔌 WebSocket closed', e?.code, e?.reason);
-        this.callbacks.onConnectionChange?.(false);
-        this.isSetupComplete = false;
-      };
-
+      // Kick off first attempt
+      tryConnect(urls[0]);
     } catch (error) {
       console.error('❌ Error connecting to Vertex AI:', error);
       this.callbacks.onError?.('Failed to connect');
