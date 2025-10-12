@@ -77,7 +77,7 @@ serve(async (req) => {
         });
 
         // Verify user
-        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
         if (authError || !user) {
           console.error('❌ Unauthorized:', authError);
           clientSocket.send(JSON.stringify({ type: 'error', message: 'Unauthorized' }));
