@@ -179,9 +179,11 @@ serve(async (req) => {
 
           if (!tokenResp.ok) {
             const errText = await tokenResp.text();
-            console.error('❌ Google OAuth token exchange failed:', tokenResp.status, errText);
-            clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex auth failed' }));
-            clientSocket.close(4002, 'vertex-auth-failed');
+            console.error('[VertexLive][OAuth] Token exchange failed', { status: tokenResp.status, body: errText.slice(0, 500) });
+            try {
+              clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex OAuth failed', status: tokenResp.status, detail: errText.slice(0, 500) }));
+            } catch (_) {}
+            clientSocket.close(4502, 'vertex-oauth-failed');
             return;
           }
 
@@ -198,9 +200,9 @@ serve(async (req) => {
           console.log('🔗 Connecting to Vertex WS...');
           vertexSocket = new WebSocket(vertexUrl);
         } catch (e) {
-          console.error('❌ Error during Google token mint:', e);
-          clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex auth failed' }));
-          clientSocket.close(4002, 'vertex-auth-failed');
+          console.error('[VertexLive][OAuth] Mint error:', e);
+          try { clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex OAuth mint error' })); } catch (_){ }
+          clientSocket.close(4503, 'vertex-oauth-mint-error');
           return;
         }
 
