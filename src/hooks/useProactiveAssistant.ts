@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTextToSpeech } from './useTextToSpeech';
 import { useToast } from '@/hooks/use-toast';
-
+import { useLanguage } from '@/contexts/LanguageContext';
 interface ProactiveMessage {
   id: string;
   text: string;
@@ -17,7 +17,7 @@ export function useProactiveAssistant() {
   const [isGenerating, setIsGenerating] = useState(false);
   const { speak, isSpeaking } = useTextToSpeech();
   const { toast } = useToast();
-
+  const { selectedLanguage } = useLanguage();
   const getMessageIcon = (type: ProactiveMessage['type']) => {
     const icons = {
       greeting: '👋',
@@ -55,9 +55,10 @@ export function useProactiveAssistant() {
     setIsGenerating(true);
 
     try {
-      const accessToken = session?.access_token;
+const accessToken = session?.access_token;
       const { data, error } = await supabase.functions.invoke('generate-proactive-message', {
         headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+        body: { override_language: selectedLanguage },
       });
 
       if (error) throw error;
@@ -130,7 +131,7 @@ export function useProactiveAssistant() {
     } finally {
       setIsGenerating(false);
     }
-  }, [lastMessageTime, speak, toast]);
+  }, [lastMessageTime, speak, toast, selectedLanguage]);
 
   const replayLastMessage = useCallback(() => {
     if (messageHistory.length > 0 && !isSpeaking) {

@@ -128,6 +128,35 @@ serve(async (req) => {
       priority = 'low';
     }
 
+    // Try to read preferred language from request body (optional)
+    let overrideLangCode: string | undefined = undefined;
+    try {
+      const maybeBody = await req.json();
+      const rawOverride = maybeBody?.override_language || maybeBody?.language || maybeBody?.preferred_language;
+      if (typeof rawOverride === 'string') {
+        overrideLangCode = rawOverride;
+      }
+    } catch (_) {
+      // No JSON body or invalid JSON - ignore
+    }
+
+    // Normalize short codes (e.g., 'de' -> 'de-DE')
+    const normalizeLang = (code: string): string => {
+      const c = (code || '').toLowerCase();
+      switch (c) {
+        case 'en': return 'en-US';
+        case 'de': return 'de-DE';
+        case 'fr': return 'fr-FR';
+        case 'es': return 'es-ES';
+        case 'sr': return 'sr-RS';
+        case 'ar': return 'ar-XA';
+        case 'ru': return 'ru-RU';
+        case 'zh': return 'zh-CN';
+        case 'pt': return 'pt-PT';
+        default: return code;
+      }
+    };
+
     // Map language codes to full language names
     const languageMap: Record<string, string> = {
       'en-US': 'English',
@@ -141,8 +170,15 @@ serve(async (req) => {
       'pt-PT': 'Portuguese'
     };
 
-    // Get user's language preference (from preferences or fallback to inferred)
-    const langCode = context.preferences?.stt_language || context.user?.language?.inferred || 'en-US';
+    // Resolve final language code: client override -> user preferences -> inferred -> default
+    const candidate = normalizeLang(overrideLangCode || '');
+    let langCode = candidate && Object.keys(languageMap).includes(candidate) ? candidate : undefined;
+    if (!langCode) {
+      const fromContext = context.preferences?.stt_language || context.user?.language?.inferred || 'en-US';
+      const normalized = normalizeLang(fromContext);
+      langCode = Object.keys(languageMap).includes(normalized) ? normalized : 'en-US';
+    }
+
     const languageName = languageMap[langCode] || 'English';
 
     // Build personalized system prompt with CRITICAL language requirement at top
