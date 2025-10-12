@@ -40,6 +40,7 @@ serve(async (req) => {
 
     // Immediately upgrade to WebSocket BEFORE any async work
     const { socket: clientSocket, response } = Deno.upgradeWebSocket(req);
+    console.log('🔄 Upgraded to WebSocket (server handshake complete)');
 
     // Shared state across handlers
     let vertexSocket: WebSocket | null = null;

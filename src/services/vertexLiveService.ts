@@ -32,10 +32,10 @@ export class VertexLiveService {
         if (!supabaseUrl) throw new Error('Missing VITE_SUPABASE_URL');
         const parsed = new URL(supabaseUrl);
         const functionsHost = parsed.host.replace('.supabase.co', '.functions.supabase.co');
-        wsUrl = `wss://${functionsHost}/vertex-live?token=${encodeURIComponent(token)}`;
+        wsUrl = `wss://${functionsHost}/functions/v1/vertex-live?token=${encodeURIComponent(token)}`;
       } catch {
         // Fallback to known host
-        wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.functions.supabase.co/vertex-live?token=${encodeURIComponent(token)}`;
+        wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.functions.supabase.co/functions/v1/vertex-live?token=${encodeURIComponent(token)}`;
       }
       console.log('🔗 Connecting to:', wsUrl);
       
