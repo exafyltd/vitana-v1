@@ -180,6 +180,8 @@ serve(async (req) => {
     }
 
     const languageName = languageMap[langCode] || 'English';
+    
+    console.log('[PROACTIVE] Resolved language:', langCode, languageName);
 
     // Build personalized system prompt with CRITICAL language requirement at top
     const systemPrompt = `🚨 CRITICAL LANGUAGE REQUIREMENT 🚨
@@ -225,11 +227,6 @@ IMPORTANT GUIDELINES:
 6. For high priority items, be clear and action-oriented
 7. For low priority, be gentle and supportive
 
-EXAMPLES:
-- High priority: "Hi ${context.user.name}! Your meditation session starts in 30 minutes. Would you like me to set a reminder?"
-- Medium priority: "I noticed you're interested in ${context.interests[0]?.name || 'wellness'}. There's a new community group you might enjoy."
-- Low priority: "Good ${timeOfDay}! How are you feeling today? I'm here if you need anything."
-
 Generate a personalized ${messageType} message now based on the PRIORITY CONTEXT.`;
 
     // Call Lovable AI
@@ -245,7 +242,7 @@ Generate a personalized ${messageType} message now based on the PRIORITY CONTEXT
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `Generate a personalized ${messageType} message for this user based on the priority context provided.` }
         ],
-        temperature: 0.9,
+        temperature: 0.4,
         max_tokens: 150
       }),
     });
@@ -272,7 +269,40 @@ Generate a personalized ${messageType} message now based on the PRIORITY CONTEXT
     }
 
     const data = await response.json();
-    const message = data.choices[0].message.content.trim();
+    const message1 = data.choices[0].message.content.trim();
+    console.log('[PROACTIVE] First pass output (truncated):', message1.slice(0, 160));
+
+    // Translation step - guarantee output is in target language
+    const translateResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        temperature: 0,
+        max_tokens: 200,
+        messages: [
+          { role: "system", content: `You are a precise translator. Translate the user content to ${languageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.` },
+          { role: "user", content: message1 }
+        ],
+      }),
+    });
+
+    let finalMessage = message1;
+    if (translateResp.ok) {
+      const tr = await translateResp.json();
+      const translated = tr.choices?.[0]?.message?.content?.trim();
+      if (translated) {
+        finalMessage = translated;
+        console.log('[PROACTIVE] Translation applied successfully');
+      }
+    } else {
+      console.warn('[PROACTIVE] Translation step failed with status', translateResp.status);
+    }
+
+    const message = finalMessage;
 
     if (user?.id) {
       console.log(`Generated ${messageType} message for user:`, user.id, message);
@@ -299,6 +329,8 @@ Generate a personalized ${messageType} message now based on the PRIORITY CONTEXT
       message, 
       messageType, 
       priority,
+      resolved_language: langCode,
+      resolved_language_name: languageName,
       context,
       mode: user?.id ? 'user' : 'guest'
     }), {
