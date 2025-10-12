@@ -62,10 +62,19 @@ export class VertexLiveService {
             if (event.data instanceof ArrayBuffer) {
               // Handle binary audio data
               console.log('📥 Received audio ArrayBuffer, size:', event.data.byteLength);
+              console.log('🎵 AudioContext state:', this.audioContext?.state);
               const audioBytes = new Uint8Array(event.data);
               
               if (this.audioContext) {
+                // Resume audio context if suspended (browser autoplay policy)
+                if (this.audioContext.state === 'suspended') {
+                  await this.audioContext.resume();
+                  console.log('▶️ Resumed audio context');
+                }
                 await playAudioData(this.audioContext, audioBytes);
+                console.log('✅ Audio playback initiated');
+              } else {
+                console.error('❌ No audio context available!');
               }
             } else if (typeof event.data === 'string') {
               // Handle JSON messages

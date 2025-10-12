@@ -94,16 +94,7 @@ function AppSidebar({
     return () => clearInterval(interval);
   }, [isStreaming]);
 
-  useEffect(() => {
-    if (location.pathname.startsWith('/admin/ai-assistant')) {
-      const active = streamingChatRef.current?.isStreamingActive?.();
-      if (!active) {
-        console.log('🔁 Auto-starting Vertex Live on /admin/ai-assistant');
-        streamingChatRef.current?.activateVideo();
-      }
-    }
-    // Do not auto-start on other routes
-  }, [location.pathname]);
+  // Removed auto-start functionality - user must manually start stream
 
   const handleLogoClick = async () => {
     await signOut();

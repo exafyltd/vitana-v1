@@ -274,6 +274,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       
       if (useVertexLiveMode) {
         try {
+          // Cancel any ongoing TTS to avoid audio conflicts
+          if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            console.log('🔇 Cancelled TTS before Vertex connection');
+          }
+          
           setIsVideoActive(true); // Set immediately for UI feedback
           await vertexConnect();
           await vertexStartAudio();
