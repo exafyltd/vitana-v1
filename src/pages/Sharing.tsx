@@ -17,8 +17,9 @@ import { NextScheduledPosts } from "@/components/sharing/NextScheduledPosts";
 import { ChannelConnector } from "@/components/sharing/ChannelConnector";
 import { AnalyticsDashboard } from "@/components/sharing/AnalyticsDashboard";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
+import { SocialShareAutopilot } from "@/components/proactive/SocialShareAutopilot";
 
-export default withScreenId(function Sharing() {
+function Sharing() {
   const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
 
   return (
@@ -46,7 +47,8 @@ export default withScreenId(function Sharing() {
             </Button>
           </UtilityActionButton>
 
-          {/* Autopilot Nudge */}
+          {/* Growth & Autopilot Features */}
+          <SocialShareAutopilot />
           <AutopilotNudge
             message="Your event 'Wellness Workshop' starts in 6 days — recommend posting to LinkedIn and X now for maximum reach."
             onPostNow={() => console.log("Post now clicked")}
@@ -80,4 +82,6 @@ export default withScreenId(function Sharing() {
       <CampaignDialog open={campaignPopupOpen} onOpenChange={setCampaignPopupOpen} />
     </AppLayout>
   );
-}, SCREEN_IDS.SHARING_OVERVIEW);
+}
+
+export default withScreenId(Sharing, SCREEN_IDS.SHARING_OVERVIEW);
