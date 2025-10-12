@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -83,6 +83,15 @@ export default function VertexTesting() {
     stopCamera,
     sendText,
   } = useVertexLive();
+
+  // Live diagnostics: reflect hook events into the debug console
+  useEffect(() => {
+    addLog('info', `Connection state changed: ${connectionState}`);
+  }, [connectionState, addLog]);
+
+  useEffect(() => {
+    if (error) addLog('error', `Vertex error: ${error}`);
+  }, [error, addLog]);
 
   // Helper utilities
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -599,6 +608,17 @@ export default function VertexTesting() {
                       <Progress value={(passedTests / totalEnabledTests) * 100} />
                       <p className="text-sm text-center text-muted-foreground">
                         {passedTests} / {totalEnabledTests} tests passed
+                      </p>
+                      <p className="text-xs text-center text-muted-foreground">
+                        Connection: {connectionState}
+                        {connectionState === 'connecting' && (
+                          <span className="ml-2 inline-block align-middle">
+                            <span className="inline-block h-3 w-3 animate-spin border-2 border-current border-t-transparent rounded-full" />
+                          </span>
+                        )}
+                        {error && (
+                          <span className="ml-2 text-destructive">• {error}</span>
+                        )}
                       </p>
                     </div>
                   )}
