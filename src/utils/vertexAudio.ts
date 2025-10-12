@@ -163,13 +163,31 @@ export class ScreenRecorder {
 class AudioQueue {
   private queue: Uint8Array[] = [];
   private isPlaying = false;
+  private buffer: Uint8Array = new Uint8Array(0);
+  private readonly MIN_CHUNK_SIZE = 4096; // ~85ms at 24kHz PCM16
 
   constructor(private audioContext: AudioContext) {}
 
   async addToQueue(audioData: Uint8Array) {
-    this.queue.push(audioData);
-    if (!this.isPlaying) {
-      await this.playNext();
+    console.log('🔊 Adding audio chunk:', audioData.byteLength, 'bytes');
+    
+    // Accumulate small chunks into buffer
+    const combined = new Uint8Array(this.buffer.length + audioData.byteLength);
+    combined.set(this.buffer);
+    combined.set(audioData, this.buffer.length);
+    this.buffer = combined;
+    
+    // Only queue when we have enough data
+    if (this.buffer.byteLength >= this.MIN_CHUNK_SIZE) {
+      console.log('✅ Buffer full, queueing:', this.buffer.byteLength, 'bytes');
+      this.queue.push(this.buffer);
+      this.buffer = new Uint8Array(0);
+      
+      if (!this.isPlaying) {
+        await this.playNext();
+      }
+    } else {
+      console.log('⏳ Buffering... (', this.buffer.byteLength, '/', this.MIN_CHUNK_SIZE, ')');
     }
   }
 
@@ -245,8 +263,21 @@ class AudioQueue {
     return wavArray;
   }
 
+  async flush() {
+    if (this.buffer.byteLength > 0) {
+      console.log('🔚 Flushing remaining buffer:', this.buffer.byteLength, 'bytes');
+      this.queue.push(this.buffer);
+      this.buffer = new Uint8Array(0);
+      
+      if (!this.isPlaying) {
+        await this.playNext();
+      }
+    }
+  }
+
   clear() {
     this.queue = [];
+    this.buffer = new Uint8Array(0);
     this.isPlaying = false;
   }
 }
@@ -258,6 +289,12 @@ export const playAudioData = async (audioContext: AudioContext, audioData: Uint8
     audioQueueInstance = new AudioQueue(audioContext);
   }
   await audioQueueInstance.addToQueue(audioData);
+};
+
+export const flushAudioQueue = async () => {
+  if (audioQueueInstance) {
+    await audioQueueInstance.flush();
+  }
 };
 
 export const clearAudioQueue = () => {

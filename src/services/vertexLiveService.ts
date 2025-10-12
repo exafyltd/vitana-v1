@@ -179,6 +179,13 @@ export class VertexLiveService {
         console.log('⚠️ AI response interrupted');
         clearAudioQueue();
       }
+
+      // Flush audio buffer when turn is complete
+      if (content.turnComplete) {
+        console.log('🏁 Turn complete, flushing audio buffer');
+        const { flushAudioQueue } = await import('@/utils/vertexAudio');
+        await flushAudioQueue();
+      }
     }
   }
 
