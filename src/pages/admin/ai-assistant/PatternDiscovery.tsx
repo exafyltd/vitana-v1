@@ -1,12 +1,54 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sparkles, Filter } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminAIAssistantNavigation } from "@/config/navigation";
+import { usePatternDiscovery } from "@/hooks/usePatternDiscovery";
+import PatternCard from "@/components/admin/patterns/PatternCard";
+import PatternDetails from "@/components/admin/patterns/PatternDetails";
 
 export default function PatternDiscovery() {
+  const navigate = useNavigate();
+  const [typeFilter, setTypeFilter] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [selectedPattern, setSelectedPattern] = useState<any>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const {
+    patterns,
+    isLoading,
+    runAnalysis,
+    reviewPattern,
+    implementPattern,
+    dismissPattern,
+  } = usePatternDiscovery({
+    type: typeFilter || undefined,
+    status: statusFilter || undefined,
+  });
+
+  const handleViewDetails = (pattern: any) => {
+    setSelectedPattern(pattern);
+    setDetailsOpen(true);
+  };
+
+  const handleReview = async (patternId: string) => {
+    await reviewPattern.mutateAsync({ id: patternId });
+  };
+
+  const handleCreateAutomation = (pattern: any) => {
+    navigate(`/admin/ai-assistant/builder?patternId=${pattern.id}`);
+  };
+
+  const handleDismiss = async (patternId: string) => {
+    await dismissPattern.mutateAsync({ id: patternId, reason: "Not relevant" });
+  };
+
   return (
     <AppLayout>
       <SEO 
@@ -24,24 +66,125 @@ export default function PatternDiscovery() {
             emoji="📊"
           />
 
+          {/* Analysis Controls */}
           <Card>
             <CardHeader>
-              <CardTitle>Discovered Patterns</CardTitle>
-              <CardDescription>Coming in Phase 6</CardDescription>
+              <CardTitle>Discover New Patterns</CardTitle>
+              <CardDescription>
+                Analyze system data to automatically discover recurring patterns and automation opportunities
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-center h-64 border-2 border-dashed rounded-lg">
-                <div className="text-center space-y-2">
-                  <TrendingUp className="h-12 w-12 mx-auto text-muted-foreground" />
-                  <p className="text-muted-foreground">
-                    Pattern Discovery will be implemented in Phase 6
-                  </p>
+              <Button
+                onClick={() => runAnalysis.mutate()}
+                disabled={runAnalysis.isPending}
+                size="lg"
+              >
+                <Sparkles className="h-5 w-5 mr-2" />
+                {runAnalysis.isPending ? "Analyzing..." : "Analyze for Patterns"}
+              </Button>
+              {patterns && patterns.length > 0 && (
+                <p className="text-sm text-muted-foreground mt-4">
+                  Last analysis discovered {patterns.length} patterns
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Filters */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Discovered Patterns</CardTitle>
+                  <CardDescription>
+                    {patterns?.length || 0} patterns discovered
+                  </CardDescription>
+                </div>
+                <Filter className="h-5 w-5 text-muted-foreground" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <Select value={typeFilter} onValueChange={setTypeFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Filter by type..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Types</SelectItem>
+                      <SelectItem value="user_behavior">User Behavior</SelectItem>
+                      <SelectItem value="temporal">Temporal</SelectItem>
+                      <SelectItem value="communication">Communication</SelectItem>
+                      <SelectItem value="workflow">Workflow</SelectItem>
+                      <SelectItem value="health_metric">Health Metric</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex-1">
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Filter by status..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Statuses</SelectItem>
+                      <SelectItem value="discovered">Discovered</SelectItem>
+                      <SelectItem value="reviewed">Reviewed</SelectItem>
+                      <SelectItem value="implemented">Implemented</SelectItem>
+                      <SelectItem value="dismissed">Dismissed</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* Pattern List */}
+          {isLoading ? (
+            <Card>
+              <CardContent className="py-12">
+                <div className="text-center text-muted-foreground">
+                  Loading patterns...
+                </div>
+              </CardContent>
+            </Card>
+          ) : patterns && patterns.length > 0 ? (
+            <div className="grid gap-6">
+              {patterns.map((pattern) => (
+                <PatternCard
+                  key={pattern.id}
+                  pattern={pattern}
+                  onViewDetails={() => handleViewDetails(pattern)}
+                  onReview={() => handleReview(pattern.id)}
+                  onCreateAutomation={() => handleCreateAutomation(pattern)}
+                  onDismiss={() => handleDismiss(pattern.id)}
+                />
+              ))}
+            </div>
+          ) : (
+            <Card>
+              <CardContent className="py-12">
+                <div className="text-center space-y-4">
+                  <Sparkles className="h-12 w-12 mx-auto text-muted-foreground" />
+                  <div>
+                    <p className="text-lg font-medium">No Patterns Discovered Yet</p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Click "Analyze for Patterns" to start discovering automation opportunities
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
+
+      {/* Pattern Details Dialog */}
+      <PatternDetails
+        pattern={selectedPattern}
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+      />
     </AppLayout>
   );
 }

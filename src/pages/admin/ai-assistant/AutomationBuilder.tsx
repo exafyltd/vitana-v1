@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Save, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
@@ -22,6 +22,8 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function AutomationBuilder() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const patternId = searchParams.get("patternId");
   const { toast } = useToast();
   const { createRule } = useAutomationRules();
   
@@ -31,6 +33,61 @@ export default function AutomationBuilder() {
   const [conditions, setConditions] = useState<any[]>([]);
   const [actions, setActions] = useState<any[]>([]);
   const [isEnabled, setIsEnabled] = useState(true);
+  const [loadingPattern, setLoadingPattern] = useState(false);
+
+  // Load pattern data if patternId is provided
+  useEffect(() => {
+    if (patternId) {
+      loadPatternData(patternId);
+    }
+  }, [patternId]);
+
+  const loadPatternData = async (id: string) => {
+    setLoadingPattern(true);
+    try {
+      const { data: pattern, error } = await supabase
+        .from("pattern_discoveries")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) throw error;
+
+      if (pattern) {
+        setName(pattern.pattern_name);
+        setDescription(pattern.pattern_description + "\n\nExpected Impact: " + pattern.expected_impact);
+        
+        // Set trigger from first trigger in array
+        if (Array.isArray(pattern.triggers) && pattern.triggers.length > 0) {
+          setTrigger(pattern.triggers[0] as string);
+        }
+        
+        // Set conditions
+        if (Array.isArray(pattern.conditions) && pattern.conditions.length > 0) {
+          setConditions(pattern.conditions as any[]);
+        }
+        
+        // Set actions
+        if (Array.isArray(pattern.suggested_actions) && pattern.suggested_actions.length > 0) {
+          setActions(pattern.suggested_actions as any[]);
+        }
+
+        toast({
+          title: "Pattern Loaded",
+          description: "Automation pre-filled from discovered pattern",
+        });
+      }
+    } catch (error) {
+      console.error("Error loading pattern:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load pattern data",
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingPattern(false);
+    }
+  };
 
   const handleSave = async (isDraft = false) => {
     if (!name.trim()) {
@@ -71,7 +128,7 @@ export default function AutomationBuilder() {
         return;
       }
 
-      await createRule.mutateAsync({
+      const result = await createRule.mutateAsync({
         name,
         description,
         trigger_type: trigger,
@@ -82,6 +139,18 @@ export default function AutomationBuilder() {
         is_active: isDraft ? false : isEnabled,
         user_id: user.id,
       });
+
+      // If created from a pattern, mark the pattern as implemented
+      if (patternId && result) {
+        await supabase
+          .from("pattern_discoveries")
+          .update({
+            status: "implemented",
+            implemented_at: new Date().toISOString(),
+            linked_rule_id: result.id,
+          })
+          .eq("id", patternId);
+      }
 
       toast({
         title: isDraft ? "Draft Saved" : "Automation Created",
@@ -110,8 +179,11 @@ export default function AutomationBuilder() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-5xl mx-auto space-y-6">
           <AdminHeader
-            title="Automation Builder"
-            description="Create intelligent automation rules to enhance user experience"
+            title={patternId ? "Create Automation from Pattern" : "Automation Builder"}
+            description={patternId 
+              ? "Building automation from discovered pattern" 
+              : "Create intelligent automation rules to enhance user experience"
+            }
             emoji="🤖"
             rightAction={
               <Button variant="outline" size="sm" onClick={() => navigate("/admin/ai-assistant")}>
@@ -120,6 +192,14 @@ export default function AutomationBuilder() {
               </Button>
             }
           />
+
+          {loadingPattern && (
+            <Card>
+              <CardContent className="py-8 text-center text-muted-foreground">
+                Loading pattern data...
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardHeader>
