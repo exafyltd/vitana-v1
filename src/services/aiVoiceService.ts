@@ -215,6 +215,16 @@ export class AIVoiceService {
     isVoiceInput?: boolean  // Track if this came from voice
   ): Promise<AIChatResponse> {
     console.info('[streaming] Sending text message:', text.substring(0, 50));
+    
+    // RULE 8: Assert language is valid before sending
+    const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT'];
+    if (language && !ALLOWED_LANGUAGES.includes(language)) {
+      console.error('[streaming] Invalid language:', language);
+      throw new Error(`Invalid language: ${language}`);
+    }
+    
+    console.log('[streaming] RULE: using language=', language);
+    
     this.firstAudioQueued = false;
     this.hasStartedAudioPlayback = false; // Reset for new message
     
@@ -232,10 +242,10 @@ export class AIVoiceService {
       throw new Error('Not authenticated');
     }
 
-    // If this is voice input, send explicit flag
+    // RULE 2: Always send override_language
     const requestBody: any = {
       text,
-      language,
+      override_language: language,  // RULE-BASED: mandatory override
       agentType: 'health',
       conversationId,
       stream: true,

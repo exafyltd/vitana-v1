@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 
 interface LanguageContextType {
@@ -6,6 +6,7 @@ interface LanguageContextType {
   setSelectedLanguage: (language: string) => void;
   languageOptions: Array<{ label: string; value: string }>;
   isLoading: boolean;
+  lastLanguageChangeAt: number;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -22,13 +23,39 @@ export const languageOptions = [
   { label: "Portuguese (PT)", value: "pt-PT" },
 ];
 
+const ALLOWED_LANGUAGES = languageOptions.map(opt => opt.value);
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const { preferences, updatePreferences, isLoading } = useUserPreferences();
+  
+  // RULE 1: Immediate local state for instant UI effect
+  const [selectedLanguage, setLocalLanguage] = useState<string>(
+    preferences?.stt_language || "en-US"
+  );
+  const [lastLanguageChangeAt, setLastLanguageChangeAt] = useState<number>(0);
 
-  const selectedLanguage = preferences?.stt_language || "en-US";
+  // Sync from server preferences on load/change
+  useEffect(() => {
+    if (preferences?.stt_language && preferences.stt_language !== selectedLanguage) {
+      console.log('[LANG] Syncing from server:', preferences.stt_language);
+      setLocalLanguage(preferences.stt_language);
+    }
+  }, [preferences?.stt_language]);
 
   const setSelectedLanguage = (language: string) => {
-    console.log('[LANG-TIMING] 2️⃣ Context received:', new Date().toISOString(), language);
+    // RULE 2: Validate against allowed set
+    if (!ALLOWED_LANGUAGES.includes(language)) {
+      console.error('[LANG] Invalid language:', language, '- fallback to en-US');
+      language = "en-US";
+    }
+    
+    console.log('[LANG] Rule-based change:', language, new Date().toISOString());
+    
+    // RULE 3: Immediate UI update (no waiting)
+    setLocalLanguage(language);
+    setLastLanguageChangeAt(Date.now());
+    
+    // Background persistence (non-blocking)
     updatePreferences({ stt_language: language });
   };
 
@@ -38,7 +65,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         selectedLanguage, 
         setSelectedLanguage, 
         languageOptions,
-        isLoading
+        isLoading,
+        lastLanguageChangeAt
       }}
     >
       {children}
