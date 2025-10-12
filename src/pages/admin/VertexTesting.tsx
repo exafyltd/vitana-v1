@@ -135,22 +135,38 @@ export default function VertexTesting() {
     try {
       await connect();
       
-      const connected = await waitForCondition(
-        () => isConnected,
-        8000,
-        'Connection timeout'
-      );
+      // Progress updates during connection
+      const startTime = Date.now();
+      const progressInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        updateTestResult('connection', 'running', `Connecting... (${elapsed}s elapsed)`);
+      }, 1000);
       
-      if (connected) {
-        updateTestResult('connection', 'success', '✅ Connected successfully');
-        addLog('info', 'Connection test passed');
-      } else {
-        throw new Error('Failed to connect');
+      try {
+        const connected = await waitForCondition(
+          () => isConnected || connectionState === 'connected',
+          15000,
+          'Connection timeout after 15 seconds'
+        );
+        
+        clearInterval(progressInterval);
+        
+        if (connected) {
+          updateTestResult('connection', 'success', '✅ Connected successfully');
+          addLog('info', 'Connection test passed');
+        } else {
+          throw new Error('Failed to connect');
+        }
+      } catch (timeoutErr) {
+        clearInterval(progressInterval);
+        throw timeoutErr;
       }
     } catch (err) {
+      const errorDetails = error || 'Unknown error';
+      const stateInfo = `State: ${connectionState}`;
       const msg = err instanceof Error ? err.message : 'Connection failed';
-      updateTestResult('connection', 'failed', `❌ ${msg}`);
-      addLog('error', msg);
+      updateTestResult('connection', 'failed', `❌ ${msg} - ${stateInfo}`);
+      addLog('error', `Connection test failed: ${msg} | ${errorDetails} | Check edge function logs`);
       throw err;
     }
   };
