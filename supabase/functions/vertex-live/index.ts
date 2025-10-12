@@ -213,7 +213,7 @@ serve(async (req) => {
           // Send setup configuration
           const setupMessage = {
             setup: {
-              model: `projects/${projectId}/locations/europe-west1/publishers/google/models/gemini-2.0-flash-live-preview-04-09`,
+              model: `projects/${projectId}/locations/europe-west1/publishers/google/models/gemini-2.0-flash-exp`,
               generation_config: {
                 response_modalities: ['AUDIO'],
                 speech_config: {
