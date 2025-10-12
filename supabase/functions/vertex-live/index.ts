@@ -38,76 +38,87 @@ serve(async (req) => {
       });
     }
 
-    // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey, {
-      global: { headers: { Authorization: `Bearer ${token}` } }
-    });
-
-    // Verify user
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
-    console.log(`🔌 WebSocket connection request from user: ${user.id}`);
-
-    // Get Vertex AI access token
-    const authResponse = await fetch(`${supabaseUrl}/functions/v1/vertex-auth`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'apikey': supabaseKey
-      }
-    });
-
-    if (!authResponse.ok) {
-      throw new Error('Failed to get Vertex AI access token');
-    }
-
-    const { access_token } = await authResponse.json();
-
-    // Get service account for project ID
-    const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
-    const serviceAccount = JSON.parse(serviceAccountJson!);
-    const projectId = serviceAccount.project_id;
-
-    // Upgrade client connection
+    // Immediately upgrade to WebSocket BEFORE any async work
     const { socket: clientSocket, response } = Deno.upgradeWebSocket(req);
 
+    // Shared state across handlers
     let vertexSocket: WebSocket | null = null;
     let conversationId: string | null = null;
     let isConnected = false;
+    let pingInterval: number | undefined;
 
-    // Connect to Vertex AI when client connects
+    // Non-async env lookups
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+
+    // Handle client WebSocket open: do all async setup here
     clientSocket.onopen = async () => {
       console.log('✅ Client WebSocket connected');
-      
-      try {
-        // Create conversation record
-        const { data: conversation, error: convError } = await supabase
-          .from('ai_conversations')
-          .insert({
-            user_id: user.id,
-            agent_type: 'vertex_live',
-            metadata: { model: 'gemini-2.0-flash-live-preview-04-09' }
-          })
-          .select()
-          .single();
 
-        if (convError) {
-          console.error('Failed to create conversation:', convError);
-        } else {
-          conversationId = conversation.id;
-          console.log(`📝 Created conversation: ${conversationId}`);
+      try {
+        // Initialize Supabase client scoped to this user
+        const supabase = createClient(supabaseUrl, supabaseKey, {
+          global: { headers: { Authorization: `Bearer ${token}` } },
+        });
+
+        // Verify user
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+          console.error('❌ Unauthorized:', authError);
+          clientSocket.send(JSON.stringify({ type: 'error', message: 'Unauthorized' }));
+          clientSocket.close(4001, 'unauthorized');
+          return;
+        }
+        console.log(`👤 Authenticated user: ${user.id}`);
+
+        // Create conversation
+        try {
+          const { data: conversation, error: convError } = await supabase
+            .from('ai_conversations')
+            .insert({
+              user_id: user.id,
+              agent_type: 'vertex_live',
+              metadata: { model: 'gemini-2.0-flash-live-preview-04-09' },
+            })
+            .select()
+            .single();
+
+          if (convError) {
+            console.warn('⚠️ Failed to create conversation:', convError);
+          } else {
+            conversationId = conversation.id;
+            console.log(`📝 Created conversation: ${conversationId}`);
+          }
+        } catch (e) {
+          console.warn('⚠️ Conversation creation error (non-fatal):', e);
         }
 
-        // Connect to Vertex AI
+        // Get Vertex access token via edge function
+        const authResponse = await fetch(`${supabaseUrl}/functions/v1/vertex-auth`, {
+          headers: { Authorization: `Bearer ${token}`, apikey: supabaseKey },
+        });
+        if (!authResponse.ok) {
+          console.error('❌ vertex-auth failed:', authResponse.status);
+          clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex auth failed' }));
+          clientSocket.close(4002, 'vertex-auth-failed');
+          return;
+        }
+        const { access_token } = await authResponse.json();
+
+        // Get project id from service account
+        const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
+        if (!serviceAccountJson) {
+          console.error('❌ Missing GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
+          clientSocket.send(JSON.stringify({ type: 'error', message: 'Server misconfiguration' }));
+          clientSocket.close(4500, 'config-missing');
+          return;
+        }
+        const serviceAccount = JSON.parse(serviceAccountJson);
+        const projectId = serviceAccount.project_id;
+
+        // Connect to Vertex Live WS (keep current auth style for now)
         const vertexUrl = `wss://us-central1-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent?key=${access_token}`;
-        
+        console.log('🔗 Connecting to Vertex WS...');
         vertexSocket = new WebSocket(vertexUrl);
 
         vertexSocket.onopen = () => {
@@ -119,46 +130,52 @@ serve(async (req) => {
             setup: {
               model: `projects/${projectId}/locations/us-central1/publishers/google/models/gemini-2.0-flash-live-preview-04-09`,
               generation_config: {
-                response_modalities: ["AUDIO"],
+                response_modalities: ['AUDIO'],
                 speech_config: {
-                  voice_config: {
-                    prebuilt_voice_config: {
-                      voice_name: "Aoede"
-                    }
-                  }
-                }
+                  voice_config: { prebuilt_voice_config: { voice_name: 'Aoede' } },
+                },
               },
               system_instruction: {
                 parts: [{
-                  text: "You are a helpful AI assistant. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights."
-                }]
-              }
-            }
+                  text:
+                    'You are a helpful AI assistant. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights.',
+                }],
+              },
+            },
           };
-
           vertexSocket!.send(JSON.stringify(setupMessage));
           console.log('📤 Sent setup configuration to Vertex AI');
 
-          // Notify client that connection is ready
-          clientSocket.send(JSON.stringify({ 
-            type: 'connection_ready',
-            conversationId 
-          }));
+          // Notify client that connection is ready and mark setup complete for the UI
+          clientSocket.send(
+            JSON.stringify({ type: 'connection_ready', conversationId }),
+          );
+          clientSocket.send(JSON.stringify({ setupComplete: true }));
+
+          // Start keep-alive ping to client
+          pingInterval = setInterval(() => {
+            try {
+              if (clientSocket.readyState === WebSocket.OPEN) {
+                clientSocket.send(JSON.stringify({ type: 'ping' }));
+              }
+            } catch (_) {}
+          }, 25000) as unknown as number;
         };
 
         vertexSocket.onerror = (error) => {
           console.error('❌ Vertex AI WebSocket error:', error);
-          clientSocket.send(JSON.stringify({ 
-            type: 'error', 
-            message: 'Vertex AI connection error' 
-          }));
+          try {
+            clientSocket.send(
+              JSON.stringify({ type: 'error', message: 'Vertex AI connection error' }),
+            );
+          } catch (_) {}
         };
 
         vertexSocket.onclose = () => {
           console.log('🔌 Vertex AI WebSocket closed');
           isConnected = false;
           if (clientSocket.readyState === WebSocket.OPEN) {
-            clientSocket.close();
+            clientSocket.close(4000, 'vertex-closed');
           }
         };
 
@@ -170,40 +187,31 @@ serve(async (req) => {
             // Forward all messages to client
             clientSocket.send(event.data);
 
-            // Log server content messages
-            if (data.serverContent) {
+            // Log assistant messages
+            if (conversationId && data.serverContent) {
               const content = data.serverContent;
-              
-              // Save message to database
-              if (conversationId && content.modelTurn) {
-                const parts = content.modelTurn.parts || [];
-                const textParts = parts.filter((p: any) => p.text);
-                const audioParts = parts.filter((p: any) => p.inlineData?.mimeType?.includes('audio'));
-
-                if (textParts.length > 0 || audioParts.length > 0) {
-                  await supabase.from('ai_messages').insert({
-                    conversation_id: conversationId,
-                    role: 'assistant',
-                    content: textParts.map((p: any) => p.text).join(' ') || '[Audio Response]',
-                    metadata: {
-                      has_audio: audioParts.length > 0,
-                      turn_complete: content.turnComplete || false
-                    }
-                  });
-                }
+              const parts = content.modelTurn?.parts || [];
+              const textParts = parts.filter((p: any) => p.text);
+              const audioParts = parts.filter((p: any) => p.inlineData?.mimeType?.includes('audio'));
+              if (textParts.length > 0 || audioParts.length > 0) {
+                await supabase.from('ai_messages').insert({
+                  conversation_id: conversationId,
+                  role: 'assistant',
+                  content: textParts.map((p: any) => p.text).join(' ') || '[Audio Response]',
+                  metadata: { has_audio: audioParts.length > 0, turn_complete: content.turnComplete || false },
+                });
               }
             }
           } catch (error) {
             console.error('Error processing Vertex message:', error);
           }
         };
-
       } catch (error) {
-        console.error('Error setting up Vertex connection:', error);
-        clientSocket.send(JSON.stringify({ 
-          type: 'error', 
-          message: 'Failed to connect to Vertex AI' 
-        }));
+        console.error('Error during setup:', error);
+        try {
+          clientSocket.send(JSON.stringify({ type: 'error', message: 'Failed to connect to Vertex AI' }));
+        } catch (_) {}
+        clientSocket.close(4501, 'setup-failed');
       }
     };
 
@@ -211,29 +219,31 @@ serve(async (req) => {
     clientSocket.onmessage = async (event) => {
       try {
         const message = JSON.parse(event.data);
-        console.log('📥 Client message type:', message.type);
+        console.log('📥 Client message type:', message.type || (message.clientContent ? 'clientContent' : message.client_content ? 'client_content' : 'unknown'));
 
         if (!isConnected || !vertexSocket) {
-          console.warn('⚠️ Vertex AI not connected, queuing message');
+          console.warn('⚠️ Vertex AI not connected, dropping message');
           return;
         }
 
         // Forward to Vertex AI
         vertexSocket.send(JSON.stringify(message));
 
-        // Log user messages to database
-        if (conversationId && message.client_content) {
-          const turns = message.client_content.turns || [];
+        // Log user messages to database (support camelCase and snake_case)
+        const clientContent = message.clientContent || message.client_content;
+        if (conversationId && clientContent) {
+          const turns = clientContent.turns || [];
           for (const turn of turns) {
             const parts = turn.parts || [];
             const textParts = parts.filter((p: any) => p.text);
-            
             if (textParts.length > 0) {
+              // Best-effort logging (no await required, but we keep await to preserve order)
+              const supabase = createClient(supabaseUrl, supabaseKey, { global: { headers: { Authorization: `Bearer ${token}` } } });
               await supabase.from('ai_messages').insert({
                 conversation_id: conversationId,
                 role: 'user',
                 content: textParts.map((p: any) => p.text).join(' '),
-                metadata: { source: 'text' }
+                metadata: { source: 'text' },
               });
             }
           }
@@ -245,8 +255,9 @@ serve(async (req) => {
 
     clientSocket.onclose = () => {
       console.log('🔌 Client WebSocket closed');
+      if (typeof pingInterval !== 'undefined') clearInterval(pingInterval);
       if (vertexSocket && vertexSocket.readyState === WebSocket.OPEN) {
-        vertexSocket.close();
+        vertexSocket.close(4000, 'client-closed');
       }
     };
 

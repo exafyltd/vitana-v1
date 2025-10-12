@@ -53,8 +53,9 @@ export class VertexLiveService {
         this.callbacks.onError?.(errorMsg);
       };
 
-      this.ws.onclose = () => {
-        console.log('🔌 WebSocket closed');
+      this.ws.onclose = (ev) => {
+        const e = ev as CloseEvent;
+        console.log('🔌 WebSocket closed', e?.code, e?.reason);
         this.callbacks.onConnectionChange?.(false);
         this.isSetupComplete = false;
       };
