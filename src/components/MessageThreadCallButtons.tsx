@@ -3,6 +3,7 @@ import { Phone, Video } from 'lucide-react';
 import { useCallState } from '@/hooks/useCallState';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
+import { callSounds } from '@/utils/callSounds';
 
 interface MessageThreadCallButtonsProps {
   userId: string;
@@ -18,6 +19,7 @@ export const MessageThreadCallButtons = ({
   const { startCall, activeCall } = useCallState(userId);
   const { toast } = useToast();
   const [isCalling, setIsCalling] = useState(false);
+  const [audioPrimed, setAudioPrimed] = useState(false);
 
   // Show notification when call times out (no answer)
   useEffect(() => {
@@ -32,9 +34,24 @@ export const MessageThreadCallButtons = ({
 
   const handleAudioCall = async () => {
     try {
+      console.log('🎯 Audio call button clicked');
       setIsCalling(true);
-      console.log('🎯 Starting audio call:', { userId, recipientId, recipientName });
       
+      // Prime audio on first interaction
+      if (!audioPrimed) {
+        console.log('🔊 Priming audio system...');
+        const primed = await callSounds.prime();
+        setAudioPrimed(primed);
+        if (!primed) {
+          toast({
+            title: "Audio blocked",
+            description: "Please allow audio to hear call sounds",
+            variant: "destructive"
+          });
+        }
+      }
+      
+      console.log('📞 Initiating audio call to:', recipientName);
       toast({
         title: "Calling...",
         description: `Calling ${recipientName}`,
@@ -56,9 +73,24 @@ export const MessageThreadCallButtons = ({
 
   const handleVideoCall = async () => {
     try {
+      console.log('🎯 Video call button clicked');
       setIsCalling(true);
-      console.log('🎯 Starting video call:', { userId, recipientId, recipientName });
       
+      // Prime audio on first interaction
+      if (!audioPrimed) {
+        console.log('🔊 Priming audio system...');
+        const primed = await callSounds.prime();
+        setAudioPrimed(primed);
+        if (!primed) {
+          toast({
+            title: "Audio blocked",
+            description: "Please allow audio to hear call sounds",
+            variant: "destructive"
+          });
+        }
+      }
+      
+      console.log('📞 Initiating video call to:', recipientName);
       toast({
         title: "Calling...",
         description: `Starting video call with ${recipientName}`,

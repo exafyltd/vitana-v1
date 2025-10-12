@@ -4,6 +4,7 @@ class CallSoundManager {
   private incomingRingtone: HTMLAudioElement | null = null;
   private connectedBeep: HTMLAudioElement | null = null;
   private endedBeep: HTMLAudioElement | null = null;
+  private isPrimed: boolean = false;
 
   constructor() {
     // Using open-source ringtone URLs (can be replaced with custom assets)
@@ -30,24 +31,82 @@ class CallSoundManager {
     }
   }
 
+  // Prime audio on first user interaction to satisfy browser autoplay policies
+  async prime(): Promise<boolean> {
+    if (this.isPrimed) {
+      console.log('🔊 Audio already primed');
+      return true;
+    }
+
+    try {
+      console.log('🔊 Priming audio system...');
+      // Play and immediately pause each audio element to unlock autoplay
+      const audioElements = [
+        this.outgoingRingtone,
+        this.incomingRingtone,
+        this.connectedBeep,
+        this.endedBeep
+      ];
+
+      for (const audio of audioElements) {
+        if (audio) {
+          audio.muted = true;
+          await audio.play();
+          audio.pause();
+          audio.currentTime = 0;
+          audio.muted = false;
+        }
+      }
+
+      this.isPrimed = true;
+      console.log('✅ Audio system primed successfully');
+      return true;
+    } catch (err) {
+      console.error('❌ Failed to prime audio system:', err);
+      return false;
+    }
+  }
+
   playOutgoingRingtone() {
+    console.log('🔊 Playing outgoing ringtone...');
     this.stopAll();
-    this.outgoingRingtone?.play().catch(err => console.warn('Could not play outgoing ringtone:', err));
+    this.outgoingRingtone?.play()
+      .then(() => console.log('✅ Outgoing ringtone playing'))
+      .catch(err => {
+        console.error('❌ Could not play outgoing ringtone:', err);
+        if (!this.isPrimed) {
+          console.warn('⚠️ Audio not primed. Call prime() on user interaction first.');
+        }
+      });
   }
 
   playIncomingRingtone() {
+    console.log('🔊 Playing incoming ringtone...');
     this.stopAll();
-    this.incomingRingtone?.play().catch(err => console.warn('Could not play incoming ringtone:', err));
+    this.incomingRingtone?.play()
+      .then(() => console.log('✅ Incoming ringtone playing'))
+      .catch(err => {
+        console.error('❌ Could not play incoming ringtone:', err);
+        if (!this.isPrimed) {
+          console.warn('⚠️ Audio not primed. Call prime() on user interaction first.');
+        }
+      });
   }
 
   playConnectedBeep() {
+    console.log('🔊 Playing connected beep...');
     this.stopAll();
-    this.connectedBeep?.play().catch(err => console.warn('Could not play connected beep:', err));
+    this.connectedBeep?.play()
+      .then(() => console.log('✅ Connected beep played'))
+      .catch(err => console.error('❌ Could not play connected beep:', err));
   }
 
   playEndedBeep() {
+    console.log('🔊 Playing ended beep...');
     this.stopAll();
-    this.endedBeep?.play().catch(err => console.warn('Could not play ended beep:', err));
+    this.endedBeep?.play()
+      .then(() => console.log('✅ Ended beep played'))
+      .catch(err => console.error('❌ Could not play ended beep:', err));
   }
 
   stopAll() {
