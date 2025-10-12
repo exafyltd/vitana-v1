@@ -25,8 +25,11 @@ export class VertexLiveService {
     try {
       this.audioContext = new AudioContext({ sampleRate: 24000 });
 
-      // Pass token as query parameter for WebSocket auth (use functions subdomain for WS)
-      const wsUrl = `wss://inmkhvwdcuyhnxkgfvsb.functions.supabase.co/vertex-live?token=${encodeURIComponent(token)}`;
+      // Use the Supabase URL from environment and construct WebSocket URL
+      const supabaseUrl = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
+      const wsUrl = `${supabaseUrl.replace('https://', 'wss://')}/functions/v1/vertex-live?token=${encodeURIComponent(token)}`;
+      console.log('🔗 Connecting to:', wsUrl);
+      
       this.ws = new WebSocket(wsUrl);
 
       this.ws.onopen = () => {
@@ -43,9 +46,12 @@ export class VertexLiveService {
         }
       };
 
-      this.ws.onerror = (error) => {
+      this.ws.onerror = (error: Event) => {
         console.error('❌ WebSocket error:', error);
-        this.callbacks.onError?.('WebSocket connection error');
+        const wsError = error as ErrorEvent;
+        const errorMsg = wsError.message || 'WebSocket connection error';
+        console.error('Error details:', errorMsg);
+        this.callbacks.onError?.(errorMsg);
       };
 
       this.ws.onclose = () => {

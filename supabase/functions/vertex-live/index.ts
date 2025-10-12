@@ -7,21 +7,31 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log('📥 Received request:', req.method, req.url);
+  
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   const upgradeHeader = req.headers.get("upgrade") || "";
+  console.log('🔍 Upgrade header:', upgradeHeader);
+  
   if (upgradeHeader.toLowerCase() !== "websocket") {
-    return new Response("Expected WebSocket connection", { status: 400 });
+    console.error('❌ Not a WebSocket request');
+    return new Response("Expected WebSocket connection", { 
+      status: 400,
+      headers: corsHeaders
+    });
   }
 
   try {
     // Extract token from URL query params
     const url = new URL(req.url);
     const token = url.searchParams.get('token');
+    console.log('🔑 Token present:', !!token);
     
     if (!token) {
+      console.error('❌ No token provided');
       return new Response(JSON.stringify({ error: 'No authorization token' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
