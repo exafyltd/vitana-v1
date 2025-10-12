@@ -15,6 +15,10 @@ serve(async (req) => {
 
   const upgradeHeader = req.headers.get("upgrade") || "";
   console.log('🔍 Upgrade header:', upgradeHeader);
+  const proto = req.headers.get('sec-websocket-protocol') || '';
+  const version = req.headers.get('sec-websocket-version') || '';
+  const origin = req.headers.get('origin') || '';
+  console.log('🔎 WS headers:', { origin, version, proto });
   
   if (upgradeHeader.toLowerCase() !== "websocket") {
     console.error('❌ Not a WebSocket request');
@@ -172,8 +176,9 @@ serve(async (req) => {
           } catch (_) {}
         };
 
-        vertexSocket.onclose = () => {
-          console.log('🔌 Vertex AI WebSocket closed');
+        vertexSocket.onclose = (ev) => {
+          const e = ev as CloseEvent;
+          console.log('🔌 Vertex AI WebSocket closed', e?.code, e?.reason);
           isConnected = false;
           if (clientSocket.readyState === WebSocket.OPEN) {
             clientSocket.close(4000, 'vertex-closed');
@@ -254,8 +259,9 @@ serve(async (req) => {
       }
     };
 
-    clientSocket.onclose = () => {
-      console.log('🔌 Client WebSocket closed');
+    clientSocket.onclose = (ev) => {
+      const e = ev as CloseEvent;
+      console.log('🔌 Client WebSocket closed', e?.code, e?.reason);
       if (typeof pingInterval !== 'undefined') clearInterval(pingInterval);
       if (vertexSocket && vertexSocket.readyState === WebSocket.OPEN) {
         vertexSocket.close(4000, 'client-closed');
