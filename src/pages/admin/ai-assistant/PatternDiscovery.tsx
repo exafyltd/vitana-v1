@@ -15,8 +15,8 @@ import PatternDetails from "@/components/admin/patterns/PatternDetails";
 
 export default function PatternDiscovery() {
   const navigate = useNavigate();
-  const [typeFilter, setTypeFilter] = useState<string>("");
-  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedPattern, setSelectedPattern] = useState<any>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
 
@@ -28,8 +28,8 @@ export default function PatternDiscovery() {
     implementPattern,
     dismissPattern,
   } = usePatternDiscovery({
-    type: typeFilter || undefined,
-    status: statusFilter || undefined,
+    type: typeFilter === "all" ? undefined : typeFilter,
+    status: statusFilter === "all" ? undefined : statusFilter,
   });
 
   const handleViewDetails = (pattern: any) => {
@@ -112,7 +112,7 @@ export default function PatternDiscovery() {
                       <SelectValue placeholder="Filter by type..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>
+                      <SelectItem value="all">All Types</SelectItem>
                       <SelectItem value="user_behavior">User Behavior</SelectItem>
                       <SelectItem value="temporal">Temporal</SelectItem>
                       <SelectItem value="communication">Communication</SelectItem>
@@ -127,7 +127,7 @@ export default function PatternDiscovery() {
                       <SelectValue placeholder="Filter by status..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses</SelectItem>
+                      <SelectItem value="all">All Statuses</SelectItem>
                       <SelectItem value="discovered">Discovered</SelectItem>
                       <SelectItem value="reviewed">Reviewed</SelectItem>
                       <SelectItem value="implemented">Implemented</SelectItem>
