@@ -26,6 +26,7 @@ import MotivationalDataCard from "@/components/health/MotivationalDataCard";
 import NextBestActionCard from "@/components/health/NextBestActionCard";
 
 import { healthNavigation } from "@/config/navigation";
+import { useProfile } from "@/context/ProfileProvider";
 
 const overviewCards = [
   {
@@ -70,6 +71,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 export default withScreenId(function Health() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [healthActionsOpen, setHealthActionsOpen] = useState(false);
@@ -185,7 +187,7 @@ export default withScreenId(function Health() {
             />
             
             <MotivationalDataCard 
-              userName="Dragan"
+              userName={profile?.displayName || profile?.fullName?.split(' ')[0] || 'there'}
               dataCompleteness={45}
             />
             
