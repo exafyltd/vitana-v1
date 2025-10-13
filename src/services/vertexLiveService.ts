@@ -69,9 +69,19 @@ export class VertexLiveService {
           try {
             // Check if this is binary audio data or JSON
             if (event.data instanceof ArrayBuffer) {
-              // Handle binary audio data (PCM16 or WAV)
+              // Handle binary audio data (should be complete WAV files from Vertex AI)
               const bytes = new Uint8Array(event.data);
               console.log('📥 Received binary audio, size:', bytes.byteLength);
+              
+              // Log first 12 bytes for debugging (should be "RIFF....WAVE")
+              if (bytes.byteLength >= 12) {
+                const header = Array.from(bytes.slice(0, 12))
+                  .map(b => b.toString(16).padStart(2, '0'))
+                  .join(' ');
+                console.log('📊 Audio header:', header);
+                const isRiff = bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46;
+                console.log('🔍 Is RIFF/WAV:', isRiff);
+              }
               
               if (!this.audioContext) {
                 console.error('❌ No audio context available!');
@@ -84,28 +94,26 @@ export class VertexLiveService {
                 console.log('▶️ Resumed audio context');
               }
               
-              // Detect WAV header ("RIFF"); otherwise assume raw PCM16 at 24kHz mono
-              const isWav = bytes.length >= 12 && bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46;
+              // Vertex AI sends complete WAV files - decode them directly
               try {
-                if (isWav) {
-                  console.log('🔎 Detected WAV header, decoding via WebAudio');
-                  const audioBuffer = await this.audioContext.decodeAudioData(bytes.buffer.slice(0));
-                  const source = this.audioContext.createBufferSource();
-                  source.buffer = audioBuffer;
-                  source.connect(this.audioContext.destination);
-                  source.start(0);
-                } else {
-                  console.log('🔎 Treating as raw PCM16 @24kHz mono');
-                  await playAudioData(this.audioContext, bytes);
+                console.log('🎧 Decoding WAV audio...');
+                const audioBuffer = await this.audioContext.decodeAudioData(bytes.buffer.slice(0));
+                console.log('✅ Decoded successfully:', audioBuffer.duration.toFixed(2), 'seconds,', audioBuffer.numberOfChannels, 'channels,', audioBuffer.sampleRate, 'Hz');
+                
+                const source = this.audioContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(this.audioContext.destination);
+                source.start(0);
+                console.log('▶️ Audio playback started');
+              } catch (error) {
+                console.error('❌ Failed to decode audio:', error);
+                if (error instanceof Error) {
+                  console.error('Error name:', error.name);
+                  console.error('Error message:', error.message);
                 }
-                console.log('✅ Audio playback initiated');
-              } catch (e) {
-                console.error('⚠️ Failed to play binary audio. Falling back to queue:', e);
-                try {
-                  await playAudioData(this.audioContext, bytes);
-                } catch (e2) {
-                  console.error('❌ Fallback audio queue failed:', e2);
-                }
+                // Don't try to wrap it in another WAV header - that creates corrupted double-wrapped audio
+                // Just skip this chunk and continue
+                console.log('⏭️ Skipping corrupted audio chunk');
               }
             } else if (typeof event.data === 'string') {
               // Handle JSON messages

@@ -169,6 +169,7 @@ class AudioQueue {
   constructor(private audioContext: AudioContext) {}
 
   async addToQueue(audioData: Uint8Array) {
+    console.warn('⚠️ AudioQueue.addToQueue called - this should not happen with Vertex AI WAV output');
     console.log('🔊 Adding audio chunk:', audioData.byteLength, 'bytes');
     
     // Log first few bytes for debugging
