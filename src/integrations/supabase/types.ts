@@ -362,6 +362,113 @@ export type Database = {
           },
         ]
       }
+      api_integrations: {
+        Row: {
+          auth_token: string | null
+          auth_type: string
+          base_url: string
+          created_at: string | null
+          created_by: string | null
+          id: string
+          integration_type: string
+          is_active: boolean | null
+          last_test_status: string | null
+          last_test_timestamp: string | null
+          metadata: Json | null
+          name: string
+          notes: string | null
+          test_endpoints: Json | null
+          test_frequency_minutes: number
+          test_runner_function: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          auth_token?: string | null
+          auth_type: string
+          base_url: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          integration_type: string
+          is_active?: boolean | null
+          last_test_status?: string | null
+          last_test_timestamp?: string | null
+          metadata?: Json | null
+          name: string
+          notes?: string | null
+          test_endpoints?: Json | null
+          test_frequency_minutes?: number
+          test_runner_function?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          auth_token?: string | null
+          auth_type?: string
+          base_url?: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          integration_type?: string
+          is_active?: boolean | null
+          last_test_status?: string | null
+          last_test_timestamp?: string | null
+          metadata?: Json | null
+          name?: string
+          notes?: string | null
+          test_endpoints?: Json | null
+          test_frequency_minutes?: number
+          test_runner_function?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      api_test_logs: {
+        Row: {
+          error_log: string | null
+          id: string
+          integration_id: string
+          metadata: Json | null
+          response_body: Json | null
+          response_time_ms: number | null
+          status: string
+          test_type: string | null
+          timestamp: string | null
+          triggered_by: string | null
+        }
+        Insert: {
+          error_log?: string | null
+          id?: string
+          integration_id: string
+          metadata?: Json | null
+          response_body?: Json | null
+          response_time_ms?: number | null
+          status: string
+          test_type?: string | null
+          timestamp?: string | null
+          triggered_by?: string | null
+        }
+        Update: {
+          error_log?: string | null
+          id?: string
+          integration_id?: string
+          metadata?: Json | null
+          response_body?: Json | null
+          response_time_ms?: number | null
+          status?: string
+          test_type?: string | null
+          timestamp?: string | null
+          triggered_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_test_logs_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "api_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_events: {
         Row: {
           created_at: string
