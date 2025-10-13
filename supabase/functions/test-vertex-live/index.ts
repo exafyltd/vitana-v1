@@ -35,15 +35,19 @@ serve(async (req) => {
       console.log('Test 1: Vertex auth function check...');
       const authResponse = await supabase.functions.invoke('vertex-auth');
       
-      if (authResponse.data?.token) {
+      console.log('Auth response:', JSON.stringify(authResponse));
+      
+      if (authResponse.error) {
+        console.error('❌ Auth check failed with error:', authResponse.error);
+      } else if (authResponse.data?.access_token) {
         testResults.auth_check = true;
         testResults.passed_tests++;
-        console.log('✅ Auth check passed');
+        console.log('✅ Auth check passed - Token received');
       } else {
-        console.error('❌ Auth check failed: No token returned');
+        console.error('❌ Auth check failed: No access_token in response');
       }
     } catch (error) {
-      console.error('❌ Auth check failed:', error);
+      console.error('❌ Auth check failed with exception:', error);
     }
 
     // Test 2: Check if WebSocket endpoint is reachable
