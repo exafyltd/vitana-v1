@@ -13,6 +13,13 @@ export default function InitEvents() {
   useEffect(() => {
     setStatus('success');
     setMessage('Please run the SQL script to generate events');
+    
+    // Auto-open SQL editor after 1 second
+    const timer = setTimeout(() => {
+      window.open('https://supabase.com/dashboard/project/inmkhvwdcuyhnxkgfvsb/sql/new', '_blank');
+    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   return (
