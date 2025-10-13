@@ -14,6 +14,7 @@ export const useVertexLive = () => {
   const serviceRef = useRef<VertexLiveService | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
   const retryCountRef = useRef(0);
+  const manualDisconnectRef = useRef(false);
 
   useEffect(() => {
     // Initialize service
@@ -47,13 +48,22 @@ export const useVertexLive = () => {
         setConnectionState('error');
         setLastEvent('error: ' + errorMsg);
         
-        // Exponential backoff with max 3 retries
+        // Skip auto-reconnect if this was a manual disconnect
+        if (manualDisconnectRef.current) {
+          console.warn('⏭️ Manual disconnect — skipping auto-reconnect');
+          return;
+        }
+
+        // Exponential backoff with jitter (max 5 retries, capped at 15s)
         retryCountRef.current += 1;
-        if (retryCountRef.current <= 3) {
-          const delay = Math.min(15000, 2000 * Math.pow(2, retryCountRef.current - 1));
+        if (retryCountRef.current <= 5) {
+          const base = Math.min(15000, 2000 * Math.pow(2, retryCountRef.current - 1));
+          const jitter = base * (0.8 + Math.random() * 0.4); // 80%-120%
+          const delay = Math.min(15000, Math.round(jitter));
+          if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+          console.log(`🔄 Attempting reconnect in ${delay}ms (try #${retryCountRef.current})`);
           reconnectTimeoutRef.current = setTimeout(() => {
             if (serviceRef.current) {
-              console.log('🔄 Attempting reconnect... (#' + retryCountRef.current + ')');
               connect();
             }
           }, delay);
@@ -85,6 +95,7 @@ export const useVertexLive = () => {
       setError(null);
       setConnectionState('connecting');
       setLastEvent('Checking authentication...');
+      manualDisconnectRef.current = false;
       
       const { data: { session } } = await supabase.auth.getSession();
       
@@ -109,6 +120,7 @@ export const useVertexLive = () => {
   const disconnect = useCallback(() => {
     if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
     retryCountRef.current = 0;
+    manualDisconnectRef.current = true;
     serviceRef.current?.disconnect();
     setTranscript('');
     setError(null);
