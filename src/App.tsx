@@ -1093,11 +1093,7 @@ const App = () => {
           } />
           
           {/* Legacy redirects for backward compatibility */}
-          <Route path="/admin/init-events" element={
-            <AdminGuard>
-              <InitEvents />
-            </AdminGuard>
-          } />
+          <Route path="/admin/init-events" element={<InitEvents />} />
           <Route path="/admin/bootstrap" element={<Navigate to="/admin/system/bootstrap" replace />} />
           <Route path="/admin/staff" element={<Navigate to="/admin/user-management/staff" replace />} />
           <Route path="/admin/queue" element={<Navigate to="/admin/clinical/queue" replace />} />
