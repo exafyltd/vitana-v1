@@ -18,15 +18,21 @@ export default function InitEvents() {
         
         const { data, error } = await supabase.functions.invoke('generate-maxina-summer-events');
         
-        if (error) throw error;
+        if (error) {
+          // Provide more specific error message for timeout
+          if (error.message?.includes('FunctionsHttpError')) {
+            throw new Error('The function timed out while generating AI images for 40 events. The edge function CPU limit was exceeded after generating 13 events. Please contact the developer to optimize the function (e.g., use placeholder images or batch processing).');
+          }
+          throw error;
+        }
         
         console.log('[InitEvents] Generation complete:', data);
         setStatus('success');
-        setMessage(`Successfully generated ${data?.generatedCount || 0} events!`);
+        setMessage(`Successfully generated ${data?.events?.length || 0} events!`);
         
         toast({
           title: "Events Generated",
-          description: `${data?.generatedCount || 0} Maxina Summer 2026 events created`,
+          description: `${data?.events?.length || 0} Maxina Summer 2026 events created`,
         });
 
         // Redirect after 2 seconds
@@ -37,11 +43,12 @@ export default function InitEvents() {
       } catch (err: any) {
         console.error('[InitEvents] Error:', err);
         setStatus('error');
-        setMessage(err.message || 'Failed to generate events');
+        const errorMsg = err.message || 'Failed to generate events';
+        setMessage(errorMsg);
         
         toast({
           title: "Generation Failed",
-          description: err.message || 'Failed to generate events',
+          description: errorMsg,
           variant: "destructive",
         });
       }
@@ -72,7 +79,10 @@ export default function InitEvents() {
         {status === 'error' && (
           <>
             <XCircle className="w-16 h-16 mx-auto text-destructive" />
-            <p className="text-lg font-medium text-destructive">{message}</p>
+            <div className="max-w-2xl mx-auto">
+              <p className="text-lg font-medium text-destructive mb-3">Generation Failed</p>
+              <p className="text-sm text-muted-foreground whitespace-pre-wrap">{message}</p>
+            </div>
           </>
         )}
       </div>
