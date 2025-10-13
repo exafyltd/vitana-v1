@@ -58,7 +58,6 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
   const [mood, setMood] = useState("");
   const [topic, setTopic] = useState("");
   const [visibility, setVisibility] = useState("Public");
-  const [credits, setCredits] = useState("");
   const [externalLink, setExternalLink] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -91,7 +90,6 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
         mediaType: mediaType.toLowerCase() as "music" | "podcast" | "video",
         tags: selectedTags,
         visibility: visibility.toLowerCase(),
-        attribution: credits,
         genre: genre || undefined,
         mood: mood || undefined,
         hostGuest: hostGuest || undefined,
@@ -112,7 +110,6 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
       setMood("");
       setTopic("");
       setVisibility("Public");
-      setCredits("");
       setExternalLink("");
       setSelectedFile(null);
       onOpenChange(false);
@@ -424,16 +421,6 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   </Button>
                 ))}
               </div>
-            </div>
-
-            <div>
-              <Label htmlFor="credits">Credits (Optional)</Label>
-              <Input
-                id="credits"
-                value={credits}
-                onChange={(e) => setCredits(e.target.value)}
-                placeholder="Credit different creator if applicable"
-              />
             </div>
 
             <div>

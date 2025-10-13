@@ -8,7 +8,6 @@ interface UploadMetadata {
   mediaType: 'music' | 'podcast' | 'video';
   tags: string[];
   visibility: string;
-  attribution: string;
   genre?: string;
   mood?: string;
   hostGuest?: string;
@@ -115,8 +114,7 @@ export const useMediaUpload = () => {
           duration: duration || null,
           tags: metadata.tags,
           status: 'pending',
-          visibility: metadata.visibility,
-          attribution: metadata.attribution,
+          is_public: metadata.visibility === 'Public',
         })
         .select()
         .single();
