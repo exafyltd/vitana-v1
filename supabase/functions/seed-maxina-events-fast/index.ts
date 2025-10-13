@@ -6,7 +6,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Intelligent event type classification
+// Binary event type classification: 'event' or 'meetup'
 function classifyEventType(event: any): string {
   const title = event.title.toLowerCase();
   const duration = event.duration;
@@ -15,58 +15,53 @@ function classifyEventType(event: any): string {
   const venue = event.venue?.toLowerCase() || '';
   const category = event.category;
   
+  // EVENTS - organized experiences with program/purpose
   // Large-scale professional events
-  if (title.includes('summit') || maxPart >= 50) return 'summit';
+  if (title.includes('summit') || maxPart >= 50) return 'event';
   
   // Retreats (multi-hour immersive)
-  if (title.includes('retreat') || duration >= 6) return 'retreat';
+  if (title.includes('retreat') || duration >= 6) return 'event';
   
   // Masterclasses
-  if (title.includes('masterclass')) return 'masterclass';
+  if (title.includes('masterclass')) return 'event';
   
-  // Dinners, brunches, galas
-  if (title.includes('dinner') || title.includes('brunch') || title.includes('gala')) {
-    return title.includes('gala') ? 'ceremony' : 'dinner';
-  }
+  // Dinners, brunches, galas, ceremonies
+  if (title.includes('dinner') || title.includes('brunch') || 
+      title.includes('gala') || title.includes('ceremony')) return 'event';
   
   // Wellness experiences (physical activities)
   if (title.includes('flow') || title.includes('breathwork') || 
       title.includes('plunge') || title.includes('walk') || 
-      venue.includes('beach') || venue.includes('boat')) {
-    return 'experience';
-  }
+      venue.includes('beach') || venue.includes('boat')) return 'event';
   
   // Educational workshops (online or physical with experts)
   if (event.type === 'online' || title.includes('101') || 
       title.includes('science') || title.includes('future of') ||
-      (reward >= 17 && maxPart >= 100)) {
-    return 'workshop';
-  }
+      (reward >= 17 && maxPart >= 100)) return 'event';
   
-  // Social meetups (casual networking, connection)
+  // High-reward or long-duration activities
+  if (duration >= 4 || reward >= 40) return 'event';
+  
+  // MEETUPS - casual networking and social gatherings
   if (title.includes('night') || title.includes('networking') || 
       title.includes('connect') || (category === 'Social & Love' && duration <= 3)) {
     return 'meetup';
   }
   
-  // Default based on formality/reward
-  return reward >= 40 ? 'workshop' : 'meetup';
+  // Default: lower reward = meetup, higher = event
+  return reward >= 25 ? 'event' : 'meetup';
 }
 
 // Determine if event is paid based on reward and type
 function isPaidEvent(event: any, eventType: string): boolean {
-  // Free event types
-  if (['meetup', 'experience'].includes(eventType) && event.reward < 40) return false;
+  // Most meetups are free
+  if (eventType === 'meetup' && event.reward < 40) return false;
   
-  // Premium events are always paid
-  if (['summit', 'retreat', 'masterclass'].includes(eventType)) return true;
+  // High-reward activities are paid
   if (event.reward >= 50) return true;
   
-  // Workshops with high rewards are paid
-  if (eventType === 'workshop' && event.reward >= 20) return true;
-  
-  // Dinners/ceremonies with high rewards are paid
-  if (['dinner', 'ceremony'].includes(eventType) && event.reward >= 45) return true;
+  // Events with moderate-to-high rewards are paid
+  if (eventType === 'event' && event.reward >= 20) return true;
   
   return false;
 }
