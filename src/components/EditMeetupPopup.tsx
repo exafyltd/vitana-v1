@@ -137,7 +137,7 @@ export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps
           location: formData.location,
           metadata: {
             category: formData.category,
-            venue: 'venue',
+            venue: 'outdoor',
             timeOfDay
           }
         }
