@@ -311,7 +311,7 @@ export function WeekGridView({
                             </p>
                             {!isVeryNarrow && (
                               <p className="text-[10px] text-muted-foreground">
-                                {format(new Date(event.start_time), 'h:mm a')}
+                                {format(new Date(event.start_time), 'HH:mm')}
                               </p>
                             )}
                             

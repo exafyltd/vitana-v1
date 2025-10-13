@@ -150,7 +150,7 @@ export function LiveRoomCard({
                 className="gap-1.5 px-2.5 py-1 bg-background/95 backdrop-blur-sm shadow-lg"
               >
                 <Clock className="w-3 h-3" />
-                {format(new Date(room.scheduledTime!), "h:mm a")}
+                {format(new Date(room.scheduledTime!), "HH:mm")}
               </Badge>
             ) : null}
             {room.isPremium && (

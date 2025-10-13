@@ -88,9 +88,10 @@ export function NextScheduledPosts() {
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <Calendar className="w-3 h-3" />
                       {scheduledDate.toLocaleDateString()} at{" "}
-                      {scheduledDate.toLocaleTimeString([], {
+                      {scheduledDate.toLocaleTimeString('en-GB', {
                         hour: "2-digit",
                         minute: "2-digit",
+                        hour12: false
                       })}
                       {isPaused && (
                         <Badge variant="outline" className="ml-2">

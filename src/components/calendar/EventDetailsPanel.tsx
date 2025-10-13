@@ -62,7 +62,7 @@ export function EventDetailsPanel({
   const formatEventTime = (startTime: string, endTime?: string | null) => {
     const start = new Date(startTime);
     const end = endTime ? new Date(endTime) : new Date(start.getTime() + 60 * 60 * 1000);
-    return `${format(start, 'h:mm a')} - ${format(end, 'h:mm a')}`;
+    return `${format(start, 'HH:mm')} - ${format(end, 'HH:mm')}`;
   };
 
   return (

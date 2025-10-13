@@ -688,7 +688,7 @@ export default function DoctorsCoaches() {
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
                                   <Clock className="h-4 w-4" />
-                                  <span>{format(appointmentDate, 'h:mm a')} - {appointment.duration_minutes} min</span>
+                                  <span>{format(appointmentDate, 'HH:mm')} - {appointment.duration_minutes} min</span>
                                 </div>
                                 {appointment.location && (
                                   <div className="flex items-center gap-2 text-sm">

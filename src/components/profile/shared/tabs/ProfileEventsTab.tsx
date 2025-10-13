@@ -90,12 +90,13 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
     const isUpcoming = date > now;
     
     return {
-      formatted: date.toLocaleDateString([], { 
+      formatted: date.toLocaleDateString('en-GB', { 
         month: 'short', 
         day: 'numeric',
         year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
         hour: '2-digit', 
-        minute: '2-digit'
+        minute: '2-digit',
+        hour12: false
       }),
       isUpcoming
     };

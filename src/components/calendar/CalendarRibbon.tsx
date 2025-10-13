@@ -62,7 +62,7 @@ export function CalendarRibbon() {
                       <div className={cn("w-1.5 h-1.5 rounded-full", getTypeColor(event.event_type))} />
                       <span className="truncate max-w-[100px]">{event.title}</span>
                       <span className="text-muted-foreground">
-                        {format(new Date(event.start_time), 'h:mm a')}
+                        {format(new Date(event.start_time), 'HH:mm')}
                       </span>
                     </button>
                   </TooltipTrigger>
@@ -70,7 +70,7 @@ export function CalendarRibbon() {
                     <div className="text-xs space-y-1">
                       <p className="font-medium">{event.title}</p>
                       <p className="text-muted-foreground">
-                        {format(new Date(event.start_time), 'MMM d, h:mm a')}
+                        {format(new Date(event.start_time), 'MMM d, HH:mm')}
                       </p>
                       {event.location && <p>{event.location}</p>}
                     </div>

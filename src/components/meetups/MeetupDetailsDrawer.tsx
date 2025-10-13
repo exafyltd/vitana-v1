@@ -572,7 +572,7 @@ export function MeetupDetailsDrawer({
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-[15px]">{format(startDate, 'EEEE, MMMM d, yyyy')}</p>
                     <p className="text-[14px] text-muted-foreground">
-                      {format(startDate, 'h:mm a')} {endDate && `- ${format(endDate, 'h:mm a')}`}
+                      {format(startDate, 'HH:mm')} {endDate && `- ${format(endDate, 'HH:mm')}`}
                       {!showLocalTime && ' UTC'}
                     </p>
                     {showCountdown && (

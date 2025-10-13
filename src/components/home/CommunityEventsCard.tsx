@@ -73,20 +73,21 @@ function CommunityEventsCardBase({ maxEvents = 3 }: CommunityEventsCardProps) {
     const isToday = date.toDateString() === now.toDateString();
     
     if (isToday) {
-      return `Today ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      return `Today ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
     }
     
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
     if (date.toDateString() === tomorrow.toDateString()) {
-      return `Tomorrow ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      return `Tomorrow ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
     }
     
-    return date.toLocaleDateString([], { 
+    return date.toLocaleDateString('en-GB', { 
       month: 'short', 
       day: 'numeric',
       hour: '2-digit', 
-      minute: '2-digit' 
+      minute: '2-digit',
+      hour12: false
     });
   };
 

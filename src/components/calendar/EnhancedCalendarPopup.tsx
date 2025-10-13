@@ -274,7 +274,7 @@ export function EnhancedCalendarPopup({
   const formatEventTime = (startTime: string, endTime?: string | null) => {
     const start = new Date(startTime);
     const end = endTime ? new Date(endTime) : addMinutes(start, 60);
-    return `${format(start, 'h:mm a')}–${format(end, 'h:mm a')}`;
+    return `${format(start, 'HH:mm')}–${format(end, 'HH:mm')}`;
   };
 
   const getTimeSinceSync = () => {

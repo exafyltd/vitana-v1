@@ -96,11 +96,11 @@ function EventMatchCardBase({ className }: EventMatchCardProps) {
       tomorrow.setDate(tomorrow.getDate() + 1);
 
       if (date.toDateString() === today.toDateString()) {
-        return `Today ${format(date, 'h:mm a')}`;
+        return `Today ${format(date, 'HH:mm')}`;
       } else if (date.toDateString() === tomorrow.toDateString()) {
-        return `Tomorrow ${format(date, 'h:mm a')}`;
+        return `Tomorrow ${format(date, 'HH:mm')}`;
       } else {
-        return format(date, 'EEE h:mm a');
+        return format(date, 'EEE HH:mm');
       }
     } catch {
       return 'Date TBD';

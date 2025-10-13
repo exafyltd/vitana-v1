@@ -250,9 +250,10 @@ export function VisualActionCard({
 
           {/* Timestamp with consistent alignment */}
           <div className="text-xs text-muted-foreground/60 mt-2 text-right font-mono">
-            {new Date(action.timestamp).toLocaleTimeString([], { 
+            {new Date(action.timestamp).toLocaleTimeString('en-GB', { 
               hour: '2-digit', 
-              minute: '2-digit' 
+              minute: '2-digit',
+              hour12: false
             })}
           </div>
         </div>
