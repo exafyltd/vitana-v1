@@ -164,12 +164,17 @@ class AudioQueue {
   private queue: Uint8Array[] = [];
   private isPlaying = false;
   private buffer: Uint8Array = new Uint8Array(0);
-  private readonly MIN_CHUNK_SIZE = 4096; // ~85ms at 24kHz PCM16
+  private readonly MIN_CHUNK_SIZE = 2048; // ~42ms at 24kHz PCM16 for lower latency
 
   constructor(private audioContext: AudioContext) {}
 
   async addToQueue(audioData: Uint8Array) {
     console.log('🔊 Adding audio chunk:', audioData.byteLength, 'bytes');
+    
+    // Log first few bytes for debugging
+    if (audioData.byteLength >= 8) {
+      console.log('📊 First bytes:', Array.from(audioData.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')).join(' '));
+    }
     
     // Accumulate small chunks into buffer
     const combined = new Uint8Array(this.buffer.length + audioData.byteLength);
@@ -203,26 +208,56 @@ class AudioQueue {
     try {
       const wavData = this.createWavFromPCM(audioData);
       const buffer = wavData.buffer.slice(0) as ArrayBuffer;
+      
+      console.log('🎧 Decoding WAV buffer, size:', buffer.byteLength);
       const audioBuffer = await this.audioContext.decodeAudioData(buffer);
+      console.log('✅ Decoded audio buffer:', audioBuffer.duration.toFixed(2), 'seconds');
       
       const source = this.audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(this.audioContext.destination);
       
-      source.onended = () => this.playNext();
+      source.onended = () => {
+        console.log('🏁 Audio chunk finished');
+        this.playNext();
+      };
       source.start(0);
+      console.log('▶️ Audio playback started');
     } catch (error) {
-      console.error('❌ Error playing audio:', error);
-      this.playNext(); // Continue with next segment
+      console.error('❌ Error playing audio chunk:', error);
+      if (error instanceof Error) {
+        console.error('Error details:', error.message, error.stack);
+      }
+      this.playNext(); // Continue with next segment even if this one fails
     }
   }
 
   private createWavFromPCM(pcmData: Uint8Array): Uint8Array {
-    // Convert bytes to 16-bit samples
+    console.log('🎵 Creating WAV from PCM, input size:', pcmData.byteLength);
+    
+    // Use DataView to read 16-bit samples with correct byte order
+    // First try little-endian (most common for PCM16)
     const int16Data = new Int16Array(pcmData.length / 2);
-    for (let i = 0; i < pcmData.length; i += 2) {
-      int16Data[i / 2] = (pcmData[i + 1] << 8) | pcmData[i];
+    const dataView = new DataView(pcmData.buffer, pcmData.byteOffset, pcmData.byteLength);
+    
+    try {
+      // Read as little-endian Int16 samples
+      for (let i = 0; i < int16Data.length; i++) {
+        int16Data[i] = dataView.getInt16(i * 2, true); // true = little-endian
+      }
+      console.log('✅ Decoded PCM16 (little-endian):', int16Data.length, 'samples');
+    } catch (error) {
+      console.error('❌ Error decoding PCM16:', error);
+      // Fallback: try big-endian
+      console.log('🔄 Trying big-endian...');
+      for (let i = 0; i < int16Data.length; i++) {
+        int16Data[i] = dataView.getInt16(i * 2, false); // false = big-endian
+      }
     }
+    
+    // Log sample statistics for debugging
+    const maxSample = Math.max(...Array.from(int16Data).map(Math.abs));
+    console.log('📊 Max sample amplitude:', maxSample, '/ 32768');
     
     // Create WAV header
     const wavHeader = new ArrayBuffer(44);
