@@ -10,6 +10,7 @@ import { Play, CheckCircle, XCircle, Clock, Loader2 } from "lucide-react";
 import SubNavigation from "@/components/SubNavigation";
 import { useToast } from "@/hooks/use-toast";
 import AppLayout from "@/components/AppLayout";
+import AlertsPanel from "@/components/admin/AlertsPanel";
 
 const adminIntegrationsNavigation = [
   { id: "overview", name: "API Integrations", path: "/admin/integrations" },
@@ -146,6 +147,11 @@ export default function Integrations() {
               </>
             )}
           </Button>
+        </div>
+
+        {/* Alerts Panel */}
+        <div className="mb-6">
+          <AlertsPanel />
         </div>
 
         {isLoading ? (
