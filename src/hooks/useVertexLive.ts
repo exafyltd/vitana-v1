@@ -129,11 +129,16 @@ export const useVertexLive = () => {
 
   const startAudio = useCallback(async () => {
     try {
+      // Check if service is ready before starting
+      if (!serviceRef.current?.isConnected()) {
+        throw new Error('Setup not complete');
+      }
       await serviceRef.current?.startAudio();
       setIsRecording(true);
     } catch (err) {
       console.error('Failed to start audio:', err);
-      setError('Failed to start audio recording');
+      setError(err instanceof Error ? err.message : 'Failed to start audio recording');
+      throw err; // Re-throw so caller knows it failed
     }
   }, []);
 

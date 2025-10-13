@@ -50,6 +50,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     isScreenSharing: vertexScreenSharing,
     transcript: vertexTranscript,
     error: vertexError,
+    lastEvent: vertexLastEvent,
     connect: vertexConnect,
     disconnect: vertexDisconnect,
     startAudio: vertexStartAudio,
@@ -59,6 +60,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   } = useVertexLive()
 
   const isStreaming = isAudioActive || isVideoActive
+
+  // Refs for latest connection state (avoid stale closures)
+  const vertexStateRef = useRef(vertexConnectionState)
+  useEffect(() => { vertexStateRef.current = vertexConnectionState }, [vertexConnectionState])
+  const vertexConnectedRef = useRef(vertexConnected)
+  useEffect(() => { vertexConnectedRef.current = vertexConnected }, [vertexConnected])
 
   // Pre-warm user context cache on component mount
   useEffect(() => {
@@ -266,6 +273,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
       console.log('🎥 Activating video stream...');
+      
+      // Prime AudioContext on user gesture (avoids autoplay blocks)
+      await aiVoiceService.resumeAudio();
+      
       setIsVideoActive(true);
       setIsAudioActive(true);
       setAssistantStreamingText('');
@@ -286,19 +297,22 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         await vertexConnect();
         console.log('✅ Connected to Vertex Live, waiting for setup...');
         
-        // Wait for setupComplete before starting audio/screen (max 5 seconds)
+        // Wait for setupComplete before starting audio/screen (max 8 seconds)
         const startTime = Date.now();
-        const maxWait = 5000;
+        const maxWait = 8000;
         const checkInterval = 100;
         
         const waitForSetup = () => {
           return new Promise<void>((resolve, reject) => {
             const check = () => {
-              if (vertexConnectionState === 'connected') {
+              // Use refs to avoid stale closure
+              if (vertexConnectedRef.current || vertexStateRef.current === 'connected') {
                 console.log('✅ Setup complete received, starting audio/screen');
                 resolve();
               } else if (Date.now() - startTime > maxWait) {
-                reject(new Error('Setup timeout'));
+                const elapsed = Date.now() - startTime;
+                console.error(`❌ Setup timeout after ${elapsed}ms, lastEvent:`, vertexLastEvent);
+                reject(new Error(`Setup timeout after ${elapsed}ms`));
               } else {
                 setTimeout(check, checkInterval);
               }
@@ -310,15 +324,16 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         await waitForSetup();
         
         // Now start audio and screen capture
-        vertexStartAudio();
-        vertexStartScreen();
+        await vertexStartAudio();
+        await vertexStartScreen();
         console.log('✅ Started audio and screen capture');
       } catch (error) {
         console.error('Error activating Vertex stream:', error);
+        const timeoutMatch = error instanceof Error && error.message.match(/(\d+)ms/);
         toast({
           title: "Connection Error",
-          description: error instanceof Error && error.message === 'Setup timeout' 
-            ? "AI setup is taking longer than expected. Please try again."
+          description: timeoutMatch 
+            ? `AI setup took too long (${timeoutMatch[1]}ms). Please try again.`
             : "Failed to connect to AI service. Please try again.",
           variant: "destructive",
         });
