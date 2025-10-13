@@ -28,7 +28,7 @@ serve(async (req) => {
 
     const { eventId, title, description, location, metadata } = await req.json();
 
-    // Verify user is event creator
+    // Verify user is event creator OR co-creator
     const { data: event, error: eventError } = await supabase
       .from('global_community_events')
       .select('created_by')
@@ -39,8 +39,21 @@ serve(async (req) => {
       throw new Error('Event not found');
     }
 
-    if (event.created_by !== user.id) {
-      throw new Error('Only event creators can generate images');
+    // Check if user is the creator
+    const isCreator = event.created_by === user.id;
+
+    // Check if user is a co-creator
+    const { data: coCreator } = await supabase
+      .from('event_co_creators')
+      .select('user_id')
+      .eq('event_id', eventId)
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    const isCoCreator = !!coCreator;
+
+    if (!isCreator && !isCoCreator) {
+      throw new Error('Only event creators and co-creators can generate images');
     }
 
     // Build AI prompt

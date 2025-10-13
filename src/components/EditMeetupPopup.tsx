@@ -156,18 +156,35 @@ export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps
       }
     } catch (err: any) {
       console.error('Image generation failed:', err);
+      console.error('Error details:', {
+        message: err.message,
+        context: err.context,
+        details: err.details
+      });
+      
+      let errorMessage = 'Failed to generate image. Please try again or upload manually.';
       
       if (err.message?.includes('429') || err.message?.includes('Too many requests')) {
-        setGenerationError('Too many requests. Please wait a moment and try again.');
+        errorMessage = 'Too many requests. Please wait a moment and try again.';
       } else if (err.message?.includes('402') || err.message?.includes('credits')) {
-        setGenerationError('AI credits depleted. Please add credits to continue.');
-      } else {
-        setGenerationError('Failed to generate image. Please try again or upload manually.');
+        errorMessage = 'AI credits depleted. Please add credits to continue.';
+      } else if (err.message?.includes('Only event creators')) {
+        errorMessage = 'You do not have permission to generate images for this event.';
+      } else if (err.context?.body) {
+        // Extract error from Supabase function response
+        try {
+          const errorBody = JSON.parse(err.context.body);
+          if (errorBody.error) {
+            errorMessage = errorBody.error;
+          }
+        } catch {}
       }
+      
+      setGenerationError(errorMessage);
       
       toast({
         title: "Generation Failed",
-        description: generationError || "Please try again",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
