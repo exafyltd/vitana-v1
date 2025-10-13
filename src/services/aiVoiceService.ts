@@ -26,6 +26,7 @@ export class AIVoiceService {
   private currentTranscript: string = '';
   private isRecordingWithClientSTT: boolean = false;
   private currentLanguage: string = 'en-US'; // Store language for client-side STT
+  private isAudioSuspended: boolean = false;
 
   constructor() {
     // Initialize audio context lazily
@@ -38,6 +39,32 @@ export class AIVoiceService {
     if (this.audioContext && this.audioContext.state === 'suspended') {
       console.info('[audio] Resuming AudioContext');
       await this.audioContext.resume();
+    }
+  }
+
+  async suspendAudio(): Promise<void> {
+    console.info('[audio] 🔇 Suspending aiVoiceService audio system for Vertex');
+    this.isAudioSuspended = true;
+    this.clearAudioQueue();
+    
+    if (this.audioContext) {
+      // Close the AudioContext to free up resources
+      if (this.audioContext.state !== 'closed') {
+        await this.audioContext.close();
+        console.info('[audio] AudioContext closed');
+      }
+      this.audioContext = null;
+    }
+  }
+
+  async reactivateAudio(): Promise<void> {
+    console.info('[audio] 🔊 Reactivating aiVoiceService audio system');
+    this.isAudioSuspended = false;
+    
+    // Recreate AudioContext
+    if (typeof window !== 'undefined' && !this.audioContext) {
+      this.audioContext = new AudioContext();
+      console.info('[audio] AudioContext recreated');
     }
   }
 
@@ -439,6 +466,12 @@ export class AIVoiceService {
   }
 
   private async queueAudio(base64Audio: string): Promise<void> {
+    // Don't queue audio if suspended (Vertex is active)
+    if (this.isAudioSuspended) {
+      console.info('[audio] Skipping audio queue - system is suspended for Vertex');
+      return;
+    }
+    
     if (!this.audioContext) return;
 
     console.info('[audio] Received audio chunk to queue');

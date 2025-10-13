@@ -290,8 +290,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         if ((window as any).__currentTTSAudio) {
           (window as any).__currentTTSAudio.pause();
           (window as any).__currentTTSAudio = null;
-          console.log('Cancelled existing TTS before Vertex connection');
         }
+        console.log('🔇 Suspending aiVoiceService audio for Vertex...');
+        await aiVoiceService.suspendAudio();
         
         // Connect to Vertex AI
         await vertexConnect();
@@ -341,13 +342,17 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         setIsAudioActive(false);
       }
     },
-    deactivateVideo: () => {
+    deactivateVideo: async () => {
       console.log('StreamingChat: deactivateVideo called');
       
       if (useVertexLiveMode) {
         vertexStopAudio();
         vertexStopScreen();
         vertexDisconnect();
+        
+        // Reactivate aiVoiceService audio after Vertex disconnects
+        console.log('🔊 Reactivating aiVoiceService audio...');
+        await aiVoiceService.reactivateAudio();
       }
       
       setIsVideoActive(false);
