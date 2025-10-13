@@ -469,6 +469,47 @@ export type Database = {
           },
         ]
       }
+      api_test_notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          integration_id: string
+          message: string
+          metadata: Json | null
+          notification_type: string
+          sent_at: string | null
+          severity: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          integration_id: string
+          message: string
+          metadata?: Json | null
+          notification_type?: string
+          sent_at?: string | null
+          severity?: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          integration_id?: string
+          message?: string
+          metadata?: Json | null
+          notification_type?: string
+          sent_at?: string | null
+          severity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_test_notifications_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "api_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_events: {
         Row: {
           created_at: string
@@ -4945,6 +4986,15 @@ export type Database = {
           id: string
           user_email: string
           user_id: string
+        }[]
+      }
+      get_recent_test_failures: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          error_count: number
+          integration_name: string
+          latest_error: string
+          latest_timestamp: string
         }[]
       }
       get_role_preference: {
