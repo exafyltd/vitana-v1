@@ -1428,6 +1428,38 @@ export type Database = {
         }
         Relationships: []
       }
+      event_co_creators: {
+        Row: {
+          added_at: string
+          added_by: string | null
+          event_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          added_by?: string | null
+          event_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          added_by?: string | null
+          event_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_co_creators_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_recommendations: {
         Row: {
           created_at: string
@@ -3115,6 +3147,7 @@ export type Database = {
       profiles: {
         Row: {
           activity_level: string | null
+          admin_user_number: number
           age_range: string | null
           avatar_url: string | null
           bio: string | null
@@ -3173,6 +3206,7 @@ export type Database = {
         }
         Insert: {
           activity_level?: string | null
+          admin_user_number?: number
           age_range?: string | null
           avatar_url?: string | null
           bio?: string | null
@@ -3231,6 +3265,7 @@ export type Database = {
         }
         Update: {
           activity_level?: string | null
+          admin_user_number?: number
           age_range?: string | null
           avatar_url?: string | null
           bio?: string | null

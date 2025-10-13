@@ -17,6 +17,7 @@ interface CommunityEvent {
   created_at: string;
   updated_at: string;
   image_url?: string;
+  is_co_creator?: boolean; // User is a co-creator of this event
 }
 
 interface CreateEventData {
@@ -66,9 +67,25 @@ export function useCommunityEvents() {
         }
         throw error;
       }
+
+      // Fetch co-creator status for current user
+      let coCreatorEventIds = new Set<string>();
+      if (user) {
+        const { data: coCreatorData } = await supabase
+          .from('event_co_creators')
+          .select('event_id')
+          .eq('user_id', user.id);
+        coCreatorEventIds = new Set(coCreatorData?.map(cc => cc.event_id) || []);
+      }
+
+      // Add is_co_creator flag to events
+      const eventsWithCoCreator = (data || []).map(event => ({
+        ...event,
+        is_co_creator: coCreatorEventIds.has(event.id)
+      }));
       
-      console.log("Fetched events:", data?.length || 0);
-      setEvents(data || []);
+      console.log("Fetched events:", eventsWithCoCreator.length);
+      setEvents(eventsWithCoCreator);
     } catch (error) {
       console.error("Error fetching events:", error);
       toast({
@@ -150,7 +167,7 @@ export function useCommunityEvents() {
           image_url: eventData.image_url,
         })
         .eq('id', eventId)
-        .eq('created_by', user.id) // Ensure only the creator can update
+        // RLS policy handles creator and co-creator checks
         .select()
         .single();
 

@@ -103,9 +103,9 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentU
     const rowEvents = events.slice(i, i + 3);
     const isEvenRow = Math.floor(i / 3) % 2 === 0;
     
-    const canEdit0 = !!currentUserId && rowEvents[0].created_by === currentUserId && new Date(rowEvents[0].start_time) > new Date();
-    const canEdit1 = rowEvents[1] && !!currentUserId && rowEvents[1].created_by === currentUserId && new Date(rowEvents[1].start_time) > new Date();
-    const canEdit2 = rowEvents[2] && !!currentUserId && rowEvents[2].created_by === currentUserId && new Date(rowEvents[2].start_time) > new Date();
+    const canEdit0 = !!currentUserId && (rowEvents[0].created_by === currentUserId || rowEvents[0].is_co_creator === true) && new Date(rowEvents[0].start_time) > new Date();
+    const canEdit1 = rowEvents[1] && !!currentUserId && (rowEvents[1].created_by === currentUserId || rowEvents[1].is_co_creator === true) && new Date(rowEvents[1].start_time) > new Date();
+    const canEdit2 = rowEvents[2] && !!currentUserId && (rowEvents[2].created_by === currentUserId || rowEvents[2].is_co_creator === true) && new Date(rowEvents[2].start_time) > new Date();
 
     rows.push(
       <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
@@ -315,7 +315,7 @@ const EventsAndMeetups = () => {
   const currentIndex = selectedEventId ? visibleEventIds.indexOf(selectedEventId) : -1;
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex >= 0 && currentIndex < visibleEventIds.length - 1;
-  const canEdit = selectedEventData && user && selectedEventData.created_by === user.id;
+  const canEdit = selectedEventData && user && (selectedEventData.created_by === user.id || selectedEventData.is_co_creator === true);
 
   return (
     <>
