@@ -1,5 +1,8 @@
 project_id = "inmkhvwdcuyhnxkgfvsb"
 
+[functions.generate-maxina-summer-events]
+verify_jwt = true
+
 [functions.vertex-auth]
 verify_jwt = true
 
