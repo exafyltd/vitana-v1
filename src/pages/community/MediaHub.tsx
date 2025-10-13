@@ -17,6 +17,8 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { communityNavigation } from "@/config/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 export default function MediaHub() {
   const navigate = useNavigate();
   const {
@@ -28,6 +30,36 @@ export default function MediaHub() {
   const [showPreview, setShowPreview] = useState(false);
   const [activeMediaTab, setActiveMediaTab] = useState("shorts");
   const latestActions = getLatestActions(2);
+
+  // Fetch approved music from database
+  const { data: approvedMusic = [] } = useQuery({
+    queryKey: ['community-music'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('media_uploads')
+        .select(`
+          id,
+          title,
+          file_url,
+          duration,
+          plays_count,
+          created_at,
+          music_metadata (
+            genre,
+            mood,
+            artist_name
+          )
+        `)
+        .eq('media_type', 'music')
+        .eq('status', 'approved')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(10);
+      
+      if (error) throw error;
+      return data || [];
+    }
+  });
   const videoShorts = [{
     title: "5 Min Morning Stretch",
     creator: "FitnessPro",
@@ -250,34 +282,46 @@ export default function MediaHub() {
                       Trending Music
                     </h2>
                     <div className="space-y-4">
-                      {[{
-                      title: "Morning Flow Beats",
-                      artist: "Wellness Sounds",
-                      duration: "3:45",
-                      genre: "Ambient"
-                    }, {
-                      title: "Focus & Flow",
-                      artist: "Study Vibes",
-                      duration: "4:20",
-                      genre: "Lo-Fi"
-                    }, {
-                      title: "Workout Energy",
-                      artist: "Fitness Mix",
-                      duration: "2:58",
-                      genre: "Electronic"
-                    }].map((track, index) => <div key={index} className="flex items-center gap-4 p-3 border rounded-lg">
-                          <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
-                            <Music className="w-6 h-6 text-purple-600" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-sm">{track.title}</h3>
-                            <p className="text-xs text-muted-foreground">{track.artist} • {track.duration}</p>
-                            <Badge variant="outline" className="text-xs mt-1">{track.genre}</Badge>
-                          </div>
-                          <Button size="sm" variant="outline">
-                            <Play className="w-4 h-4" />
-                          </Button>
-                        </div>)}
+                      {approvedMusic.length === 0 ? (
+                        <div className="text-center py-8 text-muted-foreground">
+                          <Music className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                          <p>No music uploaded yet. Be the first to share!</p>
+                        </div>
+                      ) : (
+                        approvedMusic.map((track) => {
+                          const formatDuration = (seconds: number | null) => {
+                            if (!seconds) return '0:00';
+                            const mins = Math.floor(seconds / 60);
+                            const secs = Math.floor(seconds % 60);
+                            return `${mins}:${secs.toString().padStart(2, '0')}`;
+                          };
+
+                          return (
+                            <div key={track.id} className="flex items-center gap-4 p-3 border rounded-lg">
+                              <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
+                                <Music className="w-6 h-6 text-purple-600" />
+                              </div>
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-sm">{track.title}</h3>
+                                <p className="text-xs text-muted-foreground">
+                                  {track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} • {formatDuration(track.duration)}
+                                </p>
+                                {track.music_metadata?.[0]?.genre && (
+                                  <Badge variant="outline" className="text-xs mt-1">
+                                    {track.music_metadata[0].genre}
+                                  </Badge>
+                                )}
+                              </div>
+                              <Button size="sm" variant="outline" onClick={() => {
+                                const audio = new Audio(track.file_url);
+                                audio.play();
+                              }}>
+                                <Play className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          );
+                        })
+                      )}
                     </div>
                   </CardContent>
                 </Card>
