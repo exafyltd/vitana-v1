@@ -1,4 +1,7 @@
+import { format } from "date-fns";
 import { NewsCard } from "@/components/crossover/NewsCard";
+import { useCommunityEvents } from "@/hooks/useCommunityEvents";
+import { eventTypeToPillar } from "@/lib/eventTransformers";
 
 interface HydrationReminderCardProps {
   timeLastIntake?: string;
@@ -57,18 +60,32 @@ interface UpcomingEventCardProps {
 }
 
 export function UpcomingEventCard({
-  eventTitle = "Healthy Cooking Workshop",
-  eventTime = "2 PM",
+  eventTitle,
+  eventTime,
   className
 }: UpcomingEventCardProps) {
+  const { upcomingEvents } = useCommunityEvents();
+
+  // Get next upcoming event or use provided/fallback data
+  const nextEvent = upcomingEvents.length > 0 ? upcomingEvents[0] : null;
+  
+  const title = nextEvent?.title || eventTitle || "Healthy Cooking Workshop";
+  const time = nextEvent 
+    ? format(new Date(nextEvent.start_time), 'HH:mm')
+    : eventTime || "14:00";
+  const pillar = nextEvent 
+    ? eventTypeToPillar(nextEvent.event_type)
+    : "Nutrition";
+  const image = nextEvent?.image_url || "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop";
+
   return (
     <NewsCard
-      title={eventTitle}
-      description={`Starting at ${eventTime}`}
-      imageUrl="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop"
-      pillar="Nutrition"
+      title={title}
+      description={`Starting at ${time}`}
+      imageUrl={image}
+      pillar={pillar}
       author={{ name: "Event Calendar", avatar: "/lovable-uploads/design-team-avatar.jpg" }}
-      timestamp={eventTime}
+      timestamp={time}
       rewardPoints={8}
       rewardDescription="Join event for participation credits"
       showReward={true}

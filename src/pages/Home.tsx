@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { format } from "date-fns";
 import { Search, Plus, Calendar, RefreshCw } from "lucide-react";
+import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -22,7 +24,7 @@ import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
 import { ScrollingRail } from "@/components/home/ScrollingRail";
 import { PulsingHighlightCard } from "@/components/home/PulsingHighlightCard";
 
-// Mock data for Today and Guide screens
+// Mock data for Today and Guide screens - Fallback data
 const todayScheduledEvents = [
   {
     title: "Morning Yoga with Lisa Chen",
@@ -244,6 +246,7 @@ const guideDailyMatches = [
 ];
 
 export default function Home() {
+  const { todayEvents, upcomingEvents } = useCommunityEvents();
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -254,6 +257,39 @@ export default function Home() {
   
   const firstName = profile?.displayName?.split(' ')[0] || '';
   const { greeting, emoji } = useEnhancedMotivationalMessage(firstName);
+
+  // Transform real events - moved inside component
+  const realTodayEvents = todayEvents.map(event => ({
+    title: event.title,
+    description: event.description || "Join us for this community event",
+    imageUrl: event.image_url || "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    pillar: event.event_type === 'meetup' ? 'Mental' : event.event_type === 'fitness' ? 'Exercise' : 'Mental',
+    author: { 
+      name: event.creator_display_name || "Community Member", 
+      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+    },
+    location: event.location || "Virtual",
+    attendees: event.participant_count,
+    timestamp: format(new Date(event.start_time), 'HH:mm')
+  }));
+
+  const realUpcomingEventsMapped = upcomingEvents.map(event => ({
+    title: event.title,
+    description: event.description || "Join us for this community event",
+    imageUrl: event.image_url || "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop",
+    pillar: event.event_type === 'meetup' ? 'Mental' : event.event_type === 'fitness' ? 'Exercise' : 'Mental',
+    author: { 
+      name: event.creator_display_name || "Community Member", 
+      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+    },
+    location: event.location || "Virtual",
+    attendees: event.participant_count,
+    timestamp: format(new Date(event.start_time), 'HH:mm')
+  }));
+
+  // Hybrid: blend real with mock
+  const activeScheduledEvents = realTodayEvents.length > 0 ? realTodayEvents.slice(0, 3) : todayScheduledEvents;
+  const activeEventsAndMeetups = realUpcomingEventsMapped.length > 0 ? realUpcomingEventsMapped.slice(0, 3) : todayEventsAndMeetups;
 
   // Show onboarding for new users (check localStorage for demo)
   useEffect(() => {

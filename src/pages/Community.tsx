@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { format } from "date-fns";
+import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -23,7 +25,7 @@ import { Users, Calendar, Award, TrendingUp, Star, Trophy, Crown, Medal, Sparkle
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { communityNavigation } from "@/config/navigation";
 
-// Rich mock data for Community Overview - Today Highlights
+// Mock fallback data for Today Highlights
 const todayHighlights = [
   {
     title: "Morning Run Club 🏃‍♀️",
@@ -65,7 +67,7 @@ const todayHighlights = [
   }
 ];
 
-// This Week in Community Events
+// Mock fallback for weekly events
 const weeklyEvents = [
   {
     title: "Longevity Dance Night 💃",
@@ -573,6 +575,7 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
 };
 
 export default withScreenId(function Community() {
+  const { todayEvents, upcomingEvents } = useCommunityEvents();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [timeframe, setTimeframe] = useState("7d");
   const [scope, setScope] = useState("global");
@@ -581,6 +584,48 @@ export default withScreenId(function Community() {
   const [communityFiltersOpen, setCommunityFiltersOpen] = useState(false);
   
   const latestActions = getLatestActions(2);
+
+  // Transform real events to UI format
+  const realTodayHighlights = todayEvents.slice(0, 2).map(event => ({
+    title: event.title,
+    description: event.description || "Join us for this community event",
+    imageUrl: event.image_url || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+    category: "event" as const,
+    pillar: event.event_type === 'fitness' ? 'Exercise' : event.event_type === 'workshop' ? 'Nutrition' : 'Mental',
+    author: { 
+      name: event.creator_display_name || "Community Member", 
+      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+    },
+    location: event.location || "Virtual",
+    attendees: event.participant_count,
+    timestamp: format(new Date(event.start_time), 'HH:mm'),
+    rewardPoints: 8,
+    rewardDescription: "Join event for wellness credits"
+  }));
+
+  // Hybrid: use real events or fall back to the imported mock data
+  const activeHighlights = realTodayHighlights.length > 0 ? realTodayHighlights : todayHighlights;
+
+  // Transform upcoming events for weekly view
+  const realWeeklyEvents = upcomingEvents.slice(0, 3).map(event => ({
+    title: event.title,
+    description: event.description || "Join us for this community event",
+    imageUrl: event.image_url || "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
+    category: "event" as const,
+    pillar: event.event_type === 'fitness' ? 'Exercise' : event.event_type === 'workshop' ? 'Nutrition' : 'Mental',
+    author: { 
+      name: event.creator_display_name || "Community Member", 
+      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+    },
+    location: event.location || "Virtual",
+    attendees: event.participant_count,
+    timestamp: format(new Date(event.start_time), 'EEE HH:mm'),
+    rewardPoints: 10,
+    rewardDescription: "Join event for wellness credits"
+  }));
+
+  // Hybrid: use real events or fall back to the imported mock data  
+  const activeWeeklyEvents = realWeeklyEvents.length > 0 ? realWeeklyEvents : weeklyEvents;
 
   // Global row counter for continuous alternating pattern
   let globalRowIndex = 0;
