@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, Calendar, Users, BookOpen, Activity, Stethoscope } from "lucide-react";
+import { Heart, Calendar, Users, BookOpen, Activity, Stethoscope, Upload, FlaskConical } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface HealthMasterActionPopupProps {
@@ -13,6 +13,26 @@ export function HealthMasterActionPopup({ open, onOpenChange }: HealthMasterActi
   const navigate = useNavigate();
 
   const quickActions = [
+    {
+      title: "Upload Lab Results",
+      description: "Add your latest test results and biomarkers",
+      icon: Upload,
+      action: () => {
+        navigate('/health/biomarker-results');
+        onOpenChange(false);
+      },
+      color: "from-cyan-500/20 to-blue-500/20"
+    },
+    {
+      title: "Order Blood Test",
+      description: "Schedule lab tests from certified providers",
+      icon: FlaskConical,
+      action: () => {
+        navigate('/health/services-hub');
+        onOpenChange(false);
+      },
+      color: "from-teal-500/20 to-cyan-500/20"
+    },
     {
       title: "Book Health Screening",
       description: "Schedule your annual health checkup",
