@@ -87,8 +87,8 @@ serve(async (req) => {
         }
         console.log(`👤 Authenticated user: ${user.id}`);
 
-        // Conversation logging disabled due to database constraint issues
-        // conversationId remains null
+        // Generate conversationId for protocol compatibility (not logged to DB)
+        conversationId = crypto.randomUUID();
 
         // Mint Google access token directly using service account (no external vertex-auth)
         const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
