@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { Search, Plus, Calendar, RefreshCw } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -257,6 +259,68 @@ export default function Home() {
   
   const firstName = profile?.displayName?.split(' ')[0] || '';
   const { greeting, emoji } = useEnhancedMotivationalMessage(firstName);
+
+  // Fetch real approved media uploads
+  const { data: approvedMedia } = useQuery({
+    queryKey: ['home-media-content'],
+    queryFn: async () => {
+      const { data: mediaData } = await supabase
+        .from('media_uploads')
+        .select('*, music_metadata(*)')
+        .eq('status', 'approved')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(10);
+      
+      if (!mediaData) return [];
+
+      // Fetch profiles for the media creators
+      const userIds = mediaData.map(m => m.user_id);
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('user_id, display_name, avatar_url')
+        .in('user_id', userIds);
+
+      // Create a map of profiles for quick lookup
+      const profilesMap = new Map(profilesData?.map(p => [p.user_id, p]) || []);
+
+      // Combine media with profile data
+      return mediaData.map(media => ({
+        ...media,
+        profile: profilesMap.get(media.user_id)
+      }));
+    }
+  });
+
+  // Transform real media data to match NewsCard format
+  const realMediaContent = (approvedMedia || []).map(media => ({
+    title: media.title,
+    description: media.description,
+    imageUrl: media.thumbnail_url || "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
+    pillar: media.music_metadata?.genre === 'Ambient' ? 'Mental' : media.music_metadata?.genre === 'Energetic' ? 'Exercise' : 'Nutrition',
+    mediaType: media.media_type as 'music' | 'podcast' | 'video',
+    author: { 
+      name: media.profile?.display_name || "Community Creator", 
+      avatar: media.profile?.avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+    },
+    timestamp: formatDistanceToNow(new Date(media.created_at), { addSuffix: true }),
+    fileUrl: media.file_url,
+    isReal: true
+  }));
+
+  // Blend real and mock data - prioritize real content
+  const blendedMediaContent = [
+    ...realMediaContent,
+    ...todayMediaContent.map(item => ({ ...item, isReal: false }))
+  ].slice(0, 3);
+
+  // Play media handler
+  const handlePlayMedia = (fileUrl?: string) => {
+    if (fileUrl) {
+      const audio = new Audio(fileUrl);
+      audio.play();
+    }
+  };
 
   // Transform real events - moved inside component
   const realTodayEvents = todayEvents.map(event => ({
