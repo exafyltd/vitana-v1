@@ -102,67 +102,26 @@ serve(async (req) => {
     }
 
     console.log(`Generating 40 events for user ${user.id}`);
-
+    
+    // Determine mode from request body (fast = no images)
+    let mode = 'fast';
+    try {
+      const body = await req.json();
+      mode = body?.mode || (body?.noImages ? 'fast' : mode);
+    } catch (_) {
+      // no body provided
+    }
+    console.log('Mode:', mode);
+    
     const generatedEvents = [];
+    const PLACEHOLDER_IMAGE = '/placeholder.svg';
+    
+    // Generate events (fast mode skips AI images)
+    if (mode === 'fast') {
+      for (let i = 0; i < EVENTS_DATA.length; i++) {
+        const event = EVENTS_DATA[i];
+        console.log(`(fast) Preparing event ${i + 1}/40: ${event.title}`);
 
-    // Generate events with AI images
-    for (let i = 0; i < EVENTS_DATA.length; i++) {
-      const event = EVENTS_DATA[i];
-      console.log(`Processing event ${i + 1}/40: ${event.title}`);
-
-      try {
-        // Generate AI image
-        const imagePrompt = IMAGE_PROMPTS[event.category as keyof typeof IMAGE_PROMPTS](event.venue || '');
-        
-        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${lovableApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'google/gemini-2.5-flash-image-preview',
-            messages: [{
-              role: 'user',
-              content: imagePrompt
-            }],
-            modalities: ['image', 'text']
-          })
-        });
-
-        if (!aiResponse.ok) {
-          throw new Error(`AI image generation failed: ${aiResponse.status}`);
-        }
-
-        const aiData = await aiResponse.json();
-        const imageBase64 = aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-
-        if (!imageBase64) {
-          throw new Error('No image returned from AI');
-        }
-
-        // Convert base64 to blob and upload to Supabase Storage
-        const base64Data = imageBase64.split(',')[1];
-        const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
-        
-        const fileName = `maxina-summer-2026/event-${i + 1}-${Date.now()}.jpg`;
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('event-images')
-          .upload(fileName, binaryData, {
-            contentType: 'image/jpeg',
-            upsert: false
-          });
-
-        if (uploadError) {
-          throw new Error(`Storage upload failed: ${uploadError.message}`);
-        }
-
-        // Get public URL
-        const { data: { publicUrl } } = supabase.storage
-          .from('event-images')
-          .getPublicUrl(fileName);
-
-        // Construct event object
         const startTime = new Date(`${event.date}T${event.time}:00+02:00`);
         const endTime = new Date(startTime.getTime() + event.duration * 60 * 60 * 1000);
 
@@ -176,7 +135,7 @@ serve(async (req) => {
           end_time: endTime.toISOString(),
           max_participants: event.maxPart,
           participant_count: 0,
-          image_url: publicUrl,
+          image_url: PLACEHOLDER_IMAGE,
           created_by: user.id,
           metadata: {
             category: event.category,
@@ -192,11 +151,102 @@ serve(async (req) => {
         };
 
         generatedEvents.push(eventData);
-        console.log(`✓ Event ${i + 1}/40 generated: ${event.title}`);
+        console.log(`✓ (fast) Event ${i + 1}/40 prepared: ${event.title}`);
+      }
+    } else {
+      // Generate events with AI images
+      for (let i = 0; i < EVENTS_DATA.length; i++) {
+        const event = EVENTS_DATA[i];
+        console.log(`Processing event ${i + 1}/40: ${event.title}`);
 
-      } catch (error) {
-        console.error(`Failed to generate event ${i + 1}:`, error);
-        // Continue with next event
+        try {
+          // Generate AI image
+          const imagePrompt = IMAGE_PROMPTS[event.category as keyof typeof IMAGE_PROMPTS](event.venue || '');
+          
+          const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${lovableApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: 'google/gemini-2.5-flash-image-preview',
+              messages: [{
+                role: 'user',
+                content: imagePrompt
+              }],
+              modalities: ['image', 'text']
+            })
+          });
+
+          if (!aiResponse.ok) {
+            throw new Error(`AI image generation failed: ${aiResponse.status}`);
+          }
+
+          const aiData = await aiResponse.json();
+          const imageBase64 = aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+
+          if (!imageBase64) {
+            throw new Error('No image returned from AI');
+          }
+
+          // Convert base64 to blob and upload to Supabase Storage
+          const base64Data = imageBase64.split(',')[1];
+          const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+          
+          const fileName = `maxina-summer-2026/event-${i + 1}-${Date.now()}.jpg`;
+          const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('event-images')
+            .upload(fileName, binaryData, {
+              contentType: 'image/jpeg',
+              upsert: false
+            });
+
+          if (uploadError) {
+            throw new Error(`Storage upload failed: ${uploadError.message}`);
+          }
+
+          // Get public URL
+          const { data: { publicUrl } } = supabase.storage
+            .from('event-images')
+            .getPublicUrl(fileName);
+
+          // Construct event object
+          const startTime = new Date(`${event.date}T${event.time}:00+02:00`);
+          const endTime = new Date(startTime.getTime() + event.duration * 60 * 60 * 1000);
+
+          const eventData = {
+            title: event.title,
+            description: `Join us for an exclusive ${event.category.toLowerCase()} experience.`,
+            event_type: event.type === 'online' ? 'workshop' : 'networking',
+            location: event.venue,
+            virtual_link: event.type === 'online' ? 'https://meet.vitana.app/maxina-summer' : null,
+            start_time: startTime.toISOString(),
+            end_time: endTime.toISOString(),
+            max_participants: event.maxPart,
+            participant_count: 0,
+            image_url: publicUrl,
+            created_by: user.id,
+            metadata: {
+              category: event.category,
+              autopilot_tag: event.tag,
+              host: event.host,
+              guest: event.guest,
+              vtn_reward: event.reward,
+              venue_type: event.type === 'online' ? null : event.venue?.toLowerCase().includes('boat') ? 'boat' : 
+                          event.venue?.toLowerCase().includes('beach') ? 'beach' :
+                          event.venue?.toLowerCase().includes('winery') || event.venue?.toLowerCase().includes('vineyard') ? 'winery' :
+                          event.venue?.toLowerCase().includes('hotel') ? 'hotel' : 'restaurant'
+            }
+          };
+
+          generatedEvents.push(eventData);
+          console.log(`✓ Event ${i + 1}/40 generated: ${event.title}`);
+
+        } catch (error) {
+          console.error(`Failed to generate event ${i + 1}:`, error);
+          // Continue with next event
+        }
       }
     }
 
