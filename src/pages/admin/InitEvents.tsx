@@ -11,80 +11,48 @@ export default function InitEvents() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const generateEvents = async () => {
-      try {
-        console.log('[InitEvents] Starting event generation...');
-        setStatus('loading');
-        
-        const { data, error } = await supabase.functions.invoke('seed-maxina-events-fast');
-        
-        if (error) {
-          // Provide more specific error message for timeout
-          if (error.message?.includes('FunctionsHttpError')) {
-            throw new Error('The function timed out while generating AI images for 40 events. We switched to fast mode (no images) to complete quickly.');
-          }
-          throw error;
-        }
-        
-        console.log('[InitEvents] Generation complete:', data);
-        setStatus('success');
-        setMessage(`Successfully generated ${data?.events?.length || 0} events!`);
-        
-        toast({
-          title: "Events Generated",
-          description: `${data?.events?.length || 0} Maxina Summer 2026 events created`,
-        });
-
-        // Redirect after 2 seconds
-        setTimeout(() => {
-          navigate('/admin/community/events');
-        }, 2000);
-        
-      } catch (err: any) {
-        console.error('[InitEvents] Error:', err);
-        setStatus('error');
-        const errorMsg = err.message || 'Failed to generate events';
-        setMessage(errorMsg);
-        
-        toast({
-          title: "Generation Failed",
-          description: errorMsg,
-          variant: "destructive",
-        });
-      }
-    };
-
-    generateEvents();
-  }, [navigate, toast]);
+    setStatus('success');
+    setMessage('Please run the SQL script to generate events');
+  }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted">
-      <div className="text-center space-y-6 p-8">
-        {status === 'loading' && (
-          <>
-            <Loader2 className="w-16 h-16 animate-spin mx-auto text-primary" />
-            <p className="text-lg text-muted-foreground">{message}</p>
-            <p className="text-sm text-muted-foreground">This may take 2-3 minutes...</p>
-          </>
-        )}
-        
-        {status === 'success' && (
-          <>
-            <CheckCircle className="w-16 h-16 mx-auto text-green-500" />
-            <p className="text-lg font-medium text-foreground">{message}</p>
-            <p className="text-sm text-muted-foreground">Redirecting to events page...</p>
-          </>
-        )}
-        
-        {status === 'error' && (
-          <>
-            <XCircle className="w-16 h-16 mx-auto text-destructive" />
-            <div className="max-w-2xl mx-auto">
-              <p className="text-lg font-medium text-destructive mb-3">Generation Failed</p>
-              <p className="text-sm text-muted-foreground whitespace-pre-wrap">{message}</p>
-            </div>
-          </>
-        )}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-8">
+      <div className="max-w-3xl w-full bg-card rounded-lg shadow-lg p-8 space-y-6">
+        <div className="text-center space-y-4">
+          <CheckCircle className="w-16 h-16 mx-auto text-primary" />
+          <h1 className="text-2xl font-bold text-foreground">Generate 40 Summer Events</h1>
+          <p className="text-muted-foreground">
+            Run the SQL script below in your Supabase SQL Editor to instantly create all 40 Maxina Summer 2026 events.
+          </p>
+        </div>
+
+        <div className="bg-muted/50 rounded-lg p-6 space-y-4">
+          <h2 className="font-semibold text-foreground">Instructions:</h2>
+          <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+            <li>Click the "Open SQL Editor" button below</li>
+            <li>Copy the SQL from <code className="bg-muted px-2 py-1 rounded text-xs">supabase/seed-maxina-events.sql</code></li>
+            <li>Paste it into the SQL editor</li>
+            <li>Click "Run" to insert all 40 events instantly</li>
+            <li>Return here and click "View Events" below</li>
+          </ol>
+        </div>
+
+        <div className="flex gap-4 justify-center">
+          <a
+            href="https://supabase.com/dashboard/project/inmkhvwdcuyhnxkgfvsb/sql/new"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+          >
+            Open SQL Editor →
+          </a>
+          <button
+            onClick={() => navigate('/admin/community/events')}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90 transition-colors font-medium"
+          >
+            View Events
+          </button>
+        </div>
       </div>
     </div>
   );
