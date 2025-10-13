@@ -68,7 +68,8 @@ const todayMediaContent = [
     pillar: "Mental",
     mediaType: "podcast" as const,
     author: { name: "Dr. Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
-    timestamp: "New Episode"
+    timestamp: "New Episode",
+    fileUrl: undefined as string | undefined
   },
   {
     title: "Energizing Music Playlist",
@@ -77,7 +78,8 @@ const todayMediaContent = [
     pillar: "Exercise",
     mediaType: "music" as const,
     author: { name: "VITANA Music", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-    timestamp: "Updated"
+    timestamp: "Updated",
+    fileUrl: undefined as string | undefined
   },
   {
     title: "Cooking Video: Healthy Smoothies",
@@ -86,7 +88,8 @@ const todayMediaContent = [
     pillar: "Nutrition",
     mediaType: "video" as const,
     author: { name: "Chef Tae", avatar: "/lovable-uploads/tae-min-avatar.jpg" },
-    timestamp: "15 min"
+    timestamp: "15 min",
+    fileUrl: undefined as string | undefined
   }
 ];
 
@@ -443,49 +446,52 @@ export default function Home() {
               <div className="grid grid-cols-12 gap-4 mb-8 relative z-10">
                 <div className="col-span-3">
                   <PulsingHighlightCard
-                    title={todayMediaContent[0]?.title || ""}
-                    description={todayMediaContent[0]?.description}
-                    imageUrl={todayMediaContent[0]?.imageUrl || ""}
-                    pillar={todayMediaContent[0]?.pillar}
-                    mediaType={todayMediaContent[0]?.mediaType}
-                    author={todayMediaContent[0]?.author}
-                    timestamp={todayMediaContent[0]?.timestamp}
+                    title={blendedMediaContent[0]?.title || ""}
+                    description={blendedMediaContent[0]?.description}
+                    imageUrl={blendedMediaContent[0]?.imageUrl || ""}
+                    pillar={blendedMediaContent[0]?.pillar}
+                    mediaType={blendedMediaContent[0]?.mediaType}
+                    author={blendedMediaContent[0]?.author}
+                    timestamp={blendedMediaContent[0]?.timestamp}
                     showReward={true}
                     rewardPoints={3}
                     rewardDescription="Earn credits for completing meditation"
                     rewardPosition="bottom-right"
                     featured={true}
                     className="h-[280px]"
+                    onClick={() => handlePlayMedia(blendedMediaContent[0]?.fileUrl)}
                   />
                 </div>
                 <div className="col-span-3">
                   <NewsCard
-                    title={todayMediaContent[1]?.title || ""}
-                    description={todayMediaContent[1]?.description}
-                    imageUrl={todayMediaContent[1]?.imageUrl || ""}
-                    pillar={todayMediaContent[1]?.pillar}
-                    mediaType={todayMediaContent[1]?.mediaType}
-                    author={todayMediaContent[1]?.author}
-                    timestamp={todayMediaContent[1]?.timestamp}
+                    title={blendedMediaContent[1]?.title || ""}
+                    description={blendedMediaContent[1]?.description}
+                    imageUrl={blendedMediaContent[1]?.imageUrl || ""}
+                    pillar={blendedMediaContent[1]?.pillar}
+                    mediaType={blendedMediaContent[1]?.mediaType}
+                    author={blendedMediaContent[1]?.author}
+                    timestamp={blendedMediaContent[1]?.timestamp}
                     showReward={true}
                     rewardPoints={2}
                     rewardDescription="Earn credits for workout playlist"
                     className="h-[280px]"
+                    onClick={() => handlePlayMedia(blendedMediaContent[1]?.fileUrl)}
                   />
                 </div>
                 <div className="col-span-6">
                   <NewsCard
-                    title={todayMediaContent[2]?.title || ""}
-                    description={todayMediaContent[2]?.description}
-                    imageUrl={todayMediaContent[2]?.imageUrl || ""}
-                    pillar={todayMediaContent[2]?.pillar}
-                    mediaType={todayMediaContent[2]?.mediaType}
-                    author={todayMediaContent[2]?.author}
-                    timestamp={todayMediaContent[2]?.timestamp}
+                    title={blendedMediaContent[2]?.title || ""}
+                    description={blendedMediaContent[2]?.description}
+                    imageUrl={blendedMediaContent[2]?.imageUrl || ""}
+                    pillar={blendedMediaContent[2]?.pillar}
+                    mediaType={blendedMediaContent[2]?.mediaType}
+                    author={blendedMediaContent[2]?.author}
+                    timestamp={blendedMediaContent[2]?.timestamp}
                     showReward={true}
                     rewardPoints={4}
                     rewardDescription="Earn credits for cooking tutorial"
                     className="h-[280px]"
+                    onClick={() => handlePlayMedia(blendedMediaContent[2]?.fileUrl)}
                   />
                 </div>
               </div>
