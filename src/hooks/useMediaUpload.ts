@@ -114,7 +114,7 @@ export const useMediaUpload = () => {
           duration: duration || null,
           tags: metadata.tags,
           status: 'pending',
-          is_public: metadata.visibility === 'Public',
+          is_public: metadata.visibility.toLowerCase() === 'public',
         })
         .select()
         .single();
