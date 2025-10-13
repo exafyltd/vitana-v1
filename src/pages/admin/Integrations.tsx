@@ -11,6 +11,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { useToast } from "@/hooks/use-toast";
 import AppLayout from "@/components/AppLayout";
 import AlertsPanel from "@/components/admin/AlertsPanel";
+import { AddIntegrationForm } from "@/components/admin/AddIntegrationForm";
 
 const adminIntegrationsNavigation = [
   { id: "overview", name: "API Integrations", path: "/admin/integrations" },
@@ -131,22 +132,25 @@ export default function Integrations() {
               Monitor and test all API integrations
             </p>
           </div>
-          <Button 
-            onClick={() => runTestMutation.mutate()}
-            disabled={runTestMutation.isPending}
-          >
-            {runTestMutation.isPending ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Testing All...
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4 mr-2" />
-                Run All Tests
-              </>
-            )}
-          </Button>
+          <div className="flex gap-2">
+            <AddIntegrationForm />
+            <Button 
+              onClick={() => runTestMutation.mutate()}
+              disabled={runTestMutation.isPending}
+            >
+              {runTestMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Testing All...
+                </>
+              ) : (
+                <>
+                  <Play className="w-4 h-4 mr-2" />
+                  Run All Tests
+                </>
+              )}
+            </Button>
+          </div>
         </div>
 
         {/* Alerts Panel */}
