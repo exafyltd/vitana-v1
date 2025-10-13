@@ -487,6 +487,54 @@ export default function VertexTesting() {
     return '📋';
   };
 
+  const handleVoiceTest = async () => {
+    addLog('info', '🎤 Starting voice test...');
+    
+    try {
+      if (!isConnected) {
+        addLog('info', 'Connecting to Vertex AI...');
+        await connect();
+        
+        // Wait for connection with timeout
+        const startTime = Date.now();
+        await new Promise<void>((resolve, reject) => {
+          const checkConnection = () => {
+            if (isConnected) {
+              resolve();
+            } else if (Date.now() - startTime > 10000) {
+              reject(new Error('Connection timeout'));
+            } else if (connectionState === 'error') {
+              reject(new Error(error || 'Connection error'));
+            } else {
+              setTimeout(checkConnection, 100);
+            }
+          };
+          checkConnection();
+        });
+      }
+      
+      addLog('info', '✅ Connected, sending test message...');
+      sendText("Please say 'hello' briefly.");
+      
+      await sleep(3000);
+      
+      addLog('info', '✅ Voice test complete - check if you heard audio output');
+      toast({
+        title: "Voice test sent",
+        description: "Did you hear the AI say 'hello'? Check audio_chunk_received logs.",
+      });
+      
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Voice test failed';
+      addLog('error', `❌ ${msg}`);
+      toast({
+        title: "Voice test failed",
+        description: msg,
+        variant: "destructive",
+      });
+    }
+  };
+
   const totalEnabledTests = Object.values(enabledTests).filter(Boolean).length;
   const passedTests = testResults.filter(r => r.status === 'success').length;
 
@@ -769,6 +817,27 @@ export default function VertexTesting() {
                 logs={logs} 
                 onExportLogs={handleExportLogs}
               />
+
+              {/* Quick Voice Test */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Quick Voice Test</CardTitle>
+                  <CardDescription>One-click audio output validation</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p><strong>Status:</strong> {connectionState}</p>
+                    {lastEvent && <p className="font-mono">{lastEvent}</p>}
+                  </div>
+                  <Button 
+                    onClick={handleVoiceTest}
+                    disabled={isTestRunning}
+                    className="w-full"
+                  >
+                    🎤 Say Hello (Test Output)
+                  </Button>
+                </CardContent>
+              </Card>
 
               {/* Tips */}
               <Card>

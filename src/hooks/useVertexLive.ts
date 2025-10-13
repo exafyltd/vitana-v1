@@ -178,7 +178,14 @@ export const useVertexLive = () => {
   }, []);
 
   const sendText = useCallback((text: string) => {
+    if (!serviceRef.current?.isConnected()) {
+      console.warn('⚠️ sendText called before connection ready');
+      setLastEvent('send_text_before_connect');
+      setError('Not connected - cannot send text');
+      return false;
+    }
     serviceRef.current?.sendText(text);
+    return true;
   }, []);
 
   return {

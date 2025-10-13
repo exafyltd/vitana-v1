@@ -353,15 +353,20 @@ export class VertexLiveService {
   sendText(text: string) {
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       console.warn('⚠️ WebSocket not connected');
+      this.callbacks.onError?.('Cannot send text: WebSocket not connected');
+      this.callbacks.onTrace?.('send_text_failed_not_connected');
       return;
     }
 
     if (!this.isSetupComplete) {
       console.warn('⚠️ Setup not complete, waiting...');
+      this.callbacks.onError?.('Cannot send text: Setup not complete');
+      this.callbacks.onTrace?.('send_text_failed_setup_incomplete');
       return;
     }
 
     console.log('📤 Sending text:', text);
+    this.callbacks.onTrace?.('text_message_sent');
 
     const message = {
       clientContent: {

@@ -9,6 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext"
 import { useUserPreferences } from "@/hooks/useUserPreferences"
 import { useVertexLive } from "@/hooks/useVertexLive"
 import { useProactiveAssistant } from "@/hooks/useProactiveAssistant"
+import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -504,22 +505,62 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             <VideoIcon className="h-5 w-5" />
           </Button>
 
-          {/* Developer test button - only shown when Vertex is active */}
-          {useVertexLiveMode && isVideoActive && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                if (vertexSendText) {
-                  console.log('🧪 Testing Vertex output...');
-                  vertexSendText("Please say 'hello' briefly in one sentence.");
-                }
-              }}
-              className="text-xs px-2 py-1 h-auto hover:bg-accent rounded-md"
-              title="Test Vertex audio output"
-            >
-              Test
-            </Button>
+          {/* Developer test button with connection status - only shown when Vertex mode is enabled */}
+          {useVertexLiveMode && (
+            <div className="flex items-center gap-2">
+              {/* Connection status pill */}
+              <div className={cn(
+                "px-2 py-1 rounded-full text-xs font-medium transition-colors",
+                vertexConnectionState === 'connected' && "bg-success/20 text-success",
+                vertexConnectionState === 'connecting' && "bg-warning/20 text-warning animate-pulse",
+                vertexConnectionState === 'disconnected' && "bg-muted text-muted-foreground",
+                vertexConnectionState === 'error' && "bg-destructive/20 text-destructive"
+              )}>
+                {vertexConnectionState === 'connected' && '● Connected'}
+                {vertexConnectionState === 'connecting' && '○ Connecting...'}
+                {vertexConnectionState === 'disconnected' && '○ Disconnected'}
+                {vertexConnectionState === 'error' && '✕ Error'}
+              </div>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  console.log('🧪 Test button clicked, connection state:', vertexConnectionState);
+                  
+                  if (vertexConnectionState !== 'connected') {
+                    toast({
+                      title: "AI voice not connected",
+                      description: "Press Start Stream and wait for 'Connected' status before testing.",
+                      variant: "destructive",
+                    });
+                    return;
+                  }
+                  
+                  const success = vertexSendText("Please say 'hello' briefly in one sentence.");
+                  if (success) {
+                    toast({
+                      title: "Test message sent",
+                      description: "Listen for AI voice response...",
+                    });
+                  } else {
+                    toast({
+                      title: "Failed to send test",
+                      description: "Connection not ready. Try reconnecting.",
+                      variant: "destructive",
+                    });
+                  }
+                }}
+                disabled={vertexConnectionState !== 'connected'}
+                className={cn(
+                  "text-xs px-2 py-1 h-auto hover:bg-accent rounded-md",
+                  vertexConnectionState !== 'connected' && "opacity-50 cursor-not-allowed"
+                )}
+                title="Test AI voice output (requires connection)"
+              >
+                Test
+              </Button>
+            </div>
           )}
 
           <DropdownMenu>
