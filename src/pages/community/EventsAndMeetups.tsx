@@ -21,7 +21,7 @@ import { useEventSelection } from "@/context/EventSelectionContext";
 import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
 import { cn } from "@/lib/utils";
-import { Plus, Calendar as CalendarIcon, Brain, Users } from 'lucide-react';
+import { Plus, Calendar as CalendarIcon, Brain, Users, Edit } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 
@@ -49,8 +49,19 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     showSmartAction: true,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
-    isEditable: canEdit,
-    onEdit: canEdit ? onEdit : undefined,
+    utilityTopRight: canEdit && onEdit ? (
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-8 w-8"
+        onClick={(e) => {
+          e.stopPropagation();
+          onEdit();
+        }}
+      >
+        <Edit className="h-4 w-4" />
+      </Button>
+    ) : undefined,
     actionButton: (
       <SocialShareButton
         type="event"
@@ -75,7 +86,7 @@ const chunkEvents = (events: any[], chunkSize = 6) => {
   return chunks;
 };
 
-const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit = false, onEdit?: (event: any) => void) => {
+const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentUserId?: string, onEdit?: (event: any) => void) => {
   if (events.length === 0) {
     return (
       <div className="text-center py-12">
@@ -92,6 +103,10 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
     const rowEvents = events.slice(i, i + 3);
     const isEvenRow = Math.floor(i / 3) % 2 === 0;
     
+    const canEdit0 = !!currentUserId && rowEvents[0].created_by === currentUserId && new Date(rowEvents[0].start_time) > new Date();
+    const canEdit1 = rowEvents[1] && !!currentUserId && rowEvents[1].created_by === currentUserId && new Date(rowEvents[1].start_time) > new Date();
+    const canEdit2 = rowEvents[2] && !!currentUserId && rowEvents[2].created_by === currentUserId && new Date(rowEvents[2].start_time) > new Date();
+
     rows.push(
       <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
         {isEvenRow ? (
@@ -99,7 +114,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
             <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
-                {...transformEventToNewsCard(rowEvents[0], onClick, canEdit, () => onEdit?.(rowEvents[0]))}
+                {...transformEventToNewsCard(rowEvents[0], onClick, canEdit0, () => onEdit?.(rowEvents[0]))}
                 className={cn(
                   "h-full transition-all duration-200 cursor-pointer",
                   onClick && "hover:ring-2 hover:ring-primary"
@@ -110,7 +125,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], onClick, canEdit, () => onEdit?.(rowEvents[1]))}
+                  {...transformEventToNewsCard(rowEvents[1], onClick, canEdit1, () => onEdit?.(rowEvents[1]))}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -122,7 +137,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], onClick, canEdit, () => onEdit?.(rowEvents[2]))}
+                  {...transformEventToNewsCard(rowEvents[2], onClick, canEdit2, () => onEdit?.(rowEvents[2]))}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -137,7 +152,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-0`}
-                  {...transformEventToNewsCard(rowEvents[0], onClick, canEdit, () => onEdit?.(rowEvents[0]))}
+                  {...transformEventToNewsCard(rowEvents[0], onClick, canEdit0, () => onEdit?.(rowEvents[0]))}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -149,7 +164,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], onClick, canEdit, () => onEdit?.(rowEvents[1]))}
+                  {...transformEventToNewsCard(rowEvents[1], onClick, canEdit1, () => onEdit?.(rowEvents[1]))}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -161,7 +176,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, canEdit 
               <div className="col-span-6">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], onClick, canEdit, () => onEdit?.(rowEvents[2]))}
+                  {...transformEventToNewsCard(rowEvents[2], onClick, canEdit2, () => onEdit?.(rowEvents[2]))}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -357,7 +372,7 @@ const EventsAndMeetups = () => {
                   <>
                     {chunkEvents(todayEvents).map((chunk, chunkIndex) => (
                       <div key={`today-chunk-${chunkIndex}`}>
-                        {renderEventGrid(chunk, handleCardClick, true, handleEditEvent)}
+                        {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
                         {chunkIndex < chunkEvents(todayEvents).length - 1 && (
                           <div className="px-6 mb-8 mt-8">
                             <MotivationalBanner variant="encouragement" />
@@ -384,7 +399,7 @@ const EventsAndMeetups = () => {
                   <>
                     {chunkEvents(upcomingEvents).map((chunk, chunkIndex) => (
                       <div key={`upcoming-chunk-${chunkIndex}`}>
-                        {renderEventGrid(chunk, handleCardClick, true, handleEditEvent)}
+                        {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
                         {chunkIndex < chunkEvents(upcomingEvents).length - 1 && (
                           <div className="px-6 mb-8 mt-8">
                             <MotivationalBanner variant="achievement" />
