@@ -83,7 +83,7 @@ export function useCommunityEvents() {
       // Fetch creator profiles
       const creatorIds = [...new Set(data.map(event => event.created_by))];
       const { data: profilesData } = await supabase
-        .from('profiles')
+        .from('global_community_profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', creatorIds);
       
