@@ -42,7 +42,10 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     imageUrl: event.image_url || event.imageUrl,
     category: event.event_type === 'event' ? 'event' as const : 'community' as const,
     pillar: event.pillar || (event.event_type === 'event' ? 'Event' : 'MeetUp'),
-    author: event.author || { name: 'Community', avatar: '' },
+    author: event.author || { 
+      name: event.creator_display_name || 'Community Host', 
+      avatar: event.creator_avatar_url || '' 
+    },
     location: event.location,
     attendees: event.participant_count || 0,
     timestamp: formatEventTime(event.start_time),

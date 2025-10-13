@@ -17,7 +17,9 @@ interface CommunityEvent {
   created_at: string;
   updated_at: string;
   image_url?: string;
-  is_co_creator?: boolean; // User is a co-creator of this event
+  is_co_creator?: boolean;
+  creator_display_name?: string;
+  creator_avatar_url?: string;
 }
 
 interface CreateEventData {
@@ -78,11 +80,27 @@ export function useCommunityEvents() {
         coCreatorEventIds = new Set(coCreatorData?.map(cc => cc.event_id) || []);
       }
 
-      // Add is_co_creator flag to events
-      const eventsWithCoCreator = (data || []).map(event => ({
-        ...event,
-        is_co_creator: coCreatorEventIds.has(event.id)
-      }));
+      // Fetch creator profiles
+      const creatorIds = [...new Set(data.map(event => event.created_by))];
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('user_id, display_name, avatar_url')
+        .in('user_id', creatorIds);
+      
+      const profilesMap = new Map(
+        profilesData?.map(p => [p.user_id, p]) || []
+      );
+
+      // Add is_co_creator flag and creator info to events
+      const eventsWithCoCreator = (data || []).map(event => {
+        const creatorProfile = profilesMap.get(event.created_by);
+        return {
+          ...event,
+          is_co_creator: coCreatorEventIds.has(event.id),
+          creator_display_name: creatorProfile?.display_name || undefined,
+          creator_avatar_url: creatorProfile?.avatar_url || undefined
+        };
+      });
       
       console.log("Fetched events:", eventsWithCoCreator.length);
       setEvents(eventsWithCoCreator);
