@@ -438,19 +438,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
     }
   }, [tenant?.id]);
 
-  // Auto-trigger intelligent greeting based on user preferences
-  useEffect(() => {
-    // Only trigger if auto-greeting is enabled in preferences
-    if (preferences?.auto_greeting_enabled) {
-      // Small delay to ensure the app is fully loaded
-      const timeoutId = setTimeout(() => {
-        triggerGreeting();
-      }, 1000);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [preferences?.auto_greeting_enabled, triggerGreeting]);
-
   return (
     <div>
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>

@@ -117,75 +117,85 @@ export function useIntelligentGreeting() {
     try {
       console.log('🎯 Triggering AI-powered greeting...');
       
-      // Call new AI-powered greeting generation
-      const { data, error } = await supabase.functions.invoke('generate-proactive-greeting');
+      // Get session for Authorization
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
       
-      if (error) {
-        console.error('Error generating AI greeting:', error);
-        // Fallback to old method
-        const baseContext = await fetchGreetingContext();
-        const greetingMessage = generateGreetingMessage(baseContext);
-        setLastGreeting(greetingMessage);
-        speak(greetingMessage.text);
-      } else {
-        console.log('📝 Generated AI greeting:', data.greeting);
-        const greetingMessage = {
-          text: data.greeting,
-          type: 'ai_generated' as GreetingMessageType,
-          priority: 'medium' as const,
-          context: data.context
-        };
-        setLastGreeting(greetingMessage);
-        speak(data.greeting);
+      if (!accessToken) {
+        console.warn('No session token, skipping greeting');
+        return;
       }
+      
+      // Call AI-powered greeting with proper auth and language
+      const { data, error } = await supabase.functions.invoke('generate-proactive-greeting', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        body: { override_language: preferences?.stt_language || 'en-US' }
+      });
+      
+      if (error) throw error;
+      
+      console.log('📝 Generated AI greeting:', data.greeting);
+      const greetingMessage = {
+        text: data.greeting,
+        type: 'ai_generated' as GreetingMessageType,
+        priority: 'medium' as const,
+        context: data.context
+      };
+      setLastGreeting(greetingMessage);
+      speak(data.greeting);
 
       sessionStorage.setItem(SESSION_KEY, 'true');
       localStorage.setItem(LAST_GREETING_KEY, new Date().toISOString());
 
       const historyEntry = {
-        message: data?.greeting || 'Greeting generated',
+        message: data.greeting,
         time: new Date().toISOString()
       };
       setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
     } catch (error) {
       console.error('Failed to trigger greeting:', error);
     }
-  }, [shouldGreet, fetchGreetingContext, speak]);
+  }, [shouldGreet, speak, preferences]);
 
   const manualGreeting = useCallback(async () => {
     try {
       console.log('🎯 Triggering manual AI greeting...');
       
-      // Call AI-powered greeting generation
-      const { data, error } = await supabase.functions.invoke('generate-proactive-greeting');
+      // Get session for Authorization
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
       
-      if (error) {
-        console.error('Error generating AI greeting:', error);
-        // Fallback
-        const baseContext = await fetchGreetingContext();
-        const greetingMessage = generateGreetingMessage(baseContext);
-        setLastGreeting(greetingMessage);
-        speak(greetingMessage.text);
-      } else {
-        const greetingMessage = {
-          text: data.greeting,
-          type: 'ai_generated' as GreetingMessageType,
-          priority: 'medium' as const,
-          context: data.context
-        };
-        setLastGreeting(greetingMessage);
-        speak(data.greeting);
+      if (!accessToken) {
+        console.warn('No session token, skipping greeting');
+        return;
       }
+      
+      // Call AI-powered greeting with proper auth and language
+      const { data, error } = await supabase.functions.invoke('generate-proactive-greeting', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        body: { override_language: preferences?.stt_language || 'en-US' }
+      });
+      
+      if (error) throw error;
+      
+      const greetingMessage = {
+        text: data.greeting,
+        type: 'ai_generated' as GreetingMessageType,
+        priority: 'medium' as const,
+        context: data.context
+      };
+      setLastGreeting(greetingMessage);
+      speak(data.greeting);
 
       const historyEntry = {
-        message: data?.greeting || 'Greeting generated',
+        message: data.greeting,
         time: new Date().toISOString()
       };
       setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
     } catch (error) {
       console.error('Failed to trigger manual greeting:', error);
     }
-  }, [fetchGreetingContext, speak]);
+  }, [speak, preferences]);
 
   const clearGreetingState = useCallback(() => {
     sessionStorage.removeItem(SESSION_KEY);

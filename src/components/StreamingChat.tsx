@@ -119,11 +119,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         // Show AI response in input field
         setInputValue(response.text)
         
-        // Play audio response if available
-        if (response.audio) {
-          await aiVoiceService.playAudio(response.audio)
-        }
-        
         // Check for crisis
         if (response.crisisDetected) {
           setShowCrisisButton(true)
