@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { NewsCard } from "@/components/crossover/NewsCard";
-import { useCommunityEvents } from "@/hooks/useCommunityEvents";
+import { usePersonalizedContent } from "@/hooks/usePersonalizedContent";
 
 interface TodaysPlanCardProps {
   schedule?: string;
@@ -11,13 +11,19 @@ export function TodaysPlanCard({
   schedule,
   className
 }: TodaysPlanCardProps) {
-  const { todayEvents } = useCommunityEvents();
+  const { todayEvents, recommendations, loading } = usePersonalizedContent(3);
 
-  // Generate schedule from real events or use provided/fallback
-  const generatedSchedule = todayEvents.length > 0
-    ? todayEvents
+  // Prioritize: personalized events → AI recommendations → fallback
+  const displayEvents = todayEvents.length > 0 
+    ? todayEvents 
+    : recommendations.length > 0 
+    ? recommendations 
+    : [];
+
+  const generatedSchedule = displayEvents.length > 0
+    ? displayEvents
         .slice(0, 3)
-        .map(event => `${event.title} ${format(new Date(event.start_time), 'HH:mm')}`)
+        .map(event => `${event.title} ${event.time}`)
         .join(" · ")
     : schedule || "Yoga 07:00 · Workshop 14:00 · Sleep Check 22:00";
 

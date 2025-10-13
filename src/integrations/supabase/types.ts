@@ -4932,7 +4932,7 @@ export type Database = {
       }
       l2_normalize: {
         Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: string
+        Returns: unknown
       }
       list_roles_for_active_tenant: {
         Args: { p_tenant_id: string }

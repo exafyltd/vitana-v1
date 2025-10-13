@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { NewsCard } from "@/components/crossover/NewsCard";
-import { useCommunityEvents } from "@/hooks/useCommunityEvents";
+import { usePersonalizedContent } from "@/hooks/usePersonalizedContent";
 import { eventTypeToPillar } from "@/lib/eventTransformers";
 
 interface HydrationReminderCardProps {
@@ -64,19 +64,19 @@ export function UpcomingEventCard({
   eventTime,
   className
 }: UpcomingEventCardProps) {
-  const { upcomingEvents } = useCommunityEvents();
+  const { upcomingEvents, recommendations } = usePersonalizedContent(3);
 
-  // Get next upcoming event or use provided/fallback data
-  const nextEvent = upcomingEvents.length > 0 ? upcomingEvents[0] : null;
+  // Prioritize: personalized events → AI recommendations → fallback
+  const nextEvent = upcomingEvents.length > 0 
+    ? upcomingEvents[0]
+    : recommendations.length > 0
+    ? recommendations[0]
+    : null;
   
   const title = nextEvent?.title || eventTitle || "Healthy Cooking Workshop";
-  const time = nextEvent 
-    ? format(new Date(nextEvent.start_time), 'HH:mm')
-    : eventTime || "14:00";
-  const pillar = nextEvent 
-    ? eventTypeToPillar(nextEvent.event_type)
-    : "Nutrition";
-  const image = nextEvent?.image_url || "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop";
+  const time = nextEvent?.time || nextEvent?.date || eventTime || "14:00";
+  const pillar = nextEvent?.pillar || "Nutrition";
+  const image = nextEvent?.imageUrl || "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop";
 
   return (
     <NewsCard
