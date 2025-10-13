@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus } from "lucide-react";
+import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus, Sparkles, RefreshCw, Loader2 } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -59,6 +59,9 @@ export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [generatedImagePreview, setGeneratedImagePreview] = useState<string | null>(null);
+  const [generationError, setGenerationError] = useState<string | null>(null);
   
   const availableTags = [
     'Beginner Friendly', 'Outdoor', 'Indoor', 'Free', 'Family Friendly', 
@@ -116,6 +119,60 @@ export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps
     setSelectedTags(prev => 
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
     );
+  };
+
+  const handleGenerateImage = async () => {
+    setIsGeneratingImage(true);
+    setGenerationError(null);
+    
+    try {
+      const startTime = new Date(`${formData.date}T${formData.time}`);
+      const timeOfDay = startTime.getHours() < 12 ? 'morning' : startTime.getHours() < 18 ? 'afternoon' : 'evening';
+
+      const { data, error } = await supabase.functions.invoke('generate-event-image', {
+        body: {
+          eventId: event.id,
+          title: formData.title,
+          description: formData.description,
+          location: formData.location,
+          metadata: {
+            category: formData.category,
+            venue: 'venue',
+            timeOfDay
+          }
+        }
+      });
+      
+      if (error) throw error;
+      
+      if (data.success) {
+        setGeneratedImagePreview(data.imageUrl);
+        setFormData({...formData, imageUrl: data.imageUrl});
+        
+        toast({
+          title: "Image Generated! ✨",
+          description: "AI has created a custom image for your event.",
+        });
+      }
+    } catch (err: any) {
+      console.error('Image generation failed:', err);
+      
+      if (err.message?.includes('429') || err.message?.includes('Too many requests')) {
+        setGenerationError('Too many requests. Please wait a moment and try again.');
+      } else if (err.message?.includes('402') || err.message?.includes('credits')) {
+        setGenerationError('AI credits depleted. Please add credits to continue.');
+      } else {
+        setGenerationError('Failed to generate image. Please try again or upload manually.');
+      }
+      
+      toast({
+        title: "Generation Failed",
+        description: generationError || "Please try again",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingImage(false);
+    }
   };
 
   const validateForm = () => {
@@ -310,6 +367,39 @@ export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps
               <div>
                 <Label>Meetup Image</Label>
                 <div className="mt-2 space-y-4">
+                  <Button 
+                    type="button" 
+                    variant="default"
+                    onClick={handleGenerateImage}
+                    disabled={isGeneratingImage || !formData.title}
+                    className="w-full relative"
+                  >
+                    {isGeneratingImage ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Generating with AI...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Generate Image with AI
+                      </>
+                    )}
+                  </Button>
+                  
+                  {generationError && (
+                    <div className="flex items-start gap-2 p-3 rounded-md bg-destructive/10 border border-destructive/20">
+                      <AlertCircle className="w-4 h-4 text-destructive mt-0.5" />
+                      <p className="text-sm text-destructive">{generationError}</p>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-px bg-border" />
+                    <span className="text-xs text-muted-foreground">or</span>
+                    <div className="flex-1 h-px bg-border" />
+                  </div>
+                  
                   <div>
                     <input
                       type="file"
@@ -325,18 +415,41 @@ export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps
                       className="w-full"
                     >
                       <Plus className="w-4 h-4 mr-2" />
-                      Upload New Image
+                      Upload New Image Manually
                     </Button>
                   </div>
 
                   {formData.imageUrl && (
-                    <div className="border rounded p-2">
-                      <p className="text-sm text-muted-foreground mb-2">Current image:</p>
+                    <div className="border rounded p-2 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm text-muted-foreground">
+                          {generatedImagePreview === formData.imageUrl ? "AI Generated" : "Current image"}:
+                        </p>
+                        {generatedImagePreview === formData.imageUrl && (
+                          <Badge variant="secondary" className="gap-1">
+                            <Sparkles className="w-3 h-3" />
+                            AI Generated
+                          </Badge>
+                        )}
+                      </div>
                       <img 
                         src={formData.imageUrl} 
                         alt="Preview" 
-                        className="w-full h-32 object-cover rounded"
+                        className="w-full h-48 object-cover rounded"
                       />
+                      {generatedImagePreview === formData.imageUrl && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleGenerateImage}
+                          disabled={isGeneratingImage}
+                          className="w-full"
+                        >
+                          <RefreshCw className="w-3 h-3 mr-2" />
+                          Regenerate
+                        </Button>
+                      )}
                     </div>
                   )}
                 </div>

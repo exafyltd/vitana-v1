@@ -104,3 +104,6 @@ verify_jwt = true
 
 [functions.seed-maxina-events-fast]
 verify_jwt = true
+
+[functions.generate-event-image]
+verify_jwt = true
