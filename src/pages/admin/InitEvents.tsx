@@ -16,9 +16,7 @@ export default function InitEvents() {
         console.log('[InitEvents] Starting event generation...');
         setStatus('loading');
         
-        const { data, error } = await supabase.functions.invoke('generate-maxina-summer-events', {
-          body: { mode: 'fast' }
-        });
+        const { data, error } = await supabase.functions.invoke('seed-maxina-events-fast');
         
         if (error) {
           // Provide more specific error message for timeout

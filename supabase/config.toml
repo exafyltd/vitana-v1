@@ -101,3 +101,6 @@ verify_jwt = false
 
 [functions.analyze-visual-context]
 verify_jwt = true
+
+[functions.seed-maxina-events-fast]
+verify_jwt = true
