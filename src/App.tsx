@@ -7,6 +7,7 @@ import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
+import { AdminGuard } from "@/routes/guards/AdminGuard";
 import { RTLProvider } from "@/components/RTLProvider";
 import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
 import { EventSelectionProvider } from "@/context/EventSelectionContext";
@@ -173,6 +174,7 @@ import CommunityRoomsAdmin from "./pages/admin/CommunityRoomsAdmin";
 import TelemedicineSessions from "./pages/admin/TelemedicineSessions";
 import StreamSettings from "./pages/admin/StreamSettings";
 import ProactiveSettings from "./pages/admin/ai-assistant/ProactiveSettings";
+import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 
 const App = () => {
@@ -1091,6 +1093,11 @@ const App = () => {
           } />
           
           {/* Legacy redirects for backward compatibility */}
+          <Route path="/admin/init-events" element={
+            <AdminGuard>
+              <InitEvents />
+            </AdminGuard>
+          } />
           <Route path="/admin/bootstrap" element={<Navigate to="/admin/system/bootstrap" replace />} />
           <Route path="/admin/staff" element={<Navigate to="/admin/user-management/staff" replace />} />
           <Route path="/admin/queue" element={<Navigate to="/admin/clinical/queue" replace />} />
