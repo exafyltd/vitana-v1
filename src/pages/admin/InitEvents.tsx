@@ -16,12 +16,14 @@ export default function InitEvents() {
         console.log('[InitEvents] Starting event generation...');
         setStatus('loading');
         
-        const { data, error } = await supabase.functions.invoke('generate-maxina-summer-events');
+        const { data, error } = await supabase.functions.invoke('generate-maxina-summer-events', {
+          body: { mode: 'fast' }
+        });
         
         if (error) {
           // Provide more specific error message for timeout
           if (error.message?.includes('FunctionsHttpError')) {
-            throw new Error('The function timed out while generating AI images for 40 events. The edge function CPU limit was exceeded after generating 13 events. Please contact the developer to optimize the function (e.g., use placeholder images or batch processing).');
+            throw new Error('The function timed out while generating AI images for 40 events. We switched to fast mode (no images) to complete quickly.');
           }
           throw error;
         }
