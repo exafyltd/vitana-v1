@@ -265,32 +265,64 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
-      console.log('StreamingChat: activateVideo called, useVertexLive:', useVertexLiveMode);
+      console.log('🎥 Activating video stream...');
+      setIsVideoActive(true);
+      setIsAudioActive(true);
+      setAssistantStreamingText('');
       
-      if (useVertexLiveMode) {
-        try {
-          // Cancel any ongoing TTS to avoid audio conflicts
-          if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-            console.log('🔇 Cancelled TTS before Vertex connection');
-          }
-          
-          setIsVideoActive(true); // Set immediately for UI feedback
-          await vertexConnect();
-          await vertexStartAudio();
-          await vertexStartScreen();
-          console.log('✅ Vertex Live activated');
-        } catch (error) {
-          console.error('❌ Failed to activate Vertex Live:', error);
-          setIsVideoActive(false); // Reset on error
-          toast({
-            title: "Failed to start Vertex AI Live",
-            description: "Please check your connection and try again",
-            variant: "destructive",
-          });
+      if (!useVertexLiveMode) {
+        return;
+      }
+
+      try {
+        // Cancel any existing TTS before connecting to Vertex
+        if ((window as any).__currentTTSAudio) {
+          (window as any).__currentTTSAudio.pause();
+          (window as any).__currentTTSAudio = null;
+          console.log('Cancelled existing TTS before Vertex connection');
         }
-      } else {
-        setIsVideoActive(true);
+        
+        // Connect to Vertex AI
+        await vertexConnect();
+        console.log('✅ Connected to Vertex Live, waiting for setup...');
+        
+        // Wait for setupComplete before starting audio/screen (max 5 seconds)
+        const startTime = Date.now();
+        const maxWait = 5000;
+        const checkInterval = 100;
+        
+        const waitForSetup = () => {
+          return new Promise<void>((resolve, reject) => {
+            const check = () => {
+              if (vertexConnectionState === 'connected') {
+                console.log('✅ Setup complete received, starting audio/screen');
+                resolve();
+              } else if (Date.now() - startTime > maxWait) {
+                reject(new Error('Setup timeout'));
+              } else {
+                setTimeout(check, checkInterval);
+              }
+            };
+            check();
+          });
+        };
+        
+        await waitForSetup();
+        
+        // Now start audio and screen capture
+        vertexStartAudio();
+        vertexStartScreen();
+        console.log('✅ Started audio and screen capture');
+      } catch (error) {
+        console.error('Error activating Vertex stream:', error);
+        toast({
+          title: "Connection Error",
+          description: error instanceof Error && error.message === 'Setup timeout' 
+            ? "AI setup is taking longer than expected. Please try again."
+            : "Failed to connect to AI service. Please try again.",
+          variant: "destructive",
+        });
+        setIsVideoActive(false);
         setIsAudioActive(false);
       }
     },

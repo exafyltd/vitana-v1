@@ -142,8 +142,8 @@ export class VertexLiveService {
     if (data.type === 'connection_ready') {
       this.conversationId = data.conversationId;
       console.log('✅ Connection ready, conversation ID:', this.conversationId);
-      this.callbacks.onTrace?.('Received connection_ready');
-      this.callbacks.onConnectionChange?.(true);
+      this.callbacks.onTrace?.('Received connection_ready (waiting for setup)');
+      // Don't signal connected yet - wait for setupComplete
       return;
     }
 
@@ -156,14 +156,10 @@ export class VertexLiveService {
     // Handle setup complete
     if (data.setupComplete) {
       this.isSetupComplete = true;
-      console.log('✅ Vertex AI setup complete');
+      console.log('✅ Vertex AI setup complete - ready for audio/video');
       this.callbacks.onTrace?.('Setup complete');
-      
-      // Send initial greeting to trigger AI to speak first
-      setTimeout(() => {
-        this.sendText("Hello! Please introduce yourself and ask how you can help me today.");
-      }, 500);
-      
+      // Signal true connection ready NOW (after setup, not just WS open)
+      this.callbacks.onConnectionChange?.(true);
       return;
     }
 
@@ -177,11 +173,19 @@ export class VertexLiveService {
         // Handle audio responses
         for (const part of parts) {
           if (part.inlineData && part.inlineData.mimeType?.includes('audio')) {
+            console.log('🔊 Received audio from AI');
             const audioBase64 = part.inlineData.data;
             const audioBytes = Uint8Array.from(atob(audioBase64), c => c.charCodeAt(0));
             
             if (this.audioContext) {
+              // Resume audio context if needed
+              if (this.audioContext.state === 'suspended') {
+                console.log('🔊 Resuming audio context for AI response...');
+                await this.audioContext.resume();
+                console.log('✅ Audio context resumed');
+              }
               await playAudioData(this.audioContext, audioBytes);
+              console.log('✅ Audio playback started');
             }
           }
 

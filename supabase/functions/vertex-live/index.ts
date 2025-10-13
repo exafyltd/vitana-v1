@@ -219,6 +219,23 @@ serve(async (req) => {
           );
           clientSocket.send(JSON.stringify({ setupComplete: true }));
 
+          // Send proactive greeting to make AI speak first with low latency
+          setTimeout(() => {
+            if (vertexSocket && vertexSocket.readyState === WebSocket.OPEN) {
+              const greetingMessage = {
+                clientContent: {
+                  turns: [{ 
+                    role: "user", 
+                    parts: [{ text: "Please greet me warmly and briefly ask how you can help me today." }] 
+                  }],
+                  turnComplete: true
+                }
+              };
+              vertexSocket.send(JSON.stringify(greetingMessage));
+              console.log('📤 Sent proactive greeting to trigger AI response');
+            }
+          }, 100);
+
           // Start keep-alive ping to client
           pingInterval = setInterval(() => {
             try {
