@@ -158,6 +158,12 @@ export class VertexLiveService {
       this.isSetupComplete = true;
       console.log('✅ Vertex AI setup complete');
       this.callbacks.onTrace?.('Setup complete');
+      
+      // Send initial greeting to trigger AI to speak first
+      setTimeout(() => {
+        this.sendText("Hello! Please introduce yourself and ask how you can help me today.");
+      }, 500);
+      
       return;
     }
 
