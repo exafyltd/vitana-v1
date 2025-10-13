@@ -38,6 +38,12 @@ export const eventTypeToPillar = (eventType: string): string => {
   const mapping: Record<string, string> = {
     'meetup': 'Mental',
     'workshop': 'Nutrition',
+    'masterclass': 'Nutrition',
+    'summit': 'Mental',
+    'retreat': 'Movement',
+    'experience': 'Movement',
+    'dinner': 'Mental',
+    'ceremony': 'Mental',
     'fitness': 'Movement',
     'meditation': 'Mental',
     'yoga': 'Movement',
