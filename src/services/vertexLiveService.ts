@@ -28,7 +28,7 @@ export class VertexLiveService {
     try {
       this.audioContext = new AudioContext({ sampleRate: 24000 });
 
-      // Build candidate WebSocket URLs (try canonical first, then legacy)
+      // Build WebSocket URL to Supabase Edge Function (canonical path)
       const makeHosts = () => {
         const fallbackHost = 'inmkhvwdcuyhnxkgfvsb.functions.supabase.co';
         try {
@@ -41,22 +41,24 @@ export class VertexLiveService {
         }
       };
       const functionsHost = makeHosts();
-      const urls = [
-        `wss://${functionsHost}/functions/v1/vertex-live?token=${encodeURIComponent(token)}`,
-        `wss://${functionsHost}/vertex-live?token=${encodeURIComponent(token)}`,
-      ];
+      const wsUrl = `wss://${functionsHost}/vertex-live?token=${encodeURIComponent(token)}`;
 
-      let attempt = 0;
       const tryConnect = (url: string) => {
-        const urlDesc = attempt === 0 ? 'primary path' : 'fallback path';
         console.log('🔗 Connecting to:', url);
-        this.callbacks.onTrace?.(`Trying WebSocket ${urlDesc}...`);
+        this.callbacks.onTrace?.('Trying WebSocket (canonical path)...');
         const ws = new WebSocket(url);
         ws.binaryType = 'arraybuffer';
-        let opened = false;
+
+        // Safety: setup timeout if 'connection_ready' never arrives
+        const setupTimeout = setTimeout(() => {
+          if (!this.conversationId) {
+            console.warn('⏱️ Setup timeout: no connection_ready received');
+            this.callbacks.onError?.('Setup timeout: no connection_ready');
+            try { ws.close(); } catch {}
+          }
+        }, 10000);
 
         ws.onopen = () => {
-          opened = true;
           this.ws = ws;
           console.log('✅ WebSocket connected to edge function');
           this.callbacks.onTrace?.('WebSocket open, waiting for connection_ready...');
@@ -86,6 +88,9 @@ export class VertexLiveService {
             } else if (typeof event.data === 'string') {
               // Handle JSON messages
               const data = JSON.parse(event.data);
+              if (data?.type === 'connection_ready' || data?.setupComplete) {
+                clearTimeout(setupTimeout);
+              }
               await this.handleServerMessage(data);
             } else {
               console.warn('⚠️ Unknown message type:', typeof event.data);
@@ -98,15 +103,9 @@ export class VertexLiveService {
         ws.onerror = (error: Event) => {
           console.error('❌ WebSocket error:', error);
           const wsError = error as ErrorEvent;
-          const errorMsg = wsError.message || 'WebSocket connection error';
+          const errorMsg = wsError.message || 'WebSocket transport error';
           console.error('Error details:', errorMsg);
-          // If first URL failed and not opened yet, try fallback once
-          if (!opened && attempt === 0 && urls[1]) {
-            attempt = 1;
-            console.warn('↩️ Retrying with legacy WS path...');
-            tryConnect(urls[1]);
-            return;
-          }
+          clearTimeout(setupTimeout);
           this.callbacks.onError?.(errorMsg);
         };
 
@@ -115,26 +114,21 @@ export class VertexLiveService {
           const reason = e?.reason || '';
           console.log('🔌 WebSocket closed', e?.code, reason);
           this.callbacks.onTrace?.(`WebSocket closed: ${e?.code} ${reason}`);
-          
-          if (!opened && attempt === 0 && urls[1]) {
-            attempt = 1;
-            console.warn('↩️ Retrying with legacy WS path after close...');
-            tryConnect(urls[1]);
-            return;
-          }
-          
+
+          clearTimeout(setupTimeout);
+
           // If we never got connection_ready, emit error
           if (!this.conversationId) {
             this.callbacks.onError?.(`WebSocket closed before ready (code ${e?.code}${reason ? ': ' + reason : ''})`);
           }
-          
+
           this.callbacks.onConnectionChange?.(false);
           this.isSetupComplete = false;
         };
       };
 
-      // Kick off first attempt
-      tryConnect(urls[0]);
+      // Start single attempt with canonical path only
+      tryConnect(wsUrl);
     } catch (error) {
       console.error('❌ Error connecting to Vertex AI:', error);
       this.callbacks.onError?.('Failed to connect');
