@@ -1,4 +1,4 @@
-import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue } from '@/utils/vertexAudio';
+import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue, wrapPCM16ToWav } from '@/utils/vertexAudio';
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
@@ -69,19 +69,15 @@ export class VertexLiveService {
           try {
             // Check if this is binary audio data or JSON
             if (event.data instanceof ArrayBuffer) {
-              // Handle binary audio data (should be complete WAV files from Vertex AI)
+              // Handle binary audio data - can be WAV or raw PCM
               const bytes = new Uint8Array(event.data);
-              console.log('📥 Received binary audio, size:', bytes.byteLength);
+              const isRiff = bytes.length >= 4 && 
+                bytes[0] === 0x52 && bytes[1] === 0x49 && 
+                bytes[2] === 0x46 && bytes[3] === 0x46;
               
-              // Log first 12 bytes for debugging (should be "RIFF....WAVE")
-              if (bytes.byteLength >= 12) {
-                const header = Array.from(bytes.slice(0, 12))
-                  .map(b => b.toString(16).padStart(2, '0'))
-                  .join(' ');
-                console.log('📊 Audio header:', header);
-                const isRiff = bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46;
-                console.log('🔍 Is RIFF/WAV:', isRiff);
-              }
+              const format = isRiff ? 'wav' : 'pcm';
+              console.log(`📥 audio_chunk_received (${format}): size=${bytes.byteLength}`);
+              this.callbacks.onTrace?.(`audio_chunk_received (${format}): ${bytes.byteLength} bytes`);
               
               if (!this.audioContext) {
                 console.error('❌ No audio context available!');
@@ -94,11 +90,24 @@ export class VertexLiveService {
                 console.log('▶️ Resumed audio context');
               }
               
-              // Vertex AI sends complete WAV files - decode them directly
               try {
-                console.log('🎧 Decoding WAV audio...');
-                const audioBuffer = await this.audioContext.decodeAudioData(bytes.buffer.slice(0));
-                console.log('✅ Decoded successfully:', audioBuffer.duration.toFixed(2), 'seconds,', audioBuffer.numberOfChannels, 'channels,', audioBuffer.sampleRate, 'Hz');
+                let wavData: Uint8Array;
+                
+                if (isRiff) {
+                  // Already WAV format
+                  wavData = bytes;
+                } else {
+                  // Raw PCM16 mono 24kHz - wrap with WAV header
+                  console.log('🔄 Wrapping PCM with WAV header...');
+                  wavData = wrapPCM16ToWav(bytes, 24000);
+                }
+                
+                // Decode and play
+                console.log('🎧 Decoding audio...');
+                const audioBuffer = await this.audioContext.decodeAudioData(wavData.buffer.slice(0) as ArrayBuffer);
+                const duration = audioBuffer.duration.toFixed(2);
+                console.log(`✅ audio_decoded: duration=${duration}s`);
+                this.callbacks.onTrace?.(`audio_decoded: ${duration}s`);
                 
                 const source = this.audioContext.createBufferSource();
                 source.buffer = audioBuffer;
@@ -106,14 +115,11 @@ export class VertexLiveService {
                 source.start(0);
                 console.log('▶️ Audio playback started');
               } catch (error) {
-                console.error('❌ Failed to decode audio:', error);
+                console.error('❌ Failed to decode/play audio:', error);
                 if (error instanceof Error) {
-                  console.error('Error name:', error.name);
-                  console.error('Error message:', error.message);
+                  console.error('Error:', error.name, error.message);
                 }
-                // Don't try to wrap it in another WAV header - that creates corrupted double-wrapped audio
-                // Just skip this chunk and continue
-                console.log('⏭️ Skipping corrupted audio chunk');
+                this.callbacks.onTrace?.('audio_decode_failed');
               }
             } else if (typeof event.data === 'string') {
               // Handle JSON messages
@@ -200,23 +206,13 @@ export class VertexLiveService {
       if (content.modelTurn) {
         const parts = content.modelTurn.parts || [];
         
-        // Handle audio responses
+        // Handle audio responses (temporarily disabled - using binary path instead)
         for (const part of parts) {
           if (part.inlineData && part.inlineData.mimeType?.includes('audio')) {
-            console.log('🔊 Received audio from AI');
-            const audioBase64 = part.inlineData.data;
-            const audioBytes = Uint8Array.from(atob(audioBase64), c => c.charCodeAt(0));
-            
-            if (this.audioContext) {
-              // Resume audio context if needed
-              if (this.audioContext.state === 'suspended') {
-                console.log('🔊 Resuming audio context for AI response...');
-                await this.audioContext.resume();
-                console.log('✅ Audio context resumed');
-              }
-              await playAudioData(this.audioContext, audioBytes);
-              console.log('✅ Audio playback started');
-            }
+            console.log('🔊 Received inline audio from AI (skipping - using binary path)');
+            this.callbacks.onTrace?.('inline_audio_received (disabled)');
+            // Disabled to avoid double-playback with binary audio stream
+            // The main audio comes through the ArrayBuffer path above
           }
 
           // Handle text responses (transcripts)
@@ -249,23 +245,26 @@ export class VertexLiveService {
 
     console.log('🎤 Starting audio recording...');
     
-    this.audioRecorder = new AudioRecorder((audioData) => {
-      if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+    this.audioRecorder = new AudioRecorder(
+      (audioData) => {
+        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
 
-      // Encode and send audio to Vertex AI
-      const base64Audio = encodeAudioForVertex(audioData);
-      
-      const message = {
-        realtimeInput: {
-          mediaChunks: [{
-            mimeType: "audio/pcm;rate=24000",
-            data: base64Audio
-          }]
-        }
-      };
+        // Encode and send audio to Vertex AI
+        const base64Audio = encodeAudioForVertex(audioData);
+        
+        const message = {
+          realtimeInput: {
+            mediaChunks: [{
+              mimeType: "audio/pcm;rate=24000",
+              data: base64Audio
+            }]
+          }
+        };
 
-      this.ws.send(JSON.stringify(message));
-    });
+        this.ws.send(JSON.stringify(message));
+      },
+      this.callbacks.onTrace // Pass trace callback for mic diagnostics
+    );
 
     await this.audioRecorder.start();
   }

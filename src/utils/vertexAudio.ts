@@ -4,8 +4,13 @@ export class AudioRecorder {
   private audioContext: AudioContext | null = null;
   private processor: ScriptProcessorNode | null = null;
   private source: MediaStreamAudioSourceNode | null = null;
+  private frameCount = 0;
+  private lastLevelLog = 0;
 
-  constructor(private onAudioData: (audioData: Float32Array) => void) {}
+  constructor(
+    private onAudioData: (audioData: Float32Array) => void,
+    private onTrace?: (message: string) => void
+  ) {}
 
   async start() {
     try {
@@ -22,12 +27,43 @@ export class AudioRecorder {
       });
 
       this.audioContext = new AudioContext({ sampleRate: 24000 });
+      const actualSampleRate = this.audioContext.sampleRate;
+      console.log(`🎤 Mic sample rate: requested=24000, actual=${actualSampleRate}`);
+      this.onTrace?.(`mic_samplerate: ${actualSampleRate}`);
+      
       this.source = this.audioContext.createMediaStreamSource(this.stream);
       this.processor = this.audioContext.createScriptProcessor(4096, 1, 1);
 
       this.processor.onaudioprocess = (e) => {
         const inputData = e.inputBuffer.getChannelData(0);
-        this.onAudioData(new Float32Array(inputData));
+        
+        // Compute RMS for mic level monitoring
+        let sum = 0;
+        for (let i = 0; i < inputData.length; i++) {
+          sum += inputData[i] * inputData[i];
+        }
+        const rms = Math.sqrt(sum / inputData.length);
+        const dB = 20 * Math.log10(Math.max(rms, 0.00001));
+        
+        // Log mic level every 500ms
+        const now = Date.now();
+        if (now - this.lastLevelLog > 500) {
+          this.onTrace?.(`mic_level: ${dB.toFixed(1)}dB`);
+          this.lastLevelLog = now;
+        }
+        
+        // Resample to 24kHz if needed
+        let processedData: Float32Array = inputData;
+        if (actualSampleRate !== 24000) {
+          processedData = resampleFloat32To24k(inputData, actualSampleRate) as Float32Array;
+        }
+        
+        this.frameCount++;
+        if (this.frameCount % 50 === 0) {
+          this.onTrace?.(`mic_frames_sent: ${this.frameCount}`);
+        }
+        
+        this.onAudioData(processedData);
       };
 
       this.source.connect(this.processor);
@@ -62,6 +98,43 @@ export class AudioRecorder {
   }
 }
 
+// Resample Float32 audio to 24kHz
+const resampleFloat32To24k = (input: Float32Array, inRate: number): Float32Array => {
+  const targetRate = 24000;
+  
+  if (inRate === targetRate) {
+    return input;
+  }
+  
+  // Simple downsampling for 48kHz (take every other sample)
+  if (inRate === 48000) {
+    const output = new Float32Array(input.length / 2);
+    for (let i = 0; i < output.length; i++) {
+      output[i] = input[i * 2];
+    }
+    return output;
+  }
+  
+  // Linear interpolation for other rates
+  const ratio = inRate / targetRate;
+  const outputLength = Math.floor(input.length / ratio);
+  const output = new Float32Array(outputLength);
+  
+  for (let i = 0; i < outputLength; i++) {
+    const srcPos = i * ratio;
+    const srcIdx = Math.floor(srcPos);
+    const frac = srcPos - srcIdx;
+    
+    if (srcIdx + 1 < input.length) {
+      output[i] = input[srcIdx] * (1 - frac) + input[srcIdx + 1] * frac;
+    } else {
+      output[i] = input[srcIdx];
+    }
+  }
+  
+  return new Float32Array(output); // Ensure we return Float32Array
+};
+
 // Encode Float32 audio to PCM16 base64 for Vertex AI
 export const encodeAudioForVertex = (float32Array: Float32Array): string => {
   const int16Array = new Int16Array(float32Array.length);
@@ -81,6 +154,45 @@ export const encodeAudioForVertex = (float32Array: Float32Array): string => {
   }
   
   return btoa(binary);
+};
+
+// Wrap raw PCM16 data with WAV header
+export const wrapPCM16ToWav = (pcmBytes: Uint8Array, sampleRate = 24000): Uint8Array => {
+  const numChannels = 1;
+  const bitsPerSample = 16;
+  const blockAlign = (numChannels * bitsPerSample) / 8;
+  const byteRate = sampleRate * blockAlign;
+
+  // Create WAV header
+  const wavHeader = new ArrayBuffer(44);
+  const view = new DataView(wavHeader);
+  
+  const writeString = (offset: number, string: string) => {
+    for (let i = 0; i < string.length; i++) {
+      view.setUint8(offset + i, string.charCodeAt(i));
+    }
+  };
+
+  writeString(0, 'RIFF');
+  view.setUint32(4, 36 + pcmBytes.byteLength, true);
+  writeString(8, 'WAVE');
+  writeString(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, byteRate, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, bitsPerSample, true);
+  writeString(36, 'data');
+  view.setUint32(40, pcmBytes.byteLength, true);
+
+  // Combine header and PCM data
+  const wavArray = new Uint8Array(wavHeader.byteLength + pcmBytes.byteLength);
+  wavArray.set(new Uint8Array(wavHeader), 0);
+  wavArray.set(pcmBytes, wavHeader.byteLength);
+  
+  return wavArray;
 };
 
 // Screen recording for Vertex AI vision (1 FPS)

@@ -57,6 +57,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     stopAudio: vertexStopAudio,
     startScreen: vertexStartScreen,
     stopScreen: vertexStopScreen,
+    sendText: vertexSendText,
   } = useVertexLive()
 
   const isStreaming = isAudioActive || isVideoActive
@@ -502,6 +503,24 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           >
             <VideoIcon className="h-5 w-5" />
           </Button>
+
+          {/* Developer test button - only shown when Vertex is active */}
+          {useVertexLiveMode && isVideoActive && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                if (vertexSendText) {
+                  console.log('🧪 Testing Vertex output...');
+                  vertexSendText("Please say 'hello' briefly in one sentence.");
+                }
+              }}
+              className="text-xs px-2 py-1 h-auto hover:bg-accent rounded-md"
+              title="Test Vertex audio output"
+            >
+              Test
+            </Button>
+          )}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
