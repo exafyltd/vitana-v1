@@ -433,7 +433,7 @@ export default function BiomarkerResults() {
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
-                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, h:mm a')}</span>
+                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, HH:mm')}</span>
                                 </div>
                               </div>
                             </div>
@@ -554,7 +554,7 @@ export default function BiomarkerResults() {
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
-                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, h:mm a')}</span>
+                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, HH:mm')}</span>
                                 </div>
                               </div>
                             </div>

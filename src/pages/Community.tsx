@@ -34,7 +34,7 @@ const todayHighlights = [
     author: { name: "Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
     location: "City Park",
     attendees: 32,
-    timestamp: "7:00 AM",
+    timestamp: "07:00",
     rewardPoints: 8,
     rewardDescription: "Join the run for fitness credits"
   },
@@ -59,7 +59,7 @@ const todayHighlights = [
     author: { name: "Dr. Roberts", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
     location: "Virtual",
     attendees: 85,
-    timestamp: "10:00 AM",
+    timestamp: "10:00",
     rewardPoints: 12,
     rewardDescription: "Complete hydration goals for bonus credits"
   }
@@ -76,7 +76,7 @@ const weeklyEvents = [
     author: { name: "Dance Team", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Community Center",
     attendees: 45,
-    timestamp: "Friday 8 PM",
+    timestamp: "Friday 20:00",
     rewardPoints: 10,
     rewardDescription: "Dance for fitness and social credits"
   },
@@ -89,7 +89,7 @@ const weeklyEvents = [
     author: { name: "Chef Emma", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Community Kitchen",
     attendees: 18,
-    timestamp: "Sunday 11 AM",
+    timestamp: "Sunday 11:00",
     rewardPoints: 6,
     rewardDescription: "Learn nutrition skills for wellness credits"
   },

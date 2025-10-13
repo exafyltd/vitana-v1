@@ -360,8 +360,8 @@ export function LiveRoomDrawer({
                 <div>
                   <p className="text-sm">
                     {showLocalTime
-                      ? format(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' h:mm a")
-                      : format(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' h:mm a 'UTC'")}
+                      ? format(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm")
+                      : format(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm 'UTC'")}
                   </p>
                   {showCountdown && (
                     <p className="text-sm text-muted-foreground mt-1">

@@ -32,7 +32,7 @@ const todayScheduledEvents = [
     author: { name: "Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Studio A",
     attendees: 15,
-    timestamp: "8:00 AM"
+    timestamp: "08:00"
   },
   {
     title: "Nutrition Workshop Today",
@@ -42,7 +42,7 @@ const todayScheduledEvents = [
     author: { name: "Mike Thompson", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
     location: "Kitchen Lab",
     attendees: 12,
-    timestamp: "2:00 PM"
+    timestamp: "14:00"
   },
   {
     title: "Community Fitness Challenge",
@@ -52,7 +52,7 @@ const todayScheduledEvents = [
     author: { name: "James Davis", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
     location: "Fitness Center",
     attendees: 25,
-    timestamp: "6:00 PM"
+    timestamp: "18:00"
   }
 ];
 
@@ -95,7 +95,7 @@ const todayEventsAndMeetups = [
     author: { name: "Dr. Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
     location: "Downtown Center",
     attendees: 52,
-    timestamp: "7:00 PM"
+    timestamp: "19:00"
   },
   {
     title: "Hydration Challenge Kickoff",
@@ -105,7 +105,7 @@ const todayEventsAndMeetups = [
     author: { name: "Health Coach Murphy", avatar: "/lovable-uploads/murphy-avatar.jpg" },
     location: "Wellness Center",
     attendees: 75,
-    timestamp: "6:00 PM"
+    timestamp: "18:00"
   },
   {
     title: "Sleep Workshop Tonight",
@@ -115,7 +115,7 @@ const todayEventsAndMeetups = [
     author: { name: "Sleep Therapist James", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
     location: "Therapy Center",
     attendees: 18,
-    timestamp: "8:00 PM"
+    timestamp: "20:00"
   }
 ];
 

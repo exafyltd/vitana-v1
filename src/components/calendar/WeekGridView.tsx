@@ -185,7 +185,7 @@ export function WeekGridView({
                   lineHeight: `${PIXELS_PER_HOUR}px`,
                 }}
               >
-                {format(new Date().setHours(hour, 0, 0, 0), 'h a')}
+                {format(new Date().setHours(hour, 0, 0, 0), 'HH:mm')}
               </div>
             ))}
           </div>
