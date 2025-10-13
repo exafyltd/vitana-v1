@@ -1513,6 +1513,7 @@ export type Database = {
           image_url: string | null
           location: string | null
           max_participants: number | null
+          metadata: Json | null
           moderated_at: string | null
           moderated_by: string | null
           moderation_notes: string | null
@@ -1532,6 +1533,7 @@ export type Database = {
           image_url?: string | null
           location?: string | null
           max_participants?: number | null
+          metadata?: Json | null
           moderated_at?: string | null
           moderated_by?: string | null
           moderation_notes?: string | null
@@ -1551,6 +1553,7 @@ export type Database = {
           image_url?: string | null
           location?: string | null
           max_participants?: number | null
+          metadata?: Json | null
           moderated_at?: string | null
           moderated_by?: string | null
           moderation_notes?: string | null
