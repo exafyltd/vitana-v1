@@ -452,7 +452,7 @@ export default function MediaHub() {
                               
                               {/* Delete Menu - Overlay on card */}
                               {isCreator && (
-                                <div className="absolute top-2 right-2 z-10">
+                                <div className="absolute top-4 right-4 z-30 bg-background/80 backdrop-blur-sm rounded-lg p-1">
                                   <KebabMenu>
                                     <DropdownMenuItem
                                       className="text-destructive cursor-pointer"
