@@ -90,6 +90,8 @@ export default function MediaHub() {
         .select(`
           id,
           title,
+          description,
+          tags,
           file_url,
           duration,
           plays_count,
@@ -349,20 +351,38 @@ export default function MediaHub() {
                           };
 
                           return (
-                            <div key={track.id} className="flex items-center gap-4 p-3 border rounded-lg">
+                            <div key={track.id} className="flex items-center gap-4 p-3 border rounded-lg hover:border-primary/50 transition-colors">
                               <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
                                 <Music className="w-6 h-6 text-purple-600" />
                               </div>
-                              <div className="flex-1">
-                                <h3 className="font-semibold text-sm">{track.title}</h3>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-semibold text-sm truncate">{track.title}</h3>
                                 <p className="text-xs text-muted-foreground">
                                   {track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} • {formatDuration(track.duration)}
                                 </p>
-                                {track.music_metadata?.[0]?.genre && (
-                                  <Badge variant="outline" className="text-xs mt-1">
-                                    {track.music_metadata[0].genre}
-                                  </Badge>
+                                
+                                {track.description && (
+                                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                    {track.description}
+                                  </p>
                                 )}
+                                
+                                <div className="flex flex-wrap gap-1.5 mt-2">
+                                  {track.music_metadata?.[0]?.genre && (
+                                    <Badge variant="secondary" className="text-xs px-2 py-0.5">
+                                      {track.music_metadata[0].genre}
+                                    </Badge>
+                                  )}
+                                  {track.tags?.slice(0, 3).map((tag) => (
+                                    <Badge 
+                                      key={tag} 
+                                      variant="outline" 
+                                      className="text-xs px-2 py-0.5 bg-primary/5"
+                                    >
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                </div>
                               </div>
                               <Button 
                                 size="sm" 

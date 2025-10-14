@@ -24,6 +24,11 @@ const predefinedTags = [
   "Fitness", "Mental Health", "Wellness", "Education", "Lifestyle"
 ];
 
+const musicMoodTags = [
+  "Calming", "Relaxing", "Soothing", "Meditation", "Sleep", 
+  "Inspiring", "Energetic", "Focus", "Peaceful", "Uplifting"
+];
+
 const languages = [
   { label: "English (US)", value: "en-US" },
   { label: "English (UK)", value: "en-GB" },
@@ -254,9 +259,9 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
 
             {/* Tags */}
             <div>
-              <Label>Tags</Label>
+              <Label>{mediaType === "Music" ? "Mood Tags" : "Tags"}</Label>
               <div className="flex flex-wrap gap-2 mt-2">
-                {predefinedTags.map((tag) => (
+                {(mediaType === "Music" ? musicMoodTags : predefinedTags).map((tag) => (
                   <Badge
                     key={tag}
                     variant={selectedTags.includes(tag) ? "default" : "outline"}
