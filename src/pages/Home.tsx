@@ -462,12 +462,12 @@ export default function Home() {
               </div>
 
               {/* Row 2: Music List + Two Events (1+2 pattern) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+              <div className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
                   <MusicListCard 
                     tracks={personalizedMusic || []}
                     title="Recommended for You"
-                    className="h-full"
+                    className="h-[280px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -507,7 +507,7 @@ export default function Home() {
               <MotivationalBanner variant="partnership" />
 
               {/* Row 3: Two Events + Community Events (2+1 pattern) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
+              <div className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
                 <div className="col-span-3">
                   <NewsCard
                     title={todayEventsAndMeetups[0]?.title || ""}
@@ -541,7 +541,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="col-span-6">
-                  <CommunityEventsCard maxEvents={4} className="h-full" />
+                  <CommunityEventsCard maxEvents={4} className="h-[280px]" />
                 </div>
               </div>
 
