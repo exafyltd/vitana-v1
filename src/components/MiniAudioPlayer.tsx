@@ -22,7 +22,7 @@ export function MiniAudioPlayer() {
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !currentMedia) return;
 
     const handleTimeUpdate = () => updateAudioTime(audio.currentTime);
     const handleDurationChange = () => updateAudioDuration(audio.duration);
@@ -58,7 +58,7 @@ export function MiniAudioPlayer() {
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
     };
-  }, [audioRef]);
+  }, [currentMedia]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -68,7 +68,16 @@ export function MiniAudioPlayer() {
     if (isPlaying) {
       audio.play().catch(console.error);
     }
-  }, [currentMedia, isPlaying, audioRef]);
+  }, [currentMedia, isPlaying]);
+
+  // Safety: Ensure globalState.audioElement is always set when media changes
+  useEffect(() => {
+    if (audioRef.current && currentMedia && globalState.audioElement !== audioRef.current) {
+      globalState.audioElement = audioRef.current;
+      audioRef.current.playbackRate = playbackRate;
+      audioRef.current.volume = globalState.volume;
+    }
+  }, [currentMedia, playbackRate]);
 
   if (!currentMedia) return null;
 

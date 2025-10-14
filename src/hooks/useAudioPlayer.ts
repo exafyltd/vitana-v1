@@ -74,13 +74,13 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
   }, []);
 
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current && globalState.audioElement !== audioRef.current) {
       globalState.audioElement = audioRef.current;
       // Apply current playback settings
       audioRef.current.playbackRate = globalState.playbackRate;
       audioRef.current.volume = globalState.volume;
     }
-  }, [audioRef.current]);
+  });
 
   const playMedia = useCallback((media: AudioMediaData) => {
     // If same media, just toggle play
