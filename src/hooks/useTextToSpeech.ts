@@ -37,22 +37,42 @@ export function useTextToSpeech() {
       setIsSpeaking(true);
       options?.onStart?.();
       
-      const voiceId = preferences.tts_voice || 'EXAVITQu4vr4xnSDxMaL';
-
-      console.log('[TTS] ElevenLabs: voice=', voiceId);
+      const sttLanguage = preferences.stt_language || 'en-US';
       
-      const body = {
-        text,
-        voiceId,
-        modelId: 'eleven_turbo_v2_5',
+      // RULE 6: Fixed Cloud TTS voice map (deterministic)
+      const CLOUD_VOICE_MAP: Record<string, string> = {
+        'ru-RU': 'ru-RU-Standard-D',
+        'sr-RS': 'sr-RS-Standard-B',
+        'de-DE': 'de-DE-Neural2-F',
+        'fr-FR': 'fr-FR-Neural2-A',
+        'es-ES': 'es-ES-Neural2-A',
+        'ar-XA': 'ar-XA-Standard-A',
+        'zh-CN': 'cmn-CN-Standard-A',
+        'en-US': 'en-US-Neural2-F',
+        'pt-PT': 'pt-PT-Standard-A'
       };
 
-      const { data, error } = await supabase.functions.invoke('elevenlabs-tts', { body });
+      const mappedVoice = CLOUD_VOICE_MAP[sttLanguage];
+      
+      if (!mappedVoice) {
+        setIsSpeaking(false);
+        throw new Error(`TTS voice unavailable for ${sttLanguage}`);
+      }
+
+      console.log('[TTS] RULE: voice=', mappedVoice, 'lang=', sttLanguage);
+      
+      const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
+        body: {
+          text,
+          voiceId: mappedVoice,
+          languageCode: sttLanguage
+        }
+      });
 
       if (error) throw error;
       if (!data?.audioContent) throw new Error('No audio content received');
 
-      const audio = new Audio(`data:audio/mpeg;base64,${data.audioContent}`);
+      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
       audio.volume = preferences.tts_volume / 100;
       
       audio.onended = () => {

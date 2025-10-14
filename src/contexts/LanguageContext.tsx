@@ -21,7 +21,6 @@ export const languageOptions = [
   { label: "Chinese (ZH)", value: "zh-CN" },
   { label: "French (FR)", value: "fr-FR" },
   { label: "Portuguese (PT)", value: "pt-PT" },
-  { label: "Polish (PL)", value: "pl-PL" },
 ];
 
 const ALLOWED_LANGUAGES = languageOptions.map(opt => opt.value);

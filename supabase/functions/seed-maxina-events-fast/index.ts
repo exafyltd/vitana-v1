@@ -6,66 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Binary event type classification: 'event' or 'meetup'
-function classifyEventType(event: any): string {
-  const title = event.title.toLowerCase();
-  const duration = event.duration;
-  const reward = event.reward;
-  const maxPart = event.maxPart;
-  const venue = event.venue?.toLowerCase() || '';
-  const category = event.category;
-  
-  // EVENTS - organized experiences with program/purpose
-  // Large-scale professional events
-  if (title.includes('summit') || maxPart >= 50) return 'event';
-  
-  // Retreats (multi-hour immersive)
-  if (title.includes('retreat') || duration >= 6) return 'event';
-  
-  // Masterclasses
-  if (title.includes('masterclass')) return 'event';
-  
-  // Dinners, brunches, galas, ceremonies
-  if (title.includes('dinner') || title.includes('brunch') || 
-      title.includes('gala') || title.includes('ceremony')) return 'event';
-  
-  // Wellness experiences (physical activities)
-  if (title.includes('flow') || title.includes('breathwork') || 
-      title.includes('plunge') || title.includes('walk') || 
-      venue.includes('beach') || venue.includes('boat')) return 'event';
-  
-  // Educational workshops (online or physical with experts)
-  if (event.type === 'online' || title.includes('101') || 
-      title.includes('science') || title.includes('future of') ||
-      (reward >= 17 && maxPart >= 100)) return 'event';
-  
-  // High-reward or long-duration activities
-  if (duration >= 4 || reward >= 40) return 'event';
-  
-  // MEETUPS - casual networking and social gatherings
-  if (title.includes('night') || title.includes('networking') || 
-      title.includes('connect') || (category === 'Social & Love' && duration <= 3)) {
-    return 'meetup';
-  }
-  
-  // Default: lower reward = meetup, higher = event
-  return reward >= 25 ? 'event' : 'meetup';
-}
-
-// Determine if event is paid based on reward and type
-function isPaidEvent(event: any, eventType: string): boolean {
-  // Most meetups are free
-  if (eventType === 'meetup' && event.reward < 40) return false;
-  
-  // High-reward activities are paid
-  if (event.reward >= 50) return true;
-  
-  // Events with moderate-to-high rewards are paid
-  if (eventType === 'event' && event.reward >= 20) return true;
-  
-  return false;
-}
-
 // Static schedule for Maxina Summer 2026 (no AI images - fast insert)
 const EVENTS_DATA = [
   { date: '2026-06-01', time: '06:00', title: 'Sunrise Detox Flow', category: 'Mind & Body', type: 'physical', venue: 'Maxina Boat', host: 'Mariia Maksina', guest: 'Sofia Martinez', tag: 'MIND_BODY_01', reward: 45, maxPart: 25, duration: 2 },
@@ -137,14 +77,11 @@ serve(async (req) => {
       const event = EVENTS_DATA[i];
       const startTime = new Date(`${event.date}T${event.time}:00+02:00`);
       const endTime = new Date(startTime.getTime() + event.duration * 60 * 60 * 1000);
-      
-      const eventType = classifyEventType(event);
-      const isPaid = isPaidEvent(event, eventType);
 
       generatedEvents.push({
         title: event.title,
         description: `Join us for an exclusive ${event.category.toLowerCase()} experience.`,
-        event_type: eventType,
+        event_type: event.type === 'online' ? 'workshop' : 'networking',
         location: event.venue,
         virtual_link: event.type === 'online' ? 'https://meet.vitana.app/maxina-summer' : null,
         start_time: startTime.toISOString(),
@@ -159,8 +96,6 @@ serve(async (req) => {
           host: event.host,
           guest: event.guest,
           vtn_reward: event.reward,
-          is_paid: isPaid,
-          price: isPaid ? event.reward * 10 : 0, // Convert VTN reward to approximate EUR price
           venue_type: event.type === 'online' ? null : event.venue?.toLowerCase().includes('boat') ? 'boat' : 
                       event.venue?.toLowerCase().includes('beach') ? 'beach' :
                       event.venue?.toLowerCase().includes('winery') || event.venue?.toLowerCase().includes('vineyard') ? 'winery' :

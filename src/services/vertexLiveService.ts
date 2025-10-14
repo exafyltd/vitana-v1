@@ -1,4 +1,4 @@
-import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue, wrapPCM16ToWav } from '@/utils/vertexAudio';
+import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue } from '@/utils/vertexAudio';
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
@@ -16,8 +16,6 @@ export class VertexLiveService {
   private callbacks: VertexLiveCallbacks = {};
   private conversationId: string | null = null;
   private isSetupComplete = false;
-  private connectionQuality: 'good' | 'degraded' | 'poor' = 'good';
-  private fallbackMode = false; // Graceful degradation flag
 
   constructor(callbacks: VertexLiveCallbacks) {
     this.callbacks = callbacks;
@@ -30,7 +28,7 @@ export class VertexLiveService {
     try {
       this.audioContext = new AudioContext({ sampleRate: 24000 });
 
-      // Build WebSocket URL to Supabase Edge Function (canonical path)
+      // Build candidate WebSocket URLs (try canonical first, then legacy)
       const makeHosts = () => {
         const fallbackHost = 'inmkhvwdcuyhnxkgfvsb.functions.supabase.co';
         try {
@@ -43,24 +41,22 @@ export class VertexLiveService {
         }
       };
       const functionsHost = makeHosts();
-      const wsUrl = `wss://${functionsHost}/vertex-live?token=${encodeURIComponent(token)}`;
+      const urls = [
+        `wss://${functionsHost}/functions/v1/vertex-live?token=${encodeURIComponent(token)}`,
+        `wss://${functionsHost}/vertex-live?token=${encodeURIComponent(token)}`,
+      ];
 
+      let attempt = 0;
       const tryConnect = (url: string) => {
+        const urlDesc = attempt === 0 ? 'primary path' : 'fallback path';
         console.log('🔗 Connecting to:', url);
-        this.callbacks.onTrace?.('Trying WebSocket (canonical path)...');
+        this.callbacks.onTrace?.(`Trying WebSocket ${urlDesc}...`);
         const ws = new WebSocket(url);
         ws.binaryType = 'arraybuffer';
-
-        // Safety: setup timeout if 'connection_ready' never arrives
-        const setupTimeout = setTimeout(() => {
-          if (!this.conversationId) {
-            console.warn('⏱️ Setup timeout: no connection_ready received');
-            this.callbacks.onError?.('Setup timeout: no connection_ready');
-            try { ws.close(); } catch {}
-          }
-        }, 10000);
+        let opened = false;
 
         ws.onopen = () => {
+          opened = true;
           this.ws = ws;
           console.log('✅ WebSocket connected to edge function');
           this.callbacks.onTrace?.('WebSocket open, waiting for connection_ready...');
@@ -71,98 +67,25 @@ export class VertexLiveService {
           try {
             // Check if this is binary audio data or JSON
             if (event.data instanceof ArrayBuffer) {
-              // Handle binary audio data - can be WAV or raw PCM
-              const bytes = new Uint8Array(event.data);
-              const isRiff = bytes.length >= 4 && 
-                bytes[0] === 0x52 && bytes[1] === 0x49 && 
-                bytes[2] === 0x46 && bytes[3] === 0x46;
+              // Handle binary audio data
+              console.log('📥 Received audio ArrayBuffer, size:', event.data.byteLength);
+              console.log('🎵 AudioContext state:', this.audioContext?.state);
+              const audioBytes = new Uint8Array(event.data);
               
-              const format = isRiff ? 'wav' : 'pcm';
-              console.log(`📥 audio_chunk_received (${format}): size=${bytes.byteLength}`);
-              this.callbacks.onTrace?.(`audio_chunk_received (${format}): ${bytes.byteLength} bytes`);
-              
-              // Skip audio playback in fallback mode
-              if (this.fallbackMode) {
-                console.log('⏭️ Skipping audio playback (fallback mode)');
-                return;
-              }
-              
-              if (!this.audioContext) {
+              if (this.audioContext) {
+                // Resume audio context if suspended (browser autoplay policy)
+                if (this.audioContext.state === 'suspended') {
+                  await this.audioContext.resume();
+                  console.log('▶️ Resumed audio context');
+                }
+                await playAudioData(this.audioContext, audioBytes);
+                console.log('✅ Audio playback initiated');
+              } else {
                 console.error('❌ No audio context available!');
-                return;
-              }
-              
-              // Resume audio context if suspended (browser autoplay policy)
-              if (this.audioContext.state === 'suspended') {
-                await this.audioContext.resume();
-                console.log('▶️ Resumed audio context');
-              }
-              
-              try {
-                let wavData: Uint8Array;
-                
-                if (isRiff) {
-                  // Already WAV format
-                  wavData = bytes;
-                } else {
-                  // Raw PCM16 mono 24kHz - wrap with WAV header
-                  console.log('🔄 Wrapping PCM with WAV header...');
-                  wavData = wrapPCM16ToWav(bytes, 24000);
-                }
-                
-                // Decode and play
-                console.log('🎧 Decoding audio...');
-                const audioBuffer = await this.audioContext.decodeAudioData(wavData.buffer.slice(0) as ArrayBuffer);
-                const duration = audioBuffer.duration.toFixed(2);
-                console.log(`✅ audio_decoded: duration=${duration}s`);
-                this.callbacks.onTrace?.(`audio_decoded: ${duration}s`);
-                
-                const source = this.audioContext.createBufferSource();
-                source.buffer = audioBuffer;
-                source.connect(this.audioContext.destination);
-                source.start(0);
-                console.log('▶️ Audio playback started');
-              } catch (error) {
-                console.error('❌ Failed to decode/play audio:', error);
-                if (error instanceof Error) {
-                  console.error('Error:', error.name, error.message);
-                }
-                this.callbacks.onTrace?.('audio_decode_failed');
               }
             } else if (typeof event.data === 'string') {
               // Handle JSON messages
               const data = JSON.parse(event.data);
-              
-              // Handle connection quality updates
-              if (data.type === 'connection_quality') {
-                this.connectionQuality = data.quality;
-                
-                if (data.quality === 'poor') {
-                  console.warn('⚠️ Poor connection quality detected');
-                  this.callbacks.onTrace?.('connection_quality_poor');
-                  
-                  // Enable fallback mode on poor connection
-                  if (!this.fallbackMode) {
-                    console.log('🔄 Enabling fallback mode (text-only)');
-                    this.fallbackMode = true;
-                    this.callbacks.onError?.('Connection unstable - switched to text-only mode');
-                    
-                    // Stop audio streaming to preserve bandwidth
-                    if (this.audioRecorder) {
-                      this.stopAudio();
-                    }
-                  }
-                } else if (data.quality === 'good' && this.fallbackMode) {
-                  console.log('✅ Connection restored, disabling fallback mode');
-                  this.fallbackMode = false;
-                  this.callbacks.onTrace?.('connection_restored');
-                }
-                return;
-              }
-              
-              if (data?.type === 'connection_ready' || data?.setupComplete) {
-                clearTimeout(setupTimeout);
-              }
               await this.handleServerMessage(data);
             } else {
               console.warn('⚠️ Unknown message type:', typeof event.data);
@@ -175,9 +98,15 @@ export class VertexLiveService {
         ws.onerror = (error: Event) => {
           console.error('❌ WebSocket error:', error);
           const wsError = error as ErrorEvent;
-          const errorMsg = wsError.message || 'WebSocket transport error';
+          const errorMsg = wsError.message || 'WebSocket connection error';
           console.error('Error details:', errorMsg);
-          clearTimeout(setupTimeout);
+          // If first URL failed and not opened yet, try fallback once
+          if (!opened && attempt === 0 && urls[1]) {
+            attempt = 1;
+            console.warn('↩️ Retrying with legacy WS path...');
+            tryConnect(urls[1]);
+            return;
+          }
           this.callbacks.onError?.(errorMsg);
         };
 
@@ -186,21 +115,26 @@ export class VertexLiveService {
           const reason = e?.reason || '';
           console.log('🔌 WebSocket closed', e?.code, reason);
           this.callbacks.onTrace?.(`WebSocket closed: ${e?.code} ${reason}`);
-
-          clearTimeout(setupTimeout);
-
+          
+          if (!opened && attempt === 0 && urls[1]) {
+            attempt = 1;
+            console.warn('↩️ Retrying with legacy WS path after close...');
+            tryConnect(urls[1]);
+            return;
+          }
+          
           // If we never got connection_ready, emit error
           if (!this.conversationId) {
             this.callbacks.onError?.(`WebSocket closed before ready (code ${e?.code}${reason ? ': ' + reason : ''})`);
           }
-
+          
           this.callbacks.onConnectionChange?.(false);
           this.isSetupComplete = false;
         };
       };
 
-      // Start single attempt with canonical path only
-      tryConnect(wsUrl);
+      // Kick off first attempt
+      tryConnect(urls[0]);
     } catch (error) {
       console.error('❌ Error connecting to Vertex AI:', error);
       this.callbacks.onError?.('Failed to connect');
@@ -214,8 +148,8 @@ export class VertexLiveService {
     if (data.type === 'connection_ready') {
       this.conversationId = data.conversationId;
       console.log('✅ Connection ready, conversation ID:', this.conversationId);
-      this.callbacks.onTrace?.('Received connection_ready (waiting for setup)');
-      // Don't signal connected yet - wait for setupComplete
+      this.callbacks.onTrace?.('Received connection_ready');
+      this.callbacks.onConnectionChange?.(true);
       return;
     }
 
@@ -228,10 +162,8 @@ export class VertexLiveService {
     // Handle setup complete
     if (data.setupComplete) {
       this.isSetupComplete = true;
-      console.log('✅ Vertex AI setup complete - ready for audio/video');
+      console.log('✅ Vertex AI setup complete');
       this.callbacks.onTrace?.('Setup complete');
-      // Signal true connection ready NOW (after setup, not just WS open)
-      this.callbacks.onConnectionChange?.(true);
       return;
     }
 
@@ -242,13 +174,15 @@ export class VertexLiveService {
       if (content.modelTurn) {
         const parts = content.modelTurn.parts || [];
         
-        // Handle audio responses (temporarily disabled - using binary path instead)
+        // Handle audio responses
         for (const part of parts) {
           if (part.inlineData && part.inlineData.mimeType?.includes('audio')) {
-            console.log('🔊 Received inline audio from AI (skipping - using binary path)');
-            this.callbacks.onTrace?.('inline_audio_received (disabled)');
-            // Disabled to avoid double-playback with binary audio stream
-            // The main audio comes through the ArrayBuffer path above
+            const audioBase64 = part.inlineData.data;
+            const audioBytes = Uint8Array.from(atob(audioBase64), c => c.charCodeAt(0));
+            
+            if (this.audioContext) {
+              await playAudioData(this.audioContext, audioBytes);
+            }
           }
 
           // Handle text responses (transcripts)
@@ -274,13 +208,6 @@ export class VertexLiveService {
   }
 
   async startAudio() {
-    // Graceful degradation: block audio in fallback mode
-    if (this.fallbackMode) {
-      console.warn('⚠️ Audio disabled in fallback mode (text-only)');
-      this.callbacks.onError?.('Audio unavailable - using text-only mode');
-      return;
-    }
-    
     if (!this.isSetupComplete) {
       console.warn('⚠️ Setup not complete, waiting...');
       return;
@@ -288,26 +215,23 @@ export class VertexLiveService {
 
     console.log('🎤 Starting audio recording...');
     
-    this.audioRecorder = new AudioRecorder(
-      (audioData) => {
-        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+    this.audioRecorder = new AudioRecorder((audioData) => {
+      if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
 
-        // Encode and send audio to Vertex AI
-        const base64Audio = encodeAudioForVertex(audioData);
-        
-        const message = {
-          realtimeInput: {
-            mediaChunks: [{
-              mimeType: "audio/pcm;rate=24000",
-              data: base64Audio
-            }]
-          }
-        };
+      // Encode and send audio to Vertex AI
+      const base64Audio = encodeAudioForVertex(audioData);
+      
+      const message = {
+        realtimeInput: {
+          mediaChunks: [{
+            mimeType: "audio/pcm;rate=24000",
+            data: base64Audio
+          }]
+        }
+      };
 
-        this.ws.send(JSON.stringify(message));
-      },
-      this.callbacks.onTrace // Pass trace callback for mic diagnostics
-    );
+      this.ws.send(JSON.stringify(message));
+    });
 
     await this.audioRecorder.start();
   }
@@ -396,20 +320,15 @@ export class VertexLiveService {
   sendText(text: string) {
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       console.warn('⚠️ WebSocket not connected');
-      this.callbacks.onError?.('Cannot send text: WebSocket not connected');
-      this.callbacks.onTrace?.('send_text_failed_not_connected');
       return;
     }
 
     if (!this.isSetupComplete) {
       console.warn('⚠️ Setup not complete, waiting...');
-      this.callbacks.onError?.('Cannot send text: Setup not complete');
-      this.callbacks.onTrace?.('send_text_failed_setup_incomplete');
       return;
     }
 
     console.log('📤 Sending text:', text);
-    this.callbacks.onTrace?.('text_message_sent');
 
     const message = {
       clientContent: {

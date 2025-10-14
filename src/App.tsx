@@ -128,9 +128,7 @@ import Rewards from "./pages/wallet/Rewards";
 // Sharing sub-pages
 import Distribution from "./pages/sharing/Distribution";
 import DataConsent from "./pages/sharing/DataConsent";
-import SharingIntegrations from "./pages/sharing/Integrations";
-import Integrations from "./pages/admin/Integrations";
-import IntegrationDetail from "./pages/admin/IntegrationDetail";
+import Integrations from "./pages/sharing/Integrations";
 import Campaigns from "./pages/sharing/Campaigns";
 import CampaignDetail from "./pages/sharing/CampaignDetail";
 
@@ -580,7 +578,7 @@ const App = () => {
           } />
           <Route path="/sharing/integrations" element={
             <AuthGuard>
-              <SharingIntegrations />
+              <Integrations />
             </AuthGuard>
           } />
 
@@ -1053,22 +1051,6 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="admin">
                 <AIAssistantAnalytics />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          
-          {/* API Integration Testing Routes */}
-          <Route path="/admin/integrations" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <Integrations />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/integrations/:id" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <IntegrationDetail />
               </ProtectedRoute>
             </AuthGuard>
           } />

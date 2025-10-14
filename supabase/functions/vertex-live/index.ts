@@ -87,23 +87,8 @@ serve(async (req) => {
         }
         console.log(`👤 Authenticated user: ${user.id}`);
 
-        // Fetch user preferences for voice/language
-        const { data: preferences, error: prefError } = await supabase
-          .from('user_preferences')
-          .select('tts_voice, stt_language, tts_speed, tts_pitch, tts_volume')
-          .eq('user_id', user.id)
-          .single();
-
-        if (prefError) {
-          console.warn('⚠️ Could not load user preferences, using defaults:', prefError);
-        }
-
-        const userVoice = preferences?.tts_voice || 'Aoede';
-        const userLanguage = preferences?.stt_language || 'en-US';
-        console.log(`🎙️ Using voice: ${userVoice}, language: ${userLanguage}`);
-
-        // Generate conversationId for protocol compatibility (not logged to DB)
-        conversationId = crypto.randomUUID();
+        // Conversation logging disabled due to database constraint issues
+        // conversationId remains null
 
         // Mint Google access token directly using service account (no external vertex-auth)
         const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
@@ -207,49 +192,32 @@ serve(async (req) => {
           console.log('✅ Connected to Vertex AI Live API');
           isConnected = true;
 
-          // Send setup configuration with user preferences
+          // Send setup configuration
           const setupMessage = {
             setup: {
               model: `projects/${projectId}/locations/us-central1/publishers/google/models/gemini-2.0-flash-live-preview-04-09`,
               generation_config: {
                 response_modalities: ['AUDIO'],
                 speech_config: {
-                  voice_config: { prebuilt_voice_config: { voice_name: userVoice } },
+                  voice_config: { prebuilt_voice_config: { voice_name: 'Aoede' } },
                 },
               },
               system_instruction: {
                 parts: [{
                   text:
-                    `You are a helpful AI assistant speaking in ${userLanguage}. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights. Respond in the user's language.`,
+                    'You are a helpful AI assistant. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights.',
                 }],
               },
             },
           };
           vertexSocket!.send(JSON.stringify(setupMessage));
-          console.log(`📤 Sent setup to Vertex AI (voice=${userVoice}, lang=${userLanguage})`);
+          console.log('📤 Sent setup configuration to Vertex AI');
 
           // Notify client that connection is ready and mark setup complete for the UI
           clientSocket.send(
             JSON.stringify({ type: 'connection_ready', conversationId }),
           );
           clientSocket.send(JSON.stringify({ setupComplete: true }));
-
-          // Send proactive greeting to make AI speak first with low latency
-          setTimeout(() => {
-            if (vertexSocket && vertexSocket.readyState === WebSocket.OPEN) {
-              const greetingMessage = {
-                clientContent: {
-                  turns: [{ 
-                    role: "user", 
-                    parts: [{ text: "Please greet me warmly and briefly ask how you can help me today." }] 
-                  }],
-                  turnComplete: true
-                }
-              };
-              vertexSocket.send(JSON.stringify(greetingMessage));
-              console.log('📤 Sent proactive greeting to trigger AI response');
-            }
-          }, 100);
 
           // Start keep-alive ping to client
           pingInterval = setInterval(() => {
@@ -332,33 +300,6 @@ serve(async (req) => {
       }
     };
 
-    // Connection quality monitoring
-    let lastPingTime = Date.now();
-    let connectionQuality = 'good'; // good, degraded, poor
-    
-    const monitorConnection = setInterval(() => {
-      const timeSinceLastPing = Date.now() - lastPingTime;
-      
-      if (timeSinceLastPing > 30000) {
-        connectionQuality = 'poor';
-        console.warn('⚠️ Connection quality: POOR (>30s since last message)');
-      } else if (timeSinceLastPing > 10000) {
-        connectionQuality = 'degraded';
-        console.warn('⚠️ Connection quality: DEGRADED (>10s since last message)');
-      } else {
-        connectionQuality = 'good';
-      }
-      
-      // Send quality update to client
-      try {
-        clientSocket.send(JSON.stringify({ 
-          type: 'connection_quality', 
-          quality: connectionQuality,
-          lastMessageAge: timeSinceLastPing
-        }));
-      } catch (_) {}
-    }, 5000); // Check every 5 seconds
-
     // Forward client messages to Vertex AI
     clientSocket.onmessage = async (event) => {
       try {
@@ -367,12 +308,10 @@ serve(async (req) => {
 
         if (!isConnected || !vertexSocket) {
           console.warn('⚠️ Vertex AI not connected, dropping message');
-          clientSocket.send(JSON.stringify({ type: 'error', message: 'Connection lost. Please reconnect.' }));
           return;
         }
 
         // Forward to Vertex AI
-        lastPingTime = Date.now(); // Update last activity time
         vertexSocket.send(JSON.stringify(message));
 
         // Log user messages to database (support camelCase and snake_case)
@@ -403,7 +342,6 @@ serve(async (req) => {
       const e = ev as CloseEvent;
       console.log('🔌 Client WebSocket closed', e?.code, e?.reason);
       if (typeof pingInterval !== 'undefined') clearInterval(pingInterval);
-      if (typeof monitorConnection !== 'undefined') clearInterval(monitorConnection);
       if (vertexSocket && vertexSocket.readyState === WebSocket.OPEN) {
         vertexSocket.close(4000, 'client-closed');
       }
@@ -411,8 +349,6 @@ serve(async (req) => {
 
     clientSocket.onerror = (error) => {
       console.error('❌ Client WebSocket error:', error);
-      if (typeof pingInterval !== 'undefined') clearInterval(pingInterval);
-      if (typeof monitorConnection !== 'undefined') clearInterval(monitorConnection);
     };
 
     return response;

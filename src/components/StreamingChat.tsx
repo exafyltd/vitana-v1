@@ -9,7 +9,6 @@ import { useLanguage } from "@/contexts/LanguageContext"
 import { useUserPreferences } from "@/hooks/useUserPreferences"
 import { useVertexLive } from "@/hooks/useVertexLive"
 import { useProactiveAssistant } from "@/hooks/useProactiveAssistant"
-import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,23 +50,15 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     isScreenSharing: vertexScreenSharing,
     transcript: vertexTranscript,
     error: vertexError,
-    lastEvent: vertexLastEvent,
     connect: vertexConnect,
     disconnect: vertexDisconnect,
     startAudio: vertexStartAudio,
     stopAudio: vertexStopAudio,
     startScreen: vertexStartScreen,
     stopScreen: vertexStopScreen,
-    sendText: vertexSendText,
   } = useVertexLive()
 
   const isStreaming = isAudioActive || isVideoActive
-
-  // Refs for latest connection state (avoid stale closures)
-  const vertexStateRef = useRef(vertexConnectionState)
-  useEffect(() => { vertexStateRef.current = vertexConnectionState }, [vertexConnectionState])
-  const vertexConnectedRef = useRef(vertexConnected)
-  useEffect(() => { vertexConnectedRef.current = vertexConnected }, [vertexConnected])
 
   // Pre-warm user context cache on component mount
   useEffect(() => {
@@ -274,87 +265,42 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
-      console.log('🎥 Activating video stream...');
+      console.log('StreamingChat: activateVideo called, useVertexLive:', useVertexLiveMode);
       
-      // Prime AudioContext on user gesture (avoids autoplay blocks)
-      await aiVoiceService.resumeAudio();
-      
-      setIsVideoActive(true);
-      setIsAudioActive(true);
-      setAssistantStreamingText('');
-      
-      if (!useVertexLiveMode) {
-        return;
-      }
-
-      try {
-        // Cancel any existing TTS before connecting to Vertex
-        if ((window as any).__currentTTSAudio) {
-          (window as any).__currentTTSAudio.pause();
-          (window as any).__currentTTSAudio = null;
-        }
-        console.log('🔇 Suspending aiVoiceService audio for Vertex...');
-        await aiVoiceService.suspendAudio();
-        
-        // Connect to Vertex AI
-        await vertexConnect();
-        console.log('✅ Connected to Vertex Live, waiting for setup...');
-        
-        // Wait for setupComplete before starting audio/screen (max 8 seconds)
-        const startTime = Date.now();
-        const maxWait = 8000;
-        const checkInterval = 100;
-        
-        const waitForSetup = () => {
-          return new Promise<void>((resolve, reject) => {
-            const check = () => {
-              // Use refs to avoid stale closure
-              if (vertexConnectedRef.current || vertexStateRef.current === 'connected') {
-                console.log('✅ Setup complete received, starting audio/screen');
-                resolve();
-              } else if (Date.now() - startTime > maxWait) {
-                const elapsed = Date.now() - startTime;
-                console.error(`❌ Setup timeout after ${elapsed}ms, lastEvent:`, vertexLastEvent);
-                reject(new Error(`Setup timeout after ${elapsed}ms`));
-              } else {
-                setTimeout(check, checkInterval);
-              }
-            };
-            check();
+      if (useVertexLiveMode) {
+        try {
+          // Cancel any ongoing TTS to avoid audio conflicts
+          if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            console.log('🔇 Cancelled TTS before Vertex connection');
+          }
+          
+          setIsVideoActive(true); // Set immediately for UI feedback
+          await vertexConnect();
+          await vertexStartAudio();
+          await vertexStartScreen();
+          console.log('✅ Vertex Live activated');
+        } catch (error) {
+          console.error('❌ Failed to activate Vertex Live:', error);
+          setIsVideoActive(false); // Reset on error
+          toast({
+            title: "Failed to start Vertex AI Live",
+            description: "Please check your connection and try again",
+            variant: "destructive",
           });
-        };
-        
-        await waitForSetup();
-        
-        // Now start audio and screen capture
-        await vertexStartAudio();
-        await vertexStartScreen();
-        console.log('✅ Started audio and screen capture');
-      } catch (error) {
-        console.error('Error activating Vertex stream:', error);
-        const timeoutMatch = error instanceof Error && error.message.match(/(\d+)ms/);
-        toast({
-          title: "Connection Error",
-          description: timeoutMatch 
-            ? `AI setup took too long (${timeoutMatch[1]}ms). Please try again.`
-            : "Failed to connect to AI service. Please try again.",
-          variant: "destructive",
-        });
-        setIsVideoActive(false);
+        }
+      } else {
+        setIsVideoActive(true);
         setIsAudioActive(false);
       }
     },
-    deactivateVideo: async () => {
+    deactivateVideo: () => {
       console.log('StreamingChat: deactivateVideo called');
       
       if (useVertexLiveMode) {
         vertexStopAudio();
         vertexStopScreen();
         vertexDisconnect();
-        
-        // Reactivate aiVoiceService audio after Vertex disconnects
-        console.log('🔊 Reactivating aiVoiceService audio...');
-        await aiVoiceService.reactivateAudio();
       }
       
       setIsVideoActive(false);
@@ -504,64 +450,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           >
             <VideoIcon className="h-5 w-5" />
           </Button>
-
-          {/* Developer test button with connection status - only shown when Vertex mode is enabled */}
-          {useVertexLiveMode && (
-            <div className="flex items-center gap-2">
-              {/* Connection status pill */}
-              <div className={cn(
-                "px-2 py-1 rounded-full text-xs font-medium transition-colors",
-                vertexConnectionState === 'connected' && "bg-success/20 text-success",
-                vertexConnectionState === 'connecting' && "bg-warning/20 text-warning animate-pulse",
-                vertexConnectionState === 'disconnected' && "bg-muted text-muted-foreground",
-                vertexConnectionState === 'error' && "bg-destructive/20 text-destructive"
-              )}>
-                {vertexConnectionState === 'connected' && '● Connected'}
-                {vertexConnectionState === 'connecting' && '○ Connecting...'}
-                {vertexConnectionState === 'disconnected' && '○ Disconnected'}
-                {vertexConnectionState === 'error' && '✕ Error'}
-              </div>
-              
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  console.log('🧪 Test button clicked, connection state:', vertexConnectionState);
-                  
-                  if (vertexConnectionState !== 'connected') {
-                    toast({
-                      title: "AI voice not connected",
-                      description: "Press Start Stream and wait for 'Connected' status before testing.",
-                      variant: "destructive",
-                    });
-                    return;
-                  }
-                  
-                  const success = vertexSendText("Please say 'hello' briefly in one sentence.");
-                  if (success) {
-                    toast({
-                      title: "Test message sent",
-                      description: "Listen for AI voice response...",
-                    });
-                  } else {
-                    toast({
-                      title: "Failed to send test",
-                      description: "Connection not ready. Try reconnecting.",
-                      variant: "destructive",
-                    });
-                  }
-                }}
-                disabled={vertexConnectionState !== 'connected'}
-                className={cn(
-                  "text-xs px-2 py-1 h-auto hover:bg-accent rounded-md",
-                  vertexConnectionState !== 'connected' && "opacity-50 cursor-not-allowed"
-                )}
-                title="Test AI voice output (requires connection)"
-              >
-                Test
-              </Button>
-            </div>
-          )}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
