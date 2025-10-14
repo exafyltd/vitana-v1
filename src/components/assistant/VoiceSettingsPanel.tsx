@@ -22,6 +22,10 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   const pickPreferredVoice = useCallback((voices: SpeechSynthesisVoice[]) => {
     if (voices.length === 0) return null;
 
+    // Filter out Microsoft voices immediately
+    const nonMicrosoftVoices = voices.filter(v => !v.name.toLowerCase().includes('microsoft'));
+    if (nonMicrosoftVoices.length === 0) return voices[0]; // Fallback if only Microsoft exists
+
     const isFemaleVoice = (voice: SpeechSynthesisVoice) => {
       const name = voice.name.toLowerCase();
       return name.includes('female') || name.includes('woman') || name.includes('zira') ||
@@ -30,24 +34,20 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
         name.includes('amelie') || name.includes('anna');
     };
 
-    const femaleVoices = voices.filter(isFemaleVoice);
+    const femaleVoices = nonMicrosoftVoices.filter(isFemaleVoice);
     if (femaleVoices.length > 0) {
       const googleFemale = femaleVoices.find(v => v.name.toLowerCase().includes('google'));
       if (googleFemale) return googleFemale;
-      const microsoftFemale = femaleVoices.find(v => v.name.toLowerCase().includes('microsoft'));
-      if (microsoftFemale) return microsoftFemale;
       const appleFemale = femaleVoices.find(v => v.name.toLowerCase().includes('apple'));
       if (appleFemale) return appleFemale;
       return femaleVoices[0];
     }
 
-    const google = voices.find(v => v.name.toLowerCase().includes('google'));
+    const google = nonMicrosoftVoices.find(v => v.name.toLowerCase().includes('google'));
     if (google) return google;
-    const microsoft = voices.find(v => v.name.toLowerCase().includes('microsoft'));
-    if (microsoft) return microsoft;
-    const apple = voices.find(v => v.name.toLowerCase().includes('apple'));
+    const apple = nonMicrosoftVoices.find(v => v.name.toLowerCase().includes('apple'));
     if (apple) return apple;
-    return voices[0];
+    return nonMicrosoftVoices[0];
   }, []);
 
   const loadVoices = useCallback(() => {
@@ -75,13 +75,23 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
   useEffect(() => {
     if (!preferences || availableVoices.length === 0) return;
-    const currentVoice = availableVoices.find(v => v.name === preferences.tts_voice);
-    const currentVoiceLangCode = currentVoice ? baseLang(currentVoice.lang) : undefined;
+    
+    const currentVoice = preferences.tts_voice;
+    const isCloudVoice = currentVoice?.includes('Chirp3-HD') || 
+                         currentVoice?.includes('-Standard-') || 
+                         currentVoice?.includes('-Wavenet-');
+    
+    // Don't auto-switch if user has selected a cloud voice
+    if (isCloudVoice) return;
+    
+    const currentBrowserVoice = availableVoices.find(v => v.name === currentVoice);
+    const currentVoiceLangCode = currentBrowserVoice ? baseLang(currentBrowserVoice.lang) : undefined;
     const selectedLangCode = baseLang(preferences.stt_language);
-    if (!currentVoice || currentVoiceLangCode !== selectedLangCode) {
+    
+    if (!currentBrowserVoice || currentVoiceLangCode !== selectedLangCode) {
       const candidates = availableVoices.filter(v => baseLang(v.lang) === selectedLangCode);
       const preferred = pickPreferredVoice(candidates);
-      if (preferred && preferred.name !== preferences.tts_voice) {
+      if (preferred && preferred.name !== currentVoice) {
         updatePreferences({ tts_voice: preferred.name });
       }
     }
@@ -287,21 +297,24 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
                   ))}
                 </>
               )}
-              {filteredVoices.length > 0 && (
+              {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length > 0 && (
                 <>
                   {currentCloudVoices.length > 0 && (
                     <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-2 pt-2">
                       Browser Voices
                     </div>
                   )}
-                  {filteredVoices.map((voice) => (
-                    <SelectItem key={voice.name} value={voice.name}>
-                      {voice.name}
-                    </SelectItem>
-                  ))}
+                  {filteredVoices
+                    .filter(voice => !voice.name.toLowerCase().includes('microsoft'))
+                    .map((voice) => (
+                      <SelectItem key={voice.name} value={voice.name}>
+                        {voice.name}
+                      </SelectItem>
+                    ))}
                 </>
               )}
-              {filteredVoices.length === 0 && currentCloudVoices.length === 0 && (
+              {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length === 0 && 
+               currentCloudVoices.length === 0 && (
                 <SelectItem value="" disabled>
                   No voices available
                 </SelectItem>
