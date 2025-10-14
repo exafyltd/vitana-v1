@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from "react"
-import { Mic, Video as VideoIcon, X, Send, Sparkles, Globe, Monitor, MonitorOff, Camera, CameraOff, Loader2 } from "lucide-react"
+import { Mic, Video as VideoIcon, X, Send, Sparkles, Globe, Monitor, MonitorOff, Camera, CameraOff, Loader2, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DiaryButton from "@/components/diary/DiaryButton"
 import { aiVoiceService } from "@/services/aiVoiceService"
@@ -389,7 +389,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           {vertexConnectionState === 'error' && (
             <div className="bg-red-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
               <X className="h-3 w-3" />
-              <span className="text-xs font-medium">Connection Error - Retrying...</span>
+              <span className="text-xs font-medium">
+                {vertexConnecting ? "Connection Error - Retrying..." : "Connection Failed"}
+              </span>
             </div>
           )}
           {vertexScreenSharing && (
@@ -419,6 +421,21 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             aria-label="Close live stream notification"
           >
             <X className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      {/* Reconnect button for Vertex Live error state */}
+      {useVertexLiveMode && vertexIsError && !vertexConnecting && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50">
+          <Button
+            onClick={vertexConnect}
+            variant="destructive"
+            size="sm"
+            className="shadow-lg"
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Reconnect to Gemini Live
           </Button>
         </div>
       )}
