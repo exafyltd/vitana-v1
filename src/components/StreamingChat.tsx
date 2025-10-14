@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from "react"
-import { Mic, Video as VideoIcon, X, Send, Sparkles, Globe, Monitor, MonitorOff, Camera, CameraOff, Loader2, RefreshCw } from "lucide-react"
+import { Mic, Video as VideoIcon, X, Send, Sparkles, Globe, Monitor, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DiaryButton from "@/components/diary/DiaryButton"
 import { aiVoiceService } from "@/services/aiVoiceService"
@@ -49,7 +49,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     connectionState: vertexConnectionState,
     isRecording: vertexRecording,
     isScreenSharing: vertexScreenSharing,
-    isCameraActive: vertexCameraActive,
     transcript: vertexTranscript,
     error: vertexError,
     connect: vertexConnect,
@@ -58,8 +57,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     stopAudio: vertexStopAudio,
     startScreen: vertexStartScreen,
     stopScreen: vertexStopScreen,
-    startCamera: vertexStartCamera,
-    stopCamera: vertexStopCamera,
   } = useVertexLive()
 
   const isStreaming = isAudioActive || isVideoActive
@@ -389,21 +386,13 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           {vertexConnectionState === 'error' && (
             <div className="bg-red-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
               <X className="h-3 w-3" />
-              <span className="text-xs font-medium">
-                {vertexConnecting ? "Connection Error - Retrying..." : "Connection Failed"}
-              </span>
+              <span className="text-xs font-medium">Connection Error - Retrying...</span>
             </div>
           )}
           {vertexScreenSharing && (
             <div className="bg-blue-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
               <Monitor className="h-3 w-3" />
               <span className="text-xs font-medium">Screen Sharing Active</span>
-            </div>
-          )}
-          {vertexCameraActive && (
-            <div className="bg-purple-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
-              <Camera className="h-3 w-3" />
-              <span className="text-xs font-medium">Camera Active</span>
             </div>
           )}
         </div>
@@ -421,21 +410,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             aria-label="Close live stream notification"
           >
             <X className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-
-      {/* Reconnect button for Vertex Live error state */}
-      {useVertexLiveMode && vertexIsError && !vertexConnecting && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50">
-          <Button
-            onClick={vertexConnect}
-            variant="destructive"
-            size="sm"
-            className="shadow-lg"
-          >
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Reconnect to Gemini Live
           </Button>
         </div>
       )}
@@ -506,73 +480,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           >
             <VideoIcon className="h-5 w-5" />
           </Button>
-
-          {/* Screen Share Button - Only visible when Vertex Live is connected */}
-          {useVertexLiveMode && vertexConnected && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={async () => {
-                if (vertexScreenSharing) {
-                  vertexStopScreen();
-                } else {
-                  try {
-                    await vertexStartScreen();
-                    toast({
-                      title: "Screen sharing started",
-                      description: "Gemini can now see your screen",
-                    });
-                  } catch (error) {
-                    toast({
-                      title: "Screen sharing failed",
-                      description: error instanceof Error ? error.message : "Could not share screen",
-                      variant: "destructive",
-                    });
-                  }
-                }
-              }}
-              className={vertexScreenSharing ? "bg-blue-500 text-white hover:bg-blue-600 rounded-full" : "hover:bg-accent rounded-full"}
-              aria-pressed={vertexScreenSharing}
-              aria-label={vertexScreenSharing ? "Stop screen sharing" : "Share screen"}
-              title={vertexScreenSharing ? "Stop screen sharing" : "Share your screen with AI"}
-            >
-              {vertexScreenSharing ? <MonitorOff className="h-5 w-5" /> : <Monitor className="h-5 w-5" />}
-            </Button>
-          )}
-
-          {/* Camera Button - Only visible when Vertex Live is connected */}
-          {useVertexLiveMode && vertexConnected && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={async () => {
-                if (vertexCameraActive) {
-                  vertexStopCamera();
-                } else {
-                  try {
-                    await vertexStartCamera();
-                    toast({
-                      title: "Camera started",
-                      description: "Gemini can now see you",
-                    });
-                  } catch (error) {
-                    toast({
-                      title: "Camera failed",
-                      description: error instanceof Error ? error.message : "Could not start camera",
-                      variant: "destructive",
-                    });
-                  }
-                }
-              }}
-              className={vertexCameraActive ? "bg-purple-500 text-white hover:bg-purple-600 rounded-full" : "hover:bg-accent rounded-full"}
-              aria-pressed={vertexCameraActive}
-              aria-label={vertexCameraActive ? "Stop camera" : "Turn on camera"}
-              title={vertexCameraActive ? "Stop camera" : "Share your camera with AI"}
-            >
-              {vertexCameraActive ? <CameraOff className="h-5 w-5" /> : <Camera className="h-5 w-5" />}
-            </Button>
-          )}
-
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

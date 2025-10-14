@@ -47,11 +47,10 @@ export const useVertexLive = () => {
         setConnectionState('error');
         setLastEvent('error: ' + errorMsg);
         
-        // Only retry if we haven't exceeded max attempts
-        if (retryCountRef.current < 3) {
-          retryCountRef.current += 1;
+        // Exponential backoff with max 3 retries
+        retryCountRef.current += 1;
+        if (retryCountRef.current <= 3) {
           const delay = Math.min(15000, 2000 * Math.pow(2, retryCountRef.current - 1));
-          console.log(`🔄 Will retry in ${delay}ms (attempt ${retryCountRef.current}/3)`);
           reconnectTimeoutRef.current = setTimeout(() => {
             if (serviceRef.current) {
               console.log('🔄 Attempting reconnect... (#' + retryCountRef.current + ')');
@@ -59,11 +58,7 @@ export const useVertexLive = () => {
             }
           }, delay);
         } else {
-          console.warn('🛑 Max reconnect attempts (3) reached - stopping retry loop');
-          // Clear any pending reconnection attempts
-          if (reconnectTimeoutRef.current) {
-            clearTimeout(reconnectTimeoutRef.current);
-          }
+          console.warn('🛑 Max reconnect attempts reached');
         }
       },
       onTrace: (message) => {

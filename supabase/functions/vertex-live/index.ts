@@ -90,122 +90,128 @@ serve(async (req) => {
         // Conversation logging disabled due to database constraint issues
         // conversationId remains null
 
-        // Use existing Google API key flow (same as TTS/Imagen)
-        let googleApiKey = Deno.env.get('GOOGLE_CLOUD_API_KEY');
-        if (!googleApiKey) {
-          // Fallback: try per-user stored key (same convention as ai-chat)
-          try {
-            const supa = createClient(supabaseUrl, supabaseKey, {
-              global: { headers: { Authorization: `Bearer ${token}` } },
-            });
-            const { data: apiKeyData } = await supa
-              .from('user_api_keys')
-              .select('api_key')
-              .eq('user_id', user.id)
-              .eq('service_name', 'google_cloud')
-              .single();
-            if (apiKeyData?.api_key) googleApiKey = apiKeyData.api_key;
-          } catch (e) {
-            console.warn('[vertex-live] user_api_keys lookup failed (non-fatal):', e);
-          }
-        }
-        if (!googleApiKey) {
-          console.error('❌ GOOGLE_CLOUD_API_KEY not configured');
-          clientSocket.send(JSON.stringify({ type: 'error', message: 'Google API key missing' }));
-          clientSocket.close(4500, 'google-api-key-missing');
+        // Mint Google access token directly using service account (no external vertex-auth)
+        const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
+        if (!serviceAccountJson) {
+          console.error('❌ Missing GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
+          clientSocket.send(JSON.stringify({ type: 'error', message: 'Server misconfiguration' }));
+          clientSocket.close(4500, 'config-missing');
           return;
         }
 
-        // Connect to Gemini Live API using API key (matches TTS/Imagen pattern)
-        // Endpoint path uses a slash between service and method
-        const geminiUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService/BidiGenerateContent?key=${googleApiKey}`;
-        console.log('🔗 Connecting to Gemini Live API with API key...');
-        vertexSocket = new WebSocket(geminiUrl);
+        const serviceAccount = JSON.parse(serviceAccountJson);
+        const projectId = serviceAccount.project_id;
+
+        // Helper: base64url encode
+        const base64UrlEncode = (input: Uint8Array) => {
+          let str = '';
+          for (let i = 0; i < input.length; i++) str += String.fromCharCode(input[i]);
+          return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        };
+
+        // Helper: PEM to ArrayBuffer (PKCS8)
+        const pemToArrayBuffer = (pem: string): ArrayBuffer => {
+          const b64 = pem
+            .replace(/-----BEGIN PRIVATE KEY-----/g, '')
+            .replace(/-----END PRIVATE KEY-----/g, '')
+            .replace(/\s+/g, '');
+          const raw = atob(b64);
+          const buf = new Uint8Array(raw.length);
+          for (let i = 0; i < raw.length; i++) buf[i] = raw.charCodeAt(i);
+          return buf.buffer;
+        };
+
+        try {
+          const enc = new TextEncoder();
+          const header = { alg: 'RS256', typ: 'JWT' };
+          const iat = Math.floor(Date.now() / 1000);
+          const exp = iat + 3600; // 1 hour
+          const payload = {
+            iss: serviceAccount.client_email,
+            scope: 'https://www.googleapis.com/auth/cloud-platform',
+            aud: 'https://oauth2.googleapis.com/token',
+            iat,
+            exp,
+          };
+
+          const headerB64 = base64UrlEncode(enc.encode(JSON.stringify(header)));
+          const payloadB64 = base64UrlEncode(enc.encode(JSON.stringify(payload)));
+          const toSign = enc.encode(`${headerB64}.${payloadB64}`);
+
+          const keyData = pemToArrayBuffer(serviceAccount.private_key);
+          const privateKey = await crypto.subtle.importKey(
+            'pkcs8',
+            keyData,
+            { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+            false,
+            ['sign']
+          );
+
+          const signature = new Uint8Array(
+            await crypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, privateKey, toSign)
+          );
+          const signatureB64 = base64UrlEncode(signature);
+          const assertion = `${headerB64}.${payloadB64}.${signatureB64}`;
+
+          const tokenResp = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${encodeURIComponent(assertion)}`,
+          });
+
+          if (!tokenResp.ok) {
+            const errText = await tokenResp.text();
+            console.error('[VertexLive][OAuth] Token exchange failed', { status: tokenResp.status, body: errText.slice(0, 500) });
+            try {
+              clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex OAuth failed', status: tokenResp.status, detail: errText.slice(0, 500) }));
+            } catch (_) {}
+            clientSocket.close(4502, 'vertex-oauth-failed');
+            return;
+          }
+
+          const { access_token } = await tokenResp.json();
+          if (!access_token) {
+            console.error('❌ No access_token in token response');
+            clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex auth failed' }));
+            clientSocket.close(4002, 'vertex-auth-failed');
+            return;
+          }
+
+          // Connect to Vertex Live WS using access_token (US central1)
+          const vertexUrl = `wss://us-central1-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent?access_token=${access_token}`;
+          console.log('🔗 Connecting to Vertex WS...');
+          vertexSocket = new WebSocket(vertexUrl);
+        } catch (e) {
+          console.error('[VertexLive][OAuth] Mint error:', e);
+          try { clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex OAuth mint error' })); } catch (_){ }
+          clientSocket.close(4503, 'vertex-oauth-mint-error');
+          return;
+        }
 
         vertexSocket.onopen = () => {
-          console.log('✅ Connected to Gemini Live API');
+          console.log('✅ Connected to Vertex AI Live API');
           isConnected = true;
 
-          // Send setup configuration for Gemini Live
+          // Send setup configuration
           const setupMessage = {
             setup: {
-              model: "models/gemini-2.5-flash",
-              generationConfig: {
-                responseModalities: ["AUDIO", "TEXT"],
-                speechConfig: {
-                  voiceConfig: {
-                    prebuiltVoiceConfig: {
-                      voiceName: "Puck" // Happy, enthusiastic voice
-                    }
-                  }
-                }
-              },
-              systemInstruction: {
-                parts: [{
-                  text: `You are a Vitana AI Assistant - a warm, helpful wellness coach guiding users through the Vitana health platform.
-
-**Your Personality:**
-- Enthusiastic and encouraging
-- Patient and clear in explanations
-- Celebrate user progress and achievements
-- Use friendly, conversational language
-
-**Your Role:**
-- Guide users through Vitana features step-by-step
-- Explain health tracking, appointments, wellness programs
-- Help users understand what they see on their screen
-- Store important insights to user memory for future reference
-- Provide actionable wellness tips
-
-**Visual Context:**
-- You can see the user's screen (1 FPS) and camera when shared
-- Describe what you observe to confirm you understand their context
-- Proactively point out useful features they might have missed
-
-**Response Style:**
-- Keep responses concise (30-60 seconds of speech max)
-- Ask clarifying questions when needed
-- Be proactive but not overwhelming
-- Use natural, conversational language`
-                }]
-              },
-              tools: [
-                {
-                  type: "function",
-                  name: "store_user_memory",
-                  description: "Store important user information or insights to their AI memory for future conversations. Use this when you learn something significant about the user's health goals, preferences, achievements, or concerns.",
-                  parameters: {
-                    type: "object",
-                    properties: {
-                      memory_content: {
-                        type: "string",
-                        description: "The important information to remember about the user"
-                      },
-                      category: {
-                        type: "string",
-                        enum: ["health_goal", "preference", "achievement", "concern"],
-                        description: "Category of the memory"
-                      }
-                    },
-                    required: ["memory_content", "category"]
-                  }
-                }
-              ],
-              realtimeInputConfig: {
-                automaticActivityDetection: {
-                  startOfSpeechSensitivity: "START_SENSITIVITY_LOW",
-                  endOfSpeechSensitivity: "END_SENSITIVITY_LOW",
-                  prefixPaddingMs: 300,
-                  silenceDurationMs: 1000,
-                  disabled: false
+              model: `projects/${projectId}/locations/us-central1/publishers/google/models/gemini-2.0-flash-live-preview-04-09`,
+              generation_config: {
+                response_modalities: ['AUDIO'],
+                speech_config: {
+                  voice_config: { prebuilt_voice_config: { voice_name: 'Aoede' } },
                 },
-                activityHandling: "START_OF_ACTIVITY_INTERRUPTS",
-                turnCoverage: "TURN_INCLUDES_ALL_INPUT"
-              }
-            }
+              },
+              system_instruction: {
+                parts: [{
+                  text:
+                    'You are a helpful AI assistant. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights.',
+                }],
+              },
+            },
           };
           vertexSocket!.send(JSON.stringify(setupMessage));
-          console.log('📤 Sent setup configuration to Gemini Live API');
+          console.log('📤 Sent setup configuration to Vertex AI');
 
           // Notify client that connection is ready and mark setup complete for the UI
           clientSocket.send(
@@ -224,20 +230,20 @@ serve(async (req) => {
         };
 
         vertexSocket.onerror = (error) => {
-          console.error('❌ Gemini Live API WebSocket error:', error);
+          console.error('❌ Vertex AI WebSocket error:', error);
           try {
             clientSocket.send(
-              JSON.stringify({ type: 'error', message: 'Gemini Live API connection error' }),
+              JSON.stringify({ type: 'error', message: 'Vertex AI connection error' }),
             );
           } catch (_) {}
         };
 
         vertexSocket.onclose = (ev) => {
           const e = ev as CloseEvent;
-          console.log('🔌 Gemini Live API WebSocket closed', e?.code, e?.reason);
+          console.log('🔌 Vertex AI WebSocket closed', e?.code, e?.reason);
           isConnected = false;
           if (clientSocket.readyState === WebSocket.OPEN) {
-            clientSocket.close(4000, 'gemini-closed');
+            clientSocket.close(4000, 'vertex-closed');
           }
         };
 
@@ -245,54 +251,9 @@ serve(async (req) => {
           try {
             // Check if message is JSON or Blob
             if (typeof event.data === 'string') {
-              // Handle JSON messages from Gemini
+              // Handle JSON messages
               const data = JSON.parse(event.data);
-              console.log('📥 Gemini Live API JSON message type:', data.type || Object.keys(data)[0]);
-              
-              // Handle tool calls (function calling)
-              if (data.toolCall) {
-                console.log('🔧 Tool call received:', data.toolCall);
-                
-                // Process store_user_memory function
-                if (data.toolCall.functionCalls) {
-                  for (const fc of data.toolCall.functionCalls) {
-                    if (fc.name === 'store_user_memory') {
-                      try {
-                        const args = JSON.parse(fc.args || '{}');
-                        console.log('💾 Storing memory:', args);
-                        
-                        // Store to ai_memory table
-                        const { error: memError } = await supabase.from('ai_memory').insert({
-                          user_id: user.id,
-                          memory_type: args.category || 'general',
-                          content: args.memory_content,
-                          source: 'gemini_live_session'
-                        });
-                        
-                        if (memError) {
-                          console.error('Failed to store memory:', memError);
-                        } else {
-                          console.log('✅ Memory stored successfully');
-                        }
-                        
-                        // Send response back to Gemini
-                        const toolResponse = {
-                          toolResponse: {
-                            functionResponses: [{
-                              id: fc.id,
-                              name: fc.name,
-                              response: { success: !memError }
-                            }]
-                          }
-                        };
-                        vertexSocket!.send(JSON.stringify(toolResponse));
-                      } catch (err) {
-                        console.error('Error processing tool call:', err);
-                      }
-                    }
-                  }
-                }
-              }
+              console.log('📥 Vertex AI JSON message type:', data.type || Object.keys(data)[0]);
               
               // Forward JSON to client
               clientSocket.send(event.data);
@@ -318,22 +279,22 @@ serve(async (req) => {
               }
             } else if (event.data instanceof Blob) {
               // Handle binary audio data
-              console.log('📥 Gemini Live API audio Blob received, size:', event.data.size);
+              console.log('📥 Vertex AI audio Blob received, size:', event.data.size);
               
               // Forward audio Blob to client as ArrayBuffer
               const arrayBuffer = await event.data.arrayBuffer();
               clientSocket.send(arrayBuffer);
             } else {
-              console.warn('⚠️ Unknown message type from Gemini Live API:', typeof event.data);
+              console.warn('⚠️ Unknown message type from Vertex AI:', typeof event.data);
             }
           } catch (error) {
-            console.error('Error processing Gemini message:', error);
+            console.error('Error processing Vertex message:', error);
           }
         };
       } catch (error) {
         console.error('Error during setup:', error);
         try {
-          clientSocket.send(JSON.stringify({ type: 'error', message: 'Failed to connect to Gemini Live API' }));
+          clientSocket.send(JSON.stringify({ type: 'error', message: 'Failed to connect to Vertex AI' }));
         } catch (_) {}
         clientSocket.close(4501, 'setup-failed');
       }
@@ -346,11 +307,11 @@ serve(async (req) => {
         console.log('📥 Client message type:', message.type || (message.clientContent ? 'clientContent' : message.client_content ? 'client_content' : 'unknown'));
 
         if (!isConnected || !vertexSocket) {
-          console.warn('⚠️ Gemini Live API not connected, dropping message');
+          console.warn('⚠️ Vertex AI not connected, dropping message');
           return;
         }
 
-        // Forward to Gemini Live API
+        // Forward to Vertex AI
         vertexSocket.send(JSON.stringify(message));
 
         // Log user messages to database (support camelCase and snake_case)

@@ -42,8 +42,7 @@ serve(async (req) => {
 
     const claimSet = {
       iss: client_email,
-      // Request scopes required for Gemini Live API (realtime) and general Google Cloud access
-      scope: "https://www.googleapis.com/auth/generative-language.realtime https://www.googleapis.com/auth/cloud-platform",
+      scope: "https://www.googleapis.com/auth/cloud-platform",
       aud: "https://oauth2.googleapis.com/token",
       exp: now + 3600,
       iat: now
