@@ -28,6 +28,7 @@ import { useCart } from "@/hooks/useCart";
 import { CartSidebar } from "@/components/cart/CartSidebar";
 import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -478,6 +479,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         onClose={() => setCartOpen(false)} 
       />
        <StreamingChat ref={streamingChatRef} />
+       <MiniAudioPlayer />
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
          {/* Keep DOM clean while mounting the processor */}

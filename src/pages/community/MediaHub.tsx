@@ -11,17 +11,35 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast } from "lucide-react";
+import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Pause } from "lucide-react";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { communityNavigation } from "@/config/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthProvider";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
+import { Trash2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 export default function MediaHub() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { playPodcast, currentPodcast, isPlaying } = useAudioPlayer();
+  const queryClient = useQueryClient();
   const {
     pendingCount,
     getLatestActions
@@ -30,7 +48,38 @@ export default function MediaHub() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeMediaTab, setActiveMediaTab] = useState("shorts");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [podcastToDelete, setPodcastToDelete] = useState<string | null>(null);
   const latestActions = getLatestActions(2);
+
+  // Delete podcast mutation
+  const deletePodcastMutation = useMutation({
+    mutationFn: async (podcastId: string) => {
+      const { error } = await supabase
+        .from('media_uploads')
+        .delete()
+        .eq('id', podcastId);
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['community-podcasts'] });
+      toast({
+        title: "Podcast deleted",
+        description: "Your podcast has been successfully deleted.",
+      });
+      setDeleteDialogOpen(false);
+      setPodcastToDelete(null);
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to delete podcast. Please try again.",
+        variant: "destructive",
+      });
+      console.error('Delete error:', error);
+    },
+  });
 
   // Fetch approved music from database
   const { data: approvedMusic = [] } = useQuery({
@@ -386,10 +435,30 @@ export default function MediaHub() {
                         approvedPodcasts.map((podcast: any) => {
                           const metadata = podcast.podcast_metadata?.[0];
                           const tags = podcast.tags || [];
+                          const isCurrentlyPlaying = currentPodcast?.id === podcast.id;
+                          const isCreator = user?.id === podcast.user_id;
                           
                           return (
-                            <Card key={podcast.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950">
+                            <Card key={podcast.id} className={`overflow-hidden hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950 ${isCurrentlyPlaying ? 'ring-2 ring-primary' : ''}`}>
                               <CardContent className="p-8 relative">
+                                {/* Delete Menu - Top Right */}
+                                {isCreator && (
+                                  <div className="absolute top-4 right-4">
+                                    <KebabMenu>
+                                      <DropdownMenuItem
+                                        className="text-destructive cursor-pointer"
+                                        onClick={() => {
+                                          setPodcastToDelete(podcast.id);
+                                          setDeleteDialogOpen(true);
+                                        }}
+                                      >
+                                        <Trash2 className="h-4 w-4 mr-2" />
+                                        Delete Podcast
+                                      </DropdownMenuItem>
+                                    </KebabMenu>
+                                  </div>
+                                )}
+
                                 <div className="flex gap-6">
                                   {/* Left content */}
                                   <div className="flex-1 min-w-0">
@@ -412,6 +481,15 @@ export default function MediaHub() {
                                       </span>
                                       <span className="text-muted-foreground">•</span>
                                       <LanguageFlag languageCode={metadata?.language || 'en-US'} />
+                                      {podcast.duration && (
+                                        <>
+                                          <span className="text-muted-foreground">•</span>
+                                          <Clock className="h-4 w-4 text-muted-foreground" />
+                                          <span className="text-sm text-muted-foreground">
+                                            {Math.floor(podcast.duration / 60)}:{String(Math.floor(podcast.duration % 60)).padStart(2, '0')}
+                                          </span>
+                                        </>
+                                      )}
                                     </div>
                                     
                                     {/* Tags */}
@@ -442,17 +520,27 @@ export default function MediaHub() {
                                   <div className="flex items-center">
                                     <Button
                                       size="lg"
-                                      className="rounded-full w-16 h-16 flex-shrink-0 shadow-lg hover:scale-110 transition-transform"
+                                      className={`rounded-full w-16 h-16 flex-shrink-0 shadow-lg hover:scale-110 transition-transform ${isCurrentlyPlaying && isPlaying ? 'animate-pulse' : ''}`}
                                       style={{ 
                                         backgroundColor: 'hsl(var(--primary))',
                                         color: 'hsl(var(--primary-foreground))'
                                       }}
                                       onClick={() => {
-                                        const audio = new Audio(podcast.file_url);
-                                        audio.play();
+                                        playPodcast({
+                                          id: podcast.id,
+                                          title: podcast.title,
+                                          host: metadata?.host_name || 'Unknown Host',
+                                          audioUrl: podcast.file_url,
+                                          duration: podcast.duration || 0,
+                                          imageUrl: podcast.thumbnail_url,
+                                        });
                                       }}
                                     >
-                                      <Play className="w-7 h-7" />
+                                      {isCurrentlyPlaying && isPlaying ? (
+                                        <Pause className="w-7 h-7" />
+                                      ) : (
+                                        <Play className="w-7 h-7" />
+                                      )}
                                     </Button>
                                   </div>
                                 </div>
@@ -515,5 +603,30 @@ export default function MediaHub() {
       
       {/* Autopilot Popup */}
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Podcast</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this podcast? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (podcastToDelete) {
+                  deletePodcastMutation.mutate(podcastToDelete);
+                }
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AppLayout>;
 }

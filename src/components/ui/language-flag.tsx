@@ -18,13 +18,12 @@ const languageMap: Record<string, string> = {
 };
 
 export function LanguageFlag({ languageCode, className = "" }: LanguageFlagProps) {
-  if (!languageCode || !languageMap[languageCode]) {
-    return null;
-  }
+  // Default to world flag if no language or unsupported language
+  const flag = languageCode && languageMap[languageCode] ? languageMap[languageCode] : '🌐';
 
   return (
     <div className={`flex items-center justify-center w-10 h-10 rounded-full bg-background shadow-sm ${className}`}>
-      <span className="text-2xl">{languageMap[languageCode]}</span>
+      <span className="text-2xl">{flag}</span>
     </div>
   );
 }
