@@ -1,4 +1,3 @@
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
 
@@ -154,45 +153,147 @@ Visual requirements:
 Style: Natural documentary photography meets wellness editorial, authentic moments over perfection, Mediterranean warmth throughout, emphasis on genuine human connection and wellbeing.
     `.trim();
 
-    console.log('Generating contextual image with prompt:', contextualPrompt);
+    console.log('Generating contextual image with Google Imagen');
+    console.log('Prompt preview:', contextualPrompt.substring(0, 200) + '...');
 
-    // Call Lovable AI Gateway
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    // Get Google Cloud configuration
+    const projectId = Deno.env.get('GOOGLE_CLOUD_PROJECT_ID');
+    const region = Deno.env.get('GOOGLE_CLOUD_REGION') || 'us-central1';
+    const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
+
+    if (!projectId || !serviceAccountJson) {
+      throw new Error('Google Cloud credentials not configured');
     }
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    console.log('🔐 Obtaining Vertex AI access token...');
+    
+    // Parse service account
+    const serviceAccount = JSON.parse(serviceAccountJson);
+    
+    // Create JWT for Google OAuth2
+    const header = {
+      alg: "RS256",
+      typ: "JWT",
+    };
+
+    const now = Math.floor(Date.now() / 1000);
+    const claim = {
+      iss: serviceAccount.client_email,
+      scope: "https://www.googleapis.com/auth/cloud-platform",
+      aud: "https://oauth2.googleapis.com/token",
+      exp: now + 3600,
+      iat: now,
+    };
+
+    // Encode header and claim
+    const encoder = new TextEncoder();
+    const headerB64 = btoa(JSON.stringify(header))
+      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+    const claimB64 = btoa(JSON.stringify(claim))
+      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+    
+    const signatureInput = `${headerB64}.${claimB64}`;
+    
+    // Import private key for signing
+    const privateKey = serviceAccount.private_key;
+    const pemHeader = "-----BEGIN PRIVATE KEY-----";
+    const pemFooter = "-----END PRIVATE KEY-----";
+    const pemContents = privateKey
+      .substring(pemHeader.length, privateKey.length - pemFooter.length)
+      .replace(/\s/g, '');
+    
+    const binaryDer = Uint8Array.from(atob(pemContents), c => c.charCodeAt(0));
+    
+    const key = await crypto.subtle.importKey(
+      "pkcs8",
+      binaryDer,
+      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+
+    const signature = await crypto.subtle.sign(
+      "RSASSA-PKCS1-v1_5",
+      key,
+      encoder.encode(signatureInput)
+    );
+
+    const signatureB64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
+      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+    
+    const jwt = `${signatureInput}.${signatureB64}`;
+
+    // Exchange JWT for access token
+    const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+        assertion: jwt,
+      }),
+    });
+
+    if (!tokenResponse.ok) {
+      const error = await tokenResponse.text();
+      console.error("❌ Token exchange failed:", error);
+      throw new Error('Failed to authenticate with Google Cloud');
+    }
+
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
+
+    console.log('✅ Access token obtained, calling Imagen API...');
+
+    // Call Google Imagen API
+    const imagenEndpoint = `https://${region}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${region}/publishers/google/models/imagen-3.0-fast-generate-001:predict`;
+    
+    const imagenResponse = await fetch(imagenEndpoint, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-image-preview',
-        messages: [{
-          role: 'user',
-          content: contextualPrompt
+        instances: [{
+          prompt: contextualPrompt
         }],
-        modalities: ['image', 'text'],
-        max_tokens: 4096
+        parameters: {
+          sampleCount: 1,
+          aspectRatio: "16:9",
+          addWatermark: false,
+          enhancePrompt: true,
+          language: "en",
+          personGeneration: "allow_adult",
+          safetySetting: "block_medium_and_above"
+        }
       })
     });
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('AI API error:', errorText);
+    if (!imagenResponse.ok) {
+      const errorText = await imagenResponse.text();
+      console.error('❌ Imagen API error:', imagenResponse.status, errorText);
       
-      if (aiResponse.status === 429) {
+      if (imagenResponse.status === 429) {
         throw new Error('RATE_LIMIT');
-      } else if (aiResponse.status === 402) {
-        throw new Error('PAYMENT_REQUIRED');
+      } else if (imagenResponse.status === 403) {
+        throw new Error('Google Cloud quota exceeded or API not enabled');
       }
-      throw new Error('AI generation failed');
+      throw new Error('Image generation failed');
     }
 
-    const aiData = await aiResponse.json();
-    const base64Image = aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    const imagenData = await imagenResponse.json();
+    console.log('✅ Imagen response received');
+
+    // Extract base64 image from response
+    const base64ImageData = imagenData.predictions?.[0]?.bytesBase64Encoded;
+
+    if (!base64ImageData) {
+      console.error('No image in response:', JSON.stringify(imagenData));
+      throw new Error('No image generated by Imagen');
+    }
+
+    // Convert base64 to data URL format for consistency
+    const base64Image = `data:image/png;base64,${base64ImageData}`;
 
     if (!base64Image) {
       throw new Error('No image generated');
@@ -237,8 +338,7 @@ Style: Natural documentary photography meets wellness editorial, authentic momen
     return new Response(
       JSON.stringify({
         success: true,
-        imageUrl: publicUrl,
-        prompt
+        imageUrl: publicUrl
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
