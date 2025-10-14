@@ -124,7 +124,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
   const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
-    const voiceName = preferences.tts_voice || 'Charon';
+    let voiceName = preferences.tts_voice || 'Charon';
     setIsTesting(true);
 
     try {
@@ -133,6 +133,13 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       // Detect if this is a Gemini voice (supports stylePrompt)
       const geminiVoices = ['charon', 'kore', 'fenrir', 'aoede'];
       const isGeminiVoice = geminiVoices.includes(voiceName.toLowerCase());
+
+      // If not a Gemini voice, default to Charon and update preferences
+      if (!isGeminiVoice) {
+        console.warn('⚠️ Invalid voice for Vertex AI TTS, defaulting to Charon');
+        voiceName = 'Charon';
+        updatePreferences({ tts_voice: 'Charon' });
+      }
 
       const body: any = {
         text: testPhrase,
@@ -147,15 +154,38 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
       const { data, error } = await supabase.functions.invoke('vertex-tts', { body });
       
-      if (error) throw error;
-      if (!data?.audioContent) throw new Error('No audio content received');
+      if (error) {
+        console.error('Vertex TTS error:', error);
+        const { toast } = await import('@/hooks/use-toast');
+        toast({
+          title: "Voice Preview Failed",
+          description: "Could not play voice preview. Please try a different voice.",
+          variant: "destructive"
+        });
+        setIsTesting(false);
+        return;
+      }
+      
+      if (!data?.audioContent) {
+        throw new Error('No audio content received');
+      }
+      
       const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
       audio.volume = preferences.tts_volume / 100;
       audio.onended = () => setIsTesting(false);
-      audio.onerror = () => setIsTesting(false);
+      audio.onerror = () => {
+        console.error('Audio playback error');
+        setIsTesting(false);
+      };
       await audio.play();
     } catch (error) {
       console.error('Preview error:', error);
+      const { toast } = await import('@/hooks/use-toast');
+      toast({
+        title: "Voice Preview Error",
+        description: error instanceof Error ? error.message : "Failed to preview voice",
+        variant: "destructive"
+      });
       setIsTesting(false);
     }
   };
