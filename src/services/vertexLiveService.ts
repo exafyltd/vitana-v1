@@ -26,7 +26,17 @@ export class VertexLiveService {
     this.callbacks.onTrace?.('Starting connection...');
 
     try {
-      this.audioContext = new AudioContext({ sampleRate: 24000 });
+      // Create AudioContext if not exists (prevent duplicates on reconnect)
+      if (!this.audioContext) {
+        this.audioContext = new AudioContext({ sampleRate: 24000 });
+        console.log('✅ Created AudioContext for Vertex Live (24kHz)');
+      }
+      
+      // Resume if suspended (browser autoplay policy)
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+        console.log('▶️ Resumed AudioContext for Vertex Live');
+      }
 
       // Build WebSocket URL to Supabase Edge Function (canonical path)
       const makeHosts = () => {

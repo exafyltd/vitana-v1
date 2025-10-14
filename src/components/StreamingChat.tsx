@@ -276,8 +276,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     activateVideo: async () => {
       console.log('🎥 Activating video stream...');
       
-      // Prime AudioContext on user gesture (avoids autoplay blocks)
-      await aiVoiceService.resumeAudio();
+      // Only prime aiVoiceService AudioContext for legacy mode (not Vertex)
+      if (!useVertexLiveMode) {
+        await aiVoiceService.resumeAudio();
+      }
       
       setIsVideoActive(true);
       setIsAudioActive(true);
