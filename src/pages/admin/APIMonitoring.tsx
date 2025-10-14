@@ -25,10 +25,15 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
+import { useRealtimeAPIMonitoring } from "@/hooks/useRealtimeAPIMonitoring";
+import { RecentActivityFeed } from "@/components/admin/api-monitoring/RecentActivityFeed";
 
 export default function APIMonitoring() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
+  
+  // Enable real-time subscriptions
+  useRealtimeAPIMonitoring();
 
   // Fetch API integrations
   const { data: integrations, isLoading: integrationsLoading, refetch: refetchIntegrations } = useQuery({
@@ -281,44 +286,7 @@ export default function APIMonitoring() {
 
               {/* Overview Tab */}
               <TabsContent value="overview" className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Activity className="w-5 h-5" />
-                      Recent Activity
-                    </CardTitle>
-                    <CardDescription>Latest test results and status changes</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {logsLoading ? (
-                      <div className="text-center py-8 text-muted-foreground">Loading...</div>
-                    ) : testLogs && testLogs.length > 0 ? (
-                      <div className="space-y-3">
-                        {testLogs.slice(0, 10).map((log) => (
-                           <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                            <div className="flex items-center gap-3">
-                              {getIntegrationIcon(log.api_integrations?.integration_type || '', (log.api_integrations as any)?.metadata)}
-                              <div>
-                                <p className="font-medium">{log.api_integrations?.name}</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {log.timestamp && formatDistanceToNow(new Date(log.timestamp), { addSuffix: true })}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              {log.response_time_ms && (
-                                <span className="text-sm text-muted-foreground">{log.response_time_ms}ms</span>
-                              )}
-                              {getStatusBadge(log.status)}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-8 text-muted-foreground">No test logs available</div>
-                    )}
-                  </CardContent>
-                </Card>
+                <RecentActivityFeed testLogs={testLogs} isLoading={logsLoading} />
               </TabsContent>
 
               {/* Integrations Tab */}
