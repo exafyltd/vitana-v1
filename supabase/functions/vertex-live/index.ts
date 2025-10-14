@@ -128,7 +128,7 @@ serve(async (req) => {
           const exp = iat + 3600; // 1 hour
           const payload = {
             iss: serviceAccount.client_email,
-            scope: 'https://www.googleapis.com/auth/cloud-platform',
+            scope: 'https://www.googleapis.com/auth/generative-language.realtime https://www.googleapis.com/auth/cloud-platform',
             aud: 'https://oauth2.googleapis.com/token',
             iat,
             exp,
