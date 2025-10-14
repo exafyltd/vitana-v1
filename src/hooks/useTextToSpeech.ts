@@ -40,22 +40,14 @@ export function useTextToSpeech() {
       const sttLanguage = preferences.stt_language || 'en-US';
       const voiceId = preferences.tts_voice || 'Charon';
 
-      // Detect if this is a Gemini voice (supports stylePrompt)
-      const geminiVoices = ['charon', 'kore', 'fenrir', 'aoede'];
-      const isGeminiVoice = geminiVoices.includes(voiceId.toLowerCase());
-
-      console.log('[TTS] Vertex AI: voice=', voiceId, 'lang=', sttLanguage, 'gemini=', isGeminiVoice);
+      console.log('[TTS] Vertex AI: voice=', voiceId, 'lang=', sttLanguage);
       
-      const body: any = {
+      const body = {
         text,
         voiceId,
         languageCode: sttLanguage,
+        stylePrompt: 'Speak in a friendly and helpful tone.',
       };
-
-      // Only send stylePrompt for Gemini voices
-      if (isGeminiVoice) {
-        body.stylePrompt = 'Speak in a friendly and helpful tone.';
-      }
 
       const { data, error } = await supabase.functions.invoke('vertex-tts', { body });
 

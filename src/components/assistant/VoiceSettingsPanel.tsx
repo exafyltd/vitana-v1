@@ -98,12 +98,38 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     });
   }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
 
-  // Vertex AI Gemini 2.5 Pro TTS voices
+  // Vertex AI Gemini 2.5 Pro TTS voices (all 29 available voices)
   const vertexVoices = [
-    { name: 'Charon', label: 'Charon (Female, Deep)' },
-    { name: 'Kore', label: 'Kore (Female, Warm)' },
-    { name: 'Fenrir', label: 'Fenrir (Male, Strong)' },
+    { name: 'Achernar', label: 'Achernar (Female)' },
+    { name: 'Achird', label: 'Achird (Male)' },
+    { name: 'Algenib', label: 'Algenib (Male)' },
+    { name: 'Algieba', label: 'Algieba (Male)' },
+    { name: 'Alnilam', label: 'Alnilam (Male)' },
     { name: 'Aoede', label: 'Aoede (Female, Bright)' },
+    { name: 'Autonoe', label: 'Autonoe (Female)' },
+    { name: 'Callirrhoe', label: 'Callirrhoe (Female)' },
+    { name: 'Charon', label: 'Charon (Male)' },
+    { name: 'Despina', label: 'Despina (Female)' },
+    { name: 'Enceladus', label: 'Enceladus (Male)' },
+    { name: 'Erinome', label: 'Erinome (Female)' },
+    { name: 'Fenrir', label: 'Fenrir (Male, Strong)' },
+    { name: 'Gacrux', label: 'Gacrux (Female)' },
+    { name: 'Iapetus', label: 'Iapetus (Male)' },
+    { name: 'Kore', label: 'Kore (Female, Warm)' },
+    { name: 'Laomedeia', label: 'Laomedeia (Female)' },
+    { name: 'Leda', label: 'Leda (Female)' },
+    { name: 'Orus', label: 'Orus (Male)' },
+    { name: 'Pulcherrima', label: 'Pulcherrima (Female)' },
+    { name: 'Puck', label: 'Puck (Male)' },
+    { name: 'Rasalgethi', label: 'Rasalgethi (Male)' },
+    { name: 'Sadachbia', label: 'Sadachbia (Male)' },
+    { name: 'Sadaltager', label: 'Sadaltager (Male)' },
+    { name: 'Schedar', label: 'Schedar (Male)' },
+    { name: 'Sulafat', label: 'Sulafat (Female)' },
+    { name: 'Umbriel', label: 'Umbriel (Male)' },
+    { name: 'Vindemiatrix', label: 'Vindemiatrix (Female)' },
+    { name: 'Zephyr', label: 'Zephyr (Female)' },
+    { name: 'Zubenelgenubi', label: 'Zubenelgenubi (Male)' },
   ];
 
 
@@ -118,39 +144,25 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       'zh-CN': '您好，这是您所选语音设置的预览。',
       'fr-FR': 'Bonjour, ceci est un aperçu de vos paramètres vocaux sélectionnés.',
       'pt-PT': 'Olá, esta é uma prévia das configurações de voz selecionadas.',
+      'pl-PL': 'Cześć, to jest podgląd wybranych ustawień głosu.',
     };
     return phrases[language] || phrases['en-US'];
   };
 
   const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
-    let voiceName = preferences.tts_voice || 'Charon';
+    const voiceName = preferences.tts_voice || 'Charon';
     setIsTesting(true);
 
     try {
       const { supabase } = await import('@/integrations/supabase/client');
-      
-      // Detect if this is a Gemini voice (supports stylePrompt)
-      const geminiVoices = ['charon', 'kore', 'fenrir', 'aoede'];
-      const isGeminiVoice = geminiVoices.includes(voiceName.toLowerCase());
 
-      // If not a Gemini voice, default to Charon and update preferences
-      if (!isGeminiVoice) {
-        console.warn('⚠️ Invalid voice for Vertex AI TTS, defaulting to Charon');
-        voiceName = 'Charon';
-        updatePreferences({ tts_voice: 'Charon' });
-      }
-
-      const body: any = {
+      const body = {
         text: testPhrase,
         voiceId: voiceName,
         languageCode: preferences.stt_language || 'en-US',
+        stylePrompt: 'Speak in a friendly and helpful tone.',
       };
-
-      // Only send stylePrompt for Gemini voices
-      if (isGeminiVoice) {
-        body.stylePrompt = 'Speak in a friendly and helpful tone.';
-      }
 
       const { data, error } = await supabase.functions.invoke('vertex-tts', { body });
       
@@ -217,6 +229,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               <SelectItem value="zh-CN">Chinese (CN)</SelectItem>
               <SelectItem value="fr-FR">French (FR)</SelectItem>
               <SelectItem value="pt-PT">Portuguese (PT)</SelectItem>
+              <SelectItem value="pl-PL">Polish (PL)</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -243,7 +256,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            High-quality neural voices powered by Google&apos;s latest AI
+            Using Google Gemini 2.5 Pro TTS voices for high-quality speech
           </p>
         </div>
 
