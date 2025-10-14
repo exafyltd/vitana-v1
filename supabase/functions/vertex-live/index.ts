@@ -38,9 +38,9 @@ serve(async (req) => {
     const LOCATION = Deno.env.get('GOOGLE_CLOUD_REGION') || 'us-central1';
     const MODEL = 'gemini-2.0-flash-live-preview-04-09';
     
-    const vertexUrl = `wss://${LOCATION}-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.GenAiWebSocketService/BidiGenerateContent?key=${token}`;
+    const vertexUrl = `wss://${LOCATION}-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.GenAiWebSocketService/BidiGenerateContent`;
     
-    console.log('🔌 Connecting to Vertex AI:', vertexUrl);
+    console.log('🔌 Connecting to Vertex AI (with Bearer auth):', vertexUrl);
     
     let vertexSocket: WebSocket | null = null;
     let keepAliveInterval: number | null = null;
@@ -49,8 +49,12 @@ serve(async (req) => {
       console.log('📱 Client connected');
       
       try {
-        // Connect to Vertex AI
-        vertexSocket = new WebSocket(vertexUrl);
+        // Connect to Vertex AI with Authorization header
+        vertexSocket = new WebSocket(vertexUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
         vertexSocket.onopen = () => {
           console.log('✅ Connected to Vertex AI');
