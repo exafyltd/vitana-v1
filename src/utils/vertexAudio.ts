@@ -1,4 +1,4 @@
-// Audio recording for Vertex AI Live API (24kHz PCM16)
+// Audio recording for Vertex AI Live API (16kHz PCM16)
 export class AudioRecorder {
   private stream: MediaStream | null = null;
   private audioContext: AudioContext | null = null;
@@ -18,7 +18,7 @@ export class AudioRecorder {
       
       this.stream = await navigator.mediaDevices.getUserMedia({
         audio: {
-          sampleRate: 24000,
+          sampleRate: 16000,
           channelCount: 1,
           echoCancellation: true,
           noiseSuppression: true,
@@ -26,9 +26,9 @@ export class AudioRecorder {
         }
       });
 
-      this.audioContext = new AudioContext({ sampleRate: 24000 });
+      this.audioContext = new AudioContext({ sampleRate: 16000 });
       const actualSampleRate = this.audioContext.sampleRate;
-      console.log(`🎤 Mic sample rate: requested=24000, actual=${actualSampleRate}`);
+      console.log(`🎤 Mic sample rate: requested=16000, actual=${actualSampleRate}`);
       this.onTrace?.(`mic_samplerate: ${actualSampleRate}`);
       
       this.source = this.audioContext.createMediaStreamSource(this.stream);
@@ -52,10 +52,10 @@ export class AudioRecorder {
           this.lastLevelLog = now;
         }
         
-        // Resample to 24kHz if needed
+        // Resample to 16kHz if needed
         let processedData: Float32Array = inputData;
-        if (actualSampleRate !== 24000) {
-          processedData = resampleFloat32To24k(inputData, actualSampleRate) as Float32Array;
+        if (actualSampleRate !== 16000) {
+          processedData = resampleFloat32To16k(inputData, actualSampleRate) as Float32Array;
         }
         
         this.frameCount++;
@@ -98,9 +98,9 @@ export class AudioRecorder {
   }
 }
 
-// Resample Float32 audio to 24kHz
-const resampleFloat32To24k = (input: Float32Array, inRate: number): Float32Array => {
-  const targetRate = 24000;
+// Resample Float32 audio to 16kHz
+const resampleFloat32To16k = (input: Float32Array, inRate: number): Float32Array => {
+  const targetRate = 16000;
   
   if (inRate === targetRate) {
     return input;
