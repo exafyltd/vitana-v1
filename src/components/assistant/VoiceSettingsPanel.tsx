@@ -84,9 +84,14 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       { name: 'Puck', label: 'Puck (Male)', gender: 'male' },
     ],
     'de-DE': [
-      { name: 'Despina', label: 'Despina (Female)', gender: 'female' },
-      { name: 'Enceladus', label: 'Enceladus (Male)', gender: 'male' },
-      { name: 'Schedar', label: 'Schedar (Male)', gender: 'male' },
+      { name: 'de-DE-Chirp3-HD-Aoede', label: 'Aoede (Female, Bright)', gender: 'female' },
+      { name: 'de-DE-Chirp3-HD-Kore', label: 'Kore (Female, Warm)', gender: 'female' },
+      { name: 'de-DE-Chirp3-HD-Leda', label: 'Leda (Female)', gender: 'female' },
+      { name: 'de-DE-Chirp3-HD-Zephyr', label: 'Zephyr (Female)', gender: 'female' },
+      { name: 'de-DE-Chirp3-HD-Charon', label: 'Charon (Male)', gender: 'male' },
+      { name: 'de-DE-Chirp3-HD-Fenrir', label: 'Fenrir (Male, Strong)', gender: 'male' },
+      { name: 'de-DE-Chirp3-HD-Orus', label: 'Orus (Male)', gender: 'male' },
+      { name: 'de-DE-Chirp3-HD-Puck', label: 'Puck (Male)', gender: 'male' },
     ],
     'sr-RS': [
       { name: 'Leda', label: 'Leda (Female)', gender: 'female' },

@@ -58,22 +58,28 @@ serve(async (req) => {
       synthesisInput.prompt = stylePrompt;
     }
 
-    // Use Standard voices for non-English, Gemini for English
-    const isEnglish = (languageCode || 'en-US').startsWith('en');
+    // Check if voice already includes language prefix (e.g., "de-DE-Chirp3-HD-Aoede")
+    const voiceHasPrefix = voiceId && voiceId.includes('-Chirp3-HD-');
     
     const voiceConfig: any = {
       languageCode: languageCode || 'en-US',
     };
 
-    if (isEnglish && voiceId) {
-      // Use Gemini voices for English with model_name
+    if (voiceHasPrefix) {
+      // Voice already formatted (e.g., "de-DE-Chirp3-HD-Aoede")
       voiceConfig.name = voiceId;
       voiceConfig.model_name = 'gemini-2.5-flash-preview-tts';
     } else {
-      // Use Standard/WaveNet voices for other languages
-      // Format: {languageCode}-Standard-A, {languageCode}-Neural2-A, etc.
-      const defaultVoice = `${languageCode || 'de-DE'}-Standard-A`;
-      voiceConfig.name = voiceId || defaultVoice;
+      // Legacy format - assume English Gemini voice
+      const isEnglish = (languageCode || 'en-US').startsWith('en');
+      if (isEnglish && voiceId) {
+        voiceConfig.name = voiceId; // e.g., "Charon"
+        voiceConfig.model_name = 'gemini-2.5-flash-preview-tts';
+      } else {
+        // Fallback to Standard voice for other languages
+        const defaultVoice = `${languageCode || 'de-DE'}-Standard-A`;
+        voiceConfig.name = voiceId || defaultVoice;
+      }
     }
 
     // Call Vertex AI Text-to-Speech API
