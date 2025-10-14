@@ -109,6 +109,7 @@ export const adminClinicalNavigation = [
 
 // Monitoring & Compliance - oversight tools
 export const adminMonitoringNavigation = [
+  { id: "apis", name: "API & MCP Monitor", path: "/admin/monitoring/apis" },
   { id: "stream-supervision", name: "Stream Supervision", path: "/admin/monitoring/stream-supervision" },
   { id: "reports", name: "Reports & KPIs", path: "/admin/monitoring/reports" },
   { id: "notifications", name: "Notifications", path: "/admin/monitoring/notifications" },

@@ -149,6 +149,7 @@ import Audit from "./pages/admin/Audit";
 import UserManagement from "./pages/admin/UserManagement";
 import NotificationDashboard from "./pages/admin/NotificationDashboard";
 import SystemHealth from "./pages/admin/SystemHealth";
+import APIMonitoring from "./pages/admin/APIMonitoring";
 import UserAudit from "./pages/admin/UserAudit";
 import TenantConfig from "./pages/admin/TenantConfig";
 import TenantAudit from "./pages/admin/TenantAudit";
@@ -922,6 +923,13 @@ const App = () => {
           } />
           
           {/* Monitoring & Compliance Section */}
+          <Route path="/admin/monitoring/apis" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="staff">
+                <APIMonitoring />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
           <Route path="/admin/monitoring/stream-supervision" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">

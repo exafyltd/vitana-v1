@@ -1,0 +1,463 @@
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
+import SubNavigation from "@/components/SubNavigation";
+import AdminHeader from "@/components/admin/AdminHeader";
+import { adminMonitoringNavigation } from "@/config/navigation";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Activity, 
+  CheckCircle2, 
+  XCircle, 
+  Clock, 
+  Zap,
+  AlertTriangle,
+  Server,
+  Globe,
+  PlayCircle,
+  RefreshCw,
+  ExternalLink
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { formatDistanceToNow } from "date-fns";
+
+export default function APIMonitoring() {
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  // Fetch API integrations
+  const { data: integrations, isLoading: integrationsLoading, refetch: refetchIntegrations } = useQuery({
+    queryKey: ["api-integrations"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("api_integrations")
+        .select("*")
+        .order("created_at", { ascending: false });
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  // Fetch recent test logs
+  const { data: testLogs, isLoading: logsLoading } = useQuery({
+    queryKey: ["api-test-logs"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("api_test_logs")
+        .select(`
+          *,
+          api_integrations (
+            name,
+            integration_type
+          )
+        `)
+        .order("timestamp", { ascending: false })
+        .limit(50);
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  // Fetch test notifications
+  const { data: notifications } = useQuery({
+    queryKey: ["api-test-notifications"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("api_test_notifications")
+        .select(`
+          *,
+          api_integrations (
+            name,
+            integration_type
+          )
+        `)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  // Calculate stats
+  const stats = {
+    total: integrations?.length || 0,
+    active: integrations?.filter(i => i.is_active).length || 0,
+    healthy: testLogs?.filter(l => l.status === 'success').length || 0,
+    failing: testLogs?.filter(l => l.status === 'failed').length || 0,
+    edgeFunctions: integrations?.filter(i => i.integration_type === 'edge_function').length || 0,
+    externalAPIs: integrations?.filter(i => i.integration_type === 'external_api').length || 0,
+  };
+
+  const handleTestIntegration = async (integrationId: string) => {
+    toast({
+      title: "Testing integration",
+      description: "Running health check...",
+    });
+
+    try {
+      const { data, error } = await supabase.functions.invoke("test-api-integration", {
+        body: { integration_id: integrationId }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Test completed",
+        description: data.success ? "Integration is healthy ✓" : "Test failed",
+        variant: data.success ? "default" : "destructive"
+      });
+
+      refetchIntegrations();
+    } catch (error) {
+      toast({
+        title: "Test failed",
+        description: "Could not complete health check",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const getStatusBadge = (status: string | null) => {
+    switch (status) {
+      case 'success':
+        return <Badge className="bg-green-500"><CheckCircle2 className="w-3 h-3 mr-1" />Healthy</Badge>;
+      case 'failed':
+        return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" />Failed</Badge>;
+      case 'warning':
+        return <Badge variant="secondary"><AlertTriangle className="w-3 h-3 mr-1" />Warning</Badge>;
+      default:
+        return <Badge variant="outline"><Clock className="w-3 h-3 mr-1" />Pending</Badge>;
+    }
+  };
+
+  const getIntegrationIcon = (type: string) => {
+    switch (type) {
+      case 'edge_function':
+        return <Zap className="w-4 h-4 text-purple-500" />;
+      case 'external_api':
+        return <Globe className="w-4 h-4 text-blue-500" />;
+      case 'mcp':
+        return <Server className="w-4 h-4 text-orange-500" />;
+      default:
+        return <Activity className="w-4 h-4" />;
+    }
+  };
+
+  return (
+    <AppLayout>
+      <SEO 
+        title="API & MCP Monitoring | Admin"
+        description="Monitor API integrations, edge functions, and MCP protocols"
+        canonical={window.location.href}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <SubNavigation items={adminMonitoringNavigation} />
+          
+          <div className="space-y-6 mt-6">
+            <AdminHeader
+              title="API & MCP Monitoring"
+              description="Monitor and manage all API integrations, edge functions, and MCP protocols"
+              emoji="🔌"
+            />
+
+            {/* Stats Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Total Integrations</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold">{stats.total}</div>
+                  <p className="text-xs text-muted-foreground mt-1">{stats.active} active</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Edge Functions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-6 h-6 text-purple-500" />
+                    <div className="text-3xl font-bold">{stats.edgeFunctions}</div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Supabase functions</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">External APIs</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-2">
+                    <Globe className="w-6 h-6 text-blue-500" />
+                    <div className="text-3xl font-bold">{stats.externalAPIs}</div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Third-party services</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Health Status</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-2">
+                    {stats.failing > 0 ? (
+                      <>
+                        <XCircle className="w-6 h-6 text-red-500" />
+                        <div className="text-3xl font-bold text-red-500">{stats.failing}</div>
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-6 h-6 text-green-500" />
+                        <div className="text-3xl font-bold text-green-500">All OK</div>
+                      </>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Recent tests</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Main Content Tabs */}
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="integrations">Integrations</TabsTrigger>
+                <TabsTrigger value="logs">Test Logs</TabsTrigger>
+                <TabsTrigger value="alerts">Alerts</TabsTrigger>
+              </TabsList>
+
+              {/* Overview Tab */}
+              <TabsContent value="overview" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Activity className="w-5 h-5" />
+                      Recent Activity
+                    </CardTitle>
+                    <CardDescription>Latest test results and status changes</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {logsLoading ? (
+                      <div className="text-center py-8 text-muted-foreground">Loading...</div>
+                    ) : testLogs && testLogs.length > 0 ? (
+                      <div className="space-y-3">
+                        {testLogs.slice(0, 10).map((log) => (
+                          <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center gap-3">
+                              {getIntegrationIcon(log.api_integrations?.integration_type || '')}
+                              <div>
+                                <p className="font-medium">{log.api_integrations?.name}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {log.timestamp && formatDistanceToNow(new Date(log.timestamp), { addSuffix: true })}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              {log.response_time_ms && (
+                                <span className="text-sm text-muted-foreground">{log.response_time_ms}ms</span>
+                              )}
+                              {getStatusBadge(log.status)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">No test logs available</div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Integrations Tab */}
+              <TabsContent value="integrations" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle>API Integrations Registry</CardTitle>
+                        <CardDescription>Manage all registered APIs and edge functions</CardDescription>
+                      </div>
+                      <Button onClick={() => refetchIntegrations()} variant="outline" size="sm">
+                        <RefreshCw className="w-4 h-4 mr-2" />
+                        Refresh
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {integrationsLoading ? (
+                      <div className="text-center py-8 text-muted-foreground">Loading integrations...</div>
+                    ) : integrations && integrations.length > 0 ? (
+                      <div className="space-y-3">
+                        {integrations.map((integration) => (
+                          <div key={integration.id} className="p-4 border rounded-lg hover:border-primary/50 transition-colors">
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start gap-3 flex-1">
+                                {getIntegrationIcon(integration.integration_type)}
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <h3 className="font-semibold">{integration.name}</h3>
+                                    {integration.is_active ? (
+                                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Active</Badge>
+                                    ) : (
+                                      <Badge variant="outline">Inactive</Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-muted-foreground mt-1">{integration.base_url}</p>
+                                  <div className="flex items-center gap-4 mt-2">
+                                    <span className="text-xs text-muted-foreground">
+                                      Type: {integration.integration_type}
+                                    </span>
+                                    {integration.last_test_status && (
+                                      <span className="text-xs">
+                                        Last test: {getStatusBadge(integration.last_test_status)}
+                                      </span>
+                                    )}
+                                    {integration.last_test_timestamp && (
+                                      <span className="text-xs text-muted-foreground">
+                                        {formatDistanceToNow(new Date(integration.last_test_timestamp), { addSuffix: true })}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {integration.notes && (
+                                    <p className="text-sm text-muted-foreground mt-2 italic">{integration.notes}</p>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleTestIntegration(integration.id)}
+                                >
+                                  <PlayCircle className="w-4 h-4 mr-1" />
+                                  Test
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => window.open(`https://supabase.com/dashboard/project/inmkhvwdcuyhnxkgfvsb/functions`, '_blank')}
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <Server className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground mb-4">No integrations registered yet</p>
+                        <Button variant="outline">
+                          Add First Integration
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Test Logs Tab */}
+              <TabsContent value="logs" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Test Execution History</CardTitle>
+                    <CardDescription>Detailed logs of all API health checks and tests</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {logsLoading ? (
+                      <div className="text-center py-8 text-muted-foreground">Loading logs...</div>
+                    ) : testLogs && testLogs.length > 0 ? (
+                      <div className="space-y-2">
+                        {testLogs.map((log) => (
+                          <div key={log.id} className="p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                {getIntegrationIcon(log.api_integrations?.integration_type || '')}
+                                <span className="font-medium">{log.api_integrations?.name}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                {log.response_time_ms && (
+                                  <Badge variant="outline">{log.response_time_ms}ms</Badge>
+                                )}
+                                {getStatusBadge(log.status)}
+                              </div>
+                            </div>
+                            <div className="text-sm text-muted-foreground space-y-1">
+                              <p>Test type: {log.test_type || 'automated'}</p>
+                              <p>Time: {log.timestamp && new Date(log.timestamp).toLocaleString()}</p>
+                              {log.error_log && (
+                                <p className="text-red-500 mt-2">Error: {log.error_log}</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">No test logs available</div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Alerts Tab */}
+              <TabsContent value="alerts" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5" />
+                      Alert Notifications
+                    </CardTitle>
+                    <CardDescription>Recent alerts and notifications from API monitoring</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {notifications && notifications.length > 0 ? (
+                      <div className="space-y-3">
+                        {notifications.map((notification) => (
+                          <div key={notification.id} className="p-3 border rounded-lg">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <Badge variant={notification.severity === 'critical' ? 'destructive' : 'secondary'}>
+                                    {notification.severity}
+                                  </Badge>
+                                  <span className="text-sm font-medium">{notification.api_integrations?.name}</span>
+                                </div>
+                                <p className="text-sm">{notification.message}</p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {notification.sent_at && formatDistanceToNow(new Date(notification.sent_at), { addSuffix: true })}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-4" />
+                        <p className="text-muted-foreground">No alerts - all systems operational</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}
