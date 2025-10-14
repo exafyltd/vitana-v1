@@ -22,9 +22,9 @@ export function usePersonalizedMedia(options: PersonalizedMediaOptions = {}) {
         .eq('status', 'approved')
         .eq('is_public', true);
 
-      // Filter by media type if specified
+      // Filter by media type if specified (case-insensitive)
       if (mediaType !== 'all') {
-        query = query.eq('media_type', mediaType);
+        query = query.eq('media_type', mediaType.toLowerCase());
       }
 
       // Get base results

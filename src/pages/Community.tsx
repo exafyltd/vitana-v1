@@ -24,6 +24,8 @@ import { withScreenId, SCREEN_IDS } from '@/lib/screen-id';
 import { Users, Calendar, Award, TrendingUp, Star, Trophy, Crown, Medal, Sparkles, Heart, MapPin, Clock, UserPlus, Search, Plus, Radio, Play, Music, Target, Brain, Apple, Droplets, Moon, Dumbbell, RefreshCw } from 'lucide-react';
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { communityNavigation } from "@/config/navigation";
+import { MusicListCard } from '@/components/home/MusicListCard';
+import { usePersonalizedMedia } from '@/hooks/usePersonalizedMedia';
 
 // Mock fallback data for Today Highlights
 const todayHighlights = [
@@ -627,6 +629,13 @@ export default withScreenId(function Community() {
   // Hybrid: use real events or fall back to the imported mock data  
   const activeWeeklyEvents = realWeeklyEvents.length > 0 ? realWeeklyEvents : weeklyEvents;
 
+  // Community recommended music query
+  const { data: communityMusic } = usePersonalizedMedia({
+    limit: 5,
+    mediaType: 'Music',
+    contextTags: ['Popular', 'Community', 'Trending']
+  });
+
   // Global row counter for continuous alternating pattern
   let globalRowIndex = 0;
 
@@ -756,14 +765,18 @@ export default withScreenId(function Community() {
                 <MotivationalBanner variant="achievement" />
               </div>
 
-              {/* Community Media */}
-              <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Community Media</h3>
-                {(() => {
-                  const result = renderEventGrid(communityMedia, "Community Media", globalRowIndex);
-                  globalRowIndex = result.nextRowIndex;
-                  return result.content;
-                })()}
+              {/* Community Music */}
+              <div className="mb-8 px-6">
+                <h3 className="text-xl font-bold mb-4">Community Music 🎵</h3>
+                <div className="grid grid-cols-12 gap-4">
+                  <div className="col-span-12">
+                    <MusicListCard 
+                      tracks={communityMusic || []}
+                      title="Trending in Your Community"
+                      className="h-[280px]"
+                    />
+                  </div>
+                </div>
               </div>
             </SplitBarContent>
 
