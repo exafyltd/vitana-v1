@@ -73,63 +73,83 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     return () => clearInterval(pollInterval);
   }, [loadVoices]);
 
-  // Language-specific voice mappings for Vertex AI Gemini TTS
+  // ElevenLabs voices mapped by language
   const languageVoiceMap: Record<string, Array<{ name: string; label: string; gender: 'male' | 'female' }>> = {
     'en-US': [
-      { name: 'Charon', label: 'Charon (Male)', gender: 'male' },
-      { name: 'Aoede', label: 'Aoede (Female, Bright)', gender: 'female' },
-      { name: 'Kore', label: 'Kore (Female, Warm)', gender: 'female' },
-      { name: 'Fenrir', label: 'Fenrir (Male, Strong)', gender: 'male' },
-      { name: 'Orus', label: 'Orus (Male)', gender: 'male' },
-      { name: 'Puck', label: 'Puck (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'FGY2WhTYpPnrIDTdsKH5', label: 'Laura (Female)', gender: 'female' },
+      { name: 'XB0fDUnXU5powFXDhCwa', label: 'Charlotte (Female)', gender: 'female' },
+      { name: 'Xb7hH8MSUJpSbSDYk0k2', label: 'Alice (Female)', gender: 'female' },
+      { name: 'XrExE9yKIg1WjnnlVkGX', label: 'Matilda (Female)', gender: 'female' },
+      { name: 'cgSgspJ2msm6clMCkdW9', label: 'Jessica (Female)', gender: 'female' },
+      { name: 'pFZP5JQG7iQjIQuC4Bku', label: 'Lily (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'IKne3meq5aSn9XLyUdCD', label: 'Charlie (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
+      { name: 'N2lVS1w4EtoT3dr4eOWO', label: 'Callum (Male)', gender: 'male' },
+      { name: 'SAz9YHcvj6GT2YYXdXww', label: 'River (Male)', gender: 'male' },
+      { name: 'TX3LPaxmHKxFdv7VOQHJ', label: 'Liam (Male)', gender: 'male' },
+      { name: 'bIHbv24MWmeRgasZH58o', label: 'Will (Male)', gender: 'male' },
+      { name: 'cjVigY5qzO86Huf0OWal', label: 'Eric (Male)', gender: 'male' },
+      { name: 'iP95p4xoKVk53GoZ742B', label: 'Chris (Male)', gender: 'male' },
+      { name: 'nPczCjzI2devNBz1zQrb', label: 'Brian (Male)', gender: 'male' },
+      { name: 'onwK4e9ZLuTAKqWW03F9', label: 'Daniel (Male)', gender: 'male' },
+      { name: 'pqHfZKP75CvOlQylNhV4', label: 'Bill (Male)', gender: 'male' },
     ],
     'de-DE': [
-      { name: 'de-DE-Chirp3-HD-Aoede', label: 'Aoede (Female, Bright)', gender: 'female' },
-      { name: 'de-DE-Chirp3-HD-Kore', label: 'Kore (Female, Warm)', gender: 'female' },
-      { name: 'de-DE-Chirp3-HD-Leda', label: 'Leda (Female)', gender: 'female' },
-      { name: 'de-DE-Chirp3-HD-Zephyr', label: 'Zephyr (Female)', gender: 'female' },
-      { name: 'de-DE-Chirp3-HD-Charon', label: 'Charon (Male)', gender: 'male' },
-      { name: 'de-DE-Chirp3-HD-Fenrir', label: 'Fenrir (Male, Strong)', gender: 'male' },
-      { name: 'de-DE-Chirp3-HD-Orus', label: 'Orus (Male)', gender: 'male' },
-      { name: 'de-DE-Chirp3-HD-Puck', label: 'Puck (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
     'sr-RS': [
-      { name: 'Leda', label: 'Leda (Female)', gender: 'female' },
-      { name: 'Iapetus', label: 'Iapetus (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
     'es-ES': [
-      { name: 'Callirrhoe', label: 'Callirrhoe (Female)', gender: 'female' },
-      { name: 'Algenib', label: 'Algenib (Male)', gender: 'male' },
-      { name: 'Rasalgethi', label: 'Rasalgethi (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
     'ar-XA': [
-      { name: 'Erinome', label: 'Erinome (Female)', gender: 'female' },
-      { name: 'Sadachbia', label: 'Sadachbia (Male)', gender: 'male' },
-      { name: 'Sadaltager', label: 'Sadaltager (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
     'ru-RU': [
-      { name: 'Autonoe', label: 'Autonoe (Female)', gender: 'female' },
-      { name: 'Algieba', label: 'Algieba (Male)', gender: 'male' },
-      { name: 'Umbriel', label: 'Umbriel (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
     'zh-CN': [
-      { name: 'Zephyr', label: 'Zephyr (Female)', gender: 'female' },
-      { name: 'Alnilam', label: 'Alnilam (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
     'fr-FR': [
-      { name: 'Gacrux', label: 'Gacrux (Female)', gender: 'female' },
-      { name: 'Pulcherrima', label: 'Pulcherrima (Female)', gender: 'female' },
-      { name: 'Achird', label: 'Achird (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
     'pt-PT': [
-      { name: 'Laomedeia', label: 'Laomedeia (Female)', gender: 'female' },
-      { name: 'Vindemiatrix', label: 'Vindemiatrix (Female)', gender: 'female' },
-      { name: 'Zubenelgenubi', label: 'Zubenelgenubi (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
     'pl-PL': [
-      { name: 'Achernar', label: 'Achernar (Female)', gender: 'female' },
-      { name: 'Sulafat', label: 'Sulafat (Female)', gender: 'female' },
-      { name: 'Enceladus', label: 'Enceladus (Male)', gender: 'male' },
+      { name: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah (Female)', gender: 'female' },
+      { name: '9BWtsMINqrJLrRacOk9x', label: 'Aria (Female)', gender: 'female' },
+      { name: 'CwhRBWXzGAHq8TQ4Fs17', label: 'Roger (Male)', gender: 'male' },
+      { name: 'JBFqnCBsd6RMkjVDRZzb', label: 'George (Male)', gender: 'male' },
     ],
   };
 
@@ -140,7 +160,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   const getDefaultVoiceForLanguage = useCallback((language: string): string => {
     const voices = languageVoiceMap[language] || languageVoiceMap['en-US'];
     const femaleVoice = voices.find(v => v.gender === 'female');
-    return femaleVoice?.name || voices[0]?.name || 'Charon';
+    return femaleVoice?.name || voices[0]?.name || 'EXAVITQu4vr4xnSDxMaL';
   }, []);
 
   // Auto-select appropriate voice when language changes
@@ -190,7 +210,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
   const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
-    const voiceName = preferences.tts_voice || 'Charon';
+    const voiceName = preferences.tts_voice || 'EXAVITQu4vr4xnSDxMaL';
     setIsTesting(true);
 
     try {
@@ -199,14 +219,13 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       const body = {
         text: testPhrase,
         voiceId: voiceName,
-        languageCode: preferences.stt_language || 'en-US',
-        stylePrompt: 'Speak in a friendly and helpful tone.',
+        modelId: 'eleven_turbo_v2_5',
       };
 
-      const { data, error } = await supabase.functions.invoke('vertex-tts', { body });
+      const { data, error } = await supabase.functions.invoke('elevenlabs-tts', { body });
       
       if (error) {
-        console.error('Vertex TTS error:', error);
+        console.error('ElevenLabs TTS error:', error);
         const { toast } = await import('@/hooks/use-toast');
         toast({
           title: "Voice Preview Failed",
@@ -221,7 +240,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
         throw new Error('No audio content received');
       }
       
-      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+      const audio = new Audio(`data:audio/mpeg;base64,${data.audioContent}`);
       audio.volume = preferences.tts_volume / 100;
       audio.onended = () => setIsTesting(false);
       audio.onerror = () => {
@@ -295,7 +314,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            Using Google Gemini 2.5 Pro TTS voices for high-quality speech
+            Using ElevenLabs multilingual voices for high-quality speech
           </p>
         </div>
 

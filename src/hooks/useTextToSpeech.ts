@@ -37,24 +37,22 @@ export function useTextToSpeech() {
       setIsSpeaking(true);
       options?.onStart?.();
       
-      const sttLanguage = preferences.stt_language || 'en-US';
-      const voiceId = preferences.tts_voice || 'Charon';
+      const voiceId = preferences.tts_voice || 'EXAVITQu4vr4xnSDxMaL';
 
-      console.log('[TTS] Vertex AI: voice=', voiceId, 'lang=', sttLanguage);
+      console.log('[TTS] ElevenLabs: voice=', voiceId);
       
       const body = {
         text,
         voiceId,
-        languageCode: sttLanguage,
-        stylePrompt: 'Speak in a friendly and helpful tone.',
+        modelId: 'eleven_turbo_v2_5',
       };
 
-      const { data, error } = await supabase.functions.invoke('vertex-tts', { body });
+      const { data, error } = await supabase.functions.invoke('elevenlabs-tts', { body });
 
       if (error) throw error;
       if (!data?.audioContent) throw new Error('No audio content received');
 
-      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+      const audio = new Audio(`data:audio/mpeg;base64,${data.audioContent}`);
       audio.volume = preferences.tts_volume / 100;
       
       audio.onended = () => {
