@@ -765,6 +765,16 @@ export default withScreenId(function Community() {
                 <MotivationalBanner variant="achievement" />
               </div>
 
+              {/* Community Media Hub */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold mb-4 px-6">Community Media</h3>
+                {(() => {
+                  const result = renderEventGrid(communityMedia, "Community Media", globalRowIndex);
+                  globalRowIndex = result.nextRowIndex;
+                  return result.content;
+                })()}
+              </div>
+
               {/* Community Music */}
               <div className="mb-8 px-6">
                 <h3 className="text-xl font-bold mb-4">Community Music 🎵</h3>

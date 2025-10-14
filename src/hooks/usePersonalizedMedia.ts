@@ -102,25 +102,39 @@ export function usePersonalizedMedia(options: PersonalizedMediaOptions = {}) {
         
         const creatorProfile = profilesMap.get(media.user_id);
         
+        // Safely handle metadata (can be array or single object)
+        const musicMeta = Array.isArray(media.music_metadata) 
+          ? media.music_metadata[0] 
+          : media.music_metadata;
+        const podcastMeta = Array.isArray(media.podcast_metadata) 
+          ? media.podcast_metadata[0] 
+          : media.podcast_metadata;
+        
         return {
           ...media,
           score,
-          // Transform to expected format
-          artist: media.music_metadata?.[0]?.artist_name || 
-                  media.podcast_metadata?.[0]?.host_name || 
+          // Transform to expected format with robust fallbacks
+          artist: musicMeta?.artist_name || 
+                  podcastMeta?.host_name || 
                   creatorProfile?.display_name || 
                   'Unknown Artist',
-          duration: media.music_metadata?.[0]?.duration || 
-                   media.podcast_metadata?.[0]?.duration || 
+          duration: musicMeta?.duration ?? 
+                   podcastMeta?.duration ?? 
                    0
         };
       });
 
-      // Check if we have well-scored content
+      // If no context tags or weak scoring, return most recent
+      if (contextTags.length === 0 || scoredMedia.length === 0) {
+        return scoredMedia
+          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .slice(0, limit);
+      }
+      
       const maxScore = Math.max(...scoredMedia.map(m => m.score), 0);
       
-      // If no good matches (max score < 5), just return recent content
-      if (maxScore < 5) {
+      // If weak matches (max score < 2), return recent content
+      if (maxScore < 2) {
         return scoredMedia
           .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
           .slice(0, limit);

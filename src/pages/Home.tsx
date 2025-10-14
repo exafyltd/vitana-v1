@@ -582,40 +582,41 @@ export default function Home() {
 
               <MotivationalBanner variant="guidance" />
 
-              {/* Row 4: Community News (small + small + big) */}
+              {/* Row 4: Latest from Media Hub (small + small + big) */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-3">
                   <NewsCard
-                    title={todayNews[0]?.title || ""}
-                    description={todayNews[0]?.description}
-                    imageUrl={todayNews[0]?.imageUrl || ""}
-                    pillar={todayNews[0]?.pillar}
-                    author={todayNews[0]?.author}
-                    timestamp={todayNews[0]?.timestamp}
+                    title={blendedMediaContent[0]?.title || ""}
+                    description={blendedMediaContent[0]?.description}
+                    imageUrl={blendedMediaContent[0]?.imageUrl || ""}
+                    pillar={blendedMediaContent[0]?.pillar}
+                    mediaType={blendedMediaContent[0]?.mediaType}
+                    author={blendedMediaContent[0]?.author}
+                    timestamp={blendedMediaContent[0]?.timestamp}
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-3">
                   <NewsCard
-                    title={todayNews[1]?.title || ""}
-                    description={todayNews[1]?.description}
-                    imageUrl={todayNews[1]?.imageUrl || ""}
-                    pillar={todayNews[1]?.pillar}
-                    author={todayNews[1]?.author}
-                    location={todayNews[1]?.location}
-                    attendees={todayNews[1]?.attendees}
-                    timestamp={todayNews[1]?.timestamp}
+                    title={blendedMediaContent[1]?.title || ""}
+                    description={blendedMediaContent[1]?.description}
+                    imageUrl={blendedMediaContent[1]?.imageUrl || ""}
+                    pillar={blendedMediaContent[1]?.pillar}
+                    mediaType={blendedMediaContent[1]?.mediaType}
+                    author={blendedMediaContent[1]?.author}
+                    timestamp={blendedMediaContent[1]?.timestamp}
                     className="h-full"
                   />
                 </div>
                 <div className="col-span-6">
                   <NewsCard
-                    title={todayNews[2]?.title || ""}
-                    description={todayNews[2]?.description}
-                    imageUrl={todayNews[2]?.imageUrl || ""}
-                    pillar={todayNews[2]?.pillar}
-                    author={todayNews[2]?.author}
-                    timestamp={todayNews[2]?.timestamp}
+                    title={blendedMediaContent[2]?.title || ""}
+                    description={blendedMediaContent[2]?.description}
+                    imageUrl={blendedMediaContent[2]?.imageUrl || ""}
+                    pillar={blendedMediaContent[2]?.pillar}
+                    mediaType={blendedMediaContent[2]?.mediaType}
+                    author={blendedMediaContent[2]?.author}
+                    timestamp={blendedMediaContent[2]?.timestamp}
                     className="h-full"
                   />
                 </div>
