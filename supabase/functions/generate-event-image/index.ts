@@ -157,8 +157,10 @@ Style: Natural documentary photography meets wellness editorial, authentic momen
     console.log('Prompt preview:', contextualPrompt.substring(0, 200) + '...');
 
     // Get Google Cloud configuration
-    const projectId = Deno.env.get('GOOGLE_CLOUD_PROJECT_ID');
-    const region = Deno.env.get('GOOGLE_CLOUD_REGION') || 'us-central1';
+    const rawProjectId = Deno.env.get('GOOGLE_CLOUD_PROJECT_ID') || '';
+    const projectId = rawProjectId.trim();
+    const rawRegion = Deno.env.get('GOOGLE_CLOUD_REGION') || 'us-central1';
+    const region = rawRegion.trim();
     const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
 
     if (!projectId || !serviceAccountJson) {
@@ -309,7 +311,7 @@ Style: Natural documentary photography meets wellness editorial, authentic momen
     // Upload to storage
     const fileName = `${user.id}/${eventId}.png`;
     const { error: uploadError } = await supabase.storage
-      .from('event-images')
+      .from('covers')
       .upload(fileName, imageBuffer, {
         contentType: 'image/png',
         upsert: true
@@ -322,7 +324,7 @@ Style: Natural documentary photography meets wellness editorial, authentic momen
 
     // Get public URL
     const { data: urlData } = supabase.storage
-      .from('event-images')
+      .from('covers')
       .getPublicUrl(fileName);
 
     const publicUrl = urlData.publicUrl;
