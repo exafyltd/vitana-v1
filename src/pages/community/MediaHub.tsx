@@ -141,24 +141,7 @@ export default function MediaHub() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('media_uploads')
-        .select(`
-          id,
-          user_id,
-          title,
-          description,
-          file_url,
-          thumbnail_url,
-          duration,
-          plays_count,
-          created_at,
-          tags,
-          podcast_metadata (
-            host_name,
-            episode_number,
-            series_name,
-            language
-          )
-        `)
+        .select('*, podcast_metadata(*)')
         .eq('media_type', 'podcast')
         .eq('status', 'approved')
         .eq('is_public', true)
