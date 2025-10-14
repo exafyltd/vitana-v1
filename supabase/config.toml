@@ -21,6 +21,9 @@ verify_jwt = false
 [functions.google-cloud-tts]
 verify_jwt = true
 
+[functions.google-gemini-tts]
+verify_jwt = true
+
 [functions.send-appointment-reminder]
 verify_jwt = false
 

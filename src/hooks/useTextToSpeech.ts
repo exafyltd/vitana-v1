@@ -38,54 +38,125 @@ export function useTextToSpeech() {
       options?.onStart?.();
       
       const sttLanguage = preferences.stt_language || 'en-US';
+      const userVoice = preferences.tts_voice;
       
-      // RULE 6: Fixed Cloud TTS voice map (deterministic)
-      const CLOUD_VOICE_MAP: Record<string, string> = {
-        'ru-RU': 'ru-RU-Standard-D',
+      // Determine which TTS service to use
+      const isSerbian = sttLanguage === 'sr-RS';
+      const isChirp3Voice = userVoice?.includes('Chirp3-HD');
+      const isGoogleSpeechVoice = userVoice?.includes('-Standard-') || userVoice?.includes('-Wavenet-');
+      
+      // GEMINI VOICE MAP: For Chirp 3 HD voices
+      const GEMINI_VOICE_MAP: Record<string, string> = {
+        'en-US': 'en-US-Chirp3-HD-Leda',
+        'de-DE': 'de-DE-Chirp3-HD-Achernar',
+        'ar-XA': 'ar-XA-Chirp3-HD-Aoede',
+        'es-ES': 'es-ES-Chirp3-HD-Gacrux',
+        'ru-RU': 'ru-RU-Chirp3-HD-Kore',
+        'zh-CN': 'cmn-CN-Chirp3-HD-Leda',
+        'cmn-CN': 'cmn-CN-Chirp3-HD-Leda',
+        'fr-FR': 'fr-FR-Chirp3-HD-Pulcherrima',
+        'pt-PT': 'pt-PT-Chirp3-HD-Zephyr',
+      };
+
+      // GOOGLE SPEECH VOICE MAP: Only for Serbian
+      const GOOGLE_SPEECH_VOICE_MAP: Record<string, string> = {
         'sr-RS': 'sr-RS-Standard-B',
-        'de-DE': 'de-DE-Neural2-F',
-        'fr-FR': 'fr-FR-Neural2-A',
-        'es-ES': 'es-ES-Neural2-A',
-        'ar-XA': 'ar-XA-Standard-A',
-        'zh-CN': 'cmn-CN-Standard-A',
-        'en-US': 'en-US-Neural2-F',
-        'pt-PT': 'pt-PT-Standard-A'
       };
 
-      const mappedVoice = CLOUD_VOICE_MAP[sttLanguage];
-      
-      if (!mappedVoice) {
-        setIsSpeaking(false);
-        throw new Error(`TTS voice unavailable for ${sttLanguage}`);
-      }
-
-      console.log('[TTS] RULE: voice=', mappedVoice, 'lang=', sttLanguage);
-      
-      const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
-        body: {
-          text,
-          voiceId: mappedVoice,
-          languageCode: sttLanguage
+      // Route to appropriate TTS service
+      if (isChirp3Voice || (!isGoogleSpeechVoice && !isSerbian)) {
+        // Use Gemini TTS (Chirp 3 HD)
+        const voiceId = isChirp3Voice ? userVoice : GEMINI_VOICE_MAP[sttLanguage];
+        
+        if (!voiceId) {
+          setIsSpeaking(false);
+          throw new Error(`Gemini TTS voice unavailable for ${sttLanguage}`);
         }
-      });
 
-      if (error) throw error;
-      if (!data?.audioContent) throw new Error('No audio content received');
+        console.log('[TTS] Using Gemini Chirp 3 HD:', voiceId, 'lang=', sttLanguage);
+        
+        const { data, error } = await supabase.functions.invoke('google-gemini-tts', {
+          body: {
+            text,
+            voiceId,
+            languageCode: sttLanguage
+          }
+        });
 
-      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-      audio.volume = preferences.tts_volume / 100;
-      
-      audio.onended = () => {
-        setIsSpeaking(false);
-        options?.onEnd?.();
-      };
+        if (error) throw error;
+        if (!data?.audioContent) throw new Error('No audio content received');
 
-      audio.onerror = () => {
-        setIsSpeaking(false);
-        options?.onError?.(new Error('Audio playback failed'));
-      };
+        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+        audio.volume = preferences.tts_volume / 100;
+        
+        audio.onended = () => {
+          setIsSpeaking(false);
+          options?.onEnd?.();
+        };
 
-      await audio.play();
+        audio.onerror = () => {
+          setIsSpeaking(false);
+          options?.onError?.(new Error('Audio playback failed'));
+        };
+
+        await audio.play();
+      } else if (isSerbian || isGoogleSpeechVoice) {
+        // Use Google Speech API (only for Serbian or explicitly selected Google Speech voices)
+        const voiceId = isGoogleSpeechVoice ? userVoice : GOOGLE_SPEECH_VOICE_MAP[sttLanguage];
+        
+        if (!voiceId) {
+          setIsSpeaking(false);
+          throw new Error(`Google Speech voice unavailable for ${sttLanguage}`);
+        }
+
+        console.log('[TTS] Using Google Speech API:', voiceId, 'lang=', sttLanguage);
+        
+        const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
+          body: {
+            text,
+            voiceId,
+            languageCode: sttLanguage
+          }
+        });
+
+        if (error) throw error;
+        if (!data?.audioContent) throw new Error('No audio content received');
+
+        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+        audio.volume = preferences.tts_volume / 100;
+        
+        audio.onended = () => {
+          setIsSpeaking(false);
+          options?.onEnd?.();
+        };
+
+        audio.onerror = () => {
+          setIsSpeaking(false);
+          options?.onError?.(new Error('Audio playback failed'));
+        };
+
+        await audio.play();
+      } else {
+        // Fallback to browser TTS
+        console.log('[TTS] Fallback to browser TTS');
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = preferences.tts_speed || 1.0;
+        utterance.pitch = preferences.tts_pitch || 1.0;
+        utterance.volume = preferences.tts_volume / 100;
+        utterance.lang = sttLanguage;
+        
+        utterance.onend = () => {
+          setIsSpeaking(false);
+          options?.onEnd?.();
+        };
+        
+        utterance.onerror = () => {
+          setIsSpeaking(false);
+          options?.onError?.(new Error('Speech synthesis failed'));
+        };
+        
+        window.speechSynthesis.speak(utterance);
+      }
     } catch (error) {
       setIsSpeaking(false);
       options?.onError?.(error as Error);

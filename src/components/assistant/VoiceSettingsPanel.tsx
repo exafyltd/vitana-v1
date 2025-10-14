@@ -99,18 +99,45 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
 
   const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {
-    'sr-RS': [{ name: 'sr-RS-Standard-A', label: 'Serbian Female (Standard)' }],
+    'sr-RS': [
+      { name: 'sr-RS-Standard-B', label: 'Serbian Female (Google Speech)' }
+    ],
+    'en-US': [
+      { name: 'en-US-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
+      { name: 'en-US-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
+      { name: 'en-US-Chirp3-HD-Callirrhoe', label: 'Callirrhoe (Gemini Chirp 3 HD)' },
+      { name: 'en-US-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
+    ],
+    'de-DE': [
+      { name: 'de-DE-Chirp3-HD-Achernar', label: 'Achernar (Gemini Chirp 3 HD)' },
+      { name: 'de-DE-Chirp3-HD-Gacrux', label: 'Gacrux (Gemini Chirp 3 HD)' },
+      { name: 'de-DE-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
+    ],
     'ar-XA': [
-      { name: 'ar-XA-Standard-D', label: 'Arabic Female (Standard)' },
-      { name: 'ar-XA-Wavenet-D', label: 'Arabic Female (Wavenet)' },
+      { name: 'ar-XA-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
+      { name: 'ar-XA-Chirp3-HD-Kore', label: 'Kore (Gemini Chirp 3 HD)' },
+    ],
+    'es-ES': [
+      { name: 'es-ES-Chirp3-HD-Gacrux', label: 'Gacrux (Gemini Chirp 3 HD)' },
+      { name: 'es-ES-Chirp3-HD-Vindemiatrix', label: 'Vindemiatrix (Gemini Chirp 3 HD)' },
+      { name: 'es-ES-Chirp3-HD-Despina', label: 'Despina (Gemini Chirp 3 HD)' },
+    ],
+    'ru-RU': [
+      { name: 'ru-RU-Chirp3-HD-Kore', label: 'Kore (Gemini Chirp 3 HD)' },
+      { name: 'ru-RU-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
+    ],
+    'zh-CN': [
+      { name: 'cmn-CN-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
+      { name: 'cmn-CN-Chirp3-HD-Callirrhoe', label: 'Callirrhoe (Gemini Chirp 3 HD)' },
     ],
     'fr-FR': [
-      { name: 'fr-FR-Standard-A', label: 'French Female (Standard)' },
-      { name: 'fr-FR-Wavenet-A', label: 'French Female (Wavenet)' },
+      { name: 'fr-FR-Chirp3-HD-Pulcherrima', label: 'Pulcherrima (Gemini Chirp 3 HD)' },
+      { name: 'fr-FR-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
+      { name: 'fr-FR-Chirp3-HD-Sulafat', label: 'Sulafat (Gemini Chirp 3 HD)' },
     ],
     'pt-PT': [
-      { name: 'pt-PT-Standard-A', label: 'Portuguese Female (Standard)' },
-      { name: 'pt-PT-Wavenet-A', label: 'Portuguese Female (Wavenet)' },
+      { name: 'pt-PT-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
+      { name: 'pt-PT-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
     ],
   };
 
@@ -140,13 +167,19 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
     const voiceName = preferences.tts_voice;
-    const isCloudVoice = voiceName?.includes('-Standard-') || voiceName?.includes('-Wavenet-');
+    const isChirp3Voice = voiceName?.includes('Chirp3-HD');
+    const isGoogleSpeechVoice = voiceName?.includes('-Standard-') || voiceName?.includes('-Wavenet-');
+    const isCloudVoice = isChirp3Voice || isGoogleSpeechVoice;
     setIsTesting(true);
 
     try {
       if (isCloudVoice) {
         const { supabase } = await import('@/integrations/supabase/client');
-        const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
+        
+        // Route to appropriate TTS function
+        const functionName = isChirp3Voice ? 'google-gemini-tts' : 'google-cloud-tts';
+        
+        const { data, error } = await supabase.functions.invoke(functionName, {
           body: {
             text: testPhrase,
             voiceId: voiceName,
@@ -243,7 +276,9 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               {currentCloudVoices.length > 0 && (
                 <>
                   <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                    Google Cloud Voices (High Quality)
+                    {preferences.stt_language === 'sr-RS' 
+                      ? 'Google Speech API (High Quality)' 
+                      : 'Google Gemini Chirp 3 HD (Premium)'}
                   </div>
                   {currentCloudVoices.map((voice) => (
                     <SelectItem key={voice.name} value={voice.name}>
@@ -275,7 +310,9 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
           </Select>
           <p className="text-xs text-muted-foreground">
             {currentCloudVoices.length > 0
-              ? 'Google Cloud voices provide superior quality and natural-sounding speech'
+              ? preferences.stt_language === 'sr-RS'
+                ? 'Google Speech API provides high-quality speech synthesis'
+                : 'Gemini Chirp 3 HD voices deliver premium, natural-sounding speech with emotional resonance'
               : filteredVoices.length === 0
               ? `No voices available for ${baseLang(preferences.stt_language).toUpperCase()}. Install a voice in your OS/browser settings.`
               : 'Using browser-based voices'
