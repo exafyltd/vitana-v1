@@ -25,6 +25,9 @@ import { CommunityEventsCard } from "@/components/home/CommunityEventsCard";
 import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
 import { ScrollingRail } from "@/components/home/ScrollingRail";
 import { PulsingHighlightCard } from "@/components/home/PulsingHighlightCard";
+import { MusicListCard } from "@/components/home/MusicListCard";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { usePersonalizedMedia } from "@/hooks/usePersonalizedMedia";
 
 // Mock data for Today and Guide screens - Fallback data
 const todayScheduledEvents = [
@@ -317,13 +320,29 @@ export default function Home() {
     ...todayMediaContent.map(item => ({ ...item, isReal: false }))
   ].slice(0, 3);
 
+  // Use global audio player
+  const { playMedia } = useAudioPlayer();
+  
   // Play media handler
-  const handlePlayMedia = (fileUrl?: string) => {
-    if (fileUrl) {
-      const audio = new Audio(fileUrl);
-      audio.play();
+  const handlePlayMedia = (media: any) => {
+    if (media.fileUrl) {
+      playMedia({
+        id: media.id || `media-${Date.now()}`,
+        title: media.title,
+        creator: media.author?.name || 'Unknown',
+        audioUrl: media.fileUrl,
+        duration: 0,
+        imageUrl: media.imageUrl,
+        mediaType: media.mediaType === 'music' ? 'music' : 'podcast'
+      });
     }
   };
+
+  // Fetch personalized music for MusicListCard
+  const { data: personalizedMusic } = usePersonalizedMedia({
+    limit: 5,
+    mediaType: 'Music'
+  });
 
   // Transform real events - moved inside component
   const realTodayEvents = todayEvents.map(event => ({
@@ -442,56 +461,29 @@ export default function Home() {
                 <PriorityOfDayBanner />
               </div>
 
-              {/* Row 2: Media Content with Pulsing Highlight */}
-              <div className="grid grid-cols-12 gap-4 mb-8 relative z-10">
-                <div className="col-span-3">
-                  <PulsingHighlightCard
-                    title={blendedMediaContent[0]?.title || ""}
-                    description={blendedMediaContent[0]?.description}
-                    imageUrl={blendedMediaContent[0]?.imageUrl || ""}
-                    pillar={blendedMediaContent[0]?.pillar}
-                    mediaType={blendedMediaContent[0]?.mediaType}
-                    author={blendedMediaContent[0]?.author}
-                    timestamp={blendedMediaContent[0]?.timestamp}
-                    showReward={true}
-                    rewardPoints={3}
-                    rewardDescription="Earn credits for completing meditation"
-                    rewardPosition="bottom-right"
-                    featured={true}
+              {/* Row 2: Music List + Events */}
+              <div className="grid grid-cols-12 gap-4 mb-8">
+                <div className="col-span-6">
+                  <MusicListCard 
+                    tracks={personalizedMusic || []}
+                    title="Recommended for You"
                     className="h-[280px]"
-                    onClick={() => handlePlayMedia(blendedMediaContent[0]?.fileUrl)}
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={blendedMediaContent[1]?.title || ""}
-                    description={blendedMediaContent[1]?.description}
-                    imageUrl={blendedMediaContent[1]?.imageUrl || ""}
-                    pillar={blendedMediaContent[1]?.pillar}
-                    mediaType={blendedMediaContent[1]?.mediaType}
-                    author={blendedMediaContent[1]?.author}
-                    timestamp={blendedMediaContent[1]?.timestamp}
-                    showReward={true}
-                    rewardPoints={2}
-                    rewardDescription="Earn credits for workout playlist"
-                    className="h-[280px]"
-                    onClick={() => handlePlayMedia(blendedMediaContent[1]?.fileUrl)}
                   />
                 </div>
                 <div className="col-span-6">
                   <NewsCard
-                    title={blendedMediaContent[2]?.title || ""}
-                    description={blendedMediaContent[2]?.description}
-                    imageUrl={blendedMediaContent[2]?.imageUrl || ""}
-                    pillar={blendedMediaContent[2]?.pillar}
-                    mediaType={blendedMediaContent[2]?.mediaType}
-                    author={blendedMediaContent[2]?.author}
-                    timestamp={blendedMediaContent[2]?.timestamp}
+                    title={activeScheduledEvents[0]?.title || ""}
+                    description={activeScheduledEvents[0]?.description}
+                    imageUrl={activeScheduledEvents[0]?.imageUrl || ""}
+                    pillar={activeScheduledEvents[0]?.pillar}
+                    author={activeScheduledEvents[0]?.author}
+                    location={activeScheduledEvents[0]?.location}
+                    attendees={activeScheduledEvents[0]?.attendees}
+                    timestamp={activeScheduledEvents[0]?.timestamp}
                     showReward={true}
-                    rewardPoints={4}
-                    rewardDescription="Earn credits for cooking tutorial"
+                    rewardPoints={5}
+                    rewardDescription="Earn credits for attending"
                     className="h-[280px]"
-                    onClick={() => handlePlayMedia(blendedMediaContent[2]?.fileUrl)}
                   />
                 </div>
               </div>

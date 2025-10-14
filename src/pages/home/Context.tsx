@@ -13,6 +13,8 @@ import EnrichContextPopup from "@/components/EnrichContextPopup";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { homeNavigation } from "@/config/navigation";
+import { usePersonalizedMedia } from "@/hooks/usePersonalizedMedia";
+import { MusicListCard } from "@/components/home/MusicListCard";
 
 // Context Visual Cards
 import { MyCurrentVibeCard } from "@/components/context/MyCurrentVibeCard";
@@ -38,6 +40,19 @@ export default function Context() {
   const navigate = useNavigate();
   const { pendingCount } = useAutopilot();
   const [contextPopupOpen, setContextPopupOpen] = useState(false);
+
+  // Get contextual media based on time of day
+  const hour = new Date().getHours();
+  const contextTags = 
+    hour < 12 ? ['Energetic', 'Morning', 'Uplifting'] :
+    hour < 17 ? ['Focus', 'Productivity', 'Calming'] :
+    ['Relaxing', 'Evening', 'Meditation', 'Sleep'];
+  
+  const { data: contextualMusic } = usePersonalizedMedia({
+    limit: 4,
+    mediaType: 'Music',
+    contextTags
+  });
 
   return (
     <AppLayout>
@@ -75,18 +90,29 @@ export default function Context() {
               <SplitBarTrigger value="social">Social</SplitBarTrigger>
             </SplitBarList>
 
-            {/* Current Status Tab */}
+            {/* Current Tab */}
             <SplitBarContent value="current">
               <div className="mt-6">
-                {/* Row 1: Current Snapshot (1 big + 2 small) */}
+                {/* Row 1: Current Vibe & Music */}
                 <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                  <div className="col-span-6">
+                  <div className="col-span-3">
                     <MyCurrentVibeCard className="h-full" />
+                  </div>
+                  <div className="col-span-6">
+                    <MusicListCard 
+                      tracks={contextualMusic || []}
+                      title={hour < 12 ? "Morning Energy" : hour < 17 ? "Focus Sounds" : "Evening Relaxation"}
+                      className="h-full"
+                    />
                   </div>
                   <div className="col-span-3">
                     <BiometricContextVisualCard className="h-full" />
                   </div>
-                  <div className="col-span-3">
+                </div>
+
+                {/* Row 2: Motivation Banner (full width) */}
+                <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '140px' }}>
+                  <div className="col-span-12">
                     <MotivationBannerCard className="h-full" />
                   </div>
                 </div>

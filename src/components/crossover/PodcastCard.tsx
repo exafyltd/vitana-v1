@@ -123,16 +123,18 @@ export function PodcastCard({
   return (
     <div
       className={`
-        group relative rounded-2xl border shadow-sm p-4
+        group relative rounded-2xl border-2 shadow-sm p-4
         transition-all duration-300
         flex items-start gap-4
-        hover:bg-accent/5 hover:-translate-y-1 hover:shadow-md
+        hover:bg-blue-50/50 hover:-translate-y-1 hover:shadow-md
         ${isThisPodcastPlaying 
-          ? "border-l-4 border-l-primary bg-accent/10" 
-          : "border-border/30 hover:border-l-4 hover:border-l-primary/50"
+          ? "border-blue-400 bg-blue-50/70" 
+          : "border-blue-400/50 hover:border-blue-400"
         }
       `}
     >
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-blue-500/10 rounded-2xl -z-10" />
       {/* Left: Play Button */}
       <div className="flex-shrink-0">
         <Button

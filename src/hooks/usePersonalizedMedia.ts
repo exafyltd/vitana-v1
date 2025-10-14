@@ -1,0 +1,105 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useProfile } from "@/context/ProfileProvider";
+
+interface PersonalizedMediaOptions {
+  limit?: number;
+  mediaType?: 'Music' | 'Podcast' | 'Video' | 'all';
+  contextTags?: string[];
+}
+
+export function usePersonalizedMedia(options: PersonalizedMediaOptions = {}) {
+  const { limit = 5, mediaType = 'all', contextTags = [] } = options;
+  const { profile } = useProfile();
+
+  return useQuery({
+    queryKey: ['personalized-media', limit, mediaType, contextTags],
+    queryFn: async () => {
+      // Build query
+      let query = supabase
+        .from('media_uploads')
+        .select('*, music_metadata(*), podcast_metadata(*), video_metadata(*)')
+        .eq('status', 'approved')
+        .eq('is_public', true);
+
+      // Filter by media type if specified
+      if (mediaType !== 'all') {
+        query = query.eq('media_type', mediaType);
+      }
+
+      // Get base results
+      const { data: mediaData, error } = await query
+        .order('created_at', { ascending: false })
+        .limit(50); // Get more to score and filter
+
+      if (error) throw error;
+      if (!mediaData || mediaData.length === 0) return [];
+
+      // Fetch creator profiles
+      const userIds = [...new Set(mediaData.map(m => m.user_id))];
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('user_id, display_name, avatar_url')
+        .in('user_id', userIds);
+      
+      const profilesMap = new Map(profilesData?.map(p => [p.user_id, p]) || []);
+
+      // Score each media item based on personalization factors
+      const scoredMedia = mediaData.map((media) => {
+        let score = 0;
+        
+        // Factor 1: Recency (newer content gets higher score)
+        const daysOld = (Date.now() - new Date(media.created_at).getTime()) / (1000 * 60 * 60 * 24);
+        score += Math.max(0, 10 - daysOld); // Up to 10 points for very recent content
+        
+        // Factor 2: Context tags matching
+        if (contextTags.length > 0 && media.tags) {
+          const matchingTags = media.tags.filter(tag => 
+            contextTags.some(ctxTag => 
+              tag.toLowerCase().includes(ctxTag.toLowerCase())
+            )
+          );
+          score += matchingTags.length * 5; // 5 points per matching tag
+        }
+        
+        // Factor 4: Time of day appropriateness
+        const hour = new Date().getHours();
+        if (media.tags) {
+          if (hour < 12 && media.tags.some(t => ['Energetic', 'Morning', 'Uplifting'].includes(t))) {
+            score += 10;
+          } else if (hour >= 12 && hour < 17 && media.tags.some(t => ['Focus', 'Productivity', 'Calming'].includes(t))) {
+            score += 10;
+          } else if (hour >= 17 && media.tags.some(t => ['Relaxing', 'Evening', 'Meditation', 'Sleep'].includes(t))) {
+            score += 10;
+          }
+        }
+        
+        // Factor 5: Content quality indicators
+        if (media.thumbnail_url) score += 2; // Has thumbnail
+        if (media.description && media.description.length > 50) score += 2; // Good description
+        
+        const creatorProfile = profilesMap.get(media.user_id);
+        
+        return {
+          ...media,
+          score,
+          // Transform to expected format
+          artist: media.music_metadata?.[0]?.artist_name || 
+                  media.podcast_metadata?.[0]?.host_name || 
+                  creatorProfile?.display_name || 
+                  'Unknown Artist',
+          duration: media.music_metadata?.[0]?.duration || 
+                   media.podcast_metadata?.[0]?.duration || 
+                   0
+        };
+      });
+
+      // Sort by score (highest first) and return top N
+      return scoredMedia
+        .sort((a, b) => b.score - a.score)
+        .slice(0, limit);
+    },
+    enabled: true,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+  });
+}
