@@ -364,63 +364,137 @@ export type Database = {
       }
       api_integrations: {
         Row: {
+          active_connections: number | null
           auth_token: string | null
           auth_type: string
+          avg_response_time: number | null
           base_url: string
           created_at: string | null
           created_by: string | null
+          error_rate: number | null
           id: string
           integration_type: string
           is_active: boolean | null
           last_test_status: string | null
           last_test_timestamp: string | null
+          mcp_capabilities: Json | null
+          mcp_schema: Json | null
+          mcp_tools: Json | null
           metadata: Json | null
           name: string
           notes: string | null
+          p95_latency: number | null
+          p99_latency: number | null
+          success_rate: number | null
           test_endpoints: Json | null
           test_frequency_minutes: number
           test_runner_function: string | null
+          throughput: number | null
           updated_at: string | null
         }
         Insert: {
+          active_connections?: number | null
           auth_token?: string | null
           auth_type: string
+          avg_response_time?: number | null
           base_url: string
           created_at?: string | null
           created_by?: string | null
+          error_rate?: number | null
           id?: string
           integration_type: string
           is_active?: boolean | null
           last_test_status?: string | null
           last_test_timestamp?: string | null
+          mcp_capabilities?: Json | null
+          mcp_schema?: Json | null
+          mcp_tools?: Json | null
           metadata?: Json | null
           name: string
           notes?: string | null
+          p95_latency?: number | null
+          p99_latency?: number | null
+          success_rate?: number | null
           test_endpoints?: Json | null
           test_frequency_minutes?: number
           test_runner_function?: string | null
+          throughput?: number | null
           updated_at?: string | null
         }
         Update: {
+          active_connections?: number | null
           auth_token?: string | null
           auth_type?: string
+          avg_response_time?: number | null
           base_url?: string
           created_at?: string | null
           created_by?: string | null
+          error_rate?: number | null
           id?: string
           integration_type?: string
           is_active?: boolean | null
           last_test_status?: string | null
           last_test_timestamp?: string | null
+          mcp_capabilities?: Json | null
+          mcp_schema?: Json | null
+          mcp_tools?: Json | null
           metadata?: Json | null
           name?: string
           notes?: string | null
+          p95_latency?: number | null
+          p99_latency?: number | null
+          success_rate?: number | null
           test_endpoints?: Json | null
           test_frequency_minutes?: number
           test_runner_function?: string | null
+          throughput?: number | null
           updated_at?: string | null
         }
         Relationships: []
+      }
+      api_performance_metrics: {
+        Row: {
+          created_at: string
+          endpoint: string | null
+          error_count: number
+          id: string
+          integration_id: string
+          request_count: number
+          response_time: number
+          status_code: number | null
+          timestamp: string
+        }
+        Insert: {
+          created_at?: string
+          endpoint?: string | null
+          error_count?: number
+          id?: string
+          integration_id: string
+          request_count?: number
+          response_time: number
+          status_code?: number | null
+          timestamp?: string
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string | null
+          error_count?: number
+          id?: string
+          integration_id?: string
+          request_count?: number
+          response_time?: number
+          status_code?: number | null
+          timestamp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_performance_metrics_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "api_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       api_test_logs: {
         Row: {
@@ -2426,6 +2500,53 @@ export type Database = {
             columns: ["match_id"]
             isOneToOne: false
             referencedRelation: "user_matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mcp_tool_executions: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          executed_by: string | null
+          execution_time_ms: number | null
+          id: string
+          input_parameters: Json
+          integration_id: string
+          output_result: Json | null
+          status: string
+          tool_name: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          executed_by?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          input_parameters: Json
+          integration_id: string
+          output_result?: Json | null
+          status: string
+          tool_name: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          executed_by?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          input_parameters?: Json
+          integration_id?: string
+          output_result?: Json | null
+          status?: string
+          tool_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mcp_tool_executions_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "api_integrations"
             referencedColumns: ["id"]
           },
         ]
@@ -5333,6 +5454,10 @@ export type Database = {
       unfollow_user: {
         Args: { target_user_id: string }
         Returns: Json
+      }
+      update_api_metrics: {
+        Args: { p_integration_id: string }
+        Returns: undefined
       }
       update_user_balance: {
         Args: {
