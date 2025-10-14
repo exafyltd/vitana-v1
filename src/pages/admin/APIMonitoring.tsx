@@ -92,8 +92,8 @@ export default function APIMonitoring() {
     active: integrations?.filter(i => i.is_active).length || 0,
     healthy: testLogs?.filter(l => l.status === 'success').length || 0,
     failing: testLogs?.filter(l => l.status === 'failed').length || 0,
-    edgeFunctions: integrations?.filter(i => i.integration_type === 'edge_function').length || 0,
-    externalAPIs: integrations?.filter(i => i.integration_type === 'external_api').length || 0,
+    edgeFunctions: integrations?.filter(i => (i.metadata as any)?.deployment_type === 'edge_function').length || 0,
+    externalAPIs: integrations?.filter(i => (i.metadata as any)?.deployment_type === 'external_api').length || 0,
   };
 
   const handleDiscoverIntegrations = async () => {
@@ -164,12 +164,18 @@ export default function APIMonitoring() {
     }
   };
 
-  const getIntegrationIcon = (type: string) => {
+  const getIntegrationIcon = (type: string, metadata?: any) => {
+    const deploymentType = metadata?.deployment_type;
+    
+    // Show deployment type icon
+    if (deploymentType === 'edge_function') {
+      return <Zap className="w-4 h-4 text-purple-500" />;
+    } else if (deploymentType === 'external_api') {
+      return <Globe className="w-4 h-4 text-blue-500" />;
+    }
+    
+    // Fallback based on integration type
     switch (type) {
-      case 'edge_function':
-        return <Zap className="w-4 h-4 text-purple-500" />;
-      case 'external_api':
-        return <Globe className="w-4 h-4 text-blue-500" />;
       case 'mcp':
         return <Server className="w-4 h-4 text-orange-500" />;
       default:
@@ -281,9 +287,9 @@ export default function APIMonitoring() {
                     ) : testLogs && testLogs.length > 0 ? (
                       <div className="space-y-3">
                         {testLogs.slice(0, 10).map((log) => (
-                          <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                           <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
                             <div className="flex items-center gap-3">
-                              {getIntegrationIcon(log.api_integrations?.integration_type || '')}
+                              {getIntegrationIcon(log.api_integrations?.integration_type || '', (log.api_integrations as any)?.metadata)}
                               <div>
                                 <p className="font-medium">{log.api_integrations?.name}</p>
                                 <p className="text-sm text-muted-foreground">
@@ -334,17 +340,22 @@ export default function APIMonitoring() {
                     ) : integrations && integrations.length > 0 ? (
                       <div className="space-y-3">
                         {integrations.map((integration) => (
-                          <div key={integration.id} className="p-4 border rounded-lg hover:border-primary/50 transition-colors">
+                           <div key={integration.id} className="p-4 border rounded-lg hover:border-primary/50 transition-colors">
                             <div className="flex items-start justify-between">
                               <div className="flex items-start gap-3 flex-1">
-                                {getIntegrationIcon(integration.integration_type)}
+                                {getIntegrationIcon(integration.integration_type, integration.metadata)}
                                 <div className="flex-1">
-                                  <div className="flex items-center gap-2">
+                                  <div className="flex items-center gap-2 flex-wrap">
                                     <h3 className="font-semibold">{integration.name}</h3>
                                     {integration.is_active ? (
                                       <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Active</Badge>
                                     ) : (
                                       <Badge variant="outline">Inactive</Badge>
+                                    )}
+                                    {(integration.metadata as any)?.deployment_type && (
+                                      <Badge variant="secondary" className="text-xs">
+                                        {(integration.metadata as any).deployment_type === 'edge_function' ? 'Edge Function' : 'External API'}
+                                      </Badge>
                                     )}
                                   </div>
                                   <p className="text-sm text-muted-foreground mt-1">{integration.base_url}</p>

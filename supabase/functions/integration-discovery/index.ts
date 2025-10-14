@@ -20,15 +20,16 @@ serve(async (req) => {
 
     console.log('[discovery] Starting integration discovery...');
 
-    // Define known integrations
+    // Define known integrations with correct enum values
     const integrations = [
       {
         name: 'Gemini Live (Vertex AI)',
         base_url: 'wss://us-central1-aiplatform.googleapis.com',
-        integration_type: 'edge_function',
-        auth_type: 'oauth',
+        integration_type: 'ai_multimodal',
+        auth_type: 'oauth2',
         is_active: true,
         metadata: { 
+          deployment_type: 'edge_function',
           edge_function: 'vertex-live',
           provider: 'google',
           capabilities: ['realtime', 'multimodal', 'voice']
@@ -37,10 +38,11 @@ serve(async (req) => {
       {
         name: 'Lovable AI Chat',
         base_url: 'https://ai.gateway.lovable.dev/v1/chat/completions',
-        integration_type: 'edge_function',
-        auth_type: 'bearer',
+        integration_type: 'ai_multimodal',
+        auth_type: 'api_key',
         is_active: true,
         metadata: { 
+          deployment_type: 'edge_function',
           edge_function: 'ai-chat',
           provider: 'lovable',
           capabilities: ['chat', 'streaming', 'memory']
@@ -49,10 +51,11 @@ serve(async (req) => {
       {
         name: 'Google Speech-to-Text',
         base_url: 'https://speech.googleapis.com/v1/speech:recognize',
-        integration_type: 'external_api',
+        integration_type: 'ai_stt',
         auth_type: 'api_key',
         is_active: false,
         metadata: { 
+          deployment_type: 'external_api',
           provider: 'google',
           capabilities: ['audio_transcription']
         }
@@ -60,10 +63,11 @@ serve(async (req) => {
       {
         name: 'Stripe Payments',
         base_url: 'https://api.stripe.com/v1',
-        integration_type: 'external_api',
-        auth_type: 'bearer',
+        integration_type: 'payment',
+        auth_type: 'api_key',
         is_active: true,
         metadata: { 
+          deployment_type: 'external_api',
           provider: 'stripe',
           capabilities: ['payments', 'checkout', 'webhooks'],
           edge_functions: ['stripe-create-checkout-session', 'stripe-create-booking-checkout', 'stripe-webhook']
@@ -72,10 +76,11 @@ serve(async (req) => {
       {
         name: 'Google Cloud Text-to-Speech',
         base_url: 'https://texttospeech.googleapis.com/v1/text:synthesize',
-        integration_type: 'edge_function',
+        integration_type: 'ai_tts',
         auth_type: 'api_key',
         is_active: true,
         metadata: { 
+          deployment_type: 'edge_function',
           edge_function: 'google-cloud-tts',
           provider: 'google',
           capabilities: ['tts', 'multilingual']

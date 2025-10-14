@@ -36,19 +36,31 @@ serve(async (req) => {
     let testResult = { status: 'failed', error_log: 'Not implemented', response_body: null };
 
     try {
-      // Route to appropriate test based on integration
-      if (integration.name.includes('Stripe')) {
-        testResult = await testStripeIntegration();
-      } else if (integration.name.includes('Gemini Live') || integration.name.includes('Vertex')) {
-        testResult = await testVertexLiveIntegration();
-      } else if (integration.name.includes('Lovable AI')) {
-        testResult = await testLovableAIIntegration();
-      } else if (integration.name.includes('Speech-to-Text')) {
-        testResult = await testGoogleSpeechIntegration();
-      } else if (integration.name.includes('Text-to-Speech')) {
-        testResult = await testGoogleTTSIntegration();
-      } else {
-        testResult = { status: 'skipped', error_log: 'No test implementation', response_body: null };
+      // Route to appropriate test based on integration_type and metadata
+      const integrationType = integration.integration_type;
+      const provider = integration.metadata?.provider;
+      
+      switch (integrationType) {
+        case 'payment':
+          testResult = await testStripeIntegration();
+          break;
+        case 'ai_multimodal':
+          if (provider === 'google') {
+            testResult = await testVertexLiveIntegration();
+          } else if (provider === 'lovable') {
+            testResult = await testLovableAIIntegration();
+          } else {
+            testResult = { status: 'skipped', error_log: `Unknown AI provider: ${provider}`, response_body: null };
+          }
+          break;
+        case 'ai_stt':
+          testResult = await testGoogleSpeechIntegration();
+          break;
+        case 'ai_tts':
+          testResult = await testGoogleTTSIntegration();
+          break;
+        default:
+          testResult = { status: 'skipped', error_log: 'No test implementation', response_body: null };
       }
     } catch (error) {
       testResult = { status: 'failed', error_log: error.message, response_body: null };
