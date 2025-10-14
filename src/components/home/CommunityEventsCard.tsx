@@ -9,9 +9,10 @@ import { withCardId } from "@/lib/withCardId";
 
 interface CommunityEventsCardProps {
   maxEvents?: number;
+  className?: string;
 }
 
-function CommunityEventsCardBase({ maxEvents = 3 }: CommunityEventsCardProps) {
+function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCardProps) {
   const { todayEvents, upcomingEvents, loading } = useCommunityEvents();
   const navigate = useNavigate();
 
@@ -92,7 +93,7 @@ function CommunityEventsCardBase({ maxEvents = 3 }: CommunityEventsCardProps) {
   };
 
   return (
-    <Card className="h-full">
+    <Card className={className || "h-full"}>
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">

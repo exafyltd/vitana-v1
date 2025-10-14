@@ -461,16 +461,16 @@ export default function Home() {
                 <PriorityOfDayBanner />
               </div>
 
-              {/* Row 2: Music List + Events */}
-              <div className="grid grid-cols-12 gap-4 mb-8">
+              {/* Row 2: Music List + Two Events (1+2 pattern) */}
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
                   <MusicListCard 
                     tracks={personalizedMusic || []}
                     title="Recommended for You"
-                    className="h-[280px]"
+                    className="h-full"
                   />
                 </div>
-                <div className="col-span-6">
+                <div className="col-span-3">
                   <NewsCard
                     title={activeScheduledEvents[0]?.title || ""}
                     description={activeScheduledEvents[0]?.description}
@@ -483,19 +483,32 @@ export default function Home() {
                     showReward={true}
                     rewardPoints={5}
                     rewardDescription="Earn credits for attending"
-                    className="h-[280px]"
+                    className="h-full"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <NewsCard
+                    title={activeScheduledEvents[1]?.title || ""}
+                    description={activeScheduledEvents[1]?.description}
+                    imageUrl={activeScheduledEvents[1]?.imageUrl || ""}
+                    pillar={activeScheduledEvents[1]?.pillar}
+                    author={activeScheduledEvents[1]?.author}
+                    location={activeScheduledEvents[1]?.location}
+                    attendees={activeScheduledEvents[1]?.attendees}
+                    timestamp={activeScheduledEvents[1]?.timestamp}
+                    showReward={true}
+                    rewardPoints={4}
+                    rewardDescription="Earn credits for learning"
+                    className="h-full"
                   />
                 </div>
               </div>
 
               <MotivationalBanner variant="partnership" />
 
-              {/* Row 3: Community Events Card + Events & Meetups (big + small + small) */}
+              {/* Row 3: Two Events + Community Events (2+1 pattern) */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-4">
-                  <CommunityEventsCard maxEvents={4} />
-                </div>
-                <div className="col-span-4">
+                <div className="col-span-3">
                   <NewsCard
                     title={todayEventsAndMeetups[0]?.title || ""}
                     description={todayEventsAndMeetups[0]?.description}
@@ -511,7 +524,7 @@ export default function Home() {
                     className="h-full"
                   />
                 </div>
-                <div className="col-span-4">
+                <div className="col-span-3">
                   <NewsCard
                     title={todayEventsAndMeetups[1]?.title || ""}
                     description={todayEventsAndMeetups[1]?.description}
@@ -526,6 +539,9 @@ export default function Home() {
                     rewardDescription="Earn credits for challenge participation"
                     className="h-full"
                   />
+                </div>
+                <div className="col-span-6">
+                  <CommunityEventsCard maxEvents={4} className="h-full" />
                 </div>
               </div>
 
