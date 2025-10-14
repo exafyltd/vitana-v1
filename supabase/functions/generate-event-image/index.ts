@@ -167,140 +167,50 @@ Style: Natural documentary photography meets wellness editorial, authentic momen
       throw new Error('Google Cloud credentials not configured');
     }
 
-    console.log('🔐 Obtaining Vertex AI access token...');
-    
-    // Parse service account
-    const serviceAccount = JSON.parse(serviceAccountJson);
-    
-    // Create JWT for Google OAuth2
-    const header = {
-      alg: "RS256",
-      typ: "JWT",
-    };
-
-    const now = Math.floor(Date.now() / 1000);
-    const claim = {
-      iss: serviceAccount.client_email,
-      scope: "https://www.googleapis.com/auth/cloud-platform",
-      aud: "https://oauth2.googleapis.com/token",
-      exp: now + 3600,
-      iat: now,
-    };
-
-    // Encode header and claim
-    const encoder = new TextEncoder();
-    const headerB64 = btoa(JSON.stringify(header))
-      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    const claimB64 = btoa(JSON.stringify(claim))
-      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    
-    const signatureInput = `${headerB64}.${claimB64}`;
-    
-    // Import private key for signing
-    const privateKey = serviceAccount.private_key;
-    const pemHeader = "-----BEGIN PRIVATE KEY-----";
-    const pemFooter = "-----END PRIVATE KEY-----";
-    
-    // Extract base64 content between PEM markers and remove all whitespace
-    const pemContents = privateKey
-      .replace(pemHeader, '')
-      .replace(pemFooter, '')
-      .replace(/[\r\n\s]/g, '');
-    
-    const binaryDer = Uint8Array.from(atob(pemContents), c => c.charCodeAt(0));
-    
-    const key = await crypto.subtle.importKey(
-      "pkcs8",
-      binaryDer,
-      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-      false,
-      ["sign"]
-    );
-
-    const signature = await crypto.subtle.sign(
-      "RSASSA-PKCS1-v1_5",
-      key,
-      encoder.encode(signatureInput)
-    );
-
-    const signatureB64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
-      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    
-    const jwt = `${signatureInput}.${signatureB64}`;
-
-    // Exchange JWT for access token
-    const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-        assertion: jwt,
-      }),
-    });
-
-    if (!tokenResponse.ok) {
-      const error = await tokenResponse.text();
-      console.error("❌ Token exchange failed:", error);
-      throw new Error('Failed to authenticate with Google Cloud');
+    // Use Lovable AI Gateway (pre-configured secret) to generate image
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (!LOVABLE_API_KEY) {
+      throw new Error('LOVABLE_API_KEY is not configured');
     }
 
-    const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
+    console.log('🧠 Calling Lovable AI image model...');
 
-    console.log('✅ Access token obtained, calling Imagen API...');
-
-    // Call Google Imagen API
-    const imagenEndpoint = `https://${region}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${region}/publishers/google/models/imagen-3.0-fast-generate-001:predict`;
-    
-    const imagenResponse = await fetch(imagenEndpoint, {
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        instances: [{
-          prompt: contextualPrompt
-        }],
-        parameters: {
-          sampleCount: 1,
-          aspectRatio: "16:9",
-          addWatermark: false,
-          enhancePrompt: true,
-          language: "en",
-          personGeneration: "allow_adult",
-          safetySetting: "block_medium_and_above"
-        }
-      })
+        model: 'google/gemini-2.5-flash-image-preview',
+        messages: [
+          {
+            role: 'user',
+            content: contextualPrompt,
+          },
+        ],
+        modalities: ['image', 'text'],
+      }),
     });
 
-    if (!imagenResponse.ok) {
-      const errorText = await imagenResponse.text();
-      console.error('❌ Imagen API error:', imagenResponse.status, errorText);
-      
-      if (imagenResponse.status === 429) {
+    if (!aiResponse.ok) {
+      const errorText = await aiResponse.text();
+      console.error('❌ Lovable AI error:', aiResponse.status, errorText);
+      if (aiResponse.status === 429) {
         throw new Error('RATE_LIMIT');
-      } else if (imagenResponse.status === 403) {
-        throw new Error('Google Cloud quota exceeded or API not enabled');
+      } else if (aiResponse.status === 402) {
+        throw new Error('PAYMENT_REQUIRED');
       }
       throw new Error('Image generation failed');
     }
 
-    const imagenData = await imagenResponse.json();
-    console.log('✅ Imagen response received');
+    const aiData = await aiResponse.json();
+    console.log('✅ Lovable AI response received');
 
-    // Extract base64 image from response
-    const base64ImageData = imagenData.predictions?.[0]?.bytesBase64Encoded;
-
-    if (!base64ImageData) {
-      console.error('No image in response:', JSON.stringify(imagenData));
-      throw new Error('No image generated by Imagen');
-    }
-
-    // Convert base64 to data URL format for consistency
-    const base64Image = `data:image/png;base64,${base64ImageData}`;
-
-    if (!base64Image) {
+    // Extract base64 image (data URL)
+    const base64Image = aiData?.choices?.[0]?.message?.images?.[0]?.image_url?.url as string | undefined;
+    if (!base64Image || !base64Image.startsWith('data:image')) {
+      console.error('No image in Lovable AI response:', JSON.stringify(aiData).slice(0, 500));
       throw new Error('No image generated');
     }
 
