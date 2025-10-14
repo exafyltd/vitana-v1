@@ -8,9 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { CalendarIcon, Upload as UploadIcon, X, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { useMediaUpload } from "@/hooks/useMediaUpload";
 
 interface MediaUploadPopupProps {
   open: boolean;
@@ -43,6 +45,7 @@ const videoTopics = [
 ];
 
 export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) {
+  const { uploadMedia, isUploading, progress } = useMediaUpload();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [mediaType, setMediaType] = useState<"Podcast" | "Music" | "Video" | "">("");
@@ -55,9 +58,8 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
   const [mood, setMood] = useState("");
   const [topic, setTopic] = useState("");
   const [visibility, setVisibility] = useState("Public");
-  const [credits, setCredits] = useState("");
   const [externalLink, setExternalLink] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev => 
@@ -67,12 +69,34 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
     );
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const removeFile = () => {
+    setSelectedFile(null);
+  };
+
   const handleSubmit = async () => {
-    setIsLoading(true);
-    // Simulate upload process
-    setTimeout(() => {
-      setIsLoading(false);
-      onOpenChange(false);
+    if (!selectedFile) return;
+
+    try {
+      await uploadMedia(selectedFile, {
+        title,
+        description,
+        mediaType: mediaType.toLowerCase() as "music" | "podcast" | "video",
+        tags: selectedTags,
+        visibility: visibility.toLowerCase(),
+        genre: genre || undefined,
+        mood: mood || undefined,
+        hostGuest: hostGuest || undefined,
+        duration: duration ? parseInt(duration.replace(':', '')) : undefined,
+        topic: topic || undefined,
+      });
+
       // Reset form
       setTitle("");
       setDescription("");
@@ -86,9 +110,12 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
       setMood("");
       setTopic("");
       setVisibility("Public");
-      setCredits("");
       setExternalLink("");
-    }, 2000);
+      setSelectedFile(null);
+      onOpenChange(false);
+    } catch (error) {
+      // Error already handled by hook
+    }
   };
 
   return (
@@ -155,16 +182,64 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
 
             {/* File Upload */}
             <div>
-              <Label htmlFor="file">Upload File</Label>
-              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer">
-                <UploadIcon className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">
-                  Drag & drop your file here, or click to browse
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Supported formats: MP4, MP3, WAV, MOV
-                </p>
+              <Label htmlFor="file">Upload File *</Label>
+              <div className={cn(
+                "border-2 border-dashed rounded-lg p-8 text-center transition-colors",
+                selectedFile ? "border-primary bg-primary/5" : "border-muted-foreground/25 hover:border-muted-foreground/50 cursor-pointer"
+              )}>
+                {!selectedFile ? (
+                  <>
+                    <input
+                      type="file"
+                      id="media-file-input"
+                      className="hidden"
+                      accept={
+                        mediaType === "Music" ? "audio/mpeg,audio/wav,audio/ogg,audio/mp3,audio/m4a" :
+                        mediaType === "Podcast" ? "audio/mpeg,audio/wav,audio/ogg,audio/mp3,audio/m4a" :
+                        mediaType === "Video" ? "video/mp4,video/webm,video/ogg,video/quicktime" :
+                        ""
+                      }
+                      onChange={handleFileSelect}
+                      disabled={!mediaType || isUploading}
+                    />
+                    <label htmlFor="media-file-input" className="cursor-pointer block">
+                      <UploadIcon className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                      <p className="text-sm text-muted-foreground">
+                        {mediaType ? "Click to select file" : "Select media type first"}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {mediaType === "Music" && "MP3, WAV, or OGG (max 50MB)"}
+                        {mediaType === "Podcast" && "MP3, WAV, or OGG (max 100MB)"}
+                        {mediaType === "Video" && "MP4, WebM, or OGG (max 500MB)"}
+                      </p>
+                    </label>
+                  </>
+                ) : (
+                  <div className="flex items-center justify-between">
+                    <div className="text-left flex-1">
+                      <p className="text-sm font-medium truncate">{selectedFile.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={removeFile}
+                      disabled={isUploading}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
+              {isUploading && (
+                <div className="space-y-2 mt-3">
+                  <Progress value={progress} className="w-full" />
+                  <p className="text-xs text-center text-muted-foreground">Uploading... {progress}%</p>
+                </div>
+              )}
             </div>
 
             {/* Tags */}
@@ -349,16 +424,6 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
             </div>
 
             <div>
-              <Label htmlFor="credits">Credits (Optional)</Label>
-              <Input
-                id="credits"
-                value={credits}
-                onChange={(e) => setCredits(e.target.value)}
-                placeholder="Credit different creator if applicable"
-              />
-            </div>
-
-            <div>
               <Label htmlFor="external-link">External Link (Optional)</Label>
               <Input
                 id="external-link"
@@ -375,16 +440,16 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               variant="outline"
               className="flex-1"
               onClick={() => onOpenChange(false)}
-              disabled={isLoading}
+              disabled={isUploading}
             >
               Cancel
             </Button>
             <Button
               className="flex-1"
               onClick={handleSubmit}
-              disabled={!title || !description || !mediaType || isLoading}
+              disabled={!title || !description || !mediaType || !selectedFile || isUploading}
             >
-              {isLoading ? "Publishing..." : "Publish Media"}
+              {isUploading ? "Uploading..." : "Publish Media"}
             </Button>
           </div>
         </div>

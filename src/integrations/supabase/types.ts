@@ -2314,6 +2314,87 @@ export type Database = {
           },
         ]
       }
+      media_content: {
+        Row: {
+          album: string | null
+          artist: string | null
+          category: string | null
+          created_at: string | null
+          description: string | null
+          duration_seconds: number | null
+          episode_number: number | null
+          file_path: string
+          file_size_bytes: number | null
+          id: string
+          is_featured: boolean | null
+          is_public: boolean | null
+          like_count: number | null
+          media_type: string
+          published_at: string | null
+          season_number: number | null
+          share_count: number | null
+          tags: string[] | null
+          thumbnail_path: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+          view_count: number | null
+          wellness_pillar: string | null
+        }
+        Insert: {
+          album?: string | null
+          artist?: string | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          duration_seconds?: number | null
+          episode_number?: number | null
+          file_path: string
+          file_size_bytes?: number | null
+          id?: string
+          is_featured?: boolean | null
+          is_public?: boolean | null
+          like_count?: number | null
+          media_type: string
+          published_at?: string | null
+          season_number?: number | null
+          share_count?: number | null
+          tags?: string[] | null
+          thumbnail_path?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+          view_count?: number | null
+          wellness_pillar?: string | null
+        }
+        Update: {
+          album?: string | null
+          artist?: string | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          duration_seconds?: number | null
+          episode_number?: number | null
+          file_path?: string
+          file_size_bytes?: number | null
+          id?: string
+          is_featured?: boolean | null
+          is_public?: boolean | null
+          like_count?: number | null
+          media_type?: string
+          published_at?: string | null
+          season_number?: number | null
+          share_count?: number | null
+          tags?: string[] | null
+          thumbnail_path?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+          view_count?: number | null
+          wellness_pillar?: string | null
+        }
+        Relationships: []
+      }
       media_uploads: {
         Row: {
           category: string | null

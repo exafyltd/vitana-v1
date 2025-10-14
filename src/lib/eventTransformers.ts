@@ -36,8 +36,8 @@ export interface UIEvent {
 // Map event types to wellness pillars
 export const eventTypeToPillar = (eventType: string): string => {
   const mapping: Record<string, string> = {
+    'event': 'Mental',
     'meetup': 'Mental',
-    'workshop': 'Nutrition',
     'fitness': 'Movement',
     'meditation': 'Mental',
     'yoga': 'Movement',

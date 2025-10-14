@@ -40,8 +40,8 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     title: event.title,
     description: event.description,
     imageUrl: event.image_url || event.imageUrl,
-    category: event.event_type === 'event' ? 'event' as const : 'community' as const,
-    pillar: event.pillar || (event.event_type === 'event' ? 'Event' : 'MeetUp'),
+    category: 'event' as const,
+    pillar: event.event_type === 'event' ? 'EVENT' : 'MEETUP',
     author: event.author || { 
       name: event.creator_display_name || 'Community Host', 
       avatar: event.creator_avatar_url || '' 
@@ -49,6 +49,8 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     location: event.location,
     attendees: event.participant_count || 0,
     timestamp: formatEventTime(event.start_time),
+    price: event.metadata?.is_paid ? Number(event.metadata?.price || 0) : ('free' as const),
+    eventId: event.id,
     showSmartAction: true,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
