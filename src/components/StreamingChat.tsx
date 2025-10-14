@@ -49,7 +49,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     connectionState: vertexConnectionState,
     isRecording: vertexRecording,
     isScreenSharing: vertexScreenSharing,
-    isCameraActive: vertexCameraActive,
     transcript: vertexTranscript,
     error: vertexError,
     lastEvent: vertexLastEvent,
@@ -59,8 +58,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     stopAudio: vertexStopAudio,
     startScreen: vertexStartScreen,
     stopScreen: vertexStopScreen,
-    startCamera: vertexStartCamera,
-    stopCamera: vertexStopCamera,
     sendText: vertexSendText,
   } = useVertexLive()
 
@@ -279,10 +276,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     activateVideo: async () => {
       console.log('🎥 Activating video stream...');
       
-      // Only prime aiVoiceService AudioContext for legacy mode (not Vertex)
-      if (!useVertexLiveMode) {
-        await aiVoiceService.resumeAudio();
-      }
+      // Prime AudioContext on user gesture (avoids autoplay blocks)
+      await aiVoiceService.resumeAudio();
       
       setIsVideoActive(true);
       setIsAudioActive(true);
@@ -510,9 +505,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             <VideoIcon className="h-5 w-5" />
           </Button>
 
-          {/* Vertex test button */}
+          {/* Developer test button with connection status - only shown when Vertex mode is enabled */}
           {useVertexLiveMode && (
             <div className="flex items-center gap-2">
+              {/* Connection status pill */}
               <div className={cn(
                 "px-2 py-1 rounded-full text-xs font-medium transition-colors",
                 vertexConnectionState === 'connected' && "bg-success/20 text-success",
@@ -530,20 +526,30 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                 variant="ghost"
                 size="sm"
                 onClick={() => {
+                  console.log('🧪 Test button clicked, connection state:', vertexConnectionState);
+                  
                   if (vertexConnectionState !== 'connected') {
                     toast({
                       title: "AI voice not connected",
-                      description: "Press Start Stream and wait for 'Connected' status.",
+                      description: "Press Start Stream and wait for 'Connected' status before testing.",
                       variant: "destructive",
                     });
                     return;
                   }
                   
-                  vertexSendText("Please say 'hello' briefly.");
-                  toast({
-                    title: "Test message sent",
-                    description: "Listen for AI voice response...",
-                  });
+                  const success = vertexSendText("Please say 'hello' briefly in one sentence.");
+                  if (success) {
+                    toast({
+                      title: "Test message sent",
+                      description: "Listen for AI voice response...",
+                    });
+                  } else {
+                    toast({
+                      title: "Failed to send test",
+                      description: "Connection not ready. Try reconnecting.",
+                      variant: "destructive",
+                    });
+                  }
                 }}
                 disabled={vertexConnectionState !== 'connected'}
                 className={cn(

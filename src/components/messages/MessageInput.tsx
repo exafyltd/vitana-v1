@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
-// VoiceRecorder removed - will be reinstalled
+import { VoiceRecorder } from '@/components/ui/voice-recorder';
 import { AttachmentPreview } from '@/components/ui/attachment-preview';
 import { cn } from '@/lib/utils';
 import { useHybridMessages } from "@/hooks/useHybridMessages";
@@ -576,10 +576,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
             type="button"
             variant="ghost"
             size="sm"
-            disabled={true}
-            className="h-9 w-9 p-0 opacity-50"
-            aria-label="Voice recording temporarily disabled"
-            title="Voice recording will be available after reinstallation"
+            onClick={() => setShowVoiceRecorder(true)}
+            disabled={isUploading || showVoiceRecorder}
+            className="h-9 w-9 p-0"
+            aria-label="Record voice message"
           >
             <Mic className="h-4 w-4" />
           </Button>

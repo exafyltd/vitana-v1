@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { VertexLiveService, VertexLiveCallbacks } from '@/services/vertexLiveService';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { VertexLiveService } from '@/services/vertexLiveService';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useVertexLive = () => {
@@ -9,96 +9,137 @@ export const useVertexLive = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [lastEvent, setLastEvent] = useState<string | null>(null);
-
+  const [lastEvent, setLastEvent] = useState<string>('');
+  
   const serviceRef = useRef<VertexLiveService | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const reconnectAttemptsRef = useRef(0);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+  const retryCountRef = useRef(0);
+  const manualDisconnectRef = useRef(false);
 
-  // Initialize service
   useEffect(() => {
-    const callbacks: VertexLiveCallbacks = {
-      onConnectionChange: (state) => {
-        setConnectionState(state);
-        setLastEvent(`Connection: ${state}`);
-        
-        // Handle auto-reconnect on error
-        if (state === 'error' && reconnectAttemptsRef.current < 3) {
-          reconnectAttemptsRef.current++;
-          const delay = Math.min(1000 * Math.pow(2, reconnectAttemptsRef.current), 10000);
-          
-          reconnectTimeoutRef.current = setTimeout(() => {
-            console.log(`🔄 Auto-reconnecting (attempt ${reconnectAttemptsRef.current})...`);
-            connect();
-          }, delay + Math.random() * 1000); // Add jitter
+    // Initialize service
+    serviceRef.current = new VertexLiveService({
+      onConnectionChange: (connected) => {
+        console.log('🔌 Connection status:', connected);
+        if (connected) {
+          if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+          retryCountRef.current = 0;
+          setConnectionState('connected');
+          setLastEvent('connected');
+        } else {
+          setConnectionState('disconnected');
+          setIsRecording(false);
+          setIsScreenSharing(false);
+          setLastEvent('disconnected');
         }
       },
-      onTranscription: (text) => {
-        setTranscript(text);
-        setLastEvent('Transcription received');
+      onTranscript: (text, isFinal) => {
+        console.log('📝 Transcript:', text, 'Final:', isFinal);
+        if (isFinal) {
+          setTranscript((prev) => prev + ' ' + text);
+        } else {
+          // Temporary transcript
+          setTranscript(text);
+        }
       },
-      onError: (err) => {
-        setError(err);
-        setLastEvent(`Error: ${err}`);
+      onError: (errorMsg) => {
+        console.error('❌ Vertex Live error:', errorMsg);
+        setError((prev) => (prev === errorMsg ? prev : errorMsg));
+        setConnectionState('error');
+        setLastEvent('error: ' + errorMsg);
+        
+        // Skip auto-reconnect if this was a manual disconnect
+        if (manualDisconnectRef.current) {
+          console.warn('⏭️ Manual disconnect — skipping auto-reconnect');
+          return;
+        }
+
+        // Exponential backoff with jitter (max 5 retries, capped at 15s)
+        retryCountRef.current += 1;
+        if (retryCountRef.current <= 5) {
+          const base = Math.min(15000, 2000 * Math.pow(2, retryCountRef.current - 1));
+          const jitter = base * (0.8 + Math.random() * 0.4); // 80%-120%
+          const delay = Math.min(15000, Math.round(jitter));
+          if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+          console.log(`🔄 Attempting reconnect in ${delay}ms (try #${retryCountRef.current})`);
+          reconnectTimeoutRef.current = setTimeout(() => {
+            if (serviceRef.current) {
+              connect();
+            }
+          }, delay);
+        } else {
+          console.warn('🛑 Max reconnect attempts reached');
+        }
       },
       onTrace: (message) => {
+        console.log('🔍 Trace:', message);
         setLastEvent(message);
       }
-    };
+    });
 
-    serviceRef.current = new VertexLiveService(callbacks);
-
+    // Cleanup on unmount
     return () => {
       if (reconnectTimeoutRef.current) {
         clearTimeout(reconnectTimeoutRef.current);
       }
-      serviceRef.current?.disconnect();
+      if (serviceRef.current) {
+        serviceRef.current.disconnect();
+      }
     };
   }, []);
 
   const connect = useCallback(async () => {
-    if (!serviceRef.current) return;
-
     try {
+      if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+      retryCountRef.current = 0;
       setError(null);
       setConnectionState('connecting');
-
-      // Get auth token from vertex-auth edge function
-      const { data, error: authError } = await supabase.functions.invoke('vertex-auth');
+      setLastEvent('Checking authentication...');
+      manualDisconnectRef.current = false;
       
-      if (authError) throw new Error(`Auth failed: ${authError.message}`);
-      if (!data?.access_token) throw new Error('No access token received');
-
-      await serviceRef.current.connect(data.access_token);
-      reconnectAttemptsRef.current = 0; // Reset on successful connection
+      const { data: { session } } = await supabase.auth.getSession();
       
+      if (!session?.access_token) {
+        const errorMsg = 'No authentication token';
+        setError(errorMsg);
+        setConnectionState('error');
+        setLastEvent('auth_failed: no token');
+        throw new Error(errorMsg);
+      }
+
+      setLastEvent('auth_ok');
+      await serviceRef.current?.connect(session.access_token);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Connection failed';
-      setError(errorMessage);
-      setConnectionState('error');
-      throw err;
+      const errorMsg = err instanceof Error ? err.message : 'Failed to connect';
+      if (!error) setError(errorMsg);
+      if (connectionState !== 'error') setConnectionState('error');
+      console.error('Failed to connect:', err);
     }
-  }, []);
+  }, [error, connectionState]);
 
   const disconnect = useCallback(() => {
-    if (reconnectTimeoutRef.current) {
-      clearTimeout(reconnectTimeoutRef.current);
-    }
-    reconnectAttemptsRef.current = 0;
-    
-    setIsRecording(false);
-    setIsScreenSharing(false);
-    setIsCameraActive(false);
+    if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+    retryCountRef.current = 0;
+    manualDisconnectRef.current = true;
+    serviceRef.current?.disconnect();
     setTranscript('');
     setError(null);
-    
-    serviceRef.current?.disconnect();
+    setConnectionState('disconnected');
   }, []);
 
   const startAudio = useCallback(async () => {
-    if (!serviceRef.current) return;
-    await serviceRef.current.startAudio();
-    setIsRecording(true);
+    try {
+      // Check if service is ready before starting
+      if (!serviceRef.current?.isConnected()) {
+        throw new Error('Setup not complete');
+      }
+      await serviceRef.current?.startAudio();
+      setIsRecording(true);
+    } catch (err) {
+      console.error('Failed to start audio:', err);
+      setError(err instanceof Error ? err.message : 'Failed to start audio recording');
+      throw err; // Re-throw so caller knows it failed
+    }
   }, []);
 
   const stopAudio = useCallback(() => {
@@ -107,9 +148,13 @@ export const useVertexLive = () => {
   }, []);
 
   const startScreen = useCallback(async () => {
-    if (!serviceRef.current) return;
-    await serviceRef.current.startScreen();
-    setIsScreenSharing(true);
+    try {
+      await serviceRef.current?.startScreen();
+      setIsScreenSharing(true);
+    } catch (err) {
+      console.error('Failed to start screen sharing:', err);
+      setError('Failed to start screen sharing');
+    }
   }, []);
 
   const stopScreen = useCallback(() => {
@@ -118,9 +163,13 @@ export const useVertexLive = () => {
   }, []);
 
   const startCamera = useCallback(async () => {
-    if (!serviceRef.current) return;
-    await serviceRef.current.startCamera();
-    setIsCameraActive(true);
+    try {
+      await serviceRef.current?.startCamera();
+      setIsCameraActive(true);
+    } catch (err) {
+      console.error('Failed to start camera:', err);
+      setError('Failed to start camera');
+    }
   }, []);
 
   const stopCamera = useCallback(() => {
@@ -129,11 +178,17 @@ export const useVertexLive = () => {
   }, []);
 
   const sendText = useCallback((text: string) => {
+    if (!serviceRef.current?.isConnected()) {
+      console.warn('⚠️ sendText called before connection ready');
+      setLastEvent('send_text_before_connect');
+      setError('Not connected - cannot send text');
+      return false;
+    }
     serviceRef.current?.sendText(text);
+    return true;
   }, []);
 
   return {
-    // State
     isConnected: connectionState === 'connected',
     isConnecting: connectionState === 'connecting',
     isError: connectionState === 'error',
@@ -144,8 +199,6 @@ export const useVertexLive = () => {
     transcript,
     error,
     lastEvent,
-    
-    // Actions
     connect,
     disconnect,
     startAudio,
@@ -154,6 +207,6 @@ export const useVertexLive = () => {
     stopScreen,
     startCamera,
     stopCamera,
-    sendText,
+    sendText
   };
 };

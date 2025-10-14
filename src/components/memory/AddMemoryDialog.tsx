@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-// VoiceRecorder removed - will be reinstalled
+import { VoiceRecorder } from "@/components/ui/voice-recorder";
 import { Mic, Type, Camera, X, Loader2 } from "lucide-react";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { useToast } from "@/hooks/use-toast";
@@ -239,8 +239,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
 
               {isRecording && (
                 <div className="border-2 border-primary rounded-lg p-4">
-                  <p className="text-sm text-muted-foreground">Voice recording will be available after reinstallation.</p>
-                  <Button onClick={() => setIsRecording(false)} className="mt-2">Cancel</Button>
+                  <VoiceRecorder
+                    onRecordingComplete={handleVoiceRecordingComplete}
+                    onCancel={() => setIsRecording(false)}
+                  />
                 </div>
               )}
 

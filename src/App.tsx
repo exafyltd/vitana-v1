@@ -118,6 +118,7 @@ import Billing from "./pages/settings/Billing";
 import Support from "./pages/settings/Support";
 import TenantRole from "./pages/settings/TenantRole";
 import AutopilotSettings from "./pages/settings/AutopilotSettings";
+import VoiceAISettings from "./pages/settings/VoiceAISettings";
 
 // Wallet sub-pages
 import Balance from "./pages/wallet/Balance";
@@ -170,7 +171,7 @@ import AISituationAnalyzer from "./pages/admin/ai-assistant/AISituationAnalyzer"
 import PatternDiscovery from "./pages/admin/ai-assistant/PatternDiscovery";
 import AIAssistantAnalytics from "./pages/admin/ai-assistant/Analytics";
 import LiveStreamOverview from "./pages/admin/LiveStreamOverview";
-// VertexTesting removed
+import VertexTesting from "./pages/admin/VertexTesting";
 import CommunityRoomsAdmin from "./pages/admin/CommunityRoomsAdmin";
 import TelemedicineSessions from "./pages/admin/TelemedicineSessions";
 import StreamSettings from "./pages/admin/StreamSettings";
@@ -507,7 +508,7 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/settings/autopilot" element={<Navigate to="/assistant?tab=autopilot" replace />} />
-          <Route path="/settings/voice-ai" element={<Navigate to="/assistant?tab=ai" replace />} />
+          <Route path="/settings/voice-ai" element={<Navigate to="/assistant?tab=voice" replace />} />
           
           {/* AI Assistant - New unified section */}
           <Route path="/assistant" element={
@@ -1080,7 +1081,13 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
-          {/* Vertex testing route removed */}
+          <Route path="/admin/live-stream/vertex-testing" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <VertexTesting />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
           <Route path="/admin/live-stream/community-rooms" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="admin">

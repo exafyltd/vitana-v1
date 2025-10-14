@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { useUserPreferences } from './useUserPreferences';
+import { useTextToSpeech } from './useTextToSpeech';
 import { generateGreetingMessage, GreetingContext, GreetingMessage, GreetingMessageType } from '@/services/greetingMessages';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -10,6 +11,7 @@ const LAST_GREETING_KEY = 'vitana_last_greeting_time';
 export function useIntelligentGreeting() {
   const { user } = useAuth();
   const { preferences } = useUserPreferences();
+  const { speak, isSpeaking } = useTextToSpeech();
   const [lastGreeting, setLastGreeting] = useState<GreetingMessage | null>(null);
   const [greetingHistory, setGreetingHistory] = useState<Array<{ message: string; time: string }>>([]);
   const activationTimesRef = useRef<number[]>([]);
@@ -140,7 +142,7 @@ export function useIntelligentGreeting() {
         context: data.context
       };
       setLastGreeting(greetingMessage);
-      // TTS removed - greeting only stored, not spoken
+      speak(data.greeting);
 
       sessionStorage.setItem(SESSION_KEY, 'true');
       localStorage.setItem(LAST_GREETING_KEY, new Date().toISOString());
@@ -153,7 +155,7 @@ export function useIntelligentGreeting() {
     } catch (error) {
       console.error('Failed to trigger greeting:', error);
     }
-  }, [shouldGreet, preferences]);
+  }, [shouldGreet, speak, preferences]);
 
   const manualGreeting = useCallback(async () => {
     try {
@@ -183,7 +185,7 @@ export function useIntelligentGreeting() {
         context: data.context
       };
       setLastGreeting(greetingMessage);
-      // TTS removed - greeting only stored, not spoken
+      speak(data.greeting);
 
       const historyEntry = {
         message: data.greeting,
@@ -193,7 +195,7 @@ export function useIntelligentGreeting() {
     } catch (error) {
       console.error('Failed to trigger manual greeting:', error);
     }
-  }, [preferences]);
+  }, [speak, preferences]);
 
   const clearGreetingState = useCallback(() => {
     sessionStorage.removeItem(SESSION_KEY);
@@ -204,6 +206,7 @@ export function useIntelligentGreeting() {
     manualGreeting,
     clearGreetingState,
     lastGreeting,
-    greetingHistory
+    greetingHistory,
+    isSpeaking
   };
 }

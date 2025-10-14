@@ -1,9 +1,8 @@
-import { supabase } from '@/integrations/supabase/client';
-import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue } from '@/utils/vertexAudio';
+import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue, wrapPCM16ToWav } from '@/utils/vertexAudio';
 
 export interface VertexLiveCallbacks {
-  onConnectionChange?: (state: 'disconnected' | 'connecting' | 'connected' | 'error') => void;
-  onTranscription?: (text: string) => void;
+  onConnectionChange?: (connected: boolean) => void;
+  onTranscript?: (text: string, isFinal: boolean) => void;
   onError?: (error: string) => void;
   onTrace?: (message: string) => void;
 }
@@ -14,296 +13,397 @@ export class VertexLiveService {
   private screenRecorder: ScreenRecorder | null = null;
   private cameraRecorder: CameraRecorder | null = null;
   private audioContext: AudioContext | null = null;
-  private callbacks: VertexLiveCallbacks;
-  private connectionState: 'disconnected' | 'connecting' | 'connected' | 'error' = 'disconnected';
-  private setupComplete = false;
-  private transcript = '';
+  private callbacks: VertexLiveCallbacks = {};
+  private conversationId: string | null = null;
+  private isSetupComplete = false;
 
-  constructor(callbacks: VertexLiveCallbacks = {}) {
+  constructor(callbacks: VertexLiveCallbacks) {
     this.callbacks = callbacks;
   }
 
   async connect(token: string): Promise<void> {
-    this.trace('🔌 Connecting to Vertex AI Live...');
-    this.updateConnectionState('connecting');
+    console.log('🔌 Connecting to Vertex AI Live API...');
+    this.callbacks.onTrace?.('Starting connection...');
 
     try {
-      // Initialize AudioContext
-      if (!this.audioContext) {
-        this.audioContext = new AudioContext({ sampleRate: 24000 });
-        if (this.audioContext.state === 'suspended') {
-          await this.audioContext.resume();
+      this.audioContext = new AudioContext({ sampleRate: 24000 });
+
+      // Build WebSocket URL to Supabase Edge Function (canonical path)
+      const makeHosts = () => {
+        const fallbackHost = 'inmkhvwdcuyhnxkgfvsb.functions.supabase.co';
+        try {
+          const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string | undefined;
+          if (!supabaseUrl) throw new Error('Missing VITE_SUPABASE_URL');
+          const parsed = new URL(supabaseUrl);
+          return parsed.host.replace('.supabase.co', '.functions.supabase.co');
+        } catch {
+          return fallbackHost;
         }
-      }
+      };
+      const functionsHost = makeHosts();
+      const wsUrl = `wss://${functionsHost}/vertex-live?token=${encodeURIComponent(token)}`;
 
-      // Connect to WebSocket proxy
-      const wsHost = 'inmkhvwdcuyhnxkgfvsb.supabase.co'.replace('.supabase.co', '.functions.supabase.co');
-      const wsUrl = `wss://${wsHost}/vertex-live?token=${encodeURIComponent(token)}`;
-      
-      this.trace(`📡 Connecting to: ${wsUrl}`);
-      this.ws = new WebSocket(wsUrl);
-      
-      this.ws.onopen = () => {
-        this.trace('✅ WebSocket connected');
+      const tryConnect = (url: string) => {
+        console.log('🔗 Connecting to:', url);
+        this.callbacks.onTrace?.('Trying WebSocket (canonical path)...');
+        const ws = new WebSocket(url);
+        ws.binaryType = 'arraybuffer';
+
+        // Safety: setup timeout if 'connection_ready' never arrives
+        const setupTimeout = setTimeout(() => {
+          if (!this.conversationId) {
+            console.warn('⏱️ Setup timeout: no connection_ready received');
+            this.callbacks.onError?.('Setup timeout: no connection_ready');
+            try { ws.close(); } catch {}
+          }
+        }, 10000);
+
+        ws.onopen = () => {
+          this.ws = ws;
+          console.log('✅ WebSocket connected to edge function');
+          this.callbacks.onTrace?.('WebSocket open, waiting for connection_ready...');
+          // No need to send auth message - it's in the URL
+        };
+
+        ws.onmessage = async (event) => {
+          try {
+            // Check if this is binary audio data or JSON
+            if (event.data instanceof ArrayBuffer) {
+              // Handle binary audio data - can be WAV or raw PCM
+              const bytes = new Uint8Array(event.data);
+              const isRiff = bytes.length >= 4 && 
+                bytes[0] === 0x52 && bytes[1] === 0x49 && 
+                bytes[2] === 0x46 && bytes[3] === 0x46;
+              
+              const format = isRiff ? 'wav' : 'pcm';
+              console.log(`📥 audio_chunk_received (${format}): size=${bytes.byteLength}`);
+              this.callbacks.onTrace?.(`audio_chunk_received (${format}): ${bytes.byteLength} bytes`);
+              
+              if (!this.audioContext) {
+                console.error('❌ No audio context available!');
+                return;
+              }
+              
+              // Resume audio context if suspended (browser autoplay policy)
+              if (this.audioContext.state === 'suspended') {
+                await this.audioContext.resume();
+                console.log('▶️ Resumed audio context');
+              }
+              
+              try {
+                let wavData: Uint8Array;
+                
+                if (isRiff) {
+                  // Already WAV format
+                  wavData = bytes;
+                } else {
+                  // Raw PCM16 mono 24kHz - wrap with WAV header
+                  console.log('🔄 Wrapping PCM with WAV header...');
+                  wavData = wrapPCM16ToWav(bytes, 24000);
+                }
+                
+                // Decode and play
+                console.log('🎧 Decoding audio...');
+                const audioBuffer = await this.audioContext.decodeAudioData(wavData.buffer.slice(0) as ArrayBuffer);
+                const duration = audioBuffer.duration.toFixed(2);
+                console.log(`✅ audio_decoded: duration=${duration}s`);
+                this.callbacks.onTrace?.(`audio_decoded: ${duration}s`);
+                
+                const source = this.audioContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(this.audioContext.destination);
+                source.start(0);
+                console.log('▶️ Audio playback started');
+              } catch (error) {
+                console.error('❌ Failed to decode/play audio:', error);
+                if (error instanceof Error) {
+                  console.error('Error:', error.name, error.message);
+                }
+                this.callbacks.onTrace?.('audio_decode_failed');
+              }
+            } else if (typeof event.data === 'string') {
+              // Handle JSON messages
+              const data = JSON.parse(event.data);
+              if (data?.type === 'connection_ready' || data?.setupComplete) {
+                clearTimeout(setupTimeout);
+              }
+              await this.handleServerMessage(data);
+            } else {
+              console.warn('⚠️ Unknown message type:', typeof event.data);
+            }
+          } catch (error) {
+            console.error('Error processing server message:', error);
+          }
+        };
+
+        ws.onerror = (error: Event) => {
+          console.error('❌ WebSocket error:', error);
+          const wsError = error as ErrorEvent;
+          const errorMsg = wsError.message || 'WebSocket transport error';
+          console.error('Error details:', errorMsg);
+          clearTimeout(setupTimeout);
+          this.callbacks.onError?.(errorMsg);
+        };
+
+        ws.onclose = (ev) => {
+          const e = ev as CloseEvent;
+          const reason = e?.reason || '';
+          console.log('🔌 WebSocket closed', e?.code, reason);
+          this.callbacks.onTrace?.(`WebSocket closed: ${e?.code} ${reason}`);
+
+          clearTimeout(setupTimeout);
+
+          // If we never got connection_ready, emit error
+          if (!this.conversationId) {
+            this.callbacks.onError?.(`WebSocket closed before ready (code ${e?.code}${reason ? ': ' + reason : ''})`);
+          }
+
+          this.callbacks.onConnectionChange?.(false);
+          this.isSetupComplete = false;
+        };
       };
 
-      this.ws.onmessage = (event) => {
-        this.handleServerMessage(event.data);
-      };
-
-      this.ws.onerror = (error) => {
-        this.trace(`❌ WebSocket error: ${error}`);
-        this.updateConnectionState('error');
-        this.callbacks.onError?.('WebSocket connection failed');
-      };
-
-      this.ws.onclose = (event) => {
-        this.trace(`🔌 WebSocket closed: ${event.code} ${event.reason}`);
-        this.updateConnectionState('disconnected');
-        this.cleanup();
-      };
-
+      // Start single attempt with canonical path only
+      tryConnect(wsUrl);
     } catch (error) {
-      this.trace(`❌ Connection error: ${error}`);
-      this.updateConnectionState('error');
+      console.error('❌ Error connecting to Vertex AI:', error);
+      this.callbacks.onError?.('Failed to connect');
       throw error;
     }
   }
 
-  private handleServerMessage(data: string | Blob) {
-    if (data instanceof Blob) {
-      // Binary audio data
-      data.arrayBuffer().then(buffer => {
-        const uint8Array = new Uint8Array(buffer);
-        if (this.audioContext) {
-          playAudioData(this.audioContext, uint8Array);
-        }
-      });
+  private async handleServerMessage(data: any) {
+    console.log('📥 Server message:', data.type || Object.keys(data)[0]);
+
+    if (data.type === 'connection_ready') {
+      this.conversationId = data.conversationId;
+      console.log('✅ Connection ready, conversation ID:', this.conversationId);
+      this.callbacks.onTrace?.('Received connection_ready (waiting for setup)');
+      // Don't signal connected yet - wait for setupComplete
       return;
     }
 
-    // Parse JSON message
-    try {
-      const message = JSON.parse(data);
+    if (data.type === 'error') {
+      console.error('❌ Server error:', data.message);
+      this.callbacks.onError?.(data.message);
+      return;
+    }
+
+    // Handle setup complete
+    if (data.setupComplete) {
+      this.isSetupComplete = true;
+      console.log('✅ Vertex AI setup complete - ready for audio/video');
+      this.callbacks.onTrace?.('Setup complete');
+      // Signal true connection ready NOW (after setup, not just WS open)
+      this.callbacks.onConnectionChange?.(true);
+      return;
+    }
+
+    // Handle server content (AI responses)
+    if (data.serverContent) {
+      const content = data.serverContent;
       
-      if (message.setupComplete) {
-        this.trace('✅ Setup complete');
-        this.setupComplete = true;
-        this.updateConnectionState('connected');
-      }
-      
-      if (message.serverContent) {
-        // Handle audio output
-        if (message.serverContent.modelTurn?.parts) {
-          for (const part of message.serverContent.modelTurn.parts) {
-            if (part.inlineData?.data) {
-              // Base64 audio data
-              const binaryString = atob(part.inlineData.data);
-              const bytes = new Uint8Array(binaryString.length);
-              for (let i = 0; i < binaryString.length; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-              }
-              if (this.audioContext) {
-                playAudioData(this.audioContext, bytes);
-              }
-            }
+      if (content.modelTurn) {
+        const parts = content.modelTurn.parts || [];
+        
+        // Handle audio responses (temporarily disabled - using binary path instead)
+        for (const part of parts) {
+          if (part.inlineData && part.inlineData.mimeType?.includes('audio')) {
+            console.log('🔊 Received inline audio from AI (skipping - using binary path)');
+            this.callbacks.onTrace?.('inline_audio_received (disabled)');
+            // Disabled to avoid double-playback with binary audio stream
+            // The main audio comes through the ArrayBuffer path above
+          }
+
+          // Handle text responses (transcripts)
+          if (part.text) {
+            this.callbacks.onTranscript?.(part.text, content.turnComplete || false);
           }
         }
-        
-        // Handle text transcription
-        if (message.serverContent.outputTranscription?.text) {
-          this.transcript += message.serverContent.outputTranscription.text;
-          this.callbacks.onTranscription?.(this.transcript);
-        }
-        
-        // Handle turn complete
-        if (message.serverContent.turnComplete) {
-          this.trace('✅ Turn complete');
-        }
-        
-        // Handle interruption
-        if (message.serverContent.interrupted) {
-          this.trace('⚠️ Interrupted by user');
-          clearAudioQueue();
-        }
       }
-      
-      if (message.type === 'error') {
-        this.trace(`❌ Server error: ${message.error}`);
-        this.callbacks.onError?.(message.error);
+
+      // Handle interruptions
+      if (content.interrupted) {
+        console.log('⚠️ AI response interrupted');
+        clearAudioQueue();
       }
-      
-    } catch (error) {
-      this.trace(`❌ Error parsing message: ${error}`);
+
+      // Flush audio buffer when turn is complete
+      if (content.turnComplete) {
+        console.log('🏁 Turn complete, flushing audio buffer');
+        const { flushAudioQueue } = await import('@/utils/vertexAudio');
+        await flushAudioQueue();
+      }
     }
   }
 
   async startAudio() {
-    if (this.audioRecorder) {
-      this.trace('⚠️ Audio already recording');
+    if (!this.isSetupComplete) {
+      console.warn('⚠️ Setup not complete, waiting...');
       return;
     }
 
-    this.trace('🎤 Starting audio recording...');
+    console.log('🎤 Starting audio recording...');
     
     this.audioRecorder = new AudioRecorder(
       (audioData) => {
-        if (this.ws?.readyState === WebSocket.OPEN && this.setupComplete) {
-          const base64Audio = encodeAudioForVertex(audioData);
-          const message = {
-            realtimeInput: {
-              mediaChunks: [{
-                mimeType: 'audio/pcm;rate=24000',
-                data: base64Audio
-              }]
-            }
-          };
-          this.ws.send(JSON.stringify(message));
-        }
+        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+
+        // Encode and send audio to Vertex AI
+        const base64Audio = encodeAudioForVertex(audioData);
+        
+        const message = {
+          realtimeInput: {
+            mediaChunks: [{
+              mimeType: "audio/pcm;rate=24000",
+              data: base64Audio
+            }]
+          }
+        };
+
+        this.ws.send(JSON.stringify(message));
       },
-      (trace) => this.trace(trace)
+      this.callbacks.onTrace // Pass trace callback for mic diagnostics
     );
 
     await this.audioRecorder.start();
   }
 
   stopAudio() {
+    console.log('🛑 Stopping audio recording...');
+    
     if (this.audioRecorder) {
       this.audioRecorder.stop();
       this.audioRecorder = null;
-      this.trace('🛑 Audio recording stopped');
     }
   }
 
   async startScreen() {
-    if (this.screenRecorder) {
-      this.trace('⚠️ Screen already sharing');
+    if (!this.isSetupComplete) {
+      console.warn('⚠️ Setup not complete, waiting...');
       return;
     }
 
-    this.trace('🖥️ Starting screen share...');
+    console.log('🖥️ Starting screen sharing...');
     
-    this.screenRecorder = new ScreenRecorder(
-      (base64Image) => {
-        if (this.ws?.readyState === WebSocket.OPEN && this.setupComplete) {
-          const message = {
-            realtimeInput: {
-              mediaChunks: [{
-                mimeType: 'image/jpeg',
-                data: base64Image
-              }]
-            }
-          };
-          this.ws.send(JSON.stringify(message));
+    this.screenRecorder = new ScreenRecorder((frameData) => {
+      if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+
+      // Send screen frame to Vertex AI (1 FPS)
+      const message = {
+        realtimeInput: {
+          mediaChunks: [{
+            mimeType: "image/jpeg",
+            data: frameData
+          }]
         }
-      },
-      (trace) => this.trace(trace)
-    );
+      };
+
+      this.ws.send(JSON.stringify(message));
+    });
 
     await this.screenRecorder.start();
   }
 
   stopScreen() {
+    console.log('🛑 Stopping screen sharing...');
+    
     if (this.screenRecorder) {
       this.screenRecorder.stop();
       this.screenRecorder = null;
-      this.trace('🛑 Screen share stopped');
     }
   }
 
   async startCamera() {
-    if (this.cameraRecorder) {
-      this.trace('⚠️ Camera already active');
+    if (!this.isSetupComplete) {
+      console.warn('⚠️ Setup not complete, waiting...');
       return;
     }
 
-    this.trace('📹 Starting camera...');
+    console.log('📹 Starting camera...');
     
-    this.cameraRecorder = new CameraRecorder(
-      (base64Image) => {
-        if (this.ws?.readyState === WebSocket.OPEN && this.setupComplete) {
-          const message = {
-            realtimeInput: {
-              mediaChunks: [{
-                mimeType: 'image/jpeg',
-                data: base64Image
-              }]
-            }
-          };
-          this.ws.send(JSON.stringify(message));
+    this.cameraRecorder = new CameraRecorder((frameData) => {
+      if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+
+      // Send camera frame to Vertex AI (1 FPS)
+      const message = {
+        realtimeInput: {
+          mediaChunks: [{
+            mimeType: "image/jpeg",
+            data: frameData
+          }]
         }
-      },
-      (trace) => this.trace(trace)
-    );
+      };
+
+      this.ws.send(JSON.stringify(message));
+    });
 
     await this.cameraRecorder.start();
   }
 
   stopCamera() {
+    console.log('🛑 Stopping camera...');
+    
     if (this.cameraRecorder) {
       this.cameraRecorder.stop();
       this.cameraRecorder = null;
-      this.trace('🛑 Camera stopped');
     }
   }
 
   sendText(text: string) {
-    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.setupComplete) {
-      this.trace('⚠️ Cannot send text: not connected');
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      console.warn('⚠️ WebSocket not connected');
+      this.callbacks.onError?.('Cannot send text: WebSocket not connected');
+      this.callbacks.onTrace?.('send_text_failed_not_connected');
       return;
     }
 
-    this.trace(`📤 Sending text: ${text}`);
+    if (!this.isSetupComplete) {
+      console.warn('⚠️ Setup not complete, waiting...');
+      this.callbacks.onError?.('Cannot send text: Setup not complete');
+      this.callbacks.onTrace?.('send_text_failed_setup_incomplete');
+      return;
+    }
+
+    console.log('📤 Sending text:', text);
+    this.callbacks.onTrace?.('text_message_sent');
+
     const message = {
       clientContent: {
         turns: [{
-          role: 'user',
+          role: "user",
           parts: [{ text }]
         }],
         turnComplete: true
       }
     };
+
     this.ws.send(JSON.stringify(message));
   }
 
   disconnect() {
-    this.trace('🔌 Disconnecting...');
+    console.log('🔌 Disconnecting from Vertex AI...');
     
     this.stopAudio();
     this.stopScreen();
     this.stopCamera();
-    
+
+    if (this.audioContext) {
+      this.audioContext.close();
+      this.audioContext = null;
+    }
+
     if (this.ws) {
       this.ws.close();
       this.ws = null;
     }
-    
-    clearAudioQueue();
-    this.setupComplete = false;
-    this.transcript = '';
-    this.updateConnectionState('disconnected');
-    
-    this.trace('✅ Disconnected');
+
+    this.isSetupComplete = false;
+    this.conversationId = null;
+    this.callbacks.onConnectionChange?.(false);
   }
 
   isConnected(): boolean {
-    return this.connectionState === 'connected' && this.setupComplete;
-  }
-
-  private updateConnectionState(state: typeof this.connectionState) {
-    this.connectionState = state;
-    this.callbacks.onConnectionChange?.(state);
-  }
-
-  private trace(message: string) {
-    console.log(message);
-    this.callbacks.onTrace?.(message);
-  }
-
-  private cleanup() {
-    this.stopAudio();
-    this.stopScreen();
-    this.stopCamera();
-    clearAudioQueue();
+    return this.ws?.readyState === WebSocket.OPEN && this.isSetupComplete;
   }
 }
