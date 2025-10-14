@@ -6,7 +6,6 @@ import StandardHeader from "@/components/StandardHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { Loader2 } from "lucide-react";
-import VoiceSettingsPanel from "@/components/assistant/VoiceSettingsPanel";
 import AIModelSettingsPanel from "@/components/assistant/AIModelSettingsPanel";
 import ProactiveTalkingPanel from "@/components/assistant/ProactiveTalkingPanel";
 import AutopilotSettingsPanel from "@/components/assistant/AutopilotSettingsPanel";
@@ -15,7 +14,7 @@ export default function AIAssistant() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
   
-  const activeTab = searchParams.get('tab') || 'voice';
+  const activeTab = searchParams.get('tab') || 'ai';
 
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
@@ -50,20 +49,11 @@ export default function AIAssistant() {
           />
 
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="voice">Voice</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="ai">AI</TabsTrigger>
               <TabsTrigger value="autopilot">Autopilot & Automation</TabsTrigger>
               <TabsTrigger value="proactive">Proactive Talking</TabsTrigger>
             </TabsList>
-
-            <TabsContent value="voice" className="space-y-4 mt-6">
-              <VoiceSettingsPanel
-                preferences={preferences}
-                isUpdating={isUpdating}
-                updatePreferences={updatePreferences}
-              />
-            </TabsContent>
 
             <TabsContent value="ai" className="space-y-4 mt-6">
               <AIModelSettingsPanel

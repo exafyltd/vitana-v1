@@ -118,7 +118,6 @@ import Billing from "./pages/settings/Billing";
 import Support from "./pages/settings/Support";
 import TenantRole from "./pages/settings/TenantRole";
 import AutopilotSettings from "./pages/settings/AutopilotSettings";
-import VoiceAISettings from "./pages/settings/VoiceAISettings";
 
 // Wallet sub-pages
 import Balance from "./pages/wallet/Balance";
@@ -508,7 +507,7 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/settings/autopilot" element={<Navigate to="/assistant?tab=autopilot" replace />} />
-          <Route path="/settings/voice-ai" element={<Navigate to="/assistant?tab=voice" replace />} />
+          <Route path="/settings/voice-ai" element={<Navigate to="/assistant?tab=ai" replace />} />
           
           {/* AI Assistant - New unified section */}
           <Route path="/assistant" element={

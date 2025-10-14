@@ -6,14 +6,13 @@ interface IntelligentGreetingContextValue {
   triggerGreeting: () => Promise<void>;
   manualGreeting: () => Promise<void>;
   clearGreetingState: () => void;
-  isSpeaking: boolean;
 }
 
 const IntelligentGreetingContext = createContext<IntelligentGreetingContextValue | undefined>(undefined);
 
 export function IntelligentGreetingProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const { triggerGreeting, manualGreeting, clearGreetingState, isSpeaking } = useIntelligentGreeting();
+  const { triggerGreeting, manualGreeting, clearGreetingState } = useIntelligentGreeting();
 
   // Trigger greeting once per session after authentication
   useEffect(() => {
@@ -38,20 +37,11 @@ export function IntelligentGreetingProvider({ children }: { children: ReactNode 
     triggerGreeting,
     manualGreeting,
     clearGreetingState,
-    isSpeaking
   };
 
   return (
     <IntelligentGreetingContext.Provider value={value}>
       {children}
-      
-      {/* Visual feedback when Vitana is speaking */}
-      {isSpeaking && (
-        <div className="fixed bottom-4 right-4 bg-primary text-primary-foreground px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-pulse z-50">
-          <span className="text-lg">🔊</span>
-          <span className="text-sm font-medium">Vitana is speaking...</span>
-        </div>
-      )}
     </IntelligentGreetingContext.Provider>
   );
 }

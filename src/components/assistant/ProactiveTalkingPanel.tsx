@@ -15,7 +15,7 @@ interface ProactiveTalkingPanelProps {
 }
 
 export default function ProactiveTalkingPanel({ preferences, isUpdating, updatePreferences }: ProactiveTalkingPanelProps) {
-  const { manualGreeting, clearGreetingState, lastGreeting, isSpeaking } = useIntelligentGreeting();
+  const { manualGreeting, clearGreetingState, lastGreeting } = useIntelligentGreeting();
 
   // Extract language from voice or use stt_language
   const extractLanguageFromVoice = (voice: string): string | null => {
@@ -160,11 +160,11 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
           <div className="flex gap-2">
             <Button
               onClick={manualGreeting}
-              disabled={isSpeaking || isUpdating}
+              disabled={isUpdating}
               className="flex-1"
             >
               <Play className="mr-2 h-4 w-4" />
-              {isSpeaking ? "Speaking..." : "Play Sample Greeting"}
+              Play Sample Greeting
             </Button>
             <Button
               onClick={clearGreetingState}

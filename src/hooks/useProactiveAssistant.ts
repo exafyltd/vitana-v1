@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useTextToSpeech } from './useTextToSpeech';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 interface ProactiveMessage {
@@ -15,7 +14,6 @@ export function useProactiveAssistant() {
   const [messageHistory, setMessageHistory] = useState<ProactiveMessage[]>([]);
   const [lastMessageTime, setLastMessageTime] = useState<Date | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const { speak, isSpeaking } = useTextToSpeech();
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
   
@@ -81,12 +79,7 @@ const accessToken = session?.access_token;
       setMessageHistory(prev => [message, ...prev].slice(0, 10));
       setLastMessageTime(new Date());
 
-      // Speak the message
-      speak(message.text, {
-        onError: (error) => {
-          console.error('TTS error:', error);
-        }
-      });
+      // TTS removed - message only displayed as toast
 
       // Show toast notification
       toast({
@@ -137,27 +130,14 @@ const accessToken = session?.access_token;
     } finally {
       setIsGenerating(false);
     }
-  }, [lastMessageTime, speak, toast, selectedLanguage]);
+  }, [lastMessageTime, toast, selectedLanguage]);
 
-  const replayLastMessage = useCallback(() => {
-    if (messageHistory.length > 0 && !isSpeaking) {
-      const lastMessage = messageHistory[0];
-      speak(lastMessage.text);
-      
-      toast({
-        title: `${getMessageIcon(lastMessage.type)} Replaying`,
-        description: lastMessage.text,
-        duration: 5000,
-      });
-    }
-  }, [messageHistory, isSpeaking, speak, toast]);
-
+  // Remove replayLastMessage since TTS is removed
+  
   return {
     triggerProactiveMessage,
-    replayLastMessage,
     messageHistory,
     isGenerating,
-    isSpeaking,
     canGenerate: !lastMessageTime || (Date.now() - lastMessageTime.getTime()) / 1000 >= 30,
   };
 }
