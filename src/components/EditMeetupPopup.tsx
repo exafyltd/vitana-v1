@@ -244,9 +244,10 @@ export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps
         endTime = start.toISOString();
       }
 
-      // Upload selected image to Supabase Storage (covers) and use permanent public URL
-      let uploadedImageUrl: string | undefined = event.image_url; // Keep existing image by default
+      // Determine image URL: AI-generated, manually uploaded, or existing
+      let uploadedImageUrl: string | undefined = formData.imageUrl || event.image_url; // Prefer AI-generated or new image
       if (selectedImage) {
+        // Manual image upload
         try {
           const { data: { user } } = await supabase.auth.getUser();
           const ext = selectedImage.name.split('.').pop() || 'jpg';
