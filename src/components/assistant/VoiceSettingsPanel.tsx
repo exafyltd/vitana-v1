@@ -149,6 +149,19 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       { name: 'pt-PT-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
       { name: 'pt-PT-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
     ],
+    'pl-PL': [
+      { name: 'pl-PL-Chirp3-HD-Despina', label: 'Despina (Gemini Chirp 3 HD)' },
+      { name: 'pl-PL-Standard-A', label: 'Standard A (Google Speech)' },
+      { name: 'pl-PL-Standard-B', label: 'Standard B (Google Speech)' },
+      { name: 'pl-PL-Standard-C', label: 'Standard C (Google Speech)' },
+      { name: 'pl-PL-Standard-D', label: 'Standard D (Google Speech)' },
+      { name: 'pl-PL-Standard-E', label: 'Standard E (Google Speech)' },
+      { name: 'pl-PL-Wavenet-A', label: 'Wavenet A (Google Speech)' },
+      { name: 'pl-PL-Wavenet-B', label: 'Wavenet B (Google Speech)' },
+      { name: 'pl-PL-Wavenet-C', label: 'Wavenet C (Google Speech)' },
+      { name: 'pl-PL-Wavenet-D', label: 'Wavenet D (Google Speech)' },
+      { name: 'pl-PL-Wavenet-E', label: 'Wavenet E (Google Speech)' },
+    ],
   };
 
   const filteredVoices = availableVoices.filter(voice => {
@@ -170,6 +183,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       'zh-CN': '您好，这是您所选语音设置的预览。',
       'fr-FR': 'Bonjour, ceci est un aperçu de vos paramètres vocaux sélectionnés.',
       'pt-PT': 'Olá, esta é uma prévia das configurações de voz selecionadas.',
+      'pl-PL': 'Cześć, to jest podgląd wybranych ustawień głosu.',
     };
     return phrases[language] || phrases['en-US'];
   };
@@ -257,6 +271,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               <SelectItem value="zh-CN">Chinese (CN)</SelectItem>
               <SelectItem value="fr-FR">French (FR)</SelectItem>
               <SelectItem value="pt-PT">Portuguese (PT)</SelectItem>
+              <SelectItem value="pl-PL">Polish (PL)</SelectItem>
             </SelectContent>
           </Select>
         </div>
