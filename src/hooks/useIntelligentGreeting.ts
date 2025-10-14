@@ -142,7 +142,13 @@ export function useIntelligentGreeting() {
         context: data.context
       };
       setLastGreeting(greetingMessage);
-      speak(data.greeting);
+      
+      // Use TTS with error handling
+      speak(data.greeting, {
+        onError: (err) => {
+          console.error('TTS failed during greeting:', err);
+        }
+      });
 
       sessionStorage.setItem(SESSION_KEY, 'true');
       localStorage.setItem(LAST_GREETING_KEY, new Date().toISOString());
@@ -152,8 +158,9 @@ export function useIntelligentGreeting() {
         time: new Date().toISOString()
       };
       setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to trigger greeting:', error);
+      // Silent fail - don't block app if greeting fails
     }
   }, [shouldGreet, speak, preferences]);
 
@@ -185,15 +192,22 @@ export function useIntelligentGreeting() {
         context: data.context
       };
       setLastGreeting(greetingMessage);
-      speak(data.greeting);
+      
+      // Use TTS with error handling
+      speak(data.greeting, {
+        onError: (err) => {
+          console.error('TTS failed during manual greeting:', err);
+        }
+      });
 
       const historyEntry = {
         message: data.greeting,
         time: new Date().toISOString()
       };
       setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to trigger manual greeting:', error);
+      // Silent fail - don't block app if greeting fails
     }
   }, [speak, preferences]);
 
