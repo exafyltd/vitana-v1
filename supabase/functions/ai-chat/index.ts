@@ -1048,7 +1048,20 @@ serve(async (req) => {
       });
 
       if (!aiResponse.ok) {
-        throw new Error('AI response failed');
+        const errorBody = await aiResponse.text();
+        console.error('[ai-chat] Lovable AI error:', {
+          status: aiResponse.status,
+          statusText: aiResponse.statusText,
+          body: errorBody.substring(0, 500)
+        });
+        
+        if (aiResponse.status === 429) {
+          throw new Error('RATE_LIMIT_EXCEEDED: Too many requests. Please wait a moment and try again.');
+        }
+        if (aiResponse.status === 402) {
+          throw new Error('AI_CREDITS_DEPLETED: AI credits have been used up. Please add credits to continue using AI features.');
+        }
+        throw new Error(`AI_API_ERROR: Failed to get AI response (${aiResponse.status}): ${errorBody.substring(0, 200)}`);
       }
 
       const normalizedLang = normalizeLanguage(detectedLanguage);
@@ -1403,7 +1416,20 @@ serve(async (req) => {
     });
 
     if (!aiResponse.ok) {
-      throw new Error('AI response failed');
+      const errorBody = await aiResponse.text();
+      console.error('[ai-chat][non-streaming] Lovable AI error:', {
+        status: aiResponse.status,
+        statusText: aiResponse.statusText,
+        body: errorBody.substring(0, 500)
+      });
+      
+      if (aiResponse.status === 429) {
+        throw new Error('RATE_LIMIT_EXCEEDED: Too many requests. Please wait a moment and try again.');
+      }
+      if (aiResponse.status === 402) {
+        throw new Error('AI_CREDITS_DEPLETED: AI credits have been used up. Please add credits to continue using AI features.');
+      }
+      throw new Error(`AI_API_ERROR: Failed to get AI response (${aiResponse.status}): ${errorBody.substring(0, 200)}`);
     }
 
     const aiData = await aiResponse.json();
