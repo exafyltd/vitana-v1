@@ -435,7 +435,9 @@ export default function MediaHub() {
                         </div>
                       ) : (
                         approvedPodcasts.map((podcast: any) => {
-                          const metadata = podcast.podcast_metadata?.[0];
+                          const metadata = Array.isArray(podcast.podcast_metadata) 
+                            ? podcast.podcast_metadata[0] 
+                            : podcast.podcast_metadata;
                           const isCreator = user?.id === podcast.user_id;
                           
                           return (
