@@ -462,7 +462,7 @@ export default function Home() {
               </div>
 
               {/* Row 2: Music List + Two Events (1+2 pattern) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '400px' }}>
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
                   <MusicListCard 
                     tracks={personalizedMusic || []}
@@ -507,7 +507,7 @@ export default function Home() {
               <MotivationalBanner variant="partnership" />
 
               {/* Row 3: Two Events + Community Events (2+1 pattern) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '400px' }}>
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-3">
                   <NewsCard
                     title={todayEventsAndMeetups[0]?.title || ""}
@@ -548,7 +548,7 @@ export default function Home() {
               <MotivationalBanner variant="achievement" />
 
               {/* Row 4: More Events & Meetups (big + small + small) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '400px' }}>
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
                   <NewsCard
                     title={todayEventsAndMeetups[0]?.title || ""}
@@ -599,7 +599,7 @@ export default function Home() {
               <MotivationalBanner variant="guidance" />
 
               {/* Row 4: Latest from Media Hub (small + small + big) */}
-              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '400px' }}>
+              <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-3">
                   <NewsCard
                     title={blendedMediaContent[0]?.title || ""}
