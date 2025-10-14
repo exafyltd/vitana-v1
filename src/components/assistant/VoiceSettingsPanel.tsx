@@ -98,29 +98,14 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     });
   }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
 
-  const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {
-    'sr-RS': [{ name: 'sr-RS-Standard-A', label: 'Serbian Female (Standard)' }],
-    'ar-XA': [
-      { name: 'ar-XA-Standard-D', label: 'Arabic Female (Standard)' },
-      { name: 'ar-XA-Wavenet-D', label: 'Arabic Female (Wavenet)' },
-    ],
-    'fr-FR': [
-      { name: 'fr-FR-Standard-A', label: 'French Female (Standard)' },
-      { name: 'fr-FR-Wavenet-A', label: 'French Female (Wavenet)' },
-    ],
-    'pt-PT': [
-      { name: 'pt-PT-Standard-A', label: 'Portuguese Female (Standard)' },
-      { name: 'pt-PT-Wavenet-A', label: 'Portuguese Female (Wavenet)' },
-    ],
-  };
+  // Vertex AI Gemini 2.5 Pro TTS voices
+  const vertexVoices = [
+    { name: 'Charon', label: 'Charon (Female, Deep)' },
+    { name: 'Kore', label: 'Kore (Female, Warm)' },
+    { name: 'Fenrir', label: 'Fenrir (Male, Strong)' },
+    { name: 'Aoede', label: 'Aoede (Female, Bright)' },
+  ];
 
-  const filteredVoices = availableVoices.filter(voice => {
-    const langCode = baseLang(preferences.stt_language);
-    const voiceLang = baseLang(voice.lang);
-    return voiceLang === langCode;
-  });
-
-  const currentCloudVoices = cloudVoices[preferences.stt_language] || [];
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
@@ -139,48 +124,26 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
   const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
-    const voiceName = preferences.tts_voice;
-    const isCloudVoice = voiceName?.includes('-Standard-') || voiceName?.includes('-Wavenet-');
+    const voiceName = preferences.tts_voice || 'Charon';
     setIsTesting(true);
 
     try {
-      if (isCloudVoice) {
-        const { supabase } = await import('@/integrations/supabase/client');
-        const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
-          body: {
-            text: testPhrase,
-            voiceId: voiceName,
-            languageCode: preferences.stt_language || 'en-US',
-          },
-        });
-        if (error) throw error;
-        if (!data?.audioContent) throw new Error('No audio content received');
-        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-        audio.volume = preferences.tts_volume / 100;
-        audio.onended = () => setIsTesting(false);
-        audio.onerror = () => setIsTesting(false);
-        await audio.play();
-      } else {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(testPhrase);
-        utterance.rate = preferences.tts_speed;
-        utterance.pitch = preferences.tts_pitch;
-        utterance.volume = preferences.tts_volume / 100;
-        let selectedVoice = filteredVoices.find(v => v.name === voiceName);
-        if (!selectedVoice && filteredVoices.length > 0) {
-          selectedVoice = pickPreferredVoice(filteredVoices);
-        }
-        if (selectedVoice) {
-          utterance.voice = selectedVoice;
-          utterance.lang = selectedVoice.lang;
-        } else {
-          utterance.lang = preferences.stt_language || 'en-US';
-        }
-        utterance.onstart = () => setIsTesting(true);
-        utterance.onend = () => setIsTesting(false);
-        utterance.onerror = () => setIsTesting(false);
-        window.speechSynthesis.speak(utterance);
-      }
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data, error } = await supabase.functions.invoke('vertex-tts', {
+        body: {
+          text: testPhrase,
+          voiceId: voiceName,
+          languageCode: preferences.stt_language || 'en-US',
+          stylePrompt: 'Speak in a friendly and helpful tone.',
+        },
+      });
+      if (error) throw error;
+      if (!data?.audioContent) throw new Error('No audio content received');
+      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+      audio.volume = preferences.tts_volume / 100;
+      audio.onended = () => setIsTesting(false);
+      audio.onerror = () => setIsTesting(false);
+      await audio.play();
     } catch (error) {
       console.error('Preview error:', error);
       setIsTesting(false);
@@ -219,20 +182,9 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label>Voice</Label>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={loadVoices}
-              disabled={isUpdating}
-              className="h-7 text-xs"
-            >
-              Refresh Browser Voices
-            </Button>
-          </div>
+          <Label>Voice</Label>
           <Select
-            value={preferences.tts_voice}
+            value={preferences.tts_voice || 'Charon'}
             onValueChange={(value) => updatePreferences({ tts_voice: value })}
             disabled={isUpdating}
           >
@@ -240,46 +192,18 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               <SelectValue placeholder="Select a voice" />
             </SelectTrigger>
             <SelectContent>
-              {currentCloudVoices.length > 0 && (
-                <>
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                    Google Cloud Voices (High Quality)
-                  </div>
-                  {currentCloudVoices.map((voice) => (
-                    <SelectItem key={voice.name} value={voice.name}>
-                      {voice.label}
-                    </SelectItem>
-                  ))}
-                </>
-              )}
-              {filteredVoices.length > 0 && (
-                <>
-                  {currentCloudVoices.length > 0 && (
-                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-2 pt-2">
-                      Browser Voices
-                    </div>
-                  )}
-                  {filteredVoices.map((voice) => (
-                    <SelectItem key={voice.name} value={voice.name}>
-                      {voice.name}
-                    </SelectItem>
-                  ))}
-                </>
-              )}
-              {filteredVoices.length === 0 && currentCloudVoices.length === 0 && (
-                <SelectItem value="" disabled>
-                  No voices available
+              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                Vertex AI Gemini 2.5 Pro TTS
+              </div>
+              {vertexVoices.map((voice) => (
+                <SelectItem key={voice.name} value={voice.name}>
+                  {voice.label}
                 </SelectItem>
-              )}
+              ))}
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            {currentCloudVoices.length > 0
-              ? 'Google Cloud voices provide superior quality and natural-sounding speech'
-              : filteredVoices.length === 0
-              ? `No voices available for ${baseLang(preferences.stt_language).toUpperCase()}. Install a voice in your OS/browser settings.`
-              : 'Using browser-based voices'
-            }
+            High-quality neural voices powered by Google&apos;s latest AI
           </p>
         </div>
 

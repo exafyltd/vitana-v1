@@ -38,34 +38,16 @@ export function useTextToSpeech() {
       options?.onStart?.();
       
       const sttLanguage = preferences.stt_language || 'en-US';
-      
-      // RULE 6: Fixed Cloud TTS voice map (deterministic)
-      const CLOUD_VOICE_MAP: Record<string, string> = {
-        'ru-RU': 'ru-RU-Standard-D',
-        'sr-RS': 'sr-RS-Standard-B',
-        'de-DE': 'de-DE-Neural2-F',
-        'fr-FR': 'fr-FR-Neural2-A',
-        'es-ES': 'es-ES-Neural2-A',
-        'ar-XA': 'ar-XA-Standard-A',
-        'zh-CN': 'cmn-CN-Standard-A',
-        'en-US': 'en-US-Neural2-F',
-        'pt-PT': 'pt-PT-Standard-A'
-      };
+      const voiceId = preferences.tts_voice || 'Charon';
 
-      const mappedVoice = CLOUD_VOICE_MAP[sttLanguage];
+      console.log('[TTS] Vertex AI: voice=', voiceId, 'lang=', sttLanguage);
       
-      if (!mappedVoice) {
-        setIsSpeaking(false);
-        throw new Error(`TTS voice unavailable for ${sttLanguage}`);
-      }
-
-      console.log('[TTS] RULE: voice=', mappedVoice, 'lang=', sttLanguage);
-      
-      const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
+      const { data, error } = await supabase.functions.invoke('vertex-tts', {
         body: {
           text,
-          voiceId: mappedVoice,
-          languageCode: sttLanguage
+          voiceId,
+          languageCode: sttLanguage,
+          stylePrompt: 'Speak in a friendly and helpful tone.'
         }
       });
 
