@@ -3192,6 +3192,35 @@ export type Database = {
           },
         ]
       }
+      podcast_favorites: {
+        Row: {
+          created_at: string
+          id: string
+          podcast_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          podcast_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          podcast_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "podcast_favorites_podcast_id_fkey"
+            columns: ["podcast_id"]
+            isOneToOne: false
+            referencedRelation: "media_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       podcast_metadata: {
         Row: {
           episode_number: number | null

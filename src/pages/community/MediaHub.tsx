@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Pause } from "lucide-react";
+import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2 } from "lucide-react";
+import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -23,7 +24,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
-import { Trash2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -425,131 +425,49 @@ export default function MediaHub() {
                       <Volume2 className="w-5 h-5" />
                       Latest Episodes
                     </h2>
-                    <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {approvedPodcasts.length === 0 ? (
-                        <div className="text-center py-8 text-muted-foreground">
+                        <div className="col-span-full text-center py-8 text-muted-foreground">
                           <Podcast className="w-12 h-12 mx-auto mb-3 opacity-50" />
                           <p>No podcasts uploaded yet. Be the first to share!</p>
                         </div>
                       ) : (
                         approvedPodcasts.map((podcast: any) => {
                           const metadata = podcast.podcast_metadata?.[0];
-                          const tags = podcast.tags || [];
-                          const isCurrentlyPlaying = currentPodcast?.id === podcast.id;
                           const isCreator = user?.id === podcast.user_id;
                           
                           return (
-                            <Card key={podcast.id} className={`overflow-hidden hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950 ${isCurrentlyPlaying ? 'ring-2 ring-primary' : ''}`}>
-                              <CardContent className="p-8 relative">
-                                {/* Delete Menu - Top Right */}
-                                {isCreator && (
-                                  <div className="absolute top-4 right-4">
-                                    <KebabMenu>
-                                      <DropdownMenuItem
-                                        className="text-destructive cursor-pointer"
-                                        onClick={() => {
-                                          setPodcastToDelete(podcast.id);
-                                          setDeleteDialogOpen(true);
-                                        }}
-                                      >
-                                        <Trash2 className="h-4 w-4 mr-2" />
-                                        Delete Podcast
-                                      </DropdownMenuItem>
-                                    </KebabMenu>
-                                  </div>
-                                )}
-
-                                <div className="flex gap-6">
-                                  {/* Left content */}
-                                  <div className="flex-1 min-w-0">
-                                    {/* Title */}
-                                    <h3 className="text-2xl font-bold mb-3 text-foreground leading-tight">
-                                      {podcast.title}
-                                    </h3>
-                                    
-                                    {/* Description */}
-                                    {podcast.description && (
-                                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
-                                        {podcast.description}
-                                      </p>
-                                    )}
-                                    
-                                    {/* Host and Language */}
-                                    <div className="flex items-center gap-3 mb-4">
-                                      <span className="text-sm text-muted-foreground">
-                                        {metadata?.host_name || 'Unknown Host'}
-                                      </span>
-                                      <span className="text-muted-foreground">•</span>
-                                      <LanguageFlag languageCode={metadata?.language || 'en-US'} />
-                                      {podcast.duration && (
-                                        <>
-                                          <span className="text-muted-foreground">•</span>
-                                          <Clock className="h-4 w-4 text-muted-foreground" />
-                                          <span className="text-sm text-muted-foreground">
-                                            {Math.floor(podcast.duration / 60)}:{String(Math.floor(podcast.duration % 60)).padStart(2, '0')}
-                                          </span>
-                                        </>
-                                      )}
-                                    </div>
-                                    
-                                    {/* Tags */}
-                                    {tags.length > 0 && (
-                                      <div className="flex flex-wrap gap-2">
-                                        {tags.map((tag: string, idx: number) => (
-                                          <Badge 
-                                            key={idx} 
-                                            variant="secondary" 
-                                            className="text-xs px-3 py-1 rounded-full"
-                                            style={{
-                                              backgroundColor: idx === 0 ? 'hsl(var(--pill-mental-accent) / 0.15)' : 
-                                                               idx === 1 ? 'hsl(var(--pill-sleep-accent) / 0.15)' : 
-                                                               'hsl(var(--pill-water-accent) / 0.15)',
-                                              color: idx === 0 ? 'hsl(var(--pill-mental-accent))' : 
-                                                     idx === 1 ? 'hsl(var(--pill-sleep-accent))' : 
-                                                     'hsl(var(--pill-water-accent))'
-                                            }}
-                                          >
-                                            {tag}
-                                          </Badge>
-                                        ))}
-                                      </div>
-                                    )}
-                                  </div>
-                                  
-                                  {/* Play button */}
-                                  <div className="flex items-center">
-                                    <Button
-                                      size="lg"
-                                      className={`rounded-full w-16 h-16 flex-shrink-0 shadow-lg hover:scale-110 transition-transform ${isCurrentlyPlaying && isPlaying ? 'animate-pulse' : ''}`}
-                                      style={{ 
-                                        backgroundColor: 'hsl(var(--primary))',
-                                        color: 'hsl(var(--primary-foreground))'
-                                      }}
+                            <div key={podcast.id} className="relative">
+                              <PodcastCard
+                                id={podcast.id}
+                                title={podcast.title}
+                                creator={metadata?.host_name || 'Unknown Host'}
+                                duration={podcast.duration}
+                                uploadedAt={podcast.created_at}
+                                description={podcast.description}
+                                language={metadata?.language || 'en-US'}
+                                audioUrl={podcast.file_url}
+                                imageUrl={podcast.thumbnail_url}
+                              />
+                              
+                              {/* Delete Menu - Overlay on card */}
+                              {isCreator && (
+                                <div className="absolute top-2 right-2 z-10">
+                                  <KebabMenu>
+                                    <DropdownMenuItem
+                                      className="text-destructive cursor-pointer"
                                       onClick={() => {
-                                        if (currentPodcast?.id === podcast.id) {
-                                          togglePlay();
-                                        } else {
-                                          playPodcast({
-                                            id: podcast.id,
-                                            title: podcast.title,
-                                            host: metadata?.host_name || 'Unknown Host',
-                                            audioUrl: podcast.file_url,
-                                            duration: podcast.duration || 0,
-                                            imageUrl: podcast.thumbnail_url,
-                                          });
-                                        }
+                                        setPodcastToDelete(podcast.id);
+                                        setDeleteDialogOpen(true);
                                       }}
                                     >
-                                      {isCurrentlyPlaying && isPlaying ? (
-                                        <Pause className="w-7 h-7" />
-                                      ) : (
-                                        <Play className="w-7 h-7" />
-                                      )}
-                                    </Button>
-                                  </div>
+                                      <Trash2 className="h-4 w-4 mr-2" />
+                                      Delete Podcast
+                                    </DropdownMenuItem>
+                                  </KebabMenu>
                                 </div>
-                              </CardContent>
-                            </Card>
+                              )}
+                            </div>
                           );
                         })
                       )}
