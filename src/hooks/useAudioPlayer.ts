@@ -1,23 +1,24 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 
-interface PodcastData {
+interface AudioMediaData {
   id: string;
   title: string;
-  host: string;
+  creator: string;
   audioUrl: string;
   duration: number;
   imageUrl?: string;
+  mediaType?: 'music' | 'podcast';
 }
 
 interface UseAudioPlayerReturn {
-  currentPodcast: PodcastData | null;
+  currentMedia: AudioMediaData | null;
   isPlaying: boolean;
   currentTime: number;
   duration: number;
   playbackRate: number;
   volume: number;
   
-  playPodcast: (podcast: PodcastData) => void;
+  playMedia: (media: AudioMediaData) => void;
   togglePlay: () => void;
   pause: () => void;
   seek: (time: number) => void;
@@ -25,14 +26,19 @@ interface UseAudioPlayerReturn {
   skipBackward: (seconds: number) => void;
   setPlaybackRate: (rate: number) => void;
   setVolume: (volume: number) => void;
-  closePodcast: () => void;
+  closeMedia: () => void;
   
   audioRef: React.RefObject<HTMLAudioElement>;
+  
+  // Legacy aliases for backward compatibility
+  currentPodcast: AudioMediaData | null;
+  playPodcast: (podcast: AudioMediaData) => void;
+  closePodcast: () => void;
 }
 
 // Global state for audio player (singleton pattern)
 export let globalState: {
-  currentPodcast: PodcastData | null;
+  currentMedia: AudioMediaData | null;
   isPlaying: boolean;
   currentTime: number;
   duration: number;
@@ -41,7 +47,7 @@ export let globalState: {
   audioElement: HTMLAudioElement | null;
   listeners: Set<() => void>;
 } = {
-  currentPodcast: null,
+  currentMedia: null,
   isPlaying: false,
   currentTime: 0,
   duration: 0,
@@ -76,9 +82,9 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
     }
   }, [audioRef.current]);
 
-  const playPodcast = useCallback((podcast: PodcastData) => {
-    // If same podcast, just toggle play
-    if (globalState.currentPodcast?.id === podcast.id) {
+  const playMedia = useCallback((media: AudioMediaData) => {
+    // If same media, just toggle play
+    if (globalState.currentMedia?.id === media.id) {
       togglePlay();
       return;
     }
@@ -89,10 +95,10 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
       globalState.audioElement.currentTime = 0;
     }
     
-    globalState.currentPodcast = podcast;
+    globalState.currentMedia = media;
     globalState.isPlaying = true;
     globalState.currentTime = 0;
-    globalState.duration = podcast.duration || 0;
+    globalState.duration = media.duration || 0;
     
     notifyListeners();
   }, []);
@@ -161,12 +167,12 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
     }
   }, []);
 
-  const closePodcast = useCallback(() => {
+  const closeMedia = useCallback(() => {
     if (globalState.audioElement) {
       globalState.audioElement.pause();
       globalState.audioElement.currentTime = 0;
     }
-    globalState.currentPodcast = null;
+    globalState.currentMedia = null;
     globalState.isPlaying = false;
     globalState.currentTime = 0;
     globalState.duration = 0;
@@ -174,14 +180,14 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
   }, []);
 
   return {
-    currentPodcast: globalState.currentPodcast,
+    currentMedia: globalState.currentMedia,
     isPlaying: globalState.isPlaying,
     currentTime: globalState.currentTime,
     duration: globalState.duration,
     playbackRate: globalState.playbackRate,
     volume: globalState.volume,
     
-    playPodcast,
+    playMedia,
     togglePlay,
     pause,
     seek,
@@ -189,9 +195,14 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
     skipBackward,
     setPlaybackRate,
     setVolume,
-    closePodcast,
+    closeMedia,
     
     audioRef,
+    
+    // Legacy aliases for backward compatibility
+    currentPodcast: globalState.currentMedia,
+    playPodcast: playMedia,
+    closePodcast: closeMedia,
   };
 }
 

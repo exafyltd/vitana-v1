@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2 } from "lucide-react";
+import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2 } from "lucide-react";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -38,7 +38,7 @@ import {
 export default function MediaHub() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { playPodcast, currentPodcast, isPlaying, togglePlay } = useAudioPlayer();
+  const { playMedia, currentMedia, isPlaying, togglePlay } = useAudioPlayer();
   const queryClient = useQueryClient();
   const {
     pendingCount,
@@ -364,11 +364,25 @@ export default function MediaHub() {
                                   </Badge>
                                 )}
                               </div>
-                              <Button size="sm" variant="outline" onClick={() => {
-                                const audio = new Audio(track.file_url);
-                                audio.play();
-                              }}>
-                                <Play className="w-4 h-4" />
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={() => {
+                                  playMedia({
+                                    id: track.id,
+                                    title: track.title,
+                                    creator: track.music_metadata?.[0]?.artist_name || 'Unknown Artist',
+                                    audioUrl: track.file_url,
+                                    duration: track.duration || 0,
+                                    mediaType: 'music'
+                                  });
+                                }}
+                              >
+                                {currentMedia?.id === track.id && isPlaying ? (
+                                  <Pause className="w-4 h-4" />
+                                ) : (
+                                  <Play className="w-4 h-4" />
+                                )}
                               </Button>
                             </div>
                           );

@@ -6,7 +6,7 @@ import { useAudioPlayer, updateAudioTime, updateAudioDuration, globalState, noti
 
 export function MiniAudioPlayer() {
   const {
-    currentPodcast,
+    currentMedia,
     isPlaying,
     currentTime,
     duration,
@@ -16,7 +16,7 @@ export function MiniAudioPlayer() {
     skipForward,
     seek,
     setPlaybackRate,
-    closePodcast,
+    closeMedia,
     audioRef,
   } = useAudioPlayer();
 
@@ -62,15 +62,15 @@ export function MiniAudioPlayer() {
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || !currentPodcast) return;
+    if (!audio || !currentMedia) return;
 
-    audio.src = currentPodcast.audioUrl;
+    audio.src = currentMedia.audioUrl;
     if (isPlaying) {
       audio.play().catch(console.error);
     }
-  }, [currentPodcast, isPlaying, audioRef]);
+  }, [currentMedia, isPlaying, audioRef]);
 
-  if (!currentPodcast) return null;
+  if (!currentMedia) return null;
 
   const formatTime = (seconds: number) => {
     if (!seconds || !isFinite(seconds)) return '0:00';
@@ -88,21 +88,21 @@ export function MiniAudioPlayer() {
       <div className="fixed bottom-0 left-0 right-0 bg-sidebar border-t border-border shadow-lg z-40">
         <div className="max-w-screen-2xl mx-auto px-4 py-3">
           <div className="flex items-center gap-4">
-            {/* Podcast Info */}
+            {/* Media Info */}
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              {currentPodcast.imageUrl && (
+              {currentMedia.imageUrl && (
                 <img 
-                  src={currentPodcast.imageUrl} 
-                  alt={currentPodcast.title}
+                  src={currentMedia.imageUrl} 
+                  alt={currentMedia.title}
                   className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                 />
               )}
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-foreground truncate">
-                  {currentPodcast.title}
+                  {currentMedia.title}
                 </p>
                 <p className="text-xs text-muted-foreground truncate">
-                  {currentPodcast.host}
+                  {currentMedia.creator}
                 </p>
               </div>
             </div>
@@ -180,7 +180,7 @@ export function MiniAudioPlayer() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={closePodcast}
+                onClick={closeMedia}
                 className="h-8 w-8 p-0"
               >
                 <X className="h-4 w-4" />

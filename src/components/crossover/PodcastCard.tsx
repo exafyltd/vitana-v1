@@ -52,24 +52,25 @@ export function PodcastCard({
   isCreator = false,
   onDelete,
 }: PodcastCardProps) {
-  const { currentPodcast, isPlaying, playPodcast, togglePlay } = useAudioPlayer();
+  const { currentMedia, isPlaying, playMedia, togglePlay } = useAudioPlayer();
   const { user } = useAuth();
   const { isFavorited, toggleFavorite, isToggling } = usePodcastFavorite(id, user?.id);
   const { toast } = useToast();
 
-  const isThisPodcastPlaying = currentPodcast?.id === id && isPlaying;
+  const isThisPodcastPlaying = currentMedia?.id === id && isPlaying;
 
   const handlePlayToggle = () => {
-    if (currentPodcast?.id === id) {
+    if (currentMedia?.id === id) {
       togglePlay();
     } else {
-      playPodcast({
+      playMedia({
         id,
         title,
-        host: creator,
+        creator: creator,
         audioUrl,
         duration: duration || 0,
         imageUrl,
+        mediaType: 'podcast'
       });
     }
   };
