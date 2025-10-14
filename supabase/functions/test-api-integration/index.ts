@@ -134,20 +134,41 @@ async function testStripeIntegration() {
 
 async function testVertexLiveIntegration() {
   const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
-  if (!serviceAccountJson) {
-    return { status: 'failed', error_log: 'GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON not configured', response_body: null };
+  const supabaseUrl = Deno.env.get('SUPABASE_URL');
+
+  // Health requires function reachable AND service account configured correctly
+  if (!supabaseUrl) {
+    return { status: 'failed', error_log: 'SUPABASE_URL not configured', response_body: null };
   }
 
-  // Simple validation: check if we can parse the service account
+  // 1) Probe vertex-live function (HTTP GET should return 400 if deployed and reachable)
+  let pingOk = false;
+  let pingStatus = 0;
   try {
-    const serviceAccount = JSON.parse(serviceAccountJson);
-    if (!serviceAccount.project_id || !serviceAccount.private_key) {
-      throw new Error('Invalid service account format');
-    }
-    return { status: 'success', error_log: null, response_body: { project_id: serviceAccount.project_id } };
-  } catch (error) {
-    return { status: 'failed', error_log: error.message, response_body: null };
+    const resp = await fetch(`${supabaseUrl}/functions/v1/vertex-live`, { method: 'GET' });
+    pingStatus = resp.status;
+    pingOk = resp.ok || resp.status === 400; // 400 = Expected WebSocket connection
+  } catch (e) {
+    return { status: 'failed', error_log: `vertex-live unreachable: ${e.message}`, response_body: null };
   }
+
+  // 2) Validate service account JSON presence and structure
+  if (!serviceAccountJson) {
+    return { status: 'failed', error_log: 'GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON not configured', response_body: { pingStatus } };
+  }
+
+  try {
+    const sa = JSON.parse(serviceAccountJson);
+    if (!sa.project_id || !sa.private_key) {
+      return { status: 'failed', error_log: 'Invalid service account format', response_body: { pingStatus } };
+    }
+  } catch (e) {
+    return { status: 'failed', error_log: `Service account parse error: ${e.message}`, response_body: { pingStatus } };
+  }
+
+  return pingOk
+    ? { status: 'success', error_log: null, response_body: { reachable: true, pingStatus } }
+    : { status: 'failed', error_log: `vertex-live unhealthy (status ${pingStatus})`, response_body: { pingStatus } };
 }
 
 async function testLovableAIIntegration() {

@@ -14,8 +14,7 @@ serve(async (req) => {
   try {
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
     console.log('[discovery] Starting integration discovery...');
@@ -90,45 +89,53 @@ serve(async (req) => {
 
     console.log(`[discovery] Found ${integrations.length} integrations to register`);
 
-    // Upsert integrations
+    // Upsert integrations with error aggregation and pending status
+    const results: { name: string; status: 'ok' | 'error'; error?: string }[] = [];
+    const errors: { name: string; message: string }[] = [];
+
     for (const integration of integrations) {
       const { data: existing } = await supabaseClient
         .from('api_integrations')
         .select('id')
         .eq('name', integration.name)
-        .single();
+        .maybeSingle();
 
       if (existing) {
-        // Update existing
         const { error } = await supabaseClient
           .from('api_integrations')
-          .update(integration)
+          .update({ ...integration, last_test_status: 'pending' })
           .eq('id', existing.id);
 
         if (error) {
           console.error(`[discovery] Update failed for ${integration.name}:`, error);
+          results.push({ name: integration.name, status: 'error', error: error.message });
+          errors.push({ name: integration.name, message: error.message });
         } else {
           console.log(`[discovery] ✓ Updated: ${integration.name}`);
+          results.push({ name: integration.name, status: 'ok' });
         }
       } else {
-        // Insert new
         const { error } = await supabaseClient
           .from('api_integrations')
-          .insert(integration);
+          .insert({ ...integration, last_test_status: 'pending' });
 
         if (error) {
           console.error(`[discovery] Insert failed for ${integration.name}:`, error);
+          results.push({ name: integration.name, status: 'error', error: error.message });
+          errors.push({ name: integration.name, message: error.message });
         } else {
           console.log(`[discovery] ✓ Created: ${integration.name}`);
+          results.push({ name: integration.name, status: 'ok' });
         }
       }
     }
 
     return new Response(
       JSON.stringify({ 
-        success: true, 
+        success: (typeof errors === 'undefined' || errors.length === 0),
         count: integrations.length,
-        integrations: integrations.map(i => i.name)
+        results,
+        errors
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

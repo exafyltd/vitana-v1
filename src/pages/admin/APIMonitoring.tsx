@@ -104,13 +104,21 @@ export default function APIMonitoring() {
 
     try {
       const { data, error } = await supabase.functions.invoke("integration-discovery");
-
       if (error) throw error;
 
-      toast({
-        title: "Discovery complete",
-        description: `Found ${data.count} integrations`,
-      });
+      const hadErrors = Array.isArray((data as any)?.errors) && (data as any).errors.length > 0;
+      if (hadErrors || (data as any)?.success === false) {
+        toast({
+          title: "Discovery completed with errors",
+          description: `Processed ${data.count}. Errors: ${(data as any).errors?.length || 0}`,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Discovery complete",
+          description: `Found ${data.count} integrations`,
+        });
+      }
 
       refetchIntegrations();
     } catch (error) {
