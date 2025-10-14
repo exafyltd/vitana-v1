@@ -86,9 +86,9 @@ serve(async (req) => {
 
     const accessToken = authData.access_token;
 
-    // Call Vertex AI Text-to-Speech API (Chirp 3)
+    // Call Google Cloud Text-to-Speech API with Chirp 3 HD voices
     const ttsResponse = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/chirp-3:generateAudio',
+      'https://texttospeech.googleapis.com/v1/text:synthesize',
       {
         method: 'POST',
         headers: {
