@@ -27,15 +27,11 @@ serve(async (req) => {
 
     const serviceAccount = JSON.parse(serviceAccountJson);
 
-    // All voices now require model_name for Gemini TTS
-    const modelName = 'gemini-2.5-flash-preview-tts';
-
     console.log('🎤 Vertex TTS request:', { 
       voiceId, 
       languageCode, 
       textLength: text.length,
-      hasStylePrompt: !!stylePrompt,
-      modelName
+      hasStylePrompt: !!stylePrompt
     });
 
     // Get access token
@@ -62,12 +58,23 @@ serve(async (req) => {
       synthesisInput.prompt = stylePrompt;
     }
 
-    // Prepare voice config with required model_name
-    const voiceConfig = {
+    // Use Standard voices for non-English, Gemini for English
+    const isEnglish = (languageCode || 'en-US').startsWith('en');
+    
+    const voiceConfig: any = {
       languageCode: languageCode || 'en-US',
-      name: voiceId || 'Charon',
-      model_name: modelName,
     };
+
+    if (isEnglish && voiceId) {
+      // Use Gemini voices for English with model_name
+      voiceConfig.name = voiceId;
+      voiceConfig.model_name = 'gemini-2.5-flash-preview-tts';
+    } else {
+      // Use Standard/WaveNet voices for other languages
+      // Format: {languageCode}-Standard-A, {languageCode}-Neural2-A, etc.
+      const defaultVoice = `${languageCode || 'de-DE'}-Standard-A`;
+      voiceConfig.name = voiceId || defaultVoice;
+    }
 
     // Call Vertex AI Text-to-Speech API
     const response = await fetch(
