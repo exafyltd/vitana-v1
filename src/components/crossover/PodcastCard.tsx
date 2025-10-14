@@ -19,6 +19,23 @@ interface PodcastCardProps {
   imageUrl?: string;
 }
 
+const getLanguageLabel = (languageCode: string): string => {
+  const labels: Record<string, string> = {
+    'en-US': 'English (US)',
+    'en-GB': 'English (GB)',
+    'de-DE': 'German',
+    'es-ES': 'Spanish',
+    'fr-FR': 'French',
+    'pt-PT': 'Portuguese',
+    'ru-RU': 'Russian',
+    'zh-CN': 'Chinese',
+    'ar-XA': 'Arabic',
+    'sr-RS': 'Serbian',
+    'pl-PL': 'Polish',
+  };
+  return labels[languageCode] || 'Unknown';
+};
+
 export function PodcastCard({
   id,
   title,
@@ -100,85 +117,107 @@ export function PodcastCard({
   return (
     <div
       className={`
-        group relative rounded-2xl border bg-card p-6 shadow-sm
+        group relative rounded-2xl border shadow-sm p-4
         transition-all duration-300
-        hover:bg-card/95 hover:-translate-y-1 hover:shadow-lg
-        hover:shadow-primary/15
-        ${isThisPodcastPlaying ? "border-l-4 border-l-primary bg-primary/5 ring-1 ring-primary/20" : "border-border/40"}
+        flex items-start gap-4
+        hover:bg-accent/5 hover:-translate-y-1 hover:shadow-md
+        ${isThisPodcastPlaying 
+          ? "border-l-4 border-l-primary bg-accent/10" 
+          : "border-border/30 hover:border-l-4 hover:border-l-primary/50"
+        }
       `}
     >
-      {/* Header: Title + Language Flag */}
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <h3 className="text-lg font-bold text-foreground leading-tight flex-1 min-w-0">
-          {title}
-        </h3>
-        <div className="flex-shrink-0">
-          <LanguageFlag languageCode={language} className="w-8 h-8" />
-        </div>
-      </div>
-
-      {/* Metadata: Creator • Duration • Date */}
-      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3 flex-wrap">
-        <span>{creator}</span>
-        {duration && (
-          <>
-            <span>•</span>
-            <span>{formatDuration(duration)}</span>
-          </>
-        )}
-        <span>•</span>
-        <span>{formatDate(uploadedAt)}</span>
-      </div>
-
-      {/* Description */}
-      {description && (
-        <p className="text-sm text-muted-foreground line-clamp-1 mb-4">
-          {description}
-        </p>
-      )}
-
-      {/* Action Buttons */}
-      <div className="flex items-center gap-2">
+      {/* Left: Play Button */}
+      <div className="flex-shrink-0">
         <Button
-          size="default"
+          size="sm"
           onClick={handlePlayToggle}
-          className="h-9 px-4 gap-2"
+          className="h-9 px-3 gap-2"
+          aria-label={isThisPodcastPlaying ? "Pause episode" : "Play episode"}
         >
           {isThisPodcastPlaying ? (
             <>
               <Pause className="h-4 w-4" />
-              Pause
+              <span className="hidden sm:inline">Pause</span>
             </>
           ) : (
             <>
               <Play className="h-4 w-4" />
-              Play
+              <span className="hidden sm:inline">Play</span>
             </>
           )}
         </Button>
+      </div>
 
-        <Button
-          size="icon"
-          variant="ghost"
-          onClick={() => toggleFavorite()}
-          disabled={isToggling || !user}
-          className="h-9 w-9"
-        >
-          <Heart
-            className={`h-5 w-5 transition-colors ${
-              isFavorited ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"
-            }`}
-          />
-        </Button>
+      {/* Center: Content */}
+      <div className="flex-1 min-w-0 space-y-1">
+        {/* Title with optional equalizer */}
+        <div className="flex items-center gap-2">
+          {isThisPodcastPlaying && (
+            <span className="flex-shrink-0 w-2 h-2 bg-primary rounded-full animate-pulse" aria-hidden="true" />
+          )}
+          <h3 className="text-base font-semibold text-foreground line-clamp-2 leading-tight">
+            {title}
+          </h3>
+        </div>
 
-        <Button
-          size="icon"
-          variant="ghost"
-          onClick={handleShare}
-          className="h-9 w-9"
-        >
-          <Share2 className="h-5 w-5 text-muted-foreground hover:text-primary" />
-        </Button>
+        {/* Meta row */}
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground truncate">
+          <span>by {creator}</span>
+          {duration && (
+            <>
+              <span>·</span>
+              <span>{formatDuration(duration)}</span>
+            </>
+          )}
+          <span>·</span>
+          <span>{formatDate(uploadedAt)}</span>
+        </div>
+
+        {/* Description */}
+        {description && (
+          <p className="text-xs text-muted-foreground line-clamp-1">
+            {description}
+          </p>
+        )}
+      </div>
+
+      {/* Right: Flag + Actions */}
+      <div className="flex-shrink-0 flex items-start gap-2">
+        {/* Language Flag */}
+        <LanguageFlag 
+          languageCode={language} 
+          className="w-6 h-6"
+          aria-label={`Language: ${getLanguageLabel(language)}`}
+        />
+
+        {/* Actions */}
+        <div className="flex items-center gap-1">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => toggleFavorite()}
+            disabled={isToggling || !user}
+            className="h-8 w-8"
+            aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
+          >
+            <Heart
+              className={`h-4 w-4 transition-colors ${
+                isFavorited ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+            />
+          </Button>
+
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={handleShare}
+            className="h-8 w-8"
+            aria-label="Share episode"
+          >
+            <Share2 className="h-4 w-4 text-muted-foreground hover:text-primary" />
+          </Button>
+        </div>
       </div>
     </div>
   );

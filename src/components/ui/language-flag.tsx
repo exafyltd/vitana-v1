@@ -1,6 +1,7 @@
 interface LanguageFlagProps {
   languageCode: string | null;
   className?: string;
+  'aria-label'?: string;
 }
 
 const languageMap: Record<string, string> = {
@@ -31,12 +32,20 @@ const countryFlags: Record<string, string> = {
   'PL': '🇵🇱'
 };
 
-export function LanguageFlag({ languageCode, className = "" }: LanguageFlagProps) {
+export function LanguageFlag({ 
+  languageCode, 
+  className = "",
+  'aria-label': ariaLabel 
+}: LanguageFlagProps) {
   const countryCode = languageCode && languageMap[languageCode] ? languageMap[languageCode] : null;
   const flag = countryCode && countryFlags[countryCode] ? countryFlags[countryCode] : '🌐';
 
   return (
-    <div className={`flex items-center justify-center w-10 h-10 rounded-full bg-background shadow-sm ${className}`}>
+    <div 
+      className={`flex items-center justify-center w-10 h-10 rounded-full bg-background shadow-sm ${className}`}
+      aria-label={ariaLabel}
+      role="img"
+    >
       <span className="text-2xl" style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"' }}>
         {flag}
       </span>

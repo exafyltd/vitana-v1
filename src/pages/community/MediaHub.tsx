@@ -425,7 +425,7 @@ export default function MediaHub() {
                       <Volume2 className="w-5 h-5" />
                       Latest Episodes
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="flex flex-col gap-4">
                       {approvedPodcasts.length === 0 ? (
                         <div className="col-span-full text-center py-8 text-muted-foreground">
                           <Podcast className="w-12 h-12 mx-auto mb-3 opacity-50" />
