@@ -278,7 +278,9 @@ class AudioQueue {
   private buffer: Uint8Array = new Uint8Array(0);
   private readonly MIN_CHUNK_SIZE = 6000; // ~125ms at 24kHz PCM16 - faster playback start
 
-  constructor(private audioContext: AudioContext) {}
+  constructor(private audioContext: AudioContext) {
+    console.log(`🔊 AudioQueue initialized with context sample rate: ${this.audioContext.sampleRate}Hz`);
+  }
 
   async addToQueue(audioData: Uint8Array) {
     console.warn('⚠️ AudioQueue.addToQueue called - this should not happen with Vertex AI WAV output');
@@ -345,50 +347,71 @@ class AudioQueue {
     }
   }
 
+  // Resample PCM16 from inputRate to outputRate using linear interpolation
+  private resamplePCM(inputPCM: Uint8Array, inputRate: number, outputRate: number): Int16Array {
+    const inputSamples = new Int16Array(
+      inputPCM.buffer,
+      inputPCM.byteOffset,
+      Math.floor(inputPCM.byteLength / 2)
+    );
+
+    if (inputRate === outputRate) {
+      return new Int16Array(inputSamples); // copy to detach from underlying buffer
+    }
+
+    const ratio = outputRate / inputRate;
+    const outputLength = Math.floor(inputSamples.length * ratio);
+    const outputSamples = new Int16Array(outputLength);
+
+    for (let i = 0; i < outputLength; i++) {
+      const srcPos = i / ratio;
+      const i0 = Math.floor(srcPos);
+      const i1 = Math.min(i0 + 1, inputSamples.length - 1);
+      const t = srcPos - i0;
+      outputSamples[i] = Math.round(inputSamples[i0] * (1 - t) + inputSamples[i1] * t);
+    }
+
+    console.log(`🔄 Resampled: ${inputSamples.length} @${inputRate}Hz -> ${outputSamples.length} @${outputRate}Hz`);
+    return outputSamples;
+  }
+
   private createWavFromPCM(pcmData: Uint8Array): Uint8Array {
     console.log('🎵 Creating WAV from PCM, input size:', pcmData.byteLength);
-    
-    // Use DataView to read 16-bit samples with correct byte order
-    // First try little-endian (most common for PCM16)
-    const int16Data = new Int16Array(pcmData.length / 2);
-    const dataView = new DataView(pcmData.buffer, pcmData.byteOffset, pcmData.byteLength);
-    
-    try {
-      // Read as little-endian Int16 samples
-      for (let i = 0; i < int16Data.length; i++) {
-        int16Data[i] = dataView.getInt16(i * 2, true); // true = little-endian
-      }
-      console.log('✅ Decoded PCM16 (little-endian):', int16Data.length, 'samples');
-    } catch (error) {
-      console.error('❌ Error decoding PCM16:', error);
-      // Fallback: try big-endian
-      console.log('🔄 Trying big-endian...');
-      for (let i = 0; i < int16Data.length; i++) {
-        int16Data[i] = dataView.getInt16(i * 2, false); // false = big-endian
-      }
+
+    // Vertex returns PCM16 at 24000Hz; align to AudioContext rate for correct playback
+    const sourceRate = 24000;
+    const targetRate = this.audioContext.sampleRate;
+
+    let int16Data: Int16Array;
+    if (sourceRate !== targetRate) {
+      console.log(`🔄 Resampling needed: ${sourceRate}Hz → ${targetRate}Hz`);
+      int16Data = this.resamplePCM(pcmData, sourceRate, targetRate);
+    } else {
+      int16Data = new Int16Array(
+        pcmData.buffer,
+        pcmData.byteOffset,
+        Math.floor(pcmData.byteLength / 2)
+      );
     }
-    
-    // Log sample statistics for debugging
-    const maxSample = Math.max(...Array.from(int16Data).map(Math.abs));
+
+    const maxSample = Math.max(...Array.from(int16Data, (v) => Math.abs(v)));
     console.log('📊 Max sample amplitude:', maxSample, '/ 32768');
-    
-    // Create WAV header
+
+    // Create WAV header with TARGET sample rate
     const wavHeader = new ArrayBuffer(44);
     const view = new DataView(wavHeader);
-    
-    const writeString = (offset: number, string: string) => {
-      for (let i = 0; i < string.length; i++) {
-        view.setUint8(offset + i, string.charCodeAt(i));
+
+    const writeString = (offset: number, str: string) => {
+      for (let i = 0; i < str.length; i++) {
+        view.setUint8(offset + i, str.charCodeAt(i));
       }
     };
 
-    const sampleRate = 24000;
     const numChannels = 1;
     const bitsPerSample = 16;
     const blockAlign = (numChannels * bitsPerSample) / 8;
-    const byteRate = sampleRate * blockAlign;
+    const byteRate = targetRate * blockAlign;
 
-    // WAV header
     writeString(0, 'RIFF');
     view.setUint32(4, 36 + int16Data.byteLength, true);
     writeString(8, 'WAVE');
@@ -396,18 +419,18 @@ class AudioQueue {
     view.setUint32(16, 16, true);
     view.setUint16(20, 1, true);
     view.setUint16(22, numChannels, true);
-    view.setUint32(24, sampleRate, true);
+    view.setUint32(24, targetRate, true);
     view.setUint32(28, byteRate, true);
     view.setUint16(32, blockAlign, true);
     view.setUint16(34, bitsPerSample, true);
     writeString(36, 'data');
     view.setUint32(40, int16Data.byteLength, true);
 
-    // Combine header and data
     const wavArray = new Uint8Array(wavHeader.byteLength + int16Data.byteLength);
     wavArray.set(new Uint8Array(wavHeader), 0);
-    wavArray.set(new Uint8Array(int16Data.buffer as ArrayBuffer), wavHeader.byteLength);
-    
+    wavArray.set(new Uint8Array(int16Data.buffer, int16Data.byteOffset, int16Data.byteLength), wavHeader.byteLength);
+
+    console.log(`✅ Created WAV: ${targetRate}Hz, ${int16Data.length} samples, ${wavArray.byteLength} bytes`);
     return wavArray;
   }
 
