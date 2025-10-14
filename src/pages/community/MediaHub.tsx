@@ -410,12 +410,8 @@ export default function MediaHub() {
                                       <span className="text-sm text-muted-foreground">
                                         {metadata?.host_name || 'Unknown Host'}
                                       </span>
-                                      {metadata?.language && (
-                                        <>
-                                          <span className="text-muted-foreground">•</span>
-                                          <LanguageFlag languageCode={metadata.language} />
-                                        </>
-                                      )}
+                                      <span className="text-muted-foreground">•</span>
+                                      <LanguageFlag languageCode={metadata?.language || 'en-US'} />
                                     </div>
                                     
                                     {/* Tags */}

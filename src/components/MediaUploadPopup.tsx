@@ -299,8 +299,8 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               </div>
 
               <div>
-                <Label htmlFor="language">Language</Label>
-                <Select value={language} onValueChange={setLanguage}>
+                <Label htmlFor="language">Language *</Label>
+                <Select value={language || 'en-US'} onValueChange={setLanguage} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select language" />
                   </SelectTrigger>
