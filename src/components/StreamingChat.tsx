@@ -9,6 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext"
 import { useUserPreferences } from "@/hooks/useUserPreferences"
 import { useVertexLive } from "@/hooks/useVertexLive"
 import { useProactiveAssistant } from "@/hooks/useProactiveAssistant"
+import { ClientSTT } from "@/utils/clientSTT"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -84,10 +85,19 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }
 
   const handleMicToggle = async () => {
+    console.log('[MIC] 🎤 Button clicked, current state:', { 
+      isRecording, 
+      isProcessing,
+      selectedLanguage,
+      clientSTTSupported: typeof ClientSTT !== 'undefined',
+      preferences: preferences ? 'loaded' : 'not loaded'
+    });
+    
     // Prime audio context on user gesture
     await aiVoiceService.resumeAudio()
     
     if (isRecording) {
+      console.log('[MIC] 🛑 Stopping recording...');
       // Stop recording and send to AI
       setIsRecording(false)
       setIsProcessing(true)
@@ -141,17 +151,30 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       }
     } else {
       // Start recording with instant client-side STT
+      console.log('[MIC] ▶️ Starting recording with options:', {
+        useClientSTT: preferences?.stt_instant_enabled ?? true,
+        language: selectedLanguage,
+        hasMediaDevices: !!navigator.mediaDevices,
+        hasGetUserMedia: !!navigator.mediaDevices?.getUserMedia
+      });
+      
       try {
         await aiVoiceService.startRecording({
           useClientSTT: preferences?.stt_instant_enabled ?? true,
           language: selectedLanguage
         })
+        console.log('[MIC] ✅ Recording started successfully');
         setIsRecording(true)
       } catch (error) {
-        console.error('Recording error:', error)
+        console.error('[MIC] ❌ Recording error:', error)
+        console.error('[MIC] Error details:', {
+          name: error instanceof Error ? error.name : 'unknown',
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : 'no stack'
+        });
         toast({
           title: "Microphone Error",
-          description: "Could not access microphone",
+          description: error instanceof Error ? error.message : "Could not access microphone",
           variant: "destructive",
         })
       }
@@ -410,7 +433,14 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={triggerProactiveMessage}
+            onClick={() => {
+              console.log('[SPARKLES] ✨ Button clicked, state:', {
+                isGeneratingMessage,
+                preferences: preferences ? 'loaded' : 'not loaded',
+                selectedLanguage
+              });
+              triggerProactiveMessage();
+            }}
             disabled={isGeneratingMessage}
             className="hover:bg-accent rounded-full relative"
             aria-label="Proactive Assistant"

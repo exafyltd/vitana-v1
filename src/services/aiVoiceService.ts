@@ -48,6 +48,15 @@ export class AIVoiceService {
   async startRecording(options: RecordingOptions = {}): Promise<void> {
     const useClientSTT = options.useClientSTT ?? true; // Default to instant STT
     
+    console.log('[Recording] 🎙️ Starting recording with options:', {
+      useClientSTT,
+      language: options.language,
+      clientSTTSupported: ClientSTT.isSupported(),
+      audioContextState: this.audioContext?.state,
+      hasMediaDevices: !!navigator.mediaDevices,
+      hasGetUserMedia: !!navigator.mediaDevices?.getUserMedia
+    });
+    
     // Store language for later use
     this.currentLanguage = options.language || 'en-US';
     console.log('[Recording] Language set to:', this.currentLanguage);
@@ -57,46 +66,62 @@ export class AIVoiceService {
       this.isRecordingWithClientSTT = true;
       this.currentTranscript = '';
       
-      // Start client-side STT for instant transcription
-      this.clientSTT = new ClientSTT({
-        language: options.language || 'en-US',
-        continuous: true,
-        interimResults: true,
-        onResult: (transcript, isFinal) => {
-          if (transcript && transcript.trim()) {
-            // Always keep the latest transcript (interim or final)
-            this.currentTranscript = transcript;
-          }
-          if (isFinal) {
-            console.log('[ClientSTT] Final transcript:', transcript);
-          } else {
-            console.log('[ClientSTT] Interim transcript:', transcript);
-          }
-        },
-        onError: (error) => {
-          console.error('[ClientSTT] Error:', error);
-        },
-      });
-      
-      this.clientSTT.start();
-      console.log('[Recording] Started with instant STT');
+      try {
+        // Start client-side STT for instant transcription
+        this.clientSTT = new ClientSTT({
+          language: options.language || 'en-US',
+          continuous: true,
+          interimResults: true,
+          onResult: (transcript, isFinal) => {
+            if (transcript && transcript.trim()) {
+              // Always keep the latest transcript (interim or final)
+              this.currentTranscript = transcript;
+            }
+            if (isFinal) {
+              console.log('[ClientSTT] ✅ Final transcript:', transcript);
+            } else {
+              console.log('[ClientSTT] 📝 Interim transcript:', transcript.substring(0, 50));
+            }
+          },
+          onError: (error) => {
+            console.error('[ClientSTT] ❌ Error:', error);
+          },
+        });
+        
+        this.clientSTT.start();
+        console.log('[Recording] ✅ Started with instant STT');
+      } catch (error) {
+        console.error('[Recording] ❌ ClientSTT initialization failed:', error);
+        throw error;
+      }
     } else {
-      console.log('[Recording] Using backend STT (fallback)');
+      console.log('[Recording] Using backend STT (fallback), reason:', 
+        !useClientSTT ? 'disabled in preferences' : 'ClientSTT not supported'
+      );
       this.isRecordingWithClientSTT = false;
       
-      // Fallback to MediaRecorder for backend STT
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
-      this.audioChunks = [];
+      try {
+        // Fallback to MediaRecorder for backend STT
+        console.log('[Recording] 🎤 Requesting microphone access...');
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('[Recording] ✅ Microphone access granted');
+        
+        this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
+        this.audioChunks = [];
 
-      this.mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          this.audioChunks.push(event.data);
-        }
-      };
+        this.mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            console.log('[Recording] 📦 Audio chunk received, size:', event.data.size);
+            this.audioChunks.push(event.data);
+          }
+        };
 
-      this.mediaRecorder.start();
-      console.log('[Recording] Started with backend STT');
+        this.mediaRecorder.start();
+        console.log('[Recording] ✅ Started with backend STT');
+      } catch (error) {
+        console.error('[Recording] ❌ MediaRecorder initialization failed:', error);
+        throw error;
+      }
     }
   }
 
@@ -217,7 +242,7 @@ export class AIVoiceService {
     console.info('[streaming] Sending text message:', text.substring(0, 50));
     
     // RULE 8: Assert language is valid before sending
-    const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT'];
+    const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT', 'pl-PL'];
     if (language && !ALLOWED_LANGUAGES.includes(language)) {
       console.error('[streaming] Invalid language:', language);
       throw new Error(`Invalid language: ${language}`);

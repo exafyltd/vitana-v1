@@ -21,6 +21,7 @@ export const languageOptions = [
   { label: "Chinese (ZH)", value: "zh-CN" },
   { label: "French (FR)", value: "fr-FR" },
   { label: "Portuguese (PT)", value: "pt-PT" },
+  { label: "Polish (PL)", value: "pl-PL" },
 ];
 
 const ALLOWED_LANGUAGES = languageOptions.map(opt => opt.value);
@@ -55,8 +56,38 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLocalLanguage(language);
     setLastLanguageChangeAt(Date.now());
     
-    // Background persistence (non-blocking)
-    updatePreferences({ stt_language: language });
+    // RULE 4: Auto-update TTS voice when language changes
+    const currentVoice = preferences?.tts_voice;
+    const shouldUpdateVoice = !currentVoice || !currentVoice.startsWith(language);
+    
+    if (shouldUpdateVoice) {
+      // Default Chirp 3 HD voices for each language
+      const defaultVoices: Record<string, string> = {
+        'en-US': 'en-US-Chirp3-HD-Leda',
+        'sr-RS': 'sr-RS-Standard-B',  // Serbian uses Google Speech
+        'de-DE': 'de-DE-Chirp3-HD-Achernar',
+        'ar-XA': 'ar-XA-Chirp3-HD-Aoede',
+        'es-ES': 'es-ES-Chirp3-HD-Gacrux',
+        'ru-RU': 'ru-RU-Chirp3-HD-Kore',
+        'zh-CN': 'cmn-CN-Chirp3-HD-Leda',
+        'fr-FR': 'fr-FR-Chirp3-HD-Pulcherrima',
+        'pt-PT': 'pt-PT-Chirp3-HD-Zephyr',
+        'pl-PL': 'pl-PL-Chirp3-HD-Despina',
+      };
+      
+      const newVoice = defaultVoices[language] || `${language}-Standard-A`;
+      console.log('[LANG] Auto-updating TTS voice:', currentVoice, '->', newVoice);
+      
+      // Update both STT language and TTS voice
+      updatePreferences({ 
+        stt_language: language,
+        tts_voice: newVoice
+      });
+    } else {
+      console.log('[LANG] Keeping existing voice:', currentVoice);
+      // Only update STT language
+      updatePreferences({ stt_language: language });
+    }
   };
 
   return (
