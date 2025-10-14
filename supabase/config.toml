@@ -1,5 +1,14 @@
 project_id = "inmkhvwdcuyhnxkgfvsb"
 
+[functions.integration-discovery]
+verify_jwt = true
+
+[functions.test-api-integration]
+verify_jwt = true
+
+[functions.run-uptime-checks]
+verify_jwt = false
+
 [functions.generate-maxina-summer-events]
 verify_jwt = true
 

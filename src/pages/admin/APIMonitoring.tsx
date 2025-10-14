@@ -96,6 +96,32 @@ export default function APIMonitoring() {
     externalAPIs: integrations?.filter(i => i.integration_type === 'external_api').length || 0,
   };
 
+  const handleDiscoverIntegrations = async () => {
+    toast({
+      title: "Discovering integrations",
+      description: "Scanning system for APIs and edge functions...",
+    });
+
+    try {
+      const { data, error } = await supabase.functions.invoke("integration-discovery");
+
+      if (error) throw error;
+
+      toast({
+        title: "Discovery complete",
+        description: `Found ${data.count} integrations`,
+      });
+
+      refetchIntegrations();
+    } catch (error) {
+      toast({
+        title: "Discovery failed",
+        description: "Could not scan integrations",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleTestIntegration = async (integrationId: string) => {
     toast({
       title: "Testing integration",
@@ -104,7 +130,7 @@ export default function APIMonitoring() {
 
     try {
       const { data, error } = await supabase.functions.invoke("test-api-integration", {
-        body: { integration_id: integrationId }
+        body: { integrationId }
       });
 
       if (error) throw error;
@@ -290,10 +316,16 @@ export default function APIMonitoring() {
                         <CardTitle>API Integrations Registry</CardTitle>
                         <CardDescription>Manage all registered APIs and edge functions</CardDescription>
                       </div>
-                      <Button onClick={() => refetchIntegrations()} variant="outline" size="sm">
-                        <RefreshCw className="w-4 h-4 mr-2" />
-                        Refresh
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button onClick={handleDiscoverIntegrations} variant="default" size="sm">
+                          <Server className="w-4 h-4 mr-2" />
+                          Discover
+                        </Button>
+                        <Button onClick={() => refetchIntegrations()} variant="outline" size="sm">
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          Refresh
+                        </Button>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>
