@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { format, formatDistanceToNow } from "date-fns";
 import { Search, Plus, Calendar, RefreshCw } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
+import { eventTypeToPillar } from "@/lib/eventTransformers";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
@@ -344,12 +345,29 @@ export default function Home() {
     mediaType: 'Music'
   });
 
-  // Transform real events - moved inside component
+  // Transform real community events for display using proper pillar mapping
+  const transformedCommunityEvents = [...todayEvents, ...upcomingEvents]
+    .slice(0, 5)
+    .map(event => ({
+      title: event.title,
+      description: event.description || "Join us for this community event",
+      imageUrl: event.image_url || "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800&h=600&fit=crop",
+      pillar: eventTypeToPillar(event.event_type),
+      author: { 
+        name: event.creator_display_name || "Community Member", 
+        avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+      },
+      location: event.location || (event.virtual_link ? "Virtual" : "TBA"),
+      attendees: event.participant_count,
+      timestamp: format(new Date(event.start_time), 'MMM dd, HH:mm')
+    }));
+
+  // Transform real events for scrolling rail - moved inside component
   const realTodayEvents = todayEvents.map(event => ({
     title: event.title,
     description: event.description || "Join us for this community event",
     imageUrl: event.image_url || "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
-    pillar: event.event_type === 'meetup' ? 'Mental' : event.event_type === 'fitness' ? 'Exercise' : 'Mental',
+    pillar: eventTypeToPillar(event.event_type),
     author: { 
       name: event.creator_display_name || "Community Member", 
       avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
@@ -359,23 +377,8 @@ export default function Home() {
     timestamp: format(new Date(event.start_time), 'HH:mm')
   }));
 
-  const realUpcomingEventsMapped = upcomingEvents.map(event => ({
-    title: event.title,
-    description: event.description || "Join us for this community event",
-    imageUrl: event.image_url || "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop",
-    pillar: event.event_type === 'meetup' ? 'Mental' : event.event_type === 'fitness' ? 'Exercise' : 'Mental',
-    author: { 
-      name: event.creator_display_name || "Community Member", 
-      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
-    },
-    location: event.location || "Virtual",
-    attendees: event.participant_count,
-    timestamp: format(new Date(event.start_time), 'HH:mm')
-  }));
-
-  // Hybrid: blend real with mock
+  // Hybrid: blend real with mock for scrolling rail
   const activeScheduledEvents = realTodayEvents.length > 0 ? realTodayEvents.slice(0, 3) : todayScheduledEvents;
-  const activeEventsAndMeetups = realUpcomingEventsMapped.length > 0 ? realUpcomingEventsMapped.slice(0, 3) : todayEventsAndMeetups;
 
   // Show onboarding for new users (check localStorage for demo)
   useEffect(() => {
@@ -470,79 +473,102 @@ export default function Home() {
                     className="h-[280px]"
                   />
                 </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={activeScheduledEvents[0]?.title || ""}
-                    description={activeScheduledEvents[0]?.description}
-                    imageUrl={activeScheduledEvents[0]?.imageUrl || ""}
-                    pillar={activeScheduledEvents[0]?.pillar}
-                    author={activeScheduledEvents[0]?.author}
-                    location={activeScheduledEvents[0]?.location}
-                    attendees={activeScheduledEvents[0]?.attendees}
-                    timestamp={activeScheduledEvents[0]?.timestamp}
-                    showReward={true}
-                    rewardPoints={5}
-                    rewardDescription="Earn credits for attending"
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={activeScheduledEvents[1]?.title || ""}
-                    description={activeScheduledEvents[1]?.description}
-                    imageUrl={activeScheduledEvents[1]?.imageUrl || ""}
-                    pillar={activeScheduledEvents[1]?.pillar}
-                    author={activeScheduledEvents[1]?.author}
-                    location={activeScheduledEvents[1]?.location}
-                    attendees={activeScheduledEvents[1]?.attendees}
-                    timestamp={activeScheduledEvents[1]?.timestamp}
-                    showReward={true}
-                    rewardPoints={4}
-                    rewardDescription="Earn credits for learning"
-                    className="h-full"
-                  />
-                </div>
+                {transformedCommunityEvents[0] && (
+                  <div className="col-span-3">
+                    <NewsCard
+                      title={transformedCommunityEvents[0].title}
+                      description={transformedCommunityEvents[0].description}
+                      imageUrl={transformedCommunityEvents[0].imageUrl}
+                      pillar={transformedCommunityEvents[0].pillar}
+                      author={transformedCommunityEvents[0].author}
+                      location={transformedCommunityEvents[0].location}
+                      attendees={transformedCommunityEvents[0].attendees}
+                      timestamp={transformedCommunityEvents[0].timestamp}
+                      showReward={true}
+                      rewardPoints={5}
+                      rewardDescription="Join this community event"
+                      className="h-full"
+                    />
+                  </div>
+                )}
+                {transformedCommunityEvents[1] && (
+                  <div className="col-span-3">
+                    <NewsCard
+                      title={transformedCommunityEvents[1].title}
+                      description={transformedCommunityEvents[1].description}
+                      imageUrl={transformedCommunityEvents[1].imageUrl}
+                      pillar={transformedCommunityEvents[1].pillar}
+                      author={transformedCommunityEvents[1].author}
+                      location={transformedCommunityEvents[1].location}
+                      attendees={transformedCommunityEvents[1].attendees}
+                      timestamp={transformedCommunityEvents[1].timestamp}
+                      showReward={true}
+                      rewardPoints={5}
+                      rewardDescription="Join this community event"
+                      className="h-full"
+                    />
+                  </div>
+                )}
               </div>
 
               <MotivationalBanner variant="partnership" />
 
-              {/* Row 3: Two Events + Community Events (2+1 pattern) */}
+              {/* Row 3: Community Events (2+1 pattern) */}
               <div className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={todayEventsAndMeetups[0]?.title || ""}
-                    description={todayEventsAndMeetups[0]?.description}
-                    imageUrl={todayEventsAndMeetups[0]?.imageUrl || ""}
-                    pillar={todayEventsAndMeetups[0]?.pillar}
-                    author={todayEventsAndMeetups[0]?.author}
-                    location={todayEventsAndMeetups[0]?.location}
-                    attendees={todayEventsAndMeetups[0]?.attendees}
-                    timestamp={todayEventsAndMeetups[0]?.timestamp}
-                    showReward={true}
-                    rewardPoints={6}
-                    rewardDescription="Earn credits for community connection"
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-3">
-                  <NewsCard
-                    title={todayEventsAndMeetups[1]?.title || ""}
-                    description={todayEventsAndMeetups[1]?.description}
-                    imageUrl={todayEventsAndMeetups[1]?.imageUrl || ""}
-                    pillar={todayEventsAndMeetups[1]?.pillar}
-                    author={todayEventsAndMeetups[1]?.author}
-                    location={todayEventsAndMeetups[1]?.location}
-                    attendees={todayEventsAndMeetups[1]?.attendees}
-                    timestamp={todayEventsAndMeetups[1]?.timestamp}
-                    showReward={true}
-                    rewardPoints={5}
-                    rewardDescription="Earn credits for challenge participation"
-                    className="h-full"
-                  />
-                </div>
-                <div className="col-span-6">
-                  <CommunityEventsCard maxEvents={4} className="h-[280px]" />
-                </div>
+                {transformedCommunityEvents[2] && (
+                  <div className="col-span-3">
+                    <NewsCard
+                      title={transformedCommunityEvents[2].title}
+                      description={transformedCommunityEvents[2].description}
+                      imageUrl={transformedCommunityEvents[2].imageUrl}
+                      pillar={transformedCommunityEvents[2].pillar}
+                      author={transformedCommunityEvents[2].author}
+                      location={transformedCommunityEvents[2].location}
+                      attendees={transformedCommunityEvents[2].attendees}
+                      timestamp={transformedCommunityEvents[2].timestamp}
+                      showReward={true}
+                      rewardPoints={5}
+                      rewardDescription="Join this community event"
+                      className="h-full"
+                    />
+                  </div>
+                )}
+                {transformedCommunityEvents[3] && (
+                  <div className="col-span-3">
+                    <NewsCard
+                      title={transformedCommunityEvents[3].title}
+                      description={transformedCommunityEvents[3].description}
+                      imageUrl={transformedCommunityEvents[3].imageUrl}
+                      pillar={transformedCommunityEvents[3].pillar}
+                      author={transformedCommunityEvents[3].author}
+                      location={transformedCommunityEvents[3].location}
+                      attendees={transformedCommunityEvents[3].attendees}
+                      timestamp={transformedCommunityEvents[3].timestamp}
+                      showReward={true}
+                      rewardPoints={5}
+                      rewardDescription="Join this community event"
+                      className="h-full"
+                    />
+                  </div>
+                )}
+                {transformedCommunityEvents[4] && (
+                  <div className="col-span-6">
+                    <NewsCard
+                      title={transformedCommunityEvents[4].title}
+                      description={transformedCommunityEvents[4].description}
+                      imageUrl={transformedCommunityEvents[4].imageUrl}
+                      pillar={transformedCommunityEvents[4].pillar}
+                      author={transformedCommunityEvents[4].author}
+                      location={transformedCommunityEvents[4].location}
+                      attendees={transformedCommunityEvents[4].attendees}
+                      timestamp={transformedCommunityEvents[4].timestamp}
+                      showReward={true}
+                      rewardPoints={5}
+                      rewardDescription="Join this community event"
+                      className="h-full"
+                    />
+                  </div>
+                )}
               </div>
 
               <MotivationalBanner variant="achievement" />
