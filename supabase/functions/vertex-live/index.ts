@@ -177,9 +177,9 @@ serve(async (req) => {
             return;
           }
 
-          // Connect to Gemini Live API using OAuth2 access_token
-          // Note: For OAuth2, use ?access_token= not ?key= (key is for API keys only)
-          const geminiUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService/BidiGenerateContent?access_token=${access_token}`;
+          // Connect to Gemini Live API using OAuth2 access_token via query param
+          // IMPORTANT: The correct endpoint uses a dot between service and method: GenerativeService.BidiGenerateContent
+          const geminiUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?access_token=${access_token}`;
           console.log('🔗 Connecting to Gemini Live API...');
           vertexSocket = new WebSocket(geminiUrl);
         } catch (e) {
