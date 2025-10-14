@@ -146,9 +146,11 @@ export default function Podcasts() {
                         <div className="text-sm text-muted-foreground line-clamp-1">{podcast.description}</div>
                       </div>
                     </TableCell>
-                    <TableCell>{podcast.podcast_metadata?.[0]?.host_name || 'Unknown'}</TableCell>
                     <TableCell>
-                      {podcast.podcast_metadata?.[0]?.episode_number 
+                      {podcast.podcast_metadata?.[0]?.host_name || 'Unknown Host'}
+                    </TableCell>
+                    <TableCell>
+                      {podcast.podcast_metadata?.[0]?.episode_number
                         ? `Ep. ${podcast.podcast_metadata[0].episode_number}`
                         : 'N/A'}
                     </TableCell>

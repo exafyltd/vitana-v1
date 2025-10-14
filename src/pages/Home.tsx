@@ -269,7 +269,7 @@ export default function Home() {
     queryFn: async () => {
       const { data: mediaData } = await supabase
         .from('media_uploads')
-        .select('*, music_metadata(*)')
+        .select('*, music_metadata(*), podcast_metadata(*), video_metadata(*)')
         .eq('status', 'approved')
         .eq('is_public', true)
         .order('created_at', { ascending: false })

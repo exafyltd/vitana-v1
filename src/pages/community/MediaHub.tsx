@@ -85,21 +85,35 @@ export default function MediaHub() {
     thumbnail: "BE",
     isLive: true
   }];
-  const podcastEpisodes = [{
-    title: "The Science of Sleep",
-    creator: "Dr. Sarah Wilson",
-    duration: "45:30",
-    category: "Health",
-    plays: "12k",
-    isNew: true
-  }, {
-    title: "Mindful Eating Habits",
-    creator: "Nutrition Network",
-    duration: "32:15",
-    category: "Nutrition",
-    plays: "8.5k",
-    isNew: false
-  }];
+  // Fetch approved podcasts from database
+  const { data: approvedPodcasts = [] } = useQuery({
+    queryKey: ['community-podcasts'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('media_uploads')
+        .select(`
+          id,
+          title,
+          file_url,
+          duration,
+          plays_count,
+          created_at,
+          podcast_metadata (
+            host_name,
+            episode_number,
+            series_name
+          )
+        `)
+        .eq('media_type', 'podcast')
+        .eq('status', 'approved')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(10);
+      
+      if (error) throw error;
+      return data || [];
+    }
+  });
   const liveReplays = [{
     title: "Community Yoga Session",
     date: "Yesterday",
@@ -359,35 +373,59 @@ export default function MediaHub() {
                       Latest Episodes
                     </h2>
                     <div className="space-y-4">
-                      {podcastEpisodes.map((episode, index) => <div key={index} className="p-4 border rounded-lg">
-                          <div className="flex items-start gap-3">
-                            <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center">
-                              <Volume2 className="w-6 h-6 text-green-600" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold text-sm">{episode.title}</h3>
-                                {episode.isNew && <Badge variant="secondary" className="text-xs">New</Badge>}
+                      {approvedPodcasts.length === 0 ? (
+                        <div className="text-center py-8 text-muted-foreground">
+                          <Podcast className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                          <p>No podcasts uploaded yet. Be the first to share!</p>
+                        </div>
+                      ) : (
+                        approvedPodcasts.map((podcast) => {
+                          const formatDuration = (seconds: number | null) => {
+                            if (!seconds) return '0:00';
+                            const mins = Math.floor(seconds / 60);
+                            const secs = Math.floor(seconds % 60);
+                            return `${mins}:${secs.toString().padStart(2, '0')}`;
+                          };
+
+                          return (
+                            <div key={podcast.id} className="p-4 border rounded-lg">
+                              <div className="flex items-start gap-3">
+                                <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center">
+                                  <Volume2 className="w-6 h-6 text-green-600" />
+                                </div>
+                                <div className="flex-1">
+                                  <h3 className="font-semibold text-sm">{podcast.title}</h3>
+                                  <p className="text-xs text-muted-foreground mb-2">
+                                    {podcast.podcast_metadata?.[0]?.host_name || 'Unknown Host'}
+                                  </p>
+                                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                    <span>{formatDuration(podcast.duration)}</span>
+                                    <span>•</span>
+                                    <span>{podcast.plays_count || 0} plays</span>
+                                    {podcast.podcast_metadata?.[0]?.series_name && (
+                                      <Badge variant="outline" className="text-xs">
+                                        {podcast.podcast_metadata[0].series_name}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                </div>
                               </div>
-                              <p className="text-xs text-muted-foreground mb-2">{episode.creator}</p>
-                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                <span>{episode.duration}</span>
-                                <span>•</span>
-                                <span>{episode.plays} plays</span>
-                                <Badge variant="outline" className="text-xs">{episode.category}</Badge>
+                              <div className="flex gap-2 mt-3">
+                                <Button size="sm" variant="outline" className="flex-1" onClick={() => {
+                                  const audio = new Audio(podcast.file_url);
+                                  audio.play();
+                                }}>
+                                  <Play className="w-4 h-4 mr-1" />
+                                  Play
+                                </Button>
+                                <Button size="sm" variant="ghost">
+                                  <Bookmark className="w-4 h-4" />
+                                </Button>
                               </div>
                             </div>
-                          </div>
-                          <div className="flex gap-2 mt-3">
-                            <Button size="sm" variant="outline" className="flex-1">
-                              <Play className="w-4 h-4 mr-1" />
-                              Play
-                            </Button>
-                            <Button size="sm" variant="ghost">
-                              <Bookmark className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </div>)}
+                          );
+                        })
+                      )}
                     </div>
                   </CardContent>
                 </Card>

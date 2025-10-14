@@ -125,24 +125,41 @@ export const useMediaUpload = () => {
 
       // Insert type-specific metadata
       if (metadata.mediaType === 'music' && mediaUpload) {
-        await supabase.from('music_metadata').insert({
+        const { error: musicError } = await supabase.from('music_metadata').insert({
           media_id: mediaUpload.id,
           genre: metadata.genre || null,
           mood: metadata.mood || null,
         });
+        
+        if (musicError) {
+          await supabase.from('media_uploads').delete().eq('id', mediaUpload.id);
+          throw new Error('Failed to save music metadata. Please try again.');
+        }
       } else if (metadata.mediaType === 'podcast' && mediaUpload) {
-        const [host, ...guests] = (metadata.hostGuest || '').split(',').map(s => s.trim());
-        await supabase.from('podcast_metadata').insert({
+        const [host, ...guests] = (metadata.hostGuest || '').split(',').map(s => s.trim()).filter(Boolean);
+        const guestCombined = guests.length > 0 ? guests.join(', ') : null;
+        
+        const { error: podcastError } = await supabase.from('podcast_metadata').insert({
           media_id: mediaUpload.id,
           host_name: host || null,
-          guest_names: guests.length > 0 ? guests : null,
+          guest_name: guestCombined,
         });
+        
+        if (podcastError) {
+          await supabase.from('media_uploads').delete().eq('id', mediaUpload.id);
+          throw new Error('Failed to save podcast metadata. Please try again.');
+        }
       } else if (metadata.mediaType === 'video' && mediaUpload) {
-        await supabase.from('video_metadata').insert({
+        const { error: videoError } = await supabase.from('video_metadata').insert({
           media_id: mediaUpload.id,
           topic: metadata.topic || null,
           thumbnail_url: metadata.thumbnailUrl || null,
         });
+        
+        if (videoError) {
+          await supabase.from('media_uploads').delete().eq('id', mediaUpload.id);
+          throw new Error('Failed to save video metadata. Please try again.');
+        }
       }
 
       setProgress(100);
