@@ -27,16 +27,15 @@ serve(async (req) => {
 
     const serviceAccount = JSON.parse(serviceAccountJson);
 
-    // Detect if this is a Gemini voice (supports stylePrompt)
-    const geminiVoices = ['charon', 'kore', 'fenrir', 'aoede'];
-    const isGeminiVoice = geminiVoices.includes((voiceId || '').toLowerCase());
+    // All voices now require model_name for Gemini TTS
+    const modelName = 'gemini-2.5-flash-preview-tts';
 
     console.log('🎤 Vertex TTS request:', { 
       voiceId, 
       languageCode, 
       textLength: text.length,
       hasStylePrompt: !!stylePrompt,
-      isGeminiVoice
+      modelName
     });
 
     // Get access token
@@ -57,20 +56,18 @@ serve(async (req) => {
 
     const { access_token } = await tokenResponse.json();
 
-    // Prepare synthesis input - only use stylePrompt for Gemini voices
+    // Prepare synthesis input with stylePrompt
     const synthesisInput: any = { text };
-    if (isGeminiVoice && stylePrompt) {
+    if (stylePrompt) {
       synthesisInput.prompt = stylePrompt;
     }
 
-    // Prepare voice config - only use modelName for Gemini voices
-    const voiceConfig: any = {
+    // Prepare voice config with required model_name
+    const voiceConfig = {
       languageCode: languageCode || 'en-US',
       name: voiceId || 'Charon',
+      model_name: modelName,
     };
-    if (isGeminiVoice) {
-      voiceConfig.modelName = 'gemini-2.5-pro-tts';
-    }
 
     // Call Vertex AI Text-to-Speech API
     const response = await fetch(
