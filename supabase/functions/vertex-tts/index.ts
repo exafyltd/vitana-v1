@@ -27,11 +27,16 @@ serve(async (req) => {
 
     const serviceAccount = JSON.parse(serviceAccountJson);
 
+    // Detect if this is a Gemini voice (supports stylePrompt)
+    const geminiVoices = ['charon', 'kore', 'fenrir', 'aoede'];
+    const isGeminiVoice = geminiVoices.includes((voiceId || '').toLowerCase());
+
     console.log('🎤 Vertex TTS request:', { 
       voiceId, 
       languageCode, 
       textLength: text.length,
-      hasStylePrompt: !!stylePrompt 
+      hasStylePrompt: !!stylePrompt,
+      isGeminiVoice
     });
 
     // Get access token
@@ -45,15 +50,26 @@ serve(async (req) => {
     });
 
     if (!tokenResponse.ok) {
-      throw new Error('Failed to get access token');
+      const errorBody = await tokenResponse.text();
+      console.error('❌ Token request failed:', tokenResponse.status, errorBody);
+      throw new Error(`Failed to get access token: ${tokenResponse.status}`);
     }
 
     const { access_token } = await tokenResponse.json();
 
-    // Prepare synthesis input
+    // Prepare synthesis input - only use stylePrompt for Gemini voices
     const synthesisInput: any = { text };
-    if (stylePrompt) {
+    if (isGeminiVoice && stylePrompt) {
       synthesisInput.prompt = stylePrompt;
+    }
+
+    // Prepare voice config - only use modelName for Gemini voices
+    const voiceConfig: any = {
+      languageCode: languageCode || 'en-US',
+      name: voiceId || 'Charon',
+    };
+    if (isGeminiVoice) {
+      voiceConfig.modelName = 'gemini-2.5-pro-tts';
     }
 
     // Call Vertex AI Text-to-Speech API
@@ -67,11 +83,7 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           input: synthesisInput,
-          voice: {
-            languageCode: languageCode || 'en-US',
-            name: voiceId || 'Charon',
-            modelName: 'gemini-2.5-pro-tts',
-          },
+          voice: voiceConfig,
           audioConfig: {
             audioEncoding: 'MP3',
             sampleRateHertz: 24000,
@@ -81,9 +93,13 @@ serve(async (req) => {
     );
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error('❌ Vertex TTS error:', response.status, error);
-      throw new Error(`Vertex TTS API error: ${response.status}`);
+      const errorBody = await response.text();
+      console.error('❌ Vertex TTS error:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorBody.substring(0, 500)
+      });
+      throw new Error(`Vertex TTS API error: ${response.status} - ${errorBody.substring(0, 200)}`);
     }
 
     const data = await response.json();

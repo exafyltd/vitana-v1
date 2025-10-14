@@ -129,14 +129,24 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
     try {
       const { supabase } = await import('@/integrations/supabase/client');
-      const { data, error } = await supabase.functions.invoke('vertex-tts', {
-        body: {
-          text: testPhrase,
-          voiceId: voiceName,
-          languageCode: preferences.stt_language || 'en-US',
-          stylePrompt: 'Speak in a friendly and helpful tone.',
-        },
-      });
+      
+      // Detect if this is a Gemini voice (supports stylePrompt)
+      const geminiVoices = ['charon', 'kore', 'fenrir', 'aoede'];
+      const isGeminiVoice = geminiVoices.includes(voiceName.toLowerCase());
+
+      const body: any = {
+        text: testPhrase,
+        voiceId: voiceName,
+        languageCode: preferences.stt_language || 'en-US',
+      };
+
+      // Only send stylePrompt for Gemini voices
+      if (isGeminiVoice) {
+        body.stylePrompt = 'Speak in a friendly and helpful tone.';
+      }
+
+      const { data, error } = await supabase.functions.invoke('vertex-tts', { body });
+      
       if (error) throw error;
       if (!data?.audioContent) throw new Error('No audio content received');
       const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
