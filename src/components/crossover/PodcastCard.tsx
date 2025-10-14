@@ -6,6 +6,7 @@ import { usePodcastFavorite } from "@/hooks/usePodcastFavorite";
 import { useToast } from "@/hooks/use-toast";
 import { format, isToday, isThisWeek, isThisYear } from "date-fns";
 import { useAuth } from "@/context/AuthProvider";
+import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
 
 interface PodcastCardProps {
   id: string;
@@ -17,6 +18,8 @@ interface PodcastCardProps {
   language: string;
   audioUrl: string;
   imageUrl?: string;
+  isCreator?: boolean;
+  onDelete?: () => void;
 }
 
 const getLanguageLabel = (languageCode: string): string => {
@@ -46,6 +49,8 @@ export function PodcastCard({
   language,
   audioUrl,
   imageUrl,
+  isCreator = false,
+  onDelete,
 }: PodcastCardProps) {
   const { currentPodcast, isPlaying, playPodcast, togglePlay } = useAudioPlayer();
   const { user } = useAuth();
@@ -217,6 +222,18 @@ export function PodcastCard({
           >
             <Share2 className="h-4 w-4 text-muted-foreground hover:text-primary" />
           </Button>
+
+          {/* Delete Menu - Only for creators */}
+          {isCreator && onDelete && (
+            <KebabMenu>
+              <DropdownMenuItem
+                className="text-destructive cursor-pointer"
+                onClick={onDelete}
+              >
+                Delete Podcast
+              </DropdownMenuItem>
+            </KebabMenu>
+          )}
         </div>
       </div>
     </div>

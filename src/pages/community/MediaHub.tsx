@@ -437,37 +437,23 @@ export default function MediaHub() {
                           const isCreator = user?.id === podcast.user_id;
                           
                           return (
-                            <div key={podcast.id} className="relative">
-                              <PodcastCard
-                                id={podcast.id}
-                                title={podcast.title}
-                                creator={metadata?.host_name || 'Unknown Host'}
-                                duration={podcast.duration}
-                                uploadedAt={podcast.created_at}
-                                description={podcast.description}
-                                language={metadata?.language || 'en-US'}
-                                audioUrl={podcast.file_url}
-                                imageUrl={podcast.thumbnail_url}
-                              />
-                              
-                              {/* Delete Menu - Overlay on card */}
-                              {isCreator && (
-                                <div className="absolute top-4 right-4 z-30 bg-background/80 backdrop-blur-sm rounded-lg p-1">
-                                  <KebabMenu>
-                                    <DropdownMenuItem
-                                      className="text-destructive cursor-pointer"
-                                      onClick={() => {
-                                        setPodcastToDelete(podcast.id);
-                                        setDeleteDialogOpen(true);
-                                      }}
-                                    >
-                                      <Trash2 className="h-4 w-4 mr-2" />
-                                      Delete Podcast
-                                    </DropdownMenuItem>
-                                  </KebabMenu>
-                                </div>
-                              )}
-                            </div>
+                          <PodcastCard
+                            key={podcast.id}
+                            id={podcast.id}
+                            title={podcast.title}
+                            creator={metadata?.host_name || 'Unknown Host'}
+                            duration={podcast.duration}
+                            uploadedAt={podcast.created_at}
+                            description={podcast.description}
+                            language={metadata?.language_code || 'en-US'}
+                            audioUrl={podcast.file_url}
+                            imageUrl={podcast.thumbnail_url}
+                            isCreator={isCreator}
+                            onDelete={() => {
+                              setPodcastToDelete(podcast.id);
+                              setDeleteDialogOpen(true);
+                            }}
+                          />
                           );
                         })
                       )}
