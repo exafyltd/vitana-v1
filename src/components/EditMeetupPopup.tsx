@@ -34,9 +34,10 @@ interface EditMeetupPopupProps {
   isOpen: boolean;
   onClose: () => void;
   event: CommunityEvent;
+  onUpdated?: () => void;
 }
 
-export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps) {
+export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetupPopupProps) {
   const { updateEvent } = useCommunityEvents();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -289,6 +290,7 @@ export function EditMeetupPopup({ isOpen, onClose, event }: EditMeetupPopupProps
           title: "Meetup Updated!",
           description: "Your meetup has been successfully updated.",
         });
+        onUpdated?.(); // Trigger parent to refetch events
         onClose();
         setErrors({});
       } else {

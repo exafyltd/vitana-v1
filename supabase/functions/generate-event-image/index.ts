@@ -308,8 +308,8 @@ Style: Natural documentary photography meets wellness editorial, authentic momen
     const base64Data = base64Image.split(',')[1];
     const imageBuffer = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
 
-    // Upload to storage
-    const fileName = `${user.id}/${eventId}.png`;
+    // Upload to storage with unique filename to prevent cache issues
+    const fileName = `${user.id}/${eventId}-${Date.now()}.png`;
     const { error: uploadError } = await supabase.storage
       .from('covers')
       .upload(fileName, imageBuffer, {

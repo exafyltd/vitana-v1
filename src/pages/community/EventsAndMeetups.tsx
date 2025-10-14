@@ -201,7 +201,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentU
 const EventsAndMeetups = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
-  const { events: dbEvents, loading } = useCommunityEvents();
+  const { events: dbEvents, loading, fetchEvents } = useCommunityEvents();
   const { user } = useAuth();
   
   const [createEventOpen, setCreateEventOpen] = useState(false);
@@ -484,6 +484,7 @@ const EventsAndMeetups = () => {
             setSelectedEvent(null);
           }}
           event={selectedEvent}
+          onUpdated={fetchEvents}
         />
       )}
 

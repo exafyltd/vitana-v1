@@ -217,10 +217,12 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-            style={{ 
+            style={imageUrl ? { 
               backgroundImage: `url("${imageUrl}")`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
+            } : {
+              background: 'linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted) / 0.8) 50%, hsl(var(--muted) / 0.6) 100%)'
             }}
           />
           
