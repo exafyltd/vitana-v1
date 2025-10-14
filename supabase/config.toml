@@ -9,9 +9,6 @@ verify_jwt = true
 [functions.vertex-live]
 verify_jwt = false
 
-[functions.google-cloud-tts]
-verify_jwt = true
-
 [functions.send-appointment-reminder]
 verify_jwt = false
 
@@ -111,5 +108,3 @@ verify_jwt = true
 [functions.run-api-tests]
 verify_jwt = false
 
-[functions.test-vertex-live]
-verify_jwt = false
