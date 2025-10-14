@@ -197,13 +197,31 @@ export class VertexLiveService {
       if (content.modelTurn) {
         const parts = content.modelTurn.parts || [];
         
-        // Handle audio responses (temporarily disabled - using binary path instead)
+        // Handle inline audio responses from AI
         for (const part of parts) {
-          if (part.inlineData && part.inlineData.mimeType?.includes('audio')) {
-            console.log('🔊 Received inline audio from AI (skipping - using binary path)');
-            this.callbacks.onTrace?.('inline_audio_received (disabled)');
-            // Disabled to avoid double-playback with binary audio stream
-            // The main audio comes through the ArrayBuffer path above
+          if (part.inlineData?.mimeType?.includes('audio') && part.inlineData.data) {
+            console.log('🔊 Received inline audio from AI:', part.inlineData.data.length, 'base64 chars');
+            this.callbacks.onTrace?.(`inline_audio_received: ${part.inlineData.data.length}b`);
+            
+            try {
+              // Base64-decode the audio data
+              const base64 = part.inlineData.data as string;
+              const binaryString = atob(base64);
+              const bytes = new Uint8Array(binaryString.length);
+              for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+              }
+              
+              console.log('🎵 Decoded inline audio:', bytes.byteLength, 'bytes');
+              
+              // Queue for playback through AudioQueue
+              if (this.audioContext) {
+                await playAudioData(this.audioContext, bytes);
+                this.callbacks.onTrace?.(`inline_audio_queued: ${bytes.byteLength}b`);
+              }
+            } catch (error) {
+              console.error('❌ Failed to decode/queue inline audio:', error);
+            }
           }
 
           // Handle text responses (transcripts)
@@ -246,7 +264,7 @@ export class VertexLiveService {
         const message = {
           realtimeInput: {
             mediaChunks: [{
-              mimeType: "audio/pcm;rate=24000",
+              mimeType: "audio/pcm;rate=16000",
               data: base64Audio
             }]
           }
