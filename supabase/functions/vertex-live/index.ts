@@ -17,13 +17,20 @@ serve(async (req) => {
       return new Response("Expected WebSocket", { status: 426 });
     }
 
-    // Get auth token from query params or header
+    // Get Google Cloud access token from query params ONLY
     const url = new URL(req.url);
-    const token = url.searchParams.get("token") || req.headers.get("Authorization")?.replace("Bearer ", "");
+    const token = url.searchParams.get("token");
     
     if (!token) {
-      return new Response("Missing authentication token", { status: 401 });
+      return new Response("Missing Google Cloud access token in query parameter", { status: 401 });
     }
+    
+    if (!token.startsWith('ya29.')) {
+      console.error('❌ Invalid token format - expected Google Cloud access token');
+      return new Response("Invalid authentication token format", { status: 401 });
+    }
+    
+    console.log('🔑 Using Google Cloud token:', token.substring(0, 20) + '...');
 
     const { socket: clientSocket, response } = Deno.upgradeWebSocket(req);
 
