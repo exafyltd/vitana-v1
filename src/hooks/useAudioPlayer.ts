@@ -31,7 +31,7 @@ interface UseAudioPlayerReturn {
 }
 
 // Global state for audio player (singleton pattern)
-let globalState: {
+export let globalState: {
   currentPodcast: PodcastData | null;
   isPlaying: boolean;
   currentTime: number;
@@ -51,7 +51,7 @@ let globalState: {
   listeners: new Set(),
 };
 
-const notifyListeners = () => {
+export const notifyListeners = () => {
   globalState.listeners.forEach(listener => listener());
 };
 
@@ -68,10 +68,13 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
   }, []);
 
   useEffect(() => {
-    if (audioRef.current && !globalState.audioElement) {
+    if (audioRef.current) {
       globalState.audioElement = audioRef.current;
+      // Apply current playback settings
+      audioRef.current.playbackRate = globalState.playbackRate;
+      audioRef.current.volume = globalState.volume;
     }
-  }, []);
+  }, [audioRef.current]);
 
   const playPodcast = useCallback((podcast: PodcastData) => {
     // If same podcast, just toggle play

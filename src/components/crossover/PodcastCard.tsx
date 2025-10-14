@@ -2,14 +2,30 @@ import { Volume2, Play, Pause, Bookmark } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 
 export function PodcastCard() {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+  const { currentPodcast, isPlaying, playPodcast, togglePlay } = useAudioPlayer();
+  
+  // Sample podcast data - in real app this would come from props
+  const podcastData = {
+    id: 'wellness-hour-42',
+    title: 'The Wellness Hour',
+    host: 'Health Network',
+    audioUrl: '/sample-audio.mp3', // Replace with actual audio URL
+    duration: 2720, // 45:20 in seconds
+    imageUrl: undefined,
   };
+
+  const handlePlayToggle = () => {
+    if (currentPodcast?.id === podcastData.id) {
+      togglePlay();
+    } else {
+      playPodcast(podcastData);
+    }
+  };
+
+  const isThisPodcastPlaying = isPlaying && currentPodcast?.id === podcastData.id;
 
   return (
     <Card className="h-full bg-violet-50 border-violet-200 group cursor-pointer relative overflow-hidden hover:shadow-lg transition-all duration-300">
@@ -23,9 +39,9 @@ export function PodcastCard() {
             size="sm" 
             className="rounded-full w-8 h-8 bg-white/90 hover:bg-white shadow-lg"
             style={{ color: 'hsl(var(--pill-mental-accent))' }}
-            onClick={togglePlay}
+            onClick={handlePlayToggle}
           >
-            {isPlaying ? (
+            {isThisPodcastPlaying ? (
               <Pause className="w-4 h-4" />
             ) : (
               <Play className="w-4 h-4" />

@@ -4,26 +4,42 @@ interface LanguageFlagProps {
 }
 
 const languageMap: Record<string, string> = {
-  'de-DE': '🇩🇪',
-  'en-US': '🇺🇸',
-  'en-GB': '🇬🇧',
-  'sr-RS': '🇷🇸',
-  'es-ES': '🇪🇸',
-  'ar-XA': '🇸🇦',
-  'ru-RU': '🇷🇺',
-  'zh-CN': '🇨🇳',
-  'fr-FR': '🇫🇷',
-  'pt-PT': '🇵🇹',
-  'pl-PL': '🇵🇱'
+  'de-DE': 'DE',
+  'en-US': 'US',
+  'en-GB': 'GB',
+  'sr-RS': 'RS',
+  'es-ES': 'ES',
+  'ar-XA': 'SA',
+  'ru-RU': 'RU',
+  'zh-CN': 'CN',
+  'fr-FR': 'FR',
+  'pt-PT': 'PT',
+  'pl-PL': 'PL'
+};
+
+const countryFlags: Record<string, string> = {
+  'DE': '🇩🇪',
+  'US': '🇺🇸',
+  'GB': '🇬🇧',
+  'RS': '🇷🇸',
+  'ES': '🇪🇸',
+  'SA': '🇸🇦',
+  'RU': '🇷🇺',
+  'CN': '🇨🇳',
+  'FR': '🇫🇷',
+  'PT': '🇵🇹',
+  'PL': '🇵🇱'
 };
 
 export function LanguageFlag({ languageCode, className = "" }: LanguageFlagProps) {
-  // Default to world flag if no language or unsupported language
-  const flag = languageCode && languageMap[languageCode] ? languageMap[languageCode] : '🌐';
+  const countryCode = languageCode && languageMap[languageCode] ? languageMap[languageCode] : null;
+  const flag = countryCode && countryFlags[countryCode] ? countryFlags[countryCode] : '🌐';
 
   return (
     <div className={`flex items-center justify-center w-10 h-10 rounded-full bg-background shadow-sm ${className}`}>
-      <span className="text-2xl">{flag}</span>
+      <span className="text-2xl" style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"' }}>
+        {flag}
+      </span>
     </div>
   );
 }

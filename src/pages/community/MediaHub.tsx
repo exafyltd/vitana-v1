@@ -38,7 +38,7 @@ import {
 export default function MediaHub() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { playPodcast, currentPodcast, isPlaying } = useAudioPlayer();
+  const { playPodcast, currentPodcast, isPlaying, togglePlay } = useAudioPlayer();
   const queryClient = useQueryClient();
   const {
     pendingCount,
@@ -526,14 +526,18 @@ export default function MediaHub() {
                                         color: 'hsl(var(--primary-foreground))'
                                       }}
                                       onClick={() => {
-                                        playPodcast({
-                                          id: podcast.id,
-                                          title: podcast.title,
-                                          host: metadata?.host_name || 'Unknown Host',
-                                          audioUrl: podcast.file_url,
-                                          duration: podcast.duration || 0,
-                                          imageUrl: podcast.thumbnail_url,
-                                        });
+                                        if (currentPodcast?.id === podcast.id) {
+                                          togglePlay();
+                                        } else {
+                                          playPodcast({
+                                            id: podcast.id,
+                                            title: podcast.title,
+                                            host: metadata?.host_name || 'Unknown Host',
+                                            audioUrl: podcast.file_url,
+                                            duration: podcast.duration || 0,
+                                            imageUrl: podcast.thumbnail_url,
+                                          });
+                                        }
                                       }}
                                     >
                                       {isCurrentlyPlaying && isPlaying ? (

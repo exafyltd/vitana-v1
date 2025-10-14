@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Play, Pause, X, SkipBack, SkipForward } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { useAudioPlayer, updateAudioTime, updateAudioDuration } from '@/hooks/useAudioPlayer';
+import { useAudioPlayer, updateAudioTime, updateAudioDuration, globalState, notifyListeners } from '@/hooks/useAudioPlayer';
 
 export function MiniAudioPlayer() {
   const {
@@ -30,15 +30,33 @@ export function MiniAudioPlayer() {
       audio.pause();
       updateAudioTime(0);
     };
+    
+    const handlePlay = () => {
+      if (globalState.audioElement === audio && !globalState.isPlaying) {
+        globalState.isPlaying = true;
+        notifyListeners();
+      }
+    };
+
+    const handlePause = () => {
+      if (globalState.audioElement === audio && globalState.isPlaying) {
+        globalState.isPlaying = false;
+        notifyListeners();
+      }
+    };
 
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('durationchange', handleDurationChange);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
 
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('durationchange', handleDurationChange);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
     };
   }, [audioRef]);
 
