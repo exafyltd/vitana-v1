@@ -1030,38 +1030,74 @@ serve(async (req) => {
 
     // STREAMING IMPLEMENTATION
     if (stream) {
-      const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${lovableApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash',
-          messages: [
-            { role: 'system', content: systemMessage },
-            ...conversationHistory.map((msg: any) => ({ role: msg.role, content: msg.content })),
-            { role: 'user', content: userMessage }
-          ],
-          stream: true
-        }),
-      });
+      // Retry logic with exponential backoff
+      let aiResponse;
+      let lastError;
+      const maxRetries = 3;
+      const baseDelay = 1000; // 1 second
+      
+      for (let attempt = 0; attempt < maxRetries; attempt++) {
+        try {
+          if (attempt > 0) {
+            const delay = baseDelay * Math.pow(2, attempt - 1);
+            console.log(`[ai-chat] Retry attempt ${attempt + 1}/${maxRetries} after ${delay}ms delay`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+          }
+          
+          aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${lovableApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: 'google/gemini-2.5-flash',
+              messages: [
+                { role: 'system', content: systemMessage },
+                ...conversationHistory.map((msg: any) => ({ role: msg.role, content: msg.content })),
+                { role: 'user', content: userMessage }
+              ],
+              stream: true
+            }),
+          });
 
-      if (!aiResponse.ok) {
-        const errorBody = await aiResponse.text();
-        console.error('[ai-chat] Lovable AI error:', {
-          status: aiResponse.status,
-          statusText: aiResponse.statusText,
-          body: errorBody.substring(0, 500)
-        });
-        
-        if (aiResponse.status === 429) {
-          throw new Error('RATE_LIMIT_EXCEEDED: Too many requests. Please wait a moment and try again.');
+          if (!aiResponse.ok) {
+            const errorBody = await aiResponse.text();
+            
+            // Don't retry on client errors (400-499) except rate limits
+            if (aiResponse.status >= 400 && aiResponse.status < 500 && aiResponse.status !== 429) {
+              console.error('[ai-chat] Client error (no retry):', {
+                status: aiResponse.status,
+                body: errorBody.substring(0, 500)
+              });
+              
+              if (aiResponse.status === 402) {
+                throw new Error('AI_CREDITS_DEPLETED: AI credits have been used up. Please add credits to continue using AI features.');
+              }
+              throw new Error(`AI_API_ERROR: Failed to get AI response (${aiResponse.status}): ${errorBody.substring(0, 200)}`);
+            }
+            
+            // Retry on rate limits and server errors
+            lastError = new Error(`API returned ${aiResponse.status}: ${errorBody.substring(0, 200)}`);
+            console.warn(`[ai-chat] Attempt ${attempt + 1} failed:`, aiResponse.status);
+            continue;
+          }
+          
+          // Success - break retry loop
+          break;
+        } catch (error: any) {
+          lastError = error;
+          if (error.message?.includes('AI_CREDITS_DEPLETED') || error.message?.includes('AI_API_ERROR')) {
+            throw error; // Don't retry these
+          }
+          console.warn(`[ai-chat] Attempt ${attempt + 1} threw error:`, error.message);
         }
-        if (aiResponse.status === 402) {
-          throw new Error('AI_CREDITS_DEPLETED: AI credits have been used up. Please add credits to continue using AI features.');
-        }
-        throw new Error(`AI_API_ERROR: Failed to get AI response (${aiResponse.status}): ${errorBody.substring(0, 200)}`);
+      }
+      
+      // If all retries failed
+      if (!aiResponse || !aiResponse.ok) {
+        console.error('[ai-chat] All retry attempts exhausted');
+        throw new Error('RATE_LIMIT_EXCEEDED: Too many requests. Please wait a moment and try again.');
       }
 
       const normalizedLang = normalizeLanguage(detectedLanguage);

@@ -332,6 +332,33 @@ serve(async (req) => {
       }
     };
 
+    // Connection quality monitoring
+    let lastPingTime = Date.now();
+    let connectionQuality = 'good'; // good, degraded, poor
+    
+    const monitorConnection = setInterval(() => {
+      const timeSinceLastPing = Date.now() - lastPingTime;
+      
+      if (timeSinceLastPing > 30000) {
+        connectionQuality = 'poor';
+        console.warn('⚠️ Connection quality: POOR (>30s since last message)');
+      } else if (timeSinceLastPing > 10000) {
+        connectionQuality = 'degraded';
+        console.warn('⚠️ Connection quality: DEGRADED (>10s since last message)');
+      } else {
+        connectionQuality = 'good';
+      }
+      
+      // Send quality update to client
+      try {
+        clientSocket.send(JSON.stringify({ 
+          type: 'connection_quality', 
+          quality: connectionQuality,
+          lastMessageAge: timeSinceLastPing
+        }));
+      } catch (_) {}
+    }, 5000); // Check every 5 seconds
+
     // Forward client messages to Vertex AI
     clientSocket.onmessage = async (event) => {
       try {
@@ -340,10 +367,12 @@ serve(async (req) => {
 
         if (!isConnected || !vertexSocket) {
           console.warn('⚠️ Vertex AI not connected, dropping message');
+          clientSocket.send(JSON.stringify({ type: 'error', message: 'Connection lost. Please reconnect.' }));
           return;
         }
 
         // Forward to Vertex AI
+        lastPingTime = Date.now(); // Update last activity time
         vertexSocket.send(JSON.stringify(message));
 
         // Log user messages to database (support camelCase and snake_case)
@@ -374,6 +403,7 @@ serve(async (req) => {
       const e = ev as CloseEvent;
       console.log('🔌 Client WebSocket closed', e?.code, e?.reason);
       if (typeof pingInterval !== 'undefined') clearInterval(pingInterval);
+      if (typeof monitorConnection !== 'undefined') clearInterval(monitorConnection);
       if (vertexSocket && vertexSocket.readyState === WebSocket.OPEN) {
         vertexSocket.close(4000, 'client-closed');
       }
@@ -381,6 +411,8 @@ serve(async (req) => {
 
     clientSocket.onerror = (error) => {
       console.error('❌ Client WebSocket error:', error);
+      if (typeof pingInterval !== 'undefined') clearInterval(pingInterval);
+      if (typeof monitorConnection !== 'undefined') clearInterval(monitorConnection);
     };
 
     return response;

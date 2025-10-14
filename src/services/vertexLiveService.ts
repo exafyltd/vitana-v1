@@ -16,6 +16,8 @@ export class VertexLiveService {
   private callbacks: VertexLiveCallbacks = {};
   private conversationId: string | null = null;
   private isSetupComplete = false;
+  private connectionQuality: 'good' | 'degraded' | 'poor' = 'good';
+  private fallbackMode = false; // Graceful degradation flag
 
   constructor(callbacks: VertexLiveCallbacks) {
     this.callbacks = callbacks;
@@ -79,6 +81,12 @@ export class VertexLiveService {
               console.log(`📥 audio_chunk_received (${format}): size=${bytes.byteLength}`);
               this.callbacks.onTrace?.(`audio_chunk_received (${format}): ${bytes.byteLength} bytes`);
               
+              // Skip audio playback in fallback mode
+              if (this.fallbackMode) {
+                console.log('⏭️ Skipping audio playback (fallback mode)');
+                return;
+              }
+              
               if (!this.audioContext) {
                 console.error('❌ No audio context available!');
                 return;
@@ -124,6 +132,34 @@ export class VertexLiveService {
             } else if (typeof event.data === 'string') {
               // Handle JSON messages
               const data = JSON.parse(event.data);
+              
+              // Handle connection quality updates
+              if (data.type === 'connection_quality') {
+                this.connectionQuality = data.quality;
+                
+                if (data.quality === 'poor') {
+                  console.warn('⚠️ Poor connection quality detected');
+                  this.callbacks.onTrace?.('connection_quality_poor');
+                  
+                  // Enable fallback mode on poor connection
+                  if (!this.fallbackMode) {
+                    console.log('🔄 Enabling fallback mode (text-only)');
+                    this.fallbackMode = true;
+                    this.callbacks.onError?.('Connection unstable - switched to text-only mode');
+                    
+                    // Stop audio streaming to preserve bandwidth
+                    if (this.audioRecorder) {
+                      this.stopAudio();
+                    }
+                  }
+                } else if (data.quality === 'good' && this.fallbackMode) {
+                  console.log('✅ Connection restored, disabling fallback mode');
+                  this.fallbackMode = false;
+                  this.callbacks.onTrace?.('connection_restored');
+                }
+                return;
+              }
+              
               if (data?.type === 'connection_ready' || data?.setupComplete) {
                 clearTimeout(setupTimeout);
               }
@@ -238,6 +274,13 @@ export class VertexLiveService {
   }
 
   async startAudio() {
+    // Graceful degradation: block audio in fallback mode
+    if (this.fallbackMode) {
+      console.warn('⚠️ Audio disabled in fallback mode (text-only)');
+      this.callbacks.onError?.('Audio unavailable - using text-only mode');
+      return;
+    }
+    
     if (!this.isSetupComplete) {
       console.warn('⚠️ Setup not complete, waiting...');
       return;
