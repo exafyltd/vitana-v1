@@ -91,35 +91,16 @@ export class VertexLiveService {
               }
               
               try {
-                let wavData: Uint8Array;
-                
-                if (isRiff) {
-                  // Already WAV format
-                  wavData = bytes;
-                } else {
-                  // Raw PCM16 mono 24kHz - wrap with WAV header
-                  console.log('🔄 Wrapping PCM with WAV header...');
-                  wavData = wrapPCM16ToWav(bytes, 24000);
-                }
-                
-                // Decode and play
-                console.log('🎧 Decoding audio...');
-                const audioBuffer = await this.audioContext.decodeAudioData(wavData.buffer.slice(0) as ArrayBuffer);
-                const duration = audioBuffer.duration.toFixed(2);
-                console.log(`✅ audio_decoded: duration=${duration}s`);
-                this.callbacks.onTrace?.(`audio_decoded: ${duration}s`);
-                
-                const source = this.audioContext.createBufferSource();
-                source.buffer = audioBuffer;
-                source.connect(this.audioContext.destination);
-                source.start(0);
-                console.log('▶️ Audio playback started');
+                // Send raw PCM chunks to AudioQueue for buffering and batch playback
+                console.log('🔊 Queueing audio chunk for buffered playback:', bytes.byteLength, 'bytes');
+                await playAudioData(this.audioContext, bytes);
+                this.callbacks.onTrace?.(`audio_chunk_queued: ${bytes.byteLength}b`);
               } catch (error) {
-                console.error('❌ Failed to decode/play audio:', error);
+                console.error('❌ Failed to queue audio:', error);
                 if (error instanceof Error) {
                   console.error('Error:', error.name, error.message);
                 }
-                this.callbacks.onTrace?.('audio_decode_failed');
+                this.callbacks.onTrace?.('audio_queue_failed');
               }
             } else if (typeof event.data === 'string') {
               // Handle JSON messages

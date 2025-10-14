@@ -276,7 +276,7 @@ class AudioQueue {
   private queue: Uint8Array[] = [];
   private isPlaying = false;
   private buffer: Uint8Array = new Uint8Array(0);
-  private readonly MIN_CHUNK_SIZE = 2048; // ~42ms at 24kHz PCM16 for lower latency
+  private readonly MIN_CHUNK_SIZE = 10000; // ~208ms at 24kHz PCM16 - buffer more for smooth playback
 
   constructor(private audioContext: AudioContext) {}
 
