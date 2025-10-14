@@ -143,9 +143,11 @@ export default function MediaHub() {
         .from('media_uploads')
         .select(`
           id,
+          user_id,
           title,
           description,
           file_url,
+          thumbnail_url,
           duration,
           plays_count,
           created_at,
@@ -445,7 +447,7 @@ export default function MediaHub() {
                             duration={podcast.duration}
                             uploadedAt={podcast.created_at}
                             description={podcast.description}
-                            language={metadata?.language_code || 'en-US'}
+                            language={metadata?.language || null}
                             audioUrl={podcast.file_url}
                             imageUrl={podcast.thumbnail_url}
                             isCreator={isCreator}
