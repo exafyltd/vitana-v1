@@ -15,8 +15,6 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { homeNavigation } from "@/config/navigation";
 import { usePersonalizedMedia } from "@/hooks/usePersonalizedMedia";
 import { MusicListCard } from "@/components/home/MusicListCard";
-import { MediaGridCard } from "@/components/home/MediaGridCard";
-import { Skeleton } from "@/components/ui/skeleton";
 
 // Context Visual Cards
 import { MyCurrentVibeCard } from "@/components/context/MyCurrentVibeCard";
@@ -57,38 +55,32 @@ export default function Context() {
     contextTags: timeContextTags
   });
 
-  // Current tab - Featured media grid
-  const { data: featuredMedia, isLoading: featuredLoading } = usePersonalizedMedia({
-    limit: 3,
-    mediaType: 'all',
-    contextTags: ['Featured', 'Trending']
-  });
 
-  // AI Logic tab - AI recommended content
-  const { data: aiRecommendedMedia, isLoading: aiLoading } = usePersonalizedMedia({
-    limit: 4,
-    mediaType: 'all',
+  // AI Logic tab - AI recommended music
+  const { data: aiRecommendedMedia } = usePersonalizedMedia({
+    limit: 5,
+    mediaType: 'Music',
     contextTags: ['Educational', 'Wellness', 'Self-Improvement']
   });
 
-  // Timeline tab - Time-appropriate media
-  const { data: timelineMedia, isLoading: timelineLoading } = usePersonalizedMedia({
-    limit: 4,
-    mediaType: 'all',
+  // Timeline tab - Time-appropriate music
+  const { data: timelineMedia } = usePersonalizedMedia({
+    limit: 5,
+    mediaType: 'Music',
     contextTags: timeContextTags
   });
 
-  // Environment tab - Ambient & nature content
-  const { data: environmentMedia, isLoading: environmentLoading } = usePersonalizedMedia({
-    limit: 4,
-    mediaType: 'all',
+  // Environment tab - Ambient & nature music
+  const { data: environmentMedia } = usePersonalizedMedia({
+    limit: 5,
+    mediaType: 'Music',
     contextTags: ['Nature', 'Ambient', 'Outdoor', 'Environment']
   });
 
-  // Social tab - Community favorites
-  const { data: communityMedia, isLoading: communityLoading } = usePersonalizedMedia({
-    limit: 4,
-    mediaType: 'all',
+  // Social tab - Community favorite music
+  const { data: communityMedia } = usePersonalizedMedia({
+    limit: 5,
+    mediaType: 'Music',
     contextTags: ['Popular', 'Community', 'Trending']
   });
 
@@ -154,25 +146,6 @@ export default function Context() {
                     <MotivationBannerCard className="h-full" />
                   </div>
                 </div>
-
-                {/* Row 3: Featured Media Grid */}
-                <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                  {featuredLoading ? (
-                    <>
-                      {[1, 2, 3].map((i) => (
-                        <div key={i} className="col-span-4">
-                          <Skeleton className="h-[280px] rounded-lg" />
-                        </div>
-                      ))}
-                    </>
-                  ) : featuredMedia && featuredMedia.length > 0 ? (
-                    featuredMedia.map((media) => (
-                      <div key={media.id} className="col-span-4">
-                        <MediaGridCard media={media} className="h-full" />
-                      </div>
-                    ))
-                  ) : null}
-                </div>
               </div>
             </SplitBarContent>
 
@@ -192,23 +165,15 @@ export default function Context() {
                   </div>
                 </div>
 
-                {/* Row 2: AI-Recommended Content */}
+                {/* Row 2: AI-Recommended Music */}
                 <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                  {aiLoading ? (
-                    <>
-                      {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="col-span-3">
-                          <Skeleton className="h-[280px] rounded-lg" />
-                        </div>
-                      ))}
-                    </>
-                  ) : aiRecommendedMedia && aiRecommendedMedia.length > 0 ? (
-                    aiRecommendedMedia.map((media) => (
-                      <div key={media.id} className="col-span-3">
-                        <MediaGridCard media={media} className="h-full" />
-                      </div>
-                    ))
-                  ) : null}
+                  <div className="col-span-12">
+                    <MusicListCard 
+                      tracks={aiRecommendedMedia || []}
+                      title="AI Recommended for Your Goals"
+                      className="h-full"
+                    />
+                  </div>
                 </div>
               </div>
             </SplitBarContent>
@@ -229,23 +194,15 @@ export default function Context() {
                   </div>
                 </div>
 
-                {/* Row 2: Time-Appropriate Media */}
+                {/* Row 2: Time-Based Soundtrack */}
                 <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                  {timelineLoading ? (
-                    <>
-                      {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="col-span-3">
-                          <Skeleton className="h-[280px] rounded-lg" />
-                        </div>
-                      ))}
-                    </>
-                  ) : timelineMedia && timelineMedia.length > 0 ? (
-                    timelineMedia.map((media) => (
-                      <div key={media.id} className="col-span-3">
-                        <MediaGridCard media={media} className="h-full" />
-                      </div>
-                    ))
-                  ) : null}
+                  <div className="col-span-12">
+                    <MusicListCard 
+                      tracks={timelineMedia || []}
+                      title={hour < 12 ? "Your Morning Soundtrack" : hour < 17 ? "Focus & Flow" : "Evening Relaxation"}
+                      className="h-full"
+                    />
+                  </div>
                 </div>
               </div>
             </SplitBarContent>
@@ -266,23 +223,15 @@ export default function Context() {
                   </div>
                 </div>
 
-                {/* Row 2: Ambient & Nature Content */}
+                {/* Row 2: Ambient Soundscapes */}
                 <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                  {environmentLoading ? (
-                    <>
-                      {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="col-span-3">
-                          <Skeleton className="h-[280px] rounded-lg" />
-                        </div>
-                      ))}
-                    </>
-                  ) : environmentMedia && environmentMedia.length > 0 ? (
-                    environmentMedia.map((media) => (
-                      <div key={media.id} className="col-span-3">
-                        <MediaGridCard media={media} className="h-full" />
-                      </div>
-                    ))
-                  ) : null}
+                  <div className="col-span-12">
+                    <MusicListCard 
+                      tracks={environmentMedia || []}
+                      title="Nature & Ambient Sounds"
+                      className="h-full"
+                    />
+                  </div>
                 </div>
               </div>
             </SplitBarContent>
@@ -303,23 +252,15 @@ export default function Context() {
                   </div>
                 </div>
 
-                {/* Row 2: Community Favorites */}
+                {/* Row 2: What the Community is Listening To */}
                 <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                  {communityLoading ? (
-                    <>
-                      {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="col-span-3">
-                          <Skeleton className="h-[280px] rounded-lg" />
-                        </div>
-                      ))}
-                    </>
-                  ) : communityMedia && communityMedia.length > 0 ? (
-                    communityMedia.map((media) => (
-                      <div key={media.id} className="col-span-3">
-                        <MediaGridCard media={media} className="h-full" />
-                      </div>
-                    ))
-                  ) : null}
+                  <div className="col-span-12">
+                    <MusicListCard 
+                      tracks={communityMedia || []}
+                      title="Trending in Your Community"
+                      className="h-full"
+                    />
+                  </div>
                 </div>
               </div>
             </SplitBarContent>
