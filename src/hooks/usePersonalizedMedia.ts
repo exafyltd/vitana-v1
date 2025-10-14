@@ -44,6 +44,22 @@ export function usePersonalizedMedia(options: PersonalizedMediaOptions = {}) {
       
       const profilesMap = new Map(profilesData?.map(p => [p.user_id, p]) || []);
 
+      // Tag synonym mapping for better matching
+      const tagSynonyms: Record<string, string[]> = {
+        'Sleep': ['Evening', 'Relaxing', 'Meditation', 'Sleep', 'Calm'],
+        'Mental Health': ['Focus', 'Calming', 'Mindfulness', 'Meditation', 'Wellness'],
+        'Wellness': ['Wellness', 'Health', 'Lifestyle', 'Calming', 'Relaxing'],
+        'Lifestyle': ['Wellness', 'Lifestyle', 'Health'],
+        'Energetic': ['Morning', 'Energetic', 'Uplifting', 'Active'],
+        'Nature': ['Environment', 'Nature', 'Ambient', 'Outdoor'],
+        'Popular': ['Trending', 'Popular', 'Community'],
+      };
+
+      // Expand context tags with synonyms
+      const expandedContextTags = contextTags.flatMap(tag => 
+        tagSynonyms[tag] || [tag]
+      );
+
       // Score each media item based on personalization factors
       const scoredMedia = mediaData.map((media) => {
         let score = 0;
@@ -52,14 +68,20 @@ export function usePersonalizedMedia(options: PersonalizedMediaOptions = {}) {
         const daysOld = (Date.now() - new Date(media.created_at).getTime()) / (1000 * 60 * 60 * 24);
         score += Math.max(0, 10 - daysOld); // Up to 10 points for very recent content
         
-        // Factor 2: Context tags matching
-        if (contextTags.length > 0 && media.tags) {
+        // Factor 2: Context tags matching (with synonyms)
+        if (expandedContextTags.length > 0 && media.tags) {
           const matchingTags = media.tags.filter(tag => 
-            contextTags.some(ctxTag => 
-              tag.toLowerCase().includes(ctxTag.toLowerCase())
+            expandedContextTags.some(ctxTag => 
+              tag.toLowerCase().includes(ctxTag.toLowerCase()) ||
+              ctxTag.toLowerCase().includes(tag.toLowerCase())
             )
           );
           score += matchingTags.length * 5; // 5 points per matching tag
+        }
+        
+        // Factor 3: Generic wellness tags boost
+        if (media.tags?.some(t => ['Wellness', 'Health', 'Lifestyle'].includes(t))) {
+          score += 3; // Small boost for general wellness content
         }
         
         // Factor 4: Time of day appropriateness
@@ -94,7 +116,17 @@ export function usePersonalizedMedia(options: PersonalizedMediaOptions = {}) {
         };
       });
 
-      // Sort by score (highest first) and return top N
+      // Check if we have well-scored content
+      const maxScore = Math.max(...scoredMedia.map(m => m.score), 0);
+      
+      // If no good matches (max score < 5), just return recent content
+      if (maxScore < 5) {
+        return scoredMedia
+          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .slice(0, limit);
+      }
+
+      // Otherwise, sort by score (highest first) and return top N
       return scoredMedia
         .sort((a, b) => b.score - a.score)
         .slice(0, limit);

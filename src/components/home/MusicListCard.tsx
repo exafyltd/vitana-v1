@@ -1,4 +1,4 @@
-import { Music, Play, Pause } from "lucide-react";
+import { Music, Play, Pause, Plus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
@@ -53,7 +53,30 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
   };
 
   if (!tracks || tracks.length === 0) {
-    return null;
+    return (
+      <Card className={cn(
+        "relative overflow-hidden border-2 border-purple-400/30 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-purple-500/10",
+        className
+      )}>
+        <CardContent className="flex flex-col items-center justify-center h-full py-12">
+          <Music className="w-12 h-12 text-purple-400/40 mb-4" />
+          <h3 className="text-lg font-semibold mb-2 text-muted-foreground">
+            No music available yet
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4 text-center max-w-xs">
+            Upload music to see personalized recommendations here
+          </p>
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/comm/media-hub?tab=music')}
+            className="border-purple-400/50 hover:border-purple-400"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Upload Music
+          </Button>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
