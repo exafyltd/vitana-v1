@@ -362,6 +362,154 @@ export type Database = {
           },
         ]
       }
+      api_integrations: {
+        Row: {
+          auth_token: string | null
+          auth_type: string
+          base_url: string
+          created_at: string | null
+          created_by: string | null
+          id: string
+          integration_type: string
+          is_active: boolean | null
+          last_test_status: string | null
+          last_test_timestamp: string | null
+          metadata: Json | null
+          name: string
+          notes: string | null
+          test_endpoints: Json | null
+          test_frequency_minutes: number
+          test_runner_function: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          auth_token?: string | null
+          auth_type: string
+          base_url: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          integration_type: string
+          is_active?: boolean | null
+          last_test_status?: string | null
+          last_test_timestamp?: string | null
+          metadata?: Json | null
+          name: string
+          notes?: string | null
+          test_endpoints?: Json | null
+          test_frequency_minutes?: number
+          test_runner_function?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          auth_token?: string | null
+          auth_type?: string
+          base_url?: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          integration_type?: string
+          is_active?: boolean | null
+          last_test_status?: string | null
+          last_test_timestamp?: string | null
+          metadata?: Json | null
+          name?: string
+          notes?: string | null
+          test_endpoints?: Json | null
+          test_frequency_minutes?: number
+          test_runner_function?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      api_test_logs: {
+        Row: {
+          error_log: string | null
+          id: string
+          integration_id: string
+          metadata: Json | null
+          response_body: Json | null
+          response_time_ms: number | null
+          status: string
+          test_type: string | null
+          timestamp: string | null
+          triggered_by: string | null
+        }
+        Insert: {
+          error_log?: string | null
+          id?: string
+          integration_id: string
+          metadata?: Json | null
+          response_body?: Json | null
+          response_time_ms?: number | null
+          status: string
+          test_type?: string | null
+          timestamp?: string | null
+          triggered_by?: string | null
+        }
+        Update: {
+          error_log?: string | null
+          id?: string
+          integration_id?: string
+          metadata?: Json | null
+          response_body?: Json | null
+          response_time_ms?: number | null
+          status?: string
+          test_type?: string | null
+          timestamp?: string | null
+          triggered_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_test_logs_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "api_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_test_notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          integration_id: string
+          message: string
+          metadata: Json | null
+          notification_type: string
+          sent_at: string | null
+          severity: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          integration_id: string
+          message: string
+          metadata?: Json | null
+          notification_type?: string
+          sent_at?: string | null
+          severity?: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          integration_id?: string
+          message?: string
+          metadata?: Json | null
+          notification_type?: string
+          sent_at?: string | null
+          severity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_test_notifications_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "api_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_events: {
         Row: {
           created_at: string
@@ -3049,6 +3197,7 @@ export type Database = {
           episode_number: number | null
           guest_name: string | null
           host_name: string | null
+          language: string | null
           media_id: string
           season_number: number | null
           series_name: string | null
@@ -3057,6 +3206,7 @@ export type Database = {
           episode_number?: number | null
           guest_name?: string | null
           host_name?: string | null
+          language?: string | null
           media_id: string
           season_number?: number | null
           series_name?: string | null
@@ -3065,6 +3215,7 @@ export type Database = {
           episode_number?: number | null
           guest_name?: string | null
           host_name?: string | null
+          language?: string | null
           media_id?: string
           season_number?: number | null
           series_name?: string | null
@@ -4838,6 +4989,15 @@ export type Database = {
           id: string
           user_email: string
           user_id: string
+        }[]
+      }
+      get_recent_test_failures: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          error_count: number
+          integration_name: string
+          latest_error: string
+          latest_timestamp: string
         }[]
       }
       get_role_preference: {

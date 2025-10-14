@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Play, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast } from "lucide-react";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
@@ -94,14 +95,17 @@ export default function MediaHub() {
         .select(`
           id,
           title,
+          description,
           file_url,
           duration,
           plays_count,
           created_at,
+          tags,
           podcast_metadata (
             host_name,
             episode_number,
-            series_name
+            series_name,
+            language
           )
         `)
         .eq('media_type', 'podcast')
@@ -379,50 +383,85 @@ export default function MediaHub() {
                           <p>No podcasts uploaded yet. Be the first to share!</p>
                         </div>
                       ) : (
-                        approvedPodcasts.map((podcast) => {
-                          const formatDuration = (seconds: number | null) => {
-                            if (!seconds) return '0:00';
-                            const mins = Math.floor(seconds / 60);
-                            const secs = Math.floor(seconds % 60);
-                            return `${mins}:${secs.toString().padStart(2, '0')}`;
-                          };
-
+                        approvedPodcasts.map((podcast: any) => {
+                          const metadata = podcast.podcast_metadata?.[0];
+                          const tags = podcast.tags || [];
+                          
                           return (
-                            <div key={podcast.id} className="p-4 border rounded-lg">
-                              <div className="flex items-start gap-3">
-                                <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center">
-                                  <Volume2 className="w-6 h-6 text-green-600" />
-                                </div>
-                                <div className="flex-1">
-                                  <h3 className="font-semibold text-sm">{podcast.title}</h3>
-                                  <p className="text-xs text-muted-foreground mb-2">
-                                    {podcast.podcast_metadata?.[0]?.host_name || 'Unknown Host'}
-                                  </p>
-                                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                    <span>{formatDuration(podcast.duration)}</span>
-                                    <span>•</span>
-                                    <span>{podcast.plays_count || 0} plays</span>
-                                    {podcast.podcast_metadata?.[0]?.series_name && (
-                                      <Badge variant="outline" className="text-xs">
-                                        {podcast.podcast_metadata[0].series_name}
-                                      </Badge>
+                            <Card key={podcast.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950">
+                              <CardContent className="p-8 relative">
+                                <div className="flex gap-6">
+                                  {/* Left content */}
+                                  <div className="flex-1 min-w-0">
+                                    {/* Title */}
+                                    <h3 className="text-2xl font-bold mb-3 text-foreground leading-tight">
+                                      {podcast.title}
+                                    </h3>
+                                    
+                                    {/* Description */}
+                                    {podcast.description && (
+                                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
+                                        {podcast.description}
+                                      </p>
+                                    )}
+                                    
+                                    {/* Host and Language */}
+                                    <div className="flex items-center gap-3 mb-4">
+                                      <span className="text-sm text-muted-foreground">
+                                        {metadata?.host_name || 'Unknown Host'}
+                                      </span>
+                                      {metadata?.language && (
+                                        <>
+                                          <span className="text-muted-foreground">•</span>
+                                          <LanguageFlag languageCode={metadata.language} />
+                                        </>
+                                      )}
+                                    </div>
+                                    
+                                    {/* Tags */}
+                                    {tags.length > 0 && (
+                                      <div className="flex flex-wrap gap-2">
+                                        {tags.map((tag: string, idx: number) => (
+                                          <Badge 
+                                            key={idx} 
+                                            variant="secondary" 
+                                            className="text-xs px-3 py-1 rounded-full"
+                                            style={{
+                                              backgroundColor: idx === 0 ? 'hsl(var(--pill-mental-accent) / 0.15)' : 
+                                                               idx === 1 ? 'hsl(var(--pill-sleep-accent) / 0.15)' : 
+                                                               'hsl(var(--pill-water-accent) / 0.15)',
+                                              color: idx === 0 ? 'hsl(var(--pill-mental-accent))' : 
+                                                     idx === 1 ? 'hsl(var(--pill-sleep-accent))' : 
+                                                     'hsl(var(--pill-water-accent))'
+                                            }}
+                                          >
+                                            {tag}
+                                          </Badge>
+                                        ))}
+                                      </div>
                                     )}
                                   </div>
+                                  
+                                  {/* Play button */}
+                                  <div className="flex items-center">
+                                    <Button
+                                      size="lg"
+                                      className="rounded-full w-16 h-16 flex-shrink-0 shadow-lg hover:scale-110 transition-transform"
+                                      style={{ 
+                                        backgroundColor: 'hsl(var(--primary))',
+                                        color: 'hsl(var(--primary-foreground))'
+                                      }}
+                                      onClick={() => {
+                                        const audio = new Audio(podcast.file_url);
+                                        audio.play();
+                                      }}
+                                    >
+                                      <Play className="w-7 h-7" />
+                                    </Button>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="flex gap-2 mt-3">
-                                <Button size="sm" variant="outline" className="flex-1" onClick={() => {
-                                  const audio = new Audio(podcast.file_url);
-                                  audio.play();
-                                }}>
-                                  <Play className="w-4 h-4 mr-1" />
-                                  Play
-                                </Button>
-                                <Button size="sm" variant="ghost">
-                                  <Bookmark className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            </div>
+                              </CardContent>
+                            </Card>
                           );
                         })
                       )}

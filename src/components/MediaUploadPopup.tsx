@@ -25,8 +25,17 @@ const predefinedTags = [
 ];
 
 const languages = [
-  "English", "Spanish", "French", "German", "Portuguese", 
-  "Italian", "Dutch", "Russian", "Chinese", "Japanese"
+  { label: "English (US)", value: "en-US" },
+  { label: "English (UK)", value: "en-GB" },
+  { label: "German", value: "de-DE" },
+  { label: "Serbian", value: "sr-RS" },
+  { label: "Spanish", value: "es-ES" },
+  { label: "Arabic", value: "ar-XA" },
+  { label: "Russian", value: "ru-RU" },
+  { label: "Chinese", value: "zh-CN" },
+  { label: "French", value: "fr-FR" },
+  { label: "Portuguese", value: "pt-PT" },
+  { label: "Polish", value: "pl-PL" }
 ];
 
 const musicGenres = [
@@ -51,7 +60,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
   const [mediaType, setMediaType] = useState<"Podcast" | "Music" | "Video" | "">("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [releaseDate, setReleaseDate] = useState<Date>();
-  const [language, setLanguage] = useState("");
+  const [language, setLanguage] = useState("en-US");
   const [hostGuest, setHostGuest] = useState("");
   const [duration, setDuration] = useState("");
   const [genre, setGenre] = useState("");
@@ -90,6 +99,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
         mediaType: mediaType.toLowerCase() as "music" | "podcast" | "video",
         tags: selectedTags,
         visibility: visibility.toLowerCase(),
+        language: language || undefined,
         genre: genre || undefined,
         mood: mood || undefined,
         hostGuest: hostGuest || undefined,
@@ -296,7 +306,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   </SelectTrigger>
                   <SelectContent>
                     {languages.map((lang) => (
-                      <SelectItem key={lang} value={lang}>{lang}</SelectItem>
+                      <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

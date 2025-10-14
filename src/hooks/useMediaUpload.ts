@@ -8,6 +8,7 @@ interface UploadMetadata {
   mediaType: 'music' | 'podcast' | 'video';
   tags: string[];
   visibility: string;
+  language?: string;
   genre?: string;
   mood?: string;
   hostGuest?: string;
@@ -143,6 +144,7 @@ export const useMediaUpload = () => {
           media_id: mediaUpload.id,
           host_name: host || null,
           guest_name: guestCombined,
+          language: metadata.language || null,
         });
         
         if (podcastError) {
