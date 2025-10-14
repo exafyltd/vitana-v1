@@ -104,7 +104,10 @@ serve(async (req) => {
             name: finalVoiceId,
           },
           audioConfig: {
-            audioEncoding: 'MP3',
+            audioEncoding: 'LINEAR16',
+            sampleRateHertz: 48000,
+            speakingRate: 1.0,
+            pitch: 0.0,
           },
         }),
       }

@@ -86,7 +86,7 @@ export function useTextToSpeech() {
         if (error) throw error;
         if (!data?.audioContent) throw new Error('No audio content received');
 
-        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+            const audio = new Audio(`data:audio/wav;base64,${data.audioContent}`);
         audio.volume = preferences.tts_volume / 100;
         
         audio.onended = () => {
