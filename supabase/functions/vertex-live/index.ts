@@ -38,7 +38,7 @@ serve(async (req) => {
     const LOCATION = Deno.env.get('GOOGLE_CLOUD_REGION') || 'us-central1';
     const MODEL = 'gemini-2.0-flash-live-preview-04-09';
     
-    const vertexUrl = `wss://${LOCATION}-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.GenAiWebSocketService/BidiGenerateContent`;
+    const vertexUrl = `wss://${LOCATION}-aiplatform.googleapis.com/ws/google.cloud.aiplatform.v1beta1.GenAiWebSocketService/BidiGenerateContent?access_token=${token}`;
     
     console.log('🔌 Connecting to Vertex AI (with Bearer auth):', vertexUrl);
     
@@ -49,12 +49,8 @@ serve(async (req) => {
       console.log('📱 Client connected');
       
       try {
-        // Connect to Vertex AI with Authorization header
-        vertexSocket = new WebSocket(vertexUrl, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        // Connect to Vertex AI using access_token query parameter (Deno can't set custom headers reliably)
+        vertexSocket = new WebSocket(vertexUrl);
 
         vertexSocket.onopen = () => {
           console.log('✅ Connected to Vertex AI');
