@@ -198,9 +198,12 @@ Style: Natural documentary photography meets wellness editorial, authentic momen
     const privateKey = serviceAccount.private_key;
     const pemHeader = "-----BEGIN PRIVATE KEY-----";
     const pemFooter = "-----END PRIVATE KEY-----";
+    
+    // Extract base64 content between PEM markers and remove all whitespace
     const pemContents = privateKey
-      .substring(pemHeader.length, privateKey.length - pemFooter.length)
-      .replace(/\s/g, '');
+      .replace(pemHeader, '')
+      .replace(pemFooter, '')
+      .replace(/[\r\n\s]/g, '');
     
     const binaryDer = Uint8Array.from(atob(pemContents), c => c.charCodeAt(0));
     
