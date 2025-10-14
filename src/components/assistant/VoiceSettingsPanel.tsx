@@ -73,66 +73,100 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     return () => clearInterval(pollInterval);
   }, [loadVoices]);
 
+  // Language-specific voice mappings for Vertex AI Gemini TTS
+  const languageVoiceMap: Record<string, Array<{ name: string; label: string; gender: 'male' | 'female' }>> = {
+    'en-US': [
+      { name: 'Charon', label: 'Charon (Male)', gender: 'male' },
+      { name: 'Aoede', label: 'Aoede (Female, Bright)', gender: 'female' },
+      { name: 'Kore', label: 'Kore (Female, Warm)', gender: 'female' },
+      { name: 'Fenrir', label: 'Fenrir (Male, Strong)', gender: 'male' },
+      { name: 'Orus', label: 'Orus (Male)', gender: 'male' },
+      { name: 'Puck', label: 'Puck (Male)', gender: 'male' },
+    ],
+    'de-DE': [
+      { name: 'Despina', label: 'Despina (Female)', gender: 'female' },
+      { name: 'Enceladus', label: 'Enceladus (Male)', gender: 'male' },
+      { name: 'Schedar', label: 'Schedar (Male)', gender: 'male' },
+    ],
+    'sr-RS': [
+      { name: 'Leda', label: 'Leda (Female)', gender: 'female' },
+      { name: 'Iapetus', label: 'Iapetus (Male)', gender: 'male' },
+    ],
+    'es-ES': [
+      { name: 'Callirrhoe', label: 'Callirrhoe (Female)', gender: 'female' },
+      { name: 'Algenib', label: 'Algenib (Male)', gender: 'male' },
+      { name: 'Rasalgethi', label: 'Rasalgethi (Male)', gender: 'male' },
+    ],
+    'ar-XA': [
+      { name: 'Erinome', label: 'Erinome (Female)', gender: 'female' },
+      { name: 'Sadachbia', label: 'Sadachbia (Male)', gender: 'male' },
+      { name: 'Sadaltager', label: 'Sadaltager (Male)', gender: 'male' },
+    ],
+    'ru-RU': [
+      { name: 'Autonoe', label: 'Autonoe (Female)', gender: 'female' },
+      { name: 'Algieba', label: 'Algieba (Male)', gender: 'male' },
+      { name: 'Umbriel', label: 'Umbriel (Male)', gender: 'male' },
+    ],
+    'zh-CN': [
+      { name: 'Zephyr', label: 'Zephyr (Female)', gender: 'female' },
+      { name: 'Alnilam', label: 'Alnilam (Male)', gender: 'male' },
+    ],
+    'fr-FR': [
+      { name: 'Gacrux', label: 'Gacrux (Female)', gender: 'female' },
+      { name: 'Pulcherrima', label: 'Pulcherrima (Female)', gender: 'female' },
+      { name: 'Achird', label: 'Achird (Male)', gender: 'male' },
+    ],
+    'pt-PT': [
+      { name: 'Laomedeia', label: 'Laomedeia (Female)', gender: 'female' },
+      { name: 'Vindemiatrix', label: 'Vindemiatrix (Female)', gender: 'female' },
+      { name: 'Zubenelgenubi', label: 'Zubenelgenubi (Male)', gender: 'male' },
+    ],
+    'pl-PL': [
+      { name: 'Achernar', label: 'Achernar (Female)', gender: 'female' },
+      { name: 'Sulafat', label: 'Sulafat (Female)', gender: 'female' },
+      { name: 'Enceladus', label: 'Enceladus (Male)', gender: 'male' },
+    ],
+  };
+
+  // Get voices for current language
+  const availableVoicesForLanguage = languageVoiceMap[preferences.stt_language] || languageVoiceMap['en-US'];
+  
+  // Get default female voice for the language
+  const getDefaultVoiceForLanguage = useCallback((language: string): string => {
+    const voices = languageVoiceMap[language] || languageVoiceMap['en-US'];
+    const femaleVoice = voices.find(v => v.gender === 'female');
+    return femaleVoice?.name || voices[0]?.name || 'Charon';
+  }, []);
+
+  // Auto-select appropriate voice when language changes
   useEffect(() => {
-    if (!preferences || availableVoices.length === 0) return;
-    const currentVoice = availableVoices.find(v => v.name === preferences.tts_voice);
-    const currentVoiceLangCode = currentVoice ? baseLang(currentVoice.lang) : undefined;
-    const selectedLangCode = baseLang(preferences.stt_language);
-    if (!currentVoice || currentVoiceLangCode !== selectedLangCode) {
-      const candidates = availableVoices.filter(v => baseLang(v.lang) === selectedLangCode);
-      const preferred = pickPreferredVoice(candidates);
-      if (preferred && preferred.name !== preferences.tts_voice) {
-        updatePreferences({ tts_voice: preferred.name });
-      }
+    if (!preferences) return;
+    
+    const currentLanguage = preferences.stt_language || 'en-US';
+    const currentVoice = preferences.tts_voice;
+    const voicesForLang = languageVoiceMap[currentLanguage] || languageVoiceMap['en-US'];
+    
+    // Check if current voice is valid for the selected language
+    const isVoiceValidForLanguage = voicesForLang.some(v => v.name === currentVoice);
+    
+    if (!isVoiceValidForLanguage) {
+      // Select default voice for this language (prefer female)
+      const defaultVoice = getDefaultVoiceForLanguage(currentLanguage);
+      updatePreferences({ tts_voice: defaultVoice });
     }
-  }, [availableVoices, preferences, baseLang, pickPreferredVoice, updatePreferences]);
+  }, [preferences?.stt_language, preferences?.tts_voice, updatePreferences, getDefaultVoiceForLanguage]);
 
   const handleLanguageChange = useCallback((newLanguage: string) => {
     if (!preferences) return;
-    const newBase = baseLang(newLanguage);
-    const candidates = availableVoices.filter(v => baseLang(v.lang) === newBase);
-    const preferred = pickPreferredVoice(candidates);
+    
+    // Get default voice for the new language
+    const defaultVoice = getDefaultVoiceForLanguage(newLanguage);
+    
     updatePreferences({
       stt_language: newLanguage,
-      tts_voice: preferred?.name || ''
+      tts_voice: defaultVoice
     });
-  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
-
-  // Vertex AI Gemini 2.5 Pro TTS voices (all 29 available voices)
-  const vertexVoices = [
-    { name: 'Achernar', label: 'Achernar (Female)' },
-    { name: 'Achird', label: 'Achird (Male)' },
-    { name: 'Algenib', label: 'Algenib (Male)' },
-    { name: 'Algieba', label: 'Algieba (Male)' },
-    { name: 'Alnilam', label: 'Alnilam (Male)' },
-    { name: 'Aoede', label: 'Aoede (Female, Bright)' },
-    { name: 'Autonoe', label: 'Autonoe (Female)' },
-    { name: 'Callirrhoe', label: 'Callirrhoe (Female)' },
-    { name: 'Charon', label: 'Charon (Male)' },
-    { name: 'Despina', label: 'Despina (Female)' },
-    { name: 'Enceladus', label: 'Enceladus (Male)' },
-    { name: 'Erinome', label: 'Erinome (Female)' },
-    { name: 'Fenrir', label: 'Fenrir (Male, Strong)' },
-    { name: 'Gacrux', label: 'Gacrux (Female)' },
-    { name: 'Iapetus', label: 'Iapetus (Male)' },
-    { name: 'Kore', label: 'Kore (Female, Warm)' },
-    { name: 'Laomedeia', label: 'Laomedeia (Female)' },
-    { name: 'Leda', label: 'Leda (Female)' },
-    { name: 'Orus', label: 'Orus (Male)' },
-    { name: 'Pulcherrima', label: 'Pulcherrima (Female)' },
-    { name: 'Puck', label: 'Puck (Male)' },
-    { name: 'Rasalgethi', label: 'Rasalgethi (Male)' },
-    { name: 'Sadachbia', label: 'Sadachbia (Male)' },
-    { name: 'Sadaltager', label: 'Sadaltager (Male)' },
-    { name: 'Schedar', label: 'Schedar (Male)' },
-    { name: 'Sulafat', label: 'Sulafat (Female)' },
-    { name: 'Umbriel', label: 'Umbriel (Male)' },
-    { name: 'Vindemiatrix', label: 'Vindemiatrix (Female)' },
-    { name: 'Zephyr', label: 'Zephyr (Female)' },
-    { name: 'Zubenelgenubi', label: 'Zubenelgenubi (Male)' },
-  ];
-
-
+  }, [preferences, getDefaultVoiceForLanguage, updatePreferences]);
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
       'en-US': 'Hello, this is a preview of your selected voice settings.',
@@ -237,7 +271,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
         <div className="space-y-2">
           <Label>Voice</Label>
           <Select
-            value={preferences.tts_voice || 'Charon'}
+            value={preferences.tts_voice || getDefaultVoiceForLanguage(preferences.stt_language)}
             onValueChange={(value) => updatePreferences({ tts_voice: value })}
             disabled={isUpdating}
           >
@@ -246,9 +280,9 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
             </SelectTrigger>
             <SelectContent>
               <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                Vertex AI Gemini 2.5 Pro TTS
+                Voices for {preferences.stt_language}
               </div>
-              {vertexVoices.map((voice) => (
+              {availableVoicesForLanguage.map((voice) => (
                 <SelectItem key={voice.name} value={voice.name}>
                   {voice.label}
                 </SelectItem>
