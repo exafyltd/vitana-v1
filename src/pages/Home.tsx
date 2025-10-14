@@ -27,6 +27,7 @@ import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
 import { ScrollingRail } from "@/components/home/ScrollingRail";
 import { PulsingHighlightCard } from "@/components/home/PulsingHighlightCard";
 import { MusicListCard } from "@/components/home/MusicListCard";
+import { PodcastListCard } from "@/components/home/PodcastListCard";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePersonalizedMedia } from "@/hooks/usePersonalizedMedia";
 
@@ -345,9 +346,15 @@ export default function Home() {
     mediaType: 'Music'
   });
 
+  // Fetch personalized podcasts for PodcastListCard
+  const { data: personalizedPodcasts } = usePersonalizedMedia({
+    limit: 5,
+    mediaType: 'Podcast'
+  });
+
   // Transform real community events for display using proper pillar mapping
   const transformedCommunityEvents = [...todayEvents, ...upcomingEvents]
-    .slice(0, 5)
+    .slice(0, 7) // Increased to 7 to accommodate new podcast row
     .map(event => ({
       title: event.title,
       description: event.description || "Join us for this community event",
@@ -572,6 +579,55 @@ export default function Home() {
               </div>
 
               <MotivationalBanner variant="achievement" />
+
+              {/* Row 4: Podcast List + Two Events (1+2 pattern) */}
+              <div className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
+                <div className="col-span-6">
+                  <PodcastListCard 
+                    episodes={personalizedPodcasts || []}
+                    title="Recommended Podcasts"
+                    className="h-[280px]"
+                  />
+                </div>
+                {transformedCommunityEvents[5] && (
+                  <div className="col-span-3">
+                    <NewsCard
+                      title={transformedCommunityEvents[5].title}
+                      description={transformedCommunityEvents[5].description}
+                      imageUrl={transformedCommunityEvents[5].imageUrl}
+                      pillar={transformedCommunityEvents[5].pillar}
+                      author={transformedCommunityEvents[5].author}
+                      location={transformedCommunityEvents[5].location}
+                      attendees={transformedCommunityEvents[5].attendees}
+                      timestamp={transformedCommunityEvents[5].timestamp}
+                      showReward={true}
+                      rewardPoints={5}
+                      rewardDescription="Join this community event"
+                      className="h-full"
+                    />
+                  </div>
+                )}
+                {transformedCommunityEvents[6] && (
+                  <div className="col-span-3">
+                    <NewsCard
+                      title={transformedCommunityEvents[6].title}
+                      description={transformedCommunityEvents[6].description}
+                      imageUrl={transformedCommunityEvents[6].imageUrl}
+                      pillar={transformedCommunityEvents[6].pillar}
+                      author={transformedCommunityEvents[6].author}
+                      location={transformedCommunityEvents[6].location}
+                      attendees={transformedCommunityEvents[6].attendees}
+                      timestamp={transformedCommunityEvents[6].timestamp}
+                      showReward={true}
+                      rewardPoints={5}
+                      rewardDescription="Join this community event"
+                      className="h-full"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <MotivationalBanner variant="partnership" />
 
               {/* Row 4: More Events & Meetups (big + small + small) */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>

@@ -25,6 +25,7 @@ import { Users, Calendar, Award, TrendingUp, Star, Trophy, Crown, Medal, Sparkle
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { communityNavigation } from "@/config/navigation";
 import { MusicListCard } from '@/components/home/MusicListCard';
+import { PodcastListCard } from '@/components/home/PodcastListCard';
 import { usePersonalizedMedia } from '@/hooks/usePersonalizedMedia';
 
 // Mock fallback data for Today Highlights
@@ -636,6 +637,13 @@ export default withScreenId(function Community() {
     contextTags: ['Popular', 'Community', 'Trending']
   });
 
+  // Community recommended podcasts query
+  const { data: communityPodcasts } = usePersonalizedMedia({
+    limit: 5,
+    mediaType: 'Podcast',
+    contextTags: ['Popular', 'Community', 'Trending']
+  });
+
   // Global row counter for continuous alternating pattern
   let globalRowIndex = 0;
 
@@ -783,6 +791,20 @@ export default withScreenId(function Community() {
                     <MusicListCard 
                       tracks={communityMusic || []}
                       title="Trending in Your Community"
+                      className="h-[280px]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Community Podcasts */}
+              <div className="mb-8 px-6">
+                <h3 className="text-xl font-bold mb-4">Community Podcasts 🎙️</h3>
+                <div className="grid grid-cols-12 gap-4">
+                  <div className="col-span-12">
+                    <PodcastListCard 
+                      episodes={communityPodcasts || []}
+                      title="Trending Podcast Episodes"
                       className="h-[280px]"
                     />
                   </div>
