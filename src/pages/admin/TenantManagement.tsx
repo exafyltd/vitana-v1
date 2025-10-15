@@ -13,6 +13,7 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import { adminTenantManagementNavigation } from "@/config/navigation";
+import { GeminiApiKeySetup } from "@/components/admin/GeminiApiKeySetup";
 
 const TENANT_CONFIGS = {
   maxina: { name: "Maxina", color: "bg-pink-100 text-pink-800" },
@@ -206,6 +207,9 @@ export default function TenantManagement() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Gemini API Configuration */}
+      <GeminiApiKeySetup />
         </div>
       </div>
     </AppLayout>
