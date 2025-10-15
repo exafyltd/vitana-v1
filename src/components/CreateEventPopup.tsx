@@ -180,6 +180,10 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
           end_time: endTime,
           max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
           image_url: uploadedImageUrl,
+          metadata: formData.isPaid ? { 
+            is_paid: true, 
+            price: parseFloat(formData.price) || 0 
+          } : { is_paid: false }
         };
 
         const result = await createEvent(communityEventData);

@@ -32,6 +32,7 @@ interface CreateEventData {
   end_time?: string;
   max_participants?: number;
   image_url?: string;
+  metadata?: any;
 }
 
 export function useCommunityEvents() {
@@ -124,22 +125,23 @@ export function useCommunityEvents() {
         throw new Error("User not authenticated");
       }
 
-      const { data, error } = await supabase
-        .from("global_community_events")
-        .insert([{
-          title: eventData.title,
-          description: eventData.description,
-          event_type: eventData.event_type || 'meetup',
-          location: eventData.location,
-          virtual_link: eventData.virtual_link,
-          start_time: eventData.start_time,
-          end_time: eventData.end_time,
-          max_participants: eventData.max_participants,
-          image_url: eventData.image_url,
-          created_by: user.id,
-        }])
-        .select()
-        .single();
+    const { data, error } = await supabase
+      .from("global_community_events")
+      .insert([{
+        title: eventData.title,
+        description: eventData.description,
+        event_type: eventData.event_type || 'meetup',
+        location: eventData.location,
+        virtual_link: eventData.virtual_link,
+        start_time: eventData.start_time,
+        end_time: eventData.end_time,
+        max_participants: eventData.max_participants,
+        image_url: eventData.image_url,
+        metadata: eventData.metadata || {},
+        created_by: user.id,
+      }])
+      .select()
+      .single();
 
       if (error) throw error;
 
@@ -183,6 +185,7 @@ export function useCommunityEvents() {
           end_time: eventData.end_time,
           max_participants: eventData.max_participants,
           image_url: eventData.image_url,
+          metadata: eventData.metadata || {},
         })
         .eq('id', eventId)
         // RLS policy handles creator and co-creator checks

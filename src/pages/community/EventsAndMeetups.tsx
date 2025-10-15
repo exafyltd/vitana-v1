@@ -36,15 +36,19 @@ const formatEventTime = (dateString: string) => {
 };
 
 const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void) => {
+  // Construct author object with proper fallback chain
+  const authorName = event.creator_display_name || event.author?.name || 'Community Host';
+  const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
+  
   return {
     title: event.title,
     description: event.description,
     imageUrl: event.image_url || event.imageUrl,
     category: 'event' as const,
     pillar: event.event_type === 'event' ? 'EVENT' : 'MEETUP',
-    author: event.author || { 
-      name: event.creator_display_name || 'Community Host', 
-      avatar: event.creator_avatar_url || '' 
+    author: { 
+      name: authorName, 
+      avatar: authorAvatar 
     },
     location: event.location,
     attendees: event.participant_count || 0,
