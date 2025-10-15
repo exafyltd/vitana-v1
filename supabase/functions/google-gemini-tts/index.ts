@@ -6,6 +6,60 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+/**
+ * Converts raw PCM audio data to WAV format with proper headers
+ * Based on: http://soundfile.sapp.org/doc/WaveFormat/
+ */
+function convertPCMToWav(
+  pcmData: Uint8Array,
+  sampleRate: number = 48000,
+  bitsPerSample: number = 16,
+  numChannels: number = 1
+): Uint8Array {
+  const dataSize = pcmData.length;
+  const bytesPerSample = bitsPerSample / 8;
+  const blockAlign = numChannels * bytesPerSample;
+  const byteRate = sampleRate * blockAlign;
+  const chunkSize = 36 + dataSize; // 36 bytes for header fields before data chunk size
+
+  // Create WAV header (44 bytes)
+  const header = new ArrayBuffer(44);
+  const view = new DataView(header);
+
+  // Helper to write string
+  const writeString = (offset: number, str: string) => {
+    for (let i = 0; i < str.length; i++) {
+      view.setUint8(offset + i, str.charCodeAt(i));
+    }
+  };
+
+  // RIFF chunk descriptor
+  writeString(0, 'RIFF');
+  view.setUint32(4, chunkSize, true); // File size - 8
+  writeString(8, 'WAVE');
+
+  // fmt sub-chunk
+  writeString(12, 'fmt ');
+  view.setUint32(16, 16, true); // Subchunk1Size (16 for PCM)
+  view.setUint16(20, 1, true); // AudioFormat (1 for PCM)
+  view.setUint16(22, numChannels, true); // NumChannels
+  view.setUint32(24, sampleRate, true); // SampleRate
+  view.setUint32(28, byteRate, true); // ByteRate
+  view.setUint16(32, blockAlign, true); // BlockAlign
+  view.setUint16(34, bitsPerSample, true); // BitsPerSample
+
+  // data sub-chunk
+  writeString(36, 'data');
+  view.setUint32(40, dataSize, true); // Subchunk2Size
+
+  // Combine header and PCM data
+  const wavFile = new Uint8Array(44 + dataSize);
+  wavFile.set(new Uint8Array(header), 0);
+  wavFile.set(pcmData, 44);
+
+  return wavFile;
+}
+
 // Map languages to Chirp 3 HD voices (primarily female voices)
 const GEMINI_VOICE_MAP: Record<string, string> = {
   'en-US': 'en-US-Chirp3-HD-Leda',
@@ -126,10 +180,33 @@ serve(async (req) => {
       throw new Error('No audio content received from Gemini TTS');
     }
 
-    console.log('[Gemini TTS] Success! Audio size:', ttsData.audioContent.length);
+    console.log('[Gemini TTS] Received audio, converting to WAV format...');
+
+    // Decode base64 PCM data
+    const base64Audio = ttsData.audioContent;
+    const binaryString = atob(base64Audio);
+    const pcmData = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      pcmData[i] = binaryString.charCodeAt(i);
+    }
+
+    // Convert PCM to WAV with proper headers
+    // LINEAR16 at 48kHz, 1 channel
+    const wavData = convertPCMToWav(pcmData, 48000, 16, 1);
+
+    // Convert back to base64
+    let wavBase64 = '';
+    const chunkSize = 0x8000; // Process in chunks to avoid stack overflow
+    for (let i = 0; i < wavData.length; i += chunkSize) {
+      const chunk = wavData.subarray(i, Math.min(i + chunkSize, wavData.length));
+      wavBase64 += String.fromCharCode.apply(null, Array.from(chunk));
+    }
+    const finalBase64 = btoa(wavBase64);
+
+    console.log('[Gemini TTS] Success! WAV audio size:', finalBase64.length);
 
     return new Response(
-      JSON.stringify({ audioContent: ttsData.audioContent }),
+      JSON.stringify({ audioContent: finalBase64 }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
