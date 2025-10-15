@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { generateContent, extractFunctionCall, type GeminiToolDeclaration } from "../_shared/gemini-client.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -91,10 +92,10 @@ serve(async (req) => {
 
     console.log('[analyze-patterns] Data snapshot:', JSON.stringify(dataSnapshot, null, 2));
 
-    // Call Lovable AI Gateway with structured output tool
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    // Call Gemini API with structured output tool
+    const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!GEMINI_API_KEY) {
+      throw new Error('GOOGLE_GEMINI_API_KEY not configured');
     }
 
     const systemPrompt = `You are a behavioral pattern analyst for an automation system. Analyze the provided system data to discover recurring patterns, trends, and automation opportunities.
@@ -114,117 +115,78 @@ ${JSON.stringify(dataSnapshot, null, 2)}
 
 Identify patterns with high confidence (>70%) that occur frequently and could benefit from automation. For each pattern discovered, provide specific triggers, conditions, and suggested actions.`;
 
-    const aiPayload = {
-      model: 'google/gemini-2.5-flash',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
-      ],
-      tools: [
-        {
-          type: 'function',
-          function: {
-            name: 'discover_patterns',
-            description: 'Return discovered behavioral patterns with automation suggestions',
-            parameters: {
+    const tool: GeminiToolDeclaration = {
+      name: 'discover_patterns',
+      description: 'Return discovered behavioral patterns with automation suggestions',
+      parameters: {
+        type: 'object',
+        properties: {
+          patterns: {
+            type: 'array',
+            items: {
               type: 'object',
               properties: {
-                patterns: {
+                pattern_type: {
+                  type: 'string',
+                  enum: ['user_behavior', 'temporal', 'communication', 'workflow', 'health_metric']
+                },
+                pattern_name: { type: 'string' },
+                pattern_description: { type: 'string' },
+                confidence_level: { type: 'number', minimum: 0, maximum: 1 },
+                sample_size: { type: 'integer', minimum: 0 },
+                occurrence_rate: { type: 'number', minimum: 0, maximum: 1 },
+                triggers: {
+                  type: 'array',
+                  items: { type: 'string' }
+                },
+                conditions: {
                   type: 'array',
                   items: {
                     type: 'object',
                     properties: {
-                      pattern_type: {
-                        type: 'string',
-                        enum: ['user_behavior', 'temporal', 'communication', 'workflow', 'health_metric']
-                      },
-                      pattern_name: { type: 'string' },
-                      pattern_description: { type: 'string' },
-                      confidence_level: { type: 'number', minimum: 0, maximum: 1 },
-                      sample_size: { type: 'integer', minimum: 0 },
-                      occurrence_rate: { type: 'number', minimum: 0, maximum: 1 },
-                      triggers: {
-                        type: 'array',
-                        items: { type: 'string' }
-                      },
-                      conditions: {
-                        type: 'array',
-                        items: {
-                          type: 'object',
-                          properties: {
-                            field: { type: 'string' },
-                            operator: { type: 'string' },
-                            value: { type: 'string' }
-                          }
-                        }
-                      },
-                      suggested_actions: {
-                        type: 'array',
-                        items: {
-                          type: 'object',
-                          properties: {
-                            type: { type: 'string' },
-                            config: { type: 'object' }
-                          }
-                        }
-                      },
-                      expected_impact: { type: 'string' }
-                    },
-                    required: ['pattern_type', 'pattern_name', 'pattern_description', 'confidence_level', 'sample_size']
+                      field: { type: 'string' },
+                      operator: { type: 'string' },
+                      value: { type: 'string' }
+                    }
                   }
-                }
+                },
+                suggested_actions: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      type: { type: 'string' },
+                      config: { type: 'object' }
+                    }
+                  }
+                },
+                expected_impact: { type: 'string' }
               },
-              required: ['patterns']
+              required: ['pattern_type', 'pattern_name', 'pattern_description', 'confidence_level', 'sample_size']
             }
           }
-        }
-      ],
-      tool_choice: { type: 'function', function: { name: 'discover_patterns' } }
+        },
+        required: ['patterns']
+      }
     };
 
-    console.log('[analyze-patterns] Calling Lovable AI Gateway...');
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(aiPayload),
-    });
+    console.log('[analyze-patterns] Calling Gemini API...');
+    const aiResponse = await generateContent(
+      GEMINI_API_KEY,
+      [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      { temperature: 0.5 },
+      [tool]
+    );
 
-    if (!aiResponse.ok) {
-      if (aiResponse.status === 429) {
-        throw new Error('Rate limits exceeded, please try again later.');
-      }
-      if (aiResponse.status === 402) {
-        throw new Error('Payment required, please add funds to your Lovable AI workspace.');
-      }
-      const errorText = await aiResponse.text();
-      console.error('[analyze-patterns] AI Gateway error:', aiResponse.status, errorText);
-      throw new Error(`AI Gateway error: ${aiResponse.status}`);
-    }
-
-    const aiResult = await aiResponse.json();
-    console.log('[analyze-patterns] AI response:', JSON.stringify(aiResult, null, 2));
-
-    // Extract patterns from tool call
-    const choice = aiResult.choices?.[0];
-    const toolCall = choice?.message?.tool_calls?.[0];
-    
-    let patternsData;
-    if (toolCall?.function?.arguments) {
-      try {
-        patternsData = JSON.parse(toolCall.function.arguments);
-      } catch (e) {
-        console.error('[analyze-patterns] Failed to parse tool call arguments:', e);
-        throw new Error('Failed to parse AI response');
-      }
-    } else {
-      console.error('[analyze-patterns] No tool call in response');
+    const functionCall = extractFunctionCall(aiResponse);
+    if (!functionCall) {
       throw new Error('AI did not return structured pattern data');
     }
 
-    const patterns = patternsData.patterns || [];
+    const patterns = functionCall.args.patterns || [];
     console.log(`[analyze-patterns] Discovered ${patterns.length} patterns`);
 
     // Insert patterns into database

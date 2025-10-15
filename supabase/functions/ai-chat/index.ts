@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.56.0";
+import { generateContent, extractTextFromResponse, extractFunctionCall, type GeminiToolDeclaration } from "../_shared/gemini-client.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -277,25 +278,54 @@ async function extractAndStoreInsights(
   try {
     console.log('[insights] Starting AI-powered extraction...');
     
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!lovableApiKey) {
-      console.warn('[insights] LOVABLE_API_KEY not configured, skipping extraction');
+    const geminiApiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!geminiApiKey) {
+      console.warn('[insights] GOOGLE_GEMINI_API_KEY not configured, skipping extraction');
       return;
     }
 
-    // Use Lovable AI to extract structured insights
-    const extractionResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${lovableApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: `Extract key information from this conversation that should be remembered. Focus on:
+    // Use direct Gemini API to extract structured insights
+    const tool: GeminiToolDeclaration = {
+      name: 'extract_insights',
+      description: 'Extract meaningful facts, preferences, goals, and patterns from the conversation',
+      parameters: {
+        type: 'object',
+        properties: {
+          insights: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                type: {
+                  type: 'string',
+                  enum: ['fact', 'preference', 'goal', 'pattern', 'insight'],
+                  description: 'Type of memory'
+                },
+                content: {
+                  type: 'string',
+                  description: 'Concise fact or insight (e.g., "Birthday: March 15, 1990")'
+                },
+                confidence: {
+                  type: 'number',
+                  description: 'Confidence score (0.7-1.0)',
+                  minimum: 0.7,
+                  maximum: 1.0
+                }
+              },
+              required: ['type', 'content', 'confidence']
+            }
+          }
+        },
+        required: ['insights']
+      }
+    };
+
+    const extractionResponse = await generateContent(
+      geminiApiKey,
+      [
+        {
+          role: 'system',
+          content: `Extract key information from this conversation that should be remembered. Focus on:
 - Personal facts (birthday, age, location, occupation, family)
 - Health data (conditions, medications, allergies, symptoms)
 - Preferences (foods, activities, sleep schedule)
@@ -304,70 +334,23 @@ async function extractAndStoreInsights(
 
 Return ONLY meaningful, memorable facts. Skip questions, commands, or temporary information.
 Each insight must have high confidence (0.7+). Be concise - extract the core fact only.`
-          },
-          {
-            role: 'user',
-            content: `User: ${userMessage}\nAI: ${aiResponse}`
-          }
-        ],
-        tools: [
-          {
-            type: 'function',
-            function: {
-              name: 'extract_insights',
-              description: 'Extract meaningful facts, preferences, goals, and patterns from the conversation',
-              parameters: {
-                type: 'object',
-                properties: {
-                  insights: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      properties: {
-                        type: {
-                          type: 'string',
-                          enum: ['fact', 'preference', 'goal', 'pattern', 'insight'],
-                          description: 'Type of memory'
-                        },
-                        content: {
-                          type: 'string',
-                          description: 'Concise fact or insight (e.g., "Birthday: March 15, 1990")'
-                        },
-                        confidence: {
-                          type: 'number',
-                          description: 'Confidence score (0.7-1.0)',
-                          minimum: 0.7,
-                          maximum: 1.0
-                        }
-                      },
-                      required: ['type', 'content', 'confidence']
-                    }
-                  }
-                },
-                required: ['insights']
-              }
-            }
-          }
-        ],
-        tool_choice: { type: 'function', function: { name: 'extract_insights' } }
-      }),
-    });
+        },
+        {
+          role: 'user',
+          content: `User: ${userMessage}\nAI: ${aiResponse}`
+        }
+      ],
+      { temperature: 0.3 },
+      [tool]
+    );
 
-    if (!extractionResponse.ok) {
-      const errorText = await extractionResponse.text();
-      console.error('[insights] Extraction failed:', extractionResponse.status, errorText);
-      return;
-    }
-
-    const extractionData = await extractionResponse.json();
-    const toolCall = extractionData.choices?.[0]?.message?.tool_calls?.[0];
-    
-    if (!toolCall?.function?.arguments) {
+    const functionCall = extractFunctionCall(extractionResponse);
+    if (!functionCall) {
       console.log('[insights] No insights extracted');
       return;
     }
 
-    const { insights } = JSON.parse(toolCall.function.arguments);
+    const { insights } = functionCall.args;
     
     if (!insights || insights.length === 0) {
       console.log('[insights] No insights found');
@@ -731,10 +714,10 @@ serve(async (req) => {
       }
     }).catch((err) => console.error('Error storing user message:', err));
 
-    console.log('Getting AI response from Lovable AI...');
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!lovableApiKey) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    console.log('Getting AI response from Gemini API...');
+    const geminiApiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!geminiApiKey) {
+      throw new Error('GOOGLE_GEMINI_API_KEY not configured');
     }
 
     const basePrompt = SYSTEM_PROMPTS[agentType as keyof typeof SYSTEM_PROMPTS] || SYSTEM_PROMPTS.health;

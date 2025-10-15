@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.56.0";
+import { generateEmbedding } from "../_shared/gemini-client.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,36 +28,13 @@ serve(async (req) => {
 
     console.log(`[memory-search] Semantic search for query: "${query}"`);
 
-    // Generate embedding for the query using chat completion
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    // Generate embedding for the query using Gemini
+    const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!GEMINI_API_KEY) {
+      throw new Error('GOOGLE_GEMINI_API_KEY not configured');
     }
 
-    const embeddingResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [{
-          role: 'user',
-          content: `Generate a concise semantic representation (max 50 words) that captures the key meaning of this text for similarity matching: "${query}"`
-        }],
-      }),
-    });
-
-    if (!embeddingResponse.ok) {
-      const errorText = await embeddingResponse.text();
-      console.error('[memory-search] Embedding API error:', errorText);
-      throw new Error(`Embedding API error: ${embeddingResponse.status}`);
-    }
-
-    const embeddingData = await embeddingResponse.json();
-    const semanticText = embeddingData.choices[0].message.content;
-    const queryEmbedding = textToVector(semanticText, query);
+    const queryEmbedding = await generateEmbedding(GEMINI_API_KEY, query);
     
     console.log(`[memory-search] Generated query embedding, length: ${queryEmbedding.length}`);
 

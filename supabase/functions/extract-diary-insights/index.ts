@@ -33,17 +33,75 @@ serve(async (req) => {
 
     console.log(`[diary-insights] Extracting insights from diary entry: ${diaryEntryId}`);
 
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!lovableApiKey) {
-      console.warn('[diary-insights] LOVABLE_API_KEY not configured');
+    const geminiApiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!geminiApiKey) {
+      console.warn('[diary-insights] GOOGLE_GEMINI_API_KEY not configured');
       return new Response(JSON.stringify({ success: false, error: 'API key not configured' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
 
-    // Use Lovable AI to extract structured insights
-    const extractionResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // Use Gemini API to extract structured insights
+    const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+    const extractionResponse = await generateContent(
+      geminiApiKey,
+      [
+        {
+          role: 'system',
+          content: `Extract key factual information from this diary entry that should be remembered long-term. Focus ONLY on:
+- Personal facts (birthday, age, location, occupation, family, residence)
+- Health data (conditions, medications, allergies, symptoms, treatments)
+- Preferences (foods, activities, routines, sleep schedule)
+- Goals (health targets, lifestyle changes, aspirations)
+- Important dates and events
+- Relationships and social connections
+
+CRITICAL RULES:
+1. Extract ONLY concrete, factual information
+2. Skip opinions, feelings, or temporary states unless they indicate patterns
+3. Each insight must be concise and specific
+4. Confidence must be 0.7+ for facts explicitly stated, 0.8+ for clear patterns
+5. Do NOT extract vague or generic statements`
+        },
+        {
+          role: 'user',
+          content: `Diary Entry: ${content}`
+        }
+      ],
+      { temperature: 0.3 },
+      [{
+        name: 'extract_insights',
+        description: 'Extract meaningful factual information from the diary entry',
+        parameters: {
+          type: 'object',
+          properties: {
+            insights: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  type: { type: 'string', enum: ['fact', 'preference', 'goal', 'pattern', 'insight'] },
+                  content: { type: 'string' },
+                  confidence: { type: 'number', minimum: 0.7, maximum: 1.0 }
+                },
+                required: ['type', 'content', 'confidence']
+              }
+            }
+          },
+          required: ['insights']
+        }
+      }]
+    );
+    
+    const functionCall = extractFunctionCall(extractionResponse);
+    if (!functionCall) {
+      return new Response(JSON.stringify({ success: true, insightsCount: 0 }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    const { insights } = functionCall.args;
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${lovableApiKey}`,
