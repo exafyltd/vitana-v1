@@ -27,10 +27,13 @@ import { communityNavigation } from "@/config/navigation";
 import { MusicListCard } from '@/components/home/MusicListCard';
 import { PodcastListCard } from '@/components/home/PodcastListCard';
 import { usePersonalizedMedia } from '@/hooks/usePersonalizedMedia';
+import { MeetupDetailsDrawer } from '@/components/meetups/MeetupDetailsDrawer';
+import { useEventSelection } from '@/context/EventSelectionContext';
 
 // Mock fallback data for Today Highlights
 const todayHighlights = [
   {
+    id: "today-1",
     title: "Morning Run Club 🏃‍♀️",
     description: "Start your day with energy and community spirit at sunrise",
     imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
@@ -44,6 +47,7 @@ const todayHighlights = [
     rewardDescription: "Join the run for fitness credits"
   },
   {
+    id: "today-2",
     title: "Mindful Break Podcast",
     description: "\"Breathing for Focus\" - A guided meditation session",
     imageUrl: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&h=600&fit=crop",
@@ -56,6 +60,7 @@ const todayHighlights = [
     rewardDescription: "Listen and share for wellness credits"
   },
   {
+    id: "today-3",
     title: "Community Hydration Challenge 💪",
     description: "Join 85 participants in our daily water tracking challenge",
     imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
@@ -73,6 +78,7 @@ const todayHighlights = [
 // Mock fallback for weekly events
 const weeklyEvents = [
   {
+    id: "weekly-1",
     title: "Longevity Dance Night 💃",
     description: "Express yourself through movement and colorful lights",
     imageUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
@@ -86,6 +92,7 @@ const weeklyEvents = [
     rewardDescription: "Dance for fitness and social credits"
   },
   {
+    id: "weekly-2",
     title: "Nutrition Workshop 🍎",
     description: "Learn to prep fresh, healthy meals in your kitchen",
     imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
@@ -99,6 +106,7 @@ const weeklyEvents = [
     rewardDescription: "Learn nutrition skills for wellness credits"
   },
   {
+    id: "weekly-3",
     title: "AI Spotlight: Sleep & Recovery Circle ✨",
     description: "Discover personalized sleep optimization in cozy evening sessions",
     imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
@@ -116,6 +124,7 @@ const weeklyEvents = [
 // Discover People
 const communityPeople = [
   {
+    id: "people-1",
     title: "Connect with Jovana T. 👩‍💻",
     description: "Tech wellness enthusiast with 12 mutual groups",
     imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=800&h=600&fit=crop",
@@ -128,6 +137,7 @@ const communityPeople = [
     rewardDescription: "Connect with new people for social credits"
   },
   {
+    id: "people-2",
     title: "Dr. Roberts - Hydration Expert 🩺",
     description: "Leading wellness doctor and Hydration Challenge host",
     imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&h=600&fit=crop",
@@ -140,6 +150,7 @@ const communityPeople = [
     rewardDescription: "Book consultation for wellness credits"
   },
   {
+    id: "people-3",
     title: "Mariia - Wellness Ambassador 🌸",
     description: "Inspiring wellness influencer and community leader",
     imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop",
@@ -156,6 +167,7 @@ const communityPeople = [
 // Community Media
 const communityMedia = [
   {
+    id: "media-1",
     title: "Evening Yoga Flow Replay 🎥",
     description: "Relaxing sunset yoga session for stress relief",
     imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
@@ -168,6 +180,7 @@ const communityMedia = [
     rewardDescription: "Watch wellness videos for mindfulness credits"
   },
   {
+    id: "media-2",
     title: "3 Easy Morning Stretches 🎬",
     description: "Quick balcony wellness routine to energize your day",
     imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
@@ -180,6 +193,7 @@ const communityMedia = [
     rewardDescription: "Try quick routines for exercise credits"
   },
   {
+    id: "media-3",
     title: "Focus Beats for Study Playlist 🎵",
     description: "Curated music to enhance concentration and productivity",
     imageUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
@@ -196,6 +210,7 @@ const communityMedia = [
 // Rankings Data - Top Groups
 const topGroups = [
   {
+    id: "group-1",
     title: "Sleep & Recovery Circle 🥇",
     description: "The ultimate bedtime relaxation community with 1,240 members",
     imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
@@ -207,6 +222,7 @@ const topGroups = [
     timestamp: "Most Active"
   },
   {
+    id: "group-2",
     title: "Longevity Dance Club 🥈",
     description: "Neon dance floor energy with 980 passionate dancers",
     imageUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
@@ -218,6 +234,7 @@ const topGroups = [
     timestamp: "2nd Place"
   },
   {
+    id: "group-3",
     title: "Plant-Based Nutritionists 🥉",
     description: "Fresh vegan cuisine experts with 860 food lovers",
     imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
@@ -233,6 +250,7 @@ const topGroups = [
 // Top Events (This Week)
 const topEvents = [
   {
+    id: "event-1",
     title: "Hydration Challenge Kickoff",
     description: "45 participants joining the community water tracking event",
     imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
@@ -244,6 +262,7 @@ const topEvents = [
     timestamp: "This Week"
   },
   {
+    id: "event-2",
     title: "Mindful Eating Circle",
     description: "30 participants sharing healthy recipes and mindful techniques",
     imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
@@ -255,6 +274,7 @@ const topEvents = [
     timestamp: "Weekly"
   },
   {
+    id: "event-3",
     title: "Evening Sleep Workshop",
     description: "25 participants learning better sleep quality techniques",
     imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
@@ -270,6 +290,7 @@ const topEvents = [
 // Top Creators
 const topCreators = [
   {
+    id: "creator-1",
     title: "Lisa Chen - Wellness Guru",
     description: "Hosted 12 amazing events this month in yoga and mindfulness",
     imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
@@ -280,6 +301,7 @@ const topCreators = [
     timestamp: "12 Events Hosted"
   },
   {
+    id: "creator-2",
     title: "Trainer Mike - Fitness Pro",
     description: "Led 9 high-energy fitness bootcamps with incredible results",
     imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
@@ -290,6 +312,7 @@ const topCreators = [
     timestamp: "9 Bootcamps Led"
   },
   {
+    id: "creator-3",
     title: "Chef Emma - Culinary Expert",
     description: "Created 6 inspiring cooking workshops with healthy recipes",
     imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
@@ -304,6 +327,7 @@ const topCreators = [
 // Spotlight Data
 const spotlightFeatures = [
   {
+    id: "spotlight-1",
     title: "Featured Group: Sleep & Recovery Circle",
     description: "Join our most popular night-time community for better rest",
     imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
@@ -315,6 +339,7 @@ const spotlightFeatures = [
     timestamp: "Join Now"
   },
   {
+    id: "spotlight-2",
     title: "Featured Event: Mindful Eating Circle",
     description: "Experience mindful nutrition with our colorful shared meal community",
     imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
@@ -326,6 +351,7 @@ const spotlightFeatures = [
     timestamp: "Next Session"
   },
   {
+    id: "spotlight-3",
     title: "Featured Creator: Lisa Chen - Longevity Ambassador",
     description: "Meet our inspiring yoga studio leader transforming lives daily",
     imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
@@ -336,6 +362,7 @@ const spotlightFeatures = [
     timestamp: "Follow Her Journey"
   },
   {
+    id: "spotlight-4",
     title: "AI Spotlight Suggestion 🤖",
     description: "Based on your wellness goals, join this Hydration Challenge 💧",
     imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
@@ -350,6 +377,7 @@ const spotlightFeatures = [
 // Community Highlights
 const highlightsData = [
   {
+    id: "highlight-1",
     title: "🏆 Mindful Morning Warriors",
     description: "Top community group this week with 247 active members crushing their daily meditation goals!",
     imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
@@ -362,6 +390,7 @@ const highlightsData = [
     className: "relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-yellow-500/10 before:to-orange-500/10 before:pointer-events-none border border-yellow-500/20"
   },
   {
+    id: "highlight-2",
     title: "Featured Creator: Sarah Miller",
     description: "This week's most inspiring community leader with 89 wellness posts",
     imageUrl: "/lovable-uploads/sarah-miller-avatar.jpg",
@@ -373,6 +402,7 @@ const highlightsData = [
     className: "border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-purple-500/5"
   },
   {
+    id: "highlight-3",
     title: "Rising Star Group",
     description: "Urban Hiking Club - fastest growing community this month!",
     imageUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&h=300&fit=crop",
@@ -387,7 +417,7 @@ const highlightsData = [
 ];
 
 // Enhanced render grid function with interactive action buttons and global row counter
-const renderEventGrid = (events: any[], section?: string, startingRowIndex: number = 0) => {
+const renderEventGrid = (events: any[], section?: string, startingRowIndex: number = 0, onEventClick?: (eventId: string) => void) => {
   const rows = [];
   let currentRowIndex = startingRowIndex;
   
@@ -456,6 +486,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                 className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
                 showSmartAction={true}
                 onActionClick={() => handleActionClick(rowEvents[0])}
+                eventId={rowEvents[0]?.id}
+                onClick={() => onEventClick?.(rowEvents[0]?.id)}
               />
             </div>
             {rowEvents[1] && (
@@ -476,6 +508,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[1])}
+                  eventId={rowEvents[1]?.id}
+                  onClick={() => onEventClick?.(rowEvents[1]?.id)}
                 />
               </div>
             )}
@@ -497,6 +531,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[2])}
+                  eventId={rowEvents[2]?.id}
+                  onClick={() => onEventClick?.(rowEvents[2]?.id)}
                 />
               </div>
             )}
@@ -522,6 +558,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[0])}
+                  eventId={rowEvents[0]?.id}
+                  onClick={() => onEventClick?.(rowEvents[0]?.id)}
                 />
               </div>
             )}
@@ -543,6 +581,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[1])}
+                  eventId={rowEvents[1]?.id}
+                  onClick={() => onEventClick?.(rowEvents[1]?.id)}
                 />
               </div>
             )}
@@ -564,6 +604,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[2])}
+                  eventId={rowEvents[2]?.id}
+                  onClick={() => onEventClick?.(rowEvents[2]?.id)}
                 />
               </div>
             )}
@@ -580,6 +622,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
 export default withScreenId(function Community() {
   const { todayEvents, upcomingEvents } = useCommunityEvents();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
+  const [selectedEventData, setSelectedEventData] = useState<any>(null);
   const [timeframe, setTimeframe] = useState("7d");
   const [scope, setScope] = useState("global");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -588,8 +632,37 @@ export default withScreenId(function Community() {
   
   const latestActions = getLatestActions(2);
 
+  // Event click handler for opening detail drawer
+  const handleEventClick = (eventId: string) => {
+    // Collect ALL events from all sections into one searchable array
+    const allEvents = [
+      ...todayHighlights,
+      ...weeklyEvents,
+      ...communityPeople,
+      ...communityMedia,
+      ...topGroups,
+      ...topEvents,
+      ...topCreators,
+      ...spotlightFeatures,
+      ...highlightsData
+    ];
+    
+    // Find the clicked event by ID
+    const event = allEvents.find(e => e.id === eventId);
+    if (event) {
+      setSelectedEventData(event);
+      selectEvent(eventId);
+    }
+  };
+
+  const handleDrawerClose = () => {
+    clearSelection();
+    setSelectedEventData(null);
+  };
+
   // Transform real events to UI format
   const realTodayHighlights = todayEvents.slice(0, 2).map(event => ({
+    id: event.id,
     title: event.title,
     description: event.description || "Join us for this community event",
     imageUrl: event.image_url || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
@@ -611,6 +684,7 @@ export default withScreenId(function Community() {
 
   // Transform upcoming events for weekly view
   const realWeeklyEvents = upcomingEvents.slice(0, 3).map(event => ({
+    id: event.id,
     title: event.title,
     description: event.description || "Join us for this community event",
     imageUrl: event.image_url || "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
@@ -707,7 +781,7 @@ export default withScreenId(function Community() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Today Highlights</h3>
                 {(() => {
-                  const result = renderEventGrid(todayHighlights, "Today Highlights", globalRowIndex);
+                  const result = renderEventGrid(todayHighlights, "Today Highlights", globalRowIndex, handleEventClick);
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -722,7 +796,7 @@ export default withScreenId(function Community() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">This Week in Community</h3>
                 {(() => {
-                  const result = renderEventGrid(weeklyEvents, "This Week in Community", globalRowIndex);
+                  const result = renderEventGrid(weeklyEvents, "This Week in Community", globalRowIndex, handleEventClick);
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -752,7 +826,7 @@ export default withScreenId(function Community() {
                   </Button>
                 </div>
                 {(() => {
-                  const result = renderEventGrid(highlightsData, "Community Highlights", globalRowIndex);
+                  const result = renderEventGrid(highlightsData, "Community Highlights", globalRowIndex, handleEventClick);
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -762,7 +836,7 @@ export default withScreenId(function Community() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Discover People</h3>
                 {(() => {
-                  const result = renderEventGrid(communityPeople, "Discover People", globalRowIndex);
+                  const result = renderEventGrid(communityPeople, "Discover People", globalRowIndex, handleEventClick);
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -777,7 +851,7 @@ export default withScreenId(function Community() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Community Media</h3>
                 {(() => {
-                  const result = renderEventGrid(communityMedia, "Community Media", globalRowIndex);
+                  const result = renderEventGrid(communityMedia, "Community Media", globalRowIndex, handleEventClick);
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -850,7 +924,7 @@ export default withScreenId(function Community() {
                 {(() => {
                   // Reset row counter for Rankings tab to maintain consistent visual pattern
                   let rankingsRowIndex = 0;
-                  const result = renderEventGrid(topGroups, "Rankings", rankingsRowIndex);
+                  const result = renderEventGrid(topGroups, "Rankings", rankingsRowIndex, handleEventClick);
                   rankingsRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -866,7 +940,7 @@ export default withScreenId(function Community() {
                 <h3 className="text-xl font-bold mb-4 px-6">Top Events (This Week)</h3>
                 {(() => {
                   let rankingsRowIndex = Math.ceil(topGroups.length / 3);
-                  const result = renderEventGrid(topEvents, "Rankings", rankingsRowIndex);
+                  const result = renderEventGrid(topEvents, "Rankings", rankingsRowIndex, handleEventClick);
                   rankingsRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -882,7 +956,7 @@ export default withScreenId(function Community() {
                 <h3 className="text-xl font-bold mb-4 px-6">Top Creators</h3>
                 {(() => {
                   let rankingsRowIndex = Math.ceil(topGroups.length / 3) + Math.ceil(topEvents.length / 3);
-                  const result = renderEventGrid(topCreators, "Rankings", rankingsRowIndex);
+                  const result = renderEventGrid(topCreators, "Rankings", rankingsRowIndex, handleEventClick);
                   return result.content;
                 })()}
               </div>
@@ -917,7 +991,7 @@ export default withScreenId(function Community() {
                 {(() => {
                   // Reset row counter for Spotlight tab to maintain consistent visual pattern
                   let spotlightRowIndex = 0;
-                  const result = renderEventGrid(spotlightFeatures, "Spotlight", spotlightRowIndex);
+                  const result = renderEventGrid(spotlightFeatures, "Spotlight", spotlightRowIndex, handleEventClick);
                   return result.content;
                 })()}
               </div>
@@ -967,6 +1041,15 @@ export default withScreenId(function Community() {
             <CommunityFiltersPopup 
               open={communityFiltersOpen} 
               onOpenChange={setCommunityFiltersOpen}
+            />
+          )}
+
+          {/* Event Details Drawer */}
+          {selectedEventData && (
+            <MeetupDetailsDrawer
+              event={selectedEventData}
+              open={!!selectedEventId}
+              onOpenChange={handleDrawerClose}
             />
           )}
         </div>
