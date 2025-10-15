@@ -93,50 +93,45 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }
 
   const handleMicToggle = async () => {
-    console.log('[MIC] 🎤 Microphone button clicked, vertexRecording:', vertexRecording);
+    console.log('[MIC] 🎤 Toggle clicked. Current vertexRecording:', vertexRecording, 'vertexCameraActive:', vertexCameraActive);
     
     // Block if camera is active
     if (vertexCameraActive) {
-      console.log('[MIC] ⚠️ Camera is active, mic is disabled');
+      console.log('[MIC] ⚠️ Camera is active, mic is controlled by camera');
+      toast({
+        title: "Camera Controls Microphone",
+        description: "Stop camera to control microphone independently",
+        variant: "destructive",
+        duration: 3000,
+      });
       return;
     }
     
     if (vertexRecording) {
-      // STOP: immediate
-      console.log('[MIC] 🛑 Stopping audio');
+      // STOP: clean shutdown
+      console.log('[MIC] 🛑 Stopping microphone');
       vertexStopAudio();
-      setIsRecording(false);
-      setIsAudioActive(false);
+      setIsAudioActive(false); // Clear badge immediately
+      toast({
+        title: "Microphone Stopped",
+        duration: 1500,
+      });
     } else {
-      // START: optimistic + background connection
-      setIsRecording(true);
-      setIsAudioActive(true);
+      // START: no optimistic state, wait for hook to confirm
+      console.log('[MIC] ▶️ Starting microphone...');
       
       try {
-        // Connect in background if needed
-        if (!vertexIsGeminiReady) {
-          toast({
-            title: "Connecting to Gemini...",
-            description: "Starting microphone",
-            duration: 2000,
-          });
-          await vertexConnect();
-        }
-        
         await vertexStartAudio();
-        
+        setIsAudioActive(true);
         toast({
           title: "Microphone Active",
           description: "Gemini is listening",
           duration: 2000,
         });
-        console.log('✅ Vertex audio recording started');
+        console.log('[MIC] ✅ Microphone started successfully');
       } catch (error) {
-        // Rollback on error
-        console.error('[MIC] ❌ Error:', error);
-        setIsRecording(false);
+        console.error('[MIC] ❌ Start failed:', error);
         setIsAudioActive(false);
-        vertexStopAudio();
         showError(
           "Microphone Error",
           error instanceof Error ? error.message : "Could not start microphone"
@@ -242,15 +237,13 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [useVertexLiveMode, vertexTranscript]);
 
-  // Ensure mic stops whenever both camera and screen are off
+  // Sync local UI state with hook state
   useEffect(() => {
-    if (!vertexCameraActive && !vertexScreenSharing && (vertexRecording || isAudioActive)) {
-      console.log('[SYNC] No visual streams active → stopping microphone');
-      vertexStopAudio();
-      setIsRecording(false);
+    if (!vertexRecording && isAudioActive) {
+      console.log('[SYNC] vertexRecording=false but isAudioActive=true → clearing badge');
       setIsAudioActive(false);
     }
-  }, [vertexCameraActive, vertexScreenSharing, vertexRecording, isAudioActive, vertexStopAudio]);
+  }, [vertexRecording, isAudioActive]);
 
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
@@ -538,18 +531,16 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             variant="ghost"
             size="icon"
             onClick={handleMicToggle}
-            disabled={isProcessing || vertexCameraActive}
+            disabled={vertexCameraActive}
             className={
-              vertexCameraActive
-                ? "opacity-50 cursor-not-allowed rounded-full"
-                : isProcessing
-                ? "bg-ruby text-white hover:bg-ruby/90 rounded-full animate-pulse"
-                : isRecording
+              vertexRecording
                 ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
+                : vertexCameraActive
+                ? "opacity-50 cursor-not-allowed rounded-full"
                 : "hover:bg-accent rounded-full"
             }
-            aria-pressed={isRecording}
-            aria-label={isRecording ? "Stop recording" : "Start recording"}
+            aria-pressed={vertexRecording}
+            aria-label={vertexCameraActive ? "Microphone controlled by camera" : vertexRecording ? "Stop recording" : "Start recording"}
           >
             <Mic className="h-5 w-5" />
           </Button>

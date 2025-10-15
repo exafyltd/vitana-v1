@@ -139,28 +139,56 @@ export class AudioRecorder {
   }
 
   stop() {
-    console.log('🛑 Stopping audio recording...');
+    console.log('[AudioRecorder] 🛑 Stopping audio recording...');
+    
+    // Idempotent: if already stopped, just return
+    if (!this.stream && !this.source && !this.processor) {
+      console.log('[AudioRecorder] ℹ️ Already stopped (idempotent)');
+      return;
+    }
     
     if (this.source) {
       this.source.disconnect();
       this.source = null;
+      console.log('[AudioRecorder] ✓ Source disconnected');
     }
     if (this.processor) {
       this.processor.disconnect();
       this.processor = null;
+      console.log('[AudioRecorder] ✓ Processor disconnected');
     }
     if (this.silentGain) {
       this.silentGain.disconnect();
       this.silentGain = null;
+      console.log('[AudioRecorder] ✓ Gain disconnected');
     }
     if (this.stream) {
-      this.stream.getTracks().forEach(track => track.stop());
+      const tracks = this.stream.getTracks();
+      console.log('[AudioRecorder] 🔇 Stopping', tracks.length, 'track(s)');
+      tracks.forEach(track => {
+        console.log('  - Track:', track.kind, 'state:', track.readyState);
+        track.stop();
+      });
       this.stream = null;
+      
+      // Verify all tracks are stopped
+      setTimeout(() => {
+        const stillLive = tracks.filter(t => t.readyState === 'live');
+        if (stillLive.length > 0) {
+          console.warn('[AudioRecorder] ⚠️ WARNING:', stillLive.length, 'track(s) still live after stop!');
+          stillLive.forEach(t => t.stop()); // Retry
+        } else {
+          console.log('[AudioRecorder] ✅ All tracks confirmed stopped');
+        }
+      }, 50);
     }
     if (this.audioContext) {
       this.audioContext.close();
       this.audioContext = null;
+      console.log('[AudioRecorder] ✓ AudioContext closed');
     }
+    
+    console.log('[AudioRecorder] ✅ Audio recording fully stopped');
   }
 }
 
