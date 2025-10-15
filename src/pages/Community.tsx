@@ -43,6 +43,8 @@ const todayHighlights = [
     location: "City Park",
     attendees: 32,
     timestamp: "07:00",
+    start_time: new Date(new Date().setHours(7, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(8, 0, 0, 0)).toISOString(),
     rewardPoints: 8,
     rewardDescription: "Join the run for fitness credits"
   },
@@ -56,6 +58,8 @@ const todayHighlights = [
     author: { name: "Dr. Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Podcast Studio",
     timestamp: "New Episode",
+    start_time: new Date(new Date().setHours(12, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(12, 30, 0, 0)).toISOString(),
     rewardPoints: 4,
     rewardDescription: "Listen and share for wellness credits"
   },
@@ -70,6 +74,8 @@ const todayHighlights = [
     location: "Virtual",
     attendees: 85,
     timestamp: "10:00",
+    start_time: new Date(new Date().setHours(10, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(11, 0, 0, 0)).toISOString(),
     rewardPoints: 12,
     rewardDescription: "Complete hydration goals for bonus credits"
   }
@@ -88,6 +94,8 @@ const weeklyEvents = [
     location: "Community Center",
     attendees: 45,
     timestamp: "Friday 20:00",
+    start_time: new Date(new Date().setDate(new Date().getDate() + ((5 - new Date().getDay() + 7) % 7))).setHours(20, 0, 0, 0),
+    end_time: new Date(new Date().setDate(new Date().getDate() + ((5 - new Date().getDay() + 7) % 7))).setHours(22, 0, 0, 0),
     rewardPoints: 10,
     rewardDescription: "Dance for fitness and social credits"
   },
@@ -102,6 +110,8 @@ const weeklyEvents = [
     location: "Community Kitchen",
     attendees: 18,
     timestamp: "Sunday 11:00",
+    start_time: new Date(new Date().setDate(new Date().getDate() + ((7 - new Date().getDay()) % 7))).setHours(11, 0, 0, 0),
+    end_time: new Date(new Date().setDate(new Date().getDate() + ((7 - new Date().getDay()) % 7))).setHours(13, 0, 0, 0),
     rewardPoints: 6,
     rewardDescription: "Learn nutrition skills for wellness credits"
   },
@@ -116,10 +126,16 @@ const weeklyEvents = [
     location: "Wellness Center",
     attendees: 12,
     timestamp: "Every Wednesday",
+    start_time: new Date(new Date().setDate(new Date().getDate() + ((3 - new Date().getDay() + 7) % 7))).setHours(19, 0, 0, 0),
+    end_time: new Date(new Date().setDate(new Date().getDate() + ((3 - new Date().getDay() + 7) % 7))).setHours(20, 30, 0, 0),
     rewardPoints: 15,
     rewardDescription: "AI-powered sleep improvement rewards"
   }
-];
+].map(e => ({
+  ...e,
+  start_time: new Date(e.start_time).toISOString(),
+  end_time: new Date(e.end_time).toISOString()
+}));
 
 // Discover People
 const communityPeople = [
@@ -133,6 +149,8 @@ const communityPeople = [
     author: { name: "Jovana T.", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Digital Nomad",
     timestamp: "Online Now",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString(),
     rewardPoints: 5,
     rewardDescription: "Connect with new people for social credits"
   },
@@ -146,6 +164,8 @@ const communityPeople = [
     author: { name: "Dr. Roberts", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
     location: "Medical Center",
     timestamp: "Available for consult",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString(),
     rewardPoints: 8,
     rewardDescription: "Book consultation for wellness credits"
   },
@@ -159,6 +179,8 @@ const communityPeople = [
     author: { name: "Mariia", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Wellness Studio",
     timestamp: "Active in community",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString(),
     rewardPoints: 6,
     rewardDescription: "Follow wellness ambassador for inspiration credits"
   }
@@ -176,6 +198,8 @@ const communityMedia = [
     author: { name: "Yoga Instructor Lisa", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Yoga Studio",
     timestamp: "45 min video",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 2700000).toISOString(),
     rewardPoints: 7,
     rewardDescription: "Watch wellness videos for mindfulness credits"
   },
@@ -189,6 +213,8 @@ const communityMedia = [
     author: { name: "Fitness Coach Mike", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
     location: "Home Studio",
     timestamp: "5 min routine",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 300000).toISOString(),
     rewardPoints: 3,
     rewardDescription: "Try quick routines for exercise credits"
   },
@@ -202,6 +228,8 @@ const communityMedia = [
     author: { name: "VITANA Music", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Music Studio",
     timestamp: "2h playlist",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 7200000).toISOString(),
     rewardPoints: 2,
     rewardDescription: "Listen to wellness music for mental health credits"
   }
@@ -219,7 +247,9 @@ const topGroups = [
     author: { name: "Sleep Community", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
     location: "Virtual Rooms",
     attendees: 1240,
-    timestamp: "Most Active"
+    timestamp: "Most Active",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString()
   },
   {
     id: "group-2",
@@ -231,7 +261,9 @@ const topGroups = [
     author: { name: "Dance Community", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Dance Studios",
     attendees: 980,
-    timestamp: "2nd Place"
+    timestamp: "2nd Place",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString()
   },
   {
     id: "group-3",
@@ -243,7 +275,9 @@ const topGroups = [
     author: { name: "Nutrition Community", avatar: "/lovable-uploads/tae-min-avatar.jpg" },
     location: "Community Kitchens",
     attendees: 860,
-    timestamp: "3rd Place"
+    timestamp: "3rd Place",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString()
   }
 ];
 
@@ -259,7 +293,9 @@ const topEvents = [
     author: { name: "Dr. Roberts", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
     location: "Virtual & Local",
     attendees: 45,
-    timestamp: "This Week"
+    timestamp: "This Week",
+    start_time: new Date(Date.now() + 86400000).toISOString(),
+    end_time: new Date(Date.now() + 90000000).toISOString()
   },
   {
     id: "event-2",
@@ -271,7 +307,9 @@ const topEvents = [
     author: { name: "Nutritionist Tae", avatar: "/lovable-uploads/tae-min-avatar.jpg" },
     location: "Community Center",
     attendees: 30,
-    timestamp: "Weekly"
+    timestamp: "Weekly",
+    start_time: new Date(Date.now() + 172800000).toISOString(),
+    end_time: new Date(Date.now() + 176400000).toISOString()
   },
   {
     id: "event-3",
@@ -283,7 +321,9 @@ const topEvents = [
     author: { name: "Sleep Expert Lisa", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Wellness Center",
     attendees: 25,
-    timestamp: "Every Thursday"
+    timestamp: "Every Thursday",
+    start_time: new Date(Date.now() + 259200000).toISOString(),
+    end_time: new Date(Date.now() + 262800000).toISOString()
   }
 ];
 
@@ -298,7 +338,9 @@ const topCreators = [
     pillar: "Mental",
     author: { name: "Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Yoga Studio",
-    timestamp: "12 Events Hosted"
+    timestamp: "12 Events Hosted",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString()
   },
   {
     id: "creator-2",
@@ -309,7 +351,9 @@ const topCreators = [
     pillar: "Exercise",
     author: { name: "Trainer Mike", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
     location: "Fitness Studio",
-    timestamp: "9 Bootcamps Led"
+    timestamp: "9 Bootcamps Led",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString()
   },
   {
     id: "creator-3",
@@ -320,7 +364,9 @@ const topCreators = [
     pillar: "Nutrition",
     author: { name: "Chef Emma", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Community Kitchen",
-    timestamp: "6 Workshops Created"
+    timestamp: "6 Workshops Created",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString()
   }
 ];
 
@@ -336,7 +382,9 @@ const spotlightFeatures = [
     author: { name: "Sleep Community", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
     location: "Virtual Rooms",
     attendees: 1240,
-    timestamp: "Join Now"
+    timestamp: "Join Now",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString()
   },
   {
     id: "spotlight-2",
@@ -348,7 +396,9 @@ const spotlightFeatures = [
     author: { name: "Nutritionist Tae", avatar: "/lovable-uploads/tae-min-avatar.jpg" },
     location: "Community Center",
     attendees: 30,
-    timestamp: "Next Session"
+    timestamp: "Next Session",
+    start_time: new Date(Date.now() + 86400000).toISOString(),
+    end_time: new Date(Date.now() + 90000000).toISOString()
   },
   {
     id: "spotlight-3",
@@ -359,7 +409,9 @@ const spotlightFeatures = [
     pillar: "Mental",
     author: { name: "Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Yoga Studio",
-    timestamp: "Follow Her Journey"
+    timestamp: "Follow Her Journey",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString()
   },
   {
     id: "spotlight-4",
@@ -370,7 +422,9 @@ const spotlightFeatures = [
     pillar: "Hydration",
     author: { name: "VITANA AI", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Personalized for You",
-    timestamp: "Start Today"
+    timestamp: "Start Today",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 86400000).toISOString()
   }
 ];
 
@@ -387,6 +441,8 @@ const highlightsData = [
     location: "Featured Group",
     attendees: 247,
     timestamp: "Top Performer",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString(),
     className: "relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-yellow-500/10 before:to-orange-500/10 before:pointer-events-none border border-yellow-500/20"
   },
   {
@@ -399,6 +455,8 @@ const highlightsData = [
     author: { name: "Community Spotlight", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Top Creator",
     timestamp: "Week Champion",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString(),
     className: "border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-purple-500/5"
   },
   {
@@ -412,6 +470,8 @@ const highlightsData = [
     location: "Trending",
     attendees: 156,
     timestamp: "2x Growth",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString(),
     className: "border border-green-500/20 bg-gradient-to-r from-green-500/5 to-emerald-500/5"
   }
 ];
