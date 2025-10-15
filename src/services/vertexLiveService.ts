@@ -1,5 +1,6 @@
 import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue, decodeContainerAndPlay, sniffAudioFormat } from '@/utils/vertexAudio';
-import { getTurnRecorder } from '@/utils/wavDebug';
+// Debug recorder disabled to prevent endless WAV downloads
+// import { getTurnRecorder } from '@/utils/wavDebug';
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
@@ -115,9 +116,9 @@ export class VertexLiveService {
                   return;
                 }
                 
-                // CHECKPOINT B: Record chunk for WAV debug + collect for per-turn playback
-                const recorder = getTurnRecorder();
-                recorder.addChunk(audioBytes);
+                // CHECKPOINT B: Collect for per-turn playback (debug recorder disabled)
+                // const recorder = getTurnRecorder();
+                // recorder.addChunk(audioBytes);
                 if (!this.collectingTurn) {
                   this.collectingTurn = true;
                   this.turnChunks = [];
@@ -197,9 +198,9 @@ export class VertexLiveService {
       this.callbacks.onConnectionReady?.(); // WebSocket is ready, but not Gemini yet
       // Don't call onConnectionChange(true) yet - wait for Gemini confirmation
       
-      // Start turn recording for debug
-      const recorder = getTurnRecorder();
-      recorder.startTurn();
+      // Debug recorder disabled
+      // const recorder = getTurnRecorder();
+      // recorder.startTurn();
       return;
     }
 
@@ -295,9 +296,9 @@ export class VertexLiveService {
       if (content.turnComplete) {
         console.log('🏁 Turn complete, playing per-turn buffer + flushing audio queue');
         
-        // CHECKPOINT B: Save WAV for debugging
-        const recorder = getTurnRecorder();
-        recorder.stopTurn();
+        // Debug recorder disabled
+        // const recorder = getTurnRecorder();
+        // recorder.stopTurn();
         
         // Per-turn playback (single AudioBufferSource)
         await this.playTurnBuffer();
@@ -309,7 +310,7 @@ export class VertexLiveService {
         // Reset for next turn
         this.collectingTurn = false;
         this.turnChunks = [];
-        recorder.startTurn();
+        // recorder.startTurn();
       }
     }
   }
