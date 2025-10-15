@@ -263,8 +263,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 )}
               </div>
               
-              {timestamp && (
-                <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap mr-12">
+              {timestamp && !utilityTopRight && (
+                <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
                   <Clock className="w-3 h-3" />
                   <span className="font-medium">{timestamp}</span>
                 </div>
@@ -272,8 +272,14 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             </div>
 
             {/* Utility Top Right Slot */}
-            {utilityTopRight && (
-              <div className="absolute top-4 right-4 z-20 pointer-events-auto">
+            {(utilityTopRight || (timestamp && utilityTopRight)) && (
+              <div className="absolute top-4 right-4 z-20 pointer-events-auto flex items-center gap-2">
+                {timestamp && utilityTopRight && (
+                  <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
+                    <Clock className="w-3 h-3" />
+                    <span className="font-medium">{timestamp}</span>
+                  </div>
+                )}
                 {utilityTopRight}
               </div>
             )}
