@@ -164,12 +164,14 @@ class AudioQueue {
   private queue: Uint8Array[] = [];
   private isPlaying = false;
   private buffer: Uint8Array = new Uint8Array(0);
-  private readonly MIN_CHUNK_SIZE = 4096; // ~85ms at 24kHz PCM16
+  private readonly MIN_CHUNK_SIZE = 2048; // ~42ms at 24kHz PCM16 for smoother playback
 
   constructor(private audioContext: AudioContext) {}
 
   async addToQueue(audioData: Uint8Array) {
     console.log('🔊 Adding audio chunk:', audioData.byteLength, 'bytes');
+    console.log('   Current buffer:', this.buffer.byteLength, 'bytes');
+    console.log('   Queue length:', this.queue.length, 'chunks');
     
     // Accumulate small chunks into buffer
     const combined = new Uint8Array(this.buffer.length + audioData.byteLength);
@@ -179,7 +181,7 @@ class AudioQueue {
     
     // Only queue when we have enough data
     if (this.buffer.byteLength >= this.MIN_CHUNK_SIZE) {
-      console.log('✅ Buffer full, queueing:', this.buffer.byteLength, 'bytes');
+      console.log('✅ Buffer threshold reached, queueing:', this.buffer.byteLength, 'bytes');
       this.queue.push(this.buffer);
       this.buffer = new Uint8Array(0);
       
@@ -187,7 +189,8 @@ class AudioQueue {
         await this.playNext();
       }
     } else {
-      console.log('⏳ Buffering... (', this.buffer.byteLength, '/', this.MIN_CHUNK_SIZE, ')');
+      const remaining = this.MIN_CHUNK_SIZE - this.buffer.byteLength;
+      console.log('⏳ Buffering... need', remaining, 'more bytes');
     }
   }
 
@@ -201,6 +204,30 @@ class AudioQueue {
     const audioData = this.queue.shift()!;
 
     try {
+      // Validate audio data size
+      if (audioData.byteLength < 2) {
+        console.warn('⚠️ Audio chunk too small, skipping');
+        this.playNext();
+        return;
+      }
+      
+      // Validate it's even (PCM16 requires pairs of bytes)
+      if (audioData.byteLength % 2 !== 0) {
+        console.warn('⚠️ Audio chunk has odd byte count, trimming last byte');
+        const trimmed = audioData.slice(0, audioData.byteLength - 1);
+        const wavData = this.createWavFromPCM(trimmed);
+        const buffer = wavData.buffer.slice(0) as ArrayBuffer;
+        const audioBuffer = await this.audioContext.decodeAudioData(buffer);
+        
+        const source = this.audioContext.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(this.audioContext.destination);
+        
+        source.onended = () => this.playNext();
+        source.start(0);
+        return;
+      }
+      
       const wavData = this.createWavFromPCM(audioData);
       const buffer = wavData.buffer.slice(0) as ArrayBuffer;
       const audioBuffer = await this.audioContext.decodeAudioData(buffer);
@@ -212,17 +239,23 @@ class AudioQueue {
       source.onended = () => this.playNext();
       source.start(0);
     } catch (error) {
-      console.error('❌ Error playing audio:', error);
+      console.error('❌ Error playing audio chunk:', error);
+      console.error('   Chunk size:', audioData.byteLength, 'bytes');
       this.playNext(); // Continue with next segment
     }
   }
 
   private createWavFromPCM(pcmData: Uint8Array): Uint8Array {
-    // Convert bytes to 16-bit samples
+    console.log('🎵 Creating WAV from PCM, input size:', pcmData.byteLength, 'bytes');
+    
+    // CRITICAL FIX: Use little-endian byte order (swap the order from before)
+    // Little-endian: low byte first, high byte second
     const int16Data = new Int16Array(pcmData.length / 2);
     for (let i = 0; i < pcmData.length; i += 2) {
-      int16Data[i / 2] = (pcmData[i + 1] << 8) | pcmData[i];
+      int16Data[i / 2] = pcmData[i] | (pcmData[i + 1] << 8);
     }
+    
+    console.log('✅ Converted to Int16Array, samples:', int16Data.length);
     
     // Create WAV header
     const wavHeader = new ArrayBuffer(44);
@@ -240,13 +273,13 @@ class AudioQueue {
     const blockAlign = (numChannels * bitsPerSample) / 8;
     const byteRate = sampleRate * blockAlign;
 
-    // WAV header
+    // WAV header (all using little-endian)
     writeString(0, 'RIFF');
-    view.setUint32(4, 36 + int16Data.byteLength, true);
+    view.setUint32(4, 36 + int16Data.byteLength, true); // true = little-endian
     writeString(8, 'WAVE');
     writeString(12, 'fmt ');
     view.setUint32(16, 16, true);
-    view.setUint16(20, 1, true);
+    view.setUint16(20, 1, true); // PCM format
     view.setUint16(22, numChannels, true);
     view.setUint32(24, sampleRate, true);
     view.setUint32(28, byteRate, true);
@@ -260,6 +293,7 @@ class AudioQueue {
     wavArray.set(new Uint8Array(wavHeader), 0);
     wavArray.set(new Uint8Array(int16Data.buffer as ArrayBuffer), wavHeader.byteLength);
     
+    console.log('✅ WAV created, total size:', wavArray.byteLength, 'bytes');
     return wavArray;
   }
 

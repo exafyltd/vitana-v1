@@ -197,10 +197,13 @@ serve(async (req) => {
               }
             } else if (event.data instanceof Blob) {
               // Handle binary audio data
-              console.log('📥 Vertex AI audio Blob received, size:', event.data.size);
+              console.log('📥 Vertex AI audio Blob received');
+              console.log('   Size:', event.data.size, 'bytes');
+              console.log('   Type:', event.data.type);
               
               // Forward audio Blob to client as ArrayBuffer
               const arrayBuffer = await event.data.arrayBuffer();
+              console.log('   ArrayBuffer size:', arrayBuffer.byteLength, 'bytes');
               clientSocket.send(arrayBuffer);
             } else {
               console.warn('⚠️ Unknown message type from Vertex AI:', typeof event.data);
