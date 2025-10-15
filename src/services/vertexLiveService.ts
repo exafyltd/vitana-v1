@@ -24,44 +24,6 @@ export class VertexLiveService {
     this.callbacks = callbacks;
   }
 
-  // Attempt to decode when binary payload actually contains base64-encoded ASCII
-  private tryDecodeBase64FromBytes(bytes: Uint8Array): Uint8Array | null {
-    // Quick heuristic: allow at most ~10% non-base64 ASCII bytes
-    let invalid = 0;
-    for (let i = 0; i < bytes.length; i++) {
-      const b = bytes[i];
-      const isBase64Char =
-        (b >= 43 && b <= 57) || // + , - . / 0-9
-        (b >= 65 && b <= 90) || // A-Z
-        (b >= 97 && b <= 122) || // a-z
-        b === 61 || // =
-        b === 10 || // \n
-        b === 13;   // \r
-      if (!isBase64Char) invalid++;
-      if (invalid > Math.max(8, Math.floor(bytes.length * 0.1))) {
-        return null;
-      }
-    }
-    try {
-      const text = new TextDecoder('utf-8', { fatal: false }).decode(bytes);
-      const cleaned = text.replace(/[^A-Za-z0-9+/=]/g, '');
-      if (cleaned.length < 8) return null;
-      const bin = atob(cleaned);
-      const out = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-      // Heuristic: decoded should be ~3/4 of input length when it is base64
-      if (out.length > 0 && out.length <= bytes.length && out.length >= Math.floor(bytes.length * 0.5)) {
-        return out;
-      }
-      // Fallback: if we can sniff a known audio/container format, accept
-      const fmt = sniffAudioFormat(out);
-      if (fmt !== 'unknown') return out;
-      return out;
-    } catch {
-      return null;
-    }
-  }
-
   async connect(token: string): Promise<void> {
     console.log('🔌 Connecting to Vertex AI Live API...');
     this.callbacks.onTrace?.('Starting connection...');
@@ -110,13 +72,13 @@ export class VertexLiveService {
             if (event.data instanceof ArrayBuffer) {
               // Handle binary audio data - detect format and decode accordingly
               console.log('📥 Received audio ArrayBuffer, size:', event.data.byteLength);
-              let audioBytes = new Uint8Array(event.data);
-              // Try to decode if payload is actually base64-encoded text delivered as bytes
-              const maybeDecoded = this.tryDecodeBase64FromBytes(audioBytes);
-              if (maybeDecoded) {
-                console.log('🧪 Detected base64-in-binary; decoded to bytes:', maybeDecoded.byteLength);
-                audioBytes = new Uint8Array(maybeDecoded.buffer as ArrayBuffer);
-              }
+              const audioBytes = new Uint8Array(event.data);
+              
+              // Log first few bytes for debugging
+              const hexSample = Array.from(audioBytes.slice(0, 16))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join(' ');
+              console.log('🔍 Audio bytes (hex):', hexSample);
               
               if (this.audioContext) {
                 // Resume audio context if suspended (browser autoplay policy)

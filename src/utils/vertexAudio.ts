@@ -377,7 +377,7 @@ class AudioQueue {
       }
     };
 
-    const sampleRate = 24000;
+    const sampleRate = 48000; // Gemini returns 48kHz LINEAR16 PCM audio
     const numChannels = 1;
     const bitsPerSample = 16;
     const blockAlign = (numChannels * bitsPerSample) / 8;
