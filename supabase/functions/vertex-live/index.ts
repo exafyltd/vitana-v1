@@ -208,6 +208,15 @@ serve(async (req) => {
               const arrayBuffer = await event.data.arrayBuffer();
               console.log('   ArrayBuffer size:', arrayBuffer.byteLength, 'bytes');
               
+              // If payload looks like JSON ('{' or '['), treat as TEXT frame
+              const b0 = new DataView(arrayBuffer).getUint8(0);
+              if (b0 === 0x7b /* '{' */ || b0 === 0x5b /* '[' */) {
+                const text = new TextDecoder().decode(arrayBuffer);
+                console.log('🔁 Converting Blob-as-binary (JSON) back to text frame');
+                clientSocket.send(text);
+                return;
+              }
+              
               // CHECKPOINT A: PCM sample window analysis (first 2000 samples)
               const dv = new DataView(arrayBuffer);
               const n = arrayBuffer.byteLength >> 1; // number of 16-bit samples
@@ -219,9 +228,15 @@ serve(async (req) => {
                 if (s > max) max = s;
                 sumAbs += Math.abs(s);
               }
-              const avgAbs = Math.round(sumAbs / sampleCount);
-              console.log('🔊 PCM sample window:', { min, max, avgAbs, samples: sampleCount });
+              const avgAbs = sampleCount > 0 ? Math.round(sumAbs / sampleCount) : 0;
+              console.log('🔊 PCM sample window:', { min, max, avgAbs, samples: sampleCount, bytes: arrayBuffer.byteLength });
               console.log('   Expected speech: min ~-30000..-1000, max ~+1000..+30000, avgAbs ~500..6000');
+              
+              // Drop odd-length frames (must be 16-bit aligned)
+              if ((arrayBuffer.byteLength & 1) !== 0) {
+                console.error('❌ Dropping odd-length binary frame', arrayBuffer.byteLength);
+                return;
+              }
               
               // Forward binary as binary (no JSON, no base64, no TextEncoder)
               clientSocket.send(arrayBuffer);

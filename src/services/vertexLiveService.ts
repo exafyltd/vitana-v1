@@ -20,6 +20,9 @@ export class VertexLiveService {
   private conversationId: string | null = null;
   private isSetupComplete = false;
   private geminiReadyFired = false; // NEW: Track if we've fired onGeminiReady
+  // Per-turn playback buffer (force PCM path, single play per turn)
+  private turnChunks: Uint8Array[] = [];
+  private collectingTurn = false;
 
   constructor(callbacks: VertexLiveCallbacks) {
     this.callbacks = callbacks;
@@ -112,12 +115,16 @@ export class VertexLiveService {
                   return;
                 }
                 
-                // CHECKPOINT B: Record chunk for WAV debug
+                // CHECKPOINT B: Record chunk for WAV debug + collect for per-turn playback
                 const recorder = getTurnRecorder();
                 recorder.addChunk(audioBytes);
-                
-                await playAudioData(this.audioContext, audioBytes);
-                console.log('✅ Audio playback initiated');
+                if (!this.collectingTurn) {
+                  this.collectingTurn = true;
+                  this.turnChunks = [];
+                }
+                this.turnChunks.push(audioBytes);
+                console.log('🔊 Collected chunk for turn:', audioBytes.byteLength, 'bytes', 'Total chunks:', this.turnChunks.length);
+                // NOTE: No per-chunk playback here; we'll play once at turnComplete
               } else {
                 console.error('❌ No audio context available!');
               }
@@ -131,7 +138,7 @@ export class VertexLiveService {
           } catch (error) {
             console.error('Error processing server message:', error);
           }
-        };
+          };
 
         ws.onerror = (error: Event) => {
           console.error('❌ WebSocket error:', error);
@@ -286,18 +293,54 @@ export class VertexLiveService {
 
       // Flush audio buffer when turn is complete
       if (content.turnComplete) {
-        console.log('🏁 Turn complete, flushing audio buffer');
+        console.log('🏁 Turn complete, playing per-turn buffer + flushing audio queue');
         
         // CHECKPOINT B: Save WAV for debugging
         const recorder = getTurnRecorder();
         recorder.stopTurn();
         
+        // Per-turn playback (single AudioBufferSource)
+        await this.playTurnBuffer();
+        
+        // Also flush any queue-based preview path if used elsewhere
         const { flushAudioQueue } = await import('@/utils/vertexAudio');
         await flushAudioQueue();
         
-        // Start new turn recording
+        // Reset for next turn
+        this.collectingTurn = false;
+        this.turnChunks = [];
         recorder.startTurn();
       }
+    }
+  }
+
+  // Play accumulated PCM16 chunks as a single AudioBufferSource
+  private async playTurnBuffer() {
+    try {
+      if (!this.audioContext) return;
+      const total = this.turnChunks.reduce((s, c) => s + c.length, 0);
+      if (total === 0) return;
+      const pcm = new Uint8Array(total);
+      let off = 0;
+      for (const c of this.turnChunks) { pcm.set(c, off); off += c.length; }
+      if ((pcm.byteLength & 1) !== 0) {
+        console.error('❌ Odd-length turn buffer, dropping:', pcm.byteLength);
+        return;
+      }
+      const dv = new DataView(pcm.buffer, pcm.byteOffset, pcm.byteLength);
+      const frames = pcm.byteLength >> 1;
+      const f32 = new Float32Array(frames);
+      for (let i = 0, o = 0; i < frames; i++, o += 2) f32[i] = dv.getInt16(o, true) / 32768;
+
+      const buf = this.audioContext.createBuffer(1, frames, 24000);
+      buf.copyToChannel(f32, 0);
+      const src = this.audioContext.createBufferSource();
+      src.buffer = buf;
+      src.connect(this.audioContext.destination);
+      src.start(0);
+      console.log('▶️ Per-turn playback started. Bytes:', pcm.byteLength, 'Frames:', frames);
+    } catch (e) {
+      console.error('Per-turn playback error:', e);
     }
   }
 
