@@ -88,7 +88,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 -z-10" />
       
       {/* Music note watermark */}
-      <Music className="absolute top-4 right-4 w-16 h-16 text-purple-400/10 pointer-events-none -z-10" />
+      <Music className="absolute top-4 right-4 w-16 h-16 text-purple-400/10 pointer-events-none z-0" />
       
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
