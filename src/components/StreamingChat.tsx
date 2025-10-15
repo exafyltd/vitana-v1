@@ -266,20 +266,42 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       console.log('StreamingChat: deactivateVideo called');
       
       if (useVertexLiveMode) {
-        vertexStopAudio();
-        vertexStopScreen();
+        // Stop all media streams
+        if (vertexRecording) vertexStopAudio();
+        if (vertexScreenSharing) vertexStopScreen();
+        if (vertexCameraActive) vertexStopCamera();
         vertexDisconnect();
       }
       
+      // Reset all states
       setIsVideoActive(false);
       setIsAudioActive(false);
+      setIsRecording(false);
+      setAssistantStreamingText('');
+      console.log('✅ All streams stopped, states reset');
     },
     isStreamingActive: () => {
       const active = useVertexLiveMode ? (vertexConnecting || vertexConnected) : isVideoActive;
       console.log('StreamingChat: isStreamingActive called, returning:', active);
       return active;
     },
-  }))
+  }), [
+    useVertexLiveMode,
+    vertexConnect,
+    vertexStartAudio,
+    vertexStartScreen,
+    vertexStopAudio,
+    vertexStopScreen,
+    vertexStopCamera,
+    vertexDisconnect,
+    vertexConnecting,
+    vertexConnected,
+    vertexRecording,
+    vertexScreenSharing,
+    vertexCameraActive,
+    isVideoActive,
+    toast
+  ])
 
   return (
     <>

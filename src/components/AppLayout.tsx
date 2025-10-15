@@ -76,13 +76,18 @@ function AppSidebar({
 
   const handleStreamToggle = async () => {
     if (isStreaming) {
+      console.log('🛑 Ending stream...');
       streamingChatRef.current?.deactivateVideo();
       setIsStreaming(false); // Immediate UI update
+      console.log('✅ Stream ended, button should show "Start Stream"');
     } else {
+      console.log('▶️ Starting stream...');
       setIsStreaming(true); // Optimistic UI (red button immediately)
       try {
         await streamingChatRef.current?.activateVideo();
+        console.log('✅ Stream started, button should show "End Stream"');
       } catch (error) {
+        console.error('❌ Stream start failed:', error);
         setIsStreaming(false); // Rollback on error
       }
     }
