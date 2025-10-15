@@ -88,7 +88,7 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
       <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-amber-500/10 to-orange-500/10 -z-10" />
       
       {/* Radio icon watermark */}
-      <Radio className="absolute top-4 right-4 w-16 h-16 text-orange-400/10" />
+      <Radio className="absolute top-4 right-4 w-16 h-16 text-orange-400/10 pointer-events-none -z-10" />
       
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
