@@ -240,8 +240,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           
           {/* Content Overlay */}
           <CardContent className="absolute inset-0 p-6 h-full flex flex-col text-white">
-            {/* Top Section - Category + Price on left, Timestamp on right */}
-            <div className="flex justify-between items-start">
+            {/* Top Section - Category + Price on left, Timestamp + Actions on right */}
+            <div className="flex justify-between items-center">
               {/* Left side - Category + Price */}
               <div className="flex items-center gap-2">
                 {/* Pillar badge */}
@@ -264,28 +264,20 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 )}
               </div>
               
-              {/* Right side - Timestamp (only when no utilityTopRight) */}
-              {!utilityTopRight && timestamp && (
-                <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
-                  <Clock className="w-3 h-3" />
-                  <span className="font-medium">{timestamp}</span>
+              {/* Right side - Timestamp + utilityTopRight */}
+              {(timestamp || utilityTopRight) && (
+                <div className="flex items-center gap-2 pointer-events-auto" onClick={(e) => e.stopPropagation()}>
+                  {/* Timestamp */}
+                  {timestamp && (
+                    <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
+                      <Clock className="w-3 h-3" />
+                      <span className="font-medium">{timestamp}</span>
+                    </div>
+                  )}
+                  {utilityTopRight}
                 </div>
               )}
             </div>
-
-            {/* Utility Top Right Slot - Timestamp + Actions */}
-            {utilityTopRight && (
-              <div className="absolute top-4 right-4 z-20 pointer-events-auto flex items-center gap-2">
-                {/* Timestamp */}
-                {timestamp && (
-                  <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
-                    <Clock className="w-3 h-3" />
-                    <span className="font-medium">{timestamp}</span>
-                  </div>
-                )}
-                {utilityTopRight}
-              </div>
-            )}
 
             {/* Main Content Area - takes up remaining space */}
             <div className="flex-1 flex flex-col justify-end space-y-3 pb-14">
