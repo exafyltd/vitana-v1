@@ -207,6 +207,23 @@ serve(async (req) => {
               // Forward audio Blob to client as ArrayBuffer
               const arrayBuffer = await event.data.arrayBuffer();
               console.log('   ArrayBuffer size:', arrayBuffer.byteLength, 'bytes');
+              
+              // CHECKPOINT A: PCM sample window analysis (first 2000 samples)
+              const dv = new DataView(arrayBuffer);
+              const n = arrayBuffer.byteLength >> 1; // number of 16-bit samples
+              let min = 32767, max = -32768, sumAbs = 0;
+              const sampleCount = Math.min(n, 2000);
+              for (let i = 0; i < sampleCount; i++) {
+                const s = dv.getInt16(i * 2, true); // little-endian
+                if (s < min) min = s;
+                if (s > max) max = s;
+                sumAbs += Math.abs(s);
+              }
+              const avgAbs = Math.round(sumAbs / sampleCount);
+              console.log('🔊 PCM sample window:', { min, max, avgAbs, samples: sampleCount });
+              console.log('   Expected speech: min ~-30000..-1000, max ~+1000..+30000, avgAbs ~500..6000');
+              
+              // Forward binary as binary (no JSON, no base64, no TextEncoder)
               clientSocket.send(arrayBuffer);
             } else {
               console.warn('⚠️ Unknown message type from Vertex AI:', typeof event.data);

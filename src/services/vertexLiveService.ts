@@ -1,4 +1,5 @@
 import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue, decodeContainerAndPlay, sniffAudioFormat } from '@/utils/vertexAudio';
+import { getTurnRecorder } from '@/utils/wavDebug';
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
@@ -68,11 +69,13 @@ export class VertexLiveService {
 
         ws.onmessage = async (event) => {
           try {
+            // CHECKPOINT B: Verify binary frame type
+            console.log('📥 Binary frame check:', typeof event.data, 'instanceof ArrayBuffer:', event.data instanceof ArrayBuffer);
+            
             // Check if this is binary audio data or JSON
             if (event.data instanceof ArrayBuffer) {
               // Handle binary audio data - WebSocket binary frames are ALWAYS raw PCM from Gemini
               console.log('📥 Received audio ArrayBuffer, size:', event.data.byteLength);
-              console.log('   typeof event.data:', typeof event.data, 'instanceof ArrayBuffer:', event.data instanceof ArrayBuffer);
               const audioBytes = new Uint8Array(event.data);
               
               // Enhanced diagnostic logging
@@ -108,6 +111,10 @@ export class VertexLiveService {
                   console.error('❌ PCM not 16-bit aligned. Dropping frame length=', audioBytes.byteLength);
                   return;
                 }
+                
+                // CHECKPOINT B: Record chunk for WAV debug
+                const recorder = getTurnRecorder();
+                recorder.addChunk(audioBytes);
                 
                 await playAudioData(this.audioContext, audioBytes);
                 console.log('✅ Audio playback initiated');
@@ -182,6 +189,10 @@ export class VertexLiveService {
       this.callbacks.onTrace?.('Received connection_ready (WebSocket open, waiting for Gemini...)');
       this.callbacks.onConnectionReady?.(); // WebSocket is ready, but not Gemini yet
       // Don't call onConnectionChange(true) yet - wait for Gemini confirmation
+      
+      // Start turn recording for debug
+      const recorder = getTurnRecorder();
+      recorder.startTurn();
       return;
     }
 
@@ -276,8 +287,16 @@ export class VertexLiveService {
       // Flush audio buffer when turn is complete
       if (content.turnComplete) {
         console.log('🏁 Turn complete, flushing audio buffer');
+        
+        // CHECKPOINT B: Save WAV for debugging
+        const recorder = getTurnRecorder();
+        recorder.stopTurn();
+        
         const { flushAudioQueue } = await import('@/utils/vertexAudio');
         await flushAudioQueue();
+        
+        // Start new turn recording
+        recorder.startTurn();
       }
     }
   }
