@@ -2,6 +2,7 @@ import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, pl
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
+  onConnectionReady?: () => void; // NEW: Triggered when connection is ready for greeting
   onTranscript?: (text: string, isFinal: boolean) => void;
   onError?: (error: string) => void;
   onTrace?: (message: string) => void;
@@ -149,6 +150,7 @@ export class VertexLiveService {
       this.conversationId = data.conversationId;
       console.log('✅ Connection ready, conversation ID:', this.conversationId);
       this.callbacks.onTrace?.('Received connection_ready');
+      this.callbacks.onConnectionReady?.(); // Trigger greeting flow
       this.callbacks.onConnectionChange?.(true);
       return;
     }

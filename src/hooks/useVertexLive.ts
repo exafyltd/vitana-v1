@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { VertexLiveService } from '@/services/vertexLiveService';
 import { supabase } from '@/integrations/supabase/client';
+import { playNotificationBell } from '@/utils/soundEffects';
 
 export const useVertexLive = () => {
   const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected' | 'error'>('disconnected');
@@ -14,10 +15,28 @@ export const useVertexLive = () => {
   const serviceRef = useRef<VertexLiveService | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
   const retryCountRef = useRef(0);
+  const hasGreetedRef = useRef(false);
 
   useEffect(() => {
     // Initialize service
     serviceRef.current = new VertexLiveService({
+      onConnectionReady: () => {
+        console.log('🎉 Connection ready - triggering greeting flow');
+        
+        if (!hasGreetedRef.current) {
+          hasGreetedRef.current = true;
+          
+          // Play notification bell
+          playNotificationBell();
+          
+          // Send greeting prompt to AI (AI will respond with audio)
+          setTimeout(() => {
+            serviceRef.current?.sendText(
+              "Please greet the user warmly and let them know you're ready to help. Keep it brief and friendly, around 1-2 sentences."
+            );
+          }, 500);
+        }
+      },
       onConnectionChange: (connected) => {
         console.log('🔌 Connection status:', connected);
         if (connected) {
@@ -30,6 +49,7 @@ export const useVertexLive = () => {
           setIsRecording(false);
           setIsScreenSharing(false);
           setLastEvent('disconnected');
+          hasGreetedRef.current = false; // Reset for next connection
         }
       },
       onTranscript: (text, isFinal) => {

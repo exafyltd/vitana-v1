@@ -74,17 +74,18 @@ function AppSidebar({
     return location.pathname === categoryPath || location.pathname.startsWith(categoryPath + "/");
   };
 
-  const handleStreamToggle = () => {
+  const handleStreamToggle = async () => {
     if (isStreaming) {
       streamingChatRef.current?.deactivateVideo();
+      setIsStreaming(false); // Immediate UI update
     } else {
-      streamingChatRef.current?.activateVideo();
+      setIsStreaming(true); // Optimistic UI (red button immediately)
+      try {
+        await streamingChatRef.current?.activateVideo();
+      } catch (error) {
+        setIsStreaming(false); // Rollback on error
+      }
     }
-    // Force immediate sync
-    setTimeout(() => {
-      const active = streamingChatRef.current?.isStreamingActive?.();
-      setIsStreaming(!!active);
-    }, 10);
   };
 
   useEffect(() => {

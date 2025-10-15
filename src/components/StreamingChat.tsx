@@ -89,98 +89,37 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }
 
   const handleMicToggle = async () => {
-    console.log('[MIC] 🎤 Button clicked, current state:', { 
-      isRecording, 
-      isProcessing,
-      selectedLanguage,
-      clientSTTSupported: typeof ClientSTT !== 'undefined',
-      preferences: preferences ? 'loaded' : 'not loaded'
-    });
+    console.log('[MIC] 🎤 Button clicked, vertexRecording:', vertexRecording);
     
-    // Prime audio context on user gesture
-    await aiVoiceService.resumeAudio()
-    
-    if (isRecording) {
-      console.log('[MIC] 🛑 Stopping recording...');
-      // Stop recording and send to AI
-      setIsRecording(false)
-      setIsProcessing(true)
-      
-      try {
-        const audioBlob = await aiVoiceService.stopRecording()
-        
-        // Check if using client-side STT for instant transcription
-        const clientTranscript = aiVoiceService.getClientTranscript();
-        const trimmedTranscript = (clientTranscript || '').trim();
-
-        // Guard: no audio and no transcript captured
-        if (!audioBlob && !trimmedTranscript) {
-          console.warn('No speech detected: empty transcript and no audio blob');
-          toast({
-            title: "No speech detected",
-            description: "Please try again or check your microphone.",
-            variant: "destructive",
-          })
-          return;
-        }
-        
-        // Send message with instant transcript if available
-        const response = await aiVoiceService.sendVoiceMessage(
-          audioBlob, 
-          trimmedTranscript || undefined
-        )
-        
-        // Show AI response in input field
-        setInputValue(response.text)
-        
-        // Check for crisis
-        if (response.crisisDetected) {
-          setShowCrisisButton(true)
-        }
-        
-        // Auto-fade after 5 seconds
-        if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current)
-        fadeTimeoutRef.current = setTimeout(() => {
-          setInputValue("")
-        }, 5000)
-      } catch (error) {
-        console.error('Voice error:', error)
-        toast({
-          title: "Voice Error",
-          description: error instanceof Error ? error.message : "Failed to process voice",
-          variant: "destructive",
-        })
-      } finally {
-        setIsProcessing(false)
-      }
+    if (vertexRecording) {
+      // Stop recording
+      vertexStopAudio();
+      setIsRecording(false);
     } else {
-      // Start recording with instant client-side STT
-      console.log('[MIC] ▶️ Starting recording with options:', {
-        useClientSTT: preferences?.stt_instant_enabled ?? true,
-        language: selectedLanguage,
-        hasMediaDevices: !!navigator.mediaDevices,
-        hasGetUserMedia: !!navigator.mediaDevices?.getUserMedia
-      });
-      
+      // Start audio-only mode (no screen sharing)
       try {
-        await aiVoiceService.startRecording({
-          useClientSTT: preferences?.stt_instant_enabled ?? true,
-          language: selectedLanguage
-        })
-        console.log('[MIC] ✅ Recording started successfully');
-        setIsRecording(true)
+        setIsRecording(true); // Optimistic UI
+        
+        if (!vertexConnected) {
+          // Connect if not already connected
+          await vertexConnect();
+          
+          // Wait for connection_ready (greeting will auto-play)
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+        
+        // Start audio recording
+        await vertexStartAudio();
+        
+        console.log('✅ Audio-only mode activated');
       } catch (error) {
-        console.error('[MIC] ❌ Recording error:', error)
-        console.error('[MIC] Error details:', {
-          name: error instanceof Error ? error.name : 'unknown',
-          message: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : 'no stack'
-        });
+        console.error('[MIC] ❌ Error:', error);
+        setIsRecording(false);
         toast({
           title: "Microphone Error",
           description: error instanceof Error ? error.message : "Could not access microphone",
           variant: "destructive",
-        })
+        });
       }
     }
   }
@@ -292,9 +231,22 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           }
           
           setIsVideoActive(true); // Set immediately for UI feedback
+          
+          // Connect and start audio first
           await vertexConnect();
           await vertexStartAudio();
-          await vertexStartScreen();
+          
+          // Wait for greeting, then show screen picker
+          setTimeout(async () => {
+            try {
+              await vertexStartScreen();
+              console.log('✅ Screen sharing started');
+            } catch (error) {
+              console.warn('User cancelled screen sharing or error:', error);
+              // Continue with audio-only if screen sharing fails
+            }
+          }, 2500); // 2.5s delay for greeting to complete
+          
           console.log('✅ Vertex Live activated');
         } catch (error) {
           console.error('❌ Failed to activate Vertex Live:', error);
