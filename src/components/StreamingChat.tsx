@@ -527,7 +527,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             }
             aria-label="Get AI Advice"
           >
-            {isSparklesProcessing ? (
+            {vertexConnecting || isSparklesProcessing ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               <Sparkles className="h-5 w-5" />
