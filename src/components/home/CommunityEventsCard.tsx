@@ -6,6 +6,7 @@ import { Calendar, Clock, MapPin, Users, ArrowRight } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { useEventSelection } from "@/context/EventSelectionContext";
 
 interface CommunityEventsCardProps {
   maxEvents?: number;
@@ -15,6 +16,7 @@ interface CommunityEventsCardProps {
 function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCardProps) {
   const { todayEvents, upcomingEvents, loading } = useCommunityEvents();
   const navigate = useNavigate();
+  const { selectEvent } = useEventSelection();
 
   const displayEvents = [...todayEvents, ...upcomingEvents].slice(0, maxEvents);
 
@@ -116,7 +118,10 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
           <div
             key={event.id}
             className="flex items-start gap-3 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors cursor-pointer"
-            onClick={() => navigate('/community/meetups')}
+            onClick={(e) => {
+              e.preventDefault();
+              selectEvent(event.id);
+            }}
           >
             <div className="flex-shrink-0">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">

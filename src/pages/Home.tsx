@@ -30,6 +30,8 @@ import { MusicListCard } from "@/components/home/MusicListCard";
 import { PodcastListCard } from "@/components/home/PodcastListCard";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePersonalizedMedia } from "@/hooks/usePersonalizedMedia";
+import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
+import { useEventSelection } from "@/context/EventSelectionContext";
 
 // Mock data for Today and Guide screens - Fallback data
 const todayScheduledEvents = [
@@ -268,6 +270,10 @@ export default function Home() {
   const firstName = profile?.displayName?.split(' ')[0] || '';
   const { greeting, emoji } = useEnhancedMotivationalMessage(firstName);
 
+  // Event selection for detail drawer
+  const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
+  const [selectedEventData, setSelectedEventData] = useState<any>(null);
+
   // Fetch real approved media uploads
   const { data: approvedMedia } = useQuery({
     queryKey: ['home-media-content'],
@@ -402,6 +408,22 @@ export default function Home() {
     setShowOnboarding(open);
   };
 
+  // Handle event click to open detail drawer
+  const handleEventClick = (eventId: string) => {
+    const allEvents = [...todayEvents, ...upcomingEvents];
+    const event = allEvents.find(e => e.id === eventId);
+    if (event) {
+      setSelectedEventData(event);
+      selectEvent(eventId);
+    }
+  };
+
+  // Handle drawer close
+  const handleDrawerClose = () => {
+    clearSelection();
+    setSelectedEventData(null);
+  };
+
   return (
     <AppLayout>
       <SEO title="Home | VITANA" description="VITANA Home Dashboard - Your wellness journey starts here" canonical={window.location.href} />
@@ -495,6 +517,8 @@ export default function Home() {
                       rewardPoints={5}
                       rewardDescription="Join this community event"
                       className="h-full"
+                      eventId={[...todayEvents, ...upcomingEvents][0]?.id}
+                      onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][0]?.id)}
                     />
                   </div>
                 )}
@@ -513,6 +537,8 @@ export default function Home() {
                       rewardPoints={5}
                       rewardDescription="Join this community event"
                       className="h-full"
+                      eventId={[...todayEvents, ...upcomingEvents][1]?.id}
+                      onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][1]?.id)}
                     />
                   </div>
                 )}
@@ -537,6 +563,8 @@ export default function Home() {
                       rewardPoints={5}
                       rewardDescription="Join this community event"
                       className="h-full"
+                      eventId={[...todayEvents, ...upcomingEvents][2]?.id}
+                      onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][2]?.id)}
                     />
                   </div>
                 )}
@@ -555,6 +583,8 @@ export default function Home() {
                       rewardPoints={5}
                       rewardDescription="Join this community event"
                       className="h-full"
+                      eventId={[...todayEvents, ...upcomingEvents][3]?.id}
+                      onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][3]?.id)}
                     />
                   </div>
                 )}
@@ -573,6 +603,8 @@ export default function Home() {
                       rewardPoints={5}
                       rewardDescription="Join this community event"
                       className="h-full"
+                      eventId={[...todayEvents, ...upcomingEvents][4]?.id}
+                      onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][4]?.id)}
                     />
                   </div>
                 )}
@@ -604,6 +636,8 @@ export default function Home() {
                       rewardPoints={5}
                       rewardDescription="Join this community event"
                       className="h-full"
+                      eventId={[...todayEvents, ...upcomingEvents][5]?.id}
+                      onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][5]?.id)}
                     />
                   </div>
                 )}
@@ -622,6 +656,8 @@ export default function Home() {
                       rewardPoints={5}
                       rewardDescription="Join this community event"
                       className="h-full"
+                      eventId={[...todayEvents, ...upcomingEvents][6]?.id}
+                      onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][6]?.id)}
                     />
                   </div>
                 )}
@@ -920,6 +956,19 @@ export default function Home() {
         open={showOnboarding}
         onOpenChange={handleOnboardingComplete}
       />
+
+      {/* Event Details Drawer */}
+      {selectedEventData && (
+        <MeetupDetailsDrawer
+          event={selectedEventData}
+          open={!!selectedEventId}
+          onOpenChange={(open) => {
+            if (!open) {
+              handleDrawerClose();
+            }
+          }}
+        />
+      )}
       </div>
     </AppLayout>
   );
