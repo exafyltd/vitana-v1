@@ -1011,26 +1011,47 @@ serve(async (req) => {
     const targetLanguageName = LANGUAGE_NAMES[detectedLanguage] || 'English';
     console.log('[ai-chat] RULE: Target language name=', targetLanguageName);
 
-    // STREAMING IMPLEMENTATION
+    // STREAMING IMPLEMENTATION using Gemini
     if (stream) {
-      const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${lovableApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash',
-          messages: [
-            { role: 'system', content: systemMessage },
-            ...conversationHistory.map((msg: any) => ({ role: msg.role, content: msg.content })),
-            { role: 'user', content: userMessage }
-          ],
-          stream: true
-        }),
+      const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+      if (!GEMINI_API_KEY) {
+        throw new Error('GOOGLE_GEMINI_API_KEY not configured');
+      }
+
+      // Prepare Gemini messages format
+      const geminiMessages = [
+        { role: 'user', parts: [{ text: systemMessage }] },
+        { role: 'model', parts: [{ text: 'Understood.' }] }
+      ];
+      
+      // Add conversation history
+      conversationHistory.forEach((msg: any) => {
+        const role = msg.role === 'assistant' ? 'model' : 'user';
+        geminiMessages.push({ role, parts: [{ text: msg.content }] });
       });
+      
+      // Add current user message
+      geminiMessages.push({ role: 'user', parts: [{ text: userMessage }] });
+
+      // Call Gemini streaming API
+      const aiResponse = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:streamGenerateContent?key=${GEMINI_API_KEY}&alt=sse`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: geminiMessages,
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 2048
+            }
+          })
+        }
+      );
 
       if (!aiResponse.ok) {
+        const errorText = await aiResponse.text();
+        console.error('[ai-chat] Gemini streaming failed:', aiResponse.status, errorText);
         throw new Error('AI response failed');
       }
 
@@ -1089,7 +1110,7 @@ serve(async (req) => {
                 const data = match[1];
                 if (data === '[DONE]') continue;
                 
-                // If JSON might be incomplete (cut across chunks), put it back and wait for more
+                // Parse Gemini SSE format
                 let parsed: any;
                 try {
                   parsed = JSON.parse(data);
@@ -1099,7 +1120,8 @@ serve(async (req) => {
                   break; // break inner loop to read more bytes
                 }
                 
-                const content = parsed.choices?.[0]?.delta?.content;
+                // Extract content from Gemini format
+                const content = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
                 if (content) {
                   if (firstToken) {
                     console.info('[stream] ⚡ First token received');
@@ -1192,44 +1214,23 @@ serve(async (req) => {
             
             console.log(`[ai-chat] Phase 1 complete: ${fullText.length} chars collected`);
             
-            // RULE 4: PHASE 2 - Deterministic translation pass
+            // RULE 4: PHASE 2 - Deterministic translation pass using Gemini
             console.log(`[ai-chat] RULE: Translating to ${targetLanguageName} (temperature=0)`);
             
-            const translateResp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${lovableApiKey}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                model: 'google/gemini-2.5-flash',
-                temperature: 0,  // RULE 4: Deterministic
-                max_tokens: 600,
-                messages: [
-                  {
-                    role: 'system',
-                    content: `You are a precise translator. Translate the user content to ${targetLanguageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.`
-                  },
-                  { role: 'user', content: fullText }
-                ]
-              }),
-            });
+            const { generateContent } = await import("../_shared/gemini-client.ts");
+            const translateResp = await generateContent(
+              GEMINI_API_KEY,
+              [
+                {
+                  role: 'system',
+                  content: `You are a precise translator. Translate the user content to ${targetLanguageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.`
+                },
+                { role: 'user', content: fullText }
+              ],
+              { temperature: 0 }
+            );
 
-            if (!translateResp.ok) {
-              // RULE 4: STRICT FAIL - no English fallback
-              console.error('[ai-chat] RULE VIOLATION: Translation failed');
-              const errorEvent = `data: ${JSON.stringify({
-                type: 'error',
-                message: `Translation to ${targetLanguageName} failed. Cannot proceed.`
-              })}\n\n`;
-              safeEnqueue(encoder.encode(errorEvent));
-              controller.close();
-              return;
-            }
-
-            const translateData = await translateResp.json();
-            const translatedText = translateData.choices?.[0]?.message?.content?.trim();
-
+            const translatedText = translateResp.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
             if (!translatedText) {
               // RULE 4: STRICT FAIL
               console.error('[ai-chat] RULE VIOLATION: No translation output');

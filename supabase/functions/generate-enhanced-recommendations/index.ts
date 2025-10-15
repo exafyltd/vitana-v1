@@ -59,31 +59,26 @@ serve(async (req) => {
       );
     }
 
-    // Call Lovable AI for intelligent matching
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY not configured');
+    // Call Gemini API for intelligent matching
+    const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!GEMINI_API_KEY) throw new Error('GOOGLE_GEMINI_API_KEY not configured');
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: `You are VITANA's recommendation AI. Score community content (events, groups) based on user's interests, goals, and context.
+    const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+    const aiResponse = await generateContent(
+      GEMINI_API_KEY,
+      [
+        {
+          role: 'system',
+          content: `You are VITANA's recommendation AI. Score community content (events, groups) based on user's interests, goals, and context.
 
 Return a JSON array of matches with scores and reasons. Format:
 [{"id": "uuid", "type": "event", "score": 0.85, "reasons": ["matches interest: yoga", "near your location"]}, ...]
 
 Score range: 0.0 to 1.0. Only include items with score >= 0.3.`
-          },
-          {
-            role: 'user',
-            content: `Score these candidates for user:
+        },
+        {
+          role: 'user',
+          content: `Score these candidates for user:
 
 USER CONTEXT:
 Interests: ${userContext.interests?.map((i: any) => i.interest).join(', ') || 'None'}
@@ -103,52 +98,40 @@ ${JSON.stringify(candidates.map(c => ({
 })))}
 
 Return only the JSON array.`
-          }
-        ],
-        tools: [{
-          type: 'function',
-          function: {
-            name: 'score_recommendations',
-            description: 'Score community content recommendations',
-            parameters: {
-              type: 'object',
-              properties: {
-                matches: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      id: { type: 'string' },
-                      type: { type: 'string', enum: ['event', 'group'] },
-                      score: { type: 'number' },
-                      reasons: { type: 'array', items: { type: 'string' } }
-                    },
-                    required: ['id', 'type', 'score', 'reasons']
-                  }
-                }
-              },
-              required: ['matches']
+        }
+      ],
+      { temperature: 0.4 },
+      [{
+        name: 'score_recommendations',
+        description: 'Score community content recommendations',
+        parameters: {
+          type: 'object',
+          properties: {
+            matches: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  type: { type: 'string', enum: ['event', 'group'] },
+                  score: { type: 'number' },
+                  reasons: { type: 'array', items: { type: 'string' } }
+                },
+                required: ['id', 'type', 'score', 'reasons']
+              }
             }
-          }
-        }],
-        tool_choice: { type: 'function', function: { name: 'score_recommendations' } }
-      })
-    });
+          },
+          required: ['matches']
+        }
+      }]
+    );
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('[enhanced-recommendations] AI error:', aiResponse.status, errorText);
-      throw new Error(`AI API failed: ${aiResponse.status}`);
-    }
-
-    const aiData = await aiResponse.json();
-    const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
-    if (!toolCall) {
+    const functionCall = extractFunctionCall(aiResponse);
+    if (!functionCall) {
       throw new Error('No tool call in AI response');
     }
 
-    const scored = JSON.parse(toolCall.function.arguments);
-    const matches = scored.matches || [];
+    const matches = functionCall.args.matches || [];
 
     console.log('[enhanced-recommendations] AI scored', matches.length, 'matches');
 

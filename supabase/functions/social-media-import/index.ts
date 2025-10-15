@@ -65,38 +65,29 @@ serve(async (req) => {
       const userPrompt = `Analyze this ${platform} profile text and extract structured data:\n\n${bioText}`;
 
       try {
-        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'google/gemini-2.5-flash',
-            messages: [
+        const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+        const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+        
+        if (!GEMINI_API_KEY) {
+          console.error('GOOGLE_GEMINI_API_KEY not configured');
+        } else {
+          const aiResponse = await generateContent(
+            GEMINI_API_KEY,
+            [
               { role: 'system', content: systemPrompts[platform] },
               { role: 'user', content: userPrompt }
             ],
-            tools: [{
-              type: "function",
-              function: {
-                name: "extract_profile_data",
-                description: `Extract structured data from ${platform} profile`,
-                parameters: getPlatformSchema(platform)
-              }
-            }],
-            tool_choice: { type: "function", function: { name: "extract_profile_data" } }
-          }),
-        });
+            { temperature: 0.3 },
+            [{
+              name: "extract_profile_data",
+              description: `Extract structured data from ${platform} profile`,
+              parameters: getPlatformSchema(platform)
+            }]
+          );
 
-        if (!aiResponse.ok) {
-          console.error(`AI parsing error: ${aiResponse.status}`);
-        } else {
-          const aiData = await aiResponse.json();
-          const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
-          
-          if (toolCall?.function?.arguments) {
-            const parsedData = JSON.parse(toolCall.function.arguments);
+          const functionCall = extractFunctionCall(aiResponse);
+          if (functionCall) {
+            const parsedData = functionCall.args;
             console.log('Parsed data:', parsedData);
             
             // Map parsed data to database columns

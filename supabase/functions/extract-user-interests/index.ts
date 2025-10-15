@@ -62,31 +62,26 @@ serve(async (req) => {
       `${d.text} ${d.tags?.join(', ')}`
     ).join('\n') || '';
 
-    // Call Lovable AI to extract interests
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY not configured');
+    // Call Gemini API to extract interests
+    const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!GEMINI_API_KEY) throw new Error('GOOGLE_GEMINI_API_KEY not configured');
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: `You are VITANA's interest extraction AI. Analyze user's memories and diary entries to identify their interests, hobbies, preferences, and goals. 
+    const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+    const aiResponse = await generateContent(
+      GEMINI_API_KEY,
+      [
+        {
+          role: 'system',
+          content: `You are VITANA's interest extraction AI. Analyze user's memories and diary entries to identify their interests, hobbies, preferences, and goals. 
 
 Return a JSON array of interests with confidence scores (0.0 to 1.0). Format:
 [{"interest": "yoga", "confidence": 0.85, "source": "diary"}, ...]
 
 Focus on: health activities, wellness practices, fitness, nutrition, mental health, social activities, learning interests, hobbies.`
-          },
-          {
-            role: 'user',
-            content: `Extract interests from this data:
+        },
+        {
+          role: 'user',
+          content: `Extract interests from this data:
 
 MEMORIES:
 ${memoryContext}
@@ -95,51 +90,39 @@ DIARY ENTRIES:
 ${diaryContext}
 
 Return only the JSON array, no other text.`
-          }
-        ],
-        tools: [{
-          type: 'function',
-          function: {
-            name: 'extract_interests',
-            description: 'Extract user interests with confidence scores',
-            parameters: {
-              type: 'object',
-              properties: {
-                interests: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      interest: { type: 'string' },
-                      confidence: { type: 'number' },
-                      source: { type: 'string', enum: ['diary', 'ai', 'both'] }
-                    },
-                    required: ['interest', 'confidence', 'source']
-                  }
-                }
-              },
-              required: ['interests']
+        }
+      ],
+      { temperature: 0.3 },
+      [{
+        name: 'extract_interests',
+        description: 'Extract user interests with confidence scores',
+        parameters: {
+          type: 'object',
+          properties: {
+            interests: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  interest: { type: 'string' },
+                  confidence: { type: 'number' },
+                  source: { type: 'string', enum: ['diary', 'ai', 'both'] }
+                },
+                required: ['interest', 'confidence', 'source']
+              }
             }
-          }
-        }],
-        tool_choice: { type: 'function', function: { name: 'extract_interests' } }
-      })
-    });
+          },
+          required: ['interests']
+        }
+      }]
+    );
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('[extract-interests] AI API error:', aiResponse.status, errorText);
-      throw new Error(`AI API failed: ${aiResponse.status}`);
-    }
-
-    const aiData = await aiResponse.json();
-    const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
-    if (!toolCall) {
+    const functionCall = extractFunctionCall(aiResponse);
+    if (!functionCall) {
       throw new Error('No tool call in AI response');
     }
 
-    const extracted = JSON.parse(toolCall.function.arguments);
-    const interests = extracted.interests || [];
+    const interests = functionCall.args.interests || [];
 
     console.log('[extract-interests] Extracted', interests.length, 'interests');
 

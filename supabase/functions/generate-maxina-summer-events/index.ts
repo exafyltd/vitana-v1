@@ -85,10 +85,10 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
+    const geminiApiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
 
-    if (!lovableApiKey) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    if (!geminiApiKey) {
+      throw new Error('GOOGLE_GEMINI_API_KEY not configured');
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -160,34 +160,23 @@ serve(async (req) => {
         console.log(`Processing event ${i + 1}/40: ${event.title}`);
 
         try {
-          // Generate AI image
+          // Generate AI image using Gemini
           const imagePrompt = IMAGE_PROMPTS[event.category as keyof typeof IMAGE_PROMPTS](event.venue || '');
           
-          const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${lovableApiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              model: 'google/gemini-2.5-flash-image-preview',
-              messages: [{
-                role: 'user',
-                content: imagePrompt
-              }],
-              modalities: ['image', 'text']
-            })
-          });
+          const { generateContent } = await import("../_shared/gemini-client.ts");
+          const imageResponse = await generateContent(
+            geminiApiKey,
+            [{ role: 'user', content: imagePrompt }],
+            { temperature: 0.7 }
+          );
 
-          if (!aiResponse.ok) {
-            throw new Error(`AI image generation failed: ${aiResponse.status}`);
-          }
-
-          const aiData = await aiResponse.json();
-          const imageBase64 = aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+          // Extract image from response (Gemini image generation returns base64)
+          const imageBase64 = imageResponse.candidates?.[0]?.content?.parts?.find(
+            (p: any) => p.inlineData?.data
+          )?.inlineData?.data;
 
           if (!imageBase64) {
-            throw new Error('No image returned from AI');
+            throw new Error('No image returned from Gemini');
           }
 
           // Convert base64 to blob and upload to Supabase Storage

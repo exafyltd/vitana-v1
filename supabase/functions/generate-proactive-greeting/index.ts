@@ -43,9 +43,9 @@ serve(async (req) => {
       throw new Error('Authentication required');
     }
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+    const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!GEMINI_API_KEY) {
+      throw new Error('GOOGLE_GEMINI_API_KEY is not configured');
     }
 
     // Get comprehensive user context
@@ -90,32 +90,21 @@ IMPORTANT GUIDELINES:
 
 Generate a personalized greeting now.`;
 
-    // Call Lovable AI - Phase 1
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: 'Generate a personalized proactive greeting for this user based on their context.' }
-        ],
-        temperature: 0.4,
-        max_tokens: 150
-      }),
-    });
+    // Call Gemini API - Phase 1
+    const { generateContent } = await import("../_shared/gemini-client.ts");
+    const greetingResponse = await generateContent(
+      GEMINI_API_KEY,
+      [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: 'Generate a personalized proactive greeting for this user based on their context.' }
+      ],
+      { temperature: 0.4 }
+    );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Lovable AI error:', response.status, errorText);
-      throw new Error(`Lovable AI request failed: ${response.status}`);
+    const initialGreeting = greetingResponse.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (!initialGreeting) {
+      throw new Error('Failed to generate greeting');
     }
-
-    const data = await response.json();
-    const initialGreeting = data.choices[0].message.content.trim();
     
     console.log('[greeting] Phase 1 output:', initialGreeting.substring(0, 100));
 
@@ -128,34 +117,20 @@ Generate a personalized greeting now.`;
     
     const targetLanguageName = LANGUAGE_NAMES[targetLanguage] || 'English';
     
-    const translateResp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        temperature: 0,
-        max_tokens: 200,
-        messages: [
-          {
-            role: 'system',
-            content: `You are a precise translator. Translate the user content to ${targetLanguageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.`
-          },
-          { role: 'user', content: initialGreeting }
-        ]
-      }),
-    });
+    // Phase 2 - Translation
+    const translateResp = await generateContent(
+      GEMINI_API_KEY,
+      [
+        {
+          role: 'system',
+          content: `You are a precise translator. Translate the user content to ${targetLanguageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.`
+        },
+        { role: 'user', content: initialGreeting }
+      ],
+      { temperature: 0 }
+    );
 
-    if (!translateResp.ok) {
-      // RULE 4: STRICT FAIL
-      throw new Error(`Translation to ${targetLanguageName} failed`);
-    }
-
-    const translateData = await translateResp.json();
-    const greeting = translateData.choices?.[0]?.message?.content?.trim();
-
+    const greeting = translateResp.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
     if (!greeting) {
       throw new Error(`Translation to ${targetLanguageName} produced no output`);
     }

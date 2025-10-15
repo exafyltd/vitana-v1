@@ -37,9 +37,9 @@ serve(async (req) => {
       // proceed as guest
     }
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+    const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!GEMINI_API_KEY) {
+      throw new Error('GOOGLE_GEMINI_API_KEY is not configured');
     }
 
     // Get comprehensive user context with fallback (guest-safe)
@@ -229,82 +229,41 @@ IMPORTANT GUIDELINES:
 
 Generate a personalized ${messageType} message now based on the PRIORITY CONTEXT.`;
 
-    // Call Lovable AI
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `Generate a personalized ${messageType} message for this user based on the priority context provided.` }
-        ],
-        temperature: 0.4,
-        max_tokens: 150
-      }),
-    });
+    // Call Gemini API
+    const { generateContent } = await import("../_shared/gemini-client.ts");
+    const response = await generateContent(
+      GEMINI_API_KEY,
+      [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: `Generate a personalized ${messageType} message for this user based on the priority context provided.` }
+      ],
+      { temperature: 0.4 }
+    );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Lovable AI error:', response.status, errorText);
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: 'Rate limits exceeded, please try again later.' }), {
-          status: 429,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: 'Payment required, please add credits to your Lovable AI workspace.' }), {
-          status: 402,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
-      return new Response(JSON.stringify({ error: 'AI gateway error' }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+    const message1 = response.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (!message1) {
+      throw new Error('Failed to generate proactive message');
     }
-
-    const data = await response.json();
-    const message1 = data.choices[0].message.content.trim();
     console.log('[PROACTIVE] First pass output (truncated):', message1.slice(0, 160));
 
     // Translation step - guarantee output is in target language
-    const translateResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        temperature: 0,
-        max_tokens: 200,
-        messages: [
-          { role: "system", content: `You are a precise translator. Translate the user content to ${languageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.` },
-          { role: "user", content: message1 }
-        ],
-      }),
-    });
+    const translateResp = await generateContent(
+      GEMINI_API_KEY,
+      [
+        { role: "system", content: `You are a precise translator. Translate the user content to ${languageName} only. Preserve tone, brevity, and natural phrasing. Output ONLY the translated message, no explanations.` },
+        { role: "user", content: message1 }
+      ],
+      { temperature: 0 }
+    );
 
-    let finalMessage = message1;
-    if (!translateResp.ok) {
+    const translatedText = translateResp.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (!translatedText) {
       // RULE 4: STRICT FAIL - no English fallback
       console.warn('[PROACTIVE] RULE VIOLATION: Translation failed');
       throw new Error(`Translation to ${languageName} failed`);
     }
 
-    const tr = await translateResp.json();
-    const translated = tr.choices?.[0]?.message?.content?.trim();
-    if (!translated) {
-      // RULE 4: STRICT FAIL
-      throw new Error(`Translation to ${languageName} produced no output`);
-    }
-    
-    finalMessage = translated;
+    const finalMessage = translatedText;
     console.log('[PROACTIVE] RULE: Translation complete');
 
     const message = finalMessage;

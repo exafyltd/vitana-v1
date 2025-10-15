@@ -15,10 +15,10 @@ serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
+    const geminiApiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
 
-    if (!lovableApiKey) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    if (!geminiApiKey) {
+      throw new Error('GOOGLE_GEMINI_API_KEY not configured');
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -54,16 +54,13 @@ serve(async (req) => {
       // Extract base64 data (remove data URL prefix)
       const base64Data = data.split(',')[1];
 
-      // Call Lovable AI with vision capabilities
-      const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${lovableApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash',
-          messages: [
+      // Call Gemini with vision capabilities
+      const { generateContent } = await import("../_shared/gemini-client.ts");
+      
+      try {
+        const visionResponse = await generateContent(
+          geminiApiKey,
+          [
             {
               role: 'system',
               content: `You are a health and wellness assistant analyzing visual context. Extract insights about:
@@ -78,38 +75,23 @@ Provide structured insights that can guide proactive health recommendations.`
             },
             {
               role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: `Analyze this ${type} capture and extract health and wellness insights.`
-                },
-                {
-                  type: 'image_url',
-                  image_url: {
-                    url: `data:image/jpeg;base64,${base64Data}`
-                  }
-                }
-              ]
+              content: `Analyze this ${type} capture and extract health and wellness insights.`,
+              image: base64Data
             }
-          ],
-          max_tokens: 500
-        })
-      });
+          ]
+        );
 
-      if (!aiResponse.ok) {
-        console.error(`AI analysis failed: ${aiResponse.status}`);
-        continue;
-      }
+        const analysis = visionResponse.candidates?.[0]?.content?.parts?.[0]?.text;
 
-      const aiData = await aiResponse.json();
-      const analysis = aiData.choices[0]?.message?.content;
-
-      if (analysis) {
-        insights.push({
-          type,
-          analysis,
-          timestamp: new Date().toISOString()
-        });
+        if (analysis) {
+          insights.push({
+            type,
+            analysis,
+            timestamp: new Date().toISOString()
+          });
+        }
+      } catch (err) {
+        console.error(`Vision analysis failed for ${type}:`, err);
       }
     }
 

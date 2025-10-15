@@ -122,9 +122,9 @@ serve(async (req) => {
     }
 
     // Build AI prompt for intelligent matching
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!lovableApiKey) {
-      throw new Error('LOVABLE_API_KEY not configured');
+    const geminiApiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    if (!geminiApiKey) {
+      throw new Error('GOOGLE_GEMINI_API_KEY not configured');
     }
 
     let systemPrompt = `You are an intelligent matchmaking AI that recommends ${type} based on user preferences, interests, and wellness goals.
@@ -182,31 +182,21 @@ Sort by compatibility_score descending.`;
 
     const userPrompt = `Candidates:\n${JSON.stringify(candidates, null, 2)}`;
 
-    console.log('Calling Lovable AI for intelligent matching...');
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${lovableApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-        response_format: { type: "json_object" }
-      }),
-    });
+    console.log('Calling Gemini API for intelligent matching...');
+    const { generateContent } = await import("../_shared/gemini-client.ts");
+    const aiResponse = await generateContent(
+      geminiApiKey,
+      [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      { temperature: 0.5 }
+    );
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('AI API error:', aiResponse.status, errorText);
-      throw new Error(`AI matching failed: ${errorText}`);
+    const aiText = aiResponse.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!aiText) {
+      throw new Error('No response from Gemini API');
     }
-
-    const aiData = await aiResponse.json();
-    const aiText = aiData.choices[0].message.content;
     console.log('AI matching complete');
 
     let matchedIds: Array<{ id: string; compatibility_score: number; match_reason: string }> = [];

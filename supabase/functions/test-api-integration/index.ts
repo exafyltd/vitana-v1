@@ -172,29 +172,28 @@ async function testVertexLiveIntegration() {
 }
 
 async function testLovableAIIntegration() {
-  const lovableKey = Deno.env.get('LOVABLE_API_KEY');
-  if (!lovableKey) {
-    return { status: 'failed', error_log: 'LOVABLE_API_KEY not configured', response_body: null };
+  const geminiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+  if (!geminiKey) {
+    return { status: 'failed', error_log: 'GOOGLE_GEMINI_API_KEY not configured', response_body: null };
   }
 
-  const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${lovableKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: 'google/gemini-2.5-flash',
-      messages: [{ role: 'user', content: 'ping' }],
-      max_tokens: 5
-    })
-  });
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${geminiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: 'ping' }] }],
+        generationConfig: { maxOutputTokens: 5 }
+      })
+    }
+  );
 
   if (response.ok) {
     return { status: 'success', error_log: null, response_body: { healthy: true } };
   } else {
     const errorText = await response.text();
-    return { status: 'failed', error_log: `Lovable AI error: ${response.status}`, response_body: { error: errorText } };
+    return { status: 'failed', error_log: `Gemini API error: ${response.status}`, response_body: { error: errorText } };
   }
 }
 

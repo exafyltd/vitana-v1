@@ -28,23 +28,18 @@ serve(async (req) => {
     // If bioText is provided, use AI to parse it
     let parsedData = null;
     if (bioText) {
-      const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-      if (!LOVABLE_API_KEY) {
-        throw new Error('LOVABLE_API_KEY is not configured');
+      const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+      if (!GEMINI_API_KEY) {
+        throw new Error('GOOGLE_GEMINI_API_KEY is not configured');
       }
 
-      const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash',
-          messages: [
-            {
-              role: 'system',
-              content: `You are a LinkedIn profile parser. Extract structured information from LinkedIn bio text.
+      const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+      const aiResponse = await generateContent(
+        GEMINI_API_KEY,
+        [
+          {
+            role: 'system',
+            content: `You are a LinkedIn profile parser. Extract structured information from LinkedIn bio text.
 Return ONLY valid JSON with this structure:
 {
   "headline": "Professional headline/title",
@@ -54,48 +49,33 @@ Return ONLY valid JSON with this structure:
   "key_achievements": ["achievement1", "achievement2"]
 }
 Be concise. If information is not present, use null or empty array.`
+          },
+          {
+            role: 'user',
+            content: `Parse this LinkedIn bio:\n\n${bioText}`
+          }
+        ],
+        { temperature: 0.3 },
+        [{
+          name: "parse_linkedin_bio",
+          description: "Extract structured data from LinkedIn bio",
+          parameters: {
+            type: "object",
+            properties: {
+              headline: { type: "string" },
+              summary: { type: "string" },
+              skills: { type: "array", items: { type: "string" } },
+              experience_count: { type: "number" },
+              key_achievements: { type: "array", items: { type: "string" } }
             },
-            {
-              role: 'user',
-              content: `Parse this LinkedIn bio:\n\n${bioText}`
-            }
-          ],
-          tools: [
-            {
-              type: "function",
-              function: {
-                name: "parse_linkedin_bio",
-                description: "Extract structured data from LinkedIn bio",
-                parameters: {
-                  type: "object",
-                  properties: {
-                    headline: { type: "string" },
-                    summary: { type: "string" },
-                    skills: { type: "array", items: { type: "string" } },
-                    experience_count: { type: "number" },
-                    key_achievements: { type: "array", items: { type: "string" } }
-                  },
-                  required: ["headline", "summary"],
-                  additionalProperties: false
-                }
-              }
-            }
-          ],
-          tool_choice: { type: "function", function: { name: "parse_linkedin_bio" } }
-        }),
-      });
+            required: ["headline", "summary"]
+          }
+        }]
+      );
 
-      if (!aiResponse.ok) {
-        const errorText = await aiResponse.text();
-        console.error('AI parsing failed:', errorText);
-        throw new Error('Failed to parse LinkedIn bio with AI');
-      }
-
-      const aiResult = await aiResponse.json();
-      const toolCall = aiResult.choices?.[0]?.message?.tool_calls?.[0];
-      
-      if (toolCall?.function?.arguments) {
-        parsedData = JSON.parse(toolCall.function.arguments);
+      const functionCall = extractFunctionCall(aiResponse);
+      if (functionCall) {
+        parsedData = functionCall.args;
       }
     }
 
