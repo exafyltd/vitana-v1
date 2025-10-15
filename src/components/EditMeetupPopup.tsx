@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus, Sparkles, RefreshCw, Loader2 } from "lucide-react";
+import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus, Sparkles, RefreshCw, Loader2, DollarSign } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -28,6 +28,7 @@ interface CommunityEvent {
   created_at: string;
   updated_at: string;
   image_url?: string;
+  metadata?: any;
 }
 
 interface EditMeetupPopupProps {
@@ -55,7 +56,9 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
     requirements: "",
     isRecurring: false,
     recurringType: "weekly",
-    imageUrl: ""
+    imageUrl: "",
+    isPaid: false,
+    price: ""
   });
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -101,8 +104,13 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         requirements: "",
         isRecurring: false,
         recurringType: "weekly",
-        imageUrl: event.image_url || ""
+        imageUrl: event.image_url || "",
+        isPaid: event.metadata?.is_paid || false,
+        price: event.metadata?.price?.toString() || ""
       });
+      
+      setGeneratedImagePreview(event.image_url || null);
+      setErrors({});
     }
   }, [event, isOpen]);
 
@@ -208,6 +216,14 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
     if (!formData.isVirtual && !formData.location.trim()) {
       newErrors.location = "Location is required for in-person meetups";
     }
+    
+    // Validate price if paid event
+    if (formData.isPaid && event.event_type === 'event') {
+      const priceNum = parseFloat(formData.price);
+      if (!formData.price || isNaN(priceNum) || priceNum <= 0) {
+        newErrors.price = "Please enter a valid price greater than $0";
+      }
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -274,13 +290,17 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       const eventData = {
         title: formData.title,
         description: formData.description || undefined,
-        event_type: 'meetup',
+        event_type: event.event_type, // Preserve original type (event vs meetup)
         location: formData.isVirtual ? undefined : formData.location || undefined,
         virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
         start_time: startTime,
         end_time: endTime,
         max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
         image_url: uploadedImageUrl,
+        metadata: formData.isPaid ? {
+          is_paid: true,
+          price: parseFloat(formData.price) || 0
+        } : { is_paid: false }
       };
 
       const result = await updateEvent(event.id, eventData);
@@ -311,7 +331,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Users className="w-6 h-6 text-orange-600" />
-            Edit Meetup
+            {event.event_type === 'event' ? 'Edit Event' : 'Edit Meetup'}
           </DialogTitle>
         </DialogHeader>
 
@@ -565,12 +585,85 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
             </CardContent>
           </Card>
 
+          {/* Price Section - Only for Events */}
+          {event.event_type === 'event' && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-orange-600" />
+                  Event Pricing
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="isPaid">Paid Event</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Require payment for attendance
+                    </p>
+                  </div>
+                  <Switch
+                    id="isPaid"
+                    checked={formData.isPaid}
+                    onCheckedChange={(checked) => {
+                      setFormData(prev => ({ 
+                        ...prev, 
+                        isPaid: checked,
+                        price: checked ? prev.price : ""
+                      }));
+                      if (errors.price) {
+                        setErrors(prev => {
+                          const newErrors = {...prev};
+                          delete newErrors.price;
+                          return newErrors;
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                
+                {formData.isPaid && (
+                  <div>
+                    <Label htmlFor="price">
+                      Price ($) <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="price"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="Enter ticket price"
+                      value={formData.price}
+                      onChange={(e) => {
+                        setFormData(prev => ({ ...prev, price: e.target.value }));
+                        if (errors.price) {
+                          setErrors(prev => {
+                            const newErrors = {...prev};
+                            delete newErrors.price;
+                            return newErrors;
+                          });
+                        }
+                      }}
+                      className={errors.price ? "border-destructive" : ""}
+                    />
+                    {errors.price && (
+                      <p className="text-sm text-destructive mt-1 flex items-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        {errors.price}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           <div className="flex justify-end gap-4">
             <Button variant="outline" onClick={onClose} disabled={loading}>
               Cancel
             </Button>
             <Button onClick={handleSubmit} disabled={loading}>
-              {loading ? "Updating..." : "Update Meetup"}
+              {loading ? "Updating..." : `Update ${event.event_type === 'event' ? 'Event' : 'Meetup'}`}
             </Button>
           </div>
         </div>
