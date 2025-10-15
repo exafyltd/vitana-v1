@@ -212,9 +212,26 @@ const generateImageUrl = (title: string, description: string) => {
         setSelectedImage(null);
         setErrors({});
         
-        // Call the callback with the new event ID
+        // Call the callback with the new event ID or navigate to Events & MeetUps
         if (onEventCreated && result.eventId) {
           onEventCreated(result.eventId);
+        } else if (result.eventId) {
+          // Fallback: determine correct tab and navigate
+          const eventDate = new Date(startTime);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const tomorrow = new Date(today);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          
+          const tab = (eventDate >= today && eventDate < tomorrow) ? 'today' : 'upcoming';
+          
+          // Dispatch custom event for potential listeners
+          window.dispatchEvent(new CustomEvent('community:event-created', { 
+            detail: { id: result.eventId, start_time: startTime } 
+          }));
+          
+          // Navigate to Events & MeetUps with event and tab parameters
+          window.location.href = `/comm/events-meetups?event=${result.eventId}&tab=${tab}`;
         }
       } else {
         toast({

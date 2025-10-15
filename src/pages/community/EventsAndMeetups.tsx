@@ -254,17 +254,38 @@ const EventsAndMeetups = () => {
                         activeTab === "upcoming" ? upcomingEvents : [];
   const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
 
-  // Handle deep linking - read ?event= from URL on mount
+  // Handle deep linking - read ?event= and ?tab from URL on mount
   useEffect(() => {
     const eventParam = searchParams.get('event');
+    const tabParam = searchParams.get('tab');
+    
     if (eventParam) {
+      // Switch to the correct tab if specified
+      if (tabParam && (tabParam === 'today' || tabParam === 'upcoming')) {
+        setActiveTab(tabParam);
+      } else if (!tabParam && dbEvents.length > 0) {
+        // Auto-detect tab if not specified
+        const event = dbEvents.find(e => e.id === eventParam);
+        if (event) {
+          const eventDate = new Date(event.start_time);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const tomorrow = new Date(today);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          
+          const detectedTab = (eventDate >= today && eventDate < tomorrow) ? 'today' : 'upcoming';
+          setActiveTab(detectedTab);
+        }
+      }
+      
+      // Select event and scroll into view
       selectEvent(eventParam);
       setTimeout(() => {
         const card = document.querySelector(`[data-event-id="${eventParam}"]`);
         card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
     }
-  }, []);
+  }, [dbEvents]);
 
   // Handle card click
   const handleCardClick = (event: any) => {
