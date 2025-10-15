@@ -74,11 +74,22 @@ export class VertexLiveService {
               console.log('📥 Received audio ArrayBuffer, size:', event.data.byteLength);
               const audioBytes = new Uint8Array(event.data);
               
-              // Log first few bytes for debugging
-              const hexSample = Array.from(audioBytes.slice(0, 16))
-                .map(b => b.toString(16).padStart(2, '0'))
-                .join(' ');
-              console.log('🔍 Audio bytes (hex):', hexSample);
+              // Enhanced diagnostic logging
+              if (audioBytes.length >= 8) {
+                const first8 = Array.from(audioBytes.slice(0, 8))
+                  .map(b => b.toString(16).padStart(2, '0'))
+                  .join(' ');
+                console.log('🔍 First 8 bytes (hex):', first8);
+                
+                // Check for WAV header (should NOT be present)
+                const hasRIFF = audioBytes[0] === 0x52 && audioBytes[1] === 0x49 && 
+                                audioBytes[2] === 0x46 && audioBytes[3] === 0x46;
+                if (hasRIFF) {
+                  console.error('❌ UNEXPECTED: Received WAV container! Should be raw PCM.');
+                } else {
+                  console.log('✅ Confirmed: Raw PCM data (no RIFF header)');
+                }
+              }
               
               if (this.audioContext) {
                 // Resume audio context if suspended (browser autoplay policy)

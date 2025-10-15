@@ -322,25 +322,14 @@ class AudioQueue {
       }
       
       // Validate it's even (PCM16 requires pairs of bytes)
-      if (audioData.byteLength % 2 !== 0) {
-        console.warn('⚠️ Audio chunk has odd byte count, trimming last byte');
-        const trimmed = audioData.slice(0, audioData.byteLength - 1);
-        const wavData = this.createWavFromPCM(trimmed);
-        const buffer = wavData.buffer.slice(0) as ArrayBuffer;
-        const audioBuffer = await this.audioContext.decodeAudioData(buffer);
-        
-        const source = this.audioContext.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(this.audioContext.destination);
-        
-        source.onended = () => this.playNext();
-        source.start(0);
-        return;
-      }
+      const validData = audioData.byteLength % 2 !== 0 
+        ? audioData.slice(0, audioData.byteLength - 1)
+        : audioData;
       
-      const wavData = this.createWavFromPCM(audioData);
-      const buffer = wavData.buffer.slice(0) as ArrayBuffer;
-      const audioBuffer = await this.audioContext.decodeAudioData(buffer);
+      console.log('🎵 Converting PCM to AudioBuffer, bytes:', validData.byteLength);
+      
+      // Direct PCM→AudioBuffer conversion (no WAV wrapper)
+      const audioBuffer = this.createAudioBufferFromPCM(validData);
       
       const source = this.audioContext.createBufferSource();
       source.buffer = audioBuffer;
@@ -348,6 +337,8 @@ class AudioQueue {
       
       source.onended = () => this.playNext();
       source.start(0);
+      
+      console.log('✅ Audio chunk playing, duration:', audioBuffer.duration.toFixed(3), 'seconds');
     } catch (error) {
       console.error('❌ Error playing audio chunk:', error);
       console.error('   Chunk size:', audioData.byteLength, 'bytes');
@@ -355,56 +346,36 @@ class AudioQueue {
     }
   }
 
-  private createWavFromPCM(pcmData: Uint8Array): Uint8Array {
-    console.log('🎵 Creating WAV from PCM, input size:', pcmData.byteLength, 'bytes');
-    
-    // CRITICAL FIX: Use little-endian byte order (swap the order from before)
-    // Little-endian: low byte first, high byte second
+  private createAudioBufferFromPCM(pcmData: Uint8Array): AudioBuffer {
+    // Convert PCM16 little-endian to Int16Array
     const int16Data = new Int16Array(pcmData.length / 2);
     for (let i = 0; i < pcmData.length; i += 2) {
-      int16Data[i / 2] = pcmData[i] | (pcmData[i + 1] << 8);
+      int16Data[i / 2] = pcmData[i] | (pcmData[i + 1] << 8); // little-endian
     }
     
     console.log('✅ Converted to Int16Array, samples:', int16Data.length);
     
-    // Create WAV header
-    const wavHeader = new ArrayBuffer(44);
-    const view = new DataView(wavHeader);
+    // Convert Int16 to Float32 in range [-1, 1]
+    const float32Data = new Float32Array(int16Data.length);
+    for (let i = 0; i < int16Data.length; i++) {
+      float32Data[i] = int16Data[i] / 32768.0; // Normalize to [-1, 1]
+    }
     
-    const writeString = (offset: number, string: string) => {
-      for (let i = 0; i < string.length; i++) {
-        view.setUint8(offset + i, string.charCodeAt(i));
-      }
-    };
-
-    const sampleRate = 48000; // Gemini returns 48kHz LINEAR16 PCM audio
-    const numChannels = 1;
-    const bitsPerSample = 16;
-    const blockAlign = (numChannels * bitsPerSample) / 8;
-    const byteRate = sampleRate * blockAlign;
-
-    // WAV header (all using little-endian)
-    writeString(0, 'RIFF');
-    view.setUint32(4, 36 + int16Data.byteLength, true); // true = little-endian
-    writeString(8, 'WAVE');
-    writeString(12, 'fmt ');
-    view.setUint32(16, 16, true);
-    view.setUint16(20, 1, true); // PCM format
-    view.setUint16(22, numChannels, true);
-    view.setUint32(24, sampleRate, true);
-    view.setUint32(28, byteRate, true);
-    view.setUint16(32, blockAlign, true);
-    view.setUint16(34, bitsPerSample, true);
-    writeString(36, 'data');
-    view.setUint32(40, int16Data.byteLength, true);
-
-    // Combine header and data
-    const wavArray = new Uint8Array(wavHeader.byteLength + int16Data.byteLength);
-    wavArray.set(new Uint8Array(wavHeader), 0);
-    wavArray.set(new Uint8Array(int16Data.buffer as ArrayBuffer), wavHeader.byteLength);
+    console.log('✅ Converted to Float32Array, samples:', float32Data.length);
     
-    console.log('✅ WAV created, total size:', wavArray.byteLength, 'bytes');
-    return wavArray;
+    // Create AudioBuffer at correct 24kHz rate (Gemini's actual output)
+    const audioBuffer = this.audioContext.createBuffer(
+      1,                    // mono
+      float32Data.length,   // number of frames
+      24000                 // Gemini Live API outputs 24kHz PCM16
+    );
+    
+    // Copy float32 data to buffer
+    audioBuffer.copyToChannel(float32Data, 0);
+    
+    console.log('✅ AudioBuffer created: duration=', audioBuffer.duration.toFixed(3), 's, rate=24000Hz, mono');
+    
+    return audioBuffer;
   }
 
   async flush() {
