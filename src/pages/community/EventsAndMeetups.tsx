@@ -275,6 +275,42 @@ const EventsAndMeetups = () => {
     setEditMeetupOpen(true);
   };
 
+  // Handle event creation - show the newly created event
+  const handleEventCreated = async (eventId: string) => {
+    // Wait a bit for the database to update
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Refresh events
+    await fetchEvents();
+    
+    // Find the event to determine which tab it belongs to
+    const event = dbEvents.find(e => e.id === eventId);
+    if (event) {
+      const eventDate = new Date(event.start_time);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      
+      // Switch to appropriate tab
+      if (eventDate >= today && eventDate < tomorrow) {
+        setActiveTab('today');
+      } else if (eventDate >= tomorrow) {
+        setActiveTab('upcoming');
+      }
+    }
+    
+    // Open the detail drawer for the newly created event
+    selectEvent(eventId);
+    setSearchParams({ event: eventId, tab: activeTab });
+    
+    // Scroll to the card after a short delay to ensure rendering
+    setTimeout(() => {
+      const card = document.querySelector(`[data-event-id="${eventId}"]`);
+      card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  };
+
   // Handle drawer close
   const handleDrawerClose = () => {
     clearSelection();
@@ -467,12 +503,14 @@ const EventsAndMeetups = () => {
         isOpen={createEventOpen} 
         onClose={() => setCreateEventOpen(false)}
         eventContext="community"
+        onEventCreated={handleEventCreated}
       />
 
       {/* Create MeetUp Popup */}
       <CreateMeetupPopup
         isOpen={createMeetupOpen}
         onClose={() => setCreateMeetupOpen(false)}
+        onEventCreated={handleEventCreated}
       />
 
       {/* Edit MeetUp Popup */}

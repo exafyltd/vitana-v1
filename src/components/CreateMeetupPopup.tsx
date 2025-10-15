@@ -16,9 +16,10 @@ import { supabase } from "@/integrations/supabase/client";
 interface CreateMeetupPopupProps {
   isOpen: boolean;
   onClose: () => void;
+  onEventCreated?: (eventId: string) => void;
 }
 
-export function CreateMeetupPopup({ isOpen, onClose }: CreateMeetupPopupProps) {
+export function CreateMeetupPopup({ isOpen, onClose, onEventCreated }: CreateMeetupPopupProps) {
   const { createEvent } = useCommunityEvents();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -210,6 +211,11 @@ const generateImageUrl = (title: string, description: string) => {
         setSelectedTags([]);
         setSelectedImage(null);
         setErrors({});
+        
+        // Call the callback with the new event ID
+        if (onEventCreated && result.eventId) {
+          onEventCreated(result.eventId);
+        }
       } else {
         toast({
           title: "Error Creating Meetup",

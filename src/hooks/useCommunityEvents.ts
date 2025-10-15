@@ -151,7 +151,7 @@ export function useCommunityEvents() {
         description: `${eventData.title} has been created successfully.`,
       });
 
-      return { success: true, data };
+      return { success: true, data, eventId: data.id };
     } catch (error) {
       console.error("Error creating event:", error);
       toast({

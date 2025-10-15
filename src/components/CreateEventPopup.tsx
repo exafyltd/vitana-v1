@@ -16,9 +16,10 @@ interface CreateEventPopupProps {
   isOpen: boolean;
   onClose: () => void;
   eventContext?: 'personal' | 'community';
+  onEventCreated?: (eventId: string) => void;
 }
 
-export function CreateEventPopup({ isOpen, onClose, eventContext }: CreateEventPopupProps) {
+export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated }: CreateEventPopupProps) {
   const { toast } = useToast();
   const { addEvent } = useCalendarEvents();
   const { createEvent } = useCommunityEvents();
@@ -225,6 +226,11 @@ export function CreateEventPopup({ isOpen, onClose, eventContext }: CreateEventP
 
         onClose();
         resetForm();
+        
+        // Call the callback with the new event ID
+        if (onEventCreated && result.eventId) {
+          onEventCreated(result.eventId);
+        }
       } else {
         // Personal event: only add to calendar_events
         const personalEventData = {
