@@ -1,9 +1,102 @@
+// Detect audio format from byte signature
+export const sniffAudioFormat = (bytes: Uint8Array): 'wav' | 'ogg' | 'mp3' | 'pcm' | 'unknown' => {
+  if (bytes.length < 12) return 'unknown';
+  
+  // WAV: 'RIFF' at 0 and 'WAVE' at 8
+  if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+      bytes[8] === 0x57 && bytes[9] === 0x41 && bytes[10] === 0x56 && bytes[11] === 0x45) {
+    return 'wav';
+  }
+  
+  // OGG: 'OggS' at 0
+  if (bytes[0] === 0x4F && bytes[1] === 0x67 && bytes[2] === 0x67 && bytes[3] === 0x53) {
+    return 'ogg';
+  }
+  
+  // MP3: 'ID3' at 0 or MPEG frame sync (0xFF 0xFB/0xF3/0xF2)
+  if ((bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33) ||
+      (bytes[0] === 0xFF && (bytes[1] === 0xFB || bytes[1] === 0xF3 || bytes[1] === 0xF2))) {
+    return 'mp3';
+  }
+  
+  // Default to PCM if no container detected
+  return 'pcm';
+};
+
+// Container audio queue for WAV/OGG/MP3
+class ContainerAudioQueue {
+  private queue: Uint8Array[] = [];
+  private isPlaying = false;
+
+  constructor(private audioContext: AudioContext) {}
+
+  async addToQueue(audioData: Uint8Array) {
+    console.log('🔊 [Container] Adding audio chunk:', audioData.byteLength, 'bytes');
+    this.queue.push(audioData);
+    
+    if (!this.isPlaying) {
+      await this.playNext();
+    }
+  }
+
+  private async playNext() {
+    if (this.queue.length === 0) {
+      this.isPlaying = false;
+      return;
+    }
+
+    this.isPlaying = true;
+    const audioData = this.queue.shift()!;
+
+    try {
+      // Create a copy of the buffer to ensure it's an ArrayBuffer (not SharedArrayBuffer)
+      const buffer = audioData.buffer.slice(audioData.byteOffset, audioData.byteOffset + audioData.byteLength) as ArrayBuffer;
+      const audioBuffer = await this.audioContext.decodeAudioData(buffer);
+      
+      const source = this.audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(this.audioContext.destination);
+      
+      source.onended = () => this.playNext();
+      source.start(0);
+      
+      console.log('✅ [Container] Audio playback started, duration:', audioBuffer.duration, 's');
+    } catch (error) {
+      console.error('❌ [Container] Error decoding audio:', error);
+      console.error('   Chunk size:', audioData.byteLength, 'bytes');
+      this.playNext(); // Continue with next segment
+    }
+  }
+
+  clear() {
+    this.queue = [];
+    this.isPlaying = false;
+  }
+}
+
+let containerAudioQueueInstance: ContainerAudioQueue | null = null;
+
+// Decode and play container formats (WAV/OGG/MP3)
+export const decodeContainerAndPlay = async (audioContext: AudioContext, audioData: Uint8Array) => {
+  if (!containerAudioQueueInstance) {
+    containerAudioQueueInstance = new ContainerAudioQueue(audioContext);
+  }
+  await containerAudioQueueInstance.addToQueue(audioData);
+};
+
+export const clearContainerQueue = () => {
+  if (containerAudioQueueInstance) {
+    containerAudioQueueInstance.clear();
+  }
+};
+
 // Audio recording for Vertex AI Live API (24kHz PCM16)
 export class AudioRecorder {
   private stream: MediaStream | null = null;
   private audioContext: AudioContext | null = null;
   private processor: ScriptProcessorNode | null = null;
   private source: MediaStreamAudioSourceNode | null = null;
+  private silentGain: GainNode | null = null;
 
   constructor(private onAudioData: (audioData: Float32Array) => void) {}
 
@@ -30,10 +123,16 @@ export class AudioRecorder {
         this.onAudioData(new Float32Array(inputData));
       };
 
+      // CRITICAL: Use silent gain to prevent mic feedback
+      // This ensures onaudioprocess still fires but mic audio isn't played through speakers
+      this.silentGain = this.audioContext.createGain();
+      this.silentGain.gain.value = 0; // Silent
+      
       this.source.connect(this.processor);
-      this.processor.connect(this.audioContext.destination);
+      this.processor.connect(this.silentGain);
+      this.silentGain.connect(this.audioContext.destination);
 
-      console.log('✅ Audio recording started');
+      console.log('✅ Audio recording started (mic monitoring disabled)');
     } catch (error) {
       console.error('❌ Error accessing microphone:', error);
       throw error;
@@ -50,6 +149,10 @@ export class AudioRecorder {
     if (this.processor) {
       this.processor.disconnect();
       this.processor = null;
+    }
+    if (this.silentGain) {
+      this.silentGain.disconnect();
+      this.silentGain = null;
     }
     if (this.stream) {
       this.stream.getTracks().forEach(track => track.stop());
@@ -335,6 +438,8 @@ export const clearAudioQueue = () => {
   if (audioQueueInstance) {
     audioQueueInstance.clear();
   }
+  // Also clear container queue
+  clearContainerQueue();
 };
 
 // Camera recording for Vertex AI vision (1 FPS)

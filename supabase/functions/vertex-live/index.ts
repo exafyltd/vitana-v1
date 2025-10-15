@@ -109,15 +109,19 @@ serve(async (req) => {
           isConnected = true;
 
           // Send setup configuration with correct camelCase field names
+          // Request WAV format with LINEAR16 encoding for consistent audio output
           const setupMessage = {
             setup: {
               model: 'models/gemini-2.0-flash-exp',
               generationConfig: {
                 responseModalities: ['AUDIO'],
+                responseMimeType: 'audio/wav', // Request WAV format
                 speechConfig: {
                   voiceConfig: { 
                     prebuiltVoiceConfig: { voiceName: 'Aoede' } 
                   },
+                  audioEncoding: 'LINEAR16', // Request LINEAR16 PCM encoding
+                  sampleRateHertz: 24000 // 24kHz sample rate
                 },
               },
               systemInstruction: {

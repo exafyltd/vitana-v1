@@ -1,4 +1,4 @@
-import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue } from '@/utils/vertexAudio';
+import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue, decodeContainerAndPlay, sniffAudioFormat } from '@/utils/vertexAudio';
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
@@ -68,9 +68,8 @@ export class VertexLiveService {
           try {
             // Check if this is binary audio data or JSON
             if (event.data instanceof ArrayBuffer) {
-              // Handle binary audio data
+              // Handle binary audio data - detect format and decode accordingly
               console.log('📥 Received audio ArrayBuffer, size:', event.data.byteLength);
-              console.log('🎵 AudioContext state:', this.audioContext?.state);
               const audioBytes = new Uint8Array(event.data);
               
               if (this.audioContext) {
@@ -79,7 +78,21 @@ export class VertexLiveService {
                   await this.audioContext.resume();
                   console.log('▶️ Resumed audio context');
                 }
-                await playAudioData(this.audioContext, audioBytes);
+                
+                // Detect audio format
+                const format = sniffAudioFormat(audioBytes);
+                console.log('🔍 Detected audio format:', format);
+                
+                // Route to appropriate decoder
+                if (format === 'wav' || format === 'ogg' || format === 'mp3') {
+                  console.log('🎵 Using container decoder for', format);
+                  await decodeContainerAndPlay(this.audioContext, audioBytes);
+                } else {
+                  // Fallback to PCM decoder
+                  console.log('🎵 Using PCM decoder');
+                  await playAudioData(this.audioContext, audioBytes);
+                }
+                
                 console.log('✅ Audio playback initiated');
               } else {
                 console.error('❌ No audio context available!');
@@ -176,14 +189,41 @@ export class VertexLiveService {
       if (content.modelTurn) {
         const parts = content.modelTurn.parts || [];
         
-        // Handle audio responses
+        // Handle audio responses with MIME-type detection
         for (const part of parts) {
           if (part.inlineData && part.inlineData.mimeType?.includes('audio')) {
+            const mimeType = part.inlineData.mimeType.toLowerCase();
             const audioBase64 = part.inlineData.data;
             const audioBytes = Uint8Array.from(atob(audioBase64), c => c.charCodeAt(0));
             
+            console.log('🎵 InlineData audio, MIME:', mimeType, 'Size:', audioBytes.byteLength);
+            
             if (this.audioContext) {
-              await playAudioData(this.audioContext, audioBytes);
+              // Resume if needed
+              if (this.audioContext.state === 'suspended') {
+                await this.audioContext.resume();
+              }
+              
+              // Route based on MIME type
+              if (mimeType.includes('wav') || mimeType.includes('ogg') || 
+                  mimeType.includes('opus') || mimeType.includes('mpeg') || 
+                  mimeType.includes('mp3')) {
+                console.log('🎵 Using container decoder for MIME:', mimeType);
+                await decodeContainerAndPlay(this.audioContext, audioBytes);
+              } else if (mimeType.includes('pcm') || mimeType.includes('linear16')) {
+                console.log('🎵 Using PCM decoder for MIME:', mimeType);
+                await playAudioData(this.audioContext, audioBytes);
+              } else {
+                // Unknown MIME, sniff format
+                const format = sniffAudioFormat(audioBytes);
+                console.log('🔍 Unknown MIME, sniffed format:', format);
+                
+                if (format === 'wav' || format === 'ogg' || format === 'mp3') {
+                  await decodeContainerAndPlay(this.audioContext, audioBytes);
+                } else {
+                  await playAudioData(this.audioContext, audioBytes);
+                }
+              }
             }
           }
 
