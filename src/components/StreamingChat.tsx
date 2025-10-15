@@ -202,9 +202,22 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       const now = Date.now();
       if (!errorToastAtRef.current || now - errorToastAtRef.current > 10000) {
         errorToastAtRef.current = now;
+        
+        // More user-friendly error messages
+        let errorMessage = vertexError;
+        let errorTitle = "Connection Error";
+        
+        if (vertexError.includes('3 attempts') || vertexError.includes('Max reconnection')) {
+          errorTitle = "Connection Failed";
+          errorMessage = "Unable to connect to Gemini AI. Please check your internet connection and try again.";
+        } else if (vertexError.includes('authentication') || vertexError.includes('token')) {
+          errorTitle = "Authentication Error";
+          errorMessage = "Please sign in again to continue.";
+        }
+        
         toast({
-          title: "Vertex AI Error",
-          description: vertexError,
+          title: errorTitle,
+          description: errorMessage,
           variant: "destructive",
         });
       }
@@ -230,8 +243,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             console.log('🔇 Cancelled TTS before Vertex connection');
           }
           
-          setIsVideoActive(true); // Set immediately for UI feedback
-          
           // Connect and start audio first
           await vertexConnect();
           await vertexStartAudio();
@@ -241,16 +252,25 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             try {
               await vertexStartScreen();
               console.log('✅ Screen sharing started');
+              // Only set video active AFTER screen sharing succeeds
+              setIsVideoActive(true);
             } catch (error) {
               console.warn('User cancelled screen sharing or error:', error);
-              // Continue with audio-only if screen sharing fails
+              // Clean up if screen sharing fails
+              if (vertexRecording) vertexStopAudio();
+              vertexDisconnect();
+              setIsVideoActive(false);
+              toast({
+                title: "Screen sharing cancelled",
+                description: "You can use voice-only mode with the microphone button",
+              });
             }
           }, 2500); // 2.5s delay for greeting to complete
           
-          console.log('✅ Vertex Live activated');
+          console.log('✅ Vertex Live connection initiated');
         } catch (error) {
           console.error('❌ Failed to activate Vertex Live:', error);
-          setIsVideoActive(false); // Reset on error
+          setIsVideoActive(false);
           toast({
             title: "Failed to start Vertex AI Live",
             description: "Please check your connection and try again",
@@ -281,7 +301,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       console.log('✅ All streams stopped, states reset');
     },
     isStreamingActive: () => {
-      const active = useVertexLiveMode ? (vertexConnecting || vertexConnected) : isVideoActive;
+      // Return true ONLY when screen sharing is active
+      const active = useVertexLiveMode ? vertexScreenSharing : isVideoActive;
       console.log('StreamingChat: isStreamingActive called, returning:', active);
       return active;
     },

@@ -16,6 +16,7 @@ export const useVertexLive = () => {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
   const retryCountRef = useRef(0);
   const hasGreetedRef = useRef(false);
+  const ringPlayedInSessionRef = useRef(false); // NEW: Track if we've rung the bell this session
 
   useEffect(() => {
     // Initialize service
@@ -23,10 +24,12 @@ export const useVertexLive = () => {
       onConnectionReady: () => {
         console.log('🎉 Connection ready - triggering greeting flow');
         
-        if (!hasGreetedRef.current) {
+        // Only ring and greet once per session (not on reconnects)
+        if (!ringPlayedInSessionRef.current) {
+          ringPlayedInSessionRef.current = true;
           hasGreetedRef.current = true;
           
-          // Play notification bell
+          // Play notification bell only once per session
           playNotificationBell();
           
           // Send greeting prompt to AI (AI will respond with audio)
@@ -35,6 +38,9 @@ export const useVertexLive = () => {
               "Please greet the user warmly and let them know you're ready to help. Keep it brief and friendly, around 1-2 sentences."
             );
           }, 500);
+        } else {
+          // On reconnection, just log - don't ring or greet again
+          console.log('✅ Reconnected successfully (skipping greeting/bell)');
         }
       },
       onConnectionChange: (connected) => {
@@ -79,6 +85,7 @@ export const useVertexLive = () => {
           }, delay);
         } else {
           console.warn('🛑 Max reconnect attempts reached');
+          setError('Failed to connect after 3 attempts. Please check your connection and try again.');
         }
       },
       onTrace: (message) => {
@@ -133,6 +140,8 @@ export const useVertexLive = () => {
     setTranscript('');
     setError(null);
     setConnectionState('disconnected');
+    // Reset ring flag on manual disconnect so next session gets greeting
+    ringPlayedInSessionRef.current = false;
   }, []);
 
   const startAudio = useCallback(async () => {
