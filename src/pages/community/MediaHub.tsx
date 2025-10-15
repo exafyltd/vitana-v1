@@ -353,24 +353,24 @@ export default function MediaHub() {
                           return (
                             <div 
                               key={track.id} 
-                              className={`group relative flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 ease-out ${
+                              className={`group relative flex items-center gap-5 p-5 rounded-2xl border transition-all duration-300 ease-out ${
                                 currentMedia?.id === track.id && isPlaying
                                   ? 'bg-gradient-to-br from-purple-50/90 via-pink-50/70 to-white/80 border-purple-300/60 shadow-lg shadow-purple-200/40'
                                   : 'bg-gradient-to-br from-white/80 via-purple-50/20 to-pink-50/20 border-white/50 shadow-md hover:shadow-lg hover:shadow-purple-100/30'
                               } hover:scale-[1.01] backdrop-blur-sm`}
                             >
-                              {/* Enhanced Album Art with Glow */}
-                              <div className={`relative w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-300 ${
+                              {/* Enhanced Album Art with Glow - Standardized Size */}
+                              <div className={`relative w-20 h-20 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-300 ${
                                 currentMedia?.id === track.id && isPlaying
                                   ? 'bg-gradient-to-br from-purple-400/30 via-pink-400/25 to-blue-400/30 shadow-lg shadow-purple-400/40'
                                   : 'bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-blue-400/20 shadow-md shadow-purple-300/20 group-hover:shadow-lg group-hover:shadow-purple-300/30'
                               }`}>
                                 <div className="absolute inset-0 bg-gradient-to-br from-purple-300/10 to-transparent" />
-                                <Music className="w-7 h-7 text-purple-600/80 relative z-10" />
+                                <Music className="w-8 h-8 text-purple-600/80 relative z-10" />
                               </div>
 
-                              {/* Content Area */}
-                              <div className="flex-1 min-w-0 space-y-1">
+                              {/* Content Area - Consistent Spacing */}
+                              <div className="flex-1 min-w-0 space-y-1.5">
                                 {/* Title with Now Playing Indicator */}
                                 <div className="flex items-center gap-2">
                                   <h3 className="font-bold text-base text-foreground truncate leading-tight">
@@ -393,24 +393,24 @@ export default function MediaHub() {
                                   )}
                                 </div>
                                 
-                                {/* Metadata - tighter spacing */}
-                                <p className="text-xs text-muted-foreground/80 leading-none">
+                                {/* Metadata - Enhanced Contrast */}
+                                <p className="text-xs text-muted-foreground/85 leading-none">
                                   {track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} • {formatDuration(track.duration)}
                                 </p>
                                 
-                                {/* Description - tighter line height, max 2 lines */}
+                                {/* Description - Compact with Better Readability */}
                                 {track.description && (
-                                  <p className="text-[11px] text-muted-foreground/70 line-clamp-2 leading-[1.4]">
+                                  <p className="text-[11px] text-muted-foreground/85 line-clamp-2 leading-[1.35]">
                                     {track.description}
                                   </p>
                                 )}
                                 
-                                {/* Enhanced Tags - increased top spacing */}
-                                <div className="flex flex-wrap gap-1.5 pt-2">
+                                {/* Enhanced Tags - Increased Spacing & Soft Wellness Colors */}
+                                <div className="flex flex-wrap gap-2 pt-2.5">
                                   {track.music_metadata?.[0]?.genre && (
                                     <Badge 
                                       variant="secondary" 
-                                      className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100/50 text-purple-700 border-0 font-medium"
+                                      className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-100/60 text-purple-700 border-0 font-medium"
                                     >
                                       🎹 {track.music_metadata[0].genre}
                                     </Badge>
@@ -431,7 +431,7 @@ export default function MediaHub() {
                                       <Badge 
                                         key={tag} 
                                         variant="outline" 
-                                        className="text-[10px] px-2 py-0.5 rounded-full bg-white/60 border-purple-200/40 text-purple-600/80 font-medium"
+                                        className="text-[10px] px-2.5 py-0.5 rounded-full bg-white/70 border-purple-200/50 text-purple-600/90 font-medium"
                                       >
                                         {getTagIcon(tag)} {tag}
                                       </Badge>
@@ -440,7 +440,7 @@ export default function MediaHub() {
                                 </div>
                               </div>
 
-                              {/* Premium Play Button with Now Playing Glow */}
+                              {/* Premium Play Button - Enhanced Visual Emphasis */}
                               <Button 
                                 size="sm" 
                                 onClick={() => {
@@ -453,10 +453,10 @@ export default function MediaHub() {
                                     mediaType: 'music'
                                   });
                                 }}
-                                className={`shrink-0 w-11 h-11 rounded-full transition-all duration-300 ${
+                                className={`shrink-0 w-12 h-12 rounded-full transition-all duration-300 ease-out ${
                                   currentMedia?.id === track.id && isPlaying
-                                    ? 'bg-white shadow-lg shadow-purple-400/50 border-2 border-purple-400 hover:shadow-xl hover:shadow-purple-400/60 animate-pulse'
-                                    : 'bg-white/90 hover:bg-white shadow-md hover:shadow-lg border-2 border-purple-200/50 hover:border-purple-300 group-hover:scale-110'
+                                    ? 'bg-white shadow-lg shadow-purple-400/60 border-2 border-purple-400 hover:shadow-xl hover:shadow-purple-400/70 hover:scale-105 animate-pulse'
+                                    : 'bg-white/95 hover:bg-white shadow-md hover:shadow-lg hover:shadow-purple-300/50 border-2 border-purple-200/50 hover:border-purple-300 group-hover:scale-110 hover:scale-[1.15]'
                                 }`}
                               >
                                 {currentMedia?.id === track.id && isPlaying ? (
