@@ -95,51 +95,48 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const handleMicToggle = async () => {
     console.log('[MIC] 🎤 Microphone button clicked, vertexRecording:', vertexRecording);
     
-    // Don't allow mic if camera is active
-    if (vertexCameraActive && !vertexRecording) {
+    // Block if camera is active
+    if (vertexCameraActive) {
       console.log('[MIC] ⚠️ Camera is active, mic is disabled');
       return;
     }
     
     if (vertexRecording) {
-      console.log('[MIC] 🛑 Stopping Vertex audio recording');
+      // STOP: immediate
+      console.log('[MIC] 🛑 Stopping audio');
       vertexStopAudio();
       setIsRecording(false);
       setIsAudioActive(false);
     } else {
+      // START: optimistic + background connection
+      setIsRecording(true);
+      setIsAudioActive(true);
+      
       try {
-        // Ensure Gemini is ready first
+        // Connect in background if needed
         if (!vertexIsGeminiReady) {
-          console.log('[MIC] ⏳ Connecting to Gemini first...');
+          toast({
+            title: "Connecting to Gemini...",
+            description: "Starting microphone",
+            duration: 2000,
+          });
           await vertexConnect();
-          
-          // Wait for Gemini ready
-          let attempts = 0;
-          while (!vertexIsGeminiReady && attempts < 20) {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            attempts++;
-          }
-          
-          if (!vertexIsGeminiReady) {
-            throw new Error('Connection timeout - please try again');
-          }
         }
         
-        console.log('[MIC] ▶️ Starting Vertex audio recording');
-        setIsRecording(true);
-        setIsAudioActive(true);
         await vertexStartAudio();
         
         toast({
           title: "Microphone Active",
-          description: "Gemini is listening to you",
+          description: "Gemini is listening",
           duration: 2000,
         });
         console.log('✅ Vertex audio recording started');
       } catch (error) {
+        // Rollback on error
         console.error('[MIC] ❌ Error:', error);
         setIsRecording(false);
         setIsAudioActive(false);
+        vertexStopAudio();
         showError(
           "Microphone Error",
           error instanceof Error ? error.message : "Could not start microphone"
@@ -257,66 +254,41 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             console.log('🔇 Cancelled TTS before Vertex connection');
           }
           
-          // DON'T set isVideoActive yet - wait for confirmation!
-          
-          // Connect (this will show "Connecting..." indicator only)
-          await vertexConnect();
-          
-          // Wait for Gemini to be ready (not just WebSocket)
-          console.log('⏳ Waiting for Gemini confirmation...');
-          let attempts = 0;
-          while (!vertexIsGeminiReady && attempts < 40) { // 20 seconds max (40 * 500ms)
-            await new Promise(resolve => setTimeout(resolve, 500));
-            attempts++;
-          }
-          
+          // Connect in background if needed
           if (!vertexIsGeminiReady) {
-            throw new Error('Gemini connection timeout - please try again');
+            toast({
+              title: "Connecting to Gemini...",
+              description: "Starting stream",
+              duration: 2000,
+            });
+            await vertexConnect();
           }
           
-          console.log('✅ Gemini is ready! Starting audio...');
+          // Start screen share FIRST (this is primary)
+          await vertexStartScreen();
           
-          // Start audio recording
+          // Then start audio
           await vertexStartAudio();
           
-          // Wait for greeting to play (2.5s), then prompt for screen
-          setTimeout(async () => {
-            try {
-              await vertexStartScreen();
-              console.log('✅ Screen sharing started');
-              
-              // ONLY NOW set video active (both screen AND connection confirmed)
-              setIsVideoActive(true);
-            } catch (error) {
-              console.warn('Screen sharing cancelled or failed:', error);
-              
-              // Clean up everything
-              if (vertexRecording) vertexStopAudio();
-              vertexDisconnect();
-              
-              // Ensure states are neutral
-              setIsVideoActive(false);
-              setIsAudioActive(false);
-              
-              toast({
-                title: "Screen sharing cancelled",
-                description: "You can use voice-only mode with the microphone button",
-              });
-            }
-          }, 2500);
+          // Set active immediately
+          setIsVideoActive(true);
           
-          console.log('✅ Vertex Live activation in progress...');
+          toast({
+            title: "Stream Active",
+            description: "Screen sharing and microphone enabled",
+            duration: 2000,
+          });
+          
+          console.log('✅ Vertex Live stream started');
         } catch (error) {
           console.error('❌ Failed to activate Vertex Live:', error);
           
-          // CRITICAL: Rollback all states on error
+          // Rollback all states on error
           setIsVideoActive(false);
           setIsAudioActive(false);
-          
-          // Disconnect if partially connected
-          if (vertexConnected || vertexConnecting) {
-            vertexDisconnect();
-          }
+          if (vertexRecording) vertexStopAudio();
+          if (vertexScreenSharing) vertexStopScreen();
+          vertexDisconnect();
           
           showError(
             "Connection Failed",
@@ -361,8 +333,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       console.log('✅ All streams stopped, states reset');
     },
     isStreamingActive: () => {
-      // Return true ONLY when screen sharing is active
-      const active = useVertexLiveMode ? vertexScreenSharing : isVideoActive;
+      // Return true when connected and recording (immediate feedback)
+      const active = useVertexLiveMode ? (vertexConnected && vertexRecording) : isVideoActive;
       console.log('StreamingChat: isStreamingActive called, returning:', active);
       return active;
     },
@@ -573,9 +545,11 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             size="icon"
             onClick={async () => {
               if (vertexCameraActive) {
+                // STOP: immediate
                 console.log('[CAMERA] 🛑 Stopping camera');
                 vertexStopCamera();
               } else {
+                // START: optimistic + background connection
                 try {
                   // Stop mic if active (camera disables mic)
                   if (vertexRecording) {
@@ -585,25 +559,19 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                     setIsAudioActive(false);
                   }
                   
-                  // Ensure Gemini is ready first
+                  // Connect in background if needed
                   if (!vertexIsGeminiReady) {
-                    console.log('[CAMERA] ⏳ Connecting to Gemini...');
+                    toast({
+                      title: "Connecting to Gemini...",
+                      description: "Starting camera",
+                      duration: 2000,
+                    });
                     await vertexConnect();
-                    
-                    // Wait for Gemini ready
-                    let attempts = 0;
-                    while (!vertexIsGeminiReady && attempts < 20) {
-                      await new Promise(resolve => setTimeout(resolve, 500));
-                      attempts++;
-                    }
-                    
-                    if (!vertexIsGeminiReady) {
-                      throw new Error('Connection timeout - please try again');
-                    }
                   }
                   
                   console.log('[CAMERA] ▶️ Starting camera');
                   await vertexStartCamera();
+                  
                   toast({
                     title: "Camera Active",
                     description: "Gemini can now see your camera feed",
