@@ -20,6 +20,12 @@ export const useVertexLive = () => {
   const connectionTriggerRef = useRef<'mic' | 'camera' | 'screen' | null>(null);
   const screenBellRangRef = useRef(false);
   const cameraBellRangRef = useRef(false);
+  const connectionStateRef = useRef<'disconnected' | 'connecting' | 'gemini_ready' | 'connected' | 'error'>(connectionState);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    connectionStateRef.current = connectionState;
+  }, [connectionState]);
 
   useEffect(() => {
     // Initialize service
@@ -204,29 +210,63 @@ export const useVertexLive = () => {
   const startCamera = useCallback(async () => {
     try {
       connectionTriggerRef.current = 'camera';
+      
+      // Gate camera start on Gemini readiness
+      const currentState = connectionStateRef.current;
+      if (currentState !== 'gemini_ready' && currentState !== 'connected') {
+        console.log('📹 Camera requires connection, connecting...');
+        await connect();
+        
+        // Wait for Gemini readiness (up to 30s) using ref
+        const startTime = Date.now();
+        while (connectionStateRef.current !== 'gemini_ready' && connectionStateRef.current !== 'connected') {
+          await new Promise(resolve => setTimeout(resolve, 150));
+          if (Date.now() - startTime > 30000) {
+            throw new Error('Connection timeout starting camera');
+          }
+        }
+      }
+      
+      // Only set camera active after successful start
       await serviceRef.current?.startCamera();
       setIsCameraActive(true);
       
       // Ring bell if Gemini already ready and not already rang for camera
-      if (connectionState === 'gemini_ready' && !cameraBellRangRef.current) {
+      if (connectionStateRef.current === 'gemini_ready' && !cameraBellRangRef.current) {
         console.log('🔔 Ringing bell for mid-session camera start');
         playNotificationBell();
         cameraBellRangRef.current = true;
       }
     } catch (err) {
       console.error('Failed to start camera:', err);
-      setError('Failed to start camera');
+      setError(err instanceof Error ? err.message : 'Failed to start camera');
     }
-  }, [connectionState]);
+  }, [connect]);
 
   const stopCamera = useCallback(() => {
     serviceRef.current?.stopCamera();
     setIsCameraActive(false);
-  }, []);
+    
+    // Cascade: stop audio when camera stops
+    if (isRecording) {
+      console.log('📹 Camera stopped → stopping microphone');
+      serviceRef.current?.stopAudio();
+      setIsRecording(false);
+    }
+  }, [isRecording]);
 
   const sendText = useCallback((text: string) => {
     serviceRef.current?.sendText(text);
   }, []);
+
+  // Safety net: auto-stop mic when both visual streams are off
+  useEffect(() => {
+    if (!isCameraActive && !isScreenSharing && isRecording) {
+      console.log('🛡️ [Safety] Both visual streams off → auto-stopping microphone');
+      serviceRef.current?.stopAudio();
+      setIsRecording(false);
+    }
+  }, [isCameraActive, isScreenSharing, isRecording]);
 
   return {
     isConnected: connectionState === 'gemini_ready' || connectionState === 'connected',

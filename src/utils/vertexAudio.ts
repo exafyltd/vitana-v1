@@ -441,7 +441,33 @@ export class CameraRecorder {
 
       this.video = document.createElement('video');
       this.video.srcObject = this.stream;
-      this.video.play();
+      
+      // Wait for video to be ready
+      await this.video.play();
+      console.log('📹 Video element playing, waiting for metadata...');
+      
+      // Wait for metadata to be loaded
+      await new Promise<void>((resolve) => {
+        if (this.video!.readyState >= 2) {
+          resolve();
+        } else {
+          this.video!.onloadedmetadata = () => resolve();
+        }
+      });
+      
+      // Ensure video dimensions are non-zero before capturing
+      let tries = 0;
+      while ((this.video.videoWidth === 0 || this.video.videoHeight === 0) && tries < 20) {
+        console.log('⏳ Waiting for video dimensions... try', tries + 1);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        tries++;
+      }
+      
+      if (this.video.videoWidth === 0 || this.video.videoHeight === 0) {
+        throw new Error('Camera video dimensions are zero after waiting');
+      }
+      
+      console.log('✅ Camera ready, dimensions:', this.video.videoWidth, 'x', this.video.videoHeight);
 
       this.canvas = document.createElement('canvas');
       const ctx = this.canvas.getContext('2d');

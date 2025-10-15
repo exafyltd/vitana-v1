@@ -420,9 +420,16 @@ export class VertexLiveService {
   }
 
   async startCamera() {
+    // Wait for setup completion instead of silent return
     if (!this.isSetupComplete) {
-      console.warn('⚠️ Setup not complete, waiting...');
-      return;
+      console.log('⏳ Waiting for Gemini setup to complete...');
+      const startTime = Date.now();
+      while (!this.isSetupComplete) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        if (Date.now() - startTime > 30000) {
+          throw new Error('Gemini not ready for camera');
+        }
+      }
     }
 
     console.log('📹 Starting camera...');

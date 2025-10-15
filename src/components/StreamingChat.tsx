@@ -242,15 +242,15 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [useVertexLiveMode, vertexTranscript]);
 
-  // Ensure mic stops whenever camera turns off (any path)
+  // Ensure mic stops whenever both camera and screen are off
   useEffect(() => {
-    if (!vertexCameraActive && (vertexRecording || isAudioActive)) {
-      console.log('[SYNC] Camera off → stopping microphone');
+    if (!vertexCameraActive && !vertexScreenSharing && (vertexRecording || isAudioActive)) {
+      console.log('[SYNC] No visual streams active → stopping microphone');
       vertexStopAudio();
       setIsRecording(false);
       setIsAudioActive(false);
     }
-  }, [vertexCameraActive, vertexRecording, isAudioActive, vertexStopAudio]);
+  }, [vertexCameraActive, vertexScreenSharing, vertexRecording, isAudioActive, vertexStopAudio]);
 
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
