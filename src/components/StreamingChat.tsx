@@ -10,6 +10,8 @@ import { useUserPreferences } from "@/hooks/useUserPreferences"
 import { useVertexLive } from "@/hooks/useVertexLive"
 import { useProactiveAssistant } from "@/hooks/useProactiveAssistant"
 import { ClientSTT } from "@/utils/clientSTT"
+import { useErrorNotifications } from "@/hooks/useErrorNotifications"
+import { ErrorNotificationStack } from "@/components/ErrorNotificationStack"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,13 +35,14 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
   const [useVertexLiveMode, setUseVertexLiveMode] = useState(true)
+  const [isSparklesProcessing, setIsSparklesProcessing] = useState(false)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
-  const errorToastAtRef = useRef<number>(0)
 
   const { selectedLanguage, setSelectedLanguage, languageOptions, isLoading: languageLoading } = useLanguage()
   const { toast } = useToast()
   const { preferences } = useUserPreferences()
   const { triggerProactiveMessage, isGenerating: isGeneratingMessage } = useProactiveAssistant()
+  const { errors, showError, dismissError } = useErrorNotifications()
   
   // Vertex Live API integration
   const {
@@ -92,6 +95,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const handleMicToggle = async () => {
     console.log('[MIC] 🎤 Microphone button clicked, vertexRecording:', vertexRecording);
     
+    // Don't allow mic if camera is active
+    if (vertexCameraActive && !vertexRecording) {
+      console.log('[MIC] ⚠️ Camera is active, mic is disabled');
+      return;
+    }
+    
     if (vertexRecording) {
       console.log('[MIC] 🛑 Stopping Vertex audio recording');
       vertexStopAudio();
@@ -131,11 +140,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         console.error('[MIC] ❌ Error:', error);
         setIsRecording(false);
         setIsAudioActive(false);
-        toast({
-          title: "Microphone Error",
-          description: error instanceof Error ? error.message : "Could not start microphone",
-          variant: "destructive",
-        });
+        showError(
+          "Microphone Error",
+          error instanceof Error ? error.message : "Could not start microphone"
+        );
       }
     }
   }
@@ -169,11 +177,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       });
     } catch (error: any) {
       console.error('Text error:', error);
-      toast({
-        title: "Send Error",
-        description: error.message || "Failed to send message",
-        variant: "destructive",
-      });
+      showError(
+        "Send Error",
+        error.message || "Failed to send message"
+      );
     } finally {
       setIsProcessing(false);
     }
@@ -212,33 +219,24 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [])
 
-  // Show Vertex error toasts (throttled)
+  // Show Vertex errors with new error notification system
   useEffect(() => {
     if (vertexError) {
-      const now = Date.now();
-      if (!errorToastAtRef.current || now - errorToastAtRef.current > 10000) {
-        errorToastAtRef.current = now;
-        
-        // More user-friendly error messages
-        let errorMessage = vertexError;
-        let errorTitle = "Connection Error";
-        
-        if (vertexError.includes('3 attempts') || vertexError.includes('Max reconnection')) {
-          errorTitle = "Connection Failed";
-          errorMessage = "Unable to connect to Gemini AI. Please check your internet connection and try again.";
-        } else if (vertexError.includes('authentication') || vertexError.includes('token')) {
-          errorTitle = "Authentication Error";
-          errorMessage = "Please sign in again to continue.";
-        }
-        
-        toast({
-          title: errorTitle,
-          description: errorMessage,
-          variant: "destructive",
-        });
+      // More user-friendly error messages
+      let errorMessage = vertexError;
+      let errorTitle = "Connection Error";
+      
+      if (vertexError.includes('3 attempts') || vertexError.includes('Max reconnection')) {
+        errorTitle = "Connection Failed";
+        errorMessage = "Unable to connect to Gemini AI. Please check your internet connection and try again.";
+      } else if (vertexError.includes('authentication') || vertexError.includes('token')) {
+        errorTitle = "Authentication Error";
+        errorMessage = "Please sign in again to continue.";
       }
+      
+      showError(errorTitle, errorMessage);
     }
-  }, [vertexError, toast]);
+  }, [vertexError, showError]);
 
   // Update streaming text from Vertex transcript
   useEffect(() => {
@@ -320,11 +318,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             vertexDisconnect();
           }
           
-          toast({
-            title: "Connection Failed",
-            description: error instanceof Error ? error.message : "Could not connect to Gemini AI",
-            variant: "destructive",
-          });
+          showError(
+            "Connection Failed",
+            error instanceof Error ? error.message : "Could not connect to Gemini AI"
+          );
           
           // Re-throw so AppLayout can also rollback
           throw error;
@@ -390,6 +387,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   return (
     <>
+      {/* Error notification stack */}
+      <ErrorNotificationStack errors={errors} onDismiss={dismissError} />
+
       {showCrisisButton && (
         <div className="fixed bottom-32 left-1/2 -translate-x-1/2 bg-destructive text-destructive-foreground px-4 py-3 rounded-lg flex items-center gap-3 z-50 shadow-lg animate-in fade-in slide-in-from-bottom-4">
           <span className="text-sm font-medium">We're here to help</span>
@@ -487,6 +487,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             size="icon"
             onClick={async () => {
               console.log('[SPARKLES] ✨ Requesting AI advice via Gemini Live...');
+              setIsSparklesProcessing(true);
               
               try {
                 // Ensure Gemini is ready first
@@ -518,20 +519,29 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                   description: "Gemini is thinking...",
                   duration: 2000,
                 });
+                
+                // Auto-return to neutral after 3 seconds
+                setTimeout(() => {
+                  setIsSparklesProcessing(false);
+                }, 3000);
               } catch (error) {
                 console.error('[SPARKLES] ❌ Error:', error);
-                toast({
-                  title: "Connection Error",
-                  description: error instanceof Error ? error.message : "Could not reach Gemini",
-                  variant: "destructive"
-                });
+                setIsSparklesProcessing(false);
+                showError(
+                  "Connection Error",
+                  error instanceof Error ? error.message : "Could not reach Gemini"
+                );
               }
             }}
-            disabled={isGeneratingMessage || vertexConnecting}
-            className="hover:bg-accent rounded-full relative"
+            disabled={isGeneratingMessage || vertexConnecting || isSparklesProcessing}
+            className={
+              isSparklesProcessing || vertexConnecting
+                ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
+                : "hover:bg-accent rounded-full"
+            }
             aria-label="Get AI Advice"
           >
-            {vertexConnecting ? (
+            {vertexConnecting || isSparklesProcessing ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               <Sparkles className="h-5 w-5" />
@@ -542,9 +552,11 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             variant="ghost"
             size="icon"
             onClick={handleMicToggle}
-            disabled={isProcessing}
+            disabled={isProcessing || vertexCameraActive}
             className={
-              isProcessing
+              vertexCameraActive
+                ? "opacity-50 cursor-not-allowed rounded-full"
+                : isProcessing
                 ? "bg-ruby text-white hover:bg-ruby/90 rounded-full animate-pulse"
                 : isRecording
                 ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
@@ -565,6 +577,14 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                 vertexStopCamera();
               } else {
                 try {
+                  // Stop mic if active (camera disables mic)
+                  if (vertexRecording) {
+                    console.log('[CAMERA] 🛑 Stopping mic (camera activating)');
+                    vertexStopAudio();
+                    setIsRecording(false);
+                    setIsAudioActive(false);
+                  }
+                  
                   // Ensure Gemini is ready first
                   if (!vertexIsGeminiReady) {
                     console.log('[CAMERA] ⏳ Connecting to Gemini...');
@@ -591,11 +611,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                   });
                 } catch (error) {
                   console.error('[CAMERA] ❌ Error:', error);
-                  toast({
-                    title: "Camera Error",
-                    description: error instanceof Error ? error.message : "Failed to access camera",
-                    variant: "destructive"
-                  });
+                  showError(
+                    "Camera Error",
+                    error instanceof Error ? error.message : "Failed to access camera"
+                  );
                 }
               }
             }}
@@ -641,14 +660,22 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           <div className="flex-1 flex items-center gap-2">
             <input
               type="text"
-              placeholder={isProcessing ? "Processing..." : isRecording ? "Recording..." : "Type or speak"}
+              placeholder={
+                isProcessing 
+                  ? "Processing..." 
+                  : vertexRecording 
+                  ? "AI is listening, please talk"
+                  : vertexCameraActive
+                  ? "AI is listening and watching"
+                  : vertexScreenSharing
+                  ? "AI is watching your screen"
+                  : "Type or speak"
+              }
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              disabled={isProcessing || isRecording}
-              className={`flex-1 bg-transparent text-foreground placeholder:text-muted-foreground border-none outline-none text-sm ${
-                isRecording ? "opacity-50" : ""
-              }`}
+              disabled={isProcessing}
+              className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground border-none outline-none text-sm"
               aria-label="Type a message"
             />
             {inputValue && !isProcessing && (

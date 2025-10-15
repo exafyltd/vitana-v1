@@ -17,6 +17,9 @@ export const useVertexLive = () => {
   const retryCountRef = useRef(0);
   const hasGreetedRef = useRef(false);
   const ringPlayedInSessionRef = useRef(false); // Track if we've rung the bell this session
+  const connectionTriggerRef = useRef<'mic' | 'camera' | 'screen' | null>(null);
+  const screenBellRangRef = useRef(false);
+  const cameraBellRangRef = useRef(false);
 
   useEffect(() => {
     // Initialize service
@@ -34,8 +37,13 @@ export const useVertexLive = () => {
           ringPlayedInSessionRef.current = true;
           hasGreetedRef.current = true;
           
-          // Play notification bell - connection is confirmed!
-          playNotificationBell();
+          // Only ring bell for screen or camera, NOT mic
+          if (connectionTriggerRef.current === 'screen' || connectionTriggerRef.current === 'camera') {
+            console.log('🔔 Ringing bell for', connectionTriggerRef.current);
+            playNotificationBell();
+          } else {
+            console.log('🔕 Skipping bell for mic');
+          }
           
           // Set to gemini_ready state (this is what UI will check)
           setConnectionState('gemini_ready');
@@ -156,6 +164,7 @@ export const useVertexLive = () => {
 
   const startAudio = useCallback(async () => {
     try {
+      connectionTriggerRef.current = 'mic';
       await serviceRef.current?.startAudio();
       setIsRecording(true);
     } catch (err) {
@@ -171,13 +180,21 @@ export const useVertexLive = () => {
 
   const startScreen = useCallback(async () => {
     try {
+      connectionTriggerRef.current = 'screen';
       await serviceRef.current?.startScreen();
       setIsScreenSharing(true);
+      
+      // Ring bell if Gemini already ready and not already rang for screen
+      if (connectionState === 'gemini_ready' && !screenBellRangRef.current) {
+        console.log('🔔 Ringing bell for mid-session screen start');
+        playNotificationBell();
+        screenBellRangRef.current = true;
+      }
     } catch (err) {
       console.error('Failed to start screen sharing:', err);
       setError('Failed to start screen sharing');
     }
-  }, []);
+  }, [connectionState]);
 
   const stopScreen = useCallback(() => {
     serviceRef.current?.stopScreen();
@@ -186,13 +203,21 @@ export const useVertexLive = () => {
 
   const startCamera = useCallback(async () => {
     try {
+      connectionTriggerRef.current = 'camera';
       await serviceRef.current?.startCamera();
       setIsCameraActive(true);
+      
+      // Ring bell if Gemini already ready and not already rang for camera
+      if (connectionState === 'gemini_ready' && !cameraBellRangRef.current) {
+        console.log('🔔 Ringing bell for mid-session camera start');
+        playNotificationBell();
+        cameraBellRangRef.current = true;
+      }
     } catch (err) {
       console.error('Failed to start camera:', err);
       setError('Failed to start camera');
     }
-  }, []);
+  }, [connectionState]);
 
   const stopCamera = useCallback(() => {
     serviceRef.current?.stopCamera();
