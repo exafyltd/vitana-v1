@@ -107,7 +107,7 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
         </div>
       </CardHeader>
       
-      <CardContent className="space-y-2 pb-4">
+      <CardContent className="space-y-1 pb-4">
         {episodes.slice(0, 5).map((episode) => {
           const isCurrentlyPlaying = isEpisodePlaying(episode.id);
           
@@ -115,8 +115,11 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
             <div
               key={episode.id}
               className={cn(
-                "flex items-center gap-3 p-2 rounded-lg hover:bg-orange-50/50 transition-all group/episode",
-                isCurrentlyPlaying && "bg-orange-100/70"
+                "flex items-center gap-3 p-3 rounded-xl transition-all duration-300 group/episode border-b border-border/30 last:border-b-0",
+                "bg-gradient-to-r from-orange-500/5 to-transparent",
+                "hover:from-orange-500/8 hover:to-orange-500/3",
+                "hover:shadow-sm hover:shadow-orange-400/15 hover:scale-[1.01]",
+                isCurrentlyPlaying && "from-orange-500/12 to-orange-500/6 shadow-sm"
               )}
             >
               {/* Thumbnail or radio icon */}
@@ -155,10 +158,10 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
               
               {/* Episode info */}
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-sm truncate text-foreground">
+                <h4 className="font-semibold text-sm truncate text-foreground leading-snug">
                   {episode.title}
                 </h4>
-                <p className="text-xs text-muted-foreground truncate">
+                <p className="text-xs text-muted-foreground/70 truncate font-light">
                   {episode.artist}
                 </p>
               </div>
@@ -174,8 +177,10 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
                 variant="ghost"
                 onClick={() => handlePlayEpisode(episode)}
                 className={cn(
-                  "rounded-full w-8 h-8 p-0 opacity-0 group-hover/episode:opacity-100 transition-opacity hover:bg-orange-400/20",
-                  isCurrentlyPlaying && "opacity-100 bg-orange-400/20"
+                  "rounded-full w-9 h-9 p-0 transition-all duration-300 flex-shrink-0",
+                  "opacity-0 group-hover/episode:opacity-100",
+                  "hover:bg-orange-500/15 hover:scale-110 hover:shadow-md hover:shadow-orange-400/25",
+                  isCurrentlyPlaying && "opacity-100 bg-orange-500/12 shadow-sm"
                 )}
               >
                 {isCurrentlyPlaying ? (
