@@ -100,7 +100,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
             variant="ghost"
             size="sm"
             onClick={() => navigate('/comm/media-hub?tab=music')}
-            className="text-xs hover:text-purple-600"
+            className="text-xs hover:text-purple-600 px-4 py-2 min-h-[40px] cursor-pointer"
           >
             View All
           </Button>
