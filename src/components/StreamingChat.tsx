@@ -49,6 +49,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     connectionState: vertexConnectionState,
     isRecording: vertexRecording,
     isScreenSharing: vertexScreenSharing,
+    isCameraActive: vertexCameraActive,
     transcript: vertexTranscript,
     error: vertexError,
     connect: vertexConnect,
@@ -57,6 +58,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     stopAudio: vertexStopAudio,
     startScreen: vertexStartScreen,
     stopScreen: vertexStopScreen,
+    startCamera: vertexStartCamera,
+    stopCamera: vertexStopCamera,
+    sendText: vertexSendText,
   } = useVertexLive()
 
   const isStreaming = isAudioActive || isVideoActive
@@ -188,46 +192,35 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const handleSendText = async () => {
     if (!inputValue.trim() || isProcessing) return
     
-    // Prime audio context on user gesture
-    await aiVoiceService.resumeAudio()
-    
     const userMessage = inputValue.trim()
-    setInputValue("") // Clear immediately
-    setAssistantStreamingText("") // Clear previous response
+    setInputValue("")
+    setAssistantStreamingText("")
     setIsProcessing(true)
     
     try {
-      const result = await aiVoiceService.sendTextMessage(
-        userMessage, 
-        selectedLanguage,
-        // onTextChunk callback - accumulate in dedicated streaming text
-        (chunk: string) => {
-          setAssistantStreamingText(prev => prev + chunk)
-        },
-        // onAudioChunk callback
-        (audioData: string) => {
-          // Audio is automatically queued and played by the service
-        }
-      )
+      if (!vertexConnected) {
+        await vertexConnect();
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
       
-      // Show success toast
+      vertexSendText(userMessage);
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       toast({
-        title: "Saved to history",
-        description: "Your conversation has been saved to the timeline.",
+        title: "Message sent",
+        description: "Gemini is responding...",
         duration: 2000,
       });
-      
-      // Clear streaming text after completion
-      setTimeout(() => setAssistantStreamingText(""), 3000)
     } catch (error: any) {
-      console.error('Text error:', error)
+      console.error('Text error:', error);
       toast({
-        title: error.message?.includes('Rate limit') ? "Rate limit exceeded" : error.message?.includes('Payment') ? "Credits required" : "Chat Error",
-        description: error.message || "Failed to send message. Please try again.",
+        title: "Send Error",
+        description: error.message || "Failed to send message",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
   }
 
@@ -433,19 +426,25 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => {
-              console.log('[SPARKLES] ✨ Button clicked, state:', {
-                isGeneratingMessage,
-                preferences: preferences ? 'loaded' : 'not loaded',
-                selectedLanguage
-              });
-              triggerProactiveMessage();
+            onClick={async () => {
+              console.log('[SPARKLES] ✨ Requesting AI advice via Gemini Live...');
+              
+              if (!vertexConnected) {
+                await vertexConnect();
+                await new Promise(resolve => setTimeout(resolve, 2000));
+              }
+              
+              const prompt = preferences?.auto_greeting_enabled 
+                ? "Based on our conversation so far, what advice or recommendation would be most helpful for me right now?"
+                : "Hello! What can you help me with today?";
+              
+              vertexSendText(prompt);
             }}
-            disabled={isGeneratingMessage}
+            disabled={isGeneratingMessage || vertexConnecting}
             className="hover:bg-accent rounded-full relative"
-            aria-label="Proactive Assistant"
+            aria-label="Get AI Advice"
           >
-            {isGeneratingMessage ? (
+            {vertexConnecting ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               <Sparkles className="h-5 w-5" />
@@ -473,9 +472,27 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={handleVideoToggle}
-            className={isVideoActive ? "bg-ruby text-white hover:bg-ruby/90 rounded-full" : "hover:bg-accent rounded-full"}
-            aria-pressed={isVideoActive}
+            onClick={async () => {
+              if (vertexCameraActive) {
+                vertexStopCamera();
+              } else {
+                try {
+                  if (!vertexConnected) {
+                    await vertexConnect();
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                  }
+                  await vertexStartCamera();
+                } catch (error) {
+                  toast({
+                    title: "Camera Error",
+                    description: "Failed to access camera",
+                    variant: "destructive"
+                  });
+                }
+              }
+            }}
+            className={vertexCameraActive ? "bg-ruby text-white hover:bg-ruby/90 rounded-full" : "hover:bg-accent rounded-full"}
+            aria-pressed={vertexCameraActive}
             aria-label="Toggle camera"
           >
             <VideoIcon className="h-5 w-5" />
