@@ -351,42 +351,74 @@ export default function MediaHub() {
                           };
 
                           return (
-                            <div key={track.id} className="flex items-center gap-4 p-3 border rounded-lg hover:border-primary/50 transition-colors">
-                              <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
-                                <Music className="w-6 h-6 text-purple-600" />
+                            <div 
+                              key={track.id} 
+                              className="group flex items-center gap-4 p-4 bg-gradient-to-br from-white/60 to-purple-50/30 backdrop-blur-sm rounded-2xl border border-white/40 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-300 ease-out"
+                            >
+                              {/* Enhanced Album Art / Icon */}
+                              <div className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-blue-400/20 flex items-center justify-center shadow-sm overflow-hidden flex-shrink-0 group-hover:shadow-md transition-shadow duration-300">
+                                <div className="absolute inset-0 bg-gradient-to-br from-purple-300/10 to-transparent" />
+                                <Music className="w-7 h-7 text-purple-600/80 relative z-10" />
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-semibold text-sm truncate">{track.title}</h3>
-                                <p className="text-xs text-muted-foreground">
+
+                              {/* Content Area */}
+                              <div className="flex-1 min-w-0 space-y-1.5">
+                                {/* Title - larger and bolder */}
+                                <h3 className="font-bold text-base text-foreground truncate leading-tight">
+                                  {track.title}
+                                </h3>
+                                
+                                {/* Metadata - smaller and lighter */}
+                                <p className="text-xs text-muted-foreground/80 leading-snug">
                                   {track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} • {formatDuration(track.duration)}
                                 </p>
                                 
+                                {/* Description - compact and limited */}
                                 {track.description && (
-                                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                  <p className="text-[11px] text-muted-foreground/70 line-clamp-2 leading-relaxed">
                                     {track.description}
                                   </p>
                                 )}
                                 
-                                <div className="flex flex-wrap gap-1.5 mt-2">
+                                {/* Enhanced Tags with icons */}
+                                <div className="flex flex-wrap gap-1.5 pt-1">
                                   {track.music_metadata?.[0]?.genre && (
-                                    <Badge variant="secondary" className="text-xs px-2 py-0.5">
-                                      {track.music_metadata[0].genre}
+                                    <Badge 
+                                      variant="secondary" 
+                                      className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-100/60 text-purple-700 border-0 font-medium"
+                                    >
+                                      🎹 {track.music_metadata[0].genre}
                                     </Badge>
                                   )}
-                                  {track.tags?.slice(0, 3).map((tag) => (
-                                    <Badge 
-                                      key={tag} 
-                                      variant="outline" 
-                                      className="text-xs px-2 py-0.5 bg-primary/5"
-                                    >
-                                      {tag}
-                                    </Badge>
-                                  ))}
+                                  {track.tags?.slice(0, 2).map((tag) => {
+                                    // Add personality icons based on tag keywords
+                                    const getTagIcon = (tagText: string) => {
+                                      const lower = tagText.toLowerCase();
+                                      if (lower.includes('rain') || lower.includes('water')) return '🌧';
+                                      if (lower.includes('meditat') || lower.includes('calm')) return '🧘';
+                                      if (lower.includes('ambient') || lower.includes('chill')) return '✨';
+                                      if (lower.includes('sleep') || lower.includes('night')) return '🌙';
+                                      if (lower.includes('energy') || lower.includes('focus')) return '⚡';
+                                      if (lower.includes('nature')) return '🌿';
+                                      return '🎵';
+                                    };
+                                    
+                                    return (
+                                      <Badge 
+                                        key={tag} 
+                                        variant="outline" 
+                                        className="text-[10px] px-2.5 py-0.5 rounded-full bg-white/50 border-purple-200/50 text-purple-600/80 font-medium"
+                                      >
+                                        {getTagIcon(tag)} {tag}
+                                      </Badge>
+                                    );
+                                  })}
                                 </div>
                               </div>
+
+                              {/* Enhanced Play Button */}
                               <Button 
                                 size="sm" 
-                                variant="outline" 
                                 onClick={() => {
                                   playMedia({
                                     id: track.id,
@@ -397,11 +429,12 @@ export default function MediaHub() {
                                     mediaType: 'music'
                                   });
                                 }}
+                                className="shrink-0 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-sm hover:shadow-md transition-all duration-300 border border-purple-200/50 group-hover:scale-110 group-hover:border-purple-300"
                               >
                                 {currentMedia?.id === track.id && isPlaying ? (
-                                  <Pause className="w-4 h-4" />
+                                  <Pause className="w-4 h-4 text-purple-600" />
                                 ) : (
-                                  <Play className="w-4 h-4" />
+                                  <Play className="w-4 h-4 text-purple-600 ml-0.5" />
                                 )}
                               </Button>
                             </div>
