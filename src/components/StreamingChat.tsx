@@ -545,9 +545,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             size="icon"
             onClick={async () => {
               if (vertexCameraActive) {
-                // STOP: immediate
-                console.log('[CAMERA] 🛑 Stopping camera');
+                // STOP: immediate - also stop audio
+                console.log('[CAMERA] 🛑 Stopping camera and audio');
                 vertexStopCamera();
+                vertexStopAudio();
+                setIsRecording(false);
+                setIsAudioActive(false);
               } else {
                 // START: optimistic + background connection
                 try {
