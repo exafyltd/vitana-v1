@@ -70,8 +70,9 @@ export class VertexLiveService {
           try {
             // Check if this is binary audio data or JSON
             if (event.data instanceof ArrayBuffer) {
-              // Handle binary audio data - detect format and decode accordingly
+              // Handle binary audio data - WebSocket binary frames are ALWAYS raw PCM from Gemini
               console.log('📥 Received audio ArrayBuffer, size:', event.data.byteLength);
+              console.log('   typeof event.data:', typeof event.data, 'instanceof ArrayBuffer:', event.data instanceof ArrayBuffer);
               const audioBytes = new Uint8Array(event.data);
               
               // Enhanced diagnostic logging
@@ -98,20 +99,17 @@ export class VertexLiveService {
                   console.log('▶️ Resumed audio context');
                 }
                 
-                // Detect audio format
-                const format = sniffAudioFormat(audioBytes);
-                console.log('🔍 Detected audio format:', format);
+                // WebSocket binary frames are ALWAYS raw PCM16 @ 24kHz from Gemini
+                // Never sniff format here - sniffing causes false MP3 detection
+                console.log('🎵 Streaming binary: forcing PCM path (no sniffing)');
                 
-                // Route to appropriate decoder
-                if (format === 'wav' || format === 'ogg' || format === 'mp3') {
-                  console.log('🎵 Using container decoder for', format);
-                  await decodeContainerAndPlay(this.audioContext, audioBytes);
-                } else {
-                  // Fallback to PCM decoder
-                  console.log('🎵 Using PCM decoder');
-                  await playAudioData(this.audioContext, audioBytes);
+                // Guard: must be 16-bit aligned
+                if ((audioBytes.byteLength & 1) !== 0) {
+                  console.error('❌ PCM not 16-bit aligned. Dropping frame length=', audioBytes.byteLength);
+                  return;
                 }
                 
+                await playAudioData(this.audioContext, audioBytes);
                 console.log('✅ Audio playback initiated');
               } else {
                 console.error('❌ No audio context available!');

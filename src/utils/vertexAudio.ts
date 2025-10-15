@@ -13,9 +13,8 @@ export const sniffAudioFormat = (bytes: Uint8Array): 'wav' | 'ogg' | 'mp3' | 'pc
     return 'ogg';
   }
   
-  // MP3: 'ID3' at 0 or MPEG frame sync (0xFF 0xFB/0xF3/0xF2)
-  if ((bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33) ||
-      (bytes[0] === 0xFF && (bytes[1] === 0xFB || bytes[1] === 0xF3 || bytes[1] === 0xF2))) {
+  // MP3: Only detect by ID3 header (not MPEG sync - too many false positives with PCM)
+  if (bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33) {
     return 'mp3';
   }
   
@@ -347,18 +346,17 @@ class AudioQueue {
   }
 
   private createAudioBufferFromPCM(pcmData: Uint8Array): AudioBuffer {
-    // Convert PCM16 little-endian to Int16Array
-    const int16Data = new Int16Array(pcmData.length / 2);
-    for (let i = 0; i < pcmData.length; i += 2) {
-      int16Data[i / 2] = pcmData[i] | (pcmData[i + 1] << 8); // little-endian
-    }
+    // Use DataView for safer, faster Int16 conversion
+    const dv = new DataView(pcmData.buffer, pcmData.byteOffset, pcmData.byteLength);
+    const frames = pcmData.byteLength >> 1;
     
-    console.log('✅ Converted to Int16Array, samples:', int16Data.length);
+    console.log('✅ Converting PCM16 to Float32, frames:', frames);
     
     // Convert Int16 to Float32 in range [-1, 1]
-    const float32Data = new Float32Array(int16Data.length);
-    for (let i = 0; i < int16Data.length; i++) {
-      float32Data[i] = int16Data[i] / 32768.0; // Normalize to [-1, 1]
+    const float32Data = new Float32Array(frames);
+    for (let i = 0, offset = 0; i < frames; i++, offset += 2) {
+      const int16Sample = dv.getInt16(offset, true); // true = little-endian
+      float32Data[i] = int16Sample / 32768.0;
     }
     
     console.log('✅ Converted to Float32Array, samples:', float32Data.length);
