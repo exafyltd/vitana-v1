@@ -108,28 +108,27 @@ serve(async (req) => {
           console.log('✅ Connected to Gemini Live API');
           isConnected = true;
 
-          // Send setup configuration with correct camelCase field names
-          // Request WAV format with LINEAR16 encoding for consistent audio output
+          // Send setup configuration
+          // Let Gemini use its default audio format - client will detect and decode accordingly
           const setupMessage = {
             setup: {
               model: 'models/gemini-2.0-flash-exp',
               generationConfig: {
                 responseModalities: ['AUDIO'],
-                responseMimeType: 'audio/wav', // Request WAV format
                 speechConfig: {
                   voiceConfig: { 
                     prebuiltVoiceConfig: { voiceName: 'Aoede' } 
-                  },
-                  audioEncoding: 'LINEAR16', // Request LINEAR16 PCM encoding
-                  sampleRateHertz: 24000 // 24kHz sample rate
-                },
+                  }
+                  // audioEncoding and sampleRateHertz are NOT supported by Gemini Live API v1beta
+                  // Gemini will use its default format, which the client will detect via sniffing
+                }
               },
               systemInstruction: {
                 parts: [{
-                  text: 'You are a helpful AI assistant. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights.',
-                }],
-              },
-            },
+                  text: 'You are a helpful AI assistant. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights.'
+                }]
+              }
+            }
           };
           
           console.log('📤 Sending setup to Gemini...', JSON.stringify(setupMessage, null, 2));
