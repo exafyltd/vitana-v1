@@ -267,12 +267,19 @@ class AudioQueue {
   private queue: Uint8Array[] = [];
   private isPlaying = false;
   private buffer: Uint8Array = new Uint8Array(0);
-  private readonly MIN_CHUNK_SIZE = 2048; // ~42ms at 24kHz PCM16 for smoother playback
+  private readonly MIN_CHUNK_SIZE = 4096; // Increased from 2048 to prevent tiny chunk artifacts (~85ms at 24kHz PCM16)
 
   constructor(private audioContext: AudioContext) {}
 
   async addToQueue(audioData: Uint8Array) {
     console.log('🔊 Adding audio chunk:', audioData.byteLength, 'bytes');
+    
+    // Reject extremely small chunks that cause scratchy artifacts
+    if (audioData.byteLength < 20) {
+      console.warn('⚠️ Ignoring tiny audio chunk (<20 bytes) to prevent scratchy artifacts');
+      return;
+    }
+    
     console.log('   Current buffer:', this.buffer.byteLength, 'bytes');
     console.log('   Queue length:', this.queue.length, 'chunks');
     

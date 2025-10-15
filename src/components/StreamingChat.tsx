@@ -90,35 +90,50 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }
 
   const handleMicToggle = async () => {
-    console.log('[MIC] 🎤 Button clicked, vertexRecording:', vertexRecording);
+    console.log('[MIC] 🎤 Microphone button clicked, vertexRecording:', vertexRecording);
     
     if (vertexRecording) {
-      // Stop recording
+      console.log('[MIC] 🛑 Stopping Vertex audio recording');
       vertexStopAudio();
       setIsRecording(false);
+      setIsAudioActive(false);
     } else {
-      // Start audio-only mode (no screen sharing)
       try {
-        setIsRecording(true); // Optimistic UI
-        
-        if (!vertexConnected) {
-          // Connect if not already connected
+        // Ensure Gemini is ready first
+        if (!vertexIsGeminiReady) {
+          console.log('[MIC] ⏳ Connecting to Gemini first...');
           await vertexConnect();
           
-          // Wait for connection_ready (greeting will auto-play)
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          // Wait for Gemini ready
+          let attempts = 0;
+          while (!vertexIsGeminiReady && attempts < 20) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            attempts++;
+          }
+          
+          if (!vertexIsGeminiReady) {
+            throw new Error('Connection timeout - please try again');
+          }
         }
         
-        // Start audio recording
+        console.log('[MIC] ▶️ Starting Vertex audio recording');
+        setIsRecording(true);
+        setIsAudioActive(true);
         await vertexStartAudio();
         
-        console.log('✅ Audio-only mode activated');
+        toast({
+          title: "Microphone Active",
+          description: "Gemini is listening to you",
+          duration: 2000,
+        });
+        console.log('✅ Vertex audio recording started');
       } catch (error) {
         console.error('[MIC] ❌ Error:', error);
         setIsRecording(false);
+        setIsAudioActive(false);
         toast({
           title: "Microphone Error",
-          description: error instanceof Error ? error.message : "Could not access microphone",
+          description: error instanceof Error ? error.message : "Could not start microphone",
           variant: "destructive",
         });
       }
@@ -473,16 +488,44 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             onClick={async () => {
               console.log('[SPARKLES] ✨ Requesting AI advice via Gemini Live...');
               
-              if (!vertexConnected) {
-                await vertexConnect();
-                await new Promise(resolve => setTimeout(resolve, 2000));
+              try {
+                // Ensure Gemini is ready first
+                if (!vertexIsGeminiReady) {
+                  console.log('[SPARKLES] ⏳ Connecting to Gemini...');
+                  await vertexConnect();
+                  
+                  // Wait for Gemini ready
+                  let attempts = 0;
+                  while (!vertexIsGeminiReady && attempts < 20) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    attempts++;
+                  }
+                  
+                  if (!vertexIsGeminiReady) {
+                    throw new Error('Connection timeout - please try again');
+                  }
+                }
+                
+                const prompt = preferences?.auto_greeting_enabled 
+                  ? "Based on our conversation so far, what advice or recommendation would be most helpful for me right now?"
+                  : "Hello! What can you help me with today?";
+                
+                console.log('[SPARKLES] 📤 Sending prompt to Gemini');
+                vertexSendText(prompt);
+                
+                toast({
+                  title: "AI Advice Requested",
+                  description: "Gemini is thinking...",
+                  duration: 2000,
+                });
+              } catch (error) {
+                console.error('[SPARKLES] ❌ Error:', error);
+                toast({
+                  title: "Connection Error",
+                  description: error instanceof Error ? error.message : "Could not reach Gemini",
+                  variant: "destructive"
+                });
               }
-              
-              const prompt = preferences?.auto_greeting_enabled 
-                ? "Based on our conversation so far, what advice or recommendation would be most helpful for me right now?"
-                : "Hello! What can you help me with today?";
-              
-              vertexSendText(prompt);
             }}
             disabled={isGeneratingMessage || vertexConnecting}
             className="hover:bg-accent rounded-full relative"
@@ -518,28 +561,54 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             size="icon"
             onClick={async () => {
               if (vertexCameraActive) {
+                console.log('[CAMERA] 🛑 Stopping camera');
                 vertexStopCamera();
               } else {
                 try {
-                  if (!vertexConnected) {
+                  // Ensure Gemini is ready first
+                  if (!vertexIsGeminiReady) {
+                    console.log('[CAMERA] ⏳ Connecting to Gemini...');
                     await vertexConnect();
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Wait for Gemini ready
+                    let attempts = 0;
+                    while (!vertexIsGeminiReady && attempts < 20) {
+                      await new Promise(resolve => setTimeout(resolve, 500));
+                      attempts++;
+                    }
+                    
+                    if (!vertexIsGeminiReady) {
+                      throw new Error('Connection timeout - please try again');
+                    }
                   }
+                  
+                  console.log('[CAMERA] ▶️ Starting camera');
                   await vertexStartCamera();
+                  toast({
+                    title: "Camera Active",
+                    description: "Gemini can now see your camera feed",
+                    duration: 2000,
+                  });
                 } catch (error) {
+                  console.error('[CAMERA] ❌ Error:', error);
                   toast({
                     title: "Camera Error",
-                    description: "Failed to access camera",
+                    description: error instanceof Error ? error.message : "Failed to access camera",
                     variant: "destructive"
                   });
                 }
               }
             }}
+            disabled={vertexConnecting}
             className={vertexCameraActive ? "bg-ruby text-white hover:bg-ruby/90 rounded-full" : "hover:bg-accent rounded-full"}
             aria-pressed={vertexCameraActive}
             aria-label="Toggle camera"
           >
-            <VideoIcon className="h-5 w-5" />
+            {vertexConnecting ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <VideoIcon className="h-5 w-5" />
+            )}
           </Button>
 
           <DropdownMenu>
