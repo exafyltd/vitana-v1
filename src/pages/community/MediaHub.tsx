@@ -12,6 +12,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2 } from "lucide-react";
+import { useBookmarks } from "@/hooks/useBookmarks";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -38,7 +39,8 @@ import {
 export default function MediaHub() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { playMedia, currentMedia, isPlaying, togglePlay } = useAudioPlayer();
+  const { playMedia, currentMedia, isPlaying, togglePlay, pause } = useAudioPlayer();
+  const { isBookmarked, toggleBookmark } = useBookmarks();
   const queryClient = useQueryClient();
   const {
     pendingCount,
@@ -440,31 +442,107 @@ export default function MediaHub() {
                                 </div>
                               </div>
 
-                              {/* Premium Play Button - Enhanced Visual Emphasis */}
-                              <Button 
-                                size="sm" 
-                                onClick={() => {
-                                  playMedia({
-                                    id: track.id,
-                                    title: track.title,
-                                    creator: track.music_metadata?.[0]?.artist_name || 'Unknown Artist',
-                                    audioUrl: track.file_url,
-                                    duration: track.duration || 0,
-                                    mediaType: 'music'
-                                  });
-                                }}
-                                className={`shrink-0 w-12 h-12 rounded-full transition-all duration-300 ease-out ${
-                                  currentMedia?.id === track.id && isPlaying
-                                    ? 'bg-white shadow-lg shadow-purple-400/60 border-2 border-purple-400 hover:shadow-xl hover:shadow-purple-400/70 hover:scale-105 animate-pulse'
-                                    : 'bg-white/95 hover:bg-white shadow-md hover:shadow-lg hover:shadow-purple-300/50 border-2 border-purple-200/50 hover:border-purple-300 group-hover:scale-110 hover:scale-[1.15]'
-                                }`}
-                              >
-                                {currentMedia?.id === track.id && isPlaying ? (
-                                  <Pause className="w-5 h-5 text-purple-600" />
-                                ) : (
-                                  <Play className="w-5 h-5 text-purple-600 ml-0.5" />
-                                )}
-                              </Button>
+                              {/* Right Actions - Bookmark, Share, and Play */}
+                              <div className="flex items-center gap-2 shrink-0">
+                                {/* Bookmark/Heart Button */}
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={async (e) => {
+                                    e.stopPropagation();
+                                    await toggleBookmark({
+                                      item_type: 'music',
+                                      item_id: track.id,
+                                      item_name: track.title,
+                                      item_metadata: {
+                                        artist: track.music_metadata?.[0]?.artist_name || 'Unknown Artist',
+                                        duration: track.duration,
+                                        genre: track.music_metadata?.[0]?.genre,
+                                        file_url: track.file_url,
+                                        tags: track.tags || []
+                                      }
+                                    });
+                                  }}
+                                  className="h-10 w-10"
+                                  aria-label={
+                                    isBookmarked('music', track.id) 
+                                      ? "Remove from favorites" 
+                                      : "Add to favorites"
+                                  }
+                                >
+                                  <Heart
+                                    className={`h-4 w-4 transition-colors ${
+                                      isBookmarked('music', track.id)
+                                        ? "fill-purple-500 text-purple-500"
+                                        : "text-muted-foreground hover:text-purple-500"
+                                    }`}
+                                  />
+                                </Button>
+
+                                {/* Share Button */}
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={async (e) => {
+                                    e.stopPropagation();
+                                    const shareData = {
+                                      title: track.title,
+                                      text: `Check out "${track.title}" by ${track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} on Vitana`,
+                                      url: `${window.location.origin}/comm/media-hub?music=${track.id}`,
+                                    };
+
+                                    if (navigator.share) {
+                                      try {
+                                        await navigator.share(shareData);
+                                      } catch (err) {
+                                        // User cancelled share
+                                      }
+                                    } else {
+                                      // Fallback to clipboard
+                                      await navigator.clipboard.writeText(shareData.url);
+                                      toast({
+                                        title: "Link copied",
+                                        description: "Music link copied to clipboard",
+                                        duration: 2000,
+                                      });
+                                    }
+                                  }}
+                                  className="h-10 w-10"
+                                  aria-label="Share music"
+                                >
+                                  <Share2 className="h-4 w-4 text-muted-foreground hover:text-purple-500" />
+                                </Button>
+
+                                {/* Play Button - Removed animate-pulse */}
+                                <Button 
+                                  size="sm" 
+                                  onClick={() => {
+                                    if (currentMedia?.id === track.id && isPlaying) {
+                                      pause();
+                                    } else {
+                                      playMedia({
+                                        id: track.id,
+                                        title: track.title,
+                                        creator: track.music_metadata?.[0]?.artist_name || 'Unknown Artist',
+                                        audioUrl: track.file_url,
+                                        duration: track.duration || 0,
+                                        mediaType: 'music'
+                                      });
+                                    }
+                                  }}
+                                  className={`shrink-0 w-12 h-12 rounded-full transition-all duration-300 ease-out ${
+                                    currentMedia?.id === track.id && isPlaying
+                                      ? 'bg-white shadow-lg shadow-purple-400/60 border-2 border-purple-400 hover:shadow-xl hover:shadow-purple-400/70 hover:scale-105'
+                                      : 'bg-white/95 hover:bg-white shadow-md hover:shadow-lg hover:shadow-purple-300/50 border-2 border-purple-200/50 hover:border-purple-300 group-hover:scale-110 hover:scale-[1.15]'
+                                  }`}
+                                >
+                                  {currentMedia?.id === track.id && isPlaying ? (
+                                    <Pause className="w-5 h-5 text-purple-600" />
+                                  ) : (
+                                    <Play className="w-5 h-5 text-purple-600 ml-0.5" />
+                                  )}
+                                </Button>
+                              </div>
                             </div>
                           );
                         })

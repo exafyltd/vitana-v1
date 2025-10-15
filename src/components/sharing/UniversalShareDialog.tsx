@@ -36,7 +36,7 @@ interface ShareChannel extends SocialPlatform {
 }
 
 interface ShareableContent {
-  type: "group" | "event" | "meetup" | "live_room" | "profile" | "post" | "service";
+  type: "group" | "event" | "meetup" | "live_room" | "profile" | "post" | "service" | "music";
   id: string;
   title: string;
   description?: string;

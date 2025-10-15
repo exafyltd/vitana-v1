@@ -6,7 +6,8 @@ export type BookmarkItemType =
   | 'lab_test' 
   | 'course' 
   | 'event' 
-  | 'live_room';
+  | 'live_room'
+  | 'music';
 
 export interface BookmarkedItem {
   id: string;

@@ -5,7 +5,7 @@ import { UniversalShareDialog } from "./UniversalShareDialog";
 import { analytics } from "@/lib/analytics";
 
 interface ShareableContent {
-  type: "group" | "event" | "meetup" | "live_room" | "profile" | "post" | "service";
+  type: "group" | "event" | "meetup" | "live_room" | "profile" | "post" | "service" | "music";
   id: string;
   title: string;
   description?: string;
