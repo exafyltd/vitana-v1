@@ -240,43 +240,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           
           {/* Content Overlay */}
           <CardContent className="absolute inset-0 p-6 h-full flex flex-col text-white">
-            {/* Top Section - Right-aligned badges */}
-            <div className="flex justify-end items-start">
-              {!utilityTopRight && (
-                <div className="flex items-center gap-2">
-                  {/* Pillar badge */}
-                  {pillar && (
-                    <div className="text-xs text-white font-medium bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap">
-                      {pillar}
-                    </div>
-                  )}
-                  
-                  {/* Price badge */}
-                  {price !== undefined && (
-                    <div className={cn(
-                      "text-xs font-bold rounded-md px-2 py-1 backdrop-blur-sm border whitespace-nowrap",
-                      price === "free" 
-                        ? "bg-green-500/90 text-white border-green-400/50" 
-                        : "bg-primary/90 text-primary-foreground border-primary/50"
-                    )}>
-                      {price === "free" ? "FREE" : `$${price}`}
-                    </div>
-                  )}
-                  
-                  {/* Timestamp */}
-                  {timestamp && (
-                    <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
-                      <Clock className="w-3 h-3" />
-                      <span className="font-medium">{timestamp}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Utility Top Right Slot */}
-            {utilityTopRight && (
-              <div className="absolute top-4 right-4 z-20 pointer-events-auto flex items-center gap-2">
+            {/* Top Section - Category + Price on left, Timestamp on right */}
+            <div className="flex justify-between items-start">
+              {/* Left side - Category + Price */}
+              <div className="flex items-center gap-2">
                 {/* Pillar badge */}
                 {pillar && (
                   <div className="text-xs text-white font-medium bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap">
@@ -295,7 +262,20 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                     {price === "free" ? "FREE" : `$${price}`}
                   </div>
                 )}
-                
+              </div>
+              
+              {/* Right side - Timestamp (only when no utilityTopRight) */}
+              {!utilityTopRight && timestamp && (
+                <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
+                  <Clock className="w-3 h-3" />
+                  <span className="font-medium">{timestamp}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Utility Top Right Slot - Timestamp + Actions */}
+            {utilityTopRight && (
+              <div className="absolute top-4 right-4 z-20 pointer-events-auto flex items-center gap-2">
                 {/* Timestamp */}
                 {timestamp && (
                   <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
