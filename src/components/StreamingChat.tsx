@@ -405,6 +405,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       {/* Vertex Live connection indicators */}
       {useVertexLiveMode && (
         <div className="fixed top-20 right-4 z-50 flex flex-col gap-2">
+          {(() => {
+            console.log('🔍 [UI Debug] vertexConnectionState:', vertexConnectionState, 'vertexIsGeminiReady:', vertexIsGeminiReady, 'vertexConnected:', vertexConnected);
+            return null;
+          })()}
           {vertexConnectionState === 'connecting' && (
             <div className="bg-amber-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
               <Loader2 className="w-3 h-3 animate-spin" />
