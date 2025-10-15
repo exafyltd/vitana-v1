@@ -99,35 +99,37 @@ serve(async (req) => {
           return;
         }
 
-        // Connect to Google AI Studio Gemini Live API
-        const geminiUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${apiKey}`;
-        console.log('🔗 Connecting to Gemini Live API...');
+        // Connect to Google AI Studio Gemini Live API (v1beta endpoint)
+        const geminiUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=${apiKey}`;
+        console.log('🔗 Connecting to Gemini Live API (v1beta)...');
         vertexSocket = new WebSocket(geminiUrl);
 
         vertexSocket.onopen = () => {
-          console.log('✅ Connected to Vertex AI Live API');
+          console.log('✅ Connected to Gemini Live API');
           isConnected = true;
 
-          // Send setup configuration
+          // Send setup configuration with correct camelCase field names
           const setupMessage = {
             setup: {
               model: 'models/gemini-2.0-flash-exp',
-              generation_config: {
-                response_modalities: ['AUDIO'],
-                speech_config: {
-                  voice_config: { prebuilt_voice_config: { voice_name: 'Aoede' } },
+              generationConfig: {
+                responseModalities: ['AUDIO'],
+                speechConfig: {
+                  voiceConfig: { 
+                    prebuiltVoiceConfig: { voiceName: 'Aoede' } 
+                  },
                 },
               },
-              system_instruction: {
+              systemInstruction: {
                 parts: [{
-                  text:
-                    'You are a helpful AI assistant. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights.',
+                  text: 'You are a helpful AI assistant. Keep your responses natural and conversational. When the user shares their screen, describe what you see and provide helpful insights.',
                 }],
               },
             },
           };
+          
+          console.log('📤 Sending setup to Gemini...', JSON.stringify(setupMessage, null, 2));
           vertexSocket!.send(JSON.stringify(setupMessage));
-          console.log('📤 Sent setup configuration to Vertex AI');
 
           // Notify client that connection is ready and mark setup complete for the UI
           clientSocket.send(
