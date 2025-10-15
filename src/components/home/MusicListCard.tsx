@@ -107,7 +107,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
         </div>
       </CardHeader>
       
-      <CardContent className="space-y-2 pb-4">
+      <CardContent className="space-y-1 pb-4">
         {tracks.slice(0, 5).map((track) => {
           const isCurrentlyPlaying = isTrackPlaying(track.id);
           
@@ -115,8 +115,11 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
             <div
               key={track.id}
               className={cn(
-                "flex items-center gap-3 p-2 rounded-lg hover:bg-purple-50/50 transition-all group/track",
-                isCurrentlyPlaying && "bg-purple-100/70"
+                "flex items-center gap-3 p-3 rounded-xl transition-all duration-300 group/track border-b border-border/30 last:border-b-0",
+                "bg-gradient-to-r from-hsl(var(--domain-community-accent)/0.02) to-transparent",
+                "hover:from-hsl(var(--domain-community-accent)/0.06) hover:to-hsl(var(--domain-community-accent)/0.02)",
+                "hover:shadow-sm hover:shadow-hsl(var(--domain-community-accent)/0.1) hover:scale-[1.01]",
+                isCurrentlyPlaying && "from-hsl(var(--domain-community-accent)/0.08) to-hsl(var(--domain-community-accent)/0.04) shadow-sm"
               )}
             >
               {/* Thumbnail or music icon */}
@@ -155,10 +158,10 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
               
               {/* Track info */}
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-sm truncate text-foreground">
+                <h4 className="font-semibold text-sm truncate text-foreground leading-snug">
                   {track.title}
                 </h4>
-                <p className="text-xs text-muted-foreground truncate">
+                <p className="text-xs text-muted-foreground/70 truncate font-light">
                   {track.artist}
                 </p>
               </div>
@@ -174,14 +177,16 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
                 variant="ghost"
                 onClick={() => handlePlayTrack(track)}
                 className={cn(
-                  "rounded-full w-8 h-8 p-0 opacity-0 group-hover/track:opacity-100 transition-opacity hover:bg-purple-400/20",
-                  isCurrentlyPlaying && "opacity-100 bg-purple-400/20"
+                  "rounded-full w-9 h-9 p-0 transition-all duration-300 flex-shrink-0",
+                  "opacity-0 group-hover/track:opacity-100",
+                  "hover:bg-hsl(var(--domain-community-accent)/0.15) hover:scale-110 hover:shadow-md hover:shadow-hsl(var(--domain-community-accent)/0.2)",
+                  isCurrentlyPlaying && "opacity-100 bg-hsl(var(--domain-community-accent)/0.12) shadow-sm"
                 )}
               >
                 {isCurrentlyPlaying ? (
-                  <Pause className="w-4 h-4 text-purple-600" />
+                  <Pause className="w-4 h-4 text-hsl(var(--domain-community-accent))" />
                 ) : (
-                  <Play className="w-4 h-4 text-purple-600" />
+                  <Play className="w-4 h-4 text-hsl(var(--domain-community-accent)) ml-0.5" />
                 )}
               </Button>
             </div>
