@@ -44,6 +44,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   // Vertex Live API integration
   const {
     isConnected: vertexConnected,
+    isGeminiReady: vertexIsGeminiReady,
     isConnecting: vertexConnecting,
     isError: vertexIsError,
     connectionState: vertexConnectionState,
@@ -243,39 +244,75 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             console.log('🔇 Cancelled TTS before Vertex connection');
           }
           
-          // Connect and start audio first
+          // DON'T set isVideoActive yet - wait for confirmation!
+          
+          // Connect (this will show "Connecting..." indicator only)
           await vertexConnect();
+          
+          // Wait for Gemini to be ready (not just WebSocket)
+          console.log('⏳ Waiting for Gemini confirmation...');
+          let attempts = 0;
+          while (!vertexIsGeminiReady && attempts < 40) { // 20 seconds max (40 * 500ms)
+            await new Promise(resolve => setTimeout(resolve, 500));
+            attempts++;
+          }
+          
+          if (!vertexIsGeminiReady) {
+            throw new Error('Gemini connection timeout - please try again');
+          }
+          
+          console.log('✅ Gemini is ready! Starting audio...');
+          
+          // Start audio recording
           await vertexStartAudio();
           
-          // Wait for greeting, then show screen picker
+          // Wait for greeting to play (2.5s), then prompt for screen
           setTimeout(async () => {
             try {
               await vertexStartScreen();
               console.log('✅ Screen sharing started');
-              // Only set video active AFTER screen sharing succeeds
+              
+              // ONLY NOW set video active (both screen AND connection confirmed)
               setIsVideoActive(true);
             } catch (error) {
-              console.warn('User cancelled screen sharing or error:', error);
-              // Clean up if screen sharing fails
+              console.warn('Screen sharing cancelled or failed:', error);
+              
+              // Clean up everything
               if (vertexRecording) vertexStopAudio();
               vertexDisconnect();
+              
+              // Ensure states are neutral
               setIsVideoActive(false);
+              setIsAudioActive(false);
+              
               toast({
                 title: "Screen sharing cancelled",
                 description: "You can use voice-only mode with the microphone button",
               });
             }
-          }, 2500); // 2.5s delay for greeting to complete
+          }, 2500);
           
-          console.log('✅ Vertex Live connection initiated');
+          console.log('✅ Vertex Live activation in progress...');
         } catch (error) {
           console.error('❌ Failed to activate Vertex Live:', error);
+          
+          // CRITICAL: Rollback all states on error
           setIsVideoActive(false);
+          setIsAudioActive(false);
+          
+          // Disconnect if partially connected
+          if (vertexConnected || vertexConnecting) {
+            vertexDisconnect();
+          }
+          
           toast({
-            title: "Failed to start Vertex AI Live",
-            description: "Please check your connection and try again",
+            title: "Connection Failed",
+            description: error instanceof Error ? error.message : "Could not connect to Gemini AI",
             variant: "destructive",
           });
+          
+          // Re-throw so AppLayout can also rollback
+          throw error;
         }
       } else {
         setIsVideoActive(true);
@@ -287,9 +324,20 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       
       if (useVertexLiveMode) {
         // Stop all media streams
-        if (vertexRecording) vertexStopAudio();
-        if (vertexScreenSharing) vertexStopScreen();
-        if (vertexCameraActive) vertexStopCamera();
+        if (vertexRecording) {
+          console.log('🛑 Stopping audio...');
+          vertexStopAudio();
+        }
+        if (vertexScreenSharing) {
+          console.log('🛑 Stopping screen share...');
+          vertexStopScreen();
+        }
+        if (vertexCameraActive) {
+          console.log('🛑 Stopping camera...');
+          vertexStopCamera();
+        }
+        
+        console.log('🔌 Disconnecting from Vertex...');
         vertexDisconnect();
       }
       
@@ -309,6 +357,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }), [
     useVertexLiveMode,
     vertexConnect,
+    vertexIsGeminiReady,
     vertexStartAudio,
     vertexStartScreen,
     vertexStopAudio,
@@ -361,14 +410,14 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         <div className="fixed top-20 right-4 z-50 flex flex-col gap-2">
           {vertexConnectionState === 'connecting' && (
             <div className="bg-amber-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
-              <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              <Loader2 className="w-3 h-3 animate-spin" />
               <span className="text-xs font-medium">Connecting to Gemini...</span>
             </div>
           )}
-          {vertexConnectionState === 'connected' && (
+          {(vertexConnectionState === 'gemini_ready' || vertexConnectionState === 'connected') && (
             <div className="bg-emerald-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
               <div className="w-2 h-2 bg-white rounded-full" />
-              <span className="text-xs font-medium">Live with Gemini</span>
+              <span className="text-xs font-medium">Gemini Ready</span>
             </div>
           )}
           {vertexConnectionState === 'error' && (
@@ -407,7 +456,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         id="comms-dock"
         className={
           `fixed inset-x-0 bottom-0 p-4 z-20 transition-colors rounded-t-xl ` +
-          (isVideoActive ? "bg-ruby text-white" : "bg-muted text-foreground")
+          (isVideoActive && vertexScreenSharing ? "bg-ruby text-white" : "bg-muted text-foreground")
         }
         style={{ 
           position: 'fixed', 

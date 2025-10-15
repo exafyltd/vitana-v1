@@ -2,7 +2,8 @@ import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, pl
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
-  onConnectionReady?: () => void; // NEW: Triggered when connection is ready for greeting
+  onConnectionReady?: () => void; // Triggered when WebSocket opens
+  onGeminiReady?: () => void; // NEW: Triggered when Gemini AI confirms it's ready
   onTranscript?: (text: string, isFinal: boolean) => void;
   onError?: (error: string) => void;
   onTrace?: (message: string) => void;
@@ -17,6 +18,7 @@ export class VertexLiveService {
   private callbacks: VertexLiveCallbacks = {};
   private conversationId: string | null = null;
   private isSetupComplete = false;
+  private geminiReadyFired = false; // NEW: Track if we've fired onGeminiReady
 
   constructor(callbacks: VertexLiveCallbacks) {
     this.callbacks = callbacks;
@@ -161,10 +163,10 @@ export class VertexLiveService {
 
     if (data.type === 'connection_ready') {
       this.conversationId = data.conversationId;
-      console.log('✅ Connection ready, conversation ID:', this.conversationId);
-      this.callbacks.onTrace?.('Received connection_ready');
-      this.callbacks.onConnectionReady?.(); // Trigger greeting flow
-      this.callbacks.onConnectionChange?.(true);
+      console.log('🔌 WebSocket connection ready, conversation ID:', this.conversationId);
+      this.callbacks.onTrace?.('Received connection_ready (WebSocket open, waiting for Gemini...)');
+      this.callbacks.onConnectionReady?.(); // WebSocket is ready, but not Gemini yet
+      // Don't call onConnectionChange(true) yet - wait for Gemini confirmation
       return;
     }
 
@@ -174,17 +176,33 @@ export class VertexLiveService {
       return;
     }
 
-    // Handle setup complete
+    // Handle setup complete - Gemini is ready!
     if (data.setupComplete) {
       this.isSetupComplete = true;
-      console.log('✅ Vertex AI setup complete');
-      this.callbacks.onTrace?.('Setup complete');
+      console.log('🎉 Gemini AI setup complete and ready!');
+      this.callbacks.onTrace?.('Gemini setup complete');
+      
+      // Fire Gemini ready callback (only once)
+      if (!this.geminiReadyFired) {
+        this.geminiReadyFired = true;
+        console.log('🔔 Firing onGeminiReady callback');
+        this.callbacks.onGeminiReady?.(); // This will trigger bell and greeting
+        this.callbacks.onConnectionChange?.(true); // NOW we're truly connected
+      }
       return;
     }
 
     // Handle server content (AI responses)
     if (data.serverContent) {
       const content = data.serverContent;
+      
+      // If this is the first model turn and Gemini ready hasn't fired, fire it now
+      if (content.modelTurn && !this.geminiReadyFired) {
+        this.geminiReadyFired = true;
+        console.log('🎉 Gemini responding (first model turn) - firing onGeminiReady');
+        this.callbacks.onGeminiReady?.();
+        this.callbacks.onConnectionChange?.(true);
+      }
       
       if (content.modelTurn) {
         const parts = content.modelTurn.parts || [];
@@ -403,6 +421,7 @@ export class VertexLiveService {
     }
 
     this.isSetupComplete = false;
+    this.geminiReadyFired = false; // Reset ready flag
     this.conversationId = null;
     this.callbacks.onConnectionChange?.(false);
   }

@@ -78,17 +78,28 @@ function AppSidebar({
     if (isStreaming) {
       console.log('🛑 Ending stream...');
       streamingChatRef.current?.deactivateVideo();
-      setIsStreaming(false); // Immediate UI update
-      console.log('✅ Stream ended, button should show "Start Stream"');
+      setIsStreaming(false); // Immediate UI update for stop
+      console.log('✅ Stream ended');
     } else {
       console.log('▶️ Starting stream...');
-      setIsStreaming(true); // Optimistic UI (red button immediately)
+      
+      // DON'T set isStreaming = true here!
+      // Let the polling mechanism (line 96-104) detect when it's actually active
+      
       try {
         await streamingChatRef.current?.activateVideo();
-        console.log('✅ Stream started, button should show "End Stream"');
+        
+        // If we get here, connection succeeded
+        // The useEffect polling will pick up isStreamingActive() = true
+        console.log('✅ Stream activation initiated');
       } catch (error) {
         console.error('❌ Stream start failed:', error);
-        setIsStreaming(false); // Rollback on error
+        
+        // Make absolutely sure state is neutral
+        setIsStreaming(false);
+        
+        // Error toast is already shown by activateVideo, but log it
+        console.error('Connection error:', error);
       }
     }
   };

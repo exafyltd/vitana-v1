@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { playNotificationBell } from '@/utils/soundEffects';
 
 export const useVertexLive = () => {
-  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected' | 'error'>('disconnected');
+  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'gemini_ready' | 'connected' | 'error'>('disconnected');
   const [isRecording, setIsRecording] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [isCameraActive, setIsCameraActive] = useState(false);
@@ -16,21 +16,30 @@ export const useVertexLive = () => {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
   const retryCountRef = useRef(0);
   const hasGreetedRef = useRef(false);
-  const ringPlayedInSessionRef = useRef(false); // NEW: Track if we've rung the bell this session
+  const ringPlayedInSessionRef = useRef(false); // Track if we've rung the bell this session
 
   useEffect(() => {
     // Initialize service
     serviceRef.current = new VertexLiveService({
       onConnectionReady: () => {
-        console.log('🎉 Connection ready - triggering greeting flow');
+        console.log('🔌 WebSocket connected - waiting for Gemini confirmation...');
+        setConnectionState('connecting'); // Still connecting, not ready yet
+        setLastEvent('websocket_ready');
+      },
+      onGeminiReady: () => {
+        console.log('🎉 Gemini AI is ready!');
         
         // Only ring and greet once per session (not on reconnects)
         if (!ringPlayedInSessionRef.current) {
           ringPlayedInSessionRef.current = true;
           hasGreetedRef.current = true;
           
-          // Play notification bell only once per session
+          // Play notification bell - connection is confirmed!
           playNotificationBell();
+          
+          // Set to gemini_ready state (this is what UI will check)
+          setConnectionState('gemini_ready');
+          setLastEvent('gemini_ready');
           
           // Send greeting prompt to AI (AI will respond with audio)
           setTimeout(() => {
@@ -40,7 +49,8 @@ export const useVertexLive = () => {
           }, 500);
         } else {
           // On reconnection, just log - don't ring or greet again
-          console.log('✅ Reconnected successfully (skipping greeting/bell)');
+          console.log('✅ Reconnected to Gemini (skipping greeting/bell)');
+          setConnectionState('gemini_ready');
         }
       },
       onConnectionChange: (connected) => {
@@ -194,7 +204,8 @@ export const useVertexLive = () => {
   }, []);
 
   return {
-    isConnected: connectionState === 'connected',
+    isConnected: connectionState === 'gemini_ready' || connectionState === 'connected',
+    isGeminiReady: connectionState === 'gemini_ready' || connectionState === 'connected',
     isConnecting: connectionState === 'connecting',
     isError: connectionState === 'error',
     connectionState,
