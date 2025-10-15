@@ -346,21 +346,12 @@ export class VertexLiveService {
   }
 
   async startAudio() {
-    console.log('[VertexService] startAudio called, isSetupComplete:', this.isSetupComplete);
-    
-    // Wait for setup instead of silent return
     if (!this.isSetupComplete) {
-      console.log('[VertexService] ⏳ Waiting for Gemini setup...');
-      const startTime = Date.now();
-      while (!this.isSetupComplete) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        if (Date.now() - startTime > 30000) {
-          throw new Error('Gemini not ready for microphone - setup timeout');
-        }
-      }
+      console.warn('⚠️ Setup not complete, waiting...');
+      return;
     }
 
-    console.log('[VertexService] 🎤 Starting audio recording...');
+    console.log('🎤 Starting audio recording...');
     
     this.audioRecorder = new AudioRecorder((audioData) => {
       if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
@@ -380,33 +371,16 @@ export class VertexLiveService {
       this.ws.send(JSON.stringify(message));
     });
 
-    try {
-      await this.audioRecorder.start();
-      console.log('[VertexService] ✅ Audio recording started successfully');
-    } catch (err) {
-      console.error('[VertexService] ❌ Failed to start audio recorder:', err);
-      this.audioRecorder = null;
-      throw err;
-    }
+    await this.audioRecorder.start();
   }
 
   stopAudio() {
-    console.log('[VertexService] 🛑 Stopping audio recording...');
+    console.log('🛑 Stopping audio recording...');
     
     if (this.audioRecorder) {
       this.audioRecorder.stop();
       this.audioRecorder = null;
-      console.log('[VertexService] ✅ Audio recorder stopped and cleared');
-    } else {
-      console.log('[VertexService] ℹ️ No audio recorder to stop (idempotent)');
     }
-  }
-
-  isMicActive(): boolean {
-    if (!this.audioRecorder) return false;
-    const stream = (this.audioRecorder as any).stream;
-    if (!stream) return false;
-    return stream.getTracks().some((t: MediaStreamTrack) => t.readyState === 'live');
   }
 
   async startScreen() {

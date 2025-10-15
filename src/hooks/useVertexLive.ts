@@ -170,52 +170,18 @@ export const useVertexLive = () => {
 
   const startAudio = useCallback(async () => {
     try {
-      console.log('[VertexAudio] startAudio called, current state:', connectionStateRef.current);
       connectionTriggerRef.current = 'mic';
-      
-      // Gate on Gemini readiness
-      const currentState = connectionStateRef.current;
-      if (currentState !== 'gemini_ready' && currentState !== 'connected') {
-        console.log('[VertexAudio] Not ready, connecting first...');
-        await connect();
-        
-        // Wait up to 30s for Gemini ready
-        const startTime = Date.now();
-        while (connectionStateRef.current !== 'gemini_ready' && connectionStateRef.current !== 'connected') {
-          await new Promise(resolve => setTimeout(resolve, 150));
-          if (Date.now() - startTime > 30000) {
-            throw new Error('Connection timeout - Gemini not ready for microphone');
-          }
-        }
-      }
-      
-      // Start audio in service layer
       await serviceRef.current?.startAudio();
-      
-      // Only set isRecording AFTER successful start
       setIsRecording(true);
-      console.log('[VertexAudio] ✅ Microphone started, isRecording=true');
     } catch (err) {
-      console.error('[VertexAudio] ❌ Failed to start audio:', err);
-      setIsRecording(false); // Ensure state is false on error
-      const errorMsg = err instanceof Error ? err.message : 'Failed to start audio recording';
-      setError(errorMsg);
-      throw err; // Re-throw so caller can handle
+      console.error('Failed to start audio:', err);
+      setError('Failed to start audio recording');
     }
-  }, [connect]);
+  }, []);
 
   const stopAudio = useCallback(() => {
-    console.log('[VertexAudio] stopAudio called');
     serviceRef.current?.stopAudio();
     setIsRecording(false);
-    
-    // Belt and suspenders: verify mic is actually off
-    const isMicStillActive = serviceRef.current?.isMicActive();
-    if (isMicStillActive) {
-      console.warn('[VertexAudio] ⚠️ Mic still active after stop, retrying...');
-      serviceRef.current?.stopAudio();
-    }
-    console.log('[VertexAudio] ✅ Microphone stopped, isRecording=false');
   }, []);
 
   const startScreen = useCallback(async () => {
