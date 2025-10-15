@@ -353,45 +353,69 @@ export default function MediaHub() {
                           return (
                             <div 
                               key={track.id} 
-                              className="group flex items-center gap-4 p-4 bg-gradient-to-br from-white/60 to-purple-50/30 backdrop-blur-sm rounded-2xl border border-white/40 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-300 ease-out"
+                              className={`group relative flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 ease-out ${
+                                currentMedia?.id === track.id && isPlaying
+                                  ? 'bg-gradient-to-br from-purple-50/90 via-pink-50/70 to-white/80 border-purple-300/60 shadow-lg shadow-purple-200/40'
+                                  : 'bg-gradient-to-br from-white/80 via-purple-50/20 to-pink-50/20 border-white/50 shadow-md hover:shadow-lg hover:shadow-purple-100/30'
+                              } hover:scale-[1.01] backdrop-blur-sm`}
                             >
-                              {/* Enhanced Album Art / Icon */}
-                              <div className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-blue-400/20 flex items-center justify-center shadow-sm overflow-hidden flex-shrink-0 group-hover:shadow-md transition-shadow duration-300">
+                              {/* Enhanced Album Art with Glow */}
+                              <div className={`relative w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-300 ${
+                                currentMedia?.id === track.id && isPlaying
+                                  ? 'bg-gradient-to-br from-purple-400/30 via-pink-400/25 to-blue-400/30 shadow-lg shadow-purple-400/40'
+                                  : 'bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-blue-400/20 shadow-md shadow-purple-300/20 group-hover:shadow-lg group-hover:shadow-purple-300/30'
+                              }`}>
                                 <div className="absolute inset-0 bg-gradient-to-br from-purple-300/10 to-transparent" />
                                 <Music className="w-7 h-7 text-purple-600/80 relative z-10" />
                               </div>
 
                               {/* Content Area */}
-                              <div className="flex-1 min-w-0 space-y-1.5">
-                                {/* Title - larger and bolder */}
-                                <h3 className="font-bold text-base text-foreground truncate leading-tight">
-                                  {track.title}
-                                </h3>
+                              <div className="flex-1 min-w-0 space-y-1">
+                                {/* Title with Now Playing Indicator */}
+                                <div className="flex items-center gap-2">
+                                  <h3 className="font-bold text-base text-foreground truncate leading-tight">
+                                    {track.title}
+                                  </h3>
+                                  {currentMedia?.id === track.id && isPlaying && (
+                                    <div className="flex gap-0.5 items-end h-4">
+                                      {[1, 2, 3].map((i) => (
+                                        <div
+                                          key={i}
+                                          className="w-0.5 bg-purple-600 rounded-full animate-pulse"
+                                          style={{
+                                            height: '60%',
+                                            animationDelay: `${i * 0.15}s`,
+                                            animationDuration: '0.8s'
+                                          }}
+                                        />
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
                                 
-                                {/* Metadata - smaller and lighter */}
-                                <p className="text-xs text-muted-foreground/80 leading-snug">
+                                {/* Metadata - tighter spacing */}
+                                <p className="text-xs text-muted-foreground/80 leading-none">
                                   {track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} • {formatDuration(track.duration)}
                                 </p>
                                 
-                                {/* Description - compact and limited */}
+                                {/* Description - tighter line height, max 2 lines */}
                                 {track.description && (
-                                  <p className="text-[11px] text-muted-foreground/70 line-clamp-2 leading-relaxed">
+                                  <p className="text-[11px] text-muted-foreground/70 line-clamp-2 leading-[1.4]">
                                     {track.description}
                                   </p>
                                 )}
                                 
-                                {/* Enhanced Tags with icons */}
-                                <div className="flex flex-wrap gap-1.5 pt-1">
+                                {/* Enhanced Tags - increased top spacing */}
+                                <div className="flex flex-wrap gap-1.5 pt-2">
                                   {track.music_metadata?.[0]?.genre && (
                                     <Badge 
                                       variant="secondary" 
-                                      className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-100/60 text-purple-700 border-0 font-medium"
+                                      className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100/50 text-purple-700 border-0 font-medium"
                                     >
                                       🎹 {track.music_metadata[0].genre}
                                     </Badge>
                                   )}
                                   {track.tags?.slice(0, 2).map((tag) => {
-                                    // Add personality icons based on tag keywords
                                     const getTagIcon = (tagText: string) => {
                                       const lower = tagText.toLowerCase();
                                       if (lower.includes('rain') || lower.includes('water')) return '🌧';
@@ -407,7 +431,7 @@ export default function MediaHub() {
                                       <Badge 
                                         key={tag} 
                                         variant="outline" 
-                                        className="text-[10px] px-2.5 py-0.5 rounded-full bg-white/50 border-purple-200/50 text-purple-600/80 font-medium"
+                                        className="text-[10px] px-2 py-0.5 rounded-full bg-white/60 border-purple-200/40 text-purple-600/80 font-medium"
                                       >
                                         {getTagIcon(tag)} {tag}
                                       </Badge>
@@ -416,7 +440,7 @@ export default function MediaHub() {
                                 </div>
                               </div>
 
-                              {/* Enhanced Play Button */}
+                              {/* Premium Play Button with Now Playing Glow */}
                               <Button 
                                 size="sm" 
                                 onClick={() => {
@@ -429,12 +453,16 @@ export default function MediaHub() {
                                     mediaType: 'music'
                                   });
                                 }}
-                                className="shrink-0 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-sm hover:shadow-md transition-all duration-300 border border-purple-200/50 group-hover:scale-110 group-hover:border-purple-300"
+                                className={`shrink-0 w-11 h-11 rounded-full transition-all duration-300 ${
+                                  currentMedia?.id === track.id && isPlaying
+                                    ? 'bg-white shadow-lg shadow-purple-400/50 border-2 border-purple-400 hover:shadow-xl hover:shadow-purple-400/60 animate-pulse'
+                                    : 'bg-white/90 hover:bg-white shadow-md hover:shadow-lg border-2 border-purple-200/50 hover:border-purple-300 group-hover:scale-110'
+                                }`}
                               >
                                 {currentMedia?.id === track.id && isPlaying ? (
-                                  <Pause className="w-4 h-4 text-purple-600" />
+                                  <Pause className="w-5 h-5 text-purple-600" />
                                 ) : (
-                                  <Play className="w-4 h-4 text-purple-600 ml-0.5" />
+                                  <Play className="w-5 h-5 text-purple-600 ml-0.5" />
                                 )}
                               </Button>
                             </div>
