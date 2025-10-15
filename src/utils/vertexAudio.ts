@@ -440,6 +440,8 @@ export class CameraRecorder {
       });
 
       this.video = document.createElement('video');
+      this.video.muted = true;
+      (this.video as any).playsInline = true;
       this.video.srcObject = this.stream;
       
       // Wait for video to be ready
@@ -476,10 +478,17 @@ export class CameraRecorder {
       this.intervalId = window.setInterval(() => {
         if (!this.video || !this.canvas || !ctx) return;
 
-        this.canvas.width = this.video.videoWidth;
-        this.canvas.height = this.video.videoHeight;
+        const vw = this.video.videoWidth;
+        const vh = this.video.videoHeight;
+        if (!vw || !vh) {
+          console.warn('⚠️ Skipping frame: video dimensions are zero');
+          return;
+        }
+
+        this.canvas.width = vw;
+        this.canvas.height = vh;
         
-        ctx.drawImage(this.video, 0, 0);
+        ctx.drawImage(this.video, 0, 0, vw, vh);
         
         // Convert to JPEG base64
         this.canvas.toBlob((blob) => {

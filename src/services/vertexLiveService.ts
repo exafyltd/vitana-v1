@@ -460,6 +460,9 @@ export class VertexLiveService {
       this.cameraRecorder.stop();
       this.cameraRecorder = null;
     }
+
+    // Belt and suspenders: also stop mic when camera stops
+    this.stopAudio();
   }
 
   sendText(text: string) {
