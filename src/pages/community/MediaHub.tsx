@@ -17,8 +17,8 @@ import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { communityNavigation } from "@/config/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -49,10 +49,29 @@ export default function MediaHub() {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [activeMediaTab, setActiveMediaTab] = useState("shorts");
+  
+  // Read tab parameter from URL and set initial active tab
+  const [searchParams] = useSearchParams();
+  const [activeMediaTab, setActiveMediaTab] = useState(() => {
+    const tabParam = searchParams.get('tab');
+    // Validate tab parameter against allowed values
+    if (tabParam === 'music' || tabParam === 'podcasts' || tabParam === 'shorts') {
+      return tabParam;
+    }
+    return 'shorts'; // default fallback
+  });
+  
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [podcastToDelete, setPodcastToDelete] = useState<string | null>(null);
   const latestActions = getLatestActions(2);
+
+  // Sync activeMediaTab with URL parameter changes
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam === 'music' || tabParam === 'podcasts' || tabParam === 'shorts') {
+      setActiveMediaTab(tabParam);
+    }
+  }, [searchParams]);
 
   // Delete podcast mutation
   const deletePodcastMutation = useMutation({
