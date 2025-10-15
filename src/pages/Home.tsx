@@ -36,32 +36,71 @@ import { useEventSelection } from "@/context/EventSelectionContext";
 // Mock data for Today and Guide screens - Fallback data
 const todayScheduledEvents = [
   {
+    id: 'scheduled-1',
     title: "Morning Yoga with Lisa Chen",
     description: "Start your day with energy and mindfulness",
+    event_type: "yoga",
+    location: "Studio A",
+    virtual_link: null,
+    start_time: new Date(new Date().setHours(8, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(9, 0, 0, 0)).toISOString(),
+    max_participants: 20,
+    participant_count: 15,
+    created_by: "lisa-chen",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    image_url: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    creator_display_name: "Lisa Chen",
+    creator_avatar_url: "/lovable-uploads/lisa-chen-avatar.jpg",
     imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
     pillar: "Mental",
     author: { name: "Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
-    location: "Studio A",
     attendees: 15,
     timestamp: "08:00"
   },
   {
+    id: 'scheduled-2',
     title: "Nutrition Workshop Today",
     description: "Learn meal prep strategies for busy professionals",
+    event_type: "nutrition",
+    location: "Kitchen Lab",
+    virtual_link: null,
+    start_time: new Date(new Date().setHours(14, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(15, 30, 0, 0)).toISOString(),
+    max_participants: 15,
+    participant_count: 12,
+    created_by: "mike-thompson",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    image_url: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
+    creator_display_name: "Mike Thompson",
+    creator_avatar_url: "/lovable-uploads/mike-thompson-avatar.jpg",
     imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
     pillar: "Nutrition",
     author: { name: "Mike Thompson", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
-    location: "Kitchen Lab",
     attendees: 12,
     timestamp: "14:00"
   },
   {
+    id: 'scheduled-3',
     title: "Community Fitness Challenge",
     description: "Join the weekly group fitness challenge",
+    event_type: "fitness",
+    location: "Fitness Center",
+    virtual_link: null,
+    start_time: new Date(new Date().setHours(18, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(19, 30, 0, 0)).toISOString(),
+    max_participants: 30,
+    participant_count: 25,
+    created_by: "james-davis",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    image_url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+    creator_display_name: "James Davis",
+    creator_avatar_url: "/lovable-uploads/james-davis-avatar.jpg",
     imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
     pillar: "Exercise",
     author: { name: "James Davis", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
-    location: "Fitness Center",
     attendees: 25,
     timestamp: "18:00"
   }
@@ -377,6 +416,7 @@ export default function Home() {
 
   // Transform real events for scrolling rail - moved inside component
   const realTodayEvents = todayEvents.map(event => ({
+    id: event.id,
     title: event.title,
     description: event.description || "Join us for this community event",
     imageUrl: event.image_url || "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
@@ -387,7 +427,9 @@ export default function Home() {
     },
     location: event.location || "Virtual",
     attendees: event.participant_count,
-    timestamp: format(new Date(event.start_time), 'HH:mm')
+    timestamp: format(new Date(event.start_time), 'HH:mm'),
+    start_time: event.start_time,
+    end_time: event.end_time
   }));
 
   // Hybrid: blend real with mock for scrolling rail
@@ -410,8 +452,15 @@ export default function Home() {
 
   // Handle event click to open detail drawer
   const handleEventClick = (eventId: string) => {
+    // Search in real database events
     const allEvents = [...todayEvents, ...upcomingEvents];
-    const event = allEvents.find(e => e.id === eventId);
+    let event = allEvents.find(e => e.id === eventId);
+    
+    // If not found in real events, search in mock scheduled events
+    if (!event) {
+      event = todayScheduledEvents.find(e => e.id === eventId);
+    }
+    
     if (event) {
       setSelectedEventData(event);
       selectEvent(eventId);
@@ -471,7 +520,7 @@ export default function Home() {
               {/* Row 1: Scrolling Tracker - Continuous horizontal scroll */}
               <div className="mb-6 overflow-x-hidden w-full min-w-0">
                 <ScrollingRail
-                  items={todayScheduledEvents.map((event, index) => ({
+                  items={activeScheduledEvents.map((event, index) => ({
                     title: event.title,
                     description: event.description,
                     imageUrl: event.imageUrl,
@@ -482,7 +531,9 @@ export default function Home() {
                     timestamp: event.timestamp,
                     showReward: true,
                     rewardPoints: index === 0 ? 5 : index === 1 ? 4 : 8,
-                    rewardDescription: index === 0 ? "Earn credits for attending" : index === 1 ? "Earn credits for learning" : "Earn credits for group participation"
+                    rewardDescription: index === 0 ? "Earn credits for attending" : index === 1 ? "Earn credits for learning" : "Earn credits for group participation",
+                    eventId: event.id,
+                    onClick: () => handleEventClick(event.id)
                   }))}
                   speed="medium"
                 />
