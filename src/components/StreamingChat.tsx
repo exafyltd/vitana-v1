@@ -119,7 +119,14 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       vertexStopAudio();
       setIsRecording(false);
       setIsAudioActive(false);
-      vertexDisconnect();
+      
+      // Only disconnect if no other streams are active
+      if (!vertexCameraActive && !vertexScreenSharing) {
+        console.log('[MIC] 🔌 Disconnecting (no other streams active)');
+        vertexDisconnect();
+      } else {
+        console.log('[MIC] ℹ️ Keeping connection (camera/screen still active)');
+      }
     } else {
       // START: start audio (connection handled internally)
       setIsRecording(true);
@@ -519,16 +526,16 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                 );
               }
             }}
-            disabled={isGeneratingMessage || vertexConnecting || isAutopilotProcessing}
+            disabled={isGeneratingMessage || isAutopilotProcessing}
             className={
-              isAutopilotProcessing || vertexConnecting
+              isAutopilotProcessing
                 ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
                 : "hover:bg-accent rounded-full"
             }
             aria-label="Engage Autopilot"
             title="Autopilot - Get AI recommendations"
           >
-            {vertexConnecting || isAutopilotProcessing ? (
+            {isAutopilotProcessing ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               <Plane className="h-5 w-5" />
@@ -615,16 +622,11 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                 }
               }
             }}
-            disabled={vertexConnecting}
             className={vertexCameraActive ? "bg-ruby text-white hover:bg-ruby/90 rounded-full" : "hover:bg-accent rounded-full"}
             aria-pressed={vertexCameraActive}
             aria-label="Toggle camera"
           >
-            {vertexConnecting ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              <VideoIcon className="h-5 w-5" />
-            )}
+            <VideoIcon className="h-5 w-5" />
           </Button>
 
           <DropdownMenu>

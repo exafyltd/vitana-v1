@@ -101,7 +101,7 @@ export const useVertexLive = () => {
         // Don't auto-reconnect if user intentionally disconnected
         if (isUserDisconnectingRef.current) {
           console.log('🔕 Ignoring error during user-initiated disconnect');
-          return;
+          return; // Exit early, don't set error state
         }
         
         setError((prev) => (prev === errorMsg ? prev : errorMsg));
@@ -187,10 +187,10 @@ export const useVertexLive = () => {
     screenBellRangRef.current = false;
     cameraBellRangRef.current = false;
     
-    // Clear flag after short delay (allow disconnect to complete)
+    // Clear flag after longer delay (allow disconnect to complete)
     setTimeout(() => {
       isUserDisconnectingRef.current = false;
-    }, 500);
+    }, 1000);
   }, []);
 
   const startAudio = useCallback(async () => {
