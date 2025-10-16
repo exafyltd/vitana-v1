@@ -36,11 +36,16 @@ export const useVertexLive = () => {
     serviceRef.current = new VertexLiveService({
       onConnectionReady: () => {
         console.log('🔌 WebSocket connected - waiting for Gemini confirmation...');
-        setConnectionState('connecting'); // Still connecting, not ready yet
+        // Only update to 'connecting' if we're currently 'disconnected'
+        // Don't revert from 'gemini_ready' or 'connected'
+        if (connectionStateRef.current === 'disconnected') {
+          setConnectionState('connecting');
+        }
         setLastEvent('websocket_ready');
       },
       onGeminiReady: () => {
         console.log('🎉 Gemini AI is ready!');
+        console.log('🔄 State transition: gemini_ready (from:', connectionStateRef.current, ')');
         
         // Only ring and greet once per session (not on reconnects)
         if (!ringPlayedInSessionRef.current) {
@@ -165,20 +170,6 @@ export const useVertexLive = () => {
 
       setLastEvent('auth_ok');
       await serviceRef.current?.connect(session.access_token);
-      
-      // Add timeout detection for stuck "connecting" state
-      const connectTimeout = setTimeout(() => {
-        if (connectionStateRef.current === 'connecting') {
-          console.warn('⏱️ Connection stuck in connecting state after 15s, retrying...');
-          // Disconnect and retry
-          serviceRef.current?.disconnect();
-          setConnectionState('disconnected');
-          setTimeout(() => connect(), 1000);
-        }
-      }, 15000); // 15 second timeout
-      
-      // Store timeout ref for cleanup
-      reconnectTimeoutRef.current = connectTimeout;
       
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to connect';
