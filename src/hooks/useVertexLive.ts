@@ -259,13 +259,9 @@ export const useVertexLive = () => {
     serviceRef.current?.sendText(text);
   }, []);
 
-  // Safety net: auto-stop mic when both visual streams are off
+  // Allow audio-only sessions: do not auto-stop mic when camera/screen are off
   useEffect(() => {
-    if (!isCameraActive && !isScreenSharing && isRecording) {
-      console.log('🛡️ [Safety] Both visual streams off → auto-stopping microphone');
-      serviceRef.current?.stopAudio();
-      setIsRecording(false);
-    }
+    // Intentionally left blank to prevent unwanted mic auto-stop
   }, [isCameraActive, isScreenSharing, isRecording]);
 
   return {

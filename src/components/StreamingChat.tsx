@@ -107,6 +107,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       vertexStopAudio();
       setIsRecording(false);
       setIsAudioActive(false);
+      vertexDisconnect();
     } else {
       // START: optimistic + background connection
       setIsRecording(true);
@@ -242,14 +243,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [useVertexLiveMode, vertexTranscript]);
 
-  // Ensure mic stops whenever both camera and screen are off
+  // Allow audio-only sessions; do not auto-stop mic when camera/screen are off
   useEffect(() => {
-    if (!vertexCameraActive && !vertexScreenSharing && (vertexRecording || isAudioActive)) {
-      console.log('[SYNC] No visual streams active → stopping microphone');
-      vertexStopAudio();
-      setIsRecording(false);
-      setIsAudioActive(false);
-    }
+    // No-op to avoid unintended mic shutdown
   }, [vertexCameraActive, vertexScreenSharing, vertexRecording, isAudioActive, vertexStopAudio]);
 
   useImperativeHandle(ref, () => ({
