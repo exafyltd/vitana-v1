@@ -12,6 +12,7 @@ import { useProactiveAssistant } from "@/hooks/useProactiveAssistant"
 import { ClientSTT } from "@/utils/clientSTT"
 import { useErrorNotifications } from "@/hooks/useErrorNotifications"
 import { ErrorNotificationStack } from "@/components/ErrorNotificationStack"
+import { useGlassMode } from "@/hooks/useGlassMode"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,6 +44,21 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const { preferences } = useUserPreferences()
   const { triggerProactiveMessage, isGenerating: isGeneratingMessage } = useProactiveAssistant()
   const { errors, showError, dismissError } = useErrorNotifications()
+  
+  // Glass Mode integration
+  const {
+    isActive: glassModeActive,
+    hasAudioTrack: glassModeHasAudio,
+    isAudioMuted: glassModeAudioMuted,
+    screenContext: glassModeContext,
+    startGlassMode,
+    stopGlassMode,
+    toggleAudioMute: glassModeToggleAudio,
+    setOnOverviewFrame: glassModeSetOnOverview,
+    setOnRoiFrame: glassModeSetOnRoi,
+    setOnContextUpdate: glassModeSetOnContext,
+    setOnTextSnippet: glassModeSetOnTextSnippet,
+  } = useGlassMode()
   
   // Vertex Live API integration
   const {
@@ -78,6 +94,47 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       setIsAutopilotProcessing(false)
     })
   }, [vertexSetOnResponseComplete])
+  
+  // Wire Glass Mode to Vertex Live
+  useEffect(() => {
+    if (!glassModeActive) return;
+    
+    // Send overview frames to Vertex
+    glassModeSetOnOverview((data) => {
+      if (vertexConnected) {
+        // Send overview frame (lower priority)
+        console.log('📸 Overview frame captured');
+        // TODO: Wire to Vertex Live screen input
+      }
+    });
+    
+    // Send ROI frames to Vertex (priority)
+    glassModeSetOnRoi((data) => {
+      if (vertexConnected) {
+        // Send ROI frame (higher priority)
+        console.log('🎯 ROI frame captured');
+        // TODO: Wire to Vertex Live screen input
+      }
+    });
+    
+    // Send context updates
+    glassModeSetOnContext((context) => {
+      if (vertexConnected) {
+        // Send screen context JSON
+        console.log('📊 Context update:', context);
+        // TODO: Wire to Vertex Live as screen.context
+      }
+    });
+    
+    // Send text snippets
+    glassModeSetOnTextSnippet((text) => {
+      if (vertexConnected) {
+        // Send text snippet
+        console.log('📝 Text snippet:', text.substring(0, 50) + '...');
+        vertexSendText(`[Screen Selection] ${text}`);
+      }
+    });
+  }, [glassModeActive, vertexConnected, glassModeSetOnOverview, glassModeSetOnRoi, glassModeSetOnContext, glassModeSetOnTextSnippet, vertexSendText])
 
   const isStreaming = isAudioActive || isVideoActive
 
@@ -266,7 +323,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
-      console.log('StreamingChat: activateVideo called, useVertexLive:', useVertexLiveMode);
+      console.log('StreamingChat: activateVideo called (Glass Mode), useVertexLive:', useVertexLiveMode);
       
       if (useVertexLiveMode) {
         try {
@@ -276,45 +333,48 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             console.log('🔇 Cancelled TTS before Vertex connection');
           }
           
-          // Connect in background if needed
+          // Connect to Vertex in background if needed
           if (!vertexIsGeminiReady) {
             toast({
               title: "Connecting to Gemini...",
-              description: "Starting stream",
+              description: "Starting Glass Mode",
               duration: 2000,
             });
             await vertexConnect();
           }
           
-          // Start screen share FIRST (this is primary)
-          await vertexStartScreen();
+          // Start Glass Mode (dual-stream screen capture)
+          await startGlassMode();
           
-          // Then start audio
+          // Start microphone audio
           await vertexStartAudio();
           
           // Set active immediately
           setIsVideoActive(true);
           
-          toast({
-            title: "Stream Active",
-            description: "Screen sharing and microphone enabled",
-            duration: 2000,
-          });
+          // Bell notification only on Glass Mode start & Gemini ready
+          if (vertexIsGeminiReady) {
+            toast({
+              title: "🪟 Glass Mode Active",
+              description: "AI is watching your screen with advanced context",
+              duration: 3000,
+            });
+          }
           
-          console.log('✅ Vertex Live stream started');
+          console.log('✅ Glass Mode stream started');
         } catch (error) {
-          console.error('❌ Failed to activate Vertex Live:', error);
+          console.error('❌ Failed to activate Glass Mode:', error);
           
           // Rollback all states on error
           setIsVideoActive(false);
           setIsAudioActive(false);
           if (vertexRecording) vertexStopAudio();
-          if (vertexScreenSharing) vertexStopScreen();
+          if (glassModeActive) stopGlassMode();
           vertexDisconnect();
           
           showError(
-            "Connection Failed",
-            error instanceof Error ? error.message : "Could not connect to Gemini AI"
+            "Glass Mode Failed",
+            error instanceof Error ? error.message : "Could not start Glass Mode"
           );
           
           // Re-throw so AppLayout can also rollback
@@ -326,9 +386,15 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       }
     },
     deactivateVideo: () => {
-      console.log('StreamingChat: deactivateVideo called');
+      console.log('StreamingChat: deactivateVideo called (Glass Mode)');
       
       if (useVertexLiveMode) {
+        // Stop Glass Mode if active
+        if (glassModeActive) {
+          console.log('🛑 Stopping Glass Mode...');
+          stopGlassMode();
+        }
+        
         // Stop all media streams
         if (vertexRecording) {
           console.log('🛑 Stopping audio...');
@@ -355,9 +421,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       console.log('✅ All streams stopped, states reset');
     },
     isStreamingActive: () => {
-      // "Streaming" means screen sharing, NOT just mic recording
-      const active = useVertexLiveMode ? vertexScreenSharing : isVideoActive;
-      console.log('StreamingChat: isStreamingActive called, returning:', active);
+      // "Streaming" means Glass Mode is active, NOT just mic recording
+      const active = useVertexLiveMode ? glassModeActive : isVideoActive;
+      console.log('StreamingChat: isStreamingActive called, glassModeActive:', glassModeActive, 'returning:', active);
       return active;
     },
   }), [
@@ -375,8 +441,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     vertexRecording,
     vertexScreenSharing,
     vertexCameraActive,
+    glassModeActive,
+    startGlassMode,
+    stopGlassMode,
     isVideoActive,
-    toast
+    toast,
+    showError
   ])
 
   return (
@@ -542,8 +612,27 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             )}
           </Button>
 
-          {/* Mic / Mute toggle */}
-          {(vertexCameraActive || vertexScreenSharing) ? (
+          {/* Mic / Mute toggle - Smart mode: Mute when Glass Mode active, Mic otherwise */}
+          {glassModeActive ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={glassModeToggleAudio}
+              disabled={!glassModeHasAudio}
+              className={
+                glassModeAudioMuted
+                  ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
+                  : glassModeHasAudio
+                  ? "hover:bg-accent rounded-full"
+                  : "opacity-50 cursor-not-allowed rounded-full"
+              }
+              aria-pressed={glassModeAudioMuted}
+              aria-label={glassModeAudioMuted ? "Unmute screen audio" : "Mute screen audio"}
+              title={glassModeHasAudio ? (glassModeAudioMuted ? "Unmute screen audio" : "Mute screen audio") : "No audio track available"}
+            >
+              {glassModeAudioMuted ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+            </Button>
+          ) : (vertexCameraActive || vertexScreenSharing) ? (
             <Button
               variant="ghost"
               size="icon"
@@ -665,12 +754,24 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                   if (isProcessing) return "Processing...";
                   
                   let base = "";
-                  if (vertexRecording) base = "AI is listening…";
-                  else if (vertexCameraActive) base = "AI is listening and watching";
-                  else if (vertexScreenSharing) base = "AI is watching your screen";
-                  else base = "Type or speak";
+                  if (glassModeActive) {
+                    base = "AI is watching your screen";
+                    if (glassModeHasAudio && !glassModeAudioMuted) {
+                      base += " and listening";
+                    } else if (glassModeAudioMuted) {
+                      base += " (audio muted)";
+                    }
+                  } else if (vertexRecording) {
+                    base = "AI is listening…";
+                  } else if (vertexCameraActive) {
+                    base = "AI is listening and watching";
+                  } else if (vertexScreenSharing) {
+                    base = "AI is watching your screen";
+                  } else {
+                    base = "Type or speak";
+                  }
                   
-                  if (vertexIsMuted && (vertexCameraActive || vertexScreenSharing)) {
+                  if (vertexIsMuted && (vertexCameraActive || vertexScreenSharing) && !glassModeActive) {
                     base += " (audio muted)";
                   }
                   
