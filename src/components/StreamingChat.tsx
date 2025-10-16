@@ -83,6 +83,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     startCamera: vertexStartCamera,
     stopCamera: vertexStopCamera,
     sendText: vertexSendText,
+    sendVideoFrame: vertexSendVideoFrame,
     toggleMute: vertexToggleMute,
     setOnResponseComplete: vertexSetOnResponseComplete,
   } = useVertexLive()
@@ -102,27 +103,28 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     // Send overview frames to Vertex
     glassModeSetOnOverview((data) => {
       if (vertexConnected) {
-        // Send overview frame (lower priority)
-        console.log('📸 Overview frame captured');
-        // TODO: Wire to Vertex Live screen input
+        console.log('📸 Overview frame captured, sending to Vertex');
+        // Send overview frame (lower priority, lower resolution)
+        vertexSendVideoFrame(data, "image/jpeg");
       }
     });
     
     // Send ROI frames to Vertex (priority)
     glassModeSetOnRoi((data) => {
       if (vertexConnected) {
-        // Send ROI frame (higher priority)
-        console.log('🎯 ROI frame captured');
-        // TODO: Wire to Vertex Live screen input
+        console.log('🎯 ROI frame captured, sending to Vertex');
+        // Send ROI frame (higher priority, focused on cursor area)
+        vertexSendVideoFrame(data, "image/jpeg");
       }
     });
     
     // Send context updates
     glassModeSetOnContext((context) => {
       if (vertexConnected) {
-        // Send screen context JSON
         console.log('📊 Context update:', context);
-        // TODO: Wire to Vertex Live as screen.context
+        // Send screen context as structured text
+        const contextText = `[Screen Context] Cursor: (${context.cursorX}, ${context.cursorY}), Viewport: ${context.viewportWidth}x${context.viewportHeight}, Zoom: ${context.zoom}, Scroll: (${context.scrollX}, ${context.scrollY})`;
+        vertexSendText(contextText);
       }
     });
     
@@ -134,7 +136,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         vertexSendText(`[Screen Selection] ${text}`);
       }
     });
-  }, [glassModeActive, vertexConnected, glassModeSetOnOverview, glassModeSetOnRoi, glassModeSetOnContext, glassModeSetOnTextSnippet, vertexSendText])
+  }, [glassModeActive, vertexConnected, glassModeSetOnOverview, glassModeSetOnRoi, glassModeSetOnContext, glassModeSetOnTextSnippet, vertexSendText, vertexSendVideoFrame])
 
   const isStreaming = isAudioActive || isVideoActive
 

@@ -324,6 +324,10 @@ export const useVertexLive = () => {
   const sendText = useCallback((text: string) => {
     serviceRef.current?.sendText(text);
   }, []);
+
+  const sendVideoFrame = useCallback((frameData: string, mimeType?: string) => {
+    serviceRef.current?.sendVideoFrame(frameData, mimeType);
+  }, []);
   
   const setStreamMuted = useCallback((mute: boolean) => {
     console.log('[MUTE] Setting stream mute:', mute);
@@ -372,6 +376,7 @@ export const useVertexLive = () => {
     startCamera,
     stopCamera,
     sendText,
+    sendVideoFrame,
     toggleMute,
     setStreamMuted,
     setOnResponseComplete,

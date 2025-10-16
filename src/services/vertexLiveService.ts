@@ -533,6 +533,30 @@ export class VertexLiveService {
     this.ws.send(JSON.stringify(message));
   }
 
+  sendVideoFrame(frameData: string, mimeType: string = "image/jpeg") {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      console.warn('⚠️ WebSocket not connected, cannot send video frame');
+      return;
+    }
+
+    if (!this.isSetupComplete) {
+      console.warn('⚠️ Setup not complete, cannot send video frame');
+      return;
+    }
+
+    // Send video frame to Vertex AI (same format as camera)
+    const message = {
+      realtimeInput: {
+        mediaChunks: [{
+          mimeType,
+          data: frameData  // base64 encoded JPEG
+        }]
+      }
+    };
+
+    this.ws.send(JSON.stringify(message));
+  }
+
   disconnect() {
     console.log('🔌 Disconnecting from Vertex AI...');
     
