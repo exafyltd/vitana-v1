@@ -77,6 +77,16 @@ export class VertexLiveService {
 
         ws.onmessage = async (event) => {
           try {
+            // Enhanced logging: log EVERY message for debugging
+            if (event.data instanceof ArrayBuffer) {
+              console.log('📥 Message received: ArrayBuffer,', event.data.byteLength, 'bytes');
+            } else if (typeof event.data === 'string') {
+              const preview = event.data.length > 100 ? event.data.substring(0, 100) + '...' : event.data;
+              console.log('📥 Message received: JSON -', preview);
+            } else {
+              console.log('📥 Message received:', typeof event.data);
+            }
+            
             // CHECKPOINT B: Verify binary frame type
             console.log('📥 Binary frame check:', typeof event.data, 'instanceof ArrayBuffer:', event.data instanceof ArrayBuffer);
             

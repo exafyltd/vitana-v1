@@ -134,11 +134,22 @@ serve(async (req) => {
           console.log('📤 Sending setup to Gemini...', JSON.stringify(setupMessage, null, 2));
           vertexSocket!.send(JSON.stringify(setupMessage));
 
+          // Wait briefly to ensure client WebSocket is fully ready to receive
+          await new Promise(resolve => setTimeout(resolve, 100));
+
           // Notify client that connection is ready and mark setup complete for the UI
           clientSocket.send(
             JSON.stringify({ type: 'connection_ready', conversationId }),
           );
           clientSocket.send(JSON.stringify({ setupComplete: true }));
+          
+          // Send confirmation ping to verify client is receiving messages
+          setTimeout(() => {
+            if (clientSocket.readyState === WebSocket.OPEN) {
+              clientSocket.send(JSON.stringify({ type: 'ping', timestamp: Date.now() }));
+              console.log('📤 Sent confirmation ping to client');
+            }
+          }, 200);
 
           // Start keep-alive ping to client
           pingInterval = setInterval(() => {

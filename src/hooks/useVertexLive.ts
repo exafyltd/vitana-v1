@@ -165,6 +165,21 @@ export const useVertexLive = () => {
 
       setLastEvent('auth_ok');
       await serviceRef.current?.connect(session.access_token);
+      
+      // Add timeout detection for stuck "connecting" state
+      const connectTimeout = setTimeout(() => {
+        if (connectionStateRef.current === 'connecting') {
+          console.warn('⏱️ Connection stuck in connecting state after 15s, retrying...');
+          // Disconnect and retry
+          serviceRef.current?.disconnect();
+          setConnectionState('disconnected');
+          setTimeout(() => connect(), 1000);
+        }
+      }, 15000); // 15 second timeout
+      
+      // Store timeout ref for cleanup
+      reconnectTimeoutRef.current = connectTimeout;
+      
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to connect';
       if (!error) setError(errorMsg);
