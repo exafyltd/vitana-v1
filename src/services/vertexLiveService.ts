@@ -9,6 +9,7 @@ export interface VertexLiveCallbacks {
   onTranscript?: (text: string, isFinal: boolean) => void;
   onError?: (error: string) => void;
   onTrace?: (message: string) => void;
+  onResponseComplete?: () => void; // NEW: Triggered when TTS turn completes
 }
 
 export class VertexLiveService {
@@ -16,6 +17,8 @@ export class VertexLiveService {
   private audioRecorder: AudioRecorder | null = null;
   private screenRecorder: ScreenRecorder | null = null;
   private cameraRecorder: CameraRecorder | null = null;
+  private cameraStream: MediaStream | null = null;
+  private screenStream: MediaStream | null = null;
   private audioContext: AudioContext | null = null;
   private callbacks: VertexLiveCallbacks = {};
   private conversationId: string | null = null;
@@ -316,6 +319,9 @@ export class VertexLiveService {
         const { flushAudioQueue } = await import('@/utils/vertexAudio');
         await flushAudioQueue();
         
+        // Fire response complete callback
+        this.callbacks.onResponseComplete?.();
+        
         // Reset for next turn
         this.collectingTurn = false;
         this.turnChunks = [];
@@ -408,6 +414,12 @@ export class VertexLiveService {
 
     console.log('🖥️ Starting screen sharing...');
     
+    // Capture screen stream separately so we can control audio
+    this.screenStream = await navigator.mediaDevices.getDisplayMedia({ 
+      video: true, 
+      audio: true 
+    });
+    
     this.screenRecorder = new ScreenRecorder((frameData) => {
       if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
 
@@ -434,6 +446,11 @@ export class VertexLiveService {
       this.screenRecorder.stop();
       this.screenRecorder = null;
     }
+    
+    if (this.screenStream) {
+      this.screenStream.getTracks().forEach(t => t.stop());
+      this.screenStream = null;
+    }
   }
 
   async startCamera() {
@@ -450,6 +467,12 @@ export class VertexLiveService {
     }
 
     console.log('📹 Starting camera...');
+    
+    // Capture camera stream separately so we can control audio
+    this.cameraStream = await navigator.mediaDevices.getUserMedia({ 
+      video: true, 
+      audio: true 
+    });
     
     this.cameraRecorder = new CameraRecorder((frameData) => {
       if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
@@ -477,9 +500,11 @@ export class VertexLiveService {
       this.cameraRecorder.stop();
       this.cameraRecorder = null;
     }
-
-    // Belt and suspenders: also stop mic when camera stops
-    this.stopAudio();
+    
+    if (this.cameraStream) {
+      this.cameraStream.getTracks().forEach(t => t.stop());
+      this.cameraStream = null;
+    }
   }
 
   sendText(text: string) {
@@ -540,5 +565,27 @@ export class VertexLiveService {
 
   isConnected(): boolean {
     return this.ws?.readyState === WebSocket.OPEN && this.isSetupComplete;
+  }
+  
+  setCameraAudioEnabled(enabled: boolean) {
+    if (this.cameraStream) {
+      this.cameraStream.getAudioTracks().forEach(t => t.enabled = enabled);
+      console.log(`📹 Camera audio ${enabled ? 'enabled' : 'muted'}`);
+    }
+  }
+  
+  setScreenAudioEnabled(enabled: boolean) {
+    if (this.screenStream) {
+      this.screenStream.getAudioTracks().forEach(t => t.enabled = enabled);
+      console.log(`🖥️ Screen audio ${enabled ? 'enabled' : 'muted'}`);
+    }
+  }
+  
+  hasCameraAudioTrack(): boolean {
+    return (this.cameraStream?.getAudioTracks().length ?? 0) > 0;
+  }
+  
+  hasScreenAudioTrack(): boolean {
+    return (this.screenStream?.getAudioTracks().length ?? 0) > 0;
   }
 }

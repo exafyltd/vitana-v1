@@ -8,6 +8,7 @@ export const useVertexLive = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [isCameraActive, setIsCameraActive] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [lastEvent, setLastEvent] = useState<string>('');
@@ -22,6 +23,8 @@ export const useVertexLive = () => {
   const cameraBellRangRef = useRef(false);
   const connectionStateRef = useRef<'disconnected' | 'connecting' | 'gemini_ready' | 'connected' | 'error'>(connectionState);
   const isUserDisconnectingRef = useRef(false); // Track intentional disconnects
+  const micTemporarilyDisabledRef = useRef(false);
+  const onResponseCompleteCallbackRef = useRef<(() => void) | null>(null);
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -119,6 +122,10 @@ export const useVertexLive = () => {
           console.warn('🛑 Max reconnect attempts reached');
           setError('Failed to connect after 3 attempts. Please check your connection and try again.');
         }
+      },
+      onResponseComplete: () => {
+        console.log('[VERTEX] ✅ Response complete callback');
+        onResponseCompleteCallbackRef.current?.();
       },
       onTrace: (message) => {
         console.log('🔍 Trace:', message);
@@ -224,6 +231,16 @@ export const useVertexLive = () => {
   const startScreen = useCallback(async () => {
     try {
       connectionTriggerRef.current = 'screen';
+      
+      // Stop mic if active (screen disables mic)
+      if (isRecording) {
+        console.log('[SCREEN] 🛑 Stopping mic (screen policy)');
+        stopAudio();
+      }
+      
+      // Mark mic as temporarily disabled
+      micTemporarilyDisabledRef.current = true;
+      
       await serviceRef.current?.startScreen();
       setIsScreenSharing(true);
       
@@ -236,17 +253,31 @@ export const useVertexLive = () => {
     } catch (err) {
       console.error('Failed to start screen sharing:', err);
       setError('Failed to start screen sharing');
+      micTemporarilyDisabledRef.current = false;
     }
-  }, [connectionState]);
+  }, [connectionState, isRecording, stopAudio]);
 
   const stopScreen = useCallback(() => {
     serviceRef.current?.stopScreen();
     setIsScreenSharing(false);
+    
+    // Re-enable mic control (do NOT auto-start mic)
+    micTemporarilyDisabledRef.current = false;
+    console.log('[SCREEN] ✅ Mic control re-enabled');
   }, []);
 
   const startCamera = useCallback(async () => {
     try {
       connectionTriggerRef.current = 'camera';
+      
+      // Stop mic if active (camera disables mic)
+      if (isRecording) {
+        console.log('[CAMERA] 🛑 Stopping mic (camera policy)');
+        stopAudio();
+      }
+      
+      // Mark mic as temporarily disabled
+      micTemporarilyDisabledRef.current = true;
       
       // Gate camera start on Gemini readiness
       const currentState = connectionStateRef.current;
@@ -277,23 +308,40 @@ export const useVertexLive = () => {
     } catch (err) {
       console.error('Failed to start camera:', err);
       setError(err instanceof Error ? err.message : 'Failed to start camera');
+      micTemporarilyDisabledRef.current = false;
     }
-  }, [connect]);
+  }, [connect, isRecording, stopAudio]);
 
   const stopCamera = useCallback(() => {
     serviceRef.current?.stopCamera();
     setIsCameraActive(false);
     
-    // Cascade: stop audio when camera stops
-    if (isRecording) {
-      console.log('📹 Camera stopped → stopping microphone');
-      serviceRef.current?.stopAudio();
-      setIsRecording(false);
-    }
-  }, [isRecording]);
+    // Re-enable mic control (do NOT auto-start mic)
+    micTemporarilyDisabledRef.current = false;
+    console.log('[CAMERA] ✅ Mic control re-enabled');
+  }, []);
 
   const sendText = useCallback((text: string) => {
     serviceRef.current?.sendText(text);
+  }, []);
+  
+  const setStreamMuted = useCallback((mute: boolean) => {
+    console.log('[MUTE] Setting stream mute:', mute);
+    if (isCameraActive) {
+      serviceRef.current?.setCameraAudioEnabled?.(!mute);
+    }
+    if (isScreenSharing) {
+      serviceRef.current?.setScreenAudioEnabled?.(!mute);
+    }
+    setIsMuted(mute);
+  }, [isCameraActive, isScreenSharing]);
+  
+  const toggleMute = useCallback(() => {
+    setStreamMuted(!isMuted);
+  }, [isMuted, setStreamMuted]);
+  
+  const setOnResponseComplete = useCallback((callback: () => void) => {
+    onResponseCompleteCallbackRef.current = callback;
   }, []);
 
   // Allow audio-only sessions: do not auto-stop mic when camera/screen are off
@@ -310,9 +358,11 @@ export const useVertexLive = () => {
     isRecording,
     isScreenSharing,
     isCameraActive,
+    isMuted,
     transcript,
     error,
     lastEvent,
+    micTemporarilyDisabled: micTemporarilyDisabledRef.current,
     connect,
     disconnect,
     startAudio,
@@ -321,6 +371,9 @@ export const useVertexLive = () => {
     stopScreen,
     startCamera,
     stopCamera,
-    sendText
+    sendText,
+    toggleMute,
+    setStreamMuted,
+    setOnResponseComplete,
   };
 };

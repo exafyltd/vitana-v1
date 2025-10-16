@@ -81,10 +81,10 @@ function AppSidebar({
       setIsStreaming(false); // Immediate UI update for stop
       console.log('✅ Stream ended');
     } else {
-      console.log('▶️ Starting stream...');
+      console.log('▶️ Starting stream (screen share)...');
       
       // DON'T set isStreaming = true here!
-      // Let the polling mechanism (line 96-104) detect when it's actually active
+      // Let the polling mechanism detect when it's actually active
       
       try {
         await streamingChatRef.current?.activateVideo();

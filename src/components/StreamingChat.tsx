@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from "react"
-import { Mic, Video as VideoIcon, X, Send, Sparkles, Globe, Monitor, Loader2 } from "lucide-react"
+import { Mic, MicOff, Video as VideoIcon, X, Send, Plane, Globe, Monitor, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DiaryButton from "@/components/diary/DiaryButton"
 import { aiVoiceService } from "@/services/aiVoiceService"
@@ -35,7 +35,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCrisisButton, setShowCrisisButton] = useState(false)
   const [useVertexLiveMode, setUseVertexLiveMode] = useState(true)
-  const [isSparklesProcessing, setIsSparklesProcessing] = useState(false)
+  const [isAutopilotProcessing, setIsAutopilotProcessing] = useState(false)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
 
   const { selectedLanguage, setSelectedLanguage, languageOptions, isLoading: languageLoading } = useLanguage()
@@ -54,8 +54,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     isRecording: vertexRecording,
     isScreenSharing: vertexScreenSharing,
     isCameraActive: vertexCameraActive,
+    isMuted: vertexIsMuted,
     transcript: vertexTranscript,
     error: vertexError,
+    micTemporarilyDisabled: vertexMicDisabled,
     connect: vertexConnect,
     disconnect: vertexDisconnect,
     startAudio: vertexStartAudio,
@@ -65,7 +67,17 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     startCamera: vertexStartCamera,
     stopCamera: vertexStopCamera,
     sendText: vertexSendText,
+    toggleMute: vertexToggleMute,
+    setOnResponseComplete: vertexSetOnResponseComplete,
   } = useVertexLive()
+  
+  // Wire up autopilot response complete callback
+  useEffect(() => {
+    vertexSetOnResponseComplete(() => {
+      console.log('[AUTOPILOT] ✅ Response complete, resetting button')
+      setIsAutopilotProcessing(false)
+    })
+  }, [vertexSetOnResponseComplete])
 
   const isStreaming = isAudioActive || isVideoActive
 
@@ -465,13 +477,13 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             variant="ghost"
             size="icon"
             onClick={async () => {
-              console.log('[SPARKLES] ✨ Requesting AI advice via Gemini Live...');
-              setIsSparklesProcessing(true);
+              console.log('[AUTOPILOT] ✈️ Requesting Autopilot recommendations...');
+              setIsAutopilotProcessing(true);
               
               try {
                 // If not connected at all, connect first
                 if (vertexConnectionState === 'disconnected') {
-                  console.log('[SPARKLES] ⏳ Connecting to Gemini...');
+                  console.log('[AUTOPILOT] ⏳ Connecting to Gemini...');
                   await vertexConnect();
                   
                   // Wait for Gemini ready (max 20 attempts = 10s)
@@ -486,66 +498,83 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                   }
                 }
                 
-                const prompt = preferences?.auto_greeting_enabled 
-                  ? "Based on our conversation so far, what advice or recommendation would be most helpful for me right now?"
-                  : "Hello! What can you help me with today?";
+                const prompt = "Based on my context and recent activities, provide 3-5 actionable recommendations or suggestions that would be most helpful right now. Focus on practical next steps.";
                 
-                console.log('[SPARKLES] 📤 Sending prompt to Gemini');
+                console.log('[AUTOPILOT] 📤 Sending autopilot request to Gemini');
                 vertexSendText(prompt);
                 
                 toast({
-                  title: "AI Advice Requested",
-                  description: "Gemini is thinking...",
+                  title: "Autopilot Engaged",
+                  description: "Analyzing and preparing suggestions...",
                   duration: 2000,
                 });
                 
-                // Auto-return to neutral after 3 seconds
-                setTimeout(() => {
-                  setIsSparklesProcessing(false);
-                }, 3000);
+                // Button will return to neutral via onResponseComplete callback
               } catch (error) {
-                console.error('[SPARKLES] ❌ Error:', error);
-                setIsSparklesProcessing(false);
+                console.error('[AUTOPILOT] ❌ Error:', error);
+                setIsAutopilotProcessing(false);
                 showError(
-                  "Connection Error",
+                  "Autopilot Error",
                   error instanceof Error ? error.message : "Could not reach Gemini"
                 );
               }
             }}
-            disabled={isGeneratingMessage || vertexConnecting || isSparklesProcessing}
+            disabled={isGeneratingMessage || vertexConnecting || isAutopilotProcessing}
             className={
-              isSparklesProcessing || vertexConnecting
+              isAutopilotProcessing || vertexConnecting
                 ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
                 : "hover:bg-accent rounded-full"
             }
-            aria-label="Get AI Advice"
+            aria-label="Engage Autopilot"
+            title="Autopilot - Get AI recommendations"
           >
-            {vertexConnecting || isSparklesProcessing ? (
+            {vertexConnecting || isAutopilotProcessing ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
-              <Sparkles className="h-5 w-5" />
+              <Plane className="h-5 w-5" />
             )}
           </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleMicToggle}
-            disabled={isProcessing || vertexCameraActive}
-            className={
-              vertexCameraActive
-                ? "opacity-50 cursor-not-allowed rounded-full"
-                : isProcessing
-                ? "bg-ruby text-white hover:bg-ruby/90 rounded-full animate-pulse"
-                : isRecording
-                ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
-                : "hover:bg-accent rounded-full"
-            }
-            aria-pressed={isRecording}
-            aria-label={isRecording ? "Stop recording" : "Start recording"}
-          >
-            <Mic className="h-5 w-5" />
-          </Button>
+          {/* Mic / Mute toggle */}
+          {(vertexCameraActive || vertexScreenSharing) ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={vertexToggleMute}
+              disabled={!vertexMicDisabled}
+              className={
+                vertexIsMuted
+                  ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
+                  : "hover:bg-accent rounded-full"
+              }
+              aria-pressed={vertexIsMuted}
+              aria-label={vertexIsMuted ? "Unmute stream audio" : "Mute stream audio"}
+              title={vertexIsMuted ? "Unmute stream audio" : "Mute stream audio"}
+            >
+              {vertexIsMuted ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleMicToggle}
+              disabled={isProcessing || vertexMicDisabled}
+              className={
+                vertexMicDisabled
+                  ? "opacity-50 cursor-not-allowed rounded-full"
+                  : isProcessing
+                  ? "bg-ruby text-white hover:bg-ruby/90 rounded-full animate-pulse"
+                  : isRecording
+                  ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
+                  : "hover:bg-accent rounded-full"
+              }
+              aria-pressed={isRecording}
+              aria-label={isRecording ? "Stop recording" : "Start recording"}
+              title={isRecording ? "Stop microphone" : "Start microphone"}
+            >
+              <Mic className="h-5 w-5" />
+            </Button>
+          )}
 
           <Button
             variant="ghost"
@@ -629,15 +658,22 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             <input
               type="text"
               placeholder={
-                isProcessing 
-                  ? "Processing..." 
-                  : vertexRecording 
-                  ? "AI is listening, please talk"
-                  : vertexCameraActive
-                  ? "AI is listening and watching"
-                  : vertexScreenSharing
-                  ? "AI is watching your screen"
-                  : "Type or speak"
+                (() => {
+                  if (isAutopilotProcessing) return "Autopilot is analyzing and preparing suggestions…";
+                  if (isProcessing) return "Processing...";
+                  
+                  let base = "";
+                  if (vertexRecording) base = "AI is listening…";
+                  else if (vertexCameraActive) base = "AI is listening and watching";
+                  else if (vertexScreenSharing) base = "AI is watching your screen";
+                  else base = "Type or speak";
+                  
+                  if (vertexIsMuted && (vertexCameraActive || vertexScreenSharing)) {
+                    base += " (audio muted)";
+                  }
+                  
+                  return base;
+                })()
               }
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
