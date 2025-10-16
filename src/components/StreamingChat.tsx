@@ -559,7 +559,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                 setIsRecording(false);
                 setIsAudioActive(false);
               } else {
-                // START: optimistic + background connection
+                // START camera (connection handled internally by startCamera)
                 try {
                   // Stop mic if active (camera disables mic)
                   if (vertexRecording) {
@@ -569,18 +569,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                     setIsAudioActive(false);
                   }
                   
-                  // Connect in background if needed
-                  if (!vertexIsGeminiReady) {
-                    toast({
-                      title: "Connecting to Gemini...",
-                      description: "Starting camera",
-                      duration: 2000,
-                    });
-                    await vertexConnect();
-                  }
-                  
                   console.log('[CAMERA] ▶️ Starting camera');
-                  await vertexStartCamera();
+                  await vertexStartCamera(); // This handles connection internally
                   
                   toast({
                     title: "Camera Active",
