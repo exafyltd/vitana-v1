@@ -186,7 +186,7 @@ function AppSidebar({
     return 'Community';
   };
 
-  const buttonLabel = isStreaming ? "End Glass Mode" : "Start Glass Mode";
+  const buttonLabel = isStreaming ? "End Stream" : "Start Stream";
   const buttonIcon = isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />;
 
   return (
