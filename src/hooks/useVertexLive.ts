@@ -186,6 +186,7 @@ export const useVertexLive = () => {
     ringPlayedInSessionRef.current = false;
     screenBellRangRef.current = false;
     cameraBellRangRef.current = false;
+    micTemporarilyDisabledRef.current = false; // Reset mic disabled flag
     
     // Clear flag after longer delay (allow disconnect to complete)
     setTimeout(() => {

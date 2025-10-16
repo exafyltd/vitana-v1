@@ -164,20 +164,27 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }
 
   const handleMicToggle = async () => {
-    console.log('[MIC] 🎤 Microphone button clicked, vertexRecording:', vertexRecording);
+    console.log('[MIC] 🎤 Mic clicked', { vertexRecording, isRecording, vertexCameraActive, vertexScreenSharing, vertexMicDisabled });
     
-    // Block if camera is active
-    if (vertexCameraActive) {
-      console.log('[MIC] ⚠️ Camera is active, mic is disabled');
+    // Block START (not STOP) if camera is active
+    if (vertexCameraActive && !(vertexRecording || isRecording)) {
+      console.log('[MIC] ⚠️ Camera is active, mic start is blocked');
       return;
     }
     
-    if (vertexRecording) {
+    // Decide: STOP if recording, START otherwise
+    if (vertexRecording || isRecording) {
       // STOP: immediate
       console.log('[MIC] 🛑 Stopping audio');
       vertexStopAudio();
       setIsRecording(false);
       setIsAudioActive(false);
+      
+      toast({
+        title: "Microphone stopped",
+        description: "Voice input disabled",
+        duration: 2000,
+      });
       
       // Only disconnect if no other streams are active
       if (!vertexCameraActive && !vertexScreenSharing) {
@@ -656,11 +663,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
               variant="ghost"
               size="icon"
               onClick={handleMicToggle}
-              disabled={isProcessing || vertexMicDisabled}
+              disabled={isProcessing}
               className={
-                vertexMicDisabled
-                  ? "opacity-50 cursor-not-allowed rounded-full"
-                  : isProcessing
+                isProcessing
                   ? "bg-ruby text-white hover:bg-ruby/90 rounded-full animate-pulse"
                   : isRecording
                   ? "bg-ruby text-white hover:bg-ruby/90 rounded-full"
@@ -670,7 +675,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
               aria-label={isRecording ? "Stop recording" : "Start recording"}
               title={isRecording ? "Stop microphone" : "Start microphone"}
             >
-              <Mic className="h-5 w-5" />
+              {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
             </Button>
           )}
 

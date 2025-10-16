@@ -361,6 +361,11 @@ export class VertexLiveService {
   }
 
   async startAudio() {
+    if (this.audioRecorder) {
+      console.warn('🎤 Mic already recording, ignoring startAudio');
+      return;
+    }
+
     // Wait for setup completion (up to 30s)
     if (!this.isSetupComplete) {
       console.log('⏳ Waiting for Gemini setup to complete before starting mic...');
