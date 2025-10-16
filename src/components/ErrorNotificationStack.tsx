@@ -16,12 +16,15 @@ interface ErrorNotificationProps {
 }
 
 const ErrorNotification = ({ id, title, description, onDismiss }: ErrorNotificationProps) => (
-  <div className="relative bg-destructive/10 border-2 border-destructive rounded-lg p-4 pr-10 mb-3 shadow-lg animate-in fade-in slide-in-from-top-2">
+  <div className="relative bg-destructive/10 border-2 border-destructive rounded-lg p-4 pr-10 mb-3 shadow-lg animate-in fade-in slide-in-from-top-2 pointer-events-auto">
     <Button
       variant="ghost"
-      size="icon"
-      onClick={() => onDismiss(id)}
-      className="absolute top-2 right-2 h-6 w-6 p-0 hover:bg-destructive/20"
+      size="sm"
+      onClick={(e) => {
+        e.stopPropagation();
+        onDismiss(id);
+      }}
+      className="absolute top-2 right-2 h-8 w-8 hover:bg-destructive/20"
       aria-label="Close error notification"
     >
       <X className="h-4 w-4 text-destructive" />
@@ -44,7 +47,7 @@ export const ErrorNotificationStack = ({
   if (errors.length === 0) return null;
   
   return (
-    <div className="fixed top-20 right-4 z-50 max-w-md space-y-3">
+    <div className="fixed top-20 right-4 z-[110] max-w-md space-y-3">
       {errors.map(error => (
         <ErrorNotification
           key={error.id}
