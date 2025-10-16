@@ -109,21 +109,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       setIsAudioActive(false);
       vertexDisconnect();
     } else {
-      // START: optimistic + background connection
+      // START: start audio (connection handled internally)
       setIsRecording(true);
       setIsAudioActive(true);
       
       try {
-        // Connect in background if needed
-        if (!vertexIsGeminiReady) {
-          toast({
-            title: "Connecting to Gemini...",
-            description: "Starting microphone",
-            duration: 2000,
-          });
-          await vertexConnect();
-        }
-        
+        // startAudio will connect if needed and wait for readiness
         await vertexStartAudio();
         
         toast({

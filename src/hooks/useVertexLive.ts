@@ -171,13 +171,32 @@ export const useVertexLive = () => {
   const startAudio = useCallback(async () => {
     try {
       connectionTriggerRef.current = 'mic';
+      
+      // Gate audio start on Gemini readiness
+      const currentState = connectionStateRef.current;
+      if (currentState !== 'gemini_ready' && currentState !== 'connected') {
+        console.log('🎤 Audio requires connection, connecting...');
+        await connect();
+        
+        // Wait for Gemini readiness (up to 30s)
+        const startTime = Date.now();
+        while (connectionStateRef.current !== 'gemini_ready' && connectionStateRef.current !== 'connected') {
+          await new Promise(resolve => setTimeout(resolve, 150));
+          if (Date.now() - startTime > 30000) {
+            throw new Error('Connection timeout starting audio');
+          }
+        }
+      }
+      
       await serviceRef.current?.startAudio();
       setIsRecording(true);
     } catch (err) {
       console.error('Failed to start audio:', err);
-      setError('Failed to start audio recording');
+      setError(err instanceof Error ? err.message : 'Failed to start audio recording');
+      setIsRecording(false);
+      throw err;
     }
-  }, []);
+  }, [connect]);
 
   const stopAudio = useCallback(() => {
     serviceRef.current?.stopAudio();

@@ -346,9 +346,16 @@ export class VertexLiveService {
   }
 
   async startAudio() {
+    // Wait for setup completion (up to 30s)
     if (!this.isSetupComplete) {
-      console.warn('⚠️ Setup not complete, waiting...');
-      return;
+      console.log('⏳ Waiting for Gemini setup to complete before starting mic...');
+      const startTime = Date.now();
+      while (!this.isSetupComplete) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        if (Date.now() - startTime > 30000) {
+          throw new Error('Gemini setup timeout - could not start microphone');
+        }
+      }
     }
 
     console.log('🎤 Starting audio recording...');
@@ -372,6 +379,7 @@ export class VertexLiveService {
     });
 
     await this.audioRecorder.start();
+    console.log('✅ Audio recording started successfully');
   }
 
   stopAudio() {

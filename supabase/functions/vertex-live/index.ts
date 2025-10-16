@@ -176,8 +176,16 @@ serve(async (req) => {
               const data = JSON.parse(event.data);
               console.log('📥 Vertex AI JSON message type:', data.type || Object.keys(data)[0]);
               
-              // Forward JSON to client
-              clientSocket.send(event.data);
+              // Forward JSON to client (with error handling)
+              try {
+                if (clientSocket.readyState === WebSocket.OPEN) {
+                  clientSocket.send(event.data);
+                } else {
+                  console.warn('⚠️ Client socket not open, skipping message forward');
+                }
+              } catch (sendError) {
+                console.error('❌ Error forwarding JSON to client:', sendError);
+              }
               
               // Log assistant messages if conversation tracking is enabled
               if (conversationId && data.serverContent) {
@@ -239,12 +247,29 @@ serve(async (req) => {
               }
               
               // Forward binary as binary (no JSON, no base64, no TextEncoder)
-              clientSocket.send(arrayBuffer);
+              try {
+                if (clientSocket.readyState === WebSocket.OPEN) {
+                  clientSocket.send(arrayBuffer);
+                } else {
+                  console.warn('⚠️ Client socket not open, skipping binary forward');
+                }
+              } catch (sendError) {
+                console.error('❌ Error forwarding binary to client:', sendError);
+              }
             } else {
               console.warn('⚠️ Unknown message type from Vertex AI:', typeof event.data);
             }
           } catch (error) {
-            console.error('Error processing Vertex message:', error);
+            console.error('❌ Error processing Vertex message:', error);
+            // Don't close connection on message processing errors
+            try {
+              if (clientSocket.readyState === WebSocket.OPEN) {
+                clientSocket.send(JSON.stringify({ 
+                  type: 'error', 
+                  message: 'Error processing AI response' 
+                }));
+              }
+            } catch (_) {}
           }
         };
       } catch (error) {
