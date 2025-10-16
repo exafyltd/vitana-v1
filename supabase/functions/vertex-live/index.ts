@@ -104,7 +104,7 @@ serve(async (req) => {
         console.log('🔗 Connecting to Gemini Live API (v1beta)...');
         vertexSocket = new WebSocket(geminiUrl);
 
-        vertexSocket.onopen = () => {
+        vertexSocket.onopen = async () => {
           console.log('✅ Connected to Gemini Live API');
           isConnected = true;
 
