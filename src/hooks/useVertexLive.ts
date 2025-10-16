@@ -21,6 +21,7 @@ export const useVertexLive = () => {
   const screenBellRangRef = useRef(false);
   const cameraBellRangRef = useRef(false);
   const connectionStateRef = useRef<'disconnected' | 'connecting' | 'gemini_ready' | 'connected' | 'error'>(connectionState);
+  const isUserDisconnectingRef = useRef(false); // Track intentional disconnects
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -93,6 +94,13 @@ export const useVertexLive = () => {
       },
       onError: (errorMsg) => {
         console.error('❌ Vertex Live error:', errorMsg);
+        
+        // Don't auto-reconnect if user intentionally disconnected
+        if (isUserDisconnectingRef.current) {
+          console.log('🔕 Ignoring error during user-initiated disconnect');
+          return;
+        }
+        
         setError((prev) => (prev === errorMsg ? prev : errorMsg));
         setConnectionState('error');
         setLastEvent('error: ' + errorMsg);
@@ -131,6 +139,7 @@ export const useVertexLive = () => {
 
   const connect = useCallback(async () => {
     try {
+      isUserDisconnectingRef.current = false; // Clear flag when starting new connection
       if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
       retryCountRef.current = 0;
       setError(null);
@@ -158,6 +167,8 @@ export const useVertexLive = () => {
   }, [error, connectionState]);
 
   const disconnect = useCallback(() => {
+    isUserDisconnectingRef.current = true; // Set flag BEFORE disconnect
+    
     if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
     retryCountRef.current = 0;
     serviceRef.current?.disconnect();
@@ -168,6 +179,11 @@ export const useVertexLive = () => {
     ringPlayedInSessionRef.current = false;
     screenBellRangRef.current = false;
     cameraBellRangRef.current = false;
+    
+    // Clear flag after short delay (allow disconnect to complete)
+    setTimeout(() => {
+      isUserDisconnectingRef.current = false;
+    }, 500);
   }, []);
 
   const startAudio = useCallback(async () => {

@@ -336,8 +336,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       console.log('✅ All streams stopped, states reset');
     },
     isStreamingActive: () => {
-      // Return true when connected and recording (immediate feedback)
-      const active = useVertexLiveMode ? (vertexConnected && vertexRecording) : isVideoActive;
+      // "Streaming" means screen sharing, NOT just mic recording
+      const active = useVertexLiveMode ? vertexScreenSharing : isVideoActive;
       console.log('StreamingChat: isStreamingActive called, returning:', active);
       return active;
     },
@@ -469,12 +469,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
               setIsSparklesProcessing(true);
               
               try {
-                // Ensure Gemini is ready first
-                if (!vertexIsGeminiReady) {
+                // If not connected at all, connect first
+                if (vertexConnectionState === 'disconnected') {
                   console.log('[SPARKLES] ⏳ Connecting to Gemini...');
                   await vertexConnect();
                   
-                  // Wait for Gemini ready
+                  // Wait for Gemini ready (max 20 attempts = 10s)
                   let attempts = 0;
                   while (!vertexIsGeminiReady && attempts < 20) {
                     await new Promise(resolve => setTimeout(resolve, 500));
