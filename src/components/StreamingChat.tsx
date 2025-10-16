@@ -211,6 +211,12 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   // Show Vertex errors with new error notification system
   useEffect(() => {
     if (vertexError) {
+      // Ignore "closed before ready" if we're disconnected (clean shutdown)
+      if (vertexError.includes('closed before ready') && vertexConnectionState === 'disconnected') {
+        console.log('🔕 Ignoring false error after clean disconnect');
+        return;
+      }
+      
       // More user-friendly error messages
       let errorMessage = vertexError;
       let errorTitle = "Connection Error";
@@ -225,7 +231,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       
       showError(errorTitle, errorMessage);
     }
-  }, [vertexError, showError]);
+  }, [vertexError, vertexConnectionState, showError]);
 
   // Update streaming text from Vertex transcript
   useEffect(() => {

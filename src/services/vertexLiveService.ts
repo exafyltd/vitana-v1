@@ -21,6 +21,7 @@ export class VertexLiveService {
   private conversationId: string | null = null;
   private isSetupComplete = false;
   private geminiReadyFired = false; // NEW: Track if we've fired onGeminiReady
+  private isIntentionalDisconnect = false; // Track intentional disconnects to prevent false errors
   // Per-turn playback buffer (force PCM path, single play per turn)
   private turnChunks: Uint8Array[] = [];
   private collectingTurn = false;
@@ -161,6 +162,14 @@ export class VertexLiveService {
           const reason = e?.reason || '';
           console.log('🔌 WebSocket closed', e?.code, reason);
           this.callbacks.onTrace?.(`WebSocket closed: ${e?.code} ${reason}`);
+          
+          // If this was an intentional disconnect, don't treat it as an error
+          if (this.isIntentionalDisconnect) {
+            console.log('✅ Intentional disconnect - no error');
+            this.callbacks.onConnectionChange?.(false);
+            this.isSetupComplete = false;
+            return;
+          }
           
           if (!opened && attempt === 0 && urls[1]) {
             attempt = 1;
@@ -502,6 +511,9 @@ export class VertexLiveService {
   disconnect() {
     console.log('🔌 Disconnecting from Vertex AI...');
     
+    // Mark as intentional disconnect to prevent false errors
+    this.isIntentionalDisconnect = true;
+    
     this.stopAudio();
     this.stopScreen();
     this.stopCamera();
@@ -517,9 +529,13 @@ export class VertexLiveService {
     }
 
     this.isSetupComplete = false;
-    this.geminiReadyFired = false; // Reset ready flag
+    this.geminiReadyFired = false;
     this.conversationId = null;
-    this.callbacks.onConnectionChange?.(false);
+    
+    // Reset flag after a short delay to allow close handler to see it
+    setTimeout(() => {
+      this.isIntentionalDisconnect = false;
+    }, 100);
   }
 
   isConnected(): boolean {

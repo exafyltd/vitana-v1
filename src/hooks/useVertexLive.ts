@@ -162,10 +162,12 @@ export const useVertexLive = () => {
     retryCountRef.current = 0;
     serviceRef.current?.disconnect();
     setTranscript('');
-    setError(null);
+    setError(null); // Explicitly clear errors on disconnect
     setConnectionState('disconnected');
-    // Reset ring flag on manual disconnect so next session gets greeting
+    // Reset all session flags
     ringPlayedInSessionRef.current = false;
+    screenBellRangRef.current = false;
+    cameraBellRangRef.current = false;
   }, []);
 
   const startAudio = useCallback(async () => {
