@@ -407,7 +407,7 @@ export function MeetupDetailsDrawer({
                       description: `Viewing ${event.author?.name || 'host'}'s profile`,
                     });
                   }}
-                  aria-label={`${event.author?.name || 'Community Host'}, Host — open profile`}
+                  aria-label={`${event.creator_display_name || event.author?.name || 'Community Host'}, Host — open profile`}
                   className={cn(
                     "group flex items-center gap-2 h-11 sm:h-11 px-2 rounded-full",
                     "bg-background/95 backdrop-blur-sm shadow-lg",
@@ -417,12 +417,12 @@ export function MeetupDetailsDrawer({
                   )}
                 >
                   <Avatar className="h-7 w-7 ring-1 ring-white/50">
-                    <AvatarImage src={event.author?.avatar} />
-                    <AvatarFallback className="text-xs">{event.author?.name?.[0] || 'H'}</AvatarFallback>
+                    <AvatarImage src={event.creator_avatar_url || event.author?.avatar} />
+                    <AvatarFallback className="text-xs">{(event.creator_display_name || event.author?.name)?.[0] || 'H'}</AvatarFallback>
                   </Avatar>
                   <div className="flex items-center gap-1.5 pr-2">
                     <span className="text-sm font-semibold max-w-[120px] sm:max-w-[160px] truncate">
-                      {event.author?.name || 'Community Host'}
+                      {event.creator_display_name || event.author?.name || 'Community Host'}
                     </span>
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
                     <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
@@ -441,12 +441,12 @@ export function MeetupDetailsDrawer({
                     toast({
                       title: isFollowing ? "Unfollowed" : "Following!",
                       description: isFollowing 
-                        ? `You unfollowed ${event.author?.name || 'the host'}` 
-                        : `You're now following ${event.author?.name || 'the host'}`,
+                        ? `You unfollowed ${event.creator_display_name || event.author?.name || 'the host'}` 
+                        : `You're now following ${event.creator_display_name || event.author?.name || 'the host'}`,
                     });
                   }}
                   disabled={isFollowLoading}
-                  aria-label={`Follow ${event.author?.name || 'host'}`}
+                  aria-label={`Follow ${event.creator_display_name || event.author?.name || 'host'}`}
                   aria-pressed={isFollowing}
                   variant={isFollowing ? "secondary" : "outline"}
                   className={cn(
@@ -708,12 +708,12 @@ export function MeetupDetailsDrawer({
               </div>
               <div className="flex items-center gap-3 p-4 bg-muted/40 rounded-2xl">
                 <Avatar className="h-14 w-14 border-2 border-primary">
-                  <AvatarImage src={event.author?.avatar} />
-                  <AvatarFallback>{event.author?.name?.[0] || 'H'}</AvatarFallback>
+                  <AvatarImage src={event.creator_avatar_url || event.author?.avatar} />
+                  <AvatarFallback>{(event.creator_display_name || event.author?.name)?.[0] || 'H'}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
-                    <p className="font-semibold text-[15px]">{event.author?.name || 'Community Host'}</p>
+                    <p className="font-semibold text-[15px]">{event.creator_display_name || event.author?.name || 'Community Host'}</p>
                     <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
                   </div>
                   <p className="text-[13px] text-muted-foreground">Organizer</p>
