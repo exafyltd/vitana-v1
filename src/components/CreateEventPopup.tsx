@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -429,6 +430,17 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                   />
                 </div>
               </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Virtual Event</Label>
+                  <p className="text-sm text-muted-foreground">This event will be held online</p>
+                </div>
+                <Switch 
+                  checked={formData.isVirtual}
+                  onCheckedChange={(checked) => setFormData({...formData, isVirtual: checked})}
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -464,18 +476,32 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="location">Location</Label>
-                  <Input
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    placeholder="e.g., Central Park, Community Center"
-                    className="mt-1"
-                  />
-                </div>
+              {!formData.isVirtual ? (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="location">Location</Label>
+                    <Input
+                      id="location"
+                      value={formData.location}
+                      onChange={(e) => setFormData({...formData, location: e.target.value})}
+                      placeholder="e.g., Central Park, Community Center"
+                      className="mt-1"
+                    />
+                  </div>
 
+                  <div>
+                    <Label htmlFor="capacity">Max Attendees</Label>
+                    <Input
+                      id="capacity"
+                      type="number"
+                      value={formData.capacity}
+                      onChange={(e) => setFormData({...formData, capacity: e.target.value})}
+                      placeholder="Leave empty for unlimited"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+              ) : (
                 <div>
                   <Label htmlFor="capacity">Max Attendees</Label>
                   <Input
@@ -487,7 +513,7 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                     className="mt-1"
                   />
                 </div>
-              </div>
+              )}
 
               {/* Pricing (Optional) */}
               <div className="space-y-3">

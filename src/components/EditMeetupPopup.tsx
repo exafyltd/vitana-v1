@@ -338,16 +338,16 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Meetup Details</CardTitle>
+              <CardTitle className="text-lg">{event.event_type === 'event' ? 'Event Details' : 'Meetup Details'}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="title">Meetup Title *</Label>
+                <Label htmlFor="title">{event.event_type === 'event' ? 'Event Title' : 'Meetup Title'} *</Label>
                 <Input
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  placeholder="e.g., Weekend Hiking Adventure, Meditation Circle"
+                  placeholder={event.event_type === 'event' ? "e.g., Morning Yoga Session, Cooking Workshop" : "e.g., Weekend Hiking Adventure, Meditation Circle"}
                   className={`mt-1 ${errors.title ? 'border-destructive' : ''}`}
                 />
                 {errors.title && (
@@ -364,7 +364,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  placeholder="Describe your meetup, what participants can expect..."
+                  placeholder={event.event_type === 'event' ? "Describe your event, what attendees can expect..." : "Describe your meetup, what participants can expect..."}
                   className="mt-1"
                 />
               </div>
@@ -543,8 +543,8 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Virtual Meetup</Label>
-                  <p className="text-sm text-muted-foreground">This meetup will be held online</p>
+                  <Label>Virtual {event.event_type === 'event' ? 'Event' : 'Meetup'}</Label>
+                  <p className="text-sm text-muted-foreground">This {event.event_type === 'event' ? 'event' : 'meetup'} will be held online</p>
                 </div>
                 <Switch 
                   checked={formData.isVirtual}
