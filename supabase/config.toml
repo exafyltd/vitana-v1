@@ -1,5 +1,8 @@
 project_id = "inmkhvwdcuyhnxkgfvsb"
 
+[functions.crewai-proxy]
+verify_jwt = true
+
 [functions.integration-discovery]
 verify_jwt = true
 

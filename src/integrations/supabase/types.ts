@@ -1462,6 +1462,36 @@ export type Database = {
         }
         Relationships: []
       }
+      crewai_test: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string | null
+          result: Json | null
+          status: string | null
+          work_item_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string | null
+          result?: Json | null
+          status?: string | null
+          work_item_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string | null
+          result?: Json | null
+          status?: string | null
+          work_item_id?: string | null
+        }
+        Relationships: []
+      }
       diary_entries: {
         Row: {
           attachments: Json | null
