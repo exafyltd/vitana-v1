@@ -182,7 +182,7 @@ const generateImageUrl = (title: string, description: string) => {
         start_time: startTime,
         end_time: endTime,
         max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
-        image_url: uploadedImageUrl,
+        image_url: uploadedImageUrl || generateImageUrl(formData.title, formData.description),
       };
 
       const result = await createEvent(eventData);
