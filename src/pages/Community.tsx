@@ -941,19 +941,6 @@ export default withScreenId(function Community() {
             </div>
           </Card>
 
-          {/* Autopilot Widget */}
-          <Card className="p-6 mb-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Sparkles className="w-6 h-6 text-primary" />
-                <div>
-                  <h3 className="font-semibold">Autopilot Recommendations Ready</h3>
-                  <p className="text-sm text-muted-foreground">Get personalized event suggestions</p>
-                </div>
-              </div>
-            </div>
-          </Card>
-
           {/* Today Highlights */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Today Highlights</h3>
