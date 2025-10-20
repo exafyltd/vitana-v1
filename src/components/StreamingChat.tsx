@@ -14,6 +14,7 @@ import { useErrorNotifications } from "@/hooks/useErrorNotifications"
 import { ErrorNotificationStack } from "@/components/ErrorNotificationStack"
 import { useGlassMode } from "@/hooks/useGlassMode"
 import { useIntelligentGreetingContext } from "@/context/IntelligentGreetingProvider"
+import { useStreamingState } from "@/context/StreamingStateContext"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,6 +48,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const { triggerProactiveMessage, isGenerating: isGeneratingMessage } = useProactiveAssistant()
   const { errors, showError, dismissError } = useErrorNotifications()
   const { suppressGreeting, cancelGreeting, schedulePostGlassCooldown } = useIntelligentGreetingContext()
+  const { setGlassModeActive, setMicActive, setSessionReady } = useStreamingState()
   
   // Glass Mode integration
   const {
@@ -175,12 +177,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       vertexStopAudio();
       setIsRecording(false);
       setIsAudioActive(false);
-      
-      toast({
-        title: "Microphone stopped",
-        description: "Voice input disabled",
-        duration: 2000,
-      });
+      setMicActive(false);
       
       // Disconnect if no other streams active
       if (!vertexCameraActive && !vertexScreenSharing) {
@@ -199,31 +196,21 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       console.log('[MIC] 📹➡️🎤 Camera active, switching to audio-only mode');
       vertexStopCamera();
       setCameraFramesSent(false);
-      
-      toast({
-        title: "Switched to audio-only",
-        description: "Camera stopped, microphone active",
-        duration: 2000,
-      });
     }
     
     // Start microphone
     setIsRecording(true);
     setIsAudioActive(true);
+    setMicActive(true);
     
     try {
       await vertexStartAudio();
-      
-      toast({
-        title: "Microphone Active",
-        description: "Gemini is listening (audio-only)",
-        duration: 2000,
-      });
       console.log('✅ Audio-only mode started');
     } catch (error) {
       console.error('[MIC] ❌ Error:', error);
       setIsRecording(false);
       setIsAudioActive(false);
+      setMicActive(false);
       vertexStopAudio();
       showError(
         "Microphone Error",
@@ -384,6 +371,15 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [vertexCameraActive, vertexConnected]);
 
+  // Sync Vertex state to streaming context for greeting isolation
+  useEffect(() => {
+    setSessionReady(vertexIsGeminiReady);
+  }, [vertexIsGeminiReady, setSessionReady]);
+  
+  useEffect(() => {
+    setGlassModeActive(glassModeActive);
+  }, [glassModeActive, setGlassModeActive]);
+
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
       const traceId = `RCT-${Date.now()}`;
@@ -400,7 +396,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         try {
           // CRITICAL: Suppress greeting immediately when Start Stream is clicked
           suppressGreeting();
-          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🔕 Greeting suppressed`);
+          setGlassModeActive(true);
+          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🔕 Greeting suppressed, glassModeActive=true`);
           
           // Cancel any ongoing TTS to avoid audio conflicts
           if (window.speechSynthesis) {
@@ -411,11 +408,6 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           // Connect to Vertex in background if needed
           if (!vertexIsGeminiReady) {
             console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🔌 Gemini not ready, connecting...`);
-            toast({
-              title: "Connecting to Gemini...",
-              description: "Starting Glass Mode",
-              duration: 2000,
-            });
             await vertexConnect();
             console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ vertexConnect returned`);
           } else {
@@ -430,19 +422,15 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           // Start microphone audio
           console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🎤 Starting microphone...`);
           await vertexStartAudio();
-          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Microphone started`);
+          setMicActive(true);
+          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Microphone started, micActive=true`);
           
           // Set active immediately
           setIsVideoActive(true);
           
-          // Bell notification only on Glass Mode start & Gemini ready
+          // Log success
           if (vertexIsGeminiReady) {
             console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🔔 PASS: Glass Mode fully active (ready=true)`);
-            toast({
-              title: "🪟 Glass Mode Active",
-              description: "AI is watching your screen with advanced context",
-              duration: 3000,
-            });
           }
           
           console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Glass Mode stream started successfully`);
@@ -452,6 +440,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
           // Rollback all states on error
           setIsVideoActive(false);
           setIsAudioActive(false);
+          setGlassModeActive(false);
+          setMicActive(false);
           if (vertexRecording) vertexStopAudio();
           if (glassModeActive) stopGlassMode();
           vertexDisconnect();
@@ -495,6 +485,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         
         console.log('🔌 Disconnecting from Vertex...');
         vertexDisconnect();
+        
+        // Reset streaming state context
+        setGlassModeActive(false);
+        setMicActive(false);
         
         // Schedule greeting after 5s cool-down
         console.log('🕐 Scheduling post-Glass cool-down for greeting...');

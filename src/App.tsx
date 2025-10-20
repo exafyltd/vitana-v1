@@ -12,6 +12,7 @@ import { RTLProvider } from "@/components/RTLProvider";
 import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
 import { EventSelectionProvider } from "@/context/EventSelectionContext";
 import { IntelligentGreetingProvider } from "@/context/IntelligentGreetingProvider";
+import { StreamingStateProvider, useStreamingState } from "@/context/StreamingStateContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -196,8 +197,9 @@ const App = () => {
     <RTLProvider>
       <MeetupSelectionProvider>
         <EventSelectionProvider>
-          <IntelligentGreetingProvider>
-            <TooltipProvider>
+          <StreamingStateProvider>
+            <GreetingProviderWrapper>
+              <TooltipProvider>
               <Toaster />
               <PresenceDebugPanel />
               <BrowserRouter>
@@ -1116,11 +1118,27 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
-          </IntelligentGreetingProvider>
+            </GreetingProviderWrapper>
+          </StreamingStateProvider>
       </EventSelectionProvider>
     </MeetupSelectionProvider>
   </RTLProvider>
   );
 };
+
+// Wrapper to consume streaming state and pass to IntelligentGreetingProvider
+function GreetingProviderWrapper({ children }: { children: React.ReactNode }) {
+  const { glassModeActive, micActive, sessionReady } = useStreamingState();
+  
+  return (
+    <IntelligentGreetingProvider
+      glassModeActive={glassModeActive}
+      micActive={micActive}
+      sessionReady={sessionReady}
+    >
+      {children}
+    </IntelligentGreetingProvider>
+  );
+}
 
 export default App;
