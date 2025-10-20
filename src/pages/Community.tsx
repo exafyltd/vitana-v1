@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
+import { supabase } from "@/integrations/supabase/client";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -29,6 +30,8 @@ import { PodcastListCard } from '@/components/home/PodcastListCard';
 import { usePersonalizedMedia } from '@/hooks/usePersonalizedMedia';
 import { MeetupDetailsDrawer } from '@/components/meetups/MeetupDetailsDrawer';
 import { useEventSelection } from '@/context/EventSelectionContext';
+import { useCommunityMembers } from '@/hooks/useCommunityMembers';
+import { useEventRecommendations } from '@/hooks/useEventRecommendations';
 
 // Mock fallback data for Today Highlights
 const todayHighlights = [
@@ -690,7 +693,60 @@ export default withScreenId(function Community() {
   const [showPreview, setShowPreview] = useState(false);
   const [communityFiltersOpen, setCommunityFiltersOpen] = useState(false);
   
+  // Phase 1: Real Community Members
+  const { members, loading: membersLoading, getDisplayName } = useCommunityMembers();
+  
+  // Phase 2: AI Recommendations
+  const { 
+    recommendations, 
+    loading: recsLoading, 
+    generating, 
+    generateRecommendations 
+  } = useEventRecommendations();
+  
+  // Phase 3: Real-Time Activity Metrics
+  const [activityMetrics, setActivityMetrics] = useState({
+    activeToday: 0,
+    eventsToday: 0,
+    totalMembers: 0
+  });
+  
   const latestActions = getLatestActions(2);
+
+  // Fetch real activity metrics
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        // Count today's events
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const { count: todayEventsCount } = await supabase
+          .from('global_community_events')
+          .select('*', { count: 'exact', head: true })
+          .gte('start_time', today.toISOString())
+          .lt('start_time', tomorrow.toISOString());
+
+        // Count visible community members
+        const { count: membersCount } = await supabase
+          .from('global_community_profiles')
+          .select('*', { count: 'exact', head: true })
+          .eq('is_visible', true);
+
+        setActivityMetrics({
+          activeToday: membersCount || 0,
+          eventsToday: todayEventsCount || 0,
+          totalMembers: membersCount || 0
+        });
+      } catch (error) {
+        console.error('Error fetching activity metrics:', error);
+      }
+    };
+
+    fetchMetrics();
+  }, []);
 
   // Event click handler for opening detail drawer
   const handleEventClick = (eventId: string) => {
@@ -764,6 +820,50 @@ export default withScreenId(function Community() {
   // Hybrid: use real events or fall back to the imported mock data  
   const activeWeeklyEvents = realWeeklyEvents.length > 0 ? realWeeklyEvents : weeklyEvents;
 
+  // Phase 1: Transform real community members with fallback
+  const realCommunityPeople = members.slice(0, 6).map(member => ({
+    id: member.user_id,
+    title: `Connect with ${getDisplayName(member)} 👋`,
+    description: "Active community member",
+    imageUrl: member.avatar_url || "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=800&h=600&fit=crop",
+    category: "profile" as const,
+    pillar: "Mental",
+    author: { 
+      name: getDisplayName(member), 
+      avatar: member.avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+    },
+    location: "Community Member",
+    timestamp: "Active Now",
+    start_time: new Date().toISOString(),
+    end_time: new Date(Date.now() + 3600000).toISOString(),
+    rewardPoints: 5,
+    rewardDescription: "Connect for social credits"
+  }));
+
+  const displayPeople = realCommunityPeople.length > 0 
+    ? realCommunityPeople 
+    : communityPeople;
+
+  // Phase 2: Transform AI recommendations with fallback
+  const aiSpotlightItems = recommendations.length > 0 
+    ? recommendations.slice(0, 3).map(rec => ({
+        id: rec.global_community_events.id,
+        title: `✨ ${rec.global_community_events.title}`,
+        description: `AI Match: ${Math.round(rec.match_score * 100)}% - ${Array.isArray(rec.match_reasons) ? rec.match_reasons[0] : 'Recommended for you'}`,
+        imageUrl: rec.global_community_events.image_url || `https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop`,
+        category: "ai-spotlight" as const,
+        pillar: "Mental",
+        author: { name: "AI Recommendation", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+        timestamp: format(new Date(rec.global_community_events.start_time), "MMM d, h:mm a"),
+        location: rec.global_community_events.location || "Virtual",
+        attendees: rec.global_community_events.participant_count || 0,
+        start_time: rec.global_community_events.start_time,
+        end_time: rec.global_community_events.end_time,
+        rewardPoints: 15,
+        rewardDescription: "AI-powered personalized recommendation"
+      }))
+    : spotlightFeatures;
+
   // Community recommended music query
   const { data: communityMusic } = usePersonalizedMedia({
     limit: 5,
@@ -814,6 +914,24 @@ export default withScreenId(function Community() {
               <RefreshCw className="h-4 w-4" />
             </Button>
           </UtilityActionButton>
+
+          {/* Phase 3: Real-Time Activity Banner */}
+          <Card className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
+            <div className="flex items-center gap-6 text-sm flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span className="font-medium">{activityMetrics.totalMembers} community members</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-primary" />
+                <span>{activityMetrics.eventsToday} events today</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Trophy className="w-4 h-4 text-accent" />
+                <span>{todayEvents.length + upcomingEvents.length} upcoming activities</span>
+              </div>
+            </div>
+          </Card>
 
           {/* Autopilot Integration */}
           <div className="mb-6">
@@ -892,11 +1010,25 @@ export default withScreenId(function Community() {
                 })()}
               </div>
 
-              {/* Discover People */}
+              {/* Discover People - Phase 1: Real Community Members */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Discover People</h3>
+                <div className="flex items-center justify-between mb-4 px-6">
+                  <h3 className="text-xl font-bold">Discover People</h3>
+                  {membersLoading && (
+                    <Badge variant="outline" className="animate-pulse">
+                      <Users className="w-3 h-3 mr-1" />
+                      Loading...
+                    </Badge>
+                  )}
+                  {!membersLoading && realCommunityPeople.length > 0 && (
+                    <Badge variant="secondary">
+                      <Users className="w-3 h-3 mr-1" />
+                      {members.length} members
+                    </Badge>
+                  )}
+                </div>
                 {(() => {
-                  const result = renderEventGrid(communityPeople, "Discover People", globalRowIndex, handleEventClick);
+                  const result = renderEventGrid(displayPeople, "Discover People", globalRowIndex, handleEventClick);
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -1045,12 +1177,70 @@ export default withScreenId(function Community() {
             </SplitBarContent>
 
             <SplitBarContent value="spotlight">
+              {/* Phase 2: AI-Powered Recommendations */}
+              {recommendations.length === 0 && !recsLoading && (
+                <div className="px-6 mb-8">
+                  <Card className="p-6 text-center bg-gradient-to-br from-blue-50 to-purple-50">
+                    <Sparkles className="w-12 h-12 mx-auto mb-3 text-blue-600" />
+                    <h3 className="text-lg font-semibold mb-2">Get Personalized AI Recommendations</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Let AI analyze your wellness goals and suggest the perfect events for you
+                    </p>
+                    <Button 
+                      onClick={() => generateRecommendations('events')} 
+                      disabled={generating}
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                    >
+                      {generating ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                          Analyzing Your Profile...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Generate AI Recommendations
+                        </>
+                      )}
+                    </Button>
+                  </Card>
+                </div>
+              )}
+
+              {/* AI-Generated Recommendations */}
+              {recommendations.length > 0 && (
+                <div className="mb-8">
+                  <div className="flex items-center justify-between mb-4 px-6">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xl font-bold">AI Recommended For You</h3>
+                      <Badge className="bg-gradient-to-r from-blue-500 to-purple-500">
+                        <Sparkles className="w-3 h-3 mr-1" />
+                        AI Powered
+                      </Badge>
+                    </div>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => generateRecommendations('events')}
+                      disabled={generating}
+                    >
+                      <RefreshCw className={`w-3 h-3 mr-1 ${generating ? 'animate-spin' : ''}`} />
+                      Refresh
+                    </Button>
+                  </div>
+                  {(() => {
+                    let spotlightRowIndex = 0;
+                    const result = renderEventGrid(aiSpotlightItems, "AI Spotlight", spotlightRowIndex, handleEventClick);
+                    return result.content;
+                  })()}
+                </div>
+              )}
+
               {/* Featured Content */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Featured Content</h3>
                 {(() => {
-                  // Reset row counter for Spotlight tab to maintain consistent visual pattern
-                  let spotlightRowIndex = 0;
+                  let spotlightRowIndex = recommendations.length > 0 ? 3 : 0;
                   const result = renderEventGrid(spotlightFeatures, "Spotlight", spotlightRowIndex, handleEventClick);
                   return result.content;
                 })()}
@@ -1059,32 +1249,6 @@ export default withScreenId(function Community() {
               {/* Motivational Banner */}
               <div className="px-6 mb-8">
                 <MotivationalBanner variant="partnership" />
-              </div>
-
-              {/* AI Spotlight Suggestion */}
-              <div className="px-6">
-                <Card className="p-6 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-blue-200 shadow-lg shadow-blue-500/20 animate-pulse">
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-full p-3">
-                      <Sparkles className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h4 className="text-lg font-bold">AI Spotlight Recommendation</h4>
-                        <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-                          ✨ AI
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground mb-4">
-                        Based on your wellness goals and community activity, we recommend joining the Hydration Challenge 💧
-                      </p>
-                      <Button variant="default" className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
-                        <Plus className="w-4 h-4 mr-2" />
-                        Join Challenge
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
               </div>
             </SplitBarContent>
           </SplitBar>
