@@ -205,12 +205,16 @@ export class VertexLiveService {
             return;
           }
           
-          // Code 1006 = abnormal closure, often network issue
-          if (e?.code === 1006 && !this.isIntentionalDisconnect) {
-            console.warn('⚠️ WebSocket abnormal closure (1006) - connection lost unexpectedly');
-            this.callbacks.onError?.('Connection lost unexpectedly. Please check your network and try reconnecting.');
+          // Code 1006 before connection_ready: try fallback URL even if onopen fired
+          if (e?.code === 1006 && !this.conversationId && attempt === 0 && urls[1]) {
+            attempt = 1;
+            console.warn('↩️ Code 1006 before ready, retrying with fallback URL...');
+            this.callbacks.onTrace?.('Reconnecting via fallback path...');
+            tryConnect(urls[1]);
+            return;
           }
           
+          // Regular fallback for non-opened connections
           if (!opened && attempt === 0 && urls[1]) {
             attempt = 1;
             console.warn('↩️ Retrying with legacy WS path after close...');
@@ -220,7 +224,14 @@ export class VertexLiveService {
           
           // If we never got connection_ready, emit error
           if (!this.conversationId) {
-            this.callbacks.onError?.(`WebSocket closed before ready (code ${e?.code}${reason ? ': ' + reason : ''})`);
+            const errorMsg = e?.code === 1006 
+              ? 'Connection closed unexpectedly before ready (1006). Retrying...'
+              : `WebSocket closed before ready (code ${e?.code}${reason ? ': ' + reason : ''})`;
+            this.callbacks.onError?.(errorMsg);
+          } else if (e?.code === 1006 && !this.isIntentionalDisconnect) {
+            // Code 1006 after established connection
+            console.warn('⚠️ WebSocket abnormal closure (1006) - connection lost unexpectedly');
+            this.callbacks.onError?.('Connection lost unexpectedly. Please check your network and try reconnecting.');
           }
           
           this.callbacks.onConnectionChange?.(false);
@@ -508,21 +519,10 @@ export class VertexLiveService {
   }
 
   async startCamera() {
-    // Wait for setup completion instead of silent return
-    if (!this.isSetupComplete) {
-      console.log('⏳ Waiting for Gemini setup to complete...');
-      const startTime = Date.now();
-      while (!this.isSetupComplete) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        if (Date.now() - startTime > 30000) {
-          throw new Error('Gemini not ready for camera');
-        }
-      }
-    }
-
+    // Remove internal wait - rely on outer gating in useVertexLive
     console.log('📹 Starting camera...');
     
-    // Capture camera stream separately so we can control audio
+    // Capture camera stream
     this.cameraStream = await navigator.mediaDevices.getUserMedia({ 
       video: true, 
       audio: true 
@@ -545,7 +545,7 @@ export class VertexLiveService {
 
       this.ws.send(JSON.stringify(message));
       
-      // First frame confirmation - consider camera ready
+      // First frame confirmation - consider camera ready (fallback)
       if (!firstFrameSent) {
         firstFrameSent = true;
         console.log('✅ First camera frame sent successfully');

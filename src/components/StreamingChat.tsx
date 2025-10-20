@@ -294,13 +294,28 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [])
 
-  // Show Vertex errors with new error notification system + deduplication
+  // Update camera feedback logic
+  useEffect(() => {
+    if (vertexCameraActive && vertexConnected) {
+      setCameraFramesSent(true);
+    } else {
+      setCameraFramesSent(false);
+    }
+  }, [vertexCameraActive, vertexConnected]);
+  
+  // Suppress "closed before ready" during fallback reattempt
   const lastErrorRef = useRef<{ message: string; timestamp: number } | null>(null);
   useEffect(() => {
     if (vertexError) {
       // Ignore "closed before ready" if we're disconnected (clean shutdown)
       if (vertexError.includes('closed before ready') && vertexConnectionState === 'disconnected') {
         console.log('🔕 Ignoring false error after clean disconnect');
+        return;
+      }
+      
+      // Suppress "closed before ready (1006)" during auto-reconnect
+      if (vertexError.includes('closed before ready') && vertexError.includes('1006')) {
+        console.log('🔄 Connection fallback in progress, suppressing error...');
         return;
       }
       

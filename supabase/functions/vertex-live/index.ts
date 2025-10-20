@@ -160,30 +160,8 @@ serve(async (req) => {
           // Start retry sequence
           sendSetupComplete(1);
           
-          // Listen for ACK to stop retrying
-          const originalOnMessage = clientSocket.onmessage;
-          clientSocket.onmessage = async (event) => {
-            try {
-              const data = JSON.parse(event.data);
-              
-              // Handle ping/pong for heartbeat
-              if (data.type === 'ping') {
-                clientSocket.send(JSON.stringify({ type: 'pong' }));
-                return;
-              }
-              
-              // Handle ACK
-              if (data.type === 'setupComplete_ack') {
-                console.log('✅ Received setupComplete ACK from client');
-                setupAckReceived = true;
-                return;
-              }
-            } catch (e) {
-              // Not JSON or not our ACK, pass to original handler
-            }
-            // Call original handler if it exists
-            if (originalOnMessage) await originalOnMessage.call(clientSocket, event);
-          };
+          // Setup complete ACK listener (will be merged into unified handler below)
+          let setupAckReceived = false;
 
           // Start keep-alive ping to client
           pingInterval = setInterval(() => {
@@ -326,18 +304,31 @@ serve(async (req) => {
       }
     };
 
-    // Forward client messages to Vertex AI
+    // Unified client message handler (ping/pong, ACK, and forwarding)
     clientSocket.onmessage = async (event) => {
       try {
         const message = JSON.parse(event.data);
         console.log('📥 Client message type:', message.type || (message.clientContent ? 'clientContent' : message.client_content ? 'client_content' : 'unknown'));
 
-        if (!isConnected || !vertexSocket) {
+        // Handle ping/pong for heartbeat
+        if (message.type === 'ping') {
+          clientSocket.send(JSON.stringify({ type: 'pong' }));
+          return;
+        }
+        
+        // Handle setupComplete ACK
+        if (message.type === 'setupComplete_ack') {
+          console.log('✅ Received setupComplete ACK from client');
+          setupAckReceived = true;
+          return;
+        }
+
+        // Forward to Vertex AI only if connected
+        if (!isConnected || !vertexSocket || vertexSocket.readyState !== WebSocket.OPEN) {
           console.warn('⚠️ Vertex AI not connected, dropping message');
           return;
         }
 
-        // Forward to Vertex AI
         vertexSocket.send(JSON.stringify(message));
 
         // Log user messages to database (support camelCase and snake_case)
