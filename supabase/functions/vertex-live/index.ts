@@ -165,6 +165,14 @@ serve(async (req) => {
           clientSocket.onmessage = async (event) => {
             try {
               const data = JSON.parse(event.data);
+              
+              // Handle ping/pong for heartbeat
+              if (data.type === 'ping') {
+                clientSocket.send(JSON.stringify({ type: 'pong' }));
+                return;
+              }
+              
+              // Handle ACK
               if (data.type === 'setupComplete_ack') {
                 console.log('✅ Received setupComplete ACK from client');
                 setupAckReceived = true;

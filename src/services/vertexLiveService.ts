@@ -28,6 +28,9 @@ export class VertexLiveService {
   // Per-turn playback buffer (force PCM path, single play per turn)
   private turnChunks: Uint8Array[] = [];
   private collectingTurn = false;
+  // Heartbeat management
+  private heartbeatInterval: number | null = null;
+  private lastPongReceived: number = Date.now();
 
   constructor(callbacks: VertexLiveCallbacks) {
     this.callbacks = callbacks;
@@ -73,6 +76,18 @@ export class VertexLiveService {
           console.log('✅ WebSocket connected to edge function');
           this.callbacks.onTrace?.('WebSocket open, waiting for connection_ready...');
           // No need to send auth message - it's in the URL
+          
+          // Start heartbeat to prevent abnormal closures (code 1006)
+          this.heartbeatInterval = window.setInterval(() => {
+            if (this.ws?.readyState === WebSocket.OPEN) {
+              this.ws.send(JSON.stringify({ type: 'ping' }));
+              
+              // Check if last pong was too long ago (>60s = connection issues)
+              if (Date.now() - this.lastPongReceived > 60000) {
+                console.warn('⚠️ No pong received for 60s, connection may be stale');
+              }
+            }
+          }, 30000); // Ping every 30 seconds
         };
 
         ws.onmessage = async (event) => {
@@ -176,12 +191,24 @@ export class VertexLiveService {
           console.log('🔌 WebSocket closed', e?.code, reason);
           this.callbacks.onTrace?.(`WebSocket closed: ${e?.code} ${reason}`);
           
+          // Clear heartbeat
+          if (this.heartbeatInterval) {
+            clearInterval(this.heartbeatInterval);
+            this.heartbeatInterval = null;
+          }
+          
           // If this was an intentional disconnect, don't treat it as an error
           if (this.isIntentionalDisconnect) {
             console.log('✅ Intentional disconnect - no error');
             this.callbacks.onConnectionChange?.(false);
             this.isSetupComplete = false;
             return;
+          }
+          
+          // Code 1006 = abnormal closure, often network issue
+          if (e?.code === 1006 && !this.isIntentionalDisconnect) {
+            console.warn('⚠️ WebSocket abnormal closure (1006) - connection lost unexpectedly');
+            this.callbacks.onError?.('Connection lost unexpectedly. Please check your network and try reconnecting.');
           }
           
           if (!opened && attempt === 0 && urls[1]) {
@@ -212,6 +239,12 @@ export class VertexLiveService {
 
   private async handleServerMessage(data: any) {
     console.log('📥 Server message:', data.type || Object.keys(data)[0]);
+
+    // Handle pong response to heartbeat
+    if (data.type === 'pong') {
+      this.lastPongReceived = Date.now();
+      return;
+    }
 
     if (data.type === 'connection_ready') {
       this.conversationId = data.conversationId;
@@ -495,6 +528,8 @@ export class VertexLiveService {
       audio: true 
     });
     
+    let firstFrameSent = false;
+    
     this.cameraRecorder = new CameraRecorder((frameData) => {
       if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
 
@@ -509,9 +544,23 @@ export class VertexLiveService {
       };
 
       this.ws.send(JSON.stringify(message));
+      
+      // First frame confirmation - consider camera ready
+      if (!firstFrameSent) {
+        firstFrameSent = true;
+        console.log('✅ First camera frame sent successfully');
+        
+        // If setupComplete hasn't fired yet, fire it now as fallback
+        if (!this.isSetupComplete) {
+          console.log('📹 Camera frame sent - marking Gemini as ready (fallback)');
+          this.isSetupComplete = true;
+          this.callbacks.onGeminiReady?.();
+        }
+      }
     });
 
     await this.cameraRecorder.start();
+    console.log('📹 Camera recorder started, capturing frames at 1 FPS');
   }
 
   stopCamera() {

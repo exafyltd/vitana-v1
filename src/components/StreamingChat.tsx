@@ -37,6 +37,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const [showCrisisButton, setShowCrisisButton] = useState(false)
   const [useVertexLiveMode, setUseVertexLiveMode] = useState(true)
   const [isAutopilotProcessing, setIsAutopilotProcessing] = useState(false)
+  const [cameraFramesSent, setCameraFramesSent] = useState(false)
   const fadeTimeoutRef = useRef<NodeJS.Timeout>()
 
   const { selectedLanguage, setSelectedLanguage, languageOptions, isLoading: languageLoading } = useLanguage()
@@ -340,6 +341,16 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   useEffect(() => {
     // No-op to avoid unintended mic shutdown
   }, [vertexCameraActive, vertexScreenSharing, vertexRecording, isAudioActive, vertexStopAudio]);
+  
+  // Track camera frame transmission
+  useEffect(() => {
+    if (vertexCameraActive && vertexConnected) {
+      // Camera is active and connected - frames are being sent
+      setCameraFramesSent(true);
+    } else {
+      setCameraFramesSent(false);
+    }
+  }, [vertexCameraActive, vertexConnected]);
 
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
@@ -701,6 +712,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                 vertexStopAudio();
                 setIsRecording(false);
                 setIsAudioActive(false);
+                setCameraFramesSent(false);
               } else {
                 // START camera (connection handled internally by startCamera)
                 try {
@@ -715,13 +727,19 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                   console.log('[CAMERA] ▶️ Starting camera');
                   await vertexStartCamera(); // This handles connection internally
                   
-                  toast({
-                    title: "Camera Active",
-                    description: "Gemini can now see your camera feed",
-                    duration: 2000,
-                  });
+                  // Wait for first frame confirmation
+                  setTimeout(() => {
+                    if (vertexCameraActive) {
+                      toast({
+                        title: "Camera Active",
+                        description: "AI is now watching your camera feed",
+                        duration: 3000,
+                      });
+                    }
+                  }, 2000);
                 } catch (error) {
                   console.error('[CAMERA] ❌ Error:', error);
+                  setCameraFramesSent(false);
                   showError(
                     "Camera Error",
                     error instanceof Error ? error.message : "Failed to access camera"
@@ -782,7 +800,11 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                   } else if (vertexRecording) {
                     base = "AI is listening…";
                   } else if (vertexCameraActive) {
-                    base = "AI is listening and watching";
+                    if (cameraFramesSent) {
+                      base = "AI is watching your camera…";
+                    } else {
+                      base = "Capturing video frames…";
+                    }
                   } else if (vertexScreenSharing) {
                     base = "AI is watching your screen";
                   } else {

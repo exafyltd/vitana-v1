@@ -301,12 +301,21 @@ export const useVertexLive = () => {
         console.log('📹 Camera requires connection, connecting...');
         await connect();
         
-        // Wait for Gemini readiness (up to 30s) using ref
+        // Wait for Gemini readiness (up to 15s with progress logging)
         const startTime = Date.now();
+        let lastProgressLog = 0;
         while (connectionStateRef.current !== 'gemini_ready' && connectionStateRef.current !== 'connected') {
           await new Promise(resolve => setTimeout(resolve, 150));
-          if (Date.now() - startTime > 30000) {
-            throw new Error('Connection timeout starting camera');
+          const elapsed = Date.now() - startTime;
+          
+          // Log progress every 3 seconds
+          if (elapsed - lastProgressLog > 3000) {
+            console.log(`📹 Still waiting for Gemini... (${Math.round(elapsed/1000)}s elapsed)`);
+            lastProgressLog = elapsed;
+          }
+          
+          if (elapsed > 15000) {
+            throw new Error('Connection timeout starting camera - try reconnecting');
           }
         }
       }
