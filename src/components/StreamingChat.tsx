@@ -165,18 +165,11 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   }
 
   const handleMicToggle = async () => {
-    console.log('[MIC] 🎤 Mic clicked', { vertexRecording, isRecording, vertexCameraActive, vertexScreenSharing, vertexMicDisabled });
+    console.log('[MIC] 🎤 Mic clicked', { vertexRecording, isRecording, vertexCameraActive, vertexScreenSharing });
     
-    // Block START (not STOP) if camera is active
-    if (vertexCameraActive && !(vertexRecording || isRecording)) {
-      console.log('[MIC] ⚠️ Camera is active, mic start is blocked');
-      return;
-    }
-    
-    // Decide: STOP if recording, START otherwise
+    // STOP if currently recording
     if (vertexRecording || isRecording) {
-      // STOP: immediate
-      console.log('[MIC] 🛑 Stopping audio');
+      console.log('[MIC] 🛑 Stopping audio-only mode');
       vertexStopAudio();
       setIsRecording(false);
       setIsAudioActive(false);
@@ -187,39 +180,49 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         duration: 2000,
       });
       
-      // Only disconnect if no other streams are active
+      // Disconnect if no other streams active
       if (!vertexCameraActive && !vertexScreenSharing) {
-        console.log('[MIC] 🔌 Disconnecting (no other streams active)');
+        console.log('[MIC] 🔌 Disconnecting (no other streams)');
         vertexDisconnect();
-      } else {
-        console.log('[MIC] ℹ️ Keeping connection (camera/screen still active)');
       }
-    } else {
-      // START: start audio (connection handled internally)
-      setIsRecording(true);
-      setIsAudioActive(true);
+      return;
+    }
+    
+    // START audio-only mode: STOP camera if active
+    if (vertexCameraActive) {
+      console.log('[MIC] 📹➡️🎤 Camera active, switching to audio-only mode');
+      vertexStopCamera();
+      setCameraFramesSent(false);
       
-      try {
-        // startAudio will connect if needed and wait for readiness
-        await vertexStartAudio();
-        
-        toast({
-          title: "Microphone Active",
-          description: "Gemini is listening",
-          duration: 2000,
-        });
-        console.log('✅ Vertex audio recording started');
-      } catch (error) {
-        // Rollback on error
-        console.error('[MIC] ❌ Error:', error);
-        setIsRecording(false);
-        setIsAudioActive(false);
-        vertexStopAudio();
-        showError(
-          "Microphone Error",
-          error instanceof Error ? error.message : "Could not start microphone"
-        );
-      }
+      toast({
+        title: "Switched to audio-only",
+        description: "Camera stopped, microphone active",
+        duration: 2000,
+      });
+    }
+    
+    // Start microphone
+    setIsRecording(true);
+    setIsAudioActive(true);
+    
+    try {
+      await vertexStartAudio();
+      
+      toast({
+        title: "Microphone Active",
+        description: "Gemini is listening (audio-only)",
+        duration: 2000,
+      });
+      console.log('✅ Audio-only mode started');
+    } catch (error) {
+      console.error('[MIC] ❌ Error:', error);
+      setIsRecording(false);
+      setIsAudioActive(false);
+      vertexStopAudio();
+      showError(
+        "Microphone Error",
+        error instanceof Error ? error.message : "Could not start microphone"
+      );
     }
   }
 
@@ -561,6 +564,26 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
               <span className="text-xs font-medium">Screen Sharing Active</span>
             </div>
           )}
+          
+          {/* Active mode indicators */}
+          {vertexRecording && !vertexCameraActive && !vertexScreenSharing && !glassModeActive && (
+            <div className="bg-blue-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
+              <Mic className="h-3 w-3" />
+              <span className="text-xs font-medium">Audio-Only Mode</span>
+            </div>
+          )}
+          {vertexCameraActive && (
+            <div className="bg-purple-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
+              <VideoIcon className="h-3 w-3" />
+              <span className="text-xs font-medium">Camera Mode (Video)</span>
+            </div>
+          )}
+          {glassModeActive && (
+            <div className="bg-indigo-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
+              <Monitor className="h-3 w-3" />
+              <span className="text-xs font-medium">Glass Mode (Screen)</span>
+            </div>
+          )}
         </div>
       )}
 
@@ -721,33 +744,39 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             size="icon"
             onClick={async () => {
               if (vertexCameraActive) {
-                // STOP: immediate - also stop audio
+                // STOP camera
                 console.log('[CAMERA] 🛑 Stopping camera and audio');
                 vertexStopCamera();
                 vertexStopAudio();
                 setIsRecording(false);
                 setIsAudioActive(false);
                 setCameraFramesSent(false);
+                
+                toast({
+                  title: "Camera stopped",
+                  description: "Video feed disabled",
+                  duration: 2000,
+                });
               } else {
-                // START camera (connection handled internally by startCamera)
+                // START camera
                 try {
-                  // Stop mic if active (camera disables mic)
+                  // Stop mic if active (camera replaces mic)
                   if (vertexRecording) {
-                    console.log('[CAMERA] 🛑 Stopping mic (camera activating)');
+                    console.log('[CAMERA] 🎤➡️📹 Stopping mic (camera mode starting)');
                     vertexStopAudio();
                     setIsRecording(false);
                     setIsAudioActive(false);
                   }
                   
                   console.log('[CAMERA] ▶️ Starting camera');
-                  await vertexStartCamera(); // This handles connection internally
+                  await vertexStartCamera();
                   
                   // Wait for first frame confirmation
                   setTimeout(() => {
                     if (vertexCameraActive) {
                       toast({
                         title: "Camera Active",
-                        description: "AI is now watching your camera feed",
+                        description: "AI is watching your camera feed (video mode)",
                         duration: 3000,
                       });
                     }
@@ -806,17 +835,18 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
                   
                   let base = "";
                   if (glassModeActive) {
-                    base = "AI is watching your screen";
+                    base = "AI is watching your screen (Glass Mode)";
                     if (glassModeHasAudio && !glassModeAudioMuted) {
-                      base += " and listening";
+                      base = "AI is watching your screen and listening";
                     } else if (glassModeAudioMuted) {
                       base += " (audio muted)";
                     }
-                  } else if (vertexRecording) {
-                    base = "AI is listening…";
+                  } else if (vertexRecording && !vertexCameraActive && !vertexScreenSharing) {
+                    // Audio-only mode
+                    base = "Listening (audio-only)...";
                   } else if (vertexCameraActive) {
                     if (cameraFramesSent) {
-                      base = "AI is watching your camera…";
+                      base = "AI is watching your camera (video mode)";
                     } else {
                       base = "Capturing video frames…";
                     }
