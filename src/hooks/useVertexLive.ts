@@ -150,6 +150,15 @@ export const useVertexLive = () => {
   }, []);
 
   const connect = useCallback(async () => {
+    const sessionId = `VS-${Date.now()}`;
+    const t0 = performance.now();
+    console.log(`[VERTEX][${sessionId}] t+0ms 🔌 Connect called`, {
+      currentState: connectionState,
+      isConnected: connectionState === 'connected',
+      hasService: !!serviceRef.current,
+      timestamp: new Date().toISOString()
+    });
+    
     try {
       isUserDisconnectingRef.current = false; // Clear flag when starting new connection
       if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
@@ -158,24 +167,28 @@ export const useVertexLive = () => {
       setConnectionState('connecting');
       setLastEvent('Checking authentication...');
       
+      console.log(`[VERTEX][${sessionId}] t+${(performance.now()-t0).toFixed(0)}ms 🔑 Getting auth session...`);
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session?.access_token) {
         const errorMsg = 'No authentication token';
+        console.error(`[VERTEX][${sessionId}] t+${(performance.now()-t0).toFixed(0)}ms ❌ No auth token`);
         setError(errorMsg);
         setConnectionState('error');
         setLastEvent('auth_failed: no token');
         throw new Error(errorMsg);
       }
 
+      console.log(`[VERTEX][${sessionId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Auth token obtained, connecting to service...`);
       setLastEvent('auth_ok');
       await serviceRef.current?.connect(session.access_token);
+      console.log(`[VERTEX][${sessionId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Service connected, session ID: ${sessionId}`);
       
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to connect';
+      console.error(`[VERTEX][${sessionId}] t+${(performance.now()-t0).toFixed(0)}ms ❌ Connect failed:`, err);
       if (!error) setError(errorMsg);
       if (connectionState !== 'error') setConnectionState('error');
-      console.error('Failed to connect:', err);
     }
   }, [error, connectionState]);
 

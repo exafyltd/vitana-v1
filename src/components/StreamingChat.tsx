@@ -372,37 +372,54 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     activateVideo: async () => {
-      console.log('StreamingChat: activateVideo called (Glass Mode), useVertexLive:', useVertexLiveMode);
+      const traceId = `RCT-${Date.now()}`;
+      const t0 = performance.now();
+      console.log(`[GLASS][${traceId}] t+0ms 🎬 activateVideo called (Start Stream clicked)`, {
+        useVertexLiveMode,
+        glassModeActive,
+        isGeminiReady: vertexIsGeminiReady,
+        connectionState: vertexConnectionState,
+        timestamp: new Date().toISOString()
+      });
       
       if (useVertexLiveMode) {
         try {
           // Cancel any ongoing TTS to avoid audio conflicts
           if (window.speechSynthesis) {
             window.speechSynthesis.cancel();
-            console.log('🔇 Cancelled TTS before Vertex connection');
+            console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🔇 Cancelled TTS`);
           }
           
           // Connect to Vertex in background if needed
           if (!vertexIsGeminiReady) {
+            console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🔌 Gemini not ready, connecting...`);
             toast({
               title: "Connecting to Gemini...",
               description: "Starting Glass Mode",
               duration: 2000,
             });
             await vertexConnect();
+            console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ vertexConnect returned`);
+          } else {
+            console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Gemini already ready`);
           }
           
           // Start Glass Mode (dual-stream screen capture)
+          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🪟 Starting Glass Mode...`);
           await startGlassMode();
+          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Glass Mode started`);
           
           // Start microphone audio
+          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🎤 Starting microphone...`);
           await vertexStartAudio();
+          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Microphone started`);
           
           // Set active immediately
           setIsVideoActive(true);
           
           // Bell notification only on Glass Mode start & Gemini ready
           if (vertexIsGeminiReady) {
+            console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🔔 PASS: Glass Mode fully active (ready=true)`);
             toast({
               title: "🪟 Glass Mode Active",
               description: "AI is watching your screen with advanced context",
@@ -410,9 +427,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
             });
           }
           
-          console.log('✅ Glass Mode stream started');
+          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ✅ Glass Mode stream started successfully`);
         } catch (error) {
-          console.error('❌ Failed to activate Glass Mode:', error);
+          console.error(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms ❌ FAIL: Glass Mode error:`, error);
           
           // Rollback all states on error
           setIsVideoActive(false);

@@ -8,21 +8,21 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  console.log('📥 Received request:', req.method, req.url);
+  const traceId = `EDGE-${Date.now()}`;
+  console.log(`[vertex-live][${traceId}] 📥 Request received:`, {
+    method: req.method,
+    url: req.url,
+    upgrade: req.headers.get("upgrade"),
+    timestamp: new Date().toISOString()
+  });
   
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   const upgradeHeader = req.headers.get("upgrade") || "";
-  console.log('🔍 Upgrade header:', upgradeHeader);
-  const proto = req.headers.get('sec-websocket-protocol') || '';
-  const version = req.headers.get('sec-websocket-version') || '';
-  const origin = req.headers.get('origin') || '';
-  console.log('🔎 WS headers:', { origin, version, proto });
-  
   if (upgradeHeader.toLowerCase() !== "websocket") {
-    console.error('❌ Not a WebSocket request');
+    console.error(`[vertex-live][${traceId}] ❌ Not a WebSocket request`);
     return new Response("Expected WebSocket connection", { 
       status: 400,
       headers: corsHeaders
@@ -43,10 +43,10 @@ serve(async (req) => {
         else if (p.startsWith('bearer.')) token = p.slice(7);
       }
     }
-    console.log('🔑 Token present:', !!token);
+    console.log(`[vertex-live][${traceId}] 🔑 Token present:`, !!token);
     
     if (!token) {
-      console.error('❌ No token provided');
+      console.error(`[vertex-live][${traceId}] ❌ No token provided`);
       return new Response(JSON.stringify({ error: 'No authorization token' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -55,7 +55,7 @@ serve(async (req) => {
 
     // Immediately upgrade to WebSocket BEFORE any async work
     const { socket: clientSocket, response } = Deno.upgradeWebSocket(req);
-    console.log('🔄 Upgraded to WebSocket (server handshake complete)');
+    console.log(`[vertex-live][${traceId}] ✅ WebSocket upgraded, establishing connection...`);
 
     // Shared state across handlers
     let vertexSocket: WebSocket | null = null;
@@ -70,7 +70,7 @@ serve(async (req) => {
 
     // Handle client WebSocket open: do all async setup here
     clientSocket.onopen = async () => {
-      console.log('✅ Client WebSocket connected');
+      console.log(`[vertex-live][${traceId}] 🔌 Client WebSocket opened, initiating Vertex connection...`);
 
       try {
         // Initialize Supabase client scoped to this user
@@ -81,12 +81,12 @@ serve(async (req) => {
         // Verify user
         const { data: { user }, error: authError } = await supabase.auth.getUser(token);
         if (authError || !user) {
-          console.error('❌ Unauthorized:', authError);
+          console.error(`[vertex-live][${traceId}] ❌ Unauthorized:`, authError);
           clientSocket.send(JSON.stringify({ type: 'error', message: 'Unauthorized' }));
           clientSocket.close(4001, 'unauthorized');
           return;
         }
-        console.log(`👤 Authenticated user: ${user.id}`);
+        console.log(`[vertex-live][${traceId}] 👤 Authenticated user: ${user.id}`);
 
         // Conversation logging disabled due to database constraint issues
         // conversationId remains null
@@ -94,7 +94,7 @@ serve(async (req) => {
         // Get Gemini API key from environment
         const apiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
         if (!apiKey) {
-          console.error('❌ Missing GOOGLE_GEMINI_API_KEY');
+          console.error(`[vertex-live][${traceId}] ❌ Missing GOOGLE_GEMINI_API_KEY`);
           clientSocket.send(JSON.stringify({ type: 'error', message: 'API key not configured' }));
           clientSocket.close(4500, 'config-missing');
           return;
@@ -102,11 +102,11 @@ serve(async (req) => {
 
         // Connect to Google AI Studio Gemini Live API (v1beta endpoint)
         const geminiUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=${apiKey}`;
-        console.log('🔗 Connecting to Gemini Live API (v1beta)...');
+        console.log(`[vertex-live][${traceId}] 🔗 Connecting to Gemini Live API (v1beta)...`);
         vertexSocket = new WebSocket(geminiUrl);
 
         vertexSocket.onopen = async () => {
-          console.log('✅ Connected to Gemini Live API');
+          console.log(`[vertex-live][${traceId}] ✅ Connected to Gemini Live API, configuring session...`);
           isConnected = true;
 
           // Send setup configuration
@@ -140,15 +140,16 @@ serve(async (req) => {
 
           // Notify client that connection is ready
           clientSocket.send(
-            JSON.stringify({ type: 'connection_ready', conversationId }),
+            JSON.stringify({ type: 'connection_ready', conversationId, traceId }),
           );
+          console.log(`[vertex-live][${traceId}] 📤 Sent connection_ready to client`);
           
           // Send setupComplete with retry logic (exponential backoff)
           const sendSetupComplete = (attemptNum: number) => {
             if (setupAckReceived || clientSocket.readyState !== WebSocket.OPEN) return;
             
-            console.log(`📤 Sending setupComplete (attempt ${attemptNum})`);
-            clientSocket.send(JSON.stringify({ setupComplete: true }));
+            console.log(`[vertex-live][${traceId}] 📤 Sending setupComplete (attempt ${attemptNum}, ready=true)`);
+            clientSocket.send(JSON.stringify({ setupComplete: true, traceId, timestamp: new Date().toISOString() }));
             
             // Schedule next retry with exponential backoff
             const delays = [500, 1000, 2000, 3000]; // ms
