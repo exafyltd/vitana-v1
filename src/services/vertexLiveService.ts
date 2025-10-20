@@ -238,10 +238,16 @@ export class VertexLiveService {
       console.log('🎉 Gemini AI setup complete and ready!');
       this.callbacks.onTrace?.('Gemini setup complete');
       
+      // Send ACK back to server to stop retries
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+        console.log('📤 Sending setupComplete ACK to server');
+        this.ws.send(JSON.stringify({ type: 'setupComplete_ack' }));
+      }
+      
       // Fire Gemini ready callback (only once)
       if (!this.geminiReadyFired) {
         this.geminiReadyFired = true;
-        console.log('🔔 Firing onGeminiReady callback');
+        console.log('🔔 Firing onGeminiReady callback (via setupComplete)');
         this.callbacks.onGeminiReady?.(); // This will trigger bell and greeting
         this.callbacks.onConnectionChange?.(true); // NOW we're truly connected
       }
@@ -252,10 +258,10 @@ export class VertexLiveService {
     if (data.serverContent) {
       const content = data.serverContent;
       
-      // If this is the first model turn and Gemini ready hasn't fired, fire it now
-      if (content.modelTurn && !this.geminiReadyFired) {
+      // AGGRESSIVE FALLBACK: Fire ready on ANY Gemini response if not already fired
+      if (!this.geminiReadyFired) {
         this.geminiReadyFired = true;
-        console.log('🎉 Gemini responding (first model turn) - firing onGeminiReady');
+        console.log('🎉 Gemini responding (fallback detection) - firing onGeminiReady');
         this.callbacks.onGeminiReady?.();
         this.callbacks.onConnectionChange?.(true);
       }

@@ -293,7 +293,8 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     }
   }, [])
 
-  // Show Vertex errors with new error notification system
+  // Show Vertex errors with new error notification system + deduplication
+  const lastErrorRef = useRef<{ message: string; timestamp: number } | null>(null);
   useEffect(() => {
     if (vertexError) {
       // Ignore "closed before ready" if we're disconnected (clean shutdown)
@@ -314,6 +315,16 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         errorMessage = "Please sign in again to continue.";
       }
       
+      // Deduplication: skip if same error within 5 seconds
+      const now = Date.now();
+      if (lastErrorRef.current?.message === errorMessage && 
+          now - lastErrorRef.current.timestamp < 5000) {
+        console.log('🔕 Skipping duplicate error:', errorMessage);
+        return;
+      }
+      
+      // Update last error tracking
+      lastErrorRef.current = { message: errorMessage, timestamp: now };
       showError(errorTitle, errorMessage);
     }
   }, [vertexError, vertexConnectionState, showError]);

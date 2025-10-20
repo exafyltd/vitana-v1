@@ -137,19 +137,45 @@ serve(async (req) => {
           // Wait briefly to ensure client WebSocket is fully ready to receive
           await new Promise(resolve => setTimeout(resolve, 100));
 
-          // Notify client that connection is ready and mark setup complete for the UI
+          // Notify client that connection is ready
           clientSocket.send(
             JSON.stringify({ type: 'connection_ready', conversationId }),
           );
-          clientSocket.send(JSON.stringify({ setupComplete: true }));
           
-          // Send confirmation ping to verify client is receiving messages
-          setTimeout(() => {
-            if (clientSocket.readyState === WebSocket.OPEN) {
-              clientSocket.send(JSON.stringify({ type: 'ping', timestamp: Date.now() }));
-              console.log('📤 Sent confirmation ping to client');
+          // Send setupComplete with retry logic (exponential backoff)
+          let setupAckReceived = false;
+          const sendSetupComplete = (attemptNum: number) => {
+            if (setupAckReceived || clientSocket.readyState !== WebSocket.OPEN) return;
+            
+            console.log(`📤 Sending setupComplete (attempt ${attemptNum})`);
+            clientSocket.send(JSON.stringify({ setupComplete: true }));
+            
+            // Schedule next retry with exponential backoff
+            const delays = [500, 1000, 2000, 3000]; // ms
+            if (attemptNum <= delays.length) {
+              setTimeout(() => sendSetupComplete(attemptNum + 1), delays[attemptNum - 1]);
             }
-          }, 200);
+          };
+          
+          // Start retry sequence
+          sendSetupComplete(1);
+          
+          // Listen for ACK to stop retrying
+          const originalOnMessage = clientSocket.onmessage;
+          clientSocket.onmessage = async (event) => {
+            try {
+              const data = JSON.parse(event.data);
+              if (data.type === 'setupComplete_ack') {
+                console.log('✅ Received setupComplete ACK from client');
+                setupAckReceived = true;
+                return;
+              }
+            } catch (e) {
+              // Not JSON or not our ACK, pass to original handler
+            }
+            // Call original handler if it exists
+            if (originalOnMessage) await originalOnMessage.call(clientSocket, event);
+          };
 
           // Start keep-alive ping to client
           pingInterval = setInterval(() => {
