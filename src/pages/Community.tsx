@@ -915,9 +915,17 @@ export default withScreenId(function Community() {
             </Button>
           </UtilityActionButton>
 
-          {/* Phase 3: Real-Time Activity Banner */}
-          <Card className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
-            <div className="flex items-center gap-6 text-sm flex-wrap">
+          <SplitBar defaultValue="overview" className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
+              <SplitBarTrigger value="rankings">Rankings</SplitBarTrigger>
+              <SplitBarTrigger value="spotlight">Spotlight</SplitBarTrigger>
+            </SplitBarList>
+
+        <SplitBarContent value="overview">
+          {/* Live Activity Metrics */}
+          <Card className="p-4 mb-6 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
+            <div className="flex items-center justify-center gap-6 text-sm flex-wrap">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                 <span className="font-medium">{activityMetrics.totalMembers} community members</span>
@@ -927,35 +935,26 @@ export default withScreenId(function Community() {
                 <span>{activityMetrics.eventsToday} events today</span>
               </div>
               <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-accent" />
+                <Users className="w-4 h-4 text-accent" />
                 <span>{todayEvents.length + upcomingEvents.length} upcoming activities</span>
               </div>
             </div>
           </Card>
 
-          {/* Autopilot Integration */}
-          <div className="mb-6">
-            <AutopilotWidget 
-              sectionName="Community"
-              suggestions={[
-                "Auto-join matching groups based on your interests",
-                "Schedule group meetups that fit your calendar",
-                "Connect with nearby members for wellness activities"
-              ]}
-              isEnabled={true}
-              variant="inline"
-            />
-          </div>
+          {/* Autopilot Widget */}
+          <Card className="p-6 mb-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-6 h-6 text-primary" />
+                <div>
+                  <h3 className="font-semibold">Autopilot Recommendations Ready</h3>
+                  <p className="text-sm text-muted-foreground">Get personalized event suggestions</p>
+                </div>
+              </div>
+            </div>
+          </Card>
 
-          <SplitBar defaultValue="overview" className="w-full">
-            <SplitBarList>
-              <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
-              <SplitBarTrigger value="rankings">Rankings</SplitBarTrigger>
-              <SplitBarTrigger value="spotlight">Spotlight</SplitBarTrigger>
-            </SplitBarList>
-
-            <SplitBarContent value="overview">
-              {/* Today Highlights */}
+          {/* Today Highlights */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Today Highlights</h3>
                 {(() => {
