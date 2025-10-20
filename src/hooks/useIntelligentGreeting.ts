@@ -8,13 +8,25 @@ import { supabase } from '@/integrations/supabase/client';
 const SESSION_KEY = 'vitana_greeting_spoken';
 const LAST_GREETING_KEY = 'vitana_last_greeting_time';
 
-export function useIntelligentGreeting() {
+interface GreetingGuards {
+  glassModeActive: boolean;
+  micActive: boolean;
+  sessionReady: boolean;
+  hasPendingTTS: boolean;
+}
+
+export function useIntelligentGreeting(guards?: GreetingGuards) {
   const { user } = useAuth();
   const { preferences } = useUserPreferences();
   const { speak, isSpeaking } = useTextToSpeech();
   const [lastGreeting, setLastGreeting] = useState<GreetingMessage | null>(null);
   const [greetingHistory, setGreetingHistory] = useState<Array<{ message: string; time: string }>>([]);
   const activationTimesRef = useRef<number[]>([]);
+  const greetingSuppressedRef = useRef(false);
+  const userInteractedRef = useRef(false);
+  const greetingScheduledRef = useRef(false);
+  const cooldownTimerRef = useRef<NodeJS.Timeout>();
+  const traceIdRef = useRef(`GREET-${Date.now()}`);
 
   const getTimeOfDay = (): 'morning' | 'afternoon' | 'evening' | 'night' => {
     const hour = new Date().getHours();
@@ -25,34 +37,86 @@ export function useIntelligentGreeting() {
   };
 
   const shouldGreet = useCallback((): boolean => {
-    if (!preferences?.auto_greeting_enabled) return false;
-    if (!user) return false;
+    const traceId = traceIdRef.current;
+    
+    if (!preferences?.auto_greeting_enabled) {
+      console.log(`[GREET][${traceId}] skipped_auto_greeting_disabled`);
+      return false;
+    }
+    if (!user) {
+      console.log(`[GREET][${traceId}] skipped_no_user`);
+      return false;
+    }
+
+    // CRITICAL: Check all guardrails
+    if (guards?.glassModeActive) {
+      console.log(`[GREET][${traceId}] suppressed_due_to_glass glassModeActive=${guards.glassModeActive}`);
+      return false;
+    }
+    if (guards?.micActive) {
+      console.log(`[GREET][${traceId}] suppressed_due_to_mic micActive=${guards.micActive}`);
+      return false;
+    }
+    if (!guards?.sessionReady) {
+      console.log(`[GREET][${traceId}] suppressed_session_not_ready sessionReady=${guards?.sessionReady}`);
+      return false;
+    }
+    if (guards?.hasPendingTTS || isSpeaking) {
+      console.log(`[GREET][${traceId}] suppressed_pending_tts hasPendingTTS=${guards?.hasPendingTTS} isSpeaking=${isSpeaking}`);
+      return false;
+    }
+
+    // Check suppression flag
+    if (greetingSuppressedRef.current) {
+      console.log(`[GREET][${traceId}] suppressed_by_flag`);
+      return false;
+    }
+
+    // Check user interaction
+    if (userInteractedRef.current) {
+      console.log(`[GREET][${traceId}] cancelled_by_user_input`);
+      return false;
+    }
 
     const frequency = preferences.greeting_frequency || 'session';
-
-    if (frequency === 'off') return false;
+    if (frequency === 'off') {
+      console.log(`[GREET][${traceId}] skipped_frequency_off`);
+      return false;
+    }
 
     const hasGreeted = sessionStorage.getItem(SESSION_KEY) === 'true';
     const lastGreetingTime = localStorage.getItem(LAST_GREETING_KEY);
 
     if (frequency === 'session') {
-      return !hasGreeted;
+      if (hasGreeted) {
+        console.log(`[GREET][${traceId}] skipped_already_greeted`);
+        return false;
+      }
+      return true;
     }
 
     if (frequency === 'daily' && lastGreetingTime) {
       const lastTime = new Date(lastGreetingTime);
       const now = new Date();
       const isSameDay = lastTime.toDateString() === now.toDateString();
-      return !isSameDay;
+      if (isSameDay) {
+        console.log(`[GREET][${traceId}] skipped_already_greeted_today`);
+        return false;
+      }
+      return true;
     }
 
     if (frequency === 'hourly' && lastGreetingTime) {
       const hoursSince = (Date.now() - new Date(lastGreetingTime).getTime()) / (1000 * 60 * 60);
-      return hoursSince >= 4;
+      if (hoursSince < 4) {
+        console.log(`[GREET][${traceId}] skipped_too_soon hoursSince=${hoursSince.toFixed(1)}`);
+        return false;
+      }
+      return true;
     }
 
     return !hasGreeted;
-  }, [preferences, user]);
+  }, [preferences, user, guards, isSpeaking]);
 
   // Canonicalize language code (sr, sr-RS, sr_RS → sr-RS)
   const canonicalizeLang = useCallback((l: string): string => {
@@ -112,17 +176,28 @@ export function useIntelligentGreeting() {
   }, [user]);
 
   const triggerGreeting = useCallback(async () => {
+    const traceId = traceIdRef.current;
+    
+    // Single-flight guarantee
+    if (greetingScheduledRef.current) {
+      console.log(`[GREET][${traceId}] skipped_already_scheduled`);
+      return;
+    }
+
     if (!shouldGreet()) return;
 
+    greetingScheduledRef.current = true;
+    console.log(`[GREET][${traceId}] scheduled`);
+
     try {
-      console.log('🎯 Triggering AI-powered greeting...');
+      console.log(`[GREET][${traceId}] fired timestamp=${new Date().toISOString()}`);
       
       // Get session for Authorization
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
       
       if (!accessToken) {
-        console.warn('No session token, skipping greeting');
+        console.warn(`[GREET][${traceId}] failed NO_AUTH_TOKEN`);
         return;
       }
       
@@ -132,9 +207,12 @@ export function useIntelligentGreeting() {
         body: { override_language: preferences?.stt_language || 'en-US' }
       });
       
-      if (error) throw error;
+      if (error) {
+        console.error(`[GREET][${traceId}] failed EDGE_FUNCTION_ERROR`, error);
+        throw error;
+      }
       
-      console.log('📝 Generated AI greeting:', data.greeting);
+      console.log(`[GREET][${traceId}] generated text="${data.greeting?.substring(0, 50)}..."`);
       const greetingMessage = {
         text: data.greeting,
         type: 'ai_generated' as GreetingMessageType,
@@ -152,10 +230,17 @@ export function useIntelligentGreeting() {
         time: new Date().toISOString()
       };
       setGreetingHistory((prev) => [historyEntry, ...prev].slice(0, 10));
+      console.log(`[GREET][${traceId}] completed`);
     } catch (error) {
-      console.error('Failed to trigger greeting:', error);
+      console.error(`[GREET][${traceId}] failed ${error instanceof Error ? error.message : 'UNKNOWN_ERROR'}`);
+      // Don't show error card during Glass Mode
+      if (!guards?.glassModeActive) {
+        // Error card would be handled by caller if needed
+      }
+    } finally {
+      greetingScheduledRef.current = false;
     }
-  }, [shouldGreet, speak, preferences]);
+  }, [shouldGreet, speak, preferences, guards]);
 
   const manualGreeting = useCallback(async () => {
     try {
@@ -197,13 +282,57 @@ export function useIntelligentGreeting() {
     }
   }, [speak, preferences]);
 
+  const suppressGreeting = useCallback(() => {
+    const traceId = traceIdRef.current;
+    greetingSuppressedRef.current = true;
+    console.log(`[GREET][${traceId}] suppressed_manually`);
+  }, []);
+
+  const cancelGreeting = useCallback(() => {
+    const traceId = traceIdRef.current;
+    userInteractedRef.current = true;
+    greetingScheduledRef.current = false;
+    if (cooldownTimerRef.current) {
+      clearTimeout(cooldownTimerRef.current);
+      cooldownTimerRef.current = undefined;
+    }
+    console.log(`[GREET][${traceId}] cancelled_by_user_input`);
+  }, []);
+
+  const schedulePostGlassCooldown = useCallback(() => {
+    const traceId = traceIdRef.current;
+    console.log(`[GREET][${traceId}] cooldown_started`);
+    greetingSuppressedRef.current = false; // Allow greeting again after cooldown
+    
+    if (cooldownTimerRef.current) {
+      clearTimeout(cooldownTimerRef.current);
+    }
+    
+    cooldownTimerRef.current = setTimeout(() => {
+      console.log(`[GREET][${traceId}] cooldown_ended`);
+      triggerGreeting();
+    }, 5000);
+  }, [triggerGreeting]);
+
   const clearGreetingState = useCallback(() => {
     sessionStorage.removeItem(SESSION_KEY);
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (cooldownTimerRef.current) {
+        clearTimeout(cooldownTimerRef.current);
+      }
+    };
   }, []);
 
   return {
     triggerGreeting,
     manualGreeting,
+    suppressGreeting,
+    cancelGreeting,
+    schedulePostGlassCooldown,
     clearGreetingState,
     lastGreeting,
     greetingHistory,

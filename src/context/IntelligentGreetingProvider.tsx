@@ -1,31 +1,74 @@
-import React, { createContext, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useIntelligentGreeting } from '@/hooks/useIntelligentGreeting';
 import { useAuth } from './AuthProvider';
 
 interface IntelligentGreetingContextValue {
   triggerGreeting: () => Promise<void>;
   manualGreeting: () => Promise<void>;
+  suppressGreeting: () => void;
+  cancelGreeting: () => void;
+  schedulePostGlassCooldown: () => void;
   clearGreetingState: () => void;
   isSpeaking: boolean;
 }
 
+interface IntelligentGreetingProviderProps {
+  children: ReactNode;
+  glassModeActive?: boolean;
+  micActive?: boolean;
+  sessionReady?: boolean;
+}
+
 const IntelligentGreetingContext = createContext<IntelligentGreetingContextValue | undefined>(undefined);
 
-export function IntelligentGreetingProvider({ children }: { children: ReactNode }) {
+export function IntelligentGreetingProvider({ 
+  children, 
+  glassModeActive = false,
+  micActive = false,
+  sessionReady = false
+}: IntelligentGreetingProviderProps) {
   const { user } = useAuth();
-  const { triggerGreeting, manualGreeting, clearGreetingState, isSpeaking } = useIntelligentGreeting();
+  const [hasPendingTTS, setHasPendingTTS] = useState(false);
+  
+  const { 
+    triggerGreeting, 
+    manualGreeting, 
+    suppressGreeting,
+    cancelGreeting,
+    schedulePostGlassCooldown,
+    clearGreetingState, 
+    isSpeaking 
+  } = useIntelligentGreeting({
+    glassModeActive,
+    micActive,
+    sessionReady,
+    hasPendingTTS
+  });
 
-  // Trigger greeting once per session after authentication
+  // Monitor TTS state
   useEffect(() => {
-    if (user) {
-      // Small delay to ensure app is fully loaded
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      setHasPendingTTS(window.speechSynthesis.speaking || window.speechSynthesis.pending);
+      
+      const checkTTS = setInterval(() => {
+        setHasPendingTTS(window.speechSynthesis.speaking || window.speechSynthesis.pending);
+      }, 500);
+      
+      return () => clearInterval(checkTTS);
+    }
+  }, []);
+
+  // Trigger greeting once per session after authentication AND session ready
+  useEffect(() => {
+    if (user && sessionReady && !glassModeActive && !micActive) {
+      // Wait 5s to ensure everything is stable
       const timer = setTimeout(() => {
         triggerGreeting();
-      }, 1000);
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
-  }, [user, triggerGreeting]);
+  }, [user, sessionReady, glassModeActive, micActive, triggerGreeting]);
 
   // Clear greeting state on logout
   useEffect(() => {
@@ -37,6 +80,9 @@ export function IntelligentGreetingProvider({ children }: { children: ReactNode 
   const value = {
     triggerGreeting,
     manualGreeting,
+    suppressGreeting,
+    cancelGreeting,
+    schedulePostGlassCooldown,
     clearGreetingState,
     isSpeaking
   };

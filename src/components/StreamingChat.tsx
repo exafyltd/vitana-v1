@@ -13,6 +13,7 @@ import { ClientSTT } from "@/utils/clientSTT"
 import { useErrorNotifications } from "@/hooks/useErrorNotifications"
 import { ErrorNotificationStack } from "@/components/ErrorNotificationStack"
 import { useGlassMode } from "@/hooks/useGlassMode"
+import { useIntelligentGreetingContext } from "@/context/IntelligentGreetingProvider"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,6 +46,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const { preferences } = useUserPreferences()
   const { triggerProactiveMessage, isGenerating: isGeneratingMessage } = useProactiveAssistant()
   const { errors, showError, dismissError } = useErrorNotifications()
+  const { suppressGreeting, cancelGreeting, schedulePostGlassCooldown } = useIntelligentGreetingContext()
   
   // Glass Mode integration
   const {
@@ -188,6 +190,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       return;
     }
     
+    // User activated mic - cancel greeting
+    cancelGreeting();
+    console.log('[MIC] 🔕 Greeting cancelled (user activated mic)');
+    
     // START audio-only mode: STOP camera if active
     if (vertexCameraActive) {
       console.log('[MIC] 📹➡️🎤 Camera active, switching to audio-only mode');
@@ -232,6 +238,9 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
 
   const handleSendText = async () => {
     if (!inputValue.trim() || isProcessing) return
+    
+    // User typed - cancel greeting
+    cancelGreeting();
     
     const userMessage = inputValue.trim()
     setInputValue("")
@@ -352,8 +361,13 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   useEffect(() => {
     if (useVertexLiveMode && vertexTranscript) {
       setAssistantStreamingText(vertexTranscript);
+      
+      // User spoke - cancel greeting
+      if (vertexTranscript.trim().length > 0) {
+        cancelGreeting();
+      }
     }
-  }, [useVertexLiveMode, vertexTranscript]);
+  }, [useVertexLiveMode, vertexTranscript, cancelGreeting]);
 
   // Allow audio-only sessions; do not auto-stop mic when camera/screen are off
   useEffect(() => {
@@ -384,6 +398,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
       
       if (useVertexLiveMode) {
         try {
+          // CRITICAL: Suppress greeting immediately when Start Stream is clicked
+          suppressGreeting();
+          console.log(`[GLASS][${traceId}] t+${(performance.now()-t0).toFixed(0)}ms 🔕 Greeting suppressed`);
+          
           // Cancel any ongoing TTS to avoid audio conflicts
           if (window.speechSynthesis) {
             window.speechSynthesis.cancel();
@@ -477,6 +495,10 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
         
         console.log('🔌 Disconnecting from Vertex...');
         vertexDisconnect();
+        
+        // Schedule greeting after 5s cool-down
+        console.log('🕐 Scheduling post-Glass cool-down for greeting...');
+        schedulePostGlassCooldown();
       }
       
       // Reset all states
