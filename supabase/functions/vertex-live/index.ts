@@ -62,6 +62,7 @@ serve(async (req) => {
     let conversationId: string | null = null;
     let isConnected = false;
     let pingInterval: number | undefined;
+    let setupAckReceived = false;
 
     // Non-async env lookups
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -143,7 +144,6 @@ serve(async (req) => {
           );
           
           // Send setupComplete with retry logic (exponential backoff)
-          let setupAckReceived = false;
           const sendSetupComplete = (attemptNum: number) => {
             if (setupAckReceived || clientSocket.readyState !== WebSocket.OPEN) return;
             
@@ -159,9 +159,6 @@ serve(async (req) => {
           
           // Start retry sequence
           sendSetupComplete(1);
-          
-          // Setup complete ACK listener (will be merged into unified handler below)
-          let setupAckReceived = false;
 
           // Start keep-alive ping to client
           pingInterval = setInterval(() => {
