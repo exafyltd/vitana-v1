@@ -35,15 +35,79 @@ const formatEventTime = (dateString: string) => {
   });
 };
 
+// Sanitize and validate image URLs
+const sanitizeUrl = (url?: string): string | undefined => {
+  if (!url) return undefined;
+  const s = String(url).trim();
+  if (!s) return undefined;
+  const lower = s.toLowerCase();
+  
+  // Reject unsafe schemes and known bad placeholders
+  if (
+    lower.startsWith('javascript:') ||
+    lower.startsWith('about:') ||
+    lower.includes('undefined') ||
+    s.startsWith('/api/placeholder')
+  ) {
+    console.log('[MEETUP-IMG] Rejected URL (dangerous/invalid):', s);
+    return undefined;
+  }
+  
+  const isHttp = /^https?:\/\//i.test(s);
+  const isAsset = s.startsWith('/assets/');
+  const isSupabaseStorage = lower.includes('.supabase.co/storage/');
+  const isDataImage = lower.startsWith('data:image/');
+  const isBlob = lower.startsWith('blob:');
+  
+  if (isHttp || isAsset || isSupabaseStorage || isDataImage || isBlob) {
+    console.log('[MEETUP-IMG] Accepted URL:', s);
+    return s;
+  }
+  
+  console.log('[MEETUP-IMG] Rejected URL (invalid format):', s);
+  return undefined;
+};
+
+// Generate fallback image URL based on event details
+const generateImageUrl = (title: string, description?: string): string => {
+  const images = [
+    'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800&h=600&fit=crop',
+  ];
+  const hash = (title + (description || '')).split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
+  return images[Math.abs(hash) % images.length];
+};
+
 const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void) => {
   // Construct author object with proper fallback chain
   const authorName = event.creator_display_name || event.author?.name || 'Community Host';
   const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
   
+  // Handle image URL with sanitization and fallback
+  const rawImage = event.image_url || event.imageUrl || event.metadata?.image_url || event.metadata?.cover_image_url;
+  console.log('[MEETUP-IMG] Transform event:', {
+    eventId: event.id,
+    eventTitle: event.title,
+    rawImage,
+    hasRawImage: !!rawImage
+  });
+  
+  const safeImage = sanitizeUrl(rawImage);
+  const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
+  
+  console.log('[MEETUP-IMG] Final image decision:', {
+    eventId: event.id,
+    rawImage,
+    safeImage,
+    finalImageUrl: imageUrl,
+    usingFallback: !safeImage
+  });
+  
   return {
     title: event.title,
     description: event.description,
-    imageUrl: event.image_url || event.imageUrl,
+    imageUrl: imageUrl,
     category: 'event' as const,
     pillar: event.event_type === 'event' ? 'EVENT' : 'MEETUP',
     author: { 
@@ -125,7 +189,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentU
                 key={`${i}-0`}
                 {...transformEventToNewsCard(rowEvents[0], onClick, canEdit0, () => onEdit?.(rowEvents[0]))}
                 className={cn(
-                  "h-full transition-all duration-200 cursor-pointer",
+                  "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                   onClick && "hover:ring-2 hover:ring-primary"
                 )}
               />
@@ -136,7 +200,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentU
                   key={`${i}-1`}
                   {...transformEventToNewsCard(rowEvents[1], onClick, canEdit1, () => onEdit?.(rowEvents[1]))}
                   className={cn(
-                    "h-full transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -148,7 +212,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentU
                   key={`${i}-2`}
                   {...transformEventToNewsCard(rowEvents[2], onClick, canEdit2, () => onEdit?.(rowEvents[2]))}
                   className={cn(
-                    "h-full transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -163,7 +227,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentU
                   key={`${i}-0`}
                   {...transformEventToNewsCard(rowEvents[0], onClick, canEdit0, () => onEdit?.(rowEvents[0]))}
                   className={cn(
-                    "h-full transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -175,7 +239,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentU
                   key={`${i}-1`}
                   {...transformEventToNewsCard(rowEvents[1], onClick, canEdit1, () => onEdit?.(rowEvents[1]))}
                   className={cn(
-                    "h-full transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
@@ -187,7 +251,7 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentU
                   key={`${i}-2`}
                   {...transformEventToNewsCard(rowEvents[2], onClick, canEdit2, () => onEdit?.(rowEvents[2]))}
                   className={cn(
-                    "h-full transition-all duration-200 cursor-pointer",
+                    "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                     onClick && "hover:ring-2 hover:ring-primary"
                   )}
                 />
