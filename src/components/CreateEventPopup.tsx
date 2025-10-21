@@ -51,6 +51,19 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
     return uuidRegex.test(str);
   };
 
+  // Helper function to generate time options in 15-minute intervals
+  const generateTimeOptions = () => {
+    const times: string[] = [];
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const h = hour.toString().padStart(2, '0');
+        const m = minute.toString().padStart(2, '0');
+        times.push(`${h}:${m}`);
+      }
+    }
+    return times;
+  };
+
   const resetForm = () => {
     if (imagePreviewUrl) {
       URL.revokeObjectURL(imagePreviewUrl);
@@ -543,13 +556,18 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="endTime">End Time (Optional)</Label>
-                  <Input
-                    id="endTime"
-                    type="time"
-                    value={formData.endTime}
-                    onChange={(e) => setFormData({...formData, endTime: e.target.value})}
-                    className="mt-1"
-                  />
+                  <Select value={formData.endTime} onValueChange={(value) => setFormData({...formData, endTime: value})}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select end time" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[200px]">
+                      {generateTimeOptions().map((time) => (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <p className="text-xs text-muted-foreground mt-1">Overrides duration if set</p>
                 </div>
               </div>
@@ -581,6 +599,7 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                   <Input
                     id="date"
                     type="date"
+                    min={new Date().toISOString().split('T')[0]}
                     value={formData.date}
                     onChange={(e) => setFormData({...formData, date: e.target.value})}
                     className="mt-1"
@@ -589,13 +608,18 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
 
                 <div>
                   <Label htmlFor="time">Time *</Label>
-                  <Input
-                    id="time"
-                    type="time"
-                    value={formData.time}
-                    onChange={(e) => setFormData({...formData, time: e.target.value})}
-                    className="mt-1"
-                  />
+                  <Select value={formData.time} onValueChange={(value) => setFormData({...formData, time: value})}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select time" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[200px]">
+                      {generateTimeOptions().map((time) => (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 

@@ -80,6 +80,19 @@ const generateImageUrl = (title: string, description: string) => {
   return build('Community Meetup');
 };
 
+  // Helper function to generate time options in 15-minute intervals
+  const generateTimeOptions = () => {
+    const times: string[] = [];
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const h = hour.toString().padStart(2, '0');
+        const m = minute.toString().padStart(2, '0');
+        times.push(`${h}:${m}`);
+      }
+    }
+    return times;
+  };
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -449,6 +462,7 @@ const generateImageUrl = (title: string, description: string) => {
                   <Input
                     id="date"
                     type="date"
+                    min={new Date().toISOString().split('T')[0]}
                     value={formData.date}
                     onChange={(e) => setFormData({...formData, date: e.target.value})}
                     className={`mt-1 ${errors.date ? 'border-destructive' : ''}`}
@@ -463,13 +477,18 @@ const generateImageUrl = (title: string, description: string) => {
 
                 <div>
                   <Label htmlFor="time">Time *</Label>
-                  <Input
-                    id="time"
-                    type="time"
-                    value={formData.time}
-                    onChange={(e) => setFormData({...formData, time: e.target.value})}
-                    className={`mt-1 ${errors.time ? 'border-destructive' : ''}`}
-                  />
+                  <Select value={formData.time} onValueChange={(value) => setFormData({...formData, time: value})}>
+                    <SelectTrigger className={`mt-1 ${errors.time ? 'border-destructive' : ''}`}>
+                      <SelectValue placeholder="Select time" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[200px]">
+                      {generateTimeOptions().map((time) => (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {errors.time && (
                     <p className="text-sm text-destructive mt-1 flex items-center gap-1">
                       <AlertCircle className="w-4 h-4" />
