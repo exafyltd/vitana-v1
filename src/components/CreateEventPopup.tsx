@@ -27,6 +27,7 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
+  const [autoGenerateImage, setAutoGenerateImage] = useState(false);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -135,6 +136,8 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
 
       // Upload event image to Supabase Storage
       let uploadedImageUrl: string | undefined;
+      let eventId: string | undefined;
+      
       if (selectedImage) {
         try {
           const { data: { user } } = await supabase.auth.getUser();
@@ -196,6 +199,32 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
             variant: "destructive",
           });
           return;
+        }
+
+        eventId = result.eventId;
+
+        // Auto-generate image if enabled and no manual image was uploaded
+        if (autoGenerateImage && !uploadedImageUrl && eventId) {
+          try {
+            console.log('🎨 Auto-generating image for event:', eventId);
+            const { data: imageData, error: imageError } = await supabase.functions.invoke('generate-event-image', {
+              body: { eventId }
+            });
+
+            if (imageError) throw imageError;
+            
+            if (imageData?.imageUrl) {
+              uploadedImageUrl = imageData.imageUrl;
+              console.log('✅ AI image generated:', uploadedImageUrl);
+              toast({
+                title: "Image Generated!",
+                description: "AI-generated image added to your event.",
+              });
+            }
+          } catch (e) {
+            console.error('❌ Auto image generation failed:', e);
+            // Don't show error toast, event is already created successfully
+          }
         }
 
         // 2. Also add to personal calendar (so creator sees it in their calendar)
@@ -376,6 +405,22 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                     onChange={handleImageUpload}
                   />
                 </div>
+                
+                {/* Auto-generate image option */}
+                {!imagePreviewUrl && eventContext === 'community' && (
+                  <div className="flex items-center space-x-2 mt-3 p-3 bg-muted/50 rounded-lg">
+                    <input
+                      type="checkbox"
+                      id="autoGenerateImage"
+                      checked={autoGenerateImage}
+                      onChange={(e) => setAutoGenerateImage(e.target.checked)}
+                      className="rounded"
+                    />
+                    <Label htmlFor="autoGenerateImage" className="text-sm cursor-pointer">
+                      Generate image with AI automatically (if no image uploaded)
+                    </Label>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
