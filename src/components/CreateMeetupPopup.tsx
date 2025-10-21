@@ -192,30 +192,38 @@ const generateImageUrl = (title: string, description: string) => {
           title: "Meetup Created!",
           description: "Your meetup has been successfully created and will appear in the community.",
         });
-        onClose();
-        setFormData({
-          title: "",
-          description: "",
-          category: "",
-          date: "",
-          time: "",
-          duration: "",
-          location: "",
-          isVirtual: false,
-          capacity: "",
-          requirements: "",
-          isRecurring: false,
-          recurringType: "weekly",
-          imageUrl: ""
-        });
-        setSelectedTags([]);
-        setSelectedImage(null);
-        setErrors({});
         
-        // Call the callback with the new event ID or navigate to Events & MeetUps
+        // Call the callback FIRST (before closing) to allow parent to handle event display
         if (onEventCreated && result.eventId) {
+          console.log('🎯 Meetup created, calling handler:', result.eventId);
           onEventCreated(result.eventId);
-        } else if (result.eventId) {
+        }
+        
+        // Then close and reset after a small delay to ensure smooth transition
+        setTimeout(() => {
+          onClose();
+          setFormData({
+            title: "",
+            description: "",
+            category: "",
+            date: "",
+            time: "",
+            duration: "",
+            location: "",
+            isVirtual: false,
+            capacity: "",
+            requirements: "",
+            isRecurring: false,
+            recurringType: "weekly",
+            imageUrl: ""
+          });
+          setSelectedTags([]);
+          setSelectedImage(null);
+          setErrors({});
+        }, 100);
+        
+        // Fallback navigation only if no callback was provided
+        if (!onEventCreated && result.eventId) {
           // Fallback: determine correct tab and navigate
           const eventDate = new Date(startTime);
           const today = new Date();
