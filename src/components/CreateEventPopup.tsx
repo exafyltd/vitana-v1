@@ -35,6 +35,7 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
     category: "",
     date: "",
     time: "",
+    duration: "",
     endTime: "",
     endDate: "",
     location: "",
@@ -62,6 +63,7 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
       category: "",
       date: "",
       time: "",
+      duration: "",
       endTime: "",
       endDate: "",
       location: "",
@@ -132,6 +134,19 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
       if (formData.endTime) {
         const endDate = formData.endDate || formData.date;
         endTime = new Date(`${endDate}T${formData.endTime}`).toISOString();
+      } else if (formData.duration) {
+        // Calculate end time based on duration if no manual end time is set
+        const start = new Date(startTime);
+        const durationMap = {
+          "30min": 30,
+          "1hour": 60,
+          "2hour": 120,
+          "half-day": 240,
+          "full-day": 480
+        } as const;
+        const minutes = durationMap[formData.duration as keyof typeof durationMap] || 60;
+        start.setMinutes(start.getMinutes() + minutes);
+        endTime = start.toISOString();
       }
 
       // Upload event image to Supabase Storage
@@ -469,37 +484,30 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                     <SelectContent>
                       {/* Health & Wellness */}
                       <SelectItem value="longevity">🧬 Longevity & Anti-Aging</SelectItem>
-                      <SelectItem value="biohacking">⚡ Biohacking & Optimization</SelectItem>
-                      <SelectItem value="fitness">💪 Fitness & Movement</SelectItem>
-                      <SelectItem value="nutrition">🥗 Nutrition & Diet</SelectItem>
-                      <SelectItem value="sleep">😴 Sleep & Recovery</SelectItem>
-                      
-                      {/* Medical & Science */}
-                      <SelectItem value="medical">🏥 Medical & Clinical</SelectItem>
-                      <SelectItem value="research">🔬 Scientific Research</SelectItem>
-                      <SelectItem value="diagnostics">🩺 Diagnostics & Testing</SelectItem>
-                      <SelectItem value="preventive">🛡️ Preventive Medicine</SelectItem>
-                      
-                      {/* Mental & Cognitive */}
-                      <SelectItem value="mindfulness">🧘 Mindfulness & Meditation</SelectItem>
-                      <SelectItem value="cognitive">🧠 Cognitive Health</SelectItem>
-                      <SelectItem value="mental-health">💚 Mental Health</SelectItem>
-                      
-                      {/* Specialized */}
-                      <SelectItem value="regenerative">🔄 Regenerative Medicine</SelectItem>
-                      <SelectItem value="genomics">🧬 Genomics & Personalized Health</SelectItem>
-                      <SelectItem value="supplements">💊 Supplements & Protocols</SelectItem>
-                      <SelectItem value="technology">🤖 Health Technology</SelectItem>
-                      
-                      {/* Community & Education */}
-                      <SelectItem value="workshop">📚 Workshop & Training</SelectItem>
-                      <SelectItem value="seminar">🎓 Seminar & Conference</SelectItem>
-                      <SelectItem value="social">👥 Social & Networking</SelectItem>
+...
                       <SelectItem value="outdoor">🌳 Outdoor Activities</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
+                <div>
+                  <Label htmlFor="duration">Duration (Optional)</Label>
+                  <Select value={formData.duration} onValueChange={(value) => setFormData({...formData, duration: value})}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="30min">30 minutes</SelectItem>
+                      <SelectItem value="1hour">1 hour</SelectItem>
+                      <SelectItem value="2hour">2 hours</SelectItem>
+                      <SelectItem value="half-day">Half day</SelectItem>
+                      <SelectItem value="full-day">Full day</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="endTime">End Time (Optional)</Label>
                   <Input
@@ -509,6 +517,7 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                     onChange={(e) => setFormData({...formData, endTime: e.target.value})}
                     className="mt-1"
                   />
+                  <p className="text-xs text-muted-foreground mt-1">Overrides duration if set</p>
                 </div>
               </div>
 

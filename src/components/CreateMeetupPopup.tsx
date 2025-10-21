@@ -31,6 +31,7 @@ export function CreateMeetupPopup({ isOpen, onClose, onEventCreated }: CreateMee
     date: "",
     time: "",
     duration: "",
+    customDuration: "",
     location: "",
     isVirtual: false,
     capacity: "",
@@ -136,14 +137,25 @@ const generateImageUrl = (title: string, description: string) => {
       let endTime: string | undefined = undefined;
       if (formData.duration) {
         const start = new Date(startTime);
-        const durationMap = {
-          "30min": 30,
-          "1hour": 60,
-          "2hour": 120,
-          "half-day": 240,
-          "full-day": 480
-        } as const;
-        const minutes = durationMap[formData.duration as keyof typeof durationMap] || 60;
+        let minutes = 60; // default
+        
+        if (formData.duration === "custom") {
+          // Parse custom duration (e.g., "1.5" hours or "90" minutes)
+          const customValue = parseFloat(formData.customDuration);
+          if (!isNaN(customValue) && customValue > 0) {
+            minutes = Math.round(customValue * 60); // Assume hours input
+          }
+        } else {
+          const durationMap = {
+            "30min": 30,
+            "1hour": 60,
+            "2hour": 120,
+            "half-day": 240,
+            "full-day": 480
+          } as const;
+          minutes = durationMap[formData.duration as keyof typeof durationMap] || 60;
+        }
+        
         start.setMinutes(start.getMinutes() + minutes);
         endTime = start.toISOString();
       }
@@ -209,6 +221,7 @@ const generateImageUrl = (title: string, description: string) => {
             date: "",
             time: "",
             duration: "",
+            customDuration: "",
             location: "",
             isVirtual: false,
             capacity: "",
@@ -327,10 +340,28 @@ const generateImageUrl = (title: string, description: string) => {
                       <SelectItem value="2hour">2 hours</SelectItem>
                       <SelectItem value="half-day">Half day</SelectItem>
                       <SelectItem value="full-day">Full day</SelectItem>
+                      <SelectItem value="custom">Custom</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
+
+              {formData.duration === "custom" && (
+                <div>
+                  <Label htmlFor="customDuration">Custom Duration (hours)</Label>
+                  <Input
+                    id="customDuration"
+                    type="number"
+                    step="0.5"
+                    min="0.5"
+                    placeholder="e.g., 1.5"
+                    value={formData.customDuration}
+                    onChange={(e) => setFormData({...formData, customDuration: e.target.value})}
+                    className="mt-1"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">Enter duration in hours (e.g., 1.5 for 90 minutes)</p>
+                </div>
+              )}
 
               <div>
                 <Label>Tags</Label>
