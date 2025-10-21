@@ -24,6 +24,7 @@ export function CreateMeetupPopup({ isOpen, onClose, onEventCreated }: CreateMee
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [customTime, setCustomTime] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -477,7 +478,16 @@ const generateImageUrl = (title: string, description: string) => {
 
                 <div>
                   <Label htmlFor="time">Time *</Label>
-                  <Select value={formData.time} onValueChange={(value) => setFormData({...formData, time: value})}>
+                  <Select 
+                    value={generateTimeOptions().includes(formData.time) ? formData.time : formData.time ? "custom" : ""} 
+                    onValueChange={(value) => {
+                      if (value === "custom") {
+                        setFormData({...formData, time: customTime || ""});
+                      } else {
+                        setFormData({...formData, time: value});
+                      }
+                    }}
+                  >
                     <SelectTrigger className={`mt-1 ${errors.time ? 'border-destructive' : ''}`}>
                       <SelectValue placeholder="Select time" />
                     </SelectTrigger>
@@ -487,8 +497,21 @@ const generateImageUrl = (title: string, description: string) => {
                           {time}
                         </SelectItem>
                       ))}
+                      <SelectItem value="custom">Custom time...</SelectItem>
                     </SelectContent>
                   </Select>
+                  {formData.time && !generateTimeOptions().includes(formData.time) && (
+                    <Input
+                      type="time"
+                      value={customTime}
+                      onChange={(e) => {
+                        setCustomTime(e.target.value);
+                        setFormData({...formData, time: e.target.value});
+                      }}
+                      className={`mt-2 ${errors.time ? 'border-destructive' : ''}`}
+                      placeholder="HH:MM"
+                    />
+                  )}
                   {errors.time && (
                     <p className="text-sm text-destructive mt-1 flex items-center gap-1">
                       <AlertCircle className="w-4 h-4" />

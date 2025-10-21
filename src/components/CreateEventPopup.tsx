@@ -28,6 +28,9 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [autoGenerateImage, setAutoGenerateImage] = useState(false);
+  const [customTime, setCustomTime] = useState("");
+  const [customEndTime, setCustomEndTime] = useState("");
+  const [customDuration, setCustomDuration] = useState("");
   
   const [formData, setFormData] = useState({
     title: "",
@@ -538,7 +541,16 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
 
                 <div>
                   <Label htmlFor="duration">Duration (Optional)</Label>
-                  <Select value={formData.duration} onValueChange={(value) => setFormData({...formData, duration: value})}>
+                  <Select 
+                    value={["30min", "1hour", "2hour", "half-day", "full-day"].includes(formData.duration) ? formData.duration : formData.duration ? "custom" : ""} 
+                    onValueChange={(value) => {
+                      if (value === "custom") {
+                        setFormData({...formData, duration: customDuration || ""});
+                      } else {
+                        setFormData({...formData, duration: value});
+                      }
+                    }}
+                  >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
@@ -548,15 +560,37 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                       <SelectItem value="2hour">2 hours</SelectItem>
                       <SelectItem value="half-day">Half day</SelectItem>
                       <SelectItem value="full-day">Full day</SelectItem>
+                      <SelectItem value="custom">Custom duration...</SelectItem>
                     </SelectContent>
                   </Select>
+                  {formData.duration && !["30min", "1hour", "2hour", "half-day", "full-day"].includes(formData.duration) && (
+                    <Input
+                      type="text"
+                      value={customDuration}
+                      onChange={(e) => {
+                        setCustomDuration(e.target.value);
+                        setFormData({...formData, duration: e.target.value});
+                      }}
+                      className="mt-2"
+                      placeholder="e.g., 45 minutes, 3 hours"
+                    />
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="endTime">End Time (Optional)</Label>
-                  <Select value={formData.endTime} onValueChange={(value) => setFormData({...formData, endTime: value})}>
+                  <Select 
+                    value={generateTimeOptions().includes(formData.endTime) ? formData.endTime : formData.endTime ? "custom" : ""} 
+                    onValueChange={(value) => {
+                      if (value === "custom") {
+                        setFormData({...formData, endTime: customEndTime || ""});
+                      } else {
+                        setFormData({...formData, endTime: value});
+                      }
+                    }}
+                  >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select end time" />
                     </SelectTrigger>
@@ -566,8 +600,21 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                           {time}
                         </SelectItem>
                       ))}
+                      <SelectItem value="custom">Custom time...</SelectItem>
                     </SelectContent>
                   </Select>
+                  {formData.endTime && !generateTimeOptions().includes(formData.endTime) && (
+                    <Input
+                      type="time"
+                      value={customEndTime}
+                      onChange={(e) => {
+                        setCustomEndTime(e.target.value);
+                        setFormData({...formData, endTime: e.target.value});
+                      }}
+                      className="mt-2"
+                      placeholder="HH:MM"
+                    />
+                  )}
                   <p className="text-xs text-muted-foreground mt-1">Overrides duration if set</p>
                 </div>
               </div>
@@ -608,7 +655,16 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
 
                 <div>
                   <Label htmlFor="time">Time *</Label>
-                  <Select value={formData.time} onValueChange={(value) => setFormData({...formData, time: value})}>
+                  <Select 
+                    value={generateTimeOptions().includes(formData.time) ? formData.time : formData.time ? "custom" : ""} 
+                    onValueChange={(value) => {
+                      if (value === "custom") {
+                        setFormData({...formData, time: customTime || ""});
+                      } else {
+                        setFormData({...formData, time: value});
+                      }
+                    }}
+                  >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select time" />
                     </SelectTrigger>
@@ -618,8 +674,21 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                           {time}
                         </SelectItem>
                       ))}
+                      <SelectItem value="custom">Custom time...</SelectItem>
                     </SelectContent>
                   </Select>
+                  {formData.time && !generateTimeOptions().includes(formData.time) && (
+                    <Input
+                      type="time"
+                      value={customTime}
+                      onChange={(e) => {
+                        setCustomTime(e.target.value);
+                        setFormData({...formData, time: e.target.value});
+                      }}
+                      className="mt-2"
+                      placeholder="HH:MM"
+                    />
+                  )}
                 </div>
               </div>
 
