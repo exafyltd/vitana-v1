@@ -63,6 +63,71 @@ import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 
+// Sanitize URL for security - only allow trusted sources
+function sanitizeUrl(url?: string): string | null {
+  if (!url) return null;
+  
+  const trimmed = url.trim();
+  
+  // Reject obvious bad/placeholder schemes
+  if (
+    trimmed.startsWith('javascript:') ||
+    trimmed.startsWith('about:') ||
+    trimmed.includes('undefined') ||
+    trimmed.includes('/api/placeholder')
+  ) {
+    console.log('[DRAWER-IMG] Rejected URL (bad scheme):', trimmed);
+    return null;
+  }
+  
+  // Allow http(s) URLs
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    // Allow Supabase storage URLs
+    if (trimmed.includes('.supabase.co/storage/')) {
+      console.log('[DRAWER-IMG] Accepted URL (Supabase Storage):', trimmed);
+      return trimmed;
+    }
+    console.log('[DRAWER-IMG] Accepted URL (http/https):', trimmed);
+    return trimmed;
+  }
+  
+  // Allow /assets/ paths
+  if (trimmed.startsWith('/assets/')) {
+    console.log('[DRAWER-IMG] Accepted URL (assets path):', trimmed);
+    return trimmed;
+  }
+  
+  // Allow data:image/* URIs
+  if (trimmed.startsWith('data:image/')) {
+    console.log('[DRAWER-IMG] Accepted URL (data URI):', trimmed.substring(0, 50) + '...');
+    return trimmed;
+  }
+  
+  // Allow blob: URIs
+  if (trimmed.startsWith('blob:')) {
+    console.log('[DRAWER-IMG] Accepted URL (blob):', trimmed);
+    return trimmed;
+  }
+  
+  console.log('[DRAWER-IMG] Rejected URL (unknown scheme):', trimmed);
+  return null;
+}
+
+// Generate a fallback image based on event details
+function generateImageUrl(title?: string, description?: string): string {
+  const images = [
+    'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200',
+    'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200',
+    'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200',
+    'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200',
+    'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1200'
+  ];
+  
+  const text = (title || '') + (description || '');
+  const hash = text.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return images[hash % images.length];
+}
+
 interface MeetupDetailsDrawerProps {
   event: any;
   open: boolean;
@@ -341,7 +406,14 @@ export function MeetupDetailsDrawer({
               <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
             <img
-              src={event.imageUrl || event.image_url || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200'}
+              src={(() => {
+                const rawImage = event.image_url || event.imageUrl || event.metadata?.image_url || event.metadata?.cover_image_url;
+                console.log('[DRAWER-IMG] Transform event:', { eventId: event.id, title: event.title, rawImage });
+                const safeImage = sanitizeUrl(rawImage);
+                const finalImageUrl = safeImage ?? generateImageUrl(event.title, event.description);
+                console.log('[DRAWER-IMG] Final image decision:', { eventId: event.id, safeImage, finalImageUrl, usingFallback: !safeImage });
+                return finalImageUrl;
+              })()}
               alt={event.title}
               className={cn(
                 "w-full h-full object-cover transition-opacity duration-300",
