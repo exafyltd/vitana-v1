@@ -25,12 +25,12 @@ serve(async (req) => {
       throw new Error('Authentication required');
     }
 
-    const { eventId, title, description, location, metadata } = await req.json();
+    const { eventId } = await req.json();
 
-    // Verify user is event creator OR co-creator
+    // Verify user is event creator OR co-creator and fetch full event details
     const { data: event, error: eventError } = await supabase
       .from('global_community_events')
-      .select('created_by')
+      .select('created_by, title, description, location, metadata')
       .eq('id', eventId)
       .single();
 
@@ -54,6 +54,9 @@ serve(async (req) => {
     if (!isCreator && !isCoCreator) {
       throw new Error('Only event creators and co-creators can generate images');
     }
+
+    // Extract event details from database
+    const { title, description, location, metadata } = event;
 
     // Build AI prompt with contextual intelligence
     const venue = metadata?.venue || 'outdoor';

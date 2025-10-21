@@ -205,13 +205,21 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
 
         // Auto-generate image if enabled and no manual image was uploaded
         if (autoGenerateImage && !uploadedImageUrl && eventId) {
+          toast({
+            title: "Generating AI Image...",
+            description: "Creating a custom image for your event.",
+          });
+          
           try {
             console.log('🎨 Auto-generating image for event:', eventId);
             const { data: imageData, error: imageError } = await supabase.functions.invoke('generate-event-image', {
               body: { eventId }
             });
 
-            if (imageError) throw imageError;
+            if (imageError) {
+              console.error('Image generation error:', imageError);
+              throw imageError;
+            }
             
             if (imageData?.imageUrl) {
               uploadedImageUrl = imageData.imageUrl;
@@ -220,10 +228,38 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                 title: "Image Generated!",
                 description: "AI-generated image added to your event.",
               });
+            } else if (!imageData?.success) {
+              throw new Error(imageData?.error || 'Image generation failed');
             }
-          } catch (e) {
+          } catch (e: any) {
             console.error('❌ Auto image generation failed:', e);
-            // Don't show error toast, event is already created successfully
+            
+            // Show specific error messages based on error type
+            if (e?.message?.includes('RATE_LIMIT') || e?.message?.includes('Too many requests')) {
+              toast({
+                title: "Rate Limit Reached",
+                description: "Too many image generation requests. Please try again in a moment.",
+                variant: "destructive",
+              });
+            } else if (e?.message?.includes('quota') || e?.message?.includes('credits')) {
+              toast({
+                title: "Credits Required",
+                description: "AI image generation credits depleted. Please add credits to continue.",
+                variant: "destructive",
+              });
+            } else if (e?.message?.includes('permission') || e?.message?.includes('Authentication')) {
+              toast({
+                title: "Permission Denied",
+                description: "You don't have permission to generate images for this event.",
+                variant: "destructive",
+              });
+            } else {
+              toast({
+                title: "Image Generation Failed",
+                description: "Couldn't generate AI image. Your event was created successfully without it.",
+                variant: "destructive",
+              });
+            }
           }
         }
 
