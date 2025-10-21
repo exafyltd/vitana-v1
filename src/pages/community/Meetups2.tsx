@@ -200,6 +200,7 @@ const sanitizeUrl = (url?: string) => {
   const s = String(url).trim();
   if (!s) return undefined;
   const lower = s.toLowerCase();
+  
   // Reject unsafe or temporary schemes and known bad placeholders
   if (
     lower.startsWith('blob:') ||
@@ -209,33 +210,48 @@ const sanitizeUrl = (url?: string) => {
     s.includes('undefined') ||
     s.startsWith('/api/placeholder')
   ) {
+    console.log('[MEETUP-IMG] Rejected URL (dangerous/invalid):', s);
     return undefined;
   }
+  
   const isHttp = /^https?:\/\//i.test(s);
   const isAsset = s.startsWith('/assets/');
-  return (isHttp || isAsset) ? s : undefined;
+  const isSupabaseStorage = lower.includes('.supabase.co/storage/');
+  
+  if (isHttp || isAsset || isSupabaseStorage) {
+    console.log('[MEETUP-IMG] Accepted URL:', s);
+    return s;
+  }
+  
+  console.log('[MEETUP-IMG] Rejected URL (invalid format):', s);
+  return undefined;
 };
 
 // Transform event data to NewsCard format
 const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void) => {
   const rawImage = event.image_url || event.imageUrl;
+  console.log('[MEETUP-IMG] Transform event:', {
+    eventId: event.id,
+    eventTitle: event.title,
+    rawImage,
+    hasRawImage: !!rawImage
+  });
+  
   const safeImage = sanitizeUrl(rawImage);
   const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
+  
+  console.log('[MEETUP-IMG] Final image decision:', {
+    eventId: event.id,
+    rawImage,
+    safeImage,
+    finalImageUrl: imageUrl,
+    usingFallback: !safeImage
+  });
 
   const baseAuthor = event.author || { name: event.organizer_name || 'Community', avatar: undefined };
   const authorAvatar = sanitizeUrl(baseAuthor.avatar) ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=faces';
 
   const canEdit = !!currentUserId && (event.created_by === currentUserId || event.createdBy === currentUserId) && !String(event.id || '').startsWith('dummy');
-  
-  // Debug logging
-  console.log('Event check:', {
-    eventId: event.id,
-    eventTitle: event.title,
-    eventCreatedBy: event.created_by,
-    currentUserId,
-    canEdit,
-    isDummy: event.id?.startsWith('dummy')
-  });
 
   return {
     title: event.title,
