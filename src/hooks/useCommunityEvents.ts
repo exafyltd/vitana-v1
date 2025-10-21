@@ -42,7 +42,7 @@ export function useCommunityEvents() {
   const { toast } = useToast();
 
   // Fetch all community events
-  const fetchEvents = async () => {
+  const fetchEvents = async (): Promise<CommunityEvent[]> => {
     try {
       setLoading(true);
       
@@ -66,7 +66,7 @@ export function useCommunityEvents() {
             description: "Please log in to view community events.",
             variant: "destructive",
           });
-          return;
+          return [];
         }
         throw error;
       }
@@ -105,6 +105,7 @@ export function useCommunityEvents() {
       
       console.log("Fetched events:", eventsWithCoCreator.length);
       setEvents(eventsWithCoCreator);
+      return eventsWithCoCreator;
     } catch (error) {
       console.error("Error fetching events:", error);
       toast({
@@ -112,6 +113,7 @@ export function useCommunityEvents() {
         description: "Failed to fetch meetups. Please try again.",
         variant: "destructive",
       });
+      return [];
     } finally {
       setLoading(false);
     }

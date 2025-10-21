@@ -20,6 +20,7 @@ import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
 import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Plus, Calendar as CalendarIcon, Brain, Users, Edit } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
@@ -271,6 +272,7 @@ const EventsAndMeetups = () => {
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
   const { events: dbEvents, loading, fetchEvents } = useCommunityEvents();
   const { user } = useAuth();
+  const { toast } = useToast();
   
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
@@ -366,37 +368,60 @@ const EventsAndMeetups = () => {
 
   // Handle event creation - show the newly created event
   const handleEventCreated = async (eventId: string) => {
+    console.log('🎯 Event created, handling:', eventId);
+    
     // Wait a bit for the database to update
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Refresh events
-    await fetchEvents();
+    // Refresh events and get fresh data
+    const freshEvents = await fetchEvents();
+    console.log('✅ Fresh events fetched:', freshEvents.length);
     
-    // Find the event to determine which tab it belongs to
-    const event = dbEvents.find(e => e.id === eventId);
-    if (event) {
-      const eventDate = new Date(event.start_time);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      
-      // Switch to appropriate tab
-      if (eventDate >= today && eventDate < tomorrow) {
-        setActiveTab('today');
-      } else if (eventDate >= tomorrow) {
-        setActiveTab('upcoming');
-      }
+    // Find the event in the fresh data to determine which tab it belongs to
+    const event = freshEvents.find(e => e.id === eventId);
+    
+    if (!event) {
+      console.error('❌ Event not found in fresh data:', eventId);
+      toast({
+        title: "Event Created",
+        description: "Your event was created but couldn't be displayed. Please refresh the page.",
+        variant: "destructive",
+      });
+      return;
     }
     
-    // Open the detail drawer for the newly created event
+    console.log('📅 Event found:', event.title, 'Start time:', event.start_time);
+    
+    const eventDate = new Date(event.start_time);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    // Determine correct tab
+    let targetTab = 'upcoming';
+    if (eventDate >= today && eventDate < tomorrow) {
+      targetTab = 'today';
+    } else if (eventDate >= tomorrow) {
+      targetTab = 'upcoming';
+    }
+    
+    console.log('🔄 Switching to tab:', targetTab);
+    setActiveTab(targetTab);
+    
+    // Open the detail drawer for the newly created event with correct tab
     selectEvent(eventId);
-    setSearchParams({ event: eventId, tab: activeTab });
+    setSearchParams({ event: eventId, tab: targetTab });
     
     // Scroll to the card after a short delay to ensure rendering
     setTimeout(() => {
       const card = document.querySelector(`[data-event-id="${eventId}"]`);
-      card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (card) {
+        console.log('📍 Scrolling to card');
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        console.warn('⚠️ Card not found in DOM');
+      }
     }, 300);
   };
 
