@@ -496,8 +496,29 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                     <SelectContent>
                       {/* Health & Wellness */}
                       <SelectItem value="longevity">🧬 Longevity & Anti-Aging</SelectItem>
-...
+                      <SelectItem value="fitness">💪 Fitness & Exercise</SelectItem>
+                      <SelectItem value="wellness">🧘 Wellness & Mindfulness</SelectItem>
+                      <SelectItem value="nutrition">🥗 Nutrition & Diet</SelectItem>
+                      <SelectItem value="mental-health">🧠 Mental Health</SelectItem>
+                      
+                      {/* Activities */}
                       <SelectItem value="outdoor">🌳 Outdoor Activities</SelectItem>
+                      <SelectItem value="sports">⚽ Sports & Recreation</SelectItem>
+                      <SelectItem value="adventure">🏔️ Adventure & Travel</SelectItem>
+                      
+                      {/* Learning & Growth */}
+                      <SelectItem value="workshop">📚 Workshop & Learning</SelectItem>
+                      <SelectItem value="professional">💼 Professional Development</SelectItem>
+                      <SelectItem value="creative">🎨 Creative Arts</SelectItem>
+                      
+                      {/* Community */}
+                      <SelectItem value="social">🤝 Social & Networking</SelectItem>
+                      <SelectItem value="volunteer">❤️ Volunteer & Service</SelectItem>
+                      <SelectItem value="support">🫂 Support Group</SelectItem>
+                      
+                      {/* Other */}
+                      <SelectItem value="entertainment">🎭 Entertainment</SelectItem>
+                      <SelectItem value="other">✨ Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
