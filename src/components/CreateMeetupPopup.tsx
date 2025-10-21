@@ -127,6 +127,18 @@ const generateImageUrl = (title: string, description: string) => {
       return;
     }
 
+    // Check if date/time is in the past
+    const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
+    const now = new Date();
+    if (selectedDateTime < now) {
+      toast({
+        title: "Invalid Date",
+        description: "You cannot create a meetup in the past. Please select a future date and time.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {

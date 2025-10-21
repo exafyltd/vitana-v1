@@ -123,6 +123,18 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
       return;
     }
 
+    // Check if date/time is in the past
+    const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
+    const now = new Date();
+    if (selectedDateTime < now) {
+      toast({
+        title: "Invalid Date",
+        description: "You cannot create an event in the past. Please select a future date and time.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
