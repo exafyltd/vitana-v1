@@ -34,7 +34,10 @@ export function useScheduledStreams() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('community_live_streams')
-        .select('*')
+        .select(`
+          *,
+          creator:profiles!community_live_streams_created_by_fkey(display_name, avatar_url)
+        `)
         .eq('status', 'pending')
         .not('scheduled_for', 'is', null)
         .gte('scheduled_for', new Date().toISOString())
@@ -42,7 +45,12 @@ export function useScheduledStreams() {
       
       if (error) throw error;
       
-      return (data || []) as LiveStream[];
+      return (data || []).map((stream: any) => ({
+        ...stream,
+        creator_display_name: stream.creator?.display_name,
+        creator_avatar_url: stream.creator?.avatar_url,
+        creator: undefined
+      })) as LiveStream[];
     },
   });
 }
@@ -53,13 +61,21 @@ export function useLiveStreams() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('community_live_streams')
-        .select('*')
+        .select(`
+          *,
+          creator:profiles!community_live_streams_created_by_fkey(display_name, avatar_url)
+        `)
         .eq('status', 'live')
         .order('started_at', { ascending: false });
       
       if (error) throw error;
       
-      return (data || []) as LiveStream[];
+      return (data || []).map((stream: any) => ({
+        ...stream,
+        creator_display_name: stream.creator?.display_name,
+        creator_avatar_url: stream.creator?.avatar_url,
+        creator: undefined
+      })) as LiveStream[];
     },
     refetchInterval: 30000,
   });

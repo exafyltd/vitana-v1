@@ -7,6 +7,16 @@ import {
   Sheet,
   SheetContent,
 } from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -17,6 +27,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import {
   ChevronLeft,
@@ -37,6 +48,9 @@ import {
   Hand,
   MessageCircle,
   X,
+  MoreVertical,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
@@ -52,6 +66,9 @@ interface LiveRoomDrawerProps {
   hasNext?: boolean;
   isMobile?: boolean;
   onJoin?: (roomId: string) => void;
+  isCreator?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export function LiveRoomDrawer({
@@ -64,6 +81,9 @@ export function LiveRoomDrawer({
   hasNext,
   isMobile = false,
   onJoin,
+  isCreator = false,
+  onEdit,
+  onDelete,
 }: LiveRoomDrawerProps) {
   const [isNotifying, setIsNotifying] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -71,6 +91,7 @@ export function LiveRoomDrawer({
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // Keyboard navigation
   useEffect(() => {
@@ -225,7 +246,7 @@ export function LiveRoomDrawer({
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
 
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows & Creator Menu */}
           <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
             <Button
               variant="outline"
@@ -241,6 +262,37 @@ export function LiveRoomDrawer({
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
+
+            {/* Creator Menu */}
+            {isCreator && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full bg-background/70 backdrop-blur-md shadow-md pointer-events-auto opacity-75 hover:opacity-100"
+                    aria-label="Stream options"
+                  >
+                    <MoreVertical className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={onEdit}>
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Edit Stream
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    onClick={() => setShowDeleteDialog(true)}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Stream
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+
             <Button
               variant="outline"
               size="icon"
@@ -448,17 +500,69 @@ export function LiveRoomDrawer({
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="h-[90vh]">{content}</DrawerContent>
-      </Drawer>
+      <>
+        <Drawer open={open} onOpenChange={onOpenChange}>
+          <DrawerContent className="h-[90vh]">{content}</DrawerContent>
+        </Drawer>
+        
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Live Stream?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete "{room?.title}". This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  setShowDeleteDialog(false);
+                  onDelete?.();
+                }}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </>
     );
   }
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-lg p-0">
-        {content}
-      </SheetContent>
-    </Sheet>
+    <>
+      <Sheet open={open} onOpenChange={onOpenChange}>
+        <SheetContent side="right" className="w-full sm:max-w-lg p-0">
+          {content}
+        </SheetContent>
+      </Sheet>
+      
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Live Stream?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete "{room?.title}". This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setShowDeleteDialog(false);
+                onDelete?.();
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

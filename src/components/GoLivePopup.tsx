@@ -14,13 +14,16 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useCreateStream } from "@/hooks/useLiveStreams";
+import { useCreateStream, useUpdateStream, type LiveStream } from "@/hooks/useLiveStreams";
+import { useEffect } from "react";
 
 interface GoLivePopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   defaultTitle?: string;
   onCreated?: (streamId: string) => void;
+  editMode?: boolean;
+  streamData?: LiveStream;
 }
 
 const streamTags = [
@@ -34,7 +37,7 @@ const accessOptions = [
   { id: "group", label: "Group/VIP", description: "Invited members only" }
 ];
 
-export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated }: GoLivePopupProps) {
+export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, editMode = false, streamData }: GoLivePopupProps) {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -53,12 +56,35 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated }
   const [isLoading, setIsLoading] = useState(false);
   
   const { mutateAsync: createStream } = useCreateStream();
+  const { mutateAsync: updateStream } = useUpdateStream();
   
   // Image upload states
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [autoGenerateImage, setAutoGenerateImage] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+
+  // Pre-fill form when editing
+  useEffect(() => {
+    if (editMode && streamData) {
+      setTitle(streamData.title);
+      setDescription(streamData.description || "");
+      setStreamType(streamData.stream_type === 'audio' ? 'Audio' : 'Video');
+      setSelectedTags(streamData.tags);
+      setAccessLevel(streamData.access_level);
+      setCoHostInput(streamData.co_hosts?.[0] || "");
+      setEnableChat(streamData.enable_chat);
+      setEnablePolls(streamData.enable_polls);
+      setEnableReplay(streamData.enable_replay);
+      setImagePreviewUrl(streamData.cover_image_url || "");
+      
+      if (streamData.scheduled_for) {
+        const schedDate = new Date(streamData.scheduled_for);
+        setScheduleDate(schedDate);
+        setScheduleTime(format(schedDate, 'HH:mm'));
+      }
+    }
+  }, [editMode, streamData]);
 
   const isScheduled = !!scheduleDate && !!scheduleTime && new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}`) > new Date();
 
@@ -142,6 +168,37 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated }
         return;
       }
 
+      // Handle edit mode
+      if (editMode && streamData) {
+        const updates: Partial<LiveStream> = {
+          title,
+          description: description || null,
+          stream_type: streamType.toLowerCase(),
+          tags: selectedTags,
+          access_level: accessLevel,
+          co_hosts: coHostInput ? [coHostInput] : [],
+          scheduled_for: (scheduleDate && scheduleTime) 
+            ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
+            : null,
+          enable_chat: enableChat,
+          enable_polls: enablePolls,
+          enable_replay: enableReplay,
+        };
+
+        await updateStream({ id: streamData.id, updates });
+        
+        toast({
+          title: "Stream Updated! ✨",
+          description: "Your stream has been updated successfully",
+        });
+        
+        setIsLoading(false);
+        onOpenChange(false);
+        resetForm();
+        return;
+      }
+
+      // Create mode (original code)
       // Ensure profile exists before creating stream
       const { data: existingProfile } = await supabase
         .from('profiles')
@@ -200,8 +257,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated }
         });
       }
       
-      // Prepare stream data
-      const streamData = {
+      // Prepare stream data for creation
+      const newStreamData = {
         title,
         description: description || null,
         stream_type: streamType.toLowerCase(),
@@ -221,7 +278,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated }
       };
       
       // Insert into database
-      const stream = await createStream(streamData);
+      const stream = await createStream(newStreamData);
       
       // Notify parent if stream was scheduled
       if (scheduleDate && scheduleTime && onCreated) {
@@ -255,38 +312,42 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated }
       onOpenChange(false);
       
       // Reset form
-      setTitle("Live with [Name]");
-      setDescription("");
-      setStreamType("");
-      setSelectedTags([]);
-      setShowAdvanced(false);
-      setCoHostInput("");
-      setAccessLevel("public");
-      setScheduleDate(undefined);
-      setScheduleTime("");
-      setEnableChat(true);
-      setEnablePolls(false);
-      setEnableReplay(true);
-      setSelectedImage(null);
-      setImagePreviewUrl("");
-      setAutoGenerateImage(false);
-      if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+      resetForm();
     } catch (error) {
       console.error('Error creating stream:', error);
       toast({
         title: "Error",
-        description: "Failed to create stream. Please try again.",
+        description: `Failed to ${editMode ? 'update' : 'create'} stream. Please try again.`,
         variant: "destructive",
       });
       setIsLoading(false);
     }
   };
 
+  const resetForm = () => {
+    setTitle("Live with [Name]");
+    setDescription("");
+    setStreamType("");
+    setSelectedTags([]);
+    setShowAdvanced(false);
+    setCoHostInput("");
+    setAccessLevel("public");
+    setScheduleDate(undefined);
+    setScheduleTime("");
+    setEnableChat(true);
+    setEnablePolls(false);
+    setEnableReplay(true);
+    setSelectedImage(null);
+    setImagePreviewUrl("");
+    setAutoGenerateImage(false);
+    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Go Live</DialogTitle>
+          <DialogTitle>{editMode ? 'Edit Live Stream' : 'Go Live'}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -600,10 +661,12 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated }
               disabled={!title || !streamType || selectedTags.length === 0 || isLoading}
             >
               {isLoading 
-                ? "Starting..." 
-                : isScheduled 
-                  ? "Schedule Live Session" 
-                  : "Go Live Now"
+                ? (editMode ? "Updating..." : "Starting...") 
+                : editMode
+                  ? "Update Stream"
+                  : isScheduled 
+                    ? "Schedule Live Session" 
+                    : "Go Live Now"
               }
             </Button>
           </div>

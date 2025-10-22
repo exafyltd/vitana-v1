@@ -20,9 +20,10 @@ import { Badge } from "@/components/ui/badge";
 import { communityNavigation } from "@/config/navigation";
 import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
-import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream } from "@/hooks/useLiveStreams";
+import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
 import type { LiveStream } from "@/hooks/useLiveStreams";
 import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
+import { useAuth } from "@/context/AuthProvider";
 
 // Transform LiveStream to LiveRoom format
 const transformStreamToRoom = (stream: LiveStream): LiveRoom => {
@@ -74,6 +75,7 @@ export default function LiveRooms() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { user } = useAuth();
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -81,12 +83,15 @@ export default function LiveRooms() {
   const [isMobile, setIsMobile] = useState(false);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState('live');
+  const [editingStream, setEditingStream] = useState<LiveStream | null>(null);
   
   // Fetch live streams data
   const { data: liveStreams = [], isLoading: isLoadingLive } = useLiveStreams();
   const { data: scheduledStreams = [], isLoading: isLoadingScheduled } = useScheduledStreams();
   const { mutateAsync: startStream } = useStartStream();
   const { mutateAsync: cancelStream } = useCancelStream();
+  const { mutateAsync: deleteStream } = useDeleteStream();
+  const { mutateAsync: updateStream } = useUpdateStream();
   
   const latestActions = getLatestActions(2);
   
@@ -186,6 +191,36 @@ export default function LiveRooms() {
         ? "You won't receive notifications for this room"
         : "We'll notify you when the room goes live",
     });
+  };
+
+  const handleEditRoom = () => {
+    if (!selectedRoom) return;
+    
+    // Find the real stream data
+    const stream = [...liveStreams, ...scheduledStreams].find(s => s.id === selectedRoom.id);
+    if (stream) {
+      setEditingStream(stream);
+      setIsGoLiveOpen(true);
+    }
+  };
+
+  const handleDeleteRoom = async () => {
+    if (!selectedRoomId) return;
+    
+    try {
+      await deleteStream(selectedRoomId);
+      toast({
+        title: "Stream deleted",
+        description: "Your live stream has been deleted",
+      });
+      handleDrawerClose();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete stream",
+        variant: "destructive",
+      });
+    }
   };
 
 
@@ -507,8 +542,13 @@ export default function LiveRooms() {
 
       <GoLivePopup 
         open={isGoLiveOpen} 
-        onOpenChange={setIsGoLiveOpen} 
+        onOpenChange={(open) => {
+          setIsGoLiveOpen(open);
+          if (!open) setEditingStream(null);
+        }}
         defaultTitle="Live Community Discussion"
+        editMode={!!editingStream}
+        streamData={editingStream || undefined}
         onCreated={(streamId) => {
           setActiveTab('scheduled');
           setSelectedRoomId(streamId);
@@ -533,6 +573,9 @@ export default function LiveRooms() {
           hasNext={hasNext}
           isMobile={isMobile}
           onJoin={handleJoinRoom}
+          isCreator={selectedRoom.host.id === user?.id}
+          onEdit={handleEditRoom}
+          onDelete={handleDeleteRoom}
         />
       )}
 
