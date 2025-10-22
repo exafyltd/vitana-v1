@@ -24,52 +24,8 @@ import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream, u
 import type { LiveStream } from "@/hooks/useLiveStreams";
 import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 import { useAuth } from "@/context/AuthProvider";
-
-// Transform LiveStream to LiveRoom format
-const transformStreamToRoom = (stream: LiveStream): LiveRoom => {
-  return {
-    id: stream.id,
-    title: stream.title,
-    description: stream.description || undefined,
-    host: {
-      id: stream.created_by,
-      name: stream.creator_display_name || "Anonymous Host",
-      avatar: stream.creator_avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${stream.created_by}`,
-    },
-    isLive: stream.status === 'live',
-    scheduledTime: stream.scheduled_for || undefined,
-    participants: stream.viewer_count,
-    maxParticipants: 100,
-    tags: stream.tags,
-    type: stream.stream_type as "audio" | "video",
-    isPremium: stream.access_level === 'group',
-    imageUrl: stream.cover_image_url || undefined,
-    category: stream.tags[0] || "general",
-    location: "Virtual",
-  };
-};
-
-// Merge real streams with mock data for hybrid approach
-const mergeRoomsWithMocks = (
-  realStreams: LiveStream[],
-  mockRooms: LiveRoom[]
-): LiveRoom[] => {
-  // Transform real streams first
-  const realRooms = realStreams.map(transformStreamToRoom);
-  
-  // If we have 3+ real rooms, show only real data
-  if (realRooms.length >= 3) {
-    return realRooms;
-  } else if (realRooms.length > 0) {
-    // If we have 1-2 real rooms, fill the rest with mocks (up to 3 total)
-    const mocksNeeded = 3 - realRooms.length;
-    const mocksToShow = mockRooms.slice(0, mocksNeeded);
-    return [...realRooms, ...mocksToShow];
-  } else {
-    // No real data yet, show all mocks
-    return mockRooms;
-  }
-};
+import { useProfilesByIds } from "@/hooks/useProfiles";
+import { useMemo } from "react";
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -93,7 +49,69 @@ export default function LiveRooms() {
   const { mutateAsync: deleteStream } = useDeleteStream();
   const { mutateAsync: updateStream } = useUpdateStream();
   
+  // Fetch profiles for all creators
+  const creatorIds = useMemo(() => {
+    return Array.from(new Set([...liveStreams, ...scheduledStreams].map(s => s.created_by))).filter(Boolean);
+  }, [liveStreams, scheduledStreams]);
+  
+  const { data: profiles = [] } = useProfilesByIds(creatorIds);
+  
+  // Build profile lookup map
+  const profilesMap = useMemo(
+    () => Object.fromEntries(profiles.map(p => [p.user_id, p] as const)),
+    [profiles]
+  );
+  
   const latestActions = getLatestActions(2);
+  
+  // Transform stream to room with profile hydration
+  const transformStreamToRoom = (stream: LiveStream): LiveRoom => {
+    const profile = profilesMap[stream.created_by];
+    const isYou = user?.id === stream.created_by;
+    
+    return {
+      id: stream.id,
+      title: stream.title,
+      description: stream.description || undefined,
+      host: {
+        id: stream.created_by,
+        name: profile?.display_name || (isYou ? 'You' : 'Anonymous Host'),
+        avatar: profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${stream.created_by}`,
+      },
+      isLive: stream.status === 'live',
+      scheduledTime: stream.scheduled_for || undefined,
+      participants: stream.viewer_count,
+      maxParticipants: 100,
+      tags: stream.tags,
+      type: stream.stream_type as "audio" | "video",
+      isPremium: stream.access_level === 'group',
+      imageUrl: stream.cover_image_url || undefined,
+      category: stream.tags[0] || "general",
+      location: "Virtual",
+    };
+  };
+  
+  // Merge real streams with mock data for hybrid approach
+  const mergeRoomsWithMocks = (
+    realStreams: LiveStream[],
+    mockRooms: LiveRoom[]
+  ): LiveRoom[] => {
+    // Transform real streams first
+    const realRooms = realStreams.map(transformStreamToRoom);
+    
+    // If we have 3+ real rooms, show only real data
+    if (realRooms.length >= 3) {
+      return realRooms;
+    } else if (realRooms.length > 0) {
+      // If we have 1-2 real rooms, fill the rest with mocks (up to 3 total)
+      const mocksNeeded = 3 - realRooms.length;
+      const mocksToShow = mockRooms.slice(0, mocksNeeded);
+      return [...realRooms, ...mocksToShow];
+    } else {
+      // No real data yet, show all mocks
+      return mockRooms;
+    }
+  };
   
   // Merge real data with mocks for hybrid approach
   const liveRooms = mergeRoomsWithMocks(liveStreams, mockLiveRooms);
