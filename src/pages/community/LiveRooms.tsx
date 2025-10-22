@@ -8,6 +8,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { Plus, Plane } from "lucide-react";
+import { MotivationalBanner } from "@/components/MotivationalBanner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -338,6 +339,15 @@ export default function LiveRooms() {
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < allRooms.length - 1;
 
+  // Helper to chunk rooms into groups of 6 (2 rows of 3)
+  const chunkRooms = (rooms: LiveRoom[], chunkSize = 6) => {
+    const chunks = [];
+    for (let i = 0; i < rooms.length; i += chunkSize) {
+      chunks.push(rooms.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
   // Render mosaic grid with alternating 1+2 / 2+1 layout
   const renderMosaicGrid = (rooms: LiveRoom[]) => {
     const rows = [];
@@ -624,7 +634,23 @@ export default function LiveRooms() {
                 <p className="text-muted-foreground">Loading live rooms...</p>
               </div>
             ) : liveRooms.length > 0 ? (
-              renderMosaicGrid(liveRooms)
+              <>
+                {chunkRooms(liveRooms).map((chunk, chunkIndex) => (
+                  <div key={`live-chunk-${chunkIndex}`}>
+                    {renderMosaicGrid(chunk)}
+                    {chunkIndex < chunkRooms(liveRooms).length - 1 && (
+                      <div className="mb-8 mt-2">
+                        <MotivationalBanner variant="encouragement" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {liveRooms.length > 0 && (
+                  <div className="mb-8 mt-2">
+                    <MotivationalBanner variant="partnership" />
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No live rooms at the moment</p>
@@ -647,7 +673,23 @@ export default function LiveRooms() {
                 <p className="text-muted-foreground">Loading scheduled rooms...</p>
               </div>
             ) : scheduledRooms.length > 0 ? (
-              renderMosaicGrid(scheduledRooms)
+              <>
+                {chunkRooms(scheduledRooms).map((chunk, chunkIndex) => (
+                  <div key={`scheduled-chunk-${chunkIndex}`}>
+                    {renderMosaicGrid(chunk)}
+                    {chunkIndex < chunkRooms(scheduledRooms).length - 1 && (
+                      <div className="mb-8 mt-2">
+                        <MotivationalBanner variant="achievement" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {scheduledRooms.length > 0 && (
+                  <div className="mb-8 mt-2">
+                    <MotivationalBanner variant="guidance" />
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No scheduled rooms</p>
