@@ -294,8 +294,24 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       } else {
         toast({
           title: "You're Live! 🎙️",
-          description: "Your stream is now broadcasting",
+          description: "Joining your stream room...",
         });
+
+        // Navigate creator to viewer as host
+        setTimeout(() => {
+          window.location.href = `/comm/live-rooms/${stream.id}/view`;
+          window.history.replaceState({
+            roomId: stream.id,
+            userId: user.id,
+            userName: user.email?.split('@')[0] || 'Host',
+            isHost: true,
+            room: {
+              id: stream.id,
+              title: stream.title,
+              isLive: true,
+            }
+          }, '', `/comm/live-rooms/${stream.id}/view`);
+        }, 500);
       }
       
       // Log activity

@@ -197,11 +197,37 @@ export default function LiveRooms() {
   };
 
   const handleJoinRoom = (roomId: string) => {
-    toast({
-      title: "Joining room...",
-      description: "Preparing audio/video connection",
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to join live rooms",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Find the room data
+    const room = [...liveRooms, ...scheduledRooms].find(r => r.id === roomId);
+    
+    if (!room) {
+      toast({
+        title: "Room not found",
+        description: "This live room no longer exists",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Navigate to the viewer with WebRTC integration
+    navigate(`/comm/live-rooms/${roomId}/view`, {
+      state: {
+        roomId,
+        userId: user.id,
+        userName: profilesMap[user.id]?.display_name || user.email?.split('@')[0] || 'Guest',
+        userAvatar: profilesMap[user.id]?.avatar_url,
+        room: room,
+      }
     });
-    // In real implementation, this would navigate to the LiveRoomViewer
   };
 
   const handleNotifyClick = (roomId: string) => {
