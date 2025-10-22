@@ -140,6 +140,23 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
         setIsLoading(false);
         return;
       }
+
+      // Ensure profile exists before creating stream
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!existingProfile) {
+        await supabase
+          .from('profiles')
+          .insert({
+            user_id: user.id,
+            display_name: user.email?.split('@')[0] || 'User',
+            avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`,
+          });
+      }
       
       let uploadedImageUrl: string | undefined;
       
