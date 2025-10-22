@@ -52,7 +52,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [scheduleTime, setScheduleTime] = useState("");
   const [enableChat, setEnableChat] = useState(true);
   const [enablePolls, setEnablePolls] = useState(false);
-  const [enableReplay, setEnableReplay] = useState(true);
+  const [enableRecording, setEnableRecording] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   
   const { mutateAsync: createStream } = useCreateStream();
@@ -75,7 +75,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       setCoHostInput(streamData.co_hosts?.[0] || "");
       setEnableChat(streamData.enable_chat);
       setEnablePolls(streamData.enable_polls);
-      setEnableReplay(streamData.enable_replay);
+      setEnableRecording(streamData.enable_recording ?? true);
       setImagePreviewUrl(streamData.cover_image_url || "");
       
       if (streamData.scheduled_for) {
@@ -182,7 +182,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
             : null,
           enable_chat: enableChat,
           enable_polls: enablePolls,
-          enable_replay: enableReplay,
+          enable_recording: enableRecording,
         };
 
         await updateStream({ id: streamData.id, updates });
@@ -272,7 +272,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         status: (scheduleDate && scheduleTime) ? 'pending' : 'live',
         enable_chat: enableChat,
         enable_polls: enablePolls,
-        enable_replay: enableReplay,
+        enable_recording: enableRecording,
         started_at: (!scheduleDate || !scheduleTime) ? new Date().toISOString() : null,
         created_by: user.id,
       };
@@ -352,7 +352,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     setScheduleTime("");
     setEnableChat(true);
     setEnablePolls(false);
-    setEnableReplay(true);
+    setEnableRecording(true);
     setSelectedImage(null);
     setImagePreviewUrl("");
     setAutoGenerateImage(false);
@@ -476,6 +476,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                 </div>
               )}
               
+              {/* AI generation toggle */}
               {/* AI generation toggle */}
               <div className="flex items-center justify-between mt-3">
                 <div className="space-y-0.5">
@@ -655,7 +656,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                     <Label>Record for Replay</Label>
                     <p className="text-xs text-muted-foreground">Save stream for later viewing</p>
                   </div>
-                  <Switch checked={enableReplay} onCheckedChange={setEnableReplay} />
+                  <Switch checked={enableRecording} onCheckedChange={setEnableRecording} />
                 </div>
               </div>
             )}

@@ -1382,11 +1382,13 @@ export type Database = {
           description: string | null
           enable_chat: boolean | null
           enable_polls: boolean | null
+          enable_recording: boolean | null
           enable_replay: boolean | null
           ended_at: string | null
           id: string
           metadata: Json | null
           peak_viewers: number | null
+          recording_status: string | null
           scheduled_for: string | null
           started_at: string | null
           status: string | null
@@ -1406,11 +1408,13 @@ export type Database = {
           description?: string | null
           enable_chat?: boolean | null
           enable_polls?: boolean | null
+          enable_recording?: boolean | null
           enable_replay?: boolean | null
           ended_at?: string | null
           id?: string
           metadata?: Json | null
           peak_viewers?: number | null
+          recording_status?: string | null
           scheduled_for?: string | null
           started_at?: string | null
           status?: string | null
@@ -1430,11 +1434,13 @@ export type Database = {
           description?: string | null
           enable_chat?: boolean | null
           enable_polls?: boolean | null
+          enable_recording?: boolean | null
           enable_replay?: boolean | null
           ended_at?: string | null
           id?: string
           metadata?: Json | null
           peak_viewers?: number | null
+          recording_status?: string | null
           scheduled_for?: string | null
           started_at?: string | null
           status?: string | null
@@ -4197,6 +4203,53 @@ export type Database = {
         }
         Relationships: []
       }
+      stream_recordings: {
+        Row: {
+          created_at: string
+          duration_seconds: number | null
+          file_size_bytes: number | null
+          id: string
+          recording_url: string
+          status: string | null
+          storage_path: string
+          stream_id: string
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          duration_seconds?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          recording_url: string
+          status?: string | null
+          storage_path: string
+          stream_id: string
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          duration_seconds?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          recording_url?: string
+          status?: string | null
+          storage_path?: string
+          stream_id?: string
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stream_recordings_stream_id_fkey"
+            columns: ["stream_id"]
+            isOneToOne: false
+            referencedRelation: "community_live_streams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       supplements: {
         Row: {
           benefits: string[] | null
@@ -5133,14 +5186,7 @@ export type Database = {
       }
     }
     Functions: {
-      archive_old_activity_logs: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      binary_quantize: {
-        Args: { "": string } | { "": unknown }
-        Returns: unknown
-      }
+      archive_old_activity_logs: { Args: never; Returns: undefined }
       bootstrap_admin_user: {
         Args: { p_user_email: string; p_user_id: string }
         Returns: undefined
@@ -5153,26 +5199,11 @@ export type Database = {
           user_id: string
         }[]
       }
-      clean_expired_context_cache: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      clean_expired_memory: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_abandoned_transactions: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_old_presence_records: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_old_typing_indicators: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      clean_expired_context_cache: { Args: never; Returns: undefined }
+      clean_expired_memory: { Args: never; Returns: undefined }
+      cleanup_abandoned_transactions: { Args: never; Returns: undefined }
+      cleanup_old_presence_records: { Args: never; Returns: undefined }
+      cleanup_old_typing_indicators: { Args: never; Returns: undefined }
       create_global_direct_thread: {
         Args: { p_recipient_id: string }
         Returns: string
@@ -5187,18 +5218,9 @@ export type Database = {
         Args: { p_recipient_id: string; p_tenant_id: string }
         Returns: string
       }
-      decrypt_api_key: {
-        Args: { encrypted_key_text: string }
-        Returns: string
-      }
-      encrypt_api_key: {
-        Args: { api_key_text: string }
-        Returns: string
-      }
-      follow_user: {
-        Args: { target_user_id: string }
-        Returns: Json
-      }
+      decrypt_api_key: { Args: { encrypted_key_text: string }; Returns: string }
+      encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
+      follow_user: { Args: { target_user_id: string }; Returns: Json }
       generate_unique_handle: {
         Args: {
           p_display_name?: string
@@ -5207,10 +5229,7 @@ export type Database = {
         }
         Returns: string
       }
-      get_active_users_count: {
-        Args: { hours_ago?: number }
-        Returns: number
-      }
+      get_active_users_count: { Args: { hours_ago?: number }; Returns: number }
       get_conversation_participants: {
         Args: { p_user_id: string }
         Returns: {
@@ -5223,10 +5242,7 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_follow_status: {
-        Args: { target_user_id: string }
-        Returns: boolean
-      }
+      get_follow_status: { Args: { target_user_id: string }; Returns: boolean }
       get_message_reactions: {
         Args: { message_id_param: string }
         Returns: {
@@ -5277,7 +5293,7 @@ export type Database = {
         }[]
       }
       get_recent_test_failures: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           error_count: number
           integration_name: string
@@ -5292,7 +5308,7 @@ export type Database = {
         }[]
       }
       get_system_health: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           metric: string
           status: string
@@ -5321,10 +5337,7 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_unread_match_count: {
-        Args: { p_user_id: string }
-        Returns: number
-      }
+      get_unread_match_count: { Args: { p_user_id: string }; Returns: number }
       get_user_admin_status: {
         Args: { tenant_id_param: string; user_id_param: string }
         Returns: boolean
@@ -5333,12 +5346,9 @@ export type Database = {
         Args: { currency_param: string; user_id_param: string }
         Returns: number
       }
-      get_user_follow_counts: {
-        Args: { user_id_param: string }
-        Returns: Json
-      }
+      get_user_follow_counts: { Args: { user_id_param: string }; Returns: Json }
       get_user_growth_trend: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           date: string
           new_users: number
@@ -5388,78 +5398,17 @@ export type Database = {
           youtube_url: string
         }[]
       }
-      halfvec_avg: {
-        Args: { "": number[] }
-        Returns: unknown
-      }
-      halfvec_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      halfvec_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      halfvec_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
-      hnsw_bit_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnsw_halfvec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnsw_sparsevec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnswhandler: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
       initialize_user_wallet: {
         Args: { user_id_param: string }
         Returns: undefined
       }
-      is_community_user: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_exafy_admin: {
-        Args: { user_id_param: string }
-        Returns: boolean
-      }
+      is_community_user: { Args: never; Returns: boolean }
+      is_exafy_admin: { Args: { user_id_param: string }; Returns: boolean }
       is_participant_of_global_thread: {
         Args: { thread_id_param: string }
         Returns: boolean
       }
-      is_tenant_scoped_user: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      ivfflat_bit_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ivfflat_halfvec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ivfflathandler: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      l2_norm: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: number
-      }
-      l2_normalize: {
-        Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: unknown
-      }
+      is_tenant_scoped_user: { Args: never; Returns: boolean }
       list_roles_for_active_tenant: {
         Args: { p_tenant_id: string }
         Returns: {
@@ -5562,18 +5511,6 @@ export type Database = {
         Args: { p_role: string; p_tenant_id: string }
         Returns: undefined
       }
-      sparsevec_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      sparsevec_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      sparsevec_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
       switch_to_tenant_by_slug: {
         Args: { p_tenant_slug: string }
         Returns: undefined
@@ -5586,10 +5523,7 @@ export type Database = {
         Args: { emoji_param: string; message_id_param: string }
         Returns: boolean
       }
-      unfollow_user: {
-        Args: { target_user_id: string }
-        Returns: Json
-      }
+      unfollow_user: { Args: { target_user_id: string }; Returns: Json }
       update_api_metrics: {
         Args: { p_integration_id: string }
         Returns: undefined
@@ -5606,30 +5540,6 @@ export type Database = {
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }
         Returns: boolean
-      }
-      vector_avg: {
-        Args: { "": number[] }
-        Returns: string
-      }
-      vector_dims: {
-        Args: { "": string } | { "": unknown }
-        Returns: number
-      }
-      vector_norm: {
-        Args: { "": string }
-        Returns: number
-      }
-      vector_out: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      vector_send: {
-        Args: { "": string }
-        Returns: string
-      }
-      vector_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
       }
     }
     Enums: {

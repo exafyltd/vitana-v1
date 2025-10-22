@@ -22,8 +22,11 @@ import {
 } from 'lucide-react';
 import { communityNavigation } from '@/config/navigation';
 import { LiveRoom } from '@/components/LiveRoom';
-import { useLiveChat } from '@/hooks/useLiveChat';
 import { useStreamLifecycle } from '@/hooks/useStreamLifecycle';
+import { useLiveChat } from '@/hooks/useLiveChat';
+import { useStreamRecording } from '@/hooks/useStreamRecording';
+import { StreamRecordingPlayer } from '@/components/StreamRecordingPlayer';
+import { useWebRTC } from '@/hooks/useWebRTC';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -62,12 +65,40 @@ export default function LiveRoomViewer() {
     enabled: !!roomId,
   });
 
+  // Fetch recording if stream has ended
+  const { data: recordingData } = useQuery({
+    queryKey: ['stream-recording', roomId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('stream_recordings')
+        .select('*')
+        .eq('stream_id', roomId)
+        .eq('status', 'ready')
+        .single();
+      
+      if (error) {
+        if (error.code === 'PGRST116') return null;
+        throw error;
+      }
+      return data;
+    },
+    enabled: streamData?.status === 'ended'
+  });
+
   // Initialize chat
   const { messages, sendMessage, sendReaction } = useLiveChat({
     roomId: roomId || '',
     userId: userId || user?.id || '',
     userName: userName || 'Guest',
     userAvatar,
+  });
+
+  // Initialize WebRTC
+  const { localStream, peers, isConnected, joinRoom: joinWebRTCRoom, leaveRoom: leaveWebRTCRoom } = useWebRTC({
+    roomId: roomId || '',
+    userId: userId || user?.id || '',
+    isAudioEnabled: true,
+    isVideoEnabled: streamData?.stream_type === 'video',
   });
 
   // Track participants (from WebRTC peers + self)
@@ -77,9 +108,17 @@ export default function LiveRoomViewer() {
   const { endStream } = useStreamLifecycle({
     roomId: roomId || '',
     isHost: isHost || false,
-    viewerCount: participants.length,
+    viewerCount: peers.length + 1,
     messageCount: messages.length,
     streamStatus: streamData?.status,
+  });
+
+  // Recording hook
+  const { isRecording, stopRecording } = useStreamRecording({
+    streamId: roomId || '',
+    localStream,
+    isHost: isHost || false,
+    enabled: streamData?.enable_recording ?? false,
   });
 
   // Auto-scroll to latest message
@@ -115,12 +154,16 @@ export default function LiveRoomViewer() {
 
   const handleLeaveRoom = async () => {
     if (isHost) {
+      if (isRecording) {
+        await stopRecording();
+      }
       await endStream();
       toast({
         title: "Stream Ended",
         description: "Your live stream has ended",
       });
     }
+    leaveWebRTCRoom();
     setIsInRoom(false);
     navigate('/comm/live-rooms');
   };
@@ -208,13 +251,28 @@ export default function LiveRoomViewer() {
           <div className="flex-1 flex overflow-hidden">
             {/* Video Area */}
             <div className="flex-1 flex flex-col bg-muted/50">
-              {isInRoom ? (
-                <LiveRoom
-                  roomId={roomId || ''}
-                  userId={userId || ''}
-                  userName={userName || 'Guest'}
-                  onLeave={handleLeaveRoom}
-                />
+              {streamData?.status === 'ended' && recordingData ? (
+                <div className="flex-1 flex items-center justify-center p-8">
+                  <Card className="w-full max-w-4xl p-6">
+                    <h2 className="text-2xl font-bold mb-4">Stream Replay</h2>
+                    <StreamRecordingPlayer recording={recordingData} />
+                  </Card>
+                </div>
+              ) : isInRoom ? (
+                <>
+                  <LiveRoom
+                    roomId={roomId || ''}
+                    userId={userId || ''}
+                    userName={userName || 'Guest'}
+                    onLeave={handleLeaveRoom}
+                  />
+                  {isRecording && (
+                    <div className="absolute top-4 right-4 flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full animate-pulse z-10">
+                      <div className="w-3 h-3 bg-white rounded-full" />
+                      Recording
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="flex-1 flex items-center justify-center">
                   <Card className="p-8 text-center max-w-md">
@@ -238,7 +296,7 @@ export default function LiveRoomViewer() {
               )}
 
               {/* Reaction Buttons - Show when in room */}
-              {isInRoom && (
+              {isInRoom && streamData?.status !== 'ended' && (
                 <div className="p-4 border-t bg-background/95 backdrop-blur flex items-center justify-center gap-4">
                   <Button
                     variant="outline"

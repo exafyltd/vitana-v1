@@ -14,7 +14,8 @@ export interface LiveStream {
   status: 'pending' | 'live' | 'ended' | 'cancelled';
   enable_chat: boolean;
   enable_polls: boolean;
-  enable_replay: boolean;
+  enable_recording: boolean;
+  recording_status?: string;
   created_by: string;
   created_at: string;
   updated_at: string;
