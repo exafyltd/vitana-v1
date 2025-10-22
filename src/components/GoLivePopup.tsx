@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,9 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
-import { CalendarIcon, Upload as UploadIcon, ChevronDown, ChevronUp, Mic, Video, Users, Clock } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CalendarIcon, Upload as UploadIcon, ChevronDown, ChevronUp, Mic, Video, Users, Clock, X, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface GoLivePopupProps {
   open: boolean;
@@ -29,6 +32,9 @@ const accessOptions = [
 ];
 
 export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePopupProps) {
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [title, setTitle] = useState(defaultTitle || "Live with [Name]");
   const [streamType, setStreamType] = useState<"Audio" | "Video" | "">("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -36,12 +42,63 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
   const [coHostInput, setCoHostInput] = useState("");
   const [accessLevel, setAccessLevel] = useState("public");
   const [scheduleDate, setScheduleDate] = useState<Date>();
+  const [scheduleTime, setScheduleTime] = useState("");
   const [enableChat, setEnableChat] = useState(true);
   const [enablePolls, setEnablePolls] = useState(false);
   const [enableReplay, setEnableReplay] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Image upload states
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [autoGenerateImage, setAutoGenerateImage] = useState(false);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
-  const isScheduled = !!scheduleDate && scheduleDate > new Date();
+  const isScheduled = !!scheduleDate && !!scheduleTime && new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}`) > new Date();
+
+  const generateTimeOptions = () => {
+    const times: string[] = [];
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const h = hour.toString().padStart(2, '0');
+        const m = minute.toString().padStart(2, '0');
+        times.push(`${h}:${m}`);
+      }
+    }
+    return times;
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({ 
+          title: "Invalid File Type", 
+          description: "Please select an image file (JPEG, PNG, WebP)", 
+          variant: "destructive" 
+        });
+        return;
+      }
+      // Validate file size (2MB max)
+      if (file.size > 2 * 1024 * 1024) {
+        toast({ 
+          title: "File Too Large", 
+          description: "Image must be smaller than 2MB", 
+          variant: "destructive" 
+        });
+        return;
+      }
+      setSelectedImage(file);
+      setImagePreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleRemoveImage = () => {
+    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+    setSelectedImage(null);
+    setImagePreviewUrl("");
+  };
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev => {
@@ -57,6 +114,49 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
 
   const handleGoLive = async () => {
     setIsLoading(true);
+    
+    let uploadedImageUrl: string | undefined;
+    
+    // Upload manual image if selected
+    if (selectedImage) {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        const ext = selectedImage.name.split('.').pop() || 'jpg';
+        const fileName = `live-${Date.now()}.${ext}`;
+        const filePath = `${user?.id ?? 'public'}/${fileName}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('covers')
+          .upload(filePath, selectedImage, {
+            upsert: true,
+            contentType: selectedImage.type,
+          });
+          
+        if (uploadError) throw uploadError;
+        
+        const { data: publicUrlData } = supabase.storage
+          .from('covers')
+          .getPublicUrl(filePath);
+          
+        uploadedImageUrl = publicUrlData.publicUrl;
+      } catch (e) {
+        console.error('Image upload failed:', e);
+        toast({ 
+          title: "Image upload failed", 
+          description: "Stream will be created without an image.",
+          variant: "destructive"
+        });
+      }
+    }
+    
+    // Auto-generate image if enabled and no manual image
+    if (autoGenerateImage && !uploadedImageUrl) {
+      toast({ 
+        title: "AI Image Generation", 
+        description: "Image will be generated when stream starts." 
+      });
+    }
+    
     // Simulate going live
     setTimeout(() => {
       // Log live activity
@@ -79,9 +179,14 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
       setCoHostInput("");
       setAccessLevel("public");
       setScheduleDate(undefined);
+      setScheduleTime("");
       setEnableChat(true);
       setEnablePolls(false);
       setEnableReplay(true);
+      setSelectedImage(null);
+      setImagePreviewUrl("");
+      setAutoGenerateImage(false);
+      if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
     }, 2000);
   };
 
@@ -140,14 +245,58 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
             {/* Cover Image */}
             <div>
               <Label>Cover Image / Thumbnail</Label>
-              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer mt-2">
-                <UploadIcon className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">
-                  Auto-generated or upload custom
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  PNG, JPG up to 2MB
-                </p>
+              
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              
+              {/* Upload area or preview */}
+              {isGeneratingImage ? (
+                <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center mt-2">
+                  <Loader2 className="w-6 h-6 mx-auto mb-2 text-muted-foreground animate-spin" />
+                  <p className="text-sm text-muted-foreground">
+                    Generating AI image...
+                  </p>
+                </div>
+              ) : imagePreviewUrl ? (
+                <div className="relative mt-2 rounded-lg overflow-hidden border">
+                  <img src={imagePreviewUrl} alt="Stream cover" className="w-full h-40 object-cover" />
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2"
+                    onClick={handleRemoveImage}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer mt-2"
+                >
+                  <UploadIcon className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">
+                    Click to upload custom image
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    PNG, JPG up to 2MB
+                  </p>
+                </div>
+              )}
+              
+              {/* AI generation toggle */}
+              <div className="flex items-center justify-between mt-3">
+                <div className="space-y-0.5">
+                  <Label>Auto-generate with AI</Label>
+                  <p className="text-xs text-muted-foreground">Generate image if none uploaded</p>
+                </div>
+                <Switch checked={autoGenerateImage} onCheckedChange={setAutoGenerateImage} />
               </div>
             </div>
 
@@ -243,7 +392,12 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
                         )}
                       >
                         <Clock className="mr-2 h-4 w-4" />
-                        {scheduleDate ? format(scheduleDate, "PPP 'at' p") : "Go Live Now"}
+                        {scheduleDate && scheduleTime 
+                          ? `${format(scheduleDate, "PPP")} at ${scheduleTime}`
+                          : scheduleDate 
+                            ? `${format(scheduleDate, "PPP")} - Select time`
+                            : "Go Live Now"
+                        }
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
@@ -251,15 +405,35 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
                         mode="single"
                         selected={scheduleDate}
                         onSelect={setScheduleDate}
+                        disabled={(date) => date < new Date()}
                         initialFocus
                         className="p-3 pointer-events-auto"
                       />
+                      
                       {scheduleDate && (
-                        <div className="p-3 border-t">
+                        <div className="p-3 border-t space-y-2">
+                          <Label htmlFor="schedule-time">Time</Label>
+                          <Select 
+                            value={scheduleTime || ""} 
+                            onValueChange={setScheduleTime}
+                          >
+                            <SelectTrigger id="schedule-time">
+                              <SelectValue placeholder="Select time" />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-[200px]">
+                              {generateTimeOptions().map((time) => (
+                                <SelectItem key={time} value={time}>{time}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => setScheduleDate(undefined)}
+                            onClick={() => {
+                              setScheduleDate(undefined);
+                              setScheduleTime("");
+                            }}
                             className="w-full"
                           >
                             Clear Schedule (Go Live Now)
