@@ -36,7 +36,7 @@ export function useScheduledStreams() {
         .from('community_live_streams')
         .select(`
           *,
-          profiles!community_live_streams_created_by_fkey(display_name, avatar_url)
+          creator:profiles!community_live_streams_created_by_fkey(display_name, avatar_url)
         `)
         .eq('status', 'pending')
         .not('scheduled_for', 'is', null)
@@ -47,9 +47,9 @@ export function useScheduledStreams() {
       
       return (data || []).map((stream: any) => ({
         ...stream,
-        creator_display_name: stream.profiles?.display_name,
-        creator_avatar_url: stream.profiles?.avatar_url,
-        profiles: undefined
+        creator_display_name: stream.creator?.display_name,
+        creator_avatar_url: stream.creator?.avatar_url,
+        creator: undefined
       })) as LiveStream[];
     },
   });
@@ -63,7 +63,7 @@ export function useLiveStreams() {
         .from('community_live_streams')
         .select(`
           *,
-          profiles!community_live_streams_created_by_fkey(display_name, avatar_url)
+          creator:profiles!community_live_streams_created_by_fkey(display_name, avatar_url)
         `)
         .eq('status', 'live')
         .order('started_at', { ascending: false });
@@ -72,9 +72,9 @@ export function useLiveStreams() {
       
       return (data || []).map((stream: any) => ({
         ...stream,
-        creator_display_name: stream.profiles?.display_name,
-        creator_avatar_url: stream.profiles?.avatar_url,
-        profiles: undefined
+        creator_display_name: stream.creator?.display_name,
+        creator_avatar_url: stream.creator?.avatar_url,
+        creator: undefined
       })) as LiveStream[];
     },
     refetchInterval: 30000,
