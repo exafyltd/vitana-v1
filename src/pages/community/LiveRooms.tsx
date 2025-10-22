@@ -8,6 +8,16 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { Plus, Plane } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useState, useEffect } from "react";
 import { GoLivePopup } from "@/components/GoLivePopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -40,6 +50,7 @@ export default function LiveRooms() {
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState('live');
   const [editingStream, setEditingStream] = useState<LiveStream | null>(null);
+  const [deleteConfirmRoomId, setDeleteConfirmRoomId] = useState<string | null>(null);
   
   // Fetch live streams data
   const { data: liveStreams = [], isLoading: isLoadingLive } = useLiveStreams();
@@ -222,23 +233,43 @@ export default function LiveRooms() {
     }
   };
 
-  const handleDeleteRoom = async () => {
-    if (!selectedRoomId) return;
+  const handleDeleteRoom = async (roomId?: string) => {
+    const idToDelete = roomId || selectedRoomId;
+    if (!idToDelete) return;
     
     try {
-      await deleteStream(selectedRoomId);
+      console.log('Attempting to delete stream:', idToDelete);
+      await deleteStream(idToDelete);
       toast({
         title: "Stream deleted",
         description: "Your live stream has been deleted",
       });
-      handleDrawerClose();
+      setDeleteConfirmRoomId(null);
+      if (selectedRoomId === idToDelete) {
+        handleDrawerClose();
+      }
     } catch (error) {
+      console.error('Delete stream error:', error);
       toast({
         title: "Error",
-        description: "Failed to delete stream",
+        description: error instanceof Error ? error.message : "Failed to delete stream",
         variant: "destructive",
       });
     }
+  };
+
+  const handleCardEdit = (e: React.MouseEvent, roomId: string) => {
+    e.stopPropagation();
+    const stream = [...liveStreams, ...scheduledStreams].find(s => s.id === roomId);
+    if (stream) {
+      setEditingStream(stream);
+      setIsGoLiveOpen(true);
+    }
+  };
+
+  const handleCardDelete = (e: React.MouseEvent, roomId: string) => {
+    e.stopPropagation();
+    setDeleteConfirmRoomId(roomId);
   };
 
 
@@ -276,6 +307,9 @@ export default function LiveRooms() {
                       !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
+                    isCreator={rowRooms[0].host.id === user?.id}
+                    onEdit={(e) => handleCardEdit(e, rowRooms[0].id)}
+                    onDelete={(e) => handleCardDelete(e, rowRooms[0].id)}
                     shareButton={
                       <SocialShareButton
                         type="live_room"
@@ -306,6 +340,9 @@ export default function LiveRooms() {
                       !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
+                    isCreator={rowRooms[1].host.id === user?.id}
+                    onEdit={(e) => handleCardEdit(e, rowRooms[1].id)}
+                    onDelete={(e) => handleCardDelete(e, rowRooms[1].id)}
                     shareButton={
                       <SocialShareButton
                         type="live_room"
@@ -336,6 +373,9 @@ export default function LiveRooms() {
                       !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
+                    isCreator={rowRooms[2].host.id === user?.id}
+                    onEdit={(e) => handleCardEdit(e, rowRooms[2].id)}
+                    onDelete={(e) => handleCardDelete(e, rowRooms[2].id)}
                     shareButton={
                       <SocialShareButton
                         type="live_room"
@@ -370,6 +410,9 @@ export default function LiveRooms() {
                       !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
+                    isCreator={rowRooms[0].host.id === user?.id}
+                    onEdit={(e) => handleCardEdit(e, rowRooms[0].id)}
+                    onDelete={(e) => handleCardDelete(e, rowRooms[0].id)}
                     shareButton={
                       <SocialShareButton
                         type="live_room"
@@ -400,6 +443,9 @@ export default function LiveRooms() {
                       !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
+                    isCreator={rowRooms[1].host.id === user?.id}
+                    onEdit={(e) => handleCardEdit(e, rowRooms[1].id)}
+                    onDelete={(e) => handleCardDelete(e, rowRooms[1].id)}
                     shareButton={
                       <SocialShareButton
                         type="live_room"
@@ -431,6 +477,9 @@ export default function LiveRooms() {
                       !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
+                    isCreator={rowRooms[2].host.id === user?.id}
+                    onEdit={(e) => handleCardEdit(e, rowRooms[2].id)}
+                    onDelete={(e) => handleCardDelete(e, rowRooms[2].id)}
                     shareButton={
                       <SocialShareButton
                         type="live_room"
@@ -593,9 +642,30 @@ export default function LiveRooms() {
           onJoin={handleJoinRoom}
           isCreator={selectedRoom.host.id === user?.id}
           onEdit={handleEditRoom}
-          onDelete={handleDeleteRoom}
+          onDelete={() => setDeleteConfirmRoomId(selectedRoomId)}
         />
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Live Room</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this live room? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteConfirmRoomId && handleDeleteRoom(deleteConfirmRoomId)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
     </AppLayout>
   );

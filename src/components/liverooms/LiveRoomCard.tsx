@@ -2,10 +2,11 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, Clock, Bell, Share2, MapPin } from "lucide-react";
+import { Users, Clock, Bell, Share2, MapPin, Pencil, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
 import { useState } from "react";
+import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
 
 export interface LiveRoom {
   id: string;
@@ -38,6 +39,9 @@ interface LiveRoomCardProps {
   className?: string;
   isFeatured?: boolean;
   shareButton?: React.ReactNode;
+  isCreator?: boolean;
+  onEdit?: (e: React.MouseEvent) => void;
+  onDelete?: (e: React.MouseEvent) => void;
 }
 
 // Category-based fallback gradients
@@ -60,6 +64,9 @@ export function LiveRoomCard({
   className,
   isFeatured = false,
   shareButton,
+  isCreator = false,
+  onEdit,
+  onDelete,
 }: LiveRoomCardProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -163,8 +170,8 @@ export function LiveRoomCard({
             )}
           </div>
 
-          {/* Top-right: Viewer count or countdown */}
-          <div className="absolute top-3 right-3 z-10">
+          {/* Top-right: Viewer count or countdown + Kebab menu */}
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
             {room.isLive && room.participants > 0 ? (
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
                 <Users className="w-3 h-3" />
@@ -175,6 +182,34 @@ export function LiveRoomCard({
                 Starts in {formatDistanceToNow(new Date(room.scheduledTime!))}
               </div>
             ) : null}
+            
+            {/* Kebab menu - only show for creator */}
+            {isCreator && (
+              <div className="pointer-events-auto">
+                <KebabMenu className="bg-background/95 backdrop-blur-sm hover:bg-background/80">
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit?.(e);
+                    }}
+                  >
+                    <Pencil className="w-4 h-4 mr-2" />
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete?.(e);
+                    }}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                </KebabMenu>
+              </div>
+            )}
           </div>
 
           {/* Bottom overlay content - Grid structure for perfect baseline alignment */}
