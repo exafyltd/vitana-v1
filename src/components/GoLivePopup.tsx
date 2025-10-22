@@ -8,11 +8,13 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon, Upload as UploadIcon, ChevronDown, ChevronUp, Mic, Video, Users, Clock, X, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useCreateStream } from "@/hooks/useLiveStreams";
 
 interface GoLivePopupProps {
   open: boolean;
@@ -36,6 +38,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [title, setTitle] = useState(defaultTitle || "Live with [Name]");
+  const [description, setDescription] = useState("");
   const [streamType, setStreamType] = useState<"Audio" | "Video" | "">("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -47,6 +50,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
   const [enablePolls, setEnablePolls] = useState(false);
   const [enableReplay, setEnableReplay] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  
+  const { mutateAsync: createStream } = useCreateStream();
   
   // Image upload states
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -113,66 +118,122 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
   };
 
   const handleGoLive = async () => {
+    if (!streamType) {
+      toast({ 
+        title: "Select Stream Type", 
+        description: "Please select Audio or Video",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsLoading(true);
     
-    let uploadedImageUrl: string | undefined;
-    
-    // Upload manual image if selected
-    if (selectedImage) {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        const ext = selectedImage.name.split('.').pop() || 'jpg';
-        const fileName = `live-${Date.now()}.${ext}`;
-        const filePath = `${user?.id ?? 'public'}/${fileName}`;
-        
-        const { error: uploadError } = await supabase.storage
-          .from('covers')
-          .upload(filePath, selectedImage, {
-            upsert: true,
-            contentType: selectedImage.type,
-          });
-          
-        if (uploadError) throw uploadError;
-        
-        const { data: publicUrlData } = supabase.storage
-          .from('covers')
-          .getPublicUrl(filePath);
-          
-        uploadedImageUrl = publicUrlData.publicUrl;
-      } catch (e) {
-        console.error('Image upload failed:', e);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
         toast({ 
-          title: "Image upload failed", 
-          description: "Stream will be created without an image.",
-          variant: "destructive"
+          title: "Error", 
+          description: "You must be logged in to go live", 
+          variant: "destructive" 
+        });
+        setIsLoading(false);
+        return;
+      }
+      
+      let uploadedImageUrl: string | undefined;
+      
+      // Upload manual image if selected
+      if (selectedImage) {
+        try {
+          const ext = selectedImage.name.split('.').pop() || 'jpg';
+          const fileName = `live-${Date.now()}.${ext}`;
+          const filePath = `${user.id}/${fileName}`;
+          
+          const { error: uploadError } = await supabase.storage
+            .from('covers')
+            .upload(filePath, selectedImage, {
+              upsert: true,
+              contentType: selectedImage.type,
+            });
+            
+          if (uploadError) throw uploadError;
+          
+          const { data: publicUrlData } = supabase.storage
+            .from('covers')
+            .getPublicUrl(filePath);
+            
+          uploadedImageUrl = publicUrlData.publicUrl;
+        } catch (e) {
+          console.error('Image upload failed:', e);
+          toast({ 
+            title: "Image upload failed", 
+            description: "Stream will be created without an image.",
+            variant: "destructive"
+          });
+        }
+      }
+      
+      // Auto-generate image if enabled and no manual image
+      if (autoGenerateImage && !uploadedImageUrl) {
+        toast({ 
+          title: "AI Image Generation", 
+          description: "Image will be generated when stream starts." 
         });
       }
-    }
-    
-    // Auto-generate image if enabled and no manual image
-    if (autoGenerateImage && !uploadedImageUrl) {
-      toast({ 
-        title: "AI Image Generation", 
-        description: "Image will be generated when stream starts." 
-      });
-    }
-    
-    // Simulate going live
-    setTimeout(() => {
-      // Log live activity
+      
+      // Prepare stream data
+      const streamData = {
+        title,
+        description: description || null,
+        stream_type: streamType.toLowerCase(),
+        tags: selectedTags,
+        access_level: accessLevel,
+        cover_image_url: uploadedImageUrl || null,
+        co_hosts: coHostInput ? [coHostInput] : [],
+        scheduled_for: (scheduleDate && scheduleTime) 
+          ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
+          : null,
+        status: (scheduleDate && scheduleTime) ? 'pending' : 'live',
+        enable_chat: enableChat,
+        enable_polls: enablePolls,
+        enable_replay: enableReplay,
+        started_at: (!scheduleDate || !scheduleTime) ? new Date().toISOString() : null,
+        created_by: user.id,
+      };
+      
+      // Insert into database
+      const stream = await createStream(streamData);
+      
+      // Show appropriate toast
+      if (scheduleDate && scheduleTime) {
+        toast({
+          title: "Stream Scheduled! 📅",
+          description: `Your stream is scheduled for ${format(scheduleDate, "PPP")} at ${scheduleTime}`,
+        });
+      } else {
+        toast({
+          title: "You're Live! 🎙️",
+          description: "Your stream is now broadcasting",
+        });
+      }
+      
+      // Log activity
       import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
         const { logLiveCreate, logLiveStart } = useCommunityLogger();
         if (scheduleDate) {
-          logLiveCreate(title, streamType || 'Audio', true);
+          logLiveCreate(title, streamType, true);
         } else {
-          logLiveStart(title, streamType || 'Audio');
+          logLiveStart(title, streamType);
         }
       });
       
       setIsLoading(false);
       onOpenChange(false);
+      
       // Reset form
       setTitle("Live with [Name]");
+      setDescription("");
       setStreamType("");
       setSelectedTags([]);
       setShowAdvanced(false);
@@ -187,7 +248,15 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
       setImagePreviewUrl("");
       setAutoGenerateImage(false);
       if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
-    }, 2000);
+    } catch (error) {
+      console.error('Error creating stream:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create stream. Please try again.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -215,6 +284,23 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
                   {title.length}/25
                 </span>
               </div>
+            </div>
+
+            {/* Description */}
+            <div>
+              <Label htmlFor="stream-description">Description / Bio (Optional)</Label>
+              <Textarea
+                id="stream-description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value.slice(0, 500))}
+                placeholder="Tell your audience what this stream is about..."
+                className="mt-1 resize-none"
+                rows={3}
+                maxLength={500}
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                {description.length}/500 characters
+              </p>
             </div>
 
             {/* Stream Type */}

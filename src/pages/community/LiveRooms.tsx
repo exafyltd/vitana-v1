@@ -20,110 +20,32 @@ import { Badge } from "@/components/ui/badge";
 import { communityNavigation } from "@/config/navigation";
 import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
+import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream } from "@/hooks/useLiveStreams";
+import type { LiveStream } from "@/hooks/useLiveStreams";
 
-// Mock data for live rooms
-const mockLiveRooms: LiveRoom[] = [
-  {
-    id: "live-1",
-    title: "Morning Wellness Chat ☀️",
-    description: "Join us for a casual conversation about wellness, health tips, and community support",
+// Transform LiveStream to LiveRoom format
+const transformStreamToRoom = (stream: LiveStream): LiveRoom => {
+  return {
+    id: stream.id,
+    title: stream.title,
+    description: stream.description || undefined,
     host: {
-      id: "host-1",
-      name: "Dr. Sarah Johnson",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100",
+      id: stream.created_by,
+      name: "Host",
+      avatar: "",
     },
-    isLive: true,
-    participants: 24,
-    maxParticipants: 50,
-    tags: ["Wellness", "Community", "Health"],
-    type: "audio",
-    isPremium: false,
-    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
-    category: "wellness",
-    location: "Virtual",
-  },
-  {
-    id: "live-2",
-    title: "Fitness Q&A with Coach Mike",
-    description: "Ask anything about fitness, nutrition, and building healthy habits",
-    host: {
-      id: "host-2",
-      name: "Coach Mike",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100",
-    },
-    isLive: true,
-    participants: 18,
-    maxParticipants: 30,
-    tags: ["Fitness", "Q&A", "Coaching"],
-    type: "video",
-    isPremium: true,
-    imageUrl: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=600&fit=crop",
-    category: "fitness",
-    location: "Virtual",
-  },
-  {
-    id: "live-3",
-    title: "Mental Health Support Circle",
-    description: "A safe space to share experiences and support each other",
-    host: {
-      id: "host-3",
-      name: "Emma Thompson",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100",
-    },
-    isLive: true,
-    participants: 12,
-    maxParticipants: 20,
-    tags: ["Mental Health", "Support", "Community"],
-    type: "audio",
-    isPremium: false,
-    imageUrl: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&h=600&fit=crop",
-    category: "wellness",
-    location: "Virtual",
-  },
-];
-
-const mockScheduledRooms: LiveRoom[] = [
-  {
-    id: "scheduled-1",
-    title: "Evening Meditation Session",
-    description: "Guided meditation to wind down your day and prepare for restful sleep",
-    host: {
-      id: "host-4",
-      name: "Zen Master Li",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
-    },
-    isLive: false,
-    scheduledTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
-    participants: 0,
+    isLive: stream.status === 'live',
+    scheduledTime: stream.scheduled_for || undefined,
+    participants: stream.viewer_count,
     maxParticipants: 100,
-    tags: ["Meditation", "Wellness", "Sleep"],
-    type: "audio",
-    isPremium: false,
-    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
-    category: "meditation",
+    tags: stream.tags,
+    type: stream.stream_type as "audio" | "video",
+    isPremium: stream.access_level === 'group',
+    imageUrl: stream.cover_image_url || undefined,
+    category: stream.tags[0] || "general",
     location: "Virtual",
-  },
-  {
-    id: "scheduled-2",
-    title: "Nutrition Workshop: Meal Prep 101",
-    description: "Learn how to prepare healthy meals for the week ahead",
-    host: {
-      id: "host-5",
-      name: "Chef Maria",
-      avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=100",
-    },
-    isLive: false,
-    scheduledTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    participants: 8,
-    maxParticipants: 25,
-    tags: ["Nutrition", "Cooking", "Workshop"],
-    type: "video",
-    isPremium: true,
-    imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
-    category: "health",
-    location: "Virtual",
-  },
-];
+  };
+};
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -136,7 +58,17 @@ export default function LiveRooms() {
   const [isMobile, setIsMobile] = useState(false);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   
+  // Fetch live streams data
+  const { data: liveStreams = [], isLoading: isLoadingLive } = useLiveStreams();
+  const { data: scheduledStreams = [], isLoading: isLoadingScheduled } = useScheduledStreams();
+  const { mutateAsync: startStream } = useStartStream();
+  const { mutateAsync: cancelStream } = useCancelStream();
+  
   const latestActions = getLatestActions(2);
+  
+  // Transform streams to rooms
+  const liveRooms = liveStreams.map(transformStreamToRoom);
+  const scheduledRooms = scheduledStreams.map(transformStreamToRoom);
 
   // Detect mobile
   useEffect(() => {
@@ -169,7 +101,7 @@ export default function LiveRooms() {
   };
 
   const handleNavigatePrev = () => {
-    const allRooms = [...mockLiveRooms, ...mockScheduledRooms];
+    const allRooms = [...liveRooms, ...scheduledRooms];
     const currentIndex = allRooms.findIndex((r) => r.id === selectedRoomId);
     if (currentIndex > 0) {
       const prevRoom = allRooms[currentIndex - 1];
@@ -179,7 +111,7 @@ export default function LiveRooms() {
   };
 
   const handleNavigateNext = () => {
-    const allRooms = [...mockLiveRooms, ...mockScheduledRooms];
+    const allRooms = [...liveRooms, ...scheduledRooms];
     const currentIndex = allRooms.findIndex((r) => r.id === selectedRoomId);
     if (currentIndex < allRooms.length - 1) {
       const nextRoom = allRooms[currentIndex + 1];
@@ -215,7 +147,7 @@ export default function LiveRooms() {
   };
 
 
-  const allRooms = [...mockLiveRooms, ...mockScheduledRooms];
+  const allRooms = [...liveRooms, ...scheduledRooms];
   const selectedRoom = allRooms.find((r) => r.id === selectedRoomId);
   const currentIndex = allRooms.findIndex((r) => r.id === selectedRoomId);
   const hasPrev = currentIndex > 0;
@@ -461,38 +393,64 @@ export default function LiveRooms() {
           <SplitBarList className="grid w-full grid-cols-2">
             <SplitBarTrigger value="live">
               Live
-              {mockLiveRooms.length > 0 && (
+              {liveRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
-                  {mockLiveRooms.length}
+                  {liveRooms.length}
                 </Badge>
               )}
             </SplitBarTrigger>
             <SplitBarTrigger value="scheduled">
               Scheduled
-              {mockScheduledRooms.length > 0 && (
+              {scheduledRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
-                  {mockScheduledRooms.length}
+                  {scheduledRooms.length}
                 </Badge>
               )}
             </SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="live" className="mt-6">
-            {mockLiveRooms.length > 0 ? (
-              renderMosaicGrid(mockLiveRooms)
+            {isLoadingLive ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading live rooms...</p>
+              </div>
+            ) : liveRooms.length > 0 ? (
+              renderMosaicGrid(liveRooms)
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No live rooms at the moment</p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-4"
+                  onClick={() => setIsGoLiveOpen(true)}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Be the first to go live
+                </Button>
               </div>
             )}
           </SplitBarContent>
 
           <SplitBarContent value="scheduled" className="mt-6">
-            {mockScheduledRooms.length > 0 ? (
-              renderMosaicGrid(mockScheduledRooms)
+            {isLoadingScheduled ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading scheduled rooms...</p>
+              </div>
+            ) : scheduledRooms.length > 0 ? (
+              renderMosaicGrid(scheduledRooms)
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No scheduled rooms</p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-4"
+                  onClick={() => setIsGoLiveOpen(true)}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Schedule a live room
+                </Button>
               </div>
             )}
           </SplitBarContent>

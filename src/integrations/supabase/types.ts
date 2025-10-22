@@ -1372,6 +1372,81 @@ export type Database = {
         }
         Relationships: []
       }
+      community_live_streams: {
+        Row: {
+          access_level: string | null
+          co_hosts: string[] | null
+          cover_image_url: string | null
+          created_at: string | null
+          created_by: string
+          description: string | null
+          enable_chat: boolean | null
+          enable_polls: boolean | null
+          enable_replay: boolean | null
+          ended_at: string | null
+          id: string
+          metadata: Json | null
+          peak_viewers: number | null
+          scheduled_for: string | null
+          started_at: string | null
+          status: string | null
+          stream_type: string
+          tags: string[] | null
+          title: string
+          total_messages: number | null
+          updated_at: string | null
+          viewer_count: number | null
+        }
+        Insert: {
+          access_level?: string | null
+          co_hosts?: string[] | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          created_by: string
+          description?: string | null
+          enable_chat?: boolean | null
+          enable_polls?: boolean | null
+          enable_replay?: boolean | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          peak_viewers?: number | null
+          scheduled_for?: string | null
+          started_at?: string | null
+          status?: string | null
+          stream_type: string
+          tags?: string[] | null
+          title: string
+          total_messages?: number | null
+          updated_at?: string | null
+          viewer_count?: number | null
+        }
+        Update: {
+          access_level?: string | null
+          co_hosts?: string[] | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          created_by?: string
+          description?: string | null
+          enable_chat?: boolean | null
+          enable_polls?: boolean | null
+          enable_replay?: boolean | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          peak_viewers?: number | null
+          scheduled_for?: string | null
+          started_at?: string | null
+          status?: string | null
+          stream_type?: string
+          tags?: string[] | null
+          title?: string
+          total_messages?: number | null
+          updated_at?: string | null
+          viewer_count?: number | null
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           contact_email: string | null
@@ -1458,6 +1533,36 @@ export type Database = {
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      crew_memory: {
+        Row: {
+          agent: string
+          created_at: string
+          id: string
+          key: string
+          payload: Json
+          tenant: string
+          updated_at: string
+        }
+        Insert: {
+          agent: string
+          created_at?: string
+          id?: string
+          key: string
+          payload: Json
+          tenant: string
+          updated_at?: string
+        }
+        Update: {
+          agent?: string
+          created_at?: string
+          id?: string
+          key?: string
+          payload?: Json
+          tenant?: string
           updated_at?: string
         }
         Relationships: []
