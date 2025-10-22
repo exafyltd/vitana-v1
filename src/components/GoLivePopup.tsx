@@ -170,6 +170,46 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
       // Handle edit mode
       if (editMode && streamData) {
+        let coverUrlToSave: string | null | undefined = undefined;
+
+        // A) If a new image is selected, upload it and use its public URL
+        if (selectedImage) {
+          try {
+            const ext = selectedImage.name.split(".").pop() || "jpg";
+            const fileName = `live-${Date.now()}.${ext}`;
+            const filePath = `${user.id}/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+              .from("covers")
+              .upload(filePath, selectedImage, {
+                upsert: true,
+                contentType: selectedImage.type,
+              });
+            if (uploadError) throw uploadError;
+
+            const { data: publicUrlData } = supabase.storage
+              .from("covers")
+              .getPublicUrl(filePath);
+
+            coverUrlToSave = publicUrlData.publicUrl;
+          } catch (e) {
+            console.error("Image upload failed:", e);
+            toast({
+              title: "Image upload failed",
+              description: "We'll keep the existing image.",
+              variant: "default",
+            });
+          }
+        } else {
+          // B) If user removed existing image (preview cleared) and there was one before, set to null
+          const hadExisting = !!streamData.cover_image_url;
+          const removedNow = !imagePreviewUrl;
+          if (hadExisting && removedNow) {
+            coverUrlToSave = null;
+          }
+          // C) Otherwise leave undefined to avoid changing this field
+        }
+
         const updates: Partial<LiveStream> = {
           title,
           description: description || null,
@@ -183,6 +223,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           enable_chat: enableChat,
           enable_polls: enablePolls,
           enable_recording: enableRecording,
+          ...(coverUrlToSave !== undefined ? { cover_image_url: coverUrlToSave } : {}),
         };
 
         await updateStream({ id: streamData.id, updates });
