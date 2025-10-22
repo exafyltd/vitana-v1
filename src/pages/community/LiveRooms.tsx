@@ -249,14 +249,29 @@ export default function LiveRooms() {
     });
   };
 
-  const handleEditRoom = () => {
+  const handleEditRoom = async () => {
     if (!selectedRoom) return;
-    
-    // Find the real stream data
-    const stream = [...liveStreams, ...scheduledStreams].find(s => s.id === selectedRoom.id);
-    if (stream) {
-      setEditingStream(stream);
-      setIsGoLiveOpen(true);
+
+    try {
+      const { data: stream, error } = await supabase
+        .from('community_live_streams')
+        .select('*')
+        .eq('id', selectedRoom.id)
+        .single();
+
+      if (error) throw error;
+
+      if (stream) {
+        setEditingStream(stream as LiveStream);
+        setIsGoLiveOpen(true);
+      }
+    } catch (err) {
+      console.error('Error fetching stream:', err);
+      toast({
+        title: "Error",
+        description: "Failed to load stream data",
+        variant: "destructive",
+      });
     }
   };
 
