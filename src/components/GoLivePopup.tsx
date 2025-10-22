@@ -360,12 +360,12 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                 <Input
                   id="stream-title"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value.slice(0, 25))}
+                  onChange={(e) => setTitle(e.target.value.slice(0, 100))}
                   placeholder="Live with [Name]"
-                  maxLength={25}
+                  maxLength={100}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-                  {title.length}/25
+                  {title.length}/100
                 </span>
               </div>
             </div>
