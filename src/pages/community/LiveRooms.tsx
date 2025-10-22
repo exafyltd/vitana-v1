@@ -32,8 +32,8 @@ const transformStreamToRoom = (stream: LiveStream): LiveRoom => {
     description: stream.description || undefined,
     host: {
       id: stream.created_by,
-      name: "Host",
-      avatar: "",
+      name: stream.creator_display_name || "Anonymous Host",
+      avatar: stream.creator_avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${stream.created_by}`,
     },
     isLive: stream.status === 'live',
     scheduledTime: stream.scheduled_for || undefined,
