@@ -282,6 +282,7 @@ const EventsAndMeetups = () => {
   const [activeTab, setActiveTab] = useState("today");
   const [isMobile, setIsMobile] = useState(false);
   const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Detect mobile
   useEffect(() => {
@@ -315,9 +316,30 @@ const EventsAndMeetups = () => {
     });
   }, [dbEvents]);
 
+  // Filter events by search query
+  const filteredTodayEvents = useMemo(() => {
+    if (!searchQuery.trim()) return todayEvents;
+    const query = searchQuery.toLowerCase();
+    return todayEvents.filter(event =>
+      event.title.toLowerCase().includes(query) ||
+      event.description?.toLowerCase().includes(query) ||
+      event.location?.toLowerCase().includes(query)
+    );
+  }, [todayEvents, searchQuery]);
+
+  const filteredUpcomingEvents = useMemo(() => {
+    if (!searchQuery.trim()) return upcomingEvents;
+    const query = searchQuery.toLowerCase();
+    return upcomingEvents.filter(event =>
+      event.title.toLowerCase().includes(query) ||
+      event.description?.toLowerCase().includes(query) ||
+      event.location?.toLowerCase().includes(query)
+    );
+  }, [upcomingEvents, searchQuery]);
+
   // Get all events from current tab
-  const currentEvents = activeTab === "today" ? todayEvents : 
-                        activeTab === "upcoming" ? upcomingEvents : [];
+  const currentEvents = activeTab === "today" ? filteredTodayEvents : 
+                        activeTab === "upcoming" ? filteredUpcomingEvents : [];
   const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
 
   // Handle deep linking - read ?event= and ?tab from URL on mount
@@ -488,7 +510,10 @@ const EventsAndMeetups = () => {
           />
           
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search events and meetups..." />
+            <ExpandableSearchButton 
+              placeholder="Search events and meetups..." 
+              onSearch={(query) => setSearchQuery(query)}
+            />
             <UniversalCalendarButton />
             <Button 
               onClick={() => setCreateSelectionOpen(true)}
@@ -525,17 +550,17 @@ const EventsAndMeetups = () => {
                   </div>
                 ) : (
                   <>
-                    {chunkEvents(todayEvents).map((chunk, chunkIndex) => (
+                    {chunkEvents(filteredTodayEvents).map((chunk, chunkIndex) => (
                       <div key={`today-chunk-${chunkIndex}`}>
                         {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
-                        {chunkIndex < chunkEvents(todayEvents).length - 1 && (
+                        {chunkIndex < chunkEvents(filteredTodayEvents).length - 1 && (
                           <div className="px-6 mb-8 mt-8">
                             <MotivationalBanner variant="encouragement" />
                           </div>
                         )}
                       </div>
                     ))}
-                    {todayEvents.length > 0 && (
+                    {filteredTodayEvents.length > 0 && (
                       <div className="px-6 mb-8 mt-8">
                         <MotivationalBanner variant="partnership" />
                       </div>
@@ -552,17 +577,17 @@ const EventsAndMeetups = () => {
                   </div>
                 ) : (
                   <>
-                    {chunkEvents(upcomingEvents).map((chunk, chunkIndex) => (
+                    {chunkEvents(filteredUpcomingEvents).map((chunk, chunkIndex) => (
                       <div key={`upcoming-chunk-${chunkIndex}`}>
                         {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
-                        {chunkIndex < chunkEvents(upcomingEvents).length - 1 && (
+                        {chunkIndex < chunkEvents(filteredUpcomingEvents).length - 1 && (
                           <div className="px-6 mb-8 mt-8">
                             <MotivationalBanner variant="achievement" />
                           </div>
                         )}
                       </div>
                     ))}
-                    {upcomingEvents.length > 0 && (
+                    {filteredUpcomingEvents.length > 0 && (
                       <div className="px-6 mb-8 mt-8">
                         <MotivationalBanner variant="guidance" />
                       </div>

@@ -53,6 +53,7 @@ export default function LiveRooms() {
   const [activeTab, setActiveTab] = useState('live');
   const [editingStream, setEditingStream] = useState<LiveStream | null>(null);
   const [deleteConfirmRoomId, setDeleteConfirmRoomId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   
   // Fetch live streams data
   const { data: liveStreams = [], isLoading: isLoadingLive } = useLiveStreams();
@@ -129,6 +130,31 @@ export default function LiveRooms() {
   // Merge real data with mocks for hybrid approach
   const liveRooms = mergeRoomsWithMocks(liveStreams, mockLiveRooms);
   const scheduledRooms = mergeRoomsWithMocks(scheduledStreams, mockScheduledRooms);
+
+  // Filter rooms by search query
+  const filteredLiveRooms = useMemo(() => {
+    if (!searchQuery.trim()) return liveRooms;
+    const query = searchQuery.toLowerCase();
+    return liveRooms.filter(room =>
+      room.title.toLowerCase().includes(query) ||
+      room.description?.toLowerCase().includes(query) ||
+      room.host.name.toLowerCase().includes(query) ||
+      room.tags?.some(tag => tag.toLowerCase().includes(query)) ||
+      room.category?.toLowerCase().includes(query)
+    );
+  }, [liveRooms, searchQuery]);
+
+  const filteredScheduledRooms = useMemo(() => {
+    if (!searchQuery.trim()) return scheduledRooms;
+    const query = searchQuery.toLowerCase();
+    return scheduledRooms.filter(room =>
+      room.title.toLowerCase().includes(query) ||
+      room.description?.toLowerCase().includes(query) ||
+      room.host.name.toLowerCase().includes(query) ||
+      room.tags?.some(tag => tag.toLowerCase().includes(query)) ||
+      room.category?.toLowerCase().includes(query)
+    );
+  }, [scheduledRooms, searchQuery]);
 
   // Detect mobile
   useEffect(() => {
@@ -592,7 +618,7 @@ export default function LiveRooms() {
         <UtilityActionButton>
           <ExpandableSearchButton
             placeholder="Search Live Rooms…"
-            onSearch={(query) => console.log("Search Live Rooms:", query)}
+            onSearch={(query) => setSearchQuery(query)}
           />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
@@ -606,9 +632,9 @@ export default function LiveRooms() {
           <SplitBarList className="grid w-full grid-cols-2">
             <SplitBarTrigger value="live">
               Live
-              {liveRooms.length > 0 && (
+              {filteredLiveRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
-                  {liveRooms.length}
+                  {filteredLiveRooms.length}
                   {liveStreams.length === 0 && (
                     <span className="ml-1 text-[10px] opacity-70">(demo)</span>
                   )}
@@ -617,9 +643,9 @@ export default function LiveRooms() {
             </SplitBarTrigger>
             <SplitBarTrigger value="scheduled">
               Scheduled
-              {scheduledRooms.length > 0 && (
+              {filteredScheduledRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
-                  {scheduledRooms.length}
+                  {filteredScheduledRooms.length}
                   {scheduledStreams.length === 0 && (
                     <span className="ml-1 text-[10px] opacity-70">(demo)</span>
                   )}
@@ -633,19 +659,19 @@ export default function LiveRooms() {
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading live rooms...</p>
               </div>
-            ) : liveRooms.length > 0 ? (
+            ) : filteredLiveRooms.length > 0 ? (
               <>
-                {chunkRooms(liveRooms).map((chunk, chunkIndex) => (
+                {chunkRooms(filteredLiveRooms).map((chunk, chunkIndex) => (
                   <div key={`live-chunk-${chunkIndex}`}>
                     {renderMosaicGrid(chunk)}
-                    {chunkIndex < chunkRooms(liveRooms).length - 1 && (
+                    {chunkIndex < chunkRooms(filteredLiveRooms).length - 1 && (
                       <div className="mb-8 mt-2">
                         <MotivationalBanner variant="encouragement" />
                       </div>
                     )}
                   </div>
                 ))}
-                {liveRooms.length > 0 && (
+                {filteredLiveRooms.length > 0 && (
                   <div className="mb-8 mt-2">
                     <MotivationalBanner variant="partnership" />
                   </div>
@@ -672,19 +698,19 @@ export default function LiveRooms() {
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading scheduled rooms...</p>
               </div>
-            ) : scheduledRooms.length > 0 ? (
+            ) : filteredScheduledRooms.length > 0 ? (
               <>
-                {chunkRooms(scheduledRooms).map((chunk, chunkIndex) => (
+                {chunkRooms(filteredScheduledRooms).map((chunk, chunkIndex) => (
                   <div key={`scheduled-chunk-${chunkIndex}`}>
                     {renderMosaicGrid(chunk)}
-                    {chunkIndex < chunkRooms(scheduledRooms).length - 1 && (
+                    {chunkIndex < chunkRooms(filteredScheduledRooms).length - 1 && (
                       <div className="mb-8 mt-2">
                         <MotivationalBanner variant="achievement" />
                       </div>
                     )}
                   </div>
                 ))}
-                {scheduledRooms.length > 0 && (
+                {filteredScheduledRooms.length > 0 && (
                   <div className="mb-8 mt-2">
                     <MotivationalBanner variant="guidance" />
                   </div>
