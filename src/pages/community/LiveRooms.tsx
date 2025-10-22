@@ -22,6 +22,7 @@ import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream } from "@/hooks/useLiveStreams";
 import type { LiveStream } from "@/hooks/useLiveStreams";
+import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 
 // Transform LiveStream to LiveRoom format
 const transformStreamToRoom = (stream: LiveStream): LiveRoom => {
@@ -47,6 +48,28 @@ const transformStreamToRoom = (stream: LiveStream): LiveRoom => {
   };
 };
 
+// Merge real streams with mock data for hybrid approach
+const mergeRoomsWithMocks = (
+  realStreams: LiveStream[],
+  mockRooms: LiveRoom[]
+): LiveRoom[] => {
+  // Transform real streams first
+  const realRooms = realStreams.map(transformStreamToRoom);
+  
+  // If we have 3+ real rooms, show only real data
+  if (realRooms.length >= 3) {
+    return realRooms;
+  } else if (realRooms.length > 0) {
+    // If we have 1-2 real rooms, fill the rest with mocks (up to 3 total)
+    const mocksNeeded = 3 - realRooms.length;
+    const mocksToShow = mockRooms.slice(0, mocksNeeded);
+    return [...realRooms, ...mocksToShow];
+  } else {
+    // No real data yet, show all mocks
+    return mockRooms;
+  }
+};
+
 export default function LiveRooms() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -66,9 +89,9 @@ export default function LiveRooms() {
   
   const latestActions = getLatestActions(2);
   
-  // Transform streams to rooms
-  const liveRooms = liveStreams.map(transformStreamToRoom);
-  const scheduledRooms = scheduledStreams.map(transformStreamToRoom);
+  // Merge real data with mocks for hybrid approach
+  const liveRooms = mergeRoomsWithMocks(liveStreams, mockLiveRooms);
+  const scheduledRooms = mergeRoomsWithMocks(scheduledStreams, mockScheduledRooms);
 
   // Detect mobile
   useEffect(() => {
@@ -91,6 +114,24 @@ export default function LiveRooms() {
   }, [searchParams]);
 
   const handleCardClick = (roomId: string) => {
+    // Check if it's a mock room
+    if (roomId.startsWith('mock-')) {
+      toast({
+        title: "Demo Room",
+        description: "This is an example room. Create your own to go live!",
+        action: (
+          <Button 
+            size="sm" 
+            onClick={() => setIsGoLiveOpen(true)}
+          >
+            Create Room
+          </Button>
+        ),
+      });
+      return;
+    }
+    
+    // Real room - proceed normally
     setSelectedRoomId(roomId);
     setSearchParams({ live: roomId });
   };
@@ -396,6 +437,9 @@ export default function LiveRooms() {
               {liveRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                   {liveRooms.length}
+                  {liveStreams.length === 0 && (
+                    <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                  )}
                 </Badge>
               )}
             </SplitBarTrigger>
@@ -404,6 +448,9 @@ export default function LiveRooms() {
               {scheduledRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                   {scheduledRooms.length}
+                  {scheduledStreams.length === 0 && (
+                    <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                  )}
                 </Badge>
               )}
             </SplitBarTrigger>

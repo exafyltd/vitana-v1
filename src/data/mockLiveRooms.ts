@@ -1,0 +1,118 @@
+import type { LiveRoom } from "@/components/liverooms/LiveRoomCard";
+
+export const mockLiveRooms: LiveRoom[] = [
+  {
+    id: "mock-live-1",
+    title: "Morning Meditation & Mindfulness",
+    description: "Start your day with guided meditation and breathing exercises",
+    host: {
+      id: "mock-host-1",
+      name: "Dr. Emma Wilson",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emma",
+    },
+    isLive: true,
+    participants: 24,
+    maxParticipants: 100,
+    tags: ["Meditation", "Mindfulness", "Morning"],
+    type: "audio",
+    isPremium: false,
+    category: "wellness",
+    location: "Virtual",
+  },
+  {
+    id: "mock-live-2",
+    title: "Longevity Science Q&A",
+    description: "Ask anything about longevity research and anti-aging science",
+    host: {
+      id: "mock-host-2",
+      name: "Dr. James Chen",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
+    },
+    isLive: true,
+    participants: 47,
+    maxParticipants: 100,
+    tags: ["Science", "Longevity", "Q&A"],
+    type: "video",
+    isPremium: false,
+    category: "education",
+    location: "Virtual",
+  },
+  {
+    id: "mock-live-3",
+    title: "Community Check-in & Support",
+    description: "Share your wellness journey and connect with community",
+    host: {
+      id: "mock-host-3",
+      name: "Sarah Miller",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+    },
+    isLive: true,
+    participants: 15,
+    maxParticipants: 100,
+    tags: ["Support", "Community", "Wellness"],
+    type: "audio",
+    isPremium: false,
+    category: "community",
+    location: "Virtual",
+  },
+];
+
+export const mockScheduledRooms: LiveRoom[] = [
+  {
+    id: "mock-scheduled-1",
+    title: "Evening Yoga & Stretching Session",
+    description: "Wind down your day with gentle yoga and deep stretching",
+    host: {
+      id: "mock-host-4",
+      name: "Lisa Anderson",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa",
+    },
+    isLive: false,
+    scheduledTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // 2 hours from now
+    participants: 0,
+    maxParticipants: 100,
+    tags: ["Yoga", "Stretching", "Evening"],
+    type: "video",
+    isPremium: false,
+    category: "wellness",
+    location: "Virtual",
+  },
+  {
+    id: "mock-scheduled-2",
+    title: "Nutrition Tips for Longevity",
+    description: "Expert advice on diet and nutrition for a longer, healthier life",
+    host: {
+      id: "mock-host-5",
+      name: "Dr. Michael Roberts",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+    },
+    isLive: false,
+    scheduledTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
+    participants: 0,
+    maxParticipants: 100,
+    tags: ["Nutrition", "Diet", "Health"],
+    type: "video",
+    isPremium: true,
+    category: "education",
+    location: "Virtual",
+  },
+  {
+    id: "mock-scheduled-3",
+    title: "Weekend Wellness Workshop",
+    description: "Comprehensive wellness strategies for mind, body, and spirit",
+    host: {
+      id: "mock-host-6",
+      name: "Dr. Patricia Lee",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Patricia",
+    },
+    isLive: false,
+    scheduledTime: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days from now
+    participants: 0,
+    maxParticipants: 100,
+    tags: ["Wellness", "Workshop", "Holistic"],
+    type: "video",
+    isPremium: false,
+    category: "education",
+    location: "Virtual",
+  },
+];
