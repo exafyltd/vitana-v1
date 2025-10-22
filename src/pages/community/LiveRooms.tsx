@@ -80,6 +80,7 @@ export default function LiveRooms() {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState('live');
   
   // Fetch live streams data
   const { data: liveStreams = [], isLoading: isLoadingLive } = useLiveStreams();
@@ -430,7 +431,7 @@ export default function LiveRooms() {
         </UtilityActionButton>
 
         {/* Split Bar for Live/Scheduled */}
-        <SplitBar defaultValue="live" className="mt-6">
+        <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
           <SplitBarList className="grid w-full grid-cols-2">
             <SplitBarTrigger value="live">
               Live
@@ -504,7 +505,16 @@ export default function LiveRooms() {
         </SplitBar>
       </div>
 
-      <GoLivePopup open={isGoLiveOpen} onOpenChange={setIsGoLiveOpen} defaultTitle="Live Community Discussion" />
+      <GoLivePopup 
+        open={isGoLiveOpen} 
+        onOpenChange={setIsGoLiveOpen} 
+        defaultTitle="Live Community Discussion"
+        onCreated={(streamId) => {
+          setActiveTab('scheduled');
+          setSelectedRoomId(streamId);
+          setSearchParams({ live: streamId });
+        }}
+      />
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
 
       {/* Live Room Drawer */}

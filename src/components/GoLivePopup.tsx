@@ -20,6 +20,7 @@ interface GoLivePopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   defaultTitle?: string;
+  onCreated?: (streamId: string) => void;
 }
 
 const streamTags = [
@@ -33,7 +34,7 @@ const accessOptions = [
   { id: "group", label: "Group/VIP", description: "Invited members only" }
 ];
 
-export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePopupProps) {
+export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated }: GoLivePopupProps) {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -221,6 +222,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "" }: GoLivePop
       
       // Insert into database
       const stream = await createStream(streamData);
+      
+      // Notify parent if stream was scheduled
+      if (scheduleDate && scheduleTime && onCreated) {
+        onCreated(stream.id);
+      }
       
       // Show appropriate toast
       if (scheduleDate && scheduleTime) {
