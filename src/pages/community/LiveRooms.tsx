@@ -36,6 +36,7 @@ import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
 import { useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -284,11 +285,28 @@ export default function LiveRooms() {
     }
   };
 
-  const handleCardEdit = (e: React.MouseEvent, roomId: string) => {
+  const handleCardEdit = async (e: React.MouseEvent, roomId: string) => {
     e.stopPropagation();
-    const stream = [...liveStreams, ...scheduledStreams].find(s => s.id === roomId);
+    
+    // Fetch fresh data directly from database
+    const { data: stream, error } = await supabase
+      .from('community_live_streams')
+      .select('*')
+      .eq('id', roomId)
+      .single();
+    
+    if (error) {
+      console.error('Error fetching stream:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load stream data",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     if (stream) {
-      setEditingStream(stream);
+      setEditingStream(stream as LiveStream);
       setIsGoLiveOpen(true);
     }
   };

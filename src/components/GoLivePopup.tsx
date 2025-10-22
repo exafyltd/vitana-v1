@@ -187,12 +187,6 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
         await updateStream({ id: streamData.id, updates });
         
-        // Wait for queries to refetch to ensure fresh data
-        const queryClient = (window as any).queryClient;
-        if (queryClient) {
-          await queryClient.refetchQueries({ queryKey: ['live-streams'] });
-        }
-        
         toast({
           title: "Stream Updated! ✨",
           description: "Your stream has been updated successfully",
