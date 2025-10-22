@@ -18,6 +18,7 @@ export const mockLiveRooms: LiveRoom[] = [
     isPremium: false,
     category: "wellness",
     location: "Virtual",
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
   },
   {
     id: "mock-live-2",
@@ -36,6 +37,7 @@ export const mockLiveRooms: LiveRoom[] = [
     isPremium: false,
     category: "education",
     location: "Virtual",
+    imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=600&fit=crop",
   },
   {
     id: "mock-live-3",
@@ -54,6 +56,7 @@ export const mockLiveRooms: LiveRoom[] = [
     isPremium: false,
     category: "community",
     location: "Virtual",
+    imageUrl: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=600&fit=crop",
   },
 ];
 
@@ -76,6 +79,7 @@ export const mockScheduledRooms: LiveRoom[] = [
     isPremium: false,
     category: "wellness",
     location: "Virtual",
+    imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop",
   },
   {
     id: "mock-scheduled-2",
@@ -95,6 +99,7 @@ export const mockScheduledRooms: LiveRoom[] = [
     isPremium: true,
     category: "education",
     location: "Virtual",
+    imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
   },
   {
     id: "mock-scheduled-3",
@@ -114,5 +119,6 @@ export const mockScheduledRooms: LiveRoom[] = [
     isPremium: false,
     category: "education",
     location: "Virtual",
+    imageUrl: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&h=600&fit=crop",
   },
 ];
