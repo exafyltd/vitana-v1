@@ -30,6 +30,7 @@ import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastSh
 import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
 import { useShorts, useTrackMediaEvent } from "@/hooks/useShorts";
 import { UnifiedUploadModal } from '@/components/community/UnifiedUploadModal';
+import { VideoPlayerModal } from '@/components/community/VideoPlayerModal';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
@@ -188,6 +189,8 @@ export default function MediaHub() {
     getLatestActions
   } = useAutopilot();
   const [isUnifiedUploadOpen, setIsUnifiedUploadOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<any>(null);
+  const [isVideoPlayerOpen, setIsVideoPlayerOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   
@@ -326,17 +329,8 @@ export default function MediaHub() {
   })) : fallbackShorts;
 
   const handleVideoClick = (video: any) => {
-    if (video.id && video.src_url) {
-      // Track play event
-      trackMediaEvent.mutate({
-        mediaId: video.id,
-        mediaType: 'video',
-        eventType: 'play_start'
-      });
-      
-      // Open video in player (placeholder - integrate with your media player)
-      window.open(video.src_url, '_blank');
-    }
+    setSelectedVideo(video);
+    setIsVideoPlayerOpen(true);
   };
 
   const handleVideoUploadComplete = () => {
@@ -505,6 +499,7 @@ export default function MediaHub() {
                           animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`
                         }}
                         className="group cursor-pointer"
+                        onClick={() => handleVideoClick(video)}
                       >
                         {/* Thumbnail Container */}
                         <div className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
@@ -999,6 +994,15 @@ export default function MediaHub() {
             });
           }
         }}
+      />
+
+      <VideoPlayerModal
+        isOpen={isVideoPlayerOpen}
+        onClose={() => {
+          setIsVideoPlayerOpen(false);
+          setSelectedVideo(null);
+        }}
+        video={selectedVideo}
       />
       
       {/* Autopilot Popup */}

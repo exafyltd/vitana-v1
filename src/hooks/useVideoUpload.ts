@@ -63,6 +63,54 @@ export const useVideoUpload = () => {
     });
   };
 
+  const generateThumbnail = (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.crossOrigin = 'anonymous';
+      
+      video.onloadedmetadata = () => {
+        // Seek to 1 second or 10% of duration, whichever is earlier
+        const seekTime = Math.min(1, video.duration * 0.1);
+        video.currentTime = seekTime;
+      };
+
+      video.onseeked = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            throw new Error('Failed to get canvas context');
+          }
+          
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          
+          canvas.toBlob((blob) => {
+            window.URL.revokeObjectURL(video.src);
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error('Failed to generate thumbnail'));
+            }
+          }, 'image/jpeg', 0.8);
+        } catch (error) {
+          window.URL.revokeObjectURL(video.src);
+          reject(error);
+        }
+      };
+
+      video.onerror = () => {
+        window.URL.revokeObjectURL(video.src);
+        reject(new Error('Failed to load video for thumbnail'));
+      };
+
+      video.src = URL.createObjectURL(file);
+    });
+  };
+
   const uploadVideo = async (file: File, metadata: UploadMetadata) => {
     try {
       setIsUploading(true);
@@ -107,23 +155,34 @@ export const useVideoUpload = () => {
 
       setProgress(60);
 
-      // Extract video metadata
-      console.log('Calling extract-video-meta function...');
-      const { data: videoMeta, error: metaError } = await supabase.functions.invoke<VideoMetadata>(
-        'extract-video-meta',
-        {
-          body: { videoPath: filePath }
-        }
-      );
+      // Generate thumbnail client-side
+      console.log('Generating thumbnail...');
+      let thumbnailUrl: string | null = null;
+      try {
+        const thumbnailBlob = await generateThumbnail(file);
+        const thumbnailPath = `shorts/${user.id}/${timestamp}_thumb.jpg`;
+        
+        const { error: thumbError } = await supabase.storage
+          .from('media')
+          .upload(thumbnailPath, thumbnailBlob, {
+            cacheControl: '3600',
+            contentType: 'image/jpeg',
+            upsert: false
+          });
 
-      if (metaError) {
-        console.error('Metadata extraction error:', metaError);
-        // Continue without metadata
+        if (thumbError) {
+          console.error('Thumbnail upload error:', thumbError);
+        } else {
+          const { data: { publicUrl: thumbUrl } } = supabase.storage
+            .from('media')
+            .getPublicUrl(thumbnailPath);
+          thumbnailUrl = thumbUrl;
+        }
+      } catch (thumbError) {
+        console.error('Thumbnail generation error:', thumbError);
       }
 
       setProgress(80);
-
-      console.log('Video metadata:', videoMeta);
 
       // Insert into database
       const { data: video, error: dbError } = await supabase
@@ -136,10 +195,10 @@ export const useVideoUpload = () => {
           category: metadata.category,
           language: metadata.language,
           src_url: srcUrl,
-          thumbnail_url: videoMeta?.thumbnailUrl || null,
-          duration_sec: videoMeta?.durationSec || validation.duration || null,
-          width: videoMeta?.width || null,
-          height: videoMeta?.height || null,
+          thumbnail_url: thumbnailUrl,
+          duration_sec: validation.duration || null,
+          width: null,
+          height: null,
           status: 'published'
         })
         .select()
