@@ -147,7 +147,10 @@ export function ShortPreviewCard({
 
           {/* Duration Badge - Bottom Right */}
           <div className="absolute bottom-3 right-3 z-10">
-            <span className="bg-black/40 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm">
+            <span 
+              className="bg-black/40 text-white px-2 py-1 rounded-md font-medium backdrop-blur-sm"
+              style={{ fontSize: `calc(0.75rem * var(--font-scale, 1))` }}
+            >
               {video.duration}
             </span>
           </div>
@@ -184,10 +187,18 @@ export function ShortPreviewCard({
 
         {/* Content Below Thumbnail */}
         <div className="mt-3 space-y-2">
-          <h3 className="font-semibold text-sm text-foreground leading-snug">
+          <h3 
+            className="font-semibold text-foreground leading-snug"
+            style={{ fontSize: `calc(0.875rem * var(--font-scale, 1))` }}
+          >
             {video.title}
           </h3>
-          <p className="text-xs text-muted-foreground">{video.creator}</p>
+          <p 
+            className="text-muted-foreground"
+            style={{ fontSize: `calc(0.75rem * var(--font-scale, 1))` }}
+          >
+            {video.creator}
+          </p>
 
           {/* Tag Pills */}
           {video.tags && video.tags.length > 0 && (
@@ -195,7 +206,8 @@ export function ShortPreviewCard({
               {video.tags.map((tag, tagIndex) => (
                 <span
                   key={tagIndex}
-                  className="bg-violet-500/10 text-violet-600 text-xs px-2.5 py-0.5 rounded-full font-medium"
+                  className="bg-violet-500/10 text-violet-600 px-2.5 py-0.5 rounded-full font-medium"
+                  style={{ fontSize: `calc(0.75rem * var(--font-scale, 1))` }}
                 >
                   {tag}
                 </span>

@@ -33,6 +33,8 @@ import { useShorts, useTrackMediaEvent } from "@/hooks/useShorts";
 import { ShortPreviewCard } from "@/components/community/ShortPreviewCard";
 import { UnifiedUploadModal } from '@/components/community/UnifiedUploadModal';
 import { VideoPlayerModal } from '@/components/community/VideoPlayerModal';
+import { useShortsDensity } from '@/hooks/useShortsDensity';
+import { DensityControl } from '@/components/community/DensityControl';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
@@ -213,6 +215,9 @@ export default function MediaHub() {
   const [videoToDelete, setVideoToDelete] = useState<{ id: string; src_url: string; thumbnail_url?: string } | null>(null);
   const [deleteVideoDialogOpen, setDeleteVideoDialogOpen] = useState(false);
   const latestActions = getLatestActions(2);
+  
+  // Shorts density control
+  const { density, setDensity, cardWidth, gap, fontScale } = useShortsDensity();
 
   // Sync activeMediaTab with URL parameter changes
   useEffect(() => {
@@ -584,15 +589,39 @@ export default function MediaHub() {
               <div className="space-y-6">
                 {/* Trending Shorts Section */}
                 <div>
-                  <div className="mb-6">
-                    <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
-                      <Video className="w-6 h-6 text-violet-600" />
-                      Trending Shorts
-                    </h2>
-                    <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-violet-500 to-transparent rounded-full mt-2"></div>
+                  <div className="mb-6 flex items-start justify-between gap-4">
+                    <div>
+                      <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
+                        <Video className="w-6 h-6 text-violet-600" />
+                        Trending Shorts
+                      </h2>
+                      <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-violet-500 to-transparent rounded-full mt-2"></div>
+                    </div>
+                    
+                    {/* Density Control - Hidden on mobile */}
+                    <div className="hidden sm:block">
+                      <DensityControl value={density} onChange={setDensity} />
+                    </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div 
+                    className="grid"
+                    style={{
+                      '--card-w': cardWidth,
+                      '--gap': gap,
+                      '--font-scale': fontScale,
+                      gridTemplateColumns: 'repeat(2, 1fr)',
+                      gap: '16px',
+                    } as React.CSSProperties & { '--card-w': string; '--gap': string; '--font-scale': number }}
+                  >
+                    <style>{`
+                      @media (min-width: 640px) {
+                        .grid[style*="--card-w"] {
+                          grid-template-columns: repeat(auto-fill, minmax(var(--card-w), 1fr)) !important;
+                          gap: var(--gap) !important;
+                        }
+                      }
+                    `}</style>
                     {videoShorts.map((video, index) => (
                       <ShortPreviewCard
                         key={video.id || index}
