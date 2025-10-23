@@ -57,31 +57,11 @@ export function useMessageNotifications() {
             const senderName = senderProfile?.display_name || 'Someone';
             const isGroup = thread?.type === 'group';
             
-            // Create in-app notification in database
-            const messagePreview = newMessage.body?.substring(0, 100) || 'New message';
-            const notificationTitle = isGroup 
-              ? `${senderName} in ${thread?.name || 'group chat'}`
-              : senderName;
-
-            const { error: notifError } = await supabase.from('notifications').insert({
-              user_id: user.id, // CRITICAL: Set recipient
-              type: isGroup ? 'new_group_message' : 'new_message',
-              title: notificationTitle,
-              message: messagePreview,
-              data: {
-                thread_id: newMessage.thread_id,
-                message_id: newMessage.id,
-                sender_id: newMessage.sender_id,
-                sender_avatar: senderProfile?.avatar_url,
-                context: 'global'
-              }
-            } as any);
-
-            if (notifError) {
-              console.error('Failed to create notification:', notifError);
-            }
+            // Note: Notification is now created by database trigger, not here
+            // This prevents duplicates and ensures consistency
+            console.log('🔔 Message received - notification will be created by database trigger');
             
-            // Also send push notification
+            // Send push notification
             await notifyNewMessage(
               senderName,
               newMessage.body,
@@ -156,31 +136,11 @@ export function useMessageNotifications() {
                               senderProfile?.full_name || 
                               'Someone';
             
-            // Create in-app notification in database
-            const messagePreview = newMessage.body?.substring(0, 100) || 'New message';
-            const notificationTitle = isGroup 
-              ? `${senderName} in ${threadName || 'group chat'}`
-              : senderName;
-
-            const { error: notifError } = await supabase.from('notifications').insert({
-              user_id: user.id, // CRITICAL: Set recipient
-              type: isGroup ? 'new_group_message' : 'new_message',
-              title: notificationTitle,
-              message: messagePreview,
-              data: {
-                thread_id: newMessage.thread_id || `dm-${newMessage.id}`,
-                message_id: newMessage.id,
-                sender_id: newMessage.sender_id,
-                sender_avatar: senderProfile?.avatar_url,
-                context: 'tenant'
-              }
-            } as any);
-
-            if (notifError) {
-              console.error('Failed to create notification:', notifError);
-            }
+            // Note: Notification is now created by database trigger, not here
+            // This prevents duplicates and ensures consistency
+            console.log('🔔 Message received - notification will be created by database trigger');
             
-            // Also send push notification
+            // Send push notification
             await notifyNewMessage(
               senderName,
               newMessage.body,

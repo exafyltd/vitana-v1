@@ -24,7 +24,8 @@ import { playNotificationBell } from '@/utils/soundEffects';
 
 interface Notification {
   id: string;
-  type: 'test_results' | 'appointment_reminder' | 'test_reminder' | 'critical_alert' | 'follow' | 'new_message' | 'new_group_message';
+  user_id: string;
+  type: 'test_results' | 'appointment_reminder' | 'test_reminder' | 'critical_alert' | 'follow' | 'new_message' | 'new_group_message' | 'message';
   title: string;
   message: string;
   data: any;
@@ -69,53 +70,82 @@ export default function NotificationBell() {
   useEffect(() => {
     fetchNotifications();
     
-    // Set up real-time subscription
-    const channel = supabase
-      .channel('notifications')
-      .on('postgres_changes', 
-        { event: 'INSERT', schema: 'public', table: 'notifications' },
-        async (payload) => {
-          const newNotification = payload.new as Notification;
-          setNotifications(prev => [newNotification, ...prev]);
-          if (!newNotification.is_read) {
-            setUnreadCount(prev => prev + 1);
-          }
+    // Set up real-time subscription with user filtering
+    const setupRealtimeSubscription = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
 
-          // Play sound for message notifications when page is visible
-          if ((newNotification.type === 'new_message' || newNotification.type === 'new_group_message') 
-              && !document.hidden) {
-            playNotificationBell();
-          }
+      const channel = supabase
+        .channel('notifications')
+        .on('postgres_changes', 
+          { 
+            event: 'INSERT', 
+            schema: 'public', 
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`
+          },
+          async (payload) => {
+            const newNotification = payload.new as Notification;
+            
+            // Additional guard to ensure this notification is for current user
+            if (newNotification.user_id !== user.id) return;
+            
+            console.debug('Realtime notification received:', {
+              id: newNotification.id,
+              type: newNotification.type,
+              user_id: newNotification.user_id
+            });
 
-          // Fetch profile for new follow notification
-          if (newNotification.type === 'follow') {
-            const followerId = (newNotification.data as { follower_id?: string } | null)?.follower_id;
-            if (followerId) {
-              // Fetch global profile for new follower
-              const { data: globalProfile } = await supabase
-                .from('global_community_profiles')
-                .select('user_id, display_name, avatar_url')
-                .eq('user_id', followerId)
-                .eq('is_visible', true)
-                .single();
+            setNotifications(prev => [newNotification, ...prev]);
+            if (!newNotification.is_read) {
+              setUnreadCount(prev => prev + 1);
+            }
 
-              if (globalProfile) {
-                setFollowerProfiles(prev => ({
-                  ...prev,
-                  [followerId]: {
-                    display_name: globalProfile.display_name ?? null,
-                    avatar_url: globalProfile.avatar_url ?? null
-                  }
-                }));
+            // Play sound for message notifications when page is visible (with fallback for unexpected types)
+            if ((newNotification.type === 'new_message' || 
+                 newNotification.type === 'new_group_message' || 
+                 newNotification.type === 'message') && !document.hidden) {
+              console.debug('Playing sound for notification:', newNotification.id);
+              playNotificationBell();
+            }
+
+            // Fetch profile for new follow notification
+            if (newNotification.type === 'follow') {
+              const followerId = (newNotification.data as { follower_id?: string } | null)?.follower_id;
+              if (followerId) {
+                // Fetch global profile for new follower
+                const { data: globalProfile } = await supabase
+                  .from('global_community_profiles')
+                  .select('user_id, display_name, avatar_url')
+                  .eq('user_id', followerId)
+                  .eq('is_visible', true)
+                  .single();
+
+                if (globalProfile) {
+                  setFollowerProfiles(prev => ({
+                    ...prev,
+                    [followerId]: {
+                      display_name: globalProfile.display_name ?? null,
+                      avatar_url: globalProfile.avatar_url ?? null
+                    }
+                  }));
+                }
               }
             }
           }
-        }
-      )
-      .subscribe();
+        )
+        .subscribe();
+
+      return channel;
+    };
+
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    setupRealtimeSubscription().then(ch => { channel = ch; });
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
     };
   }, []);
 
