@@ -13,7 +13,8 @@ import { ProfileStats } from "@/components/profile/shared/ProfileStats";
 import { VitanaImpactPanel } from "@/components/profile/VitanaImpactPanel";
 import { AchievementsBanner } from "@/components/profile/AchievementsBanner";
 import { SuccessStoryCarousel } from "@/components/profile/community/SuccessStoryCarousel";
-import { Share2, QrCode, Copy, Edit3, Star, TrendingUp } from "lucide-react";
+import { ProfileIdCardFront } from "@/components/profile/shared/ProfileIdCardFront";
+import { ProfileIdCardBack } from "@/components/profile/shared/ProfileIdCardBack";
 
 // Dummy data for the profile stats
 const dummyProfileStats = {
@@ -82,6 +83,11 @@ export default function Profile() {
     }
   };
 
+  const handleEdit = () => {
+    // Navigate to profile settings or open edit modal
+    console.log("Edit profile");
+  };
+
   if (loading) {
     return (
       <AppLayout>
@@ -109,134 +115,18 @@ export default function Profile() {
           <div className="w-full max-w-6xl">
             <h1 className="sr-only">User Profile - Vitana ID Card</h1>
 
-            {/* Premium Vitana ID Card Header */}
-            <div className="mb-8 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))]/10 via-transparent to-[hsl(var(--pill-mental-accent))]/10 rounded-3xl blur-3xl" />
+            {/* Two ID Cards Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              {/* Front ID Card - Left */}
+              <ProfileIdCardFront 
+                profile={mockUserProfile} 
+                scope="owner" 
+                editMode={true} 
+                onEdit={handleEdit}
+              />
               
-              <div className="relative rounded-3xl bg-gradient-to-br from-white/90 via-white/70 to-white/50 dark:from-gray-900/90 dark:via-gray-900/70 dark:to-gray-900/50 backdrop-blur-2xl border border-white/40 dark:border-gray-800/40 p-10 shadow-[0_20px_60px_rgba(0,0,0,0.08),0_8px_20px_rgba(0,0,0,0.04)]">
-                {/* Decorative corner accents */}
-                <div className="absolute top-0 left-0 w-20 h-20 rounded-tl-3xl border-t-2 border-l-2 border-[hsl(var(--sys-vitana-accent))]/30" />
-                <div className="absolute top-0 right-0 w-20 h-20 rounded-tr-3xl border-t-2 border-r-2 border-[hsl(var(--pill-mental-accent))]/30" />
-                <div className="absolute bottom-0 left-0 w-20 h-20 rounded-bl-3xl border-b-2 border-l-2 border-[hsl(var(--pill-nutrition-accent))]/30" />
-                <div className="absolute bottom-0 right-0 w-20 h-20 rounded-br-3xl border-b-2 border-r-2 border-[hsl(var(--pill-hydration-accent))]/30" />
-
-                <div className="flex flex-col lg:flex-row items-center gap-8">
-                  {/* Avatar Section with Glowing Ring */}
-                  <div className="relative flex-shrink-0">
-                    {/* Multi-layer glow */}
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/30 to-[hsl(var(--pill-nutrition-accent))]/30 blur-3xl animate-pulse" />
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[hsl(var(--pill-mental-accent))]/20 to-[hsl(var(--pill-hydration-accent))]/20 blur-2xl" />
-                    
-                    <div className="relative">
-                      <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] via-[hsl(var(--pill-mental-accent))] to-[hsl(var(--pill-nutrition-accent))] opacity-20 blur-xl" />
-                      <div className="relative rounded-full p-1 bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] via-[hsl(var(--pill-mental-accent))] to-[hsl(var(--pill-nutrition-accent))] shadow-2xl">
-                        <Avatar className="relative h-40 w-40 border-4 border-white dark:border-gray-900 shadow-2xl">
-                          <AvatarImage src={profile.avatar || "/placeholder.svg"} alt="User avatar" loading="lazy" />
-                          <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
-                            {profile.initials}
-                          </AvatarFallback>
-                        </Avatar>
-                      </div>
-                      
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="absolute -bottom-2 -right-2 h-10 w-10 rounded-full p-0 bg-white dark:bg-gray-900 shadow-xl border-2 hover:scale-110 transition-transform"
-                      >
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Identity Section */}
-                  <div className="flex-1 text-center lg:text-left">
-                    <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
-                          <h1 className="text-4xl font-bold text-foreground tracking-tight">{profile.displayName}</h1>
-                          <Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />
-                        </div>
-                        
-                        <div className="flex items-center justify-center lg:justify-start gap-2 mb-3">
-                          <p className="text-lg text-muted-foreground">@{profile.handle || `@${profile.displayName.toLowerCase().replace(/\s+/g, '_')}`}</p>
-                          {mockUserProfile.longevityArchetype && (
-                            <>
-                              <span className="text-muted-foreground">•</span>
-                              <span className="text-sm text-muted-foreground">{mockUserProfile.longevityArchetype}</span>
-                            </>
-                          )}
-                        </div>
-
-                        <p className="text-sm text-muted-foreground max-w-xl mb-4">
-                          {profile.bio || "Building a balanced life through connection, health, and purpose."}
-                        </p>
-
-                        {/* Role Badges */}
-                        <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap mb-4">
-                          {mockUserProfile.roles.map((role) => (
-                            <Badge key={role} variant="secondary" className="capitalize rounded-full px-3 py-1">
-                              {role}
-                            </Badge>
-                          ))}
-                          {mockUserProfile.membershipTier && (
-                            <Badge variant="outline" className="capitalize text-primary rounded-full px-3 py-1 border-2">
-                              {mockUserProfile.membershipTier}
-                            </Badge>
-                          )}
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex items-center justify-center lg:justify-start gap-3">
-                          <Button variant="outline" className="rounded-full gap-2 shadow-sm">
-                            <Share2 className="h-4 w-4" />
-                            Share Profile
-                          </Button>
-                          <Button variant="outline" className="rounded-full gap-2 shadow-sm">
-                            <QrCode className="h-4 w-4" />
-                            QR Code
-                          </Button>
-                          <Button variant="outline" className="rounded-full gap-2 shadow-sm">
-                            <Copy className="h-4 w-4" />
-                            Copy Link
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Animated Vitana Index Orb */}
-                      <div className="relative flex-shrink-0">
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/20 to-[hsl(var(--pill-nutrition-accent))]/20 blur-2xl animate-pulse" />
-                        
-                        <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/10 to-[hsl(var(--pill-nutrition-accent))]/10 backdrop-blur-xl border border-[hsl(var(--sys-vitana-accent))]/30 shadow-[0_8px_32px_rgba(0,0,0,0.08)] flex flex-col items-center justify-center group hover:scale-105 transition-all duration-300">
-                          <TrendingUp className="w-6 h-6 text-[hsl(var(--sys-vitana-accent))] mb-1 group-hover:scale-110 transition-transform" />
-                          <div className="text-3xl font-bold bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] bg-clip-text text-transparent">
-                            {mockUserProfile.vitanaIndex}
-                          </div>
-                          <div className="text-[10px] font-semibold text-muted-foreground tracking-wider">
-                            VITANA INDEX
-                          </div>
-                          {mockUserProfile.vitanaPercentile && (
-                            <Badge 
-                              variant="outline" 
-                              className="mt-1 text-[10px] px-2 py-0 border-[hsl(var(--sys-vitana-accent))]/30 bg-[hsl(var(--sys-vitana-accent))]/10 text-[hsl(var(--sys-vitana-accent))]"
-                            >
-                              TOP {100 - mockUserProfile.vitanaPercentile}%
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ID Card Footer */}
-                <div className="mt-6 pt-6 border-t border-gray-200/50 dark:border-gray-700/50 flex items-center justify-between text-xs text-muted-foreground">
-                  <div>Member since {new Date().getFullYear()}</div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono">ID: {mockUserProfile.id.slice(0, 8)}</span>
-                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--sys-vitana-accent))] animate-pulse" />
-                  </div>
-                </div>
-              </div>
+              {/* Back ID Card - Right */}
+              <ProfileIdCardBack profile={mockUserProfile} />
             </div>
 
             {/* Achievements Banner */}
