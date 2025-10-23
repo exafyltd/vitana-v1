@@ -46,6 +46,24 @@ export function ShortPreviewCard({
     isVisible,
   });
 
+  // Tag color mapping
+  const getTagColor = (tag: string) => {
+    const tagLower = tag.toLowerCase();
+    if (tagLower.includes('nutrition') || tagLower.includes('recipe')) {
+      return 'from-orange-400/20 to-orange-500/10 text-orange-700 border-orange-300/30';
+    }
+    if (tagLower.includes('wellness') || tagLower.includes('mindful')) {
+      return 'from-violet-400/20 to-violet-500/10 text-violet-700 border-violet-300/30';
+    }
+    if (tagLower.includes('fitness') || tagLower.includes('yoga')) {
+      return 'from-emerald-400/20 to-emerald-500/10 text-emerald-700 border-emerald-300/30';
+    }
+    if (tagLower.includes('health')) {
+      return 'from-blue-400/20 to-blue-500/10 text-blue-700 border-blue-300/30';
+    }
+    return 'from-violet-400/20 to-violet-500/10 text-violet-700 border-violet-300/30';
+  };
+
   // IntersectionObserver to track visibility (60% threshold)
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -106,10 +124,10 @@ export function ShortPreviewCard({
       <div className="cursor-pointer" onClick={onClick}>
         {/* Thumbnail Container */}
         <div
-          className={`relative aspect-[9/16] rounded-2xl overflow-hidden shadow-md transition-all duration-300 ${
+          className={`relative aspect-[9/16] rounded-2xl overflow-hidden transition-all duration-300 ${
             isHovering && !disabled
-              ? 'scale-[1.02] shadow-xl shadow-violet-500/20'
-              : 'hover:shadow-xl hover:scale-[1.02]'
+              ? '-translate-y-1 shadow-lg ring-4 ring-violet-500/10'
+              : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-violet-500/10'
           }`}
         >
           {/* Video Element (hidden until preview starts) */}
@@ -136,6 +154,16 @@ export function ShortPreviewCard({
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
 
+          {/* Dark overlay fade-in before preview (prevents flash) */}
+          {isHovering && !isPreviewing && (
+            <div 
+              className="absolute inset-0 bg-black/20 pointer-events-none"
+              style={{
+                animation: 'fadeIn 200ms ease-out forwards'
+              }}
+            />
+          )}
+
           {/* Live Badge - Top Left */}
           {video.isLive && (
             <div className="absolute top-3 left-3 z-10">
@@ -146,10 +174,9 @@ export function ShortPreviewCard({
           )}
 
           {/* Duration Badge - Bottom Right */}
-          <div className="absolute bottom-3 right-3 z-10">
+          <div className="absolute bottom-2 right-2 z-10">
             <span 
-              className="bg-black/40 text-white px-2 py-1 rounded-md font-medium backdrop-blur-sm"
-              style={{ fontSize: `calc(0.75rem * var(--font-scale, 1))` }}
+              className="bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded-md font-medium backdrop-blur-sm"
             >
               {video.duration}
             </span>
@@ -206,7 +233,7 @@ export function ShortPreviewCard({
               {video.tags.map((tag, tagIndex) => (
                 <span
                   key={tagIndex}
-                  className="bg-violet-500/10 text-violet-600 px-2.5 py-0.5 rounded-full font-medium"
+                  className={`bg-gradient-to-br px-2.5 py-0.5 rounded-full font-semibold border ${getTagColor(tag)}`}
                   style={{ fontSize: `calc(0.75rem * var(--font-scale, 1))` }}
                 >
                   {tag}
@@ -216,6 +243,14 @@ export function ShortPreviewCard({
           )}
         </div>
       </div>
+
+      {/* Inline keyframe animations */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 }

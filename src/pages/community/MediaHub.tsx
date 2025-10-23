@@ -588,7 +588,7 @@ export default function MediaHub() {
             <SplitBarContent value="shorts">
               <div className="space-y-6">
                 {/* Trending Shorts Section */}
-                <div>
+                <div className="bg-gradient-to-b from-white/0 to-white/5 rounded-t-3xl p-6 -mx-6 -mt-6">
                   <div className="mb-6 flex items-start justify-between gap-4">
                     <div>
                       <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">

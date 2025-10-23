@@ -1,16 +1,17 @@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ShortsDensity } from '@/hooks/useShortsDensity';
+import { Grid3x3, Grid2x2, LayoutGrid } from 'lucide-react';
 
 interface DensityControlProps {
   value: ShortsDensity;
   onChange: (value: ShortsDensity) => void;
 }
 
-const densityOptions: { value: ShortsDensity; label: string }[] = [
-  { value: 'cozy', label: 'Cozy' },
-  { value: 'compact', label: 'Compact' },
-  { value: 'gallery', label: 'Gallery' },
+const densityOptions: { value: ShortsDensity; label: string; icon: React.ReactNode }[] = [
+  { value: 'cozy', label: 'Cozy', icon: <Grid2x2 className="w-3.5 h-3.5" /> },
+  { value: 'compact', label: 'Compact', icon: <Grid3x3 className="w-3.5 h-3.5" /> },
+  { value: 'gallery', label: 'Gallery', icon: <LayoutGrid className="w-3.5 h-3.5" /> },
 ];
 
 export function DensityControl({ value, onChange }: DensityControlProps) {
@@ -19,7 +20,7 @@ export function DensityControl({ value, onChange }: DensityControlProps) {
       <RadioGroup
         value={value}
         onValueChange={(v) => onChange(v as ShortsDensity)}
-        className="flex items-center gap-1 bg-muted/50 p-1 rounded-lg"
+        className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-lg"
         aria-label="View density"
       >
         {densityOptions.map((option) => (
@@ -32,17 +33,19 @@ export function DensityControl({ value, onChange }: DensityControlProps) {
             <Label
               htmlFor={`density-${option.value}`}
               className={`
-                cursor-pointer px-3 py-1.5 rounded-md text-sm font-medium
-                transition-all duration-200
-                peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2
+                cursor-pointer px-3 py-2 rounded-full text-xs font-semibold
+                transition-all duration-300 ease-out
+                flex items-center gap-1.5
+                peer-focus-visible:ring-2 peer-focus-visible:ring-violet-500 peer-focus-visible:ring-offset-2
                 ${
                   value === option.value
-                    ? 'bg-background text-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
+                    ? 'bg-gradient-to-r from-violet-500 to-sky-400 text-white shadow-md scale-105'
+                    : 'text-foreground/70 hover:text-foreground hover:bg-white/20 hover:scale-105'
                 }
               `}
             >
-              {option.label}
+              {option.icon}
+              <span>{option.label}</span>
             </Label>
           </div>
         ))}
