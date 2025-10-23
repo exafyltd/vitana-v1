@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2 } from "lucide-react";
+import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2 } from "lucide-react";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
@@ -26,6 +26,8 @@ import { useAuth } from "@/context/AuthProvider";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
 import { toast } from "@/hooks/use-toast";
+import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastShows";
+import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,6 +38,148 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+// SubscribeButton component
+function SubscribeButton({ show }: { show: PopularShow }) {
+  const { user } = useAuth();
+  const { isSubscribed, toggleSubscription, isToggling } = usePodcastShowSubscription(
+    { show_name: show.show_name, host_name: show.host_name },
+    user?.id
+  );
+
+  return (
+    <button 
+      onClick={() => toggleSubscription()}
+      disabled={!user || isToggling}
+      className="group/sub relative w-full py-2.5 rounded-full font-semibold text-sm transition-all duration-300 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {/* Gradient border effect */}
+      <div className={`absolute inset-0 rounded-full transition-opacity ${
+        isSubscribed 
+          ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
+          : 'bg-gradient-to-r from-purple-500 to-pink-500'
+      } ${isSubscribed ? 'opacity-100' : 'opacity-100 group-hover/sub:opacity-0'}`}></div>
+      
+      <div className={`absolute inset-[2px] rounded-full transition-all duration-300 ${
+        isSubscribed
+          ? 'bg-gradient-to-r from-green-500 to-emerald-500'
+          : 'bg-white group-hover/sub:bg-gradient-to-r group-hover/sub:from-purple-500 group-hover/sub:to-pink-500'
+      }`}></div>
+      
+      {/* Text with gradient sweep */}
+      <span className={`relative flex items-center justify-center gap-2 transition-colors duration-300 ${
+        isSubscribed
+          ? 'text-white'
+          : 'bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent group-hover/sub:text-white'
+      }`}>
+        {isToggling ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <>
+            <Heart className={`w-4 h-4 ${isSubscribed ? 'fill-current' : 'fill-current opacity-80'}`} />
+            {isSubscribed ? 'Subscribed' : 'Subscribe'}
+          </>
+        )}
+      </span>
+      
+      {/* Hover glow effect */}
+      <div className="absolute inset-0 rounded-full opacity-0 group-hover/sub:opacity-100 shadow-lg shadow-purple-400/50 transition-opacity duration-300 -z-10"></div>
+    </button>
+  );
+}
+
+// PopularShowsList component
+function PopularShowsList() {
+  const { data: popularShows = [], isLoading: isLoadingShows } = usePopularPodcastShows();
+  
+  // Fallback shows if database is empty
+  const fallbackShows: PopularShow[] = [
+    {
+      show_name: "Wellness Today",
+      host_name: "Dr. Sarah Wilson",
+      episode_count: 45,
+      category: "Health",
+      subscriber_count: 0,
+      latest_episode_date: new Date().toISOString()
+    },
+    {
+      show_name: "Mindful Living",
+      host_name: "Alex Chen",
+      episode_count: 32,
+      category: "Lifestyle",
+      subscriber_count: 0,
+      latest_episode_date: new Date().toISOString()
+    },
+    {
+      show_name: "Fitness Forward",
+      host_name: "Mike Johnson",
+      episode_count: 28,
+      category: "Fitness",
+      subscriber_count: 0,
+      latest_episode_date: new Date().toISOString()
+    }
+  ];
+  
+  const displayShows = popularShows.length > 0 ? popularShows : fallbackShows;
+  
+  if (isLoadingShows) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+      </div>
+    );
+  }
+  
+  return (
+    <div className="space-y-4">
+      {displayShows.slice(0, 3).map((show, index) => (
+        <div 
+          key={`${show.show_name}-${show.host_name}`}
+          style={{
+            animation: `fadeSlideIn 0.4s ease-out ${index * 0.15}s backwards`
+          }}
+          className="group relative p-5 rounded-2xl border-2 border-white/40 bg-white/70 shadow-md hover:shadow-xl hover:shadow-purple-100/40 hover:-translate-y-1 hover:border-purple-200/60 transition-all duration-300 backdrop-blur-sm"
+        >
+          {/* Avatar with Gradient */}
+          <div className="flex items-start gap-4 mb-4">
+            <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 shadow-md flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-lg">
+                {show.host_name.split(' ').map(n => n[0]).join('')}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-bold text-base text-foreground leading-tight mb-1">
+                {show.show_name}
+              </h4>
+              <p className="text-xs text-muted-foreground/75 font-medium mb-2">
+                by {show.host_name}
+              </p>
+              <p className="text-xs text-muted-foreground/60">
+                {show.episode_count} episodes
+                {show.subscriber_count > 0 && ` • ${show.subscriber_count} subscribers`}
+              </p>
+            </div>
+          </div>
+
+          {/* Category Chip */}
+          {show.category && (
+            <div className="mb-4">
+              <Badge 
+                variant="outline" 
+                className="text-xs border-purple-300/60 bg-purple-50/80 text-purple-700 font-medium"
+              >
+                {show.category}
+              </Badge>
+            </div>
+          )}
+
+          {/* Subscribe Button */}
+          <SubscribeButton show={show} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function MediaHub() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -756,74 +900,7 @@ export default function MediaHub() {
                       <h3 className="text-2xl font-semibold mb-1 text-foreground">Popular Shows</h3>
                       <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
                     </div>
-                    <div className="space-y-4">
-                      {[{
-                        title: "Wellness Today",
-                        host: "Dr. Sarah Wilson",
-                        episodes: 45,
-                        category: "Health"
-                      }, {
-                        title: "Mindful Living",
-                        host: "Alex Chen",
-                        episodes: 32,
-                        category: "Lifestyle"
-                      }, {
-                        title: "Fitness Forward",
-                        host: "Mike Johnson",
-                        episodes: 28,
-                        category: "Fitness"
-                      }].map((show, index) => (
-                        <div 
-                          key={index} 
-                          style={{
-                            animation: `fadeSlideIn 0.4s ease-out ${index * 0.15}s backwards`
-                          }}
-                          className="group relative p-5 rounded-2xl border-2 border-white/40 bg-white/70 shadow-md hover:shadow-xl hover:shadow-purple-100/40 hover:-translate-y-1 hover:border-purple-200/60 transition-all duration-300 backdrop-blur-sm"
-                        >
-                          {/* Avatar with Gradient */}
-                          <div className="flex items-start gap-4 mb-4">
-                            <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 shadow-md flex items-center justify-center flex-shrink-0">
-                              <span className="text-white font-bold text-lg">
-                                {show.host.split(' ').map(n => n[0]).join('')}
-                              </span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-bold text-base text-foreground leading-tight mb-1">{show.title}</h4>
-                              <p className="text-xs text-muted-foreground/75 font-medium mb-2">by {show.host}</p>
-                              <p className="text-xs text-muted-foreground/60">{show.episodes} episodes</p>
-                            </div>
-                          </div>
-
-                          {/* Category Chip */}
-                          <div className="mb-4">
-                            <Badge 
-                              variant="outline" 
-                              className="text-xs border-purple-300/60 bg-purple-50/80 text-purple-700 font-medium"
-                            >
-                              {show.category}
-                            </Badge>
-                          </div>
-
-                          {/* Subscribe Button with Gradient Outline */}
-                          <button 
-                            className="group/sub relative w-full py-2.5 rounded-full font-semibold text-sm transition-all duration-300 overflow-hidden"
-                          >
-                            {/* Gradient border effect */}
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 opacity-100 group-hover/sub:opacity-0 transition-opacity"></div>
-                            <div className="absolute inset-[2px] rounded-full bg-white group-hover/sub:bg-gradient-to-r group-hover/sub:from-purple-500 group-hover/sub:to-pink-500 transition-all duration-300"></div>
-                            
-                            {/* Text with gradient sweep */}
-                            <span className="relative bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent group-hover/sub:text-white transition-colors duration-300 flex items-center justify-center gap-2">
-                              <Heart className="w-4 h-4 fill-current opacity-80" />
-                              Subscribe
-                            </span>
-                            
-                            {/* Hover glow effect */}
-                            <div className="absolute inset-0 rounded-full opacity-0 group-hover/sub:opacity-100 shadow-lg shadow-purple-400/50 transition-opacity duration-300 -z-10"></div>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
+                    <PopularShowsList />
                   </CardContent>
                 </Card>
               </div>

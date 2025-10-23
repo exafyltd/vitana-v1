@@ -3521,6 +3521,33 @@ export type Database = {
           },
         ]
       }
+      podcast_show_subscriptions: {
+        Row: {
+          host_name: string
+          id: string
+          notification_enabled: boolean | null
+          show_name: string
+          subscribed_at: string | null
+          user_id: string
+        }
+        Insert: {
+          host_name: string
+          id?: string
+          notification_enabled?: boolean | null
+          show_name: string
+          subscribed_at?: string | null
+          user_id: string
+        }
+        Update: {
+          host_name?: string
+          id?: string
+          notification_enabled?: boolean | null
+          show_name?: string
+          subscribed_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       post_analytics: {
         Row: {
           channel_type: Database["public"]["Enums"]["channel_type"]
@@ -5173,6 +5200,17 @@ export type Database = {
           new_users_30d: number | null
           new_users_7d: number | null
           total_users: number | null
+        }
+        Relationships: []
+      }
+      popular_podcast_shows: {
+        Row: {
+          category: string | null
+          episode_count: number | null
+          host_name: string | null
+          latest_episode_date: string | null
+          show_name: string | null
+          subscriber_count: number | null
         }
         Relationships: []
       }
