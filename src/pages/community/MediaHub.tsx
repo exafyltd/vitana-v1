@@ -191,6 +191,7 @@ export default function MediaHub() {
   } = useAutopilot();
   const [isUnifiedUploadOpen, setIsUnifiedUploadOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<any>(null);
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(-1);
   const [isVideoPlayerOpen, setIsVideoPlayerOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -386,14 +387,50 @@ export default function MediaHub() {
     tags: short.tags
   })) : fallbackShorts;
 
-  const handleVideoClick = (video: any) => {
+  const handleVideoClick = (video: any, index: number) => {
     setSelectedVideo({
       id: video.id,
+      user_id: video.user_id,
       title: video.title,
       src_url: video.src_url,
       thumbnail_url: video.thumbnail_url || video.thumbnailImage
     });
+    setSelectedVideoIndex(index);
     setIsVideoPlayerOpen(true);
+  };
+
+  const handleNextVideo = () => {
+    if (selectedVideoIndex < videoShorts.length - 1) {
+      const nextIndex = selectedVideoIndex + 1;
+      const nextVideo = videoShorts[nextIndex];
+      if (nextVideo && 'src_url' in nextVideo) {
+        setSelectedVideo({
+          id: nextVideo.id,
+          user_id: nextVideo.user_id,
+          title: nextVideo.title,
+          src_url: nextVideo.src_url,
+          thumbnail_url: nextVideo.thumbnail_url || nextVideo.thumbnailImage
+        });
+        setSelectedVideoIndex(nextIndex);
+      }
+    }
+  };
+
+  const handlePreviousVideo = () => {
+    if (selectedVideoIndex > 0) {
+      const prevIndex = selectedVideoIndex - 1;
+      const prevVideo = videoShorts[prevIndex];
+      if (prevVideo && 'src_url' in prevVideo) {
+        setSelectedVideo({
+          id: prevVideo.id,
+          user_id: prevVideo.user_id,
+          title: prevVideo.title,
+          src_url: prevVideo.src_url,
+          thumbnail_url: prevVideo.thumbnail_url || prevVideo.thumbnailImage
+        });
+        setSelectedVideoIndex(prevIndex);
+      }
+    }
   };
 
   const handleVideoUploadComplete = () => {
@@ -588,7 +625,7 @@ export default function MediaHub() {
                         
                         <div
                           className="cursor-pointer"
-                          onClick={() => handleVideoClick(video)}
+                          onClick={() => handleVideoClick(video, index)}
                         >
                           {/* Thumbnail Container */}
                           <div className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
@@ -1091,8 +1128,13 @@ export default function MediaHub() {
         onClose={() => {
           setIsVideoPlayerOpen(false);
           setSelectedVideo(null);
+          setSelectedVideoIndex(-1);
         }}
         video={selectedVideo}
+        onNext={handleNextVideo}
+        onPrevious={handlePreviousVideo}
+        hasNext={selectedVideoIndex < videoShorts.length - 1}
+        hasPrevious={selectedVideoIndex > 0}
         onDelete={
           selectedVideo && user?.id && selectedVideo.user_id === user.id
             ? () => {
