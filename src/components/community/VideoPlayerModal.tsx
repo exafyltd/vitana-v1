@@ -43,14 +43,15 @@ export const VideoPlayerModal = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
-  const [showArrows, setShowArrows] = useState(true);
+  const [showArrowsMobile, setShowArrowsMobile] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     if (isOpen && video && videoRef.current) {
       hasTrackedPlay.current = false;
       setIsTransitioning(false);
-      setShowArrows(true); // Show arrows when modal opens
+      setShowArrowsMobile(false);
+      hasInteracted.current = false;
       handleVideoPlay();
     }
   }, [isOpen, video]);
@@ -84,20 +85,20 @@ export const VideoPlayerModal = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, hasNext, hasPrevious, onNext, onPrevious, onClose]);
 
-  // Auto-hide arrows after idle (only after user interaction)
+  // Auto-hide arrows on mobile after 2s
   useEffect(() => {
-    if (showArrows && hasInteracted.current) {
+    if (showArrowsMobile) {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      idleTimerRef.current = setTimeout(() => setShowArrows(false), 2000);
+      idleTimerRef.current = setTimeout(() => setShowArrowsMobile(false), 2000);
     }
     return () => {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
-  }, [showArrows]);
+  }, [showArrowsMobile]);
 
-  const handleMouseMove = () => {
+  const handleInteraction = () => {
     hasInteracted.current = true;
-    setShowArrows(true);
+    setShowArrowsMobile(true);
   };
 
   const handlePlay = () => {
@@ -182,6 +183,7 @@ export const VideoPlayerModal = ({
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartRef.current = e.touches[0].clientX;
+    handleInteraction();
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
@@ -191,8 +193,10 @@ export const VideoPlayerModal = ({
     if (Math.abs(diff) > 50) {
       if (diff > 0 && hasNext && onNext) {
         handleNavigation(onNext);
+        handleInteraction();
       } else if (diff < 0 && hasPrevious && onPrevious) {
         handleNavigation(onPrevious);
+        handleInteraction();
       }
     }
   };
@@ -203,66 +207,68 @@ export const VideoPlayerModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-none w-screen h-screen p-0 bg-black/70 backdrop-blur-xl border-0 animate-fade-in">
+      <DialogContent className="max-w-none w-screen h-screen p-0 bg-black/70 backdrop-blur-xl border-0 animate-fade-in overflow-visible">
         <DialogTitle className="sr-only">{video.title}</DialogTitle>
         
         {/* Ambient blurred background */}
         <div 
-          className="absolute inset-0 bg-cover bg-center blur-3xl opacity-30 scale-110"
+          className="absolute inset-0 bg-cover bg-center blur-3xl opacity-30 scale-110 -z-10"
           style={{ backgroundImage: `url(${video.thumbnail_url})` }}
         />
 
         {/* Custom premium close button */}
         <button
           onClick={onClose}
-          className="fixed top-6 right-6 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 
+          className="fixed top-6 right-6 z-[9999] w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 
             flex items-center justify-center shadow-lg transition-all duration-300 
-            hover:bg-white/20 hover:rotate-90 hover:scale-110"
+            hover:bg-white/20 hover:rotate-90 hover:scale-105"
         >
           <X className="w-6 h-6 text-white" />
         </button>
 
         {/* Main content container */}
         <div 
-          className="relative z-10 flex items-center justify-center h-full p-8"
-          onMouseMove={handleMouseMove}
-          onTouchStart={(e) => {
-            hasInteracted.current = true;
-            handleTouchStart(e);
-          }}
+          className="relative z-10 flex items-center justify-center h-full p-8 overflow-visible"
+          onMouseMove={handleInteraction}
+          onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Container for video and navigation arrows */}
-          <div className="relative flex items-center justify-center">
-            {/* Left navigation arrow */}
-            {hasPrevious && onPrevious && (
-              <button
-                onClick={() => handleNavigation(onPrevious)}
-                className={`absolute -left-20 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full 
-                  bg-white/15 backdrop-blur-md border-2 border-white/30 
-                  flex items-center justify-center shadow-lg transition-all duration-300 
-                  hover:bg-white/25 hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] hover:scale-110
-                  ${showArrows ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-              >
-                <ChevronLeft className="w-9 h-9 text-white" />
-              </button>
-            )}
-            
-            {/* Right navigation arrow */}
-            {hasNext && onNext && (
-              <button
-                onClick={() => handleNavigation(onNext)}
-                className={`absolute -right-20 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full 
-                  bg-white/15 backdrop-blur-md border-2 border-white/30 
-                  flex items-center justify-center shadow-lg transition-all duration-300 
-                  hover:bg-white/25 hover:shadow-[0_0_40px_rgba(56,189,248,0.6)] hover:scale-110
-                  ${showArrows ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-              >
-                <ChevronRight className="w-9 h-9 text-white" />
-              </button>
-            )}
+          {/* Left navigation arrow - Always visible on desktop, show on tap/swipe on mobile */}
+          {hasPrevious && onPrevious && (
+            <button
+              onClick={() => {
+                handleNavigation(onPrevious);
+                handleInteraction();
+              }}
+              className={`absolute left-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
+                bg-white/12 backdrop-blur-sm text-white shadow-lg border border-white/20 
+                flex items-center justify-center transition-all duration-300 cursor-pointer
+                hover:bg-white/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
+                md:opacity-100 ${showArrowsMobile ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+            >
+              <ChevronLeft className="w-6 h-6 text-white" />
+            </button>
+          )}
+          
+          {/* Right navigation arrow - Always visible on desktop, show on tap/swipe on mobile */}
+          {hasNext && onNext && (
+            <button
+              onClick={() => {
+                handleNavigation(onNext);
+                handleInteraction();
+              }}
+              className={`absolute right-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
+                bg-white/12 backdrop-blur-sm text-white shadow-lg border border-white/20 
+                flex items-center justify-center transition-all duration-300 cursor-pointer
+                hover:bg-white/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
+                md:opacity-100 ${showArrowsMobile ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+            >
+              <ChevronRight className="w-6 h-6 text-white" />
+            </button>
+          )}
 
-            {/* Video frame with gradient border */}
+          {/* Video frame with gradient border */}
+          <div className="relative flex items-center justify-center overflow-visible">
             <div 
               className={`relative w-auto max-w-[500px] h-[90vh] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300
                 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
@@ -382,7 +388,7 @@ export const VideoPlayerModal = ({
                 </div>
               )}
             </div>
-            </div>
+          </div>
           </div>
         </div>
       </DialogContent>
