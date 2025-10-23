@@ -30,6 +30,7 @@ import { toast } from "@/hooks/use-toast";
 import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastShows";
 import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
 import { useShorts, useTrackMediaEvent } from "@/hooks/useShorts";
+import { ShortPreviewCard } from "@/components/community/ShortPreviewCard";
 import { UnifiedUploadModal } from '@/components/community/UnifiedUploadModal';
 import { VideoPlayerModal } from '@/components/community/VideoPlayerModal';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
@@ -593,99 +594,21 @@ export default function MediaHub() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {videoShorts.map((video, index) => (
-                      <div 
+                      <ShortPreviewCard
                         key={video.id || index}
-                        style={{
-                          animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`
+                        video={video}
+                        index={index}
+                        currentUserId={user?.id}
+                        onClick={() => handleVideoClick(video, index)}
+                        onDelete={() => {
+                          setVideoToDelete({
+                            id: video.id,
+                            src_url: video.src_url,
+                            thumbnail_url: video.thumbnail_url
+                          });
+                          setDeleteVideoDialogOpen(true);
                         }}
-                        className="group relative"
-                      >
-                        {/* Delete Menu (only for video owner) */}
-                        {user?.id && video.user_id === user.id && (
-                          <div className="absolute top-3 right-3 z-20" onClick={(e) => e.stopPropagation()}>
-                            <KebabMenu>
-                              <DropdownMenuItem
-                                className="text-destructive focus:text-destructive cursor-pointer"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setVideoToDelete({
-                                    id: video.id,
-                                    src_url: video.src_url,
-                                    thumbnail_url: video.thumbnail_url
-                                  });
-                                  setDeleteVideoDialogOpen(true);
-                                }}
-                              >
-                                <Trash2 className="w-4 h-4 mr-2" />
-                                Delete
-                              </DropdownMenuItem>
-                            </KebabMenu>
-                          </div>
-                        )}
-                        
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => handleVideoClick(video, index)}
-                        >
-                          {/* Thumbnail Container */}
-                          <div className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
-                            {/* Thumbnail Image */}
-                            <img 
-                              src={video.thumbnailImage} 
-                              alt={video.title}
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
-                            
-                            {/* Gradient overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                            
-                            {/* Live Badge - Top Left */}
-                            {video.isLive && (
-                              <div className="absolute top-3 left-3 z-10">
-                                <Badge className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full border-0 animate-pulse">
-                                  • LIVE
-                                </Badge>
-                              </div>
-                            )}
-                            
-                            {/* Duration Badge - Bottom Right */}
-                            <div className="absolute bottom-3 right-3 z-10">
-                              <span className="bg-black/40 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm">
-                                {video.duration}
-                              </span>
-                            </div>
-                            
-                            {/* Hover Play Button - Centered */}
-                            <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                              <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
-                                <Play className="w-8 h-8 text-violet-600 fill-violet-600 ml-1" />
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Content Below Thumbnail */}
-                          <div className="mt-3 space-y-2">
-                            <h3 className="font-semibold text-sm text-foreground leading-snug">
-                              {video.title}
-                            </h3>
-                            <p className="text-xs text-muted-foreground">
-                              {video.creator}
-                            </p>
-                            
-                            {/* Tag Pills */}
-                            <div className="flex flex-wrap gap-1.5">
-                              {video.tags?.map((tag, tagIndex) => (
-                                <span 
-                                  key={tagIndex}
-                                  className="bg-violet-500/10 text-violet-600 text-xs px-2.5 py-0.5 rounded-full font-medium"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      />
                     ))}
                   </div>
                 </div>
