@@ -276,7 +276,8 @@ export default function MediaHub() {
     views: "2.3k",
     likes: 234,
     thumbnail: "MS",
-    isLive: false
+    isLive: false,
+    tags: ["Fitness", "Yoga"]
   }, {
     title: "Quick Healthy Breakfast",
     creator: "NutriChef",
@@ -284,7 +285,8 @@ export default function MediaHub() {
     views: "1.8k",
     likes: 189,
     thumbnail: "QH",
-    isLive: false
+    isLive: false,
+    tags: ["Nutrition", "Recipes"]
   }, {
     title: "Breathing Exercise",
     creator: "MindfulMoments",
@@ -292,7 +294,8 @@ export default function MediaHub() {
     views: "3.1k",
     likes: 412,
     thumbnail: "BE",
-    isLive: true
+    isLive: true,
+    tags: ["Mindfulness", "Wellness"]
   }];
   // Fetch approved podcasts from database
   const { data: approvedPodcasts = [] } = useQuery({
@@ -429,57 +432,90 @@ export default function MediaHub() {
             </SplitBarList>
 
             <SplitBarContent value="shorts">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Video Shorts Content */}
-                <div className="lg:col-span-3">
-                  <Card>
-                    <CardContent className="p-6">
-                      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <Play className="w-5 h-5" />
-                        Trending Shorts
-                      </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {videoShorts.map((video, index) => <div key={index} className="relative group cursor-pointer">
-                            <div className="relative aspect-[9/16] bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg overflow-hidden">
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <Avatar className="w-16 h-16">
-                                  <AvatarFallback className="text-lg">{video.thumbnail}</AvatarFallback>
-                                </Avatar>
-                              </div>
-                              <div className="absolute top-2 left-2">
-                                {video.isLive && <Badge variant="destructive" className="text-xs">
-                                    • LIVE
-                                  </Badge>}
-                              </div>
-                              <div className="absolute bottom-2 right-2">
-                                <Badge variant="secondary" className="text-xs">
-                                  {video.duration}
-                                </Badge>
-                              </div>
-                              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <Button size="sm" className="rounded-full w-12 h-12">
-                                  <Play className="w-6 h-6" />
-                                </Button>
-                              </div>
+              <div className="space-y-6">
+                {/* Trending Shorts Section */}
+                <div>
+                  <div className="mb-6">
+                    <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
+                      <Video className="w-6 h-6 text-violet-600" />
+                      Trending Shorts
+                    </h2>
+                    <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-violet-500 to-transparent rounded-full mt-2"></div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {videoShorts.map((video, index) => (
+                      <div 
+                        key={index}
+                        style={{
+                          animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`
+                        }}
+                        className="group cursor-pointer"
+                      >
+                        {/* Thumbnail Container */}
+                        <div className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                          {/* Glass gradient background */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-violet-100/80 via-sky-100/80 to-purple-100/80 backdrop-blur-sm">
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Avatar className="w-20 h-20">
+                                <AvatarFallback className="text-xl bg-gradient-to-br from-violet-500 to-sky-400 text-white">
+                                  {video.thumbnail}
+                                </AvatarFallback>
+                              </Avatar>
                             </div>
-                            <div className="mt-3">
-                              <h3 className="font-semibold text-sm">{video.title}</h3>
-                              <p className="text-xs text-muted-foreground">{video.creator}</p>
-                              <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                                <span className="flex items-center gap-1">
-                                  <Eye className="w-3 h-3" />
-                                  {video.views}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <Heart className="w-3 h-3" />
-                                  {video.likes}
-                                </span>
-                              </div>
+                          </div>
+                          
+                          {/* Gradient overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                          
+                          {/* Live Badge - Top Left */}
+                          {video.isLive && (
+                            <div className="absolute top-3 left-3 z-10">
+                              <Badge className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full border-0 animate-pulse">
+                                • LIVE
+                              </Badge>
                             </div>
-                          </div>)}
+                          )}
+                          
+                          {/* Duration Badge - Bottom Right */}
+                          <div className="absolute bottom-3 right-3 z-10">
+                            <span className="bg-black/40 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm">
+                              {video.duration}
+                            </span>
+                          </div>
+                          
+                          {/* Hover Play Button - Centered */}
+                          <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                            <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
+                              <Play className="w-8 h-8 text-violet-600 fill-violet-600 ml-1" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Content Below Thumbnail */}
+                        <div className="mt-3 space-y-2">
+                          <h3 className="font-semibold text-sm text-foreground leading-snug">
+                            {video.title}
+                          </h3>
+                          <p className="text-xs text-muted-foreground">
+                            {video.creator}
+                          </p>
+                          
+                          {/* Tag Pills */}
+                          <div className="flex flex-wrap gap-1.5">
+                            {video.tags?.map((tag, tagIndex) => (
+                              <span 
+                                key={tagIndex}
+                                className="bg-violet-500/10 text-violet-600 text-xs px-2.5 py-0.5 rounded-full font-medium"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    ))}
+                  </div>
                 </div>
               </div>
             </SplitBarContent>
