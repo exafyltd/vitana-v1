@@ -64,7 +64,6 @@ export function useMessageNotifications() {
               : senderName;
 
             await supabase.from('notifications').insert({
-              user_id: user.id,
               type: isGroup ? 'new_group_message' : 'new_message',
               title: notificationTitle,
               message: messagePreview,
@@ -74,9 +73,8 @@ export function useMessageNotifications() {
                 sender_id: newMessage.sender_id,
                 sender_avatar: senderProfile?.avatar_url,
                 context: 'global'
-              },
-              is_read: false
-            });
+              }
+            } as any);
             
             // Also send push notification
             await notifyNewMessage(
@@ -160,7 +158,6 @@ export function useMessageNotifications() {
               : senderName;
 
             await supabase.from('notifications').insert({
-              user_id: user.id,
               type: isGroup ? 'new_group_message' : 'new_message',
               title: notificationTitle,
               message: messagePreview,
@@ -170,9 +167,8 @@ export function useMessageNotifications() {
                 sender_id: newMessage.sender_id,
                 sender_avatar: senderProfile?.avatar_url,
                 context: 'tenant'
-              },
-              is_read: false
-            });
+              }
+            } as any);
             
             // Also send push notification
             await notifyNewMessage(

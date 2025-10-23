@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface Notification {
   id: string;
-  type: 'test_results' | 'appointment_reminder' | 'test_reminder' | 'critical_alert' | 'follow';
+  type: 'test_results' | 'appointment_reminder' | 'test_reminder' | 'critical_alert' | 'follow' | 'new_message' | 'new_group_message';
   title: string;
   message: string;
   data: any;
@@ -48,6 +48,10 @@ const getNotificationIcon = (type: string) => {
       return '🚨';
     case 'follow':
       return '👤';
+    case 'new_message':
+      return '💬';
+    case 'new_group_message':
+      return '👥';
     default:
       return '🔔';
   }
@@ -262,6 +266,16 @@ export default function NotificationBell() {
       if (followerData?.follower_id) {
         navigate(`/u/${followerData.follower_id}`);
       }
+    } else if (notification.type === 'new_message' || notification.type === 'new_group_message') {
+      const messageData = notification.data as { thread_id?: string; context?: string } | null;
+      if (messageData?.thread_id) {
+        navigate('/messages', {
+          state: {
+            selectedThreadId: messageData.thread_id,
+            context: messageData.context || 'global'
+          }
+        });
+      }
     }
     // Add more navigation logic for other notification types as needed
   };
@@ -376,6 +390,20 @@ export default function NotificationBell() {
                           </AvatarFallback>
                         </Avatar>
                       </div>
+                    ) : (notification.type === 'new_message' || notification.type === 'new_group_message') && notification.data?.sender_avatar ? (
+                      <div className="flex-shrink-0">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage 
+                            src={notification.data.sender_avatar}
+                            alt={notification.title}
+                            loading="lazy"
+                            onError={(e) => (e.currentTarget.src = '')}
+                          />
+                          <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                            {getInitials(notification.title)}
+                          </AvatarFallback>
+                        </Avatar>
+                      </div>
                     ) : (
                       <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-muted">
                         <span className="text-xl">{getNotificationIcon(notification.type)}</span>
@@ -389,6 +417,13 @@ export default function NotificationBell() {
                           <>
                             <span className="font-semibold">{actorName}</span>
                             <span className="text-muted-foreground"> started following you</span>
+                          </>
+                        ) : (notification.type === 'new_message' || notification.type === 'new_group_message') ? (
+                          <>
+                            <span className="font-semibold">{notification.title}</span>
+                            <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                              {notification.message}
+                            </p>
                           </>
                         ) : (
                           <span className={!notification.is_read ? 'font-medium' : ''}>

@@ -5701,6 +5701,8 @@ export type Database = {
         | "test_reminder"
         | "critical_alert"
         | "follow"
+        | "new_message"
+        | "new_group_message"
       order_status:
         | "pending"
         | "confirmed"
@@ -5863,6 +5865,8 @@ export const Constants = {
         "test_reminder",
         "critical_alert",
         "follow",
+        "new_message",
+        "new_group_message",
       ],
       order_status: [
         "pending",
