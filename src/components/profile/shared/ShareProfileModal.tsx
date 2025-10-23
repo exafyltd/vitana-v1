@@ -77,16 +77,17 @@ export function ShareProfileModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] p-0 gap-0">
-        <DialogHeader className="p-6 pb-4 border-b">
-          <DialogTitle>Share Profile</DialogTitle>
+      <DialogContent className="sm:max-w-[500px] p-0 gap-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-300">
+        <DialogHeader className="p-6 pb-4 border-b border-white/20 dark:border-gray-800/20">
+          <DialogTitle className="text-xl font-bold text-foreground">Share Profile</DialogTitle>
         </DialogHeader>
 
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-5">
           {/* Mini ID Card Preview */}
-          <div className="relative p-4 rounded-2xl bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-lg">
-            <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16 border-2 border-white/80 dark:border-gray-800/80">
+          <div className="relative p-5 rounded-2xl bg-gradient-to-br from-white/80 via-white/50 to-white/20 dark:from-gray-900/80 dark:via-gray-900/50 dark:to-gray-900/20 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)]">
+            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/5 via-transparent to-[hsl(var(--pill-nutrition-accent))]/5 rounded-2xl pointer-events-none" />
+            <div className="relative flex items-center gap-4">
+              <Avatar className="h-16 w-16 border-2 border-white/80 dark:border-gray-800/80 shadow-lg">
                 <AvatarImage src={profile.avatarUrl} alt={profile.name} />
                 <AvatarFallback className="text-lg font-bold bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white">
                   {profile.name.split(' ').map(n => n[0]).join('')}
@@ -109,11 +110,20 @@ export function ShareProfileModal({
           {/* Copy Link */}
           <Button
             onClick={handleCopyLink}
-            className="w-full justify-start gap-3 h-12"
+            className="w-full justify-start gap-3 h-12 rounded-2xl bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:from-[hsl(var(--sys-vitana-accent))]/90 hover:to-[hsl(var(--pill-nutrition-accent))]/90 shadow-[0_4px_16px_hsl(var(--sys-vitana-accent)/0.3)] hover:shadow-[0_6px_24px_hsl(var(--sys-vitana-accent)/0.4)] transition-all text-white border-0"
             variant="default"
           >
-            {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
-            <span className="font-medium">{copied ? "Link Copied!" : "Copy Profile Link"}</span>
+            {copied ? (
+              <>
+                <Check className="h-5 w-5 animate-in zoom-in-50 duration-200" />
+                <span className="font-semibold">Link Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="h-5 w-5" />
+                <span className="font-semibold">Copy Profile Link</span>
+              </>
+            )}
           </Button>
 
           {/* QR Code Section */}
@@ -121,14 +131,14 @@ export function ShareProfileModal({
             <Button
               onClick={() => setShowQR(true)}
               variant="outline"
-              className="w-full justify-start gap-3 h-12"
+              className="w-full justify-start gap-3 h-12 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
             >
               <QrCode className="h-5 w-5" />
               <span className="font-medium">Show QR Code</span>
             </Button>
           ) : (
-            <div className="space-y-3">
-              <div className="flex items-center justify-center p-6 bg-white dark:bg-gray-900 rounded-xl border">
+            <div className="space-y-3 animate-in fade-in-0 slide-in-from-top-2 duration-300">
+              <div className="flex items-center justify-center p-6 bg-white dark:bg-gray-900 rounded-2xl border border-white/40 dark:border-gray-800/40 shadow-lg">
                 <QRCodeSVG
                   id="profile-qr-code"
                   value={profileUrl}
@@ -140,41 +150,41 @@ export function ShareProfileModal({
               <Button
                 onClick={handleDownloadQR}
                 variant="outline"
-                className="w-full gap-2"
+                className="w-full gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
               >
                 <Download className="h-4 w-4" />
-                Download QR Code
+                <span className="font-medium">Download QR Code</span>
               </Button>
             </div>
           )}
 
           {/* Social Share Buttons */}
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">Share to social</p>
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-muted-foreground">Share to social</p>
             <div className="grid grid-cols-3 gap-2">
               <Button
                 onClick={onShareToLinkedIn}
                 variant="outline"
-                className="gap-2 h-10"
+                className="gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-[#0077B5]/10 hover:border-[#0077B5]/30 hover:text-[#0077B5] transition-all"
               >
                 <Linkedin className="h-4 w-4" />
-                LinkedIn
+                <span className="font-medium">LinkedIn</span>
               </Button>
               <Button
                 onClick={onShareToX}
                 variant="outline"
-                className="gap-2 h-10"
+                className="gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-foreground/10 hover:border-foreground/30 transition-all"
               >
                 <Twitter className="h-4 w-4" />
-                X
+                <span className="font-medium">X</span>
               </Button>
               <Button
                 onClick={onShareToFacebook}
                 variant="outline"
-                className="gap-2 h-10"
+                className="gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-[#1877F2]/10 hover:border-[#1877F2]/30 hover:text-[#1877F2] transition-all"
               >
                 <Facebook className="h-4 w-4" />
-                Facebook
+                <span className="font-medium">Facebook</span>
               </Button>
             </div>
           </div>
@@ -183,10 +193,10 @@ export function ShareProfileModal({
           <Button
             onClick={onViewPublicProfile}
             variant="secondary"
-            className="w-full gap-2"
+            className="w-full gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
           >
             <ExternalLink className="h-4 w-4" />
-            View Public Profile
+            <span className="font-medium">View Public Profile</span>
           </Button>
         </div>
       </DialogContent>
