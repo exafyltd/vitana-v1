@@ -349,21 +349,26 @@ export default function MediaHub() {
             </SplitBarContent>
 
             <SplitBarContent value="music">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                      <Music className="w-5 h-5" />
-                      Trending Music
-                    </h2>
+              <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
+                {/* Trending Music - Left Column (~62%) */}
+                <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
+                  <CardContent className="p-8">
+                    <div className="mb-6">
+                      <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
+                        <Music className="w-6 h-6 text-purple-600" />
+                        Trending Music
+                      </h2>
+                      <div className="h-0.5 w-32 bg-gradient-to-r from-purple-500 via-pink-500 to-transparent rounded-full mt-2"></div>
+                    </div>
+                    
                     <div className="space-y-4">
                       {approvedMusic.length === 0 ? (
-                        <div className="text-center py-8 text-muted-foreground">
-                          <Music className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                          <p>No music uploaded yet. Be the first to share!</p>
+                        <div className="text-center py-12 text-muted-foreground">
+                          <Music className="w-16 h-16 mx-auto mb-4 opacity-30" />
+                          <p className="text-base">No music uploaded yet. Be the first to share!</p>
                         </div>
                       ) : (
-                        approvedMusic.map((track) => {
+                        approvedMusic.map((track, index) => {
                           const formatDuration = (seconds: number | null) => {
                             if (!seconds) return '0:00';
                             const mins = Math.floor(seconds / 60);
@@ -371,42 +376,53 @@ export default function MediaHub() {
                             return `${mins}:${secs.toString().padStart(2, '0')}`;
                           };
 
+                          const isCurrentlyPlaying = currentMedia?.id === track.id && isPlaying;
+
                           return (
                             <div 
                               key={track.id} 
-                              className={`group relative flex items-center gap-5 p-5 rounded-2xl border transition-all duration-300 ease-out ${
-                                currentMedia?.id === track.id && isPlaying
-                                  ? 'bg-gradient-to-br from-purple-50/90 via-pink-50/70 to-white/80 border-purple-300/60 shadow-lg shadow-purple-200/40'
-                                  : 'bg-gradient-to-br from-white/80 via-purple-50/20 to-pink-50/20 border-white/50 shadow-md hover:shadow-lg hover:shadow-purple-100/30'
-                              } hover:scale-[1.01] backdrop-blur-sm`}
+                              style={{
+                                animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`
+                              }}
+                              className={`group relative flex items-start gap-4 p-5 rounded-2xl border-2 transition-all duration-300 ease-out ${
+                                isCurrentlyPlaying
+                                  ? 'bg-gradient-to-br from-purple-50/95 via-pink-50/80 to-white/90 border-purple-300/70 shadow-xl shadow-purple-200/50'
+                                  : 'bg-white/70 border-white/40 shadow-md hover:shadow-xl hover:shadow-purple-100/40 hover:border-purple-200/60'
+                              } hover:-translate-y-1 backdrop-blur-sm overflow-hidden`}
                             >
-                              {/* Enhanced Album Art with Glow - Standardized Size */}
-                              <div className={`relative w-20 h-20 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-300 ${
-                                currentMedia?.id === track.id && isPlaying
-                                  ? 'bg-gradient-to-br from-purple-400/30 via-pink-400/25 to-blue-400/30 shadow-lg shadow-purple-400/40'
-                                  : 'bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-blue-400/20 shadow-md shadow-purple-300/20 group-hover:shadow-lg group-hover:shadow-purple-300/30'
+                              {/* Now Playing Accent Bar */}
+                              {isCurrentlyPlaying && (
+                                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500 animate-pulse"></div>
+                              )}
+
+                              {/* Square Album Cover */}
+                              <div className={`relative w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-300 ${
+                                isCurrentlyPlaying
+                                  ? 'bg-gradient-to-br from-purple-400/40 via-pink-400/35 to-blue-400/40 shadow-lg shadow-purple-400/50 ring-2 ring-purple-300/60'
+                                  : 'bg-gradient-to-br from-purple-400/25 via-pink-400/20 to-blue-400/25 shadow-md shadow-purple-300/20 group-hover:shadow-lg group-hover:shadow-purple-300/40'
                               }`}>
-                                <div className="absolute inset-0 bg-gradient-to-br from-purple-300/10 to-transparent" />
-                                <Music className="w-8 h-8 text-purple-600/80 relative z-10" />
+                                <Music className="w-7 h-7 text-purple-600/90 relative z-10" />
+                                {isCurrentlyPlaying && (
+                                  <div className="absolute inset-0 bg-gradient-to-br from-purple-300/20 to-transparent animate-pulse"></div>
+                                )}
                               </div>
 
-                              {/* Content Area - Consistent Spacing */}
-                              <div className="flex-1 min-w-0 space-y-1.5">
-                                {/* Title with Now Playing Indicator */}
-                                <div className="flex items-center gap-2">
-                                  <h3 className="font-bold text-base text-foreground truncate leading-tight">
+                              {/* Content Stack */}
+                              <div className="flex-1 min-w-0 space-y-2">
+                                {/* Title Row with Animated Equalizer */}
+                                <div className="flex items-center gap-2.5">
+                                  <h3 className="font-bold text-lg text-foreground truncate leading-tight">
                                     {track.title}
                                   </h3>
-                                  {currentMedia?.id === track.id && isPlaying && (
-                                    <div className="flex gap-0.5 items-end h-4">
+                                  {isCurrentlyPlaying && (
+                                    <div className="flex gap-0.5 items-end h-4 ml-1">
                                       {[1, 2, 3].map((i) => (
                                         <div
                                           key={i}
-                                          className="w-0.5 bg-purple-600 rounded-full animate-pulse"
+                                          className="w-0.5 bg-purple-600 rounded-full"
                                           style={{
-                                            height: '60%',
-                                            animationDelay: `${i * 0.15}s`,
-                                            animationDuration: '0.8s'
+                                            height: `${40 + Math.sin(Date.now() / 200 + i) * 30}%`,
+                                            animation: `equalizer 0.8s ease-in-out ${i * 0.15}s infinite`,
                                           }}
                                         />
                                       ))}
@@ -414,24 +430,24 @@ export default function MediaHub() {
                                   )}
                                 </div>
                                 
-                                {/* Metadata - Enhanced Contrast */}
-                                <p className="text-xs text-muted-foreground/85 leading-none">
+                                {/* Artist & Duration - 75% opacity */}
+                                <p className="text-sm text-muted-foreground/75 leading-none font-medium">
                                   {track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} • {formatDuration(track.duration)}
                                 </p>
                                 
-                                {/* Description - Compact with Better Readability */}
+                                {/* One-line Description */}
                                 {track.description && (
-                                  <p className="text-[11px] text-muted-foreground/85 line-clamp-2 leading-[1.35]">
+                                  <p className="text-xs text-muted-foreground/75 line-clamp-1 leading-relaxed">
                                     {track.description}
                                   </p>
                                 )}
                                 
-                                {/* Enhanced Tags - Increased Spacing & Soft Wellness Colors */}
-                                <div className="flex flex-wrap gap-2 pt-2.5">
+                                {/* Tag Chips */}
+                                <div className="flex flex-wrap gap-2 pt-1">
                                   {track.music_metadata?.[0]?.genre && (
                                     <Badge 
                                       variant="secondary" 
-                                      className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-100/60 text-purple-700 border-0 font-medium"
+                                      className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-100/70 text-purple-700 border-0 font-medium hover:bg-purple-100 transition-colors"
                                     >
                                       🎹 {track.music_metadata[0].genre}
                                     </Badge>
@@ -452,7 +468,7 @@ export default function MediaHub() {
                                       <Badge 
                                         key={tag} 
                                         variant="outline" 
-                                        className="text-[10px] px-2.5 py-0.5 rounded-full bg-white/70 border-purple-200/50 text-purple-600/90 font-medium"
+                                        className="text-[10px] px-2.5 py-0.5 rounded-full bg-white/80 border-purple-200/60 text-purple-600/90 font-medium hover:bg-white hover:border-purple-300 transition-colors"
                                       >
                                         {getTagIcon(tag)} {tag}
                                       </Badge>
@@ -461,81 +477,93 @@ export default function MediaHub() {
                                 </div>
                               </div>
 
-                              {/* Right Actions - Bookmark, Share, and Play */}
-                              <div className="flex items-center gap-2 shrink-0">
-                                {/* Bookmark/Heart Button */}
-                                <Button
-                                  size="icon"
-                                  variant="ghost"
-                                  onClick={async (e) => {
-                                    e.stopPropagation();
-                                    await toggleBookmark({
-                                      item_type: 'music',
-                                      item_id: track.id,
-                                      item_name: track.title,
-                                      item_metadata: {
-                                        artist: track.music_metadata?.[0]?.artist_name || 'Unknown Artist',
-                                        duration: track.duration,
-                                        genre: track.music_metadata?.[0]?.genre,
-                                        file_url: track.file_url,
-                                        tags: track.tags || []
-                                      }
-                                    });
-                                  }}
-                                  className="h-10 w-10"
-                                  aria-label={
-                                    isBookmarked('music', track.id) 
-                                      ? "Remove from favorites" 
-                                      : "Add to favorites"
-                                  }
-                                >
-                                  <Heart
-                                    className={`h-4 w-4 transition-colors ${
-                                      isBookmarked('music', track.id)
-                                        ? "fill-purple-500 text-purple-500"
-                                        : "text-muted-foreground hover:text-purple-500"
-                                    }`}
-                                  />
-                                </Button>
-
-                                {/* Share Button */}
-                                <Button
-                                  size="icon"
-                                  variant="ghost"
-                                  onClick={async (e) => {
-                                    e.stopPropagation();
-                                    const shareData = {
-                                      title: track.title,
-                                      text: `Check out "${track.title}" by ${track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} on Vitana`,
-                                      url: `${window.location.origin}/comm/media-hub?music=${track.id}`,
-                                    };
-
-                                    if (navigator.share) {
-                                      try {
-                                        await navigator.share(shareData);
-                                      } catch (err) {
-                                        // User cancelled share
-                                      }
-                                    } else {
-                                      // Fallback to clipboard
-                                      await navigator.clipboard.writeText(shareData.url);
-                                      toast({
-                                        title: "Link copied",
-                                        description: "Music link copied to clipboard",
-                                        duration: 2000,
+                              {/* Right Actions - Play + Icons with Divider */}
+                              <div className="flex items-center gap-3 shrink-0">
+                                {/* Action Icons */}
+                                <div className="flex items-center gap-1.5">
+                                  {/* Heart */}
+                                  <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={async (e) => {
+                                      e.stopPropagation();
+                                      await toggleBookmark({
+                                        item_type: 'music',
+                                        item_id: track.id,
+                                        item_name: track.title,
+                                        item_metadata: {
+                                          artist: track.music_metadata?.[0]?.artist_name || 'Unknown Artist',
+                                          duration: track.duration,
+                                          genre: track.music_metadata?.[0]?.genre,
+                                          file_url: track.file_url,
+                                          tags: track.tags || []
+                                        }
                                       });
-                                    }
-                                  }}
-                                  className="h-10 w-10"
-                                  aria-label="Share music"
-                                >
-                                  <Share2 className="h-4 w-4 text-muted-foreground hover:text-purple-500" />
-                                </Button>
+                                    }}
+                                    className="h-9 w-9 rounded-full hover:bg-purple-50"
+                                  >
+                                    <Heart
+                                      className={`h-4 w-4 transition-all ${
+                                        isBookmarked('music', track.id)
+                                          ? "fill-purple-500 text-purple-500"
+                                          : "text-muted-foreground/60 hover:text-purple-500"
+                                      }`}
+                                    />
+                                  </Button>
 
-                                {/* Play Button - Removed animate-pulse */}
+                                  {/* Share */}
+                                  <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={async (e) => {
+                                      e.stopPropagation();
+                                      const shareData = {
+                                        title: track.title,
+                                        text: `Check out "${track.title}" by ${track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} on Vitana`,
+                                        url: `${window.location.origin}/comm/media-hub?music=${track.id}`,
+                                      };
+
+                                      if (navigator.share) {
+                                        try {
+                                          await navigator.share(shareData);
+                                        } catch (err) {
+                                          // User cancelled
+                                        }
+                                      } else {
+                                        await navigator.clipboard.writeText(shareData.url);
+                                        toast({
+                                          title: "Link copied",
+                                          description: "Music link copied to clipboard",
+                                          duration: 2000,
+                                        });
+                                      }
+                                    }}
+                                    className="h-9 w-9 rounded-full hover:bg-purple-50"
+                                  >
+                                    <Share2 className="h-4 w-4 text-muted-foreground/60 hover:text-purple-500" />
+                                  </Button>
+
+                                  {/* More Options */}
+                                  <KebabMenu className="h-9 w-9 rounded-full hover:bg-purple-50">
+                                    <DropdownMenuItem>Add to Playlist</DropdownMenuItem>
+                                    <DropdownMenuItem>View Artist</DropdownMenuItem>
+                                  </KebabMenu>
+                                </div>
+
+                                {/* Vertical Divider */}
+                                <div className="h-10 w-px bg-gradient-to-b from-transparent via-purple-200/50 to-transparent"></div>
+
+                                {/* Circular Play Button with Ripple Effect */}
                                 <Button 
                                   size="sm" 
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    // Ripple effect
+                                    const btn = e.currentTarget;
+                                    const ripple = document.createElement('span');
+                                    ripple.className = 'absolute inset-0 rounded-full bg-purple-400/30 animate-ping';
+                                    btn.appendChild(ripple);
+                                    setTimeout(() => ripple.remove(), 600);
+                                    
                                     if (currentMedia?.id === track.id && isPlaying) {
                                       pause();
                                     } else {
@@ -549,16 +577,16 @@ export default function MediaHub() {
                                       });
                                     }
                                   }}
-                                  className={`shrink-0 w-12 h-12 rounded-full transition-all duration-300 ease-out ${
-                                    currentMedia?.id === track.id && isPlaying
-                                      ? 'bg-white shadow-lg shadow-purple-400/60 border-2 border-purple-400 hover:shadow-xl hover:shadow-purple-400/70 hover:scale-105'
-                                      : 'bg-white/95 hover:bg-white shadow-md hover:shadow-lg hover:shadow-purple-300/50 border-2 border-purple-200/50 hover:border-purple-300 group-hover:scale-110 hover:scale-[1.15]'
-                                  }`}
+                                  className={`relative shrink-0 w-14 h-14 rounded-full transition-all duration-300 ease-out overflow-hidden ${
+                                    isCurrentlyPlaying
+                                      ? 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-400/60 hover:shadow-xl hover:shadow-purple-400/70 hover:scale-105'
+                                      : 'bg-gradient-to-br from-white to-purple-50 shadow-lg hover:shadow-xl hover:shadow-purple-300/60 border-2 border-purple-200/60 hover:border-purple-300 hover:scale-110'
+                                  } group-hover:animate-pulse-subtle`}
                                 >
-                                  {currentMedia?.id === track.id && isPlaying ? (
-                                    <Pause className="w-5 h-5 text-purple-600" />
+                                  {isCurrentlyPlaying ? (
+                                    <Pause className="w-6 h-6 text-white relative z-10" />
                                   ) : (
-                                    <Play className="w-5 h-5 text-purple-600 ml-0.5" />
+                                    <Play className="w-6 h-6 text-purple-600 ml-0.5 relative z-10" />
                                   )}
                                 </Button>
                               </div>
@@ -570,28 +598,102 @@ export default function MediaHub() {
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-4">Music Playlists</h3>
-                    <div className="space-y-3">
-                      {playlists.map((playlist, index) => <div key={index} className="p-4 border rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center">
-                              <Music className="w-6 h-6 text-purple-600" />
-                            </div>
-                            <div className="flex-1">
-                              <h4 className="font-medium text-sm">{playlist.title}</h4>
-                              <p className="text-xs text-muted-foreground">{playlist.count} tracks</p>
+                {/* Music Playlists - Right Column (~38%) */}
+                <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
+                  <CardContent className="p-8">
+                    <div className="mb-6">
+                      <h3 className="text-2xl font-semibold mb-1 text-foreground">Music Playlists</h3>
+                      <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {playlists.map((playlist, index) => (
+                        <div 
+                          key={index} 
+                          style={{
+                            animation: `fadeSlideIn 0.4s ease-out ${index * 0.15}s backwards`
+                          }}
+                          className="group relative p-5 rounded-2xl border-2 border-white/40 bg-white/70 shadow-md hover:shadow-xl hover:shadow-purple-100/40 hover:-translate-y-1 hover:border-purple-200/60 transition-all duration-300 backdrop-blur-sm overflow-hidden"
+                        >
+                          {/* Heart Icon - Top Right */}
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="absolute top-3 right-3 h-8 w-8 rounded-full hover:bg-purple-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <Heart className="h-4 w-4 text-muted-foreground/60 hover:text-pink-500 hover:fill-pink-500" />
+                          </Button>
+
+                          {/* Cover Collage / Gradient Swatch */}
+                          <div className="mb-4">
+                            <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-md">
+                              {/* Gradient collage effect */}
+                              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 bg-white/20 p-0.5">
+                                <div className="bg-gradient-to-br from-purple-400 to-pink-400 rounded-tl-lg flex items-center justify-center">
+                                  <Music className="w-6 h-6 text-white/80" />
+                                </div>
+                                <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-tr-lg flex items-center justify-center">
+                                  <Music className="w-5 h-5 text-white/70" />
+                                </div>
+                                <div className="bg-gradient-to-br from-purple-500 to-blue-400 rounded-bl-lg flex items-center justify-center">
+                                  <Music className="w-5 h-5 text-white/70" />
+                                </div>
+                                <div className="bg-gradient-to-br from-blue-400 to-purple-400 rounded-br-lg flex items-center justify-center">
+                                  <Music className="w-6 h-6 text-white/80" />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          <Button size="sm" variant="outline" className="w-full mt-3">
+
+                          {/* Playlist Info */}
+                          <div className="space-y-2 mb-4">
+                            <h4 className="font-bold text-base text-foreground leading-tight">{playlist.title}</h4>
+                            <p className="text-xs text-muted-foreground/75 font-medium">
+                              {playlist.count} tracks • ~{Math.floor(playlist.count * 3.5)} min • by Vitana
+                            </p>
+                          </div>
+
+                          {/* Full-width Elevated Play Bar */}
+                          <button 
+                            className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold text-sm shadow-md hover:shadow-lg hover:shadow-purple-400/50 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group/play"
+                          >
+                            <Play className="w-4 h-4 group-hover/play:scale-110 transition-transform" />
                             Play Playlist
-                          </Button>
-                        </div>)}
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
               </div>
+
+              {/* Custom Animations */}
+              <style>{`
+                @keyframes fadeSlideIn {
+                  from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                  }
+                  to {
+                    opacity: 1;
+                    transform: translateY(0);
+                  }
+                }
+                
+                @keyframes equalizer {
+                  0%, 100% { height: 40%; }
+                  50% { height: 80%; }
+                }
+                
+                @keyframes pulse-subtle {
+                  0%, 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+                  50% { box-shadow: 0 0 0 8px rgba(168, 85, 247, 0); }
+                }
+                
+                .animate-pulse-subtle {
+                  animation: pulse-subtle 2s ease-in-out infinite;
+                }
+              `}</style>
             </SplitBarContent>
 
             <SplitBarContent value="podcasts">
