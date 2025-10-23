@@ -111,7 +111,7 @@ export const useVideoUpload = () => {
     });
   };
 
-  const uploadVideo = async (file: File, metadata: UploadMetadata) => {
+  const uploadVideo = async (file: File, metadata: UploadMetadata, options?: { thumbnailFile?: File }) => {
     try {
       setIsUploading(true);
       setProgress(0);
@@ -136,11 +136,12 @@ export const useVideoUpload = () => {
       const fileName = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
       const filePath = `shorts/${user.id}/${fileName}`;
 
-      // Upload video to storage
+      // Upload video to storage with proper contentType
       const { error: uploadError } = await supabase.storage
         .from('media')
         .upload(filePath, file, {
           cacheControl: '3600',
+          contentType: file.type,
           upsert: false
         });
 
@@ -155,31 +156,55 @@ export const useVideoUpload = () => {
 
       setProgress(60);
 
-      // Generate thumbnail client-side
-      console.log('Generating thumbnail...');
+      // Generate or upload thumbnail
+      console.log('Processing thumbnail...');
       let thumbnailUrl: string | null = null;
       try {
-        const thumbnailBlob = await generateThumbnail(file);
-        const thumbnailPath = `shorts/${user.id}/${timestamp}_thumb.jpg`;
-        
-        const { error: thumbError } = await supabase.storage
-          .from('media')
-          .upload(thumbnailPath, thumbnailBlob, {
-            cacheControl: '3600',
-            contentType: 'image/jpeg',
-            upsert: false
-          });
-
-        if (thumbError) {
-          console.error('Thumbnail upload error:', thumbError);
-        } else {
-          const { data: { publicUrl: thumbUrl } } = supabase.storage
+        if (options?.thumbnailFile) {
+          // Use custom thumbnail provided by user
+          const thumbnailExt = options.thumbnailFile.name.split('.').pop() || 'jpg';
+          const thumbnailPath = `shorts/${user.id}/${timestamp}_thumb.${thumbnailExt}`;
+          
+          const { error: thumbError } = await supabase.storage
             .from('media')
-            .getPublicUrl(thumbnailPath);
-          thumbnailUrl = thumbUrl;
+            .upload(thumbnailPath, options.thumbnailFile, {
+              cacheControl: '3600',
+              contentType: options.thumbnailFile.type || 'image/jpeg',
+              upsert: false
+            });
+
+          if (thumbError) {
+            console.error('Custom thumbnail upload error:', thumbError);
+          } else {
+            const { data: { publicUrl: thumbUrl } } = supabase.storage
+              .from('media')
+              .getPublicUrl(thumbnailPath);
+            thumbnailUrl = thumbUrl;
+          }
+        } else {
+          // Generate thumbnail automatically from video
+          const thumbnailBlob = await generateThumbnail(file);
+          const thumbnailPath = `shorts/${user.id}/${timestamp}_thumb.jpg`;
+          
+          const { error: thumbError } = await supabase.storage
+            .from('media')
+            .upload(thumbnailPath, thumbnailBlob, {
+              cacheControl: '3600',
+              contentType: 'image/jpeg',
+              upsert: false
+            });
+
+          if (thumbError) {
+            console.error('Thumbnail upload error:', thumbError);
+          } else {
+            const { data: { publicUrl: thumbUrl } } = supabase.storage
+              .from('media')
+              .getPublicUrl(thumbnailPath);
+            thumbnailUrl = thumbUrl;
+          }
         }
       } catch (thumbError) {
-        console.error('Thumbnail generation error:', thumbError);
+        console.error('Thumbnail processing error:', thumbError);
       }
 
       setProgress(80);

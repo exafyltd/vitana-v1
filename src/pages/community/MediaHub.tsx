@@ -13,6 +13,7 @@ import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2 } from "lucide-react";
 import { useBookmarks } from "@/hooks/useBookmarks";
+import { extractStoragePath } from "@/lib/utils";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -207,6 +208,8 @@ export default function MediaHub() {
   
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [podcastToDelete, setPodcastToDelete] = useState<string | null>(null);
+  const [videoToDelete, setVideoToDelete] = useState<{ id: string; src_url: string; thumbnail_url?: string } | null>(null);
+  const [deleteVideoDialogOpen, setDeleteVideoDialogOpen] = useState(false);
   const latestActions = getLatestActions(2);
 
   // Sync activeMediaTab with URL parameter changes
@@ -243,6 +246,59 @@ export default function MediaHub() {
         variant: "destructive",
       });
       console.error('Delete error:', error);
+    },
+  });
+
+  // Delete video short mutation
+  const deleteVideoMutation = useMutation({
+    mutationFn: async (video: { id: string; src_url: string; thumbnail_url?: string }) => {
+      if (!user?.id) throw new Error('User not authenticated');
+      
+      // Delete from database
+      const { error: dbError } = await supabase
+        .from('media_videos')
+        .delete()
+        .eq('id', video.id)
+        .eq('user_id', user.id);
+      
+      if (dbError) throw dbError;
+      
+      // Delete files from storage
+      const filesToRemove: string[] = [];
+      
+      const videoPath = extractStoragePath(video.src_url, 'media');
+      if (videoPath) filesToRemove.push(videoPath);
+      
+      if (video.thumbnail_url) {
+        const thumbPath = extractStoragePath(video.thumbnail_url, 'media');
+        if (thumbPath) filesToRemove.push(thumbPath);
+      }
+      
+      if (filesToRemove.length > 0) {
+        const { error: storageError } = await supabase.storage
+          .from('media')
+          .remove(filesToRemove);
+        
+        if (storageError) console.error('Storage cleanup error:', storageError);
+      }
+    },
+    onSuccess: () => {
+      refetchShorts();
+      toast({
+        title: "Video deleted",
+        description: "Your video has been successfully deleted.",
+      });
+      setDeleteVideoDialogOpen(false);
+      setVideoToDelete(null);
+      setIsVideoPlayerOpen(false);
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to delete video. Please try again.",
+        variant: "destructive",
+      });
+      console.error('Delete video error:', error);
     },
   });
 
@@ -317,19 +373,26 @@ export default function MediaHub() {
   // Use real data if available, otherwise fallback
   const videoShorts = realShorts.length > 0 ? realShorts.map(short => ({
     id: short.id,
+    user_id: short.user_id,
     title: short.title,
-    creator: "Community Member", // We'll add profile integration later
+    creator: "Community Member",
     duration: short.duration_sec ? `${Math.floor(short.duration_sec / 60)}:${(short.duration_sec % 60).toString().padStart(2, '0')}` : '0:00',
     views: short.views_count.toString(),
     likes: short.likes_count,
     thumbnailImage: short.thumbnail_url || fallbackShorts[0].thumbnailImage,
     src_url: short.src_url,
+    thumbnail_url: short.thumbnail_url,
     isLive: false,
     tags: short.tags
   })) : fallbackShorts;
 
   const handleVideoClick = (video: any) => {
-    setSelectedVideo(video);
+    setSelectedVideo({
+      id: video.id,
+      title: video.title,
+      src_url: video.src_url,
+      thumbnail_url: video.thumbnail_url || video.thumbnailImage
+    });
     setIsVideoPlayerOpen(true);
   };
 
@@ -494,68 +557,95 @@ export default function MediaHub() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {videoShorts.map((video, index) => (
                       <div 
-                        key={index}
+                        key={video.id || index}
                         style={{
                           animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`
                         }}
-                        className="group cursor-pointer"
-                        onClick={() => handleVideoClick(video)}
+                        className="group relative"
                       >
-                        {/* Thumbnail Container */}
-                        <div className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
-                          {/* Thumbnail Image */}
-                          <img 
-                            src={video.thumbnailImage} 
-                            alt={video.title}
-                            className="absolute inset-0 w-full h-full object-cover"
-                          />
-                          
-                          {/* Gradient overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                          
-                          {/* Live Badge - Top Left */}
-                          {video.isLive && (
-                            <div className="absolute top-3 left-3 z-10">
-                              <Badge className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full border-0 animate-pulse">
-                                • LIVE
-                              </Badge>
-                            </div>
-                          )}
-                          
-                          {/* Duration Badge - Bottom Right */}
-                          <div className="absolute bottom-3 right-3 z-10">
-                            <span className="bg-black/40 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm">
-                              {video.duration}
-                            </span>
-                          </div>
-                          
-                          {/* Hover Play Button - Centered */}
-                          <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                            <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
-                              <Play className="w-8 h-8 text-violet-600 fill-violet-600 ml-1" />
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Content Below Thumbnail */}
-                        <div className="mt-3 space-y-2">
-                          <h3 className="font-semibold text-sm text-foreground leading-snug">
-                            {video.title}
-                          </h3>
-                          <p className="text-xs text-muted-foreground">
-                            {video.creator}
-                          </p>
-                          
-                          {/* Tag Pills */}
-                          <div className="flex flex-wrap gap-1.5">
-                            {video.tags?.map((tag, tagIndex) => (
-                              <span 
-                                key={tagIndex}
-                                className="bg-violet-500/10 text-violet-600 text-xs px-2.5 py-0.5 rounded-full font-medium"
+                        {/* Delete Menu (only for video owner) */}
+                        {user?.id && video.user_id === user.id && (
+                          <div className="absolute top-3 right-3 z-20" onClick={(e) => e.stopPropagation()}>
+                            <KebabMenu>
+                              <DropdownMenuItem
+                                className="text-destructive focus:text-destructive cursor-pointer"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setVideoToDelete({
+                                    id: video.id,
+                                    src_url: video.src_url,
+                                    thumbnail_url: video.thumbnail_url
+                                  });
+                                  setDeleteVideoDialogOpen(true);
+                                }}
                               >
-                                {tag}
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
+                            </KebabMenu>
+                          </div>
+                        )}
+                        
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => handleVideoClick(video)}
+                        >
+                          {/* Thumbnail Container */}
+                          <div className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                            {/* Thumbnail Image */}
+                            <img 
+                              src={video.thumbnailImage} 
+                              alt={video.title}
+                              className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            
+                            {/* Gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                            
+                            {/* Live Badge - Top Left */}
+                            {video.isLive && (
+                              <div className="absolute top-3 left-3 z-10">
+                                <Badge className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full border-0 animate-pulse">
+                                  • LIVE
+                                </Badge>
+                              </div>
+                            )}
+                            
+                            {/* Duration Badge - Bottom Right */}
+                            <div className="absolute bottom-3 right-3 z-10">
+                              <span className="bg-black/40 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm">
+                                {video.duration}
                               </span>
-                            ))}
+                            </div>
+                            
+                            {/* Hover Play Button - Centered */}
+                            <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                              <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
+                                <Play className="w-8 h-8 text-violet-600 fill-violet-600 ml-1" />
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Content Below Thumbnail */}
+                          <div className="mt-3 space-y-2">
+                            <h3 className="font-semibold text-sm text-foreground leading-snug">
+                              {video.title}
+                            </h3>
+                            <p className="text-xs text-muted-foreground">
+                              {video.creator}
+                            </p>
+                            
+                            {/* Tag Pills */}
+                            <div className="flex flex-wrap gap-1.5">
+                              {video.tags?.map((tag, tagIndex) => (
+                                <span 
+                                  key={tagIndex}
+                                  className="bg-violet-500/10 text-violet-600 text-xs px-2.5 py-0.5 rounded-full font-medium"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1003,6 +1093,18 @@ export default function MediaHub() {
           setSelectedVideo(null);
         }}
         video={selectedVideo}
+        onDelete={
+          selectedVideo && user?.id && selectedVideo.user_id === user.id
+            ? () => {
+                setVideoToDelete({
+                  id: selectedVideo.id,
+                  src_url: selectedVideo.src_url,
+                  thumbnail_url: selectedVideo.thumbnail_url
+                });
+                setDeleteVideoDialogOpen(true);
+              }
+            : undefined
+        }
       />
       
       {/* Autopilot Popup */}
@@ -1023,6 +1125,31 @@ export default function MediaHub() {
               onClick={() => {
                 if (podcastToDelete) {
                   deletePodcastMutation.mutate(podcastToDelete);
+                }
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Video Confirmation Dialog */}
+      <AlertDialog open={deleteVideoDialogOpen} onOpenChange={setDeleteVideoDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Video</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this video? This action cannot be undone and will remove the video from storage.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (videoToDelete) {
+                  deleteVideoMutation.mutate(videoToDelete);
                 }
               }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

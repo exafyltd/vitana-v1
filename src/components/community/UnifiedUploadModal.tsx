@@ -47,6 +47,8 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete }: Uni
   
   // Video-specific
   const [topic, setTopic] = useState('');
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
   const { uploadMedia, isUploading: isMediaUploading, progress: mediaProgress } = useMediaUpload();
   const { uploadVideo, isUploading: isVideoUploading, progress: videoProgress } = useVideoUpload();
@@ -58,6 +60,18 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete }: Uni
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
+    }
+  };
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setThumbnailFile(selectedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setThumbnailPreview(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
     }
   };
 
@@ -79,7 +93,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete }: Uni
           tags,
           category: topic || 'General',
           language: language || 'English',
-        });
+        }, { thumbnailFile: thumbnailFile || undefined });
       } else {
         await uploadMedia(file, {
           title,
@@ -113,6 +127,8 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete }: Uni
       setHostGuest('');
       setLanguage('');
       setTopic('');
+      setThumbnailFile(null);
+      setThumbnailPreview(null);
       setVisibility('public');
       onOpenChange(false);
     }
@@ -309,16 +325,65 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete }: Uni
               )}
 
               {mediaType === 'video' && (
-                <div className="space-y-2">
-                  <Label htmlFor="topic">Topic / Category</Label>
-                  <Input
-                    id="topic"
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    placeholder="e.g., Wellness, Fitness"
-                    disabled={isUploading}
-                  />
-                </div>
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="topic">Topic / Category</Label>
+                    <Input
+                      id="topic"
+                      value={topic}
+                      onChange={(e) => setTopic(e.target.value)}
+                      placeholder="e.g., Wellness, Fitness"
+                      disabled={isUploading}
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="thumbnail">Custom Thumbnail (optional)</Label>
+                    <div className={cn(
+                      "border-2 border-dashed rounded-lg p-4 text-center transition-colors",
+                      thumbnailFile ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                    )}>
+                      {thumbnailPreview ? (
+                        <div className="space-y-2">
+                          <img src={thumbnailPreview} alt="Thumbnail preview" className="w-full h-32 object-cover rounded" />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setThumbnailFile(null);
+                              setThumbnailPreview(null);
+                            }}
+                            disabled={isUploading}
+                          >
+                            <X className="w-4 h-4 mr-1" />
+                            Remove
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <Upload className="w-8 h-8 mx-auto text-muted-foreground" />
+                          <div>
+                            <label htmlFor="thumbnail-upload" className="cursor-pointer">
+                              <span className="text-primary hover:underline">Upload thumbnail</span>
+                            </label>
+                            <Input
+                              id="thumbnail-upload"
+                              type="file"
+                              accept=".jpg,.jpeg,.png,.webp"
+                              onChange={handleThumbnailChange}
+                              className="hidden"
+                              disabled={isUploading}
+                            />
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            JPG, PNG, WebP (auto-generated if not provided)
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
               )}
 
               {/* Tags */}
