@@ -29,7 +29,7 @@ import { toast } from "@/hooks/use-toast";
 import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastShows";
 import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
 import { useShorts, useTrackMediaEvent } from "@/hooks/useShorts";
-import { UploadVideoModal } from "@/components/community/UploadVideoModal";
+import { UnifiedUploadModal } from '@/components/community/UnifiedUploadModal';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
@@ -187,8 +187,7 @@ export default function MediaHub() {
     pendingCount,
     getLatestActions
   } = useAutopilot();
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [isVideoUploadOpen, setIsVideoUploadOpen] = useState(false);
+  const [isUnifiedUploadOpen, setIsUnifiedUploadOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   
@@ -462,16 +461,10 @@ export default function MediaHub() {
             <UniversalCalendarButton />
             <Button 
               size="sm" 
-              onClick={() => {
-                if (activeMediaTab === 'shorts') {
-                  setIsVideoUploadOpen(true);
-                } else {
-                  setIsUploadOpen(true);
-                }
-              }}
+              onClick={() => setIsUnifiedUploadOpen(true)}
             >
               <Upload className="w-4 h-4 mr-2" />
-              Upload {activeMediaTab === 'shorts' ? 'Video' : 'Media'}
+              Upload
             </Button>
           </UtilityActionButton>
 
@@ -994,13 +987,18 @@ export default function MediaHub() {
         </div>
       </div>
 
-      <MediaUploadPopup open={isUploadOpen} onOpenChange={setIsUploadOpen} />
-      
-      {/* Video Upload Modal */}
-      <UploadVideoModal 
-        open={isVideoUploadOpen} 
-        onOpenChange={setIsVideoUploadOpen}
-        onUploadComplete={handleVideoUploadComplete}
+      <UnifiedUploadModal 
+        open={isUnifiedUploadOpen} 
+        onOpenChange={setIsUnifiedUploadOpen}
+        onUploadComplete={(mediaType) => {
+          if (mediaType === 'video') {
+            refetchShorts();
+            toast({
+              title: 'Success!',
+              description: 'Your video is now live in the community.',
+            });
+          }
+        }}
       />
       
       {/* Autopilot Popup */}
