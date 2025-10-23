@@ -697,13 +697,14 @@ export default function MediaHub() {
             </SplitBarContent>
 
             <SplitBarContent value="podcasts">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                      <Volume2 className="w-5 h-5" />
-                      Latest Episodes
-                    </h2>
+              <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
+                {/* Latest Episodes - Left Column (~60%) */}
+                <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
+                  <CardContent className="p-8">
+                    <div className="mb-6">
+                      <h2 className="text-2xl font-semibold mb-1 text-foreground">Latest Episodes</h2>
+                      <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
+                    </div>
                     <div className="flex flex-col gap-4">
                       {approvedPodcasts.length === 0 ? (
                         <div className="col-span-full text-center py-8 text-muted-foreground">
@@ -711,30 +712,36 @@ export default function MediaHub() {
                           <p>No podcasts uploaded yet. Be the first to share!</p>
                         </div>
                       ) : (
-                        approvedPodcasts.map((podcast: any) => {
+                        approvedPodcasts.map((podcast: any, index: number) => {
                           const metadata = Array.isArray(podcast.podcast_metadata) 
                             ? podcast.podcast_metadata[0] 
                             : podcast.podcast_metadata;
                           const isCreator = user?.id === podcast.user_id;
                           
                           return (
-                          <PodcastCard
+                          <div
                             key={podcast.id}
-                            id={podcast.id}
-                            title={podcast.title}
-                            creator={metadata?.host_name || 'Unknown Host'}
-                            duration={podcast.duration}
-                            uploadedAt={podcast.created_at}
-                            description={podcast.description}
-                            language={metadata?.language || null}
-                            audioUrl={podcast.file_url}
-                            imageUrl={podcast.thumbnail_url}
-                            isCreator={isCreator}
-                            onDelete={() => {
-                              setPodcastToDelete(podcast.id);
-                              setDeleteDialogOpen(true);
+                            style={{
+                              animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`
                             }}
-                          />
+                          >
+                            <PodcastCard
+                              id={podcast.id}
+                              title={podcast.title}
+                              creator={metadata?.host_name || 'Unknown Host'}
+                              duration={podcast.duration}
+                              uploadedAt={podcast.created_at}
+                              description={podcast.description}
+                              language={metadata?.language || null}
+                              audioUrl={podcast.file_url}
+                              imageUrl={podcast.thumbnail_url}
+                              isCreator={isCreator}
+                              onDelete={() => {
+                                setPodcastToDelete(podcast.id);
+                                setDeleteDialogOpen(true);
+                              }}
+                            />
+                          </div>
                           );
                         })
                       )}
@@ -742,43 +749,80 @@ export default function MediaHub() {
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-4">Popular Shows</h3>
+                {/* Popular Shows - Right Column (~40%) */}
+                <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
+                  <CardContent className="p-8">
+                    <div className="mb-6">
+                      <h3 className="text-2xl font-semibold mb-1 text-foreground">Popular Shows</h3>
+                      <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
+                    </div>
                     <div className="space-y-4">
                       {[{
-                      title: "Wellness Today",
-                      host: "Dr. Sarah Wilson",
-                      episodes: 45,
-                      category: "Health"
-                    }, {
-                      title: "Mindful Living",
-                      host: "Alex Chen",
-                      episodes: 32,
-                      category: "Lifestyle"
-                    }, {
-                      title: "Fitness Forward",
-                      host: "Mike Johnson",
-                      episodes: 28,
-                      category: "Fitness"
-                    }].map((show, index) => <div key={index} className="p-4 border rounded-lg">
-                          <div className="flex items-center gap-3 mb-3">
-                            <Avatar className="w-10 h-10">
-                              <AvatarFallback>{show.host.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                            </Avatar>
-                            <div className="flex-1">
-                              <h4 className="font-medium text-sm">{show.title}</h4>
-                              <p className="text-xs text-muted-foreground">by {show.host}</p>
+                        title: "Wellness Today",
+                        host: "Dr. Sarah Wilson",
+                        episodes: 45,
+                        category: "Health"
+                      }, {
+                        title: "Mindful Living",
+                        host: "Alex Chen",
+                        episodes: 32,
+                        category: "Lifestyle"
+                      }, {
+                        title: "Fitness Forward",
+                        host: "Mike Johnson",
+                        episodes: 28,
+                        category: "Fitness"
+                      }].map((show, index) => (
+                        <div 
+                          key={index} 
+                          style={{
+                            animation: `fadeSlideIn 0.4s ease-out ${index * 0.15}s backwards`
+                          }}
+                          className="group relative p-5 rounded-2xl border-2 border-white/40 bg-white/70 shadow-md hover:shadow-xl hover:shadow-purple-100/40 hover:-translate-y-1 hover:border-purple-200/60 transition-all duration-300 backdrop-blur-sm"
+                        >
+                          {/* Avatar with Gradient */}
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 shadow-md flex items-center justify-center flex-shrink-0">
+                              <span className="text-white font-bold text-lg">
+                                {show.host.split(' ').map(n => n[0]).join('')}
+                              </span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-bold text-base text-foreground leading-tight mb-1">{show.title}</h4>
+                              <p className="text-xs text-muted-foreground/75 font-medium mb-2">by {show.host}</p>
+                              <p className="text-xs text-muted-foreground/60">{show.episodes} episodes</p>
                             </div>
                           </div>
-                          <div className="flex items-center justify-between mb-3">
-                            <Badge variant="outline" className="text-xs">{show.category}</Badge>
-                            <span className="text-xs text-muted-foreground">{show.episodes} episodes</span>
+
+                          {/* Category Chip */}
+                          <div className="mb-4">
+                            <Badge 
+                              variant="outline" 
+                              className="text-xs border-purple-300/60 bg-purple-50/80 text-purple-700 font-medium"
+                            >
+                              {show.category}
+                            </Badge>
                           </div>
-                          <Button size="sm" variant="outline" className="w-full">
-                            Subscribe
-                          </Button>
-                        </div>)}
+
+                          {/* Subscribe Button with Gradient Outline */}
+                          <button 
+                            className="group/sub relative w-full py-2.5 rounded-full font-semibold text-sm transition-all duration-300 overflow-hidden"
+                          >
+                            {/* Gradient border effect */}
+                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 opacity-100 group-hover/sub:opacity-0 transition-opacity"></div>
+                            <div className="absolute inset-[2px] rounded-full bg-white group-hover/sub:bg-gradient-to-r group-hover/sub:from-purple-500 group-hover/sub:to-pink-500 transition-all duration-300"></div>
+                            
+                            {/* Text with gradient sweep */}
+                            <span className="relative bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent group-hover/sub:text-white transition-colors duration-300 flex items-center justify-center gap-2">
+                              <Heart className="w-4 h-4 fill-current opacity-80" />
+                              Subscribe
+                            </span>
+                            
+                            {/* Hover glow effect */}
+                            <div className="absolute inset-0 rounded-full opacity-0 group-hover/sub:opacity-100 shadow-lg shadow-purple-400/50 transition-opacity duration-300 -z-10"></div>
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>

@@ -123,119 +123,146 @@ export function PodcastCard({
   return (
     <div
       className={`
-        group relative rounded-2xl border-2 shadow-sm p-4
+        group relative rounded-2xl border-2 shadow-md p-5
         transition-all duration-300
         flex items-start gap-4
-        hover:bg-blue-50/50 hover:-translate-y-1 hover:shadow-md
+        bg-white/70 backdrop-blur-sm
+        hover:shadow-xl hover:shadow-purple-100/40 hover:-translate-y-1 hover:border-purple-200/60
         ${isThisPodcastPlaying 
-          ? "border-blue-400 bg-blue-50/70" 
-          : "border-blue-400/50 hover:border-blue-400"
+          ? "border-purple-300/70 bg-white/80 shadow-lg shadow-purple-100/30" 
+          : "border-white/40 hover:border-purple-200/60"
         }
       `}
     >
-      {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-blue-500/10 rounded-2xl -z-10" />
-      {/* Left: Play Button */}
+      {/* Now Playing Accent Bar */}
+      {isThisPodcastPlaying && (
+        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 to-pink-500 rounded-l-2xl" />
+      )}
+
+      {/* Cover Image */}
       <div className="flex-shrink-0">
-        <Button
-          size="sm"
-          onClick={handlePlayToggle}
-          className="h-9 px-3 gap-2"
-          aria-label={isThisPodcastPlaying ? "Pause episode" : "Play episode"}
-        >
-          {isThisPodcastPlaying ? (
-            <>
-              <Pause className="h-4 w-4" />
-              <span className="hidden sm:inline">Pause</span>
-            </>
-          ) : (
-            <>
-              <Play className="h-4 w-4" />
-              <span className="hidden sm:inline">Play</span>
-            </>
-          )}
-        </Button>
+        {imageUrl ? (
+          <img 
+            src={imageUrl} 
+            alt={`${title} cover`}
+            className="w-16 h-16 rounded-lg object-cover shadow-md"
+          />
+        ) : (
+          <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-400 to-pink-400 shadow-md flex items-center justify-center">
+            <Pause className="w-6 h-6 text-white/80" />
+          </div>
+        )}
       </div>
 
       {/* Center: Content */}
-      <div className="flex-1 min-w-0 space-y-1">
-        {/* Title with optional equalizer */}
+      <div className="flex-1 min-w-0 space-y-2">
+        {/* Title with Language Flag and Equalizer */}
         <div className="flex items-center gap-2">
           {isThisPodcastPlaying && (
-            <span className="flex-shrink-0 w-2 h-2 bg-primary rounded-full animate-pulse" aria-hidden="true" />
+            <div className="flex items-center gap-0.5 h-3 flex-shrink-0" aria-label="Now playing">
+              <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0s' }}></div>
+              <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0.2s' }}></div>
+              <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0.4s' }}></div>
+            </div>
           )}
-          <h3 className="text-base font-semibold text-foreground line-clamp-2 leading-tight">
+          <h3 className="text-lg font-bold text-foreground line-clamp-1 leading-tight flex-1">
             {title}
           </h3>
+          {language && (
+            <LanguageFlag 
+              languageCode={language} 
+              className="w-5 h-5 flex-shrink-0"
+              aria-label={`Language: ${getLanguageLabel(language)}`}
+            />
+          )}
         </div>
 
         {/* Meta row */}
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground truncate">
-          <span>by {creator}</span>
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground/75 truncate">
+          <span className="font-medium">{creator}</span>
           {duration && (
             <>
-              <span>·</span>
+              <span>•</span>
               <span>{formatDuration(duration)}</span>
             </>
           )}
-          <span>·</span>
-          <span>{formatDate(uploadedAt)}</span>
         </div>
 
-        {/* Description */}
+        {/* Description - clamped to 2 lines */}
         {description && (
-          <p className="text-xs text-muted-foreground line-clamp-1">
+          <p className="text-xs text-muted-foreground/75 line-clamp-2 leading-relaxed">
             {description}
           </p>
         )}
       </div>
 
-      {/* Right: Flag + Actions */}
-      <div className="flex-shrink-0 flex items-start gap-2">
-        {/* Language Flag */}
-        <LanguageFlag 
-          languageCode={language} 
-          className="w-6 h-6"
-          aria-label={`Language: ${getLanguageLabel(language)}`}
-        />
+      {/* Right: Circular Play Button */}
+      <div className="flex-shrink-0 flex items-center">
+        <button
+          onClick={handlePlayToggle}
+          className={`
+            relative w-12 h-12 rounded-full flex items-center justify-center
+            bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-md
+            transition-all duration-300
+            hover:shadow-lg hover:shadow-purple-400/50 hover:scale-105
+            active:scale-95
+            ${isThisPodcastPlaying ? 'animate-pulse-subtle' : ''}
+          `}
+          aria-label={isThisPodcastPlaying ? "Pause episode" : "Play episode"}
+        >
+          {isThisPodcastPlaying ? (
+            <Pause className="h-5 w-5 fill-white" />
+          ) : (
+            <Play className="h-5 w-5 fill-white" />
+          )}
+          
+          {/* Ripple effect on click */}
+          <span className="absolute inset-0 rounded-full animate-ping opacity-0 group-active:opacity-75 bg-purple-400"></span>
+        </button>
+      </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-1">
+      {/* Bottom Interaction Bar */}
+      <div className="absolute bottom-0 left-0 right-0 px-5 pb-3 pt-2 bg-gradient-to-t from-white/60 to-transparent backdrop-blur-sm rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="flex items-center justify-end gap-2">
           <Button
             size="icon"
             variant="ghost"
             onClick={() => toggleFavorite()}
             disabled={isToggling || !user}
-            className="h-8 w-8"
+            className="h-7 w-7 hover:bg-purple-50/80"
             aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
           >
             <Heart
-              className={`h-4 w-4 transition-colors ${
-                isFavorited ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"
+              className={`h-3.5 w-3.5 transition-colors ${
+                isFavorited ? "fill-pink-500 text-pink-500" : "text-muted-foreground/60 hover:text-pink-500"
               }`}
             />
           </Button>
+
+          <div className="w-px h-4 bg-border/50"></div>
 
           <Button
             size="icon"
             variant="ghost"
             onClick={handleShare}
-            className="h-8 w-8"
+            className="h-7 w-7 hover:bg-purple-50/80"
             aria-label="Share episode"
           >
-            <Share2 className="h-4 w-4 text-muted-foreground hover:text-primary" />
+            <Share2 className="h-3.5 w-3.5 text-muted-foreground/60 hover:text-purple-500" />
           </Button>
 
-          {/* Delete Menu - Only for creators */}
           {isCreator && onDelete && (
-            <KebabMenu>
-              <DropdownMenuItem
-                className="text-destructive cursor-pointer"
-                onClick={onDelete}
-              >
-                Delete Podcast
-              </DropdownMenuItem>
-            </KebabMenu>
+            <>
+              <div className="w-px h-4 bg-border/50"></div>
+              <KebabMenu>
+                <DropdownMenuItem
+                  className="text-destructive cursor-pointer"
+                  onClick={onDelete}
+                >
+                  Delete Podcast
+                </DropdownMenuItem>
+              </KebabMenu>
+            </>
           )}
         </div>
       </div>
