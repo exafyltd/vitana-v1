@@ -181,21 +181,22 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                   key={platform.name}
                   className={`group relative flex flex-col items-center p-5 rounded-2xl border transition-all duration-300 ease-out ${
                     connected 
-                      ? `bg-white/70 dark:bg-gray-800/70 backdrop-blur-md cursor-pointer hover:-translate-y-1 hover:shadow-xl` 
+                      ? `bg-white/70 dark:bg-gray-800/70 backdrop-blur-md cursor-pointer` 
                       : `bg-gray-100/40 dark:bg-gray-900/40 backdrop-blur-sm hover:scale-[1.02]`
                   }`}
                 style={connected ? {
                   borderColor: platform.brandColor,
-                  boxShadow: `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 1px 0 rgba(255,255,255,0.3)`,
+                  boxShadow: `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`,
                 } as React.CSSProperties : {
                   borderColor: 'rgba(160, 160, 160, 0.2)',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.04), inset 0 1px 2px rgba(0,0,0,0.03)',
                   filter: 'grayscale(0.7)',
                   opacity: 0.6
                 } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   if (connected) {
-                    e.currentTarget.style.boxShadow = `0 16px 48px ${platform.brandColor}30, 0 0 60px ${platform.brandColor}25, inset 0 1px 0 rgba(255,255,255,0.4)`;
+                    e.currentTarget.style.transform = 'translateY(-4px) rotateY(2deg)';
+                    e.currentTarget.style.boxShadow = `0 16px 48px ${platform.brandColor}35, 0 0 60px ${platform.brandColor}30, inset 0 2px 8px rgba(255,255,255,0.2), inset 0 -2px 6px rgba(0,0,0,0.05)`;
                   } else {
                     e.currentTarget.style.filter = 'grayscale(0.3)';
                     e.currentTarget.style.opacity = '0.8';
@@ -204,7 +205,8 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 }}
                 onMouseLeave={(e) => {
                   if (connected) {
-                    e.currentTarget.style.boxShadow = `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 1px 0 rgba(255,255,255,0.3)`;
+                    e.currentTarget.style.transform = 'translateY(0) rotateY(0deg)';
+                    e.currentTarget.style.boxShadow = `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`;
                   } else {
                     e.currentTarget.style.filter = 'grayscale(0.7)';
                     e.currentTarget.style.opacity = '0.6';
@@ -216,16 +218,27 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 role={connected ? "link" : undefined}
                 aria-label={connected ? `Open ${platform.name} profile` : undefined}
               >
-                {/* Icon with green check overlay for connected */}
-                <div className="relative flex items-center justify-center h-[36px] mb-3">
+                {/* Icon with colored ring for connected, green check overlay */}
+                <div className="relative flex items-center justify-center h-[40px] mb-3">
                   <div 
-                    className={`relative flex items-center justify-center ${connected ? 'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110' : ''}`}
+                    className={`relative flex items-center justify-center ${connected ? 'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:rotate-3' : ''}`}
                   >
+                    {/* Colored ring for connected platforms */}
+                    {connected && (
+                      <div 
+                        className="absolute inset-0 rounded-full -m-2 transition-all duration-300"
+                        style={{
+                          border: `2px solid ${platform.brandColor}40`,
+                          boxShadow: `0 0 16px ${platform.brandColor}30`
+                        }}
+                      />
+                    )}
+                    
                     <div 
                       className={`relative z-10 transition-all duration-300`}
                       style={connected ? { 
                         color: platform.brandColor,
-                        filter: `drop-shadow(0 4px 16px ${platform.brandColor}40)`
+                        filter: `drop-shadow(0 4px 20px ${platform.brandColor}50)`
                       } : {
                         color: '#aaa',
                         filter: 'grayscale(1)',
@@ -241,7 +254,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     
                     {/* Green check overlay for connected */}
                     {connected && (
-                      <div className="absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-lg">
+                      <div className="absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-[0_4px_12px_rgba(34,197,94,0.4)]">
                         <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
