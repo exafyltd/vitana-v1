@@ -23,7 +23,10 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
   const [tags, setTags] = useState<string[]>([]);
   const [category, setCategory] = useState('');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
   const { uploadVideo, isUploading, progress } = useVideoUpload();
 
@@ -47,6 +50,26 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
     }
   };
 
+  const handleThumbnailSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setThumbnailFile(selectedFile);
+      const url = URL.createObjectURL(selectedFile);
+      setThumbnailPreviewUrl(url);
+    }
+  };
+
+  const handleRemoveThumbnail = () => {
+    setThumbnailFile(null);
+    if (thumbnailPreviewUrl) {
+      URL.revokeObjectURL(thumbnailPreviewUrl);
+      setThumbnailPreviewUrl(null);
+    }
+    if (thumbnailInputRef.current) {
+      thumbnailInputRef.current.value = '';
+    }
+  };
+
   const handleAddTag = () => {
     const trimmedTag = tagInput.trim();
     if (trimmedTag && !tags.includes(trimmedTag)) {
@@ -67,15 +90,20 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
     }
 
     try {
-      await uploadVideo(file, {
-        title: title.trim(),
-        description: description.trim() || undefined,
-        tags,
-        category: category.trim() || undefined,
-      });
+      await uploadVideo(
+        file, 
+        {
+          title: title.trim(),
+          description: description.trim() || undefined,
+          tags,
+          category: category.trim() || undefined,
+        },
+        thumbnailFile ? { thumbnailFile } : undefined
+      );
 
       // Reset form
       handleRemoveFile();
+      handleRemoveThumbnail();
       setTitle('');
       setDescription('');
       setTags([]);
@@ -144,6 +172,52 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
                 </Button>
                 <div className="p-2 bg-black/80 text-white text-sm">
                   {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Custom Thumbnail (Optional) */}
+          <div className="space-y-2">
+            <Label>Custom Thumbnail (optional)</Label>
+            <p className="text-xs text-muted-foreground mb-2">
+              JPG, PNG, WebP (auto-generated if not provided)
+            </p>
+            {!thumbnailFile ? (
+              <div
+                onClick={() => thumbnailInputRef.current?.click()}
+                className="border-2 border-dashed border-muted-foreground/25 rounded-2xl p-8 text-center cursor-pointer hover:border-sky-500 hover:bg-sky-50/50 transition-all duration-200"
+              >
+                <Upload className="w-10 h-10 mx-auto mb-2 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">Upload thumbnail</p>
+                <input
+                  ref={thumbnailInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleThumbnailSelect}
+                  className="hidden"
+                />
+              </div>
+            ) : (
+              <div className="relative rounded-2xl overflow-hidden border-2 border-muted">
+                {thumbnailPreviewUrl && (
+                  <img
+                    src={thumbnailPreviewUrl}
+                    alt="Thumbnail preview"
+                    className="w-full h-40 object-cover"
+                  />
+                )}
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleRemoveThumbnail}
+                  className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+                <div className="p-2 bg-black/80 text-white text-sm">
+                  {thumbnailFile.name}
                 </div>
               </div>
             )}
