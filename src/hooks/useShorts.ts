@@ -21,6 +21,11 @@ export interface Short {
   status: string;
   created_at: string;
   updated_at: string;
+  profiles?: {
+    display_name: string | null;
+    full_name: string | null;
+    avatar_url: string | null;
+  };
 }
 
 interface FetchShortsParams {
@@ -51,10 +56,26 @@ export const useShorts = (params: FetchShortsParams = {}) => {
         query = query.limit(params.limit);
       }
 
-      const { data, error } = await query;
+      const { data: videos, error } = await query;
 
       if (error) throw error;
-      return data as Short[];
+      if (!videos || videos.length === 0) return [];
+
+      // Fetch profiles for all unique user_ids
+      const userIds = [...new Set(videos.map(v => v.user_id))];
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, display_name, full_name, avatar_url')
+        .in('id', userIds);
+
+      // Create a map of user_id to profile
+      const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+
+      // Enrich videos with profile data
+      return videos.map(video => ({
+        ...video,
+        profiles: profileMap.get(video.user_id) || null
+      })) as Short[];
     },
   });
 };
