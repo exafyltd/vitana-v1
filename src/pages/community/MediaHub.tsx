@@ -39,53 +39,45 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 // SubscribeButton component
-function SubscribeButton({ show }: { show: PopularShow }) {
-  const { user } = useAuth();
-  const { isSubscribed, toggleSubscription, isToggling } = usePodcastShowSubscription(
-    { show_name: show.show_name, host_name: show.host_name },
-    user?.id
-  );
+  function SubscribeButton({ show }: { show: PopularShow }) {
+    const { user } = useAuth();
+    const { isSubscribed, toggleSubscription, isToggling } = usePodcastShowSubscription(
+      { show_name: show.show_name, host_name: show.host_name },
+      user?.id
+    );
 
-  return (
-    <button 
-      onClick={() => toggleSubscription()}
-      disabled={!user || isToggling}
-      className="group/sub relative w-full py-2.5 rounded-full font-semibold text-sm transition-all duration-300 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      {/* Gradient border effect */}
-      <div className={`absolute inset-0 rounded-full transition-opacity ${
-        isSubscribed 
-          ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
-          : 'bg-gradient-to-r from-purple-500 to-pink-500'
-      } ${isSubscribed ? 'opacity-100' : 'opacity-100 group-hover/sub:opacity-0'}`}></div>
-      
-      <div className={`absolute inset-[2px] rounded-full transition-all duration-300 ${
-        isSubscribed
-          ? 'bg-gradient-to-r from-green-500 to-emerald-500'
-          : 'bg-white group-hover/sub:bg-gradient-to-r group-hover/sub:from-purple-500 group-hover/sub:to-pink-500'
-      }`}></div>
-      
-      {/* Text with gradient sweep */}
-      <span className={`relative flex items-center justify-center gap-2 transition-colors duration-300 ${
-        isSubscribed
-          ? 'text-white'
-          : 'bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent group-hover/sub:text-white'
-      }`}>
-        {isToggling ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
-        ) : (
-          <>
-            <Heart className={`w-4 h-4 ${isSubscribed ? 'fill-current' : 'fill-current opacity-80'}`} />
-            {isSubscribed ? 'Subscribed' : 'Subscribe'}
-          </>
-        )}
-      </span>
-      
-      {/* Hover glow effect */}
-      <div className="absolute inset-0 rounded-full opacity-0 group-hover/sub:opacity-100 shadow-lg shadow-purple-400/50 transition-opacity duration-300 -z-10"></div>
-    </button>
-  );
-}
+    return (
+      <button 
+        onClick={() => toggleSubscription()}
+        disabled={!user || isToggling}
+        className={`
+          group/sub relative w-full py-2.5 px-5 rounded-2xl font-semibold text-sm
+          transition-all duration-200
+          disabled:opacity-50 disabled:cursor-not-allowed
+          focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2
+          ${isSubscribed 
+            ? 'bg-emerald-100/30 border-2 border-emerald-500 text-emerald-600 hover:animate-[pulse_2s_ease-in-out_infinite]' 
+            : 'bg-transparent border-2 border-violet-500 text-violet-500 hover:bg-gradient-to-r hover:from-violet-500 hover:to-fuchsia-400 hover:text-white hover:shadow-md hover:scale-[1.02]'
+          }
+        `}
+      >
+        <span className="relative flex items-center justify-center gap-2">
+          {isToggling ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <>
+              <Heart className={`w-4 h-4 transition-all ${
+                isSubscribed 
+                  ? 'fill-current text-emerald-600' 
+                  : 'fill-none group-hover/sub:fill-current group-hover/sub:text-white'
+              }`} />
+              {isSubscribed ? 'Subscribed' : 'Subscribe'}
+            </>
+          )}
+        </span>
+      </button>
+    );
+  }
 
 // PopularShowsList component
 function PopularShowsList() {
