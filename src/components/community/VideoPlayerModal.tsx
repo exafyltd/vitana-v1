@@ -42,13 +42,14 @@ export const VideoPlayerModal = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
-  const [showArrows, setShowArrows] = useState(false);
+  const [showArrows, setShowArrows] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     if (isOpen && video && videoRef.current) {
       hasTrackedPlay.current = false;
       setIsTransitioning(false);
+      setShowArrows(true); // Show arrows when modal opens
       handleVideoPlay();
     }
   }, [isOpen, video]);
