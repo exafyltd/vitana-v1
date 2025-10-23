@@ -43,7 +43,7 @@ export function useMessageNotifications() {
             // Get sender info
             const { data: senderProfile } = await supabase
               .from('global_community_profiles')
-              .select('display_name')
+              .select('display_name, avatar_url')
               .eq('user_id', newMessage.sender_id)
               .maybeSingle();
 
@@ -57,6 +57,28 @@ export function useMessageNotifications() {
             const senderName = senderProfile?.display_name || 'Someone';
             const isGroup = thread?.type === 'group';
             
+            // Create in-app notification in database
+            const messagePreview = newMessage.body?.substring(0, 100) || 'New message';
+            const notificationTitle = isGroup 
+              ? `${senderName} in ${thread?.name || 'group chat'}`
+              : senderName;
+
+            await supabase.from('notifications').insert({
+              user_id: user.id,
+              type: isGroup ? 'new_group_message' : 'new_message',
+              title: notificationTitle,
+              message: messagePreview,
+              data: {
+                thread_id: newMessage.thread_id,
+                message_id: newMessage.id,
+                sender_id: newMessage.sender_id,
+                sender_avatar: senderProfile?.avatar_url,
+                context: 'global'
+              },
+              is_read: false
+            });
+            
+            // Also send push notification
             await notifyNewMessage(
               senderName,
               newMessage.body,
@@ -109,26 +131,50 @@ export function useMessageNotifications() {
             // Get sender info
             const { data: senderProfile } = await supabase
               .from('profiles')
-              .select('display_name, full_name')
+              .select('display_name, full_name, avatar_url')
               .eq('user_id', newMessage.sender_id)
               .maybeSingle();
 
             // Get thread info for groups
             let isGroup = false;
+            let threadName = null;
             if (newMessage.thread_id) {
               const { data: thread } = await supabase
                 .from('message_threads')
-                .select('type')
+                .select('type, name')
                 .eq('id', newMessage.thread_id)
                 .maybeSingle();
               
               isGroup = thread?.type === 'group';
+              threadName = thread?.name;
             }
 
             const senderName = senderProfile?.display_name || 
                               senderProfile?.full_name || 
                               'Someone';
             
+            // Create in-app notification in database
+            const messagePreview = newMessage.body?.substring(0, 100) || 'New message';
+            const notificationTitle = isGroup 
+              ? `${senderName} in ${threadName || 'group chat'}`
+              : senderName;
+
+            await supabase.from('notifications').insert({
+              user_id: user.id,
+              type: isGroup ? 'new_group_message' : 'new_message',
+              title: notificationTitle,
+              message: messagePreview,
+              data: {
+                thread_id: newMessage.thread_id || `dm-${newMessage.id}`,
+                message_id: newMessage.id,
+                sender_id: newMessage.sender_id,
+                sender_avatar: senderProfile?.avatar_url,
+                context: 'tenant'
+              },
+              is_read: false
+            });
+            
+            // Also send push notification
             await notifyNewMessage(
               senderName,
               newMessage.body,
