@@ -11,9 +11,9 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { useFollow } from "@/hooks/useFollow";
 import { useProfileShare } from "@/hooks/useProfileShare";
-import { ProfileShareSheet } from "./ProfileShareSheet";
+import { MessageComposeModal } from "./MessageComposeModal";
+import { ShareProfileModal } from "./ShareProfileModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
-import { QRCodeModal } from "../QRCodeModal";
 import {
   Tooltip,
   TooltipContent,
@@ -37,7 +37,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
   const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
-  const [qrModalOpen, setQrModalOpen] = useState(false);
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
   const handleFollowClick = async () => {
     if (isFollowing) {
@@ -59,7 +60,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
     isPublic: isPublicProfile
   });
 
-  const handleMessageClick = async () => {
+  const handleMessageClick = () => {
     if (!user) {
       toast({
         title: "Authentication required",
@@ -69,22 +70,50 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
       return;
     }
 
+    if (isOwner) {
+      toast({
+        title: "Can't message yourself",
+        description: "You cannot send messages to your own profile",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setMessageModalOpen(true);
+  };
+
+  const handleSendMessage = async (message: string) => {
     setIsCreatingThread(true);
     try {
       const thread = await createThread([profile.id]);
       if (thread?.id) {
         logMessageSend(thread.id, 'direct', 'global');
+        toast({
+          title: "Message sent",
+          description: "Your message has been sent successfully"
+        });
         navigate('/inbox/direct', { state: { selectedThreadId: thread.id } });
       }
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to open conversation. Please try again.",
+        description: "Failed to send message. Please try again.",
         variant: "destructive"
       });
+      throw error;
     } finally {
       setIsCreatingThread(false);
     }
+  };
+
+  const handleShareToFacebook = () => {
+    const url = shareHook.getShareUrl ? shareHook.getShareUrl() : `${window.location.origin}/u/${profile.handle}`;
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    window.open(facebookUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleViewPublicProfile = () => {
+    window.open(`/u/${profile.handle}`, '_blank');
   };
   
   const profileUrl = `${window.location.origin}/u/${profile.handle}`;
@@ -248,50 +277,51 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                   <UserPlus className="h-4 w-4 mr-2" />
                   {followLoading ? "..." : isFollowing ? "Following" : "Follow"}
                 </Button>
+                
                 <Button 
-                  variant="secondary"
-                  className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-[0_4px_12px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.08)] text-white dark:text-white" 
+                  className="inline-flex items-center gap-2 rounded-full h-10 px-4 bg-white/10 backdrop-blur-md border border-white/20 text-foreground/80 hover:bg-white/20 hover:border-white/30 hover:text-foreground transition"
                   onClick={handleMessageClick}
-                  disabled={isCreatingThread}
                 >
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  <span>{isCreatingThread ? "Opening..." : "Message"}</span>
+                  <MessageSquare className="h-4 w-4" />
+                  <span>Message</span>
                 </Button>
                 
-                <ProfileShareSheet
-                  isOpen={shareHook.isShareOpen}
-                  onOpenChange={shareHook.setIsShareOpen}
-                  onCopyLink={shareHook.copyLink}
-                  onShareToX={shareHook.shareToX}
-                  onShareToLinkedIn={shareHook.shareToLinkedIn}
-                  onShareToWhatsApp={shareHook.shareToWhatsApp}
-                  onShareViaEmail={shareHook.shareViaEmail}
-                  onShareNative={shareHook.shareNative}
-                  canUseNativeShare={shareHook.canUseNativeShare}
-                  trigger={
-                    <Button 
-                      variant="secondary"
-                      className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-[0_4px_12px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.08)] text-white dark:text-white"
-                      onClick={shareHook.openShare}
-                    >
-                      <Share2 className="h-4 w-4 mr-2" />
-                      <span>Share</span>
-                    </Button>
-                  }
-                />
+                <Button 
+                  className="inline-flex items-center gap-2 rounded-full h-10 px-4 bg-white/10 backdrop-blur-md border border-white/20 text-foreground/80 hover:bg-white/20 hover:border-white/30 hover:text-foreground transition"
+                  onClick={() => setShareModalOpen(true)}
+                >
+                  <Share2 className="h-4 w-4" />
+                  <span>Share</span>
+                </Button>
               </>
             )}
           </div>
         </div>
       </div>
       
-      {/* QR Code Modal */}
-      <QRCodeModal
-        isOpen={qrModalOpen}
-        onOpenChange={setQrModalOpen}
-        profileUrl={profileUrl}
-        profileName={profile.name}
-      />
+      {/* Message Compose Modal */}
+      {!isOwner && (
+        <MessageComposeModal
+          isOpen={messageModalOpen}
+          onOpenChange={setMessageModalOpen}
+          recipient={profile}
+          onSend={handleSendMessage}
+        />
+      )}
+
+      {/* Share Profile Modal */}
+      {!isOwner && (
+        <ShareProfileModal
+          isOpen={shareModalOpen}
+          onOpenChange={setShareModalOpen}
+          profile={profile}
+          onCopyLink={shareHook.copyLink}
+          onShareToX={shareHook.shareToX}
+          onShareToLinkedIn={shareHook.shareToLinkedIn}
+          onShareToFacebook={handleShareToFacebook}
+          onViewPublicProfile={handleViewPublicProfile}
+        />
+      )}
     </>
   );
 }

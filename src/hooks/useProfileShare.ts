@@ -140,6 +140,7 @@ export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOpti
     shareViaEmail,
     shareNative,
     canUseNativeShare: canUseNativeShare(),
-    isPublic
+    isPublic,
+    getShareUrl
   };
 };
