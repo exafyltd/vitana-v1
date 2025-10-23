@@ -28,6 +28,8 @@ import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab
 import { toast } from "@/hooks/use-toast";
 import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastShows";
 import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
+import { useShorts, useTrackMediaEvent } from "@/hooks/useShorts";
+import { UploadVideoModal } from "@/components/community/UploadVideoModal";
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
@@ -272,7 +274,12 @@ export default function MediaHub() {
       return data || [];
     }
   });
-  const videoShorts = [{
+  // Fetch real video shorts from database
+  const { data: realShorts = [], isLoading: isShortsLoading, refetch: refetchShorts } = useShorts({ limit: 20 });
+  const trackMediaEvent = useTrackMediaEvent();
+
+  // Fallback mock data for when database is empty
+  const fallbackShorts = [{
     title: "5 Min Morning Stretch",
     creator: "FitnessPro",
     duration: "0:45",
@@ -303,6 +310,42 @@ export default function MediaHub() {
     isLive: true,
     tags: ["Mindfulness", "Wellness"]
   }];
+
+  // Use real data if available, otherwise fallback
+  const videoShorts = realShorts.length > 0 ? realShorts.map(short => ({
+    id: short.id,
+    title: short.title,
+    creator: "Community Member", // We'll add profile integration later
+    duration: short.duration_sec ? `${Math.floor(short.duration_sec / 60)}:${(short.duration_sec % 60).toString().padStart(2, '0')}` : '0:00',
+    views: short.views_count.toString(),
+    likes: short.likes_count,
+    thumbnailImage: short.thumbnail_url || fallbackShorts[0].thumbnailImage,
+    src_url: short.src_url,
+    isLive: false,
+    tags: short.tags
+  })) : fallbackShorts;
+
+  const handleVideoClick = (video: any) => {
+    if (video.id && video.src_url) {
+      // Track play event
+      trackMediaEvent.mutate({
+        mediaId: video.id,
+        mediaType: 'video',
+        eventType: 'play_start'
+      });
+      
+      // Open video in player (placeholder - integrate with your media player)
+      window.open(video.src_url, '_blank');
+    }
+  };
+
+  const handleVideoUploadComplete = () => {
+    refetchShorts();
+    toast({
+      title: 'Success!',
+      description: 'Your video is now live in the community.',
+    });
+  };
   // Fetch approved podcasts from database
   const { data: approvedPodcasts = [] } = useQuery({
     queryKey: ['community-podcasts'],
@@ -357,7 +400,9 @@ export default function MediaHub() {
     category: "Nutrition",
     avatar: "NC"
   }];
-  return <AppLayout>
+  
+  return (
+    <AppLayout>
       <SEO title="Media Hub | Community" description="Discover videos, podcasts, and community content" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
@@ -414,9 +459,18 @@ export default function MediaHub() {
               onSearch={(query) => console.log('Search Media:', query)}
             />
             <UniversalCalendarButton />
-            <Button size="sm" onClick={() => setIsUploadOpen(true)}>
+            <Button 
+              size="sm" 
+              onClick={() => {
+                if (activeMediaTab === 'shorts') {
+                  setIsVideoUploadOpen(true);
+                } else {
+                  setIsUploadOpen(true);
+                }
+              }}
+            >
               <Upload className="w-4 h-4 mr-2" />
-              Upload
+              Upload {activeMediaTab === 'shorts' ? 'Video' : 'Media'}
             </Button>
           </UtilityActionButton>
 
@@ -518,7 +572,7 @@ export default function MediaHub() {
                       </div>
                     ))}
                   </div>
-                </div>
+                )}
               </div>
             </SplitBarContent>
 
@@ -941,6 +995,13 @@ export default function MediaHub() {
 
       <MediaUploadPopup open={isUploadOpen} onOpenChange={setIsUploadOpen} />
       
+      {/* Video Upload Modal */}
+      <UploadVideoModal 
+        open={isVideoUploadOpen} 
+        onOpenChange={setIsVideoUploadOpen}
+        onUploadComplete={handleVideoUploadComplete}
+      />
+      
       {/* Autopilot Popup */}
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
 
@@ -968,5 +1029,6 @@ export default function MediaHub() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </AppLayout>;
+    </AppLayout>
+  );
 }

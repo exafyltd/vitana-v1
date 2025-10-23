@@ -2805,6 +2805,36 @@ export type Database = {
         }
         Relationships: []
       }
+      media_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          media_id: string
+          media_type: string
+          metadata: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          media_id: string
+          media_type: string
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          media_id?: string
+          media_type?: string
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       media_uploads: {
         Row: {
           category: string | null
@@ -2883,6 +2913,72 @@ export type Database = {
           updated_at?: string
           user_id?: string
           views_count?: number | null
+        }
+        Relationships: []
+      }
+      media_videos: {
+        Row: {
+          captions_url: string | null
+          category: string | null
+          created_at: string
+          description: string | null
+          duration_sec: number | null
+          height: number | null
+          id: string
+          language: string | null
+          likes_count: number | null
+          shares_count: number | null
+          src_url: string
+          status: string | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          views_count: number | null
+          width: number | null
+        }
+        Insert: {
+          captions_url?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          duration_sec?: number | null
+          height?: number | null
+          id?: string
+          language?: string | null
+          likes_count?: number | null
+          shares_count?: number | null
+          src_url: string
+          status?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          views_count?: number | null
+          width?: number | null
+        }
+        Update: {
+          captions_url?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          duration_sec?: number | null
+          height?: number | null
+          id?: string
+          language?: string | null
+          likes_count?: number | null
+          shares_count?: number | null
+          src_url?: string
+          status?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          views_count?: number | null
+          width?: number | null
         }
         Relationships: []
       }
