@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTrackMediaEvent } from "@/hooks/useShorts";
 import { useEffect, useRef, useState } from "react";
-import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface VideoPlayerModalProps {
   isOpen: boolean;
@@ -36,6 +36,7 @@ export const VideoPlayerModal = ({
   const hasTrackedPlay = useRef(false);
   const idleTimerRef = useRef<NodeJS.Timeout>();
   const touchStartRef = useRef<number>(0);
+  const hasInteracted = useRef(false);
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -83,9 +84,9 @@ export const VideoPlayerModal = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, hasNext, hasPrevious, onNext, onPrevious, onClose]);
 
-  // Auto-hide arrows after idle
+  // Auto-hide arrows after idle (only after user interaction)
   useEffect(() => {
-    if (showArrows) {
+    if (showArrows && hasInteracted.current) {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       idleTimerRef.current = setTimeout(() => setShowArrows(false), 2000);
     }
@@ -93,6 +94,11 @@ export const VideoPlayerModal = ({
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
   }, [showArrows]);
+
+  const handleMouseMove = () => {
+    hasInteracted.current = true;
+    setShowArrows(true);
+  };
 
   const handlePlay = () => {
     if (video && !hasTrackedPlay.current) {
@@ -206,42 +212,60 @@ export const VideoPlayerModal = ({
           style={{ backgroundImage: `url(${video.thumbnail_url})` }}
         />
 
+        {/* Custom premium close button */}
+        <button
+          onClick={onClose}
+          className="fixed top-6 right-6 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 
+            flex items-center justify-center shadow-lg transition-all duration-300 
+            hover:bg-white/20 hover:rotate-90 hover:scale-110"
+        >
+          <X className="w-6 h-6 text-white" />
+        </button>
+
         {/* Main content container */}
         <div 
           className="relative z-10 flex items-center justify-center h-full p-8"
-          onMouseMove={() => setShowArrows(true)}
-          onTouchStart={handleTouchStart}
+          onMouseMove={handleMouseMove}
+          onTouchStart={(e) => {
+            hasInteracted.current = true;
+            handleTouchStart(e);
+          }}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Navigation Arrows */}
-          {hasPrevious && onPrevious && (
-            <button
-              onClick={() => handleNavigation(onPrevious)}
-              className={`absolute left-8 z-20 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 
-                flex items-center justify-center shadow-lg transition-all duration-300 
-                hover:bg-white/20 hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:scale-110
-                ${showArrows ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-            >
-              <ChevronLeft className="w-8 h-8 text-white" />
-            </button>
-          )}
-          
-          {hasNext && onNext && (
-            <button
-              onClick={() => handleNavigation(onNext)}
-              className={`absolute right-8 z-20 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 
-                flex items-center justify-center shadow-lg transition-all duration-300 
-                hover:bg-white/20 hover:shadow-[0_0_30px_rgba(56,189,248,0.5)] hover:scale-110
-                ${showArrows ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-            >
-              <ChevronRight className="w-8 h-8 text-white" />
-            </button>
-          )}
+          {/* Container for video and navigation arrows */}
+          <div className="relative flex items-center justify-center">
+            {/* Left navigation arrow */}
+            {hasPrevious && onPrevious && (
+              <button
+                onClick={() => handleNavigation(onPrevious)}
+                className={`absolute -left-20 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full 
+                  bg-white/15 backdrop-blur-md border-2 border-white/30 
+                  flex items-center justify-center shadow-lg transition-all duration-300 
+                  hover:bg-white/25 hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] hover:scale-110
+                  ${showArrows ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              >
+                <ChevronLeft className="w-9 h-9 text-white" />
+              </button>
+            )}
+            
+            {/* Right navigation arrow */}
+            {hasNext && onNext && (
+              <button
+                onClick={() => handleNavigation(onNext)}
+                className={`absolute -right-20 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full 
+                  bg-white/15 backdrop-blur-md border-2 border-white/30 
+                  flex items-center justify-center shadow-lg transition-all duration-300 
+                  hover:bg-white/25 hover:shadow-[0_0_40px_rgba(56,189,248,0.6)] hover:scale-110
+                  ${showArrows ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              >
+                <ChevronRight className="w-9 h-9 text-white" />
+              </button>
+            )}
 
-          {/* Video frame with gradient border */}
-          <div 
-            className={`relative w-auto max-w-[500px] h-[90vh] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300
-              ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
+            {/* Video frame with gradient border */}
+            <div 
+              className={`relative w-auto max-w-[500px] h-[90vh] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300
+                ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
             style={{
               background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(56, 189, 248, 0.3))',
               padding: '2px'
@@ -357,6 +381,7 @@ export const VideoPlayerModal = ({
                   <h3 className="text-white text-xl font-semibold">{video.title}</h3>
                 </div>
               )}
+            </div>
             </div>
           </div>
         </div>
