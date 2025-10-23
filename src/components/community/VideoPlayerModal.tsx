@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTrackMediaEvent } from "@/hooks/useShorts";
 import { useEffect, useRef, useState } from "react";
@@ -45,6 +45,7 @@ export const VideoPlayerModal = ({
   const [showControls, setShowControls] = useState(true);
   const [showArrowsMobile, setShowArrowsMobile] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
 
   useEffect(() => {
     if (isOpen && video && videoRef.current) {
@@ -84,6 +85,15 @@ export const VideoPlayerModal = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, hasNext, hasPrevious, onNext, onPrevious, onClose]);
+
+  // Detect pointer type (fine = mouse/trackpad, coarse = touch)
+  useEffect(() => {
+    const mql = window.matchMedia('(pointer: coarse)');
+    const update = () => setIsCoarsePointer(mql.matches);
+    update();
+    mql.addEventListener('change', update);
+    return () => mql.removeEventListener('change', update);
+  }, []);
 
   // Auto-hide arrows on mobile after 2s
   useEffect(() => {
@@ -202,6 +212,7 @@ export const VideoPlayerModal = ({
   };
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const showArrows = !isCoarsePointer || showArrowsMobile;
 
   if (!video) return null;
 
@@ -217,14 +228,19 @@ export const VideoPlayerModal = ({
         />
 
         {/* Custom premium close button */}
-        <button
-          onClick={onClose}
-          className="fixed top-6 right-6 z-[9999] w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 
-            flex items-center justify-center shadow-lg transition-all duration-300 
-            hover:bg-white/20 hover:rotate-90 hover:scale-105"
-        >
-          <X className="w-6 h-6 text-white" />
-        </button>
+        <div className="fixed top-6 right-6 z-[9999] pointer-events-none">
+          <DialogClose asChild>
+            <button
+              aria-label="Close"
+              onClick={onClose}
+              className="pointer-events-auto w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 
+                flex items-center justify-center shadow-lg transition-all duration-300 
+                hover:bg-white/20 hover:rotate-90 hover:scale-105 cursor-pointer"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+          </DialogClose>
+        </div>
 
         {/* Main content container */}
         <div 
@@ -236,15 +252,16 @@ export const VideoPlayerModal = ({
           {/* Left navigation arrow - Always visible on desktop, show on tap/swipe on mobile */}
           {hasPrevious && onPrevious && (
             <button
+              aria-label="Previous video"
               onClick={() => {
                 handleNavigation(onPrevious);
                 handleInteraction();
               }}
               className={`absolute left-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
                 bg-white/12 backdrop-blur-sm text-white shadow-lg border border-white/20 
-                flex items-center justify-center transition-all duration-300 cursor-pointer
+                flex items-center justify-center transition-all duration-300 cursor-pointer pointer-events-auto
                 hover:bg-white/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
-                md:opacity-100 ${showArrowsMobile ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+                ${showArrows ? 'opacity-100' : 'opacity-0'}`}
             >
               <ChevronLeft className="w-6 h-6 text-white" />
             </button>
@@ -253,15 +270,16 @@ export const VideoPlayerModal = ({
           {/* Right navigation arrow - Always visible on desktop, show on tap/swipe on mobile */}
           {hasNext && onNext && (
             <button
+              aria-label="Next video"
               onClick={() => {
                 handleNavigation(onNext);
                 handleInteraction();
               }}
               className={`absolute right-8 top-1/2 -translate-y-1/2 z-[9999] w-12 h-12 rounded-full 
                 bg-white/12 backdrop-blur-sm text-white shadow-lg border border-white/20 
-                flex items-center justify-center transition-all duration-300 cursor-pointer
+                flex items-center justify-center transition-all duration-300 cursor-pointer pointer-events-auto
                 hover:bg-white/18 hover:scale-105 hover:ring-2 hover:ring-accent/40
-                md:opacity-100 ${showArrowsMobile ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+                ${showArrows ? 'opacity-100' : 'opacity-0'}`}
             >
               <ChevronRight className="w-6 h-6 text-white" />
             </button>
