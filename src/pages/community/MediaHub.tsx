@@ -28,6 +28,9 @@ import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab
 import { toast } from "@/hooks/use-toast";
 import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastShows";
 import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
+import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
+import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
+import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -276,6 +279,7 @@ export default function MediaHub() {
     views: "2.3k",
     likes: 234,
     thumbnail: "MS",
+    thumbnailImage: shortsMorningStretch,
     isLive: false,
     tags: ["Fitness", "Yoga"]
   }, {
@@ -285,6 +289,7 @@ export default function MediaHub() {
     views: "1.8k",
     likes: 189,
     thumbnail: "QH",
+    thumbnailImage: shortsHealthyBreakfast,
     isLive: false,
     tags: ["Nutrition", "Recipes"]
   }, {
@@ -294,6 +299,7 @@ export default function MediaHub() {
     views: "3.1k",
     likes: 412,
     thumbnail: "BE",
+    thumbnailImage: shortsBreathingExercise,
     isLive: true,
     tags: ["Mindfulness", "Wellness"]
   }];
@@ -454,16 +460,12 @@ export default function MediaHub() {
                       >
                         {/* Thumbnail Container */}
                         <div className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
-                          {/* Glass gradient background */}
-                          <div className="absolute inset-0 bg-gradient-to-br from-violet-100/80 via-sky-100/80 to-purple-100/80 backdrop-blur-sm">
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <Avatar className="w-20 h-20">
-                                <AvatarFallback className="text-xl bg-gradient-to-br from-violet-500 to-sky-400 text-white">
-                                  {video.thumbnail}
-                                </AvatarFallback>
-                              </Avatar>
-                            </div>
-                          </div>
+                          {/* Thumbnail Image */}
+                          <img 
+                            src={video.thumbnailImage} 
+                            alt={video.title}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
                           
                           {/* Gradient overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
