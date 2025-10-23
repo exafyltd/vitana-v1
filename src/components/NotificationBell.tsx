@@ -142,10 +142,17 @@ export default function NotificationBell() {
     let channel: ReturnType<typeof supabase.channel> | null = null;
     setupRealtimeSubscription().then(ch => { channel = ch; });
 
+    // Polling fallback every 30 seconds
+    const pollingInterval = setInterval(() => {
+      console.debug('[Notifications] Polling fallback check');
+      fetchNotifications();
+    }, 30000);
+
     return () => {
       if (channel) {
         supabase.removeChannel(channel);
       }
+      clearInterval(pollingInterval);
     };
   }, []);
 
