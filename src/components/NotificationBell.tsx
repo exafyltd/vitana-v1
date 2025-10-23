@@ -20,6 +20,7 @@ import { useSidebar } from '@/components/ui/sidebar';
 import { useFollow } from '@/hooks/useFollow';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { playNotificationBell } from '@/utils/soundEffects';
 
 interface Notification {
   id: string;
@@ -78,6 +79,12 @@ export default function NotificationBell() {
           setNotifications(prev => [newNotification, ...prev]);
           if (!newNotification.is_read) {
             setUnreadCount(prev => prev + 1);
+          }
+
+          // Play sound for message notifications when page is visible
+          if ((newNotification.type === 'new_message' || newNotification.type === 'new_group_message') 
+              && !document.hidden) {
+            playNotificationBell();
           }
 
           // Fetch profile for new follow notification

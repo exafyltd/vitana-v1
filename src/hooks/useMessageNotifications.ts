@@ -63,7 +63,8 @@ export function useMessageNotifications() {
               ? `${senderName} in ${thread?.name || 'group chat'}`
               : senderName;
 
-            await supabase.from('notifications').insert({
+            const { error: notifError } = await supabase.from('notifications').insert({
+              user_id: user.id, // CRITICAL: Set recipient
               type: isGroup ? 'new_group_message' : 'new_message',
               title: notificationTitle,
               message: messagePreview,
@@ -75,6 +76,10 @@ export function useMessageNotifications() {
                 context: 'global'
               }
             } as any);
+
+            if (notifError) {
+              console.error('Failed to create notification:', notifError);
+            }
             
             // Also send push notification
             await notifyNewMessage(
@@ -157,7 +162,8 @@ export function useMessageNotifications() {
               ? `${senderName} in ${threadName || 'group chat'}`
               : senderName;
 
-            await supabase.from('notifications').insert({
+            const { error: notifError } = await supabase.from('notifications').insert({
+              user_id: user.id, // CRITICAL: Set recipient
               type: isGroup ? 'new_group_message' : 'new_message',
               title: notificationTitle,
               message: messagePreview,
@@ -169,6 +175,10 @@ export function useMessageNotifications() {
                 context: 'tenant'
               }
             } as any);
+
+            if (notifError) {
+              console.error('Failed to create notification:', notifError);
+            }
             
             // Also send push notification
             await notifyNewMessage(
