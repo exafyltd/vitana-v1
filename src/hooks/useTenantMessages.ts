@@ -352,7 +352,8 @@ export function useTenantMessages() {
       if (error) {
         // Remove optimistic message on error
         setMessages(prev => prev.filter(msg => msg.id !== optimisticMessage.id));
-        throw error;
+        // Normalize error to standard Error object
+        throw new Error(error.message || error.hint || 'Failed to send message');
       }
 
       // Replace optimistic message with real message

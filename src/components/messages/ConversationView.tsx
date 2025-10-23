@@ -430,6 +430,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   ) => {
     try {
       setSendError(null);
+      
+      // Check if offline first
+      if (!navigator.onLine) {
+        setSendError('You are offline. Message will be sent when connection is restored.');
+        console.warn('📴 Offline - message queued');
+        return;
+      }
+
       if (!threadId) {
         console.error('No thread ID available for sending message');
         setSendError('Thread not found');
@@ -579,17 +587,37 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         });
       }
     } catch (error) {
-      console.error('Error sending message:', error);
-      const isTimeout = error instanceof Error && error.message.includes('timed out');
+      // Extract meaningful error message from various error types
+      const extractMessage = (e: unknown): string => {
+        if (!e) return 'Unknown error';
+        if (typeof e === 'string') return e;
+        if (typeof e === 'object') {
+          if ('message' in e && typeof (e as any).message === 'string') {
+            return (e as any).message;
+          }
+          if ('hint' in e && typeof (e as any).hint === 'string') {
+            return (e as any).hint;
+          }
+          if ('details' in e && typeof (e as any).details === 'string') {
+            return (e as any).details;
+          }
+        }
+        return 'Failed to send message';
+      };
 
-      const errorMessage = error instanceof Error ? error.message : 'unknown';
-      setSendError(`Failed to send message: ${errorMessage}`);
+      const errorMessage = extractMessage(error);
+      const isTimeout = errorMessage.includes('timed out');
+      
+      console.error('❌ Send error (full payload):', error);
+      console.error('❌ Extracted error message:', errorMessage);
+      
+      setSendError(errorMessage);
 
       toast({
         title: isTimeout ? 'Sending Timed Out' : 'Message Failed',
         description: isTimeout
           ? 'Your message is taking longer than expected. You can retry sending it.'
-          : `Message failed: ${errorMessage}`,
+          : errorMessage,
         variant: 'destructive',
       });
 
