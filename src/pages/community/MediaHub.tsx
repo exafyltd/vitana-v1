@@ -188,6 +188,7 @@ export default function MediaHub() {
     getLatestActions
   } = useAutopilot();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isVideoUploadOpen, setIsVideoUploadOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   
@@ -572,7 +573,7 @@ export default function MediaHub() {
                       </div>
                     ))}
                   </div>
-                )}
+                </div>
               </div>
             </SplitBarContent>
 
