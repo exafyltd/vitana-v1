@@ -10,8 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProfile } from "@/context/ProfileProvider";
 import { ProfileStats } from "@/components/profile/shared/ProfileStats";
-import { CommunityImpactWidget } from "@/components/profile/community/CommunityImpactWidget";
+import { VitanaImpactPanel } from "@/components/profile/VitanaImpactPanel";
+import { AchievementsBanner } from "@/components/profile/AchievementsBanner";
 import { SuccessStoryCarousel } from "@/components/profile/community/SuccessStoryCarousel";
+import { Share2, QrCode, Copy, Edit3, Star, TrendingUp } from "lucide-react";
 
 // Dummy data for the profile stats
 const dummyProfileStats = {
@@ -101,204 +103,283 @@ export default function Profile() {
         description="View and manage your personal profile"
       />
 
-      <section className="mx-auto max-w-6xl px-4 py-6 flex justify-center">
-        <div className="w-full max-w-6xl">
-          <h1 className="sr-only">User Profile</h1>
+      {/* Premium gradient background */}
+      <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-blue-50/20 to-pink-50/30 dark:from-purple-950/10 dark:via-blue-950/10 dark:to-pink-950/10">
+        <section className="mx-auto max-w-6xl px-4 py-8">
+          <div className="w-full max-w-6xl">
+            <h1 className="sr-only">User Profile - Vitana ID Card</h1>
 
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="mb-6 rounded-xl shadow-sm">
-              <TabsTrigger value="overview" className="rounded-lg">Overview</TabsTrigger>
-              <TabsTrigger value="highlights" className="rounded-lg">Highlights</TabsTrigger>
-              <TabsTrigger value="connections" className="rounded-lg">Connections</TabsTrigger>
-              <TabsTrigger value="activity" className="rounded-lg">Activity</TabsTrigger>
-              <TabsTrigger value="health" className="rounded-lg">Health Snapshot</TabsTrigger>
-              <TabsTrigger value="privacy" className="rounded-lg">Privacy View</TabsTrigger>
-            </TabsList>
+            {/* Premium Vitana ID Card Header */}
+            <div className="mb-8 relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))]/10 via-transparent to-[hsl(var(--pill-mental-accent))]/10 rounded-3xl blur-3xl" />
+              
+              <div className="relative rounded-3xl bg-gradient-to-br from-white/90 via-white/70 to-white/50 dark:from-gray-900/90 dark:via-gray-900/70 dark:to-gray-900/50 backdrop-blur-2xl border border-white/40 dark:border-gray-800/40 p-10 shadow-[0_20px_60px_rgba(0,0,0,0.08),0_8px_20px_rgba(0,0,0,0.04)]">
+                {/* Decorative corner accents */}
+                <div className="absolute top-0 left-0 w-20 h-20 rounded-tl-3xl border-t-2 border-l-2 border-[hsl(var(--sys-vitana-accent))]/30" />
+                <div className="absolute top-0 right-0 w-20 h-20 rounded-tr-3xl border-t-2 border-r-2 border-[hsl(var(--pill-mental-accent))]/30" />
+                <div className="absolute bottom-0 left-0 w-20 h-20 rounded-bl-3xl border-b-2 border-l-2 border-[hsl(var(--pill-nutrition-accent))]/30" />
+                <div className="absolute bottom-0 right-0 w-20 h-20 rounded-br-3xl border-b-2 border-r-2 border-[hsl(var(--pill-hydration-accent))]/30" />
 
-            <TabsContent value="overview">
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                {/* Left column: Core identity */}
-                <div className="space-y-6 lg:col-span-1">
-                  <Card className="rounded-xl shadow-sm">
-                    <CardContent className="p-6">
-                      <div className="flex flex-col items-center text-center">
-                        <div className="relative mb-4">
-                          <Avatar className="h-28 w-28 ring-2 ring-border">
-                            <AvatarImage src={profile.avatar || "/placeholder.svg"} alt="User avatar" loading="lazy" />
-                            <AvatarFallback>{profile.initials}</AvatarFallback>
-                          </Avatar>
-                        </div>
-                        <div className="space-y-1">
-                          <div className="text-2xl font-semibold leading-none tracking-tight">{profile.displayName}</div>
-                          <div className="text-sm text-muted-foreground">{profile.handle || `@${profile.displayName.toLowerCase().replace(/\s+/g, '_')}`}</div>
-                          <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-                            {profile.bio || "Building a balanced life through connection, health, and purpose."}
-                          </p>
-                        </div>
-                        <div className="mt-4 flex items-center gap-2">
-                          <Button size="sm" className="rounded-lg shadow-sm">
-                            Message
-                          </Button>
-                          <Button size="sm" variant="outline" className="rounded-lg shadow-sm">
-                            Edit Profile
-                          </Button>
-                        </div>
+                <div className="flex flex-col lg:flex-row items-center gap-8">
+                  {/* Avatar Section with Glowing Ring */}
+                  <div className="relative flex-shrink-0">
+                    {/* Multi-layer glow */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/30 to-[hsl(var(--pill-nutrition-accent))]/30 blur-3xl animate-pulse" />
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[hsl(var(--pill-mental-accent))]/20 to-[hsl(var(--pill-hydration-accent))]/20 blur-2xl" />
+                    
+                    <div className="relative">
+                      <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] via-[hsl(var(--pill-mental-accent))] to-[hsl(var(--pill-nutrition-accent))] opacity-20 blur-xl" />
+                      <div className="relative rounded-full p-1 bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] via-[hsl(var(--pill-mental-accent))] to-[hsl(var(--pill-nutrition-accent))] shadow-2xl">
+                        <Avatar className="relative h-40 w-40 border-4 border-white dark:border-gray-900 shadow-2xl">
+                          <AvatarImage src={profile.avatar || "/placeholder.svg"} alt="User avatar" loading="lazy" />
+                          <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+                            {profile.initials}
+                          </AvatarFallback>
+                        </Avatar>
                       </div>
-
-                      <div className="mt-6 grid grid-cols-1 gap-4">
-                        <div className="rounded-xl border bg-muted/20 p-4 shadow-sm">
-                          <dl className="grid grid-cols-2 gap-3 text-sm">
-                            <div>
-                              <dt className="text-muted-foreground">Email</dt>
-                              <dd className="font-medium">{profile.email || "Not provided"}</dd>
-                            </div>
-                            <div>
-                              <dt className="text-muted-foreground">Phone</dt>
-                              <dd className="font-medium">{profile.phone || "Not provided"}</dd>
-                            </div>
-                            <div>
-                              <dt className="text-muted-foreground">Location</dt>
-                              <dd className="font-medium">Brooklyn</dd>
-                            </div>
-                            <div>
-                              <dt className="text-muted-foreground">Archetype</dt>
-                              <dd className="font-medium">Frequent Flyer</dd>
-                            </div>
-                          </dl>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2">
-                          {[
-                            'Organized',
-                            'Practical',
-                            'Passionate',
-                            'Protective',
-                            'Hardworking',
-                            'Punctual',
-                          ].map((t) => (
-                            <Badge key={t} variant="secondary">{t}</Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Right column: Cards */}
-                <div className="lg:col-span-2 space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card className="rounded-xl shadow-sm">
-                      <CardHeader>
-                        <CardTitle>Bio</CardTitle>
-                        <CardDescription>Short story and context</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-2 text-sm text-muted-foreground">
-                        <p>
-                          {profile.bio || "I travel often for work and love optimizing every day for energy and focus. I keep my routines simple and my social life meaningful."}
-                        </p>
-                      </CardContent>
-                    </Card>
-
-                    <CommunityImpactWidget 
-                      vitanaIndex={mockUserProfile.vitanaIndex}
-                      communityStats={{
-                        posts: dummyProfileStats.posts,
-                        helpedUsers: 12,
-                        featuredStories: 3,
-                        influenceScore: 85
-                      }}
-                    />
-
-                    <Card className="rounded-xl shadow-sm">
-                      <CardHeader>
-                        <CardTitle>Motivations</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        {[
-                          { label: 'Price', value: 60 },
-                          { label: 'Comfort', value: 72 },
-                          { label: 'Convenience', value: 88 },
-                          { label: 'Speed', value: 54 },
-                          { label: 'Loyalty/Miles', value: 42 },
-                        ].map((m) => (
-                          <div key={m.label}>
-                            <div className="mb-1 flex items-center justify-between text-sm">
-                              <span className="text-muted-foreground">{m.label}</span>
-                              <span className="font-medium">{m.value}%</span>
-                            </div>
-                            <Progress value={m.value} />
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    <Card className="rounded-xl shadow-sm">
-                      <CardHeader>
-                        <CardTitle>Personality</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        {[
-                          { left: 'Introvert', right: 'Extrovert', value: 35 },
-                          { left: 'Analytical', right: 'Creative', value: 75 },
-                          { left: 'Loyal', right: 'Fickle', value: 20 },
-                          { left: 'Passive', right: 'Active', value: 80 },
-                        ].map((row, idx) => (
-                          <div key={idx}>
-                            <div className="mb-1 flex justify-between text-xs text-muted-foreground">
-                              <span>{row.left}</span>
-                              <span>{row.right}</span>
-                            </div>
-                            <Progress value={row.value} />
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    <Card className="rounded-xl shadow-sm">
-                      <CardHeader>
-                        <CardTitle>Frustrations</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                          <li>Too much time spent planning when busy</li>
-                          <li>Too many apps for one purpose</li>
-                          <li>Prefers simple flows over complex settings</li>
-                        </ul>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="rounded-xl shadow-sm">
-                      <CardHeader>
-                        <CardTitle>Goals</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                          <li>Spend less time booking and organizing</li>
-                          <li>Keep healthy habits while traveling</li>
-                        </ul>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="rounded-xl shadow-sm">
-                      <CardHeader>
-                        <CardTitle>Favourite Brands</CardTitle>
-                        <CardDescription>Sample interests</CardDescription>
-                      </CardHeader>
-                      <CardContent className="flex flex-wrap gap-2">
-                        {['adidas', 'nike', 'netflix', 'airbnb', 'zara'].map((b) => (
-                          <Badge key={b} variant="outline" className="capitalize">{b}</Badge>
-                        ))}
-                      </CardContent>
-                    </Card>
+                      
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="absolute -bottom-2 -right-2 h-10 w-10 rounded-full p-0 bg-white dark:bg-gray-900 shadow-xl border-2 hover:scale-110 transition-transform"
+                      >
+                        <Edit3 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
 
-                  {/* Success Story Carousel */}
-                  <div className="lg:col-span-2">
-                    <SuccessStoryCarousel />
+                  {/* Identity Section */}
+                  <div className="flex-1 text-center lg:text-left">
+                    <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
+                          <h1 className="text-4xl font-bold text-foreground tracking-tight">{profile.displayName}</h1>
+                          <Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />
+                        </div>
+                        
+                        <div className="flex items-center justify-center lg:justify-start gap-2 mb-3">
+                          <p className="text-lg text-muted-foreground">@{profile.handle || `@${profile.displayName.toLowerCase().replace(/\s+/g, '_')}`}</p>
+                          {mockUserProfile.longevityArchetype && (
+                            <>
+                              <span className="text-muted-foreground">•</span>
+                              <span className="text-sm text-muted-foreground">{mockUserProfile.longevityArchetype}</span>
+                            </>
+                          )}
+                        </div>
+
+                        <p className="text-sm text-muted-foreground max-w-xl mb-4">
+                          {profile.bio || "Building a balanced life through connection, health, and purpose."}
+                        </p>
+
+                        {/* Role Badges */}
+                        <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap mb-4">
+                          {mockUserProfile.roles.map((role) => (
+                            <Badge key={role} variant="secondary" className="capitalize rounded-full px-3 py-1">
+                              {role}
+                            </Badge>
+                          ))}
+                          {mockUserProfile.membershipTier && (
+                            <Badge variant="outline" className="capitalize text-primary rounded-full px-3 py-1 border-2">
+                              {mockUserProfile.membershipTier}
+                            </Badge>
+                          )}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex items-center justify-center lg:justify-start gap-3">
+                          <Button variant="outline" className="rounded-full gap-2 shadow-sm">
+                            <Share2 className="h-4 w-4" />
+                            Share Profile
+                          </Button>
+                          <Button variant="outline" className="rounded-full gap-2 shadow-sm">
+                            <QrCode className="h-4 w-4" />
+                            QR Code
+                          </Button>
+                          <Button variant="outline" className="rounded-full gap-2 shadow-sm">
+                            <Copy className="h-4 w-4" />
+                            Copy Link
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Animated Vitana Index Orb */}
+                      <div className="relative flex-shrink-0">
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/20 to-[hsl(var(--pill-nutrition-accent))]/20 blur-2xl animate-pulse" />
+                        
+                        <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/10 to-[hsl(var(--pill-nutrition-accent))]/10 backdrop-blur-xl border border-[hsl(var(--sys-vitana-accent))]/30 shadow-[0_8px_32px_rgba(0,0,0,0.08)] flex flex-col items-center justify-center group hover:scale-105 transition-all duration-300">
+                          <TrendingUp className="w-6 h-6 text-[hsl(var(--sys-vitana-accent))] mb-1 group-hover:scale-110 transition-transform" />
+                          <div className="text-3xl font-bold bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] bg-clip-text text-transparent">
+                            {mockUserProfile.vitanaIndex}
+                          </div>
+                          <div className="text-[10px] font-semibold text-muted-foreground tracking-wider">
+                            VITANA INDEX
+                          </div>
+                          {mockUserProfile.vitanaPercentile && (
+                            <Badge 
+                              variant="outline" 
+                              className="mt-1 text-[10px] px-2 py-0 border-[hsl(var(--sys-vitana-accent))]/30 bg-[hsl(var(--sys-vitana-accent))]/10 text-[hsl(var(--sys-vitana-accent))]"
+                            >
+                              TOP {100 - mockUserProfile.vitanaPercentile}%
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ID Card Footer */}
+                <div className="mt-6 pt-6 border-t border-gray-200/50 dark:border-gray-700/50 flex items-center justify-between text-xs text-muted-foreground">
+                  <div>Member since {new Date().getFullYear()}</div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono">ID: {mockUserProfile.id.slice(0, 8)}</span>
+                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--sys-vitana-accent))] animate-pulse" />
                   </div>
                 </div>
               </div>
-            </TabsContent>
+            </div>
+
+            {/* Achievements Banner */}
+            <div className="mb-8">
+              <AchievementsBanner />
+            </div>
+
+            {/* Unified Bottom Navigation Tabs */}
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="mb-8 rounded-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 p-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
+                <TabsTrigger 
+                  value="overview" 
+                  className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--sys-vitana-accent))] data-[state=active]:to-[hsl(var(--pill-nutrition-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+                >
+                  Posts
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="highlights" 
+                  className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-mental-accent))] data-[state=active]:to-[hsl(var(--pill-sleep-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+                >
+                  Media
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="connections" 
+                  className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--domain-community-accent))] data-[state=active]:to-[hsl(var(--pill-mental-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+                >
+                  Groups
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="activity" 
+                  className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-hydration-accent))] data-[state=active]:to-[hsl(var(--pill-exercise-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+                >
+                  Events
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="health" 
+                  className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-nutrition-accent))] data-[state=active]:to-[hsl(var(--pill-hydration-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+                >
+                  Health
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="overview">
+                <div className="grid grid-cols-1 gap-6">
+                  {/* Vitana Impact Panel */}
+                  <VitanaImpactPanel 
+                    vitanaIndex={mockUserProfile.vitanaIndex || 750}
+                    communityStats={{
+                      posts: dummyProfileStats.posts,
+                      helpedUsers: 12,
+                      featuredStories: 3,
+                      influenceScore: 85
+                    }}
+                  />
+
+                  <Card className="rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
+                    <CardHeader>
+                      <CardTitle>Motivations</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {[
+                        { label: 'Price', value: 60 },
+                        { label: 'Comfort', value: 72 },
+                        { label: 'Convenience', value: 88 },
+                        { label: 'Speed', value: 54 },
+                        { label: 'Loyalty/Miles', value: 42 },
+                      ].map((m) => (
+                        <div key={m.label}>
+                          <div className="mb-1 flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">{m.label}</span>
+                            <span className="font-medium">{m.value}%</span>
+                          </div>
+                          <Progress value={m.value} />
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+
+                  <Card className="rounded-xl shadow-sm">
+                    <CardHeader>
+                      <CardTitle>Personality</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {[
+                        { left: 'Introvert', right: 'Extrovert', value: 35 },
+                        { left: 'Analytical', right: 'Creative', value: 75 },
+                        { left: 'Loyal', right: 'Fickle', value: 20 },
+                        { left: 'Passive', right: 'Active', value: 80 },
+                      ].map((row, idx) => (
+                        <div key={idx}>
+                          <div className="mb-1 flex justify-between text-xs text-muted-foreground">
+                            <span>{row.left}</span>
+                            <span>{row.right}</span>
+                          </div>
+                          <Progress value={row.value} />
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+
+                  <Card className="rounded-xl shadow-sm">
+                    <CardHeader>
+                      <CardTitle>Frustrations</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                        <li>Too much time spent planning when busy</li>
+                        <li>Too many apps for one purpose</li>
+                        <li>Prefers simple flows over complex settings</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="rounded-xl shadow-sm">
+                    <CardHeader>
+                      <CardTitle>Goals</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                        <li>Spend less time booking and organizing</li>
+                        <li>Keep healthy habits while traveling</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="rounded-xl shadow-sm">
+                    <CardHeader>
+                      <CardTitle>Favourite Brands</CardTitle>
+                      <CardDescription>Sample interests</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex flex-wrap gap-2">
+                      {['adidas', 'nike', 'netflix', 'airbnb', 'zara'].map((b) => (
+                        <Badge key={b} variant="outline" className="capitalize">{b}</Badge>
+                      ))}
+                    </CardContent>
+                  </Card>
+
+                  {/* Success Story Carousel */}
+                  <div>
+                    <SuccessStoryCarousel />
+                  </div>
+                </div>
+              </TabsContent>
 
             <TabsContent value="highlights">
               <Card className="rounded-xl shadow-sm">
@@ -369,6 +450,7 @@ export default function Profile() {
           </Tabs>
         </div>
       </section>
+      </div>
     </AppLayout>
   );
 }
