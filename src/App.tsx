@@ -178,6 +178,7 @@ import StreamSettings from "./pages/admin/StreamSettings";
 import ProactiveSettings from "./pages/admin/ai-assistant/ProactiveSettings";
 import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
+import { useMessageNotifications } from "@/hooks/useMessageNotifications";
 
 const App = () => {
   // Initialize session ID for activity logging
@@ -192,6 +193,9 @@ const App = () => {
 
   // Initialize appointment notifications globally
   useAppointmentNotifications();
+  
+  // Initialize message notifications globally
+  useMessageNotifications();
 
   return (
     <RTLProvider>
