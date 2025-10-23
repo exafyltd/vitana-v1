@@ -215,7 +215,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
           )}
 
           {/* Glass Action Buttons with Soft Shadows and Hover Lift */}
-          <div className="flex items-center justify-center gap-3 flex-wrap">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             {isOwner ? (
               <>
                 <Button 
@@ -240,7 +240,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
             ) : (
               <>
                 <Button 
-                  variant={isFollowing ? "secondary" : "default"} 
+                  variant="default"
                   className="rounded-full bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:from-[hsl(var(--sys-vitana-accent))]/90 hover:to-[hsl(var(--pill-nutrition-accent))]/90 hover:-translate-y-1 transition-all shadow-[0_6px_20px_rgba(0,0,0,0.12),0_0_40px_hsl(var(--sys-vitana-accent)/0.3)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.16),0_0_60px_hsl(var(--sys-vitana-accent)/0.4)] border-0 text-white"
                   onClick={handleFollowClick}
                   disabled={followLoading}
@@ -249,67 +249,36 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                   {followLoading ? "..." : isFollowing ? "Following" : "Follow"}
                 </Button>
                 <Button 
-                  variant="outline" 
-                  className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-[0_4px_12px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.08)]" 
+                  variant="secondary"
+                  className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-[0_4px_12px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.08)] text-white dark:text-white" 
                   onClick={handleMessageClick}
                   disabled={isCreatingThread}
                 >
-                  <MessageSquare className="h-4 w-4 mr-2 text-white dark:text-white" />
-                  <span className="text-white dark:text-white">{isCreatingThread ? "Opening..." : "Message"}</span>
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  <span>{isCreatingThread ? "Opening..." : "Message"}</span>
                 </Button>
                 
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div>
-                        <ProfileShareSheet
-                          isOpen={shareHook.isShareOpen}
-                          onOpenChange={shareHook.setIsShareOpen}
-                          onCopyLink={shareHook.copyLink}
-                          onShareToX={shareHook.shareToX}
-                          onShareToLinkedIn={shareHook.shareToLinkedIn}
-                          onShareToWhatsApp={shareHook.shareToWhatsApp}
-                          onShareViaEmail={shareHook.shareViaEmail}
-                          onShareNative={shareHook.shareNative}
-                          canUseNativeShare={shareHook.canUseNativeShare}
-                          trigger={
-                            <Button 
-                              variant="outline" 
-                              className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-[0_4px_12px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.08)]"
-                              onClick={shareHook.openShare}
-                              disabled={!shareHook.isPublic}
-                            >
-                              <Share2 className="h-4 w-4 mr-2 text-white dark:text-white" />
-                              <span className="text-white dark:text-white">Share</span>
-                            </Button>
-                          }
-                        />
-                      </div>
-                    </TooltipTrigger>
-                    {!shareHook.isPublic && (
-                      <TooltipContent>
-                        <p>Profile must be public to share</p>
-                      </TooltipContent>
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
-                
-                {shareHook.isPublic && (
-                  <Button 
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-[0_4px_12px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.08)]"
-                    onClick={() => setQrModalOpen(true)}
-                    title="View QR Code"
-                  >
-                    <svg className="h-4 w-4 text-white dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <rect x="3" y="3" width="8" height="8" rx="1" />
-                      <rect x="13" y="3" width="8" height="8" rx="1" />
-                      <rect x="3" y="13" width="8" height="8" rx="1" />
-                      <rect x="13" y="13" width="8" height="8" rx="1" />
-                    </svg>
-                  </Button>
-                )}
+                <ProfileShareSheet
+                  isOpen={shareHook.isShareOpen}
+                  onOpenChange={shareHook.setIsShareOpen}
+                  onCopyLink={shareHook.copyLink}
+                  onShareToX={shareHook.shareToX}
+                  onShareToLinkedIn={shareHook.shareToLinkedIn}
+                  onShareToWhatsApp={shareHook.shareToWhatsApp}
+                  onShareViaEmail={shareHook.shareViaEmail}
+                  onShareNative={shareHook.shareNative}
+                  canUseNativeShare={shareHook.canUseNativeShare}
+                  trigger={
+                    <Button 
+                      variant="secondary"
+                      className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-[0_4px_12px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.08)] text-white dark:text-white"
+                      onClick={shareHook.openShare}
+                    >
+                      <Share2 className="h-4 w-4 mr-2" />
+                      <span>Share</span>
+                    </Button>
+                  }
+                />
               </>
             )}
           </div>
