@@ -158,20 +158,20 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div id="social-connections-section" className="relative h-full flex flex-col items-center justify-center p-6 bg-card border rounded-2xl shadow-lg overflow-hidden">
-        {/* Faint top gradient bar for visual anchoring */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20" />
+      <div id="social-connections-section" className="relative h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden">
+        {/* Premium gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--util-profile-accent))]/5 via-transparent to-[hsl(var(--pill-hydration-accent))]/5 pointer-events-none" />
         
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-foreground mb-2">
-            {isOwnProfile ? 'Connect Social Media' : 'Social Media Profiles'}
+        <div className="relative z-10 text-center mb-8">
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            Social Presence
           </h2>
           <p className="text-sm text-muted-foreground">
-            {isOwnProfile ? 'Import your profiles to enrich Vitana' : 'Connected social media accounts'}
+            Verified connections across your digital life
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 w-full max-w-md">
+        <div className="relative z-10 grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-2xl">
           <TooltipProvider delayDuration={200}>
             {allPlatforms.map((platform) => {
               const connected = isConnected(platform.platform);
@@ -179,48 +179,36 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
               const cardContent = (
                 <div
                   key={platform.name}
-                  className={`group relative flex flex-col items-center pt-3 pb-3 px-3 rounded-xl border transition-all duration-300 ease-out focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
+                  className={`group relative flex flex-col items-center p-5 rounded-2xl border transition-all duration-300 ease-out ${
                     connected 
-                      ? `bg-card border-border cursor-pointer hover:-translate-y-1` 
-                      : `hover:scale-[1.01] hover:-translate-y-0.5`
+                      ? `bg-white/70 dark:bg-gray-800/70 backdrop-blur-md cursor-pointer hover:-translate-y-1 hover:shadow-xl` 
+                      : `bg-gray-100/40 dark:bg-gray-900/40 backdrop-blur-sm hover:scale-[1.02]`
                   }`}
                 style={connected ? {
-                  boxShadow: `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`,
+                  borderColor: platform.brandColor,
+                  boxShadow: `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 1px 0 rgba(255,255,255,0.3)`,
                 } as React.CSSProperties : {
-                  backgroundColor: 'rgba(250, 250, 250, 0.6)',
-                  boxShadow: 'inset 0 1px 1px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03)',
-                  borderColor: 'rgba(0, 0, 0, 0.05)',
+                  borderColor: 'rgba(160, 160, 160, 0.2)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                  filter: 'grayscale(0.7)',
+                  opacity: 0.6
                 } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   if (connected) {
-                    e.currentTarget.style.borderColor = platform.brandColor;
-                    e.currentTarget.style.boxShadow = `inset 0 0 40px ${platform.brandColor}08, inset 0 1px 3px rgba(0,0,0,0.05), 0 4px 24px ${platform.brandColor}30, 0 0 0 1px ${platform.brandColor}20`;
+                    e.currentTarget.style.boxShadow = `0 16px 48px ${platform.brandColor}30, 0 0 60px ${platform.brandColor}25, inset 0 1px 0 rgba(255,255,255,0.4)`;
                   } else {
-                    e.currentTarget.style.borderColor = platform.brandColor;
-                    e.currentTarget.style.boxShadow = `inset 0 1px 1px rgba(0,0,0,0.02), 0 2px 8px ${platform.brandColor}18, 0 0 0 1px ${platform.brandColor}40`;
-                    // Color the icon on hover
-                    const icon = e.currentTarget.querySelector('.unconnected-icon') as HTMLElement;
-                    if (icon) {
-                      icon.style.color = platform.brandColor;
-                      icon.style.opacity = '1';
-                      icon.style.filter = 'none';
-                    }
+                    e.currentTarget.style.filter = 'grayscale(0.3)';
+                    e.currentTarget.style.opacity = '0.8';
+                    e.currentTarget.style.borderColor = platform.brandColor + '40';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (connected) {
-                    e.currentTarget.style.borderColor = '';
-                    e.currentTarget.style.boxShadow = `inset 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06), 0 0 20px ${platform.brandColor}1F`;
+                    e.currentTarget.style.boxShadow = `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 1px 0 rgba(255,255,255,0.3)`;
                   } else {
-                    e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.05)';
-                    e.currentTarget.style.boxShadow = 'inset 0 1px 1px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03)';
-                    // Reset icon on hover leave
-                    const icon = e.currentTarget.querySelector('.unconnected-icon') as HTMLElement;
-                    if (icon) {
-                      icon.style.color = '#999';
-                      icon.style.opacity = '0.65';
-                      icon.style.filter = 'grayscale(0.3)';
-                    }
+                    e.currentTarget.style.filter = 'grayscale(0.7)';
+                    e.currentTarget.style.opacity = '0.6';
+                    e.currentTarget.style.borderColor = 'rgba(160, 160, 160, 0.2)';
                   }
                 }}
                 onClick={() => connected && handleOpenProfile(platform.platform)}
@@ -228,97 +216,76 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 role={connected ? "link" : undefined}
                 aria-label={connected ? `Open ${platform.name} profile` : undefined}
               >
-                {/* Icon - fixed size, centered */}
-                <div className="flex items-center justify-center h-[30px] mb-2">
+                {/* Icon with green check overlay for connected */}
+                <div className="relative flex items-center justify-center h-[36px] mb-3">
                   <div 
-                    className={`relative flex items-center justify-center ${connected ? 'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-105' : ''}`}
+                    className={`relative flex items-center justify-center ${connected ? 'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110' : ''}`}
                   >
-                    {/* Gradient background for connected logos */}
-                    {connected && (
-                      <div 
-                        className="absolute inset-0 rounded-lg -m-1.5"
-                        style={{
-                          background: platform.platform === 'instagram' 
-                            ? 'linear-gradient(45deg, #F58529 0%, #FEDA77 25%, #DD2A7B 50%, #8134AF 75%, #515BD4 100%)'
-                            : platform.platform === 'linkedin'
-                            ? 'linear-gradient(135deg, #0A66C2 0%, #0077B5 100%)'
-                            : platform.platform === 'facebook'
-                            ? 'linear-gradient(135deg, #1877F2 0%, #0C63D4 100%)'
-                            : platform.platform === 'youtube'
-                            ? 'linear-gradient(135deg, #FF0000 0%, #CC0000 100%)'
-                            : platform.platform === 'x'
-                            ? 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)'
-                            : platform.platform === 'tiktok'
-                            ? 'linear-gradient(135deg, #000000 0%, #00f2ea 100%)'
-                            : `linear-gradient(135deg, ${platform.brandColor} 0%, ${platform.brandColor}CC 100%)`,
-                          opacity: 0.08,
-                        }}
-                      />
-                    )}
-                    
                     <div 
-                      className={`relative z-10 transition-all duration-300 ${
-                        platform.platform === 'x' && connected 
-                          ? 'dark:text-white' 
-                          : ''
-                      } ${!connected ? 'unconnected-icon' : ''}`}
-                      style={connected && platform.platform !== 'instagram' ? { 
+                      className={`relative z-10 transition-all duration-300`}
+                      style={connected ? { 
                         color: platform.brandColor,
-                        filter: `drop-shadow(0 0 12px ${platform.brandColor}1F)`
-                      } : connected && platform.platform === 'instagram' ? {
-                        filter: 'drop-shadow(0 0 12px rgba(221, 42, 123, 0.12))'
+                        filter: `drop-shadow(0 4px 16px ${platform.brandColor}40)`
                       } : {
-                        color: '#999',
-                        filter: 'grayscale(0.3)',
-                        opacity: 0.65
+                        color: '#aaa',
+                        filter: 'grayscale(1)',
+                        opacity: 0.5
                       }}
                     >
-                      {/* Render custom icon or lucide icon based on connection state */}
                       {platform.platform === 'instagram' ? (
-                        <InstagramIcon className="h-[28px] w-[28px]" connected={connected} />
+                        <InstagramIcon className="h-[32px] w-[32px]" connected={connected} />
                       ) : (
                         platform.icon
                       )}
                     </div>
+                    
+                    {/* Green check overlay for connected */}
+                    {connected && (
+                      <div className="absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-lg">
+                        <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
                 {/* Platform name */}
-                <span className={`text-sm font-medium mb-2 transition-colors duration-300 ${
-                  connected ? 'text-foreground' : 'text-muted-foreground/70'
-                }`}>
+                <span className={`text-sm font-semibold mb-3 transition-colors duration-300 ${
+                  connected ? 'text-foreground' : 'text-muted-foreground/50'
+                }`}
+                style={connected ? { color: platform.brandColor } : {}}
+                >
                   {platform.name}
                 </span>
                 
-                {/* Connected pill and actions - baseline aligned */}
-                <div className="flex flex-col items-center gap-2.5 w-full min-h-[28px]">
+                {/* Status or action button */}
+                <div className="flex flex-col items-center gap-2 w-full">
                   {connected ? (
                     <>
                       <div 
-                        className="inline-flex items-center gap-1.5 px-3 h-7 rounded-full text-xs font-medium border-0"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
                         style={{
-                          backgroundColor: `${platform.brandColor}18`,
-                          color: platform.brandColor
+                          backgroundColor: `${platform.brandColor}15`,
+                          color: platform.brandColor,
+                          border: `1px solid ${platform.brandColor}30`
                         }}
                       >
-                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
                         <span>Connected</span>
                       </div>
                       {isOwnProfile && (
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-7 text-xs px-3 w-full transition-colors duration-200 hover:underline"
+                          className="h-7 text-xs px-3 w-full transition-colors duration-200"
                           style={{
-                            '--hover-color': platform.brandColor,
-                          } as React.CSSProperties}
+                            color: platform.brandColor
+                          }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.color = platform.brandColor;
+                            e.currentTarget.style.textDecoration = 'underline';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.color = '';
+                            e.currentTarget.style.textDecoration = 'none';
                           }}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -333,7 +300,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="h-8 text-xs px-4 w-full border-2 font-semibold hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+                      className="h-8 text-xs px-4 w-full font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-200"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleConnect(platform);
@@ -342,7 +309,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                       Connect
                     </Button>
                   ) : (
-                    <span className="text-xs text-muted-foreground/60">Not linked yet</span>
+                    <span className="text-xs text-muted-foreground/40 italic">Not linked</span>
                   )}
                 </div>
               </div>

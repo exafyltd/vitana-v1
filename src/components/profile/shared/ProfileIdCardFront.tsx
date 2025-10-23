@@ -86,25 +86,36 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   };
   
   return (
-    <div className="relative h-full flex flex-col items-center justify-center p-8 bg-card border rounded-2xl shadow-lg">
-      {/* Avatar */}
-      <div className="relative mb-4">
-        {/* Ambient glow behind avatar */}
+    <div className="relative h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden">
+      {/* Premium gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/5 via-transparent to-[hsl(var(--pill-mental-accent))]/5 pointer-events-none" />
+      
+      {/* User ID Chip - Top Right */}
+      <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 shadow-sm">
+        <span className="text-xs font-medium text-muted-foreground">ID • {profile.id.slice(0, 8)}</span>
+      </div>
+      
+      {/* Avatar with Glowing Ring */}
+      <div className="relative mb-4 z-10">
+        {/* Animated ambient glow */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-48 h-48 rounded-full" 
+          <div className="w-52 h-52 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/20 to-[hsl(var(--pill-nutrition-accent))]/20 blur-3xl animate-pulse" />
+        </div>
+        
+        {/* Glowing ring animation */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-[200px] h-[200px] rounded-full border-2 border-[hsl(var(--sys-vitana-accent))]/30 animate-pulse" 
                style={{
-                 backgroundColor: 'hsl(var(--accent))',
-                 opacity: 0.06,
-                 filter: 'blur(40px)'
+                 boxShadow: '0 0 30px hsl(var(--sys-vitana-accent) / 0.3), inset 0 0 20px hsl(var(--sys-vitana-accent) / 0.1)'
                }} />
         </div>
         
-        <Avatar className="relative h-48 w-48 border-4 border-background shadow-xl drop-shadow-2xl"
+        <Avatar className="relative h-48 w-48 border-4 border-white/80 dark:border-gray-800/80 shadow-[0_20px_60px_rgba(0,0,0,0.2),0_0_40px_hsl(var(--sys-vitana-accent)/0.2)]"
                 style={{
-                  filter: 'drop-shadow(0 0 20px rgba(0, 0, 0, 0.1)) drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15))'
+                  filter: 'drop-shadow(0 0 20px hsl(var(--sys-vitana-accent) / 0.3))'
                 }}>
-          <AvatarImage src={profile.avatarUrl} alt={profile.name} />
-          <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-primary to-secondary text-white">
+          <AvatarImage src={profile.avatarUrl} alt={profile.name} className="object-cover" />
+          <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white">
             {profile.name.split(' ').map(n => n[0]).join('')}
           </AvatarFallback>
         </Avatar>
@@ -112,43 +123,45 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
           <Button
             size="sm"
             variant="outline"
-            className="absolute bottom-0 right-0 h-8 w-8 rounded-full p-0 bg-background shadow-lg"
+            className="absolute bottom-2 right-2 h-9 w-9 rounded-full p-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-lg hover:scale-110 transition-transform"
             onClick={onEdit}
           >
-            <Edit3 className="h-3 w-3" />
+            <Edit3 className="h-4 w-4" />
           </Button>
         )}
       </div>
 
       {/* Name, Handle, VITANA Index */}
-      <div className="text-center mb-4 w-full">
+      <div className="relative text-center mb-4 w-full z-10">
         <div className="flex items-center justify-center gap-3 mb-2">
-          <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
+          <h1 className="text-3xl font-bold text-foreground">{profile.name}</h1>
           {profile.roles.includes('professional') && (
-            <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+            <Star className="h-6 w-6 fill-yellow-400 text-yellow-400 drop-shadow-md" />
           )}
-          {/* VITANA Index Badge */}
+          {/* Animated VITANA Index Orb */}
           {profile.vitanaIndex && (
             <div className="relative flex items-center">
-              <div className="absolute inset-0 w-14 h-14 rounded-full bg-white/40 blur-lg animate-pulse"></div>
+              {/* Pulsing glow layers */}
+              <div className="absolute inset-0 w-16 h-16 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/30 to-[hsl(var(--pill-nutrition-accent))]/30 blur-2xl animate-pulse"></div>
               
-              <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-xl border border-gray-300/60 flex flex-col items-center justify-center animate-pulse"
+              {/* Main orb with gradient */}
+              <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] shadow-[0_10px_40px_rgba(0,0,0,0.15),0_0_30px_hsl(var(--sys-vitana-accent)/0.4)] border-2 border-white/30 dark:border-white/20 flex flex-col items-center justify-center animate-pulse"
                    style={{
-                     background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)',
-                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)'
+                     background: 'linear-gradient(135deg, hsl(var(--sys-vitana-accent)) 0%, hsl(var(--pill-nutrition-accent)) 100%)',
                    }}>
                 <div className="flex flex-col items-center justify-center text-center">
-                  <div className="text-lg font-bold leading-none" style={{color: '#006D5B'}}>{profile.vitanaIndex}</div>
-                  <div className="text-[6px] font-medium leading-tight mt-0.5" style={{color: '#2C2C2C'}}>
-                    <span className="font-semibold">VITANA</span>
+                  <div className="text-xl font-bold leading-none text-white drop-shadow-md">{profile.vitanaIndex}</div>
+                  <div className="text-[7px] font-semibold leading-tight mt-0.5 text-white/90">
+                    VITANA
                   </div>
                 </div>
               </div>
               
+              {/* Tier badge as gradient chip */}
               {profile.vitanaPercentile && (
                 <div className="absolute -top-1 -right-1 z-20">
-                  <div className="h-3 px-1 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 shadow-md flex items-center justify-center">
-                    <span className="text-[6px] font-bold text-white leading-none">TOP {100 - profile.vitanaPercentile}%</span>
+                  <div className="h-4 px-2 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 shadow-lg flex items-center justify-center border border-white/30">
+                    <span className="text-[7px] font-bold text-white leading-none">TOP {100 - profile.vitanaPercentile}%</span>
                   </div>
                 </div>
               )}
@@ -166,31 +179,38 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
           )}
         </div>
         
-        {/* Role Badges */}
+        {/* Role Badges - Gradient Chips */}
         <div className="flex items-center justify-center gap-2 flex-wrap mb-4">
           {profile.roles.map((role) => (
-            <Badge key={role} variant="secondary" className="capitalize">
-              {role}
-            </Badge>
+            <div key={role} className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))]/20 to-[hsl(var(--pill-nutrition-accent))]/20 rounded-full blur-sm group-hover:blur-md transition-all" />
+              <Badge variant="secondary" className="relative capitalize bg-gradient-to-r from-white/80 to-white/60 dark:from-gray-800/80 dark:to-gray-800/60 backdrop-blur-sm border-[hsl(var(--sys-vitana-accent))]/20 shadow-sm">
+                {role}
+              </Badge>
+            </div>
           ))}
           {profile.membershipTier && (
-            <Badge variant="outline" className="capitalize text-primary">
-              {profile.membershipTier}
-            </Badge>
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))]/30 to-[hsl(var(--pill-nutrition-accent))]/30 rounded-full blur-sm group-hover:blur-md transition-all" />
+              <Badge variant="outline" className="relative capitalize bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))]/10 to-[hsl(var(--pill-nutrition-accent))]/10 border-[hsl(var(--sys-vitana-accent))]/30 text-[hsl(var(--sys-vitana-accent))] font-semibold shadow-sm">
+                {profile.membershipTier}
+              </Badge>
+            </div>
           )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center justify-center gap-2">
+        {/* Glass Action Buttons with Hover Lift */}
+        <div className="flex items-center justify-center gap-3">
           {isOwner ? (
             <>
-              <Button variant="ghost" className="rounded-full">
+              <Button variant="ghost" className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-0.5 transition-all shadow-sm">
                 <ExternalLink className="h-4 w-4" />
               </Button>
               {editMode && onEdit && (
                 <Button 
                   variant="outline" 
                   onClick={onEdit}
+                  className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-0.5 transition-all shadow-sm"
                 >
                   <Edit3 className="h-4 w-4 mr-2" />
                   Edit Identity
@@ -201,7 +221,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
             <>
               <Button 
                 variant={isFollowing ? "secondary" : "default"} 
-                className="rounded-full"
+                className="rounded-full bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:shadow-lg hover:-translate-y-1 transition-all shadow-md border-0 text-white"
                 onClick={handleFollowClick}
                 disabled={followLoading}
               >
@@ -210,7 +230,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
               </Button>
               <Button 
                 variant="outline" 
-                className="rounded-full" 
+                className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-md" 
                 onClick={handleMessageClick}
                 disabled={isCreatingThread}
               >
@@ -235,7 +255,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
                         trigger={
                           <Button 
                             variant="outline" 
-                            className="rounded-full"
+                            className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 hover:-translate-y-1 transition-all shadow-md"
                             onClick={shareHook.openShare}
                             disabled={!shareHook.isPublic}
                           >
