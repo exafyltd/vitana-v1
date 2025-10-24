@@ -14,7 +14,7 @@ import { useProfileShare } from "@/hooks/useProfileShare";
 import { MessageComposeModal } from "./MessageComposeModal";
 import { ShareProfileModal } from "./ShareProfileModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
-import { useProfileTheme } from "@/hooks/useProfileTheme";
+import { useProfileTheme, ThemeConfig } from "@/hooks/useProfileTheme";
 import {
   Tooltip,
   TooltipContent,
@@ -27,9 +27,11 @@ interface ProfileIdCardFrontProps {
   scope: Scope;
   editMode?: boolean;
   onEdit?: () => void;
+  themeConfig: ThemeConfig;
+  cycleTheme: () => void;
 }
 
-export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: ProfileIdCardFrontProps) {
+export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConfig, cycleTheme }: ProfileIdCardFrontProps) {
   const isOwner = scope === 'owner';
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -40,8 +42,6 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
-  const targetUserId = isOwner ? user?.id : profile.id;
-  const { themeConfig, cycleTheme } = useProfileTheme(targetUserId);
 
   const handleFollowClick = async () => {
     if (isFollowing) {

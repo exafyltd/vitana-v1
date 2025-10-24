@@ -16,6 +16,7 @@ import { AchievementsBanner } from "@/components/profile/AchievementsBanner";
 import { SuccessStoryCarousel } from "@/components/profile/community/SuccessStoryCarousel";
 import { ProfileIdCardFront } from "@/components/profile/shared/ProfileIdCardFront";
 import { ProfileIdCardBack } from "@/components/profile/shared/ProfileIdCardBack";
+import { useProfileTheme } from "@/hooks/useProfileTheme";
 
 // Dummy data for the profile stats
 const dummyProfileStats = {
@@ -36,6 +37,7 @@ export default function Profile() {
   const { profile, loading } = useProfile();
   const { user } = useAuth();
   const location = useLocation();
+  const { themeConfig, cycleTheme } = useProfileTheme(user?.id);
 
   // Scroll to social connections section if hash is present
   useEffect(() => {
@@ -125,10 +127,12 @@ export default function Profile() {
                 scope="owner" 
                 editMode={true} 
                 onEdit={handleEdit}
+                themeConfig={themeConfig}
+                cycleTheme={cycleTheme}
               />
               
               {/* Back ID Card - Right */}
-              <ProfileIdCardBack profile={mockUserProfile} />
+              <ProfileIdCardBack profile={mockUserProfile} themeConfig={themeConfig} />
             </div>
 
             {/* Achievements Banner */}

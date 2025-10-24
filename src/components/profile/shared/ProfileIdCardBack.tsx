@@ -8,10 +8,11 @@ import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { useState } from "react";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
-import { useProfileTheme } from "@/hooks/useProfileTheme";
+import { useProfileTheme, ThemeConfig } from "@/hooks/useProfileTheme";
 
 interface ProfileIdCardBackProps {
   profile: UserProfile;
+  themeConfig: ThemeConfig;
 }
 
 interface SocialLink {
@@ -36,17 +37,13 @@ interface PlatformConfig {
   brandBorder: string;
 }
 
-export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
+export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackProps) {
   const { user } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
   
   // Check if this is the user's own profile
   const isOwnProfile = user?.id === (profile.user_id || profile.id);
-  
-  // Get theme configuration for adaptive accents
-  const targetUserId = isOwnProfile ? user?.id : profile.id;
-  const { themeConfig } = useProfileTheme(targetUserId);
   
   // Check if platform is connected by checking dedicated URL columns
   const isConnected = (platform: SocialPlatform): boolean => {

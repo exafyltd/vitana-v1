@@ -16,7 +16,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
   const { user } = useAuth();
   const isOwner = scope === 'owner';
   const targetUserId = isOwner ? user?.id : profile.id;
-  const { themeConfig } = useProfileTheme(targetUserId);
+  const { themeConfig, cycleTheme } = useProfileTheme(targetUserId);
   
   return (
     <div className="relative pt-12 pb-6">
@@ -29,6 +29,8 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
             scope={scope} 
             editMode={editMode} 
             onEdit={onEdit}
+            themeConfig={themeConfig}
+            cycleTheme={cycleTheme}
           />
           
           {/* Themed Vertical Divider - Only visible on large screens */}
@@ -37,7 +39,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
           </div>
           
           {/* Back ID Card - Right */}
-          <ProfileIdCardBack profile={profile} />
+          <ProfileIdCardBack profile={profile} themeConfig={themeConfig} />
         </div>
       </div>
     </div>
