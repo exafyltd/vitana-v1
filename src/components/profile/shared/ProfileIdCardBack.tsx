@@ -1,11 +1,14 @@
 import { UserProfile } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
-import { Linkedin, Youtube, Plus, Link as LinkIcon, Facebook } from "lucide-react";
+import { Plus, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { XIcon } from "@/components/icons/XIcon";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { InstagramIcon } from "@/components/icons/InstagramIcon";
+import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
+import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
+import { FacebookIcon } from "@/components/icons/FacebookIcon";
 import { useState } from "react";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 import { useProfileTheme, ThemeConfig } from "@/hooks/useProfileTheme";
@@ -63,7 +66,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'LinkedIn', 
       platform: 'linkedin',
-      icon: <Linkedin className="h-[30px] w-[30px]" />, 
+      icon: <LinkedInIcon className="h-[32px] w-[32px]" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(10,102,194,0.15)]',
       urlPattern: /linkedin\.com/i,
       brandColor: '#0A66C2',
@@ -75,7 +78,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'Instagram', 
       platform: 'instagram',
-      icon: <InstagramIcon className="h-[28px] w-[28px]" connected={true} />, 
+      icon: <InstagramIcon className="h-[32px] w-[32px]" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(221,42,123,0.12)]',
       urlPattern: /instagram\.com/i,
       brandColor: '#DD2A7B',
@@ -87,7 +90,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'X', 
       platform: 'x',
-      icon: <XIcon className="h-[30px] w-[30px]" />, 
+      icon: <XIcon className="h-[32px] w-[32px]" />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(15,20,25,0.15)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]',
       urlPattern: /twitter\.com|x\.com/i,
       brandColor: '#0F1419',
@@ -99,7 +102,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'TikTok', 
       platform: 'tiktok',
-      icon: <TikTokIcon className="h-[30px] w-[30px]" />, 
+      icon: <TikTokIcon className="h-[32px] w-[32px]" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(0,242,234,0.15)]',
       urlPattern: /tiktok\.com/i,
       brandColor: '#00f2ea',
@@ -111,7 +114,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'YouTube', 
       platform: 'youtube',
-      icon: <Youtube className="h-[30px] w-[30px]" />, 
+      icon: <YouTubeIcon className="h-[32px] w-[32px]" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(255,0,0,0.15)]',
       urlPattern: /youtube\.com|youtu\.be/i,
       brandColor: '#FF0000',
@@ -123,7 +126,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
     { 
       name: 'Facebook', 
       platform: 'facebook',
-      icon: <Facebook className="h-[30px] w-[30px]" />, 
+      icon: <FacebookIcon className="h-[32px] w-[32px]" connected={true} />, 
       hoverHalo: 'hover:shadow-[0_0_20px_rgba(24,119,242,0.15)]',
       urlPattern: /facebook\.com/i,
       brandColor: '#1877F2',
@@ -273,6 +276,14 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                     >
                       {platform.platform === 'instagram' ? (
                         <InstagramIcon className="h-[32px] w-[32px]" connected={connected} />
+                      ) : platform.platform === 'linkedin' ? (
+                        <LinkedInIcon className="h-[32px] w-[32px]" connected={connected} />
+                      ) : platform.platform === 'tiktok' ? (
+                        <TikTokIcon className="h-[32px] w-[32px]" connected={connected} />
+                      ) : platform.platform === 'youtube' ? (
+                        <YouTubeIcon className="h-[32px] w-[32px]" connected={connected} />
+                      ) : platform.platform === 'facebook' ? (
+                        <FacebookIcon className="h-[32px] w-[32px]" connected={connected} />
                       ) : (
                         platform.icon
                       )}
@@ -375,7 +386,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
         {profile.linkedin_url && (profile.linkedin_headline || profile.linkedin_summary) && (
           <div className="w-full max-w-md mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
             <div className="flex items-center gap-2 mb-2">
-              <Linkedin className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <LinkedInIcon className="h-4 w-4" connected={true} />
               <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">LinkedIn Profile Data</span>
             </div>
             {profile.linkedin_headline && (
