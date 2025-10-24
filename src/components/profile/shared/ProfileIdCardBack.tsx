@@ -163,21 +163,26 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div id="social-connections-section" className="relative h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30 backdrop-blur-xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-[400ms] ease-in-out">
+      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 ${themeConfig.backCard.darkBase || 'bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30'} ${themeConfig.backCard.darkBase ? 'backdrop-blur-2xl' : 'backdrop-blur-xl'} rounded-3xl ${themeConfig.backCard.darkBase ? 'shadow-[0_30px_80px_rgba(0,0,0,0.4),0_15px_40px_rgba(147,51,234,0.2),inset_0_1px_0_rgba(167,139,250,0.15)]' : 'shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)]'} overflow-hidden transition-all duration-500 ease-in-out`}>
         {/* Themed gradient border */}
-        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} opacity-40 pointer-events-none transition-all duration-[400ms] ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
+        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} ${themeConfig.backCard.darkBase ? 'opacity-50' : 'opacity-40'} pointer-events-none transition-all duration-500 ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
+        
+        {/* Left edge glow (ambient light bleed for dark theme) */}
+        {themeConfig.backCard.leftEdgeGlow && (
+          <div className={`absolute left-0 top-0 bottom-0 w-32 ${themeConfig.backCard.leftEdgeGlow} opacity-60 pointer-events-none transition-all duration-500 ease-in-out`} />
+        )}
         
         {/* Themed corner glow */}
-        <div className={`absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.backCard.borderGradient} blur-3xl opacity-20 pointer-events-none transition-all duration-[400ms] ease-in-out`} />
+        <div className={`absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.backCard.borderGradient} blur-3xl opacity-20 pointer-events-none transition-all duration-500 ease-in-out`} />
         
         {/* Themed top stripe */}
-        <div className={`absolute top-0 left-0 right-0 h-1 ${themeConfig.backCard.topStripe} rounded-t-3xl transition-all duration-[400ms] ease-in-out`} />
+        <div className={`absolute top-0 left-0 right-0 h-1 ${themeConfig.backCard.topStripe} rounded-t-3xl transition-all duration-500 ease-in-out`} />
         
         <div className="relative z-10 text-center mb-8">
-          <h2 className="text-2xl font-bold text-foreground mb-2">
+          <h2 className={`text-2xl font-bold mb-2 transition-colors duration-500 ${themeConfig.backCard.textHeader || 'text-foreground'}`}>
             Social Presence
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className={`text-sm transition-colors duration-500 ${themeConfig.backCard.textInactive || 'text-muted-foreground'}`}>
             Verified connections across your digital life
           </p>
         </div>
@@ -197,7 +202,9 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                   }`}
                 style={connected ? {
                   borderColor: platform.brandColor,
-                  boxShadow: `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`,
+                  boxShadow: themeConfig.backCard.darkBase 
+                    ? `0 8px 24px ${platform.brandColor}18, 0 0 40px ${platform.brandColor}13, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`
+                    : `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`,
                 } as React.CSSProperties : {
                   borderColor: 'rgba(160, 160, 160, 0.2)',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.04), inset 0 1px 2px rgba(0,0,0,0.03)',
@@ -207,7 +214,10 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 onMouseEnter={(e) => {
                   if (connected) {
                     e.currentTarget.style.transform = 'translateY(-4px) rotateY(2deg)';
-                    e.currentTarget.style.boxShadow = `0 16px 48px ${platform.brandColor}35, 0 0 60px ${platform.brandColor}30, inset 0 2px 8px rgba(255,255,255,0.2), inset 0 -2px 6px rgba(0,0,0,0.05)`;
+                    const hoverShadow = themeConfig.backCard.darkBase
+                      ? `0 16px 48px ${platform.brandColor}30, 0 0 60px ${platform.brandColor}25, inset 0 2px 8px rgba(255,255,255,0.2), inset 0 -2px 6px rgba(0,0,0,0.05)`
+                      : `0 16px 48px ${platform.brandColor}35, 0 0 60px ${platform.brandColor}30, inset 0 2px 8px rgba(255,255,255,0.2), inset 0 -2px 6px rgba(0,0,0,0.05)`;
+                    e.currentTarget.style.boxShadow = hoverShadow;
                   } else {
                     e.currentTarget.style.filter = 'grayscale(0.3)';
                     e.currentTarget.style.opacity = '0.8';
@@ -217,7 +227,10 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 onMouseLeave={(e) => {
                   if (connected) {
                     e.currentTarget.style.transform = 'translateY(0) rotateY(0deg)';
-                    e.currentTarget.style.boxShadow = `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`;
+                    const defaultShadow = themeConfig.backCard.darkBase
+                      ? `0 8px 24px ${platform.brandColor}18, 0 0 40px ${platform.brandColor}13, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`
+                      : `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`;
+                    e.currentTarget.style.boxShadow = defaultShadow;
                   } else {
                     e.currentTarget.style.filter = 'grayscale(0.7)';
                     e.currentTarget.style.opacity = '0.6';
@@ -276,7 +289,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 
                 {/* Platform name */}
                 <span className={`text-sm font-semibold mb-3 transition-colors duration-300 ${
-                  connected ? 'text-foreground' : 'text-muted-foreground/50'
+                  connected ? (themeConfig.backCard.textHeader || 'text-foreground') : (themeConfig.backCard.textInactive || 'text-muted-foreground/50')
                 }`}
                 style={connected ? { color: platform.brandColor } : {}}
                 >

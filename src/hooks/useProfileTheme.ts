@@ -45,6 +45,10 @@ export interface ThemeConfig {
     accentGlow: string;
     topStripe: string;
     platformHoverGlow: string;
+    darkBase?: string;
+    leftEdgeGlow?: string;
+    textHeader?: string;
+    textInactive?: string;
   };
 }
 
@@ -131,6 +135,10 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
       accentGlow: 'shadow-[0_0_50px_rgba(147,51,234,0.2)]',
       topStripe: 'bg-gradient-to-r from-purple-600/30 via-indigo-500/40 to-blue-500/30',
       platformHoverGlow: 'hover:shadow-[0_0_35px_rgba(147,51,234,0.3)]',
+      darkBase: 'bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/85',
+      leftEdgeGlow: 'bg-gradient-to-r from-violet-600/40 to-transparent',
+      textHeader: 'text-white/90',
+      textInactive: 'text-gray-300/70',
     },
   },
   expression: {
