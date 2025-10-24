@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { useToast } from '@/hooks/use-toast';
 
 export type ProfileTheme = 'serenity' | 'focus' | 'expression';
 
@@ -152,15 +153,16 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
   },
 };
 
-export function useProfileTheme(profileId?: string) {
+export function useProfileTheme(userId?: string) {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [theme, setThemeState] = useState<ProfileTheme>('serenity');
   const [loading, setLoading] = useState(true);
 
   // Load theme from database
   useEffect(() => {
     const loadTheme = async () => {
-      if (!profileId) {
+      if (!userId) {
         setLoading(false);
         return;
       }
@@ -169,7 +171,7 @@ export function useProfileTheme(profileId?: string) {
         const { data, error } = await supabase
           .from('profiles')
           .select('theme')
-          .eq('id', profileId)
+          .eq('user_id', userId)
           .single();
 
         if (!error && data?.theme) {
@@ -183,21 +185,23 @@ export function useProfileTheme(profileId?: string) {
     };
 
     loadTheme();
-  }, [profileId]);
+  }, [userId]);
 
   const setTheme = async (newTheme: ProfileTheme) => {
     // Only allow theme changes for own profile
-    if (!user || !profileId || user.id !== profileId) {
+    if (!user || !userId || user.id !== userId) {
+      console.warn('Unauthorized theme change attempt');
       return;
     }
 
+    // Optimistic update
     setThemeState(newTheme);
 
     try {
       const { error } = await supabase
         .from('profiles')
         .update({ theme: newTheme })
-        .eq('id', profileId);
+        .eq('user_id', userId);
 
       if (error) {
         console.error('Error saving theme:', error);
@@ -205,14 +209,26 @@ export function useProfileTheme(profileId?: string) {
         const { data } = await supabase
           .from('profiles')
           .select('theme')
-          .eq('id', profileId)
+          .eq('user_id', userId)
           .single();
         if (data?.theme) {
           setThemeState(data.theme as ProfileTheme);
         }
+        toast({
+          title: "Error updating theme",
+          description: "Failed to save theme preference",
+          variant: "destructive"
+        });
+        return;
       }
+
+      toast({
+        title: "Theme updated",
+        description: `Switched to ${THEME_CONFIGS[newTheme].displayName}`,
+      });
     } catch (err) {
       console.error('Error updating theme:', err);
+      setThemeState(theme);
     }
   };
 

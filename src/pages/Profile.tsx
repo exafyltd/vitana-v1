@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProfile } from "@/context/ProfileProvider";
+import { useAuth } from "@/context/AuthProvider";
 import { ProfileStats } from "@/components/profile/shared/ProfileStats";
 import { VitanaImpactPanel } from "@/components/profile/VitanaImpactPanel";
 import { AchievementsBanner } from "@/components/profile/AchievementsBanner";
@@ -33,6 +34,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 export default function Profile() {
   const { profile, loading } = useProfile();
+  const { user } = useAuth();
   const location = useLocation();
 
   // Scroll to social connections section if hash is present
@@ -53,7 +55,7 @@ export default function Profile() {
 
   // Create a mock UserProfile object that matches ProfileStats component expectations
   const mockUserProfile = {
-    id: "1",
+    id: user?.id || "",
     name: profile.displayName,
     handle: profile.handle || "@user",
     avatarUrl: profile.avatar,

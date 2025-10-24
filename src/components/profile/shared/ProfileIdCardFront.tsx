@@ -40,7 +40,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
-  const { themeConfig, cycleTheme } = useProfileTheme(profile.id);
+  const targetUserId = isOwner ? user?.id : profile.id;
+  const { themeConfig, cycleTheme } = useProfileTheme(targetUserId);
 
   const handleFollowClick = async () => {
     if (isFollowing) {
@@ -150,31 +151,32 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
         {/* Gradient bridge connecting panels */}
         <div className="absolute inset-y-0 -right-px w-px bg-gradient-to-b from-transparent via-[hsl(var(--sys-vitana-accent))]/30 to-transparent pointer-events-none" />
         
-        {/* Theme Switcher - Top Left (only for owner) */}
-        {isOwner && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={cycleTheme}
-                  className="absolute top-4 left-4 w-10 h-10 rounded-full bg-gradient-to-br from-white/40 to-white/20 dark:from-gray-800/40 dark:to-gray-800/20 backdrop-blur-md border border-white/50 dark:border-gray-700/50 shadow-[0_4px_12px_rgba(0,0,0,0.15),inset_0_1px_2px_rgba(255,255,255,0.6)] hover:scale-110 hover:shadow-[0_6px_20px_rgba(0,0,0,0.2)] transition-all duration-300 flex items-center justify-center text-xl animate-fade-in z-20 cursor-pointer active:scale-95"
-                  style={{ animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards' }}
-                  aria-label="Cycle theme"
-                >
-                  {themeConfig.icon}
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p className="text-xs">Theme: {themeConfig.displayName}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
-        
-        {/* User ID Chip - Embossed style - Top Right */}
-        <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-gradient-to-br from-white/30 to-white/10 dark:from-gray-800/30 dark:to-gray-800/10 backdrop-blur-md border border-white/40 dark:border-gray-700/40 shadow-[0_2px_8px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105 animate-fade-in"
-             style={{ animationDelay: '0.6s', opacity: 0, animationFillMode: 'forwards' }}>
-          <span className="text-xs font-mono font-semibold text-foreground/70 tracking-wide">🆔 {profile.id.slice(0, 8)}</span>
+        {/* Top Right Corner - ID Chip & Theme Switcher */}
+        <div className="absolute top-4 right-4 flex items-center gap-2 animate-fade-in z-20" style={{ animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards' }}>
+          {/* Theme Switcher (only for owner) */}
+          {isOwner && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={cycleTheme}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-white/40 to-white/20 dark:from-gray-800/40 dark:to-gray-800/20 backdrop-blur-md border border-white/50 dark:border-gray-700/50 shadow-[0_4px_12px_rgba(0,0,0,0.15),inset_0_1px_2px_rgba(255,255,255,0.6)] hover:scale-110 hover:shadow-[0_6px_20px_rgba(0,0,0,0.2)] transition-all duration-300 flex items-center justify-center text-xl cursor-pointer active:scale-95"
+                    aria-label="Cycle theme"
+                  >
+                    {themeConfig.icon}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  <p className="text-xs">Theme: {themeConfig.displayName}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+          
+          {/* User ID Chip */}
+          <div className="px-3 py-1.5 rounded-full bg-gradient-to-br from-white/30 to-white/10 dark:from-gray-800/30 dark:to-gray-800/10 backdrop-blur-md border border-white/40 dark:border-gray-700/40 shadow-[0_2px_8px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105">
+            <span className="text-xs font-mono font-semibold text-foreground/70 tracking-wide">🆔 {profile.id.slice(0, 8)}</span>
+          </div>
         </div>
       
         {/* Avatar with Layered Glow System */}
