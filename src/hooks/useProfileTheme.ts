@@ -49,6 +49,10 @@ export interface ThemeConfig {
     leftEdgeGlow?: string;
     textHeader?: string;
     textInactive?: string;
+    lightBase?: string;
+    lightShadow?: string;
+    lightBorderOpacity?: string;
+    dividerColor?: string;
   };
 }
 
@@ -93,6 +97,10 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
       accentGlow: 'shadow-[0_0_40px_rgba(20,184,166,0.15)]',
       topStripe: 'bg-gradient-to-r from-teal-500/30 via-cyan-400/40 to-teal-500/30',
       platformHoverGlow: 'hover:shadow-[0_0_30px_rgba(20,184,166,0.25)]',
+      lightBase: 'bg-white/[0.45]',
+      lightShadow: '0 8px 20px rgba(0,0,0,0.08)',
+      lightBorderOpacity: 'opacity-24',
+      dividerColor: 'from-gray-300/60',
     },
   },
   focus: {
@@ -139,6 +147,7 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
       leftEdgeGlow: 'bg-gradient-to-r from-violet-500/30 to-transparent blur-md',
       textHeader: 'text-white/90',
       textInactive: 'text-gray-300/70',
+      dividerColor: 'from-purple-400/40',
     },
   },
   expression: {
@@ -181,6 +190,10 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
       accentGlow: 'shadow-[0_0_50px_rgba(192,132,252,0.2)]',
       topStripe: 'bg-gradient-to-r from-purple-500/30 via-pink-400/40 to-teal-400/35',
       platformHoverGlow: 'hover:shadow-[0_0_35px_rgba(192,132,252,0.25)]',
+      lightBase: 'bg-white/[0.30]',
+      lightShadow: '0 8px 20px rgba(0,0,0,0.08)',
+      lightBorderOpacity: 'opacity-24',
+      dividerColor: 'from-violet-300/50',
     },
   },
 };

@@ -163,9 +163,14 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 ${themeConfig.backCard.darkBase || 'bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30'} ${themeConfig.backCard.darkBase ? 'backdrop-blur-2xl' : 'backdrop-blur-xl'} rounded-3xl ${themeConfig.backCard.darkBase ? 'shadow-[0_4px_20px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)]' : 'shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)]'} overflow-hidden transition-all duration-500 ease-in-out`}>
+      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 ${themeConfig.backCard.darkBase || themeConfig.backCard.lightBase || 'bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30'} ${themeConfig.backCard.darkBase || themeConfig.backCard.lightBase ? 'backdrop-blur-2xl' : 'backdrop-blur-xl'} rounded-3xl overflow-hidden transition-all duration-500 ease-in-out`}
+           style={{
+             boxShadow: themeConfig.backCard.darkBase 
+               ? '0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)'
+               : themeConfig.backCard.lightShadow || '0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08)'
+           }}>
         {/* Themed gradient border */}
-        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} ${themeConfig.backCard.darkBase ? 'opacity-50' : 'opacity-40'} pointer-events-none transition-all duration-500 ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
+        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} ${themeConfig.backCard.darkBase ? 'opacity-50' : themeConfig.backCard.lightBorderOpacity || 'opacity-40'} pointer-events-none transition-all duration-500 ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
         
         {/* Left edge glow (ambient light bleed for dark theme) */}
         {themeConfig.backCard.leftEdgeGlow && (

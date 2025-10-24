@@ -145,6 +145,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
            style={{
              background: themeConfig.card.background,
            }}>
+        {/* Avatar-centered gradient glow (Serenity & Expression only) */}
+        {(themeConfig.name === 'serenity' || themeConfig.name === 'expression') && (
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] pointer-events-none" 
+               style={{ 
+                 background: 'radial-gradient(circle at top center, rgba(255,255,255,0.3), transparent 80%)',
+               }} />
+        )}
+        
         {/* Premium gradient overlay with radial depth */}
         <div className={`absolute inset-0 ${themeConfig.card.overlay} pointer-events-none transition-all duration-500 ease-in-out`} />
         
