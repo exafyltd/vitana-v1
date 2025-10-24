@@ -79,7 +79,7 @@ export function ProfileSplitNavigation({
       {/* Posts Tab */}
       <SplitBarContent value="posts">
         <div className="mt-6">
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-12 gap-x-10 gap-y-8">
             <div className="col-span-8">
               <ProfilePostsTab profile={profile} scope={scope} editMode={editMode} onEditAbout={onEditAbout} />
             </div>
@@ -132,7 +132,7 @@ export function ProfileSplitNavigation({
       {/* Media Tab */}
       <SplitBarContent value="media">
         <div className="mt-6">
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-12 gap-x-10 gap-y-8">
             <div className="col-span-8">
               <ProfileMediaTab profile={profile} scope={scope} editMode={editMode} />
             </div>
@@ -236,7 +236,7 @@ export function ProfileSplitNavigation({
       {/* Events Tab */}
       <SplitBarContent value="events">
         <div className="mt-6">
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-12 gap-x-10 gap-y-8">
             <div className="col-span-8">
               <ProfileEventsTab profile={profile} scope={scope} editMode={editMode} isOwnProfile={isOwnProfile} />
             </div>
@@ -288,7 +288,7 @@ export function ProfileSplitNavigation({
       {showHealthTab && (
         <SplitBarContent value="health">
           <div className="mt-6">
-            <div className="grid grid-cols-12 gap-6">
+            <div className="grid grid-cols-12 gap-x-10 gap-y-8">
               <div className="col-span-8">
                 <ProfileHealthTab profile={profile} scope={scope} editMode={editMode} onEditVisibility={onEditVisibility} />
               </div>
@@ -342,7 +342,7 @@ export function ProfileSplitNavigation({
       {showServicesTab && (
         <SplitBarContent value="services">
           <div className="mt-6">
-            <div className="grid grid-cols-12 gap-6">
+            <div className="grid grid-cols-12 gap-x-10 gap-y-8">
               <div className="col-span-8">
                 <ProfileServicesTab profile={profile} scope={scope} editMode={editMode} onEditServices={onEditServices} onEditCompliance={onEditCompliance} />
               </div>

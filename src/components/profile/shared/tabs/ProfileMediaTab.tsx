@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Video, Headphones, Music, Play, Eye, Users, Sparkles } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
@@ -16,6 +17,7 @@ type MediaCategory = 'all' | 'video' | 'music' | 'podcast' | 'guided';
 
 export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabProps) {
   const [activeCategory, setActiveCategory] = useState<MediaCategory>('all');
+  const [showAll, setShowAll] = useState(false);
 
   // Diverse mock media content with creators and sub-genres
   const mockMedia = [
@@ -130,12 +132,14 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
     { id: 'video' as MediaCategory, label: 'Videos', icon: Video },
     { id: 'music' as MediaCategory, label: 'Music', icon: Music },
     { id: 'podcast' as MediaCategory, label: 'Podcasts', icon: Headphones },
-    { id: 'guided' as MediaCategory, label: 'Guided Sessions', icon: Play },
+    { id: 'guided' as MediaCategory, label: 'Guided', icon: Play },
   ];
 
   const filteredMedia = activeCategory === 'all' 
     ? mockMedia 
     : mockMedia.filter(item => item.category === activeCategory);
+
+  const displayedMedia = showAll ? filteredMedia : filteredMedia.slice(0, 6);
 
   const getMediaIcon = (type: string) => {
     switch (type) {
@@ -175,50 +179,45 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
     }
   };
 
-  const getCardHeight = (size: string) => {
-    switch (size) {
-      case 'large': return 'row-span-2';
-      case 'medium': return 'row-span-1';
-      case 'small': return 'row-span-1';
-      default: return 'row-span-1';
-    }
-  };
-
   if (filteredMedia.length === 0) {
     return (
       <div className="w-full max-w-5xl mx-auto space-y-6 animate-fadeInUp">
         {/* Category filters - Floating glass segmented control */}
         <div className="flex justify-center">
-          <div className="inline-flex gap-1 p-1 bg-white/70 backdrop-blur-xl border border-white/30 rounded-full shadow-sm">
+          <div className="inline-flex gap-1 p-1 rounded-full bg-white/70 backdrop-blur-xl border border-white/30 shadow-sm">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300",
+                  "relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 motion-reduce:hover:scale-100",
                   activeCategory === cat.id
                     ? "bg-gradient-to-r from-violet-500 to-blue-400 text-white shadow-[0_0_12px_rgba(139,92,246,0.3)]"
                     : "text-gray-700 dark:text-gray-300 hover:bg-white/50"
                 )}
+                aria-label={`Filter by ${cat.label}`}
               >
                 <cat.icon className="h-4 w-4" />
                 {cat.label}
+                {activeCategory === cat.id && (
+                  <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-gradient-to-r from-violet-400 to-sky-400 rounded-full" />
+                )}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Empty state with elegant glass shimmer */}
+        {/* Empty state */}
         <div className="flex flex-col items-center justify-center py-20 space-y-6">
           <div className="w-24 h-24 bg-gradient-to-br from-violet-100/50 to-sky-100/50 dark:from-white/5 dark:to-white/10 rounded-3xl backdrop-blur-xl flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
             <Music className="h-12 w-12 text-violet-400/60 dark:text-violet-300/40" />
           </div>
           <div className="text-center space-y-3">
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-              No {activeCategory === 'all' ? 'media' : categories.find(c => c.id === activeCategory)?.label.toLowerCase()} yet
+              Your Media Studio will grow with your journey
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-sm leading-relaxed">
-              Upload your first track and start sharing your creative content with the world
+            <p className="text-sm text-muted-foreground/80 max-w-sm leading-[1.75] tracking-wide">
+              Upload your first track and start sharing your creative content
             </p>
           </div>
         </div>
@@ -236,25 +235,23 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
 
       {/* Category filters - Floating glass segmented control */}
       <div className="flex justify-center relative z-10">
-        <div className="inline-flex gap-1 p-1 bg-white/70 backdrop-blur-xl border border-white/30 rounded-full shadow-sm">
+        <div className="inline-flex gap-1 p-1 rounded-full bg-white/70 backdrop-blur-xl border border-white/30 shadow-sm">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
               className={cn(
-                "relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300",
+                "relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 motion-reduce:hover:scale-100",
                 activeCategory === cat.id
                   ? "bg-gradient-to-r from-violet-500 to-blue-400 text-white shadow-[0_0_12px_rgba(139,92,246,0.3)]"
                   : "text-gray-700 dark:text-gray-300 hover:bg-white/50"
               )}
+              aria-label={`Filter by ${cat.label}`}
             >
               <cat.icon className="h-4 w-4" />
               {cat.label}
               {activeCategory === cat.id && (
-                <>
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-0.5 bg-gradient-to-r from-transparent via-violet-300 to-transparent animate-pulse" />
-                  <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-yellow-400 animate-pulse" />
-                </>
+                <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-gradient-to-r from-violet-400 to-sky-400 rounded-full" />
               )}
             </button>
           ))}
@@ -270,61 +267,59 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
         <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent dark:from-white/20" />
       </div>
 
-      {/* Masonry grid with relative positioning */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[200px] relative z-10">
-        {filteredMedia.map((item, index) => (
+      {/* Media grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10">
+        {displayedMedia.map((item, index) => (
           <Card 
             key={item.id} 
             className={cn(
               "group cursor-pointer transition-all duration-300 ease-out overflow-hidden relative",
-              "bg-white/60 backdrop-blur-xl rounded-2xl",
-              "border border-transparent bg-gradient-to-br from-violet-300/40 to-sky-200/40 bg-clip-padding",
-              "shadow-[0_4px_10px_rgba(0,0,0,0.05)]",
-              "hover:scale-[1.015] hover:brightness-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.12)]",
-              getCardHeight(item.size)
+              "rounded-2xl bg-white/60 backdrop-blur-xl border border-white/30",
+              "shadow-[0_4px_12px_rgba(0,0,0,0.05)]",
+              "motion-reduce:hover:scale-100 hover:scale-[1.015] hover:brightness-[1.05] hover:shadow-[0_10px_25px_rgba(0,0,0,0.12)]"
             )}
             style={{
               animationDelay: `${index * 50}ms`
             }}
           >
-            <div className="relative h-full w-full overflow-hidden rounded-2xl">
+            <div className="relative h-64 w-full overflow-hidden rounded-2xl">
               {/* Thumbnail with zoom on hover */}
               <img 
                 src={item.thumbnail} 
                 alt={item.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-500 motion-reduce:group-hover:scale-100 group-hover:scale-110"
               />
               
               {/* Bottom gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-transparent" />
               
               {/* Play button overlay on hover */}
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform motion-reduce:group-hover:scale-100 group-hover:scale-110 transition-transform">
                   <Play className="h-8 w-8 text-white ml-1" />
                 </div>
               </div>
               
               {/* Duration badge */}
-              <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs rounded-full px-2 py-1 backdrop-blur-sm font-medium">
+              <Badge className="absolute bottom-3 right-3 bg-black/70 text-white text-xs rounded-full px-2 py-1 backdrop-blur-sm font-medium border-0">
                 {item.duration}
-              </div>
+              </Badge>
 
               {/* Content info with slide-up animation */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2 transition-all duration-300 group-hover:-translate-y-2">
+              <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2 transition-all duration-300 motion-reduce:group-hover:-translate-y-0 group-hover:-translate-y-1">
                 <div className="flex items-start gap-2">
-                  <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg text-white">
+                  <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg text-white shrink-0">
                     {getMediaIcon(item.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-sm text-white line-clamp-2 drop-shadow-lg transition-all duration-300">
+                    <h3 className="font-medium text-sm text-white line-clamp-2 drop-shadow-lg">
                       {item.title}
                     </h3>
                     {/* Sub-genre tag - revealed on hover */}
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 mt-1">
-                      <span className="inline-block text-xs px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded-full text-white/90">
+                      <Badge className="inline-block text-xs px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded-full text-white/90 border-0">
                         {item.subGenre}
-                      </span>
+                      </Badge>
                     </div>
                     <div className="flex items-center gap-3 mt-1 text-xs text-white/80">
                       <div className="flex items-center gap-1">
@@ -341,7 +336,7 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
                   <img 
                     src={item.creator.avatar} 
                     alt={item.creator.name}
-                    className="w-5 h-5 rounded-full ring-1 ring-white/30"
+                    className="w-4 h-4 rounded-full ring-1 ring-white/30"
                   />
                   <span className="text-xs text-white/90 font-medium drop-shadow">
                     {item.creator.name}
@@ -352,6 +347,19 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
           </Card>
         ))}
       </div>
+
+      {/* Show More Button */}
+      {filteredMedia.length > 6 && !showAll && (
+        <div className="flex justify-center pt-4 relative z-10">
+          <Button 
+            variant="soft" 
+            onClick={() => setShowAll(true)}
+            className="px-6 py-2"
+          >
+            Show more ({filteredMedia.length - 6} more {filteredMedia.length - 6 === 1 ? 'item' : 'items'})
+          </Button>
+        </div>
+      )}
 
       {/* Now Playing Dock - Placeholder */}
       <div className="fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-violet-900/20 via-sky-900/10 to-transparent backdrop-blur-2xl border-t border-white/10 z-50 pointer-events-none">

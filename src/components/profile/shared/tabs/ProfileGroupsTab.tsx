@@ -12,7 +12,6 @@ interface ProfileGroupsTabProps {
 }
 
 export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
-  // Mock communities data - replace with real data
   const mockCommunities = [
     { 
       id: '1', 
@@ -83,6 +82,28 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
     }
   };
 
+  const gridCols = mockCommunities.length > 6 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2';
+
+  if (mockCommunities.length === 0) {
+    return (
+      <div className="w-full max-w-7xl mx-auto space-y-6">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold flex items-center gap-2"><span>🌍</span><span>Active Communities</span></h2>
+          <p className="text-sm text-muted-foreground/80 leading-[1.75] tracking-wide">Connect, collaborate, and grow together</p>
+        </div>
+        <div className="flex flex-col items-center justify-center py-20 space-y-6">
+          <div className="w-24 h-24 bg-gradient-to-br from-violet-100/50 to-sky-100/50 dark:from-white/5 dark:to-white/10 rounded-3xl backdrop-blur-xl flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
+            <Users className="h-12 w-12 text-violet-400/60" />
+          </div>
+          <div className="text-center space-y-3">
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">You're not in any communities yet</h3>
+            <p className="text-sm text-muted-foreground/80 max-w-sm leading-[1.75] tracking-wide">Explore wellness circles</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-7xl mx-auto space-y-6">
       {/* Section Header */}
@@ -136,7 +157,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
               {/* Member avatars collage */}
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
-                  {community.avatars.slice(0, 4).map((member, idx) => (
+                  {community.avatars.slice(0, 3).map((member, idx) => (
                     <Avatar 
                       key={idx}
                       className="w-8 h-8 border-2 border-white shadow-sm ring-1 ring-black/5"
@@ -148,9 +169,9 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                     </Avatar>
                   ))}
                 </div>
-                {community.avatars.length > 4 && (
+                {community.avatars.length > 3 && (
                   <span className="text-xs text-muted-foreground/70">
-                    +{community.avatars.length - 4} more
+                    +{community.avatars.length - 3} more
                   </span>
                 )}
               </div>
@@ -161,8 +182,9 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                   {community.type}
                 </Badge>
                 <Button 
-                  size="sm"
-                  className={`rounded-full bg-gradient-to-r ${community.gradient} hover:opacity-90 text-white border-0 shadow-sm px-4`}
+                  variant="soft"
+                  size="xs"
+                  className="ml-auto"
                 >
                   View {community.type === 'group' ? 'Group' : 'Event'}
                 </Button>
