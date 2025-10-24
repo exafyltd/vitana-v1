@@ -204,7 +204,7 @@ export function useProfileTheme(userId?: string) {
   const [theme, setThemeState] = useState<ProfileTheme>('serenity');
   const [loading, setLoading] = useState(true);
 
-  // Load theme from database
+  // Load theme from database and subscribe to real-time updates
   useEffect(() => {
     const loadTheme = async () => {
       if (!userId) {
@@ -230,6 +230,31 @@ export function useProfileTheme(userId?: string) {
     };
 
     loadTheme();
+
+    // Subscribe to real-time theme changes
+    if (userId) {
+      const channel = supabase
+        .channel(`profile-theme-${userId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'profiles',
+            filter: `user_id=eq.${userId}`,
+          },
+          (payload) => {
+            if (payload.new?.theme) {
+              setThemeState(payload.new.theme as ProfileTheme);
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
   }, [userId]);
 
   const setTheme = async (newTheme: ProfileTheme) => {
