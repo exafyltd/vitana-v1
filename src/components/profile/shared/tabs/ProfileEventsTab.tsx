@@ -8,7 +8,55 @@ import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { useNavigate } from "react-router-dom";
 import { NewsCard } from "@/components/crossover/NewsCard";
-import { format, formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow, addDays } from "date-fns";
+
+// TODO: Remove mock data once real events are populated
+const MOCK_EVENTS: CommunityEvent[] = [
+  {
+    id: 'mock-event-1',
+    title: '🌅 Sunrise Yoga & Meditation',
+    description: 'Start your day with intention. Join us for a peaceful morning session combining gentle yoga flows with guided meditation overlooking the city skyline.',
+    start_time: addDays(new Date(), 3).toISOString(),
+    end_time: addDays(new Date(), 3).toISOString(),
+    location: 'Rooftop Wellness Studio',
+    participant_count: 12,
+    event_type: 'yoga',
+    created_by: 'mock-creator-1'
+  },
+  {
+    id: 'mock-event-2',
+    title: '🧘 Mindfulness & Breathwork Circle',
+    description: 'A transformative evening of guided breathwork, meditation, and conscious connection. Perfect for releasing stress and finding inner peace.',
+    start_time: addDays(new Date(), 7).toISOString(),
+    end_time: addDays(new Date(), 7).toISOString(),
+    location: 'Virtual',
+    participant_count: 28,
+    event_type: 'meditation',
+    created_by: 'mock-creator-2'
+  },
+  {
+    id: 'mock-event-3',
+    title: '🏃‍♀️ Morning Run & Coffee Social',
+    description: 'Join fellow runners for an energizing 5K through the park, followed by coffee and community conversation. All fitness levels welcome!',
+    start_time: addDays(new Date(), 5).toISOString(),
+    end_time: addDays(new Date(), 5).toISOString(),
+    location: 'Central Park - North Meadow',
+    participant_count: 45,
+    event_type: 'fitness',
+    created_by: 'mock-creator-3'
+  },
+  {
+    id: 'mock-event-4',
+    title: '🌿 Wellness Workshop: Nutrition Basics',
+    description: 'Learn the fundamentals of intuitive eating and meal planning with our certified nutritionist. Practical tips and Q&A session included.',
+    start_time: addDays(new Date(), 10).toISOString(),
+    end_time: addDays(new Date(), 10).toISOString(),
+    location: 'Community Wellness Center',
+    participant_count: 18,
+    event_type: 'nutrition',
+    created_by: 'mock-creator-4'
+  }
+];
 
 interface ProfileEventsTabProps {
   profile: UserProfile;
@@ -71,10 +119,18 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
 
         if (joinedError) throw joinedError;
 
-        setCreatedEvents(created || []);
-        setJoinedEvents(
-          joinedData?.map(item => item.global_community_events).filter(Boolean) as CommunityEvent[] || []
-        );
+        const createdEventsData = created || [];
+        const joinedEventsData = joinedData?.map(item => item.global_community_events).filter(Boolean) as CommunityEvent[] || [];
+        
+        // TODO: Remove mock data injection once real events are available
+        // If no real events exist, show mock data for preview purposes
+        if (createdEventsData.length === 0 && joinedEventsData.length === 0) {
+          setCreatedEvents(MOCK_EVENTS.slice(0, 2).map(e => ({ ...e, created_by: profile.id })));
+          setJoinedEvents(MOCK_EVENTS.slice(2, 4));
+        } else {
+          setCreatedEvents(createdEventsData);
+          setJoinedEvents(joinedEventsData);
+        }
       } catch (error) {
         console.error('Error fetching events:', error);
       } finally {
