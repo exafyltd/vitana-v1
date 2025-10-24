@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Heart, MessageSquare, Share, Edit3, MapPin, ExternalLink, Star } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
@@ -87,61 +88,75 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout }: Profi
       )}
 
       {/* Posts */}
-      {mockPosts.map((post) => (
-        <Card 
-          key={post.id} 
-          className="p-6 bg-white/70 dark:bg-black/30 backdrop-blur-xl border border-white/30 shadow-sm rounded-2xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-        >
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <Avatar className="h-11 w-11 ring-2 ring-violet-200/50 dark:ring-violet-400/20">
-                <AvatarImage src={profile.avatarUrl} alt={profile.name} />
-                <AvatarFallback>{profile.name[0]}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-semibold text-base">{profile.name}</span>
-                  <span className="text-muted-foreground/70 text-sm">@{profile.handle} • {post.date}</span>
-                </div>
-                <p className="mt-2.5 text-foreground/90 leading-[1.7]">
-                  {post.content.split(' ').map((word, i) => {
-                    if (word.startsWith('#') || word.startsWith('@')) {
-                      return (
-                        <span key={i} className="bg-gradient-to-r from-violet-500 to-blue-400 bg-clip-text text-transparent font-medium">
-                          {word}{' '}
-                        </span>
-                      );
-                    }
-                    return word + ' ';
-                  })}
-                </p>
-                {post.image && (
-                  <div className="mt-4 rounded-xl overflow-hidden shadow-md">
-                    <img src={post.image} alt="Post image" className="w-full h-48 object-cover" />
+      <TooltipProvider>
+        {mockPosts.map((post, index) => (
+          <Card 
+            key={post.id} 
+            className="p-6 bg-white/70 dark:bg-black/30 backdrop-blur-xl border border-white/30 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 ease-out animate-fade-in-up overflow-hidden"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            {/* Aurora gradient bar */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-violet-200/10 via-violet-300/20 to-transparent" />
+            
+            <div className="space-y-4 relative">
+              <div className="flex items-start gap-3">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Avatar className="h-11 w-11 ring-2 ring-violet-200/50 dark:ring-violet-400/20 hover:ring-violet-200 dark:hover:ring-violet-400/50 transition-all duration-300 cursor-pointer">
+                      <AvatarImage src={profile.avatarUrl} alt={profile.name} />
+                      <AvatarFallback>{profile.name[0]}</AvatarFallback>
+                    </Avatar>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="font-medium">{profile.name}</p>
+                    {profile.bio && <p className="text-xs text-muted-foreground">{profile.bio.slice(0, 50)}...</p>}
+                  </TooltipContent>
+                </Tooltip>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-semibold text-base tracking-wide">{profile.name}</span>
+                    <span className="text-muted-foreground/70 text-sm">@{profile.handle} • {post.date}</span>
                   </div>
-                )}
+                  <p className="mt-2.5 text-gray-800 dark:text-gray-100 leading-[1.75] tracking-wide font-medium">
+                    {post.content.split(' ').map((word, i) => {
+                      if (word.startsWith('#') || word.startsWith('@')) {
+                        return (
+                          <span key={i} className="bg-gradient-to-r from-violet-500 to-blue-400 bg-clip-text text-transparent font-semibold">
+                            {word}{' '}
+                          </span>
+                        );
+                      }
+                      return word + ' ';
+                    })}
+                  </p>
+                  {post.image && (
+                    <div className="mt-4 rounded-xl overflow-hidden shadow-md">
+                      <img src={post.image} alt="Post image" className="w-full h-48 object-cover" />
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <div className="border-t border-white/20 my-3" />
+              
+              <div className="flex items-center gap-6 px-4 py-2.5 rounded-full bg-gradient-to-r from-violet-50/70 to-sky-50/70 dark:from-white/5 dark:to-white/10">
+                <button className="flex items-center gap-2 text-muted-foreground hover:text-pink-500 transition-all duration-200 group">
+                  <Heart className="h-4 w-4 group-hover:fill-current group-hover:scale-110 transition-all" />
+                  <span className="text-sm font-medium group-hover:scale-105 transition-transform">{post.likes}</span>
+                </button>
+                <button className="flex items-center gap-2 text-muted-foreground hover:text-blue-500 transition-all duration-200 group">
+                  <MessageSquare className="h-4 w-4 group-hover:fill-current group-hover:scale-110 transition-all" />
+                  <span className="text-sm font-medium group-hover:scale-105 transition-transform">{post.comments}</span>
+                </button>
+                <button className="flex items-center gap-2 text-muted-foreground hover:text-violet-500 transition-all duration-200 group">
+                  <Share className="h-4 w-4 group-hover:fill-current group-hover:scale-110 transition-all" />
+                  <span className="text-sm font-medium group-hover:scale-105 transition-transform">{post.shares}</span>
+                </button>
               </div>
             </div>
-            
-            <div className="border-t border-white/20 my-3" />
-            
-            <div className="flex items-center gap-6 px-4 py-2.5 rounded-full bg-gradient-to-r from-violet-50/50 to-sky-50/50 dark:from-white/5 dark:to-white/10">
-              <button className="flex items-center gap-2 text-muted-foreground hover:text-pink-500 transition-colors group">
-                <Heart className="h-4 w-4 group-hover:fill-current transition-all" />
-                <span className="text-sm font-medium">{post.likes}</span>
-              </button>
-              <button className="flex items-center gap-2 text-muted-foreground hover:text-blue-500 transition-colors group">
-                <MessageSquare className="h-4 w-4 group-hover:fill-current transition-all" />
-                <span className="text-sm font-medium">{post.comments}</span>
-              </button>
-              <button className="flex items-center gap-2 text-muted-foreground hover:text-violet-500 transition-colors group">
-                <Share className="h-4 w-4 group-hover:fill-current transition-all" />
-                <span className="text-sm font-medium">{post.shares}</span>
-              </button>
-            </div>
-          </div>
-        </Card>
-      ))}
+          </Card>
+        ))}
+      </TooltipProvider>
     </div>
   );
 }

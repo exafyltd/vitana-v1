@@ -204,6 +204,16 @@ export default {
 					'100%': {
 						transform: 'translateX(-50%)'
 					}
+				},
+				'fade-in-up': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
@@ -212,7 +222,8 @@ export default {
 				'pulse-glow': 'pulse-glow 2.5s ease-in-out infinite',
 				'scroll-slow': 'scroll 60s linear infinite',
 				'scroll-medium': 'scroll 40s linear infinite',
-				'scroll-fast': 'scroll 20s linear infinite'
+				'scroll-fast': 'scroll 20s linear infinite',
+				'fade-in-up': 'fade-in-up 0.5s ease-out'
 			}
 		}
 	},
