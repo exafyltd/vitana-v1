@@ -1,9 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Users, Crown, Shield } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
+import { CommunityImpactWidget } from "@/components/profile/community/CommunityImpactWidget";
 
 interface ProfileGroupsTabProps {
   profile: UserProfile;
@@ -19,7 +21,14 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
       members: 1250, 
       type: 'group',
       role: 'admin',
-      description: 'A community focused on mindful movement and wellness practices.'
+      description: 'A community focused on mindful movement and wellness practices.',
+      gradient: 'from-violet-400 via-purple-400 to-sky-400',
+      avatars: [
+        { name: 'Alex M', avatar: null },
+        { name: 'Sarah K', avatar: null },
+        { name: 'John D', avatar: null },
+        { name: 'Emma R', avatar: null },
+      ]
     },
     { 
       id: '2', 
@@ -27,7 +36,13 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
       members: 850, 
       type: 'event',
       role: 'member',
-      description: 'Join us for daily morning yoga sessions and start your day right.'
+      description: 'Join us for daily morning yoga sessions and start your day right.',
+      gradient: 'from-amber-400 via-orange-400 to-rose-400',
+      avatars: [
+        { name: 'Maria L', avatar: null },
+        { name: 'David P', avatar: null },
+        { name: 'Lisa T', avatar: null },
+      ]
     },
     { 
       id: '3', 
@@ -35,9 +50,23 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
       members: 2100, 
       type: 'group',
       role: 'moderator',
-      description: 'Warriors on the path to optimal health and wellness.'
+      description: 'Warriors on the path to optimal health and wellness.',
+      gradient: 'from-emerald-400 via-green-400 to-teal-400',
+      avatars: [
+        { name: 'Chris W', avatar: null },
+        { name: 'Nina S', avatar: null },
+        { name: 'Tom B', avatar: null },
+        { name: 'Anna H', avatar: null },
+      ]
     }
   ];
+
+  const mockCommunityStats = {
+    posts: 42,
+    helpedUsers: 127,
+    featuredStories: 3,
+    influenceScore: 75
+  };
 
   const getRoleIcon = (role: string) => {
     switch (role) {
@@ -56,45 +85,104 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto grid gap-4 md:grid-cols-2">
-      {mockCommunities.map((community) => (
-        <Card key={community.id} className="p-6 hover:shadow-md transition-shadow">
-          <div className="space-y-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="w-6 h-6 text-primary" />
+    <div className="w-full max-w-7xl mx-auto space-y-6">
+      {/* Section Header */}
+      <div className="space-y-2">
+        <h2 className="text-2xl font-semibold flex items-center gap-2">
+          <span>🌍</span>
+          <span>Active Communities</span>
+        </h2>
+        <p className="text-sm text-muted-foreground/80">
+          Connect, collaborate, and grow together with like-minded wellness enthusiasts
+        </p>
+      </div>
+
+      {/* Two-column layout: Groups on left, Impact on right */}
+      <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+        {/* Groups Grid */}
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+          {mockCommunities.map((community) => (
+            <Card 
+              key={community.id} 
+              className="group relative overflow-hidden bg-white/60 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] hover:scale-[1.01] transition-all duration-300"
+            >
+              {/* Gradient accent border */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${community.gradient} opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-300`} />
+              
+              <div className="relative p-6 space-y-4">
+                {/* Header with icon and role badge */}
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${community.gradient} rounded-xl flex items-center justify-center shadow-sm`}>
+                      <Users className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-lg truncate">{community.name}</h3>
+                      <p className="text-sm text-muted-foreground/80">
+                        {community.members.toLocaleString()} members
+                      </p>
+                    </div>
+                  </div>
+                  <Badge className={getRoleColor(community.role)} variant="outline">
+                    <div className="flex items-center gap-1">
+                      {getRoleIcon(community.role)}
+                      <span className="capitalize text-xs">{community.role}</span>
+                    </div>
+                  </Badge>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-lg">{community.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {community.members.toLocaleString()} members
-                  </p>
+                
+                {/* Description */}
+                <p className="text-sm text-muted-foreground/80 line-clamp-2">
+                  {community.description}
+                </p>
+                
+                {/* Member avatars collage */}
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-2">
+                    {community.avatars.slice(0, 4).map((member, idx) => (
+                      <Avatar 
+                        key={idx}
+                        className="w-8 h-8 border-2 border-white shadow-sm ring-1 ring-black/5"
+                      >
+                        <AvatarImage src={member.avatar || undefined} />
+                        <AvatarFallback className="text-xs bg-gradient-to-br from-violet-100 to-sky-100 text-violet-700">
+                          {member.name.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                    ))}
+                  </div>
+                  {community.avatars.length > 4 && (
+                    <span className="text-xs text-muted-foreground/70">
+                      +{community.avatars.length - 4} more
+                    </span>
+                  )}
+                </div>
+                
+                {/* Footer with type and action */}
+                <div className="flex items-center justify-between pt-2">
+                  <Badge variant="secondary" className="capitalize text-xs">
+                    {community.type}
+                  </Badge>
+                  <Button 
+                    size="sm"
+                    className={`rounded-full bg-gradient-to-r ${community.gradient} hover:opacity-90 text-white border-0 shadow-sm px-4`}
+                  >
+                    View {community.type === 'group' ? 'Group' : 'Event'}
+                  </Button>
                 </div>
               </div>
-              <Badge className={getRoleColor(community.role)} variant="outline">
-                <div className="flex items-center gap-1">
-                  {getRoleIcon(community.role)}
-                  <span className="capitalize">{community.role}</span>
-                </div>
-              </Badge>
-            </div>
-            
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {community.description}
-            </p>
-            
-            <div className="flex items-center justify-between">
-              <Badge variant="secondary" className="capitalize">
-                {community.type}
-              </Badge>
-              <Button variant="outline" size="sm">
-                View {community.type === 'group' ? 'Group' : 'Event'}
-              </Button>
-            </div>
-          </div>
-        </Card>
-      ))}
+            </Card>
+          ))}
+        </div>
+
+        {/* Community Impact Widget */}
+        <div className="lg:sticky lg:top-6 lg:self-start">
+          <CommunityImpactWidget 
+            communityStats={mockCommunityStats}
+            className="bg-white/60 backdrop-blur-xl border-white/30"
+          />
+        </div>
+      </div>
     </div>
   );
 }

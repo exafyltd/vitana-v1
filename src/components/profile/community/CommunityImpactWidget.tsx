@@ -29,11 +29,11 @@ export function CommunityImpactWidget({
   const influence = getInfluenceLevel(communityStats.influenceScore);
 
   return (
-    <Card className={`rounded-xl shadow-sm hover:shadow-md transition-all duration-300 ${className}`}>
+    <Card className={`rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition-all duration-300 ${className}`}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <div className="icon-community rounded-full p-2">
-            <Users className="h-4 w-4" />
+        <CardTitle className="flex items-center gap-2 bg-gradient-to-r from-violet-600 via-purple-600 to-sky-600 bg-clip-text text-transparent">
+          <div className="bg-gradient-to-br from-violet-400 to-sky-400 rounded-full p-2">
+            <Users className="h-4 w-4 text-white" />
           </div>
           Community Impact
         </CardTitle>
