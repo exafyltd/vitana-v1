@@ -76,7 +76,7 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
     },
     buttons: {
       primary: 'bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 shadow-[0_8px_24px_rgba(20,184,166,0.3)]',
-      secondary: 'bg-teal-50/50 dark:bg-teal-900/30 border-teal-300/50 dark:border-teal-700/50 hover:bg-teal-100/60 dark:hover:bg-teal-900/40',
+      secondary: 'bg-teal-50/50 dark:bg-teal-900/30 border-teal-300/50 dark:border-teal-700/50 hover:bg-teal-100/60 dark:hover:bg-teal-900/40 text-teal-700 dark:text-teal-200',
     },
   },
   focus: {
@@ -148,7 +148,7 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
     },
     buttons: {
       primary: 'bg-gradient-to-r from-purple-500 via-pink-500 to-teal-500 hover:from-purple-600 hover:via-pink-600 hover:to-teal-600 shadow-[0_8px_24px_rgba(192,132,252,0.35),0_0_60px_rgba(244,114,182,0.25)]',
-      secondary: 'bg-purple-50/60 dark:bg-purple-900/40 border-purple-300/60 dark:border-purple-700/60 hover:bg-purple-100/70 dark:hover:bg-purple-900/50',
+      secondary: 'bg-purple-50/60 dark:bg-purple-900/40 border-purple-300/60 dark:border-purple-700/60 hover:bg-purple-100/70 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-200',
     },
   },
 };
