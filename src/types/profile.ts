@@ -73,6 +73,7 @@ export interface UserProfile {
   coverUrl?: string;
   roles: Array<'community'|'patient'|'professional'|'staff'|'admin'>;
   membershipTier?: 'vip' | 'standard' | null;
+  theme?: 'serenity' | 'focus' | 'expression';
 
   bio?: string;
   links?: { label: string; url: string }[];

@@ -3831,6 +3831,7 @@ export type Database = {
           preferred_languages: Json | null
           professional_skills: string[] | null
           tenant_id: string | null
+          theme: string | null
           tiktok_bio: string | null
           tiktok_content_themes: string[] | null
           tiktok_followers_count: number | null
@@ -3890,6 +3891,7 @@ export type Database = {
           preferred_languages?: Json | null
           professional_skills?: string[] | null
           tenant_id?: string | null
+          theme?: string | null
           tiktok_bio?: string | null
           tiktok_content_themes?: string[] | null
           tiktok_followers_count?: number | null
@@ -3949,6 +3951,7 @@ export type Database = {
           preferred_languages?: Json | null
           professional_skills?: string[] | null
           tenant_id?: string | null
+          theme?: string | null
           tiktok_bio?: string | null
           tiktok_content_themes?: string[] | null
           tiktok_followers_count?: number | null
