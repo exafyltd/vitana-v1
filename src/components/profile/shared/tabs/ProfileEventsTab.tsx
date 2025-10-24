@@ -58,6 +58,9 @@ const MOCK_EVENTS: CommunityEvent[] = [
   }
 ];
 
+// Minimum events to show in each tab (blend real + mock)
+const MIN_EVENTS_PER_TAB = 4;
+
 interface ProfileEventsTabProps {
   profile: UserProfile;
   scope: Scope;
@@ -129,23 +132,39 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         const createdEventsData = created || [];
         const joinedEventsData = joinedData?.map(item => item.global_community_events).filter(Boolean) as CommunityEvent[] || [];
         
-        // TODO: Remove mock data injection once real events are available
-        // If no real events exist, show mock data for preview purposes
-        if (createdEventsData.length === 0 && joinedEventsData.length === 0) {
-          setCreatedEvents(MOCK_EVENTS.slice(0, 2).map(e => ({ ...e, created_by: profile.user_id })));
-          setJoinedEvents(MOCK_EVENTS.slice(2, 4));
-          console.debug('[ProfileEventsTab] Using mock data: no real events', { created: 2, joined: 2 });
-        } else {
-          setCreatedEvents(createdEventsData);
-          setJoinedEvents(joinedEventsData);
-          console.debug('[ProfileEventsTab] Using real data', { created: createdEventsData.length, joined: joinedEventsData.length });
-        }
+        // Blend real events with mock events to ensure minimum count
+        const supplementCreatedEvents = (events: CommunityEvent[]) => {
+          if (events.length >= MIN_EVENTS_PER_TAB) return events;
+          
+          const needed = MIN_EVENTS_PER_TAB - events.length;
+          const mockToAdd = MOCK_EVENTS
+            .slice(0, needed)
+            .map(e => ({ ...e, created_by: profile.user_id }));
+          
+          return [...events, ...mockToAdd];
+        };
+
+        const supplementJoinedEvents = (events: CommunityEvent[]) => {
+          if (events.length >= MIN_EVENTS_PER_TAB) return events;
+          
+          const needed = MIN_EVENTS_PER_TAB - events.length;
+          const mockToAdd = MOCK_EVENTS.slice(0, needed);
+          
+          return [...events, ...mockToAdd];
+        };
+
+        setCreatedEvents(supplementCreatedEvents(createdEventsData));
+        setJoinedEvents(supplementJoinedEvents(joinedEventsData));
+
+        console.debug('[ProfileEventsTab] Event counts:', {
+          created: { real: createdEventsData.length, total: supplementCreatedEvents(createdEventsData).length },
+          joined: { real: joinedEventsData.length, total: supplementJoinedEvents(joinedEventsData).length }
+        });
       } catch (error) {
         console.error('Error fetching events:', error);
-        // On error, show mock data so the tab isn't empty
-        setCreatedEvents(MOCK_EVENTS.slice(0, 2));
-        setJoinedEvents(MOCK_EVENTS.slice(2, 4));
-        console.debug('[ProfileEventsTab] Using mock data: fetch error', { created: 2, joined: 2 });
+        setCreatedEvents(MOCK_EVENTS.slice(0, MIN_EVENTS_PER_TAB).map(e => ({ ...e, created_by: profile.user_id })));
+        setJoinedEvents(MOCK_EVENTS.slice(0, MIN_EVENTS_PER_TAB));
+        console.debug('[ProfileEventsTab] Using mock data: fetch error');
       } finally {
         setLoading(false);
       }
