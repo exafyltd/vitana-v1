@@ -40,6 +40,12 @@ export interface ThemeConfig {
     primary: string;
     secondary: string;
   };
+  backCard: {
+    borderGradient: string;
+    accentGlow: string;
+    topStripe: string;
+    platformHoverGlow: string;
+  };
 }
 
 export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
@@ -78,6 +84,12 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
       primary: 'bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 shadow-[0_8px_24px_rgba(20,184,166,0.3)]',
       secondary: 'bg-teal-50/50 dark:bg-teal-900/30 border-teal-300/50 dark:border-teal-700/50 hover:bg-teal-100/60 dark:hover:bg-teal-900/40 text-teal-700 dark:text-teal-200',
     },
+    backCard: {
+      borderGradient: 'from-teal-400/60 via-cyan-300/40 to-teal-400/20',
+      accentGlow: 'shadow-[0_0_40px_rgba(20,184,166,0.15)]',
+      topStripe: 'bg-gradient-to-r from-teal-500/30 via-cyan-400/40 to-teal-500/30',
+      platformHoverGlow: 'hover:shadow-[0_0_30px_rgba(20,184,166,0.25)]',
+    },
   },
   focus: {
     name: 'focus',
@@ -114,6 +126,12 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
       primary: 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-[0_8px_24px_rgba(147,51,234,0.4),0_0_60px_rgba(147,51,234,0.3)]',
       secondary: 'bg-purple-950/50 dark:bg-purple-900/40 border-purple-500/50 dark:border-purple-400/50 hover:bg-purple-900/60 dark:hover:bg-purple-800/50',
     },
+    backCard: {
+      borderGradient: 'from-purple-500/60 via-indigo-400/40 to-blue-400/30',
+      accentGlow: 'shadow-[0_0_50px_rgba(147,51,234,0.2)]',
+      topStripe: 'bg-gradient-to-r from-purple-600/30 via-indigo-500/40 to-blue-500/30',
+      platformHoverGlow: 'hover:shadow-[0_0_35px_rgba(147,51,234,0.3)]',
+    },
   },
   expression: {
     name: 'expression',
@@ -149,6 +167,12 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
     buttons: {
       primary: 'bg-gradient-to-r from-purple-500 via-pink-500 to-teal-500 hover:from-purple-600 hover:via-pink-600 hover:to-teal-600 shadow-[0_8px_24px_rgba(192,132,252,0.35),0_0_60px_rgba(244,114,182,0.25)]',
       secondary: 'bg-purple-50/60 dark:bg-purple-900/40 border-purple-300/60 dark:border-purple-700/60 hover:bg-purple-100/70 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-200',
+    },
+    backCard: {
+      borderGradient: 'from-purple-400/60 via-pink-400/50 to-teal-400/40',
+      accentGlow: 'shadow-[0_0_50px_rgba(192,132,252,0.2)]',
+      topStripe: 'bg-gradient-to-r from-purple-500/30 via-pink-400/40 to-teal-400/35',
+      platformHoverGlow: 'hover:shadow-[0_0_35px_rgba(192,132,252,0.25)]',
     },
   },
 };

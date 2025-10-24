@@ -8,6 +8,7 @@ import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { useState } from "react";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
+import { useProfileTheme } from "@/hooks/useProfileTheme";
 
 interface ProfileIdCardBackProps {
   profile: UserProfile;
@@ -42,6 +43,10 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
   
   // Check if this is the user's own profile
   const isOwnProfile = user?.id === (profile.user_id || profile.id);
+  
+  // Get theme configuration for adaptive accents
+  const targetUserId = isOwnProfile ? user?.id : profile.id;
+  const { themeConfig } = useProfileTheme(targetUserId);
   
   // Check if platform is connected by checking dedicated URL columns
   const isConnected = (platform: SocialPlatform): boolean => {
@@ -158,9 +163,15 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div id="social-connections-section" className="relative h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden">
-        {/* Premium gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--util-profile-accent))]/5 via-transparent to-[hsl(var(--pill-hydration-accent))]/5 pointer-events-none" />
+      <div id="social-connections-section" className="relative h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30 backdrop-blur-xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-[400ms] ease-in-out">
+        {/* Themed gradient border */}
+        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} opacity-40 pointer-events-none transition-all duration-[400ms] ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
+        
+        {/* Themed corner glow */}
+        <div className={`absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.backCard.borderGradient} blur-3xl opacity-20 pointer-events-none transition-all duration-[400ms] ease-in-out`} />
+        
+        {/* Themed top stripe */}
+        <div className={`absolute top-0 left-0 right-0 h-1 ${themeConfig.backCard.topStripe} rounded-t-3xl transition-all duration-[400ms] ease-in-out`} />
         
         <div className="relative z-10 text-center mb-8">
           <h2 className="text-2xl font-bold text-foreground mb-2">
@@ -179,9 +190,9 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
               const cardContent = (
                 <div
                   key={platform.name}
-                  className={`group relative flex flex-col items-center p-5 rounded-2xl border transition-all duration-300 ease-out ${
+                  className={`group relative flex flex-col items-center p-5 rounded-2xl border transition-all duration-[400ms] ease-in-out ${
                     connected 
-                      ? `bg-white/70 dark:bg-gray-800/70 backdrop-blur-md cursor-pointer` 
+                      ? `bg-white/70 dark:bg-gray-800/70 backdrop-blur-md cursor-pointer ${themeConfig.backCard.platformHoverGlow}` 
                       : `bg-gray-100/40 dark:bg-gray-900/40 backdrop-blur-sm hover:scale-[1.02]`
                   }`}
                 style={connected ? {

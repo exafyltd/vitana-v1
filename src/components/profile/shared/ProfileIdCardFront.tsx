@@ -141,15 +141,12 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   
   return (
     <>
-      <div className={`relative h-full flex flex-col items-center justify-center p-8 backdrop-blur-2xl ${themeConfig.card.border} rounded-3xl ${themeConfig.card.shadow} overflow-hidden animate-fade-in transition-all duration-300 ease-out`}
+      <div className={`relative h-full flex flex-col items-center justify-center p-8 backdrop-blur-2xl ${themeConfig.card.border} rounded-3xl ${themeConfig.card.shadow} overflow-hidden animate-fade-in transition-all duration-[400ms] ease-in-out`}
            style={{
              background: themeConfig.card.background,
            }}>
         {/* Premium gradient overlay with radial depth */}
-        <div className={`absolute inset-0 ${themeConfig.card.overlay} pointer-events-none transition-all duration-300 ease-out`} />
-        
-        {/* Gradient bridge connecting panels */}
-        <div className="absolute inset-y-0 -right-px w-px bg-gradient-to-b from-transparent via-[hsl(var(--sys-vitana-accent))]/30 to-transparent pointer-events-none" />
+        <div className={`absolute inset-0 ${themeConfig.card.overlay} pointer-events-none transition-all duration-[400ms] ease-in-out`} />
         
         {/* Top Right Corner - ID Chip & Theme Switcher */}
         <div className="absolute top-4 right-4 flex items-center gap-2 animate-fade-in z-20" style={{ animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards' }}>
