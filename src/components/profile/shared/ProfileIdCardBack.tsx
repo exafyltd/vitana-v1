@@ -163,7 +163,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
 
   return (
     <>
-      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 ${themeConfig.backCard.darkBase || 'bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30'} ${themeConfig.backCard.darkBase ? 'backdrop-blur-2xl' : 'backdrop-blur-xl'} rounded-3xl ${themeConfig.backCard.darkBase ? 'shadow-[0_30px_80px_rgba(0,0,0,0.4),0_15px_40px_rgba(147,51,234,0.2),inset_0_1px_0_rgba(167,139,250,0.15)]' : 'shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)]'} overflow-hidden transition-all duration-500 ease-in-out`}>
+      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 ${themeConfig.backCard.darkBase || 'bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30'} ${themeConfig.backCard.darkBase ? 'backdrop-blur-2xl' : 'backdrop-blur-xl'} rounded-3xl ${themeConfig.backCard.darkBase ? 'shadow-[0_4px_20px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)]' : 'shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)]'} overflow-hidden transition-all duration-500 ease-in-out`}>
         {/* Themed gradient border */}
         <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} ${themeConfig.backCard.darkBase ? 'opacity-50' : 'opacity-40'} pointer-events-none transition-all duration-500 ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
         
@@ -289,7 +289,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 
                 {/* Platform name */}
                 <span className={`text-sm font-semibold mb-3 transition-colors duration-300 ${
-                  connected ? (themeConfig.backCard.textHeader || 'text-foreground') : (themeConfig.backCard.textInactive || 'text-muted-foreground/50')
+                  connected ? (themeConfig.backCard.textHeader || 'text-foreground') : 'text-white/50'
                 }`}
                 style={connected ? { color: platform.brandColor } : {}}
                 >
