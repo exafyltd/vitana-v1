@@ -89,6 +89,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
       if (!profile.id) {
         setCreatedEvents(MOCK_EVENTS.slice(0, 2));
         setJoinedEvents(MOCK_EVENTS.slice(2, 4));
+        console.debug('[ProfileEventsTab] Using mock data: no profile.id', { created: 2, joined: 2 });
         setLoading(false);
         return;
       }
@@ -133,15 +134,18 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         if (createdEventsData.length === 0 && joinedEventsData.length === 0) {
           setCreatedEvents(MOCK_EVENTS.slice(0, 2).map(e => ({ ...e, created_by: profile.id })));
           setJoinedEvents(MOCK_EVENTS.slice(2, 4));
+          console.debug('[ProfileEventsTab] Using mock data: no real events', { created: 2, joined: 2 });
         } else {
           setCreatedEvents(createdEventsData);
           setJoinedEvents(joinedEventsData);
+          console.debug('[ProfileEventsTab] Using real data', { created: createdEventsData.length, joined: joinedEventsData.length });
         }
       } catch (error) {
         console.error('Error fetching events:', error);
         // On error, show mock data so the tab isn't empty
         setCreatedEvents(MOCK_EVENTS.slice(0, 2));
         setJoinedEvents(MOCK_EVENTS.slice(2, 4));
+        console.debug('[ProfileEventsTab] Using mock data: fetch error', { created: 2, joined: 2 });
       } finally {
         setLoading(false);
       }
@@ -291,6 +295,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     location={event.location || "Virtual"}
                     attendees={event.participant_count}
                     timestamp={formatTimestamp(event.start_time)}
+                    className="min-h-[320px] md:min-h-[360px]"
                     showSmartAction={!isMock}
                     eventId={isMock ? undefined : event.id}
                     data-event-id={event.id}
@@ -360,6 +365,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     location={event.location || "Virtual"}
                     attendees={event.participant_count}
                     timestamp={formatTimestamp(event.start_time)}
+                    className="min-h-[320px] md:min-h-[360px]"
                     showSmartAction={!isMock}
                     eventId={isMock ? undefined : event.id}
                     data-event-id={event.id}
