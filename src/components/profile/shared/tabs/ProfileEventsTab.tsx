@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Calendar, Clock, MapPin, Users, Plus, Edit, Sparkles, Heart, Coffee, Dumbbell } from "lucide-react";
+import { Calendar, Users, Plus, Edit } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { useNavigate } from "react-router-dom";
+import { NewsCard } from "@/components/crossover/NewsCard";
+import { format, formatDistanceToNow } from "date-fns";
 
 interface ProfileEventsTabProps {
   profile: UserProfile;
@@ -85,181 +85,39 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
     fetchEvents();
   }, [profile.id]);
 
-  const getEventStatus = (startTime: string, endTime?: string) => {
-    const now = new Date();
-    const start = new Date(startTime);
-    const end = endTime ? new Date(endTime) : null;
-
-    if (start > now) return { label: "Upcoming", color: "bg-emerald-500", emoji: "🟢" };
-    if (end && end > now && start <= now) return { label: "Ongoing", color: "bg-sky-500", emoji: "🔵" };
-    return { label: "Past", color: "bg-gray-400", emoji: "⚫" };
-  };
-
-  const getEventIcon = (type: string) => {
-    const icons: Record<string, any> = {
-      wellness: Heart,
-      meetup: Coffee,
-      fitness: Dumbbell,
+  // Map event type to pillar (for NewsCard)
+  const eventTypeToPillar = (eventType: string): string => {
+    const mapping: Record<string, string> = {
+      'event': 'Community',
+      'meetup': 'Social',
+      'fitness': 'Movement',
+      'meditation': 'Mindfulness',
+      'yoga': 'Movement',
+      'nutrition': 'Nutrition',
+      'wellness': 'Wellness',
     };
-    return icons[type.toLowerCase()] || Sparkles;
+    return mapping[eventType.toLowerCase()] || 'Event';
   };
 
-  const getEventGradient = (type: string) => {
-    const gradients: Record<string, string> = {
-      wellness: "from-violet-50 to-white dark:from-violet-950/30 dark:to-background",
-      meetup: "from-amber-50 to-white dark:from-amber-950/30 dark:to-background",
-      fitness: "from-teal-50 to-white dark:from-teal-950/30 dark:to-background",
-    };
-    return gradients[type.toLowerCase()] || "from-sky-50 to-white dark:from-sky-950/30 dark:to-background";
+  // Generate event image based on type (placeholder approach)
+  const getEventImageUrl = (eventType: string): string => {
+    // Use a gradient background or placeholder
+    // In production, events would have real images
+    return ""; // Empty will trigger gradient fallback in NewsCard
   };
 
-  const formatEventTime = (dateString: string) => {
+  // Format timestamp for NewsCard
+  const formatTimestamp = (dateString: string): string => {
     const date = new Date(dateString);
     const now = new Date();
     
-    return {
-      date: date.toLocaleDateString('en-GB', { 
-        month: 'short', 
-        day: 'numeric',
-        year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
-      }),
-      time: date.toLocaleTimeString('en-GB', { 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false
-      }),
-      isUpcoming: date > now
-    };
-  };
-
-  const EventCard = ({ event, showEditButton = false }: { event: CommunityEvent; showEditButton?: boolean }) => {
-    const { date, time } = formatEventTime(event.start_time);
-    const status = getEventStatus(event.start_time, event.end_time);
-    const EventIcon = getEventIcon(event.event_type);
-    const gradient = getEventGradient(event.event_type);
-    
-    return (
-      <Card 
-        className={`rounded-2xl bg-gradient-to-br ${gradient} border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] hover:translate-y-[-2px] motion-reduce:hover:translate-y-0 transition-all duration-300 overflow-hidden group cursor-pointer`}
-        onClick={() => navigate('/community/meetups')}
-      >
-        {/* Header Icon Area */}
-        <div className="relative h-24 bg-gradient-to-br from-white/40 to-white/10 dark:from-white/5 dark:to-white/5 backdrop-blur-sm flex items-center justify-center border-b border-white/20">
-          <EventIcon className="w-10 h-10 text-primary/40 group-hover:text-primary/60 transition-colors" />
-          
-          {/* Status Badge */}
-          <div className="absolute top-3 right-3">
-            <Badge 
-              className={`${status.color} text-white border-0 text-xs font-medium px-2.5 py-0.5 shadow-sm`}
-            >
-              <span className="mr-1">{status.emoji}</span>
-              {status.label}
-            </Badge>
-          </div>
-
-          {/* Edit Button */}
-          {showEditButton && status.label === "Upcoming" && (
-            <Button
-              size="xs"
-              variant="soft"
-              className="absolute top-3 left-3"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate('/community/meetups');
-              }}
-              aria-label="Edit event"
-            >
-              <Edit className="w-3 h-3" />
-            </Button>
-          )}
-        </div>
-
-        <CardContent className="p-5">
-          {/* Title */}
-          <h4 className="font-semibold text-base leading-[1.75] tracking-wide text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-            {event.title}
-          </h4>
-          
-          {/* Description */}
-          {event.description && (
-            <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
-              {event.description}
-            </p>
-          )}
-          
-          {/* Date/Time Row */}
-          <div className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 mb-2">
-            <div className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-primary/60" />
-              <span className="font-medium">{date}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-primary/60" />
-              <span>{time}</span>
-            </div>
-          </div>
-
-          {/* Location */}
-          {event.location && (
-            <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-3">
-              <MapPin className="w-4 h-4 text-primary/60" />
-              <span className="truncate">{event.location}</span>
-            </div>
-          )}
-
-          {/* Participants */}
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-4">
-            <Users className="w-4 h-4 text-primary/60" />
-            <span>{event.participant_count} {event.participant_count === 1 ? 'participant' : 'participants'}</span>
-          </div>
-
-          {/* Hosted By */}
-          <div className="flex items-center gap-2 mb-4 pb-4 border-b border-white/20">
-            <Avatar className="w-6 h-6">
-              <AvatarImage src="" alt="Host" />
-              <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                {profile.name?.charAt(0) || "H"}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-xs text-muted-foreground">
-              Hosted by <span className="font-medium text-foreground">{profile.name || "Community"}</span>
-            </span>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex items-center gap-2">
-            {status.label === "Upcoming" ? (
-              <Button 
-                variant="solid" 
-                size="sm" 
-                className="flex-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate('/community/meetups');
-                }}
-              >
-                Join Event
-              </Button>
-            ) : (
-              <Button 
-                variant="soft" 
-                size="sm" 
-                className="flex-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate('/community/meetups');
-                }}
-              >
-                View Details
-              </Button>
-            )}
-            <Badge variant="outline" className="text-xs px-2.5 py-1 capitalize">
-              {event.event_type}
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
-    );
+    if (date > now) {
+      // Future event - show relative time
+      return formatDistanceToNow(date, { addSuffix: true });
+    } else {
+      // Past event - show date
+      return format(date, 'MMM dd, yyyy');
+    }
   };
 
   if (loading) {
@@ -350,10 +208,39 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
           ) : (
             <div className="grid gap-6 md:grid-cols-2">
               {createdEvents.map((event) => (
-                <EventCard 
-                  key={event.id} 
-                  event={event} 
-                  showEditButton={isOwnProfile}
+                <NewsCard
+                  key={event.id}
+                  title={event.title}
+                  description={event.description}
+                  imageUrl={getEventImageUrl(event.event_type)}
+                  category="event"
+                  pillar={eventTypeToPillar(event.event_type)}
+                  author={{
+                    name: profile.name || "Community",
+                    avatar: profile.avatarUrl
+                  }}
+                  location={event.location || "Virtual"}
+                  attendees={event.participant_count}
+                  timestamp={formatTimestamp(event.start_time)}
+                  showSmartAction={true}
+                  eventId={event.id}
+                  data-event-id={event.id}
+                  onClick={() => navigate('/community/meetups')}
+                  utilityTopRight={
+                    isOwnProfile && new Date(event.start_time) > new Date() ? (
+                      <Button
+                        size="xs"
+                        variant="soft"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate('/community/meetups');
+                        }}
+                        aria-label="Edit event"
+                      >
+                        <Edit className="w-3 h-3" />
+                      </Button>
+                    ) : undefined
+                  }
                 />
               ))}
             </div>
@@ -382,7 +269,25 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
           ) : (
             <div className="grid gap-6 md:grid-cols-2">
               {joinedEvents.map((event) => (
-                <EventCard key={event.id} event={event} />
+                <NewsCard
+                  key={event.id}
+                  title={event.title}
+                  description={event.description}
+                  imageUrl={getEventImageUrl(event.event_type)}
+                  category="event"
+                  pillar={eventTypeToPillar(event.event_type)}
+                  author={{
+                    name: profile.name || "Community",
+                    avatar: profile.avatarUrl
+                  }}
+                  location={event.location || "Virtual"}
+                  attendees={event.participant_count}
+                  timestamp={formatTimestamp(event.start_time)}
+                  showSmartAction={true}
+                  eventId={event.id}
+                  data-event-id={event.id}
+                  onClick={() => navigate('/community/meetups')}
+                />
               ))}
             </div>
           )}
