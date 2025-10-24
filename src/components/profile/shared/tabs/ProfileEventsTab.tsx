@@ -85,11 +85,11 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
 
   useEffect(() => {
     const fetchEvents = async () => {
-      // If profile.id is missing, immediately show mock data
-      if (!profile.id) {
+      // If profile.user_id is missing, immediately show mock data
+      if (!profile.user_id) {
         setCreatedEvents(MOCK_EVENTS.slice(0, 2));
         setJoinedEvents(MOCK_EVENTS.slice(2, 4));
-        console.debug('[ProfileEventsTab] Using mock data: no profile.id', { created: 2, joined: 2 });
+        console.debug('[ProfileEventsTab] Using mock data: no profile.user_id', { created: 2, joined: 2 });
         setLoading(false);
         return;
       }
@@ -99,7 +99,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         const { data: created, error: createdError } = await supabase
           .from('global_community_events')
           .select('*')
-          .eq('created_by', profile.id)
+          .eq('created_by', profile.user_id)
           .order('start_time', { ascending: false });
 
         if (createdError) throw createdError;
@@ -121,7 +121,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
               created_by
             )
           `)
-          .eq('user_id', profile.id)
+          .eq('user_id', profile.user_id)
           .eq('status', 'attending');
 
         if (joinedError) throw joinedError;
@@ -132,7 +132,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         // TODO: Remove mock data injection once real events are available
         // If no real events exist, show mock data for preview purposes
         if (createdEventsData.length === 0 && joinedEventsData.length === 0) {
-          setCreatedEvents(MOCK_EVENTS.slice(0, 2).map(e => ({ ...e, created_by: profile.id })));
+          setCreatedEvents(MOCK_EVENTS.slice(0, 2).map(e => ({ ...e, created_by: profile.user_id })));
           setJoinedEvents(MOCK_EVENTS.slice(2, 4));
           console.debug('[ProfileEventsTab] Using mock data: no real events', { created: 2, joined: 2 });
         } else {
@@ -152,7 +152,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
     };
     
     fetchEvents();
-  }, [profile.id]);
+  }, [profile.user_id]);
 
   // Map event type to pillar (for NewsCard)
   const eventTypeToPillar = (eventType: string): string => {
