@@ -85,7 +85,13 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
 
   useEffect(() => {
     const fetchEvents = async () => {
-      if (!profile.id) return;
+      // If profile.id is missing, immediately show mock data
+      if (!profile.id) {
+        setCreatedEvents(MOCK_EVENTS.slice(0, 2));
+        setJoinedEvents(MOCK_EVENTS.slice(2, 4));
+        setLoading(false);
+        return;
+      }
       
       try {
         // Fetch events created by user
@@ -133,6 +139,9 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         }
       } catch (error) {
         console.error('Error fetching events:', error);
+        // On error, show mock data so the tab isn't empty
+        setCreatedEvents(MOCK_EVENTS.slice(0, 2));
+        setJoinedEvents(MOCK_EVENTS.slice(2, 4));
       } finally {
         setLoading(false);
       }
@@ -263,42 +272,51 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2">
-              {createdEvents.map((event) => (
-                <NewsCard
-                  key={event.id}
-                  title={event.title}
-                  description={event.description}
-                  imageUrl={getEventImageUrl(event.event_type)}
-                  category="event"
-                  pillar={eventTypeToPillar(event.event_type)}
-                  author={{
-                    name: profile.name || "Community",
-                    avatar: profile.avatarUrl
-                  }}
-                  location={event.location || "Virtual"}
-                  attendees={event.participant_count}
-                  timestamp={formatTimestamp(event.start_time)}
-                  showSmartAction={true}
-                  eventId={event.id}
-                  data-event-id={event.id}
-                  onClick={() => navigate('/community/meetups')}
-                  utilityTopRight={
-                    isOwnProfile && new Date(event.start_time) > new Date() ? (
-                      <Button
-                        size="xs"
-                        variant="soft"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate('/community/meetups');
-                        }}
-                        aria-label="Edit event"
-                      >
-                        <Edit className="w-3 h-3" />
-                      </Button>
-                    ) : undefined
-                  }
-                />
-              ))}
+              {createdEvents.map((event) => {
+                const isMock = event.id.startsWith('mock-');
+                const isUpcoming = new Date(event.start_time) > new Date();
+                
+                return (
+                  <NewsCard
+                    key={event.id}
+                    title={event.title}
+                    description={event.description}
+                    imageUrl={getEventImageUrl(event.event_type)}
+                    category="event"
+                    pillar={eventTypeToPillar(event.event_type)}
+                    author={{
+                      name: profile.name || "Community",
+                      avatar: profile.avatarUrl
+                    }}
+                    location={event.location || "Virtual"}
+                    attendees={event.participant_count}
+                    timestamp={formatTimestamp(event.start_time)}
+                    showSmartAction={!isMock}
+                    eventId={isMock ? undefined : event.id}
+                    data-event-id={event.id}
+                    onClick={() => navigate('/community/meetups')}
+                    utilityTopRight={
+                      isMock ? (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-white/90">
+                          Preview
+                        </span>
+                      ) : isOwnProfile && isUpcoming ? (
+                        <Button
+                          size="xs"
+                          variant="soft"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/community/meetups');
+                          }}
+                          aria-label="Edit event"
+                        >
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                      ) : undefined
+                    }
+                  />
+                );
+              })}
             </div>
           )}
         </TabsContent>
@@ -324,27 +342,38 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2">
-              {joinedEvents.map((event) => (
-                <NewsCard
-                  key={event.id}
-                  title={event.title}
-                  description={event.description}
-                  imageUrl={getEventImageUrl(event.event_type)}
-                  category="event"
-                  pillar={eventTypeToPillar(event.event_type)}
-                  author={{
-                    name: profile.name || "Community",
-                    avatar: profile.avatarUrl
-                  }}
-                  location={event.location || "Virtual"}
-                  attendees={event.participant_count}
-                  timestamp={formatTimestamp(event.start_time)}
-                  showSmartAction={true}
-                  eventId={event.id}
-                  data-event-id={event.id}
-                  onClick={() => navigate('/community/meetups')}
-                />
-              ))}
+              {joinedEvents.map((event) => {
+                const isMock = event.id.startsWith('mock-');
+                
+                return (
+                  <NewsCard
+                    key={event.id}
+                    title={event.title}
+                    description={event.description}
+                    imageUrl={getEventImageUrl(event.event_type)}
+                    category="event"
+                    pillar={eventTypeToPillar(event.event_type)}
+                    author={{
+                      name: profile.name || "Community",
+                      avatar: profile.avatarUrl
+                    }}
+                    location={event.location || "Virtual"}
+                    attendees={event.participant_count}
+                    timestamp={formatTimestamp(event.start_time)}
+                    showSmartAction={!isMock}
+                    eventId={isMock ? undefined : event.id}
+                    data-event-id={event.id}
+                    onClick={() => navigate('/community/meetups')}
+                    utilityTopRight={
+                      isMock ? (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-white/90">
+                          Preview
+                        </span>
+                      ) : undefined
+                    }
+                  />
+                );
+              })}
             </div>
           )}
         </TabsContent>
