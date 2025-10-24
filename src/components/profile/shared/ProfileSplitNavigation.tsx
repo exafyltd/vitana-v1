@@ -184,7 +184,7 @@ export function ProfileSplitNavigation({
       {/* Groups Tab */}
       <SplitBarContent value="groups">
         <div className="mt-6">
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-12 gap-x-10 gap-y-6">
             <div className="col-span-8">
               <ProfileGroupsTab profile={profile} scope={scope} />
             </div>

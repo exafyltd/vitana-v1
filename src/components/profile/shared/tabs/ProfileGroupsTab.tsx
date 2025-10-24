@@ -5,7 +5,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Users, Crown, Shield } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
-import { CommunityImpactWidget } from "@/components/profile/community/CommunityImpactWidget";
 
 interface ProfileGroupsTabProps {
   profile: UserProfile;
@@ -97,91 +96,80 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
         </p>
       </div>
 
-      {/* Two-column layout: Groups on left, Impact on right */}
-      <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
-        {/* Groups Grid */}
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
-          {mockCommunities.map((community) => (
-            <Card 
-              key={community.id} 
-              className="group relative overflow-hidden bg-white/60 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] hover:scale-[1.01] transition-all duration-300"
-            >
-              {/* Gradient accent border */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${community.gradient} opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-300`} />
-              
-              <div className="relative p-6 space-y-4">
-                {/* Header with icon and role badge */}
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3 flex-1">
-                    <div className={`w-12 h-12 bg-gradient-to-br ${community.gradient} rounded-xl flex items-center justify-center shadow-sm`}>
-                      <Users className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-lg truncate">{community.name}</h3>
-                      <p className="text-sm text-muted-foreground/80">
-                        {community.members.toLocaleString()} members
-                      </p>
-                    </div>
+      {/* Groups Grid */}
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+        {mockCommunities.map((community) => (
+          <Card 
+            key={community.id} 
+            className="group relative overflow-hidden bg-white/60 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] hover:scale-[1.01] transition-all duration-300"
+          >
+            {/* Gradient accent border */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${community.gradient} opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-300`} />
+            
+            <div className="relative p-6 space-y-4">
+              {/* Header with icon and role badge */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3 flex-1">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${community.gradient} rounded-xl flex items-center justify-center shadow-sm`}>
+                    <Users className="w-6 h-6 text-white" />
                   </div>
-                  <Badge className={getRoleColor(community.role)} variant="outline">
-                    <div className="flex items-center gap-1">
-                      {getRoleIcon(community.role)}
-                      <span className="capitalize text-xs">{community.role}</span>
-                    </div>
-                  </Badge>
-                </div>
-                
-                {/* Description */}
-                <p className="text-sm text-muted-foreground/80 line-clamp-2">
-                  {community.description}
-                </p>
-                
-                {/* Member avatars collage */}
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {community.avatars.slice(0, 4).map((member, idx) => (
-                      <Avatar 
-                        key={idx}
-                        className="w-8 h-8 border-2 border-white shadow-sm ring-1 ring-black/5"
-                      >
-                        <AvatarImage src={member.avatar || undefined} />
-                        <AvatarFallback className="text-xs bg-gradient-to-br from-violet-100 to-sky-100 text-violet-700">
-                          {member.name.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
-                    ))}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-lg truncate">{community.name}</h3>
+                    <p className="text-sm text-muted-foreground/80">
+                      {community.members.toLocaleString()} members
+                    </p>
                   </div>
-                  {community.avatars.length > 4 && (
-                    <span className="text-xs text-muted-foreground/70">
-                      +{community.avatars.length - 4} more
-                    </span>
-                  )}
                 </div>
-                
-                {/* Footer with type and action */}
-                <div className="flex items-center justify-between pt-2">
-                  <Badge variant="secondary" className="capitalize text-xs">
-                    {community.type}
-                  </Badge>
-                  <Button 
-                    size="sm"
-                    className={`rounded-full bg-gradient-to-r ${community.gradient} hover:opacity-90 text-white border-0 shadow-sm px-4`}
-                  >
-                    View {community.type === 'group' ? 'Group' : 'Event'}
-                  </Button>
-                </div>
+                <Badge className={getRoleColor(community.role)} variant="outline">
+                  <div className="flex items-center gap-1">
+                    {getRoleIcon(community.role)}
+                    <span className="capitalize text-xs">{community.role}</span>
+                  </div>
+                </Badge>
               </div>
-            </Card>
-          ))}
-        </div>
-
-        {/* Community Impact Widget */}
-        <div className="lg:sticky lg:top-6 lg:self-start">
-          <CommunityImpactWidget 
-            communityStats={mockCommunityStats}
-            className="bg-white/60 backdrop-blur-xl border-white/30"
-          />
-        </div>
+              
+              {/* Description */}
+              <p className="text-sm text-muted-foreground/80 line-clamp-2">
+                {community.description}
+              </p>
+              
+              {/* Member avatars collage */}
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
+                  {community.avatars.slice(0, 4).map((member, idx) => (
+                    <Avatar 
+                      key={idx}
+                      className="w-8 h-8 border-2 border-white shadow-sm ring-1 ring-black/5"
+                    >
+                      <AvatarImage src={member.avatar || undefined} />
+                      <AvatarFallback className="text-xs bg-gradient-to-br from-violet-100 to-sky-100 text-violet-700">
+                        {member.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                  ))}
+                </div>
+                {community.avatars.length > 4 && (
+                  <span className="text-xs text-muted-foreground/70">
+                    +{community.avatars.length - 4} more
+                  </span>
+                )}
+              </div>
+              
+              {/* Footer with type and action */}
+              <div className="flex items-center justify-between pt-2">
+                <Badge variant="secondary" className="capitalize text-xs">
+                  {community.type}
+                </Badge>
+                <Button 
+                  size="sm"
+                  className={`rounded-full bg-gradient-to-r ${community.gradient} hover:opacity-90 text-white border-0 shadow-sm px-4`}
+                >
+                  View {community.type === 'group' ? 'Group' : 'Event'}
+                </Button>
+              </div>
+            </div>
+          </Card>
+        ))}
       </div>
     </div>
   );
