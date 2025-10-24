@@ -203,7 +203,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                 style={connected ? {
                   borderColor: platform.brandColor,
                   boxShadow: themeConfig.backCard.darkBase 
-                    ? `0 8px 24px ${platform.brandColor}18, 0 0 40px ${platform.brandColor}13, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`
+                    ? `0 8px 24px ${platform.brandColor}16, 0 0 40px ${platform.brandColor}12, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`
                     : `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`,
                 } as React.CSSProperties : {
                   borderColor: 'rgba(160, 160, 160, 0.2)',
@@ -215,7 +215,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                   if (connected) {
                     e.currentTarget.style.transform = 'translateY(-4px) rotateY(2deg)';
                     const hoverShadow = themeConfig.backCard.darkBase
-                      ? `0 16px 48px ${platform.brandColor}30, 0 0 60px ${platform.brandColor}25, inset 0 2px 8px rgba(255,255,255,0.2), inset 0 -2px 6px rgba(0,0,0,0.05)`
+                      ? `0 16px 48px ${platform.brandColor}28, 0 0 60px ${platform.brandColor}22, inset 0 2px 8px rgba(255,255,255,0.2), inset 0 -2px 6px rgba(0,0,0,0.05)`
                       : `0 16px 48px ${platform.brandColor}35, 0 0 60px ${platform.brandColor}30, inset 0 2px 8px rgba(255,255,255,0.2), inset 0 -2px 6px rgba(0,0,0,0.05)`;
                     e.currentTarget.style.boxShadow = hoverShadow;
                   } else {
@@ -228,7 +228,7 @@ export function ProfileIdCardBack({ profile }: ProfileIdCardBackProps) {
                   if (connected) {
                     e.currentTarget.style.transform = 'translateY(0) rotateY(0deg)';
                     const defaultShadow = themeConfig.backCard.darkBase
-                      ? `0 8px 24px ${platform.brandColor}18, 0 0 40px ${platform.brandColor}13, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`
+                      ? `0 8px 24px ${platform.brandColor}16, 0 0 40px ${platform.brandColor}12, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`
                       : `0 8px 24px ${platform.brandColor}20, 0 0 40px ${platform.brandColor}15, inset 0 2px 8px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.05)`;
                     e.currentTarget.style.boxShadow = defaultShadow;
                   } else {
