@@ -32,7 +32,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const isOwner = scope === 'owner';
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { createThread } = useHybridMessages('global');
+  const { createThread, sendMessage } = useHybridMessages('global');
   const { toast } = useToast();
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
@@ -85,15 +85,33 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit }: Profile
   const handleSendMessage = async (message: string) => {
     setIsCreatingThread(true);
     try {
+      // 1. Create or get existing thread
       const thread = await createThread([profile.id]);
-      if (thread?.id) {
-        logMessageSend(thread.id, 'direct', 'global');
-        toast({
-          title: "Message sent",
-          description: "Your message has been sent successfully"
-        });
-        navigate('/inbox/direct', { state: { selectedThreadId: thread.id } });
+      if (!thread?.id) {
+        throw new Error('Failed to create thread');
       }
+
+      // 2. Send the actual message content
+      await sendMessage({
+        context: 'global',
+        threadId: thread.id,
+        content: message,
+        type: 'text'
+      });
+
+      // 3. Log the activity
+      logMessageSend(thread.id, 'text', 'global');
+      
+      // 4. Show success and navigate to inbox
+      toast({
+        title: "Message sent",
+        description: "Your message has been sent successfully"
+      });
+      
+      // 5. Navigate to inbox with thread selected
+      navigate('/inbox', { 
+        state: { selectedThreadId: thread.id } 
+      });
     } catch (error) {
       toast({
         title: "Error",
