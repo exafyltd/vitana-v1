@@ -78,6 +78,7 @@ interface CommunityEvent {
   participant_count: number;
   event_type: string;
   created_by: string;
+  image_url?: string;
 }
 
 export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: ProfileEventsTabProps) {
@@ -121,7 +122,8 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
               location,
               participant_count,
               event_type,
-              created_by
+              created_by,
+              image_url
             )
           `)
           .eq('user_id', profile.user_id)
@@ -187,11 +189,19 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
     return mapping[eventType.toLowerCase()] || 'Event';
   };
 
-  // Generate event image based on type (placeholder approach)
-  const getEventImageUrl = (eventType: string): string => {
-    // Use a gradient background or placeholder
-    // In production, events would have real images
-    return ""; // Empty will trigger gradient fallback in NewsCard
+  // Themed placeholder images by event type
+  const PLACEHOLDER_BY_TYPE: Record<string, string> = {
+    fitness: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+    meditation: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    yoga: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
+    nutrition: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
+    event: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
+    meetup: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+  };
+
+  // Get event image URL with themed fallback
+  const getEventImageUrl = (event: CommunityEvent): string => {
+    return event.image_url || PLACEHOLDER_BY_TYPE[event.event_type?.toLowerCase()] || PLACEHOLDER_BY_TYPE.event;
   };
 
   // Format timestamp for NewsCard
@@ -304,7 +314,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     key={event.id}
                     title={event.title}
                     description={event.description}
-                    imageUrl={getEventImageUrl(event.event_type)}
+                    imageUrl={getEventImageUrl(event)}
                     category="event"
                     pillar={eventTypeToPillar(event.event_type)}
                     author={{
@@ -374,7 +384,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     key={event.id}
                     title={event.title}
                     description={event.description}
-                    imageUrl={getEventImageUrl(event.event_type)}
+                    imageUrl={getEventImageUrl(event)}
                     category="event"
                     pillar={eventTypeToPillar(event.event_type)}
                     author={{
