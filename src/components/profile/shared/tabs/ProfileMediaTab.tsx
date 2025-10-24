@@ -17,95 +17,111 @@ type MediaCategory = 'all' | 'video' | 'music' | 'podcast' | 'guided';
 export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabProps) {
   const [activeCategory, setActiveCategory] = useState<MediaCategory>('all');
 
-  // Diverse mock media content
+  // Diverse mock media content with creators and sub-genres
   const mockMedia = [
     {
       id: '1',
       type: 'video',
       category: 'video' as MediaCategory,
       title: '15-Minute Morning Flow',
+      subGenre: 'Vinyasa Yoga',
       thumbnail: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800',
       duration: '15:23',
       views: 2300,
       date: '2 days ago',
-      size: 'large'
+      size: 'large',
+      creator: { name: 'Sarah Chen', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sarah' }
     },
     {
       id: '2',
       type: 'podcast',
       category: 'podcast' as MediaCategory,
       title: 'Finding Inner Peace Through Daily Practice',
+      subGenre: 'Wellness Talk',
       thumbnail: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800',
       duration: '32:15',
       plays: 890,
       date: '1 week ago',
-      size: 'medium'
+      size: 'medium',
+      creator: { name: 'Michael Torres', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=michael' }
     },
     {
       id: '3',
       type: 'music',
       category: 'music' as MediaCategory,
       title: 'Meditation Sounds',
+      subGenre: 'Ambient',
       thumbnail: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800',
       duration: '8:45',
       plays: 1456,
       date: '2 weeks ago',
-      size: 'small'
+      size: 'small',
+      creator: { name: 'Luna Rivers', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=luna' }
     },
     {
       id: '4',
       type: 'video',
       category: 'video' as MediaCategory,
       title: 'Sunset Yoga Session',
+      subGenre: 'Hatha Flow',
       thumbnail: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800',
       duration: '22:10',
       views: 3420,
       date: '3 days ago',
-      size: 'medium'
+      size: 'medium',
+      creator: { name: 'Emma Wilson', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=emma' }
     },
     {
       id: '5',
       type: 'guided',
       category: 'guided' as MediaCategory,
       title: 'Guided Breathwork Journey',
+      subGenre: 'Pranayama',
       thumbnail: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=800',
       duration: '12:30',
       plays: 678,
       date: '5 days ago',
-      size: 'large'
+      size: 'large',
+      creator: { name: 'David Kim', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=david' }
     },
     {
       id: '6',
       type: 'music',
       category: 'music' as MediaCategory,
       title: 'Deep Focus Ambient Mix',
+      subGenre: 'Lo-Fi Chill',
       thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
       duration: '45:00',
       plays: 2890,
       date: '1 week ago',
-      size: 'small'
+      size: 'small',
+      creator: { name: 'Alex Rivera', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=alex' }
     },
     {
       id: '7',
       type: 'podcast',
       category: 'podcast' as MediaCategory,
       title: 'The Science of Mindfulness',
+      subGenre: 'Educational',
       thumbnail: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800',
       duration: '28:45',
       plays: 1234,
       date: '4 days ago',
-      size: 'medium'
+      size: 'medium',
+      creator: { name: 'Dr. Sophia Lee', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sophia' }
     },
     {
       id: '8',
       type: 'video',
       category: 'video' as MediaCategory,
       title: 'Evening Wind Down Routine',
+      subGenre: 'Restorative',
       thumbnail: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800',
       duration: '18:55',
       views: 1890,
       date: '6 days ago',
-      size: 'large'
+      size: 'large',
+      creator: { name: 'Maya Patel', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=maya' }
     }
   ];
 
@@ -146,6 +162,16 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
       case 'podcast': return '🎙️ Featured Podcasts';
       case 'guided': return '✨ Guided Sessions';
       default: return '📚 All Media';
+    }
+  };
+
+  const getCategoryGradient = (category: MediaCategory) => {
+    switch (category) {
+      case 'video': return 'from-violet-500/10 via-transparent to-transparent';
+      case 'music': return 'from-blue-500/10 via-transparent to-transparent';
+      case 'podcast': return 'from-sky-500/10 via-transparent to-transparent';
+      case 'guided': return 'from-purple-500/10 via-transparent to-transparent';
+      default: return 'from-indigo-500/10 via-transparent to-transparent';
     }
   };
 
@@ -201,16 +227,22 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6 animate-fadeInUp">
+    <div className="w-full max-w-5xl mx-auto space-y-6 animate-fadeInUp pb-32">
+      {/* Category-based ambient gradient background */}
+      <div className={cn(
+        "fixed inset-0 pointer-events-none transition-all duration-700 bg-gradient-to-br",
+        getCategoryGradient(activeCategory)
+      )} />
+
       {/* Category filters - Floating glass segmented control */}
-      <div className="flex justify-center">
+      <div className="flex justify-center relative z-10">
         <div className="inline-flex gap-1 p-1 bg-white/70 backdrop-blur-xl border border-white/30 rounded-full shadow-sm">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300",
+                "relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300",
                 activeCategory === cat.id
                   ? "bg-gradient-to-r from-violet-500 to-blue-400 text-white shadow-[0_0_12px_rgba(139,92,246,0.3)]"
                   : "text-gray-700 dark:text-gray-300 hover:bg-white/50"
@@ -218,13 +250,19 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
             >
               <cat.icon className="h-4 w-4" />
               {cat.label}
+              {activeCategory === cat.id && (
+                <>
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-0.5 bg-gradient-to-r from-transparent via-violet-300 to-transparent animate-pulse" />
+                  <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-yellow-400 animate-pulse" />
+                </>
+              )}
             </button>
           ))}
         </div>
       </div>
 
       {/* Section title with gradient underline */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 relative z-10">
         <h2 className="relative text-xl font-semibold text-gray-800 dark:text-gray-100">
           {getSectionTitle(activeCategory)}
           <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-400 via-sky-400 to-transparent opacity-60" />
@@ -232,17 +270,17 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
         <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent dark:from-white/20" />
       </div>
 
-      {/* Masonry grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[200px]">
+      {/* Masonry grid with relative positioning */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[200px] relative z-10">
         {filteredMedia.map((item, index) => (
           <Card 
             key={item.id} 
             className={cn(
-              "group cursor-pointer transition-all duration-300 ease-out overflow-hidden",
+              "group cursor-pointer transition-all duration-300 ease-out overflow-hidden relative",
               "bg-white/60 backdrop-blur-xl rounded-2xl",
               "border border-transparent bg-gradient-to-br from-violet-300/40 to-sky-200/40 bg-clip-padding",
-              "shadow-[0_4px_10px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.1)]",
-              "hover:scale-[1.015]",
+              "shadow-[0_4px_10px_rgba(0,0,0,0.05)]",
+              "hover:scale-[1.015] hover:brightness-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.12)]",
               getCardHeight(item.size)
             )}
             style={{
@@ -272,16 +310,22 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
                 {item.duration}
               </div>
 
-              {/* Content info */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
+              {/* Content info with slide-up animation */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2 transition-all duration-300 group-hover:-translate-y-2">
                 <div className="flex items-start gap-2">
                   <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg text-white">
                     {getMediaIcon(item.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-sm text-white line-clamp-2 drop-shadow-lg">
+                    <h3 className="font-medium text-sm text-white line-clamp-2 drop-shadow-lg transition-all duration-300">
                       {item.title}
                     </h3>
+                    {/* Sub-genre tag - revealed on hover */}
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 mt-1">
+                      <span className="inline-block text-xs px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded-full text-white/90">
+                        {item.subGenre}
+                      </span>
+                    </div>
                     <div className="flex items-center gap-3 mt-1 text-xs text-white/80">
                       <div className="flex items-center gap-1">
                         {getMetricIcon(item.type)}
@@ -291,10 +335,33 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
                     </div>
                   </div>
                 </div>
+
+                {/* Creator chip */}
+                <div className="flex items-center gap-2 pt-2 border-t border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <img 
+                    src={item.creator.avatar} 
+                    alt={item.creator.name}
+                    className="w-5 h-5 rounded-full ring-1 ring-white/30"
+                  />
+                  <span className="text-xs text-white/90 font-medium drop-shadow">
+                    {item.creator.name}
+                  </span>
+                </div>
               </div>
             </div>
           </Card>
         ))}
+      </div>
+
+      {/* Now Playing Dock - Placeholder */}
+      <div className="fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-violet-900/20 via-sky-900/10 to-transparent backdrop-blur-2xl border-t border-white/10 z-50 pointer-events-none">
+        <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
+          <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+            <Music className="h-4 w-4" />
+            <span className="font-medium">Now Playing Dock</span>
+            <span className="text-xs opacity-60">(Coming Soon)</span>
+          </div>
+        </div>
       </div>
     </div>
   );
