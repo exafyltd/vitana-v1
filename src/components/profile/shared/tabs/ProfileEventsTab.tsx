@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Users, Plus, Edit } from "lucide-react";
+import { Calendar, Users, Plus, Edit, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
@@ -331,9 +331,17 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     onClick={() => navigate('/community/meetups')}
                     utilityTopRight={
                       isMock ? (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-white/90">
-                          Preview
-                        </span>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full bg-white/10 text-white border border-white/20 backdrop-blur-sm hover:bg-white/20"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/community/meetups');
+                          }}
+                        >
+                          Join Event
+                        </Button>
                       ) : isOwnProfile && isUpcoming ? (
                         <Button
                           size="xs"
@@ -351,6 +359,20 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                   />
                 );
               })}
+            </div>
+          )}
+          
+          {/* Explore More Events Button */}
+          {createdEvents.length > 0 && (
+            <div className="flex justify-center pt-8 pb-4">
+              <Button 
+                variant="outline" 
+                className="rounded-full px-8 py-6 text-base font-medium group"
+                onClick={() => navigate('/community/meetups')}
+              >
+                Explore More Events
+                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
           )}
         </TabsContent>
@@ -401,14 +423,36 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                     onClick={() => navigate('/community/meetups')}
                     utilityTopRight={
                       isMock ? (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-white/90">
-                          Preview
-                        </span>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full bg-white/10 text-white border border-white/20 backdrop-blur-sm hover:bg-white/20"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/community/meetups');
+                          }}
+                        >
+                          Join Event
+                        </Button>
                       ) : undefined
                     }
                   />
                 );
               })}
+            </div>
+          )}
+          
+          {/* Explore More Events Button */}
+          {joinedEvents.length > 0 && (
+            <div className="flex justify-center pt-8 pb-4">
+              <Button 
+                variant="outline" 
+                className="rounded-full px-8 py-6 text-base font-medium group"
+                onClick={() => navigate('/community/meetups')}
+              >
+                Explore More Events
+                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
           )}
         </TabsContent>

@@ -185,7 +185,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       <Card 
         ref={ref}
         className={cn(
-          "group relative cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-0 h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+          "group relative cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01] border-0 h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+          "shadow-[0_4px_12px_rgba(0,0,0,0.08)]",
           isSelected && "ring-2 ring-primary ring-offset-2",
           className
         )}
@@ -227,7 +228,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           />
           
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none" />
           
           {/* Media Play Icon Overlay */}
           {MediaIcon && (
@@ -244,9 +245,20 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             <div className="flex justify-between items-center">
               {/* Left side - Category + Price */}
               <div className="flex items-center gap-2">
-                {/* Pillar badge */}
+                {/* Pillar badge with gradient accents */}
                 {pillar && (
-                  <div className="text-xs text-white font-medium bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap">
+                  <div className={cn(
+                    "text-xs text-white font-medium rounded-md px-2 py-1 backdrop-blur-sm border border-white/30 uppercase tracking-wide whitespace-nowrap",
+                    pillar.toLowerCase().includes('movement') || pillar.toLowerCase().includes('exercise') 
+                      ? "bg-gradient-to-r from-orange-500/80 to-rose-500/80"
+                      : pillar.toLowerCase().includes('mind') || pillar.toLowerCase().includes('mental')
+                      ? "bg-gradient-to-r from-violet-500/80 to-sky-500/80"
+                      : pillar.toLowerCase().includes('nutrition')
+                      ? "bg-gradient-to-r from-emerald-500/80 to-lime-500/80"
+                      : pillar.toLowerCase().includes('community')
+                      ? "bg-gradient-to-r from-pink-500/80 to-violet-500/80"
+                      : "bg-black/40"
+                  )}>
                     {pillar}
                   </div>
                 )}
@@ -270,7 +282,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                   {/* Timestamp */}
                   {timestamp && (
                     <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
-                      <Clock className="w-3 h-3" />
+                      <Calendar className="w-3 h-3" />
                       <span className="font-medium">{timestamp}</span>
                     </div>
                   )}
@@ -294,33 +306,33 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               )}
 
               {/* Meta Information */}
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between pt-1">
                 {/* Author */}
                 {author && (
-                  <div className="flex items-center gap-2">
-                    <Avatar className="w-6 h-6 border-2 border-white/30">
+                  <div className="flex items-center gap-2.5">
+                    <Avatar className="w-7 h-7 border-2 border-white/40">
                       <AvatarImage src={author.avatar} alt={author.name} />
                       <AvatarFallback className="text-xs bg-white/20 text-white">
                         {author.name.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-xs text-white/90 font-medium">
+                    <span className="text-xs text-white font-medium">
                       {author.name}
                     </span>
                   </div>
                 )}
 
                 {/* Location & Attendees */}
-                <div className="flex items-center gap-3 text-xs text-white/80">
+                <div className="flex items-center gap-3 text-xs text-white/90">
                   {location && (
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-3 h-3" />
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-white/70" />
                       {location}
                     </div>
                   )}
                   {(attendees !== undefined || (eventId && eventParticipation?.participantCount > 0)) && (
-                    <div className="flex items-center gap-1">
-                      <Users className="w-3 h-3" />
+                    <div className="flex items-center gap-1.5">
+                      <Users className="w-3.5 h-3.5 text-white/70" />
                       {displayAttendees}
                     </div>
                   )}
