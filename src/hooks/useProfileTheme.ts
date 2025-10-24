@@ -45,6 +45,10 @@ export interface ThemeConfig {
     accentGlow: string;
     topStripe: string;
     platformHoverGlow: string;
+    darkBase?: string;
+    leftEdgeGlow?: string;
+    textHeader?: string;
+    textInactive?: string;
   };
 }
 
@@ -127,10 +131,14 @@ export const THEME_CONFIGS: Record<ProfileTheme, ThemeConfig> = {
       secondary: 'bg-purple-950/50 dark:bg-purple-900/40 border-purple-500/50 dark:border-purple-400/50 hover:bg-purple-900/60 dark:hover:bg-purple-800/50',
     },
     backCard: {
-      borderGradient: 'from-purple-500/60 via-indigo-400/40 to-blue-400/30',
-      accentGlow: 'shadow-[0_0_50px_rgba(147,51,234,0.2)]',
+      borderGradient: 'from-violet-500/60 via-sky-400/40 to-transparent',
+      accentGlow: 'shadow-[0_0_50px_rgba(147,51,234,0.25),0_10px_40px_rgba(99,102,241,0.15),inset_0_1px_0_rgba(139,92,246,0.1)]',
       topStripe: 'bg-gradient-to-r from-purple-600/30 via-indigo-500/40 to-blue-500/30',
       platformHoverGlow: 'hover:shadow-[0_0_35px_rgba(147,51,234,0.3)]',
+      darkBase: 'bg-white/10 backdrop-blur-2xl',
+      leftEdgeGlow: 'bg-gradient-to-r from-violet-600/40 to-transparent',
+      textHeader: 'text-white/90',
+      textInactive: 'text-gray-400/70',
     },
   },
   expression: {

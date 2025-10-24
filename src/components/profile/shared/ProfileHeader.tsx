@@ -26,7 +26,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
           
           {/* Themed Vertical Divider - Only visible on large screens */}
           <div className="hidden lg:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px pointer-events-none">
-            <div className="h-full bg-gradient-to-b from-transparent via-current to-transparent opacity-30 transition-all duration-[400ms] ease-in-out" style={{ color: 'hsl(var(--sys-vitana-accent))' }} />
+            <div className="h-full bg-gradient-to-b from-transparent via-current to-transparent opacity-40 transition-all duration-500 ease-in-out" style={{ color: 'hsl(var(--sys-vitana-accent))' }} />
           </div>
           
           {/* Back ID Card - Right */}
