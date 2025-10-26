@@ -65,28 +65,6 @@ export default function AIAssistantOverview() {
           <div>
             <h2 className="text-lg font-semibold mb-4">Get Started</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card 
-                className="hover:shadow-lg transition-shadow cursor-pointer" 
-                onClick={() => navigate('/admin/ai-assistant/automation-builder')}
-              >
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                      <Zap className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-base">Automation Builder</CardTitle>
-                      <CardDescription>Create and manage automation rules</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Build powerful automations with triggers, conditions, and actions. 
-                    Start with templates or create custom workflows.
-                  </p>
-                </CardContent>
-              </Card>
 
               <Card 
                 className="hover:shadow-lg transition-shadow cursor-pointer" 

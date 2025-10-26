@@ -13,7 +13,7 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { adminAIAssistantNavigation } from "@/config/navigation";
+import { adminAutomationNavigation } from "@/config/navigation";
 import TriggerSelector from "@/components/admin/automation/TriggerSelector";
 import ConditionBuilder from "@/components/admin/automation/ConditionBuilder";
 import ActionConfigurator from "@/components/admin/automation/ActionConfigurator";
@@ -157,7 +157,7 @@ export default function AutomationBuilder() {
         description: `Automation rule "${name}" has been ${isDraft ? "saved as draft" : "created successfully"}`,
       });
 
-      navigate("/admin/ai-assistant");
+      navigate("/admin/automation");
     } catch (error) {
       toast({
         title: "Error",
@@ -174,7 +174,7 @@ export default function AutomationBuilder() {
         description="Create and configure automation rules" 
         canonical={window.location.href} 
       />
-      <SubNavigation items={adminAIAssistantNavigation} />
+      <SubNavigation items={adminAutomationNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-5xl mx-auto space-y-6">

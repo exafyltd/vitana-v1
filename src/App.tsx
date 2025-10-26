@@ -166,7 +166,8 @@ import PodcastsManagement from "./pages/admin/media/Podcasts";
 import MusicManagement from "./pages/admin/media/Music";
 import AnalyticsManagement from "./pages/admin/media/Analytics";
 import AIAssistantOverview from "./pages/admin/AIAssistant";
-import AutomationBuilder from "./pages/admin/ai-assistant/AutomationBuilder";
+import AutomationOverview from "./pages/admin/Automation";
+import AutomationBuilder from "./pages/admin/automation/AutomationBuilder";
 import AISituationAnalyzer from "./pages/admin/ai-assistant/AISituationAnalyzer";
 import PatternDiscovery from "./pages/admin/ai-assistant/PatternDiscovery";
 import AIAssistantAnalytics from "./pages/admin/ai-assistant/Analytics";
@@ -1033,13 +1034,6 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
-          <Route path="/admin/ai-assistant/automation-builder" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <AutomationBuilder />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
           <Route path="/admin/ai-assistant/ai-analyzer" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="admin">
@@ -1065,6 +1059,22 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="admin">
                 <AIAssistantAnalytics />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          
+          {/* Automation Routes */}
+          <Route path="/admin/automation" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <AutomationOverview />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/admin/automation/builder" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="admin">
+                <AutomationBuilder />
               </ProtectedRoute>
             </AuthGuard>
           } />
@@ -1108,6 +1118,7 @@ const App = () => {
           
           {/* Legacy redirects for backward compatibility */}
           <Route path="/admin/init-events" element={<InitEvents />} />
+          <Route path="/admin/ai-assistant/automation-builder" element={<Navigate to="/admin/automation/builder" replace />} />
           <Route path="/admin/bootstrap" element={<Navigate to="/admin/system/bootstrap" replace />} />
           <Route path="/admin/staff" element={<Navigate to="/admin/user-management/staff" replace />} />
           <Route path="/admin/queue" element={<Navigate to="/admin/clinical/queue" replace />} />

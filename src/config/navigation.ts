@@ -135,11 +135,16 @@ export const adminMediaNavigation = [
 // AI Assistant - automation & intelligence system
 export const adminAIAssistantNavigation = [
   { id: "overview", name: "Overview", path: "/admin/ai-assistant" },
-  { id: "automation-builder", name: "Automation Builder", path: "/admin/ai-assistant/automation-builder" },
   { id: "ai-analyzer", name: "AI Situation Analyzer", path: "/admin/ai-assistant/ai-analyzer" },
   { id: "pattern-discovery", name: "Pattern Discovery", path: "/admin/ai-assistant/pattern-discovery" },
   { id: "proactive-settings", name: "Proactive Settings", path: "/admin/ai-assistant/proactive-settings" },
   { id: "analytics", name: "Analytics & Performance", path: "/admin/ai-assistant/analytics" },
+];
+
+// Automation - workflow automation system
+export const adminAutomationNavigation = [
+  { id: "overview", name: "Overview", path: "/admin/automation" },
+  { id: "builder", name: "Automation Builder", path: "/admin/automation/builder" },
 ];
 
 // Live & Stream - streaming management
