@@ -135,9 +135,10 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
   
   return (
     <>
-      <div className={`relative h-full flex flex-col items-center justify-center p-8 backdrop-blur-2xl ${themeConfig.card.border} rounded-3xl ${themeConfig.card.shadow} overflow-hidden animate-fade-in transition-all duration-500 ease-in-out`}
+      <div className={`relative h-full flex flex-col items-center justify-center p-8 backdrop-blur-2xl ${themeConfig.card.border} rounded-3xl overflow-hidden animate-fade-in transition-all duration-500 ease-in-out`}
            style={{
              background: themeConfig.card.background,
+             boxShadow: '0 0 25px rgba(0,0,0,0.2)'
            }}>
         {/* Avatar-centered gradient glow (Serenity & Expression only) */}
         {(themeConfig.name === 'serenity' || themeConfig.name === 'expression') && (
@@ -162,19 +163,19 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
         <div className="relative mb-5 z-10 animate-fade-in transition-all duration-300 ease-out" style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
           {/* Outer ambient halo - soft and wide */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-[60px] animate-[pulse_4s_ease-in-out_infinite] transition-all duration-300`} />
+            <div className={`w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-[60px] animate-[pulse_4s_ease-in-out_infinite] transition-all duration-300`} style={{ opacity: 0.65 }} />
           </div>
           
           {/* Inner light ring - bright and focused */}
           <div className="absolute inset-0 flex items-center justify-center animate-[pulse_3s_ease-in-out_infinite]">
-            <div className={`w-56 h-56 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-2xl transition-all duration-300`} />
+            <div className={`w-56 h-56 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-2xl transition-all duration-300`} style={{ opacity: 0.75 }} />
           </div>
           
           {/* Outer glow ring with pulse */}
           <div className="absolute inset-0 flex items-center justify-center animate-[pulse_3.5s_ease-in-out_infinite]">
             <div className={`w-[210px] h-[210px] rounded-full border ${themeConfig.avatar.rings[0]} transition-all duration-300`} 
                  style={{
-                   boxShadow: '0 0 30px hsl(var(--sys-vitana-accent) / 0.3), 0 0 60px hsl(var(--sys-vitana-accent) / 0.15), inset 0 0 20px hsl(var(--sys-vitana-accent) / 0.08)'
+                   boxShadow: '0 0 25px hsl(var(--sys-vitana-accent) / 0.2), 0 0 50px hsl(var(--sys-vitana-accent) / 0.1), inset 0 0 15px hsl(var(--sys-vitana-accent) / 0.06)'
                  }} />
           </div>
           
@@ -182,13 +183,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
           <div className="absolute inset-0 flex items-center justify-center animate-[pulse_2.5s_ease-in-out_infinite]">
             <div className={`w-[202px] h-[202px] rounded-full border-2 ${themeConfig.avatar.rings[1]} transition-all duration-300`} 
                  style={{
-                   boxShadow: '0 0 40px hsl(var(--sys-vitana-accent) / 0.4), inset 0 0 25px hsl(var(--sys-vitana-accent) / 0.12)'
+                   boxShadow: '0 0 30px hsl(var(--sys-vitana-accent) / 0.25), inset 0 0 20px hsl(var(--sys-vitana-accent) / 0.08)'
                  }} />
           </div>
           
-          <Avatar className={`relative h-48 w-48 ${themeConfig.avatar.border} shadow-[0_25px_70px_rgba(0,0,0,0.25),0_0_50px_hsl(var(--sys-vitana-accent)/0.3),inset_0_2px_4px_rgba(255,255,255,0.5)] transition-all duration-500 hover:scale-105 ease-out`}
+          <Avatar className={`relative h-48 w-48 ${themeConfig.avatar.border} transition-all duration-500 hover:scale-105 ease-out`}
                   style={{
-                    filter: 'drop-shadow(0 0 30px hsl(var(--sys-vitana-accent) / 0.4))'
+                    boxShadow: '0 0 25px rgba(0,0,0,0.2), 0 0 40px hsl(var(--sys-vitana-accent)/0.2), inset 0 2px 4px rgba(255,255,255,0.5)',
+                    filter: 'drop-shadow(0 0 20px hsl(var(--sys-vitana-accent) / 0.25))'
                   }}>
             <AvatarImage src={profile.avatarUrl} alt={profile.name} className="object-cover" />
             <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-[hsl(199,36%,48%)] to-[hsl(239,36%,67%)] text-white">
@@ -224,10 +226,11 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                 <div className={`absolute inset-0 w-20 h-20 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-2xl animate-[pulse_2s_ease-in-out_infinite] transition-all duration-300`}></div>
                 <div className={`absolute inset-0 w-18 h-18 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-xl animate-[pulse_3s_ease-in-out_infinite] transition-all duration-300`}></div>
                 
-                {/* Glass orb with gradient border and inner light */}
-                <div className={`relative w-[68px] h-[68px] rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.15),0_0_50px_hsl(var(--sys-vitana-accent)/0.6),inset_0_2px_12px_rgba(255,255,255,0.3),inset_0_-2px_8px_rgba(0,0,0,0.1)] border-[3px] flex flex-col items-center justify-center animate-[pulse_2.8s_ease-in-out_infinite] transition-all duration-500 hover:scale-110 hover:shadow-[0_12px_50px_rgba(0,0,0,0.2),0_0_70px_hsl(var(--sys-vitana-accent)/0.8)] cursor-pointer group ease-out`}
+            {/* Glass orb with gradient border and inner light */}
+                <div className={`relative w-[68px] h-[68px] rounded-full border-[3px] flex flex-col items-center justify-center animate-[pulse_2.8s_ease-in-out_infinite] transition-all duration-500 hover:scale-110 cursor-pointer group ease-out`}
                      style={{
                        background: themeConfig.vitanaOrb.background,
+                       boxShadow: '0 0 25px rgba(0,0,0,0.2), 0 0 40px hsl(var(--sys-vitana-accent)/0.4), inset 0 2px 12px rgba(255,255,255,0.3), inset 0 -2px 8px rgba(0,0,0,0.1)'
                      }}>
                   {/* Inner glass reflection */}
                   <div className="absolute inset-[3px] rounded-full bg-gradient-to-br from-white/20 via-transparent to-transparent pointer-events-none" />
@@ -333,25 +336,34 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
               <>
                 <Button 
                   variant="default"
-                  className={`rounded-full ${themeConfig.buttons.primary} hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)] border-0 text-white font-semibold active:scale-100 ease-out`}
+                  className={`rounded-full ${themeConfig.buttons.primary} hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 border-0 text-white font-semibold active:scale-100 ease-out`}
                   onClick={handleFollowClick}
                   disabled={followLoading}
+                  style={{
+                    boxShadow: '0 0 25px rgba(0,0,0,0.2)'
+                  }}
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
                   {followLoading ? "..." : isFollowing ? "Following" : "Follow"}
                 </Button>
                 
                 <Button 
-                  className={`inline-flex items-center gap-2 rounded-full h-10 px-5 ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] font-medium active:scale-100 ease-out`}
+                  className={`inline-flex items-center gap-2 rounded-full h-10 px-5 ${themeConfig.buttons.primary} backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 font-medium active:scale-100 ease-out text-white border-0`}
                   onClick={handleMessageClick}
+                  style={{
+                    boxShadow: '0 0 25px rgba(0,0,0,0.2)'
+                  }}
                 >
                   <MessageSquare className="h-4 w-4" />
                   <span>Message</span>
                 </Button>
                 
                 <Button 
-                  className={`inline-flex items-center gap-2 rounded-full h-10 px-5 ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] font-medium active:scale-100 ease-out`}
+                  className={`inline-flex items-center gap-2 rounded-full h-10 px-5 ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 font-medium active:scale-100 ease-out`}
                   onClick={() => setShareModalOpen(true)}
+                  style={{
+                    boxShadow: '0 0 25px rgba(0,0,0,0.2)'
+                  }}
                 >
                   <Share2 className="h-4 w-4" />
                   <span>Share</span>
