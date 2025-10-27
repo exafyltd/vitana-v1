@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,6 +56,13 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
 
   const isUploading = isMediaUploading || isVideoUploading;
   const progress = mediaType === 'video' ? videoProgress : mediaProgress;
+
+  // Sync mediaType with initialMediaType when modal opens
+  useEffect(() => {
+    if (open && initialMediaType) {
+      setMediaType(initialMediaType);
+    }
+  }, [open, initialMediaType]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
