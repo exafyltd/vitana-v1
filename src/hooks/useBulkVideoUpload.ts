@@ -73,13 +73,29 @@ export const useBulkVideoUpload = () => {
         const positions = [0.2, 0.5, 0.8]; // 20%, 50%, 80%
         let captured = 0;
 
-        canvas.width = 320;
-        canvas.height = 180;
+        // Portrait 9:16 canvas for shorts
+        canvas.width = 540;
+        canvas.height = 960;
 
         video.onseeked = () => {
           if (ctx) {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            thumbnails.push(canvas.toDataURL('image/jpeg', 0.8));
+            // Cover-crop algorithm: scale to fill canvas, center and crop
+            const vW = video.videoWidth;
+            const vH = video.videoHeight;
+            const cW = canvas.width;
+            const cH = canvas.height;
+            const scale = Math.max(cW / vW, cH / vH);
+            const drawW = vW * scale;
+            const drawH = vH * scale;
+            const dx = (cW - drawW) / 2;
+            const dy = (cH - drawH) / 2;
+            
+            ctx.clearRect(0, 0, cW, cH);
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(video, dx, dy, drawW, drawH);
+            
+            thumbnails.push(canvas.toDataURL('image/jpeg', 0.9));
           }
           captured++;
           
@@ -111,15 +127,31 @@ export const useBulkVideoUpload = () => {
 
       video.preload = 'metadata';
       video.onloadedmetadata = () => {
-        canvas.width = 320;
-        canvas.height = 180;
+        // Portrait 9:16 canvas for shorts
+        canvas.width = 540;
+        canvas.height = 960;
         video.currentTime = Math.min(timeInSeconds, video.duration);
       };
 
       video.onseeked = () => {
         if (ctx) {
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          // Cover-crop algorithm: scale to fill canvas, center and crop
+          const vW = video.videoWidth;
+          const vH = video.videoHeight;
+          const cW = canvas.width;
+          const cH = canvas.height;
+          const scale = Math.max(cW / vW, cH / vH);
+          const drawW = vW * scale;
+          const drawH = vH * scale;
+          const dx = (cW - drawW) / 2;
+          const dy = (cH - drawH) / 2;
+          
+          ctx.clearRect(0, 0, cW, cH);
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(video, dx, dy, drawW, drawH);
+          
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
           window.URL.revokeObjectURL(video.src);
           resolve(dataUrl);
         } else {

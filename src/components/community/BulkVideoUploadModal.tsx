@@ -98,7 +98,7 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
       
       {/* Current thumbnail */}
       {item.thumbnail?.url && (
-        <div className="relative w-full h-32 rounded-lg overflow-hidden border-2 border-primary">
+        <div className="relative w-full aspect-[9/16] rounded-lg overflow-hidden border-2 border-primary">
           <img 
             src={item.thumbnail.url} 
             alt="Selected thumbnail" 
@@ -128,7 +128,7 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
                   thumbnail: { type: 'auto', url: thumb }
                 })}
                 className={cn(
-                  "relative aspect-video rounded border-2 overflow-hidden transition-all hover:border-primary",
+                  "relative aspect-[9/16] rounded border-2 overflow-hidden transition-all hover:border-primary",
                   item.thumbnail?.url === thumb ? "border-primary ring-2 ring-primary" : "border-border"
                 )}
               >

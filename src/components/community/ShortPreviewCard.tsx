@@ -139,8 +139,11 @@ export function ShortPreviewCard({
             className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
               isPreviewing && !loadError ? 'opacity-100' : 'opacity-0'
             }`}
-            playsInline
+            poster={video.thumbnail_url || video.thumbnailImage}
+            preload="metadata"
             muted
+            playsInline
+            loop
             disablePictureInPicture
             controlsList="nodownload nofullscreen noremoteplayback"
           />
