@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2 } from "lucide-react";
+import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2, ChevronDown } from "lucide-react";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { extractStoragePath } from "@/lib/utils";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
@@ -26,6 +26,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "@/hooks/use-toast";
 import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastShows";
 import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
@@ -33,6 +38,7 @@ import { useShorts, useTrackMediaEvent } from "@/hooks/useShorts";
 import { ShortPreviewCard } from "@/components/community/ShortPreviewCard";
 import { UnifiedUploadModal } from '@/components/community/UnifiedUploadModal';
 import { VideoPlayerModal } from '@/components/community/VideoPlayerModal';
+import { BulkVideoUploadModal } from '@/components/community/BulkVideoUploadModal';
 import { useShortsDensity } from '@/hooks/useShortsDensity';
 import { DensityControl } from '@/components/community/DensityControl';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
@@ -193,6 +199,7 @@ export default function MediaHub() {
     getLatestActions
   } = useAutopilot();
   const [isUnifiedUploadOpen, setIsUnifiedUploadOpen] = useState(false);
+  const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<any>(null);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(-1);
   const [isVideoPlayerOpen, setIsVideoPlayerOpen] = useState(false);
@@ -559,13 +566,25 @@ export default function MediaHub() {
               onSearch={(query) => console.log('Search Media:', query)}
             />
             <UniversalCalendarButton />
-            <Button 
-              size="sm" 
-              onClick={() => setIsUnifiedUploadOpen(true)}
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              Upload
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm">
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload
+                  <ChevronDown className="w-3 h-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setIsUnifiedUploadOpen(true)}>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Single Upload
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setIsBulkUploadOpen(true)}>
+                  <Video className="w-4 h-4 mr-2" />
+                  Bulk Video Upload
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </UtilityActionButton>
 
           {/* Media Hub Subtabs */}
@@ -1153,6 +1172,25 @@ export default function MediaHub() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Upload Modals */}
+      <UnifiedUploadModal 
+        open={isUnifiedUploadOpen} 
+        onOpenChange={setIsUnifiedUploadOpen}
+        onUploadComplete={(mediaType) => {
+          if (mediaType === 'video') refetchShorts();
+          setIsUnifiedUploadOpen(false);
+        }}
+      />
+      
+      <BulkVideoUploadModal
+        open={isBulkUploadOpen}
+        onOpenChange={setIsBulkUploadOpen}
+        onUploadComplete={() => {
+          refetchShorts();
+          setIsBulkUploadOpen(false);
+        }}
+      />
     </AppLayout>
   );
 }

@@ -1,0 +1,642 @@
+import { useState, useRef } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Upload, X, Play, Check, AlertCircle, Loader2, 
+  ChevronDown, ChevronUp, Image as ImageIcon, Film
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useBulkVideoUpload, VideoFileItem } from '@/hooks/useBulkVideoUpload';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+
+interface BulkVideoUploadModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onUploadComplete?: () => void;
+}
+
+const PREDEFINED_TAGS = [
+  'Fitness', 'Nutrition', 'Wellness', 'Mindfulness', 'Motivation',
+  'Mental Health', 'Lifestyle', 'Education', 'Sleep', 'Longevity'
+];
+
+const VIDEO_TOPICS = [
+  'Fitness', 'Nutrition', 'Mental Health', 'Wellness', 
+  'Education', 'Lifestyle', 'Motivation', 'Meditation'
+];
+
+function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (updates: Partial<VideoFileItem>) => void }) {
+  const [autoThumbnails, setAutoThumbnails] = useState<string[]>([]);
+  const [isLoadingThumbs, setIsLoadingThumbs] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { generateAutoThumbnails, captureThumbnailAtTime } = useBulkVideoUpload();
+
+  const loadAutoThumbnails = async () => {
+    setIsLoadingThumbs(true);
+    try {
+      const thumbs = await generateAutoThumbnails(item.file);
+      setAutoThumbnails(thumbs);
+    } catch (error) {
+      console.error('Failed to generate thumbnails:', error);
+    } finally {
+      setIsLoadingThumbs(false);
+    }
+  };
+
+  const handleCaptureFrame = async () => {
+    if (!videoRef.current) return;
+    
+    try {
+      const dataUrl = await captureThumbnailAtTime(item.file, currentTime);
+      onUpdate({
+        thumbnail: {
+          type: 'frame',
+          url: dataUrl,
+          selectedFrame: currentTime,
+        }
+      });
+    } catch (error) {
+      console.error('Failed to capture frame:', error);
+    }
+  };
+
+  const handleCustomUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onUpdate({
+          thumbnail: {
+            type: 'custom',
+            url: reader.result as string,
+            file: file,
+          }
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  if (autoThumbnails.length === 0 && !isLoadingThumbs) {
+    loadAutoThumbnails();
+  }
+
+  return (
+    <div className="space-y-3">
+      <Label className="text-sm font-medium">Thumbnail</Label>
+      
+      {/* Current thumbnail */}
+      {item.thumbnail?.url && (
+        <div className="relative w-full h-32 rounded-lg overflow-hidden border-2 border-primary">
+          <img 
+            src={item.thumbnail.url} 
+            alt="Selected thumbnail" 
+            className="w-full h-full object-cover"
+          />
+          <Badge className="absolute top-2 right-2 text-xs">
+            {item.thumbnail.type === 'auto' ? 'Auto' : item.thumbnail.type === 'frame' ? 'Frame' : 'Custom'}
+          </Badge>
+        </div>
+      )}
+
+      {/* Auto-generated suggestions */}
+      {isLoadingThumbs ? (
+        <div className="flex items-center justify-center py-4">
+          <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-sm text-muted-foreground">Generating thumbnails...</span>
+        </div>
+      ) : autoThumbnails.length > 0 && (
+        <div className="space-y-2">
+          <Label className="text-xs text-muted-foreground">Quick picks</Label>
+          <div className="grid grid-cols-3 gap-2">
+            {autoThumbnails.map((thumb, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => onUpdate({
+                  thumbnail: { type: 'auto', url: thumb }
+                })}
+                className={cn(
+                  "relative aspect-video rounded border-2 overflow-hidden transition-all hover:border-primary",
+                  item.thumbnail?.url === thumb ? "border-primary ring-2 ring-primary" : "border-border"
+                )}
+              >
+                <img src={thumb} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                {item.thumbnail?.url === thumb && (
+                  <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
+                    <Check className="w-5 h-5 text-primary" />
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Video scrubber for custom frame selection */}
+      <div className="space-y-2">
+        <Label className="text-xs text-muted-foreground">Pick exact frame</Label>
+        <div className="border rounded-lg p-2 space-y-2">
+          <video
+            ref={videoRef}
+            src={URL.createObjectURL(item.file)}
+            className="w-full rounded"
+            onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+          />
+          <div className="flex items-center gap-2">
+            <input
+              type="range"
+              min="0"
+              max={item.duration || 60}
+              step="0.1"
+              value={currentTime}
+              onChange={(e) => {
+                const time = parseFloat(e.target.value);
+                setCurrentTime(time);
+                if (videoRef.current) {
+                  videoRef.current.currentTime = time;
+                }
+              }}
+              className="flex-1"
+            />
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={handleCaptureFrame}
+            >
+              <Film className="w-4 h-4 mr-1" />
+              Use Frame
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Custom upload */}
+      <div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={handleCustomUpload}
+          className="hidden"
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => fileInputRef.current?.click()}
+          className="w-full"
+        >
+          <ImageIcon className="w-4 h-4 mr-2" />
+          Upload Custom Image
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
+  item: VideoFileItem;
+  onUpdate: (updates: Partial<VideoFileItem>) => void;
+  onRemove: () => void;
+  onRetry: () => void;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const getStatusIcon = () => {
+    switch (item.status) {
+      case 'queued':
+        return <div className="w-5 h-5 rounded-full border-2 border-muted-foreground" />;
+      case 'uploading':
+        return <Loader2 className="w-5 h-5 animate-spin text-primary" />;
+      case 'done':
+        return <Check className="w-5 h-5 text-green-500" />;
+      case 'failed':
+        return <AlertCircle className="w-5 h-5 text-destructive" />;
+      default:
+        return null;
+    }
+  };
+
+  const getStatusBadge = () => {
+    const variants: Record<VideoFileItem['status'], string> = {
+      queued: 'bg-muted text-muted-foreground',
+      uploading: 'bg-blue-100 text-blue-700',
+      processing: 'bg-purple-100 text-purple-700',
+      done: 'bg-green-100 text-green-700',
+      failed: 'bg-red-100 text-red-700',
+    };
+
+    return (
+      <Badge className={cn('text-xs', variants[item.status])}>
+        {item.status}
+      </Badge>
+    );
+  };
+
+  return (
+    <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
+      <div className="border rounded-lg">
+        {/* Collapsed View */}
+        <div className="flex items-center gap-3 p-3">
+          {getStatusIcon()}
+          
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <p className="font-medium text-sm truncate">{item.title}</p>
+              {getStatusBadge()}
+            </div>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <span>{(item.file.size / 1024 / 1024).toFixed(1)} MB</span>
+              {item.duration && (
+                <span>{Math.floor(item.duration / 60)}:{(item.duration % 60).toString().padStart(2, '0')}</span>
+              )}
+              {item.error && (
+                <span className="text-destructive flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {item.error}
+                </span>
+              )}
+            </div>
+            
+            {item.status === 'uploading' && (
+              <Progress value={item.progress} className="h-1 mt-2" />
+            )}
+          </div>
+
+          <div className="flex items-center gap-1">
+            {item.status === 'failed' && (
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                onClick={onRetry}
+              >
+                Retry
+              </Button>
+            )}
+            {item.status !== 'uploading' && item.status !== 'done' && (
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                onClick={onRemove}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            )}
+            <CollapsibleTrigger asChild>
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+              >
+                {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </Button>
+            </CollapsibleTrigger>
+          </div>
+        </div>
+
+        {/* Expanded View */}
+        <CollapsibleContent>
+          <div className="border-t p-4 space-y-4 bg-muted/20">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor={`title-${item.id}`} className="text-sm">Title</Label>
+                <Input
+                  id={`title-${item.id}`}
+                  value={item.title}
+                  onChange={(e) => onUpdate({ title: e.target.value.slice(0, 100) })}
+                  placeholder="Video title"
+                  disabled={item.status === 'uploading' || item.status === 'done'}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor={`topic-${item.id}`} className="text-sm">Topic</Label>
+                <select
+                  id={`topic-${item.id}`}
+                  value={item.topic}
+                  onChange={(e) => onUpdate({ topic: e.target.value })}
+                  disabled={item.status === 'uploading' || item.status === 'done'}
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background"
+                >
+                  {VIDEO_TOPICS.map(topic => (
+                    <option key={topic} value={topic}>{topic}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor={`description-${item.id}`} className="text-sm">Description</Label>
+              <Textarea
+                id={`description-${item.id}`}
+                value={item.description}
+                onChange={(e) => onUpdate({ description: e.target.value.slice(0, 500) })}
+                placeholder="Describe your video..."
+                disabled={item.status === 'uploading' || item.status === 'done'}
+                rows={2}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm">Tags</Label>
+              <div className="flex flex-wrap gap-2">
+                {PREDEFINED_TAGS.map(tag => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => {
+                      const newTags = item.tags.includes(tag)
+                        ? item.tags.filter(t => t !== tag)
+                        : [...item.tags, tag];
+                      onUpdate({ tags: newTags });
+                    }}
+                    disabled={item.status === 'uploading' || item.status === 'done'}
+                    className={cn(
+                      'px-2 py-1 text-xs rounded-full transition-colors',
+                      item.tags.includes(tag)
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-secondary hover:bg-secondary/80'
+                    )}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm">Visibility</Label>
+              <div className="flex gap-2">
+                {(['public', 'unlisted', 'private'] as const).map(vis => (
+                  <Button
+                    key={vis}
+                    type="button"
+                    size="sm"
+                    variant={item.visibility === vis ? 'default' : 'outline'}
+                    onClick={() => onUpdate({ visibility: vis })}
+                    disabled={item.status === 'uploading' || item.status === 'done'}
+                    className="capitalize"
+                  >
+                    {vis}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <ThumbnailPicker item={item} onUpdate={onUpdate} />
+          </div>
+        </CollapsibleContent>
+      </div>
+    </Collapsible>
+  );
+}
+
+export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: BulkVideoUploadModalProps) {
+  const [sharedTitle, setSharedTitle] = useState('');
+  const [sharedDescription, setSharedDescription] = useState('');
+  const [sharedTags, setSharedTags] = useState<string[]>([]);
+  const [sharedTopic, setSharedTopic] = useState('General');
+  const [sharedVisibility, setSharedVisibility] = useState<'public' | 'unlisted' | 'private'>('public');
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const dropZoneRef = useRef<HTMLDivElement>(null);
+
+  const {
+    items,
+    isUploading,
+    activeUploads,
+    addFiles,
+    updateItem,
+    removeItem,
+    uploadAll,
+    retryItem,
+    clearCompleted,
+  } = useBulkVideoUpload();
+
+  const handleFileSelect = async (files: FileList | null) => {
+    if (!files) return;
+    
+    const filesArray = Array.from(files);
+    await addFiles(filesArray, {
+      title: sharedTitle,
+      description: sharedDescription,
+      tags: sharedTags,
+      topic: sharedTopic,
+      visibility: sharedVisibility,
+    });
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await handleFileSelect(e.dataTransfer.files);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleSubmit = async () => {
+    await uploadAll(3);
+    onUploadComplete?.();
+  };
+
+  const queuedCount = items.filter(i => i.status === 'queued').length;
+  const uploadingCount = items.filter(i => i.status === 'uploading').length;
+  const doneCount = items.filter(i => i.status === 'done').length;
+  const failedCount = items.filter(i => i.status === 'failed').length;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between">
+            <span>Bulk Video Upload</span>
+            {items.length > 0 && (
+              <div className="flex items-center gap-2 text-sm font-normal">
+                <Badge variant="outline">{queuedCount} queued</Badge>
+                {uploadingCount > 0 && <Badge className="bg-blue-100 text-blue-700">{uploadingCount} uploading</Badge>}
+                {doneCount > 0 && <Badge className="bg-green-100 text-green-700">{doneCount} done</Badge>}
+                {failedCount > 0 && <Badge className="bg-red-100 text-red-700">{failedCount} failed</Badge>}
+              </div>
+            )}
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-6">
+          {/* File Drop Zone */}
+          <div
+            ref={dropZoneRef}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            className={cn(
+              "border-2 border-dashed rounded-lg p-8 text-center transition-colors",
+              items.length > 0 ? "border-border" : "border-muted-foreground/25 hover:border-primary"
+            )}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="video/mp4,video/webm,video/ogg"
+              onChange={(e) => handleFileSelect(e.target.files)}
+              className="hidden"
+              disabled={isUploading}
+            />
+            <Upload className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+            <p className="text-lg font-medium mb-1">
+              {items.length === 0 ? 'Drop videos here or click to browse' : 'Add more videos'}
+            </p>
+            <p className="text-sm text-muted-foreground mb-4">
+              MP4, WebM, OGG • Max 500MB per file • Up to 60s for shorts
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+            >
+              Select Files
+            </Button>
+          </div>
+
+          {/* Shared Metadata */}
+          {items.length > 0 && (
+            <div className="border rounded-lg p-4 bg-muted/20 space-y-4">
+              <h3 className="font-semibold text-sm">Apply to all videos (optional)</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  placeholder="Title pattern"
+                  value={sharedTitle}
+                  onChange={(e) => setSharedTitle(e.target.value)}
+                  disabled={isUploading}
+                />
+                <select
+                  value={sharedTopic}
+                  onChange={(e) => setSharedTopic(e.target.value)}
+                  disabled={isUploading}
+                  className="h-10 px-3 rounded-md border border-input bg-background"
+                >
+                  {VIDEO_TOPICS.map(topic => (
+                    <option key={topic} value={topic}>{topic}</option>
+                  ))}
+                </select>
+              </div>
+              <Textarea
+                placeholder="Shared description"
+                value={sharedDescription}
+                onChange={(e) => setSharedDescription(e.target.value)}
+                disabled={isUploading}
+                rows={2}
+              />
+              <div className="flex flex-wrap gap-2">
+                {PREDEFINED_TAGS.map(tag => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => {
+                      setSharedTags(prev =>
+                        prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+                      );
+                    }}
+                    disabled={isUploading}
+                    className={cn(
+                      'px-2 py-1 text-xs rounded-full transition-colors',
+                      sharedTags.includes(tag)
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-secondary hover:bg-secondary/80'
+                    )}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Queue List */}
+          {items.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-semibold">Upload Queue ({items.length})</h3>
+                {doneCount > 0 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearCompleted}
+                    disabled={isUploading}
+                  >
+                    Clear Completed
+                  </Button>
+                )}
+              </div>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {items.map(item => (
+                  <VideoItemRow
+                    key={item.id}
+                    item={item}
+                    onUpdate={(updates) => updateItem(item.id, updates)}
+                    onRemove={() => removeItem(item.id)}
+                    onRetry={() => retryItem(item.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          {items.length > 0 && (
+            <div className="flex items-center justify-between pt-4 border-t">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isUploading}
+              >
+                {isUploading ? 'Uploading...' : 'Cancel'}
+              </Button>
+              <div className="flex items-center gap-2">
+                {activeUploads > 0 && (
+                  <span className="text-sm text-muted-foreground">
+                    {activeUploads} active upload{activeUploads > 1 ? 's' : ''}
+                  </span>
+                )}
+                <Button
+                  onClick={handleSubmit}
+                  disabled={queuedCount === 0 || isUploading}
+                  className="bg-gradient-to-r from-violet-500 to-sky-400 hover:from-violet-600 hover:to-sky-500"
+                >
+                  {isUploading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Publishing...
+                    </>
+                  ) : (
+                    `Publish All (${queuedCount})`
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
