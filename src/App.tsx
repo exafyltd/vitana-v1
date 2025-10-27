@@ -17,6 +17,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Auth from "./pages/Auth";
+import IntroExperience from "./pages/IntroExperience";
 
 // Portal pages
 import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
@@ -211,6 +212,7 @@ const App = () => {
                 <TenantDetector />
                 <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Navigate to="/auth" replace />} />
           <Route path="/register" element={<Navigate to="/auth" replace />} />

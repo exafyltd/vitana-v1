@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { useSmartRouting } from "@/hooks/useSmartRouting";
@@ -7,13 +7,25 @@ import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, BookOpen, Leaf, Shield, Users, Settings } from "lucide-react";
+import { hasSeenIntro } from "@/utils/introVideo";
 
 const Index = () => {
   const { user } = useAuth();
   const { isExafyAdmin } = useTenant();
+  const navigate = useNavigate();
   
   // Use smart routing to redirect authenticated users
   useSmartRouting();
+
+  const handleMaxinaClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const alreadySeen = hasSeenIntro('maxina');
+    if (alreadySeen) {
+      navigate('/maxina');
+    } else {
+      navigate('/_intro/maxina');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
@@ -32,7 +44,7 @@ const Index = () => {
           {/* Platform Selection */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Maxina Portal */}
-            <Link to="/maxina">
+            <div onClick={handleMaxinaClick}>
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
                 <CardHeader className="text-center">
                   <div className="flex justify-center mb-4">
@@ -47,7 +59,7 @@ const Index = () => {
                   </p>
                 </CardContent>
               </Card>
-            </Link>
+            </div>
 
             {/* AlKalma Portal */}
             <Link to="/alkalma">
