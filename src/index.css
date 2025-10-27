@@ -56,8 +56,8 @@ All colors MUST be HSL.
     --pill-sleep-tint: 50 100% 96%;
 
     /* System / Utility */
-    --sys-vitana-accent: 173 70% 45%;
-    --sys-vitana-tint: 173 70% 96%;
+    --sys-vitana-accent: 199 36% 48%;
+    --sys-vitana-tint: 199 36% 96%;
     --sys-autopilot-accent: 8 85% 56%;
     --sys-autopilot-tint: 8 100% 96%;
     --sys-ai-accent: 14 88% 54%;
@@ -137,8 +137,8 @@ All colors MUST be HSL.
     /* Focus Profile Theme - Exclusive Design System */
     --profile-bg-start: 216 53% 8%;
     --profile-bg-end: 222 47% 11%;
-    --profile-accent-teal: 199 60% 48%;
-    --profile-accent-indigo: 239 60% 67%;
+    --profile-accent-teal: 199 36% 48%;
+    --profile-accent-indigo: 239 36% 67%;
     --profile-glass-light: 0 0% 100%;
     --profile-text-primary: 210 20% 96%;
     --profile-text-secondary: 210 20% 80%;
@@ -188,8 +188,8 @@ All colors MUST be HSL.
     --pill-sleep-tint: 50 100% 8%;
 
     /* System / Utility */
-    --sys-vitana-accent: 173 70% 55%;
-    --sys-vitana-tint: 173 70% 8%;
+    --sys-vitana-accent: 199 36% 52%;
+    --sys-vitana-tint: 199 36% 8%;
     --sys-autopilot-accent: 8 85% 66%;
     --sys-autopilot-tint: 8 100% 8%;
     --sys-ai-accent: 14 88% 64%;
@@ -257,8 +257,8 @@ All colors MUST be HSL.
     /* Focus Profile Theme - Dark Mode (same as light for this theme) */
     --profile-bg-start: 216 53% 8%;
     --profile-bg-end: 222 47% 11%;
-    --profile-accent-teal: 199 60% 48%;
-    --profile-accent-indigo: 239 60% 67%;
+    --profile-accent-teal: 199 36% 48%;
+    --profile-accent-indigo: 239 36% 67%;
     --profile-glass-light: 0 0% 100%;
     --profile-text-primary: 210 20% 96%;
     --profile-text-secondary: 210 20% 80%;

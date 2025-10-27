@@ -191,7 +191,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                     filter: 'drop-shadow(0 0 30px hsl(var(--sys-vitana-accent) / 0.4))'
                   }}>
             <AvatarImage src={profile.avatarUrl} alt={profile.name} className="object-cover" />
-            <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white">
+            <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-[hsl(199,36%,48%)] to-[hsl(239,36%,67%)] text-white">
               {profile.name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>
           </Avatar>
@@ -242,7 +242,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   {/* Rotating gradient border effect */}
                   <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                        style={{
-                         background: 'conic-gradient(from 0deg, hsl(var(--sys-vitana-accent)), hsl(var(--pill-nutrition-accent)), hsl(var(--pill-mental-accent)), hsl(var(--sys-vitana-accent)))',
+                         background: 'conic-gradient(from 0deg, hsl(199,36%,48%), hsl(239,36%,67%), hsl(219,36%,58%), hsl(199,36%,48%))',
                          mask: 'radial-gradient(circle, transparent 95%, black 98%)',
                          WebkitMask: 'radial-gradient(circle, transparent 95%, black 98%)',
                        }} />
@@ -291,14 +291,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
             <div className="flex items-center justify-center mb-4 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
               <div className="relative group/tier">
                 {/* Glowing halo effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))]/40 via-[hsl(var(--pill-nutrition-accent))]/35 to-[hsl(var(--pill-mental-accent))]/30 rounded-full blur-xl group-hover/tier:blur-2xl transition-all duration-500 opacity-60 group-hover/tier:opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(199,36%,48%)]/20 via-[hsl(239,36%,67%)]/15 to-[hsl(219,36%,58%)]/10 rounded-full blur-xl group-hover/tier:blur-2xl transition-all duration-500 opacity-60 group-hover/tier:opacity-80" />
                 
                 {/* Metallic gradient capsule */}
-                <div className="relative px-6 py-2.5 rounded-full bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/20 via-[hsl(var(--pill-nutrition-accent))]/15 to-[hsl(var(--sys-vitana-accent))]/10 backdrop-blur-md border-2 border-[hsl(var(--sys-vitana-accent))]/40 shadow-[0_6px_20px_rgba(0,0,0,0.12),inset_0_2px_4px_rgba(255,255,255,0.3),inset_0_-2px_4px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.16),inset_0_2px_6px_rgba(255,255,255,0.4)]">
+                <div className="relative px-6 py-2.5 rounded-full bg-gradient-to-br from-[hsl(199,36%,48%)]/10 via-[hsl(239,36%,67%)]/8 to-[hsl(199,36%,48%)]/5 backdrop-blur-md border-2 border-[hsl(199,36%,48%)]/25 shadow-[0_6px_20px_rgba(0,0,0,0.12),inset_0_2px_4px_rgba(255,255,255,0.3),inset_0_-2px_4px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.16),inset_0_2px_6px_rgba(255,255,255,0.4)]">
                   {/* Inner shine reflection */}
                   <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 via-transparent to-transparent pointer-events-none" />
                   
-                  <span className="relative text-sm font-bold bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))] via-[hsl(var(--pill-nutrition-accent))] to-[hsl(var(--sys-vitana-accent))] bg-clip-text text-transparent tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
+                  <span className="relative text-sm font-bold bg-gradient-to-r from-[hsl(199,36%,48%)] via-[hsl(239,36%,67%)] to-[hsl(199,36%,48%)] bg-clip-text text-transparent tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
                     {profile.membershipTier || profile.roles[0] || 'Community Member'}
                   </span>
                 </div>
