@@ -659,13 +659,14 @@ export default function MediaHub() {
                       '--gap': gap,
                       '--font-scale': fontScale,
                       gridTemplateColumns: 'repeat(2, 1fr)',
+                      justifyItems: 'center',
                       gap: '16px',
                     } as React.CSSProperties & { '--card-w': string; '--gap': string; '--font-scale': number }}
                   >
                     <style>{`
                       @media (min-width: 640px) {
                         .grid[style*="--card-w"] {
-                          grid-template-columns: repeat(auto-fill, minmax(var(--card-w), 1fr)) !important;
+                          grid-template-columns: repeat(auto-fill, var(--card-w)) !important;
                           gap: var(--gap) !important;
                         }
                       }

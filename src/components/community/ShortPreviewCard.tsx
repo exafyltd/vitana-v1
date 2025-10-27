@@ -97,7 +97,7 @@ export function ShortPreviewCard({
       style={{
         animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`,
       }}
-      className="group relative"
+      className="group relative w-full max-w-[260px] mx-auto"
       {...handlers}
       tabIndex={0}
       role="button"
