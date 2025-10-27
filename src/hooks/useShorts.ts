@@ -62,14 +62,19 @@ export const useShorts = (params: FetchShortsParams = {}) => {
       if (!videos || videos.length === 0) return [];
 
       // Fetch profiles for all unique user_ids
-      const userIds = [...new Set(videos.map(v => v.user_id))];
+      const userIds = [...new Set(videos.map(v => v.user_id))].filter(Boolean);
+      
+      if (userIds.length === 0) {
+        return videos as Short[];
+      }
+
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, display_name, full_name, avatar_url')
-        .in('id', userIds);
+        .select('user_id, display_name, full_name, avatar_url')
+        .in('user_id', userIds);
 
       // Create a map of user_id to profile
-      const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+      const profileMap = new Map(profiles?.map(p => [p.user_id, p]) || []);
 
       // Enrich videos with profile data
       return videos.map(video => ({

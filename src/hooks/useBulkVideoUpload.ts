@@ -31,6 +31,16 @@ interface UploadOptions {
 const MAX_SIZE = 500 * 1024 * 1024; // 500MB
 const MAX_DURATION = 300; // 5 minutes (300 seconds) for shorts, configurable
 
+// Humanize filename: remove extension, replace _ and - with spaces, title case
+const humanizeFilename = (filename: string): string => {
+  return filename
+    .replace(/\.[^/.]+$/, '') // Remove extension
+    .replace(/[_-]/g, ' ') // Replace _ and - with spaces
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 export const useBulkVideoUpload = () => {
   const [items, setItems] = useState<VideoFileItem[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -150,7 +160,7 @@ export const useBulkVideoUpload = () => {
       const item: VideoFileItem = {
         id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         file,
-        title: sharedMetadata?.title || file.name.replace(/\.[^/.]+$/, ''),
+        title: sharedMetadata?.title || humanizeFilename(file.name),
         description: sharedMetadata?.description || '',
         tags: sharedMetadata?.tags || [],
         topic: sharedMetadata?.topic || 'General',

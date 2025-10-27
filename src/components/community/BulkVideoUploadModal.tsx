@@ -407,7 +407,7 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
 }
 
 export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: BulkVideoUploadModalProps) {
-  const [sharedTitle, setSharedTitle] = useState('');
+  const [titlePattern, setTitlePattern] = useState('{base}');
   const [sharedDescription, setSharedDescription] = useState('');
   const [sharedTags, setSharedTags] = useState<string[]>([]);
   const [sharedTopic, setSharedTopic] = useState('General');
@@ -428,17 +428,35 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
     clearCompleted,
   } = useBulkVideoUpload();
 
+  const applyTitlePattern = (baseTitle: string, index: number): string => {
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    
+    return titlePattern
+      .replace(/\{base\}/g, baseTitle)
+      .replace(/\{index\}/g, (index + 1).toString())
+      .replace(/\{date\}/g, dateStr);
+  };
+
   const handleFileSelect = async (files: FileList | null) => {
     if (!files) return;
     
     const filesArray = Array.from(files);
-    await addFiles(filesArray, {
-      title: sharedTitle,
+    const newItems = await addFiles(filesArray, {
       description: sharedDescription,
       tags: sharedTags,
       topic: sharedTopic,
       visibility: sharedVisibility,
     });
+
+    // Apply title pattern to each item after creation
+    if (titlePattern && titlePattern !== '{base}') {
+      newItems.forEach((item, index) => {
+        const baseTitle = item.title; // Already humanized by addFiles
+        const patternedTitle = applyTitlePattern(baseTitle, items.length + index);
+        updateItem(item.id, { title: patternedTitle });
+      });
+    }
   };
 
   const handleDrop = async (e: React.DragEvent) => {
@@ -521,22 +539,33 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
             <div className="border rounded-lg p-4 bg-muted/20 space-y-4">
               <h3 className="font-semibold text-sm">Apply to all videos (optional)</h3>
               <div className="grid grid-cols-2 gap-4">
-                <Input
-                  placeholder="Title pattern"
-                  value={sharedTitle}
-                  onChange={(e) => setSharedTitle(e.target.value)}
-                  disabled={isUploading}
-                />
-                <select
-                  value={sharedTopic}
-                  onChange={(e) => setSharedTopic(e.target.value)}
-                  disabled={isUploading}
-                  className="h-10 px-3 rounded-md border border-input bg-background"
-                >
-                  {VIDEO_TOPICS.map(topic => (
-                    <option key={topic} value={topic}>{topic}</option>
-                  ))}
-                </select>
+                <div className="space-y-2">
+                  <Label className="text-xs text-muted-foreground">
+                    Title Pattern
+                    <span className="ml-2 text-xs">
+                      Use: {'{base}'}, {'{index}'}, {'{date}'}
+                    </span>
+                  </Label>
+                  <Input
+                    placeholder="{base}"
+                    value={titlePattern}
+                    onChange={(e) => setTitlePattern(e.target.value)}
+                    disabled={isUploading}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs text-muted-foreground">Topic</Label>
+                  <select
+                    value={sharedTopic}
+                    onChange={(e) => setSharedTopic(e.target.value)}
+                    disabled={isUploading}
+                    className="h-10 px-3 rounded-md border border-input bg-background w-full"
+                  >
+                    {VIDEO_TOPICS.map(topic => (
+                      <option key={topic} value={topic}>{topic}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <Textarea
                 placeholder="Shared description"

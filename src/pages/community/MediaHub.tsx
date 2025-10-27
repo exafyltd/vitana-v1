@@ -395,6 +395,8 @@ export default function MediaHub() {
     user_id: short.user_id,
     title: short.title,
     creator: short.profiles?.display_name || short.profiles?.full_name || "Community Member",
+    creatorAvatar: short.profiles?.avatar_url || null,
+    creatorDisplayName: short.profiles?.display_name || short.profiles?.full_name || null,
     duration: short.duration_sec ? `${Math.floor(short.duration_sec / 60)}:${(short.duration_sec % 60).toString().padStart(2, '0')}` : '0:00',
     views: short.views_count.toString(),
     likes: short.likes_count,

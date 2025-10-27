@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Play, Trash2 } from 'lucide-react';
+import { Play, Trash2, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { useShortHoverPreview } from '@/hooks/useShortHoverPreview';
 
@@ -16,6 +17,8 @@ interface ShortPreviewCardProps {
     user_id?: string;
     tags?: string[];
     isLive?: boolean;
+    creatorAvatar?: string | null;
+    creatorDisplayName?: string | null;
   };
   index: number;
   currentUserId?: string;
@@ -122,9 +125,9 @@ export function ShortPreviewCard({
       )}
 
       <div className="cursor-pointer" onClick={onClick}>
-        {/* Thumbnail Container */}
+        {/* Thumbnail Container - Fixed 9:16 aspect ratio */}
         <div
-          className={`relative aspect-[9/16] rounded-2xl overflow-hidden transition-all duration-300 ${
+          className={`relative aspect-[9/16] w-full rounded-2xl overflow-hidden bg-muted transition-all duration-300 ${
             isHovering && !disabled
               ? '-translate-y-1 shadow-lg ring-4 ring-violet-500/10'
               : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-violet-500/10'
@@ -133,7 +136,7 @@ export function ShortPreviewCard({
           {/* Video Element (hidden until preview starts) */}
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
               isPreviewing && !loadError ? 'opacity-100' : 'opacity-0'
             }`}
             playsInline
@@ -146,7 +149,7 @@ export function ShortPreviewCard({
           <img
             src={video.thumbnailImage}
             alt={video.title}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
               isPreviewing && !loadError ? 'opacity-0' : 'opacity-100'
             }`}
           />
@@ -173,10 +176,10 @@ export function ShortPreviewCard({
             </div>
           )}
 
-          {/* Duration Badge - Bottom Right */}
-          <div className="absolute bottom-2 right-2 z-10">
+          {/* Duration Badge - Bottom Right (outside overflow) */}
+          <div className="absolute bottom-2 right-2 z-10 pointer-events-none">
             <span 
-              className="bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded-md font-medium backdrop-blur-sm"
+              className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded font-medium backdrop-blur-sm"
             >
               {video.duration}
             </span>
@@ -215,17 +218,27 @@ export function ShortPreviewCard({
         {/* Content Below Thumbnail */}
         <div className="mt-3 space-y-2">
           <h3 
-            className="font-semibold text-foreground leading-snug"
+            className="font-semibold text-foreground leading-snug line-clamp-2"
             style={{ fontSize: `calc(0.875rem * var(--font-scale, 1))` }}
           >
             {video.title}
           </h3>
-          <p 
-            className="text-muted-foreground"
-            style={{ fontSize: `calc(0.75rem * var(--font-scale, 1))` }}
-          >
-            {video.creator}
-          </p>
+          
+          {/* Uploader info */}
+          <div className="flex items-center gap-2">
+            <Avatar className="h-6 w-6">
+              <AvatarImage src={video.creatorAvatar || undefined} alt={video.creator} />
+              <AvatarFallback className="text-xs bg-muted">
+                {video.creatorDisplayName?.[0] || video.creator[0] || <User className="w-3 h-3" />}
+              </AvatarFallback>
+            </Avatar>
+            <p 
+              className="text-muted-foreground flex-1 truncate"
+              style={{ fontSize: `calc(0.75rem * var(--font-scale, 1))` }}
+            >
+              {video.creator}
+            </p>
+          </div>
 
           {/* Tag Pills */}
           {video.tags && video.tags.length > 0 && (
