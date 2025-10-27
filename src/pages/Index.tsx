@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { useSmartRouting } from "@/hooks/useSmartRouting";
@@ -13,17 +13,20 @@ const Index = () => {
   const { user } = useAuth();
   const { isExafyAdmin } = useTenant();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   
   // Use smart routing to redirect authenticated users
   useSmartRouting();
 
   const handleMaxinaClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    const forceIntro = searchParams.get('forceIntro') === 'true';
     const alreadySeen = hasSeenIntro('maxina');
-    if (alreadySeen) {
-      navigate('/maxina');
-    } else {
+    
+    if (forceIntro || !alreadySeen) {
       navigate('/_intro/maxina');
+    } else {
+      navigate('/maxina');
     }
   };
 
