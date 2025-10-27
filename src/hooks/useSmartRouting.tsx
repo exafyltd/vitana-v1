@@ -16,13 +16,13 @@ export function useSmartRouting() {
     if (authLoading) return;
 
     // Don't redirect if already on a portal page or auth page
-    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth'];
+    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro'];
     if (portalPaths.some(path => location.pathname.startsWith(path))) return;
 
     // If user is not authenticated, handle based on current path
     if (!user) {
       // Allow access to public pages and portal pages
-      const publicPaths = ['/', '/maxina', '/alkalma', '/earthlinks', '/exafy-admin'];
+      const publicPaths = ['/', '/maxina', '/alkalma', '/earthlinks', '/exafy-admin', '/_intro'];
       if (publicPaths.some(path => location.pathname === path || location.pathname.startsWith(path))) return;
       
       // Redirect unauthenticated users trying to access protected pages to landing page
