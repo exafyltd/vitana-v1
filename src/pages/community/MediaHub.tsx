@@ -322,7 +322,7 @@ export default function MediaHub() {
   });
 
   // Fetch approved music from database
-  const { data: approvedMusic = [] } = useQuery({
+  const { data: approvedMusic = [], refetch: refetchMusic } = useQuery({
     queryKey: ['community-music'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -459,7 +459,7 @@ export default function MediaHub() {
     });
   };
   // Fetch approved podcasts from database
-  const { data: approvedPodcasts = [] } = useQuery({
+  const { data: approvedPodcasts = [], refetch: refetchPodcasts } = useQuery({
     queryKey: ['community-podcasts'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -1209,19 +1209,22 @@ export default function MediaHub() {
           if (!open) setInitialMediaType(undefined);
         }}
         onUploadComplete={(mediaType) => {
+          // Refresh the appropriate list based on what was uploaded
           if (mediaType === 'video') {
             refetchShorts();
-            toast({
-              title: 'Success!',
-              description: 'Your video is now live in the community.',
-            });
-          } else {
-            toast({
-              title: 'Success!',
-              description: `Your ${mediaType} is now live in the community.`,
-            });
+          } else if (mediaType === 'music') {
+            refetchMusic();
+          } else if (mediaType === 'podcast') {
+            refetchPodcasts();
           }
+          
+          toast({
+            title: 'Success!',
+            description: `Your ${mediaType} is now live in the community.`,
+          });
+          
           setIsUnifiedUploadOpen(false);
+          setInitialMediaType(undefined);
         }}
         initialMediaType={initialMediaType}
       />
