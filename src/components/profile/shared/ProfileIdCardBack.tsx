@@ -163,30 +163,16 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
 
   return (
     <>
-      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 backdrop-blur-xl rounded-3xl overflow-hidden transition-all duration-500 ease-in-out`}
+      <div id="social-connections-section" className="relative h-full flex flex-col items-center justify-center p-8 rounded-3xl overflow-visible transition-all duration-500 ease-in-out bg-white/10 backdrop-blur-2xl border border-white/20"
            style={{
-             background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.05) 100%), linear-gradient(120deg, rgba(14,165,233,0.03) 0%, transparent 60%)',
-             boxShadow: '0 0 25px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)'
+             boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 0 1px rgba(255,255,255,0.2)'
            }}>
-        {/* Themed gradient border */}
-        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} ${themeConfig.backCard.darkBase ? 'opacity-50' : themeConfig.backCard.lightBorderOpacity || 'opacity-40'} pointer-events-none transition-all duration-500 ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
-        
-        {/* Left edge glow (ambient light bleed for dark theme) */}
-        {themeConfig.backCard.leftEdgeGlow && (
-          <div className={`absolute left-0 top-0 bottom-0 w-32 ${themeConfig.backCard.leftEdgeGlow} opacity-60 pointer-events-none transition-all duration-500 ease-in-out`} />
-        )}
-        
-        {/* Themed corner glow */}
-        <div className={`absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.backCard.borderGradient} blur-3xl opacity-20 pointer-events-none transition-all duration-500 ease-in-out`} />
-        
-        {/* Themed top stripe */}
-        <div className={`absolute top-0 left-0 right-0 h-1 ${themeConfig.backCard.topStripe} rounded-t-3xl transition-all duration-500 ease-in-out`} />
         
         <div className="relative z-10 text-center mb-8">
-          <h2 className={`text-2xl font-bold mb-2 transition-colors duration-500 ${themeConfig.backCard.textHeader || 'text-foreground'}`}>
+          <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-500">
             Social Presence
           </h2>
-          <p className={`text-sm transition-colors duration-500 ${themeConfig.backCard.textInactive || 'text-muted-foreground'}`}>
+          <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-500">
             Verified connections across your digital life
           </p>
         </div>

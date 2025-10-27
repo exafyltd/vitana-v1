@@ -135,23 +135,12 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
   
   return (
     <>
-      <div className={`relative h-full flex flex-col items-center justify-center p-8 backdrop-blur-2xl ${themeConfig.card.border} rounded-3xl overflow-hidden animate-fade-in transition-all duration-500 ease-in-out`}
+      <div className="relative h-full flex flex-col items-center justify-center p-8 rounded-3xl overflow-visible animate-fade-in transition-all duration-500 ease-in-out bg-white/10 backdrop-blur-2xl border border-white/20"
            style={{
-             background: themeConfig.card.background,
-             boxShadow: '0 0 25px rgba(0,0,0,0.2)'
+             boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 0 1px rgba(255,255,255,0.2)'
            }}>
-        {/* Avatar-centered gradient glow (Serenity & Expression only) */}
-        {(themeConfig.name === 'serenity' || themeConfig.name === 'expression') && (
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] pointer-events-none" 
-               style={{ 
-                 background: 'radial-gradient(circle at top center, rgba(255,255,255,0.3), transparent 80%)',
-               }} />
-        )}
         
-        {/* Premium gradient overlay with radial depth */}
-        <div className={`absolute inset-0 ${themeConfig.card.overlay} pointer-events-none transition-all duration-500 ease-in-out`} />
-        
-        {/* Top Right Corner - ID Chip (Theme Switcher Disabled - Focus is Exclusive) */}
+        {/* Top Right Corner - ID Chip */}
         <div className="absolute top-4 right-4 flex items-center gap-2 animate-fade-in z-20" style={{ animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards' }}>
           {/* User ID Chip */}
           <div className="px-3 py-1.5 rounded-full bg-gradient-to-br from-white/30 to-white/10 dark:from-gray-800/30 dark:to-gray-800/10 backdrop-blur-md border border-white/40 dark:border-gray-700/40 shadow-[0_2px_8px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105">
@@ -161,36 +150,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
       
         {/* Avatar with Layered Glow System */}
         <div className="relative mb-5 z-10 animate-fade-in transition-all duration-300 ease-out" style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
-          {/* Outer ambient halo - soft and wide */}
+          {/* Minimal ambient aura */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-[60px] animate-[pulse_4s_ease-in-out_infinite] transition-all duration-300`} style={{ opacity: 0.65 }} />
+            <div className="w-64 h-64 rounded-full bg-gradient-to-br from-[#0ea5e9]/25 to-transparent blur-[60px]" />
           </div>
           
-          {/* Inner light ring - bright and focused */}
-          <div className="absolute inset-0 flex items-center justify-center animate-[pulse_3s_ease-in-out_infinite]">
-            <div className={`w-56 h-56 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-2xl transition-all duration-300`} style={{ opacity: 0.75 }} />
-          </div>
-          
-          {/* Outer glow ring with pulse */}
-          <div className="absolute inset-0 flex items-center justify-center animate-[pulse_3.5s_ease-in-out_infinite]">
-            <div className={`w-[210px] h-[210px] rounded-full border ${themeConfig.avatar.rings[0]} transition-all duration-300`} 
-                 style={{
-                   boxShadow: '0 0 25px hsl(var(--sys-vitana-accent) / 0.2), 0 0 50px hsl(var(--sys-vitana-accent) / 0.1), inset 0 0 15px hsl(var(--sys-vitana-accent) / 0.06)'
-                 }} />
-          </div>
-          
-          {/* Inner vitality ring */}
-          <div className="absolute inset-0 flex items-center justify-center animate-[pulse_2.5s_ease-in-out_infinite]">
-            <div className={`w-[202px] h-[202px] rounded-full border-2 ${themeConfig.avatar.rings[1]} transition-all duration-300`} 
-                 style={{
-                   boxShadow: '0 0 30px hsl(var(--sys-vitana-accent) / 0.25), inset 0 0 20px hsl(var(--sys-vitana-accent) / 0.08)'
-                 }} />
-          </div>
-          
-          <Avatar className={`relative h-48 w-48 ${themeConfig.avatar.border} transition-all duration-500 hover:scale-105 ease-out`}
+          <Avatar className="relative h-48 w-48 border-4 border-white/30 transition-all duration-500 hover:scale-105 ease-out"
                   style={{
-                    boxShadow: '0 0 25px rgba(0,0,0,0.2), 0 0 40px hsl(var(--sys-vitana-accent)/0.2), inset 0 2px 4px rgba(255,255,255,0.5)',
-                    filter: 'drop-shadow(0 0 20px hsl(var(--sys-vitana-accent) / 0.25))'
+                    boxShadow: '0 0 40px rgba(14,165,233,0.25)'
                   }}>
             <AvatarImage src={profile.avatarUrl} alt={profile.name} className="object-cover" />
             <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-[hsl(199,36%,48%)] to-[hsl(239,36%,67%)] text-white">
@@ -212,32 +179,29 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
         {/* Name, Handle, VITANA Index */}
         <div className="relative text-center mb-3.5 w-full z-10">
           <div className="flex items-center justify-center gap-4 mb-1.5 animate-fade-in" style={{ animationDelay: '0.2s', opacity: 0, animationFillMode: 'forwards' }}>
-            {/* Name with gradient text */}
-            <h1 className={`text-3xl font-bold ${themeConfig.text.name} tracking-tight transition-all duration-300 ease-out`} 
+            {/* Name with elegant contrast */}
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight transition-all duration-300 ease-out" 
                 style={{ letterSpacing: '-0.02em' }}>
               {profile.name}
             </h1>
             
-            {/* Glass Orb VITANA Index with animated pulse and gradient edge */}
+            {/* Glass Orb VITANA Index with soft ambient glow */}
             {profile.vitanaIndex && (
               <div className="relative flex items-center">
-                {/* Triple-layer ethereal glow system */}
-                <div className={`absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-3xl animate-[pulse_2.5s_ease-in-out_infinite] transition-all duration-300`}></div>
-                <div className={`absolute inset-0 w-20 h-20 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-2xl animate-[pulse_2s_ease-in-out_infinite] transition-all duration-300`}></div>
-                <div className={`absolute inset-0 w-18 h-18 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-xl animate-[pulse_3s_ease-in-out_infinite] transition-all duration-300`}></div>
+                {/* Soft single ambient glow */}
+                <div className="absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br from-[#0ea5e9]/15 to-[#6366f1]/10 blur-3xl" />
                 
-            {/* Glass orb with gradient border and inner light */}
-                <div className={`relative w-[68px] h-[68px] rounded-full border-[3px] flex flex-col items-center justify-center animate-[pulse_2.8s_ease-in-out_infinite] transition-all duration-500 hover:scale-110 cursor-pointer group ease-out`}
+            {/* Clean glass orb */}
+                <div className="relative w-[68px] h-[68px] rounded-full border-2 border-white/30 flex flex-col items-center justify-center transition-all duration-500 hover:scale-105 cursor-pointer group ease-out bg-white/20 backdrop-blur-md"
                      style={{
-                       background: themeConfig.vitanaOrb.background,
-                       boxShadow: '0 0 25px rgba(0,0,0,0.2), 0 0 40px hsl(var(--sys-vitana-accent)/0.4), inset 0 2px 12px rgba(255,255,255,0.3), inset 0 -2px 8px rgba(0,0,0,0.1)'
+                       boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
                      }}>
                   {/* Inner glass reflection */}
                   <div className="absolute inset-[3px] rounded-full bg-gradient-to-br from-white/20 via-transparent to-transparent pointer-events-none" />
                   
                   <div className="flex flex-col items-center justify-center text-center relative z-10">
-                    <div className={`text-2xl font-extrabold leading-none ${themeConfig.vitanaOrb.text} drop-shadow-[0_3px_10px_rgba(0,0,0,0.4)] transition-colors duration-300`}>{profile.vitanaIndex}</div>
-                    <div className={`text-[8px] font-bold leading-tight mt-1 ${themeConfig.vitanaOrb.text}/98 tracking-[0.08em] uppercase transition-colors duration-300`}>
+                    <div className="text-2xl font-extrabold leading-none text-gray-900 dark:text-gray-100 transition-colors duration-300">{profile.vitanaIndex}</div>
+                    <div className="text-[8px] font-bold leading-tight mt-1 text-gray-700 dark:text-gray-300 tracking-[0.08em] uppercase transition-colors duration-300">
                       Vitana
                     </div>
                   </div>
@@ -272,18 +236,18 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
           
           {/* Handle with refined typography */}
           <div className="flex items-center justify-center gap-2 mb-2 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0, animationFillMode: 'forwards' }}>
-            <p className={`text-base ${themeConfig.text.handle} font-light tracking-wide transition-colors duration-300`}>@{profile.handle}</p>
+            <p className="text-base text-gray-700 dark:text-gray-300 font-light tracking-wide transition-colors duration-300">@{profile.handle}</p>
             {profile.longevityArchetype && (
               <>
                 <span className="text-muted-foreground/50 text-xs">•</span>
-                <span className={`text-sm ${themeConfig.text.handle} font-light tracking-wide transition-colors duration-300`}>{profile.longevityArchetype}</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300 font-light tracking-wide transition-colors duration-300">{profile.longevityArchetype}</span>
               </>
             )}
           </div>
           
           {/* Optional bio tagline */}
           {profile.bio && (
-            <p className={`text-sm ${themeConfig.text.bio} max-w-md mx-auto mb-3 px-4 leading-relaxed font-light italic animate-fade-in transition-colors duration-300`} 
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md mx-auto mb-3 px-4 leading-relaxed font-light italic animate-fade-in transition-colors duration-300" 
                style={{ animationDelay: '0.35s', opacity: 0, animationFillMode: 'forwards' }}>
               {profile.bio}
             </p>
@@ -293,11 +257,12 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
           {(profile.roles.length > 0 || profile.membershipTier) && (
             <div className="flex items-center justify-center mb-4 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
               <div className="relative group/tier">
-                {/* Glowing halo effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(199,36%,48%)]/20 via-[hsl(239,36%,67%)]/15 to-[hsl(219,36%,58%)]/10 rounded-full blur-xl group-hover/tier:blur-2xl transition-all duration-500 opacity-60 group-hover/tier:opacity-80" />
+                {/* Soft ambient glow */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(199,36%,48%)]/15 to-[hsl(239,36%,67%)]/10 rounded-full blur-xl transition-all duration-500" />
                 
-                {/* Metallic gradient capsule */}
-                <div className="relative px-6 py-2.5 rounded-full bg-gradient-to-br from-[hsl(199,36%,48%)]/10 via-[hsl(239,36%,67%)]/8 to-[hsl(199,36%,48%)]/5 backdrop-blur-md border-2 border-[hsl(199,36%,48%)]/25 shadow-[0_6px_20px_rgba(0,0,0,0.12),inset_0_2px_4px_rgba(255,255,255,0.3),inset_0_-2px_4px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(0,0,0,0.16),inset_0_2px_6px_rgba(255,255,255,0.4)]">
+                {/* Glass capsule */}
+                <div className="relative px-6 py-2.5 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/30 transition-all duration-300 hover:scale-105" 
+                     style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}>
                   {/* Inner shine reflection */}
                   <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 via-transparent to-transparent pointer-events-none" />
                   
@@ -316,7 +281,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                 <Button 
                   variant="outline"
                   onClick={() => window.open(profileUrl, '_blank')}
-                  className={`rounded-full ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 shadow-[0_6px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)] active:scale-100 ease-out`}
+                  className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#6366f1] text-white border-0 backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 active:scale-100 ease-out"
+                  style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
                   <span className="font-medium">View Public Profile</span>
@@ -325,7 +291,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   <Button 
                     variant="outline" 
                     onClick={onEdit}
-                    className={`rounded-full ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 shadow-[0_6px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)] active:scale-100 ease-out`}
+                    className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#6366f1] text-white border-0 backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 active:scale-100 ease-out"
+                    style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
                   >
                     <Edit3 className="h-4 w-4 mr-2" />
                     <span className="font-medium">Edit Identity</span>
@@ -336,34 +303,28 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
               <>
                 <Button 
                   variant="default"
-                  className={`rounded-full ${themeConfig.buttons.primary} hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 border-0 text-white font-semibold active:scale-100 ease-out`}
+                  className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#6366f1] text-white border-0 hover:-translate-y-1 hover:scale-105 transition-all duration-300 font-semibold active:scale-100 ease-out"
                   onClick={handleFollowClick}
                   disabled={followLoading}
-                  style={{
-                    boxShadow: '0 0 25px rgba(0,0,0,0.2)'
-                  }}
+                  style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
                   {followLoading ? "..." : isFollowing ? "Following" : "Follow"}
                 </Button>
                 
                 <Button 
-                  className={`inline-flex items-center gap-2 rounded-full h-10 px-5 ${themeConfig.buttons.primary} backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 font-medium active:scale-100 ease-out text-white border-0`}
+                  className="inline-flex items-center gap-2 rounded-full h-10 px-5 bg-gradient-to-r from-[#0ea5e9] to-[#6366f1] text-white border-0 backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 font-medium active:scale-100 ease-out"
                   onClick={handleMessageClick}
-                  style={{
-                    boxShadow: '0 0 25px rgba(0,0,0,0.2)'
-                  }}
+                  style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
                 >
                   <MessageSquare className="h-4 w-4" />
                   <span>Message</span>
                 </Button>
                 
                 <Button 
-                  className={`inline-flex items-center gap-2 rounded-full h-10 px-5 ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 font-medium active:scale-100 ease-out`}
+                  className="inline-flex items-center gap-2 rounded-full h-10 px-5 bg-gradient-to-r from-[#0ea5e9] to-[#6366f1] text-white border-0 backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 font-medium active:scale-100 ease-out"
                   onClick={() => setShareModalOpen(true)}
-                  style={{
-                    boxShadow: '0 0 25px rgba(0,0,0,0.2)'
-                  }}
+                  style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
                 >
                   <Share2 className="h-4 w-4" />
                   <span>Share</span>
