@@ -579,13 +579,13 @@ export default function MediaHub() {
                   <ChevronDown className="w-3 h-3 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-background">
+              <DropdownMenuContent align="end" className="bg-popover z-50 border border-border shadow-md">
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
                     <Video className="w-4 h-4 mr-2" />
                     Video
                   </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="bg-background">
+                  <DropdownMenuSubContent className="bg-popover z-50 border border-border shadow-md">
                     <DropdownMenuItem onClick={() => {
                       setInitialMediaType('video');
                       setIsUnifiedUploadOpen(true);
@@ -1108,19 +1108,6 @@ export default function MediaHub() {
         </div>
       </div>
 
-      <UnifiedUploadModal 
-        open={isUnifiedUploadOpen} 
-        onOpenChange={setIsUnifiedUploadOpen}
-        onUploadComplete={(mediaType) => {
-          if (mediaType === 'video') {
-            refetchShorts();
-            toast({
-              title: 'Success!',
-              description: 'Your video is now live in the community.',
-            });
-          }
-        }}
-      />
 
       <VideoPlayerModal
         isOpen={isVideoPlayerOpen}
@@ -1202,8 +1189,9 @@ export default function MediaHub() {
       </AlertDialog>
 
       {/* Upload Modals */}
-      <UnifiedUploadModal 
-        open={isUnifiedUploadOpen} 
+      <UnifiedUploadModal
+        key={initialMediaType || 'none'}
+        open={isUnifiedUploadOpen}
         onOpenChange={(open) => {
           setIsUnifiedUploadOpen(open);
           if (!open) setInitialMediaType(undefined);
