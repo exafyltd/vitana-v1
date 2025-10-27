@@ -20,9 +20,16 @@ const Index = () => {
 
   const handleMaxinaClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    const forceIntro = searchParams.get('forceIntro') === 'true';
+    const param = searchParams.get('forceIntro');
+    const forceIntro = searchParams.has('forceIntro') && (
+      param === null ||
+      param === '' ||
+      param.toLowerCase() === 'true' ||
+      param === '1' ||
+      param.toLowerCase() === 'yes' ||
+      param.toLowerCase() === 'on'
+    );
     const alreadySeen = hasSeenIntro('maxina');
-    
     if (forceIntro || !alreadySeen) {
       navigate('/_intro/maxina');
     } else {
