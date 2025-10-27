@@ -61,6 +61,8 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
   useEffect(() => {
     if (open && initialMediaType) {
       setMediaType(initialMediaType);
+    } else if (!open) {
+      setMediaType(null); // Reset when modal closes
     }
   }, [open, initialMediaType]);
 
