@@ -168,7 +168,7 @@ export const useBulkVideoUpload = () => {
 
           // Check duration for shorts
           if (duration > MAX_DURATION) {
-            item.error = `Video is ${Math.floor(duration / 60)}:${(duration % 60).toString().padStart(2, '0')}. Shorts should be ≤60s. Consider uploading as full video.`;
+            item.error = `Video is ${Math.floor(duration / 60)}:${(duration % 60).toString().padStart(2, '0')}. Shorts should be ≤5min. Consider uploading as full video.`;
           }
 
           // Generate auto thumbnails
@@ -237,7 +237,7 @@ export const useBulkVideoUpload = () => {
       if (item.thumbnail) {
         if (item.thumbnail.type === 'custom' && item.thumbnail.file) {
           // Upload custom thumbnail
-          const thumbPath = `thumbs/${user.id}/${timestamp}_thumb.jpg`;
+          const thumbPath = `shorts/${user.id}/${timestamp}_thumb.jpg`;
           const { error: thumbError } = await supabase.storage
             .from('media')
             .upload(thumbPath, item.thumbnail.file);
@@ -252,7 +252,7 @@ export const useBulkVideoUpload = () => {
           // Convert data URL to blob and upload
           const response = await fetch(item.thumbnail.url);
           const blob = await response.blob();
-          const thumbPath = `thumbs/${user.id}/${timestamp}_thumb.jpg`;
+          const thumbPath = `shorts/${user.id}/${timestamp}_thumb.jpg`;
           
           const { error: thumbError } = await supabase.storage
             .from('media')
@@ -281,7 +281,6 @@ export const useBulkVideoUpload = () => {
           duration_sec: item.duration || null,
           tags: item.tags,
           category: item.topic,
-          is_public: item.visibility === 'public',
         })
         .select()
         .single();
