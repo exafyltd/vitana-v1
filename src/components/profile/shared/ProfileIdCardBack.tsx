@@ -67,9 +67,9 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
       name: 'LinkedIn', 
       platform: 'linkedin',
       icon: <LinkedInIcon className="h-[32px] w-[32px]" connected={true} />, 
-      hoverHalo: 'hover:shadow-[0_0_20px_rgba(10,102,194,0.1)]',
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(10,102,194,0.15)]',
       urlPattern: /linkedin\.com/i,
-      brandColor: 'rgba(10, 102, 194, 0.8)',
+      brandColor: '#0A66C2',
       brandTint: 'bg-[#0A66C2]/[0.04] dark:bg-[#0A66C2]/[0.06]',
       brandTintHex: '#E9F2FB',
       brandTintHexDark: '#0A4580',
@@ -79,13 +79,13 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
       name: 'Instagram', 
       platform: 'instagram',
       icon: <InstagramIcon className="h-[32px] w-[32px]" connected={true} />, 
-      hoverHalo: 'hover:shadow-[0_0_20px_rgba(251,113,133,0.1)]',
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(221,42,123,0.12)]',
       urlPattern: /instagram\.com/i,
-      brandColor: '#fb7185',
-      brandTint: 'bg-[#fb7185]/[0.04] dark:bg-[#fb7185]/[0.06]',
+      brandColor: '#DD2A7B',
+      brandTint: 'bg-[#E4405F]/[0.04] dark:bg-[#E4405F]/[0.06]',
       brandTintHex: '#FCEBF6',
       brandTintHexDark: '#9C1C55',
-      brandBorder: 'border-t-[#fb7185]'
+      brandBorder: 'border-t-[#E4405F]'
     },
     { 
       name: 'X', 
@@ -127,9 +127,9 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
       name: 'Facebook', 
       platform: 'facebook',
       icon: <FacebookIcon className="h-[32px] w-[32px]" connected={true} />, 
-      hoverHalo: 'hover:shadow-[0_0_20px_rgba(24,119,242,0.1)]',
+      hoverHalo: 'hover:shadow-[0_0_20px_rgba(24,119,242,0.15)]',
       urlPattern: /facebook\.com/i,
-      brandColor: 'rgba(24, 119, 242, 0.8)',
+      brandColor: '#1877F2',
       brandTint: 'bg-[#1877F2]/[0.04] dark:bg-[#1877F2]/[0.06]',
       brandTintHex: '#EAF0FE',
       brandTintHexDark: '#1057B8',
@@ -163,16 +163,31 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
 
   return (
     <>
-      <div id="social-connections-section" className="relative h-full flex flex-col items-center justify-center p-8 rounded-3xl overflow-visible transition-all duration-500 ease-in-out bg-white/10 backdrop-blur-2xl border border-white/20"
+      <div id="social-connections-section" className={`relative h-full flex flex-col items-center justify-center p-8 ${themeConfig.backCard.darkBase || themeConfig.backCard.lightBase || 'bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-900/90 dark:via-gray-900/60 dark:to-gray-900/30'} ${themeConfig.backCard.darkBase || themeConfig.backCard.lightBase ? 'backdrop-blur-2xl' : 'backdrop-blur-xl'} rounded-3xl overflow-hidden transition-all duration-500 ease-in-out`}
            style={{
-             boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 0 1px rgba(255,255,255,0.2)'
+             boxShadow: themeConfig.backCard.darkBase 
+               ? '0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)'
+               : themeConfig.backCard.lightShadow || '0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08)'
            }}>
+        {/* Themed gradient border */}
+        <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${themeConfig.backCard.borderGradient} ${themeConfig.backCard.darkBase ? 'opacity-50' : themeConfig.backCard.lightBorderOpacity || 'opacity-40'} pointer-events-none transition-all duration-500 ease-in-out`} style={{ padding: '2px', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
+        
+        {/* Left edge glow (ambient light bleed for dark theme) */}
+        {themeConfig.backCard.leftEdgeGlow && (
+          <div className={`absolute left-0 top-0 bottom-0 w-32 ${themeConfig.backCard.leftEdgeGlow} opacity-60 pointer-events-none transition-all duration-500 ease-in-out`} />
+        )}
+        
+        {/* Themed corner glow */}
+        <div className={`absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.backCard.borderGradient} blur-3xl opacity-20 pointer-events-none transition-all duration-500 ease-in-out`} />
+        
+        {/* Themed top stripe */}
+        <div className={`absolute top-0 left-0 right-0 h-1 ${themeConfig.backCard.topStripe} rounded-t-3xl transition-all duration-500 ease-in-out`} />
         
         <div className="relative z-10 text-center mb-8">
-          <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-500">
+          <h2 className={`text-2xl font-bold mb-2 transition-colors duration-500 ${themeConfig.backCard.textHeader || 'text-foreground'}`}>
             Social Presence
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-500">
+          <p className={`text-sm transition-colors duration-500 ${themeConfig.backCard.textInactive || 'text-muted-foreground'}`}>
             Verified connections across your digital life
           </p>
         </div>

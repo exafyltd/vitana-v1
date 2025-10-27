@@ -19,7 +19,7 @@ export function ProfileHeader({ profile, scope, editMode, onEdit }: ProfileHeade
   const { themeConfig, cycleTheme } = useProfileTheme(targetUserId);
   
   return (
-    <div className="relative pt-12 pb-6 bg-gradient-to-br from-[#f9fafb]/80 via-[#f3f4f6]/70 to-[#e5e7eb]/50 dark:from-[#0b0f19]/90 dark:via-[#111827]/80 dark:to-[#1e293b]/70">
+    <div className="relative pt-12 pb-6">
       <div className="container mx-auto px-6">
         {/* Two ID Cards Layout with Themed Divider */}
         <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
