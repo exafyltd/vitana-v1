@@ -14,13 +14,7 @@ import { useProfileShare } from "@/hooks/useProfileShare";
 import { MessageComposeModal } from "./MessageComposeModal";
 import { ShareProfileModal } from "./ShareProfileModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
-import { useProfileTheme, ThemeConfig } from "@/hooks/useProfileTheme";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { ThemeConfig } from "@/hooks/useProfileTheme";
 
 interface ProfileIdCardFrontProps {
   profile: UserProfile;
@@ -156,28 +150,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
         {/* Premium gradient overlay with radial depth */}
         <div className={`absolute inset-0 ${themeConfig.card.overlay} pointer-events-none transition-all duration-500 ease-in-out`} />
         
-        {/* Top Right Corner - ID Chip & Theme Switcher */}
+        {/* Top Right Corner - ID Chip (Theme Switcher Disabled - Focus is Exclusive) */}
         <div className="absolute top-4 right-4 flex items-center gap-2 animate-fade-in z-20" style={{ animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards' }}>
-          {/* Theme Switcher (only for owner) */}
-          {isOwner && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={cycleTheme}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-white/40 to-white/20 dark:from-gray-800/40 dark:to-gray-800/20 backdrop-blur-md border border-white/50 dark:border-gray-700/50 shadow-[0_4px_12px_rgba(0,0,0,0.15),inset_0_1px_2px_rgba(255,255,255,0.6)] hover:scale-110 hover:shadow-[0_6px_20px_rgba(0,0,0,0.2)] transition-all duration-300 flex items-center justify-center text-xl cursor-pointer active:scale-95"
-                    aria-label="Cycle theme"
-                  >
-                    {themeConfig.icon}
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="left">
-                  <p className="text-xs">Theme: {themeConfig.displayName}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-          
           {/* User ID Chip */}
           <div className="px-3 py-1.5 rounded-full bg-gradient-to-br from-white/30 to-white/10 dark:from-gray-800/30 dark:to-gray-800/10 backdrop-blur-md border border-white/40 dark:border-gray-700/40 shadow-[0_2px_8px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105">
             <span className="text-xs font-mono font-semibold text-foreground/70 tracking-wide">🆔 {profile.id.slice(0, 8)}</span>

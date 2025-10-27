@@ -133,6 +133,16 @@ All colors MUST be HSL.
     
     /* Diary Voice Button */
     --brand-live: #ff004f;
+
+    /* Focus Profile Theme - Exclusive Design System */
+    --profile-bg-start: 216 53% 8%;
+    --profile-bg-end: 222 47% 11%;
+    --profile-accent-teal: 199 60% 48%;
+    --profile-accent-indigo: 239 60% 67%;
+    --profile-glass-light: 0 0% 100%;
+    --profile-text-primary: 210 20% 96%;
+    --profile-text-secondary: 210 20% 80%;
+    --profile-text-tertiary: 210 20% 70%;
   }
 
   .dark {
@@ -243,6 +253,16 @@ All colors MUST be HSL.
     --brand-accent: 339 89% 49%;
     --brand-bg: 222.2 84% 4.9%;
     --brand-fg: 210 40% 98%;
+
+    /* Focus Profile Theme - Dark Mode (same as light for this theme) */
+    --profile-bg-start: 216 53% 8%;
+    --profile-bg-end: 222 47% 11%;
+    --profile-accent-teal: 199 60% 48%;
+    --profile-accent-indigo: 239 60% 67%;
+    --profile-glass-light: 0 0% 100%;
+    --profile-text-primary: 210 20% 96%;
+    --profile-text-secondary: 210 20% 80%;
+    --profile-text-tertiary: 210 20% 70%;
   }
 }
 
