@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2, ChevronDown } from "lucide-react";
+import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2, ChevronDown, Mic } from "lucide-react";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { extractStoragePath } from "@/lib/utils";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
@@ -25,11 +25,15 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
-import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
+import { KebabMenu, DropdownMenuItem as KebabDropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "@/hooks/use-toast";
 import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastShows";
@@ -200,6 +204,7 @@ export default function MediaHub() {
   } = useAutopilot();
   const [isUnifiedUploadOpen, setIsUnifiedUploadOpen] = useState(false);
   const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
+  const [initialMediaType, setInitialMediaType] = useState<'music' | 'podcast' | 'video' | undefined>();
   const [selectedVideo, setSelectedVideo] = useState<any>(null);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(-1);
   const [isVideoPlayerOpen, setIsVideoPlayerOpen] = useState(false);
@@ -574,14 +579,37 @@ export default function MediaHub() {
                   <ChevronDown className="w-3 h-3 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setIsUnifiedUploadOpen(true)}>
-                  <Upload className="w-4 h-4 mr-2" />
-                  Single Upload
+              <DropdownMenuContent align="end" className="bg-background">
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <Video className="w-4 h-4 mr-2" />
+                    Video
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="bg-background">
+                    <DropdownMenuItem onClick={() => {
+                      setInitialMediaType('video');
+                      setIsUnifiedUploadOpen(true);
+                    }}>
+                      Single Upload
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setIsBulkUploadOpen(true)}>
+                      Bulk Upload
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+                <DropdownMenuItem onClick={() => {
+                  setInitialMediaType('music');
+                  setIsUnifiedUploadOpen(true);
+                }}>
+                  <Music className="w-4 h-4 mr-2" />
+                  Music
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setIsBulkUploadOpen(true)}>
-                  <Video className="w-4 h-4 mr-2" />
-                  Bulk Video Upload
+                <DropdownMenuItem onClick={() => {
+                  setInitialMediaType('podcast');
+                  setIsUnifiedUploadOpen(true);
+                }}>
+                  <Mic className="w-4 h-4 mr-2" />
+                  Podcast
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -860,8 +888,8 @@ export default function MediaHub() {
 
                                   {/* More Options */}
                                   <KebabMenu className="h-9 w-9 rounded-full hover:bg-purple-50">
-                                    <DropdownMenuItem>Add to Playlist</DropdownMenuItem>
-                                    <DropdownMenuItem>View Artist</DropdownMenuItem>
+                                    <KebabDropdownMenuItem>Add to Playlist</KebabDropdownMenuItem>
+                                    <KebabDropdownMenuItem>View Artist</KebabDropdownMenuItem>
                                   </KebabMenu>
                                 </div>
 
@@ -1176,11 +1204,26 @@ export default function MediaHub() {
       {/* Upload Modals */}
       <UnifiedUploadModal 
         open={isUnifiedUploadOpen} 
-        onOpenChange={setIsUnifiedUploadOpen}
+        onOpenChange={(open) => {
+          setIsUnifiedUploadOpen(open);
+          if (!open) setInitialMediaType(undefined);
+        }}
         onUploadComplete={(mediaType) => {
-          if (mediaType === 'video') refetchShorts();
+          if (mediaType === 'video') {
+            refetchShorts();
+            toast({
+              title: 'Success!',
+              description: 'Your video is now live in the community.',
+            });
+          } else {
+            toast({
+              title: 'Success!',
+              description: `Your ${mediaType} is now live in the community.`,
+            });
+          }
           setIsUnifiedUploadOpen(false);
         }}
+        initialMediaType={initialMediaType}
       />
       
       <BulkVideoUploadModal

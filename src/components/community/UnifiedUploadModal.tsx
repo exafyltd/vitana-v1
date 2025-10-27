@@ -16,6 +16,7 @@ interface UnifiedUploadModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onUploadComplete?: (mediaType: 'music' | 'podcast' | 'video') => void;
+  initialMediaType?: 'music' | 'podcast' | 'video';
 }
 
 const PREDEFINED_TAGS = [
@@ -29,8 +30,8 @@ const SIZE_LIMITS = {
   video: { max: 500, text: 'MP4, WebM, OGG (max 500MB, 5min)' },
 };
 
-export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete }: UnifiedUploadModalProps) {
-  const [mediaType, setMediaType] = useState<'music' | 'podcast' | 'video' | null>(null);
+export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initialMediaType }: UnifiedUploadModalProps) {
+  const [mediaType, setMediaType] = useState<'music' | 'podcast' | 'video' | null>(initialMediaType || null);
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -166,31 +167,38 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete }: Uni
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Upload Media</DialogTitle>
+          <DialogTitle>
+            {initialMediaType 
+              ? `Upload ${initialMediaType.charAt(0).toUpperCase() + initialMediaType.slice(1)}`
+              : 'Upload Media'
+            }
+          </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Media Type Selector */}
-          <div className="space-y-2">
-            <Label htmlFor="mediaType">Media Type *</Label>
-            <Select
-              value={mediaType || ''}
-              onValueChange={(value) => setMediaType(value as 'music' | 'podcast' | 'video')}
-              disabled={isUploading}
-            >
-              <SelectTrigger id="mediaType">
-                <SelectValue placeholder="Select media type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="podcast">🎙️ Podcast</SelectItem>
-                <SelectItem value="music">🎵 Music</SelectItem>
-                <SelectItem value="video">🎬 Video</SelectItem>
-              </SelectContent>
-            </Select>
-            {!mediaType && (
-              <p className="text-xs text-muted-foreground">Select media type first</p>
-            )}
-          </div>
+          {!initialMediaType && (
+            <div className="space-y-2">
+              <Label htmlFor="mediaType">Media Type *</Label>
+              <Select
+                value={mediaType || ''}
+                onValueChange={(value) => setMediaType(value as 'music' | 'podcast' | 'video')}
+                disabled={isUploading}
+              >
+                <SelectTrigger id="mediaType">
+                  <SelectValue placeholder="Select media type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="podcast">🎙️ Podcast</SelectItem>
+                  <SelectItem value="music">🎵 Music</SelectItem>
+                  <SelectItem value="video">🎬 Video</SelectItem>
+                </SelectContent>
+              </Select>
+              {!mediaType && (
+                <p className="text-xs text-muted-foreground">Select media type first</p>
+              )}
+            </div>
+          )}
 
           {/* File Upload Area */}
           {mediaType && (
