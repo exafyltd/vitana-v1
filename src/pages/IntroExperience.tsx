@@ -7,8 +7,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const MAXINA_WELCOME_SSML = `<speak>
-  Welcome to <sub alias="Vi-tah-nah-land">Vitanaland</sub>.  
-  You're entering the Maxina experience — where calm begins and energy awakens.  
+  Welcome to <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> land.
+  You're entering the Maxina experience — where calm begins and energy awakens.
   Let's explore, connect, and feel amazing together.
 </speak>`;
 
