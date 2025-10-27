@@ -6,9 +6,11 @@ import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-const MAXINA_WELCOME_TEXT = `Welcome to Vitanaland.
-You're entering the Maxina experience.
-Where your wellness, connection, and purpose come together.`;
+const MAXINA_WELCOME_SSML = `<speak>
+  Welcome to <sub alias="Vi-tah-nah-land">Vitanaland</sub>.  
+  You're entering the Maxina experience — where calm begins and energy awakens.  
+  Let's explore, connect, and feel amazing together.
+</speak>`;
 
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
@@ -63,9 +65,12 @@ export default function IntroExperience() {
       // Call Google Cloud TTS edge function
       const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
         body: {
-          text: MAXINA_WELCOME_TEXT,
-          voiceId: 'en-US-Standard-C', // Natural female voice
-          languageCode: 'en-US'
+          text: MAXINA_WELCOME_SSML,
+          voiceId: 'en-US-Wavenet-F',
+          languageCode: 'en-US',
+          speakingRate: 0.96,
+          pitch: 1.0,
+          useSSML: true
         }
       });
 

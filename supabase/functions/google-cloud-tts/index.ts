@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { text, voiceId, languageCode } = await req.json();
+    const { text, voiceId, languageCode, speakingRate, pitch, useSSML } = await req.json();
     
     if (!text) {
       throw new Error('Text is required');
@@ -32,15 +32,15 @@ serve(async (req) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          input: { text },
+          input: useSSML ? { ssml: text } : { text },
           voice: {
             languageCode: languageCode || 'en-US',
             name: voiceId || 'en-US-Standard-A',
           },
           audioConfig: {
             audioEncoding: 'MP3',
-            speakingRate: 1.0,
-            pitch: 0.0,
+            speakingRate: speakingRate ?? 1.0,
+            pitch: pitch ?? 0.0,
           },
         }),
       }
