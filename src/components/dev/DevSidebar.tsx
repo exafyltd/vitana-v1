@@ -199,13 +199,13 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
               <div className="space-y-3">
                 <div>
                   <h2 className="text-lg font-bold">Vitana DEV</h2>
-                  <p className="text-xs text-muted-foreground">Command Hub</p>
+                  <p className="text-xs text-sidebar-foreground/50 font-normal">Command Hub</p>
                 </div>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     placeholder="Search members, groups, or..."
-                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-muted-foreground/50"
+                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-muted-foreground"
                   />
                 </div>
               </div>
@@ -239,13 +239,13 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
               </div>
               <div>
                 <h2 className="text-lg font-bold">Vitana DEV</h2>
-                <p className="text-xs text-muted-foreground">Command Hub</p>
+                <p className="text-xs text-sidebar-foreground/50 font-normal">Command Hub</p>
               </div>
               <div className="relative mt-3">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     placeholder="Search members, groups, or..."
-                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-muted-foreground/50"
+                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-muted-foreground"
                   />
               </div>
             </>
