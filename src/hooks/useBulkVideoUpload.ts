@@ -73,27 +73,17 @@ export const useBulkVideoUpload = () => {
         const positions = [0.2, 0.5, 0.8]; // 20%, 50%, 80%
         let captured = 0;
 
-        // Portrait 9:16 canvas for shorts
-        canvas.width = 540;
-        canvas.height = 960;
-
         video.onseeked = () => {
-          if (ctx) {
-            // Cover-crop algorithm: scale to fill canvas, center and crop
-            const vW = video.videoWidth;
-            const vH = video.videoHeight;
-            const cW = canvas.width;
-            const cH = canvas.height;
-            const scale = Math.max(cW / vW, cH / vH);
-            const drawW = vW * scale;
-            const drawH = vH * scale;
-            const dx = (cW - drawW) / 2;
-            const dy = (cH - drawH) / 2;
+          if (ctx && video.readyState >= 2) {
+            // Use actual video dimensions for sharp thumbnails
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
             
-            ctx.clearRect(0, 0, cW, cH);
+            // Draw video frame at full quality
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(video, dx, dy, drawW, drawH);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             thumbnails.push(canvas.toDataURL('image/jpeg', 0.9));
           }
@@ -127,34 +117,26 @@ export const useBulkVideoUpload = () => {
 
       video.preload = 'metadata';
       video.onloadedmetadata = () => {
-        // Portrait 9:16 canvas for shorts
-        canvas.width = 540;
-        canvas.height = 960;
         video.currentTime = Math.min(timeInSeconds, video.duration);
       };
 
       video.onseeked = () => {
-        if (ctx) {
-          // Cover-crop algorithm: scale to fill canvas, center and crop
-          const vW = video.videoWidth;
-          const vH = video.videoHeight;
-          const cW = canvas.width;
-          const cH = canvas.height;
-          const scale = Math.max(cW / vW, cH / vH);
-          const drawW = vW * scale;
-          const drawH = vH * scale;
-          const dx = (cW - drawW) / 2;
-          const dy = (cH - drawH) / 2;
+        if (ctx && video.readyState >= 2) {
+          // Use actual video dimensions instead of fixed size
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
           
-          ctx.clearRect(0, 0, cW, cH);
+          // Draw video frame at full quality
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
-          ctx.drawImage(video, dx, dy, drawW, drawH);
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
           
           const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
           window.URL.revokeObjectURL(video.src);
           resolve(dataUrl);
         } else {
+          window.URL.revokeObjectURL(video.src);
           reject(new Error('Failed to capture frame'));
         }
       };
@@ -298,7 +280,11 @@ export const useBulkVideoUpload = () => {
           
           const { error: thumbError } = await supabase.storage
             .from('media')
-            .upload(thumbPath, blob);
+            .upload(thumbPath, blob, {
+              cacheControl: '3600',
+              contentType: 'image/jpeg',
+              upsert: false
+            });
 
           if (!thumbError) {
             const { data: { publicUrl: thumbUrl } } = supabase.storage
