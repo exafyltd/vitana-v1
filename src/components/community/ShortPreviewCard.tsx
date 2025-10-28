@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Play, Trash2, User } from 'lucide-react';
+import { Play, Trash2, User, Edit } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
@@ -19,11 +19,13 @@ interface ShortPreviewCardProps {
     isLive?: boolean;
     creatorAvatar?: string | null;
     creatorDisplayName?: string | null;
+    description?: string;
   };
   index: number;
   currentUserId?: string;
   onClick: () => void;
   onDelete?: () => void;
+  onEdit?: () => void;
 }
 
 export function ShortPreviewCard({
@@ -32,9 +34,12 @@ export function ShortPreviewCard({
   currentUserId,
   onClick,
   onDelete,
+  onEdit,
 }: ShortPreviewCardProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   
   const {
     videoRef,
@@ -67,6 +72,19 @@ export function ShortPreviewCard({
     return 'from-violet-400/20 to-violet-500/10 text-violet-700 border-violet-300/30';
   };
 
+  // Check if thumbnail is landscape
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete) {
+      setIsLandscape(img.naturalWidth > img.naturalHeight);
+    }
+  }, [video.thumbnailImage]);
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    setIsLandscape(img.naturalWidth > img.naturalHeight);
+  };
+
   // IntersectionObserver to track visibility (60% threshold)
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -89,7 +107,7 @@ export function ShortPreviewCard({
     };
   }, []);
 
-  const showDeleteMenu = currentUserId && video.user_id === currentUserId;
+  const showOwnerMenu = currentUserId && video.user_id === currentUserId;
 
   return (
     <div
@@ -103,23 +121,37 @@ export function ShortPreviewCard({
       role="button"
       aria-label={`Play ${video.title}`}
     >
-      {/* Delete Menu (only for video owner) */}
-      {showDeleteMenu && onDelete && (
+      {/* Owner Menu (Edit & Delete) */}
+      {showOwnerMenu && (onEdit || onDelete) && (
         <div
           className="absolute top-3 right-3 z-20"
           onClick={(e) => e.stopPropagation()}
         >
           <KebabMenu>
-            <DropdownMenuItem
-              className="text-destructive focus:text-destructive cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete();
-              }}
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Delete
-            </DropdownMenuItem>
+            {onEdit && (
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit();
+                }}
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                Edit details
+              </DropdownMenuItem>
+            )}
+            {onDelete && (
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete();
+                }}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </DropdownMenuItem>
+            )}
           </KebabMenu>
         </div>
       )}
@@ -133,12 +165,20 @@ export function ShortPreviewCard({
               : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-violet-500/10'
           }`}
         >
+          {/* Blurred background for landscape thumbnails */}
+          {isLandscape && (
+            <div
+              className="absolute inset-0 bg-cover bg-center blur-2xl scale-110"
+              style={{ backgroundImage: `url(${video.thumbnailImage})` }}
+            />
+          )}
+
           {/* Video Element (hidden until preview starts) */}
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
-              isPreviewing && !loadError ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
+              isLandscape ? 'object-contain' : 'object-cover object-center'
+            } ${isPreviewing && !loadError ? 'opacity-100' : 'opacity-0'}`}
             poster={video.thumbnail_url || video.thumbnailImage}
             preload="metadata"
             muted
@@ -150,11 +190,15 @@ export function ShortPreviewCard({
 
           {/* Thumbnail Image */}
           <img
+            ref={imgRef}
             src={video.thumbnailImage}
             alt={video.title}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
-              isPreviewing && !loadError ? 'opacity-0' : 'opacity-100'
-            }`}
+            onLoad={handleImageLoad}
+            loading="lazy"
+            decoding="async"
+            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
+              isLandscape ? 'object-contain' : 'object-cover object-center'
+            } ${isPreviewing && !loadError ? 'opacity-0' : 'opacity-100'}`}
           />
 
           {/* Gradient overlay */}

@@ -43,6 +43,7 @@ import { ShortPreviewCard } from "@/components/community/ShortPreviewCard";
 import { UnifiedUploadModal } from '@/components/community/UnifiedUploadModal';
 import { VideoPlayerModal } from '@/components/community/VideoPlayerModal';
 import { BulkVideoUploadModal } from '@/components/community/BulkVideoUploadModal';
+import { EditShortVideoModal } from '@/components/community/EditShortVideoModal';
 import { useShortsDensity } from '@/hooks/useShortsDensity';
 import { DensityControl } from '@/components/community/DensityControl';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
@@ -226,6 +227,7 @@ export default function MediaHub() {
   const [podcastToDelete, setPodcastToDelete] = useState<string | null>(null);
   const [videoToDelete, setVideoToDelete] = useState<{ id: string; src_url: string; thumbnail_url?: string } | null>(null);
   const [deleteVideoDialogOpen, setDeleteVideoDialogOpen] = useState(false);
+  const [editingVideo, setEditingVideo] = useState<any>(null);
   const latestActions = getLatestActions(2);
   
   // Shorts density control
@@ -394,6 +396,7 @@ export default function MediaHub() {
     id: short.id,
     user_id: short.user_id,
     title: short.title,
+    description: short.description,
     creator: short.profiles?.display_name || short.profiles?.full_name || "Community Member",
     creatorAvatar: short.profiles?.avatar_url || null,
     creatorDisplayName: short.profiles?.display_name || short.profiles?.full_name || null,
@@ -678,6 +681,7 @@ export default function MediaHub() {
                         index={index}
                         currentUserId={user?.id}
                         onClick={() => handleVideoClick(video, index)}
+                        onEdit={() => setEditingVideo(video)}
                         onDelete={() => {
                           setVideoToDelete({
                             id: video.id,
@@ -1189,6 +1193,30 @@ export default function MediaHub() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Edit Video Modal */}
+      {editingVideo && (
+        <EditShortVideoModal
+          isOpen={!!editingVideo}
+          onClose={() => setEditingVideo(null)}
+          video={{
+            id: editingVideo.id,
+            user_id: editingVideo.user_id,
+            title: editingVideo.title,
+            description: editingVideo.description,
+            tags: editingVideo.tags,
+            src_url: editingVideo.src_url,
+            thumbnail_url: editingVideo.thumbnail_url
+          }}
+          onSave={() => {
+            refetchShorts();
+            toast({
+              title: 'Success',
+              description: 'Video updated successfully',
+            });
+          }}
+        />
+      )}
 
       {/* Upload Modals */}
       <UnifiedUploadModal
