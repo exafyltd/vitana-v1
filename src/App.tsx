@@ -41,6 +41,11 @@ import DevGateway from "./pages/dev/DevGateway";
 import DevCICD from "./pages/dev/DevCICD";
 import DevObservability from "./pages/dev/DevObservability";
 import DevLayout from "./layouts/DevLayout";
+
+// Dev Hub Dashboard sub-pages
+import DashboardAIFeed from "./pages/dev/dashboard/AIFeed";
+import DashboardAlerts from "./pages/dev/dashboard/Alerts";
+import DashboardSystemHealth from "./pages/dev/dashboard/SystemHealth";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
@@ -258,6 +263,9 @@ const App = () => {
           }>
             <Route index element={<Navigate to="/dev/dashboard" replace />} />
             <Route path="dashboard" element={<DevDashboard />} />
+            <Route path="dashboard/ai-feed" element={<DashboardAIFeed />} />
+            <Route path="dashboard/alerts" element={<DashboardAlerts />} />
+            <Route path="dashboard/health" element={<DashboardSystemHealth />} />
             <Route path="command" element={<DevCommand />} />
             <Route path="agents" element={<DevAgents />} />
             <Route path="pipelines" element={<DevPipelines />} />
