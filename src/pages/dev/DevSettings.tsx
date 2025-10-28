@@ -1,12 +1,21 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { DEV_HUB_CONFIG } from "@/config/devHub.config";
-import { DevTabs } from "@/components/dev/DevTabs";
+import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { Button } from "@/components/ui/button";
+import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
-import { Key, Flag, Users } from "lucide-react";
+import { Key, Flag, Users, Plus } from "lucide-react";
+import { devSettingsNavigation } from "@/config/dev-navigation";
 
 export default function DevSettings() {
+  const [activeTab, setActiveTab] = useState("environment");
+
   const environmentContent = (
     <Card>
       <CardHeader>
@@ -79,50 +88,78 @@ export default function DevSettings() {
     </Card>
   );
 
-  const tabs = [
-    {
-      value: "environment",
-      label: "Environment",
-      content: environmentContent
-    },
-    {
-      value: "auth",
-      label: "Auth",
-      content: <DevEmptyState 
-        title="Authentication Settings" 
-        description="View Supabase authentication configuration and enabled providers."
-        icon={Key}
-      />
-    },
-    {
-      value: "flags",
-      label: "Feature Flags",
-      content: <DevEmptyState 
-        title="Feature Flags" 
-        description="Manage Dev Hub feature flags and environment variables."
-        icon={Flag}
-      />
-    },
-    {
-      value: "tenants",
-      label: "Tenants",
-      content: <DevEmptyState 
-        title="Tenant Configuration" 
-        description="View and manage tenant configurations (System, Maxina, Earthlinks, AlKalma)."
-        icon={Users}
-      />
-    },
-  ];
-
   return (
-    <div className="container mx-auto px-4 py-6">
+    <>
       <SEO 
         title="Vitana DEV — Settings" 
         description="Configuration settings for Dev Hub"
         canonical={window.location.href}
       />
-      
-      <DevTabs defaultTab="environment" tabs={tabs} />
-    </div>
+
+      {/* Horizontal Navigation */}
+      <SubNavigation items={devSettingsNavigation} />
+
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          
+          {/* 3-Card Header */}
+          <DevStandardHeader 
+            title="Settings"
+            description="Configure Dev Hub environment, authentication, and features"
+            emoji="⚙️"
+          />
+
+          {/* Utility Action Buttons */}
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search settings…"
+              onSearch={(query) => console.log('Search:', query)}
+            />
+            <Button size="sm">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Config
+            </Button>
+          </UtilityActionButton>
+
+          {/* Split-Screen Navigation Bar */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+              <SplitBarTrigger value="environment">Environment</SplitBarTrigger>
+              <SplitBarTrigger value="auth">Auth</SplitBarTrigger>
+              <SplitBarTrigger value="flags">Feature Flags</SplitBarTrigger>
+              <SplitBarTrigger value="tenants">Tenants</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="environment" className="mt-6">
+              {environmentContent}
+            </SplitBarContent>
+
+            <SplitBarContent value="auth" className="mt-6">
+              <DevEmptyState 
+                title="Authentication Settings" 
+                description="View Supabase authentication configuration and enabled providers."
+                icon={Key}
+              />
+            </SplitBarContent>
+
+            <SplitBarContent value="flags" className="mt-6">
+              <DevEmptyState 
+                title="Feature Flags" 
+                description="Manage Dev Hub feature flags and environment variables."
+                icon={Flag}
+              />
+            </SplitBarContent>
+
+            <SplitBarContent value="tenants" className="mt-6">
+              <DevEmptyState 
+                title="Tenant Configuration" 
+                description="View and manage tenant configurations (System, Maxina, Earthlinks, AlKalma)."
+                icon={Users}
+              />
+            </SplitBarContent>
+          </SplitBar>
+        </div>
+      </div>
+    </>
   );
 }

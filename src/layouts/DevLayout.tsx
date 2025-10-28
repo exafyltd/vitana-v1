@@ -1,8 +1,7 @@
 import { ReactNode, useState, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { DevSidebar } from "@/components/dev/DevSidebar";
-import { DevHubHeader } from "@/components/dev/DevHubHeader";
 import { useAuth } from "@/context/AuthProvider";
 import { DEV_HUB_CONFIG } from "@/config/devHub.config";
 import { useErrorNotifications } from "@/hooks/useErrorNotifications";
@@ -17,7 +16,6 @@ interface DevLayoutProps {
 
 export default function DevLayout({ children }: DevLayoutProps) {
   const { user } = useAuth();
-  const location = useLocation();
   const { errors, dismissError } = useErrorNotifications();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -85,12 +83,8 @@ export default function DevLayout({ children }: DevLayoutProps) {
             </div>
           )}
           
-          <DevHubHeader />
-          
           <main className="flex-1 overflow-auto">
-            <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
-              {children || <Outlet />}
-            </div>
+            {children || <Outlet />}
           </main>
         </div>
         

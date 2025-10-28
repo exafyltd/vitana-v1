@@ -1,3 +1,8 @@
+/**
+ * @deprecated Use SplitBar component instead (VITANA Universal Design Pattern)
+ * This component will be removed in Phase 2.
+ * Migrate to: import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar"
+ */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReactNode, useRef, useEffect } from "react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";

@@ -25,16 +25,16 @@ import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 const DEV_NAV_ITEMS = [
-  { title: "Home", url: "/dev/dashboard", icon: Home },
-  { title: "Command Hub", url: "/dev/command", icon: Terminal },
-  { title: "Agents", url: "/dev/agents", icon: Users },
-  { title: "Pipelines (Conductor)", url: "/dev/pipelines", icon: GitBranch },
-  { title: "OASIS", url: "/dev/oasis", icon: Database },
-  { title: "VTID Ledger", url: "/dev/vtid", icon: FileText },
-  { title: "Gateway", url: "/dev/gateway", icon: Globe },
-  { title: "CI/CD & Deploys", url: "/dev/cicd", icon: Workflow },
-  { title: "Observability", url: "/dev/observability", icon: Activity },
-  { title: "Settings", url: "/dev/settings", icon: Settings },
+  { title: "Home", url: "/dev/dashboard" },
+  { title: "Command Hub", url: "/dev/command" },
+  { title: "Agents", url: "/dev/agents" },
+  { title: "Pipelines (Conductor)", url: "/dev/pipelines" },
+  { title: "OASIS", url: "/dev/oasis" },
+  { title: "VTID Ledger", url: "/dev/vtid" },
+  { title: "Gateway", url: "/dev/gateway" },
+  { title: "CI/CD & Deploys", url: "/dev/cicd" },
+  { title: "Observability", url: "/dev/observability" },
+  { title: "Settings", url: "/dev/settings" },
 ] as const;
 
 interface DevSidebarProps {
@@ -97,7 +97,6 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
                     : "hover:bg-sidebar-accent/50"
                 }
               >
-                <item.icon className="h-4 w-4" />
                 {(!isMobile || open) && <span>{item.title}</span>}
               </NavLink>
             </SidebarMenuButton>
@@ -181,35 +180,37 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
     );
   }
 
-  // Desktop: Render as Sidebar
+  // Desktop: Render as Sidebar (dark theme matching Maxina)
   return (
-    <Sidebar collapsible="icon" className="border-r">
-      {/* Header */}
-      <SidebarHeader className="border-b p-4">
-        <div className="flex items-center justify-between">
-          <SidebarTrigger className="ml-auto" />
-        </div>
-        {open && (
-          <div className="mt-2">
-            <h2 className="text-lg font-bold">Vitana DEV</h2>
-            <p className="text-xs text-muted-foreground">Command Hub</p>
+    <div className="dark">
+      <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
+        {/* Header */}
+        <SidebarHeader className="border-b border-sidebar-border rounded-tr-2xl p-4">
+          <div className="flex items-center justify-between">
+            <SidebarTrigger className="ml-auto" />
           </div>
-        )}
-      </SidebarHeader>
+          {open && (
+            <div className="mt-2">
+              <h2 className="text-lg font-bold">Vitana DEV</h2>
+              <p className="text-xs text-muted-foreground">Command Hub</p>
+            </div>
+          )}
+        </SidebarHeader>
 
-      {/* Navigation */}
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            {navigationContent}
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+        {/* Navigation */}
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              {navigationContent}
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
 
-      {/* Utility Zone (Footer) */}
-      <SidebarFooter className="border-t p-4">
-        {footerContent}
-      </SidebarFooter>
-    </Sidebar>
+        {/* Utility Zone (Footer) */}
+        <SidebarFooter className="border-t border-sidebar-border p-4">
+          {footerContent}
+        </SidebarFooter>
+      </Sidebar>
+    </div>
   );
 }

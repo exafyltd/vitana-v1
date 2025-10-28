@@ -1,57 +1,94 @@
-import { DevTabs } from "@/components/dev/DevTabs";
+import { useState } from "react";
+import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { Button } from "@/components/ui/button";
+import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
-import { FileText, GitBranch, BarChart, DollarSign } from "lucide-react";
+import { FileText, GitBranch, BarChart, DollarSign, Plus } from "lucide-react";
+import { devObservabilityNavigation } from "@/config/dev-navigation";
 
 export default function DevObservability() {
-  const tabs = [
-    {
-      value: "logs",
-      label: "Logs",
-      content: <DevEmptyState 
-        title="Aggregated Logs" 
-        description="View and search system logs across all services."
-        icon={FileText}
-      />
-    },
-    {
-      value: "traces",
-      label: "Traces",
-      content: <DevEmptyState 
-        title="Distributed Traces" 
-        description="Analyze distributed request traces."
-        icon={GitBranch}
-      />
-    },
-    {
-      value: "metrics",
-      label: "Metrics",
-      content: <DevEmptyState 
-        title="System Metrics" 
-        description="Monitor performance metrics and system health."
-        icon={BarChart}
-      />
-    },
-    {
-      value: "costs",
-      label: "Costs",
-      content: <DevEmptyState 
-        title="Cost Breakdown" 
-        description="View resource costs by tenant and service."
-        icon={DollarSign}
-      />
-    },
-  ];
+  const [activeTab, setActiveTab] = useState("logs");
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <>
       <SEO 
         title="Vitana DEV — Observability" 
         description="Observability and monitoring for Vitana platform"
         canonical={window.location.href}
       />
-      
-      <DevTabs defaultTab="logs" tabs={tabs} />
-    </div>
+
+      {/* Horizontal Navigation */}
+      <SubNavigation items={devObservabilityNavigation} />
+
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          
+          {/* 3-Card Header */}
+          <DevStandardHeader 
+            title="Observability"
+            description="Monitor logs, traces, metrics, and costs across the platform"
+            emoji="📊"
+          />
+
+          {/* Utility Action Buttons */}
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search logs…"
+              onSearch={(query) => console.log('Search:', query)}
+            />
+            <Button size="sm">
+              <Plus className="w-4 h-4 mr-2" />
+              Create Alert
+            </Button>
+          </UtilityActionButton>
+
+          {/* Split-Screen Navigation Bar */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+              <SplitBarTrigger value="logs">Logs</SplitBarTrigger>
+              <SplitBarTrigger value="traces">Traces</SplitBarTrigger>
+              <SplitBarTrigger value="metrics">Metrics</SplitBarTrigger>
+              <SplitBarTrigger value="costs">Costs</SplitBarTrigger>
+            </SplitBarList>
+
+            <SplitBarContent value="logs" className="mt-6">
+              <DevEmptyState 
+                title="Aggregated Logs" 
+                description="View and search system logs across all services."
+                icon={FileText}
+              />
+            </SplitBarContent>
+
+            <SplitBarContent value="traces" className="mt-6">
+              <DevEmptyState 
+                title="Distributed Traces" 
+                description="Analyze distributed request traces."
+                icon={GitBranch}
+              />
+            </SplitBarContent>
+
+            <SplitBarContent value="metrics" className="mt-6">
+              <DevEmptyState 
+                title="System Metrics" 
+                description="Monitor performance metrics and system health."
+                icon={BarChart}
+              />
+            </SplitBarContent>
+
+            <SplitBarContent value="costs" className="mt-6">
+              <DevEmptyState 
+                title="Cost Breakdown" 
+                description="View resource costs by tenant and service."
+                icon={DollarSign}
+              />
+            </SplitBarContent>
+          </SplitBar>
+        </div>
+      </div>
+    </>
   );
 }

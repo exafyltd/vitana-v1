@@ -1,3 +1,8 @@
+/**
+ * @deprecated This component is no longer used in VITANA Universal Design Pattern.
+ * Settings, Sign Out, and user info are now in the sidebar.
+ * Will be removed in Phase 2.
+ */
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
