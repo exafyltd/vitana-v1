@@ -3,7 +3,7 @@ import { User } from "@supabase/supabase-js";
 import {
   Home, Terminal, Users, GitBranch, Database, 
   FileText, Globe, Workflow, Activity, Settings,
-  Play, LogOut, ChevronRight
+  Play, LogOut, ChevronRight, Search
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger
@@ -25,16 +26,16 @@ import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 const DEV_NAV_ITEMS = [
-  { title: "Home", url: "/dev/dashboard" },
-  { title: "Command Hub", url: "/dev/command" },
-  { title: "Agents", url: "/dev/agents" },
-  { title: "Pipelines (Conductor)", url: "/dev/pipelines" },
-  { title: "OASIS", url: "/dev/oasis" },
-  { title: "VTID Ledger", url: "/dev/vtid" },
-  { title: "Gateway", url: "/dev/gateway" },
-  { title: "CI/CD & Deploys", url: "/dev/cicd" },
-  { title: "Observability", url: "/dev/observability" },
-  { title: "Settings", url: "/dev/settings" },
+  { title: "Home", url: "/dev/dashboard", icon: Home },
+  { title: "Command Hub", url: "/dev/command", icon: Terminal },
+  { title: "Agents", url: "/dev/agents", icon: Users },
+  { title: "Pipelines (Conductor)", url: "/dev/pipelines", icon: GitBranch },
+  { title: "OASIS", url: "/dev/oasis", icon: Database },
+  { title: "VTID Ledger", url: "/dev/vtid", icon: FileText },
+  { title: "Gateway", url: "/dev/gateway", icon: Globe },
+  { title: "CI/CD & Deploys", url: "/dev/cicd", icon: Workflow },
+  { title: "Observability", url: "/dev/observability", icon: Activity },
+  { title: "Settings", url: "/dev/settings", icon: Settings },
 ] as const;
 
 interface DevSidebarProps {
@@ -93,11 +94,12 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
                 onClick={() => handleNavigation(item.url)}
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "hover:bg-sidebar-accent/50"
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground flex items-center gap-3"
+                    : "hover:bg-sidebar-accent/50 flex items-center gap-3"
                 }
               >
-                {(!isMobile || open) && <span>{item.title}</span>}
+                <item.icon className="h-5 w-5 shrink-0" />
+                {open && <span>{item.title}</span>}
               </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -109,12 +111,12 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
   const footerContent = (
     <div className="space-y-2">
       <Button 
-        variant="outline" 
-        size={(isMobile || !open) ? "icon" : "default"}
-        className="w-full gap-2"
+        variant="default" 
+        size={!open ? "icon" : "default"}
+        className="w-full gap-2 bg-white dark:bg-white text-black hover:bg-gray-100 dark:hover:bg-gray-100"
       >
         <Play className="h-4 w-4" />
-        {(!isMobile && open) && <span>Start Stream</span>}
+        {open && <span>Start Stream</span>}
       </Button>
 
       <DropdownMenu>
@@ -159,9 +161,18 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
         <SheetContent side="left" className="w-[280px] p-0">
           <SheetHeader className="border-b p-4">
             <SheetTitle className="text-left">
-              <div>
-                <h2 className="text-lg font-bold">Vitana DEV</h2>
-                <p className="text-xs text-muted-foreground">Command Hub</p>
+              <div className="space-y-3">
+                <div>
+                  <h2 className="text-lg font-bold">Vitana DEV</h2>
+                  <p className="text-xs text-muted-foreground">Command Hub</p>
+                </div>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    placeholder="Search members, groups, or..."
+                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border"
+                  />
+                </div>
               </div>
             </SheetTitle>
           </SheetHeader>
@@ -186,13 +197,29 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
       <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
         {/* Header */}
         <SidebarHeader className="border-b border-sidebar-border rounded-tr-2xl p-4">
-          <div className="flex items-center justify-between">
-            <SidebarTrigger className="ml-auto" />
-          </div>
-          {open && (
-            <div className="mt-2">
-              <h2 className="text-lg font-bold">Vitana DEV</h2>
-              <p className="text-xs text-muted-foreground">Command Hub</p>
+          {open ? (
+            <>
+              <div className="flex items-center justify-between mb-3">
+                <SidebarTrigger className="ml-auto" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold">Vitana DEV</h2>
+                <p className="text-xs text-muted-foreground">Command Hub</p>
+              </div>
+              <div className="relative mt-3">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Search members, groups, or..."
+                  className="pl-9 bg-sidebar-accent/20 border-sidebar-border"
+                />
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center gap-3">
+              <SidebarTrigger />
+              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl">
+                V
+              </div>
             </div>
           )}
         </SidebarHeader>
