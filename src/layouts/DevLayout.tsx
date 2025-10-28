@@ -5,6 +5,8 @@ import { DevSidebar } from "@/components/dev/DevSidebar";
 import { DevHubHeader } from "@/components/dev/DevHubHeader";
 import { useAuth } from "@/context/AuthProvider";
 import { DEV_HUB_CONFIG } from "@/config/devHub.config";
+import { useErrorNotifications } from "@/hooks/useErrorNotifications";
+import { ErrorNotificationStack } from "@/components/ErrorNotificationStack";
 
 interface DevLayoutProps {
   children?: ReactNode;
@@ -13,6 +15,7 @@ interface DevLayoutProps {
 export default function DevLayout({ children }: DevLayoutProps) {
   const { user } = useAuth();
   const location = useLocation();
+  const { errors, dismissError } = useErrorNotifications();
 
   // Sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
@@ -63,6 +66,9 @@ export default function DevLayout({ children }: DevLayoutProps) {
             </div>
           </main>
         </div>
+        
+        {/* Error Notification Stack */}
+        <ErrorNotificationStack errors={errors} onDismiss={dismissError} />
       </div>
     </SidebarProvider>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface ErrorNotification {
   id: string;
@@ -6,6 +6,9 @@ export interface ErrorNotification {
   description: string;
   timestamp: number;
 }
+
+const AUTO_DISMISS_DELAY = 10000; // 10 seconds
+const MAX_VISIBLE_ERRORS = 5;
 
 export const useErrorNotifications = () => {
   const [errors, setErrors] = useState<ErrorNotification[]>([]);
@@ -30,7 +33,11 @@ export const useErrorNotifications = () => {
     };
     
     console.log('[ERROR] Showing new error:', title);
-    setErrors(prev => [...prev, newError]);
+    setErrors(prev => {
+      const updated = [...prev, newError];
+      // Keep only the most recent errors if we exceed the limit
+      return updated.slice(-MAX_VISIBLE_ERRORS);
+    });
   };
   
   const dismissError = (id: string) => {
@@ -38,5 +45,28 @@ export const useErrorNotifications = () => {
     setErrors(prev => prev.filter(e => e.id !== id));
   };
   
-  return { errors, showError, dismissError };
+  const clearAllErrors = () => {
+    console.log('[ERROR] Clearing all errors');
+    setErrors([]);
+  };
+  
+  // Auto-dismiss errors after delay
+  useEffect(() => {
+    if (errors.length === 0) return;
+    
+    const timers = errors.map(error => {
+      const timeElapsed = Date.now() - error.timestamp;
+      const remainingTime = Math.max(0, AUTO_DISMISS_DELAY - timeElapsed);
+      
+      return setTimeout(() => {
+        dismissError(error.id);
+      }, remainingTime);
+    });
+    
+    return () => {
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  }, [errors]);
+  
+  return { errors, showError, dismissError, clearAllErrors };
 };

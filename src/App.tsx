@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
+import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
 import { AdminGuard } from "@/routes/guards/AdminGuard";
 import { RTLProvider } from "@/components/RTLProvider";
 import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
@@ -250,7 +251,9 @@ const App = () => {
           <Route path="/dev/login" element={<DevLogin />} />
           <Route path="/dev" element={
             <DevAuthGuard>
-              <DevLayout />
+              <DevErrorBoundary>
+                <DevLayout />
+              </DevErrorBoundary>
             </DevAuthGuard>
           }>
             <Route index element={<Navigate to="/dev/dashboard" replace />} />
