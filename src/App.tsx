@@ -51,6 +51,47 @@ import DashboardSystemHealth from "./pages/dev/dashboard/SystemHealth";
 import CommandApprovals from "./pages/dev/command/Approvals";
 import CommandHistory from "./pages/dev/command/History";
 import CommandCompose from "./pages/dev/command/Compose";
+
+// Dev Hub Agents sub-pages
+import AgentsWorker from "./pages/dev/agents/Worker";
+import AgentsValidator from "./pages/dev/agents/Validator";
+import AgentsQATest from "./pages/dev/agents/QATest";
+import AgentsCrewTemplate from "./pages/dev/agents/CrewTemplate";
+
+// Dev Hub VTID sub-pages
+import VTIDIssue from "./pages/dev/vtid/Issue";
+import VTIDAnalytics from "./pages/dev/vtid/Analytics";
+import VTIDSearch from "./pages/dev/vtid/Search";
+
+// Dev Hub Gateway sub-pages
+import GatewayRequests from "./pages/dev/gateway/Requests";
+import GatewayMobileLinks from "./pages/dev/gateway/MobileLinks";
+import GatewayWebhooks from "./pages/dev/gateway/Webhooks";
+
+// Dev Hub OASIS sub-pages
+import OasisState from "./pages/dev/oasis/State";
+import OasisLedger from "./pages/dev/oasis/Ledger";
+import OasisPolicies from "./pages/dev/oasis/Policies";
+
+// Dev Hub Pipelines sub-pages
+import PipelinesTests from "./pages/dev/pipelines/Tests";
+import PipelinesCanary from "./pages/dev/pipelines/Canary";
+import PipelinesRollbacks from "./pages/dev/pipelines/Rollbacks";
+
+// Dev Hub CI/CD sub-pages
+import CICDRuns from "./pages/dev/cicd/Runs";
+import CICDArtifacts from "./pages/dev/cicd/Artifacts";
+import CICDMatrix from "./pages/dev/cicd/Matrix";
+
+// Dev Hub Observability sub-pages
+import ObservabilityTraces from "./pages/dev/observability/Traces";
+import ObservabilityMetrics from "./pages/dev/observability/Metrics";
+import ObservabilityCosts from "./pages/dev/observability/Costs";
+
+// Dev Hub Settings sub-pages
+import SettingsAuth from "./pages/dev/settings/Auth";
+import SettingsFlags from "./pages/dev/settings/Flags";
+import SettingsTenants from "./pages/dev/settings/Tenants";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
@@ -276,13 +317,40 @@ const App = () => {
             <Route path="command/history" element={<CommandHistory />} />
             <Route path="command/compose" element={<CommandCompose />} />
             <Route path="agents" element={<DevAgents />} />
+            <Route path="agents/worker" element={<AgentsWorker />} />
+            <Route path="agents/validator" element={<AgentsValidator />} />
+            <Route path="agents/qa-test" element={<AgentsQATest />} />
+            <Route path="agents/crew-template" element={<AgentsCrewTemplate />} />
             <Route path="pipelines" element={<DevPipelines />} />
             <Route path="oasis" element={<DevOasis />} />
             <Route path="vtid" element={<DevVTID />} />
+            <Route path="vtid/issue" element={<VTIDIssue />} />
+            <Route path="vtid/analytics" element={<VTIDAnalytics />} />
+            <Route path="vtid/search" element={<VTIDSearch />} />
             <Route path="gateway" element={<DevGateway />} />
+            <Route path="gateway/requests" element={<GatewayRequests />} />
+            <Route path="gateway/mobile" element={<GatewayMobileLinks />} />
+            <Route path="gateway/webhooks" element={<GatewayWebhooks />} />
+            <Route path="oasis" element={<DevOasis />} />
+            <Route path="oasis/state" element={<OasisState />} />
+            <Route path="oasis/ledger" element={<OasisLedger />} />
+            <Route path="oasis/policies" element={<OasisPolicies />} />
+            <Route path="pipelines" element={<DevPipelines />} />
+            <Route path="pipelines/tests" element={<PipelinesTests />} />
+            <Route path="pipelines/canary" element={<PipelinesCanary />} />
+            <Route path="pipelines/rollbacks" element={<PipelinesRollbacks />} />
             <Route path="cicd" element={<DevCICD />} />
+            <Route path="cicd/runs" element={<CICDRuns />} />
+            <Route path="cicd/artifacts" element={<CICDArtifacts />} />
+            <Route path="cicd/matrix" element={<CICDMatrix />} />
             <Route path="observability" element={<DevObservability />} />
+            <Route path="observability/traces" element={<ObservabilityTraces />} />
+            <Route path="observability/metrics" element={<ObservabilityMetrics />} />
+            <Route path="observability/costs" element={<ObservabilityCosts />} />
             <Route path="settings" element={<DevSettings />} />
+            <Route path="settings/auth" element={<SettingsAuth />} />
+            <Route path="settings/flags" element={<SettingsFlags />} />
+            <Route path="settings/tenants" element={<SettingsTenants />} />
           </Route>
           <Route path="/home" element={
             <AuthGuard>
