@@ -6,7 +6,7 @@ import { useSmartRouting } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, BookOpen, Leaf, Shield, Users, Settings } from "lucide-react";
+import { Heart, BookOpen, Leaf, Shield, Terminal } from "lucide-react";
 
 
 const Index = () => {
@@ -39,7 +39,7 @@ const Index = () => {
           </p>
           
           {/* Platform Selection */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-7xl mx-auto">
             {/* Maxina Portal */}
             <div onClick={handleMaxinaClick}>
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
@@ -107,6 +107,24 @@ const Index = () => {
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
                     Secure access for Exafy administrators to manage tenant environments.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Vitana DEV Portal */}
+            <Link to="/dev">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-blue-200 bg-gradient-to-br from-blue-50/50 to-slate-50/50">
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    <Terminal className="h-12 w-12 text-blue-600 group-hover:scale-110 transition-transform" />
+                  </div>
+                  <CardTitle className="text-xl text-blue-700">Vitana DEV</CardTitle>
+                  <CardDescription>Developer & Command Hub</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Operate the Vitana platform: observe events, issue commands, and review agent activity with VTID governance.
                   </p>
                 </CardContent>
               </Card>

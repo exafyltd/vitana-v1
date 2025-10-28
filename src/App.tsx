@@ -25,6 +25,11 @@ import MaxinaPortal from "./pages/portals/MaxinaPortal";
 import AlkalmaPortal from "./pages/portals/AlkalmaPortal";
 import EarthlinksPortal from "./pages/portals/EarthlinksPortal";
 import CommunityPortal from "./pages/portals/CommunityPortal";
+
+// Dev Hub pages
+import DevLogin from "./pages/dev/DevLogin";
+import DevDashboard from "./pages/dev/DevDashboard";
+import DevSettings from "./pages/dev/DevSettings";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
@@ -230,6 +235,20 @@ const App = () => {
           <Route path="/alkalma" element={<AlkalmaPortal />} />
           <Route path="/earthlinks" element={<EarthlinksPortal />} />
           <Route path="/community" element={<CommunityPortal />} />
+          
+          {/* Dev Hub Routes */}
+          <Route path="/dev" element={<Navigate to="/dev/dashboard" replace />} />
+          <Route path="/dev/login" element={<DevLogin />} />
+          <Route path="/dev/dashboard" element={
+            <AuthGuard>
+              <DevDashboard />
+            </AuthGuard>
+          } />
+          <Route path="/dev/settings" element={
+            <AuthGuard>
+              <DevSettings />
+            </AuthGuard>
+          } />
           <Route path="/home" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="community">
