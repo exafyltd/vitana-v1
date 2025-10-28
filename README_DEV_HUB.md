@@ -1,11 +1,11 @@
-# Vitana DEV Hub — Phase 1 Implementation
+ Vitana DEV Hub — Phase 1 Implementation
 
 ## Overview
 
 The Vitana DEV Hub is a developer command center for observing platform events, managing VTIDs, and issuing commands. Phase 1 delivers a **read-only shell** with graceful degradation for missing backend endpoints.
 
 ## Feature Flags
-
+#
 Set these environment variables in `.env`:
 
 ```bash
