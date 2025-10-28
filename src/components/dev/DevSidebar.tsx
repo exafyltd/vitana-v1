@@ -1,9 +1,10 @@
+import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { User } from "@supabase/supabase-js";
 import {
   Home, Terminal, Users, GitBranch, Database, 
   FileText, Globe, Workflow, Activity, Settings,
-  Play, LogOut, ChevronRight, Search
+  Play, Square, LogOut, ChevronRight, Search
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
@@ -24,6 +25,8 @@ import {
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { StreamingChatRef } from "@/components/StreamingChat";
+import { cn } from "@/lib/utils";
 
 const DEV_NAV_ITEMS = [
   { title: "Home", url: "/dev/dashboard", icon: Home },
@@ -42,15 +45,31 @@ interface DevSidebarProps {
   user: User | null;
   mobileOpen?: boolean;
   onMobileOpenChange?: (open: boolean) => void;
+  streamingChatRef?: React.RefObject<StreamingChatRef>;
 }
 
-export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: DevSidebarProps) {
+export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, streamingChatRef }: DevSidebarProps) {
   const { open } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { toast } = useToast();
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const [isStreaming, setIsStreaming] = useState(false);
+
+  // Track streaming state
+  useEffect(() => {
+    if (!streamingChatRef?.current) return;
+    
+    const interval = setInterval(() => {
+      const active = streamingChatRef.current?.isStreamingActive?.();
+      if (typeof active === "boolean" && active !== isStreaming) {
+        setIsStreaming(active);
+      }
+    }, 500);
+    
+    return () => clearInterval(interval);
+  }, [streamingChatRef, isStreaming]);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -77,6 +96,20 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
   const getUserInitials = () => {
     if (!user?.email) return "?";
     return user.email.substring(0, 2).toUpperCase();
+  };
+
+  const handleStartStream = async () => {
+    if (!streamingChatRef?.current) return;
+    
+    try {
+      if (isStreaming) {
+        streamingChatRef.current.deactivateVideo();
+      } else {
+        await streamingChatRef.current.activateVideo();
+      }
+    } catch (error) {
+      console.error('Error toggling stream:', error);
+    }
   };
 
   const navigationContent = (
@@ -113,10 +146,16 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
       <Button 
         variant="default" 
         size={!open ? "icon" : "default"}
-        className="w-full gap-2 rounded-full bg-white dark:bg-white text-black hover:bg-gray-100 dark:hover:bg-gray-100"
+        onClick={handleStartStream}
+        className={cn(
+          "w-full gap-2 rounded-full transition-colors",
+          isStreaming 
+            ? "bg-red-500 text-white hover:bg-red-600 dark:bg-red-500 dark:hover:bg-red-600" 
+            : "bg-white dark:bg-white text-black hover:bg-gray-100 dark:hover:bg-gray-100"
+        )}
       >
-        <Play className="h-4 w-4" />
-        {open && <span>Start Stream</span>}
+        {isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+        {open && <span>{isStreaming ? "Stop Stream" : "Start Stream"}</span>}
       </Button>
 
       <DropdownMenu>

@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { DevSidebar } from "@/components/dev/DevSidebar";
@@ -9,6 +9,7 @@ import { ErrorNotificationStack } from "@/components/ErrorNotificationStack";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
+import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
 
 interface DevLayoutProps {
   children?: ReactNode;
@@ -18,6 +19,9 @@ export default function DevLayout({ children }: DevLayoutProps) {
   const { user } = useAuth();
   const { errors, dismissError } = useErrorNotifications();
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // StreamingChat ref for Glass Mode
+  const streamingChatRef = useRef<StreamingChatRef>(null);
 
   // Sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
@@ -65,6 +69,7 @@ export default function DevLayout({ children }: DevLayoutProps) {
           user={user} 
           mobileOpen={mobileMenuOpen}
           onMobileOpenChange={setMobileMenuOpen}
+          streamingChatRef={streamingChatRef}
         />
         
         <div className="flex-1 flex flex-col">
@@ -83,13 +88,16 @@ export default function DevLayout({ children }: DevLayoutProps) {
             </div>
           )}
           
-          <main className="flex-1 overflow-auto">
+          <main className="flex-1 overflow-auto pb-20">
             {children || <Outlet />}
           </main>
         </div>
         
         {/* Error Notification Stack */}
         <ErrorNotificationStack errors={errors} onDismiss={dismissError} />
+        
+        {/* Communication Bar */}
+        <StreamingChat ref={streamingChatRef} />
       </div>
     </SidebarProvider>
   );
