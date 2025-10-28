@@ -31,6 +31,14 @@ import CommunityPortal from "./pages/portals/CommunityPortal";
 import DevLogin from "./pages/dev/DevLogin";
 import DevDashboard from "./pages/dev/DevDashboard";
 import DevSettings from "./pages/dev/DevSettings";
+import DevCommand from "./pages/dev/DevCommand";
+import DevAgents from "./pages/dev/DevAgents";
+import DevPipelines from "./pages/dev/DevPipelines";
+import DevOasis from "./pages/dev/DevOasis";
+import DevVTID from "./pages/dev/DevVTID";
+import DevGateway from "./pages/dev/DevGateway";
+import DevCICD from "./pages/dev/DevCICD";
+import DevObservability from "./pages/dev/DevObservability";
 import DevLayout from "./layouts/DevLayout";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -247,6 +255,14 @@ const App = () => {
           }>
             <Route index element={<Navigate to="/dev/dashboard" replace />} />
             <Route path="dashboard" element={<DevDashboard />} />
+            <Route path="command" element={<DevCommand />} />
+            <Route path="agents" element={<DevAgents />} />
+            <Route path="pipelines" element={<DevPipelines />} />
+            <Route path="oasis" element={<DevOasis />} />
+            <Route path="vtid" element={<DevVTID />} />
+            <Route path="gateway" element={<DevGateway />} />
+            <Route path="cicd" element={<DevCICD />} />
+            <Route path="observability" element={<DevObservability />} />
             <Route path="settings" element={<DevSettings />} />
           </Route>
           <Route path="/home" element={
