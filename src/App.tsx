@@ -31,6 +31,7 @@ import CommunityPortal from "./pages/portals/CommunityPortal";
 import DevLogin from "./pages/dev/DevLogin";
 import DevDashboard from "./pages/dev/DevDashboard";
 import DevSettings from "./pages/dev/DevSettings";
+import DevLayout from "./layouts/DevLayout";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
@@ -241,19 +242,13 @@ const App = () => {
           <Route path="/dev/login" element={<DevLogin />} />
           <Route path="/dev" element={
             <DevAuthGuard>
-              <Navigate to="/dev/dashboard" replace />
+              <DevLayout />
             </DevAuthGuard>
-          } />
-          <Route path="/dev/dashboard" element={
-            <DevAuthGuard>
-              <DevDashboard />
-            </DevAuthGuard>
-          } />
-          <Route path="/dev/settings" element={
-            <DevAuthGuard>
-              <DevSettings />
-            </DevAuthGuard>
-          } />
+          }>
+            <Route index element={<Navigate to="/dev/dashboard" replace />} />
+            <Route path="dashboard" element={<DevDashboard />} />
+            <Route path="settings" element={<DevSettings />} />
+          </Route>
           <Route path="/home" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="community">
