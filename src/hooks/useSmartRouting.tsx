@@ -16,7 +16,7 @@ export function useSmartRouting() {
     if (authLoading) return;
 
     // Don't redirect if already on a portal page or auth page
-    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro'];
+    const portalPaths = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro', '/dev'];
     if (portalPaths.some(path => location.pathname.startsWith(path))) return;
 
     // If user is not authenticated, handle based on current path

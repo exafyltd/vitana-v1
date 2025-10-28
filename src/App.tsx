@@ -7,6 +7,7 @@ import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
+import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { AdminGuard } from "@/routes/guards/AdminGuard";
 import { RTLProvider } from "@/components/RTLProvider";
 import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
@@ -237,17 +238,21 @@ const App = () => {
           <Route path="/community" element={<CommunityPortal />} />
           
           {/* Dev Hub Routes */}
-          <Route path="/dev" element={<Navigate to="/dev/dashboard" replace />} />
           <Route path="/dev/login" element={<DevLogin />} />
+          <Route path="/dev" element={
+            <DevAuthGuard>
+              <Navigate to="/dev/dashboard" replace />
+            </DevAuthGuard>
+          } />
           <Route path="/dev/dashboard" element={
-            <AuthGuard>
+            <DevAuthGuard>
               <DevDashboard />
-            </AuthGuard>
+            </DevAuthGuard>
           } />
           <Route path="/dev/settings" element={
-            <AuthGuard>
+            <DevAuthGuard>
               <DevSettings />
-            </AuthGuard>
+            </DevAuthGuard>
           } />
           <Route path="/home" element={
             <AuthGuard>

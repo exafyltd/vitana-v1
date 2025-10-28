@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,24 @@ import SEO from "@/components/SEO";
 export default function DevLogin() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Handle redirect after auth
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN' && location.pathname.startsWith('/dev')) {
+        const next = searchParams.get('next');
+        const redirectPath = next ? decodeURIComponent(next) : '/dev/dashboard';
+        navigate(redirectPath, { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate, location, searchParams]);
 
   useEffect(() => {
     if (user) {
@@ -27,10 +42,13 @@ export default function DevLogin() {
     setLoading(true);
 
     try {
+      const next = searchParams.get('next');
+      const redirectPath = next ? decodeURIComponent(next) : '/dev/dashboard';
+      
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/dev/dashboard`,
+          emailRedirectTo: `${window.location.origin}${redirectPath}`,
         },
       });
 
@@ -55,10 +73,13 @@ export default function DevLogin() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
+      const next = searchParams.get('next');
+      const redirectPath = next ? decodeURIComponent(next) : '/dev/dashboard';
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dev/dashboard`,
+          redirectTo: `${window.location.origin}${redirectPath}`,
         },
       });
 
