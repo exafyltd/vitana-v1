@@ -37,7 +37,6 @@ export function ShortPreviewCard({
   onEdit,
 }: ShortPreviewCardProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [isLandscape, setIsLandscape] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   
@@ -70,19 +69,6 @@ export function ShortPreviewCard({
       return 'from-blue-400/20 to-blue-500/10 text-blue-700 border-blue-300/30';
     }
     return 'from-violet-400/20 to-violet-500/10 text-violet-700 border-violet-300/30';
-  };
-
-  // Check if thumbnail is landscape
-  useEffect(() => {
-    const img = imgRef.current;
-    if (img && img.complete) {
-      setIsLandscape(img.naturalWidth > img.naturalHeight);
-    }
-  }, [video.thumbnailImage]);
-
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.currentTarget;
-    setIsLandscape(img.naturalWidth > img.naturalHeight);
   };
 
   // IntersectionObserver to track visibility (60% threshold)
@@ -165,20 +151,12 @@ export function ShortPreviewCard({
               : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-violet-500/10'
           }`}
         >
-          {/* Blurred background for landscape thumbnails */}
-          {isLandscape && (
-            <div
-              className="absolute inset-0 bg-cover bg-center blur-2xl scale-110"
-              style={{ backgroundImage: `url(${video.thumbnailImage})` }}
-            />
-          )}
-
           {/* Video Element (hidden until preview starts) */}
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
-              isLandscape ? 'object-contain' : 'object-cover object-center'
-            } ${isPreviewing && !loadError ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
+              isPreviewing && !loadError ? 'opacity-100' : 'opacity-0'
+            }`}
             poster={video.thumbnail_url || video.thumbnailImage}
             preload="metadata"
             muted
@@ -193,12 +171,11 @@ export function ShortPreviewCard({
             ref={imgRef}
             src={video.thumbnailImage}
             alt={video.title}
-            onLoad={handleImageLoad}
             loading="lazy"
             decoding="async"
-            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
-              isLandscape ? 'object-contain' : 'object-cover object-center'
-            } ${isPreviewing && !loadError ? 'opacity-0' : 'opacity-100'}`}
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
+              isPreviewing && !loadError ? 'opacity-0' : 'opacity-100'
+            }`}
           />
 
           {/* Gradient overlay */}
