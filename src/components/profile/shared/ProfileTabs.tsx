@@ -9,6 +9,7 @@ import { ProfileGroupsTab } from "./tabs/ProfileGroupsTab";
 import { ProfileHealthTab } from "./tabs/ProfileHealthTab";
 import { ProfileServicesTab } from "./tabs/ProfileServicesTab";
 import { ProfileEventsTab } from "./tabs/ProfileEventsTab";
+import { ProfileInsightTab } from "./tabs/ProfileInsightTab";
 import { SmartTabPreview } from "../engagement/SmartTabPreview";
 import { useState } from "react";
 
@@ -41,21 +42,23 @@ export function ProfileTabs({
   const showServicesTab = profile.offerings && 
     profile.offerings.some(offering => offering.status === 'published');
 
-  // In edit mode, remove showcase tab since it's now a standalone section
+  // Tab order: Posts, Media, Groups, Events, Health (conditional), Services (conditional), Insight (always last)
   const tabs = ['posts', 'media', 'groups', 'events'];
   if (showHealthTab) tabs.push('health');
   if (showServicesTab) tabs.push('services');
+  tabs.push('insight'); // Insight is always the final tab
 
   return (
     <div className="space-y-6">
       <Tabs defaultValue="posts" onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className={`grid w-full grid-cols-${tabs.length}`}>
+        <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
           <TabsTrigger value="posts">Posts</TabsTrigger>
           <TabsTrigger value="media">Media</TabsTrigger>
           <TabsTrigger value="groups">Groups</TabsTrigger>
           <TabsTrigger value="events">Events</TabsTrigger>
-          {showHealthTab && <TabsTrigger value="health">Health Snapshot</TabsTrigger>}
+          {showHealthTab && <TabsTrigger value="health">Health</TabsTrigger>}
           {showServicesTab && <TabsTrigger value="services">Services</TabsTrigger>}
+          <TabsTrigger value="insight">Insight</TabsTrigger>
         </TabsList>
 
         {/* Smart Tab Previews */}
@@ -116,6 +119,14 @@ export function ProfileTabs({
               />
             </TabsContent>
           )}
+
+          <TabsContent value="insight">
+            <ProfileInsightTab 
+              profile={profile} 
+              scope={scope}
+              editMode={editMode}
+            />
+          </TabsContent>
         </Tabs>
     </div>
   );
