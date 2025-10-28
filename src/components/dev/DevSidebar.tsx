@@ -205,7 +205,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     placeholder="Search members, groups, or..."
-                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-muted-foreground"
+                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-sidebar-foreground/70"
                   />
                 </div>
               </div>
@@ -245,7 +245,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     placeholder="Search members, groups, or..."
-                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-muted-foreground"
+                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-sidebar-foreground/70"
                   />
               </div>
             </>
