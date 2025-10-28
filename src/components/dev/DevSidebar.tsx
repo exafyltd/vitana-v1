@@ -15,13 +15,11 @@ import {
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle
 } from "@/components/ui/sheet";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuSeparator, DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
+import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -56,6 +54,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
   const { toast } = useToast();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [isStreaming, setIsStreaming] = useState(false);
+  const { profile } = useProfile();
 
   // Track streaming state
   useEffect(() => {
@@ -80,23 +79,6 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
     }
   };
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      navigate('/dev/login', { replace: true });
-    } catch (error) {
-      toast({
-        title: "Error signing out",
-        description: "Please try again",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const getUserInitials = () => {
-    if (!user?.email) return "?";
-    return user.email.substring(0, 2).toUpperCase();
-  };
 
   const handleStartStream = async () => {
     if (!streamingChatRef?.current) return;
@@ -158,38 +140,39 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
         {open && <span>{isStreaming ? "Stop Stream" : "Start Stream"}</span>}
       </Button>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start gap-2 hover:bg-sidebar-accent min-h-[44px]"
-          >
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="text-xs">
-                {getUserInitials()}
-              </AvatarFallback>
-            </Avatar>
-            {(!isMobile && open) && (
-              <div className="flex-1 text-left">
-                <p className="text-sm font-medium truncate">{user?.email}</p>
-                <p className="text-xs text-muted-foreground">Developer</p>
-              </div>
-            )}
-            {(!isMobile && open) && <ChevronRight className="h-4 w-4 ml-auto" />}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuItem onClick={() => handleNavigation('/dev/settings')}>
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleSignOut}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Sign Out
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {open ? (
+        <ProfileDrawer
+          trigger={
+            <button className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group w-full">
+              <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+                <AvatarImage src={profile.avatar} alt={profile.displayName} />
+                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-800 font-semibold text-xs">
+                  {profile.initials}
+                </AvatarFallback>
+              </Avatar>
+              {!isMobile && (
+                <div className="flex-1 text-left">
+                  <p className="text-sm font-medium truncate">{profile.displayName}</p>
+                  <p className="text-xs text-muted-foreground/50">Developer</p>
+                </div>
+              )}
+            </button>
+          }
+        />
+      ) : (
+        <ProfileDrawer
+          trigger={
+            <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto">
+              <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+                <AvatarImage src={profile.avatar} alt={profile.displayName} />
+                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-800 font-semibold text-xs">
+                  {profile.initials}
+                </AvatarFallback>
+              </Avatar>
+            </button>
+          }
+        />
+      )}
     </div>
   );
 
