@@ -13,10 +13,10 @@ export const devDashboardNavigation = [
 
 // Command horizontal tabs
 export const devCommandNavigation = [
-  { id: "queue", name: "Queue", path: "/dev/command" },
-  { id: "approvals", name: "Approvals", path: "/dev/command/approvals" },
-  { id: "history", name: "History", path: "/dev/command/history" },
-  { id: "compose", name: "Compose", path: "/dev/command/compose" },
+  { id: "live-console", name: "Live Console", path: "/dev/command" },
+  { id: "autopilot-runs", name: "Autopilot Runs", path: "/dev/command/autopilot-runs" },
+  { id: "agents", name: "Agents", path: "/dev/command/agents" },
+  { id: "system-metrics", name: "System Metrics", path: "/dev/command/system-metrics" },
 ];
 
 // Agents horizontal tabs

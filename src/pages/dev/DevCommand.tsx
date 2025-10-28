@@ -7,11 +7,13 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { Button } from "@/components/ui/button";
 import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
-import { Terminal, CheckCircle, History, FileEdit, Plus } from "lucide-react";
+import { Plus, Plane, Users, Activity } from "lucide-react";
 import { devCommandNavigation } from "@/config/dev-navigation";
+import { LiveConsoleTab } from "@/components/dev/LiveConsoleTab";
+import { ActiveVTIDChip } from "@/components/dev/ActiveVTIDChip";
 
 export default function DevCommand() {
-  const [activeTab, setActiveTab] = useState("queue");
+  const [activeTab, setActiveTab] = useState("live-console");
 
   return (
     <>
@@ -24,15 +26,24 @@ export default function DevCommand() {
       {/* Horizontal Navigation */}
       <SubNavigation items={devCommandNavigation} />
 
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
+      <div className="p-6 pb-24 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
-          {/* 3-Card Header */}
-          <DevStandardHeader 
-            title="Command Hub"
-            description="Execute and monitor commands across the platform"
-            emoji="⚡"
-          />
+          {/* 3-Card Header with Active VTID */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <DevStandardHeader 
+                  title="Operate the Vitana System Autonomously"
+                  description="Execute commands, manage workflows, and monitor system operations"
+                  emoji="✨"
+                />
+              </div>
+              <div className="ml-4">
+                <ActiveVTIDChip />
+              </div>
+            </div>
+          </div>
 
           {/* Utility Action Buttons */}
           <UtilityActionButton>
@@ -42,49 +53,57 @@ export default function DevCommand() {
             />
             <Button size="sm">
               <Plus className="w-4 h-4 mr-2" />
-              New Command
+              Command Actions
             </Button>
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="queue">Queue</SplitBarTrigger>
-              <SplitBarTrigger value="approvals">Approvals</SplitBarTrigger>
-              <SplitBarTrigger value="history">History</SplitBarTrigger>
-              <SplitBarTrigger value="compose">Compose</SplitBarTrigger>
+              <SplitBarTrigger value="live-console">Live Console</SplitBarTrigger>
+              <SplitBarTrigger value="autopilot-runs">Autopilot Runs</SplitBarTrigger>
+              <SplitBarTrigger value="agents">Agents</SplitBarTrigger>
+              <SplitBarTrigger value="system-metrics">System Metrics</SplitBarTrigger>
             </SplitBarList>
 
-            <SplitBarContent value="queue" className="mt-6">
-              <DevEmptyState 
-                title="Command Queue" 
-                description="View and manage pending commands in the execution queue."
-                icon={Terminal}
-              />
+            <SplitBarContent value="live-console" className="mt-6">
+              <LiveConsoleTab />
             </SplitBarContent>
 
-            <SplitBarContent value="approvals" className="mt-6">
-              <DevEmptyState 
-                title="Command Approvals" 
-                description="Review and approve commands requiring authorization."
-                icon={CheckCircle}
-              />
+            <SplitBarContent value="autopilot-runs" className="mt-6">
+              <div className="grid grid-cols-12 gap-6">
+                <div className="col-span-12">
+                  <DevEmptyState 
+                    title="Autopilot Runs" 
+                    description="View and manage autonomous workflow executions"
+                    icon={Plane}
+                  />
+                </div>
+              </div>
             </SplitBarContent>
 
-            <SplitBarContent value="history" className="mt-6">
-              <DevEmptyState 
-                title="Command History" 
-                description="Browse the history of executed commands and their results."
-                icon={History}
-              />
+            <SplitBarContent value="agents" className="mt-6">
+              <div className="grid grid-cols-12 gap-6">
+                <div className="col-span-12">
+                  <DevEmptyState 
+                    title="Agent Management" 
+                    description="Configure and monitor AI agents"
+                    icon={Users}
+                  />
+                </div>
+              </div>
             </SplitBarContent>
 
-            <SplitBarContent value="compose" className="mt-6">
-              <DevEmptyState 
-                title="Command Composer" 
-                description="Compose and execute custom commands with syntax highlighting."
-                icon={FileEdit}
-              />
+            <SplitBarContent value="system-metrics" className="mt-6">
+              <div className="grid grid-cols-12 gap-6">
+                <div className="col-span-12">
+                  <DevEmptyState 
+                    title="System Metrics" 
+                    description="Real-time performance monitoring"
+                    icon={Activity}
+                  />
+                </div>
+              </div>
             </SplitBarContent>
           </SplitBar>
         </div>

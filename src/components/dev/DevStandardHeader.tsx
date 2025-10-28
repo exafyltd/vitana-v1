@@ -94,15 +94,16 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
           )}
         </div>
 
-        {/* Right Card - Vitana Index */}
+        {/* Right Card - System Health */}
         <div 
           className="w-32 bg-white/80 dark:bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-          onClick={() => navigate('/health-tracker/vitana-index')}
+          onClick={() => navigate('/dev/observability/health')}
         >
-          <div className="flex items-center justify-center h-full">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-              <span className="text-xl font-bold text-green-600">742</span>
-            </div>
+          <div className="flex flex-col items-center justify-center h-full space-y-2">
+            <span className="text-3xl font-bold" style={{ color: '#22c55e' }}>
+              99%
+            </span>
+            <span className="text-xs text-muted-foreground">System Health</span>
           </div>
         </div>
       </div>

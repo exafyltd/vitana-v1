@@ -10,6 +10,7 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
+import { ActiveVTIDProvider } from "@/context/ActiveVTIDContext";
 
 interface DevLayoutProps {
   children?: ReactNode;
@@ -62,43 +63,45 @@ export default function DevLayout({ children }: DevLayoutProps) {
   }
 
   return (
-    <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <div className="min-h-screen flex w-full bg-background">
-        {/* Mobile: Sheet, Desktop: Sidebar */}
-        <DevSidebar 
-          user={user} 
-          mobileOpen={mobileMenuOpen}
-          onMobileOpenChange={setMobileMenuOpen}
-          streamingChatRef={streamingChatRef}
-        />
-        
-        <div className="flex-1 flex flex-col">
-          {/* Mobile Menu Button */}
-          {isMobile && (
-            <div className="border-b bg-card px-4 py-2 flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setMobileMenuOpen(true)}
-                className="min-h-[44px] min-w-[44px]"
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-              <span className="text-sm font-medium">Menu</span>
-            </div>
-          )}
+    <ActiveVTIDProvider>
+      <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
+        <div className="min-h-screen flex w-full bg-background">
+          {/* Mobile: Sheet, Desktop: Sidebar */}
+          <DevSidebar 
+            user={user} 
+            mobileOpen={mobileMenuOpen}
+            onMobileOpenChange={setMobileMenuOpen}
+            streamingChatRef={streamingChatRef}
+          />
           
-          <main className="flex-1 overflow-auto pb-28">
-            {children || <Outlet />}
-          </main>
+          <div className="flex-1 flex flex-col">
+            {/* Mobile Menu Button */}
+            {isMobile && (
+              <div className="border-b bg-card px-4 py-2 flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="min-h-[44px] min-w-[44px]"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+                <span className="text-sm font-medium">Menu</span>
+              </div>
+            )}
+            
+            <main className="flex-1 overflow-auto pb-28">
+              {children || <Outlet />}
+            </main>
+          </div>
+          
+          {/* Error Notification Stack */}
+          <ErrorNotificationStack errors={errors} onDismiss={dismissError} />
+          
+          {/* Communication Bar */}
+          <StreamingChat ref={streamingChatRef} />
         </div>
-        
-        {/* Error Notification Stack */}
-        <ErrorNotificationStack errors={errors} onDismiss={dismissError} />
-        
-        {/* Communication Bar */}
-        <StreamingChat ref={streamingChatRef} />
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </ActiveVTIDProvider>
   );
 }
