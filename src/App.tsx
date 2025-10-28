@@ -46,6 +46,11 @@ import DevLayout from "./layouts/DevLayout";
 import DashboardAIFeed from "./pages/dev/dashboard/AIFeed";
 import DashboardAlerts from "./pages/dev/dashboard/Alerts";
 import DashboardSystemHealth from "./pages/dev/dashboard/SystemHealth";
+
+// Dev Hub Command sub-pages
+import CommandApprovals from "./pages/dev/command/Approvals";
+import CommandHistory from "./pages/dev/command/History";
+import CommandCompose from "./pages/dev/command/Compose";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
@@ -267,6 +272,9 @@ const App = () => {
             <Route path="dashboard/alerts" element={<DashboardAlerts />} />
             <Route path="dashboard/health" element={<DashboardSystemHealth />} />
             <Route path="command" element={<DevCommand />} />
+            <Route path="command/approvals" element={<CommandApprovals />} />
+            <Route path="command/history" element={<CommandHistory />} />
+            <Route path="command/compose" element={<CommandCompose />} />
             <Route path="agents" element={<DevAgents />} />
             <Route path="pipelines" element={<DevPipelines />} />
             <Route path="oasis" element={<DevOasis />} />
