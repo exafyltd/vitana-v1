@@ -16,7 +16,6 @@ import { CommunityImpactWidget } from "../community/CommunityImpactWidget";
 import { SuccessStoryCarousel } from "../community/SuccessStoryCarousel";
 import { CompatibilityIndicator } from "../engagement/CompatibilityIndicator";
 import { ContextualCTAs } from "../engagement/ContextualCTAs";
-import { ViewModeIntelligence } from "../engagement/ViewModeIntelligence";
 import { SmartEditingToolbar } from "../editor/SmartEditingToolbar";
 import { ProfileProgressCard } from "../editor/ProfileProgressCard";
 import { useAutoSave } from "@/hooks/useAutoSave";
@@ -194,12 +193,6 @@ export function ProfileLayout({
                 }}
               />
             )}
-            
-            {/* View Mode Intelligence */}
-            <ViewModeIntelligence
-              isOwnProfile={isOwnProfile}
-              viewerCompatibility={92}
-            />
           </div>
         </div>
 

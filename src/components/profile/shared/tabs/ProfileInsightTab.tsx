@@ -22,14 +22,70 @@ import {
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { format } from "date-fns";
+import { ProfileBadgesGrid } from "@/components/profile/insight/ProfileBadgesGrid";
+import { ProfileInterestTags } from "@/components/profile/insight/ProfileInterestTags";
+import { ProfileTimeline } from "@/components/profile/insight/ProfileTimeline";
+import { SharedConnectionsCard } from "@/components/profile/insight/SharedConnectionsCard";
+import { FeaturedContentCarousel } from "@/components/profile/insight/FeaturedContentCarousel";
+import { ContextualCTAs } from "@/components/profile/engagement/ContextualCTAs";
+import { ViewModeIntelligence } from "@/components/profile/engagement/ViewModeIntelligence";
+import { AutopilotSuggestions } from "@/components/profile/AutopilotSuggestions";
 
 interface ProfileInsightTabProps {
   profile: UserProfile;
   scope: Scope;
   editMode?: boolean;
+  isOwnProfile?: boolean;
+  
+  // For ContextualCTAs
+  compatibilityScore?: number;
+  hasActiveChallenge?: boolean;
+  
+  // For ViewModeIntelligence
+  viewerCompatibility?: number;
+  similarProfiles?: Array<{
+    id: string;
+    name: string;
+    avatar: string;
+    commonInterests: string[];
+    compatibility: number;
+  }>;
+  profileInsights?: {
+    viewsThisWeek: number;
+    profileCompleteness: number;
+    engagementRate: number;
+  };
+  
+  // For new sections
+  badges?: Array<{id: string; name: string; icon: string; description: string; color: string}>;
+  interests?: string[];
+  milestones?: Array<{date: string; type: 'joined' | 'post' | 'group' | 'event' | 'achievement' | 'live'; description: string}>;
+  mutualConnections?: number;
+  sharedGroups?: string[];
+  featuredContent?: Array<any>;
+  
+  // Callbacks
+  onSectionClick?: (sectionId: string) => void;
 }
 
-export function ProfileInsightTab({ profile, scope, editMode }: ProfileInsightTabProps) {
+export function ProfileInsightTab({ 
+  profile, 
+  scope, 
+  editMode,
+  isOwnProfile = false,
+  compatibilityScore = 0,
+  hasActiveChallenge = false,
+  viewerCompatibility = 0,
+  similarProfiles = [],
+  profileInsights,
+  badges,
+  interests,
+  milestones,
+  mutualConnections,
+  sharedGroups,
+  featuredContent,
+  onSectionClick
+}: ProfileInsightTabProps) {
   // Mock data for recent activity
   const recentActivity = [
     {
@@ -64,6 +120,9 @@ export function ProfileInsightTab({ profile, scope, editMode }: ProfileInsightTa
     { name: 'Facebook', icon: Facebook, url: profile.facebook_url, color: 'from-blue-500 to-blue-600' },
     { name: 'TikTok', icon: Music2, url: profile.tiktok_url, color: 'from-pink-600 to-rose-600' }
   ].filter(network => network.url);
+
+  const isServiceProvider = profile.offerings && profile.offerings.length > 0;
+  const profileType = profile.professionalCredentials?.isLiveStreamingEnabled ? 'coach' : 'user';
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -122,6 +181,11 @@ export function ProfileInsightTab({ profile, scope, editMode }: ProfileInsightTa
                 </div>
               </div>
             </div>
+
+            {/* Interests & Expertise Tags - Integrated into profile card */}
+            <div className="mt-6 pt-6 border-t border-muted/20">
+              <ProfileInterestTags interests={interests} />
+            </div>
           </CardContent>
         </Card>
 
@@ -159,10 +223,50 @@ export function ProfileInsightTab({ profile, scope, editMode }: ProfileInsightTa
             </CardContent>
           </Card>
         </div>
+
+        {/* Badges & Achievements */}
+        <ProfileBadgesGrid badges={badges} />
+
+        {/* Featured Content Carousel */}
+        <FeaturedContentCarousel content={featuredContent} />
+
+        {/* Community Journey Timeline */}
+        <ProfileTimeline milestones={milestones} />
       </div>
 
       {/* Right Sidebar (1/3 width) */}
       <div className="space-y-6">
+        {/* Edit Mode: Autopilot Suggestions */}
+        {editMode && (
+          <AutopilotSuggestions 
+            type="profile-section"
+            onSuggestionClick={(suggestion) => {
+              console.log('Autopilot suggestion clicked:', suggestion);
+            }}
+          />
+        )}
+
+        {/* View Mode (Other's Profile): Contextual CTAs */}
+        {!editMode && !isOwnProfile && (
+          <>
+            <ContextualCTAs
+              isOwnProfile={false}
+              profileType={profileType}
+              hasActiveChallenge={hasActiveChallenge}
+              isServiceProvider={isServiceProvider}
+              compatibilityScore={compatibilityScore}
+            />
+            
+            {/* Shared Connections Card */}
+            {compatibilityScore >= 50 && (
+              <SharedConnectionsCard
+                mutualConnections={mutualConnections}
+                sharedGroups={sharedGroups}
+              />
+            )}
+          </>
+        )}
+
         {/* Health Snapshot */}
         {profile.vitanaIndex && (
           <Card className="rounded-2xl shadow-sm border-muted/40 bg-gradient-to-br from-emerald-50/80 to-white dark:from-emerald-950/30 dark:to-slate-900">
@@ -267,6 +371,14 @@ export function ProfileInsightTab({ profile, scope, editMode }: ProfileInsightTa
             ))}
           </CardContent>
         </Card>
+
+        {/* ViewModeIntelligence - Profile Analytics or Recommendations */}
+        <ViewModeIntelligence
+          isOwnProfile={isOwnProfile}
+          viewerCompatibility={viewerCompatibility}
+          similarProfiles={similarProfiles}
+          profileInsights={profileInsights}
+        />
       </div>
     </div>
   );
