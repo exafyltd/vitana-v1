@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
 
@@ -16,6 +16,7 @@ export default function DevLogin() {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Handle redirect after auth
@@ -37,32 +38,23 @@ export default function DevLogin() {
     }
   }, [user, navigate]);
 
-  const handleMagicLink = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const next = searchParams.get('next');
-      const redirectPath = next ? decodeURIComponent(next) : '/dev/dashboard';
-      
-      const { error } = await supabase.auth.signInWithOtp({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
-        options: {
-          emailRedirectTo: `${window.location.origin}${redirectPath}`,
-        },
+        password,
       });
 
       if (error) throw error;
 
-      toast({
-        title: "Check your email",
-        description: "We've sent you a magic link to sign in.",
-      });
-      setEmail('');
+      // Navigation is handled by onAuthStateChange
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "Failed to send magic link",
+        description: error.message || "Failed to sign in",
         variant: "destructive",
       });
     } finally {
@@ -108,7 +100,7 @@ export default function DevLogin() {
           <CardDescription>Developer & Command Hub</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form onSubmit={handleMagicLink} className="space-y-4">
+          <form onSubmit={handleSignIn} className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium">
                 Email Address
@@ -123,13 +115,23 @@ export default function DevLogin() {
                 disabled={loading}
               />
             </div>
-            <Button type="submit" className="w-full gap-2" disabled={loading}>
-              {loading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Mail className="h-4 w-4" />
-              )}
-              Send Magic Link
+            <div className="space-y-2">
+              <label htmlFor="password" className="text-sm font-medium">
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              Sign In
             </Button>
           </form>
 
