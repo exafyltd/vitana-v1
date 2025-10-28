@@ -6,13 +6,26 @@ import { Users, Crown, Shield } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 
+interface Community {
+  id: string;
+  name: string;
+  members: number;
+  type: 'group' | 'event';
+  role: 'admin' | 'moderator' | 'member';
+  description: string;
+  cover_url?: string | null;
+  avatar_url?: string | null;
+  gradient: string;
+  avatars: Array<{ name: string; avatar: string | null }>;
+}
+
 interface ProfileGroupsTabProps {
   profile: UserProfile;
   scope: Scope;
 }
 
 export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
-  const mockCommunities = [
+  const mockCommunities: Community[] = [
     { 
       id: '1', 
       name: 'Mindful Movement', 
@@ -20,6 +33,8 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
       type: 'group',
       role: 'admin',
       description: 'A community focused on mindful movement and wellness practices.',
+      cover_url: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80',
+      avatar_url: null,
       gradient: 'from-violet-400 via-purple-400 to-sky-400',
       avatars: [
         { name: 'Alex M', avatar: null },
@@ -35,6 +50,8 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
       type: 'event',
       role: 'member',
       description: 'Join us for daily morning yoga sessions and start your day right.',
+      cover_url: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80',
+      avatar_url: null,
       gradient: 'from-amber-400 via-orange-400 to-rose-400',
       avatars: [
         { name: 'Maria L', avatar: null },
@@ -49,6 +66,8 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
       type: 'group',
       role: 'moderator',
       description: 'Warriors on the path to optimal health and wellness.',
+      cover_url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
+      avatar_url: null,
       gradient: 'from-emerald-400 via-green-400 to-teal-400',
       avatars: [
         { name: 'Chris W', avatar: null },
@@ -68,21 +87,11 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
 
   const getRoleIcon = (role: string) => {
     switch (role) {
-      case 'admin': return <Crown className="h-4 w-4 text-yellow-600" />;
-      case 'moderator': return <Shield className="h-4 w-4 text-blue-600" />;
-      default: return <Users className="h-4 w-4 text-muted-foreground" />;
+      case 'admin': return <Crown className="h-4 w-4 text-yellow-400" />;
+      case 'moderator': return <Shield className="h-4 w-4 text-blue-400" />;
+      default: return <Users className="h-4 w-4 text-white/70" />;
     }
   };
-
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'admin': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-      case 'moderator': return 'bg-blue-100 text-blue-700 border-blue-200';
-      default: return 'bg-muted text-muted-foreground';
-    }
-  };
-
-  const gridCols = mockCommunities.length > 6 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2';
 
   if (mockCommunities.length === 0) {
     return (
@@ -122,26 +131,29 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
         {mockCommunities.map((community) => (
           <Card 
             key={community.id} 
-            className="group relative overflow-hidden bg-white/60 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.08)] hover:scale-[1.01] transition-all duration-300"
+            className="group relative overflow-hidden rounded-2xl border-0 h-80 shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
           >
-            {/* Gradient accent border */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${community.gradient} opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-300`} />
+            {/* Background Image Layer */}
+            {community.cover_url && (
+              <div 
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                style={{ backgroundImage: `url(${community.cover_url})` }}
+              />
+            )}
             
-            <div className="relative p-6 space-y-4">
-              {/* Header with icon and role badge */}
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3 flex-1">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${community.gradient} rounded-xl flex items-center justify-center shadow-sm`}>
-                    <Users className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-lg truncate">{community.name}</h3>
-                    <p className="text-sm text-muted-foreground/80">
-                      {community.members.toLocaleString()} members
-                    </p>
-                  </div>
-                </div>
-                <Badge className={getRoleColor(community.role)} variant="outline">
+            {/* Fallback gradient if no image */}
+            {!community.cover_url && (
+              <div className={`absolute inset-0 bg-gradient-to-br ${community.gradient}`} />
+            )}
+            
+            {/* Gradient Overlay for readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
+            
+            {/* Content Layer */}
+            <div className="relative h-full p-6 flex flex-col justify-between text-white">
+              {/* Top section with role badge */}
+              <div className="flex justify-end">
+                <Badge className="bg-white/20 backdrop-blur-md border-white/30 text-white hover:bg-white/30">
                   <div className="flex items-center gap-1">
                     {getRoleIcon(community.role)}
                     <span className="capitalize text-xs">{community.role}</span>
@@ -149,45 +161,58 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                 </Badge>
               </div>
               
-              {/* Description */}
-              <p className="text-sm text-muted-foreground/80 line-clamp-2">
-                {community.description}
-              </p>
-              
-              {/* Member avatars collage */}
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2">
-                  {community.avatars.slice(0, 3).map((member, idx) => (
-                    <Avatar 
-                      key={idx}
-                      className="w-8 h-8 border-2 border-white shadow-sm ring-1 ring-black/5"
-                    >
-                      <AvatarImage src={member.avatar || undefined} />
-                      <AvatarFallback className="text-xs bg-gradient-to-br from-violet-100 to-sky-100 text-violet-700">
-                        {member.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                  ))}
+              {/* Bottom section with all info */}
+              <div className="space-y-4">
+                {/* Title and members */}
+                <div>
+                  <h3 className="font-bold text-2xl mb-1 drop-shadow-lg">
+                    {community.name}
+                  </h3>
+                  <p className="text-sm text-white/90 flex items-center gap-1">
+                    <Users className="w-4 h-4" />
+                    {community.members.toLocaleString()} members
+                  </p>
                 </div>
-                {community.avatars.length > 3 && (
-                  <span className="text-xs text-muted-foreground/70">
-                    +{community.avatars.length - 3} more
-                  </span>
-                )}
-              </div>
-              
-              {/* Footer with type and action */}
-              <div className="flex items-center justify-between pt-2">
-                <Badge variant="secondary" className="capitalize text-xs">
-                  {community.type}
-                </Badge>
-                <Button 
-                  variant="soft"
-                  size="xs"
-                  className="ml-auto"
-                >
-                  View {community.type === 'group' ? 'Group' : 'Event'}
-                </Button>
+                
+                {/* Description */}
+                <p className="text-sm text-white/80 line-clamp-2 drop-shadow">
+                  {community.description}
+                </p>
+                
+                {/* Member avatars collage */}
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-2">
+                    {community.avatars.slice(0, 3).map((member, idx) => (
+                      <Avatar 
+                        key={idx}
+                        className="w-8 h-8 border-2 border-white shadow-sm"
+                      >
+                        <AvatarImage src={member.avatar || undefined} />
+                        <AvatarFallback className="text-xs bg-gradient-to-br from-violet-400 to-sky-400 text-white">
+                          {member.name.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                    ))}
+                  </div>
+                  {community.avatars.length > 3 && (
+                    <span className="text-xs text-white/70">
+                      +{community.avatars.length - 3} more
+                    </span>
+                  )}
+                </div>
+                
+                {/* Footer with type and action */}
+                <div className="flex items-center justify-between pt-2">
+                  <Badge className="bg-white/20 backdrop-blur-md border-white/30 text-white capitalize text-xs hover:bg-white/30">
+                    {community.type}
+                  </Badge>
+                  <Button 
+                    size="sm"
+                    className="bg-white/90 hover:bg-white text-gray-900"
+                  >
+                    View
+                  </Button>
+                </div>
               </div>
             </div>
           </Card>
