@@ -8,10 +8,11 @@ import { formatDistanceToNow } from "date-fns";
 
 interface LiveEventsPanelProps {
   tenant?: string;
+  status?: 'all' | 'green' | 'blue' | 'yellow' | 'red';
 }
 
-export function LiveEventsPanel({ tenant = 'system' }: LiveEventsPanelProps) {
-  const { events, error, available, isLoading, refetch } = useDevEvents({ tenant });
+export function LiveEventsPanel({ tenant = 'system', status = 'all' }: LiveEventsPanelProps) {
+  const { events, error, available, isLoading, refetch } = useDevEvents({ tenant, status });
 
   const getStatusColor = (status: string) => {
     switch (status) {

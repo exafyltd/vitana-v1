@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DevTabs } from "@/components/dev/DevTabs";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
 import { LiveEventsPanel } from "@/components/dev/LiveEventsPanel";
@@ -9,8 +9,21 @@ import SEO from "@/components/SEO";
 import { Activity, Bell, Heart } from "lucide-react";
 
 export default function DevDashboard() {
-  const [tenantFilter, setTenantFilter] = useState('system');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [tenantFilter, setTenantFilter] = useState(() => {
+    return localStorage.getItem('dev_dashboard_tenant') || 'system';
+  });
+  const [statusFilter, setStatusFilter] = useState(() => {
+    return localStorage.getItem('dev_dashboard_status') || 'all';
+  });
+
+  // Persist filters to localStorage
+  useEffect(() => {
+    localStorage.setItem('dev_dashboard_tenant', tenantFilter);
+  }, [tenantFilter]);
+
+  useEffect(() => {
+    localStorage.setItem('dev_dashboard_status', statusFilter);
+  }, [statusFilter]);
 
   const tenants = ['All', 'System', 'Maxina', 'Earthlinks', 'AlKalma'];
   const statuses = ['All', 'Green', 'Blue', 'Yellow', 'Red'];
@@ -51,7 +64,10 @@ export default function DevDashboard() {
       {/* Dashboard Panels */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <LiveEventsPanel tenant={tenantFilter === 'all' ? 'system' : tenantFilter} />
+          <LiveEventsPanel 
+            tenant={tenantFilter === 'all' ? 'system' : tenantFilter}
+            status={statusFilter as 'all' | 'green' | 'blue' | 'yellow' | 'red'}
+          />
           <VTIDSnapshotPanel />
         </div>
         

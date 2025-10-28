@@ -4,6 +4,7 @@ import { DEV_HUB_CONFIG } from "@/config/devHub.config";
 
 interface UseDevEventsOptions {
   tenant?: string;
+  status?: 'all' | 'green' | 'blue' | 'yellow' | 'red';
   limit?: number;
   enabled?: boolean;
 }
@@ -11,12 +12,13 @@ interface UseDevEventsOptions {
 export function useDevEvents(options: UseDevEventsOptions = {}) {
   const {
     tenant = 'system',
+    status = 'all',
     limit = DEV_HUB_CONFIG.maxRecentEvents,
     enabled = true,
   } = options;
 
   const query = useQuery({
-    queryKey: ['dev-events', tenant, limit],
+    queryKey: ['dev-events', tenant, status, limit],
     queryFn: async () => {
       const result = await gatewayClient.getRecentEvents({ tenant, limit });
       
@@ -28,8 +30,13 @@ export function useDevEvents(options: UseDevEventsOptions = {}) {
         };
       }
       
+      // Frontend filtering by status
+      const filteredEvents = status === 'all' 
+        ? result 
+        : result.filter(e => e.status === status);
+      
       return {
-        events: result,
+        events: filteredEvents,
         error: null,
         available: true,
       };
