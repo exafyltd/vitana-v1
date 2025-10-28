@@ -202,7 +202,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
                   <p className="text-xs text-sidebar-foreground/50 font-normal">Command Hub</p>
                 </div>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-sidebar-foreground/60" />
                   <Input
                     placeholder="Search members, groups, or..."
                     className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-sidebar-foreground/70"
@@ -242,7 +242,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
                 <p className="text-xs text-sidebar-foreground/50 font-normal">Command Hub</p>
               </div>
               <div className="relative mt-3">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-sidebar-foreground/60" />
                   <Input
                     placeholder="Search members, groups, or..."
                     className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-sidebar-foreground/70"
