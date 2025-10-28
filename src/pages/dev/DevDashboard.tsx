@@ -29,41 +29,47 @@ export default function DevDashboard() {
   const statuses = ['All', 'Green', 'Blue', 'Yellow', 'Red'];
 
   const overviewContent = (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Filters */}
-      <div className="flex flex-wrap gap-4 items-center">
-        <div className="flex gap-2 items-center">
-          <span className="text-sm font-medium">Tenant:</span>
-          {tenants.map((tenant) => (
-            <Button
-              key={tenant}
-              variant={tenantFilter === tenant.toLowerCase() ? "default" : "outline"}
-              size="sm"
-              onClick={() => setTenantFilter(tenant.toLowerCase())}
-            >
-              {tenant}
-            </Button>
-          ))}
+      <div className="flex flex-col md:flex-row md:flex-wrap gap-4 items-start md:items-center">
+        <div className="flex flex-wrap gap-2 items-center w-full md:w-auto">
+          <span className="text-sm font-medium whitespace-nowrap">Tenant:</span>
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide w-full md:w-auto">
+            {tenants.map((tenant) => (
+              <Button
+                key={tenant}
+                variant={tenantFilter === tenant.toLowerCase() ? "default" : "outline"}
+                size="sm"
+                onClick={() => setTenantFilter(tenant.toLowerCase())}
+                className="min-h-[44px] md:min-h-0 whitespace-nowrap"
+              >
+                {tenant}
+              </Button>
+            ))}
+          </div>
         </div>
         
-        <div className="flex gap-2 items-center">
-          <span className="text-sm font-medium">Status:</span>
-          {statuses.map((status) => (
-            <Button
-              key={status}
-              variant={statusFilter === status.toLowerCase() ? "default" : "outline"}
-              size="sm"
-              onClick={() => setStatusFilter(status.toLowerCase())}
-            >
-              {status}
-            </Button>
-          ))}
+        <div className="flex flex-wrap gap-2 items-center w-full md:w-auto">
+          <span className="text-sm font-medium whitespace-nowrap">Status:</span>
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide w-full md:w-auto">
+            {statuses.map((status) => (
+              <Button
+                key={status}
+                variant={statusFilter === status.toLowerCase() ? "default" : "outline"}
+                size="sm"
+                onClick={() => setStatusFilter(status.toLowerCase())}
+                className="min-h-[44px] md:min-h-0 whitespace-nowrap"
+              >
+                {status}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Dashboard Panels */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="lg:col-span-2 space-y-4 md:space-y-6">
           <LiveEventsPanel 
             tenant={tenantFilter === 'all' ? 'system' : tenantFilter}
             status={statusFilter as 'all' | 'green' | 'blue' | 'yellow' | 'red'}
@@ -114,7 +120,7 @@ export default function DevDashboard() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <>
       <SEO 
         title="Vitana DEV — Dashboard" 
         description="Command hub dashboard for Vitana platform operations"
@@ -122,6 +128,6 @@ export default function DevDashboard() {
       />
       
       <DevTabs defaultTab="overview" tabs={tabs} />
-    </div>
+    </>
   );
 }
