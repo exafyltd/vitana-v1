@@ -124,21 +124,34 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
   );
 
   const footerContent = (
-    <div className="space-y-2">
-      <Button 
-        variant="default" 
-        size={!open ? "icon" : "default"}
-        onClick={handleStartStream}
-        className={cn(
-          "w-full gap-2 rounded-full transition-colors",
-          isStreaming 
-            ? "bg-red-500 text-white hover:bg-red-600 dark:bg-red-500 dark:hover:bg-red-600" 
-            : "bg-white dark:bg-white text-black hover:bg-gray-100 dark:hover:bg-gray-100"
-        )}
-      >
-        {isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-        {open && <span>{isStreaming ? "Stop Stream" : "Start Stream"}</span>}
-      </Button>
+    <>
+      {open ? (
+        <Button 
+          onClick={handleStartStream}
+          className={cn(
+            "w-full justify-center rounded-xl shadow-sm hover:shadow-md transition-all",
+            isStreaming 
+              ? "bg-red-500 text-white hover:bg-red-600" 
+              : "bg-primary text-primary-foreground hover:bg-primary/90"
+          )}
+        >
+          {isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          <span>{isStreaming ? "Stop Stream" : "Start Stream"}</span>
+        </Button>
+      ) : (
+        <Button 
+          onClick={handleStartStream}
+          size="icon"
+          className={cn(
+            "w-10 h-10 rounded-full shadow-sm hover:shadow-md transition-all mx-auto",
+            isStreaming 
+              ? "bg-red-500 text-white hover:bg-red-600" 
+              : "bg-primary text-primary-foreground hover:bg-primary/90"
+          )}
+        >
+          {isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+        </Button>
+      )}
 
       {open ? (
         <ProfileDrawer
@@ -173,7 +186,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
           }
         />
       )}
-    </div>
+    </>
   );
 
   // Mobile: Render as Sheet
@@ -256,8 +269,10 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
         </SidebarContent>
 
         {/* Utility Zone (Footer) */}
-        <SidebarFooter className="border-t border-sidebar-border p-4">
-          {footerContent}
+        <SidebarFooter className="sticky bottom-24 bg-sidebar border-t border-sidebar-border">
+          <div className="px-2 py-3 space-y-3">
+            {footerContent}
+          </div>
         </SidebarFooter>
       </Sidebar>
     </div>

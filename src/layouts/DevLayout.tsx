@@ -88,7 +88,7 @@ export default function DevLayout({ children }: DevLayoutProps) {
             </div>
           )}
           
-          <main className="flex-1 overflow-auto pb-20">
+          <main className="flex-1 overflow-auto pb-28">
             {children || <Outlet />}
           </main>
         </div>
