@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Video, Headphones, Music, Play, Eye, Users, Sparkles } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
@@ -182,29 +183,31 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
   if (filteredMedia.length === 0) {
     return (
       <div className="w-full space-y-6 animate-fadeInUp">
-        {/* Category filters - Floating glass segmented control */}
-        <div className="flex justify-center">
-          <div className="inline-flex gap-1 p-1 rounded-full bg-white/70 backdrop-blur-xl border border-white/30 shadow-sm">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={cn(
-                  "relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 motion-reduce:hover:scale-100",
-                  activeCategory === cat.id
-                    ? "bg-gradient-to-r from-violet-500 to-blue-400 text-white shadow-[0_0_12px_rgba(139,92,246,0.3)]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-white/50"
-                )}
-                aria-label={`Filter by ${cat.label}`}
-              >
-                <cat.icon className="h-4 w-4" />
-                {cat.label}
-                {activeCategory === cat.id && (
-                  <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-gradient-to-r from-violet-400 to-sky-400 rounded-full" />
-                )}
-              </button>
-            ))}
+        {/* Header with filter dropdown */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3 flex-1">
+            <h2 className="relative text-xl font-semibold text-gray-800 dark:text-gray-100">
+              {getSectionTitle(activeCategory)}
+              <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-400 via-sky-400 to-transparent opacity-60" />
+            </h2>
+            <div className="hidden sm:block h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent dark:from-white/20" />
           </div>
+          
+          <Select value={activeCategory} onValueChange={(value) => setActiveCategory(value as MediaCategory)}>
+            <SelectTrigger className="w-full sm:w-[180px] bg-white/70 backdrop-blur-xl border-white/30 shadow-sm rounded-full">
+              <SelectValue placeholder="Filter media" />
+            </SelectTrigger>
+            <SelectContent className="bg-white/95 backdrop-blur-xl border-white/30">
+              {categories.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  <div className="flex items-center gap-2">
+                    <cat.icon className="h-4 w-4" />
+                    <span>{cat.label}</span>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Empty state */}
@@ -233,38 +236,31 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
         getCategoryGradient(activeCategory)
       )} />
 
-      {/* Category filters - Floating glass segmented control */}
-      <div className="flex justify-center relative z-10">
-        <div className="inline-flex gap-1 p-1 rounded-full bg-white/70 backdrop-blur-xl border border-white/30 shadow-sm">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={cn(
-                "relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 motion-reduce:hover:scale-100",
-                activeCategory === cat.id
-                  ? "bg-gradient-to-r from-violet-500 to-blue-400 text-white shadow-[0_0_12px_rgba(139,92,246,0.3)]"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-white/50"
-              )}
-              aria-label={`Filter by ${cat.label}`}
-            >
-              <cat.icon className="h-4 w-4" />
-              {cat.label}
-              {activeCategory === cat.id && (
-                <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-gradient-to-r from-violet-400 to-sky-400 rounded-full" />
-              )}
-            </button>
-          ))}
+      {/* Header with filter dropdown */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 relative z-10">
+        <div className="flex items-center gap-3 flex-1">
+          <h2 className="relative text-xl font-semibold text-gray-800 dark:text-gray-100">
+            {getSectionTitle(activeCategory)}
+            <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-400 via-sky-400 to-transparent opacity-60" />
+          </h2>
+          <div className="hidden sm:block h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent dark:from-white/20" />
         </div>
-      </div>
-
-      {/* Section title with gradient underline */}
-      <div className="flex items-center gap-3 relative z-10">
-        <h2 className="relative text-xl font-semibold text-gray-800 dark:text-gray-100">
-          {getSectionTitle(activeCategory)}
-          <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-400 via-sky-400 to-transparent opacity-60" />
-        </h2>
-        <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent dark:from-white/20" />
+        
+        <Select value={activeCategory} onValueChange={(value) => setActiveCategory(value as MediaCategory)}>
+          <SelectTrigger className="w-full sm:w-[180px] bg-white/70 backdrop-blur-xl border-white/30 shadow-sm rounded-full">
+            <SelectValue placeholder="Filter media" />
+          </SelectTrigger>
+          <SelectContent className="bg-white/95 backdrop-blur-xl border-white/30">
+            {categories.map((cat) => (
+              <SelectItem key={cat.id} value={cat.id}>
+                <div className="flex items-center gap-2">
+                  <cat.icon className="h-4 w-4" />
+                  <span>{cat.label}</span>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Media grid */}
