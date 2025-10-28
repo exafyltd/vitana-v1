@@ -113,7 +113,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
       <Button 
         variant="default" 
         size={!open ? "icon" : "default"}
-        className="w-full gap-2 bg-white dark:bg-white text-black hover:bg-gray-100 dark:hover:bg-gray-100"
+        className="w-full gap-2 rounded-full bg-white dark:bg-white text-black hover:bg-gray-100 dark:hover:bg-gray-100"
       >
         <Play className="h-4 w-4" />
         {open && <span>Start Stream</span>}
@@ -170,7 +170,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     placeholder="Search members, groups, or..."
-                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border"
+                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-muted-foreground/50"
                   />
                 </div>
               </div>
@@ -208,10 +208,10 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
               </div>
               <div className="relative mt-3">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="Search members, groups, or..."
-                  className="pl-9 bg-sidebar-accent/20 border-sidebar-border"
-                />
+                  <Input
+                    placeholder="Search members, groups, or..."
+                    className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-muted-foreground/50"
+                  />
               </div>
             </>
           ) : (
