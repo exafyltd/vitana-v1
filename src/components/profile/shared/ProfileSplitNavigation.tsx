@@ -16,7 +16,7 @@ import { shouldShowField } from "@/lib/profileScope";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Activity } from "lucide-react";
+import { Activity, MessageSquare, Video, Users, Calendar, Heart, Briefcase, Lightbulb } from "lucide-react";
 
 interface ProfileSplitNavigationProps {
   profile: UserProfile;
@@ -71,12 +71,29 @@ export function ProfileSplitNavigation({
   // Always add Insight as the FINAL tab
   tabs.push({ id: 'insight', name: 'Insight' });
 
+  // Icon mapping for tabs
+  const getTabIcon = (tabId: string) => {
+    switch (tabId) {
+      case 'posts': return <MessageSquare className="h-4 w-4" />;
+      case 'media': return <Video className="h-4 w-4" />;
+      case 'groups': return <Users className="h-4 w-4" />;
+      case 'events': return <Calendar className="h-4 w-4" />;
+      case 'health': return <Heart className="h-4 w-4" />;
+      case 'services': return <Briefcase className="h-4 w-4" />;
+      case 'insight': return <Lightbulb className="h-4 w-4" />;
+      default: return null;
+    }
+  };
+
   return (
     <SplitBar defaultValue="posts" className="w-full">
-      <SplitBarList className={`grid w-full grid-cols-${tabs.length}`}>
+      <SplitBarList className="w-full">
         {tabs.map(tab => (
           <SplitBarTrigger key={tab.id} value={tab.id}>
-            {tab.name}
+            <span className="flex items-center gap-2">
+              {getTabIcon(tab.id)}
+              {tab.name}
+            </span>
           </SplitBarTrigger>
         ))}
       </SplitBarList>
