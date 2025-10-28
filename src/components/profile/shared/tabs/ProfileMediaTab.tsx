@@ -181,7 +181,7 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
 
   if (filteredMedia.length === 0) {
     return (
-      <div className="w-full max-w-5xl mx-auto space-y-6 animate-fadeInUp">
+      <div className="w-full space-y-6 animate-fadeInUp">
         {/* Category filters - Floating glass segmented control */}
         <div className="flex justify-center">
           <div className="inline-flex gap-1 p-1 rounded-full bg-white/70 backdrop-blur-xl border border-white/30 shadow-sm">
@@ -226,7 +226,7 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6 animate-fadeInUp pb-32">
+    <div className="w-full space-y-6 animate-fadeInUp pb-32">
       {/* Category-based ambient gradient background */}
       <div className={cn(
         "fixed inset-0 pointer-events-none transition-all duration-700 bg-gradient-to-br",

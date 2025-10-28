@@ -39,7 +39,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout }: Profi
   ];
 
   return (
-    <div className="w-full max-w-3xl mx-auto space-y-8">
+    <div className="w-full space-y-8">
       {mockPosts.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 space-y-6">
           <div className="w-24 h-24 bg-gradient-to-br from-violet-100/50 to-sky-100/50 dark:from-white/5 dark:to-white/10 rounded-3xl backdrop-blur-xl flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.06)]">

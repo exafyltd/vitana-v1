@@ -79,7 +79,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto space-y-6 animate-fade-in bg-gradient-to-b from-white to-emerald-50/60 dark:from-slate-900 dark:to-emerald-950 rounded-2xl p-6">
+    <div className="w-full space-y-6 animate-fade-in bg-gradient-to-b from-white to-emerald-50/60 dark:from-slate-900 dark:to-emerald-950 rounded-2xl p-6">
       {/* Privacy Settings */}
       {editMode && onEditVisibility && (
         <Card className="p-6 border border-dashed border-muted-foreground/20 rounded-2xl shadow-sm bg-gradient-to-br from-background/95 to-background/80 backdrop-blur-sm">
