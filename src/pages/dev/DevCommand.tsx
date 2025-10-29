@@ -9,7 +9,6 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Plus, Plane, Users, Activity } from "lucide-react";
 import { devCommandNavigation } from "@/config/dev-navigation";
-import { ActiveVTIDChip } from "@/components/dev/ActiveVTIDChip";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { CommandCenterView } from "@/components/dev/CommandCenterView";
 import { OpenTasksSplitView } from "@/components/dev/OpenTasksSplitView";
@@ -38,21 +37,12 @@ export default function DevCommand() {
       <div className="p-6 pb-24 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
-          {/* 3-Card Header with Active VTID */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <DevStandardHeader 
-                  title="Operate the Vitana System Autonomously"
-                  description="Execute commands, manage workflows, and monitor system operations"
-                  emoji="✨"
-                />
-              </div>
-              <div className="ml-4">
-                <ActiveVTIDChip />
-              </div>
-            </div>
-          </div>
+          {/* 3-Card Header */}
+          <DevStandardHeader 
+            title="Operate the Vitana System Autonomously"
+            description="Execute commands, manage workflows, and monitor system operations"
+            emoji="✨"
+          />
 
           {/* Utility Action Buttons */}
           <UtilityActionButton>
