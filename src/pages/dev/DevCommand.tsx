@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
-import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,14 @@ export default function DevCommand() {
         title="Vitana DEV — Command" 
         description="Command execution hub for Vitana platform"
         canonical={window.location.href}
+      />
+
+      {/* Main Navigation */}
+      <SubNavigation 
+        items={devCommandNavigation.map(item => ({
+          ...item,
+          path: '#' // Use hash for state-based navigation
+        }))}
       />
 
       <div className="p-6 pb-24 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
@@ -54,55 +61,44 @@ export default function DevCommand() {
             </Button>
           </UtilityActionButton>
 
-          {/* Horizontal Navigation Bar */}
-          <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="live-console">Live Console</SplitBarTrigger>
-              <SplitBarTrigger value="tasks">Tasks</SplitBarTrigger>
-              <SplitBarTrigger value="autopilot-runs">Autopilot Runs</SplitBarTrigger>
-              <SplitBarTrigger value="history">History</SplitBarTrigger>
-            </SplitBarList>
-
-            <SplitBarContent value="live-console" className="mt-6">
-              <LiveConsoleTab />
-            </SplitBarContent>
-
-            <SplitBarContent value="autopilot-runs" className="mt-6">
-              <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-12">
-                  <DevEmptyState 
-                    title="Autopilot Runs" 
-                    description="View and manage autonomous workflow executions"
-                    icon={Plane}
-                  />
-                </div>
+          {/* Content based on active tab */}
+          {activeTab === "live-console" && <LiveConsoleTab />}
+          
+          {activeTab === "tasks" && (
+            <div className="grid grid-cols-12 gap-6">
+              <div className="col-span-12">
+                <DevEmptyState 
+                  title="Tasks Overview" 
+                  description="Manage and track system tasks"
+                  icon={Users}
+                />
               </div>
-            </SplitBarContent>
+            </div>
+          )}
 
-            <SplitBarContent value="tasks" className="mt-6">
-              <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-12">
-                  <DevEmptyState 
-                    title="Tasks Overview" 
-                    description="Manage and track system tasks"
-                    icon={Users}
-                  />
-                </div>
+          {activeTab === "autopilot-runs" && (
+            <div className="grid grid-cols-12 gap-6">
+              <div className="col-span-12">
+                <DevEmptyState 
+                  title="Autopilot Runs" 
+                  description="View and manage autonomous workflow executions"
+                  icon={Plane}
+                />
               </div>
-            </SplitBarContent>
+            </div>
+          )}
 
-            <SplitBarContent value="history" className="mt-6">
-              <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-12">
-                  <DevEmptyState 
-                    title="Command History" 
-                    description="View past operations and executions"
-                    icon={Activity}
-                  />
-                </div>
+          {activeTab === "history" && (
+            <div className="grid grid-cols-12 gap-6">
+              <div className="col-span-12">
+                <DevEmptyState 
+                  title="Command History" 
+                  description="View past operations and executions"
+                  icon={Activity}
+                />
               </div>
-            </SplitBarContent>
-          </SplitBar>
+            </div>
+          )}
         </div>
       </div>
     </>
