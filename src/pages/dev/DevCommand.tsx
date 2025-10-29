@@ -57,13 +57,13 @@ export default function DevCommand() {
             </Button>
           </UtilityActionButton>
 
-          {/* Split-Screen Navigation Bar */}
+          {/* Horizontal Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="live-console">Live Console</SplitBarTrigger>
+              <SplitBarTrigger value="tasks">Tasks</SplitBarTrigger>
               <SplitBarTrigger value="autopilot-runs">Autopilot Runs</SplitBarTrigger>
-              <SplitBarTrigger value="agents">Agents</SplitBarTrigger>
-              <SplitBarTrigger value="system-metrics">System Metrics</SplitBarTrigger>
+              <SplitBarTrigger value="history">History</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="live-console" className="mt-6">
@@ -82,24 +82,24 @@ export default function DevCommand() {
               </div>
             </SplitBarContent>
 
-            <SplitBarContent value="agents" className="mt-6">
+            <SplitBarContent value="tasks" className="mt-6">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12">
                   <DevEmptyState 
-                    title="Agent Management" 
-                    description="Configure and monitor AI agents"
+                    title="Tasks Overview" 
+                    description="Manage and track system tasks"
                     icon={Users}
                   />
                 </div>
               </div>
             </SplitBarContent>
 
-            <SplitBarContent value="system-metrics" className="mt-6">
+            <SplitBarContent value="history" className="mt-6">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12">
                   <DevEmptyState 
-                    title="System Metrics" 
-                    description="Real-time performance monitoring"
+                    title="Command History" 
+                    description="View past operations and executions"
                     icon={Activity}
                   />
                 </div>
