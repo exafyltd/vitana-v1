@@ -13,6 +13,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { CommandCenterView } from "@/components/dev/CommandCenterView";
 import { OpenTasksList } from "@/components/dev/OpenTasksList";
 import { TasksView } from "@/components/dev/TasksView";
+import { AutopilotRunsView } from "@/components/dev/AutopilotRunsView";
 
 export default function DevCommand() {
   const location = useLocation();
@@ -40,8 +41,20 @@ export default function DevCommand() {
           
           {/* 3-Card Header */}
           <DevStandardHeader 
-            title={activeTab === "tasks" ? "Manage and Track System Tasks" : "Operate the Vitana System Autonomously"}
-            description={activeTab === "tasks" ? "View, organize, and complete tasks across all agents and autopilot runs." : "Execute commands, manage workflows, and monitor system operations"}
+            title={
+              activeTab === "tasks" 
+                ? "Manage and Track System Tasks" 
+                : activeTab === "autopilot-runs"
+                ? "Monitor Autopilot Executions"
+                : "Operate the Vitana System Autonomously"
+            }
+            description={
+              activeTab === "tasks" 
+                ? "View, organize, and complete tasks across all agents and autopilot runs." 
+                : activeTab === "autopilot-runs"
+                ? "View, trigger, and analyze automated workflows and system actions."
+                : "Execute commands, manage workflows, and monitor system operations"
+            }
             emoji="✨"
           />
 
@@ -80,15 +93,7 @@ export default function DevCommand() {
           )}
 
           {activeTab === "autopilot-runs" && (
-            <div className="grid grid-cols-12 gap-6">
-              <div className="col-span-12">
-                <DevEmptyState 
-                  title="Autopilot Runs" 
-                  description="View and manage autonomous workflow executions"
-                  icon={Plane}
-                />
-              </div>
-            </div>
+            <AutopilotRunsView />
           )}
 
           {activeTab === "history" && (
