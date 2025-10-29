@@ -59,38 +59,38 @@ export function LiveConsoleTab() {
   return (
     <Card className="overflow-hidden">
       {/* Split-Screen Navigation Bar */}
-      <SplitBar value={nestedTab} onValueChange={setNestedTab}>
-        <SplitBarList className="w-full bg-muted/30 p-1">
-          <SplitBarTrigger value="command-center">Command Center</SplitBarTrigger>
-          <SplitBarTrigger value="open-tasks">Open Tasks</SplitBarTrigger>
-        </SplitBarList>
+      <div className="border-b bg-muted/30">
+        <SplitBar value={nestedTab} onValueChange={setNestedTab}>
+          <SplitBarList className="w-full p-1">
+            <SplitBarTrigger value="command-center">Command Center</SplitBarTrigger>
+            <SplitBarTrigger value="open-tasks">Open Tasks</SplitBarTrigger>
+          </SplitBarList>
+        </SplitBar>
+      </div>
 
-        <SplitBarContent value="command-center">
-          <div className="h-[600px]">
-            <SplitScreen
-              leftPanel={commandCenterLeftPanel}
-              rightPanel={commandCenterRightPanel}
-              defaultLeftSize={30}
-              minLeftSize={20}
-              minRightSize={50}
-              screenId="command-hub-command-center"
-            />
-          </div>
-        </SplitBarContent>
-
-        <SplitBarContent value="open-tasks">
-          <div className="h-[600px]">
-            <SplitScreen
-              leftPanel={openTasksLeftPanel}
-              rightPanel={openTasksRightPanel}
-              defaultLeftSize={30}
-              minLeftSize={20}
-              minRightSize={50}
-              screenId="command-hub-open-tasks"
-            />
-          </div>
-        </SplitBarContent>
-      </SplitBar>
+      {/* Split Screen Content */}
+      <div className="h-[600px]">
+        {nestedTab === "command-center" && (
+          <SplitScreen
+            leftPanel={commandCenterLeftPanel}
+            rightPanel={commandCenterRightPanel}
+            defaultLeftSize={30}
+            minLeftSize={20}
+            minRightSize={50}
+            screenId="command-hub-command-center"
+          />
+        )}
+        {nestedTab === "open-tasks" && (
+          <SplitScreen
+            leftPanel={openTasksLeftPanel}
+            rightPanel={openTasksRightPanel}
+            defaultLeftSize={30}
+            minLeftSize={20}
+            minRightSize={50}
+            screenId="command-hub-open-tasks"
+          />
+        )}
+      </div>
 
       <div className="p-2 border-t bg-muted/30 text-center">
         <p className="text-xs text-muted-foreground">
