@@ -4,7 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Plane, Lock } from "lucide-react";
 import { DEV_HUB_CONFIG } from "@/config/devHub.config";
-import { useAutopilot } from "@/hooks/use-autopilot";
+import { useDevAutopilot } from "@/hooks/use-dev-autopilot";
+import { DevAutopilotPopup } from "@/components/dev/DevAutopilotPopup";
 
 interface DevStandardHeaderProps {
   title: string;
@@ -18,7 +19,7 @@ interface DevStandardHeaderProps {
  */
 export function DevStandardHeader({ title, description, emoji }: DevStandardHeaderProps) {
   const navigate = useNavigate();
-  const { pendingCount, getLatestActions } = useAutopilot();
+  const { pendingCount, getLatestActions } = useDevAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const latestActions = getLatestActions(2);
@@ -107,6 +108,9 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
           </div>
         </div>
       </div>
+
+      {/* Dev Autopilot Popup */}
+      <DevAutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </div>
   );
 }
