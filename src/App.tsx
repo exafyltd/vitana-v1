@@ -316,6 +316,8 @@ const App = () => {
             <Route path="command/approvals" element={<CommandApprovals />} />
             <Route path="command/history" element={<CommandHistory />} />
             <Route path="command/compose" element={<CommandCompose />} />
+            <Route path="command/tasks" element={<DevCommand />} />
+            <Route path="command/autopilot-runs" element={<DevCommand />} />
             <Route path="agents" element={<DevAgents />} />
             <Route path="agents/worker" element={<AgentsWorker />} />
             <Route path="agents/validator" element={<AgentsValidator />} />
