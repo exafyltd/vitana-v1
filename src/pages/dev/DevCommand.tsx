@@ -31,10 +31,10 @@ export default function DevCommand() {
 
   const getButtonLabel = () => {
     switch (activeTab) {
-      case "live-console": return "+ New Command";
-      case "tasks": return "+ New Task";
-      case "autopilot-runs": return "+ New Run";
-      default: return "+ Action";
+      case "live-console": return "New Command";
+      case "tasks": return "New Task";
+      case "autopilot-runs": return "New Run";
+      default: return "Action";
     }
   };
 

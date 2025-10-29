@@ -43,7 +43,7 @@ export default function CommandHistory() {
             />
             <Button size="sm" onClick={() => setExportModalOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              + Export Logs
+              Export Logs
             </Button>
           </UtilityActionButton>
 
