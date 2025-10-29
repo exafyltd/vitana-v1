@@ -2,35 +2,18 @@ import { useState } from "react";
 import { SplitScreen } from "@/components/ui/split-screen";
 import { DevHubFeed } from "./DevHubFeed";
 import { CommandChat } from "./CommandChat";
-import { OpenTasksView } from "./OpenTasksView";
-import { TaskDetailsPanel } from "./TaskDetailsPanel";
+import { OpenTasksList } from "./OpenTasksList";
 import { useSplitFocus } from "@/hooks/dev/useSplitFocus";
 import { Card } from "@/components/ui/card";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 
-interface Task {
-  id: string;
-  title: string;
-  assignee: string;
-  priority: "high" | "medium" | "low";
-  status: "pending" | "in-progress";
-  vtid?: string;
-  created_at: string;
-}
-
 export function LiveConsoleTab() {
   const [nestedTab, setNestedTab] = useState("command-center");
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const { focusedPane, setFocus, hasUnreadLeft, hasUnreadRight, markRead } = useSplitFocus();
 
   const handleTickerVTIDClick = () => {
     setFocus('right');
     markRead('left');
-  };
-
-  const handleTaskClick = (task: Task) => {
-    setSelectedTask(task);
-    setFocus('right');
   };
 
   const commandCenterLeftPanel = (
@@ -48,13 +31,6 @@ export function LiveConsoleTab() {
     />
   );
 
-  const openTasksLeftPanel = (
-    <OpenTasksView onTaskClick={handleTaskClick} />
-  );
-
-  const openTasksRightPanel = (
-    <TaskDetailsPanel task={selectedTask} />
-  );
 
   return (
     <Card className="overflow-hidden">
@@ -80,16 +56,7 @@ export function LiveConsoleTab() {
             screenId="command-hub-command-center"
           />
         )}
-        {nestedTab === "open-tasks" && (
-          <SplitScreen
-            leftPanel={openTasksLeftPanel}
-            rightPanel={openTasksRightPanel}
-            defaultLeftSize={30}
-            minLeftSize={20}
-            minRightSize={50}
-            screenId="command-hub-open-tasks"
-          />
-        )}
+        {nestedTab === "open-tasks" && <OpenTasksList />}
       </div>
 
       <div className="p-2 border-t bg-muted/30 text-center">
