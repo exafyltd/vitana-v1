@@ -14,6 +14,9 @@ import { CommandCenterView } from "@/components/dev/CommandCenterView";
 import { OpenTasksList } from "@/components/dev/OpenTasksList";
 import { TasksView } from "@/components/dev/TasksView";
 import { AutopilotRunsView } from "@/components/dev/AutopilotRunsView";
+import { CreateCommandModal } from "@/components/dev/modals/CreateCommandModal";
+import { CreateTaskModal } from "@/components/dev/modals/CreateTaskModal";
+import { TriggerRunModal } from "@/components/dev/modals/TriggerRunModal";
 
 export default function DevCommand() {
   const location = useLocation();
@@ -22,6 +25,32 @@ export default function DevCommand() {
     : location.pathname.split("/").pop() || "live-console";
   
   const [nestedTab, setNestedTab] = useState("command-center");
+  const [createCommandOpen, setCreateCommandOpen] = useState(false);
+  const [createTaskOpen, setCreateTaskOpen] = useState(false);
+  const [triggerRunOpen, setTriggerRunOpen] = useState(false);
+
+  const getButtonLabel = () => {
+    switch (activeTab) {
+      case "live-console": return "+ New Command";
+      case "tasks": return "+ New Task";
+      case "autopilot-runs": return "+ New Run";
+      default: return "+ Action";
+    }
+  };
+
+  const handleActionClick = () => {
+    switch (activeTab) {
+      case "live-console":
+        setCreateCommandOpen(true);
+        break;
+      case "tasks":
+        setCreateTaskOpen(true);
+        break;
+      case "autopilot-runs":
+        setTriggerRunOpen(true);
+        break;
+    }
+  };
 
   return (
     <>
@@ -64,9 +93,9 @@ export default function DevCommand() {
               placeholder="Search commands…"
               onSearch={(query) => console.log('Search:', query)}
             />
-            <Button size="sm">
+            <Button size="sm" onClick={handleActionClick}>
               <Plus className="w-4 h-4 mr-2" />
-              Command Actions
+              {getButtonLabel()}
             </Button>
           </UtilityActionButton>
 
@@ -109,6 +138,20 @@ export default function DevCommand() {
           )}
         </div>
       </div>
+
+      {/* Modals */}
+      <CreateCommandModal 
+        open={createCommandOpen} 
+        onOpenChange={setCreateCommandOpen}
+      />
+      <CreateTaskModal 
+        open={createTaskOpen} 
+        onOpenChange={setCreateTaskOpen}
+      />
+      <TriggerRunModal 
+        open={triggerRunOpen} 
+        onOpenChange={setTriggerRunOpen}
+      />
     </>
   );
 }

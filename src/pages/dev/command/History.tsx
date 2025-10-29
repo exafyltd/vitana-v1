@@ -6,14 +6,16 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { Button } from "@/components/ui/button";
 import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
-import { Download } from "lucide-react";
+import { Plus } from "lucide-react";
 import { devCommandNavigation } from "@/config/dev-navigation";
 import { ExecutionLogsList } from "@/components/dev/ExecutionLogsList";
 import { TimelineView } from "@/components/dev/TimelineView";
 import { FilteredView } from "@/components/dev/FilteredView";
+import { ExportLogsModal } from "@/components/dev/modals/ExportLogsModal";
 
 export default function CommandHistory() {
   const [activeTab, setActiveTab] = useState("logs");
+  const [exportModalOpen, setExportModalOpen] = useState(false);
 
   return (
     <>
@@ -39,9 +41,9 @@ export default function CommandHistory() {
               placeholder="Search history…"
               onSearch={(query) => console.log('Search:', query)}
             />
-            <Button size="sm">
-              <Download className="w-4 h-4 mr-2" />
-              Export
+            <Button size="sm" onClick={() => setExportModalOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              + Export Logs
             </Button>
           </UtilityActionButton>
 
@@ -66,6 +68,12 @@ export default function CommandHistory() {
           </SplitBar>
         </div>
       </div>
+
+      {/* Export Modal */}
+      <ExportLogsModal 
+        open={exportModalOpen} 
+        onOpenChange={setExportModalOpen}
+      />
     </>
   );
 }
