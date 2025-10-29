@@ -83,3 +83,12 @@ export const devSettingsNavigation = [
   { id: "flags", name: "Feature Flags", path: "/dev/settings/flags" },
   { id: "tenants", name: "Tenants", path: "/dev/settings/tenants" },
 ];
+
+// Docs horizontal tabs
+export const devDocsNavigation = [
+  { id: "overview", name: "Overview", path: "/dev/docs" },
+  { id: "catalogs", name: "Catalogs", path: "/dev/docs/catalogs" },
+  { id: "screen-lists", name: "Screen Lists", path: "/dev/docs/screen-lists" },
+  { id: "frontpages", name: "Frontpages", path: "/dev/docs/frontpages" },
+  { id: "role-views", name: "Role Views", path: "/dev/docs/role-views" },
+];

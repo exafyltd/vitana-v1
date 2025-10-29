@@ -40,6 +40,7 @@ import DevVTID from "./pages/dev/DevVTID";
 import DevGateway from "./pages/dev/DevGateway";
 import DevCICD from "./pages/dev/DevCICD";
 import DevObservability from "./pages/dev/DevObservability";
+import DevDocs from "./pages/dev/DevDocs";
 import DevLayout from "./layouts/DevLayout";
 
 // Dev Hub Dashboard sub-pages
@@ -353,6 +354,11 @@ const App = () => {
             <Route path="settings/auth" element={<SettingsAuth />} />
             <Route path="settings/flags" element={<SettingsFlags />} />
             <Route path="settings/tenants" element={<SettingsTenants />} />
+            <Route path="docs" element={<DevDocs />} />
+            <Route path="docs/catalogs" element={<DevDocs />} />
+            <Route path="docs/screen-lists" element={<DevDocs />} />
+            <Route path="docs/frontpages" element={<DevDocs />} />
+            <Route path="docs/role-views" element={<DevDocs />} />
           </Route>
           <Route path="/home" element={
             <AuthGuard>
