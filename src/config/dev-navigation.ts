@@ -14,9 +14,9 @@ export const devDashboardNavigation = [
 // Command horizontal tabs
 export const devCommandNavigation = [
   { id: "live-console", name: "Live Console", path: "/dev/command" },
+  { id: "tasks", name: "Tasks", path: "/dev/command/tasks" },
   { id: "autopilot-runs", name: "Autopilot Runs", path: "/dev/command/autopilot-runs" },
-  { id: "agents", name: "Agents", path: "/dev/command/agents" },
-  { id: "system-metrics", name: "System Metrics", path: "/dev/command/system-metrics" },
+  { id: "history", name: "History", path: "/dev/command/history" },
 ];
 
 // Agents horizontal tabs

@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 const DEV_NAV_ITEMS = [
   { title: "Home", url: "/dev/dashboard", icon: Home },
   { title: "Command Hub", url: "/dev/command", icon: Satellite },
+  { title: "Docs", url: "/dev/docs", icon: FileText },
   { title: "Agents", url: "/dev/agents", icon: Users },
   { title: "Pipelines (Conductor)", url: "/dev/pipelines", icon: GitBranch },
   { title: "OASIS", url: "/dev/oasis", icon: Database },
