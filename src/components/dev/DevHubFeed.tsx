@@ -61,7 +61,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
 
   // SSE connection with fallback
   useEffect(() => {
-    const sseBaseUrl = import.meta.env.VITE_DEVHUB_SSE_BASE || window.location.origin;
+    const sseBaseUrl = import.meta.env.VITE_DEVHUB_SSE_BASE || "https://vitana-gateway-86804897789.us-central1.run.app";
     const vtidParam = scope === "ALL" ? "ALL" : currentVTID;
     const url = `${sseBaseUrl}/api/v1/devhub/feed?vtid=${vtidParam}`;
     
@@ -160,10 +160,10 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
       isFocused ? "border-primary/50" : "border-border opacity-70"
     )}>
       {/* Header Controls */}
-      <div className="flex flex-col gap-2 px-4 py-3 border-b bg-card">
+      <div className="flex flex-col gap-2 px-3 py-2 border-b bg-card">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-sm tracking-wide">FEED</h3>
+            <h3 className="font-semibold text-sm tracking-wide">Live Console</h3>
             {hasUnread && !isFocused && (
               <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center rounded-full">
                 •
@@ -174,8 +174,8 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                 LIVE
               </Badge>
             ) : (
-              <Badge variant="secondary" className="text-xs">
-                OFFLINE (mock)
+              <Badge variant="secondary" className="text-xs bg-red-500/20 text-red-700 dark:text-red-400 border-red-500/30">
+                OFFLINE (MOCK)
               </Badge>
             )}
           </div>
@@ -184,7 +184,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             size="sm"
             variant="ghost"
             onClick={() => setPaused(!paused)}
-            className="h-7 gap-1"
+            className="h-6 gap-1 px-2"
           >
             {paused ? (
               <>
@@ -232,7 +232,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             value={filterQuery}
             onChange={(e) => setFilterQuery(e.target.value)}
             placeholder="Filter events..."
-            className="h-7 text-xs flex-1"
+            className="h-6 text-xs flex-1"
           />
         </div>
       </div>
@@ -240,7 +240,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
       {/* Vertical Feed */}
       <ScrollArea className="flex-1" ref={scrollRef}>
         {shownEvents.length === 0 ? (
-          <div className="flex items-center justify-center h-32">
+          <div className="flex items-center justify-center h-24">
             <p className="text-xs text-muted-foreground">No events yet...</p>
           </div>
         ) : (
@@ -248,46 +248,37 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             {shownEvents.map((event, i) => (
               <div
                 key={`${event.vtid}-${event.ts}-${i}`}
-                className="px-4 py-3 hover:bg-accent/50 transition-colors"
+                className="px-3 py-1.5 hover:bg-accent/50 transition-colors"
               >
-                <div className="grid grid-cols-[90px_1fr_auto] items-start gap-3">
+                <div className="grid grid-cols-[70px_1fr_auto] items-center gap-2">
                   {/* Timestamp */}
-                  <div className="text-[11px] text-muted-foreground font-mono">
+                  <div className="text-[10px] text-muted-foreground font-mono">
                     {formatTime(event.ts)}
                   </div>
 
                   {/* Event Details */}
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 text-[11px] text-muted-foreground mb-1">
-                      {/* Clickable VTID */}
-                      <button
-                        onClick={() => handleVTIDClick(event)}
-                        className="font-semibold text-foreground hover:text-primary underline underline-offset-2 transition-colors"
-                      >
-                        {event.vtid}
-                      </button>
-                      <span>•</span>
-                      <span className="uppercase">{event.layer}-{event.module}</span>
-                    </div>
-                    <div className="text-[12px] font-semibold leading-tight line-clamp-2 mb-1">
-                      {event.title}
-                    </div>
-                    {event.ref && (
-                      <div className="text-[11px] text-muted-foreground truncate">
-                        {event.ref}
-                      </div>
-                    )}
+                  <div className="min-w-0 flex items-center gap-2 text-[11px]">
+                    {/* Clickable VTID */}
+                    <button
+                      onClick={() => handleVTIDClick(event)}
+                      className="font-bold text-foreground hover:text-primary underline underline-offset-2 transition-colors shrink-0"
+                    >
+                      {event.vtid}
+                    </button>
+                    <span className="text-muted-foreground">•</span>
+                    <span className="uppercase text-muted-foreground shrink-0">{event.layer}-{event.module}</span>
+                    <span className="font-semibold truncate">{event.title}</span>
                   </div>
 
                   {/* Status Badge */}
-                  <div className="flex flex-col items-end gap-1">
+                  <div className="flex items-center">
                     {event.link ? (
                       <a
                         href={event.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={cn(
-                          "text-[10px] px-2 py-0.5 rounded-full border uppercase font-medium transition-all hover:scale-105",
+                          "text-[9px] px-1.5 py-0.5 rounded border uppercase font-medium transition-all hover:scale-105 whitespace-nowrap",
                           getStatusColor(event.status)
                         )}
                         onClick={(e) => e.stopPropagation()}
@@ -297,7 +288,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                     ) : (
                       <span
                         className={cn(
-                          "text-[10px] px-2 py-0.5 rounded-full border uppercase font-medium opacity-70",
+                          "text-[9px] px-1.5 py-0.5 rounded border uppercase font-medium opacity-70 whitespace-nowrap",
                           getStatusColor(event.status)
                         )}
                       >
@@ -327,12 +318,12 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
       </ScrollArea>
 
       {/* Footer Info */}
-      <div className="px-4 py-2 border-t bg-muted/30">
-        <p className="text-xs text-muted-foreground">
+      <div className="px-3 py-1.5 border-t bg-muted/30">
+        <p className="text-[10px] text-muted-foreground">
           {filteredEvents.length > 0 ? `${filteredEvents.length} events` : 'No events'}
           {filterQuery && ` • Filtered`}
           {paused && ` • Paused`}
-          {' • '}Click VTID to focus
+          {' • '}Click VTID to open details
         </p>
       </div>
     </div>
