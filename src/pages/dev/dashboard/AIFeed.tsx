@@ -4,6 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import { devDashboardNavigation } from "@/config/dev-navigation";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
@@ -37,6 +38,7 @@ export default function DashboardAIFeed() {
               placeholder="Search AI activities…"
               onSearch={(query) => console.log('Search:', query)}
             />
+            <UniversalCalendarButton />
             <Button size="sm">
               <Plus className="w-4 h-4 mr-2" />
               Filter

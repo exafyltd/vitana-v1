@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Activity, Bell, Heart, Plus } from "lucide-react";
@@ -61,6 +62,7 @@ export default function DevDashboard() {
               placeholder="Search events, VTIDs, commands…"
               onSearch={(query) => console.log('Search:', query)}
             />
+            <UniversalCalendarButton />
             <Button size="sm">
               <Plus className="w-4 h-4 mr-2" />
               Action

@@ -4,6 +4,7 @@ import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
@@ -93,6 +94,7 @@ export default function DevCommand() {
               placeholder="Search commands…"
               onSearch={(query) => console.log('Search:', query)}
             />
+            <UniversalCalendarButton />
             <Button size="sm" onClick={handleActionClick}>
               <Plus className="w-4 h-4 mr-2" />
               {getButtonLabel()}
