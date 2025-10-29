@@ -25,6 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { StreamingChatRef } from "@/components/StreamingChat";
 import { cn } from "@/lib/utils";
+import { PlatformIconsRow } from "./PlatformIconsRow";
 
 const DEV_NAV_ITEMS = [
   { title: "Home", url: "/dev/dashboard", icon: Home },
@@ -202,6 +203,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
                   <h2 className="text-lg font-bold">Vitana DEV</h2>
                   <p className="text-xs text-sidebar-foreground/50 font-normal">Command Hub</p>
                 </div>
+                <PlatformIconsRow />
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-sidebar-foreground/60" />
                   <Input
@@ -242,6 +244,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
                 <h2 className="text-lg font-bold">Vitana DEV</h2>
                 <p className="text-xs text-sidebar-foreground/50 font-normal">Command Hub</p>
               </div>
+              <PlatformIconsRow />
               <div className="relative mt-3">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-sidebar-foreground/60" />
                   <Input
