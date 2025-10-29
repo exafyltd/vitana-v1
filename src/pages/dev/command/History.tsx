@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSessionAutosave } from "@/hooks/dev/useSessionAutosave";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -20,6 +21,13 @@ export default function CommandHistory() {
   const [activeTab, setActiveTab] = useState("logs");
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
+
+  // Autosave session
+  useSessionAutosave({
+    tab: "History",
+    subtab: activeTab === "logs" ? "Execution Logs" : 
+            activeTab === "timeline" ? "Timeline" : "Filtered",
+  });
 
   return (
     <>

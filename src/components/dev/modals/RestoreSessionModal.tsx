@@ -21,9 +21,24 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
   const { sessions, restoreSession, clearAllSessions } = useSessionRestore();
 
   const handleRestore = (sessionId: string) => {
+    const session = sessions.find((s) => s.id === sessionId);
+    
+    if (!session) {
+      toast.error("Session not found");
+      return;
+    }
+
+    // Check if we're already on the target path
+    const isAlreadyOnPath = window.location.pathname === session.path;
+    
     restoreSession(sessionId);
     onOpenChange(false);
-    toast.success("Session restored successfully");
+    
+    if (isAlreadyOnPath) {
+      toast.success("Session restored successfully");
+    } else {
+      toast.success("Restoring session...");
+    }
   };
 
   const handleClearAll = () => {
@@ -63,7 +78,8 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
               {sessions.map((session) => (
                 <div
                   key={session.id}
-                  className="p-4 rounded-xl bg-gradient-to-br from-white/50 to-white/30 dark:from-card/50 dark:to-card/30 border border-white/20 dark:border-white/10 backdrop-blur-sm hover:border-primary/30 transition-all duration-200"
+                  className="p-4 rounded-xl bg-gradient-to-br from-white/50 to-white/30 dark:from-card/50 dark:to-card/30 border border-white/20 dark:border-white/10 backdrop-blur-sm hover:border-primary/30 hover:shadow-lg transition-all duration-200 cursor-pointer group"
+                  onClick={() => handleRestore(session.id)}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 space-y-2">
@@ -103,8 +119,11 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
 
                     <Button
                       size="sm"
-                      onClick={() => handleRestore(session.id)}
-                      className="shrink-0"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRestore(session.id);
+                      }}
+                      className="shrink-0 opacity-80 group-hover:opacity-100 transition-opacity"
                     >
                       Restore
                     </Button>

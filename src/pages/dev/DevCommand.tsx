@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useSessionAutosave } from "@/hooks/dev/useSessionAutosave";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -32,6 +33,24 @@ export default function DevCommand() {
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
   const [triggerRunOpen, setTriggerRunOpen] = useState(false);
   const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
+
+  // Autosave session on tab/subtab changes
+  const { saveCurrentSession } = useSessionAutosave({
+    tab: activeTab === "live-console" ? "Live Console" : 
+         activeTab === "tasks" ? "Tasks" : 
+         activeTab === "autopilot-runs" ? "Autopilot Runs" : "History",
+    subtab: activeTab === "live-console" ? 
+            (nestedTab === "command-center" ? "Command Center" : "Open Tasks") : 
+            undefined,
+    context: undefined, // Can be enhanced with specific task/run context
+  });
+
+  // Save session when modals open/close
+  useEffect(() => {
+    if (createCommandOpen || createTaskOpen || triggerRunOpen) {
+      saveCurrentSession();
+    }
+  }, [createCommandOpen, createTaskOpen, triggerRunOpen]);
 
   const getButtonLabel = () => {
     switch (activeTab) {

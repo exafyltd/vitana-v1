@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSessionAutosave } from "@/hooks/dev/useSessionAutosave";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
@@ -16,6 +17,14 @@ import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal
 export default function DevPipelines() {
   const [activeTab, setActiveTab] = useState("builds");
   const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
+
+  // Autosave session
+  useSessionAutosave({
+    tab: "Pipelines",
+    subtab: activeTab === "builds" ? "Builds" : 
+            activeTab === "tests" ? "Tests" : 
+            activeTab === "canary" ? "Canary" : "Rollbacks",
+  });
 
   return (
     <>

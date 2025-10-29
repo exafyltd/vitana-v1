@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSessionAutosave } from "@/hooks/dev/useSessionAutosave";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
@@ -16,6 +17,15 @@ import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal
 export default function DevAgents() {
   const [activeTab, setActiveTab] = useState("planner");
   const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
+
+  // Autosave session
+  useSessionAutosave({
+    tab: "Agents",
+    subtab: activeTab === "planner" ? "Planner" : 
+            activeTab === "worker" ? "Worker" : 
+            activeTab === "validator" ? "Validator" : 
+            activeTab === "qa" ? "QA" : "Crew Template",
+  });
 
   return (
     <>
