@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Clock, Activity } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ExternalLink, Clock, Activity, ChevronDown } from "lucide-react";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
+import { formatDistanceToNow } from "date-fns";
 
 interface CommandChatProps {
   isFocused?: boolean;
@@ -85,11 +89,36 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
     }
   };
 
+  const formatRelativeTime = (iso: string) => {
+    try {
+      return formatDistanceToNow(new Date(iso), { addSuffix: true });
+    } catch {
+      return iso;
+    }
+  };
+
+  const getSourceColor = (source: string) => {
+    if (source.includes("github")) return "#007aff";
+    if (source.includes("gcp")) return "#28a745";
+    if (source.includes("oasis")) return "#8854d0";
+    if (source.includes("agent")) return "#6c757d";
+    return "#6c757d";
+  };
+
+  const getSourceLabel = (source: string) => {
+    if (source.includes("github")) return "GitHub";
+    if (source.includes("gcp")) return "GCP";
+    if (source.includes("oasis")) return "OASIS";
+    if (source.includes("agent")) return "Agent";
+    return source;
+  };
+
   return (
-    <div className={cn(
-      "h-full flex flex-col transition-all",
-      isFocused ? "border-l border-primary/50" : "border-l border-border opacity-70"
-    )}>
+    <TooltipProvider>
+      <div className={cn(
+        "h-full flex flex-col transition-all",
+        isFocused ? "border-l border-primary/50" : "border-l border-border opacity-70"
+      )}>
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 border-b bg-card">
         <div className="flex items-center gap-2">
@@ -107,11 +136,12 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
         )}
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 overflow-auto p-4">
-        {selectedEvent ? (
-          <Card>
-            <CardHeader>
+        {/* Chat Area */}
+        <ScrollArea className="flex-1">
+          <div className="p-4">
+            {selectedEvent ? (
+              <Card>
+                <CardHeader>
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="text-xl font-bold">{selectedEvent.vtid}</CardTitle>
@@ -155,27 +185,73 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                 </span>
               </div>
 
-              {/* Timeline View */}
-              {vtidTimeline.length > 1 && (
-                <div className="space-y-2 pt-4 border-t">
-                  <h4 className="text-sm font-semibold mb-2">Event Timeline ({vtidTimeline.length} events)</h4>
-                  <div className="space-y-1 max-h-48 overflow-y-auto">
-                    {vtidTimeline.map((evt, idx) => (
-                      <div key={idx} className="text-xs p-2 bg-muted/50 rounded border border-border">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-semibold">{evt.title}</span>
-                          <Badge className={getStatusColor(evt.status)} variant="outline">
-                            {evt.status}
-                          </Badge>
+                {/* Timeline View */}
+                {vtidTimeline.length > 0 && (
+                  <div className="space-y-2 pt-4 border-t">
+                    <h4 className="text-sm font-semibold mb-3">Event Timeline ({vtidTimeline.length} events)</h4>
+                    <div className="space-y-2">
+                      {vtidTimeline.map((evt, idx) => (
+                        <div key={idx} className="relative">
+                          {/* Timeline connector */}
+                          {idx < vtidTimeline.length - 1 && (
+                            <div className="absolute left-[9px] top-8 w-0.5 h-full bg-border" />
+                          )}
+                          
+                          <div className="flex items-start gap-3">
+                            {/* Source Icon */}
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div
+                                  className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 border-2 border-background z-10"
+                                  style={{ backgroundColor: getSourceColor(evt.source) }}
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Source: {getSourceLabel(evt.source)}</p>
+                              </TooltipContent>
+                            </Tooltip>
+
+                            {/* Event Card */}
+                            <Collapsible className="flex-1">
+                              <div className="text-xs p-2 bg-muted/50 rounded border border-border">
+                                <div className="flex items-center justify-between mb-1">
+                                  <div className="flex items-center gap-2 flex-1">
+                                    <span className="font-semibold">{evt.title}</span>
+                                    <Badge className={getStatusColor(evt.status)} variant="outline">
+                                      {evt.status}
+                                    </Badge>
+                                  </div>
+                                  <CollapsibleTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="h-5 w-5 p-0">
+                                      <ChevronDown className="h-3 w-3" />
+                                    </Button>
+                                  </CollapsibleTrigger>
+                                </div>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <div className="text-muted-foreground">
+                                      {formatRelativeTime(evt.ts)}
+                                    </div>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{formatTime(evt.ts)}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                                
+                                {/* Expandable JSON */}
+                                <CollapsibleContent className="mt-2">
+                                  <pre className="text-[10px] bg-background p-2 rounded overflow-x-auto">
+                                    {JSON.stringify(evt, null, 2)}
+                                  </pre>
+                                </CollapsibleContent>
+                              </div>
+                            </Collapsible>
+                          </div>
                         </div>
-                        <div className="text-muted-foreground">
-                          {formatTime(evt.ts)}
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Action Links */}
               <div className="space-y-2 pt-4 border-t">
@@ -215,23 +291,24 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                   {JSON.stringify(selectedEvent, null, 2)}
                 </pre>
               </details>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="h-full flex items-center justify-center">
-            <div className="text-center max-w-md">
-              <p className="text-sm text-muted-foreground mb-4">
-                {activeVTID 
-                  ? `Select an event from the Live Console to view details`
-                  : "Click a VTID in the Live Console to open its details"}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                The card view will show event timeline, status, logs, and actionable links.
-              </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="h-full flex items-center justify-center">
+              <div className="text-center max-w-md">
+                <p className="text-sm text-muted-foreground mb-4">
+                  {activeVTID 
+                    ? `Select an event from the Live Console to view details`
+                    : "Click a VTID in the Live Console to open its details"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  The card view will show event timeline, status, logs, and actionable links.
+                </p>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </ScrollArea>
 
       {/* Footer */}
       <div className="px-3 py-1.5 border-t bg-muted/30">
@@ -240,5 +317,6 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
         </p>
       </div>
     </div>
+  </TooltipProvider>
   );
 }
