@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
@@ -8,14 +9,18 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Plus, Plane, Users, Activity } from "lucide-react";
 import { devCommandNavigation } from "@/config/dev-navigation";
-import { LiveConsoleTab } from "@/components/dev/LiveConsoleTab";
 import { ActiveVTIDChip } from "@/components/dev/ActiveVTIDChip";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { CommandCenterView } from "@/components/dev/CommandCenterView";
+import { OpenTasksSplitView } from "@/components/dev/OpenTasksSplitView";
 
 export default function DevCommand() {
   const location = useLocation();
   const activeTab = location.pathname === "/dev/command" 
     ? "live-console" 
     : location.pathname.split("/").pop() || "live-console";
+  
+  const [nestedTab, setNestedTab] = useState("command-center");
 
   return (
     <>
@@ -62,7 +67,22 @@ export default function DevCommand() {
           </UtilityActionButton>
 
           {/* Content based on active tab */}
-          {activeTab === "live-console" && <LiveConsoleTab />}
+          {activeTab === "live-console" && (
+            <SplitBar value={nestedTab} onValueChange={setNestedTab}>
+              <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
+                <SplitBarTrigger value="command-center">Command Center</SplitBarTrigger>
+                <SplitBarTrigger value="open-tasks">Open Tasks</SplitBarTrigger>
+              </SplitBarList>
+
+              <SplitBarContent value="command-center">
+                <CommandCenterView />
+              </SplitBarContent>
+
+              <SplitBarContent value="open-tasks">
+                <OpenTasksSplitView />
+              </SplitBarContent>
+            </SplitBar>
+          )}
           
           {activeTab === "tasks" && (
             <div className="grid grid-cols-12 gap-6">
