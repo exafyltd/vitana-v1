@@ -10,9 +10,12 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { CheckCircle, Clock, FileCheck, Filter } from "lucide-react";
 import { devCommandNavigation } from "@/config/dev-navigation";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function CommandApprovals() {
   const [activeTab, setActiveTab] = useState("pending");
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   return (
     <>
@@ -43,6 +46,7 @@ export default function CommandApprovals() {
               <Filter className="w-4 h-4 mr-2" />
               Filter
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
@@ -78,6 +82,11 @@ export default function CommandApprovals() {
           </SplitBar>
         </div>
       </div>
+
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
+      />
     </>
   );
 }

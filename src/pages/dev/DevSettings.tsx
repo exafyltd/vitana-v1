@@ -13,9 +13,12 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Key, Flag, Users, Plus } from "lucide-react";
 import { devSettingsNavigation } from "@/config/dev-navigation";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function DevSettings() {
   const [activeTab, setActiveTab] = useState("environment");
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   const environmentContent = (
     <Card>
@@ -121,6 +124,7 @@ export default function DevSettings() {
               <Plus className="w-4 h-4 mr-2" />
               Add Config
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}
@@ -162,6 +166,11 @@ export default function DevSettings() {
           </SplitBar>
         </div>
       </div>
+
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
+      />
     </>
   );
 }

@@ -13,10 +13,13 @@ import { ExecutionLogsList } from "@/components/dev/ExecutionLogsList";
 import { TimelineView } from "@/components/dev/TimelineView";
 import { FilteredView } from "@/components/dev/FilteredView";
 import { ExportLogsModal } from "@/components/dev/modals/ExportLogsModal";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function CommandHistory() {
   const [activeTab, setActiveTab] = useState("logs");
   const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   return (
     <>
@@ -47,6 +50,7 @@ export default function CommandHistory() {
               <Plus className="w-4 h-4 mr-2" />
               Export Logs
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
@@ -75,6 +79,10 @@ export default function CommandHistory() {
       <ExportLogsModal 
         open={exportModalOpen} 
         onOpenChange={setExportModalOpen}
+      />
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
       />
     </>
   );

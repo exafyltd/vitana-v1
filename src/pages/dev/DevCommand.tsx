@@ -18,6 +18,8 @@ import { AutopilotRunsView } from "@/components/dev/AutopilotRunsView";
 import { CreateCommandModal } from "@/components/dev/modals/CreateCommandModal";
 import { CreateTaskModal } from "@/components/dev/modals/CreateTaskModal";
 import { TriggerRunModal } from "@/components/dev/modals/TriggerRunModal";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function DevCommand() {
   const location = useLocation();
@@ -29,6 +31,7 @@ export default function DevCommand() {
   const [createCommandOpen, setCreateCommandOpen] = useState(false);
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
   const [triggerRunOpen, setTriggerRunOpen] = useState(false);
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   const getButtonLabel = () => {
     switch (activeTab) {
@@ -99,6 +102,7 @@ export default function DevCommand() {
               <Plus className="w-4 h-4 mr-2" />
               {getButtonLabel()}
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Content based on active tab */}
@@ -153,6 +157,10 @@ export default function DevCommand() {
       <TriggerRunModal 
         open={triggerRunOpen} 
         onOpenChange={setTriggerRunOpen}
+      />
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
       />
     </>
   );

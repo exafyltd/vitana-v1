@@ -10,9 +10,12 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Brain, Cpu, Shield, TestTube, Users, Plus } from "lucide-react";
 import { devAgentsNavigation } from "@/config/dev-navigation";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function DevAgents() {
   const [activeTab, setActiveTab] = useState("planner");
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   return (
     <>
@@ -46,6 +49,7 @@ export default function DevAgents() {
               <Plus className="w-4 h-4 mr-2" />
               New Agent
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}
@@ -100,6 +104,11 @@ export default function DevAgents() {
           </SplitBar>
         </div>
       </div>
+
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
+      />
     </>
   );
 }

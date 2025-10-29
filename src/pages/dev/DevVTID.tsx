@@ -11,9 +11,12 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Plus, BarChart3, Search } from "lucide-react";
 import { devVTIDNavigation } from "@/config/dev-navigation";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function DevVTID() {
   const [activeTab, setActiveTab] = useState("registry");
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   return (
     <>
@@ -47,6 +50,7 @@ export default function DevVTID() {
               <Plus className="w-4 h-4 mr-2" />
               Issue VTID
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}
@@ -88,6 +92,11 @@ export default function DevVTID() {
           </SplitBar>
         </div>
       </div>
+
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
+      />
     </>
   );
 }

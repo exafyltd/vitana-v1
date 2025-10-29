@@ -10,9 +10,12 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Package, TestTube2, Rocket, Undo2, Plus } from "lucide-react";
 import { devPipelinesNavigation } from "@/config/dev-navigation";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function DevPipelines() {
   const [activeTab, setActiveTab] = useState("builds");
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   return (
     <>
@@ -46,6 +49,7 @@ export default function DevPipelines() {
               <Plus className="w-4 h-4 mr-2" />
               New Pipeline
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}
@@ -91,6 +95,11 @@ export default function DevPipelines() {
           </SplitBar>
         </div>
       </div>
+
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
+      />
     </>
   );
 }

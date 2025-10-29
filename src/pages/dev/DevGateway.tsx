@@ -10,9 +10,12 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Globe, Activity, Smartphone, Webhook, Plus } from "lucide-react";
 import { devGatewayNavigation } from "@/config/dev-navigation";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function DevGateway() {
   const [activeTab, setActiveTab] = useState("endpoints");
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   return (
     <>
@@ -46,6 +49,7 @@ export default function DevGateway() {
               <Plus className="w-4 h-4 mr-2" />
               New Endpoint
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}
@@ -91,6 +95,11 @@ export default function DevGateway() {
           </SplitBar>
         </div>
       </div>
+
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
+      />
     </>
   );
 }

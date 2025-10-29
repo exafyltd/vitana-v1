@@ -13,9 +13,12 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Activity, Bell, Heart, Plus } from "lucide-react";
 import { devDashboardNavigation } from "@/config/dev-navigation";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function DevDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
   const [tenantFilter, setTenantFilter] = useState(() => {
     return localStorage.getItem('dev_dashboard_tenant') || 'system';
   });
@@ -67,6 +70,7 @@ export default function DevDashboard() {
               <Plus className="w-4 h-4 mr-2" />
               Action
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar (sub-tabs) */}
@@ -162,6 +166,11 @@ export default function DevDashboard() {
           </SplitBar>
         </div>
       </div>
+
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
+      />
     </>
   );
 }

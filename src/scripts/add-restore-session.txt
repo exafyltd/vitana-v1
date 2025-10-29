@@ -1,0 +1,26 @@
+Files successfully updated with RestoreSessionButton:
+- DevDashboard.tsx ✓
+- DevCommand.tsx ✓
+- DevDocs.tsx ✓
+- DevAgents.tsx ✓
+- command/History.tsx ✓
+- command/Approvals.tsx ✓
+
+Remaining files to update (will do in next batch):
+- DevCICD.tsx
+- DevGateway.tsx
+- DevObservability.tsx
+- DevPipelines.tsx
+- DevVTID.tsx
+- DevOasis.tsx
+- DevSettings.tsx
+- command/Compose.tsx
+- dashboard/* (AIFeed, Alerts, SystemHealth)
+- agents/* (CrewTemplate, QATest, Validator, Worker)
+- cicd/* (Artifacts, Matrix, Runs)
+- gateway/* (MobileLinks, Requests, Webhooks)
+- observability/* (Metrics, Traces, Costs, Logs, Health)
+- pipelines/* (Tests, DataFlow, Jobs, Schedules, Sources)
+- vtid/* (Issue, Search, Mappings, Registry)
+- oasis/* (State, Ledger, Policies)
+- settings/* (Flags, Tenants)

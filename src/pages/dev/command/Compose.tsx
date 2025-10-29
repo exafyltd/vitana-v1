@@ -10,9 +10,12 @@ import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { FileEdit, Code, Zap, CheckCircle } from "lucide-react";
 import { devCommandNavigation } from "@/config/dev-navigation";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function CommandCompose() {
   const [activeTab, setActiveTab] = useState("editor");
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   return (
     <>
@@ -43,6 +46,7 @@ export default function CommandCompose() {
               <CheckCircle className="w-4 h-4 mr-2" />
               Validate
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
@@ -78,6 +82,11 @@ export default function CommandCompose() {
           </SplitBar>
         </div>
       </div>
+
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
+      />
     </>
   );
 }

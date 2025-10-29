@@ -21,6 +21,8 @@ import { NewCatalogEntryModal } from "@/components/dev/modals/NewCatalogEntryMod
 import { ImportScreenListModal } from "@/components/dev/modals/ImportScreenListModal";
 import { UploadFrontpageModal } from "@/components/dev/modals/UploadFrontpageModal";
 import { AddRoleViewModal } from "@/components/dev/modals/AddRoleViewModal";
+import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
+import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
 
 export default function DevDocs() {
   const location = useLocation();
@@ -33,6 +35,7 @@ export default function DevDocs() {
   const [importScreenOpen, setImportScreenOpen] = useState(false);
   const [uploadFrontpageOpen, setUploadFrontpageOpen] = useState(false);
   const [addRoleViewOpen, setAddRoleViewOpen] = useState(false);
+  const [restoreSessionOpen, setRestoreSessionOpen] = useState(false);
 
   const getButtonLabel = () => {
     switch (activeTab) {
@@ -119,6 +122,7 @@ export default function DevDocs() {
               <Plus className="w-4 h-4 mr-2" />
               {getButtonLabel()}
             </Button>
+            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Content based on active tab */}
@@ -150,6 +154,10 @@ export default function DevDocs() {
       <AddRoleViewModal 
         open={addRoleViewOpen} 
         onOpenChange={setAddRoleViewOpen}
+      />
+      <RestoreSessionModal 
+        open={restoreSessionOpen} 
+        onOpenChange={setRestoreSessionOpen}
       />
     </>
   );
