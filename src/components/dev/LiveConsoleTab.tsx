@@ -1,5 +1,5 @@
 import { SplitScreen } from "@/components/ui/split-screen";
-import { TickerFeed } from "./TickerFeed";
+import { TickerStream } from "./TickerStream";
 import { CommandChat } from "./CommandChat";
 import { useSplitFocus } from "@/hooks/dev/useSplitFocus";
 import { Card } from "@/components/ui/card";
@@ -13,7 +13,7 @@ export function LiveConsoleTab() {
   };
 
   const leftPanel = (
-    <TickerFeed
+    <TickerStream
       onVTIDClick={handleTickerVTIDClick}
       isFocused={focusedPane === 'left'}
       hasUnread={hasUnreadLeft}

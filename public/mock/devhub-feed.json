@@ -1,0 +1,179 @@
+{
+  "events": [
+    {
+      "ts": "2025-10-29T10:20:00Z",
+      "vtid": "DEV-CICDL-0031",
+      "layer": "CICDL",
+      "module": "CORE",
+      "source": "github.actions",
+      "kind": "workflow_run",
+      "status": "success",
+      "title": "CICDL-CORE-LINT-VTID",
+      "ref": "vt/DEV-CICDL-0031-workflow-identity",
+      "link": "https://github.com/exafyltd/vitana-platform/actions/runs/123456789"
+    },
+    {
+      "ts": "2025-10-29T10:18:45Z",
+      "vtid": "DEV-OASIS-0042",
+      "layer": "OASIS",
+      "module": "EVENTS",
+      "source": "oasis.events",
+      "kind": "event",
+      "status": "in_progress",
+      "title": "OASIS-EVENTS-WORKFLOW-SYNC",
+      "ref": "evt/workflow-sync-batch-1",
+      "link": "https://console.cloud.google.com/run/detail/us-central1/oasis-events"
+    },
+    {
+      "ts": "2025-10-29T10:17:30Z",
+      "vtid": "DEV-CICDL-0031",
+      "layer": "CICDL",
+      "module": "DEPLOY",
+      "source": "gcp.deploy",
+      "kind": "deploy",
+      "status": "success",
+      "title": "CICDL-DEPLOY-GATEWAY",
+      "ref": "deploy/gateway-v2.1.0",
+      "link": "https://console.cloud.google.com/run/detail/us-central1/vitana-gateway"
+    },
+    {
+      "ts": "2025-10-29T10:15:22Z",
+      "vtid": "DEV-AGENT-0055",
+      "layer": "AGENT",
+      "module": "PING",
+      "source": "agent.ping",
+      "kind": "ping",
+      "status": "info",
+      "title": "AGENT-PING-HEALTH-CHECK",
+      "ref": "ping/agent-health-1"
+    },
+    {
+      "ts": "2025-10-29T10:14:10Z",
+      "vtid": "DEV-CICDL-0031",
+      "layer": "CICDL",
+      "module": "TEST",
+      "source": "github.actions",
+      "kind": "workflow_run",
+      "status": "failure",
+      "title": "CICDL-TEST-INTEGRATION",
+      "ref": "vt/DEV-CICDL-0031-test-run",
+      "link": "https://github.com/exafyltd/vitana-platform/actions/runs/123456790"
+    },
+    {
+      "ts": "2025-10-29T10:12:55Z",
+      "vtid": "DEV-OASIS-0042",
+      "layer": "OASIS",
+      "module": "CORE",
+      "source": "oasis.events",
+      "kind": "event",
+      "status": "success",
+      "title": "OASIS-CORE-EVENT-PROCESSED",
+      "ref": "evt/core-process-batch-5"
+    },
+    {
+      "ts": "2025-10-29T10:11:40Z",
+      "vtid": "DEV-GATEWAY-0028",
+      "layer": "GATEWAY",
+      "module": "API",
+      "source": "gcp.deploy",
+      "kind": "deploy",
+      "status": "queued",
+      "title": "GATEWAY-API-DEPLOY-PENDING",
+      "ref": "deploy/api-v1.5.2",
+      "link": "https://console.cloud.google.com/run/detail/us-central1/vitana-api"
+    },
+    {
+      "ts": "2025-10-29T10:10:25Z",
+      "vtid": "DEV-CICDL-0031",
+      "layer": "CICDL",
+      "module": "BUILD",
+      "source": "github.actions",
+      "kind": "workflow_run",
+      "status": "in_progress",
+      "title": "CICDL-BUILD-DOCKER-IMAGE",
+      "ref": "vt/DEV-CICDL-0031-build",
+      "link": "https://github.com/exafyltd/vitana-platform/actions/runs/123456791"
+    },
+    {
+      "ts": "2025-10-29T10:09:15Z",
+      "vtid": "DEV-MONITOR-0067",
+      "layer": "MONITOR",
+      "module": "METRICS",
+      "source": "agent.ping",
+      "kind": "ping",
+      "status": "success",
+      "title": "MONITOR-METRICS-COLLECTED",
+      "ref": "ping/metrics-batch-12"
+    },
+    {
+      "ts": "2025-10-29T10:08:00Z",
+      "vtid": "DEV-OASIS-0042",
+      "layer": "OASIS",
+      "module": "SYNC",
+      "source": "oasis.events",
+      "kind": "event",
+      "status": "failure",
+      "title": "OASIS-SYNC-RETRY-REQUIRED",
+      "ref": "evt/sync-failed-3",
+      "link": "https://console.cloud.google.com/run/detail/us-central1/oasis-sync"
+    },
+    {
+      "ts": "2025-10-29T10:06:45Z",
+      "vtid": "DEV-CICDL-0031",
+      "layer": "CICDL",
+      "module": "CORE",
+      "source": "github.actions",
+      "kind": "workflow_run",
+      "status": "success",
+      "title": "CICDL-CORE-TYPE-CHECK",
+      "ref": "vt/DEV-CICDL-0031-typecheck",
+      "link": "https://github.com/exafyltd/vitana-platform/actions/runs/123456792"
+    },
+    {
+      "ts": "2025-10-29T10:05:30Z",
+      "vtid": "DEV-GATEWAY-0028",
+      "layer": "GATEWAY",
+      "module": "HEALTH",
+      "source": "agent.ping",
+      "kind": "ping",
+      "status": "info",
+      "title": "GATEWAY-HEALTH-OK",
+      "ref": "ping/gateway-health-8"
+    },
+    {
+      "ts": "2025-10-29T10:04:20Z",
+      "vtid": "DEV-DEPLOY-0073",
+      "layer": "DEPLOY",
+      "module": "ROLLOUT",
+      "source": "gcp.deploy",
+      "kind": "deploy",
+      "status": "success",
+      "title": "DEPLOY-ROLLOUT-COMPLETE",
+      "ref": "deploy/rollout-prod-5",
+      "link": "https://console.cloud.google.com/run/detail/us-central1/vitana-prod"
+    },
+    {
+      "ts": "2025-10-29T10:03:05Z",
+      "vtid": "DEV-OASIS-0042",
+      "layer": "OASIS",
+      "module": "EVENTS",
+      "source": "oasis.events",
+      "kind": "event",
+      "status": "in_progress",
+      "title": "OASIS-EVENTS-PROCESSING",
+      "ref": "evt/process-queue-9"
+    },
+    {
+      "ts": "2025-10-29T10:01:50Z",
+      "vtid": "DEV-CICDL-0031",
+      "layer": "CICDL",
+      "module": "SECURITY",
+      "source": "github.actions",
+      "kind": "workflow_run",
+      "status": "success",
+      "title": "CICDL-SECURITY-SCAN-PASS",
+      "ref": "vt/DEV-CICDL-0031-security",
+      "link": "https://github.com/exafyltd/vitana-platform/actions/runs/123456793"
+    }
+  ]
+}

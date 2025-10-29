@@ -39,3 +39,19 @@ export interface SplitFocusState {
   hasUnreadRight: boolean;
   markRead: (pane: 'left' | 'right') => void;
 }
+
+export interface TickerEvent {
+  ts: string;
+  vtid: string;
+  layer: string;
+  module: string;
+  source: "oasis.events" | "github.actions" | "gcp.deploy" | "agent.ping";
+  kind: "workflow_run" | "event" | "deploy" | "ping";
+  status: "queued" | "in_progress" | "success" | "failure" | "info";
+  title: string;
+  ref?: string;
+  link?: string;
+}
+
+export type TickerConnectionState = "LIVE" | "OFFLINE";
+export type TickerScope = "ALL" | string;
