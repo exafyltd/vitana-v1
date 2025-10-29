@@ -6,8 +6,15 @@ import {
 } from "@/components/ui/tooltip";
 
 const GoogleCloudIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 5.5L9.5 8H6v3.5L3.5 14 6 16.5V20h3.5L12 22.5l2.5-2.5H18v-3.5l2.5-2.5-2.5-2.5V8h-3.5L12 5.5zm0 2.12l1.38 1.38H16v2.62l1.88 1.88L16 15.38V18h-2.62L12 19.88 10.62 18H8v-2.62L6.12 13.5 8 11.62V9h2.62L12 7.62z"/>
+  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Blue top segment */}
+    <path d="M12 3L15.5 5.5V8.5L12 11L8.5 8.5V5.5L12 3Z" fill="#4285F4"/>
+    {/* Red right segment */}
+    <path d="M15.5 8.5L19 11L19 15L15.5 17.5L12 15V11L15.5 8.5Z" fill="#EA4335"/>
+    {/* Yellow left segment */}
+    <path d="M8.5 8.5L12 11V15L8.5 17.5L5 15V11L8.5 8.5Z" fill="#FBBC05"/>
+    {/* Gray bottom segment */}
+    <path d="M12 15L15.5 17.5L12 21L8.5 17.5L12 15Z" fill="#AECBFA"/>
   </svg>
 );
 
