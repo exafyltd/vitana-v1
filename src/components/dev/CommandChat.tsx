@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,8 +24,35 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
       timestamp: new Date(),
     },
   ]);
-  const { activeVTID } = useActiveVTID();
+  const { activeVTID, setActiveVTID } = useActiveVTID();
   const { toast } = useToast();
+
+  // Listen for VTID selection from DevHubFeed
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const { vtid, event } = customEvent.detail;
+      
+      // Show a message with the event details
+      const detailMessage: CommandMessage = {
+        id: Date.now().toString(),
+        type: 'system',
+        content: `Selected VTID: ${vtid}\n\nEvent Details:\n${event.title}\nLayer: ${event.layer}-${event.module}\nStatus: ${event.status}\nTimestamp: ${event.ts}${event.ref ? `\nRef: ${event.ref}` : ''}`,
+        timestamp: new Date(),
+        vtid,
+      };
+      
+      setMessages(prev => [...prev, detailMessage]);
+      
+      toast({
+        title: "VTID Selected",
+        description: `Loaded details for ${vtid}`,
+      });
+    };
+    
+    window.addEventListener("vitana:openChat", handler);
+    return () => window.removeEventListener("vitana:openChat", handler);
+  }, [toast]);
 
   const handleSend = () => {
     if (!inputValue.trim()) return;

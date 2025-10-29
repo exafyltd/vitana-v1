@@ -1,5 +1,5 @@
 import { SplitScreen } from "@/components/ui/split-screen";
-import { TickerStream } from "./TickerStream";
+import { DevHubFeed } from "./DevHubFeed";
 import { CommandChat } from "./CommandChat";
 import { useSplitFocus } from "@/hooks/dev/useSplitFocus";
 import { Card } from "@/components/ui/card";
@@ -13,7 +13,7 @@ export function LiveConsoleTab() {
   };
 
   const leftPanel = (
-    <TickerStream
+    <DevHubFeed
       onVTIDClick={handleTickerVTIDClick}
       isFocused={focusedPane === 'left'}
       hasUnread={hasUnreadLeft}
@@ -41,7 +41,7 @@ export function LiveConsoleTab() {
       </div>
       <div className="p-2 border-t bg-muted/30 text-center">
         <p className="text-xs text-muted-foreground">
-          Keyboard shortcuts: <kbd className="px-1 py-0.5 bg-background border rounded text-xs">1</kbd> Focus Ticker • <kbd className="px-1 py-0.5 bg-background border rounded text-xs">2</kbd> Focus Chat • <kbd className="px-1 py-0.5 bg-background border rounded text-xs">←</kbd> <kbd className="px-1 py-0.5 bg-background border rounded text-xs">→</kbd> Switch
+          Keyboard shortcuts: <kbd className="px-1 py-0.5 bg-background border rounded text-xs">1</kbd> Focus Feed • <kbd className="px-1 py-0.5 bg-background border rounded text-xs">2</kbd> Focus Chat • <kbd className="px-1 py-0.5 bg-background border rounded text-xs">←</kbd> <kbd className="px-1 py-0.5 bg-background border rounded text-xs">→</kbd> Switch
         </p>
       </div>
     </Card>
