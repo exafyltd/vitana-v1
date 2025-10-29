@@ -68,12 +68,20 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
     const es = new EventSource(url);
     let connected = false;
 
-    const onTicker = (e: MessageEvent) => {
+    const onMessage = (e: MessageEvent) => {
       try {
-        const data = JSON.parse(e.data) as TickerEvent;
+        const data = JSON.parse(e.data);
+        
+        // Skip heartbeat messages
+        if (data.type === "heartbeat") {
+          return;
+        }
+        
+        // Process actual ticker events
+        const event = data as TickerEvent;
         connected = true;
         setConnectionState("LIVE");
-        setEvents(prev => [data, ...prev].slice(0, 200));
+        setEvents(prev => [event, ...prev].slice(0, 200));
       } catch (err) {
         console.error("Failed to parse ticker event:", err);
       }
@@ -85,7 +93,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
       }
     };
 
-    es.addEventListener("ticker", onTicker);
+    es.addEventListener("message", onMessage);
     es.addEventListener("error", onError);
 
     // Fallback to mock data after 1s
