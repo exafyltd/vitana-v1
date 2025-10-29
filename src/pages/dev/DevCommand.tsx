@@ -23,9 +23,6 @@ export default function DevCommand() {
         canonical={window.location.href}
       />
 
-      {/* Horizontal Navigation */}
-      <SubNavigation items={devCommandNavigation} />
-
       <div className="p-6 pb-24 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           
