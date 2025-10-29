@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
 import { DevEmptyState } from "@/components/dev/DevEmptyState";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -12,7 +12,10 @@ import { LiveConsoleTab } from "@/components/dev/LiveConsoleTab";
 import { ActiveVTIDChip } from "@/components/dev/ActiveVTIDChip";
 
 export default function DevCommand() {
-  const [activeTab, setActiveTab] = useState("live-console");
+  const location = useLocation();
+  const activeTab = location.pathname === "/dev/command" 
+    ? "live-console" 
+    : location.pathname.split("/").pop() || "live-console";
 
   return (
     <>
@@ -24,10 +27,7 @@ export default function DevCommand() {
 
       {/* Main Navigation */}
       <SubNavigation 
-        items={devCommandNavigation.map(item => ({
-          ...item,
-          path: '#' // Use hash for state-based navigation
-        }))}
+        items={devCommandNavigation}
       />
 
       <div className="p-6 pb-24 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
