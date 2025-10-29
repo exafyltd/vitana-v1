@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
 import { Pause, Play } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface FeedEvent {
   ts: string;
@@ -20,7 +21,7 @@ interface FeedEvent {
   link?: string;
 }
 
-type ConnectionState = "LIVE" | "OFFLINE";
+type ConnectionState = "CONNECTING" | "LIVE" | "MOCK MODE";
 type ScopeFilter = "ALL" | string;
 
 interface DevHubFeedProps {
@@ -49,19 +50,22 @@ const formatTime = (iso: string) => {
 
 export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }: DevHubFeedProps) {
   const [events, setEvents] = useState<FeedEvent[]>([]);
-  const [connectionState, setConnectionState] = useState<ConnectionState>("OFFLINE");
+  const [connectionState, setConnectionState] = useState<ConnectionState>("CONNECTING");
   const [scope, setScope] = useState<ScopeFilter>("ALL");
   const [filterQuery, setFilterQuery] = useState("");
   const [paused, setPaused] = useState(false);
   const [visibleCount, setVisibleCount] = useState(200);
+  const [highlightedVTID, setHighlightedVTID] = useState<string | null>(null);
   const { setActiveVTID } = useActiveVTID();
+  const { toast } = useToast();
   
-  const currentVTID = "DEV-CICDL-0031"; // Can be made dynamic later
+  const currentVTID = "DEV-CICDL-0031";
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // SSE connection with fallback
   useEffect(() => {
-    const sseBaseUrl = import.meta.env.VITE_DEVHUB_SSE_BASE || "https://vitana-gateway-86804897789.us-central1.run.app";
+    setConnectionState("CONNECTING");
+    const sseBaseUrl = "https://vitana-gateway-86804897789.us-central1.run.app";
     const vtidParam = scope === "ALL" ? "ALL" : currentVTID;
     const url = `${sseBaseUrl}/api/v1/devhub/feed?vtid=${vtidParam}`;
     
@@ -92,7 +96,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
 
     const onError = () => {
       if (connected) {
-        setConnectionState("OFFLINE");
+        setConnectionState("CONNECTING");
       }
     };
 
@@ -106,10 +110,15 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
           const response = await fetch("/mock/devhub-feed.json");
           const mockData = await response.json();
           setEvents(mockData.events || []);
-          setConnectionState("OFFLINE");
+          setConnectionState("MOCK MODE");
+          toast({
+            title: "Connection Failed",
+            description: "Using mock data. Live feed unavailable.",
+            variant: "destructive",
+          });
         } catch (err) {
           console.error("Failed to load mock data:", err);
-          setConnectionState("OFFLINE");
+          setConnectionState("MOCK MODE");
         }
       }
     }, 1000);
@@ -121,10 +130,13 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
   }, [scope, paused, currentVTID]);
 
   const filteredEvents = useMemo(() => {
-    const needle = filterQuery.trim().toLowerCase();
-    if (!needle) return events;
+    // Filter out invalid events
+    const validEvents = events.filter(e => e.title && e.ts && e.vtid);
     
-    return events.filter(e =>
+    const needle = filterQuery.trim().toLowerCase();
+    if (!needle) return validEvents;
+    
+    return validEvents.filter(e =>
       (e.title || "").toLowerCase().includes(needle) ||
       (e.ref || "").toLowerCase().includes(needle) ||
       (e.source || "").toLowerCase().includes(needle) ||
@@ -141,6 +153,10 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
       label: event.vtid,
       tenant: 'system',
     });
+    
+    // Highlight all events with same VTID
+    setHighlightedVTID(event.vtid);
+    setTimeout(() => setHighlightedVTID(null), 3000);
     
     // Dispatch global event for Chat to listen
     window.dispatchEvent(new CustomEvent("vitana:openChat", {
@@ -169,13 +185,19 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                 •
               </Badge>
             )}
-            {connectionState === "LIVE" ? (
+            {connectionState === "LIVE" && (
               <Badge variant="default" className="text-xs bg-green-500/20 text-green-700 dark:text-green-400 border-green-500/30">
                 LIVE
               </Badge>
-            ) : (
-              <Badge variant="secondary" className="text-xs bg-red-500/20 text-red-700 dark:text-red-400 border-red-500/30">
-                OFFLINE (MOCK)
+            )}
+            {connectionState === "CONNECTING" && (
+              <Badge variant="secondary" className="text-xs bg-amber-500/20 text-amber-700 dark:text-amber-400 border-amber-500/30">
+                CONNECTING...
+              </Badge>
+            )}
+            {connectionState === "MOCK MODE" && (
+              <Badge variant="secondary" className="text-xs bg-muted text-muted-foreground border-border">
+                MOCK MODE
               </Badge>
             )}
           </div>
@@ -248,53 +270,60 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             {shownEvents.map((event, i) => (
               <div
                 key={`${event.vtid}-${event.ts}-${i}`}
-                className="px-3 py-1.5 hover:bg-accent/50 transition-colors"
+                className={cn(
+                  "px-3 py-1 hover:bg-accent/50 transition-all",
+                  highlightedVTID === event.vtid && "bg-primary/10 border-l-2 border-l-primary"
+                )}
               >
-                <div className="grid grid-cols-[70px_1fr_auto] items-center gap-2">
+                <div className="grid grid-cols-[60px_1fr] items-start gap-3">
                   {/* Timestamp */}
-                  <div className="text-[10px] text-muted-foreground font-mono">
+                  <div className="text-[10px] text-muted-foreground font-mono pt-0.5">
                     {formatTime(event.ts)}
                   </div>
 
                   {/* Event Details */}
-                  <div className="min-w-0 flex items-center gap-2 text-[11px]">
-                    {/* Clickable VTID */}
-                    <button
-                      onClick={() => handleVTIDClick(event)}
-                      className="font-bold text-foreground hover:text-primary underline underline-offset-2 transition-colors shrink-0"
-                    >
-                      {event.vtid}
-                    </button>
-                    <span className="text-muted-foreground">•</span>
-                    <span className="uppercase text-muted-foreground shrink-0">{event.layer}-{event.module}</span>
-                    <span className="font-semibold truncate">{event.title}</span>
-                  </div>
-
-                  {/* Status Badge */}
-                  <div className="flex items-center">
-                    {event.link ? (
-                      <a
-                        href={event.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={cn(
-                          "text-[9px] px-1.5 py-0.5 rounded border uppercase font-medium transition-all hover:scale-105 whitespace-nowrap",
-                          getStatusColor(event.status)
-                        )}
-                        onClick={(e) => e.stopPropagation()}
+                  <div className="min-w-0 space-y-0.5">
+                    {/* Title + Status */}
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-[12px] leading-tight">{event.title}</span>
+                      {event.link ? (
+                        <a
+                          href={event.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={cn(
+                            "text-[9px] px-1.5 py-0.5 rounded border uppercase font-bold transition-all hover:scale-105 whitespace-nowrap",
+                            getStatusColor(event.status)
+                          )}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {event.status}
+                        </a>
+                      ) : (
+                        <span
+                          className={cn(
+                            "text-[9px] px-1.5 py-0.5 rounded border uppercase font-bold whitespace-nowrap",
+                            getStatusColor(event.status)
+                          )}
+                        >
+                          {event.status}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* Layer, Module, VTID */}
+                    <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                      <span className="uppercase">{event.layer}</span>
+                      <span>•</span>
+                      <span className="uppercase">{event.module}</span>
+                      <span>•</span>
+                      <button
+                        onClick={() => handleVTIDClick(event)}
+                        className="font-semibold text-foreground hover:text-primary underline underline-offset-2 transition-colors"
                       >
-                        {event.status}
-                      </a>
-                    ) : (
-                      <span
-                        className={cn(
-                          "text-[9px] px-1.5 py-0.5 rounded border uppercase font-medium opacity-70 whitespace-nowrap",
-                          getStatusColor(event.status)
-                        )}
-                      >
-                        {event.status}
-                      </span>
-                    )}
+                        {event.vtid}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

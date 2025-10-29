@@ -27,10 +27,11 @@ interface FeedEvent {
 export function CommandChat({ isFocused = true, hasUnread = false }: CommandChatProps) {
   const { activeVTID, setActiveVTID } = useActiveVTID();
   const [selectedEvent, setSelectedEvent] = useState<FeedEvent | null>(null);
+  const [vtidTimeline, setVtidTimeline] = useState<FeedEvent[]>([]);
 
   // Listen for VTID selection from DevHubFeed
   useEffect(() => {
-    const handler = (e: Event) => {
+    const handler = async (e: Event) => {
       const customEvent = e as CustomEvent;
       const { vtid, event } = customEvent.detail;
       
@@ -42,6 +43,23 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
         });
         
         setSelectedEvent(event || null);
+        
+        // Fetch timeline for this VTID
+        try {
+          const response = await fetch(
+            `https://vitana-gateway-86804897789.us-central1.run.app/api/v1/oasis/events?vtid=${vtid}&limit=50`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setVtidTimeline(data.events || []);
+          } else {
+            // Fallback: show only the clicked event
+            setVtidTimeline(event ? [event] : []);
+          }
+        } catch (err) {
+          console.error("Failed to fetch VTID timeline:", err);
+          setVtidTimeline(event ? [event] : []);
+        }
       }
     };
     
@@ -136,6 +154,28 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                   {selectedEvent.source} • {selectedEvent.kind}
                 </span>
               </div>
+
+              {/* Timeline View */}
+              {vtidTimeline.length > 1 && (
+                <div className="space-y-2 pt-4 border-t">
+                  <h4 className="text-sm font-semibold mb-2">Event Timeline ({vtidTimeline.length} events)</h4>
+                  <div className="space-y-1 max-h-48 overflow-y-auto">
+                    {vtidTimeline.map((evt, idx) => (
+                      <div key={idx} className="text-xs p-2 bg-muted/50 rounded border border-border">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-semibold">{evt.title}</span>
+                          <Badge className={getStatusColor(evt.status)} variant="outline">
+                            {evt.status}
+                          </Badge>
+                        </div>
+                        <div className="text-muted-foreground">
+                          {formatTime(evt.ts)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Action Links */}
               <div className="space-y-2 pt-4 border-t">
