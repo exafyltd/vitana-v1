@@ -1,4 +1,4 @@
-import { RotateCcw } from "lucide-react";
+import { RotateCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -18,11 +18,11 @@ export function RestoreSessionButton({ onClick }: RestoreSessionButtonProps) {
         <TooltipTrigger asChild>
           <Button
             size="sm"
-            variant="outline"
+            variant="ghost"
             onClick={onClick}
-            className="h-9 w-9 p-0 bg-white/50 dark:bg-card/50 backdrop-blur-sm hover:bg-white/80 dark:hover:bg-card/80 transition-all duration-200"
+            className="h-9 w-9 p-0 hover:opacity-70 transition-opacity"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCw className="h-4 w-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
