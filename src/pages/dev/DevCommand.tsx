@@ -11,7 +11,7 @@ import { Plus, Plane, Users, Activity } from "lucide-react";
 import { devCommandNavigation } from "@/config/dev-navigation";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { CommandCenterView } from "@/components/dev/CommandCenterView";
-import { OpenTasksSplitView } from "@/components/dev/OpenTasksSplitView";
+import { OpenTasksList } from "@/components/dev/OpenTasksList";
 
 export default function DevCommand() {
   const location = useLocation();
@@ -69,7 +69,7 @@ export default function DevCommand() {
               </SplitBarContent>
 
               <SplitBarContent value="open-tasks">
-                <OpenTasksSplitView />
+                <OpenTasksList />
               </SplitBarContent>
             </SplitBar>
           )}
