@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
-import { DevEmptyState } from "@/components/dev/DevEmptyState";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Button } from "@/components/ui/button";
 import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
-import { ScrollText, Clock, Archive, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import { devCommandNavigation } from "@/config/dev-navigation";
+import { ExecutionLogsList } from "@/components/dev/ExecutionLogsList";
+import { TimelineView } from "@/components/dev/TimelineView";
+import { FilteredView } from "@/components/dev/FilteredView";
 
 export default function CommandHistory() {
   const [activeTab, setActiveTab] = useState("logs");
@@ -28,7 +30,7 @@ export default function CommandHistory() {
           
           <DevStandardHeader 
             title="Command History"
-            description="Browse the history of executed commands and their results"
+            description="Browse the history of executed commands and review their outcomes."
             emoji="📜"
           />
 
@@ -51,27 +53,15 @@ export default function CommandHistory() {
             </SplitBarList>
 
             <SplitBarContent value="logs" className="mt-6">
-              <DevEmptyState 
-                title="Execution Logs" 
-                description="View detailed logs of all executed commands with status and output."
-                icon={ScrollText}
-              />
+              <ExecutionLogsList />
             </SplitBarContent>
 
             <SplitBarContent value="timeline" className="mt-6">
-              <DevEmptyState 
-                title="Timeline View" 
-                description="Browse commands in chronological order with timestamps and duration."
-                icon={Clock}
-              />
+              <TimelineView />
             </SplitBarContent>
 
             <SplitBarContent value="filtered" className="mt-6">
-              <DevEmptyState 
-                title="Filtered History" 
-                description="Filter command history by status, tenant, date range, or user."
-                icon={Archive}
-              />
+              <FilteredView />
             </SplitBarContent>
           </SplitBar>
         </div>
