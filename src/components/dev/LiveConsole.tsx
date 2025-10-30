@@ -9,6 +9,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "@/hooks/use-toast";
 import { SoftWarningBanner } from "./SoftWarningBanner";
 import { EventDetailDrawer } from "./EventDetailDrawer";
+import { StatusHeaderBar } from "./status/StatusHeaderBar";
+import { StatusDetailsDrawer } from "./status/StatusDetailsDrawer";
+import { EmptyStatePanel } from "./status/EmptyStatePanel";
+import { MiniFooterStatus } from "./status/MiniFooterStatus";
+import { useBackendStatus } from "@/hooks/useBackendStatus";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { RefreshCw, Activity } from "lucide-react";
 
 const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
 
@@ -33,7 +40,14 @@ export default function LiveConsole() {
   const [showFallbackPrompt, setShowFallbackPrompt] = useState(false);
   const [useFallback, setUseFallback] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [statusDetailsOpen, setStatusDetailsOpen] = useState(false);
+  const [eventRate, setEventRate] = useState(0);
+  const [totalLoaded, setTotalLoaded] = useState(0);
   const fallbackInterval = useRef<NodeJS.Timeout>();
+  const eventCountRef = useRef(0);
+  const rateIntervalRef = useRef<NodeJS.Timeout>();
+
+  const backendStatus = useBackendStatus();
 
   // Session storage persistence
   useEffect(() => {
@@ -59,7 +73,10 @@ export default function LiveConsole() {
   // Initial history load
   useEffect(() => {
     fetchEvents({ limit: 50, filters })
-      .then(({ items, next_cursor }) => prependHistory(items, next_cursor))
+      .then(({ items, next_cursor }) => {
+        prependHistory(items, next_cursor);
+        setTotalLoaded(items.length);
+      })
       .catch(err => {
         console.error("Failed to load history:", err);
         if (err.message?.includes("401")) {
@@ -73,6 +90,7 @@ export default function LiveConsole() {
     url: `${BASE_EVENTS}/events/stream`,
     onStatus: (ok) => {
       setStreaming(ok);
+      backendStatus.updateSSEStatus(ok);
       if (!ok) {
         setSseFailCount(prev => prev + 1);
         if (sseFailCount >= 2 && !useFallback) {
@@ -84,6 +102,7 @@ export default function LiveConsole() {
       }
     },
     onEvent: (ev: Event) => {
+      eventCountRef.current++;
       if (paused) {
         setBufferedEvents(prev => [...prev, ev]);
       } else {
@@ -95,6 +114,18 @@ export default function LiveConsole() {
       }
     }
   });
+
+  // Calculate event rate
+  useEffect(() => {
+    rateIntervalRef.current = setInterval(() => {
+      setEventRate(eventCountRef.current);
+      eventCountRef.current = 0;
+    }, 1000);
+
+    return () => {
+      if (rateIntervalRef.current) clearInterval(rateIntervalRef.current);
+    };
+  }, []);
 
   // Fallback polling
   useEffect(() => {
@@ -131,6 +162,7 @@ export default function LiveConsole() {
             filters 
           });
           prependHistory(items, next_cursor);
+          setTotalLoaded(prev => prev + items.length);
         } catch (err) {
           console.error("Failed to load more events:", err);
           if (err.message?.includes("401")) {
@@ -182,8 +214,22 @@ export default function LiveConsole() {
     return true;
   });
 
+  const lastEvent = events[0];
+  const isOffline = backendStatus.backendStatus === "OFFLINE";
+  const isDegraded = !streaming && useFallback;
+  const streamStatusLabel = streaming ? "SSE Live" : useFallback ? "Polling" : "Disconnected";
+
   return (
     <div className="h-full flex flex-col">
+      {/* Status Header Bar */}
+      <StatusHeaderBar
+        backendStatus={backendStatus.backendStatus}
+        streamStatus={streamStatusLabel}
+        latency={backendStatus.latency}
+        lastEventTime={lastEvent?.ts}
+        activeVTID={useCommandHub.getState().activeVTID}
+        onOpenDetails={() => setStatusDetailsOpen(true)}
+      />
       {/* SSE Failure Banner */}
       {showFallbackPrompt && (
         <SoftWarningBanner 
@@ -205,15 +251,50 @@ export default function LiveConsole() {
       <div className="flex items-center justify-between p-3 border-b">
         <div className="flex items-center gap-2">
           <span className="font-semibold">Live Console</span>
-          <Badge variant={streaming ? "default" : "secondary"}>
+          <Badge variant={streaming ? "success" : "secondary"}>
             {streaming ? "LIVE" : "RECONNECTING"}
           </Badge>
           {useFallback && <Badge variant="outline">POLLING</Badge>}
         </div>
         <div className="flex items-center gap-2">
-          <Button size="sm" variant="outline" onClick={handleRunSmoke}>
-            Run Smoke
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={() => backendStatus.retryAll()}
+                  disabled={backendStatus.backendStatus === "ONLINE"}
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {backendStatus.backendStatus === "ONLINE" ? "All services connected" : "Reconnect"}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={handleRunSmoke}
+                    disabled={isOffline}
+                  >
+                    Run Smoke
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              {isOffline && (
+                <TooltipContent>
+                  Cannot send smoke test: Backend is offline
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
           <label className="flex items-center gap-2 text-sm cursor-pointer">
             <input 
               type="checkbox" 
@@ -264,20 +345,62 @@ export default function LiveConsole() {
       {/* Event List */}
       <div 
         ref={listRef} 
-        className="flex-1 overflow-auto px-2" 
+        className="flex-1 overflow-auto" 
         aria-live="polite" 
         aria-busy={false}
         role="feed"
       >
-        {filteredEvents.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-muted-foreground">
-            <div className="text-center">
-              <p>No events match filters</p>
-              <p className="text-sm">Events will appear here in real-time</p>
+        {/* Feed Instrumentation Watermark */}
+        {filteredEvents.length > 0 && (
+          <div className="sticky top-0 z-10 bg-muted/80 backdrop-blur border-b px-3 py-1 flex items-center justify-between text-[10px]">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <Activity className="w-3 h-3" />
+                <span className="font-semibold">
+                  {streaming ? "LIVE" : useFallback ? "POLLING" : "DISCONNECTED"}
+                </span>
+              </div>
+              {streaming && eventRate > 0 && (
+                <span className="text-muted-foreground">
+                  {eventRate}/s rate
+                </span>
+              )}
+              {useFallback && (
+                <span className="text-muted-foreground">5s refresh</span>
+              )}
+            </div>
+            <div className="text-muted-foreground">
+              Showing {filteredEvents.length} • Loaded {totalLoaded} more
             </div>
           </div>
+        )}
+
+        {filteredEvents.length === 0 ? (
+          isOffline ? (
+            <EmptyStatePanel
+              type="offline"
+              onRetry={() => backendStatus.retryAll()}
+              onOpenDetails={() => setStatusDetailsOpen(true)}
+            />
+          ) : isDegraded ? (
+            <EmptyStatePanel
+              type="degraded"
+              onForceReconnect={() => {
+                setUseFallback(false);
+                setSseFailCount(0);
+                backendStatus.retryAll();
+              }}
+              onViewLogs={() => setStatusDetailsOpen(true)}
+            />
+          ) : (
+            <EmptyStatePanel
+              type="quiet"
+              onClearFilters={() => setFilters({ layer: "ALL", status: "ALL" })}
+            />
+          )
         ) : (
-          filteredEvents.map(ev => (
+          <div className="px-2">
+            {filteredEvents.map(ev => (
             <button 
               key={ev.id} 
               className="w-full text-left py-2 px-2 border-b hover:bg-accent/50 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-primary"
@@ -312,9 +435,19 @@ export default function LiveConsole() {
                 {ev.title}
               </div>
             </button>
-          ))
+            ))}
+          </div>
         )}
       </div>
+
+      {/* Mini Footer Status */}
+      <MiniFooterStatus
+        backendStatus={backendStatus.backendStatus}
+        streamStatus={streamStatusLabel}
+        lastEventTime={lastEvent?.ts}
+        latency={backendStatus.latency}
+        onOpenDetails={() => setStatusDetailsOpen(true)}
+      />
 
       {/* Event Detail Drawer */}
       {selectedEvent && (
@@ -324,6 +457,16 @@ export default function LiveConsole() {
           onClose={() => setSelectedEvent(null)}
         />
       )}
+
+      {/* Status Details Drawer */}
+      <StatusDetailsDrawer
+        open={statusDetailsOpen}
+        onClose={() => setStatusDetailsOpen(false)}
+        services={backendStatus.services}
+        connectionEvents={backendStatus.connectionEvents}
+        diagnosticInfo={backendStatus.diagnosticInfo}
+        onRetryAll={() => backendStatus.retryAll()}
+      />
     </div>
   );
 }

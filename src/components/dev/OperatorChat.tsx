@@ -4,6 +4,8 @@ import { fetchThread, postChat } from "@/lib/commandHubApi";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { useBackendStatus } from "@/hooks/useBackendStatus";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function OperatorChat() {
   const { activeVTID, threads, upsertThread, appendChat, setActiveVTID } = useCommandHub();
@@ -11,6 +13,7 @@ export default function OperatorChat() {
   const [isLoading, setIsLoading] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const backendStatus = useBackendStatus();
 
   // Load thread when VTID changes
   useEffect(() => {
@@ -83,6 +86,7 @@ export default function OperatorChat() {
 
   const items = activeVTID ? (threads[activeVTID]?.items ?? []) : [];
   const chatEnabled = import.meta.env.VITE_COMMAND_HUB_CHAT_ENABLED !== "false";
+  const isChatOffline = backendStatus.services.find(s => s.name === "Chat API")?.status === "DOWN";
 
   if (!chatEnabled) {
     return (
@@ -134,16 +138,29 @@ export default function OperatorChat() {
 
       <div className="p-3 border-t">
         <div className="flex gap-2">
-          <input
-            ref={inputRef}
-            value={input}
-            onChange={(e)=>setInput(e.target.value)}
-            onKeyDown={(e)=>{ if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); }}}
-            placeholder="Type a message or /task, /status..."
-            className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            disabled={isLoading}
-          />
-          <Button onClick={send} disabled={isLoading || !input.trim()}>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex-1">
+                  <input
+                    ref={inputRef}
+                    value={input}
+                    onChange={(e)=>setInput(e.target.value)}
+                    onKeyDown={(e)=>{ if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); }}}
+                    placeholder={isChatOffline ? "Chat offline" : "Type a message or /task, /status..."}
+                    className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                    disabled={isLoading || isChatOffline}
+                  />
+                </div>
+              </TooltipTrigger>
+              {isChatOffline && (
+                <TooltipContent>
+                  Cannot send message: Chat API is offline
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
+          <Button onClick={send} disabled={isLoading || !input.trim() || isChatOffline}>
             {isLoading ? "Sending..." : "Send"}
           </Button>
         </div>
