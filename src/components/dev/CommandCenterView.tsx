@@ -1,6 +1,7 @@
 import { SplitScreen } from "@/components/ui/split-screen";
 import LiveConsole from "./LiveConsole";
 import OperatorChat from "./OperatorChat";
+import { BackendDiagnostic } from "./BackendDiagnostic";
 
 export function CommandCenterView() {
   const leftPanel = <LiveConsole />;
@@ -8,6 +9,7 @@ export function CommandCenterView() {
 
   return (
     <div className="h-[600px]">
+      <BackendDiagnostic />
       <SplitScreen
         leftPanel={leftPanel}
         rightPanel={rightPanel}
