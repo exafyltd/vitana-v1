@@ -6,11 +6,24 @@ import {
 } from "@/components/ui/tooltip";
 
 const GoogleCloudIcon = () => (
-  <img 
-    src="https://www.gstatic.com/devrel-devsite/prod/v14b10a8cb3a55d42ff5c1b58eac85bb96d5eb9398d01d3b9ec54a20620a1e569/cloud/images/favicons/onecloud/super_cloud.svg"
-    alt="Google Cloud"
-    className="h-5 w-5"
-  />
+  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Authentic Google Cloud Platform hexagonal logo with official brand colors */}
+    {/* Blue top section */}
+    <path d="M12 3L16.5 6V9L12 6V3Z" fill="#4285F4"/>
+    {/* Blue-Red transition (top-right) */}
+    <path d="M16.5 6L21 9V12L16.5 9V6Z" fill="#4285F4"/>
+    {/* Red right section */}
+    <path d="M21 9V15L16.5 12V9L21 9Z" fill="#EA4335"/>
+    {/* Yellow bottom-right section */}
+    <path d="M16.5 12V15L12 18V15L16.5 12Z" fill="#FBBC05"/>
+    {/* Yellow-Green transition (bottom-left) */}
+    <path d="M12 15V18L7.5 15V12L12 15Z" fill="#FBBC05"/>
+    {/* Green left section */}
+    <path d="M7.5 9V15L3 12V9L7.5 9Z" fill="#34A853"/>
+    {/* Blue-Green top-left section */}
+    <path d="M7.5 6V9L3 9L7.5 6Z" fill="#34A853"/>
+    <path d="M12 3V6L7.5 6L12 3Z" fill="#4285F4"/>
+  </svg>
 );
 
 const GitHubIcon = () => (
