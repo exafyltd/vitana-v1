@@ -2,6 +2,7 @@
  * Command Hub Type Definitions
  */
 
+// Legacy types (kept for compatibility)
 export interface VTIDMetadata {
   id: string;
   label: string;
@@ -55,3 +56,46 @@ export interface TickerEvent {
 
 export type TickerConnectionState = "LIVE" | "OFFLINE";
 export type TickerScope = "ALL" | string;
+
+// New real-time Command Hub types
+export type Status = "info" | "success" | "warn" | "error";
+export type Layer = "CICDL" | "AICOR" | "AGENT" | "GATEWAY" | "OASIS" | "UNKNOWN";
+
+export interface Link {
+  label: string;
+  href: string;
+}
+
+export interface Event {
+  id: string;
+  ts: string; // ISO timestamp
+  vtid?: string;
+  layer: Layer;
+  module?: string;
+  kind: string; // e.g., "chat.message.out", "task.created"
+  status: Status;
+  title: string;
+  data?: Record<string, any>;
+  links?: Link[];
+}
+
+export interface ChatThread {
+  vtid: string;
+  items: ChatItem[];
+}
+
+export interface ChatItem {
+  role: "user" | "operator";
+  ts: string;
+  text: string;
+  links?: Link[];
+  meta?: Record<string, any>;
+}
+
+export interface Filters {
+  q?: string;
+  layer?: Layer | "ALL";
+  status?: Status | "ALL";
+  module?: string | "ALL";
+  vtid?: string;
+}
