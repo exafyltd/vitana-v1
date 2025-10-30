@@ -6,19 +6,11 @@ import {
 } from "@/components/ui/tooltip";
 
 const GoogleCloudIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Authentic Google Cloud Platform hexagonal logo */}
-    {/* Blue section (top-right) */}
-    <path d="M16.5 7.5L19.5 10.5L16.5 13.5L13.5 10.5L16.5 7.5Z" fill="#4285F4"/>
-    {/* Red section (right) */}
-    <path d="M19.5 10.5L21 12L19.5 13.5L16.5 13.5L19.5 10.5Z" fill="#EA4335"/>
-    {/* Yellow section (bottom) */}
-    <path d="M12 16.5L16.5 13.5L13.5 10.5L9 14L12 16.5Z" fill="#FBBC04"/>
-    {/* Green section (left) */}
-    <path d="M7.5 7.5L12 12L9 14L4.5 10.5L7.5 7.5Z" fill="#34A853"/>
-    {/* Center hexagon structure */}
-    <path d="M12 8L15 10.5L12 13L9 10.5L12 8Z" fill="#4285F4" fillOpacity="0.7"/>
-  </svg>
+  <img 
+    src="https://www.gstatic.com/devrel-devsite/prod/v14b10a8cb3a55d42ff5c1b58eac85bb96d5eb9398d01d3b9ec54a20620a1e569/cloud/images/favicons/onecloud/super_cloud.svg"
+    alt="Google Cloud"
+    className="h-5 w-5"
+  />
 );
 
 const GitHubIcon = () => (
