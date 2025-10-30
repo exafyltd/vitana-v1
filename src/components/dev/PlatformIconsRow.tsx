@@ -7,14 +7,17 @@ import {
 
 const GoogleCloudIcon = () => (
   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Blue diamond */}
-    <path d="M12 2L9 5L12 8L15 5L12 2Z" fill="#4285F4"/>
-    {/* Red diamond */}
-    <path d="M19 9L16 12L19 15L22 12L19 9Z" fill="#EA4335"/>
-    {/* Yellow diamond */}
-    <path d="M5 9L2 12L5 15L8 12L5 9Z" fill="#FBBC05"/>
-    {/* Green diamond */}
-    <path d="M12 16L9 19L12 22L15 19L12 16Z" fill="#34A853"/>
+    {/* Authentic Google Cloud Platform hexagonal logo */}
+    {/* Blue section (top-right) */}
+    <path d="M16.5 7.5L19.5 10.5L16.5 13.5L13.5 10.5L16.5 7.5Z" fill="#4285F4"/>
+    {/* Red section (right) */}
+    <path d="M19.5 10.5L21 12L19.5 13.5L16.5 13.5L19.5 10.5Z" fill="#EA4335"/>
+    {/* Yellow section (bottom) */}
+    <path d="M12 16.5L16.5 13.5L13.5 10.5L9 14L12 16.5Z" fill="#FBBC04"/>
+    {/* Green section (left) */}
+    <path d="M7.5 7.5L12 12L9 14L4.5 10.5L7.5 7.5Z" fill="#34A853"/>
+    {/* Center hexagon structure */}
+    <path d="M12 8L15 10.5L12 13L9 10.5L12 8Z" fill="#4285F4" fillOpacity="0.7"/>
   </svg>
 );
 
@@ -66,7 +69,7 @@ export function PlatformIconsRow() {
                 href={platform.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cursor-pointer transition-all hover:scale-110 hover:opacity-80"
+                className="cursor-pointer transition-all hover:scale-110 hover:brightness-105"
                 aria-label={platform.name}
               >
                 {platform.icon}
