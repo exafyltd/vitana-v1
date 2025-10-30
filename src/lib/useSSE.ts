@@ -24,9 +24,8 @@ export function useSSE({
     const connect = () => {
       if (aborted) return;
       
-      // NOTE: Native EventSource doesn't support custom headers.
-      // If the backend requires auth headers, provide an SSE proxy on the server.
-      const es = new EventSource(url, { withCredentials: true } as any);
+      // IMPORTANT: Public SSE - no credentials, no custom headers
+      const es = new EventSource(url);
       
       es.onopen = () => {
         console.log('✅ SSE connected');

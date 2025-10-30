@@ -4,6 +4,7 @@ import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 
 const BASE_EVENTS = import.meta.env.VITE_EVENTS_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1";
 const BASE_OPERATOR = import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1";
+const STATUS_URL = `${BASE_EVENTS.replace('/api/v1','')}/status/cmdhub.json`;
 
 type TestResult = { status: "testing" | "success" | "failed"; message?: string };
 
@@ -13,11 +14,27 @@ export function BackendDiagnostic() {
     chat: { status: "testing" },
     sse: { status: "testing" }
   });
+  const [liveStatus, setLiveStatus] = useState<boolean>(false);
+  const [allowOrigin, setAllowOrigin] = useState<string>("");
 
   useEffect(() => {
     console.log("🔍 [Backend Diagnostic] Starting connection tests...");
     console.log("📍 VITE_EVENTS_BASE_URL:", BASE_EVENTS);
     console.log("📍 VITE_OPERATOR_BASE_URL:", BASE_OPERATOR);
+    console.log("📍 STATUS_URL:", STATUS_URL);
+    
+    async function checkLiveStatus() {
+      try {
+        const res = await fetch(STATUS_URL, { cache: "no-store" });
+        const status = await res.json();
+        console.log("✅ Live status check:", status);
+        setLiveStatus(Boolean(status.live));
+        setAllowOrigin(status.allow_origin || "");
+      } catch (error) {
+        console.error("❌ Live status check failed:", error);
+        setLiveStatus(false);
+      }
+    }
     
     async function testEndpoint(base: string, endpoint: string, label: string, key: string) {
       const url = `${base}/${endpoint}`;
@@ -52,9 +69,8 @@ export function BackendDiagnostic() {
       console.log(`\n🌊 Testing SSE: ${BASE_EVENTS}/events/stream`);
       
       try {
-        const es = new EventSource(`${BASE_EVENTS}/events/stream`, { 
-          withCredentials: true 
-        } as any);
+        // Public SSE - no credentials
+        const es = new EventSource(`${BASE_EVENTS}/events/stream`);
         
         let opened = false;
         
@@ -103,6 +119,9 @@ export function BackendDiagnostic() {
     }
     
     async function runDiagnostics() {
+      // Check live status first
+      await checkLiveStatus();
+      
       // Test REST endpoints
       await testEndpoint(BASE_EVENTS, "events?limit=1&hours=1", "GET /events", "events");
       await testEndpoint(BASE_OPERATOR, "chat/thread?vtid=test-001", "GET /chat/thread", "chat");
@@ -124,9 +143,14 @@ export function BackendDiagnostic() {
       <div className="font-semibold text-sm mb-2 flex items-center gap-2">
         Backend Status
         {anyTesting && <Loader2 className="w-3 h-3 animate-spin" />}
-        {!anyTesting && allSuccess && <Badge variant="default">LIVE</Badge>}
-        {!anyTesting && !allSuccess && <Badge variant="destructive">OFFLINE</Badge>}
+        {!anyTesting && liveStatus && allSuccess && <Badge variant="success">LIVE</Badge>}
+        {!anyTesting && (!liveStatus || !allSuccess) && <Badge variant="destructive">OFFLINE</Badge>}
       </div>
+      {allowOrigin && (
+        <div className="text-[10px] text-muted-foreground mb-1">
+          Origin: {allowOrigin}
+        </div>
+      )}
       <div className="space-y-1.5 text-xs">
         <div className="flex items-center justify-between gap-2">
           <span>Events API:</span>
