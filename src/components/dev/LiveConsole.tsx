@@ -1,9 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCommandHub } from "@/state/commandHubStore";
-import { fetchEvents } from "@/lib/commandHubApi";
+import { fetchEvents, postChat } from "@/lib/commandHubApi";
 import { useSSE } from "@/lib/useSSE";
-import { Event } from "@/types/command-hub";
+import { Event, Layer, Status } from "@/types/command-hub";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import { SoftWarningBanner } from "./SoftWarningBanner";
+import { EventDetailDrawer } from "./EventDetailDrawer";
 
 const BASE_EVENTS = import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1";
 
@@ -17,26 +22,100 @@ export default function LiveConsole() {
     paused, 
     setPaused, 
     setStreaming,
-    streaming 
+    streaming,
+    filters,
+    setFilters
   } = useCommandHub();
   
   const listRef = useRef<HTMLDivElement>(null);
+  const [bufferedEvents, setBufferedEvents] = useState<Event[]>([]);
+  const [sseFailCount, setSseFailCount] = useState(0);
+  const [showFallbackPrompt, setShowFallbackPrompt] = useState(false);
+  const [useFallback, setUseFallback] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const fallbackInterval = useRef<NodeJS.Timeout>();
+
+  // Session storage persistence
+  useEffect(() => {
+    const stored = sessionStorage.getItem("commandHubState");
+    if (stored) {
+      try {
+        const { filters: savedFilters, activeVTID } = JSON.parse(stored);
+        if (savedFilters) setFilters(savedFilters);
+        if (activeVTID) setActiveVTID(activeVTID);
+      } catch (e) {
+        console.error("Failed to restore session:", e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("commandHubState", JSON.stringify({ 
+      filters, 
+      activeVTID: useCommandHub.getState().activeVTID 
+    }));
+  }, [filters]);
 
   // Initial history load
   useEffect(() => {
-    fetchEvents({ limit: 50 })
+    fetchEvents({ limit: 50, filters })
       .then(({ items, next_cursor }) => prependHistory(items, next_cursor))
-      .catch(err => console.error("Failed to load history:", err));
-  }, []);
+      .catch(err => {
+        console.error("Failed to load history:", err);
+        if (err.message?.includes("401")) {
+          toast({ title: "Session expired", description: "Please sign in." });
+        }
+      });
+  }, [filters]);
 
-  // Streaming (SSE)
+  // Streaming (SSE) with failure tracking
   useSSE({
     url: `${BASE_EVENTS}/events/stream`,
-    onStatus: (ok) => setStreaming(ok),
+    onStatus: (ok) => {
+      setStreaming(ok);
+      if (!ok) {
+        setSseFailCount(prev => prev + 1);
+        if (sseFailCount >= 2 && !useFallback) {
+          setShowFallbackPrompt(true);
+        }
+      } else {
+        setSseFailCount(0);
+        setShowFallbackPrompt(false);
+      }
+    },
     onEvent: (ev: Event) => {
-      if (!paused) addEvents([ev]);
+      if (paused) {
+        setBufferedEvents(prev => [...prev, ev]);
+      } else {
+        addEvents([ev]);
+        // Check if it's a smoke test event
+        if (ev.kind === "telemetry.smoke") {
+          toast({ title: "Smoke test received ✓", description: "Event arrived successfully" });
+        }
+      }
     }
   });
+
+  // Fallback polling
+  useEffect(() => {
+    if (!useFallback) {
+      if (fallbackInterval.current) clearInterval(fallbackInterval.current);
+      return;
+    }
+    
+    fallbackInterval.current = setInterval(async () => {
+      try {
+        const { items } = await fetchEvents({ limit: 10, filters });
+        addEvents(items);
+      } catch (err) {
+        console.error("Fallback poll failed:", err);
+      }
+    }, 5000);
+
+    return () => {
+      if (fallbackInterval.current) clearInterval(fallbackInterval.current);
+    };
+  }, [useFallback, filters]);
 
   // Infinite scroll: fetch older when scrolled to top 10%
   useEffect(() => {
@@ -48,58 +127,163 @@ export default function LiveConsole() {
         try {
           const { items, next_cursor } = await fetchEvents({ 
             cursor: nextCursor, 
-            limit: 50 
+            limit: 50,
+            filters 
           });
           prependHistory(items, next_cursor);
         } catch (err) {
           console.error("Failed to load more events:", err);
+          if (err.message?.includes("401")) {
+            toast({ title: "Session expired", description: "Please sign in." });
+          }
         }
       }
     };
     
     el.addEventListener("scroll", onScroll);
     return () => el.removeEventListener("scroll", onScroll);
-  }, [nextCursor]);
+  }, [nextCursor, filters]);
+
+  const handleUnpause = () => {
+    setPaused(false);
+    if (bufferedEvents.length > 0) {
+      addEvents(bufferedEvents);
+      setBufferedEvents([]);
+    }
+  };
+
+  const handleRunSmoke = async () => {
+    try {
+      await postChat({ message: "Run telemetry smoke", urgency: "normal" });
+      toast({ title: "Smoke test sent ✓", description: "Waiting for event..." });
+    } catch (err) {
+      toast({ title: "Failed to send smoke test", description: String(err), variant: "destructive" });
+    }
+  };
+
+  const handleEventClick = (ev: Event) => {
+    if (ev.vtid) {
+      setActiveVTID(ev.vtid);
+      // Trigger chat thread load in OperatorChat via store
+    }
+    setSelectedEvent(ev);
+  };
+
+  const filteredEvents = events.filter(ev => {
+    if (filters.layer && filters.layer !== "ALL" && ev.layer !== filters.layer) return false;
+    if (filters.status && filters.status !== "ALL" && ev.status !== filters.status) return false;
+    if (filters.module && filters.module !== "ALL" && ev.module !== filters.module) return false;
+    if (filters.vtid && ev.vtid !== filters.vtid) return false;
+    return true;
+  });
 
   return (
     <div className="h-full flex flex-col">
+      {/* SSE Failure Banner */}
+      {showFallbackPrompt && (
+        <SoftWarningBanner 
+          message="Real-time connection unstable. Enable 5s refresh fallback?"
+          dismissible={false}
+        >
+          <div className="flex gap-2 mt-2">
+            <Button size="sm" onClick={() => { setUseFallback(true); setShowFallbackPrompt(false); }}>
+              Yes
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => setShowFallbackPrompt(false)}>
+              No
+            </Button>
+          </div>
+        </SoftWarningBanner>
+      )}
+
+      {/* Header */}
       <div className="flex items-center justify-between p-3 border-b">
         <div className="flex items-center gap-2">
           <span className="font-semibold">Live Console</span>
           <Badge variant={streaming ? "default" : "secondary"}>
             {streaming ? "LIVE" : "RECONNECTING"}
           </Badge>
+          {useFallback && <Badge variant="outline">POLLING</Badge>}
         </div>
-        <label className="flex items-center gap-2 text-sm cursor-pointer">
-          <input 
-            type="checkbox" 
-            checked={paused} 
-            onChange={e => setPaused(e.target.checked)}
-            className="cursor-pointer"
-          />
-          Pause
-        </label>
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="outline" onClick={handleRunSmoke}>
+            Run Smoke
+          </Button>
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <input 
+              type="checkbox" 
+              checked={paused} 
+              onChange={e => paused ? handleUnpause() : setPaused(true)}
+              className="cursor-pointer"
+            />
+            Pause
+            {paused && bufferedEvents.length > 0 && (
+              <Badge variant="secondary" className="ml-1">
+                {bufferedEvents.length} new
+              </Badge>
+            )}
+          </label>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-2 p-2 border-b bg-muted/50">
+        <Select value={filters.layer || "ALL"} onValueChange={(v) => setFilters({ layer: v as Layer | "ALL" })}>
+          <SelectTrigger className="w-[140px] h-8">
+            <SelectValue placeholder="Layer" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="ALL">All Layers</SelectItem>
+            <SelectItem value="CICDL">CICDL</SelectItem>
+            <SelectItem value="AICOR">AICOR</SelectItem>
+            <SelectItem value="AGENT">AGENT</SelectItem>
+            <SelectItem value="GATEWAY">GATEWAY</SelectItem>
+            <SelectItem value="OASIS">OASIS</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select value={filters.status || "ALL"} onValueChange={(v) => setFilters({ status: v as Status | "ALL" })}>
+          <SelectTrigger className="w-[140px] h-8">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="ALL">All Status</SelectItem>
+            <SelectItem value="info">Info</SelectItem>
+            <SelectItem value="success">Success</SelectItem>
+            <SelectItem value="warn">Warning</SelectItem>
+            <SelectItem value="error">Error</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       
+      {/* Event List */}
       <div 
         ref={listRef} 
         className="flex-1 overflow-auto px-2" 
         aria-live="polite" 
         aria-busy={false}
+        role="feed"
       >
-        {events.length === 0 ? (
+        {filteredEvents.length === 0 ? (
           <div className="flex items-center justify-center h-full text-muted-foreground">
             <div className="text-center">
-              <p>No events in last 72h</p>
+              <p>No events match filters</p>
               <p className="text-sm">Events will appear here in real-time</p>
             </div>
           </div>
         ) : (
-          events.map(ev => (
+          filteredEvents.map(ev => (
             <button 
               key={ev.id} 
-              className="w-full text-left py-2 px-2 border-b hover:bg-accent/50 transition-colors rounded"
-              onClick={() => ev.vtid && setActiveVTID(ev.vtid)}
+              className="w-full text-left py-2 px-2 border-b hover:bg-accent/50 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-primary"
+              onClick={() => handleEventClick(ev)}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleEventClick(ev);
+                }
+              }}
             >
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <Badge variant={getBadgeVariant(ev.status)}>
@@ -126,6 +310,15 @@ export default function LiveConsole() {
           ))
         )}
       </div>
+
+      {/* Event Detail Drawer */}
+      {selectedEvent && (
+        <EventDetailDrawer 
+          event={selectedEvent} 
+          open={!!selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
     </div>
   );
 }
