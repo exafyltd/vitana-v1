@@ -9,7 +9,7 @@ export const DEV_HUB_CONFIG = {
   readonly: import.meta.env.VITE_DEV_HUB_READONLY !== 'false', // Default true (Phase 1)
   
   // Gateway configuration
-  gatewayBase: import.meta.env.VITE_GATEWAY_BASE || 'https://vitana-gateway-86804897789.us-central1.run.app',
+  gatewayBase: import.meta.env.VITE_GATEWAY_BASE || 'https://oasis-operator-86804897789.us-central1.run.app',
   
   // Polling intervals (ms)
   eventsRefreshInterval: 10000, // 10 seconds

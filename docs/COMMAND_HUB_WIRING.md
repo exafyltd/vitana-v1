@@ -298,6 +298,83 @@ Users can type natural language or use shortcuts:
 ✓ Click outside or X to close
 ```
 
+## Runtime Setup & Configuration
+
+### Environment Variables Setup
+
+The Command Hub requires the following environment variables in `.env`:
+
+```env
+# Command Hub Configuration
+VITE_EVENTS_BASE_URL=https://oasis-operator-86804897789.us-central1.run.app/api/v1
+VITE_OPERATOR_BASE_URL=https://oasis-operator-86804897789.us-central1.run.app/api/v1
+VITE_DEFAULT_HISTORY_HOURS=72
+VITE_COMMAND_HUB_CHAT_ENABLED=true
+
+# Legacy Dev Hub Configuration (for backward compatibility)
+VITE_DEV_HUB_ENABLED=true
+VITE_DEV_HUB_READONLY=true
+VITE_GATEWAY_BASE=https://oasis-operator-86804897789.us-central1.run.app
+VITE_DEVHUB_SSE_BASE=https://oasis-operator-86804897789.us-central1.run.app
+```
+
+### Backend Connection Verification
+
+Test the backend is reachable:
+
+```bash
+# Test events endpoint
+curl -s https://oasis-operator-86804897789.us-central1.run.app/api/v1/events | head
+
+# Test SSE stream (should keep connection open)
+curl -N https://oasis-operator-86804897789.us-central1.run.app/api/v1/events/stream
+```
+
+Expected response format:
+```json
+{
+  "items": [
+    {
+      "id": "evt_123",
+      "vtid": "VTID-2025-0001",
+      "ts": "2025-01-30T10:30:00Z",
+      "kind": "telemetry.smoke",
+      "layer": "infra",
+      "status": "SUCCESS",
+      "title": "Smoke test completed",
+      "data": {}
+    }
+  ],
+  "next_cursor": "cursor_token_here"
+}
+```
+
+### CORS Configuration
+
+The backend must have CORS enabled for the frontend domain:
+
+```python
+# FastAPI example
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or specific domains
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+### SSE Authentication
+
+EventSource doesn't support custom headers. Two options:
+
+1. **Cookie-based auth** (recommended): Backend sets HttpOnly cookies on login
+2. **SSE Proxy**: Frontend server proxies SSE with auth headers injected server-side
+
+Current implementation uses `withCredentials: true` for cookie-based auth.
+
 ## Performance Notes
 
 - **Virtualization**: Consider implementing `react-window` or `react-virtualized` if event lists regularly exceed 1000 items

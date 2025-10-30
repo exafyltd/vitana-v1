@@ -50,8 +50,9 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
         
         // Fetch timeline for this VTID
         try {
+          const baseUrl = import.meta.env.VITE_EVENTS_BASE_URL || import.meta.env.VITE_GATEWAY_BASE || '/api/v1';
           const response = await fetch(
-            `https://vitana-gateway-86804897789.us-central1.run.app/api/v1/oasis/events?vtid=${vtid}&limit=50`
+            `${baseUrl}/oasis/events?vtid=${vtid}&limit=50`
           );
           if (response.ok) {
             const data = await response.json();
