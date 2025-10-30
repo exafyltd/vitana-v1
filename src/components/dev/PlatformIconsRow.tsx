@@ -4,25 +4,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { siGooglecloud } from "simple-icons";
 
 const GoogleCloudIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Authentic Google Cloud Platform hexagonal logo with official brand colors */}
-    {/* Blue top section */}
-    <path d="M12 3L16.5 6V9L12 6V3Z" fill="#4285F4"/>
-    {/* Blue-Red transition (top-right) */}
-    <path d="M16.5 6L21 9V12L16.5 9V6Z" fill="#4285F4"/>
-    {/* Red right section */}
-    <path d="M21 9V15L16.5 12V9L21 9Z" fill="#EA4335"/>
-    {/* Yellow bottom-right section */}
-    <path d="M16.5 12V15L12 18V15L16.5 12Z" fill="#FBBC05"/>
-    {/* Yellow-Green transition (bottom-left) */}
-    <path d="M12 15V18L7.5 15V12L12 15Z" fill="#FBBC05"/>
-    {/* Green left section */}
-    <path d="M7.5 9V15L3 12V9L7.5 9Z" fill="#34A853"/>
-    {/* Blue-Green top-left section */}
-    <path d="M7.5 6V9L3 9L7.5 6Z" fill="#34A853"/>
-    <path d="M12 3V6L7.5 6L12 3Z" fill="#4285F4"/>
+  <svg 
+    viewBox="0 0 24 24" 
+    className="h-5 w-5" 
+    fill="currentColor" 
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+  >
+    <path d={siGooglecloud.path} />
   </svg>
 );
 
