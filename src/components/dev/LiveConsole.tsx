@@ -154,7 +154,12 @@ export default function LiveConsole() {
 
   const handleRunSmoke = async () => {
     try {
-      await postChat({ message: "Run telemetry smoke", urgency: "normal" });
+      const BASE_OPERATOR = import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1";
+      await fetch(`${BASE_OPERATOR}/events/smoke`, { 
+        method: "POST",
+        mode: "cors",
+        credentials: "include"
+      });
       toast({ title: "Smoke test sent ✓", description: "Waiting for event..." });
     } catch (err) {
       toast({ title: "Failed to send smoke test", description: String(err), variant: "destructive" });
