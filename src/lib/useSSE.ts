@@ -25,7 +25,7 @@ export function useSSE({
       if (aborted) return;
       
       // IMPORTANT: Public SSE - no credentials, no custom headers
-      const es = new EventSource(url);
+      const es = new EventSource(url.trim());
       
       es.onopen = () => {
         console.log('✅ SSE connected');

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 
-const BASE_EVENTS = import.meta.env.VITE_EVENTS_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1";
-const BASE_OPERATOR = import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1";
+const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
+const BASE_OPERATOR = (import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
 const STATUS_URL = `${BASE_EVENTS.replace('/api/v1','')}/status/cmdhub.json`;
 
 type TestResult = { status: "testing" | "success" | "failed"; message?: string };

@@ -1,9 +1,9 @@
 import { Event, ChatThread, Filters } from "@/types/command-hub";
 
 // Read from environment/config
-const BASE_EVENTS = import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1";
-const BASE_OP = import.meta.env.VITE_OPERATOR_BASE_URL || "/api/v1";
-const DEFAULT_H = Number(import.meta.env.VITE_DEFAULT_HISTORY_HOURS || 72);
+const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
+const BASE_OP = (import.meta.env.VITE_OPERATOR_BASE_URL || "/api/v1").trim();
+const DEFAULT_H = Number((import.meta.env.VITE_DEFAULT_HISTORY_HOURS || 72) as number);
 
 export async function fetchEvents(opts: { 
   cursor?: string; 

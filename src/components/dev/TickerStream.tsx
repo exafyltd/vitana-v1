@@ -61,9 +61,9 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
 
   // SSE connection with fallback
   useEffect(() => {
-    const sseBaseUrl = import.meta.env.VITE_DEVHUB_SSE_BASE || window.location.origin;
+    const sseBaseUrl = (import.meta.env.VITE_DEVHUB_SSE_BASE || window.location.origin).trim();
     const vtidParam = scope === "ALL" ? "ALL" : currentVTID;
-    const url = `${sseBaseUrl}/api/v1/devhub/feed?vtid=${vtidParam}`;
+    const url = `${sseBaseUrl}/api/v1/devhub/feed?vtid=${vtidParam}`.trim();
     
     const es = new EventSource(url);
     let connected = false;

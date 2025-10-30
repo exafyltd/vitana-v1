@@ -145,9 +145,9 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
   // SSE connection with fallback
   useEffect(() => {
     setConnectionState("CONNECTING");
-    const sseBaseUrl = import.meta.env.VITE_GATEWAY_BASE || import.meta.env.VITE_DEVHUB_SSE_BASE || "https://oasis-operator-86804897789.us-central1.run.app";
+    const sseBaseUrl = (import.meta.env.VITE_GATEWAY_BASE || import.meta.env.VITE_DEVHUB_SSE_BASE || "https://oasis-operator-86804897789.us-central1.run.app").trim();
     const vtidParam = scope === "ALL" ? "ALL" : currentVTID;
-    const url = `${sseBaseUrl}/api/v1/devhub/feed?vtid=${vtidParam}`;
+    const url = `${sseBaseUrl}/api/v1/devhub/feed?vtid=${vtidParam}`.trim();
     
     const es = new EventSource(url);
     let connected = false;

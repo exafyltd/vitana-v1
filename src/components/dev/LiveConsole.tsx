@@ -10,7 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { SoftWarningBanner } from "./SoftWarningBanner";
 import { EventDetailDrawer } from "./EventDetailDrawer";
 
-const BASE_EVENTS = import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1";
+const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
 
 export default function LiveConsole() {
   const { 
@@ -154,7 +154,7 @@ export default function LiveConsole() {
 
   const handleRunSmoke = async () => {
     try {
-      const BASE_OPERATOR = import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1";
+      const BASE_OPERATOR = (import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
       await fetch(`${BASE_OPERATOR}/events/smoke`, { 
         method: "POST",
         mode: "cors",
