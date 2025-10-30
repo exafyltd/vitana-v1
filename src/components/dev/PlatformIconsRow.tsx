@@ -8,23 +8,38 @@ const GoogleCloudIcon = () => (
   <svg 
     viewBox="0 0 24 24" 
     className="h-5 w-5" 
+    fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    role="img"
     aria-hidden="true"
   >
-    {/* Official Google Cloud multicolor hexagon logo */}
-    {/* Blue hexagon base */}
-    <path fill="#4285F4" d="M12 3.5l4.5 2.6v5.2L12 13.9l-4.5-2.6V6.1L12 3.5z"/>
-    {/* Red segment (top-right) */}
-    <path fill="#EA4335" d="M16.5 6.1v5.2L20 9V5.5l-3.5 0.6z"/>
-    {/* Yellow segment (bottom-right) */}
-    <path fill="#FBBC05" d="M16.5 11.3L12 13.9v4.6l4.5-2.6v-4.6z"/>
-    {/* Green segment (bottom-left) */}
-    <path fill="#34A853" d="M7.5 11.3v4.6L12 18.5v-4.6l-4.5-2.6z"/>
-    {/* Blue-Green segment (left) */}
-    <path fill="#34A853" d="M4 9l3.5 2.3V6.1L4 5.5V9z"/>
-    {/* Top connector */}
-    <path fill="#4285F4" d="M12 3.5L16.5 6.1 20 5.5 12 1 4 5.5 7.5 6.1 12 3.5z"/>
+    {/* Official Google Cloud hexagon logo - multicolor */}
+    {/* Blue outer segment (top-left arc) */}
+    <path 
+      fill="#4285F4" 
+      d="M12 2.5L6.5 6v3.5l2-1.2V6.8L12 4.2l3.5 2v1.5l2 1.2V6L12 2.5z"
+    />
+    {/* Red outer segment (right arc) */}
+    <path 
+      fill="#EA4335" 
+      d="M19.5 8.3l-2-1.2v5.8l-2 1.2v3.5l4-2.3V8.3z"
+    />
+    {/* Yellow outer segment (bottom-left arc) */}
+    <path 
+      fill="#FBBC05" 
+      d="M6.5 15.3V9.5l-2 1.2v7l4 2.3v-3.5l-2-1.2z"
+    />
+    {/* Inner gray hexagon */}
+    <path 
+      fill="#E8EAED" 
+      d="M12 7.5l-3 1.7v3.6l3 1.7 3-1.7V9.2L12 7.5z"
+    />
+    {/* Center white circle */}
+    <circle 
+      fill="#FFFFFF" 
+      cx="12" 
+      cy="12" 
+      r="1.5"
+    />
   </svg>
 );
 
