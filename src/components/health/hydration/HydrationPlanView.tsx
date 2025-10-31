@@ -20,6 +20,10 @@ export function HydrationPlanView() {
     return <HydrationEmptyState />;
   }
   
+  const daysCompleted = planData.dailyStats.filter(d => d.completionPercentage >= 100).length;
+  const totalDays = planData.dailyStats.length;
+  const energyImpact = planData.progress.recoveryImpact;
+  
   return (
     <>
       <div className="space-y-6">
@@ -30,8 +34,8 @@ export function HydrationPlanView() {
           }}
         />
         
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Your Daily Hydration Tracking</h3>
+        <div className="border-t border-slate-200/60 dark:border-slate-800/60 pt-6">
+          <h3 className="text-xl font-semibold tracking-tight mb-4">Your Daily Hydration Tracking</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {planData.dailyStats.map(dayData => (
               <DailyHydrationCard
@@ -40,6 +44,13 @@ export function HydrationPlanView() {
                 onClick={() => setSelectedDay(dayData)}
               />
             ))}
+          </div>
+          
+          {/* Summary Strip */}
+          <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 text-center">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              You've met your hydration goal {daysCompleted} of {totalDays} days this week — energy and recovery up {energyImpact}.
+            </p>
           </div>
         </div>
         

@@ -17,8 +17,9 @@ interface HydrationDashboardProps {
 
 export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardProps) {
   return (
-    <Card className="p-6 bg-gradient-to-br from-sky-50 via-cyan-50/30 to-blue-50/30 
-      dark:from-slate-900/50 dark:via-slate-800/30 dark:to-slate-900/50">
+    <Card className="p-6 bg-gradient-to-br from-[hsl(197,84%,81%)]/60 via-[hsl(194,79%,63%)]/50 to-[hsl(199,100%,96%)]/40 
+      dark:from-[hsl(210,35%,17%)]/80 dark:via-[hsl(210,48%,12%)]/80 dark:to-[hsl(210,55%,8%)]/80 
+      backdrop-blur-md rounded-2xl border-slate-200/60 dark:border-slate-800/60">
       
       <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
@@ -28,7 +29,7 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {/* Consistency Score */}
-        <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
+        <div className="text-center p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <div className="relative w-20 h-20 mx-auto mb-2">
             {/* Circular Progress */}
             <svg className="w-full h-full -rotate-90">
@@ -63,7 +64,7 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
         </div>
         
         {/* Avg Daily Intake */}
-        <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
+        <div className="text-center p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <Droplets className="w-6 h-6 mx-auto mb-2 text-blue-600 dark:text-blue-400" />
           <p className="text-2xl font-bold">{(progress.avgDailyIntake / 1000).toFixed(1)}L</p>
           <p className="text-xs text-muted-foreground">Avg Intake</p>
@@ -74,14 +75,14 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
         </div>
         
         {/* Streak Days */}
-        <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
+        <div className="text-center p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <Flame className="w-6 h-6 mx-auto mb-2 text-amber-600 dark:text-amber-400" />
           <p className="text-2xl font-bold">{progress.streakDays}</p>
           <p className="text-xs text-muted-foreground">Day Streak</p>
         </div>
         
         {/* Missed Days */}
-        <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
+        <div className="text-center p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <CalendarX className="w-6 h-6 mx-auto mb-2 text-slate-600 dark:text-slate-400" />
           <p className="text-2xl font-bold">{progress.missedDays}</p>
           <p className="text-xs text-muted-foreground">Missed Days</p>
@@ -108,9 +109,9 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
       {/* AI Summary */}
       {aiSummary && (
         <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 
-          dark:from-cyan-500/20 dark:to-blue-500/20 border border-cyan-200/30 dark:border-cyan-700/30">
-          <Brain className="w-5 h-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-muted-foreground italic">
+          dark:from-cyan-500/20 dark:to-blue-500/20 border border-slate-200/60 dark:border-slate-700/60">
+          <Brain className="w-5 h-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-0.5 animate-pulse" />
+          <p className="text-sm font-medium italic text-slate-700/90 dark:text-slate-300/90">
             "{aiSummary}"
           </p>
         </div>
