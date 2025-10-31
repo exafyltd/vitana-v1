@@ -13,6 +13,7 @@ interface DailySleepCardProps {
 export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
   const isExcellent = data.sleepScore >= 85;
   const isGood = data.sleepScore >= 70 && data.sleepScore < 85;
+  const isBelowTarget = data.sleepScore < 70;
   const hasAINote = !!data.aiNote;
   
   // Determine border based on score
@@ -31,7 +32,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
   return (
     <Card 
       className={cn(
-        "group cursor-pointer overflow-hidden transition-all hover:shadow-lg hover:shadow-indigo-100/20 dark:hover:shadow-indigo-900/20 hover:-translate-y-1 hover:ring-1 hover:ring-indigo-300/50 dark:hover:ring-indigo-500/40 relative border rounded-2xl",
+        "group cursor-pointer overflow-hidden transition-all hover:shadow-lg hover:shadow-indigo-100/20 dark:hover:shadow-indigo-900/20 hover:-translate-y-[2px] hover:ring-1 hover:ring-indigo-300/30 dark:hover:ring-indigo-700/40 relative border rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20",
         getBorderClass(),
         hasAINote && "ring-2 ring-indigo-500/50 ring-offset-2",
         isExcellent && "bg-gradient-to-br from-emerald-50/50 to-indigo-50/50 dark:from-emerald-950/10 dark:to-indigo-950/10"
@@ -53,14 +54,15 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h4 className="font-bold text-lg">{data.day}</h4>
+            <h4 className="text-base font-semibold text-indigo-700 dark:text-indigo-300">{data.day}</h4>
             <p className="text-xs text-slate-600 dark:text-slate-400">{new Date(data.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</p>
           </div>
           <Moon 
             className={cn(
-              "w-8 h-8 transition-colors",
-              isExcellent ? "text-indigo-500" : isGood ? "text-purple-500" : "text-slate-400"
-            )} 
+              "w-8 h-8 transition-all duration-1200 ease-in-out",
+              isExcellent ? "text-indigo-500 animate-pulse" : isGood ? "text-purple-500" : "text-slate-400"
+            )}
+            style={{ opacity: isExcellent ? 1 : 0.8 }}
           />
         </div>
         
@@ -79,7 +81,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
               background: 'rgb(226 232 240 / 0.5)'
             }}
           />
-          <p className="text-xs text-slate-500/90 dark:text-slate-400/80 mt-1.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 italic mt-1.5">
             {getStatusText()}
           </p>
         </div>
@@ -115,7 +117,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
       {/* Excellence Badge Overlay */}
       {isExcellent && (
         <div className="absolute top-3 left-3">
-          <Badge className="bg-emerald-500 hover:bg-emerald-600 gap-1">
+          <Badge className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white text-xs font-semibold px-2 py-1 rounded-full gap-1 border-0">
             <Sparkles className="w-3 h-3" />
             Excellent
           </Badge>

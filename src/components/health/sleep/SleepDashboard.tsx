@@ -17,8 +17,9 @@ interface SleepDashboardProps {
 
 export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
   return (
-    <Card className="p-6 bg-gradient-to-br from-[hsl(230,100%,90%)]/30 via-[hsl(270,50%,90%)]/40 to-[hsl(210,100%,97%)]/40 
-      dark:from-[hsl(222,61%,7%)]/90 dark:via-[hsl(230,32%,11%)]/90 dark:to-[hsl(216,31%,15%)]/90">
+    <Card className="p-6 bg-gradient-to-br from-[#B8C7FF]/40 via-[#CFC8F7]/30 to-[#EAF2FF]/25
+      dark:from-[#0C1024]/90 dark:via-[#1B1E36]/85 dark:to-[#202842]/80 
+      backdrop-blur-sm border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
       
       <h3 className="text-xl font-semibold tracking-tight mb-4 flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
@@ -28,14 +29,14 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {/* Average Duration */}
-        <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <Moon className="w-6 h-6 mx-auto mb-2 text-indigo-600 dark:text-indigo-400" />
           <p className="text-2xl font-bold">{progress.avgDuration}</p>
           <p className="text-xs text-slate-600 dark:text-slate-400">Avg Duration</p>
         </div>
         
         {/* Consistency Score */}
-        <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <div className="relative w-16 h-16 mx-auto mb-2">
             {/* Circular Progress */}
             <svg className="w-full h-full -rotate-90">
@@ -74,14 +75,14 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
         </div>
         
         {/* Deep Sleep */}
-        <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <Activity className="w-6 h-6 mx-auto mb-2 text-sky-600 dark:text-sky-400" />
           <p className="text-2xl font-bold">{progress.deepSleepPercentage}%</p>
           <p className="text-xs text-slate-600 dark:text-slate-400">Deep Sleep</p>
         </div>
         
         {/* Streak Days */}
-        <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <Flame className="w-6 h-6 mx-auto mb-2 text-amber-600 dark:text-amber-400" />
           <p className="text-2xl font-bold">{progress.streakDays}</p>
           <p className="text-xs text-slate-600 dark:text-slate-400">Day Streak</p>
@@ -110,7 +111,7 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
         <div className="flex items-start gap-3 p-4 rounded-2xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 
           dark:from-indigo-500/20 dark:to-purple-500/20 border border-indigo-200/30 dark:border-indigo-700/30">
           <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5 animate-pulse" />
-          <p className="text-sm text-slate-600 dark:text-slate-400 italic">
+          <p className="text-sm italic text-slate-600/90 dark:text-slate-300/80">
             "{aiSummary}"
           </p>
         </div>

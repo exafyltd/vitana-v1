@@ -22,7 +22,7 @@ export function SleepPlanView() {
   
   const daysWithGoodSleep = planData.dailyStats.filter(d => d.sleepScore >= 70).length;
   const totalDays = planData.dailyStats.length;
-  const energyImpact = planData.progress.recoveryImpact;
+  const avgScore = Math.round(planData.dailyStats.reduce((sum, day) => sum + day.sleepScore, 0) / totalDays);
   
   return (
     <>
@@ -49,7 +49,7 @@ export function SleepPlanView() {
           {/* Summary Strip */}
           <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 text-center">
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              You've achieved quality sleep (score ≥70) {daysWithGoodSleep} of {totalDays} days this week — {energyImpact}.
+              Average sleep quality: {avgScore}/100 • 🌙 Deep Sleep: {planData.progress.deepSleepPercentage}% • 💪 Consistency: +{planData.progress.consistencyTrend}% • {planData.progress.recoveryImpact}
             </p>
           </div>
         </div>
