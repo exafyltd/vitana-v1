@@ -105,7 +105,7 @@ export function ShortPreviewCard({
       style={{
         animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`,
       }}
-      className="group relative w-full max-w-[260px] mx-auto h-[420px] sm:h-[480px]"
+      className="group relative w-full max-w-[260px] mx-auto"
       {...handlers}
       tabIndex={0}
       role="button"
@@ -149,7 +149,7 @@ export function ShortPreviewCard({
       <div className="cursor-pointer" onClick={onClick}>
         {/* Thumbnail Container - Fixed 9:16 aspect ratio with max height */}
         <div
-          className={`relative aspect-[9/16] w-full h-full max-h-[420px] sm:max-h-[480px] rounded-xl overflow-hidden bg-muted transition-all duration-300 ${
+          className={`relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-muted transition-all duration-300 ${
             isHovering && !disabled
               ? '-translate-y-1 shadow-lg ring-4 ring-violet-500/10'
               : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-violet-500/10'
@@ -273,7 +273,7 @@ export function ShortPreviewCard({
           </div>
 
           {/* Tag Pills */}
-          {video.tags && video.tags.length > 0 && (
+          {video.tags?.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {video.tags.map((tag, tagIndex) => (
                 <span
