@@ -17,6 +17,7 @@ import { NutritionPlanView } from "@/components/health/nutrition/NutritionPlanVi
 import { ExercisePlanView } from "@/components/health/exercise/ExercisePlanView";
 import { HydrationPlanView } from "@/components/health/hydration/HydrationPlanView";
 import { SleepPlanView } from "@/components/health/sleep/SleepPlanView";
+import { MentalPlanView } from "@/components/health/mental/MentalPlanView";
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -134,8 +135,17 @@ export default withScreenId(function Plans() {
               </div>
             </SplitBarContent>
             
+            {/* Mental Plan - Full View */}
+            <SplitBarContent value="mental">
+              <div className="grid grid-cols-12 gap-6">
+                <div className="col-span-12">
+                  <MentalPlanView />
+                </div>
+              </div>
+            </SplitBarContent>
+            
             {/* Other plan type tabs */}
-            {['mental', 'supplement'].map(type => (
+            {['supplement'].map(type => (
               <SplitBarContent key={type} value={type}>
                 <div className="grid grid-cols-12 gap-6">
                   <div className="col-span-12">
