@@ -1,31 +1,63 @@
-import { useState } from "react";
-import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { TaskCatalogueList } from "@/components/dev/TaskCatalogueList";
-import { MyTasksList } from "@/components/dev/MyTasksList";
-import { CompletedTasksTable } from "@/components/dev/CompletedTasksTable";
+/**
+ * TasksView - Vitana Real-Time Task Board (Three-Column Cockpit)
+ */
+
+import { useEffect } from "react";
+import { useTaskStream } from "@/hooks/useTaskStream";
+import { useTaskStore } from "@/state/taskStore";
+import { TaskAnalytics } from "@/components/dev/TaskAnalytics";
+import { TaskConnectionStatus } from "@/components/dev/TaskConnectionStatus";
+import { SchedulePane } from "@/components/dev/SchedulePane";
+import { CatalogPane } from "@/components/dev/CatalogPane";
+import { CompletedPane } from "@/components/dev/CompletedPane";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 export function TasksView() {
-  const [activeSubTab, setActiveSubTab] = useState("task-catalogue");
+  // Initialize real-time streaming
+  useTaskStream();
+  
+  const tasks = useTaskStore((state) => state.tasks);
 
   return (
-    <SplitBar value={activeSubTab} onValueChange={setActiveSubTab}>
-      <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-        <SplitBarTrigger value="task-catalogue">Task Catalogue</SplitBarTrigger>
-        <SplitBarTrigger value="my-tasks">My Tasks</SplitBarTrigger>
-        <SplitBarTrigger value="completed">Completed / Archived</SplitBarTrigger>
-      </SplitBarList>
+    <div className="flex flex-col h-full">
+      {/* Header with connection status */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h1 className="text-2xl font-bold">Task Board</h1>
+          <p className="text-sm text-muted-foreground">Real-time command cockpit</p>
+        </div>
+        <TaskConnectionStatus />
+      </div>
 
-      <SplitBarContent value="task-catalogue">
-        <TaskCatalogueList />
-      </SplitBarContent>
+      {/* Analytics ribbon */}
+      <TaskAnalytics />
 
-      <SplitBarContent value="my-tasks">
-        <MyTasksList />
-      </SplitBarContent>
-
-      <SplitBarContent value="completed">
-        <CompletedTasksTable />
-      </SplitBarContent>
-    </SplitBar>
+      {/* Three-column resizable layout */}
+      <div className="flex-1 min-h-0">
+        <ResizablePanelGroup direction="horizontal" className="h-full rounded-lg border">
+          <ResizablePanel defaultSize={33} minSize={25}>
+            <div className="h-full p-4">
+              <SchedulePane tasks={tasks} />
+            </div>
+          </ResizablePanel>
+          
+          <ResizableHandle withHandle />
+          
+          <ResizablePanel defaultSize={34} minSize={25}>
+            <div className="h-full p-4 border-x">
+              <CatalogPane tasks={tasks} />
+            </div>
+          </ResizablePanel>
+          
+          <ResizableHandle withHandle />
+          
+          <ResizablePanel defaultSize={33} minSize={25}>
+            <div className="h-full p-4">
+              <CompletedPane tasks={tasks} />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    </div>
   );
 }
