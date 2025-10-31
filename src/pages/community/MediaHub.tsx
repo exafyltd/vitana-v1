@@ -304,7 +304,7 @@ export default function MediaHub() {
       }
     },
     onSuccess: () => {
-      refetchShorts();
+      queryClient.invalidateQueries({ queryKey: ['shorts'] });
       toast({
         title: "Video deleted",
         description: "Your video has been successfully deleted.",
