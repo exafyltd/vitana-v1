@@ -47,6 +47,7 @@ export const SCREEN_IDS = {
   HEALTH_BIOMARKERS: "D1-005-02",
   HEALTH_TRACKER: "D1-005-03",
   HEALTH_EDUCATION: "D1-005-04",
+  HEALTH_PLANS: "D1-005-05",
 
   // Settings Sub-pages (D1-009-xx)
   SETTINGS_PREFERENCES: "D1-009-01",
@@ -119,6 +120,7 @@ export const SCREEN_MAPPINGS: ScreenIdMapping[] = [
   { screenId: SCREEN_IDS.HEALTH_BIOMARKERS, route: "/health/biomarkers", category: "health", pattern: "sub-page-header" },
   { screenId: SCREEN_IDS.HEALTH_TRACKER, route: "/health/tracker", category: "health", pattern: "split-screen" },
   { screenId: SCREEN_IDS.HEALTH_EDUCATION, route: "/health/education", category: "health", pattern: "sub-page-header" },
+  { screenId: SCREEN_IDS.HEALTH_PLANS, route: "/health/plans", category: "health", pattern: "sub-page-header" },
 ];
 
 export function getScreenId(route: string): ScreenId | null {

@@ -47,6 +47,7 @@ export const healthNavigation = [
   { id: "overview", name: "Overview", path: "/health" },
   { id: "services-hub", name: "Services Hub", path: "/health/services-hub" },
   { id: "my-biology", name: "My Biology", path: "/health/my-biology" },
+  { id: "plans", name: "My Plans", path: "/health/plans" },
   { id: "education-science", name: "Education & Science", path: "/health/education" },
 ];
 

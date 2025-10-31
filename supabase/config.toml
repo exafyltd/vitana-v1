@@ -122,3 +122,6 @@ verify_jwt = true
 
 [functions.generate-event-image]
 verify_jwt = true
+
+[functions.generate-personalized-plan]
+verify_jwt = true

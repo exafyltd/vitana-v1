@@ -1823,6 +1823,36 @@ export type Database = {
           },
         ]
       }
+      event_kinds: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          event_type: string
+          label: string
+          layer: string
+          module: string
+          status: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          event_type: string
+          label: string
+          layer: string
+          module: string
+          status: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          event_type?: string
+          label?: string
+          layer?: string
+          module?: string
+          status?: string
+        }
+        Relationships: []
+      }
       event_recommendations: {
         Row: {
           created_at: string
@@ -1863,6 +1893,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      events: {
+        Row: {
+          actor: string
+          created_at: string | null
+          environment: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          source_service: string
+          timestamp: string | null
+          vtid: string
+        }
+        Insert: {
+          actor: string
+          created_at?: string | null
+          environment: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          source_service: string
+          timestamp?: string | null
+          vtid: string
+        }
+        Update: {
+          actor?: string
+          created_at?: string | null
+          environment?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          source_service?: string
+          timestamp?: string | null
+          vtid?: string
+        }
+        Relationships: []
       }
       exchange_rates: {
         Row: {
@@ -3405,6 +3471,108 @@ export type Database = {
         }
         Relationships: []
       }
+      oasis_events: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string | null
+          layer: string | null
+          link: string | null
+          message: string
+          meta: Json | null
+          metadata: Json | null
+          model: string | null
+          module: string | null
+          ref: string | null
+          role: string
+          service: string
+          source: string | null
+          status: string
+          title: string | null
+          topic: string
+          vtid: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind?: string | null
+          layer?: string | null
+          link?: string | null
+          message: string
+          meta?: Json | null
+          metadata?: Json | null
+          model?: string | null
+          module?: string | null
+          ref?: string | null
+          role: string
+          service: string
+          source?: string | null
+          status: string
+          title?: string | null
+          topic: string
+          vtid?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string | null
+          layer?: string | null
+          link?: string | null
+          message?: string
+          meta?: Json | null
+          metadata?: Json | null
+          model?: string | null
+          module?: string | null
+          ref?: string | null
+          role?: string
+          service?: string
+          source?: string | null
+          status?: string
+          title?: string | null
+          topic?: string
+          vtid?: string | null
+        }
+        Relationships: []
+      }
+      OasisEvent: {
+        Row: {
+          created_at: string | null
+          event: string
+          git_sha: string | null
+          id: string
+          metadata: Json | null
+          notes: string | null
+          rid: string
+          service: string
+          status: string
+          tenant: string
+        }
+        Insert: {
+          created_at?: string | null
+          event: string
+          git_sha?: string | null
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          rid: string
+          service: string
+          status: string
+          tenant: string
+        }
+        Update: {
+          created_at?: string | null
+          event?: string
+          git_sha?: string | null
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          rid?: string
+          service?: string
+          status?: string
+          tenant?: string
+        }
+        Relationships: []
+      }
       patient_provider_assignments: {
         Row: {
           assigned_at: string
@@ -3546,6 +3714,47 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plan_adherence_logs: {
+        Row: {
+          completed: boolean | null
+          data: Json
+          id: string
+          logged_at: string | null
+          notes: string | null
+          plan_id: string
+          plan_type: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          data: Json
+          id?: string
+          logged_at?: string | null
+          notes?: string | null
+          plan_id: string
+          plan_type: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          data?: Json
+          id?: string
+          logged_at?: string | null
+          notes?: string | null
+          plan_id?: string
+          plan_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plan_adherence_logs_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "user_health_plans"
             referencedColumns: ["id"]
           },
         ]
@@ -4776,6 +4985,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_health_plans: {
+        Row: {
+          active: boolean | null
+          adherence_score: number | null
+          ai_generated: boolean | null
+          created_at: string | null
+          generated_at: string | null
+          id: string
+          last_updated: string | null
+          plan_data: Json
+          plan_type: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          adherence_score?: number | null
+          ai_generated?: boolean | null
+          created_at?: string | null
+          generated_at?: string | null
+          id?: string
+          last_updated?: string | null
+          plan_data: Json
+          plan_type: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          adherence_score?: number | null
+          ai_generated?: boolean | null
+          created_at?: string | null
+          generated_at?: string | null
+          id?: string
+          last_updated?: string | null
+          plan_data?: Json
+          plan_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_interests: {
         Row: {
           confidence_score: number | null
@@ -5171,6 +5419,51 @@ export type Database = {
           scoring_tiers?: Json | null
           updated_at?: string | null
           version?: number | null
+        }
+        Relationships: []
+      }
+      VtidLedger: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          description: string
+          id: string
+          metadata: Json | null
+          parent_vtid: string | null
+          status: string
+          task_family: string
+          task_type: string
+          tenant: string
+          updated_at: string
+          vtid: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          description: string
+          id: string
+          metadata?: Json | null
+          parent_vtid?: string | null
+          status: string
+          task_family: string
+          task_type: string
+          tenant: string
+          updated_at?: string
+          vtid: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          metadata?: Json | null
+          parent_vtid?: string | null
+          status?: string
+          task_family?: string
+          task_type?: string
+          tenant?: string
+          updated_at?: string
+          vtid?: string
         }
         Relationships: []
       }
