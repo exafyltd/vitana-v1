@@ -74,14 +74,14 @@ Deno.serve(async (req) => {
 
     console.log('Video metadata:', { width, height, durationSec });
 
-    // Generate thumbnail from first frame
+    // Generate thumbnail from first frame at native video resolution
     const thumbnailPath = `/tmp/${crypto.randomUUID()}.jpg`;
     const thumbnailCommand = new Deno.Command('ffmpeg', {
       args: [
         '-i', tempVideoPath,
         '-ss', '00:00:01',
         '-vframes', '1',
-        '-vf', 'scale=640:-1',
+        '-vf', `scale=${width}:${height}`,
         '-y',
         thumbnailPath
       ],
