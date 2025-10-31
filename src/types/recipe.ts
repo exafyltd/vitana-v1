@@ -53,4 +53,12 @@ export interface NutritionPlanData {
   caloriesTarget?: number;
   proteinTarget?: number;
   dietaryRestrictions?: string[];
+  // Autopilot overview data
+  goalFocus?: string;
+  schedule?: string;
+  currentWeek?: number;
+  totalWeeks?: number;
+  completionPercentage?: number;
+  aiInsight?: string;
+  lastUpdated?: string;
 }

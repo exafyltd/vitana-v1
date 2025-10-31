@@ -5,6 +5,7 @@ import { Calendar } from "lucide-react";
 import { RecipeCard } from "./RecipeCard";
 import { RecipeSheet } from "./RecipeSheet";
 import { NutritionEmptyState } from "./NutritionEmptyState";
+import { NutritionOverviewCard } from "./NutritionOverviewCard";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { mockNutritionPlan } from "@/data/mockRecipes";
 
@@ -58,6 +59,14 @@ export function NutritionPlanView() {
   return (
     <>
       <div className="space-y-6">
+        {/* Autopilot Overview Card */}
+        <NutritionOverviewCard 
+          planData={planData}
+          onRecalibrate={() => {
+            console.log('Recalibrate nutrition plan');
+          }}
+        />
+        
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start bg-muted/50">

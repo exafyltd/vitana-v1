@@ -387,6 +387,14 @@ export const mockNutritionPlan: NutritionPlanData = {
   caloriesTarget: 2000,
   proteinTarget: 150,
   dietaryRestrictions: [],
+  // Autopilot overview data
+  goalFocus: 'Balanced Nutrition',
+  schedule: '3 meals + 2 snacks per day',
+  currentWeek: 2,
+  totalWeeks: 4,
+  completionPercentage: 68,
+  aiInsight: 'Autopilot adjusted your carb intake to align with increased activity this week.',
+  lastUpdated: '3h ago',
   days: [
     {
       day: 1,
