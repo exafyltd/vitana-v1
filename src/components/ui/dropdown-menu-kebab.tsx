@@ -19,7 +19,7 @@ const KebabMenu = React.forwardRef<
   KebabMenuProps
 >(({ children, className, ...props }, ref) => {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           ref={ref}
@@ -36,7 +36,10 @@ const KebabMenu = React.forwardRef<
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-48 z-50 bg-popover border border-border shadow-md"
+        sideOffset={6}
+        onCloseAutoFocus={(e) => e.preventDefault()}
+        className="w-48 z-[100] bg-popover/95 backdrop-blur-md border border-border shadow-xl pointer-events-auto"
+        onClick={(e) => e.stopPropagation()}
       >
         {children}
       </DropdownMenuContent>
