@@ -1,11 +1,9 @@
 import { useState, useMemo } from "react";
 import { Recipe, NutritionPlanData } from "@/types/recipe";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Search } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { RecipeCard } from "./RecipeCard";
 import { RecipeSheet } from "./RecipeSheet";
-import { RecipeFilters } from "./RecipeFilters";
 import { NutritionEmptyState } from "./NutritionEmptyState";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { mockNutritionPlan } from "@/data/mockRecipes";
@@ -17,13 +15,7 @@ function sortMealsBySlot(meals: Recipe[]): Recipe[] {
 
 export function NutritionPlanView() {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all');
-  const [filters, setFilters] = useState({
-    dietType: [] as string[],
-    calorieRange: [0, 1000] as [number, number],
-    minProtein: 0
-  });
   
   const { plans } = useHealthPlans();
   const nutritionPlan = plans?.find(p => p.plan_type === 'nutrition');
@@ -34,7 +26,7 @@ export function NutritionPlanView() {
     return <NutritionEmptyState />;
   }
   
-  // Filter and search logic
+  // Filter logic
   const filteredMeals = useMemo(() => {
     let meals = planData.days.flatMap(day => day.meals);
     
@@ -46,34 +38,8 @@ export function NutritionPlanView() {
       });
     }
     
-    // Search filter
-    if (searchQuery) {
-      meals = meals.filter(m =>
-        m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        m.ingredients.some(i => i.item.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    }
-    
-    // Diet filter
-    if (filters.dietType.length > 0) {
-      meals = meals.filter(m =>
-        filters.dietType.every(diet => m.tags.includes(diet))
-      );
-    }
-    
-    // Calorie filter
-    meals = meals.filter(m =>
-      m.calories >= filters.calorieRange[0] &&
-      m.calories <= filters.calorieRange[1]
-    );
-    
-    // Protein filter
-    if (filters.minProtein > 0) {
-      meals = meals.filter(m => m.macros.protein >= filters.minProtein);
-    }
-    
     return meals;
-  }, [planData, activeTab, searchQuery, filters]);
+  }, [planData, activeTab]);
   
   // Group by day
   const mealsByDay = useMemo(() => {
@@ -92,20 +58,6 @@ export function NutritionPlanView() {
   return (
     <>
       <div className="space-y-6">
-        {/* Search + Filters Row */}
-        <div className="flex gap-4 flex-wrap">
-          <div className="flex-1 min-w-[200px] relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder="Search recipes or ingredients..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9"
-            />
-          </div>
-          <RecipeFilters filters={filters} onFiltersChange={setFilters} />
-        </div>
-        
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start bg-muted/50">
