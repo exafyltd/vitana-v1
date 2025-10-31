@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { useShortHoverPreview } from '@/hooks/useShortHoverPreview';
+import { ImageWithFallback } from '@/components/diary/ImageWithFallback';
 
 interface ShortPreviewCardProps {
   video: {
@@ -95,13 +96,16 @@ export function ShortPreviewCard({
 
   const showOwnerMenu = currentUserId && video.user_id === currentUserId;
 
+  // Get the best available thumbnail URL
+  const thumbnailUrl = video.thumbnail_url || video.thumbnailImage;
+
   return (
     <div
       ref={containerRef}
       style={{
         animation: `fadeSlideIn 0.4s ease-out ${index * 0.1}s backwards`,
       }}
-      className="group relative w-full max-w-[260px] mx-auto"
+      className="group relative w-full max-w-[260px] mx-auto h-[420px] sm:h-[480px]"
       {...handlers}
       tabIndex={0}
       role="button"
@@ -143,21 +147,26 @@ export function ShortPreviewCard({
       )}
 
       <div className="cursor-pointer" onClick={onClick}>
-        {/* Thumbnail Container - Fixed 9:16 aspect ratio */}
+        {/* Thumbnail Container - Fixed 9:16 aspect ratio with max height */}
         <div
-          className={`relative aspect-[9/16] w-full rounded-2xl overflow-hidden bg-muted transition-all duration-300 ${
+          className={`relative aspect-[9/16] w-full h-full max-h-[420px] sm:max-h-[480px] rounded-xl overflow-hidden bg-muted transition-all duration-300 ${
             isHovering && !disabled
               ? '-translate-y-1 shadow-lg ring-4 ring-violet-500/10'
               : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-violet-500/10'
           }`}
         >
+          {/* Fallback gradient if no thumbnail */}
+          {!thumbnailUrl && (
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 via-purple-500/20 to-pink-500/20" />
+          )}
+
           {/* Video Element (hidden until preview starts) */}
           <video
             ref={videoRef}
             className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
               isPreviewing && !loadError ? 'opacity-100' : 'opacity-0'
             }`}
-            poster={video.thumbnail_url || video.thumbnailImage}
+            poster={thumbnailUrl}
             preload="metadata"
             muted
             playsInline
@@ -166,17 +175,16 @@ export function ShortPreviewCard({
             controlsList="nodownload nofullscreen noremoteplayback"
           />
 
-          {/* Thumbnail Image */}
-          <img
-            ref={imgRef}
-            src={video.thumbnailImage}
-            alt={video.title}
-            loading="lazy"
-            decoding="async"
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
-              isPreviewing && !loadError ? 'opacity-0' : 'opacity-100'
-            }`}
-          />
+          {/* Thumbnail Image with fallback handling */}
+          {thumbnailUrl && (
+            <ImageWithFallback
+              src={thumbnailUrl}
+              alt={video.title}
+              className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${
+                isPreviewing && !loadError ? 'opacity-0' : 'opacity-100'
+              }`}
+            />
+          )}
 
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
