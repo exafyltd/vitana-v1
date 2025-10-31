@@ -13,6 +13,7 @@ import { PersonalizedPlanCard } from "@/components/health/PersonalizedPlanCard";
 import { PlanGeneratorWizard } from "@/components/health/PlanGeneratorWizard";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { NutritionPlanView } from "@/components/health/nutrition/NutritionPlanView";
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -94,8 +95,17 @@ export default withScreenId(function Plans() {
               </div>
             </SplitBarContent>
             
-            {/* Individual plan type tabs */}
-            {['nutrition', 'exercise', 'hydration', 'sleep', 'mental', 'supplement'].map(type => (
+            {/* Nutrition Plan - Full Recipe View */}
+            <SplitBarContent value="nutrition">
+              <div className="grid grid-cols-12 gap-6">
+                <div className="col-span-12">
+                  <NutritionPlanView />
+                </div>
+              </div>
+            </SplitBarContent>
+            
+            {/* Other plan type tabs */}
+            {['exercise', 'hydration', 'sleep', 'mental', 'supplement'].map(type => (
               <SplitBarContent key={type} value={type}>
                 <div className="grid grid-cols-12 gap-6">
                   <div className="col-span-12">
