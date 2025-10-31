@@ -256,6 +256,11 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <p className="font-medium text-sm truncate">{item.title}</p>
+              {item.hasGenericTitle && item.status === 'queued' && (
+                <Badge variant="destructive" className="text-xs animate-pulse">
+                  ⚠️ Needs title
+                </Badge>
+              )}
               {getStatusBadge()}
             </div>
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
@@ -301,9 +306,16 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
               <Button
                 type="button"
                 size="sm"
-                variant="ghost"
+                variant={item.hasGenericTitle && item.status === 'queued' ? "default" : "ghost"}
+                className={cn(
+                  item.hasGenericTitle && item.status === 'queued' && "animate-pulse"
+                )}
+                id={`expand-${item.id}`}
               >
                 {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                {!isExpanded && item.hasGenericTitle && item.status === 'queued' && (
+                  <span className="ml-1 text-xs">Edit</span>
+                )}
               </Button>
             </CollapsibleTrigger>
           </div>
@@ -318,9 +330,15 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
                 <Input
                   id={`title-${item.id}`}
                   value={item.title}
-                  onChange={(e) => onUpdate({ title: e.target.value.slice(0, 100) })}
+                  onChange={(e) => onUpdate({ 
+                    title: e.target.value.slice(0, 100),
+                    hasGenericTitle: false
+                  })}
                   placeholder="Video title"
                   disabled={item.status === 'uploading' || item.status === 'done'}
+                  className={cn(
+                    item.hasGenericTitle && "border-destructive focus-visible:ring-destructive"
+                  )}
                 />
               </div>
 
@@ -538,34 +556,49 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
           {items.length > 0 && (
             <div className="border rounded-lg p-4 bg-muted/20 space-y-4">
               <h3 className="font-semibold text-sm">Apply to all videos (optional)</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">
-                    Title Pattern
-                    <span className="ml-2 text-xs">
-                      Use: {'{base}'}, {'{index}'}, {'{date}'}
-                    </span>
+              <div className="space-y-2 bg-muted/50 p-4 rounded-lg border border-border">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="titlePattern" className="text-sm font-medium">
+                    Title Pattern (recommended)
                   </Label>
-                  <Input
-                    placeholder="{base}"
-                    value={titlePattern}
-                    onChange={(e) => setTitlePattern(e.target.value)}
-                    disabled={isUploading}
-                  />
+                  <Badge variant="outline" className="text-xs">Tip</Badge>
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">Topic</Label>
-                  <select
-                    value={sharedTopic}
-                    onChange={(e) => setSharedTopic(e.target.value)}
-                    disabled={isUploading}
-                    className="h-10 px-3 rounded-md border border-input bg-background w-full"
-                  >
-                    {VIDEO_TOPICS.map(topic => (
-                      <option key={topic} value={topic}>{topic}</option>
-                    ))}
-                  </select>
+                <Input
+                  id="titlePattern"
+                  placeholder="e.g., My Series - Part {index}"
+                  value={titlePattern}
+                  onChange={(e) => setTitlePattern(e.target.value)}
+                  disabled={isUploading}
+                  className="font-mono"
+                />
+                <div className="space-y-1">
+                  <p className="text-xs text-muted-foreground">
+                    Use <code className="px-1 py-0.5 bg-muted rounded">{'{base}'}</code> for filename, 
+                    <code className="px-1 py-0.5 bg-muted rounded ml-1">{'{index}'}</code> for number, 
+                    <code className="px-1 py-0.5 bg-muted rounded ml-1">{'{date}'}</code> for today's date
+                  </p>
+                  {titlePattern !== '{base}' && items.length > 0 && (
+                    <div className="bg-background p-2 rounded text-xs border border-border">
+                      <strong className="text-muted-foreground">Preview:</strong> 
+                      <span className="ml-2 text-foreground">
+                        {applyTitlePattern(items[0]?.title.replace(/download/i, 'Video') || 'Example', 0)}
+                      </span>
+                    </div>
+                  )}
                 </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Topic</Label>
+                <select
+                  value={sharedTopic}
+                  onChange={(e) => setSharedTopic(e.target.value)}
+                  disabled={isUploading}
+                  className="h-10 px-3 rounded-md border border-input bg-background w-full"
+                >
+                  {VIDEO_TOPICS.map(topic => (
+                    <option key={topic} value={topic}>{topic}</option>
+                  ))}
+                </select>
               </div>
               <Textarea
                 placeholder="Shared description"
@@ -595,6 +628,64 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                     {tag}
                   </button>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Generic title warning */}
+          {items.some(item => item.status === 'queued' && item.hasGenericTitle) && (
+            <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-1">
+                    Some videos need better titles
+                  </p>
+                  <p className="text-xs text-yellow-700 dark:text-yellow-300 mb-3">
+                    Videos with generic titles like "Download" won't be discoverable. 
+                    Click the expand button (
+                    <ChevronDown className="w-3 h-3 inline" />
+                    ) on each video to edit the title and add tags.
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        items.forEach((item) => {
+                          if (item.hasGenericTitle && item.status === 'queued') {
+                            document.getElementById(`expand-${item.id}`)?.click();
+                          }
+                        });
+                      }}
+                      className="text-xs"
+                    >
+                      Expand all
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        items.forEach((item, index) => {
+                          if (item.hasGenericTitle && item.status === 'queued') {
+                            const newTitle = titlePattern !== '{base}' 
+                              ? applyTitlePattern('Video', index)
+                              : `Video ${index + 1}`;
+                            updateItem(item.id, { 
+                              title: newTitle,
+                              hasGenericTitle: false 
+                            });
+                          }
+                        });
+                      }}
+                      className="text-xs"
+                    >
+                      Auto-rename with pattern
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -649,13 +740,22 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                 )}
                 <Button
                   onClick={handleSubmit}
-                  disabled={queuedCount === 0 || isUploading}
+                  disabled={
+                    queuedCount === 0 || 
+                    isUploading ||
+                    items.some(item => item.status === 'queued' && item.hasGenericTitle)
+                  }
                   className="bg-gradient-to-r from-violet-500 to-sky-400 hover:from-violet-600 hover:to-sky-500"
                 >
                   {isUploading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Publishing...
+                    </>
+                  ) : items.some(item => item.status === 'queued' && item.hasGenericTitle) ? (
+                    <>
+                      <AlertCircle className="w-4 h-4 mr-2" />
+                      Fix titles before uploading
                     </>
                   ) : (
                     `Publish All (${queuedCount})`

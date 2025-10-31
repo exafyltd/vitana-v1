@@ -21,6 +21,7 @@ export interface VideoFileItem {
     selectedFrame?: number;
   };
   mediaId?: string;
+  hasGenericTitle?: boolean;
 }
 
 interface UploadOptions {
@@ -39,6 +40,18 @@ const humanizeFilename = (filename: string): string => {
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
+};
+
+// Check if title is generic (e.g., "Download", "Video", etc.)
+const isGenericTitle = (title: string): boolean => {
+  const genericTerms = ['download', 'video', 'file', 'clip', 'short', 'untitled', 'movie', 'vid'];
+  const normalized = title.toLowerCase().trim();
+  
+  // Check if title is exactly a generic term or generic term with number
+  return genericTerms.some(term => 
+    normalized === term || 
+    normalized.match(new RegExp(`^${term}\\s*\\(?\\d*\\)?$`))
+  );
 };
 
 export const useBulkVideoUpload = () => {
@@ -170,11 +183,12 @@ export const useBulkVideoUpload = () => {
 
     for (const file of files) {
       const validation = validateFile(file);
+      const humanizedTitle = humanizeFilename(file.name);
       
       const item: VideoFileItem = {
         id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         file,
-        title: sharedMetadata?.title || humanizeFilename(file.name),
+        title: sharedMetadata?.title || humanizedTitle,
         description: sharedMetadata?.description || '',
         tags: sharedMetadata?.tags || [],
         topic: sharedMetadata?.topic || 'General',
@@ -182,6 +196,7 @@ export const useBulkVideoUpload = () => {
         status: validation.valid ? 'queued' : 'failed',
         progress: 0,
         error: validation.error,
+        hasGenericTitle: !sharedMetadata?.title && isGenericTitle(humanizedTitle),
       };
 
       // Get duration and generate thumbnails for valid files
