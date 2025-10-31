@@ -17,6 +17,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { useQueryClient } from '@tanstack/react-query';
 
 interface BulkVideoUploadModalProps {
   open: boolean;
@@ -425,6 +426,7 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
 }
 
 export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: BulkVideoUploadModalProps) {
+  const queryClient = useQueryClient();
   const [titlePattern, setTitlePattern] = useState('{base}');
   const [sharedDescription, setSharedDescription] = useState('');
   const [sharedTags, setSharedTags] = useState<string[]>([]);
@@ -490,6 +492,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
 
   const handleSubmit = async () => {
     await uploadAll(3);
+    await queryClient.invalidateQueries({ queryKey: ['shorts'] });
     onUploadComplete?.();
   };
 
