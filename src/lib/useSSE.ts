@@ -40,7 +40,16 @@ export function useSSE({
     // Pre-flight health check
     const checkHealth = async (): Promise<boolean> => {
       try {
-        const baseUrl = url.replace('/events/stream', '');
+        // Build base URL robustly (strip query and '/events/stream')
+        let baseUrl: string;
+        try {
+          const u = new URL(url, window.location.origin);
+          const cleanedPath = u.pathname.replace('/events/stream', '');
+          baseUrl = `${u.origin}${cleanedPath}`;
+        } catch {
+          baseUrl = url.split('?')[0].replace('/events/stream', '');
+        }
+
         const healthUrl = `${baseUrl}/events?limit=1`;
         
         const controller = new AbortController();
@@ -49,7 +58,7 @@ export function useSSE({
         const response = await fetch(healthUrl, {
           signal: controller.signal,
           mode: 'cors',
-          credentials: 'include'
+          credentials: includeCredentials ? 'include' : 'omit',
         });
         
         clearTimeout(timeoutId);

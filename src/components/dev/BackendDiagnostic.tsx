@@ -69,8 +69,8 @@ export function BackendDiagnostic() {
       console.log(`\n🌊 Testing SSE: ${BASE_EVENTS}/events/stream`);
       
       try {
-        // Public SSE - no credentials
-        const es = new EventSource(`${BASE_EVENTS}/events/stream`);
+        // Use credentials to match production SSE auth behavior
+        const es = new EventSource(`${BASE_EVENTS}/events/stream`, { withCredentials: true });
         
         let opened = false;
         
