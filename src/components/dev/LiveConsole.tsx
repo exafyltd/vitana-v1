@@ -44,6 +44,7 @@ export default function LiveConsole() {
   const [statusDetailsOpen, setStatusDetailsOpen] = useState(false);
   const [eventRate, setEventRate] = useState(0);
   const [totalLoaded, setTotalLoaded] = useState(0);
+  const [forceReconnectKey, setForceReconnectKey] = useState(0);
   const fallbackInterval = useRef<NodeJS.Timeout>();
   const eventCountRef = useRef(0);
   const rateIntervalRef = useRef<NodeJS.Timeout>();
@@ -86,7 +87,7 @@ export default function LiveConsole() {
       });
   }, [filters]);
 
-  // Streaming (SSE) with failure tracking
+  // Streaming (SSE) with failure tracking and circuit breaker
   useSSE({
     url: `${BASE_EVENTS}/events/stream`,
     onStatus: (ok) => {
@@ -100,7 +101,22 @@ export default function LiveConsole() {
       } else {
         setSseFailCount(0);
         setShowFallbackPrompt(false);
+        setUseFallback(false); // Disable fallback on successful reconnection
+        toast({ 
+          title: "✅ Reconnected", 
+          description: "Live event stream restored" 
+        });
       }
+    },
+    onMaxRetriesExceeded: () => {
+      console.error('🔴 Max SSE retries exceeded, activating polling fallback');
+      setUseFallback(true);
+      setShowFallbackPrompt(false);
+      toast({ 
+        title: "⚠️ Connection Failed", 
+        description: "Switched to polling mode (5s refresh)",
+        variant: "destructive"
+      });
     },
     onEvent: (ev: Event) => {
       eventCountRef.current++;
@@ -108,7 +124,6 @@ export default function LiveConsole() {
         setBufferedEvents(prev => [...prev, ev]);
       } else {
         addEvents([ev]);
-        // Check if it's a smoke test event
         if (ev.kind === "telemetry.smoke") {
           toast({ title: "Smoke test received ✓", description: "Event arrived successfully" });
         }
@@ -185,6 +200,33 @@ export default function LiveConsole() {
     }
   };
 
+  const handleForceReconnect = () => {
+    console.log('🔄 Force reconnecting SSE...');
+    // Close all existing connections first
+    const sseManager = (window as any).sseManager;
+    if (sseManager) {
+      sseManager.closeAll();
+    }
+    
+    setSseFailCount(0);
+    setUseFallback(false);
+    setShowFallbackPrompt(false);
+    
+    // Force component remount by updating URL slightly then reverting
+    setForceReconnectKey(prev => prev + 1);
+    
+    backendStatus.retryAll();
+    toast({ 
+      title: "🔄 Reconnecting...", 
+      description: "Attempting to restore live connection" 
+    });
+    
+    // Reload page as last resort to ensure clean state
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
+
   const handleRunSmoke = async () => {
     try {
       const BASE_OPERATOR = (import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
@@ -244,12 +286,26 @@ export default function LiveConsole() {
         >
           <div className="flex gap-2 mt-2">
             <Button size="sm" onClick={() => { setUseFallback(true); setShowFallbackPrompt(false); }}>
-              Yes
+              Enable Polling
             </Button>
-            <Button size="sm" variant="outline" onClick={() => setShowFallbackPrompt(false)}>
-              No
+            <Button size="sm" variant="outline" onClick={handleForceReconnect}>
+              Force Reconnect
+            </Button>
+            <Button size="sm" variant="ghost" onClick={() => setShowFallbackPrompt(false)}>
+              Dismiss
             </Button>
           </div>
+        </SoftWarningBanner>
+      )}
+      
+      {useFallback && (
+        <SoftWarningBanner 
+          message="⚠️ Polling mode active (5s refresh). SSE unavailable."
+          dismissible={true}
+        >
+          <Button size="sm" onClick={handleForceReconnect} className="mt-2">
+            Try Reconnecting to Live Stream
+          </Button>
         </SoftWarningBanner>
       )}
 
@@ -268,15 +324,16 @@ export default function LiveConsole() {
               <TooltipTrigger asChild>
                 <Button 
                   size="sm" 
-                  variant="outline" 
-                  onClick={() => backendStatus.retryAll()}
-                  disabled={backendStatus.backendStatus === "ONLINE"}
+                  variant={streaming ? "outline" : "default"}
+                  onClick={handleForceReconnect}
+                  disabled={streaming && !useFallback}
                 >
-                  <RefreshCw className="w-4 h-4" />
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  {streaming ? "Connected" : "Reconnect"}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {backendStatus.backendStatus === "ONLINE" ? "All services connected" : "Reconnect"}
+                {streaming ? "Force reconnect SSE stream" : "Reconnect to live stream"}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -390,12 +447,8 @@ export default function LiveConsole() {
             />
           ) : isDegraded ? (
             <EmptyStatePanel
-              type="degraded"
-              onForceReconnect={() => {
-                setUseFallback(false);
-                setSseFailCount(0);
-                backendStatus.retryAll();
-              }}
+            type="degraded"
+              onForceReconnect={handleForceReconnect}
               onViewLogs={() => setStatusDetailsOpen(true)}
             />
           ) : (
