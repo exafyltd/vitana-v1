@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { sseManager } from "./sseConnectionManager";
 
-const MAX_RETRIES = 5;
-const HEALTH_CHECK_TIMEOUT = 5000;
+const MAX_RETRIES = 10;
+const HEALTH_CHECK_TIMEOUT = 3000;
 
 type Options = {
   url: string;
@@ -22,14 +22,15 @@ export function useSSE({
   maxBackoffMs = 30000 
 }: Options) {
   const connectionIdRef = useRef<string | null>(null);
-  const mountedRef = useRef(false);
   const failCountRef = useRef(0);
   const lastSuccessRef = useRef<number>(Date.now());
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
   
   useEffect(() => {
-    // Prevent double mount in React Strict Mode
-    if (mountedRef.current) return;
-    mountedRef.current = true;
+    // Clear any previous reconnect attempts
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+    }
 
     let aborted = false;
     let backoff = 1000;
@@ -75,7 +76,7 @@ export function useSSE({
         if (!healthy) {
           console.warn('❌ Backend unhealthy, delaying reconnection...');
           failCountRef.current++;
-          setTimeout(connect, backoff);
+          reconnectTimeoutRef.current = setTimeout(connect, backoff);
           backoff = Math.min(backoff * 2, maxBackoffMs);
           return;
         }
@@ -119,7 +120,7 @@ export function useSSE({
           return;
         }
         
-        setTimeout(connect, backoff);
+        reconnectTimeoutRef.current = setTimeout(connect, backoff);
         backoff = Math.min(backoff * 2, maxBackoffMs);
       };
     };
@@ -128,7 +129,9 @@ export function useSSE({
     
     return () => {
       aborted = true;
-      mountedRef.current = false;
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
       if (connectionIdRef.current) {
         sseManager.unregister(connectionIdRef.current);
         connectionIdRef.current = null;

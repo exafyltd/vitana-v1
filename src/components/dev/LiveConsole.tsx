@@ -88,8 +88,9 @@ export default function LiveConsole() {
   }, [filters]);
 
   // Streaming (SSE) with failure tracking and circuit breaker
+  // forceReconnectKey forces useSSE to remount when changed
   useSSE({
-    url: `${BASE_EVENTS}/events/stream`,
+    url: `${BASE_EVENTS}/events/stream?key=${forceReconnectKey}`,
     onStatus: (ok) => {
       setStreaming(ok);
       backendStatus.updateSSEStatus(ok);
@@ -202,29 +203,28 @@ export default function LiveConsole() {
 
   const handleForceReconnect = () => {
     console.log('🔄 Force reconnecting SSE...');
+    
     // Close all existing connections first
     const sseManager = (window as any).sseManager;
     if (sseManager) {
       sseManager.closeAll();
     }
     
+    // Reset all failure tracking
     setSseFailCount(0);
     setUseFallback(false);
     setShowFallbackPrompt(false);
     
-    // Force component remount by updating URL slightly then reverting
+    // Force useSSE to remount by changing the URL key
     setForceReconnectKey(prev => prev + 1);
     
+    // Retry backend health check
     backendStatus.retryAll();
+    
     toast({ 
       title: "🔄 Reconnecting...", 
       description: "Attempting to restore live connection" 
     });
-    
-    // Reload page as last resort to ensure clean state
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
   };
 
   const handleRunSmoke = async () => {
