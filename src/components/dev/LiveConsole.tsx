@@ -91,6 +91,7 @@ export default function LiveConsole() {
   // forceReconnectKey forces useSSE to remount when changed
   useSSE({
     url: `${BASE_EVENTS}/events/stream?key=${forceReconnectKey}`,
+    includeCredentials: true,
     onStatus: (ok) => {
       setStreaming(ok);
       backendStatus.updateSSEStatus(ok);

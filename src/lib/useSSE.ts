@@ -11,6 +11,7 @@ type Options = {
   onMaxRetriesExceeded?: () => void;
   getHeaders?: () => Record<string, string>;
   maxBackoffMs?: number;
+  includeCredentials?: boolean;
 };
 
 export function useSSE({ 
@@ -19,7 +20,8 @@ export function useSSE({
   onStatus,
   onMaxRetriesExceeded,
   getHeaders, 
-  maxBackoffMs = 30000 
+  maxBackoffMs = 30000,
+  includeCredentials = false
 }: Options) {
   const connectionIdRef = useRef<string | null>(null);
   const failCountRef = useRef(0);
@@ -83,8 +85,10 @@ export function useSSE({
         console.log('✅ Backend healthy, attempting reconnection...');
       }
       
-      // IMPORTANT: Public SSE - no credentials, no custom headers
-      const es = new EventSource(url.trim());
+      // SSE connection (supports optional credentials)
+      const es = includeCredentials 
+        ? new EventSource(url.trim(), { withCredentials: true })
+        : new EventSource(url.trim());
       connectionIdRef.current = sseManager.register(url, es);
       
       es.onopen = () => {
