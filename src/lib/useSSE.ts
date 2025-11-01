@@ -27,6 +27,13 @@ export function useSSE({
   const failCountRef = useRef(0);
   const lastSuccessRef = useRef<number>(Date.now());
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+  // Keep latest handlers in refs to avoid re-creating the SSE connection on every render
+  const onEventRef = useRef(onEvent);
+  const onStatusRef = useRef(onStatus);
+
+  // Update refs when callbacks change, without restarting the connection
+  useEffect(() => { onEventRef.current = onEvent; }, [onEvent]);
+  useEffect(() => { onStatusRef.current = onStatus; }, [onStatus]);
   
   useEffect(() => {
     // Clear any previous reconnect attempts
@@ -105,13 +112,13 @@ export function useSSE({
         console.log(`✅ SSE connected successfully (readyState: ${readyState}, URL: ${url})`);
         failCountRef.current = 0; // Reset failure count on success
         lastSuccessRef.current = Date.now();
-        onStatus?.(true);
+        onStatusRef.current?.(true);
         backoff = 1000;
       };
       
       es.onmessage = (ev) => {
         try {
-          onEvent(JSON.parse(ev.data));
+          onEventRef.current?.(JSON.parse(ev.data));
         } catch (e) {
           console.warn('Failed to parse SSE event:', e);
         }
@@ -133,7 +140,7 @@ export function useSSE({
           console.error('   Possible causes: malformed SSE data, missing heartbeats, premature close');
         }
         
-        onStatus?.(false);
+        onStatusRef.current?.(false);
         
         if (connectionIdRef.current) {
           sseManager.unregister(connectionIdRef.current);
@@ -164,7 +171,7 @@ export function useSSE({
         connectionIdRef.current = null;
       }
     };
-  }, [url, onEvent, onStatus, onMaxRetriesExceeded, maxBackoffMs]);
+  }, [url, onMaxRetriesExceeded, maxBackoffMs, includeCredentials]);
 }
 
 // Force reconnect utility (exposed for manual reconnection)
