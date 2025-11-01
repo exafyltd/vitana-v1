@@ -16,6 +16,7 @@ import { MiniFooterStatus } from "./status/MiniFooterStatus";
 import { useBackendStatus } from "@/hooks/useBackendStatus";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw, Activity } from "lucide-react";
+import { SSEConnectionMonitor } from "./SSEConnectionMonitor";
 
 const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
 
@@ -221,6 +222,11 @@ export default function LiveConsole() {
 
   return (
     <div className="h-full flex flex-col">
+      {/* SSE Connection Monitor */}
+      <div className="p-3 border-b">
+        <SSEConnectionMonitor />
+      </div>
+
       {/* Status Header Bar */}
       <StatusHeaderBar
         backendStatus={backendStatus.backendStatus}

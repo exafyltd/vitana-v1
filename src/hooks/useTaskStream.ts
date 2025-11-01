@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { useTaskStore } from "@/state/taskStore";
 import { fetchTasks, pollTasks } from "@/lib/taskApi";
 import { Task } from "@/types/task";
+import { sseManager } from "@/lib/sseConnectionManager";
 
 const STREAM_URL = import.meta.env.VITE_GATEWAY_BASE || "https://oasis-operator-86804897789.us-central1.run.app";
 const POLL_INTERVAL = 10000; // 10 seconds
@@ -13,11 +14,16 @@ const MAX_BACKOFF = 30000; // 30 seconds
 
 export function useTaskStream() {
   const { addTask, updateTask, removeTask, setConnectionState, setTasks } = useTaskStore();
-  const stopRef = useRef<(() => void) | null>(null);
+  const connectionIdRef = useRef<string | null>(null);
   const pollingRef = useRef<NodeJS.Timeout | null>(null);
   const lastUpdateRef = useRef<string>(new Date().toISOString());
+  const mountedRef = useRef(false);
 
   useEffect(() => {
+    // Prevent double mount in React Strict Mode
+    if (mountedRef.current) return;
+    mountedRef.current = true;
+
     let aborted = false;
     let backoff = 1000;
     let isPolling = false;
@@ -60,7 +66,9 @@ export function useTaskStream() {
       if (aborted) return;
       
       try {
-        const es = new EventSource(`${STREAM_URL}/api/v1/tasks/stream`);
+        const url = `${STREAM_URL}/api/v1/tasks/stream`;
+        const es = new EventSource(url);
+        connectionIdRef.current = sseManager.register(url, es);
         
         es.onopen = () => {
           console.log("✅ Task stream connected");
@@ -102,7 +110,10 @@ export function useTaskStream() {
         es.onerror = () => {
           console.warn("⚠️ Task stream error, reconnecting...");
           setConnectionState("RECONNECTING");
-          es.close();
+          if (connectionIdRef.current) {
+            sseManager.unregister(connectionIdRef.current);
+            connectionIdRef.current = null;
+          }
           
           // Start polling after 10s of being disconnected
           setTimeout(() => {
@@ -115,11 +126,6 @@ export function useTaskStream() {
           setTimeout(connectStream, backoff);
           backoff = Math.min(backoff * 2, MAX_BACKOFF);
         };
-        
-        stopRef.current = () => {
-          es.close();
-          stopPolling();
-        };
       } catch (error) {
         console.error("Failed to connect to task stream:", error);
         setConnectionState("OFFLINE");
@@ -131,7 +137,11 @@ export function useTaskStream() {
     
     return () => {
       aborted = true;
-      stopRef.current?.();
+      mountedRef.current = false;
+      if (connectionIdRef.current) {
+        sseManager.unregister(connectionIdRef.current);
+        connectionIdRef.current = null;
+      }
       stopPolling();
     };
   }, [addTask, updateTask, removeTask, setConnectionState, setTasks]);

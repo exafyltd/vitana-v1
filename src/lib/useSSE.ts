@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { sseManager } from "./sseConnectionManager";
 
 type Options = {
   url: string;
@@ -15,9 +16,14 @@ export function useSSE({
   getHeaders, 
   maxBackoffMs = 30000 
 }: Options) {
-  const stopRef = useRef<(() => void) | null>(null);
+  const connectionIdRef = useRef<string | null>(null);
+  const mountedRef = useRef(false);
   
   useEffect(() => {
+    // Prevent double mount in React Strict Mode
+    if (mountedRef.current) return;
+    mountedRef.current = true;
+
     let aborted = false;
     let backoff = 1000;
 
@@ -26,6 +32,7 @@ export function useSSE({
       
       // IMPORTANT: Public SSE - no credentials, no custom headers
       const es = new EventSource(url.trim());
+      connectionIdRef.current = sseManager.register(url, es);
       
       es.onopen = () => {
         console.log('✅ SSE connected');
@@ -45,19 +52,24 @@ export function useSSE({
       es.onerror = () => {
         console.warn('⚠️ SSE error, reconnecting...');
         onStatus?.(false);
-        es.close();
+        if (connectionIdRef.current) {
+          sseManager.unregister(connectionIdRef.current);
+          connectionIdRef.current = null;
+        }
         setTimeout(connect, backoff);
         backoff = Math.min(backoff * 2, maxBackoffMs);
       };
-      
-      stopRef.current = () => es.close();
     };
 
     connect();
     
     return () => {
       aborted = true;
-      stopRef.current?.();
+      mountedRef.current = false;
+      if (connectionIdRef.current) {
+        sseManager.unregister(connectionIdRef.current);
+        connectionIdRef.current = null;
+      }
     };
   }, [url, onEvent, onStatus, maxBackoffMs]);
 }
