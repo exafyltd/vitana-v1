@@ -92,7 +92,8 @@ export function useSSE({
       connectionIdRef.current = sseManager.register(url, es);
       
       es.onopen = () => {
-        console.log('✅ SSE connected successfully');
+        const readyState = es.readyState;
+        console.log(`✅ SSE connected successfully (readyState: ${readyState}, URL: ${url})`);
         failCountRef.current = 0; // Reset failure count on success
         lastSuccessRef.current = Date.now();
         onStatus?.(true);
@@ -107,9 +108,22 @@ export function useSSE({
         }
       };
       
-      es.onerror = () => {
+      es.onerror = (errorEvent) => {
+        const readyState = es.readyState;
+        const timeSinceSuccess = Date.now() - lastSuccessRef.current;
         failCountRef.current++;
-        console.warn(`⚠️ SSE error (attempt ${failCountRef.current}/${MAX_RETRIES})`);
+        
+        console.error(`⚠️ SSE error (attempt ${failCountRef.current}/${MAX_RETRIES})`);
+        console.error(`   ReadyState: ${readyState} (0=CONNECTING, 1=OPEN, 2=CLOSED)`);
+        console.error(`   Time since last success: ${timeSinceSuccess}ms`);
+        console.error(`   URL: ${url}`);
+        
+        // Rapid failure detection (failing within 5s of success = backend issue)
+        if (timeSinceSuccess < 5000) {
+          console.error('   ⚠️ RAPID FAILURE: Connection closed within 5s - likely BACKEND ISSUE');
+          console.error('   Possible causes: malformed SSE data, missing heartbeats, premature close');
+        }
+        
         onStatus?.(false);
         
         if (connectionIdRef.current) {

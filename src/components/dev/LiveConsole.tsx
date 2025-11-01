@@ -48,6 +48,9 @@ export default function LiveConsole() {
   const fallbackInterval = useRef<NodeJS.Timeout>();
   const eventCountRef = useRef(0);
   const rateIntervalRef = useRef<NodeJS.Timeout>();
+  const lastStatusRef = useRef<boolean | null>(null);
+  const statusTransitionCountRef = useRef(0);
+  const lastToastTimeRef = useRef(0);
 
   const backendStatus = useBackendStatus();
 
@@ -93,21 +96,58 @@ export default function LiveConsole() {
     url: `${BASE_EVENTS}/events/stream?key=${forceReconnectKey}`,
     includeCredentials: true,
     onStatus: (ok) => {
+      const now = Date.now();
+      const timeSinceLastStatus = lastStatusRef.current !== null ? now - lastToastTimeRef.current : Infinity;
+      const statusChanged = lastStatusRef.current !== ok;
+      
+      // Track rapid status changes (connection flapping)
+      if (statusChanged) {
+        statusTransitionCountRef.current++;
+        console.log(`[SSE Status] ${ok ? 'CONNECTED' : 'DISCONNECTED'} (transition #${statusTransitionCountRef.current}, last: ${lastStatusRef.current})`);
+        
+        // Detect flapping: 5+ transitions in 10 seconds
+        if (statusTransitionCountRef.current >= 5 && timeSinceLastStatus < 10000) {
+          console.error('🚨 [SSE FLAPPING DETECTED] Connection unstable - toggling rapidly');
+          console.error(`   Transitions: ${statusTransitionCountRef.current} in ${timeSinceLastStatus}ms`);
+          console.error('   BACKEND ISSUE: Stream likely sending malformed data or closing prematurely');
+        }
+      }
+      
+      lastStatusRef.current = ok;
       setStreaming(ok);
       backendStatus.updateSSEStatus(ok);
+      
       if (!ok) {
         setSseFailCount(prev => prev + 1);
         if (sseFailCount >= 2 && !useFallback) {
           setShowFallbackPrompt(true);
         }
+        
+        // Only show disconnect toast if we were stable for >3s and not already in fallback
+        if (timeSinceLastStatus > 3000 && !useFallback) {
+          lastToastTimeRef.current = now;
+          toast({ 
+            title: "⚠️ Connection Lost", 
+            description: "Attempting to reconnect...",
+            variant: "destructive"
+          });
+        }
       } else {
         setSseFailCount(0);
         setShowFallbackPrompt(false);
-        setUseFallback(false); // Disable fallback on successful reconnection
-        toast({ 
-          title: "✅ Reconnected", 
-          description: "Live event stream restored" 
-        });
+        setUseFallback(false);
+        
+        // Only show reconnect toast if:
+        // 1. We were previously disconnected (statusChanged)
+        // 2. At least 3 seconds since last toast (debounce)
+        // 3. Not a fresh page load (lastStatusRef was set before)
+        if (statusChanged && timeSinceLastStatus > 3000 && lastStatusRef.current !== null) {
+          lastToastTimeRef.current = now;
+          toast({ 
+            title: "✅ Reconnected", 
+            description: "Live event stream restored" 
+          });
+        }
       }
     },
     onMaxRetriesExceeded: () => {
@@ -211,10 +251,13 @@ export default function LiveConsole() {
       sseManager.closeAll();
     }
     
-    // Reset all failure tracking
+    // Reset all failure tracking and diagnostics
     setSseFailCount(0);
     setUseFallback(false);
     setShowFallbackPrompt(false);
+    lastStatusRef.current = null;
+    statusTransitionCountRef.current = 0;
+    lastToastTimeRef.current = 0;
     
     // Force useSSE to remount by changing the URL key
     setForceReconnectKey(prev => prev + 1);
