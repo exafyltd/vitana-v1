@@ -37,11 +37,27 @@ class SSEConnectionManager {
     console.log(`[SSE Manager] All connections closed`);
   }
 
+  // Remove connections that are already closed to prevent leaks and UI confusion
+  private sweepClosed(context: string = 'sweep') {
+    let removed = 0;
+    this.connections.forEach((es, id) => {
+      if (es.readyState === 2 /* CLOSED */) {
+        this.connections.delete(id);
+        removed++;
+      }
+    });
+    if (removed > 0) {
+      console.log(`[SSE Manager] ${context}: pruned ${removed} closed connection(s). Active: ${this.connections.size}`);
+    }
+  }
+
   getActiveCount(): number {
+    this.sweepClosed('getActiveCount');
     return this.connections.size;
   }
 
   getConnectionInfo(): Array<{ id: string; url: string; readyState: number }> {
+    this.sweepClosed('getConnectionInfo');
     return Array.from(this.connections.entries()).map(([id, es]) => ({
       id,
       url: es.url,
