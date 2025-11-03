@@ -409,7 +409,7 @@ export function MeetupDetailsDrawer({
     }
 
     // Get host ID from event creator
-    const hostId = event.creator_id || event.author?.id;
+    const hostId = event.created_by;
     
     if (!hostId) {
       toast({
@@ -435,7 +435,7 @@ export function MeetupDetailsDrawer({
   const handleSendMessageToHost = async (message: string) => {
     setIsCreatingThread(true);
     try {
-      const hostId = event.creator_id || event.author?.id;
+      const hostId = event.created_by;
       
       if (!hostId) {
         throw new Error('Host ID not found');
@@ -1086,15 +1086,15 @@ export function MeetupDetailsDrawer({
       </div>
 
       {/* Message Compose Modal */}
-      {event.creator_id && (
+      {event.created_by && (
         <MessageComposeModal
           isOpen={messageModalOpen}
           onOpenChange={setMessageModalOpen}
           recipient={{
-            id: event.creator_id,
-            name: event.creator_display_name || event.author?.name || 'Event Host',
+            id: event.created_by,
+            name: event.creator_display_name || 'Event Host',
             handle: event.creator_handle || 'host',
-            avatarUrl: event.creator_avatar_url || event.author?.avatar || '',
+            avatarUrl: event.creator_avatar_url || '',
             roles: [],
             stats: { posts: 0, followers: 0, following: 0, mediaUploads: 0, groupsJoined: 0 },
             visibility: {
