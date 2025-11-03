@@ -21,6 +21,7 @@ import { ManageMyActionsPopup } from "@/components/ManageMyActionsPopup";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { VisualActionCard } from "@/components/actions/VisualActionCard";
+import { cn } from "@/lib/utils";
 
 export default function Actions() {
   const navigate = useNavigate();
@@ -28,6 +29,9 @@ export default function Actions() {
   const [manageActionsOpen, setManageActionsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  // Guide rail visibility - set to true when Guide widgets are added
+  const hasGuide = false;
 
   const getCategoryIcon = (category: AutopilotCategory) => {
     switch (category) {
@@ -78,7 +82,7 @@ export default function Actions() {
       <SEO title="Actions | Dashboard" description="Next Best Actions & Today's Plan" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50/50 via-blue-50/30 to-pink-50/50 dark:from-purple-950/20 dark:via-blue-950/20 dark:to-pink-950/20 min-h-screen">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full max-w-[1600px] mx-auto px-8 lg:px-10">
           <StandardHeader
             title="Next Best Actions & Today's Plan"
             description="Autopilot = your decision partner."
@@ -110,40 +114,47 @@ export default function Actions() {
             {/* Pending Actions Tab */}
             <SplitBarContent value="pending">
               <div className="mt-6">
-                <div className="grid grid-cols-12 gap-6">
-                  <div className="col-span-12 xl:col-span-9">
-                    <div className="space-y-6">
-                      {pendingActions.length > 0 ? (
-                        pendingActions
-                          .sort((a, b) => {
-                            const priorityOrder = { high: 3, medium: 2, low: 1 };
-                            return priorityOrder[b.priority] - priorityOrder[a.priority];
-                          })
-                          .map(action => (
-                            <VisualActionCard
-                              key={action.id}
-                              action={action}
-                              onExecute={() => executeActions([action.id])}
-                              onDismiss={() => dismissActions([action.id])}
-                              onEdit={() => console.log("Edit action:", action.id)}
-                              onDetails={() => console.log("View details:", action.id)}
-                            />
-                          ))
-                      ) : (
-                        <div className="text-center py-8 text-muted-foreground">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                            <Zap className="w-8 h-8 text-gray-400" />
-                          </div>
-                          <p>No pending actions</p>
+                <div className="grid grid-cols-12 gap-6 xl:gap-7">
+                  <section
+                    className={cn(
+                      "col-span-12 space-y-6",
+                      hasGuide ? "xl:col-span-9" : "xl:col-span-12"
+                    )}
+                    data-testid="actions-main-rail"
+                  >
+                    {pendingActions.length > 0 ? (
+                      pendingActions
+                        .sort((a, b) => {
+                          const priorityOrder = { high: 3, medium: 2, low: 1 };
+                          return priorityOrder[b.priority] - priorityOrder[a.priority];
+                        })
+                        .map(action => (
+                          <VisualActionCard
+                            key={action.id}
+                            action={action}
+                            onExecute={() => executeActions([action.id])}
+                            onDismiss={() => dismissActions([action.id])}
+                            onEdit={() => console.log("Edit action:", action.id)}
+                            onDetails={() => console.log("View details:", action.id)}
+                          />
+                        ))
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                          <Zap className="w-8 h-8 text-gray-400" />
                         </div>
-                      )}
-                    </div>
-                  </div>
-                  <aside className="hidden xl:block xl:col-span-3">
-                    <div className="sticky top-6 space-y-4">
-                      {/* Future: Quick stats, tips, or filters */}
-                    </div>
-                  </aside>
+                        <p>No pending actions</p>
+                      </div>
+                    )}
+                  </section>
+                  
+                  {hasGuide && (
+                    <aside className="hidden xl:block xl:col-span-3" data-testid="actions-guide-rail">
+                      <div className="sticky top-6 space-y-4">
+                        {/* Future: Quick stats, tips, or filters */}
+                      </div>
+                    </aside>
+                  )}
                 </div>
               </div>
             </SplitBarContent>
@@ -151,8 +162,14 @@ export default function Actions() {
             {/* Categories Tab */}
             <SplitBarContent value="categories">
               <div className="mt-6">
-                <div className="grid grid-cols-12 gap-6">
-                  <div className="col-span-12 xl:col-span-9">
+                <div className="grid grid-cols-12 gap-6 xl:gap-7">
+                  <section
+                    className={cn(
+                      "col-span-12",
+                      hasGuide ? "xl:col-span-9" : "xl:col-span-12"
+                    )}
+                    data-testid="actions-main-rail"
+                  >
                     <Tabs defaultValue="health" className="w-full">
                       <TabsList className="grid grid-cols-5 w-full mb-4">
                         {categories.map(category => {
@@ -215,12 +232,15 @@ export default function Actions() {
                         </TabsContent>
                       ))}
                     </Tabs>
-                  </div>
-                  <aside className="hidden xl:block xl:col-span-3">
-                    <div className="sticky top-6 space-y-4">
-                      {/* Future: Category insights */}
-                    </div>
-                  </aside>
+                  </section>
+                  
+                  {hasGuide && (
+                    <aside className="hidden xl:block xl:col-span-3" data-testid="actions-guide-rail">
+                      <div className="sticky top-6 space-y-4">
+                        {/* Future: Category insights */}
+                      </div>
+                    </aside>
+                  )}
                 </div>
               </div>
             </SplitBarContent>
@@ -228,20 +248,29 @@ export default function Actions() {
             {/* Completed Actions Tab */}
             <SplitBarContent value="completed">
               <div className="mt-6">
-                <div className="grid grid-cols-12 gap-6">
-                  <div className="col-span-12 xl:col-span-9">
+                <div className="grid grid-cols-12 gap-6 xl:gap-7">
+                  <section
+                    className={cn(
+                      "col-span-12",
+                      hasGuide ? "xl:col-span-9" : "xl:col-span-12"
+                    )}
+                    data-testid="actions-main-rail"
+                  >
                     <div className="text-center py-8 text-muted-foreground">
                       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
                         <CheckCircle className="w-8 h-8 text-gray-400" />
                       </div>
                       <p>No completed actions to show</p>
                     </div>
-                  </div>
-                  <aside className="hidden xl:block xl:col-span-3">
-                    <div className="sticky top-6 space-y-4">
-                      {/* Future: Completion stats */}
-                    </div>
-                  </aside>
+                  </section>
+                  
+                  {hasGuide && (
+                    <aside className="hidden xl:block xl:col-span-3" data-testid="actions-guide-rail">
+                      <div className="sticky top-6 space-y-4">
+                        {/* Future: Completion stats */}
+                      </div>
+                    </aside>
+                  )}
                 </div>
               </div>
             </SplitBarContent>
@@ -249,20 +278,29 @@ export default function Actions() {
             {/* Failed Actions Tab */}
             <SplitBarContent value="failed">
               <div className="mt-6">
-                <div className="grid grid-cols-12 gap-6">
-                  <div className="col-span-12 xl:col-span-9">
+                <div className="grid grid-cols-12 gap-6 xl:gap-7">
+                  <section
+                    className={cn(
+                      "col-span-12",
+                      hasGuide ? "xl:col-span-9" : "xl:col-span-12"
+                    )}
+                    data-testid="actions-main-rail"
+                  >
                     <div className="text-center py-8 text-muted-foreground">
                       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
                         <FileText className="w-8 h-8 text-gray-400" />
                       </div>
                       <p>No failed actions to show</p>
                     </div>
-                  </div>
-                  <aside className="hidden xl:block xl:col-span-3">
-                    <div className="sticky top-6 space-y-4">
-                      {/* Future: Error analytics */}
-                    </div>
-                  </aside>
+                  </section>
+                  
+                  {hasGuide && (
+                    <aside className="hidden xl:block xl:col-span-3" data-testid="actions-guide-rail">
+                      <div className="sticky top-6 space-y-4">
+                        {/* Future: Error analytics */}
+                      </div>
+                    </aside>
+                  )}
                 </div>
               </div>
             </SplitBarContent>
