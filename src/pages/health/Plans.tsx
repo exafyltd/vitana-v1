@@ -94,8 +94,11 @@ export default withScreenId(function Plans() {
                     {["nutrition", "exercise", "hydration", "sleep", "mental", "supplement"].map((planType, idx) => (
                       <div 
                         key={planType}
-                        className="animate-fade-in"
-                        style={{ animationDelay: `${idx * 100}ms` }}
+                        className="animate-fade-in opacity-0"
+                        style={{ 
+                          animationDelay: `${idx * 100}ms`,
+                          animationFillMode: 'forwards'
+                        }}
                       >
                         <PersonalizedPlanCard type={planType as any} />
                       </div>

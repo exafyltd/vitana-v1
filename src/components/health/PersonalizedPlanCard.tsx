@@ -47,6 +47,24 @@ const PLAN_DOT_COLORS: Record<string, string> = {
   supplement: "#f59e0b"
 };
 
+const PLAN_CARD_GRADIENTS: Record<string, string> = {
+  nutrition: "bg-gradient-to-br from-emerald-50/80 via-white/70 to-emerald-100/60 dark:from-emerald-950/40 dark:via-slate-900/50 dark:to-emerald-900/30",
+  exercise: "bg-gradient-to-br from-sky-50/80 via-white/70 to-indigo-100/60 dark:from-sky-950/40 dark:via-slate-900/50 dark:to-indigo-900/30",
+  hydration: "bg-gradient-to-br from-cyan-50/80 via-white/70 to-teal-100/60 dark:from-cyan-950/40 dark:via-slate-900/50 dark:to-teal-900/30",
+  sleep: "bg-gradient-to-br from-indigo-50/80 via-white/70 to-violet-100/60 dark:from-indigo-950/40 dark:via-slate-900/50 dark:to-violet-900/30",
+  mental: "bg-gradient-to-br from-rose-50/80 via-white/70 to-pink-100/60 dark:from-rose-950/40 dark:via-slate-900/50 dark:to-pink-900/30",
+  supplement: "bg-gradient-to-br from-amber-50/80 via-white/70 to-orange-100/60 dark:from-amber-950/40 dark:via-slate-900/50 dark:to-orange-900/30"
+};
+
+const PROGRESS_LABELS: Record<string, string> = {
+  nutrition: "Completion",
+  exercise: "Week Progress",
+  hydration: "Daily Goal",
+  sleep: "Sleep Score",
+  mental: "Streak Progress",
+  supplement: "Adherence"
+};
+
 interface PersonalizedPlanCardProps {
   type: 'nutrition' | 'exercise' | 'hydration' | 'sleep' | 'mental' | 'supplement';
   detailed?: boolean;
@@ -61,6 +79,8 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
   const colorClass = PLAN_COLORS[type];
   const glowClass = PLAN_GLOWS[type];
   const dotColor = PLAN_DOT_COLORS[type];
+  const gradientClass = PLAN_CARD_GRADIENTS[type];
+  const progressLabel = PROGRESS_LABELS[type];
   
   const planName = type.charAt(0).toUpperCase() + type.slice(1) + " Plan";
   
@@ -76,8 +96,9 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
   return (
     <div 
       className={cn(
-        "group relative overflow-hidden rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 p-6 shadow-sm transition-all hover:translate-y-[-3px] hover:scale-[1.03] hover:shadow-lg duration-300",
-        "h-[220px] flex flex-col"
+        "group relative overflow-hidden rounded-2xl backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 p-6 shadow-sm transition-all hover:translate-y-[-3px] hover:scale-[1.03] hover:shadow-lg hover:rotate-[0.5deg] duration-300 ease-out",
+        "h-[220px] flex flex-col",
+        gradientClass
       )}
     >
       {/* Status Indicator & Timestamp */}
@@ -103,7 +124,7 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
         "mb-3 inline-flex p-3 rounded-xl bg-gradient-to-br transition-all duration-300",
         colorClass,
         glowClass,
-        plan?.ai_generated && summary?.status === "synced" && "animate-pulse-glow"
+        plan?.ai_generated && summary?.status === "synced" && "icon-pulse"
       )}>
         <Icon className="w-6 h-6 text-white" />
       </div>
@@ -129,15 +150,20 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
             
             {/* Insight Lines */}
             {summary.insightLine1 && (
-              <p className="text-xs text-slate-600 dark:text-slate-300 mb-1 flex items-center gap-1">
-                <span className="text-indigo-500">🔹</span>
+              <p className="text-xs text-slate-600 dark:text-slate-300 mb-1">
                 {summary.insightLine1}
               </p>
             )}
             {summary.insightLine2 && (
-              <p className="text-xs text-slate-600 dark:text-slate-300 mb-3 flex items-center gap-1">
-                <span className="text-indigo-500">🔹</span>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
                 {summary.insightLine2}
+              </p>
+            )}
+            
+            {/* Footer Line */}
+            {summary.footerLine && (
+              <p className="text-[11px] text-muted-foreground italic mb-3">
+                {summary.footerLine}
               </p>
             )}
           </>
@@ -155,7 +181,7 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
             <div className="mb-3">
               <div className="flex justify-between items-center mb-1.5">
                 <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                  Adherence
+                  {progressLabel}
                 </span>
                 <span className="text-sm font-bold text-slate-900 dark:text-white">
                   {plan.adherence_score}%
@@ -163,7 +189,7 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
               </div>
               <div className="h-1.5 bg-slate-200/50 dark:bg-slate-700/50 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full transition-all duration-1000 ease-out"
                   style={{ width: `${plan.adherence_score}%` }}
                 />
               </div>

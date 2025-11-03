@@ -41,6 +41,8 @@ export function calculateAutopilotContext(plans: any[]): AutopilotContextData {
   const hydrationPlan = plans.find(p => p.plan_type === "hydration");
   const nutritionPlan = plans.find(p => p.plan_type === "nutrition");
   const mentalPlan = plans.find(p => p.plan_type === "mental");
+  const exercisePlan = plans.find(p => p.plan_type === "exercise");
+  const supplementPlan = plans.find(p => p.plan_type === "supplement");
   
   // Check balanced pillars
   if (sleepPlan && hydrationPlan && 
@@ -70,6 +72,24 @@ export function calculateAutopilotContext(plans: any[]): AutopilotContextData {
     });
   }
   
+  // Exercise recovery needs attention
+  if (exercisePlan && exercisePlan.adherence_score > 70 && sleepPlan && sleepPlan.adherence_score < 70) {
+    insights.push({
+      status: "needs-attention",
+      label: "Recovery optimization",
+      pillars: ["exercise", "sleep"]
+    });
+  }
+  
+  // Nutrition + Exercise synergy
+  if (nutritionPlan && nutritionPlan.adherence_score > 75 && exercisePlan && exercisePlan.adherence_score > 75) {
+    insights.push({
+      status: "balanced",
+      label: "Nutrition + Exercise",
+      pillars: ["nutrition", "exercise"]
+    });
+  }
+  
   // Generate cross-pillar relationships
   const relationships: PillarSynergy[] = [];
   
@@ -93,7 +113,6 @@ export function calculateAutopilotContext(plans: any[]): AutopilotContextData {
     });
   }
   
-  const exercisePlan = plans.find(p => p.plan_type === "exercise");
   if (exercisePlan && sleepPlan && exercisePlan.adherence_score > 70) {
     relationships.push({
       from: "exercise",
@@ -101,6 +120,28 @@ export function calculateAutopilotContext(plans: any[]): AutopilotContextData {
       impact: "Exercise timing optimized for better sleep quality",
       type: "positive",
       icons: { from: "🏋️", to: "🌙" }
+    });
+  }
+  
+  // Sleep → Mental
+  if (sleepPlan && sleepPlan.adherence_score > 80 && mentalPlan && mentalPlan.adherence_score > 70) {
+    relationships.push({
+      from: "sleep",
+      to: "mental",
+      impact: "Better sleep enhanced mental focus +8%",
+      type: "positive",
+      icons: { from: "🌙", to: "🧘‍♀️" }
+    });
+  }
+  
+  // Supplement → Hydration
+  if (supplementPlan && supplementPlan.adherence_score > 85 && hydrationPlan && hydrationPlan.adherence_score > 70) {
+    relationships.push({
+      from: "supplement",
+      to: "hydration",
+      impact: "Magnesium AM dose boosted hydration absorption +4%",
+      type: "positive",
+      icons: { from: "⚗️", to: "💧" }
     });
   }
   
