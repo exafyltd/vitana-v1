@@ -40,6 +40,7 @@ import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastSh
 import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
 import { useShorts, useTrackMediaEvent } from "@/hooks/useShorts";
 import { ShortPreviewCard } from "@/components/community/ShortPreviewCard";
+import { useUserInterestsStore } from "@/stores/userInterestsStore";
 import { UnifiedUploadModal } from '@/components/community/UnifiedUploadModal';
 import { VideoPlayerModal } from '@/components/community/VideoPlayerModal';
 import { BulkVideoUploadModal } from '@/components/community/BulkVideoUploadModal';
@@ -232,6 +233,10 @@ export default function MediaHub() {
   
   // Shorts density control
   const { density, setDensity, cardWidth, gap, fontScale } = useShortsDensity();
+  
+  // Get user interests for filtering
+  const { getActiveTags, filteringEnabled } = useUserInterestsStore();
+  const activeTags = getActiveTags();
 
   // Sync activeMediaTab with URL parameter changes
   useEffect(() => {
@@ -354,8 +359,11 @@ export default function MediaHub() {
       return data || [];
     }
   });
-  // Fetch real video shorts from database
-  const { data: realShorts = [], isLoading: isShortsLoading, refetch: refetchShorts } = useShorts({ limit: 20 });
+  // Fetch real video shorts from database with filtering
+  const { data: realShorts = [], isLoading: isShortsLoading, refetch: refetchShorts } = useShorts({ 
+    limit: 20,
+    tags: activeTags.length > 0 && filteringEnabled ? activeTags : undefined
+  });
   const trackMediaEvent = useTrackMediaEvent();
 
   // Fallback mock data for when database is empty
@@ -668,6 +676,48 @@ export default function MediaHub() {
                       <DensityControl value={density} onChange={setDensity} />
                     </div>
                   </div>
+                  
+                  {/* Filter Indicator */}
+                  {activeTags.length > 0 && filteringEnabled && (
+                    <div className="mb-4 flex flex-wrap items-center gap-2">
+                      <span className="text-sm text-muted-foreground">Filtered by:</span>
+                      {activeTags.map(tag => (
+                        <Badge key={tag} variant="secondary" className="gap-1">
+                          {tag}
+                        </Badge>
+                      ))}
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          useUserInterestsStore.getState().setFilteringEnabled(false);
+                          toast({
+                            title: "Filters cleared",
+                            description: "Showing all shorts",
+                          });
+                        }}
+                        className="text-xs h-6"
+                      >
+                        Clear filters
+                      </Button>
+                    </div>
+                  )}
+                  
+                  {/* Empty State */}
+                  {videoShorts.length === 0 && !isShortsLoading && activeTags.length > 0 && filteringEnabled && (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground mb-2">No shorts match your interests</p>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          useUserInterestsStore.getState().setFilteringEnabled(false);
+                        }}
+                      >
+                        View all shorts
+                      </Button>
+                    </div>
+                  )}
                   
                   <div 
                     className="grid"

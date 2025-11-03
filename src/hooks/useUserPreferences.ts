@@ -40,6 +40,10 @@ export interface UserPreferences {
   auto_greeting_enabled: boolean;
   greeting_frequency: 'session' | 'daily' | 'hourly' | 'off';
   greeting_message_types: string[];
+  // Interests & Goals (for content filtering)
+  interests: string[];
+  wellness_goals: string[];
+  shorts_filtering_enabled: boolean;
   created_at: string;
   updated_at: string;
 }

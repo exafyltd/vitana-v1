@@ -30,6 +30,7 @@ export interface Short {
 
 interface FetchShortsParams {
   tag?: string;
+  tags?: string[]; // Multiple tags (OR condition)
   category?: string;
   limit?: number;
 }
@@ -46,6 +47,11 @@ export const useShorts = (params: FetchShortsParams = {}) => {
 
       if (params.tag) {
         query = query.contains('tags', [params.tag]);
+      }
+
+      // Filter by multiple tags (OR condition - show if video has ANY of these tags)
+      if (params.tags && params.tags.length > 0) {
+        query = query.overlaps('tags', params.tags);
       }
 
       if (params.category) {

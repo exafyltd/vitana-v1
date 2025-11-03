@@ -5209,6 +5209,8 @@ export type Database = {
           greeting_frequency: string | null
           greeting_message_types: Json | null
           id: string
+          interests: string[] | null
+          shorts_filtering_enabled: boolean | null
           store_voice_recordings: boolean | null
           stt_auto_punctuation: boolean | null
           stt_instant_enabled: boolean | null
@@ -5222,6 +5224,7 @@ export type Database = {
           tts_volume: number | null
           updated_at: string | null
           user_id: string
+          wellness_goals: string[] | null
         }
         Insert: {
           ai_model?: string | null
@@ -5239,6 +5242,8 @@ export type Database = {
           greeting_frequency?: string | null
           greeting_message_types?: Json | null
           id?: string
+          interests?: string[] | null
+          shorts_filtering_enabled?: boolean | null
           store_voice_recordings?: boolean | null
           stt_auto_punctuation?: boolean | null
           stt_instant_enabled?: boolean | null
@@ -5252,6 +5257,7 @@ export type Database = {
           tts_volume?: number | null
           updated_at?: string | null
           user_id: string
+          wellness_goals?: string[] | null
         }
         Update: {
           ai_model?: string | null
@@ -5269,6 +5275,8 @@ export type Database = {
           greeting_frequency?: string | null
           greeting_message_types?: Json | null
           id?: string
+          interests?: string[] | null
+          shorts_filtering_enabled?: boolean | null
           store_voice_recordings?: boolean | null
           stt_auto_punctuation?: boolean | null
           stt_instant_enabled?: boolean | null
@@ -5282,6 +5290,7 @@ export type Database = {
           tts_volume?: number | null
           updated_at?: string | null
           user_id?: string
+          wellness_goals?: string[] | null
         }
         Relationships: []
       }
