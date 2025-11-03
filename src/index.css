@@ -126,6 +126,10 @@ All colors MUST be HSL.
     --gradient-play-end: 328 86% 70%; /* Pink */
     --gradient-disabled-start: 220 14% 60%; /* Grey */
     --gradient-disabled-end: 220 13% 69%; /* Light Grey */
+    
+    /* Vitana Premium Gradient (emerald → cyan) */
+    --gradient-vitana-start: 160 84% 39%; /* Emerald */
+    --gradient-vitana-end: 189 94% 43%; /* Cyan */
 
     /* Unified Layout System Variables */
     --row-base: 70px;
@@ -248,6 +252,10 @@ All colors MUST be HSL.
     --gradient-play-end: 328 86% 80%; /* Brighter Pink */
     --gradient-disabled-start: 220 14% 70%; /* Brighter Grey */
     --gradient-disabled-end: 220 13% 79%; /* Brighter Light Grey */
+    
+    /* Vitana Premium Gradient - Dark Mode */
+    --gradient-vitana-start: 160 84% 49%; /* Brighter Emerald */
+    --gradient-vitana-end: 189 94% 53%; /* Brighter Cyan */
 
     /* Tenant brand variables - dark mode defaults */
     --brand-accent: 339 89% 49%;

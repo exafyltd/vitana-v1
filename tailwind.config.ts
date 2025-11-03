@@ -214,6 +214,14 @@ export default {
 						opacity: '1',
 						transform: 'translateY(0)'
 					}
+				},
+				'gradient-x': {
+					'0%, 100%': {
+						'background-position': '0% 50%'
+					},
+					'50%': {
+						'background-position': '100% 50%'
+					}
 				}
 			},
 			animation: {
@@ -223,7 +231,8 @@ export default {
 				'scroll-slow': 'scroll 60s linear infinite',
 				'scroll-medium': 'scroll 40s linear infinite',
 				'scroll-fast': 'scroll 20s linear infinite',
-				'fade-in-up': 'fade-in-up 0.5s ease-out'
+				'fade-in-up': 'fade-in-up 0.5s ease-out',
+				'gradient-x': 'gradient-x 3s ease infinite'
 			}
 		}
 	},

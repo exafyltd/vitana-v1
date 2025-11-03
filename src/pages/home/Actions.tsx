@@ -89,8 +89,8 @@ export default function Actions() {
             emoji="⭐"
           />
 
-          {/* Action Buttons */}
-          <UtilityActionButton className="mb-6">
+          {/* Action Buttons with glass blur */}
+          <UtilityActionButton className="mb-6 bg-white/40 dark:bg-card/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg rounded-xl p-2">
             <ExpandableSearchButton 
               placeholder="Search actions, categories, or autopilot tasks…"
               onSearch={(query) => console.log('Search Actions:', query)}
@@ -110,10 +110,21 @@ export default function Actions() {
               <SplitBarTrigger value="completed">Completed</SplitBarTrigger>
               <SplitBarTrigger value="failed">Failed</SplitBarTrigger>
             </SplitBarList>
+            
+            {/* Soft separator gradient line */}
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-border/60 to-transparent my-4" />
 
             {/* Pending Actions Tab */}
             <SplitBarContent value="pending">
-              <div className="mt-6">
+              <div className="mt-2">
+                {/* AI contextual hint */}
+                <div className="mb-6 px-1">
+                  <p className="text-sm text-muted-foreground/80 flex items-center gap-2">
+                    <span className="text-base">🤖</span>
+                    <span>Autopilot analyzed your routines and found <strong className="text-foreground font-semibold">{pendingActions.length} optimized actions</strong> for today.</span>
+                  </p>
+                </div>
+                
                 <div className="grid grid-cols-12 gap-6 xl:gap-7">
                   <section
                     className={cn(

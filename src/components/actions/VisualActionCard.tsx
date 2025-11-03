@@ -143,13 +143,13 @@ export function VisualActionCard({
     <div 
       className={cn(
         "group overflow-hidden rounded-2xl border-l-4 transition-all duration-300 bg-card/70 backdrop-blur-lg dark:bg-card/60",
-        "border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.01]",
-        "hover:border-l-8 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)]",
+        "border-border/50 border shadow-sm hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1 hover:scale-[1.01]",
+        "hover:border-l-8 hover:border-primary/30",
         getCategoryColor(action.category),
         className
       )}
     >
-      <div className="flex flex-col sm:flex-row h-auto sm:h-[180px]">
+      <div className="flex flex-col sm:flex-row h-auto sm:h-[170px]">
         {/* Left Half - Real Image */}
         <div className="w-full sm:w-1/2 h-32 sm:h-full relative overflow-hidden">
           <div className="w-full h-full">
@@ -172,7 +172,7 @@ export function VisualActionCard({
         </div>
 
         {/* Right Half - Action Content with tighter spacing */}
-        <div className="w-full sm:w-1/2 p-4 flex flex-col justify-between">
+        <div className="w-full sm:w-1/2 p-3.5 flex flex-col justify-between">
           <div className="space-y-2.5">
             {/* Motivational Hook - smaller text */}
             <div className="text-xs font-medium text-muted-foreground leading-snug">
@@ -207,12 +207,12 @@ export function VisualActionCard({
             </p>
           </div>
 
-          {/* Action Buttons - horizontal layout with gradient + outline */}
+          {/* Action Buttons - horizontal layout with Vitana gradient + outline */}
           <div className="flex gap-2 mt-3">
             <Button 
               size="sm"
               onClick={() => onExecute(action.id)}
-              className="flex-1 text-xs h-8 bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:from-[hsl(var(--gradient-join-start))]/90 hover:to-[hsl(var(--gradient-join-end))]/90 text-white border-0 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 shadow-md"
+              className="flex-1 text-xs h-8 bg-gradient-to-r from-[hsl(var(--gradient-vitana-start))] to-[hsl(var(--gradient-vitana-end))] hover:from-[hsl(var(--gradient-vitana-start))]/90 hover:to-[hsl(var(--gradient-vitana-end))]/90 text-white border-0 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[hsl(var(--gradient-vitana-end))]/30 active:scale-95 shadow-md"
             >
               <CheckCircle className="w-3 h-3 mr-1" />
               Do Now
@@ -221,7 +221,7 @@ export function VisualActionCard({
               variant="outline" 
               size="sm"
               onClick={() => onDismiss(action.id)}
-              className="flex-1 text-xs h-8 bg-background/40 backdrop-blur-sm border-border/60 hover:bg-background/70 hover:border-border transition-all duration-300 font-medium"
+              className="flex-1 text-xs h-8 bg-transparent backdrop-blur-sm border-border/60 hover:bg-muted/50 hover:border-border transition-all duration-300 font-medium"
             >
               Later
             </Button>
