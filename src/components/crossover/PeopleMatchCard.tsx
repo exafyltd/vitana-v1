@@ -32,25 +32,79 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   const [loading, setLoading] = useState(true);
   const [interacting, setInteracting] = useState<string | null>(null);
 
+  const getMatchReason = (index: number): string => {
+    const reasons = [
+      "Morning routine & wellness goals align",
+      "Similar activity patterns & interests",
+      "Shared fitness & mindfulness journey",
+      "Compatible lifestyle & schedule",
+      "Overlapping health goals",
+      "Mutual wellness interests"
+    ];
+    return reasons[index % reasons.length];
+  };
+
+  const fetchRealProfilesWithScores = async () => {
+    const { data: profiles, error } = await supabase
+      .from('profiles')
+      .select('user_id, display_name, handle, avatar_url, bio')
+      .not('avatar_url', 'is', null)
+      .limit(6);
+    
+    if (error || !profiles || profiles.length === 0) {
+      return null;
+    }
+    
+    return profiles.map((profile, index) => ({
+      user_id: profile.user_id,
+      display_name: profile.display_name || profile.handle || 'Community Member',
+      avatar_url: profile.avatar_url,
+      bio: profile.bio || "Vitana community member",
+      compatibility_score: 85 - (index * 3),
+      match_reason: getMatchReason(index)
+    }));
+  };
+
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
+        // TIER 1: Try edge function
         const { data, error } = await supabase.functions.invoke('generate-recommendations', {
           body: { type: 'people', limit: 6 }
         });
 
-        if (error) throw error;
-
-        if (data?.recommendations && data.recommendations.length > 0) {
+        if (!error && data?.recommendations && data.recommendations.length > 0) {
+          console.log("✅ Using edge function recommendations");
           setMatches(data.recommendations);
-        } else {
-          // Use demo data as fallback
-          setMatches(demoPeople);
+          setLoading(false);
+          return;
         }
+
+        // TIER 2: Fetch real profiles with synthetic scores
+        console.log("⚠️ Edge function failed, fetching real profiles...");
+        const realProfiles = await fetchRealProfilesWithScores();
+        
+        if (realProfiles && realProfiles.length > 0) {
+          console.log("✅ Using real profiles with synthetic scores:", realProfiles.length);
+          setMatches(realProfiles);
+          setLoading(false);
+          return;
+        }
+
+        // TIER 3: Use demo data as last resort
+        console.log("ℹ️ No real profiles found, using demo data");
+        setMatches(demoPeople);
+        
       } catch (error) {
         console.error('Failed to fetch people recommendations:', error);
-        // Use demo data as fallback
-        setMatches(demoPeople);
+        
+        // Try real profiles on exception
+        const realProfiles = await fetchRealProfilesWithScores();
+        if (realProfiles && realProfiles.length > 0) {
+          setMatches(realProfiles);
+        } else {
+          setMatches(demoPeople);
+        }
       } finally {
         setLoading(false);
       }
@@ -60,8 +114,8 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   }, [demoPeople]);
 
   const handleChatClick = (match: PeopleMatch) => {
-    // Check if it's a demo user
-    if (match.user_id.startsWith('demo-')) {
+    // Check if it's a demo user (DiceBear avatar URLs or demo- prefix)
+    if (match.user_id.startsWith('demo-') || match.avatar_url.includes('dicebear.com')) {
       toast({
         title: "💬 Chat started",
         description: `Opening conversation with ${match.display_name}...`,
