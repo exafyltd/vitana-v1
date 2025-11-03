@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { cn } from "@/lib/utils";
 import { calculatePlanSummary } from "@/lib/planSummaryCalculator";
 import { getMockPlan } from "@/lib/mockPlanData";
+import { toast } from "sonner";
 import { 
   Apple, 
   Dumbbell, 
@@ -44,14 +47,22 @@ const PLAN_ACCENT_CHIPS: Record<string, string> = {
 interface PersonalizedPlanCardProps {
   type: 'nutrition' | 'exercise' | 'hydration' | 'sleep' | 'mental' | 'supplement';
   detailed?: boolean;
+  onGenerateClick?: () => void;
 }
 
-export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPlanCardProps) {
-  const { plans, isLoading } = useHealthPlans();
+export function PersonalizedPlanCard({ 
+  type, 
+  detailed = false,
+  onGenerateClick
+}: PersonalizedPlanCardProps) {
+  const { plans, isLoading, generatePlan } = useHealthPlans();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [isRefreshing, setIsRefreshing] = useState(false);
   
   const realPlan = plans?.find(p => p.plan_type === type);
   const plan = realPlan || getMockPlan(type); // Always show data
+  const isGenerating = generatePlan.isPending;
   
   const Icon = PLAN_ICONS[type];
   const dotColor = PLAN_DOT_COLORS[type];
@@ -61,6 +72,14 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
   
   // Calculate live summary data - always available now
   const summary = calculatePlanSummary(plan);
+  
+  // Refresh handler
+  const handleRefreshPlan = async () => {
+    setIsRefreshing(true);
+    await queryClient.invalidateQueries({ queryKey: ['health-plans'] });
+    toast.success(`${planName} refreshed! 🔄`);
+    setTimeout(() => setIsRefreshing(false), 1000);
+  };
   
   const statusConfig = {
     "synced": { label: "AI Optimized ✅", bg: "bg-emerald-100/60 dark:bg-emerald-800/60", text: "text-emerald-700 dark:text-emerald-300" },
@@ -185,18 +204,22 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
                 View Plan
               </button>
               <button
-                className="inline-flex items-center justify-center rounded-full h-9 w-9 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 transition-colors"
+                onClick={handleRefreshPlan}
+                disabled={isRefreshing}
+                className="inline-flex items-center justify-center rounded-full h-9 w-9 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Refresh plan"
               >
-                <RotateCw className="w-4 h-4" />
+                <RotateCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
               </button>
             </>
           ) : (
             <button
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors"
+              onClick={onGenerateClick}
+              disabled={isGenerating}
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Zap className="w-3.5 h-3.5" />
-              Generate Plan
+              <Zap className={cn("w-3.5 h-3.5", isGenerating && "animate-pulse")} />
+              {isGenerating ? "Generating..." : "Generate Plan"}
             </button>
           )}
         </div>

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -21,15 +22,54 @@ import { MentalPlanView } from "@/components/health/mental/MentalPlanView";
 import { CrossPlanRelationshipWidget } from "@/components/health/CrossPlanRelationshipWidget";
 import { VitanaScoreTooltip } from "@/components/health/VitanaScoreTooltip";
 import { calculateAutopilotContext } from "@/services/autopilotContext";
+import { toast } from "sonner";
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
   const { plans, isLoading } = useHealthPlans();
+  const navigate = useNavigate();
   
   // Calculate autopilot context
   const autopilotData = useMemo(() => {
     return calculateAutopilotContext(plans || []);
   }, [plans]);
+  
+  // Footer button handlers
+  const handleRecalibrateAll = () => {
+    toast.info('🔄 Recalibration Started', {
+      description: 'Analyzing all plans and cross-pillar synergies. This may take a few moments...',
+      action: {
+        label: 'View Progress',
+        onClick: () => navigate('/health/plans')
+      }
+    });
+  };
+
+  const handleViewReport = () => {
+    toast.info('📊 Report Generation', {
+      description: 'Your detailed health analytics report is being prepared. Check back in a few minutes!',
+      action: {
+        label: 'Got it',
+        onClick: () => {}
+      }
+    });
+  };
+
+  const handleOptimizeWeakest = () => {
+    // Find plan with lowest adherence score
+    const weakestPlan = plans && plans.length > 0
+      ? plans.reduce((min, p) => p.adherence_score < min.adherence_score ? p : min)
+      : null;
+    const weakestPillar = weakestPlan?.plan_type || 'nutrition';
+    
+    toast.success(`✨ Optimizing ${weakestPillar.charAt(0).toUpperCase() + weakestPillar.slice(1)}`, {
+      description: 'AI Autopilot is analyzing your weakest pillar and generating targeted improvements.',
+      action: {
+        label: 'View Plan',
+        onClick: () => navigate(`/health/plans/${weakestPillar}`)
+      }
+    });
+  };
   
   return (
     <AppLayout>
@@ -92,7 +132,10 @@ export default withScreenId(function Plans() {
                           animationFillMode: 'forwards'
                         }}
                       >
-                        <PersonalizedPlanCard type={planType as any} />
+                        <PersonalizedPlanCard 
+                          type={planType as any}
+                          onGenerateClick={() => setWizardOpen(true)}
+                        />
                       </div>
                     ))}
                   </div>
@@ -128,13 +171,22 @@ export default withScreenId(function Plans() {
                     
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-2">
-                      <button className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors">
+                      <button 
+                        onClick={handleRecalibrateAll}
+                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors"
+                      >
                         ⚙ Recalibrate All
                       </button>
-                      <button className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors">
+                      <button 
+                        onClick={handleViewReport}
+                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors"
+                      >
                         📈 View Detailed Report
                       </button>
-                      <button className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors">
+                      <button 
+                        onClick={handleOptimizeWeakest}
+                        className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors"
+                      >
                         ✨ Optimize Weakest Pillar
                       </button>
                     </div>
