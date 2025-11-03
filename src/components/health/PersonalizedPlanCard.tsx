@@ -67,13 +67,13 @@ const PROGRESS_LABELS: Record<string, string> = {
   supplement: "Adherence"
 };
 
-const PLAN_STRIP_GRADIENTS: Record<string, string> = {
-  nutrition: "bg-gradient-to-r from-emerald-400/40 to-emerald-600/40 group-hover:from-emerald-400/60 group-hover:to-emerald-600/60",
-  exercise: "bg-gradient-to-r from-blue-400/40 to-blue-600/40 group-hover:from-blue-400/60 group-hover:to-blue-600/60",
-  hydration: "bg-gradient-to-r from-cyan-400/40 to-cyan-600/40 group-hover:from-cyan-400/60 group-hover:to-cyan-600/60",
-  sleep: "bg-gradient-to-r from-indigo-400/40 to-indigo-600/40 group-hover:from-indigo-400/60 group-hover:to-indigo-600/60",
-  mental: "bg-gradient-to-r from-rose-400/40 to-rose-600/40 group-hover:from-rose-400/60 group-hover:to-rose-600/60",
-  supplement: "bg-gradient-to-r from-amber-400/40 to-amber-600/40 group-hover:from-amber-400/60 group-hover:to-amber-600/60"
+const PLAN_CONTAINED_BAR_GRADIENTS: Record<string, string> = {
+  nutrition: "bg-gradient-to-r from-emerald-400/80 to-emerald-600/80",
+  exercise: "bg-gradient-to-r from-blue-400/80 to-blue-600/80",
+  hydration: "bg-gradient-to-r from-cyan-400/80 to-cyan-600/80",
+  sleep: "bg-gradient-to-r from-indigo-400/80 to-indigo-600/80",
+  mental: "bg-gradient-to-r from-rose-400/80 to-rose-600/80",
+  supplement: "bg-gradient-to-r from-amber-400/80 to-amber-600/80"
 };
 
 const PLAN_PROGRESS_COLORS: Record<string, string> = {
@@ -103,7 +103,7 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
   const dotColor = PLAN_DOT_COLORS[type];
   const gradientClass = PLAN_CARD_GRADIENTS[type];
   const progressLabel = PROGRESS_LABELS[type];
-  const stripGradient = PLAN_STRIP_GRADIENTS[type];
+  const containedBarGradient = PLAN_CONTAINED_BAR_GRADIENTS[type];
   const progressColor = PLAN_PROGRESS_COLORS[type];
   
   const planName = type.charAt(0).toUpperCase() + type.slice(1) + " Plan";
@@ -148,7 +148,7 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
       {/* Content Container - z-10 */}
       <div className="relative z-10 p-6 flex flex-col h-full">
         {/* Header Row: Icon + Title */}
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 pb-2">
           <div className={cn(
             "inline-flex p-3 rounded-xl bg-gradient-to-br transition-all duration-300",
             colorClass,
@@ -168,18 +168,18 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
           </h3>
         </div>
 
-        {/* Thin Status Strip - 6px - z-0 - Below Header */}
+        {/* Contained Status Bar - inset, rounded */}
         <div 
           className={cn(
-            "absolute left-0 right-0 top-[60px] h-[6px] z-0 transition-opacity duration-200",
-            stripGradient
+            "mt-1 mb-3 mx-auto w-[calc(100%-2rem)] h-[6px] rounded-full opacity-40 group-hover:opacity-60 transition-opacity duration-200",
+            containedBarGradient
           )}
           role="presentation"
           aria-hidden="true"
         />
 
         {/* Metrics Line with gradient dot */}
-        <div className="flex items-center gap-1.5 mb-2">
+        <div className="flex items-center gap-1.5 pt-0">
           <div 
             className="w-1.5 h-1.5 rounded-full flex-shrink-0" 
             style={{ backgroundColor: dotColor }}
@@ -188,9 +188,6 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
             {summary.metricsLine}
           </p>
         </div>
-        
-        {/* Light divider */}
-        <div className="w-full h-px bg-slate-200/50 dark:bg-slate-700/50 my-2" />
         
         {/* Insight Lines */}
         {summary.insightLine1 && (
