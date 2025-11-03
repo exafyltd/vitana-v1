@@ -117,32 +117,29 @@ export default withScreenId(function Plans() {
                   <div className="rounded-2xl bg-gradient-to-r from-indigo-500/10 via-cyan-500/10 to-violet-500/10 border border-indigo-200/60 dark:border-indigo-800/60 backdrop-blur-md p-6 shadow-sm">
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
-                        🤖 Autopilot Summary
+                        🧠 Autopilot Summary
                       </h3>
                       <div className="space-y-1 text-sm text-muted-foreground">
-                        <VitanaScoreTooltip score={autopilotData.vitanaScore}>
-                          <button className="hover:text-foreground transition-colors font-semibold">
-                            {autopilotData.vitanaScore} Vitana Score
-                          </button>
-                        </VitanaScoreTooltip>
-                        <span> · {plans?.length || 0} plans actively synced</span>
-                        <div>Cross-pillar synergy: <span className="font-semibold text-indigo-600 dark:text-indigo-400">{autopilotData.synergyScore}/100</span> <span className="text-emerald-600 dark:text-emerald-400">(+{autopilotData.synergyTrend}%)</span></div>
-                        <div>Next automatic recalibration: <span className="font-medium">{autopilotData.nextRecalibration}</span></div>
-                        <div className="text-xs italic">Last adjustment: {autopilotData.lastAdjustment}</div>
+                        <div>
+                          <VitanaScoreTooltip score={autopilotData.vitanaScore}>
+                            <button className="hover:text-foreground transition-colors font-semibold">
+                              {autopilotData.vitanaScore} Vitana Score
+                            </button>
+                          </VitanaScoreTooltip>
+                          <span> · 5 active plans synced · Cross-pillar synergy {autopilotData.synergyScore}/100</span>
+                        </div>
+                        <div>Next recalibration: <span className="font-medium">{autopilotData.nextRecalibration}</span> · Adjustment: {autopilotData.lastAdjustment}</div>
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <button className="px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm">
-                        ⚙ Recalibrate All Plans
+                        ⚙ Recalibrate All
                       </button>
                       <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors">
-                        📊 View Detailed Report
+                        📈 View Detailed Report
                       </button>
                       <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors">
-                        🔍 Analyze Synergy
-                      </button>
-                      <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors">
-                        ⚡ Optimize Weakest Pillar
+                        ✨ Optimize Weakest Pillar
                       </button>
                     </div>
                   </div>

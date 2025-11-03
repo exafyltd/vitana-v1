@@ -33,7 +33,7 @@ export function AutopilotInsightBanner({
             Autopilot Health Overview
           </h3>
           <p className="text-sm text-muted-foreground mb-4">
-            Your Vitana Autopilot has analyzed your current plans and overall consistency.
+            Your Vitana Autopilot analyzed current plans and consistency.
           </p>
           
           {/* Insights */}
@@ -56,7 +56,7 @@ export function AutopilotInsightBanner({
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-foreground">
-                Synergy Index
+                Synergy Index:
               </span>
               <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
                 {synergyScore} / 100
@@ -69,7 +69,7 @@ export function AutopilotInsightBanner({
             {/* Progress Bar */}
             <div className="flex-1 h-2 bg-slate-200/50 dark:bg-slate-700/50 rounded-full overflow-hidden max-w-xs">
               <div 
-                className="h-full bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-500 rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-500 rounded-full transition-all duration-1000"
                 style={{ width: `${synergyScore}%` }}
               />
             </div>

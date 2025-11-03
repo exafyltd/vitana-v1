@@ -30,35 +30,35 @@ export function calculatePlanSummary(plan: any): PlanSummary {
       metricsLine = "4 sessions/week · Strength & Mobility";
       insightLine1 = "💪 Recovery load adjusted for better shoulder stability";
       insightLine2 = "Last Workout: Yesterday · Recovery +7%";
-      footerLine = "Next session: Tomorrow 7 AM · Recalibration Active";
+      footerLine = "Next session: Tomorrow · Week 2 of 4";
       break;
       
     case "hydration":
       metricsLine = "8 glasses/day · 72% consistency";
-      insightLine1 = "💧 AI added +300ml due to high temperature and exercise";
+      insightLine1 = "💧 +300ml added due to temperature & exercise";
       insightLine2 = "2.3L avg intake · Goal met 4 days in a row";
-      footerLine = "Peak intake at 11 AM";
+      footerLine = "2.3L avg intake · Goal met 4 days";
       break;
       
     case "sleep":
-      metricsLine = "7.5h avg · Sleep Score 86/100";
-      insightLine1 = "💤 Autopilot shifted bedtime +15min for better deep sleep";
+      metricsLine = "7.5h avg · Sleep score 86/100";
+      insightLine1 = "💤 Bedtime shifted +15min for deeper sleep";
       insightLine2 = "Deep Sleep ↑6% · REM Stable · Consistency ↑12%";
-      footerLine = "Evening routine consistent";
+      footerLine = "Consistency ↑12% · REM Stable";
       break;
       
     case "mental":
-      metricsLine = "10 min reflection · 9-day streak";
+      metricsLine = "10min reflection · 9-day streak";
       insightLine1 = "🌿 Stress ↓8% · Focus +12% · Mood Improving";
       insightLine2 = "Mind coach: 'Keep steady reflection rhythm'";
-      footerLine = "Mindfulness sessions optimized";
+      footerLine = "AI Synced 4h ago";
       break;
       
     case "supplement":
       metricsLine = "3 supplements · 98% adherence";
-      insightLine1 = "⚗️ Magnesium AM boost linked to hydration gain +4%";
+      insightLine1 = "⚗️ Magnesium AM dose improved hydration";
       insightLine2 = "AI tracking dosage timing sync";
-      footerLine = "Vitamin D · Omega-3 · Magnesium";
+      footerLine = "Fully Synced · Tracking active";
       break;
       
     default:

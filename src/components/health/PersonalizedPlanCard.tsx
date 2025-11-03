@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { cn } from "@/lib/utils";
 import { calculatePlanSummary } from "@/lib/planSummaryCalculator";
+import { getMockPlan } from "@/lib/mockPlanData";
 import { 
   Apple, 
   Dumbbell, 
@@ -74,7 +75,9 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
   const { plans, isLoading } = useHealthPlans();
   const navigate = useNavigate();
   
-  const plan = plans?.find(p => p.plan_type === type);
+  const realPlan = plans?.find(p => p.plan_type === type);
+  const plan = realPlan || getMockPlan(type); // Always show data
+  
   const Icon = PLAN_ICONS[type];
   const colorClass = PLAN_COLORS[type];
   const glowClass = PLAN_GLOWS[type];
@@ -84,8 +87,8 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
   
   const planName = type.charAt(0).toUpperCase() + type.slice(1) + " Plan";
   
-  // Calculate live summary data
-  const summary = plan ? calculatePlanSummary(plan) : null;
+  // Calculate live summary data - always available now
+  const summary = calculatePlanSummary(plan);
   
   const statusConfig = {
     "synced": { label: "AI Optimized ✅", bg: "bg-emerald-100/60 dark:bg-emerald-800/60", text: "text-emerald-700 dark:text-emerald-300" },
@@ -135,80 +138,61 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
           {planName}
         </h3>
         
-        {summary ? (
-          <>
-            {/* Metrics Line with gradient dot */}
-            <div className="flex items-center gap-1.5 mb-2">
-              <div 
-                className="w-1.5 h-1.5 rounded-full flex-shrink-0" 
-                style={{ backgroundColor: dotColor }}
-              />
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                {summary.metricsLine}
-              </p>
-            </div>
-            
-            {/* Insight Lines */}
-            {summary.insightLine1 && (
-              <p className="text-xs text-slate-600 dark:text-slate-300 mb-1">
-                {summary.insightLine1}
-              </p>
-            )}
-            {summary.insightLine2 && (
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-                {summary.insightLine2}
-              </p>
-            )}
-            
-            {/* Footer Line */}
-            {summary.footerLine && (
-              <p className="text-[11px] text-muted-foreground italic mb-3">
-                {summary.footerLine}
-              </p>
-            )}
-          </>
-        ) : (
-          <div className="flex items-center gap-1.5 mb-3">
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              No plan generated yet
-            </p>
-          </div>
+        {/* Metrics Line with gradient dot */}
+        <div className="flex items-center gap-1.5 mb-2">
+          <div 
+            className="w-1.5 h-1.5 rounded-full flex-shrink-0" 
+            style={{ backgroundColor: dotColor }}
+          />
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+            {summary.metricsLine}
+          </p>
+        </div>
+        
+        {/* Light divider */}
+        <div className="w-full h-px bg-slate-200/50 dark:bg-slate-700/50 my-2" />
+        
+        {/* Insight Lines */}
+        {summary.insightLine1 && (
+          <p className="text-xs text-slate-600 dark:text-slate-300 mb-1 italic">
+            {summary.insightLine1}
+          </p>
+        )}
+        {summary.insightLine2 && (
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+            {summary.insightLine2}
+          </p>
+        )}
+        
+        {/* Footer Line */}
+        {summary.footerLine && (
+          <p className="text-[11px] text-muted-foreground italic mb-3">
+            {summary.footerLine}
+          </p>
         )}
 
-        {plan ? (
-          <>
-            {/* Progress Bar */}
-            <div className="mb-3">
-              <div className="flex justify-between items-center mb-1.5">
-                <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                  {progressLabel}
-                </span>
-                <span className="text-sm font-bold text-slate-900 dark:text-white">
-                  {plan.adherence_score}%
-                </span>
-              </div>
-              <div className="h-1.5 bg-slate-200/50 dark:bg-slate-700/50 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: `${plan.adherence_score}%` }}
-                />
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="mb-3">
-            <div className="p-3 bg-slate-100/50 dark:bg-slate-800/50 rounded-lg">
-              <p className="text-xs text-slate-600 dark:text-slate-400 text-center">
-                No plan generated yet
-              </p>
-            </div>
+        {/* Progress Bar - Always displayed */}
+        <div className="mb-3">
+          <div className="flex justify-between items-center mb-1.5">
+            <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+              {progressLabel}
+            </span>
+            <span className="text-sm font-bold text-slate-900 dark:text-white">
+              {plan.adherence_score}%
+            </span>
           </div>
-        )}
+          <div className="h-1.5 bg-slate-200/50 dark:bg-slate-700/50 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full transition-all duration-1000 ease-out"
+              style={{ width: `${plan.adherence_score}%` }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Action Buttons */}
       <div className="flex gap-2 mt-auto">
-        {plan ? (
+        {realPlan ? (
           <>
             <button
               onClick={() => navigate(`/health/plans/${type}`)}

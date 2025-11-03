@@ -26,13 +26,8 @@ export interface AutopilotContextData {
 }
 
 export function calculateAutopilotContext(plans: any[]): AutopilotContextData {
-  // Calculate average adherence across all plans
-  const totalAdherence = plans.reduce((sum, plan) => {
-    return sum + (plan.adherence_score || 0);
-  }, 0);
-  
-  const avgAdherence = plans.length > 0 ? totalAdherence / plans.length : 0;
-  const synergyScore = Math.round(avgAdherence);
+  // Use fixed synergy score for consistent demo
+  const synergyScore = 84;
   
   // Generate insights based on adherence patterns
   const insights: AutopilotInsight[] = [];
@@ -67,7 +62,7 @@ export function calculateAutopilotContext(plans: any[]): AutopilotContextData {
   if (mentalPlan && mentalPlan.adherence_score >= 70 && mentalPlan.adherence_score < 85) {
     insights.push({
       status: "improving",
-      label: "Mental focus",
+      label: "Mental",
       pillars: ["mental"]
     });
   }
@@ -155,17 +150,17 @@ export function calculateAutopilotContext(plans: any[]): AutopilotContextData {
     });
   }
   
-  // Calculate mock Vitana score based on adherence
-  const vitanaScore = Math.round(avgAdherence * 10);
+  // Use fixed vitana score for consistent demo
+  const vitanaScore = 742;
   
   return {
-    synergyScore,
+    synergyScore: 84,
     synergyTrend: 3,
     insights,
     relationships,
     lastRecalibration: "3h ago",
-    nextRecalibration: "2h 47m",
-    lastAdjustment: "Sleep +15min earlier for recovery",
+    nextRecalibration: "2h 47min",
+    lastAdjustment: "Sleep -15min for recovery",
     vitanaScore
   };
 }
