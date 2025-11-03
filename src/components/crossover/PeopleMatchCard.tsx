@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useDemoMatches } from "@/hooks/useDemoMatches";
+import { SkeletonCard } from "@/components/ui/skeleton-card";
 
 interface PeopleMatch {
   user_id: string;
@@ -25,6 +27,7 @@ interface PeopleMatchCardProps {
 function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { people: demoPeople } = useDemoMatches();
   const [matches, setMatches] = useState<PeopleMatch[]>([]);
   const [loading, setLoading] = useState(true);
   const [interacting, setInteracting] = useState<string | null>(null);
@@ -33,65 +36,48 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
     const fetchRecommendations = async () => {
       try {
         const { data, error } = await supabase.functions.invoke('generate-recommendations', {
-          body: { type: 'people', limit: 3 }
+          body: { type: 'people', limit: 6 }
         });
 
         if (error) throw error;
 
-        if (data?.recommendations) {
+        if (data?.recommendations && data.recommendations.length > 0) {
           setMatches(data.recommendations);
+        } else {
+          // Use demo data as fallback
+          setMatches(demoPeople);
         }
       } catch (error) {
         console.error('Failed to fetch people recommendations:', error);
-        // Use fallback data
-        setMatches([]);
+        // Use demo data as fallback
+        setMatches(demoPeople);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRecommendations();
-  }, []);
+  }, [demoPeople]);
 
-  const handleInteraction = async (targetId: string, type: 'like' | 'pass') => {
-    try {
-      setInteracting(targetId);
-
-      const { data, error } = await supabase.functions.invoke('process-match-interaction', {
-        body: {
-          target_id: targetId,
-          target_type: 'user',
-          interaction_type: type
-        }
-      });
-
-      if (error) throw error;
-
-      // Remove the match from the list
-      setMatches(prev => prev.filter(m => m.user_id !== targetId));
-
-      if (data.match_created) {
-        toast({
-          title: "🎉 It's a Match!",
-          description: "You both liked each other. Start a conversation!",
-          duration: 5000,
-        });
-      } else if (type === 'like') {
-        toast({
-          title: "👍 Liked",
-          description: "They'll be notified if they like you back!",
-        });
-      }
-    } catch (error) {
-      console.error('Error processing interaction:', error);
+  const handleChatClick = (match: PeopleMatch) => {
+    // Check if it's a demo user
+    if (match.user_id.startsWith('demo-')) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to process interaction. Please try again.",
+        title: "💬 Chat started",
+        description: `Opening conversation with ${match.display_name}...`,
+        duration: 3000,
       });
-    } finally {
-      setInteracting(null);
+      return;
     }
+    
+    // Real user - navigate to actual chat
+    navigate(`/messages/direct?user=${match.user_id}`);
+  };
+
+  const getAvatarRingColor = (score: number) => {
+    return score >= 80 
+      ? "ring-2 ring-green-400/30 group-hover:ring-green-400/60 group-hover:shadow-[0_0_20px_rgba(74,222,128,0.4)]" 
+      : "ring-2 ring-amber-400/30 group-hover:ring-pink-400/60 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.4)]";
   };
 
   if (loading) {
@@ -115,47 +101,60 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
 
   const content = (
     <div className="space-y-3">
+      <p className="text-xs text-muted-foreground">
+        Suggested based on your profile & recent activity.
+      </p>
+      
       {matches.length === 0 ? (
-        <div className="text-center py-6">
-          <p className="text-sm text-muted-foreground">No matches available yet</p>
-          <p className="text-xs text-muted-foreground mt-1">Check back soon!</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {[1, 2, 3, 4].map((i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       ) : (
-        matches.map((match) => (
-          <div key={match.user_id} className="flex items-center gap-3 p-3 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.15)] hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all duration-300 group">
-            <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-fuchsia-500 rounded-full opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-400 to-fuchsia-400 rounded-full opacity-20 animate-pulse" />
-              <Avatar className="h-12 w-12 relative ring-2 ring-pink-500/20 group-hover:ring-pink-500/50 transition-all duration-300">
-                <AvatarImage src={match.avatar_url} />
-                <AvatarFallback>{match.display_name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold truncate">{match.display_name}</p>
-                <Badge className="text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0">{match.compatibility_score}%</Badge>
+        <>
+          {matches.map((match) => (
+            <div key={match.user_id} className="flex items-center gap-3 p-3 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.15)] hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all duration-300 group">
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-fuchsia-500 rounded-full opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
+                <Avatar className={`h-12 w-12 relative transition-all duration-300 ${getAvatarRingColor(match.compatibility_score)}`}>
+                  <AvatarImage src={match.avatar_url} />
+                  <AvatarFallback>{match.display_name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                </Avatar>
               </div>
-              <p className="text-xs text-muted-foreground truncate">{match.match_reason}</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold truncate">{match.display_name}</p>
+                  <Badge className="text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0">{match.compatibility_score}%</Badge>
+                </div>
+                <p className="text-xs text-muted-foreground truncate">{match.match_reason}</p>
+              </div>
+              <Button
+                size="sm"
+                onClick={() => handleChatClick(match)}
+                className="bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                💬 Chat
+              </Button>
             </div>
-            <Button
-              size="sm"
-              onClick={() => handleInteraction(match.user_id, 'like')}
-              disabled={interacting === match.user_id}
-              className="bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+          ))}
+          
+          <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center gap-2 text-xs">
+              <span className="font-medium text-foreground">Ready for meaningful connections</span>
+              <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(236,72,153,0.5)]" />
+            </div>
+            <Button 
+              variant="link" 
+              size="sm" 
+              onClick={() => navigate('/community/people?recommended=1')}
+              className="text-xs text-primary"
             >
-              💬 Chat
+              See more →
             </Button>
           </div>
-        ))
+        </>
       )}
-
-      <div className="mt-4 p-3 bg-gradient-to-r from-pink-500/10 to-fuchsia-500/10 rounded-2xl border border-pink-500/20">
-        <div className="flex items-center justify-between text-xs">
-          <span className="font-medium text-foreground">Ready for meaningful connections</span>
-          <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(236,72,153,0.5)]" />
-        </div>
-      </div>
     </div>
   );
 

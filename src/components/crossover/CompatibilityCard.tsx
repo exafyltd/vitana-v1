@@ -1,29 +1,93 @@
 import { CrossoverCard } from "./CrossoverCard";
-import { Target, TrendingUp, Zap } from "lucide-react";
+import { Target, TrendingUp, Zap, ArrowUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { useDemoMatches } from "@/hooks/useDemoMatches";
+import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from "react";
 
 interface CompatibilityCardProps {
-  overallScore?: number;
-  topFactors?: string[];
-  matchingInterests?: string[];
   className?: string;
 }
 
-function CompatibilityCardBase({ 
-  overallScore = 89,
-  topFactors = ["Wellness Goals", "Activity Level", "Schedule Flexibility"],
-  matchingInterests = ["Yoga", "Healthy Eating", "Mindfulness"],
-  className 
-}: CompatibilityCardProps) {
+function CompatibilityCardBase({ className }: CompatibilityCardProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { insights } = useDemoMatches();
+  const [animatedScore, setAnimatedScore] = useState(0);
+  
+  const overallScore = insights.compatibility_overall_pct;
+  const topFactors = insights.top_factors;
+  const matchingInterests = insights.shared_interests;
+  const weekDelta = insights.week_delta_pct;
+
+  useEffect(() => {
+    // Animate score from 0 to target
+    const duration = 1000; // 1 second
+    const steps = 30;
+    const increment = overallScore / steps;
+    let current = 0;
+    
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= overallScore) {
+        setAnimatedScore(overallScore);
+        clearInterval(timer);
+      } else {
+        setAnimatedScore(Math.floor(current));
+      }
+    }, duration / steps);
+
+    return () => clearInterval(timer);
+  }, [overallScore]);
+
+  const handleImproveScore = () => {
+    toast({
+      title: "🎯 Smart nudges added",
+      description: "Added 2 optimized actions to your Actions tab.",
+      duration: 3000,
+    });
+  };
 
   const content = (
     <div className="space-y-3">
       <div className="text-center p-4 bg-gradient-to-br from-pink-500/10 to-fuchsia-500/10 rounded-2xl border border-pink-500/20 backdrop-blur-md">
         <div className="relative inline-flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-fuchsia-500 rounded-full opacity-20 animate-pulse" />
-          <div className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent relative animate-pulse">{overallScore}%</div>
+          <svg className="w-32 h-32 transform -rotate-90 absolute">
+            <circle 
+              cx="64" 
+              cy="64" 
+              r="56" 
+              className="stroke-muted/30" 
+              strokeWidth="8" 
+              fill="none" 
+            />
+            <circle 
+              cx="64" 
+              cy="64" 
+              r="56" 
+              className="stroke-pink-500"
+              strokeWidth="8" 
+              fill="none"
+              strokeDasharray={`${2 * Math.PI * 56}`}
+              strokeDashoffset={`${2 * Math.PI * 56 * (1 - animatedScore / 100)}`}
+              style={{ 
+                transition: 'stroke-dashoffset 0.3s ease-out',
+                filter: 'drop-shadow(0 0 8px rgba(236, 72, 153, 0.5))'
+              }}
+            />
+          </svg>
+          <div className="relative z-10">
+            <div className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent">
+              {animatedScore}%
+            </div>
+            {weekDelta > 0 && (
+              <div className="flex items-center justify-center gap-1 text-xs text-green-600 dark:text-green-400 mt-1">
+                <ArrowUp className="w-3 h-3" />
+                <span>+{weekDelta}% this week</span>
+              </div>
+            )}
+          </div>
         </div>
         <p className="text-xs text-muted-foreground mt-2">Overall Compatibility</p>
       </div>
@@ -81,7 +145,7 @@ function CompatibilityCardBase({
       buttonText="View Details"
       onButtonClick={() => navigate('/ai/insights')}
       secondaryButtonText="Improve Score"
-      onSecondaryButtonClick={() => navigate('/settings/preferences')}
+      onSecondaryButtonClick={handleImproveScore}
       className={className}
     />
   );

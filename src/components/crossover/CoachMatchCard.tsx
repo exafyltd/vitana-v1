@@ -4,68 +4,79 @@ import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useDemoMatches } from "@/hooks/useDemoMatches";
+import { useToast } from "@/hooks/use-toast";
 
 interface CoachMatchCardProps {
-  coaches?: Array<{
-    id: string;
-    name: string;
-    avatar: string;
-    specialty: string;
-    availability: string;
-    rating: number;
-  }>;
   className?: string;
 }
 
-function CoachMatchCardBase({ 
-  coaches = [
-    { id: "1", name: "Dr. Roberts", avatar: "/lovable-uploads/dr-roberts-avatar.jpg", specialty: "Primary Care", availability: "Available", rating: 4.9 },
-    { id: "2", name: "Mike Thompson", avatar: "/lovable-uploads/mike-thompson-avatar.jpg", specialty: "Personal Trainer", availability: "Next week", rating: 4.8 },
-    { id: "3", name: "Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg", specialty: "Life Coach", availability: "Tomorrow", rating: 5.0 }
-  ],
-  className 
-}: CoachMatchCardProps) {
+function CoachMatchCardBase({ className }: CoachMatchCardProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { coaches } = useDemoMatches();
 
   const getAvailabilityColor = (availability: string) => {
     switch (availability.toLowerCase()) {
-      case "available": return "text-green-600";
-      case "tomorrow": return "text-blue-600";
-      default: return "text-yellow-600";
+      case "available": return "text-green-600 dark:text-green-400";
+      case "tomorrow": return "text-blue-600 dark:text-blue-400";
+      default: return "text-yellow-600 dark:text-yellow-400";
     }
+  };
+
+  const handleBookCoach = (coachId: string, coachName: string) => {
+    if (coachId.startsWith('demo-')) {
+      toast({
+        title: "📅 Booking started",
+        description: `Opening booking for ${coachName}...`,
+        duration: 3000,
+      });
+      return;
+    }
+    navigate(`/discover/doctors-coaches/${coachId}`);
   };
 
   const content = (
     <div className="space-y-3">
+      <p className="text-xs text-muted-foreground">
+        Vetted professionals, tailored to your goals.
+      </p>
+      
       {coaches.map((coach) => (
-        <div key={coach.id} className="flex items-center gap-3 p-2 bg-secondary/20 rounded-lg">
-          <Avatar className="w-8 h-8">
+        <div 
+          key={coach.id} 
+          className="flex items-center gap-3 p-3 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 cursor-pointer group"
+          onClick={() => handleBookCoach(coach.id, coach.name)}
+        >
+          <Avatar className="w-12 h-12 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all">
             <AvatarImage src={coach.avatar} />
             <AvatarFallback>{coach.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between">
-              <p className="font-medium text-sm truncate">{coach.name}</p>
+            <div className="flex items-center justify-between mb-1">
+              <p className="font-semibold text-sm truncate">{coach.name}</p>
               <div className="flex items-center gap-1">
                 <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                <span className="text-xs">{coach.rating}</span>
+                <span className="text-xs font-medium">{coach.rating}</span>
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-muted-foreground truncate">{coach.specialty}</p>
-              <span className={`text-xs font-medium ${getAvailabilityColor(coach.availability)}`}>
-                {coach.availability}
-              </span>
-            </div>
+            <p className="text-xs text-muted-foreground truncate mb-1">{coach.specialty}</p>
+            <p className="text-xs font-medium text-primary">from €{coach.sessions_from}</p>
+            <p className="text-xs italic text-muted-foreground mt-1 line-clamp-1">"{coach.tagline}"</p>
           </div>
-          <Calendar className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+          <div className="flex flex-col items-end gap-1">
+            <span className={`text-xs font-medium ${getAvailabilityColor(coach.availability)}`}>
+              {coach.availability}
+            </span>
+            <Calendar className="w-4 h-4 text-muted-foreground" />
+          </div>
         </div>
       ))}
 
-      <div className="mt-4 p-2 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20 rounded-lg">
+      <div className="mt-4 p-3 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-2xl border border-green-500/20">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">Expert help available</span>
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+          <span className="font-medium text-foreground">Expert help available</span>
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
         </div>
       </div>
     </div>

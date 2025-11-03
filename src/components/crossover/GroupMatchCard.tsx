@@ -3,8 +3,12 @@ import { Users2, MapPin, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
+import { useDemoMatches } from "@/hooks/useDemoMatches";
+import { SkeletonCard } from "@/components/ui/skeleton-card";
+import { useToast } from "@/hooks/use-toast";
 
 interface GroupMatch {
   id: string;
@@ -22,6 +26,8 @@ interface GroupMatchCardProps {
 
 function GroupMatchCardBase({ className }: GroupMatchCardProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { groups: demoGroups } = useDemoMatches();
   const [groups, setGroups] = useState<GroupMatch[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -65,59 +71,19 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
             }));
           setGroups(mapped);
         } else {
-          // Fallback: generate recommendations if none exist
-          const { data: generatedData, error: genError } = await supabase.functions.invoke('generate-enhanced-recommendations', {
-            body: { type: 'groups' }
-          });
-
-          if (!genError && generatedData?.recommendations) {
-            // Fetch again after generation
-            const { data: refreshData } = await supabase
-              .from('group_recommendations')
-              .select(`
-                match_score,
-                match_reasons,
-                global_community_groups (
-                  id,
-                  name,
-                  description,
-                  category,
-                  member_count
-                )
-              `)
-              .eq('is_dismissed', false)
-              .gte('match_score', 0.5)
-              .order('match_score', { ascending: false })
-              .limit(3);
-
-            if (refreshData) {
-              const mapped = refreshData
-                .filter(r => r.global_community_groups)
-                .map(r => ({
-                  id: r.global_community_groups.id,
-                  name: r.global_community_groups.name,
-                  description: r.global_community_groups.description || '',
-                  category: r.global_community_groups.category || 'general',
-                  member_count: r.global_community_groups.member_count,
-                  compatibility_score: Math.round(r.match_score * 100),
-                  match_reason: Array.isArray(r.match_reasons) && r.match_reasons.length > 0
-                    ? (r.match_reasons as string[])[0]
-                    : 'Great match for you'
-                }));
-              setGroups(mapped);
-            }
-          }
+          // Use demo data as fallback
+          setGroups(demoGroups);
         }
       } catch (error) {
         console.error('Failed to fetch group recommendations:', error);
-        setGroups([]);
+        setGroups(demoGroups);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRecommendations();
-  }, []);
+  }, [demoGroups]);
 
   if (loading) {
     return (
@@ -138,50 +104,73 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
     );
   }
 
+  const handleJoinGroup = (group: GroupMatch) => {
+    if (group.id.startsWith('demo-')) {
+      toast({
+        title: "✓ Joined",
+        description: `You're now part of ${group.name}!`,
+        duration: 3000,
+      });
+      return;
+    }
+    navigate(`/community/groups/${group.id}`);
+  };
+
   const content = (
     <div className="space-y-3">
+      <p className="text-xs text-muted-foreground">
+        Communities that match your vibe.
+      </p>
+      
       {groups.length === 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="p-4 rounded-2xl bg-card/40 backdrop-blur-md border border-white/10 animate-pulse">
-              <div className="h-4 bg-muted/50 rounded mb-3 w-3/4" />
-              <div className="space-y-2">
-                <div className="h-3 bg-muted/50 rounded w-1/2" />
-                <div className="h-3 bg-muted/50 rounded w-full" />
-                <div className="h-3 bg-muted/50 rounded w-2/3" />
-              </div>
-            </div>
+            <SkeletonCard key={i} />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {groups.map((group) => (
-            <div key={group.id} className="p-4 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300">
-              <div className="flex items-start justify-between mb-3">
-                <h4 className="font-semibold text-sm leading-tight">{group.name}</h4>
-                <Badge className="text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0">
-                  {group.compatibility_score}%
-                </Badge>
-              </div>
-              <div className="space-y-2 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  <span className="capitalize">{group.category}</span>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {groups.map((group) => (
+              <div 
+                key={group.id} 
+                className="p-4 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 cursor-pointer"
+                onClick={() => handleJoinGroup(group)}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h4 className="font-semibold text-sm leading-tight">{group.name}</h4>
+                  <Badge className="text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0">
+                    {group.compatibility_score}%
+                  </Badge>
                 </div>
-                <p className="line-clamp-2">{group.match_reason}</p>
-                <p className="font-medium text-foreground">{group.member_count} members</p>
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    <span className="capitalize">{group.category}</span>
+                  </div>
+                  <p className="line-clamp-2">{group.match_reason}</p>
+                  <p className="font-medium text-foreground">{group.member_count} members</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
 
-      <div className="mt-4 p-3 bg-gradient-to-r from-fuchsia-500/10 to-amber-500/10 rounded-2xl border border-fuchsia-500/20">
-        <div className="flex items-center justify-between text-xs">
-          <span className="font-medium text-foreground">Perfect for your interests</span>
-          <div className="w-2 h-2 bg-fuchsia-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(217,70,239,0.5)]" />
-        </div>
-      </div>
+          <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center gap-2 text-xs">
+              <span className="font-medium text-foreground">Perfect for your interests</span>
+              <div className="w-2 h-2 bg-fuchsia-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(217,70,239,0.5)]" />
+            </div>
+            <Button 
+              variant="link" 
+              size="sm" 
+              onClick={() => navigate('/community/groups?recommended=1')}
+              className="text-xs text-primary"
+            >
+              See more →
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 
