@@ -500,17 +500,17 @@ All colors MUST be HSL.
     100% { box-shadow: 0 0 0 0 rgba(255, 0, 79, 0); }
   }
   
-  /* Icon Pulse Animation for Active Plans */
+  /* Icon Pulse Animation for Active Plans - Disabled by default for accessibility */
   @keyframes icon-pulse {
     0%, 100% { transform: scale(1); opacity: 1; }
     50% { transform: scale(1.05); opacity: 0.9; }
   }
   
   .icon-pulse {
-    animation: icon-pulse 2s ease-in-out infinite;
+    animation: none; /* Disabled continuous animation */
   }
 
-  /* Pulse Glow Animation */
+  /* Pulse Glow Animation - Disabled by default for accessibility */
   @keyframes pulse-glow {
     0%, 100% {
       box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
@@ -521,7 +521,19 @@ All colors MUST be HSL.
   }
 
   .animate-pulse-glow {
-    animation: pulse-glow 3.5s ease-in-out infinite;
+    animation: none; /* Disabled continuous animation */
+  }
+  
+  /* Respect prefers-reduced-motion globally */
+  @media (prefers-reduced-motion: reduce) {
+    .icon-pulse,
+    .animate-pulse-glow,
+    .diary-pulse,
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   /* Fade In Up Animation */

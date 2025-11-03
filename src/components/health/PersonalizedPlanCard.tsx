@@ -9,7 +9,8 @@ import {
   Droplet, 
   Moon, 
   Brain, 
-  Plus
+  Plus,
+  CheckCircle2
 } from "lucide-react";
 
 const PLAN_ICONS: Record<string, any> = {
@@ -66,6 +67,24 @@ const PROGRESS_LABELS: Record<string, string> = {
   supplement: "Adherence"
 };
 
+const PLAN_STRIP_GRADIENTS: Record<string, string> = {
+  nutrition: "bg-gradient-to-r from-emerald-400/40 to-emerald-600/40 group-hover:from-emerald-400/60 group-hover:to-emerald-600/60",
+  exercise: "bg-gradient-to-r from-blue-400/40 to-blue-600/40 group-hover:from-blue-400/60 group-hover:to-blue-600/60",
+  hydration: "bg-gradient-to-r from-cyan-400/40 to-cyan-600/40 group-hover:from-cyan-400/60 group-hover:to-cyan-600/60",
+  sleep: "bg-gradient-to-r from-indigo-400/40 to-indigo-600/40 group-hover:from-indigo-400/60 group-hover:to-indigo-600/60",
+  mental: "bg-gradient-to-r from-rose-400/40 to-rose-600/40 group-hover:from-rose-400/60 group-hover:to-rose-600/60",
+  supplement: "bg-gradient-to-r from-amber-400/40 to-amber-600/40 group-hover:from-amber-400/60 group-hover:to-amber-600/60"
+};
+
+const PLAN_PROGRESS_COLORS: Record<string, string> = {
+  nutrition: "bg-emerald-500",
+  exercise: "bg-blue-500",
+  hydration: "bg-cyan-500",
+  sleep: "bg-indigo-500",
+  mental: "bg-rose-500",
+  supplement: "bg-amber-500"
+};
+
 interface PersonalizedPlanCardProps {
   type: 'nutrition' | 'exercise' | 'hydration' | 'sleep' | 'mental' | 'supplement';
   detailed?: boolean;
@@ -84,6 +103,8 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
   const dotColor = PLAN_DOT_COLORS[type];
   const gradientClass = PLAN_CARD_GRADIENTS[type];
   const progressLabel = PROGRESS_LABELS[type];
+  const stripGradient = PLAN_STRIP_GRADIENTS[type];
+  const progressColor = PLAN_PROGRESS_COLORS[type];
   
   const planName = type.charAt(0).toUpperCase() + type.slice(1) + " Plan";
   
@@ -99,45 +120,64 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
   return (
     <div 
       className={cn(
-        "group relative overflow-hidden rounded-2xl backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 p-6 shadow-sm transition-all hover:translate-y-[-3px] hover:scale-[1.03] hover:shadow-lg hover:rotate-[0.5deg] duration-300 ease-out",
-        "h-[220px] flex flex-col",
+        "group relative overflow-hidden rounded-2xl backdrop-blur-md",
+        "border border-slate-200/60 dark:border-slate-800/60",
+        "shadow-sm hover:shadow-lg transition-all duration-200 ease-out",
+        "hover:-translate-y-[2px]",
+        "motion-reduce:hover:translate-y-0",
+        "bg-white/90 dark:bg-slate-900/90",
+        "supports-[backdrop-filter]:bg-white/70 supports-[backdrop-filter]:dark:bg-slate-900/70",
+        "h-[220px]",
         gradientClass
       )}
     >
-      {/* Status Indicator & Timestamp */}
-      <div className="absolute top-3 right-3 flex items-center gap-2">
-        {summary && (
-          <div className={cn(
-            "px-2 py-0.5 rounded-md text-[11px] font-medium",
-            statusConfig[summary.status].bg,
-            statusConfig[summary.status].text
-          )}>
-            {statusConfig[summary.status].label}
-          </div>
-        )}
-        {summary && (
-          <span className="text-[11px] text-muted-foreground">
-            {summary.lastUpdated}
-          </span>
-        )}
-      </div>
-      
-      {/* Icon with Glow */}
-      <div className={cn(
-        "mb-3 inline-flex p-3 rounded-xl bg-gradient-to-br transition-all duration-300",
-        colorClass,
-        glowClass,
-        plan?.ai_generated && summary?.status === "synced" && "icon-pulse"
-      )}>
-        <Icon className="w-6 h-6 text-white" />
+      {/* Top-Right Meta Badge - z-20 (Always Visible) */}
+      <div 
+        className="absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm px-2 py-1 shadow-sm"
+        aria-label={`AI Optimized ${summary.lastUpdated}`}
+      >
+        <CheckCircle2 className="w-3 h-3" style={{ color: dotColor }} />
+        <span className="text-[11px] font-medium text-slate-700 dark:text-slate-300">
+          AI Optimized
+        </span>
+        <span className="text-[11px] text-slate-500 dark:text-slate-400">
+          · {summary.lastUpdated}
+        </span>
       </div>
 
-      {/* Title & Live Metrics */}
-      <div className="flex-1">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
-          {planName}
-        </h3>
-        
+      {/* Content Container - z-10 */}
+      <div className="relative z-10 p-6 flex flex-col h-full">
+        {/* Header Row: Icon + Title */}
+        <div className="flex items-center gap-3 mb-3">
+          <div className={cn(
+            "inline-flex p-3 rounded-xl bg-gradient-to-br transition-all duration-300",
+            colorClass,
+            "group-hover:ring-1 group-hover:ring-offset-2",
+            type === "nutrition" && "group-hover:ring-emerald-500/10",
+            type === "exercise" && "group-hover:ring-blue-500/10",
+            type === "hydration" && "group-hover:ring-cyan-500/10",
+            type === "sleep" && "group-hover:ring-indigo-500/10",
+            type === "mental" && "group-hover:ring-rose-500/10",
+            type === "supplement" && "group-hover:ring-amber-500/10"
+          )}>
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+          
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+            {planName}
+          </h3>
+        </div>
+
+        {/* Thin Status Strip - 6px - z-0 - Below Header */}
+        <div 
+          className={cn(
+            "absolute left-0 right-0 top-[60px] h-[6px] z-0 transition-opacity duration-200",
+            stripGradient
+          )}
+          role="presentation"
+          aria-hidden="true"
+        />
+
         {/* Metrics Line with gradient dot */}
         <div className="flex items-center gap-1.5 mb-2">
           <div 
@@ -158,61 +198,57 @@ export function PersonalizedPlanCard({ type, detailed = false }: PersonalizedPla
             {summary.insightLine1}
           </p>
         )}
-        {summary.insightLine2 && (
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-            {summary.insightLine2}
-          </p>
-        )}
-        
-        {/* Footer Line */}
-        {summary.footerLine && (
-          <p className="text-[11px] text-muted-foreground italic mb-3">
-            {summary.footerLine}
-          </p>
-        )}
 
-        {/* Progress Bar - Always displayed */}
-        <div className="mb-3">
-          <div className="flex justify-between items-center mb-1.5">
-            <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-              {progressLabel}
+        {/* Footer Row with Progress Pill */}
+        <div className="flex items-center justify-between gap-3 mt-auto pt-2">
+          {/* Left: Progress Pill with Mini Bar */}
+          <div 
+            className="inline-flex items-center gap-2 rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-1"
+            aria-label={`Progress ${plan.adherence_score} percent`}
+          >
+            <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">
+              Progress {plan.adherence_score}%
             </span>
-            <span className="text-sm font-bold text-slate-900 dark:text-white">
-              {plan.adherence_score}%
-            </span>
+            
+            {/* Mini Progress Bar */}
+            <div className="h-[4px] w-[56px] rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+              <div 
+                className={cn("h-full rounded-full transition-all duration-500", progressColor)}
+                style={{ width: `${plan.adherence_score}%` }}
+              />
+            </div>
           </div>
-          <div className="h-1.5 bg-slate-200/50 dark:bg-slate-700/50 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full transition-all duration-1000 ease-out"
-              style={{ width: `${plan.adherence_score}%` }}
-            />
+          
+          {/* Right: Footer Text */}
+          <div className="text-[11px] text-muted-foreground">
+            {summary.footerLine}
           </div>
         </div>
-      </div>
 
-      {/* Action Buttons */}
-      <div className="flex gap-2 mt-auto">
-        {realPlan ? (
-          <>
+        {/* Action Buttons */}
+        <div className="flex gap-2 mt-3">
+          {realPlan ? (
+            <>
+              <button
+                onClick={() => navigate(`/health/plans/${type}`)}
+                className="flex-1 px-3 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
+              >
+                🔍 View Plan
+              </button>
+              <button
+                className="px-3 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors"
+              >
+                ↻
+              </button>
+            </>
+          ) : (
             <button
-              onClick={() => navigate(`/health/plans/${type}`)}
               className="flex-1 px-3 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
             >
-              🔍 View Plan
+              ⚡ Generate Plan
             </button>
-            <button
-              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors"
-            >
-              ↻
-            </button>
-          </>
-        ) : (
-          <button
-            className="flex-1 px-3 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
-          >
-            ⚡ Generate Plan
-          </button>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
