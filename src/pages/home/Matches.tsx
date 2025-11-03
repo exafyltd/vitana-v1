@@ -29,12 +29,12 @@ export default function Matches() {
       <SEO title="Matches | Dashboard" description="Matchmaking & Opportunities" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-pink-50 via-fuchsia-50 to-amber-50 dark:from-pink-950/30 dark:via-fuchsia-950/30 dark:to-amber-950/30 min-h-screen animate-gradient-x">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Matchmaking & Opportunities"
-            description="Autopilot as your wingman."
-            emoji="🤝"
+            title="Find Your People"
+            description="AI-powered connections that feel natural and right for you."
+            emoji="💫"
           />
 
           {/* Action Buttons */}
@@ -76,10 +76,16 @@ export default function Matches() {
             </SplitBarList>
 
             <SplitBarContent value="people" className="mt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <PeopleMatchCard />
-                <GroupMatchCard />
-                <CompatibilityCard />
+              <div className="grid grid-cols-12 gap-6">
+                <div className="col-span-12 xl:col-span-7">
+                  <PeopleMatchCard />
+                </div>
+                <div className="col-span-12 xl:col-span-5">
+                  <CompatibilityCard />
+                </div>
+                <div className="col-span-12">
+                  <GroupMatchCard />
+                </div>
               </div>
             </SplitBarContent>
 

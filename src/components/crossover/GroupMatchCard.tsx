@@ -141,35 +141,45 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
   const content = (
     <div className="space-y-3">
       {groups.length === 0 ? (
-        <div className="text-center py-6">
-          <p className="text-sm text-muted-foreground">No groups available yet</p>
-          <p className="text-xs text-muted-foreground mt-1">Check back soon!</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="p-4 rounded-2xl bg-card/40 backdrop-blur-md border border-white/10 animate-pulse">
+              <div className="h-4 bg-muted/50 rounded mb-3 w-3/4" />
+              <div className="space-y-2">
+                <div className="h-3 bg-muted/50 rounded w-1/2" />
+                <div className="h-3 bg-muted/50 rounded w-full" />
+                <div className="h-3 bg-muted/50 rounded w-2/3" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
-        groups.map((group) => (
-          <div key={group.id} className="p-2 bg-secondary/20 rounded-lg">
-            <div className="flex items-start justify-between mb-2">
-              <h4 className="font-medium text-sm leading-tight">{group.name}</h4>
-              <Badge variant="default" className="text-xs">
-                {group.compatibility_score}%
-              </Badge>
-            </div>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <MapPin className="w-3 h-3" />
-                <span className="capitalize">{group.category}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {groups.map((group) => (
+            <div key={group.id} className="p-4 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300">
+              <div className="flex items-start justify-between mb-3">
+                <h4 className="font-semibold text-sm leading-tight">{group.name}</h4>
+                <Badge className="text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0">
+                  {group.compatibility_score}%
+                </Badge>
               </div>
-              <p className="truncate">{group.match_reason}</p>
-              <p>{group.member_count} members</p>
+              <div className="space-y-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  <span className="capitalize">{group.category}</span>
+                </div>
+                <p className="line-clamp-2">{group.match_reason}</p>
+                <p className="font-medium text-foreground">{group.member_count} members</p>
+              </div>
             </div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
 
-      <div className="mt-4 p-2 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-lg">
+      <div className="mt-4 p-3 bg-gradient-to-r from-fuchsia-500/10 to-amber-500/10 rounded-2xl border border-fuchsia-500/20">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">Perfect for your interests</span>
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+          <span className="font-medium text-foreground">Perfect for your interests</span>
+          <div className="w-2 h-2 bg-fuchsia-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(217,70,239,0.5)]" />
         </div>
       </div>
     </div>

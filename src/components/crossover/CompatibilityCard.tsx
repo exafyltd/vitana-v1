@@ -20,21 +20,24 @@ function CompatibilityCardBase({
 
   const content = (
     <div className="space-y-3">
-      <div className="text-center p-3 bg-secondary/20 rounded-lg">
-        <div className="text-2xl font-bold text-primary">{overallScore}%</div>
-        <p className="text-xs text-muted-foreground">Overall Compatibility</p>
+      <div className="text-center p-4 bg-gradient-to-br from-pink-500/10 to-fuchsia-500/10 rounded-2xl border border-pink-500/20 backdrop-blur-md">
+        <div className="relative inline-flex items-center justify-center">
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-fuchsia-500 rounded-full opacity-20 animate-pulse" />
+          <div className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent relative animate-pulse">{overallScore}%</div>
+        </div>
+        <p className="text-xs text-muted-foreground mt-2">Overall Compatibility</p>
       </div>
       
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-xs">
-          <TrendingUp className="w-3 h-3 text-green-600" />
+          <TrendingUp className="w-3 h-3 text-pink-600" />
           <span className="font-medium">Top Match Factors:</span>
         </div>
         <div className="flex flex-wrap gap-1">
           {topFactors.map((factor, index) => (
             <span 
               key={index} 
-              className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-full"
+              className="px-3 py-1.5 bg-gradient-to-r from-pink-500/10 to-fuchsia-500/10 border border-pink-500/20 text-foreground text-xs rounded-full backdrop-blur-sm"
             >
               {factor}
             </span>
@@ -44,14 +47,14 @@ function CompatibilityCardBase({
 
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-xs">
-          <Zap className="w-3 h-3 text-blue-600" />
+          <Zap className="w-3 h-3 text-fuchsia-600" />
           <span className="font-medium">Shared Interests:</span>
         </div>
         <div className="flex flex-wrap gap-1">
           {matchingInterests.map((interest, index) => (
             <span 
               key={index} 
-              className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 text-xs rounded-full"
+              className="px-3 py-1.5 bg-gradient-to-r from-fuchsia-500/10 to-amber-500/10 border border-fuchsia-500/20 text-foreground text-xs rounded-full backdrop-blur-sm"
             >
               {interest}
             </span>
@@ -59,9 +62,9 @@ function CompatibilityCardBase({
         </div>
       </div>
 
-      <div className="w-full bg-secondary/30 rounded-full h-2">
+      <div className="w-full bg-secondary/30 rounded-full h-2.5 overflow-hidden">
         <div 
-          className="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all" 
+          className="bg-gradient-to-r from-pink-500 via-fuchsia-500 to-amber-500 h-2.5 rounded-full transition-all duration-1000 ease-out animate-pulse shadow-[0_0_10px_rgba(236,72,153,0.5)]" 
           style={{ width: `${overallScore}%` }}
         />
       </div>
