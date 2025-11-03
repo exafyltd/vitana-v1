@@ -89,8 +89,8 @@ export default function Actions() {
             emoji="⭐"
           />
 
-          {/* Action Buttons with glass blur */}
-          <UtilityActionButton className="mb-6 bg-white/40 dark:bg-card/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg rounded-xl p-2">
+          {/* Action Buttons */}
+          <UtilityActionButton className="mb-6">
             <ExpandableSearchButton 
               placeholder="Search actions, categories, or autopilot tasks…"
               onSearch={(query) => console.log('Search Actions:', query)}
