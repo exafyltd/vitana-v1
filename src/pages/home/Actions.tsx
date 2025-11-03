@@ -82,7 +82,7 @@ export default function Actions() {
       <SEO title="Actions | Dashboard" description="Next Best Actions & Today's Plan" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50/50 via-blue-50/30 to-pink-50/50 dark:from-purple-950/20 dark:via-blue-950/20 dark:to-pink-950/20 min-h-screen">
-        <div className="w-full max-w-[1600px] mx-auto px-8 lg:px-10">
+        <div className="max-w-7xl mx-auto">
           <StandardHeader
             title="Next Best Actions & Today's Plan"
             description="Autopilot = your decision partner."
