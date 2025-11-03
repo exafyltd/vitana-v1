@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -24,11 +24,18 @@ const PLAN_OPTIONS = [
 interface PlanGeneratorWizardProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  defaultPlanType?: string;
 }
 
-export function PlanGeneratorWizard({ open, onOpenChange }: PlanGeneratorWizardProps) {
-  const [selectedPlan, setSelectedPlan] = useState<string>('nutrition');
+export function PlanGeneratorWizard({ open, onOpenChange, defaultPlanType }: PlanGeneratorWizardProps) {
+  const [selectedPlan, setSelectedPlan] = useState<string>(defaultPlanType || 'nutrition');
   const { generatePlan } = useHealthPlans();
+  
+  useEffect(() => {
+    if (defaultPlanType) {
+      setSelectedPlan(defaultPlanType);
+    }
+  }, [defaultPlanType]);
   
   const handleGenerate = () => {
     generatePlan.mutate({
@@ -47,10 +54,16 @@ export function PlanGeneratorWizard({ open, onOpenChange }: PlanGeneratorWizardP
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            Generate AI-Powered Health Plan
+            {defaultPlanType 
+              ? `Generate ${PLAN_OPTIONS.find(o => o.value === defaultPlanType)?.label || 'Health Plan'}`
+              : 'Generate AI-Powered Health Plan'
+            }
           </DialogTitle>
           <DialogDescription>
-            Select the type of personalized health plan you'd like to create
+            {defaultPlanType
+              ? `Create a personalized ${PLAN_OPTIONS.find(o => o.value === defaultPlanType)?.label.toLowerCase()} tailored to your health profile`
+              : "Select the type of personalized health plan you'd like to create"
+            }
           </DialogDescription>
         </DialogHeader>
         

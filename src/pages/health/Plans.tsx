@@ -26,6 +26,7 @@ import { toast } from "sonner";
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
+  const [selectedPlanType, setSelectedPlanType] = useState<string | undefined>(undefined);
   const { plans, isLoading } = useHealthPlans();
   const navigate = useNavigate();
   
@@ -94,14 +95,17 @@ export default withScreenId(function Plans() {
           
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search plans..." />
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => setWizardOpen(true)}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Generate New Plan
-            </Button>
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => {
+              setSelectedPlanType(undefined);
+              setWizardOpen(true);
+            }}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Generate New Plan
+          </Button>
           </UtilityActionButton>
           
           {/* Split Bar Navigation */}
@@ -132,10 +136,13 @@ export default withScreenId(function Plans() {
                           animationFillMode: 'forwards'
                         }}
                       >
-                        <PersonalizedPlanCard 
-                          type={planType as any}
-                          onGenerateClick={() => setWizardOpen(true)}
-                        />
+            <PersonalizedPlanCard 
+              type={planType as any}
+              onGenerateClick={() => {
+                setSelectedPlanType(planType);
+                setWizardOpen(true);
+              }}
+            />
                       </div>
                     ))}
                   </div>
@@ -256,7 +263,11 @@ export default withScreenId(function Plans() {
       
       <PlanGeneratorWizard
         open={wizardOpen}
-        onOpenChange={setWizardOpen}
+        onOpenChange={(open) => {
+          setWizardOpen(open);
+          if (!open) setSelectedPlanType(undefined);
+        }}
+        defaultPlanType={selectedPlanType}
       />
     </AppLayout>
   );
