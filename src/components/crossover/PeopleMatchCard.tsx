@@ -123,7 +123,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
     };
 
     fetchRecommendations();
-  }, [demoPeople]);
+  }, []); // Only fetch once on mount
 
   const handleChatClick = (match: PeopleMatch) => {
     // Check if it's a demo user (DiceBear avatar URLs or demo- prefix)
