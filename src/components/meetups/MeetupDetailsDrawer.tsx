@@ -15,6 +15,10 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
+import { MessageComposeModal } from "@/components/profile/shared/MessageComposeModal";
+import { useHybridMessages } from "@/hooks/useHybridMessages";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthProvider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -161,8 +165,16 @@ export function MeetupDetailsDrawer({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [previousEventId, setPreviousEventId] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [isCreatingThread, setIsCreatingThread] = useState(false);
   
   const { addEvent, removeEvent } = useCalendarEvents();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  
+  // Determine context based on event
+  const messageContext = event?.tenant_id ? 'tenant' : 'global';
+  const { createThread, sendMessage } = useHybridMessages(messageContext);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -383,6 +395,92 @@ export function MeetupDetailsDrawer({
       onNavigateNext();
     } else if (isRightSwipe && hasPrev && onNavigatePrev) {
       onNavigatePrev();
+    }
+  };
+
+  const handleMessageHost = () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to message the host",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Get host ID from event creator
+    const hostId = event.creator_id || event.author?.id;
+    
+    if (!hostId) {
+      toast({
+        title: "Cannot message host",
+        description: "Host information not available",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (hostId === user.id) {
+      toast({
+        title: "Cannot message yourself",
+        description: "You are the host of this event",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setMessageModalOpen(true);
+  };
+
+  const handleSendMessageToHost = async (message: string) => {
+    setIsCreatingThread(true);
+    try {
+      const hostId = event.creator_id || event.author?.id;
+      
+      if (!hostId) {
+        throw new Error('Host ID not found');
+      }
+
+      // 1. Create or get existing direct message thread
+      const thread = await createThread([hostId]);
+      if (!thread?.id) {
+        throw new Error('Failed to create thread');
+      }
+
+      // 2. Send the actual message content
+      await sendMessage({
+        context: messageContext,
+        threadId: thread.id,
+        content: message,
+        type: 'text'
+      });
+
+      // 3. Show success message
+      toast({
+        title: "Message sent! 📨",
+        description: `Your message has been sent to ${event.creator_display_name || event.author?.name || 'the host'}`,
+      });
+
+      // 4. Close modal and drawer
+      setMessageModalOpen(false);
+      onOpenChange(false);
+
+      // 5. Navigate to messages view
+      navigate('/messages', { 
+        state: { 
+          threadId: thread.id,
+          highlightThread: true 
+        } 
+      });
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      toast({
+        title: "Failed to send message",
+        description: "Please try again later",
+        variant: "destructive"
+      });
+    } finally {
+      setIsCreatingThread(false);
     }
   };
 
@@ -790,9 +888,24 @@ export function MeetupDetailsDrawer({
                   </div>
                   <p className="text-[13px] text-muted-foreground">Organizer</p>
                 </div>
-                <Button variant="outline" size="sm" className="gap-1.5">
-                  <MessageCircle className="h-4 w-4" />
-                  Message
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="gap-1.5"
+                  onClick={handleMessageHost}
+                  disabled={isCreatingThread}
+                >
+                  {isCreatingThread ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <MessageCircle className="h-4 w-4" />
+                      Message
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
@@ -971,6 +1084,31 @@ export function MeetupDetailsDrawer({
           </TooltipProvider>
         </div>
       </div>
+
+      {/* Message Compose Modal */}
+      {event.creator_id && (
+        <MessageComposeModal
+          isOpen={messageModalOpen}
+          onOpenChange={setMessageModalOpen}
+          recipient={{
+            id: event.creator_id,
+            name: event.creator_display_name || event.author?.name || 'Event Host',
+            handle: event.creator_handle || 'host',
+            avatarUrl: event.creator_avatar_url || event.author?.avatar || '',
+            roles: [],
+            stats: { posts: 0, followers: 0, following: 0, mediaUploads: 0, groupsJoined: 0 },
+            visibility: {
+              about: 'public',
+              links: 'public',
+              location: 'public',
+              showcase: 'public',
+              indexPublic: false,
+              healthShareConsent: false
+            }
+          }}
+          onSend={handleSendMessageToHost}
+        />
+      )}
     </div>
   );
 
