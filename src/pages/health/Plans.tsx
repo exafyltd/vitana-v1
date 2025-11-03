@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -18,10 +18,19 @@ import { ExercisePlanView } from "@/components/health/exercise/ExercisePlanView"
 import { HydrationPlanView } from "@/components/health/hydration/HydrationPlanView";
 import { SleepPlanView } from "@/components/health/sleep/SleepPlanView";
 import { MentalPlanView } from "@/components/health/mental/MentalPlanView";
+import { AutopilotInsightBanner } from "@/components/health/AutopilotInsightBanner";
+import { CrossPlanRelationshipWidget } from "@/components/health/CrossPlanRelationshipWidget";
+import { VitanaScoreTooltip } from "@/components/health/VitanaScoreTooltip";
+import { calculateAutopilotContext } from "@/services/autopilotContext";
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
-  const { isLoading } = useHealthPlans();
+  const { plans, isLoading } = useHealthPlans();
+  
+  // Calculate autopilot context
+  const autopilotData = useMemo(() => {
+    return calculateAutopilotContext(plans || []);
+  }, [plans]);
   
   return (
     <AppLayout>
@@ -44,14 +53,12 @@ export default withScreenId(function Plans() {
             emoji="🎯"
           />
           
-          {/* Autopilot Summary Subheader */}
-          <div className="flex items-center justify-end gap-3 mb-6 text-sm italic text-slate-500/90 dark:text-slate-400/80">
-            <span className="flex items-center gap-2">
-              <span className="text-base">🤖</span>
-              <span>Autopilot Summary</span>
-            </span>
-            <span className="font-medium">742 VITANA Score · 5 Active Plans · Fully Synced with AI Context</span>
-          </div>
+          {/* Autopilot Insight Banner */}
+          <AutopilotInsightBanner
+            insights={autopilotData.insights}
+            synergyScore={autopilotData.synergyScore}
+            synergyTrend={autopilotData.synergyTrend}
+          />
           
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search plans..." />
@@ -77,65 +84,67 @@ export default withScreenId(function Plans() {
             </SplitBarList>
             
             <SplitBarContent value="all">
-              {/* Content Grid Container with Animation Stagger */}
-              <div className="grid grid-cols-12 gap-6 mb-8">
-                {isLoading ? (
-                  <div className="col-span-12 text-center py-12">
-                    <p className="text-muted-foreground">Loading plans...</p>
-                  </div>
-                ) : (
-                  <>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '0ms' }}>
-                      <PersonalizedPlanCard type="nutrition" />
-                    </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '100ms' }}>
-                      <PersonalizedPlanCard type="exercise" />
-                    </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                      <PersonalizedPlanCard type="hydration" />
-                    </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
-                      <PersonalizedPlanCard type="sleep" />
-                    </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '400ms' }}>
-                      <PersonalizedPlanCard type="mental" />
-                    </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '500ms' }}>
-                      <PersonalizedPlanCard type="supplement" />
-                    </div>
-                  </>
-                )}
-              </div>
-              
-              {/* Unified Autopilot Bar */}
-              <div className="rounded-2xl bg-gradient-to-r from-indigo-500/10 via-cyan-500/10 to-indigo-500/10 dark:from-indigo-600/20 dark:via-cyan-600/20 dark:to-indigo-600/20 backdrop-blur-md border border-indigo-200/60 dark:border-indigo-800/60 p-6 shadow-lg shadow-indigo-100/40 dark:shadow-indigo-900/20">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1">
-                      🤖 Autopilot Summary
-                    </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      All plans calibrated to your 742 Vitana Index · Last recalibrated 3h ago
-                    </p>
-                  </div>
-                  <div className="flex gap-3">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="bg-white/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700"
-                    >
-                      ⚙️ Recalibrate All
-                    </Button>
-                    <Button 
-                      variant="default" 
-                      size="sm"
-                      className="bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600"
-                    >
-                      📈 View Progress Report
-                    </Button>
-                  </div>
+              {isLoading ? (
+                <div className="text-center py-12 text-slate-600 dark:text-slate-400">
+                  Loading plans...
                 </div>
-              </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                    {["nutrition", "exercise", "hydration", "sleep", "mental", "supplement"].map((planType, idx) => (
+                      <div 
+                        key={planType}
+                        className="animate-fade-in"
+                        style={{ animationDelay: `${idx * 100}ms` }}
+                      >
+                        <PersonalizedPlanCard type={planType as any} />
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Cross-Plan Relationship Widget */}
+                  <div className="mb-6">
+                    <CrossPlanRelationshipWidget
+                      relationships={autopilotData.relationships}
+                      lastSynced={autopilotData.lastRecalibration}
+                    />
+                  </div>
+                  
+                  {/* Enhanced Autopilot Summary Bar */}
+                  <div className="rounded-2xl bg-gradient-to-r from-indigo-500/10 via-cyan-500/10 to-violet-500/10 border border-indigo-200/60 dark:border-indigo-800/60 backdrop-blur-md p-6 shadow-sm">
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                        🤖 Autopilot Summary
+                      </h3>
+                      <div className="space-y-1 text-sm text-muted-foreground">
+                        <VitanaScoreTooltip score={autopilotData.vitanaScore}>
+                          <button className="hover:text-foreground transition-colors font-semibold">
+                            {autopilotData.vitanaScore} Vitana Score
+                          </button>
+                        </VitanaScoreTooltip>
+                        <span> · {plans?.length || 0} plans actively synced</span>
+                        <div>Cross-pillar synergy: <span className="font-semibold text-indigo-600 dark:text-indigo-400">{autopilotData.synergyScore}/100</span> <span className="text-emerald-600 dark:text-emerald-400">(+{autopilotData.synergyTrend}%)</span></div>
+                        <div>Next automatic recalibration: <span className="font-medium">{autopilotData.nextRecalibration}</span></div>
+                        <div className="text-xs italic">Last adjustment: {autopilotData.lastAdjustment}</div>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <button className="px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm">
+                        ⚙ Recalibrate All Plans
+                      </button>
+                      <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors">
+                        📊 View Detailed Report
+                      </button>
+                      <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors">
+                        🔍 Analyze Synergy
+                      </button>
+                      <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors">
+                        ⚡ Optimize Weakest Pillar
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </SplitBarContent>
             
             {/* Nutrition Plan - Full Recipe View */}
