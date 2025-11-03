@@ -142,119 +142,118 @@ export function VisualActionCard({
   return (
     <div 
       className={cn(
-        "group overflow-hidden rounded-xl border-l-4 border-t border-r border-b transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-card",
-        "border-border hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)]",
+        "group overflow-hidden rounded-2xl border-l-4 transition-all duration-300 bg-card/70 backdrop-blur-lg dark:bg-card/60",
+        "border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.01]",
+        "hover:border-l-8 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)]",
         getCategoryColor(action.category),
         className
       )}
     >
-      <div className="flex h-full min-h-[220px]">
-        {/* Left Half - Real Image with 16:9 aspect ratio */}
-        <div className="w-1/2 relative overflow-hidden">
-          <div className="aspect-video w-full h-full">
+      <div className="flex flex-col sm:flex-row h-auto sm:h-[180px]">
+        {/* Left Half - Real Image */}
+        <div className="w-full sm:w-1/2 h-32 sm:h-full relative overflow-hidden">
+          <div className="w-full h-full">
             <img
               src={actionImage}
               alt={action.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
             
-            {/* Gradient overlay for better text contrast */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent" />
+            {/* Enhanced gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent" />
             
-            {/* Category badge - top-left corner */}
-            <div className="absolute top-3 left-3">
-              <div className="w-10 h-10 rounded-lg bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/20">
-                <span className="text-lg">{action.icon}</span>
+            {/* Category badge - reduced size */}
+            <div className="absolute top-2 left-2">
+              <div className="w-8 h-8 rounded-xl bg-white/95 dark:bg-gray-900/95 backdrop-blur-md flex items-center justify-center shadow-lg border border-white/30">
+                <span className="text-base">{action.icon}</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Half - Action Content with enhanced typography */}
-        <div className="w-1/2 p-5 flex flex-col justify-between">
-          <div className="space-y-4">
-            {/* Motivational Hook - enhanced */}
-            <div className="text-sm font-medium text-muted-foreground leading-relaxed">
+        {/* Right Half - Action Content with tighter spacing */}
+        <div className="w-full sm:w-1/2 p-4 flex flex-col justify-between">
+          <div className="space-y-2.5">
+            {/* Motivational Hook - smaller text */}
+            <div className="text-xs font-medium text-muted-foreground leading-snug">
               {motivationalHook}
             </div>
             
-            {/* Title & Tags with better hierarchy */}
-            <div className="space-y-3">
-              <h4 className="font-bold text-base leading-tight line-clamp-2 text-foreground">
+            {/* Title & Tags with tighter hierarchy */}
+            <div className="space-y-2">
+              <h4 className="font-bold text-sm leading-tight line-clamp-2 text-foreground">
                 {action.title}
               </h4>
               
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 <Badge 
                   variant="outline" 
-                  className={cn("text-xs px-2.5 py-1", getPriorityColor(action.priority))}
+                  className={cn("text-[10px] px-2 py-0.5 font-medium", getPriorityColor(action.priority))}
                 >
                   {action.priority}
                 </Badge>
                 {action.timeEstimate && (
-                  <Badge variant="outline" className="text-xs px-2.5 py-1 bg-muted/50">
-                    <Clock className="w-3 h-3 mr-1" />
+                  <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-muted/50 font-medium">
+                    <Clock className="w-2.5 h-2.5 mr-1" />
                     {action.timeEstimate}
                   </Badge>
                 )}
               </div>
             </div>
             
-            {/* Reason with softer contrast */}
-            <p className="text-sm text-muted-foreground/80 line-clamp-2 leading-relaxed">
+            {/* Reason with smaller text */}
+            <p className="text-xs text-muted-foreground/80 line-clamp-2 leading-snug">
               {action.reason}
             </p>
           </div>
 
-          {/* Action Buttons with premium styling */}
-          <div className="grid grid-cols-2 gap-3 mt-5">
+          {/* Action Buttons - horizontal layout with gradient + outline */}
+          <div className="flex gap-2 mt-3">
             <Button 
               size="sm"
               onClick={() => onExecute(action.id)}
-              className="text-sm h-9 bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:from-[hsl(var(--gradient-join-start))]/90 hover:to-[hsl(var(--gradient-join-end))]/90 text-white border-0 font-medium transition-all duration-200 hover:scale-105 active:scale-95"
+              className="flex-1 text-xs h-8 bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:from-[hsl(var(--gradient-join-start))]/90 hover:to-[hsl(var(--gradient-join-end))]/90 text-white border-0 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 shadow-md"
             >
-              <CheckCircle className="w-3.5 h-3.5 mr-1.5" />
+              <CheckCircle className="w-3 h-3 mr-1" />
               Do Now
             </Button>
             <Button 
               variant="outline" 
               size="sm"
               onClick={() => onDismiss(action.id)}
-              className="text-sm h-9 bg-background/60 backdrop-blur-sm border-border/60 hover:bg-background/80 transition-all duration-200"
+              className="flex-1 text-xs h-8 bg-background/40 backdrop-blur-sm border-border/60 hover:bg-background/70 hover:border-border transition-all duration-300 font-medium"
             >
               Later
             </Button>
           </div>
           
-          {/* Secondary Actions with better spacing */}
-          <div className="flex justify-between mt-3 pt-2 border-t border-border/30">
+          {/* Secondary Actions - more subtle */}
+          <div className="flex justify-between mt-2 pt-2 border-t border-border/20">
             <Button 
               variant="ghost" 
               size="sm"
               onClick={() => onEdit?.(action.id)}
-              className="text-xs h-7 px-3 text-muted-foreground hover:text-foreground transition-colors"
+              className="text-[10px] h-6 px-2 text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Edit className="w-3 h-3 mr-1" />
+              <Edit className="w-2.5 h-2.5 mr-1" />
               Edit
             </Button>
+            <div className="text-[10px] text-muted-foreground/60 font-mono flex items-center">
+              {new Date(action.timestamp).toLocaleTimeString('en-GB', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false
+              })}
+            </div>
             <Button 
               variant="ghost" 
               size="sm"
               onClick={() => onDetails?.(action.id)}
-              className="text-xs h-7 px-3 text-muted-foreground hover:text-foreground transition-colors"
+              className="text-[10px] h-6 px-2 text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Eye className="w-3 h-3 mr-1" />
+              <Eye className="w-2.5 h-2.5 mr-1" />
               Details
             </Button>
-          </div>
-
-          {/* Timestamp with consistent alignment */}
-          <div className="text-xs text-muted-foreground/60 mt-2 text-right font-mono">
-            {new Date(action.timestamp).toLocaleTimeString('en-GB', { 
-              hour: '2-digit', 
-              minute: '2-digit',
-              hour12: false
-            })}
           </div>
         </div>
       </div>

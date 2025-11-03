@@ -77,8 +77,8 @@ export default function Actions() {
     <AppLayout>
       <SEO title="Actions | Dashboard" description="Next Best Actions & Today's Plan" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
+      <div className="p-6 bg-gradient-to-br from-purple-50/50 via-blue-50/30 to-pink-50/50 dark:from-purple-950/20 dark:via-blue-950/20 dark:to-pink-950/20 min-h-screen">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <StandardHeader
             title="Next Best Actions & Today's Plan"
             description="Autopilot = your decision partner."
@@ -109,7 +109,7 @@ export default function Actions() {
 
             {/* Pending Actions Tab */}
             <SplitBarContent value="pending">
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {pendingActions.length > 0 ? (
                   pendingActions
                     .sort((a, b) => {
@@ -157,10 +157,10 @@ export default function Actions() {
                 </TabsList>
 
                 {categories.map(category => (
-                  <TabsContent key={category.key} value={category.key} className="space-y-3">
+                  <TabsContent key={category.key} value={category.key} className="space-y-6">
                     {actionsByCategory[category.key]?.length > 0 ? (
                       <>
-                        <div className="grid gap-4">
+                        <div className="space-y-6">
                           {actionsByCategory[category.key]
                             .sort((a, b) => {
                               const priorityOrder = { high: 3, medium: 2, low: 1 };

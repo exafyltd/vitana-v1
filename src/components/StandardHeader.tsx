@@ -31,7 +31,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
         {/* Welcome Message */}
         <div className="flex-1 bg-card rounded-2xl p-8 shadow-xl border border-white/20 relative z-10">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 dark:from-purple-400 dark:via-blue-400 dark:to-pink-400 bg-clip-text text-transparent">
               {title} {emoji}
             </h1>
             <p className="text-muted-foreground truncate">{description}</p>
