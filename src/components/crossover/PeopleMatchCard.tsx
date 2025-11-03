@@ -45,11 +45,23 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   };
 
   const fetchRealProfilesWithScores = async () => {
-    const { data: profiles, error } = await supabase
+    // Get current user ID
+    const { data: { user } } = await supabase.auth.getUser();
+    const currentUserId = user?.id;
+
+    // Build query
+    let query = supabase
       .from('profiles')
       .select('user_id, display_name, handle, avatar_url, bio')
       .not('avatar_url', 'is', null)
       .limit(6);
+    
+    // Exclude current user if logged in
+    if (currentUserId) {
+      query = query.neq('user_id', currentUserId);
+    }
+    
+    const { data: profiles, error } = await query;
     
     if (error || !profiles || profiles.length === 0) {
       return null;
