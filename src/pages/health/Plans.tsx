@@ -113,32 +113,36 @@ export default withScreenId(function Plans() {
                     />
                   </div>
                   
-                  {/* Enhanced Autopilot Summary Bar */}
-                  <div className="rounded-2xl bg-gradient-to-r from-indigo-500/10 via-cyan-500/10 to-violet-500/10 border border-indigo-200/60 dark:border-indigo-800/60 backdrop-blur-md p-6 shadow-sm">
+                  {/* Autopilot Summary Footer */}
+                  <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-[0_6px_20px_rgba(20,25,40,0.06)]">
                     <div className="mb-4">
-                      <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
                         🧠 Autopilot Summary
                       </h3>
-                      <div className="space-y-1 text-sm text-muted-foreground">
+                      <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
                         <div>
                           <VitanaScoreTooltip score={autopilotData.vitanaScore}>
-                            <button className="hover:text-foreground transition-colors font-semibold">
+                            <button className="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold">
                               {autopilotData.vitanaScore} Vitana Score
                             </button>
                           </VitanaScoreTooltip>
                           <span> · 5 active plans synced · Cross-pillar synergy {autopilotData.synergyScore}/100</span>
                         </div>
-                        <div>Next recalibration: <span className="font-medium">{autopilotData.nextRecalibration}</span> · Adjustment: {autopilotData.lastAdjustment}</div>
+                        <div>
+                          Next recalibration: <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span> · Adjustment: {autopilotData.lastAdjustment}
+                        </div>
                       </div>
                     </div>
+                    
+                    {/* Action Buttons */}
                     <div className="flex flex-wrap gap-2">
-                      <button className="px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm">
+                      <button className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors">
                         ⚙ Recalibrate All
                       </button>
-                      <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors">
+                      <button className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors">
                         📈 View Detailed Report
                       </button>
-                      <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold rounded-lg transition-colors">
+                      <button className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors">
                         ✨ Optimize Weakest Pillar
                       </button>
                     </div>
