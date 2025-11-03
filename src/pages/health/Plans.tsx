@@ -34,7 +34,7 @@ export default withScreenId(function Plans() {
       <SubNavigation items={healthNavigation} />
       
       {/* Outer Container */}
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-slate-50/70 via-indigo-50/60 to-white/70 dark:from-slate-950/90 dark:via-slate-900/85 dark:to-slate-800/80 min-h-screen">
         {/* Inner Container */}
         <div className="max-w-7xl mx-auto">
           
@@ -43,6 +43,15 @@ export default withScreenId(function Plans() {
             description="AI-powered plans tailored to your unique health profile and goals"
             emoji="🎯"
           />
+          
+          {/* Autopilot Summary Subheader */}
+          <div className="flex items-center justify-end gap-3 mb-6 text-sm italic text-slate-500/90 dark:text-slate-400/80">
+            <span className="flex items-center gap-2">
+              <span className="text-base">🤖</span>
+              <span>Autopilot Summary</span>
+            </span>
+            <span className="font-medium">742 VITANA Score · 5 Active Plans · Fully Synced with AI Context</span>
+          </div>
           
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search plans..." />
@@ -68,34 +77,64 @@ export default withScreenId(function Plans() {
             </SplitBarList>
             
             <SplitBarContent value="all">
-              {/* Content Grid Container */}
-              <div className="grid grid-cols-12 gap-6">
+              {/* Content Grid Container with Animation Stagger */}
+              <div className="grid grid-cols-12 gap-6 mb-8">
                 {isLoading ? (
                   <div className="col-span-12 text-center py-12">
                     <p className="text-muted-foreground">Loading plans...</p>
                   </div>
                 ) : (
                   <>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '0ms' }}>
                       <PersonalizedPlanCard type="nutrition" />
                     </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '100ms' }}>
                       <PersonalizedPlanCard type="exercise" />
                     </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '200ms' }}>
                       <PersonalizedPlanCard type="hydration" />
                     </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
                       <PersonalizedPlanCard type="sleep" />
                     </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '400ms' }}>
                       <PersonalizedPlanCard type="mental" />
                     </div>
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 animate-fade-in" style={{ animationDelay: '500ms' }}>
                       <PersonalizedPlanCard type="supplement" />
                     </div>
                   </>
                 )}
+              </div>
+              
+              {/* Unified Autopilot Bar */}
+              <div className="rounded-2xl bg-gradient-to-r from-indigo-500/10 via-cyan-500/10 to-indigo-500/10 dark:from-indigo-600/20 dark:via-cyan-600/20 dark:to-indigo-600/20 backdrop-blur-md border border-indigo-200/60 dark:border-indigo-800/60 p-6 shadow-lg shadow-indigo-100/40 dark:shadow-indigo-900/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1">
+                      🤖 Autopilot Summary
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      All plans calibrated to your 742 Vitana Index · Last recalibrated 3h ago
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="bg-white/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700"
+                    >
+                      ⚙️ Recalibrate All
+                    </Button>
+                    <Button 
+                      variant="default" 
+                      size="sm"
+                      className="bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600"
+                    >
+                      📈 View Progress Report
+                    </Button>
+                  </div>
+                </div>
               </div>
             </SplitBarContent>
             
