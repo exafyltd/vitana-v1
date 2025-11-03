@@ -78,7 +78,7 @@ export default function Actions() {
       <SEO title="Actions | Dashboard" description="Next Best Actions & Today's Plan" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50/50 via-blue-50/30 to-pink-50/50 dark:from-purple-950/20 dark:via-blue-950/20 dark:to-pink-950/20 min-h-screen">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
           <StandardHeader
             title="Next Best Actions & Today's Plan"
             description="Autopilot = your decision partner."
@@ -109,117 +109,161 @@ export default function Actions() {
 
             {/* Pending Actions Tab */}
             <SplitBarContent value="pending">
-              <div className="space-y-6">
-                {pendingActions.length > 0 ? (
-                  pendingActions
-                    .sort((a, b) => {
-                      const priorityOrder = { high: 3, medium: 2, low: 1 };
-                      return priorityOrder[b.priority] - priorityOrder[a.priority];
-                    })
-                    .map(action => (
-                      <VisualActionCard
-                        key={action.id}
-                        action={action}
-                        onExecute={() => executeActions([action.id])}
-                        onDismiss={() => dismissActions([action.id])}
-                        onEdit={() => console.log("Edit action:", action.id)}
-                        onDetails={() => console.log("View details:", action.id)}
-                      />
-                    ))
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                      <Zap className="w-8 h-8 text-gray-400" />
+              <div className="mt-6">
+                <div className="grid grid-cols-12 gap-6">
+                  <div className="col-span-12 xl:col-span-9">
+                    <div className="space-y-6">
+                      {pendingActions.length > 0 ? (
+                        pendingActions
+                          .sort((a, b) => {
+                            const priorityOrder = { high: 3, medium: 2, low: 1 };
+                            return priorityOrder[b.priority] - priorityOrder[a.priority];
+                          })
+                          .map(action => (
+                            <VisualActionCard
+                              key={action.id}
+                              action={action}
+                              onExecute={() => executeActions([action.id])}
+                              onDismiss={() => dismissActions([action.id])}
+                              onEdit={() => console.log("Edit action:", action.id)}
+                              onDetails={() => console.log("View details:", action.id)}
+                            />
+                          ))
+                      ) : (
+                        <div className="text-center py-8 text-muted-foreground">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                            <Zap className="w-8 h-8 text-gray-400" />
+                          </div>
+                          <p>No pending actions</p>
+                        </div>
+                      )}
                     </div>
-                    <p>No pending actions</p>
                   </div>
-                )}
+                  <aside className="hidden xl:block xl:col-span-3">
+                    <div className="sticky top-6 space-y-4">
+                      {/* Future: Quick stats, tips, or filters */}
+                    </div>
+                  </aside>
+                </div>
               </div>
             </SplitBarContent>
 
             {/* Categories Tab */}
             <SplitBarContent value="categories">
-              <Tabs defaultValue="health" className="w-full">
-                <TabsList className="grid grid-cols-5 w-full mb-4">
-                  {categories.map(category => {
-                    const IconComponent = getCategoryIcon(category.key);
-                    return (
-                      <TabsTrigger 
-                        key={category.key} 
-                        value={category.key}
-                        className="text-xs"
-                      >
-                        <IconComponent className="w-4 h-4 mr-1" />
-                        {category.label.split(' ')[0]} ({category.count})
-                      </TabsTrigger>
-                    );
-                  })}
-                </TabsList>
+              <div className="mt-6">
+                <div className="grid grid-cols-12 gap-6">
+                  <div className="col-span-12 xl:col-span-9">
+                    <Tabs defaultValue="health" className="w-full">
+                      <TabsList className="grid grid-cols-5 w-full mb-4">
+                        {categories.map(category => {
+                          const IconComponent = getCategoryIcon(category.key);
+                          return (
+                            <TabsTrigger 
+                              key={category.key} 
+                              value={category.key}
+                              className="text-xs"
+                            >
+                              <IconComponent className="w-4 h-4 mr-1" />
+                              {category.label.split(' ')[0]} ({category.count})
+                            </TabsTrigger>
+                          );
+                        })}
+                      </TabsList>
 
-                {categories.map(category => (
-                  <TabsContent key={category.key} value={category.key} className="space-y-6">
-                    {actionsByCategory[category.key]?.length > 0 ? (
-                      <>
-                        <div className="space-y-6">
-                          {actionsByCategory[category.key]
-                            .sort((a, b) => {
-                              const priorityOrder = { high: 3, medium: 2, low: 1 };
-                              return priorityOrder[b.priority] - priorityOrder[a.priority];
-                            })
-                            .map(action => (
-                              <VisualActionCard
-                                key={action.id}
-                                action={action}
-                                onExecute={() => executeActions([action.id])}
-                                onDismiss={() => dismissActions([action.id])}
-                                onEdit={() => console.log("Edit action:", action.id)}
-                                onDetails={() => console.log("View details:", action.id)}
-                              />
-                            ))}
-                        </div>
-                        <div className="flex justify-between pt-4">
-                          <Button 
-                            variant="outline"
-                            onClick={() => executeActions(actionsByCategory[category.key].map(a => a.id))}
-                          >
-                            <Zap className="w-4 h-4 mr-2" />
-                            Execute All {category.label.split(' ')[0]}
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            Configure Category
-                          </Button>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                          {React.createElement(getCategoryIcon(category.key), { className: "w-8 h-8 text-gray-400" })}
-                        </div>
-                        <p>No {category.label.toLowerCase()} actions available</p>
-                      </div>
-                    )}
-                  </TabsContent>
-                ))}
-              </Tabs>
+                      {categories.map(category => (
+                        <TabsContent key={category.key} value={category.key} className="space-y-6">
+                          {actionsByCategory[category.key]?.length > 0 ? (
+                            <>
+                              <div className="space-y-6">
+                                {actionsByCategory[category.key]
+                                  .sort((a, b) => {
+                                    const priorityOrder = { high: 3, medium: 2, low: 1 };
+                                    return priorityOrder[b.priority] - priorityOrder[a.priority];
+                                  })
+                                  .map(action => (
+                                    <VisualActionCard
+                                      key={action.id}
+                                      action={action}
+                                      onExecute={() => executeActions([action.id])}
+                                      onDismiss={() => dismissActions([action.id])}
+                                      onEdit={() => console.log("Edit action:", action.id)}
+                                      onDetails={() => console.log("View details:", action.id)}
+                                    />
+                                  ))}
+                              </div>
+                              <div className="flex justify-between pt-4">
+                                <Button 
+                                  variant="outline"
+                                  onClick={() => executeActions(actionsByCategory[category.key].map(a => a.id))}
+                                >
+                                  <Zap className="w-4 h-4 mr-2" />
+                                  Execute All {category.label.split(' ')[0]}
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  Configure Category
+                                </Button>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-center py-8 text-muted-foreground">
+                              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                                {React.createElement(getCategoryIcon(category.key), { className: "w-8 h-8 text-gray-400" })}
+                              </div>
+                              <p>No {category.label.toLowerCase()} actions available</p>
+                            </div>
+                          )}
+                        </TabsContent>
+                      ))}
+                    </Tabs>
+                  </div>
+                  <aside className="hidden xl:block xl:col-span-3">
+                    <div className="sticky top-6 space-y-4">
+                      {/* Future: Category insights */}
+                    </div>
+                  </aside>
+                </div>
+              </div>
             </SplitBarContent>
 
             {/* Completed Actions Tab */}
             <SplitBarContent value="completed">
-              <div className="text-center py-8 text-muted-foreground">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                  <CheckCircle className="w-8 h-8 text-gray-400" />
+              <div className="mt-6">
+                <div className="grid grid-cols-12 gap-6">
+                  <div className="col-span-12 xl:col-span-9">
+                    <div className="text-center py-8 text-muted-foreground">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                        <CheckCircle className="w-8 h-8 text-gray-400" />
+                      </div>
+                      <p>No completed actions to show</p>
+                    </div>
+                  </div>
+                  <aside className="hidden xl:block xl:col-span-3">
+                    <div className="sticky top-6 space-y-4">
+                      {/* Future: Completion stats */}
+                    </div>
+                  </aside>
                 </div>
-                <p>No completed actions to show</p>
               </div>
             </SplitBarContent>
 
             {/* Failed Actions Tab */}
             <SplitBarContent value="failed">
-              <div className="text-center py-8 text-muted-foreground">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                  <FileText className="w-8 h-8 text-gray-400" />
+              <div className="mt-6">
+                <div className="grid grid-cols-12 gap-6">
+                  <div className="col-span-12 xl:col-span-9">
+                    <div className="text-center py-8 text-muted-foreground">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                        <FileText className="w-8 h-8 text-gray-400" />
+                      </div>
+                      <p>No failed actions to show</p>
+                    </div>
+                  </div>
+                  <aside className="hidden xl:block xl:col-span-3">
+                    <div className="sticky top-6 space-y-4">
+                      {/* Future: Error analytics */}
+                    </div>
+                  </aside>
                 </div>
-                <p>No failed actions to show</p>
               </div>
             </SplitBarContent>
           </SplitBar>
