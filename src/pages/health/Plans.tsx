@@ -18,7 +18,6 @@ import { ExercisePlanView } from "@/components/health/exercise/ExercisePlanView"
 import { HydrationPlanView } from "@/components/health/hydration/HydrationPlanView";
 import { SleepPlanView } from "@/components/health/sleep/SleepPlanView";
 import { MentalPlanView } from "@/components/health/mental/MentalPlanView";
-import { AutopilotInsightBanner } from "@/components/health/AutopilotInsightBanner";
 import { CrossPlanRelationshipWidget } from "@/components/health/CrossPlanRelationshipWidget";
 import { VitanaScoreTooltip } from "@/components/health/VitanaScoreTooltip";
 import { calculateAutopilotContext } from "@/services/autopilotContext";
@@ -51,13 +50,6 @@ export default withScreenId(function Plans() {
             title="Your Personalized Health Plans"
             description="AI-powered plans tailored to your unique health profile and goals"
             emoji="🎯"
-          />
-          
-          {/* Autopilot Insight Banner */}
-          <AutopilotInsightBanner
-            insights={autopilotData.insights}
-            synergyScore={autopilotData.synergyScore}
-            synergyTrend={autopilotData.synergyTrend}
           />
           
           <UtilityActionButton>
