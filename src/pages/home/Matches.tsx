@@ -17,13 +17,17 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 // Import match-specific cards
 import { PeopleMatchCard } from "@/components/crossover/PeopleMatchCard";
 import { GroupMatchCard } from "@/components/crossover/GroupMatchCard";
-import { CoachMatchCard } from "@/components/crossover/CoachMatchCard";
 import { EventMatchCard } from "@/components/crossover/EventMatchCard";
 import { CompatibilityCard } from "@/components/crossover/CompatibilityCard";
+import { CoachCompatibilityHero } from "@/components/coaches/CoachCompatibilityHero";
+import { CoachDirectoryGrid } from "@/components/coaches/CoachDirectoryGrid";
+import { RelatedCommunityPreview } from "@/components/coaches/RelatedCommunityPreview";
+import { useDemoMatches } from "@/hooks/useDemoMatches";
 
 export default function Matches() {
   const navigate = useNavigate();
   const [matchFiltersOpen, setMatchFiltersOpen] = useState(false);
+  const { insights } = useDemoMatches();
 
   return (
     <AppLayout>
@@ -95,10 +99,19 @@ export default function Matches() {
             </SplitBarContent>
 
             <SplitBarContent value="coaches" className="mt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <CoachMatchCard />
-                <CompatibilityCard />
-                <GroupMatchCard />
+              <div className="space-y-8">
+                {/* Tier 1: Hero Match Analysis */}
+                <CoachCompatibilityHero 
+                  overallScore={insights.compatibility_overall_pct}
+                  topFactors={insights.top_factors}
+                  sharedInterests={insights.shared_interests}
+                />
+                
+                {/* Tier 2: Coach Directory */}
+                <CoachDirectoryGrid />
+                
+                {/* Tier 3: Related Community */}
+                <RelatedCommunityPreview />
               </div>
             </SplitBarContent>
 
