@@ -45,6 +45,7 @@ export interface DemoEvent {
   match_score: number;
   match_reasons: string[];
   tags: string[];
+  image_url?: string;
 }
 
 export interface DemoInsight {
@@ -274,6 +275,18 @@ export function useDemoMatches() {
     }
   ];
 
+  // Image URLs for demo events
+  const eventImages: Record<string, string> = {
+    "demo-group-1": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop", // Yoga beach
+    "demo-group-2": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&h=600&fit=crop", // Walking nature
+    "demo-group-3": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&h=600&fit=crop", // Nutrition
+    "demo-group-4": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop", // Fitness group
+    "demo-group-5": "https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&h=600&fit=crop", // Meditation
+    "demo-group-6": "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800&h=600&fit=crop", // Pilates
+    "demo-group-7": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop", // Meal prep
+    "demo-group-8": "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=600&fit=crop", // Dance
+  };
+
   const events: DemoEvent[] = groups.map(group => ({
     id: group.id,
     title: group.name,
@@ -283,7 +296,8 @@ export function useDemoMatches() {
     event_type: group.category,
     match_score: group.compatibility_score / 100,
     match_reasons: [group.match_reason],
-    tags: group.tags
+    tags: group.tags,
+    image_url: eventImages[group.id],
   }));
 
   const coaches: DemoCoach[] = [
