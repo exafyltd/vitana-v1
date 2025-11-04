@@ -27,6 +27,8 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
     <Card 
       className={cn(
         "group cursor-pointer overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-[1px] motion-reduce:hover:translate-y-0 relative rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm",
+        "before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_15%_20%,rgba(6,182,212,0.06)_0%,transparent_30%),radial-gradient(circle_at_85%_30%,rgba(14,165,233,0.05)_0%,transparent_25%),radial-gradient(circle_at_40%_80%,rgba(34,211,238,0.04)_0%,transparent_35%),radial-gradient(circle_at_70%_60%,rgba(56,189,248,0.045)_0%,transparent_28%)] before:pointer-events-none before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-300",
+        "dark:before:bg-[radial-gradient(circle_at_15%_20%,rgba(6,182,212,0.08)_0%,transparent_30%),radial-gradient(circle_at_85%_30%,rgba(14,165,233,0.06)_0%,transparent_25%)]"
       )}
       onClick={onClick}
     >

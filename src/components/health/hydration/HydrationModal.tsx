@@ -62,8 +62,11 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
           backdrop-blur-xl bg-white/90 dark:bg-slate-900/90"
       >
         {/* Header with Glass Visualization */}
-        <div className="relative bg-gradient-to-br from-sky-100 via-cyan-50 to-blue-100 
-          dark:from-sky-950 dark:via-cyan-950 dark:to-blue-950 p-8">
+        <div className="relative overflow-hidden bg-gradient-to-br from-sky-100 via-cyan-50 to-blue-100 
+          dark:from-sky-950 dark:via-cyan-950 dark:to-blue-950 p-8
+          before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_30%_40%,rgba(6,182,212,0.1)_0%,transparent_45%),radial-gradient(circle_at_70%_60%,rgba(14,165,233,0.08)_0%,transparent_40%)]
+          dark:before:bg-[radial-gradient(circle_at_30%_40%,rgba(6,182,212,0.15)_0%,transparent_45%),radial-gradient(circle_at_70%_60%,rgba(14,165,233,0.12)_0%,transparent_40%)]
+          before:pointer-events-none">
           
           {/* Close Buttons */}
           <button

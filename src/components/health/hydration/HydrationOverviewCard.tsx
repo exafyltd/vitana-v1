@@ -12,9 +12,12 @@ interface HydrationOverviewCardProps {
 
 export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOverviewCardProps) {
   return (
-    <Card className="p-6 pt-10 mb-6 bg-gradient-to-br from-[hsl(197,84%,81%)]/60 via-[hsl(194,79%,63%)]/50 to-[hsl(199,100%,96%)]/40 
+    <Card className="relative p-6 pt-10 mb-6 overflow-hidden bg-gradient-to-br from-[hsl(197,84%,81%)]/60 via-[hsl(194,79%,63%)]/50 to-[hsl(199,100%,96%)]/40 
       dark:from-[hsl(210,35%,17%)]/80 dark:via-[hsl(210,48%,12%)]/80 dark:to-[hsl(210,55%,8%)]/80 
-      backdrop-blur-md border-slate-200/60 dark:border-slate-800/60 rounded-2xl">
+      backdrop-blur-md border-slate-200/60 dark:border-slate-800/60 rounded-2xl
+      before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_20%_30%,rgba(6,182,212,0.08)_0%,transparent_50%),radial-gradient(circle_at_80%_70%,rgba(14,165,233,0.06)_0%,transparent_50%),radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.04)_0%,transparent_70%)]
+      dark:before:bg-[radial-gradient(circle_at_20%_30%,rgba(6,182,212,0.12)_0%,transparent_50%),radial-gradient(circle_at_80%_70%,rgba(14,165,233,0.09)_0%,transparent_50%)]
+      before:pointer-events-none">
       
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
