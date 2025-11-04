@@ -33,7 +33,7 @@ export default function MyBusiness() {
       <SEO title="My Business | Community" description="Manage your wellness services and events" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       
-      <div className="p-6 bg-gradient-to-b from-white via-pink-50/40 to-rose-50/60 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
           <div className="flex flex-col lg:flex-row gap-4 mb-8">
