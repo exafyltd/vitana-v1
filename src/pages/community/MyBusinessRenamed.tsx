@@ -33,15 +33,23 @@ export default function MyBusiness() {
       <SEO title="My Business | Community" description="Manage your wellness services and events" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-b from-white via-pink-50/40 to-rose-50/60 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
           <div className="flex flex-col lg:flex-row gap-4 mb-8">
             {/* Shortened Header Bar - Welcome Message */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">My Business Hub ✨</h1>
-                <p className="text-muted-foreground">Manage your wellness business services and grow your community.</p>
+            <div className="flex-1 bg-gradient-to-br from-white/90 via-pink-50/80 to-fuchsia-50/70 backdrop-blur-xl rounded-3xl p-8 shadow-[0_0_40px_rgba(236,72,153,0.15)] border border-white/30 relative overflow-hidden">
+              <div className="absolute top-0 right-1/4 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl" />
+              <div className="relative z-10 flex items-center justify-between">
+                <div className="flex-1">
+                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-600 via-fuchsia-600 to-amber-600 bg-clip-text text-transparent mb-2">
+                    My Business Hub
+                  </h1>
+                  <p className="text-base text-muted-foreground">
+                    Grow your wellness business and manage clients effortlessly
+                  </p>
+                </div>
+                <div className="hidden md:block w-20 h-20 rounded-full bg-gradient-to-br from-pink-500/20 to-fuchsia-500/20 border-2 border-white/50 shadow-lg" />
               </div>
             </div>
             
@@ -117,136 +125,203 @@ export default function MyBusiness() {
           </UtilityActionButton>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <DollarSign className="w-4 h-4 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">$2,450</p>
-                    <p className="text-sm text-muted-foreground">This Month</p>
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="rounded-2xl bg-white/70 backdrop-blur-sm border border-white/20 shadow-[0_0_20px_rgba(34,197,94,0.1)] hover:shadow-[0_0_30px_rgba(34,197,94,0.2)] transition-all duration-300 p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-green-400/20 to-emerald-500/20 shadow-lg shadow-green-500/20">
+                  <DollarSign className="w-5 h-5 text-green-600" />
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <Users className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">147</p>
-                    <p className="text-sm text-muted-foreground">Active Clients</p>
-                  </div>
+                <div>
+                  <p className="text-2xl font-bold">$2,450</p>
+                  <p className="text-xs text-muted-foreground">Revenue this month</p>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <Calendar className="w-4 h-4 text-purple-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">23</p>
-                    <p className="text-sm text-muted-foreground">Upcoming Sessions</p>
-                  </div>
+              </div>
+            </div>
+            
+            <div className="rounded-2xl bg-white/70 backdrop-blur-sm border border-white/20 shadow-[0_0_20px_rgba(59,130,246,0.1)] hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] transition-all duration-300 p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-blue-400/20 to-cyan-500/20 shadow-lg shadow-blue-500/20">
+                  <Users className="w-5 h-5 text-blue-600" />
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-orange-100 rounded-lg">
-                    <TrendingUp className="w-4 h-4 text-orange-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">4.9</p>
-                    <p className="text-sm text-muted-foreground">Avg Rating</p>
-                  </div>
+                <div>
+                  <p className="text-2xl font-bold">147</p>
+                  <p className="text-xs text-muted-foreground">Active clients</p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+            
+            <div className="rounded-2xl bg-white/70 backdrop-blur-sm border border-white/20 shadow-[0_0_20px_rgba(168,85,247,0.1)] hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-purple-400/20 to-fuchsia-500/20 shadow-lg shadow-purple-500/20">
+                  <Calendar className="w-5 h-5 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">23</p>
+                  <p className="text-xs text-muted-foreground">Upcoming sessions</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="rounded-2xl bg-white/70 backdrop-blur-sm border border-white/20 shadow-[0_0_20px_rgba(251,191,36,0.1)] hover:shadow-[0_0_30px_rgba(251,191,36,0.2)] transition-all duration-300 p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-400/20 to-orange-500/20 shadow-lg shadow-yellow-500/20">
+                  <TrendingUp className="w-5 h-5 text-orange-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">4.9</p>
+                  <p className="text-xs text-muted-foreground">Average rating</p>
+                </div>
+              </div>
+            </div>
           </div>
 
 
           {/* Split Bar Navigation */}
-          <SplitBar defaultValue="management" className="w-full">
-            <SplitBarList>
-              <SplitBarTrigger value="management">Management</SplitBarTrigger>
-              <SplitBarTrigger value="referrals">Referrals</SplitBarTrigger>
-              <SplitBarTrigger value="analytics">Analytics</SplitBarTrigger>
-              <SplitBarTrigger value="clients">Clients</SplitBarTrigger>
+          <SplitBar defaultValue="management" className="w-full mb-6">
+            <SplitBarList className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-2 shadow-[0_0_20px_rgba(236,72,153,0.1)]">
+              <SplitBarTrigger value="management" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+                Management
+              </SplitBarTrigger>
+              <SplitBarTrigger value="referrals" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+                Referrals
+              </SplitBarTrigger>
+              <SplitBarTrigger value="analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+                Analytics
+              </SplitBarTrigger>
+              <SplitBarTrigger value="clients" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+                Clients
+              </SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="management" className="space-y-4">
               <div className="grid gap-4">
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-lg">Morning Yoga Flow</CardTitle>
+                <div className="relative rounded-2xl bg-white/80 backdrop-blur-md border border-white/20 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 overflow-hidden">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 to-pink-500" />
+                  <div className="p-5 pb-3">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="text-lg font-semibold">Morning Yoga Flow</h3>
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_6px_rgba(34,197,94,0.5)]" />
+                            <span className="text-xs text-green-600 font-medium">Active</span>
+                          </div>
+                        </div>
                         <p className="text-sm text-muted-foreground">Recurring • Mon, Wed, Fri at 7:00 AM</p>
                       </div>
-                      <Badge variant="default">Active</Badge>
                     </div>
-                  </CardHeader>
-                  <CardContent>
+                  </div>
+                  <div className="px-5 py-3 border-t border-border/50 bg-gradient-to-r from-white/50 to-pink-50/30">
                     <div className="flex items-center justify-between">
-                      <div className="flex gap-4">
-                        <span className="text-sm">👥 12/15 spots</span>
-                        <span className="text-sm">💰 $25/session</span>
-                        <span className="text-sm">⭐ 4.8 rating</span>
+                      <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-1.5">
+                          <Users className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span className="font-medium">12/15</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <DollarSign className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span className="font-medium">$25</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <TrendingUp className="w-3.5 h-3.5 text-yellow-500" />
+                          <span className="font-medium">4.8</span>
+                        </div>
                       </div>
-                      <Button variant="outline" size="sm">Manage</Button>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" className="rounded-full px-4 py-1 h-8 text-xs hover:bg-pink-50 border-pink-200">
+                          Edit
+                        </Button>
+                        <Button size="sm" className="rounded-full px-4 py-1 h-8 text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600">
+                          Manage
+                        </Button>
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
 
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-lg">Nutrition Consultation</CardTitle>
+                <div className="relative rounded-2xl bg-white/80 backdrop-blur-md border border-white/20 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 overflow-hidden">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-400 to-emerald-500" />
+                  <div className="p-5 pb-3">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="text-lg font-semibold">Nutrition Consultation</h3>
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_6px_rgba(34,197,94,0.5)]" />
+                            <span className="text-xs text-green-600 font-medium">Active</span>
+                          </div>
+                        </div>
                         <p className="text-sm text-muted-foreground">One-on-one • 60 minutes</p>
                       </div>
-                      <Badge variant="default">Active</Badge>
                     </div>
-                  </CardHeader>
-                  <CardContent>
+                  </div>
+                  <div className="px-5 py-3 border-t border-border/50 bg-gradient-to-r from-white/50 to-emerald-50/30">
                     <div className="flex items-center justify-between">
-                      <div className="flex gap-4">
-                        <span className="text-sm">📅 Available slots</span>
-                        <span className="text-sm">💰 $80/session</span>
-                        <span className="text-sm">⭐ 5.0 rating</span>
+                      <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span className="font-medium">Available</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <DollarSign className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span className="font-medium">$80</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <TrendingUp className="w-3.5 h-3.5 text-yellow-500" />
+                          <span className="font-medium">5.0</span>
+                        </div>
                       </div>
-                      <Button variant="outline" size="sm">Manage</Button>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" className="rounded-full px-4 py-1 h-8 text-xs hover:bg-pink-50 border-pink-200">
+                          Edit
+                        </Button>
+                        <Button size="sm" className="rounded-full px-4 py-1 h-8 text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600">
+                          Manage
+                        </Button>
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Weekend Wellness Workshop</CardTitle>
-                    <p className="text-sm text-muted-foreground">Saturday, Dec 16 • 10:00 AM - 4:00 PM</p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-4">
-                        <span className="text-sm">👥 8/20 registered</span>
-                        <span className="text-sm">💰 $150/person</span>
-                        <Badge variant="secondary">In 5 days</Badge>
+                <div className="relative rounded-2xl bg-white/80 backdrop-blur-md border border-white/20 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 overflow-hidden">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-400 to-indigo-500" />
+                  <div className="p-5 pb-3">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="text-lg font-semibold">Weekend Wellness Workshop</h3>
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-blue-500" />
+                            <span className="text-xs text-blue-600 font-medium">In 5 days</span>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Saturday, Dec 16 • 10:00 AM - 4:00 PM</p>
                       </div>
-                      <Button variant="outline" size="sm">Edit</Button>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                  <div className="px-5 py-3 border-t border-border/50 bg-gradient-to-r from-white/50 to-purple-50/30">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-1.5">
+                          <Users className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span className="font-medium">8/20</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <DollarSign className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span className="font-medium">$150</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" className="rounded-full px-4 py-1 h-8 text-xs hover:bg-pink-50 border-pink-200">
+                          Edit
+                        </Button>
+                        <Button size="sm" className="rounded-full px-4 py-1 h-8 text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600">
+                          Manage
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </SplitBarContent>
 
