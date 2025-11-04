@@ -178,20 +178,20 @@ export default function MyBusiness() {
 
           {/* Split Bar Navigation */}
           <SplitBar defaultValue="management" className="w-full mb-6">
-            <SplitBarList className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-2 shadow-[0_0_20px_rgba(236,72,153,0.1)]">
-              <SplitBarTrigger value="management" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+            <SplitBarList>
+              <SplitBarTrigger value="management" className="flex items-center gap-2">
                 <Briefcase className="w-4 h-4" />
                 Management
               </SplitBarTrigger>
-              <SplitBarTrigger value="referrals" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+              <SplitBarTrigger value="referrals" className="flex items-center gap-2">
                 <UserPlus className="w-4 h-4" />
                 Referrals
               </SplitBarTrigger>
-              <SplitBarTrigger value="analytics" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+              <SplitBarTrigger value="analytics" className="flex items-center gap-2">
                 <BarChart3 className="w-4 h-4" />
                 Analytics
               </SplitBarTrigger>
-              <SplitBarTrigger value="clients" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+              <SplitBarTrigger value="clients" className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 Clients
               </SplitBarTrigger>
