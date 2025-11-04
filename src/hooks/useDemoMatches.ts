@@ -21,6 +21,7 @@ export interface DemoGroup {
   next_time_iso?: string;
   location?: string;
   cover_img?: string;
+  image_url?: string;
   tags: string[];
 }
 
@@ -187,6 +188,7 @@ export function useDemoMatches() {
       match_reason: "Perfect for morning routines & mindfulness",
       next_time_iso: getTodayTime(7, 30),
       location: "Cala Major Beach",
+      image_url: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
       tags: ["Yoga", "Outdoors"]
     },
     {
@@ -199,6 +201,7 @@ export function useDemoMatches() {
       match_reason: "Aligns with your walking & mental health goals",
       next_time_iso: getTodayTime(18, 0),
       location: "City Park",
+      image_url: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&h=600&fit=crop",
       tags: ["Walking", "Mental"]
     },
     {
@@ -211,6 +214,7 @@ export function useDemoMatches() {
       match_reason: "Matches your healthy eating interests",
       next_time_iso: getTomorrowTime(14, 0),
       location: "Kitchen Lab",
+      image_url: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&h=600&fit=crop",
       tags: ["Healthy Eating"]
     },
     {
@@ -223,6 +227,7 @@ export function useDemoMatches() {
       match_reason: "Great for strength & cardio goals",
       next_time_iso: getSaturdayTime(10, 0),
       location: "Fitness Center",
+      image_url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
       tags: ["Strength", "Cardio"]
     },
     {
@@ -235,6 +240,7 @@ export function useDemoMatches() {
       match_reason: "Perfect for sleep & relaxation",
       next_time_iso: getTodayTime(20, 30),
       location: "Studio A",
+      image_url: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&h=600&fit=crop",
       tags: ["Breathwork", "Relax"]
     },
     {
@@ -247,6 +253,7 @@ export function useDemoMatches() {
       match_reason: "Complements your mobility work",
       next_time_iso: getThursdayTime(17, 0),
       location: "Studio B",
+      image_url: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800&h=600&fit=crop",
       tags: ["Pilates"]
     },
     {
@@ -259,6 +266,7 @@ export function useDemoMatches() {
       match_reason: "Supports your nutrition goals",
       next_time_iso: getSundayTime(12, 0),
       location: "Community Hub",
+      image_url: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
       tags: ["Meal Prep"]
     },
     {
@@ -271,6 +279,7 @@ export function useDemoMatches() {
       match_reason: "Great way to move and connect",
       next_time_iso: getFridayTime(19, 0),
       location: "Studio C",
+      image_url: "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=600&fit=crop",
       tags: ["Dance", "Social"]
     }
   ];

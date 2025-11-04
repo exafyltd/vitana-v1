@@ -1,26 +1,16 @@
-import { Users2, MapPin, Loader2, Calendar } from "lucide-react";
+import { Users2, Loader2, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
-import { SkeletonCard } from "@/components/ui/skeleton-card";
 import { useToast } from "@/hooks/use-toast";
 import { EventImageCard } from "@/components/events/EventImageCard";
 import { transformRecommendationToCard } from "@/lib/eventCardTransformers";
-import { UnifiedEventCard } from "@/types/events";
-
-interface GroupMatch {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  member_count: number;
-  compatibility_score: number;
-  match_reason: string;
-}
+import { UnifiedEventCard, UnifiedGroupCard } from "@/types/community";
+import { GroupImageCard } from "@/components/groups/GroupImageCard";
+import { transformGroupRecommendationToCard } from "@/lib/groupCardTransformers";
 
 interface GroupMatchCardProps {
   className?: string;
@@ -30,7 +20,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { groups: demoGroups, events: demoEvents } = useDemoMatches();
-  const [groups, setGroups] = useState<GroupMatch[]>([]);
+  const [groups, setGroups] = useState<UnifiedGroupCard[]>([]);
   const [events, setEvents] = useState<UnifiedEventCard[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,35 +37,41 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
               id,
               name,
               description,
+              member_count,
               category,
-              member_count
+              image_url,
+              tags
             )
           `)
           .eq('is_dismissed', false)
           .gte('match_score', 0.5)
           .order('match_score', { ascending: false })
-          .limit(3);
+          .limit(6);
 
         if (groupError) throw groupError;
 
         if (groupData && groupData.length > 0) {
-          const mapped = groupData
+          const mappedGroups = groupData
             .filter(r => r.global_community_groups)
-            .map(r => ({
-              id: r.global_community_groups.id,
-              name: r.global_community_groups.name,
-              description: r.global_community_groups.description || '',
-              category: r.global_community_groups.category || 'general',
-              member_count: r.global_community_groups.member_count,
-              compatibility_score: Math.round(r.match_score * 100),
-              match_reason: Array.isArray(r.match_reasons) && r.match_reasons.length > 0
-                ? (r.match_reasons as string[])[0]
-                : 'Great match for you'
+            .map(r => transformGroupRecommendationToCard({
+              ...r,
+              group: r.global_community_groups,
+              compatibility_score: r.match_score,
             }));
-          setGroups(mapped);
+          setGroups(mappedGroups);
         } else {
           // Use demo data as fallback
-          setGroups(demoGroups);
+          const transformedDemo = demoGroups.slice(0, 6).map(g => ({
+            id: g.id,
+            name: g.name,
+            description: g.description,
+            category: g.category || 'Community',
+            image: g.image_url || '',
+            match_score: g.compatibility_score,
+            member_count: g.member_count,
+            tags: g.tags || [],
+          }));
+          setGroups(transformedDemo);
         }
 
         // Fetch event recommendations
@@ -115,9 +111,19 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
         }
       } catch (error) {
         console.error('Failed to fetch recommendations:', error);
-        setGroups(demoGroups);
-        const transformedDemo = demoEvents.slice(0, 3).map(e => transformRecommendationToCard(e));
-        setEvents(transformedDemo);
+        const transformedDemo = demoGroups.slice(0, 6).map(g => ({
+          id: g.id,
+          name: g.name,
+          description: g.description,
+          category: g.category || 'Community',
+          image: g.image_url || '',
+          match_score: g.compatibility_score,
+          member_count: g.member_count,
+          tags: g.tags || [],
+        }));
+        setGroups(transformedDemo);
+        const transformedDemoEvents = demoEvents.slice(0, 3).map(e => transformRecommendationToCard(e));
+        setEvents(transformedDemoEvents);
       } finally {
         setLoading(false);
       }
@@ -134,7 +140,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
     );
   }
 
-  const handleJoinGroup = (group: GroupMatch) => {
+  const handleJoinGroup = (group: UnifiedGroupCard) => {
     if (group.id.startsWith('demo-')) {
       toast({
         title: "✓ Joined",
@@ -189,26 +195,13 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {groups.map((group) => (
-                <div 
-                  key={group.id} 
-                  className="p-4 rounded-2xl bg-card/70 backdrop-blur-md border border-border shadow-sm hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 cursor-pointer hover:scale-[1.02]"
-                  onClick={() => handleJoinGroup(group)}
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <h4 className="font-semibold text-sm leading-tight">{group.name}</h4>
-                    <Badge className="bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0 text-xs">
-                      {group.compatibility_score}%
-                    </Badge>
-                  </div>
-                  <div className="space-y-2 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-3 h-3" />
-                      <span className="capitalize">{group.category}</span>
-                    </div>
-                    <p className="line-clamp-2">{group.match_reason}</p>
-                    <p className="font-medium text-foreground">{group.member_count} members</p>
-                  </div>
-                </div>
+                <GroupImageCard
+                  key={group.id}
+                  group={group}
+                  variant="full"
+                  showMatchScore={true}
+                  onClick={handleJoinGroup}
+                />
               ))}
             </div>
 

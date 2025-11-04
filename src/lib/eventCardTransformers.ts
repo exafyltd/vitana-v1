@@ -1,4 +1,4 @@
-import { UnifiedEventCard } from "@/types/events";
+import { UnifiedEventCard } from "@/types/community";
 import { NewsCardProps } from "@/components/crossover/NewsCard";
 import { format } from "date-fns";
 

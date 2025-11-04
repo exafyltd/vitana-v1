@@ -8,7 +8,7 @@ import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useToast } from "@/hooks/use-toast";
 import { EventImageCard } from "@/components/events/EventImageCard";
 import { transformRecommendationToCard } from "@/lib/eventCardTransformers";
-import { UnifiedEventCard } from "@/types/events";
+import { UnifiedEventCard } from "@/types/community";
 
 
 interface EventMatchCardProps {

@@ -1,5 +1,5 @@
 import React from "react";
-import { UnifiedEventCard } from "@/types/events";
+import { UnifiedEventCard } from "@/types/community";
 import { NewsCard, NewsCardProps } from "@/components/crossover/NewsCard";
 import { eventCardToNewsCardProps } from "@/lib/eventCardTransformers";
 import { cn } from "@/lib/utils";

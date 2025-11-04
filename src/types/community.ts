@@ -13,3 +13,14 @@ export interface UnifiedEventCard {
   creator_display_name?: string;
   creator_avatar_url?: string;
 }
+
+export interface UnifiedGroupCard {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  image: string;
+  match_score?: number;
+  member_count: number;
+  tags: string[];
+}
