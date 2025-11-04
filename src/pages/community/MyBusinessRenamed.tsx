@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
-import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2, Search } from "lucide-react";
+import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2, Search, Briefcase, UserPlus } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
@@ -179,16 +179,20 @@ export default function MyBusiness() {
           {/* Split Bar Navigation */}
           <SplitBar defaultValue="management" className="w-full mb-6">
             <SplitBarList className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-2 shadow-[0_0_20px_rgba(236,72,153,0.1)]">
-              <SplitBarTrigger value="management" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+              <SplitBarTrigger value="management" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+                <Briefcase className="w-4 h-4" />
                 Management
               </SplitBarTrigger>
-              <SplitBarTrigger value="referrals" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+              <SplitBarTrigger value="referrals" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+                <UserPlus className="w-4 h-4" />
                 Referrals
               </SplitBarTrigger>
-              <SplitBarTrigger value="analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+              <SplitBarTrigger value="analytics" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+                <BarChart3 className="w-4 h-4" />
                 Analytics
               </SplitBarTrigger>
-              <SplitBarTrigger value="clients" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+              <SplitBarTrigger value="clients" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-fuchsia-500 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-pink-50/50 transition-all duration-200">
+                <Users className="w-4 h-4" />
                 Clients
               </SplitBarTrigger>
             </SplitBarList>
