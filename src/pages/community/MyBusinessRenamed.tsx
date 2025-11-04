@@ -49,7 +49,9 @@ export default function MyBusiness() {
                     Grow your wellness business and manage clients effortlessly
                   </p>
                 </div>
-                <div className="hidden md:block w-20 h-20 rounded-full bg-gradient-to-br from-pink-500/20 to-fuchsia-500/20 border-2 border-white/50 shadow-lg" />
+                <div className="hidden md:block">
+                  <Briefcase className="w-12 h-12 text-pink-500/60" />
+                </div>
               </div>
             </div>
             
