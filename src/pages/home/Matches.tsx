@@ -22,6 +22,9 @@ import { CompatibilityCard } from "@/components/crossover/CompatibilityCard";
 import { CoachCompatibilityHero } from "@/components/coaches/CoachCompatibilityHero";
 import { CoachDirectoryGrid } from "@/components/coaches/CoachDirectoryGrid";
 import { RelatedCommunityPreview } from "@/components/coaches/RelatedCommunityPreview";
+import { AnalysisHero } from "@/components/analysis/AnalysisHero";
+import { InsightsSummaryGrid } from "@/components/analysis/InsightsSummaryGrid";
+import { ContinueConnectingFeed } from "@/components/analysis/ContinueConnectingFeed";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 
 export default function Matches() {
@@ -119,13 +122,23 @@ export default function Matches() {
               <EventMatchCard />
             </SplitBarContent>
 
-            <SplitBarContent value="compatibility" className="mt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <CompatibilityCard />
-                <PeopleMatchCard />
-                <GroupMatchCard />
-              </div>
-            </SplitBarContent>
+        <SplitBarContent value="compatibility" className="mt-6">
+          <div className="space-y-8">
+            {/* Tier 1: Hero Compatibility Dashboard */}
+            <AnalysisHero 
+              overallScore={insights.compatibility_overall_pct}
+              topFactors={insights.top_factors}
+              sharedInterests={insights.shared_interests}
+              weekDelta={insights.week_delta_pct}
+            />
+            
+            {/* Tier 2: Insights Summary Grid */}
+            <InsightsSummaryGrid />
+            
+            {/* Tier 3: Continue Connecting Feed */}
+            <ContinueConnectingFeed />
+          </div>
+        </SplitBarContent>
           </SplitBar>
         </div>
       </div>
