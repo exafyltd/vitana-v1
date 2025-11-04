@@ -12,6 +12,7 @@ import { MatchFiltersPopup } from "@/components/MatchFiltersPopup";
 import { Users, Target, Calendar, UserCheck, Plus } from "lucide-react";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
+import { InspirationalBanner } from "@/components/groups/InspirationalBanner";
 
 // Import match-specific cards
 import { PeopleMatchCard } from "@/components/crossover/PeopleMatchCard";
@@ -90,10 +91,12 @@ export default function Matches() {
             </SplitBarContent>
 
             <SplitBarContent value="groups" className="mt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <InspirationalBanner 
+                title="Find your community. Grow together."
+                subtitle="Discover groups and events that resonate with your journey"
+              />
+              <div className="space-y-10">
                 <GroupMatchCard />
-                <EventMatchCard />
-                <PeopleMatchCard />
               </div>
             </SplitBarContent>
 

@@ -46,7 +46,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           .eq('is_dismissed', false)
           .gte('match_score', 0.5)
           .order('match_score', { ascending: false })
-          .limit(6);
+          .limit(9);
 
         if (groupError) throw groupError;
 
@@ -61,7 +61,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           setGroups(mappedGroups);
         } else {
           // Use demo data as fallback
-          const transformedDemo = demoGroups.slice(0, 6).map(g => ({
+          const transformedDemo = demoGroups.slice(0, 9).map(g => ({
             id: g.id,
             name: g.name,
             description: g.description,
@@ -92,7 +92,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           .eq('is_dismissed', false)
           .gte('match_score', 0.5)
           .order('match_score', { ascending: false })
-          .limit(3);
+          .limit(6);
 
         if (eventError) throw eventError;
 
@@ -106,12 +106,12 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           setEvents(mappedEvents);
         } else {
           // Use demo data as fallback
-          const transformedDemo = demoEvents.slice(0, 3).map(e => transformRecommendationToCard(e));
+          const transformedDemo = demoEvents.slice(0, 6).map(e => transformRecommendationToCard(e));
           setEvents(transformedDemo);
         }
       } catch (error) {
         console.error('Failed to fetch recommendations:', error);
-        const transformedDemo = demoGroups.slice(0, 6).map(g => ({
+        const transformedDemo = demoGroups.slice(0, 9).map(g => ({
           id: g.id,
           name: g.name,
           description: g.description,
@@ -122,7 +122,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           tags: g.tags || [],
         }));
         setGroups(transformedDemo);
-        const transformedDemoEvents = demoEvents.slice(0, 3).map(e => transformRecommendationToCard(e));
+        const transformedDemoEvents = demoEvents.slice(0, 6).map(e => transformRecommendationToCard(e));
         setEvents(transformedDemoEvents);
       } finally {
         setLoading(false);
