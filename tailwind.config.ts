@@ -222,6 +222,14 @@ export default {
 					'50%': {
 						'background-position': '100% 50%'
 					}
+				},
+				'shimmer': {
+					'0%': {
+						transform: 'translateX(-100%)'
+					},
+					'100%': {
+						transform: 'translateX(100%)'
+					}
 				}
 			},
 			animation: {
@@ -232,7 +240,8 @@ export default {
 				'scroll-medium': 'scroll 40s linear infinite',
 				'scroll-fast': 'scroll 20s linear infinite',
 				'fade-in-up': 'fade-in-up 0.5s ease-out',
-				'gradient-x': 'gradient-x 3s ease infinite'
+				'gradient-x': 'gradient-x 3s ease infinite',
+				'shimmer': 'shimmer 2s ease-in-out infinite'
 			}
 		}
 	},

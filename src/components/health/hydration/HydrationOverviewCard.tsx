@@ -12,11 +12,10 @@ interface HydrationOverviewCardProps {
 
 export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOverviewCardProps) {
   return (
-    <Card className="relative p-6 pt-10 mb-6 overflow-hidden bg-gradient-to-br from-[hsl(197,84%,81%)]/60 via-[hsl(194,79%,63%)]/50 to-[hsl(199,100%,96%)]/40 
-      dark:from-[hsl(210,35%,17%)]/80 dark:via-[hsl(210,48%,12%)]/80 dark:to-[hsl(210,55%,8%)]/80 
-      backdrop-blur-md border-slate-200/60 dark:border-slate-800/60 rounded-2xl
-      before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_20%_30%,rgba(6,182,212,0.08)_0%,transparent_50%),radial-gradient(circle_at_80%_70%,rgba(14,165,233,0.06)_0%,transparent_50%),radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.04)_0%,transparent_70%)]
-      dark:before:bg-[radial-gradient(circle_at_20%_30%,rgba(6,182,212,0.12)_0%,transparent_50%),radial-gradient(circle_at_80%_70%,rgba(14,165,233,0.09)_0%,transparent_50%)]
+    <Card className="relative p-6 pt-10 mb-6 overflow-hidden bg-gradient-to-br from-[#f9fdff] to-[#f1faff]
+      dark:from-slate-900 dark:to-slate-800
+      border-slate-200/60 dark:border-slate-700/60 rounded-2xl
+      before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,100,0.05)_0%,transparent_60%)]
       before:pointer-events-none">
       
       {/* Header */}
@@ -88,7 +87,9 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         </div>
         <div className="relative h-3 w-full overflow-hidden rounded-full bg-slate-200/50 dark:bg-slate-800/50">
           <div 
-            className="h-full bg-gradient-to-r from-sky-400 to-cyan-500 opacity-80 transition-all ease-in-out duration-1200 rounded-full"
+            className="h-full bg-gradient-to-r from-sky-400 to-cyan-500 transition-all ease-in-out duration-1200 rounded-full relative overflow-hidden
+              before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent
+              before:animate-[shimmer_2s_ease-in-out_infinite] before:translate-x-[-100%]"
             style={{ width: `${planData.completionPercentage}%` }}
           />
         </div>

@@ -7,10 +7,9 @@ export function HydrationEmptyState() {
   const { generatePlan } = useHealthPlans();
   
   return (
-    <Card className="relative p-12 text-center overflow-hidden bg-gradient-to-br from-sky-50/50 to-cyan-50/50 
-      dark:from-slate-900/50 dark:to-slate-800/50
-      before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.05)_0%,transparent_60%),radial-gradient(circle_at_25%_75%,rgba(14,165,233,0.04)_0%,transparent_50%)]
-      dark:before:bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.08)_0%,transparent_60%)]
+    <Card className="relative p-12 text-center overflow-hidden bg-gradient-to-br from-[#f9fdff] to-[#f1faff]
+      dark:from-slate-900 dark:to-slate-800
+      before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,100,0.05)_0%,transparent_60%)]
       before:pointer-events-none">
       <div className="max-w-md mx-auto space-y-4">
         <div className="w-20 h-20 bg-cyan-100 dark:bg-cyan-900/20 rounded-full flex items-center justify-center mx-auto">
