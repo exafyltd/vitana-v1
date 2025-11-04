@@ -1,3 +1,4 @@
+import React from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -7,11 +8,25 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { GrantAccessDialog } from "@/components/sharing/GrantAccessDialog";
+import { CreatePackageDialog } from "@/components/sharing/CreatePackageDialog";
+import { PrivacySettingsDialog } from "@/components/sharing/PrivacySettingsDialog";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Shield, AlertCircle, Database, Package, Plus } from "lucide-react";
+import { Shield, AlertCircle, Database, Package, Plus, ChevronDown } from "lucide-react";
 
 export default withScreenId(function DataConsent() {
+  const [grantAccessOpen, setGrantAccessOpen] = React.useState(false);
+  const [createPackageOpen, setCreatePackageOpen] = React.useState(false);
+  const [privacySettingsOpen, setPrivacySettingsOpen] = React.useState(false);
+
   return (
     <AppLayout>
       <SEO
@@ -33,14 +48,39 @@ export default withScreenId(function DataConsent() {
               placeholder="Search permissions, packages..."
             />
             <UniversalCalendarButton />
-            <Button size="sm" variant="default">
-              <Plus className="w-4 h-4 mr-2" />
-              Grant Access
-            </Button>
-            <Button size="sm" variant="outline">
-              <Plus className="w-4 h-4 mr-2" />
-              Create Package
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" variant="default">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Manage Access
+                  <ChevronDown className="w-4 h-4 ml-2" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem onClick={() => setGrantAccessOpen(true)}>
+                  <Shield className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Grant Permission</span>
+                    <span className="text-xs text-muted-foreground">Allow data access to entity</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setCreatePackageOpen(true)}>
+                  <Package className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Create Data Package</span>
+                    <span className="text-xs text-muted-foreground">Bundle data for sharing</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setPrivacySettingsOpen(true)}>
+                  <Database className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Privacy Settings</span>
+                    <span className="text-xs text-muted-foreground">Configure global controls</span>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </UtilityActionButton>
 
           {/* Four Split Screens: 30/30/20/20 */}
@@ -112,6 +152,10 @@ export default withScreenId(function DataConsent() {
           </div>
         </div>
       </div>
+
+      <GrantAccessDialog open={grantAccessOpen} onOpenChange={setGrantAccessOpen} />
+      <CreatePackageDialog open={createPackageOpen} onOpenChange={setCreatePackageOpen} />
+      <PrivacySettingsDialog open={privacySettingsOpen} onOpenChange={setPrivacySettingsOpen} />
     </AppLayout>
   );
 }, SCREEN_IDS.SHARING_OVERVIEW);

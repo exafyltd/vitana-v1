@@ -8,15 +8,24 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { AutomationRuleDialog } from "@/components/sharing/AutomationRuleDialog";
 import { TemplateDialog } from "@/components/sharing/TemplateDialog";
+import { BrandGuidelineDialog } from "@/components/sharing/BrandGuidelineDialog";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Zap, BarChart3, Palette, Plus } from "lucide-react";
+import { Zap, BarChart3, Palette, Plus, ChevronDown } from "lucide-react";
 
 export default withScreenId(function Distribution() {
   const [rulePopupOpen, setRulePopupOpen] = React.useState(false);
   const [templatePopupOpen, setTemplatePopupOpen] = React.useState(false);
+  const [guidelinePopupOpen, setGuidelinePopupOpen] = React.useState(false);
 
   return (
     <AppLayout>
@@ -39,14 +48,39 @@ export default withScreenId(function Distribution() {
               placeholder="Search automation rules, templates..."
             />
             <UniversalCalendarButton />
-            <Button size="sm" variant="default" onClick={() => setRulePopupOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Rule
-            </Button>
-            <Button size="sm" variant="outline" onClick={() => setTemplatePopupOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              New Template
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" variant="default">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Asset
+                  <ChevronDown className="w-4 h-4 ml-2" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem onClick={() => setTemplatePopupOpen(true)}>
+                  <Palette className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Campaign Template</span>
+                    <span className="text-xs text-muted-foreground">Pre-built distribution pattern</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setRulePopupOpen(true)}>
+                  <Zap className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Automation Rule</span>
+                    <span className="text-xs text-muted-foreground">If-then workflow logic</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setGuidelinePopupOpen(true)}>
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Brand Guideline</span>
+                    <span className="text-xs text-muted-foreground">Channel-specific rules</span>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </UtilityActionButton>
 
           {/* Three Split Sections: Templates / Rules / Brand Kit */}
@@ -161,6 +195,7 @@ export default withScreenId(function Distribution() {
 
       <AutomationRuleDialog open={rulePopupOpen} onOpenChange={setRulePopupOpen} />
       <TemplateDialog open={templatePopupOpen} onOpenChange={setTemplatePopupOpen} />
+      <BrandGuidelineDialog open={guidelinePopupOpen} onOpenChange={setGuidelinePopupOpen} />
     </AppLayout>
   );
 }, SCREEN_IDS.SHARING_OVERVIEW);

@@ -1,0 +1,116 @@
+import React from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "@/components/ui/use-toast";
+
+interface BrandGuidelineDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialogProps) {
+  const [channel, setChannel] = React.useState("");
+  const [imageSpecs, setImageSpecs] = React.useState("");
+  const [bestTimes, setBestTimes] = React.useState("");
+  const [guidelines, setGuidelines] = React.useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Placeholder for actual implementation
+    toast({
+      title: "Brand guideline created",
+      description: `Guidelines for ${channel} have been saved.`,
+    });
+
+    // Reset form
+    setChannel("");
+    setImageSpecs("");
+    setBestTimes("");
+    setGuidelines("");
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Create Brand Guideline</DialogTitle>
+          <DialogDescription>
+            Define channel-specific rules and best practices
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit}>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="channel">Channel</Label>
+              <Select value={channel} onValueChange={setChannel}>
+                <SelectTrigger id="channel">
+                  <SelectValue placeholder="Select channel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="instagram">Instagram</SelectItem>
+                  <SelectItem value="linkedin">LinkedIn</SelectItem>
+                  <SelectItem value="twitter">Twitter/X</SelectItem>
+                  <SelectItem value="facebook">Facebook</SelectItem>
+                  <SelectItem value="tiktok">TikTok</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="imageSpecs">Image Specifications</Label>
+              <Input
+                id="imageSpecs"
+                placeholder="e.g., 1080x1080px, JPG/PNG"
+                value={imageSpecs}
+                onChange={(e) => setImageSpecs(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="bestTimes">Best Posting Times</Label>
+              <Input
+                id="bestTimes"
+                placeholder="e.g., Tue-Thu 9-11am EST"
+                value={bestTimes}
+                onChange={(e) => setBestTimes(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="guidelines">Guidelines & Notes</Label>
+              <Textarea
+                id="guidelines"
+                placeholder="Add hashtag rules, tone of voice, character limits..."
+                value={guidelines}
+                onChange={(e) => setGuidelines(e.target.value)}
+                rows={4}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button type="submit">Save Guideline</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
