@@ -24,12 +24,3 @@ export interface UnifiedGroupCard {
   member_count: number;
   tags: string[];
 }
-
-export interface CategoryTheme {
-  gradient: string;
-  glow: string;
-  icon: string;
-  bg: string;
-  hoverGlow: string;
-  buttonColor: string;
-}

@@ -1,4 +1,4 @@
-import { UnifiedGroupCard, CategoryTheme } from "@/types/community";
+import { UnifiedGroupCard } from "@/types/community";
 import { Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -6,7 +6,6 @@ interface GroupImageCardProps {
   group: UnifiedGroupCard;
   variant?: "full" | "compact";
   showMatchScore?: boolean;
-  categoryTheme?: CategoryTheme;
   onClick?: (group: UnifiedGroupCard) => void;
 }
 
@@ -14,7 +13,6 @@ export const GroupImageCard = ({
   group,
   variant = "full",
   showMatchScore = true,
-  categoryTheme,
   onClick,
 }: GroupImageCardProps) => {
   const isCompact = variant === "compact";
@@ -23,16 +21,13 @@ export const GroupImageCard = ({
     onClick?.(group);
   };
 
-  const hoverGlow = categoryTheme?.hoverGlow || "hover:shadow-[0_0_30px_rgba(236,72,153,0.2)]";
-
   return (
     <div
       onClick={handleClick}
       className={cn(
         "group relative rounded-2xl overflow-hidden cursor-pointer",
         "shadow-sm hover:shadow-md transition-all duration-300",
-        "hover:scale-[1.05]",
-        hoverGlow,
+        "hover:scale-[1.05] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)]",
         isCompact ? "aspect-square" : "aspect-video"
       )}
     >
@@ -96,9 +91,9 @@ export const GroupImageCard = ({
           handleClick();
         }}
         className={cn(
-          "absolute z-20 rounded-full font-medium transition-all duration-200",
-          "text-white border-0 shadow-lg",
-          categoryTheme?.buttonColor || "bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600",
+          "absolute z-20 bg-white/90 backdrop-blur-sm rounded-full",
+          "text-slate-800 hover:bg-white font-medium transition-all duration-200",
+          "hover:shadow-lg",
           isCompact 
             ? "top-2 right-2 px-2.5 py-1 text-[11px]"
             : "top-3 right-3 px-3 py-1.5 text-[12px]"
