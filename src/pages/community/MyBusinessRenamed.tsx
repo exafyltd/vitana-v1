@@ -37,21 +37,15 @@ export default function MyBusiness() {
         <div className="max-w-7xl mx-auto">
           {/* Header Section with Perfect Symmetry - Three Cards Layout */}
           <div className="flex flex-col lg:flex-row gap-4 mb-8">
-            {/* Shortened Header Bar - Welcome Message */}
-            <div className="flex-1 bg-gradient-to-br from-white/90 via-blue-50/80 to-purple-50/70 backdrop-blur-xl rounded-3xl p-8 shadow-[0_0_40px_rgba(168,85,247,0.15)] border border-white/30 relative overflow-hidden">
-              <div className="absolute top-0 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
-              <div className="relative z-10 flex items-center justify-between">
-                <div className="flex-1">
-                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent mb-2">
-                    My Business Hub
-                  </h1>
-                  <p className="text-base text-muted-foreground">
-                    Grow your wellness business and manage clients effortlessly
-                  </p>
-                </div>
-                <div className="hidden md:block">
-                  <Briefcase className="w-12 h-12 text-purple-500/60" />
-                </div>
+            {/* Welcome Message */}
+            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">
+                  My Business Hub 💼
+                </h1>
+                <p className="text-muted-foreground">
+                  Grow your wellness business and manage clients effortlessly
+                </p>
               </div>
             </div>
             

@@ -28,14 +28,13 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
     <>
       {/* Header Section with Perfect Symmetry - Three Cards Layout */}
       <div className="flex flex-col lg:flex-row gap-4 mb-8">
-        {/* Welcome Message with animated gradient background */}
-        <div className="flex-1 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-pink-500/10 dark:from-purple-500/20 dark:via-blue-500/20 dark:to-pink-500/20 rounded-2xl p-8 shadow-xl border border-white/20 relative z-10 overflow-hidden animate-gradient-x bg-[length:200%_auto]">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-blue-500/5 to-pink-500/5 dark:from-purple-500/10 dark:via-blue-500/10 dark:to-pink-500/10 animate-pulse" />
-          <div className="relative z-10">
-            <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 dark:from-purple-400 dark:via-blue-400 dark:to-pink-400 bg-clip-text text-transparent">
+        {/* Welcome Message */}
+        <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               {title} {emoji}
             </h1>
-            <p className="text-muted-foreground truncate">{description}</p>
+            <p className="text-muted-foreground">{description}</p>
             {syncTimestamp && (
               <p className="text-[10px] text-muted-foreground/80 absolute bottom-2 right-3">
                 {syncTimestamp}

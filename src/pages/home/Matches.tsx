@@ -37,7 +37,7 @@ export default function Matches() {
       <SEO title="Matches | Dashboard" description="Matchmaking & Opportunities" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-pink-50 via-fuchsia-50 to-amber-50 dark:from-pink-950/30 dark:via-fuchsia-950/30 dark:to-amber-950/30 min-h-screen animate-gradient-x">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title="Find Your People"
