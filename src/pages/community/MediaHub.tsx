@@ -361,7 +361,7 @@ export default function MediaHub() {
   });
   // Fetch real video shorts from database with filtering
   const { data: realShorts = [], isLoading: isShortsLoading, refetch: refetchShorts } = useShorts({ 
-    limit: 20,
+    limit: 100,
     tags: activeTags.length > 0 && filteringEnabled ? activeTags : undefined
   });
   const trackMediaEvent = useTrackMediaEvent();

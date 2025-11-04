@@ -20,9 +20,9 @@ interface UserInterestsStore extends UserInterests {
 export const useUserInterestsStore = create<UserInterestsStore>()(
   persist(
     (set, get) => ({
-      interests: [],
-      wellness_goals: [],
-      filteringEnabled: true,
+    interests: [],
+    wellness_goals: [],
+    filteringEnabled: false,
       
       setInterests: (interests) => set({ interests }),
       
