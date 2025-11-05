@@ -160,13 +160,68 @@ const chunkEvents = (events: any[], chunkSize = 6) => {
   return chunks;
 };
 
-const renderEventGrid = (events: any[], onClick?: (event: any) => void, currentUserId?: string, onEdit?: (event: any) => void) => {
+const renderEventGrid = (
+  events: any[], 
+  onClick?: (event: any) => void, 
+  currentUserId?: string, 
+  onEdit?: (event: any) => void,
+  emptyStateConfig?: {
+    icon?: React.ReactNode;
+    title: string;
+    description: string;
+    primaryAction?: {
+      label: string;
+      onClick: () => void;
+    };
+    secondaryAction?: {
+      label: string;
+      onClick: () => void;
+    };
+  }
+) => {
   if (events.length === 0) {
+    const defaultConfig: {
+      icon?: React.ReactNode;
+      title: string;
+      description: string;
+      primaryAction?: {
+        label: string;
+        onClick: () => void;
+      };
+      secondaryAction?: {
+        label: string;
+        onClick: () => void;
+      };
+    } = {
+      icon: <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
+      title: "No events scheduled",
+      description: "Check back soon for upcoming community events!",
+    };
+    
+    const config = emptyStateConfig || defaultConfig;
+    
     return (
       <div className="text-center py-12">
-        <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-        <h3 className="text-lg font-semibold mb-2">No events scheduled</h3>
-        <p className="text-muted-foreground">Check back soon for upcoming community events!</p>
+        {config.icon}
+        <h3 className="text-lg font-semibold mb-2">{config.title}</h3>
+        <p className="text-muted-foreground mb-6">{config.description}</p>
+        {(config.primaryAction || config.secondaryAction) && (
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {config.primaryAction && (
+              <Button onClick={config.primaryAction.onClick}>
+                {config.primaryAction.label}
+              </Button>
+            )}
+            {config.secondaryAction && (
+              <Button 
+                variant="outline" 
+                onClick={config.secondaryAction.onClick}
+              >
+                {config.secondaryAction.label}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     );
   }
@@ -550,20 +605,42 @@ const EventsAndMeetups = () => {
                   </div>
                 ) : (
                   <>
-                    {chunkEvents(filteredTodayEvents).map((chunk, chunkIndex) => (
-                      <div key={`today-chunk-${chunkIndex}`}>
-                        {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
-                        {chunkIndex < chunkEvents(filteredTodayEvents).length - 1 && (
-                          <div className="px-6 mb-8 mt-8">
-                            <MotivationalBanner variant="encouragement" />
+                    {filteredTodayEvents.length === 0 ? (
+                      renderEventGrid(
+                        [], 
+                        handleCardClick, 
+                        user?.id, 
+                        handleEditEvent,
+                        {
+                          icon: <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
+                          title: "No Events Today",
+                          description: "There are no events scheduled for today. Check upcoming events or create your own!",
+                          primaryAction: {
+                            label: "Create Event",
+                            onClick: () => setCreateSelectionOpen(true)
+                          },
+                          secondaryAction: {
+                            label: "View Upcoming Events",
+                            onClick: () => setActiveTab('upcoming')
+                          }
+                        }
+                      )
+                    ) : (
+                      <>
+                        {chunkEvents(filteredTodayEvents).map((chunk, chunkIndex) => (
+                          <div key={`today-chunk-${chunkIndex}`}>
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {chunkIndex < chunkEvents(filteredTodayEvents).length - 1 && (
+                              <div className="px-6 mb-8 mt-8">
+                                <MotivationalBanner variant="encouragement" />
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    ))}
-                    {filteredTodayEvents.length > 0 && (
-                      <div className="px-6 mb-8 mt-8">
-                        <MotivationalBanner variant="partnership" />
-                      </div>
+                        ))}
+                        <div className="px-6 mb-8 mt-8">
+                          <MotivationalBanner variant="partnership" />
+                        </div>
+                      </>
                     )}
                   </>
                 )}
@@ -577,20 +654,38 @@ const EventsAndMeetups = () => {
                   </div>
                 ) : (
                   <>
-                    {chunkEvents(filteredUpcomingEvents).map((chunk, chunkIndex) => (
-                      <div key={`upcoming-chunk-${chunkIndex}`}>
-                        {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
-                        {chunkIndex < chunkEvents(filteredUpcomingEvents).length - 1 && (
-                          <div className="px-6 mb-8 mt-8">
-                            <MotivationalBanner variant="achievement" />
+                    {filteredUpcomingEvents.length === 0 ? (
+                      renderEventGrid(
+                        [], 
+                        handleCardClick, 
+                        user?.id, 
+                        handleEditEvent,
+                        {
+                          icon: <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
+                          title: "No Upcoming Events",
+                          description: "There are no events scheduled. Be the first to create one!",
+                          primaryAction: {
+                            label: "Create Event",
+                            onClick: () => setCreateSelectionOpen(true)
+                          }
+                        }
+                      )
+                    ) : (
+                      <>
+                        {chunkEvents(filteredUpcomingEvents).map((chunk, chunkIndex) => (
+                          <div key={`upcoming-chunk-${chunkIndex}`}>
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {chunkIndex < chunkEvents(filteredUpcomingEvents).length - 1 && (
+                              <div className="px-6 mb-8 mt-8">
+                                <MotivationalBanner variant="achievement" />
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    ))}
-                    {filteredUpcomingEvents.length > 0 && (
-                      <div className="px-6 mb-8 mt-8">
-                        <MotivationalBanner variant="guidance" />
-                      </div>
+                        ))}
+                        <div className="px-6 mb-8 mt-8">
+                          <MotivationalBanner variant="guidance" />
+                        </div>
+                      </>
                     )}
                   </>
                 )}
