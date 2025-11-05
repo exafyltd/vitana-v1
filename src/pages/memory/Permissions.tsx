@@ -126,60 +126,37 @@ function Permissions() {
           </Button>
         </UtilityActionButton>
 
-        {/* Quick Settings Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-8">
-          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-            <CardHeader>
-              <CardTitle>Privacy Settings</CardTitle>
-              <CardDescription>Control your data privacy and sharing preferences</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">AI Analysis Enabled</span>
-                <Switch defaultChecked />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Research Participation</span>
-                <Switch />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Community Sharing</span>
-                <Switch defaultChecked />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
-            <CardHeader>
-              <CardTitle>Data Access</CardTitle>
-              <CardDescription>Manage who can access your health memories</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Healthcare Providers</span>
-                <Switch defaultChecked />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Emergency Access</span>
-                <Switch defaultChecked />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Family Members</span>
-                <Switch />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="privacy">Privacy Overview</SplitBarTrigger>
-            <SplitBarTrigger value="access">Access Control</SplitBarTrigger>
-            <SplitBarTrigger value="security">Security Features</SplitBarTrigger>
+            <SplitBarTrigger value="privacy">🔐 Privacy Settings</SplitBarTrigger>
+            <SplitBarTrigger value="access">👥 Data Access</SplitBarTrigger>
+            <SplitBarTrigger value="security">🛡️ Security Features</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="privacy">
             <div className="mt-6">
+              {/* Privacy Settings Card with toggles */}
+              <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 mb-6">
+                <CardHeader>
+                  <CardTitle>Privacy Settings</CardTitle>
+                  <CardDescription>Control your data privacy and sharing preferences</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">AI Analysis Enabled</span>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Research Participation</span>
+                    <Switch />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Community Sharing</span>
+                    <Switch defaultChecked />
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Row 1: Privacy Settings (big + small + small) */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
@@ -226,6 +203,28 @@ function Permissions() {
 
           <SplitBarContent value="access">
             <div className="mt-6">
+              {/* Data Access Card with toggles */}
+              <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200 mb-6">
+                <CardHeader>
+                  <CardTitle>Data Access</CardTitle>
+                  <CardDescription>Manage who can access your health memories</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Healthcare Providers</span>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Emergency Access</span>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Family Members</span>
+                    <Switch />
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Row 1: Access Controls (small + small + big) */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-3">
