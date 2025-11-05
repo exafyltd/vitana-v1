@@ -84,20 +84,16 @@ export default function Inspiration() {
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="templates">
-                <Lightbulb className="w-4 h-4 mr-2" />
-                Templates
+                💡 Templates
               </SplitBarTrigger>
               <SplitBarTrigger value="favorites">
-                <Heart className="w-4 h-4 mr-2" />
-                My Favorites
+                ❤️ My Favorites
               </SplitBarTrigger>
               <SplitBarTrigger value="recent">
-                <Clock className="w-4 h-4 mr-2" />
-                Recently Used
+                ⏰ Recently Used
               </SplitBarTrigger>
               <SplitBarTrigger value="custom">
-                <Edit className="w-4 h-4 mr-2" />
-                Custom Messages
+                ✏️ Custom Messages
               </SplitBarTrigger>
             </SplitBarList>
 

@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, MoreHorizontal, Archive, FolderOpen, Plus, Clock, Settings } from "lucide-react";
+import { Search, MoreHorizontal, Archive, Plus } from "lucide-react";
 import { messagesNavigation } from "@/config/navigation";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
@@ -56,20 +56,16 @@ export default function Archived() {
             <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
               <SplitBarList>
                 <SplitBarTrigger value="all">
-                  <FolderOpen className="w-4 h-4 mr-2" />
-                  All Archives
+                  📂 All Archives
                 </SplitBarTrigger>
                 <SplitBarTrigger value="recent">
-                  <Clock className="w-4 h-4 mr-2" />
-                  Recently Archived
+                  ⏰ Recently Archived
                 </SplitBarTrigger>
                 <SplitBarTrigger value="category">
-                  <Archive className="w-4 h-4 mr-2" />
-                  By Category
+                  📦 By Category
                 </SplitBarTrigger>
                 <SplitBarTrigger value="settings">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Settings
+                  ⚙️ Settings
                 </SplitBarTrigger>
               </SplitBarList>
 

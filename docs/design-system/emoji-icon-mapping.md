@@ -469,6 +469,47 @@ When choosing emoji icons for new SplitBar tabs:
 
 ---
 
+### Messages Section
+
+#### Archived (`/messages/archived`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 📂 | All Archives | View all archived messages |
+| ⏰ | Recently Archived | Messages archived recently |
+| 📦 | By Category | Organized by category |
+| ⚙️ | Settings | Archive settings |
+
+**File:** `src/pages/messages/Archived.tsx`
+
+---
+
+#### Reminder (`/messages/reminder`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| ⏰ | Unanswered | Messages awaiting response |
+| 💬 | Recent Replies | Recently replied messages |
+| ⚠️ | Follow Up Needed | Messages requiring follow-up |
+| 📊 | Response Stats | Response statistics |
+
+**File:** `src/pages/messages/Reminder.tsx`
+
+---
+
+#### Inspiration (`/messages/inspiration`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 💡 | Templates | Pre-written message templates |
+| ❤️ | My Favorites | Saved favorite templates |
+| ⏰ | Recently Used | Recently used templates |
+| ✏️ | Custom Messages | Custom created messages |
+
+**File:** `src/pages/messages/Inspiration.tsx`
+
+---
+
 ## Quick Reference Table
 
 ### Common Icon Patterns

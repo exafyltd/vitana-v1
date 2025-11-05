@@ -85,20 +85,16 @@ export default function Reminder() {
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="unanswered">
-                <Clock className="w-4 h-4 mr-2" />
-                Unanswered
+                ⏰ Unanswered
               </SplitBarTrigger>
               <SplitBarTrigger value="recent">
-                <MessageCircle className="w-4 h-4 mr-2" />
-                Recent Replies
+                💬 Recent Replies
               </SplitBarTrigger>
               <SplitBarTrigger value="followup">
-                <AlertCircle className="w-4 h-4 mr-2" />
-                Follow Up Needed
+                ⚠️ Follow Up Needed
               </SplitBarTrigger>
               <SplitBarTrigger value="stats">
-                <BarChart3 className="w-4 h-4 mr-2" />
-                Response Stats
+                📊 Response Stats
               </SplitBarTrigger>
             </SplitBarList>
 
