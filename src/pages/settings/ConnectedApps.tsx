@@ -42,9 +42,9 @@ function ConnectedApps() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="connected">Connected Apps</SplitBarTrigger>
-              <SplitBarTrigger value="available">Available Integrations</SplitBarTrigger>
-              <SplitBarTrigger value="sync">Data Sync</SplitBarTrigger>
+              <SplitBarTrigger value="connected">🔌 Connected Apps</SplitBarTrigger>
+              <SplitBarTrigger value="available">✨ Available Integrations</SplitBarTrigger>
+              <SplitBarTrigger value="sync">🔄 Data Sync</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="connected">

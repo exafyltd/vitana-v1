@@ -45,9 +45,9 @@ function Preferences() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="appearance">Appearance</SplitBarTrigger>
-              <SplitBarTrigger value="language">Language & Region</SplitBarTrigger>
-              <SplitBarTrigger value="accessibility">Accessibility</SplitBarTrigger>
+              <SplitBarTrigger value="appearance">🎨 Appearance</SplitBarTrigger>
+              <SplitBarTrigger value="language">🌐 Language & Region</SplitBarTrigger>
+              <SplitBarTrigger value="accessibility">♿ Accessibility</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="appearance">

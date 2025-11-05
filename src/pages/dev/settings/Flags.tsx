@@ -46,9 +46,9 @@ export default function SettingsFlags() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="list">Flag List</SplitBarTrigger>
-              <SplitBarTrigger value="status">Flag Status</SplitBarTrigger>
-              <SplitBarTrigger value="history">Flag History</SplitBarTrigger>
+              <SplitBarTrigger value="list">🚩 Flag List</SplitBarTrigger>
+              <SplitBarTrigger value="status">🔘 Flag Status</SplitBarTrigger>
+              <SplitBarTrigger value="history">📜 Flag History</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="list" className="mt-6">

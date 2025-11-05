@@ -51,8 +51,8 @@ export default function Billing() {
         
         <SplitBar defaultValue="billing" className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="billing">Billing</SplitBarTrigger>
-            <SplitBarTrigger value="rewards">Rewards & Achievements</SplitBarTrigger>
+            <SplitBarTrigger value="billing">💳 Billing</SplitBarTrigger>
+            <SplitBarTrigger value="rewards">🏆 Rewards & Achievements</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="billing" className="space-y-6">

@@ -46,9 +46,9 @@ export default function SettingsTenants() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="list">Tenant List</SplitBarTrigger>
-              <SplitBarTrigger value="users">Tenant Users</SplitBarTrigger>
-              <SplitBarTrigger value="config">Tenant Configs</SplitBarTrigger>
+              <SplitBarTrigger value="list">🏢 Tenant List</SplitBarTrigger>
+              <SplitBarTrigger value="users">👤 Tenant Users</SplitBarTrigger>
+              <SplitBarTrigger value="config">⚙️ Tenant Configs</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="list" className="mt-6">

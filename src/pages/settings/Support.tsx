@@ -44,9 +44,9 @@ function Support() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="contact">Contact Support</SplitBarTrigger>
-              <SplitBarTrigger value="knowledge">Knowledge Base</SplitBarTrigger>
-              <SplitBarTrigger value="community">Community Help</SplitBarTrigger>
+              <SplitBarTrigger value="contact">💬 Contact Support</SplitBarTrigger>
+              <SplitBarTrigger value="knowledge">📚 Knowledge Base</SplitBarTrigger>
+              <SplitBarTrigger value="community">👥 Community Help</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="contact">

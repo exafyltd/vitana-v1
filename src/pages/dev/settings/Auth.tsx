@@ -45,9 +45,9 @@ export default function SettingsAuth() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="config">Supabase Config</SplitBarTrigger>
-              <SplitBarTrigger value="providers">Auth Providers</SplitBarTrigger>
-              <SplitBarTrigger value="jwt">JWT Settings</SplitBarTrigger>
+              <SplitBarTrigger value="config">⚙️ Supabase Config</SplitBarTrigger>
+              <SplitBarTrigger value="providers">🔑 Auth Providers</SplitBarTrigger>
+              <SplitBarTrigger value="jwt">🎫 JWT Settings</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="config" className="mt-6">

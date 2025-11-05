@@ -42,9 +42,9 @@ function Privacy() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="profile">Profile Visibility</SplitBarTrigger>
-              <SplitBarTrigger value="data">Data Sharing</SplitBarTrigger>
-              <SplitBarTrigger value="security">Security</SplitBarTrigger>
+              <SplitBarTrigger value="profile">👁️ Profile Visibility</SplitBarTrigger>
+              <SplitBarTrigger value="data">📊 Data Sharing</SplitBarTrigger>
+              <SplitBarTrigger value="security">🔒 Security</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="profile">
