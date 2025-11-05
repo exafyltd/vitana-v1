@@ -501,6 +501,31 @@ When choosing emoji icons for new SplitBar tabs:
 
 | Icon | Label | Purpose |
 |------|-------|---------|
+| 💡 | Templates | Pre-made message templates |
+| ❤️ | My Favorites | Saved favorite messages |
+| ⏰ | Recently Used | Recently used templates |
+| ✏️ | Custom Messages | Custom message creation |
+
+**File:** `src/pages/messages/Inspiration.tsx`
+
+---
+
+### Health Section
+
+#### My Biology (`/health/my-biology`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 🧪 | My Medical | Medical biomarkers and lab results |
+| 🧬 | My Omics | Genomics, metabolomics, and omics data |
+| 💊 | My Supplements | Supplement tracking and management |
+
+**File:** `src/pages/health/MyBiology.tsx`
+
+---
+
+| Icon | Label | Purpose |
+|------|-------|---------|
 | 💡 | Templates | Pre-written message templates |
 | ❤️ | My Favorites | Saved favorite templates |
 | ⏰ | Recently Used | Recently used templates |

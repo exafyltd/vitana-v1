@@ -378,16 +378,13 @@ export default function MyBiology() {
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="medical">
-                <TestTube className="w-4 h-4 mr-2" />
-                My Medical
+                🧪 My Medical
               </SplitBarTrigger>
               <SplitBarTrigger value="omics">
-                <Dna className="w-4 h-4 mr-2" />
-                My Omics
+                🧬 My Omics
               </SplitBarTrigger>
               <SplitBarTrigger value="supplements">
-                <Pill className="w-4 h-4 mr-2" />
-                My Supplements
+                💊 My Supplements
               </SplitBarTrigger>
             </SplitBarList>
 
