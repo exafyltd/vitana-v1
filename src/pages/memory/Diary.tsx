@@ -79,9 +79,9 @@ function Diary() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
           <SplitBarList>
-            <SplitBarTrigger value="voice">Voice</SplitBarTrigger>
-            <SplitBarTrigger value="photos">Photos</SplitBarTrigger>
-            <SplitBarTrigger value="text">Text</SplitBarTrigger>
+            <SplitBarTrigger value="voice">🎤 Voice</SplitBarTrigger>
+            <SplitBarTrigger value="photos">📸 Photos</SplitBarTrigger>
+            <SplitBarTrigger value="text">✍️ Text</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="voice">

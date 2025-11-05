@@ -151,9 +151,9 @@ function Recall() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="search">Search Results</SplitBarTrigger>
-            <SplitBarTrigger value="insights">AI Insights</SplitBarTrigger>
-            <SplitBarTrigger value="quick">Quick Recall</SplitBarTrigger>
+            <SplitBarTrigger value="search">🔍 Search Results</SplitBarTrigger>
+            <SplitBarTrigger value="insights">🧠 AI Insights</SplitBarTrigger>
+            <SplitBarTrigger value="quick">⚡ Quick Recall</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="search">
