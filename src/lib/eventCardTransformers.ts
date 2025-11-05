@@ -82,6 +82,7 @@ export const eventCardToNewsCardProps = (
     attendees: event.attendees,
     timestamp,
     eventId: event.id,
+    eventType: event.event_type,
     showSmartAction: true,
     onClick,
     'data-event-id': event.id,

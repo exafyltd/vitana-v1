@@ -37,6 +37,7 @@ interface NewsCardProps {
   showReward?: boolean;
   rewardPosition?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
   eventId?: string; // For event participation
+  eventType?: string; // The specific event_type value (e.g., 'meetup', 'event', 'community')
   "data-event-id"?: string; // For deep linking
 }
 
@@ -65,6 +66,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     showReward = false,
     rewardPosition = "top-right",
     eventId,
+    eventType,
     "data-event-id": dataEventId
   }, ref) => {
     // Always call the hook, but only use it for event cards
@@ -108,7 +110,15 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       
         // For events, use participation state
         if (category === "event" && eventId) {
-          buttonText = eventParticipation?.isParticipating ? "Leave Event" : "Join Event";
+          // Check if it's a meetup vs event
+          const isMeetup = eventType?.toLowerCase() === 'meetup';
+          
+          if (isMeetup) {
+            buttonText = eventParticipation?.isParticipating ? "Leave MeetUp" : "Join MeetUp";
+          } else {
+            buttonText = eventParticipation?.isParticipating ? "Leave Event" : "Join Event";
+          }
+          
           buttonIcon = eventParticipation?.isParticipating ? UserMinus : UserPlus;
           buttonType = "join";
         } else {
