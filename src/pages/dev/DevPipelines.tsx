@@ -64,10 +64,10 @@ export default function DevPipelines() {
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="builds">Builds</SplitBarTrigger>
-              <SplitBarTrigger value="tests">Tests</SplitBarTrigger>
-              <SplitBarTrigger value="canary">Canary</SplitBarTrigger>
-              <SplitBarTrigger value="rollbacks">Rollbacks</SplitBarTrigger>
+              <SplitBarTrigger value="builds">🔨 Builds</SplitBarTrigger>
+              <SplitBarTrigger value="tests">🧪 Tests</SplitBarTrigger>
+              <SplitBarTrigger value="canary">🐤 Canary</SplitBarTrigger>
+              <SplitBarTrigger value="rollbacks">⏮️ Rollbacks</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="builds" className="mt-6">

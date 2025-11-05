@@ -55,10 +55,10 @@ export default function DevCICD() {
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="workflows">Workflows</SplitBarTrigger>
-              <SplitBarTrigger value="runs">Runs</SplitBarTrigger>
-              <SplitBarTrigger value="artifacts">Artifacts</SplitBarTrigger>
-              <SplitBarTrigger value="matrix">Env Matrix</SplitBarTrigger>
+              <SplitBarTrigger value="workflows">🔄 Workflows</SplitBarTrigger>
+              <SplitBarTrigger value="runs">▶️ Runs</SplitBarTrigger>
+              <SplitBarTrigger value="artifacts">📦 Artifacts</SplitBarTrigger>
+              <SplitBarTrigger value="matrix">🌐 Env Matrix</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="workflows" className="mt-6">

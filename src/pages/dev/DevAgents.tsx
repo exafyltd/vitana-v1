@@ -65,11 +65,11 @@ export default function DevAgents() {
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="planner">Planner</SplitBarTrigger>
-              <SplitBarTrigger value="worker">Worker</SplitBarTrigger>
-              <SplitBarTrigger value="validator">Validator</SplitBarTrigger>
-              <SplitBarTrigger value="qa">QA/Test</SplitBarTrigger>
-              <SplitBarTrigger value="crew">Crew Template</SplitBarTrigger>
+              <SplitBarTrigger value="planner">📋 Planner</SplitBarTrigger>
+              <SplitBarTrigger value="worker">⚙️ Worker</SplitBarTrigger>
+              <SplitBarTrigger value="validator">✅ Validator</SplitBarTrigger>
+              <SplitBarTrigger value="qa">🧪 QA/Test</SplitBarTrigger>
+              <SplitBarTrigger value="crew">👥 Crew Template</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="planner" className="mt-6">

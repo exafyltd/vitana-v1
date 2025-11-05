@@ -55,10 +55,10 @@ export default function DevOasis() {
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="events">Events</SplitBarTrigger>
-              <SplitBarTrigger value="state">State</SplitBarTrigger>
-              <SplitBarTrigger value="ledger">Ledger</SplitBarTrigger>
-              <SplitBarTrigger value="policies">Policies</SplitBarTrigger>
+              <SplitBarTrigger value="events">⚡ Events</SplitBarTrigger>
+              <SplitBarTrigger value="state">🔄 State</SplitBarTrigger>
+              <SplitBarTrigger value="ledger">📒 Ledger</SplitBarTrigger>
+              <SplitBarTrigger value="policies">📜 Policies</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="events" className="mt-6">

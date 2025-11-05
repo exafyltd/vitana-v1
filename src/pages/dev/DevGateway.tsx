@@ -55,10 +55,10 @@ export default function DevGateway() {
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="endpoints">Endpoints</SplitBarTrigger>
-              <SplitBarTrigger value="requests">Requests</SplitBarTrigger>
-              <SplitBarTrigger value="mobile">Mobile Links</SplitBarTrigger>
-              <SplitBarTrigger value="webhooks">Webhooks</SplitBarTrigger>
+              <SplitBarTrigger value="endpoints">🔌 Endpoints</SplitBarTrigger>
+              <SplitBarTrigger value="requests">📡 Requests</SplitBarTrigger>
+              <SplitBarTrigger value="mobile">📱 Mobile Links</SplitBarTrigger>
+              <SplitBarTrigger value="webhooks">🪝 Webhooks</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="endpoints" className="mt-6">

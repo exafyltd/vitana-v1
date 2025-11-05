@@ -128,8 +128,8 @@ export default function DevCommand() {
           {activeTab === "live-console" && (
             <SplitBar value={nestedTab} onValueChange={setNestedTab}>
               <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-                <SplitBarTrigger value="command-center">Command Center</SplitBarTrigger>
-                <SplitBarTrigger value="open-tasks">Open Tasks</SplitBarTrigger>
+                <SplitBarTrigger value="command-center">🎮 Command Center</SplitBarTrigger>
+                <SplitBarTrigger value="open-tasks">📋 Open Tasks</SplitBarTrigger>
               </SplitBarList>
 
               <SplitBarContent value="command-center">

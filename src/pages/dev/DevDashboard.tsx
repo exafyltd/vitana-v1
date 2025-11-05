@@ -76,10 +76,10 @@ export default function DevDashboard() {
           {/* Split-Screen Navigation Bar (sub-tabs) */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
-              <SplitBarTrigger value="ai-feed">AI Feed</SplitBarTrigger>
-              <SplitBarTrigger value="alerts">Alerts</SplitBarTrigger>
-              <SplitBarTrigger value="health">System Health</SplitBarTrigger>
+              <SplitBarTrigger value="overview">📊 Overview</SplitBarTrigger>
+              <SplitBarTrigger value="ai-feed">🤖 AI Feed</SplitBarTrigger>
+              <SplitBarTrigger value="alerts">🔔 Alerts</SplitBarTrigger>
+              <SplitBarTrigger value="health">💚 System Health</SplitBarTrigger>
             </SplitBarList>
 
             {/* Overview Tab Content */}

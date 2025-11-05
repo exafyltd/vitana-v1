@@ -64,10 +64,10 @@ export default function DevObservability() {
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="logs">Logs</SplitBarTrigger>
-              <SplitBarTrigger value="traces">Traces</SplitBarTrigger>
-              <SplitBarTrigger value="metrics">Metrics</SplitBarTrigger>
-              <SplitBarTrigger value="costs">Costs</SplitBarTrigger>
+              <SplitBarTrigger value="logs">📝 Logs</SplitBarTrigger>
+              <SplitBarTrigger value="traces">🔍 Traces</SplitBarTrigger>
+              <SplitBarTrigger value="metrics">📈 Metrics</SplitBarTrigger>
+              <SplitBarTrigger value="costs">💰 Costs</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="logs" className="mt-6">

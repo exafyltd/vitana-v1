@@ -130,10 +130,10 @@ export default function DevSettings() {
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="environment">Environment</SplitBarTrigger>
-              <SplitBarTrigger value="auth">Auth</SplitBarTrigger>
-              <SplitBarTrigger value="flags">Feature Flags</SplitBarTrigger>
-              <SplitBarTrigger value="tenants">Tenants</SplitBarTrigger>
+              <SplitBarTrigger value="environment">🌍 Environment</SplitBarTrigger>
+              <SplitBarTrigger value="auth">🔐 Auth</SplitBarTrigger>
+              <SplitBarTrigger value="flags">🚩 Feature Flags</SplitBarTrigger>
+              <SplitBarTrigger value="tenants">🏢 Tenants</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="environment" className="mt-6">

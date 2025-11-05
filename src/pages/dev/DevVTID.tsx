@@ -56,10 +56,10 @@ export default function DevVTID() {
           {/* Split-Screen Navigation Bar */}
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList className="w-full mb-6 bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="registry">Registry</SplitBarTrigger>
-              <SplitBarTrigger value="issue">Issue</SplitBarTrigger>
-              <SplitBarTrigger value="analytics">Analytics</SplitBarTrigger>
-              <SplitBarTrigger value="search">Search</SplitBarTrigger>
+              <SplitBarTrigger value="registry">📚 Registry</SplitBarTrigger>
+              <SplitBarTrigger value="issue">🎫 Issue</SplitBarTrigger>
+              <SplitBarTrigger value="analytics">📊 Analytics</SplitBarTrigger>
+              <SplitBarTrigger value="search">🔍 Search</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="registry" className="mt-6">
