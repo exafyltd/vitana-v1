@@ -167,9 +167,9 @@ function Settings() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
-              <SplitBarTrigger value="categories">Notifications</SplitBarTrigger>
-              <SplitBarTrigger value="shortcuts">Quick Actions</SplitBarTrigger>
+              <SplitBarTrigger value="overview">⚙️ Overview</SplitBarTrigger>
+              <SplitBarTrigger value="categories">🔔 Notifications</SplitBarTrigger>
+              <SplitBarTrigger value="shortcuts">⚡ Quick Actions</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="overview">

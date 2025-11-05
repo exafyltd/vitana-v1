@@ -511,8 +511,8 @@ export default function Home() {
         {/* Split Navigation */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="today">Today</SplitBarTrigger>
-            <SplitBarTrigger value="guide">Guide</SplitBarTrigger>
+            <SplitBarTrigger value="today">📅 Today</SplitBarTrigger>
+            <SplitBarTrigger value="guide">🧭 Guide</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="today">

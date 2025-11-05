@@ -178,9 +178,9 @@ export default function Wallet() {
         {/* Split Navigation */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="balance-overview">Balance Overview</SplitBarTrigger>
-            <SplitBarTrigger value="recent-activity">Recent Activity</SplitBarTrigger>
-            <SplitBarTrigger value="quick-actions">Smart Actions</SplitBarTrigger>
+            <SplitBarTrigger value="balance-overview">💰 Balance Overview</SplitBarTrigger>
+            <SplitBarTrigger value="recent-activity">📊 Recent Activity</SplitBarTrigger>
+            <SplitBarTrigger value="quick-actions">⚡ Smart Actions</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="balance-overview">

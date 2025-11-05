@@ -162,9 +162,9 @@ export default withScreenId(function Memory() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="categories">Categories</SplitBarTrigger>
-            <SplitBarTrigger value="timeline">Timeline</SplitBarTrigger>
-            <SplitBarTrigger value="education">Education</SplitBarTrigger>
+            <SplitBarTrigger value="categories">📂 Categories</SplitBarTrigger>
+            <SplitBarTrigger value="timeline">📅 Timeline</SplitBarTrigger>
+            <SplitBarTrigger value="education">📚 Education</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="categories">

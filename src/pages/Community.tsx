@@ -916,11 +916,11 @@ export default withScreenId(function Community() {
           </UtilityActionButton>
 
           <SplitBar defaultValue="overview" className="w-full">
-            <SplitBarList>
-              <SplitBarTrigger value="overview">Overview</SplitBarTrigger>
-              <SplitBarTrigger value="rankings">Rankings</SplitBarTrigger>
-              <SplitBarTrigger value="spotlight">Spotlight</SplitBarTrigger>
-            </SplitBarList>
+          <SplitBarList>
+            <SplitBarTrigger value="overview">🏠 Overview</SplitBarTrigger>
+            <SplitBarTrigger value="rankings">🏆 Rankings</SplitBarTrigger>
+            <SplitBarTrigger value="spotlight">⭐ Spotlight</SplitBarTrigger>
+          </SplitBarList>
 
         <SplitBarContent value="overview">
           {/* Live Activity Metrics */}

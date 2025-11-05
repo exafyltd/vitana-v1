@@ -39,8 +39,8 @@ export default function Groups() {
           {/* Split Navigation */}
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="my-groups">My Groups</SplitBarTrigger>
-              <SplitBarTrigger value="recommended">Recommended Groups</SplitBarTrigger>
+              <SplitBarTrigger value="my-groups">👥 My Groups</SplitBarTrigger>
+              <SplitBarTrigger value="recommended">✨ Recommended Groups</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="my-groups">
