@@ -289,7 +289,7 @@ function Timeline() {
 
         {/* Tabs for All and By Category */}
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "all" | "by-category")} className="mt-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="all" className="flex items-center gap-2">
               📋 All
             </TabsTrigger>
