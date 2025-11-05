@@ -116,10 +116,10 @@ function Rewards() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
           <SplitBarList>
-            <SplitBarTrigger value="earned">Earned Rewards</SplitBarTrigger>
-            <SplitBarTrigger value="pending">Pending Commissions</SplitBarTrigger>
-            <SplitBarTrigger value="referral">Withdrawal & Referral</SplitBarTrigger>
-            <SplitBarTrigger value="intelligence">Earning Intelligence</SplitBarTrigger>
+            <SplitBarTrigger value="earned">🎁 Earned Rewards</SplitBarTrigger>
+            <SplitBarTrigger value="pending">⏳ Pending Commissions</SplitBarTrigger>
+            <SplitBarTrigger value="referral">💸 Withdrawal & Referral</SplitBarTrigger>
+            <SplitBarTrigger value="intelligence">🧠 Earning Intelligence</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner variant="rewards" />

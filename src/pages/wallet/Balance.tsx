@@ -116,10 +116,10 @@ function Balance() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
           <SplitBarList>
-            <SplitBarTrigger value="credits">Credits Account</SplitBarTrigger>
-            <SplitBarTrigger value="tokens">Tokens Account</SplitBarTrigger>
-            <SplitBarTrigger value="membership">Membership Benefits</SplitBarTrigger>
-            <SplitBarTrigger value="optimization">Earning Optimization</SplitBarTrigger>
+            <SplitBarTrigger value="credits">💳 Credits Account</SplitBarTrigger>
+            <SplitBarTrigger value="tokens">🪙 Tokens Account</SplitBarTrigger>
+            <SplitBarTrigger value="membership">⭐ Membership Benefits</SplitBarTrigger>
+            <SplitBarTrigger value="optimization">📈 Earning Optimization</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner 

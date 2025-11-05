@@ -115,10 +115,10 @@ function Subscriptions() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
           <SplitBarList>
-            <SplitBarTrigger value="active">Active</SplitBarTrigger>
-            <SplitBarTrigger value="paused">Paused</SplitBarTrigger>
-            <SplitBarTrigger value="available">Available</SplitBarTrigger>
-            <SplitBarTrigger value="recommendations">Smart Recommendations</SplitBarTrigger>
+            <SplitBarTrigger value="active">✅ Active</SplitBarTrigger>
+            <SplitBarTrigger value="paused">⏸️ Paused</SplitBarTrigger>
+            <SplitBarTrigger value="available">📦 Available</SplitBarTrigger>
+            <SplitBarTrigger value="recommendations">✨ Smart Recommendations</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner variant="subscriptions" />
