@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
-import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2, Search, Briefcase, UserPlus } from "lucide-react";
+import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2, Search } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate } from "react-router-dom";
@@ -175,21 +175,17 @@ export default function MyBusiness() {
           {/* Split Bar Navigation */}
           <SplitBar defaultValue="management" className="w-full mb-6">
             <SplitBarList>
-              <SplitBarTrigger value="management" className="flex items-center gap-2">
-                <Briefcase className="w-4 h-4" />
-                Management
+              <SplitBarTrigger value="management">
+                💼 Management
               </SplitBarTrigger>
-              <SplitBarTrigger value="referrals" className="flex items-center gap-2">
-                <UserPlus className="w-4 h-4" />
-                Referrals
+              <SplitBarTrigger value="referrals">
+                👥 Referrals
               </SplitBarTrigger>
-              <SplitBarTrigger value="analytics" className="flex items-center gap-2">
-                <BarChart3 className="w-4 h-4" />
-                Analytics
+              <SplitBarTrigger value="analytics">
+                📊 Analytics
               </SplitBarTrigger>
-              <SplitBarTrigger value="clients" className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
-                Clients
+              <SplitBarTrigger value="clients">
+                👤 Clients
               </SplitBarTrigger>
             </SplitBarList>
 

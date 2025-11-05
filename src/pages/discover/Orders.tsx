@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
-import { Package, Clock, CheckCircle, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plane, Plus, RefreshCw } from "lucide-react";
+import { Package, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plane, Plus, RefreshCw, Clock, CheckCircle } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState, useEffect } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -305,12 +305,10 @@ export default function Orders() {
           <Tabs defaultValue="active" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="active" className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                Active Orders ({activeOrders.length})
+                ⏰ Active Orders ({activeOrders.length})
               </TabsTrigger>
               <TabsTrigger value="completed" className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4" />
-                Order History ({completedOrders.length})
+                ✅ Order History ({completedOrders.length})
               </TabsTrigger>
             </TabsList>
             

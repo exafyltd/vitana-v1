@@ -60,6 +60,17 @@ When choosing emoji icons for new SplitBar tabs:
 - Ensure icon + text combination is screen-reader friendly
 - Test on multiple devices/platforms for emoji rendering
 
+### 6. **Navigation Hierarchy** ⭐ NEW
+- **Page-Level Navigation (SplitBar/Tabs)**: Use emoji icons for visual consistency
+- **Modal/Popup Navigation**: Use Lucide icons to distinguish from page-level navigation
+- **Rationale**: Creates clear visual hierarchy between primary navigation and contextual actions
+
+**Files that retain Lucide icons in modal/popup contexts:**
+- `AddToAIFeedPopup.tsx`
+- `CreateContentPopup.tsx`
+- `CreatePackagePopup.tsx`
+- `ManageMyActionsPopup.tsx`
+
 ---
 
 ## Settings Section
@@ -357,6 +368,104 @@ When choosing emoji icons for new SplitBar tabs:
 | 💰 | Share & Earn | Affiliate sharing and earnings |
 
 **File:** `src/pages/Discover.tsx`
+
+---
+
+### Media Hub (`/community/media-hub`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 📹 | Shorts | Short-form video content |
+| 🎵 | Music | Music streaming and playlists |
+| 🎙️ | Podcasts | Podcast episodes and shows |
+
+**File:** `src/pages/community/MediaHub.tsx`
+
+---
+
+### Messages (`/messages`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 🌍 | Global Community | Global community messages |
+| 🏢 | Professional Network | Professional network messages |
+
+**File:** `src/pages/Messages.tsx`
+
+---
+
+### My Business (`/community/my-business`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 💼 | Management | Business service management |
+| 👥 | Referrals | Referral program and tracking |
+| 📊 | Analytics | Business analytics and insights |
+| 👤 | Clients | Client management |
+
+**File:** `src/pages/community/MyBusinessRenamed.tsx`
+
+---
+
+### Matches (`/home/matches`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 👥 | People | Match with individuals |
+| 💬 | Groups | Match with groups and communities |
+| ✅ | Coaches | Find compatible coaches |
+| 📅 | Events | Discover matching events |
+| 🎯 | Analysis | Compatibility analysis and insights |
+
+**File:** `src/pages/home/Matches.tsx`
+
+---
+
+### Live Room Directory (`/community/live-room-directory`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 🔴 | Live now | Currently live rooms |
+| 📅 | Scheduled | Upcoming scheduled rooms |
+| 📋 | All rooms | All available rooms |
+
+**File:** `src/components/community/LiveRoomDirectory.tsx`
+
+---
+
+### Orders (`/discover/orders`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| ⏰ | Active Orders | Currently active orders |
+| ✅ | Order History | Completed order history |
+
+**File:** `src/pages/discover/Orders.tsx`
+
+---
+
+### Timeline (`/memory/timeline`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 📋 | All | All activity timeline |
+| 📊 | By Category | Activity organized by category |
+
+**File:** `src/pages/memory/Timeline.tsx`
+
+---
+
+### Search (`/search`)
+
+| Icon | Label | Purpose |
+|------|-------|---------|
+| 🔍 | All | All search results |
+| 👥 | People | Search people |
+| 💬 | Groups | Search groups |
+| 🎬 | Content | Search content |
+| ❤️ | Health | Search health resources |
+
+**File:** `src/pages/Search.tsx`
 
 ---
 

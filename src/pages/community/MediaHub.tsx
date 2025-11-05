@@ -644,18 +644,15 @@ export default function MediaHub() {
           {/* Media Hub Subtabs */}
           <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="shorts" className="flex items-center gap-2">
-                <Video className="w-4 h-4" />
-                Shorts
-              </SplitBarTrigger>
-              <SplitBarTrigger value="music" className="flex items-center gap-2">
-                <Music className="w-4 h-4" />
-                Music
-              </SplitBarTrigger>
-              <SplitBarTrigger value="podcasts" className="flex items-center gap-2">
-                <Podcast className="w-4 h-4" />
-                Podcasts
-              </SplitBarTrigger>
+            <SplitBarTrigger value="shorts">
+              📹 Shorts
+            </SplitBarTrigger>
+            <SplitBarTrigger value="music">
+              🎵 Music
+            </SplitBarTrigger>
+            <SplitBarTrigger value="podcasts">
+              🎙️ Podcasts
+            </SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="shorts">

@@ -9,7 +9,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { MatchFiltersPopup } from "@/components/MatchFiltersPopup";
-import { Users, Target, Calendar, UserCheck, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 
@@ -61,25 +61,20 @@ export default function Matches() {
           {/* Split Navigation */}
           <SplitBar defaultValue="people" className="w-full mb-6">
             <SplitBarList className="grid w-full grid-cols-5">
-              <SplitBarTrigger value="people" className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
-                People
+              <SplitBarTrigger value="people">
+                👥 People
               </SplitBarTrigger>
-              <SplitBarTrigger value="groups" className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
-                Groups
+              <SplitBarTrigger value="groups">
+                💬 Groups
               </SplitBarTrigger>
-              <SplitBarTrigger value="coaches" className="flex items-center gap-2">
-                <UserCheck className="w-4 h-4" />
-                Coaches
+              <SplitBarTrigger value="coaches">
+                ✅ Coaches
               </SplitBarTrigger>
-              <SplitBarTrigger value="events" className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Events
+              <SplitBarTrigger value="events">
+                📅 Events
               </SplitBarTrigger>
-              <SplitBarTrigger value="compatibility" className="flex items-center gap-2">
-                <Target className="w-4 h-4" />
-                Analysis
+              <SplitBarTrigger value="compatibility">
+                🎯 Analysis
               </SplitBarTrigger>
             </SplitBarList>
 

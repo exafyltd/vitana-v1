@@ -126,10 +126,10 @@ export default function LiveRoomDirectory({ onJoinRoom }: LiveRoomDirectoryProps
         <SplitBarList>
           <SplitBarTrigger value="live" className="flex items-center gap-2">
             <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            Live now
+            🔴 Live now
           </SplitBarTrigger>
-          <SplitBarTrigger value="scheduled">Scheduled</SplitBarTrigger>
-          <SplitBarTrigger value="all">All rooms</SplitBarTrigger>
+          <SplitBarTrigger value="scheduled">📅 Scheduled</SplitBarTrigger>
+          <SplitBarTrigger value="all">📋 All rooms</SplitBarTrigger>
         </SplitBarList>
 
         <SplitBarContent value="live" className="mt-6">

@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Plus, Users, MessageSquareText } from "lucide-react";
+import { Plus, Users, MessageSquareText, Globe, Building } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
@@ -28,7 +28,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Globe, Building } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import NewConversationPopup from "@/components/NewConversationPopup";
 import ConversationListSkeleton from "@/components/messages/ConversationListSkeleton";
 import EmptyStateIllustration from "@/components/messages/EmptyStateIllustration";
@@ -799,14 +799,12 @@ export default function Messages() {
           {/* Split Navigation */}
           <SplitBar value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} className="flex-1">
             <SplitBarList>
-              <SplitBarTrigger value="global" className="flex items-center gap-2">
-                <Globe className="w-4 h-4" />
-                Global Community
-              </SplitBarTrigger>
-              <SplitBarTrigger value="tenant" className="flex items-center gap-2">
-                <Building className="w-4 h-4" />
-                Professional Network
-              </SplitBarTrigger>
+            <SplitBarTrigger value="global">
+              🌍 Global Community
+            </SplitBarTrigger>
+            <SplitBarTrigger value="tenant">
+              🏢 Professional Network
+            </SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="global">

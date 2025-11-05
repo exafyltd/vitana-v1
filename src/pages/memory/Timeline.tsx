@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Plus, Loader2, Calendar as CalendarIcon, LayoutList, Grid3x3, RefreshCw } from "lucide-react";
+import { Plus, Loader2, Calendar as CalendarIcon, RefreshCw, LayoutList, Grid3x3 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -291,12 +291,10 @@ function Timeline() {
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "all" | "by-category")} className="mt-6">
           <TabsList className="grid w-full max-w-md grid-cols-2">
             <TabsTrigger value="all" className="flex items-center gap-2">
-              <LayoutList className="w-4 h-4" />
-              All
+              📋 All
             </TabsTrigger>
             <TabsTrigger value="by-category" className="flex items-center gap-2">
-              <Grid3x3 className="w-4 h-4" />
-              By Category
+              📊 By Category
             </TabsTrigger>
           </TabsList>
 

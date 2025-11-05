@@ -351,35 +351,31 @@ export default function Search() {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="all" className="flex items-center gap-2">
-              All
+              🔍 All
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('all')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="people" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              People
+              👥 People
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('people')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="groups" className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4" />
-              Groups
+              💬 Groups
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('groups')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
-              <Video className="h-4 w-4" />
-              Content
+              🎬 Content
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('content')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="health" className="flex items-center gap-2">
-              <Heart className="h-4 w-4" />
-              Health
+              ❤️ Health
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('health')}
               </Badge>
