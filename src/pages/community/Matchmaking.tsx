@@ -54,11 +54,11 @@ export default function Matchmaking() {
           {/* Split Navigation */}
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList className="grid w-full grid-cols-5">
-              <SplitBarTrigger value="people">People</SplitBarTrigger>
-              <SplitBarTrigger value="groups">Groups</SplitBarTrigger>
-              <SplitBarTrigger value="coaches">Coaches</SplitBarTrigger>
-              <SplitBarTrigger value="events">Events</SplitBarTrigger>
-              <SplitBarTrigger value="analysis">Analysis</SplitBarTrigger>
+              <SplitBarTrigger value="people">👤 People</SplitBarTrigger>
+              <SplitBarTrigger value="groups">👥 Groups</SplitBarTrigger>
+              <SplitBarTrigger value="coaches">🏃 Coaches</SplitBarTrigger>
+              <SplitBarTrigger value="events">📅 Events</SplitBarTrigger>
+              <SplitBarTrigger value="analysis">📊 Analysis</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="people" className="mt-6">

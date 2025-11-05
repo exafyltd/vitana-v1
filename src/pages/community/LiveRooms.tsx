@@ -631,7 +631,7 @@ export default function LiveRooms() {
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
           <SplitBarList className="grid w-full grid-cols-2">
             <SplitBarTrigger value="live">
-              Live
+              📡 Live
               {filteredLiveRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                   {filteredLiveRooms.length}
@@ -642,7 +642,7 @@ export default function LiveRooms() {
               )}
             </SplitBarTrigger>
             <SplitBarTrigger value="scheduled">
-              Scheduled
+              📅 Scheduled
               {filteredScheduledRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                   {filteredScheduledRooms.length}

@@ -45,8 +45,8 @@ export default withScreenId(function Feed() {
         {/* Split Navigation */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="following">Following</SplitBarTrigger>
-            <SplitBarTrigger value="recommended">Recommended</SplitBarTrigger>
+            <SplitBarTrigger value="following">👥 Following</SplitBarTrigger>
+            <SplitBarTrigger value="recommended">✨ Recommended</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="following">

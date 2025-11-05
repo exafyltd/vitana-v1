@@ -631,8 +631,8 @@ const {
         ) : (
           <SplitBar defaultValue="today" className="mt-6">
             <SplitBarList className="grid w-full grid-cols-2">
-              <SplitBarTrigger value="today">Today</SplitBarTrigger>
-              <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
+              <SplitBarTrigger value="today">☀️ Today</SplitBarTrigger>
+              <SplitBarTrigger value="upcoming">📅 Upcoming</SplitBarTrigger>
             </SplitBarList>
             <SplitBarContent value="today" className="mt-6">
               {renderEventGrid(todayList, currentUserId, handleEditEvent, handleCardClick)}

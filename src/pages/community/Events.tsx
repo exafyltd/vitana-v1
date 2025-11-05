@@ -487,8 +487,8 @@ const Events = () => {
 
             <SplitBar defaultValue="today" onValueChange={setActiveTab}>
               <SplitBarList>
-                <SplitBarTrigger value="today">Today</SplitBarTrigger>
-                <SplitBarTrigger value="upcoming">Upcoming</SplitBarTrigger>
+                <SplitBarTrigger value="today">☀️ Today</SplitBarTrigger>
+                <SplitBarTrigger value="upcoming">📅 Upcoming</SplitBarTrigger>
               </SplitBarList>
 
               <SplitBarContent value="today">
