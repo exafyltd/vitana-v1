@@ -136,23 +136,37 @@ function Permissions() {
           <SplitBarContent value="privacy">
             <div className="mt-6">
               {/* Privacy Settings Card with toggles */}
-              <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 mb-6">
+              <Card className="bg-gradient-to-br from-white/65 to-[#f0f7fa]/40 dark:from-slate-900/65 dark:to-slate-800/40 border-border/30 mb-6 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardHeader>
-                  <CardTitle>Privacy Settings</CardTitle>
+                  <CardTitle className="text-lg">Privacy Settings</CardTitle>
                   <CardDescription>Control your data privacy and sharing preferences</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">AI Analysis Enabled</span>
-                    <Switch defaultChecked />
+                <CardContent className="space-y-5">
+                  <div className="flex items-center justify-between group transition-all duration-300 hover:translate-x-1">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">🧠</span>
+                      <span className="text-sm font-medium">AI Analysis Enabled</span>
+                    </div>
+                    <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Research Participation</span>
-                    <Switch />
+                  <div className="flex items-center justify-between group transition-all duration-300 hover:translate-x-1">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">🧪</span>
+                      <span className="text-sm font-medium">Research Participation</span>
+                    </div>
+                    <Switch className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Community Sharing</span>
-                    <Switch defaultChecked />
+                  <div className="flex items-center justify-between group transition-all duration-300 hover:translate-x-1">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">🌐</span>
+                      <span className="text-sm font-medium">Community Sharing</span>
+                    </div>
+                    <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
+                  </div>
+                  <div className="pt-3 border-t border-border/50">
+                    <p className="text-xs text-muted-foreground italic">
+                      Your privacy settings are encrypted and can be modified at any time. Changes take effect immediately.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
