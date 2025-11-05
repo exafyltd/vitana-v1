@@ -237,15 +237,6 @@ function Permissions() {
 
           <SplitBarContent value="access">
             <div className="mt-6">
-              {/* Data Access Label Chip */}
-              <div className="flex items-center justify-between mb-3">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-primary/20 to-primary/10 text-primary border border-primary/30">
-                  👥 ACCESS CONTROL
-                </span>
-                <span className="text-xs text-muted-foreground flex items-center gap-1.5">
-                  🔄 Last updated by Autopilot 3 h ago
-                </span>
-              </div>
 
               {/* Data Access Card with toggles */}
               <Card className="bg-gradient-to-br from-white/65 to-[#f0f7fa]/40 dark:from-slate-900/65 dark:to-slate-800/40 border-border/30 mb-6 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
