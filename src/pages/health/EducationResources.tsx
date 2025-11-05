@@ -44,12 +44,12 @@ export default function EducationResources() {
             </Button>
           </UtilityActionButton>
 
-          <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
-            <SplitBarList>
-              <SplitBarTrigger value="articles">Articles</SplitBarTrigger>
-              <SplitBarTrigger value="videos">Videos</SplitBarTrigger>
-              <SplitBarTrigger value="podcasts">Podcasts</SplitBarTrigger>
-            </SplitBarList>
+        <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
+          <SplitBarList>
+            <SplitBarTrigger value="articles">📚 Articles</SplitBarTrigger>
+            <SplitBarTrigger value="videos">🎥 Videos</SplitBarTrigger>
+            <SplitBarTrigger value="podcasts">🎧 Podcasts</SplitBarTrigger>
+          </SplitBarList>
 
             <SplitBarContent value="articles" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

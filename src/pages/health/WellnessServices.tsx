@@ -282,11 +282,11 @@ export default function WellnessServices() {
 
           <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="preventiveCare">Preventive Care</SplitBarTrigger>
-              <SplitBarTrigger value="medicalServices">Medical Services</SplitBarTrigger>
-              <SplitBarTrigger value="wellnessPrograms">Wellness Programs</SplitBarTrigger>
-              <SplitBarTrigger value="insuranceSupport">Insurance Support</SplitBarTrigger>
-              <SplitBarTrigger value="myServices">My Services</SplitBarTrigger>
+              <SplitBarTrigger value="preventiveCare">🛡️ Preventive Care</SplitBarTrigger>
+              <SplitBarTrigger value="medicalServices">🏥 Medical Services</SplitBarTrigger>
+              <SplitBarTrigger value="wellnessPrograms">💪 Wellness Programs</SplitBarTrigger>
+              <SplitBarTrigger value="insuranceSupport">📋 Insurance Support</SplitBarTrigger>
+              <SplitBarTrigger value="myServices">⭐ My Services</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="preventiveCare">

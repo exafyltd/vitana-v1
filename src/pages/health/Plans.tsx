@@ -111,12 +111,12 @@ export default withScreenId(function Plans() {
           {/* Split Bar Navigation */}
           <SplitBar defaultValue="all" className="mb-6">
             <SplitBarList className="w-full bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="all">All Plans</SplitBarTrigger>
-              <SplitBarTrigger value="nutrition">Nutrition</SplitBarTrigger>
-              <SplitBarTrigger value="exercise">Exercise</SplitBarTrigger>
-              <SplitBarTrigger value="hydration">Hydration</SplitBarTrigger>
-              <SplitBarTrigger value="sleep">Sleep</SplitBarTrigger>
-              <SplitBarTrigger value="mental">Mental</SplitBarTrigger>
+              <SplitBarTrigger value="all">📋 All Plans</SplitBarTrigger>
+              <SplitBarTrigger value="nutrition">🥗 Nutrition</SplitBarTrigger>
+              <SplitBarTrigger value="exercise">🏃 Exercise</SplitBarTrigger>
+              <SplitBarTrigger value="hydration">💧 Hydration</SplitBarTrigger>
+              <SplitBarTrigger value="sleep">😴 Sleep</SplitBarTrigger>
+              <SplitBarTrigger value="mental">🧠 Mental</SplitBarTrigger>
             </SplitBarList>
             
             <SplitBarContent value="all">

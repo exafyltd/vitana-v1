@@ -313,8 +313,8 @@ export default function BiomarkerResults() {
 
           <SplitScreen value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitScreenList>
-              <SplitScreenTrigger value="new">New Results</SplitScreenTrigger>
-              <SplitScreenTrigger value="history">History</SplitScreenTrigger>
+              <SplitScreenTrigger value="new">✨ New Results</SplitScreenTrigger>
+              <SplitScreenTrigger value="history">📜 History</SplitScreenTrigger>
             </SplitScreenList>
 
             <SplitScreenContent value="new">
