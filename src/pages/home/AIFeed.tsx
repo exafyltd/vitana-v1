@@ -103,10 +103,10 @@ export default function AIFeed() {
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="feed" className="w-full">
             <SplitBarList className="grid w-full grid-cols-4">
-              <SplitBarTrigger value="feed">Feed</SplitBarTrigger>
-              <SplitBarTrigger value="routines">Routines</SplitBarTrigger>
-              <SplitBarTrigger value="ideas">Ideas</SplitBarTrigger>
-              <SplitBarTrigger value="history">History</SplitBarTrigger>
+              <SplitBarTrigger value="feed">📰 Feed</SplitBarTrigger>
+              <SplitBarTrigger value="routines">🔄 Routines</SplitBarTrigger>
+              <SplitBarTrigger value="ideas">💡 Ideas</SplitBarTrigger>
+              <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
             </SplitBarList>
 
             {/* Activity Feed Tab */}

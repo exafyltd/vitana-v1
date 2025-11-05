@@ -105,10 +105,10 @@ export default function Actions() {
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="pending" className="w-full">
             <SplitBarList className="grid w-full grid-cols-4">
-              <SplitBarTrigger value="pending">Pending</SplitBarTrigger>
-              <SplitBarTrigger value="categories">Categories</SplitBarTrigger>
-              <SplitBarTrigger value="completed">Completed</SplitBarTrigger>
-              <SplitBarTrigger value="failed">Failed</SplitBarTrigger>
+              <SplitBarTrigger value="pending">⏳ Pending</SplitBarTrigger>
+              <SplitBarTrigger value="categories">📂 Categories</SplitBarTrigger>
+              <SplitBarTrigger value="completed">✅ Completed</SplitBarTrigger>
+              <SplitBarTrigger value="failed">❌ Failed</SplitBarTrigger>
             </SplitBarList>
             
             {/* Soft separator gradient line */}

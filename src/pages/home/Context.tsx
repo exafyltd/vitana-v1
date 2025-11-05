@@ -113,11 +113,11 @@ export default function Context() {
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="current" className="w-full">
             <SplitBarList className="grid w-full grid-cols-5">
-              <SplitBarTrigger value="current">Current</SplitBarTrigger>
-              <SplitBarTrigger value="reasoning">AI Logic</SplitBarTrigger>
-              <SplitBarTrigger value="timeline">Timeline</SplitBarTrigger>
-              <SplitBarTrigger value="environment">Environment</SplitBarTrigger>
-              <SplitBarTrigger value="social">Social</SplitBarTrigger>
+              <SplitBarTrigger value="current">⚡ Current</SplitBarTrigger>
+              <SplitBarTrigger value="reasoning">🤖 AI Logic</SplitBarTrigger>
+              <SplitBarTrigger value="timeline">📅 Timeline</SplitBarTrigger>
+              <SplitBarTrigger value="environment">🌍 Environment</SplitBarTrigger>
+              <SplitBarTrigger value="social">👥 Social</SplitBarTrigger>
             </SplitBarList>
 
             {/* Current Tab */}
