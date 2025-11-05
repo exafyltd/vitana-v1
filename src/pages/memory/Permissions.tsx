@@ -246,24 +246,67 @@ function Permissions() {
 
           <SplitBarContent value="access">
             <div className="mt-6">
+              {/* Data Access Label Chip */}
+              <div className="flex items-center justify-between mb-3">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-primary/20 to-primary/10 text-primary border border-primary/30">
+                  👥 ACCESS CONTROL
+                </span>
+                <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                  🔄 Last updated by Autopilot 3 h ago
+                </span>
+              </div>
+
               {/* Data Access Card with toggles */}
-              <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200 mb-6">
-                <CardHeader>
-                  <CardTitle>Data Access</CardTitle>
-                  <CardDescription>Manage who can access your health memories</CardDescription>
+              <Card className="bg-gradient-to-br from-white/65 to-[#f0f7fa]/40 dark:from-slate-900/65 dark:to-slate-800/40 border-border/30 mb-6 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+                <CardHeader className="pb-2 pt-3 px-5">
+                  <CardTitle className="text-base">Data Access</CardTitle>
+                  <CardDescription className="text-xs">Manage who can access your health memories</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Healthcare Providers</span>
-                    <Switch defaultChecked />
+                <CardContent className="px-5 pb-0">
+                  {/* Two-column grid layout for toggles */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                    <div className="group transition-all duration-300 hover:translate-x-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-lg">🏥</span>
+                          <span className="text-sm font-medium">Healthcare Providers</span>
+                        </div>
+                        <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
+                      </div>
+                      <span className="text-xs text-muted-foreground ml-8 block">Medical professionals only</span>
+                    </div>
+
+                    <div className="group transition-all duration-300 hover:translate-x-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-lg">🚨</span>
+                          <span className="text-sm font-medium">Emergency Access</span>
+                        </div>
+                        <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
+                      </div>
+                      <span className="text-xs text-muted-foreground ml-8 block">First responders access</span>
+                    </div>
+
+                    <div className="group transition-all duration-300 hover:translate-x-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-lg">👨‍👩‍👧‍👦</span>
+                          <span className="text-sm font-medium">Family Members</span>
+                        </div>
+                        <Switch className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
+                      </div>
+                      <span className="text-xs text-muted-foreground ml-8 block">Trusted family contacts</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Emergency Access</span>
-                    <Switch defaultChecked />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Family Members</span>
-                    <Switch />
+                  
+                  {/* Translucent Footer Bar */}
+                  <div className="mt-2 -mx-5 px-5 py-2 bg-muted/30 backdrop-blur-sm border-t border-border/40 flex items-start gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-muted-foreground mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Access permissions are audited regularly. You can revoke access at any time through your security settings.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
