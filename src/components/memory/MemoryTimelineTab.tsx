@@ -71,7 +71,7 @@ export function MemoryTimelineTab() {
     metadata: [
       ...(item.confidenceScore ? [{ 
         icon: <Sparkles className="w-3 h-3 text-amber-500" />, 
-        text: `⚡ ${Math.round(item.confidenceScore * 100)}% confidence` 
+        text: `${Math.round(item.confidenceScore * 100)}% confidence` 
       }] : [])
     ],
     timestamp: new Date(item.createdAt),
@@ -94,18 +94,19 @@ export function MemoryTimelineTab() {
       }
     ],
     expandedContent: item.tags && item.tags.length > 0 ? (
-      <div className="space-y-2 animate-in fade-in-up duration-150">
-        <div className="flex items-center gap-2 flex-wrap">
-          <Tag className="w-3 h-3 text-muted-foreground" />
-          {item.tags.map((tag) => (
-            <Badge 
-              key={tag} 
-              variant="outline" 
-              className="rounded-full bg-white/5 px-3 py-1 text-xs transition-all hover:bg-white/10"
-            >
-              {tag}
-            </Badge>
-          ))}
+      <div className="space-y-2">
+        <div className="border-t border-white/10 mt-3 pt-2">
+          <div className="flex flex-wrap gap-2 transition-opacity duration-150">
+            {item.tags.map((tag) => (
+              <Badge 
+                key={tag} 
+                variant="outline" 
+                className="rounded-full bg-white/5 px-3 py-1 text-[12px] font-medium transition-colors hover:bg-white/10"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
         </div>
       </div>
     ) : undefined,

@@ -179,7 +179,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           "group relative overflow-hidden",
           "rounded-2xl border border-white/20",
           "shadow-[0_2px_12px_rgba(0,0,0,0.15)]",
-          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_0_12px_rgba(255,255,255,0.1)]",
+          "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
           density === 'compact' ? 'min-h-[64px]' : 'min-h-[80px]',
           className
@@ -202,7 +202,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           className={cn(
             "grid items-center gap-4 px-5 py-4 cursor-pointer",
             "grid-cols-[48px_1fr_auto]",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/60"
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/45 focus-visible:ring-offset-2"
           )}
           role="button"
           tabIndex={0}
@@ -221,26 +221,26 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-semibold text-sm truncate" dir={isRTL ? 'rtl' : 'ltr'}>
+              <h3 className="text-[15px] font-semibold tracking-tight truncate" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {badges?.map((badge, idx) => (
-                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1">
+                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1 text-[12px] font-medium">
                   {badge.icon}
                   <span>{badge.label}</span>
                 </Badge>
               ))}
               {privacyBadge && (
-                <Badge variant="outline" className={cn("text-xs", privacyBadge.color)}>
+                <Badge variant="outline" className={cn("text-[12px] font-medium", privacyBadge.color)}>
                   🔒 {privacyBadge.label}
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-muted-foreground line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[14px] text-white/90 leading-snug line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             {metadata && (
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <div className="flex items-center gap-3 text-[13px] text-white/70">
                 {metadata.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-1">
                     {item.icon}
@@ -253,7 +253,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
           <div className="flex items-center justify-end gap-2">
             {timestamp && (
-              <span className="text-xs text-center text-muted-foreground pr-3">
+              <span className="text-[13px] text-center text-white/70 pr-3">
                 {formatTimestamp()}
               </span>
             )}
@@ -314,7 +314,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             role="region"
             aria-label="Expanded card content"
             aria-live="polite"
-            className="px-5 pb-5 pt-3 border-t border-white/10 animate-in fade-in-up duration-150"
+            className="px-5 pb-5 pt-3 border-t border-white/10 overflow-hidden transition-all duration-200 ease-out"
           >
             {expandedContent}
           </div>

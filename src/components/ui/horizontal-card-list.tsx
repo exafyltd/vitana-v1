@@ -214,13 +214,11 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
     <div className={cn("w-full", className)}>
       {groupedItems.map((group, groupIdx) => (
         <div key={groupIdx} className="mb-6">
-          {group.label && (
-            <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm py-2 mb-2 mt-4 first:mt-0">
-              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                {group.label}
-              </h3>
-            </div>
-          )}
+        {group.label && (
+          <div className="text-[12px] font-medium text-muted-foreground/80 uppercase tracking-wide mt-4 mb-2 px-2">
+            {group.label}
+          </div>
+        )}
 
           {shouldVirtualize ? (
             <VirtualizedList

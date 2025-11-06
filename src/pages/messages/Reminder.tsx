@@ -135,20 +135,21 @@ export default function Reminder() {
       ],
     expandedContent: (
       <div className="space-y-3">
-        <div className="text-sm font-medium text-muted-foreground" aria-label="Quick Replies">Quick Replies:</div>
-        <div className="flex flex-wrap gap-2 animate-in fade-in-up duration-150">
-          {msg.quickReplies.map((reply, idx) => (
-            <Button
-              key={idx}
-              variant="outline"
-              size="sm"
-              onClick={() => handleReply(msg.id, reply)}
-              className="transition-all hover:scale-105"
-            >
-              <Send className="w-3 h-3 mr-1" />
-              {reply}
-            </Button>
-          ))}
+        <div className="border-t border-white/10 pt-3 mt-3" aria-label="Quick Replies">
+          <div className="flex flex-wrap gap-2 transition-opacity duration-150">
+            {msg.quickReplies.map((reply, idx) => (
+              <Button
+                key={idx}
+                variant="outline"
+                size="sm"
+                onClick={() => handleReply(msg.id, reply)}
+                className="transition-all hover:scale-105 text-[12px]"
+              >
+                <Send className="w-3 h-3 mr-1" />
+                {reply}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
     ),
@@ -164,11 +165,11 @@ export default function Reminder() {
       title: 'Health Data Share Request',
       description: 'Dr. Smith requested access to your recent lab results',
       badges: [
-        { label: 'Requires Consent', variant: 'destructive' as const, icon: <Shield className="w-3 h-3" /> }
+        { label: 'Requires Consent', variant: 'outline' as const, icon: <Shield className="w-3 h-3" /> }
       ],
     privacyBadge: {
       label: 'HIPAA Protected',
-      color: 'text-amber-700 dark:text-amber-500 bg-amber-900/30 border-white/15 opacity-90'
+      color: 'text-amber-400/90'
     },
       metadata: [
         { icon: <Clock className="w-3 h-3" />, text: '5m ago' }
@@ -196,7 +197,8 @@ export default function Reminder() {
         setConsentOpen(true);
       },
       density: 'comfy' as const,
-      accentColor: 'hsl(var(--pill-health-accent))'
+      accentColor: 'hsl(var(--pill-health-accent))',
+      className: 'opacity-90 backdrop-blur-[10px] border border-white/15 bg-warning/15 text-warning-foreground/90'
     };
 
   const transformedMessages: StandardHorizontalCardProps[] = import.meta.env.DEV 

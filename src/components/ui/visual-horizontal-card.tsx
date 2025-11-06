@@ -132,9 +132,9 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           "group relative overflow-hidden",
           "rounded-2xl border border-white/20",
           "shadow-[0_2px_12px_rgba(0,0,0,0.15)]",
-          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_0_12px_rgba(255,255,255,0.1)]",
+          "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/60",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/45 focus-visible:ring-offset-2",
           density === 'compact' ? 'min-h-[120px]' : 'min-h-[140px]',
           className
         )}
@@ -195,29 +195,29 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           <div className="flex-1 px-5 py-4 flex flex-col justify-center space-y-2">
             <div className="flex items-start gap-2">
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-base line-clamp-2 mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
+                <h3 className="text-[15px] font-semibold tracking-tight line-clamp-2 mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
                   {title}
                 </h3>
                 {privacyBadge && (
-                  <Badge variant="outline" className={cn("text-xs mb-1", privacyBadge.color)}>
+                  <Badge variant="outline" className={cn("text-[12px] font-medium mb-1", privacyBadge.color)}>
                     🔒 {privacyBadge.label}
                   </Badge>
                 )}
               </div>
             </div>
             
-            <p className="text-sm text-muted-foreground line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[14px] text-white/90 leading-snug line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             
             {motivationalHook && (
-              <p className="text-sm text-primary font-medium">
+              <p className="text-[14px] text-primary font-medium">
                 {motivationalHook}
               </p>
             )}
             
             {metadata && (
-              <div className="flex items-center gap-3 text-xs text-muted-foreground pt-1">
+              <div className="flex items-center gap-3 text-[13px] text-white/70 pt-1">
                 {metadata.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-1">
                     {item.icon}
@@ -230,14 +230,14 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
 
           <div className="flex flex-col items-center justify-between p-3 bg-muted/30">
             {statusBadge && (
-              <Badge variant={statusBadge.variant} className="flex items-center gap-1">
+              <Badge variant={statusBadge.variant} className="flex items-center gap-1 text-[12px] font-medium">
                 {statusBadge.icon}
-                <span className="text-xs">{statusBadge.label}</span>
+                <span>{statusBadge.label}</span>
               </Badge>
             )}
             
             {timestamp && (
-              <span className="text-xs text-center text-muted-foreground">
+              <span className="text-[13px] text-center text-white/70">
                 {formatTimestamp()}
               </span>
             )}
@@ -253,7 +253,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             role="region"
             aria-label="Expanded card content"
             aria-live="polite"
-            className="px-5 pb-5 pt-3 border-t border-white/10 animate-in fade-in-up duration-150"
+            className="px-5 pb-5 pt-3 border-t border-white/10 overflow-hidden transition-all duration-200 ease-out"
           >
             {expandedContent}
           </div>
