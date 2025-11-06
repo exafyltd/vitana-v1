@@ -16,10 +16,10 @@ Does the list item need an image?
 ### StandardHorizontalCard
 **Text-focused horizontal card** with icon, title, description, badges, and actions.
 
-**Dimensions:**
-- `min-h-[88px]` - Locked height
-- `px-4 py-3` - Internal padding
-- `gap-3` - Between cards
+**Dimensions (LOCKED):**
+- `min-h-[88px]` - Fixed minimum height
+- `px-4 py-3` - Internal padding (16px horizontal, 12px vertical)
+- `gap-3` - Spacing between cards (12px)
 - `rounded-xl` - Corner radius (12px)
 
 **Layout:**
@@ -30,66 +30,75 @@ Does the list item need an image?
 - Badges: 11px text, h-5, px-2
 
 **States:**
-- Hover: 2px accent rail (left), shadow-xl, border-accent/40
-- Focus: ring-2 ring-accent/60
-- Expansion: 200ms ease-out (Standard only)
+- Hover: 2px accent rail (left), shadow-xl, border-accent/40, 200ms ease-out
+- Focus: ring-1 ring-[hsl(var(--accent))]/60 (no outline jitter)
+- Expansion: 200ms ease-out (Standard only), disabled on Visual cards
 
 **Actions:**
 - Primary: Right side, ghost variant → solid on hover
 - Secondary: Kebab menu (DropdownMenu)
 
 **A11y:**
-- `<article>` semantic
-- `aria-expanded` for expandable cards
-- Keyboard: Enter/Space to expand, Esc to collapse
-- RTL: Accent rail flips to right
+- Structure: `<article>` > `<button>` (header) + `<region>` (expanded body)
+- `aria-expanded`, `aria-controls`, `aria-labelledby` on expandable cards
+- Keyboard: Enter/Space toggle (Standard only), Esc collapses, Tab order left→right
+- Focus ring: ring-1 ring-[hsl(var(--accent))]/60, no outline jitter
+- RTL: Accent rail + icon paddings flip to right
 
 ### VisualHorizontalCard
 **Image-heavy horizontal card** with visual content, category badge, and status indicators.
 
-**Dimensions:**
-- `min-h-[160px]` - Locked height
-- `px-4 py-3` - Internal padding
-- `gap-3` - Between cards
+**Dimensions (LOCKED):**
+- `min-h-[160px]` - Fixed minimum height
+- `px-4 py-3` - Internal padding (16px horizontal, 12px vertical)
+- `gap-3` - Spacing between cards (12px)
 - `rounded-xl` - Corner radius (12px)
 
 **Layout:**
-- Image: 36% width (≥1024px), stacked on mobile
-- Image aspect: 16:9 default, 4:3 option via `mediaAspect` prop
-- Image treatment: `object-cover`, `rounded-xl`, `lazy` loading
-- Reserved height via padding-bottom trick
+- Image: 36% width (≥1024px), stacked on smaller screens
+- Image aspect: 16:9 default (56.25% padding), 4:3 option (75% padding) via `mediaAspect` prop
+- Image treatment: `object-cover`, `rounded-t-xl lg:rounded-l-xl`, `lazy` loading
+- Reserved height via padding-bottom trick to prevent CLS
+- Category badge: overlays top-left inside media (z-10)
 - Title: 15px/semibold (2-line clamp)
 - Description: 13.5px (2-line clamp)
 - Metadata: 12px text
 - Badges: 11px text, h-5, px-2
 
 **States:**
-- Hover: 2px accent rail (left), shadow-xl, border-accent/40
-- Focus: ring-2 ring-accent/60
-- Motion: 200ms ease-out
+- Hover: 2px accent rail (left), shadow-xl, border-accent/40, image scale-105, 200ms ease-out
+- Focus: ring-1 ring-[hsl(var(--accent))]/60 (no outline jitter)
+- Motion: 200ms ease-out for all transitions
 
 **Actions:**
-- No expansion (Visual cards are display-only)
+- No inline expansion (Visual cards open modal/page on action)
+- Primary CTA on the right side
+- Secondary actions in kebab menu
 - Category badge overlays image (top-left)
-- Status dot (right side)
+- Status dot and badge (right side column)
 
 **A11y:**
-- `<article>` semantic
+- Structure: `<article>` > `<button>` (clickable card)
 - Image alt text required
-- RTL: Accent rail flips to right
-- Dark mode: Uses semantic tokens only
+- Focus ring: ring-1 ring-[hsl(var(--accent))]/60, no outline jitter
+- Keyboard: Tab to focus, Enter/Space to activate
+- RTL: Accent rail + layout flip to right
+- Dark mode: Uses semantic tokens only (no hardcoded colors)
 
 ### HorizontalCardList
-**Container** with virtualization (≥30 items), infinite scroll, grouping, and single-open expansion.
+**Container** with virtualization (≥30 items, disabled when any card expanded), infinite scroll (600px rootMargin), grouping, and single-open expansion.
+
+### HorizontalCardSkeleton
+**Loading state** for both patterns with shimmer animation, matching dimensions (Standard=88px, Visual=160px), same paddings (px-4 py-3), and gap-3. Shows 3-5 skeleton rows while loading. Reserved media height for Visual variant to prevent CLS.
 
 ## Analytics
 
 **Events emitted:**
-- `horizontal_list_view` - When list renders
-- `horizontal_card_view` - When card becomes visible (50% threshold)
+- `horizontal_list_view` - When list renders (on mount with itemCount)
+- `horizontal_card_view` - When card becomes visible (50% IntersectionObserver threshold)
 - `horizontal_card_expand` - When card expansion toggled (Standard only)
 - `horizontal_card_cta` - When primary/secondary action clicked
-- `horizontal_list_load_more` - When infinite scroll loads more
+- `horizontal_list_load_more` - When infinite scroll sentinel triggers (600px rootMargin, with newItemCount)
 
 **Payload structure:**
 ```typescript
@@ -198,13 +207,18 @@ const items: VisualHorizontalCardProps[] = activities.map(activity => ({
 />
 ```
 
+## Density
+
+**Locked to compact** - No UI density toggle. density="compact" by default. Prop remains for dev use only.
+
 ## SLOs
 
 - TTI < 2000ms
-- Interaction < 200ms
-- Infinite scroll < 500ms
+- Interaction < 200ms (200ms ease-out animations)
+- Infinite scroll < 500ms (600px rootMargin for preloading)
 - A11y score ≥ 95%
 - Zero critical violations
+- No CLS (reserved image heights)
 
 ## Feature Flags
 

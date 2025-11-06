@@ -10,6 +10,7 @@ export interface VisualHorizontalCardProps {
   screenId: string;
   imageUrl: string;
   imageAlt: string;
+  mediaAspect?: '16:9' | '4:3';
   category: {
     icon: string;
     label: string;
@@ -51,6 +52,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       screenId,
       imageUrl,
       imageAlt,
+      mediaAspect = '16:9',
       category,
       title,
       description,
@@ -126,6 +128,8 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       return timestamp.toLocaleDateString();
     };
 
+    const aspectPadding = mediaAspect === '4:3' ? '75%' : '56.25%'; // 4:3 or 16:9
+
     return (
       <article
         ref={ref || cardRef}
@@ -134,32 +138,25 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           "rounded-xl border border-white/10",
           "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/60 focus-visible:ring-offset-2",
           "min-h-[160px]",
           "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[2px] before:rounded-l-xl",
           "before:bg-transparent before:transition-all before:duration-200",
-          "hover:before:bg-current focus-visible:before:bg-current",
+          "hover:before:bg-current",
+          isRTL && "before:left-auto before:right-0 before:rounded-l-none before:rounded-r-xl",
           className
         )}
-        onClick={onClick}
-        role="article"
-        aria-expanded={isExpanded}
-        aria-label={`${title} - ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}`}
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleExpand();
-          }
-        }}
         style={{
           background: 'rgba(255,255,255,0.4)',
           backdropFilter: 'blur(6px)',
           color: category.color || undefined
         }}
+        aria-label={title}
       >
         <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_1fr_80px]">
-          <div className="relative overflow-hidden min-h-[160px] lg:min-h-0">
+          <div 
+            className="relative overflow-hidden min-h-[160px] lg:min-h-0 rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none"
+            style={{ paddingBottom: aspectPadding }}
+          >
             {!imageError ? (
               <>
                 <img
@@ -169,7 +166,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
                   onLoad={() => setImageLoaded(true)}
                   onError={() => setImageError(true)}
                   className={cn(
-                    "w-full h-full object-cover transition-transform duration-300 rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none",
+                    "absolute inset-0 w-full h-full object-cover transition-transform duration-300",
                     "group-hover:scale-105",
                     imageLoaded ? 'opacity-100' : 'opacity-0'
                   )}
@@ -177,26 +174,30 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
                 <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent" />
               </>
             ) : (
-              <div className="w-full h-full bg-muted flex items-center justify-center">
+              <div className="absolute inset-0 bg-muted flex items-center justify-center">
                 <span className="text-3xl">{category.icon}</span>
               </div>
             )}
             
             <Badge 
               variant="secondary" 
-              className="absolute top-1.5 left-1.5 bg-white/25 backdrop-blur-sm border border-white/40 text-[11px] px-2 py-0.5 h-5"
+              className="absolute top-1.5 left-1.5 bg-white/25 backdrop-blur-sm border border-white/40 text-[11px] px-2 py-0.5 h-5 z-10"
             >
               {category.icon} {category.label}
             </Badge>
 
             {rewardPoints && rewardPoints > 0 && (
-              <div className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-[11px] font-bold">
+              <div className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-[11px] font-bold z-10">
                 {rewardPoints}
               </div>
             )}
           </div>
 
-          <div className="flex-1 px-4 py-3 flex flex-col justify-center gap-1.5">
+          <button
+            className="flex-1 px-4 py-3 flex flex-col justify-center gap-1.5 text-left focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/60 focus:ring-inset"
+            onClick={onClick}
+            tabIndex={0}
+          >
             <div className="flex items-baseline gap-2 flex-nowrap">
               <h3 className="text-[15px] font-semibold leading-tight tracking-tight line-clamp-2 flex-1 min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
@@ -242,7 +243,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
                 )}
               </div>
             )}
-          </div>
+          </button>
 
           <div className="flex flex-col items-center justify-center p-2 bg-muted/20 gap-2">
             {statusBadge && (
@@ -260,14 +261,13 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
 
         {isExpanded && expandedContent && (
           <div 
+            id={`card-content-${id}`}
             role="region"
-            aria-label="Expanded card content"
+            aria-labelledby={`card-header-${id}`}
             aria-live="polite"
             className="px-4 pb-2 pt-1.5 border-t border-white/10"
             style={{ 
-              animation: 'accordion-down 200ms ease-out',
-              paddingLeft: '16px',
-              paddingRight: '16px'
+              animation: 'accordion-down 200ms ease-out'
             }}
           >
             {expandedContent}

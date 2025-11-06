@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import VirtualizedList from '@/components/ui/virtualized-list';
 import { StandardHorizontalCard, StandardHorizontalCardProps } from './standard-horizontal-card';
 import { VisualHorizontalCard, VisualHorizontalCardProps } from './visual-horizontal-card';
+import { HorizontalCardSkeleton } from './horizontal-card-skeleton';
 import { cn } from '@/lib/utils';
 import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface HorizontalCardListProps<T extends StandardHorizontalCardProps | VisualHorizontalCardProps> {
   items: T[];
@@ -65,7 +65,7 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
   // Disable virtualization when any card is expanded
   const shouldVirtualize = expandedCards.size === 0 && (enableVirtualization ?? items.length >= 30);
   
-  const actualItemHeight = itemHeight || (variant === 'standard' ? 80 : 140);
+  const actualItemHeight = itemHeight || (variant === 'standard' ? 88 : 160);
   const actualContainerHeight = containerHeight || 
     (typeof window !== 'undefined' ? window.innerHeight - 200 : 600);
 
@@ -81,7 +81,7 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
     }
   }, [items.length, screenId, listId]);
 
-  // Infinite scroll observer - fires load_more analytics
+  // Infinite scroll observer - fires load_more analytics with 600px rootMargin
   useEffect(() => {
     if (!infiniteScroll || !sentinelRef.current || !onLoadMore || !hasMore || isLoading) return;
 
@@ -96,12 +96,12 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
           onLoadMore();
         }
       },
-      { rootMargin: `${loadMoreThreshold}px` }
+      { rootMargin: '600px' }
     );
 
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
-  }, [infiniteScroll, onLoadMore, hasMore, isLoading, loadMoreThreshold, screenId, listId, items.length]);
+  }, [infiniteScroll, onLoadMore, hasMore, isLoading, screenId, listId, items.length]);
 
   const handleToggleExpand = (cardId: string) => {
     setExpandedCards(prev => {
@@ -237,10 +237,8 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
       ))}
 
       {isLoading && (
-        <div className={gapClass}>
-          {[1, 2, 3].map(i => (
-            <Skeleton key={i} className="h-20 w-full rounded-2xl" />
-          ))}
+        <div className="space-y-3">
+          <HorizontalCardSkeleton variant={variant} count={3} />
         </div>
       )}
 

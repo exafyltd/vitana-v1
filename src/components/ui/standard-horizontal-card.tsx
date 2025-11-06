@@ -181,12 +181,13 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
           "min-h-[88px]",
-          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[2px] before:rounded-l-xl",
+          "before:absolute before:top-0 before:bottom-0 before:w-[2px]",
           "before:bg-transparent before:transition-all before:duration-200",
-          accentColor && "hover:before:bg-current focus-visible:before:bg-current",
+          isRTL 
+            ? "before:right-0 before:rounded-r-xl hover:before:bg-current focus-within:before:bg-current" 
+            : "before:left-0 before:rounded-l-xl hover:before:bg-current focus-within:before:bg-current",
           className
         )}
-        role="article"
         style={{
           background: 'rgba(255,255,255,0.4)',
           backdropFilter: 'blur(6px)',
@@ -194,24 +195,36 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         }}
       >
 
-        <div 
+        <button 
           className={cn(
-            "grid items-center gap-3 px-4 py-3 cursor-pointer min-h-[88px]",
+            "w-full grid items-center gap-3 px-4 py-3 text-left min-h-[88px]",
             "grid-cols-[36px_1fr_auto]",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/60 focus-visible:ring-offset-2"
+            "focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/60 focus:ring-inset",
+            "rounded-xl transition-all duration-200"
           )}
-          role="button"
+          type="button"
           tabIndex={0}
-          aria-expanded={isExpanded}
-          aria-controls={panelId}
-          aria-label={`${title} - ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}`}
+          aria-expanded={expandedContent ? isExpanded : undefined}
+          aria-controls={expandedContent ? panelId : undefined}
           onClick={(e) => {
             onClick?.();
             if (expandedContent) handleExpand(e);
           }}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => {
+            if (!expandedContent) return;
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleExpand(e);
+            } else if (e.key === 'Escape' && isExpanded) {
+              e.preventDefault();
+              handleExpand(e);
+            }
+          }}
         >
-          <div className="flex items-center justify-center">
+          <div className={cn(
+            "flex items-center justify-center",
+            isRTL && "order-last"
+          )}>
             {renderIcon()}
           </div>
 
@@ -255,13 +268,17 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             )}
           </div>
 
-          <div className="flex items-center justify-end gap-1.5">
+          <div className={cn(
+            "flex items-center justify-end gap-1.5",
+            isRTL && "justify-start order-first"
+          )}>
             {primaryAction && (
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={handlePrimaryAction}
                 disabled={primaryAction.disabled}
+                tabIndex={-1}
                 className="h-8 px-3 text-[13px] font-medium opacity-70 hover:opacity-100 hover:bg-accent hover:text-accent-foreground group-hover:opacity-100 transition-all duration-200"
               >
                 {primaryAction.icon}
@@ -275,6 +292,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                   <Button
                     size="sm"
                     variant="ghost"
+                    tabIndex={-1}
                     className="h-8 w-8 p-0"
                   >
                     <MoreVertical className="w-4 h-4" />
@@ -304,18 +322,17 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
               </DropdownMenu>
             )}
           </div>
-        </div>
+        </button>
 
         {isExpanded && expandedContent && (
           <div 
             id={panelId}
             role="region"
-            aria-label="Expanded card content"
+            aria-labelledby={`card-title-${id}`}
             aria-live="polite"
-            className="px-4 pb-3 pt-2 border-t border-white/10"
+            className="px-4 pb-2 pt-1.5 border-t border-white/10"
             style={{ 
-              animation: 'accordion-down 200ms ease-out',
-              padding: '8px 16px 12px'
+              animation: 'accordion-down 200ms ease-out'
             }}
           >
             {expandedContent}
