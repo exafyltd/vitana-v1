@@ -165,7 +165,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
                   onLoad={() => setImageLoaded(true)}
                   onError={() => setImageError(true)}
                   className={cn(
-                    "absolute inset-0 w-full h-full object-cover transition-transform duration-300",
+                    "absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-300",
                     "group-hover:scale-105",
                     imageLoaded ? 'opacity-100' : 'opacity-0'
                   )}
