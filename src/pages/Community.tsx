@@ -1177,6 +1177,7 @@ export default withScreenId(function Community() {
                   groupBy="none"
                   gap="sm"
                   enableVirtualization={false}
+                  allowMultipleExpanded={false}
                   emptyState={
                     <div className="text-center py-8 text-muted-foreground">
                       No group rankings available yet
@@ -1203,6 +1204,7 @@ export default withScreenId(function Community() {
                   groupBy="none"
                   gap="sm"
                   enableVirtualization={false}
+                  allowMultipleExpanded={false}
                   emptyState={
                     <div className="text-center py-8 text-muted-foreground">
                       No event rankings available yet
@@ -1229,6 +1231,7 @@ export default withScreenId(function Community() {
                   groupBy="none"
                   gap="sm"
                   enableVirtualization={false}
+                  allowMultipleExpanded={false}
                   emptyState={
                     <div className="text-center py-8 text-muted-foreground">
                       No creator rankings available yet
@@ -1250,6 +1253,7 @@ export default withScreenId(function Community() {
                   groupBy="none"
                   gap="sm"
                   enableVirtualization={false}
+                  allowMultipleExpanded={false}
                   emptyState={
                     <div className="text-center py-8 text-muted-foreground">
                       No member rankings available yet
