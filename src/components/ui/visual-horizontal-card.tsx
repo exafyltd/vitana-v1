@@ -28,6 +28,7 @@ export interface VisualHorizontalCardProps {
     variant: 'default' | 'secondary' | 'outline' | 'destructive';
     icon?: React.ReactNode;
   };
+  secondaryLabel?: string;
   timestamp?: string | Date;
   statusDot?: 'success' | 'warning' | 'error' | 'info';
   rewardPoints?: number;
@@ -59,6 +60,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       motivationalHook,
       metadata,
       statusBadge,
+      secondaryLabel,
       timestamp,
       statusDot,
       rewardPoints,
@@ -132,7 +134,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       <article
         ref={ref || cardRef}
         className={cn(
-          "group relative overflow-hidden",
+          "group relative",
           "rounded-xl border border-white/10",
           "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
@@ -150,7 +152,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         }}
         aria-label={title}
       >
-        <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_1fr_80px]">
+        <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_auto_100px] gap-0 lg:gap-3">
           <div 
             className="relative overflow-hidden h-[100px] rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none"
           >
@@ -248,16 +250,35 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             )}
           </button>
 
-          <div className="flex flex-col items-center justify-center p-2 bg-muted/20 gap-2">
+          <div className={cn(
+            "flex flex-col items-end justify-center px-3 py-3 bg-muted/20 gap-2",
+            "shrink-0 w-full lg:w-[100px] min-w-[90px] max-w-[110px]",
+            "lg:mt-0 mt-2"
+          )}>
             {statusBadge && (
-              <Badge variant={statusBadge.variant} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 h-5 opacity-80">
+              <Badge 
+                variant={statusBadge.variant} 
+                className={cn(
+                  "flex items-center gap-1",
+                  "text-[13px] font-semibold",
+                  "px-2 py-0.5 h-auto",
+                  "opacity-90",
+                  "truncate max-w-full"
+                )}
+              >
                 {statusBadge.icon}
-                <span>{statusBadge.label}</span>
+                <span className="truncate">{statusBadge.label}</span>
               </Badge>
             )}
             
+            {secondaryLabel && (
+              <span className="text-[11px] text-muted-foreground/80 mt-1 truncate max-w-full text-right">
+                {secondaryLabel}
+              </span>
+            )}
+            
             {statusDot && (
-              <div className={cn("w-2.5 h-2.5 rounded-full", getStatusDotColor())} />
+              <div className={cn("w-2.5 h-2.5 rounded-full mt-1", getStatusDotColor())} />
             )}
           </div>
         </div>

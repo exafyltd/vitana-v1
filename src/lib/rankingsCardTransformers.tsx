@@ -205,6 +205,7 @@ export function transformMemberRankingToCard(
       variant: rank <= 3 ? 'default' : 'secondary',
       icon: rankEmoji
     },
+    secondaryLabel: member.score_trend === 'up' ? 'Rising' : member.score_trend === 'down' ? 'Falling' : 'Stable',
     expandedContent,
     density: 'compact',
     screenId: 'COMMUNITY_RANKINGS_MEMBERS',
@@ -285,6 +286,7 @@ export function transformGroupRankingToCard(
       variant: rank <= 3 ? 'default' : 'secondary',
       icon: rankEmoji
     },
+    secondaryLabel: 'Weekly',
     expandedContent,
     density: 'compact',
     screenId: 'COMMUNITY_RANKINGS_GROUPS',
@@ -387,6 +389,7 @@ export function transformEventRankingToCard(
       label: event.timestamp || `#${rank}`,
       variant: rank <= 3 ? 'default' : 'secondary'
     },
+    secondaryLabel: 'This Week',
     expandedContent,
     density: 'compact',
     screenId: 'COMMUNITY_RANKINGS_EVENTS',
@@ -479,6 +482,7 @@ export function transformCreatorRankingToCard(
       variant: rank <= 3 ? 'default' : 'secondary',
       icon: rankEmoji
     },
+    secondaryLabel: 'Monthly',
     expandedContent,
     density: 'compact',
     screenId: 'COMMUNITY_RANKINGS_CREATORS',
