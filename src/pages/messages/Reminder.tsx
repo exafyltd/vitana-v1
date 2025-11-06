@@ -134,26 +134,25 @@ export default function Reminder() {
         }
       ],
     expandedContent: (
-      <div className="space-y-3">
-        <div className="border-t border-white/10 pt-3 mt-3" aria-label="Quick Replies">
-          <div className="flex flex-wrap gap-2 transition-opacity duration-150">
-            {msg.quickReplies.map((reply, idx) => (
-              <Button
-                key={idx}
-                variant="outline"
-                size="sm"
-                onClick={() => handleReply(msg.id, reply)}
-                className="transition-all hover:scale-105 text-[12px]"
-              >
-                <Send className="w-3 h-3 mr-1" />
-                {reply}
-              </Button>
-            ))}
-          </div>
+      <div className="space-y-2 animate-in fade-in duration-150" aria-label="Quick Replies">
+        <p className="text-[12px] text-muted-foreground mb-1">Quick Replies:</p>
+        <div className="flex flex-wrap gap-2">
+          {msg.quickReplies.map((reply, idx) => (
+            <Button
+              key={idx}
+              variant="outline"
+              size="sm"
+              onClick={() => handleReply(msg.id, reply)}
+              className="h-8 px-3 text-[13px] hover:scale-105 transition-transform"
+            >
+              <Send className="w-3 h-3 mr-1" />
+              {reply}
+            </Button>
+          ))}
         </div>
       </div>
     ),
-      density: 'comfy' as const,
+      density: 'compact' as const,
       accentColor: 'hsl(var(--domain-messages-accent))'
     }));
 
@@ -196,9 +195,8 @@ export default function Reminder() {
         });
         setConsentOpen(true);
       },
-      density: 'comfy' as const,
-      accentColor: 'hsl(var(--pill-health-accent))',
-      className: 'opacity-90 backdrop-blur-[10px] border border-white/15 bg-warning/15 text-warning-foreground/90'
+      density: 'compact' as const,
+      accentColor: 'hsl(var(--pill-health-accent))'
     };
 
   const transformedMessages: StandardHorizontalCardProps[] = import.meta.env.DEV 
@@ -266,13 +264,13 @@ export default function Reminder() {
             <SplitBarContent value="unanswered">
               {useNewCards ? (
                 <>
-                  <HorizontalCardList
-                    items={transformedMessages}
-                    variant="standard"
-                    groupBy="date"
-                    screenId={SCREEN_IDS.INBOX_REMINDER}
-                    listId="reminder-unanswered"
-                    gap="md"
+      <HorizontalCardList
+        items={transformedMessages}
+        variant="standard"
+        groupBy="date"
+        screenId={SCREEN_IDS.INBOX_REMINDER}
+        listId="reminder-unanswered"
+        gap="sm"
                     emptyState={
                       <Card className="border-dashed">
                         <CardContent className="p-12 text-center">

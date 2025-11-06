@@ -44,6 +44,7 @@ export interface StandardHorizontalCardProps {
   density?: 'compact' | 'comfy';
   accentColor?: string;
   className?: string;
+  enableCompactDensity?: boolean;
   privacyBadge?: {
     label: string;
     color: string;
@@ -70,7 +71,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       expandedContent,
       isExpanded,
       onToggleExpand,
-      density = 'comfy',
+      density = 'compact',
       accentColor,
       className,
       privacyBadge,
@@ -150,11 +151,10 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
     const renderIcon = () => {
       if (typeof icon === 'string') {
-        // Wrap emoji in span with proper attributes
         return (
           <div className={cn(
             "flex items-center justify-center rounded-full",
-            density === 'compact' ? 'w-10 h-10 text-xl' : 'w-12 h-12 text-2xl',
+            "w-10 h-10 text-xl",
             accentColor ? `bg-${accentColor}/10` : 'bg-muted'
           )}>
             <span role="img" aria-label="icon">{icon}</span>
@@ -177,31 +177,31 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         ref={ref || cardRef}
         className={cn(
           "group relative overflow-hidden",
-          "rounded-2xl border border-white/20",
-          "shadow-[0_2px_12px_rgba(0,0,0,0.15)]",
-          "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
+          "rounded-xl border border-white/20",
+          "shadow-[0_1px_4px_rgba(0,0,0,0.04)]",
+          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_2px_10px_rgba(0,0,0,0.06)]",
           "transition-all duration-200 ease-out",
-          density === 'compact' ? 'min-h-[64px]' : 'min-h-[80px]',
+          "min-h-[64px]",
           className
         )}
         role="article"
         style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
-          backdropFilter: 'blur(8px)'
+          background: 'rgba(255,255,255,0.7)',
+          backdropFilter: 'blur(2px)'
         }}
       >
         {accentColor && (
           <div className={cn(
-            "absolute top-0 bottom-0 w-1 rounded-l-2xl",
+            "absolute top-0 bottom-0 w-0.5 rounded-l-xl",
             `bg-${accentColor}`,
-            isRTL ? 'right-0 rounded-l-none rounded-r-2xl' : 'left-0'
+            isRTL ? 'right-0 rounded-l-none rounded-r-xl' : 'left-0'
           )} />
         )}
 
         <div 
           className={cn(
-            "grid items-center gap-4 px-5 py-4 cursor-pointer",
-            "grid-cols-[48px_1fr_auto]",
+            "grid items-center gap-3 px-4 py-2.5 cursor-pointer",
+            "grid-cols-[40px_1fr_auto]",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/45 focus-visible:ring-offset-2"
           )}
           role="button"
@@ -219,28 +219,28 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             {renderIcon()}
           </div>
 
-          <div className="flex-1 min-w-0 space-y-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-[15px] font-semibold tracking-tight truncate" dir={isRTL ? 'rtl' : 'ltr'}>
+          <div className="flex-1 min-w-0 space-y-0.5">
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-[15px] font-semibold leading-5 tracking-tight truncate" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {badges?.map((badge, idx) => (
-                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1 text-[12px] font-medium">
+                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1 text-[11.5px] font-medium px-2 py-0.5">
                   {badge.icon}
                   <span>{badge.label}</span>
                 </Badge>
               ))}
               {privacyBadge && (
-                <Badge variant="outline" className={cn("text-[12px] font-medium", privacyBadge.color)}>
+                <Badge variant="outline" className={cn("text-[11.5px] font-medium px-2 py-0.5", privacyBadge.color)}>
                   🔒 {privacyBadge.label}
                 </Badge>
               )}
             </div>
-            <p className="text-[14px] text-white/90 leading-snug line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[13.5px] leading-5 text-white/90 line-clamp-1" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             {metadata && (
-              <div className="flex items-center gap-3 text-[13px] text-white/70">
+              <div className="flex items-center gap-3 text-[12px] text-muted-foreground">
                 {metadata.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-1">
                     {item.icon}
@@ -251,9 +251,9 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             )}
           </div>
 
-          <div className="flex items-center justify-end gap-2">
+          <div className="flex items-baseline justify-end gap-2">
             {timestamp && (
-              <span className="text-[13px] text-center text-white/70 pr-3">
+              <span className="text-[12.5px] text-muted-foreground">
                 {formatTimestamp()}
               </span>
             )}
@@ -264,7 +264,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 variant={primaryAction.variant || 'outline'}
                 onClick={handlePrimaryAction}
                 disabled={primaryAction.disabled}
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
+                className="opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity h-7 text-[13px]"
               >
                 {primaryAction.icon}
                 {primaryAction.label}
@@ -277,7 +277,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity h-7 w-7 p-0"
                   >
                     <MoreVertical className="w-4 h-4" />
                   </Button>
@@ -314,7 +314,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             role="region"
             aria-label="Expanded card content"
             aria-live="polite"
-            className="px-5 pb-5 pt-3 border-t border-white/10 overflow-hidden transition-all duration-200 ease-out"
+            className="px-4 pb-3 pt-2 border-t border-white/10 overflow-hidden transition-all duration-200 ease-out"
           >
             {expandedContent}
           </div>
