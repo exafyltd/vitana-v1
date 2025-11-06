@@ -33,7 +33,12 @@ import { useEventSelection } from '@/context/EventSelectionContext';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 import { useEventRecommendations } from '@/hooks/useEventRecommendations';
 import { HorizontalCardList } from '@/components/ui/horizontal-card-list';
-import { transformMemberRankingToCard } from '@/lib/rankingsCardTransformers';
+import { 
+  transformMemberRankingToCard,
+  transformGroupRankingToCard,
+  transformEventRankingToCard,
+  transformCreatorRankingToCard
+} from '@/lib/rankingsCardTransformers';
 
 // Mock fallback data for Today Highlights
 const todayHighlights = [
@@ -1161,14 +1166,23 @@ export default withScreenId(function Community() {
 
               {/* Top 3 Groups */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Top 3 Groups</h3>
-                {(() => {
-                  // Reset row counter for Rankings tab to maintain consistent visual pattern
-                  let rankingsRowIndex = 0;
-                  const result = renderEventGrid(topGroups, "Rankings", rankingsRowIndex, handleEventClick);
-                  rankingsRowIndex = result.nextRowIndex;
-                  return result.content;
-                })()}
+                <h3 className="text-xl font-bold mb-4 px-6">Top 3 Groups 🏆</h3>
+                <HorizontalCardList
+                  items={topGroups.map((group, idx) => 
+                    transformGroupRankingToCard(group, idx + 1)
+                  )}
+                  variant="visual"
+                  screenId="COMMUNITY_RANKINGS_GROUPS"
+                  listId="rankings-top-groups"
+                  groupBy="none"
+                  gap="sm"
+                  enableVirtualization={false}
+                  emptyState={
+                    <div className="text-center py-8 text-muted-foreground">
+                      No group rankings available yet
+                    </div>
+                  }
+                />
               </div>
 
               {/* Motivational Banner */}
@@ -1178,13 +1192,23 @@ export default withScreenId(function Community() {
 
               {/* Top Events This Week */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Top Events (This Week)</h3>
-                {(() => {
-                  let rankingsRowIndex = Math.ceil(topGroups.length / 3);
-                  const result = renderEventGrid(topEvents, "Rankings", rankingsRowIndex, handleEventClick);
-                  rankingsRowIndex = result.nextRowIndex;
-                  return result.content;
-                })()}
+                <h3 className="text-xl font-bold mb-4 px-6">Top Events (This Week) 📅</h3>
+                <HorizontalCardList
+                  items={topEvents.map((event, idx) => 
+                    transformEventRankingToCard(event, idx + 1)
+                  )}
+                  variant="visual"
+                  screenId="COMMUNITY_RANKINGS_EVENTS"
+                  listId="rankings-top-events"
+                  groupBy="none"
+                  gap="sm"
+                  enableVirtualization={false}
+                  emptyState={
+                    <div className="text-center py-8 text-muted-foreground">
+                      No event rankings available yet
+                    </div>
+                  }
+                />
               </div>
 
               {/* Guidance Banner */}
@@ -1194,12 +1218,23 @@ export default withScreenId(function Community() {
 
               {/* Top Creators */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Top Creators</h3>
-                {(() => {
-                  let rankingsRowIndex = Math.ceil(topGroups.length / 3) + Math.ceil(topEvents.length / 3);
-                  const result = renderEventGrid(topCreators, "Rankings", rankingsRowIndex, handleEventClick);
-                  return result.content;
-                })()}
+                <h3 className="text-xl font-bold mb-4 px-6">Top Creators ⭐</h3>
+                <HorizontalCardList
+                  items={topCreators.map((creator, idx) => 
+                    transformCreatorRankingToCard(creator, idx + 1)
+                  )}
+                  variant="visual"
+                  screenId="COMMUNITY_RANKINGS_CREATORS"
+                  listId="rankings-top-creators"
+                  groupBy="none"
+                  gap="sm"
+                  enableVirtualization={false}
+                  emptyState={
+                    <div className="text-center py-8 text-muted-foreground">
+                      No creator rankings available yet
+                    </div>
+                  }
+                />
               </div>
 
               {/* Top VITANA Members */}

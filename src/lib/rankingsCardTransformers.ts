@@ -152,3 +152,137 @@ export function transformMemberRankingToCard(
     }
   };
 }
+
+/**
+ * Transform Group Ranking to Visual Horizontal Card
+ */
+export function transformGroupRankingToCard(
+  group: any,
+  rank: number
+): VisualHorizontalCardProps {
+  const rankEmoji = getRankEmoji(rank);
+  const rankColor = getRankColor(rank);
+  
+  return {
+    id: `group-rank-${group.id}`,
+    title: `${rankEmoji} ${group.title}`,
+    description: group.description,
+    imageUrl: group.imageUrl,
+    imageAlt: group.title,
+    category: {
+      icon: '🏆',
+      label: 'Top Group',
+      color: rankColor
+    },
+    metadata: [
+      {
+        icon: '👥',
+        text: `${group.attendees || 0} members`
+      },
+      {
+        icon: '📍',
+        text: group.location || 'Virtual'
+      }
+    ],
+    statusBadge: {
+      label: `${rankEmoji} #${rank}`,
+      variant: rank <= 3 ? 'default' : 'secondary',
+      icon: rankEmoji
+    },
+    density: 'compact',
+    screenId: 'COMMUNITY_RANKINGS_GROUPS',
+    onClick: () => {
+      console.log('View group:', group.id);
+      // TODO: Navigate to group detail
+    }
+  };
+}
+
+/**
+ * Transform Event Ranking to Visual Horizontal Card
+ */
+export function transformEventRankingToCard(
+  event: any,
+  rank: number
+): VisualHorizontalCardProps {
+  const rankEmoji = getRankEmoji(rank);
+  const rankColor = getRankColor(rank);
+  
+  return {
+    id: `event-rank-${event.id}`,
+    title: `${rankEmoji} ${event.title}`,
+    description: event.description,
+    imageUrl: event.imageUrl,
+    imageAlt: event.title,
+    category: {
+      icon: '📅',
+      label: 'Top Event',
+      color: rankColor
+    },
+    metadata: [
+      {
+        icon: '👥',
+        text: `${event.attendees || 0} attending`
+      },
+      {
+        icon: '📍',
+        text: event.location || 'Virtual'
+      }
+    ],
+    statusBadge: {
+      label: event.timestamp || `#${rank}`,
+      variant: rank <= 3 ? 'default' : 'secondary'
+    },
+    density: 'compact',
+    screenId: 'COMMUNITY_RANKINGS_EVENTS',
+    onClick: () => {
+      console.log('View event:', event.id);
+      // TODO: Navigate to event detail or open RSVP modal
+    }
+  };
+}
+
+/**
+ * Transform Creator Ranking to Visual Horizontal Card
+ */
+export function transformCreatorRankingToCard(
+  creator: any,
+  rank: number
+): VisualHorizontalCardProps {
+  const rankEmoji = getRankEmoji(rank);
+  const rankColor = getRankColor(rank);
+  
+  return {
+    id: `creator-rank-${creator.id}`,
+    title: creator.title, // e.g., "Lisa Chen - Wellness Guru"
+    description: creator.description, // e.g., "Hosted 12 events this month"
+    imageUrl: creator.imageUrl,
+    imageAlt: creator.author?.name || creator.title,
+    category: {
+      icon: '⭐',
+      label: 'Top Creator',
+      color: rankColor
+    },
+    metadata: [
+      {
+        icon: '🎯',
+        text: creator.timestamp || 'Active' // e.g., "12 Events Hosted"
+      },
+      {
+        icon: '📍',
+        text: creator.location || 'Multiple venues'
+      }
+    ],
+    statusBadge: {
+      label: `${rankEmoji} #${rank}`,
+      variant: rank <= 3 ? 'default' : 'secondary',
+      icon: rankEmoji
+    },
+    density: 'compact',
+    screenId: 'COMMUNITY_RANKINGS_CREATORS',
+    onClick: () => {
+      console.log('View creator profile:', creator.id);
+      // TODO: Navigate to creator profile
+    }
+  };
+}
