@@ -31,6 +31,7 @@ import { MotivationalBanner } from "@/components/ai-feed/MotivationalBanner";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { transformActivityToVisualCard, transformRoutineToVisualCard } from "@/lib/ai-feed-transformers";
 import { isFeatureEnabled } from "@/lib/feature-flags";
+import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { VisualHorizontalCardProps } from "@/components/ui/visual-horizontal-card";
 
 export default function AIFeed() {
@@ -81,8 +82,8 @@ export default function AIFeed() {
     ? activityFeed.filter(item => item.type === "action" && item.status === "completed")
     : activityFeed;
 
-  // Transform activities to visual cards if unified lists are enabled
-  const transformedActivities: VisualHorizontalCardProps[] = filteredFeed.map(transformActivityToVisualCard);
+  // Transform activities to standard cards if unified lists are enabled
+  const transformedActivities: StandardHorizontalCardProps[] = filteredFeed.map(transformActivityToVisualCard);
   const useUnifiedLists = isFeatureEnabled('enableUnifiedHorizontalLists');
 
   return (
@@ -156,7 +157,7 @@ export default function AIFeed() {
                   {useUnifiedLists ? (
                     <HorizontalCardList
                       items={transformedActivities}
-                      variant="visual"
+                      variant="standard"
                       groupBy="date"
                       screenId="AI_FEED_ACTIVITY"
                       listId="ai-feed-activity"

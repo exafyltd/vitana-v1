@@ -1,9 +1,10 @@
+import { StandardHorizontalCardProps } from '@/components/ui/standard-horizontal-card';
 import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
-import { Award, TrendingUp, CheckCircle, AlertTriangle, Zap } from 'lucide-react';
+import { Award, TrendingUp, CheckCircle, AlertTriangle, Zap, Activity, Brain, Droplets } from 'lucide-react';
 import { AutopilotActionStatus } from '@/types/autopilot';
 import { createElement } from 'react';
 
-// Import images
+// Import images for routines (Visual pattern)
 import sunriseRoutineImg from '@/assets/ai-feed/sunrise-routine.jpg';
 import hydrationTrackingImg from '@/assets/ai-feed/hydration-tracking.jpg';
 import eveningWinddownImg from '@/assets/ai-feed/evening-winddown.jpg';
@@ -111,39 +112,45 @@ const getSecondaryInfo = (category: string, title: string) => {
   return { streak: mockData.streak, credits: mockData.credits };
 };
 
-export function transformActivityToVisualCard(activity: ActivityItem): VisualHorizontalCardProps {
+const getCategoryIcon = (category: string, emoji: string) => {
+  const color = getCategoryColor(category);
+  return createElement(
+    'div',
+    {
+      className: 'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0',
+      style: { backgroundColor: `${color}20` }
+    },
+    createElement('span', { className: 'text-lg' }, emoji)
+  );
+};
+
+export function transformActivityToVisualCard(activity: ActivityItem): StandardHorizontalCardProps {
   const secondaryInfo = getSecondaryInfo(activity.category, activity.title);
   
   return {
     id: activity.id,
     screenId: 'AI_FEED_ACTIVITY',
-    imageUrl: getCategoryImage(activity.category, activity.title),
-    imageAlt: activity.title,
-    category: {
-      icon: activity.icon,
-      label: activity.category,
-      color: getCategoryColor(activity.category),
-    },
+    icon: getCategoryIcon(activity.category, activity.icon),
     title: activity.title,
     description: activity.reason,
-    motivationalHook: getMotivationalHook(activity.title, activity.status),
+    badges: [
+      {
+        label: activity.status,
+        variant: getStatusVariant(activity.status),
+        icon: getStatusIcon(activity.status),
+      }
+    ],
     metadata: [
       { icon: createElement(Award, { className: 'w-3 h-3' }), text: `${secondaryInfo.streak} day streak` },
       { icon: createElement(TrendingUp, { className: 'w-3 h-3' }), text: `+${secondaryInfo.credits} pts earned` },
     ],
-    statusBadge: {
-      label: activity.status,
-      variant: getStatusVariant(activity.status),
-      icon: getStatusIcon(activity.status),
-    },
     timestamp: new Date(activity.timestamp).toLocaleDateString(undefined, {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
     }),
-    statusDot: getStatusDot(activity.status),
-    rewardPoints: activity.status === 'completed' ? 5 : 3,
+    accentColor: getCategoryColor(activity.category),
     density: 'compact',
   };
 }
