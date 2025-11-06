@@ -152,7 +152,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         }}
         aria-label={title}
       >
-        <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_auto_100px] gap-0 lg:gap-3">
+        <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_auto_112px] gap-0 lg:gap-3">
           <div 
             className="relative overflow-hidden h-[100px] rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none"
           >
@@ -250,31 +250,32 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             )}
           </button>
 
+          {/* Right Badge Zone - Fixed width, single medal + cadence text */}
           <div className={cn(
-            "flex flex-col items-end justify-center px-3 py-3 bg-muted/20 gap-2",
-            "shrink-0 w-full lg:w-[100px] min-w-[90px] max-w-[110px]",
+            "flex flex-col items-end justify-center px-3 py-3 bg-muted/20",
+            "shrink-0 w-full lg:w-[112px] min-w-[100px]",
             "lg:mt-0 mt-2"
           )}>
             {statusBadge && (
-              <Badge 
-                variant={statusBadge.variant} 
-                className={cn(
-                  "flex items-center gap-1",
-                  "text-[13px] font-semibold",
-                  "px-2 py-0.5 h-auto",
-                  "opacity-90",
-                  "truncate max-w-full"
-                )}
+              <div 
+                className="flex items-center gap-1 text-[13px] font-semibold leading-none"
+                aria-label={`Rank ${statusBadge.label}`}
+                title={`${statusBadge.icon} ${statusBadge.label}`}
               >
-                {statusBadge.icon}
-                <span className="truncate">{statusBadge.label}</span>
-              </Badge>
+                {statusBadge.icon && (
+                  <span aria-hidden="true">{statusBadge.icon}</span>
+                )}
+                <span className="truncate max-w-[90px]">{statusBadge.label}</span>
+              </div>
             )}
             
             {secondaryLabel && (
-              <span className="text-[11px] text-muted-foreground/80 mt-1 truncate max-w-full text-right">
+              <div 
+                className="mt-1 text-[11px] text-muted-foreground leading-none"
+                title={secondaryLabel}
+              >
                 {secondaryLabel}
-              </span>
+              </div>
             )}
             
             {statusDot && (

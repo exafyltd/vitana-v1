@@ -181,7 +181,7 @@ export function transformMemberRankingToCard(
 
   return {
     id: `member-rank-${member.user_id}`,
-    title: `${rankEmoji} ${member.display_name || 'Anonymous User'}`,
+    title: member.display_name || 'Anonymous User',
     description: getDescriptionByType(member, rankingType),
     imageUrl: member.avatar_url || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
     imageAlt: member.display_name || 'Member',
@@ -201,7 +201,7 @@ export function transformMemberRankingToCard(
       }
     ],
     statusBadge: {
-      label: `${rankEmoji} #${rank}`,
+      label: `V#${rank}`,
       variant: rank <= 3 ? 'default' : 'secondary',
       icon: rankEmoji
     },
@@ -262,7 +262,7 @@ export function transformGroupRankingToCard(
 
   return {
     id: `group-rank-${group.id}`,
-    title: `${rankEmoji} ${group.title}`,
+    title: group.title,
     description: group.description,
     imageUrl: group.imageUrl,
     imageAlt: group.title,
@@ -282,7 +282,7 @@ export function transformGroupRankingToCard(
       }
     ],
     statusBadge: {
-      label: `${rankEmoji} #${rank}`,
+      label: `V#${rank}`,
       variant: rank <= 3 ? 'default' : 'secondary',
       icon: rankEmoji
     },
@@ -366,7 +366,7 @@ export function transformEventRankingToCard(
 
   return {
     id: `event-rank-${event.id}`,
-    title: `${rankEmoji} ${event.title}`,
+    title: event.title,
     description: event.description,
     imageUrl: event.imageUrl,
     imageAlt: event.title,
@@ -386,8 +386,9 @@ export function transformEventRankingToCard(
       }
     ],
     statusBadge: {
-      label: event.timestamp || `#${rank}`,
-      variant: rank <= 3 ? 'default' : 'secondary'
+      label: `V#${rank}`,
+      variant: rank <= 3 ? 'default' : 'secondary',
+      icon: rankEmoji
     },
     secondaryLabel: 'This Week',
     expandedContent,
@@ -478,7 +479,7 @@ export function transformCreatorRankingToCard(
       }
     ],
     statusBadge: {
-      label: `${rankEmoji} #${rank}`,
+      label: `V#${rank}`,
       variant: rank <= 3 ? 'default' : 'secondary',
       icon: rankEmoji
     },
