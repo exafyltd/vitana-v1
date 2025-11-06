@@ -32,6 +32,8 @@ import { MeetupDetailsDrawer } from '@/components/meetups/MeetupDetailsDrawer';
 import { useEventSelection } from '@/context/EventSelectionContext';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 import { useEventRecommendations } from '@/hooks/useEventRecommendations';
+import { HorizontalCardList } from '@/components/ui/horizontal-card-list';
+import { transformMemberRankingToCard } from '@/lib/rankingsCardTransformers';
 
 // Mock fallback data for Today Highlights
 const todayHighlights = [
@@ -370,6 +372,67 @@ const topCreators = [
     timestamp: "6 Workshops Created",
     start_time: new Date().toISOString(),
     end_time: new Date(Date.now() + 3600000).toISOString()
+  }
+];
+
+// Top VITANA Members
+const topVitanaMembers = [
+  {
+    user_id: 'member-1',
+    display_name: 'Sarah Mitchell',
+    avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    vitana_score: 892,
+    vitana_tier: 'Excellent',
+    score_trend: 'up' as const,
+    pillar_scores: {
+      sleep: 178,
+      exercise: 185,
+      nutrition: 182,
+      hydration: 175,
+      mental: 172
+    },
+    wellness_streak_days: 47,
+    score_30d_change: 65,
+    total_activities: 234,
+    achievements: [
+      { title: '🏆 30-Day Streak', description: 'Completed goals for 30 days straight', earned_at: '2024-01-15' }
+    ]
+  },
+  {
+    user_id: 'member-2',
+    display_name: 'Marcus Johnson',
+    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    vitana_score: 875,
+    vitana_tier: 'Excellent',
+    score_trend: 'stable' as const,
+    pillar_scores: {
+      sleep: 180,
+      exercise: 190,
+      nutrition: 175,
+      hydration: 170,
+      mental: 160
+    },
+    wellness_streak_days: 32,
+    score_30d_change: 12,
+    total_activities: 189
+  },
+  {
+    user_id: 'member-3',
+    display_name: 'Emily Rodriguez',
+    avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    vitana_score: 831,
+    vitana_tier: 'Good',
+    score_trend: 'up' as const,
+    pillar_scores: {
+      sleep: 165,
+      exercise: 172,
+      nutrition: 168,
+      hydration: 162,
+      mental: 164
+    },
+    wellness_streak_days: 21,
+    score_30d_change: 48,
+    total_activities: 156
   }
 ];
 
@@ -1137,6 +1200,27 @@ export default withScreenId(function Community() {
                   const result = renderEventGrid(topCreators, "Rankings", rankingsRowIndex, handleEventClick);
                   return result.content;
                 })()}
+              </div>
+
+              {/* Top VITANA Members */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold mb-4 px-6">Top VITANA Members 💎</h3>
+                <HorizontalCardList
+                  items={topVitanaMembers.map((member, idx) => 
+                    transformMemberRankingToCard(member, idx + 1, 'vitana_index')
+                  )}
+                  variant="visual"
+                  screenId="COMMUNITY_RANKINGS_MEMBERS"
+                  listId="rankings-top-members"
+                  groupBy="none"
+                  gap="sm"
+                  enableVirtualization={false}
+                  emptyState={
+                    <div className="text-center py-8 text-muted-foreground">
+                      No member rankings available yet
+                    </div>
+                  }
+                />
               </div>
 
               {/* Badges Section */}

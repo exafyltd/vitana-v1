@@ -1,0 +1,154 @@
+import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
+import { getVitanaIndexTier, formatVitanaIndexScore } from '@/lib/vitanaIndex';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+
+/**
+ * Member Ranking Data Structure
+ */
+export interface MemberRanking {
+  user_id: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  vitana_score: number;
+  vitana_tier: string;
+  score_trend: 'up' | 'down' | 'stable';
+  pillar_scores?: {
+    sleep: number;
+    exercise: number;
+    nutrition: number;
+    hydration: number;
+    mental: number;
+  };
+  wellness_streak_days: number;
+  score_30d_change: number;
+  total_activities: number;
+  achievements?: Array<{
+    title: string;
+    description: string;
+    earned_at: string;
+  }>;
+}
+
+/**
+ * Get trend icon component
+ */
+function getTrendIcon(trend: 'up' | 'down' | 'stable') {
+  switch (trend) {
+    case 'up':
+      return '↗️';
+    case 'down':
+      return '↘️';
+    default:
+      return '→';
+  }
+}
+
+/**
+ * Get rank emoji based on position
+ */
+function getRankEmoji(rank: number): string {
+  if (rank === 1) return '🥇';
+  if (rank === 2) return '🥈';
+  if (rank === 3) return '🥉';
+  return '🏅';
+}
+
+/**
+ * Get rank-specific accent color
+ */
+function getRankColor(rank: number): string {
+  if (rank === 1) return 'hsl(45, 100%, 50%)'; // Gold
+  if (rank === 2) return 'hsl(0, 0%, 75%)'; // Silver
+  if (rank === 3) return 'hsl(30, 80%, 60%)'; // Bronze
+  return 'hsl(217, 91%, 60%)'; // Blue
+}
+
+/**
+ * Get description by ranking type
+ */
+function getDescriptionByType(member: MemberRanking, type: string): string {
+  switch (type) {
+    case 'vitana_index':
+      return `${formatVitanaIndexScore(member.vitana_score)} • ${member.total_activities || 0} activities`;
+    case 'most_improved':
+      return `+${member.score_30d_change} points in 30 days`;
+    case 'streak':
+      return `${member.wellness_streak_days} day streak 🔥`;
+    case 'balanced':
+      return `Balanced across all 5 wellness pillars`;
+    default:
+      return '';
+  }
+}
+
+/**
+ * Transform Member Ranking to Visual Horizontal Card
+ */
+export function transformMemberRankingToCard(
+  member: MemberRanking,
+  rank: number,
+  rankingType: 'vitana_index' | 'most_improved' | 'streak' | 'balanced' = 'vitana_index'
+): VisualHorizontalCardProps {
+  const tier = getVitanaIndexTier(member.vitana_score);
+  const rankEmoji = getRankEmoji(rank);
+  
+  // Category badge varies by ranking type
+  const categoryConfig = {
+    vitana_index: {
+      icon: '💎',
+      label: 'Top VITANA',
+      color: tier.color
+    },
+    most_improved: {
+      icon: '📈',
+      label: 'Most Improved',
+      color: 'hsl(142, 71%, 45%)' // Green
+    },
+    streak: {
+      icon: '🔥',
+      label: 'Streak Leader',
+      color: 'hsl(24, 95%, 53%)' // Orange
+    },
+    balanced: {
+      icon: '⚖️',
+      label: 'Balanced',
+      color: 'hsl(217, 91%, 60%)' // Blue
+    }
+  };
+
+  const config = categoryConfig[rankingType];
+
+  return {
+    id: `member-rank-${member.user_id}`,
+    title: `${rankEmoji} ${member.display_name || 'Anonymous User'}`,
+    description: getDescriptionByType(member, rankingType),
+    imageUrl: member.avatar_url || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    imageAlt: member.display_name || 'Member',
+    category: {
+      icon: config.icon,
+      label: config.label,
+      color: config.color
+    },
+    metadata: [
+      {
+        icon: '💯',
+        text: `${formatVitanaIndexScore(member.vitana_score)} • ${tier.label}`
+      },
+      {
+        icon: getTrendIcon(member.score_trend),
+        text: member.score_trend === 'up' ? 'Rising' : member.score_trend === 'down' ? 'Falling' : 'Stable'
+      }
+    ],
+    statusBadge: {
+      label: `${rankEmoji} #${rank}`,
+      variant: rank <= 3 ? 'default' : 'secondary',
+      icon: rankEmoji
+    },
+    density: 'compact',
+    screenId: 'COMMUNITY_RANKINGS_MEMBERS',
+    onClick: () => {
+      console.log('View member profile:', member.user_id);
+      // TODO: Implement navigation to profile page
+    }
+  };
+}
