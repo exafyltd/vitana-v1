@@ -154,8 +154,8 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         return (
           <div className={cn(
             "flex items-center justify-center rounded-full",
-            "w-10 h-10 text-xl",
-            accentColor ? `bg-${accentColor}/10` : 'bg-muted'
+            "w-9 h-9 text-lg shadow-sm",
+            accentColor ? `bg-${accentColor}/10` : 'bg-muted/50'
           )}>
             <span role="img" aria-label="icon">{icon}</span>
           </div>
@@ -192,7 +192,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       >
         {accentColor && (
           <div className={cn(
-            "absolute top-0 bottom-0 w-0.5 rounded-l-xl",
+            "absolute top-0 bottom-0 w-1 rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity",
             `bg-${accentColor}`,
             isRTL ? 'right-0 rounded-l-none rounded-r-xl' : 'left-0'
           )} />
@@ -200,8 +200,8 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
         <div 
           className={cn(
-            "grid items-center gap-3 px-4 py-2.5 cursor-pointer",
-            "grid-cols-[40px_1fr_auto]",
+            "grid items-center gap-2.5 px-4 py-2 cursor-pointer min-h-[72px]",
+            "grid-cols-[36px_1fr_auto]",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/45 focus-visible:ring-offset-2"
           )}
           role="button"
@@ -220,51 +220,53 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           </div>
 
           <div className="flex-1 min-w-0 space-y-0.5">
-            <div className="flex items-baseline gap-2">
-              <h3 className="text-[15px] font-semibold leading-5 tracking-tight truncate" dir={isRTL ? 'rtl' : 'ltr'}>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h3 className="text-[15px] font-semibold leading-tight tracking-tight truncate" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {badges?.map((badge, idx) => (
-                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1 text-[11.5px] font-medium px-2 py-0.5">
+                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 h-5">
                   {badge.icon}
                   <span>{badge.label}</span>
                 </Badge>
               ))}
               {privacyBadge && (
-                <Badge variant="outline" className={cn("text-[11.5px] font-medium px-2 py-0.5", privacyBadge.color)}>
+                <Badge variant="outline" className={cn("text-[11px] font-medium px-2 py-0.5 h-5", privacyBadge.color)}>
                   🔒 {privacyBadge.label}
                 </Badge>
               )}
+              {timestamp && (
+                <span className="text-[12px] text-muted-foreground/70 ml-auto">
+                  {formatTimestamp()}
+                </span>
+              )}
             </div>
-            <p className="text-[13.5px] leading-5 text-white/90 line-clamp-1" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[13.5px] leading-snug text-white/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             {metadata && (
-              <div className="flex items-center gap-3 text-[12px] text-muted-foreground">
+              <div className="flex items-center gap-2 text-[12px] text-muted-foreground/75">
                 {metadata.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-1">
-                    {item.icon}
-                    <span>{item.text}</span>
-                  </div>
+                  <React.Fragment key={idx}>
+                    {idx > 0 && <span className="text-muted-foreground/40">•</span>}
+                    <div className="flex items-center gap-1">
+                      {item.icon}
+                      <span>{item.text}</span>
+                    </div>
+                  </React.Fragment>
                 ))}
               </div>
             )}
           </div>
 
-          <div className="flex items-baseline justify-end gap-2">
-            {timestamp && (
-              <span className="text-[12.5px] text-muted-foreground">
-                {formatTimestamp()}
-              </span>
-            )}
-            
+          <div className="flex items-center justify-end gap-2">
             {primaryAction && (
               <Button
                 size="sm"
-                variant={primaryAction.variant || 'outline'}
+                variant="ghost"
                 onClick={handlePrimaryAction}
                 disabled={primaryAction.disabled}
-                className="opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity h-7 text-[13px]"
+                className="h-8 text-[13px] hover:bg-accent/10 group-hover:bg-accent/10"
               >
                 {primaryAction.icon}
                 {primaryAction.label}
@@ -277,7 +279,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity h-7 w-7 p-0"
+                    className="h-8 w-8 p-0"
                   >
                     <MoreVertical className="w-4 h-4" />
                   </Button>
@@ -315,6 +317,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             aria-label="Expanded card content"
             aria-live="polite"
             className="px-4 pb-3 pt-2 border-t border-white/10 overflow-hidden transition-all duration-200 ease-out"
+            style={{ padding: '12px 16px' }}
           >
             {expandedContent}
           </div>

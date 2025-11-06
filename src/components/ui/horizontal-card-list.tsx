@@ -205,9 +205,9 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
   }
 
   const gapClass = {
-    sm: 'space-y-3',
-    md: 'space-y-3',
-    lg: 'space-y-4'
+    sm: 'divide-y divide-white/5',
+    md: 'divide-y divide-white/5',
+    lg: 'space-y-2'
   }[gap];
 
   return (
@@ -215,7 +215,7 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
       {groupedItems.map((group, groupIdx) => (
         <div key={groupIdx} className="mb-6">
         {group.label && (
-          <div className="text-[12px] font-medium text-muted-foreground/80 uppercase tracking-wide py-1.5 px-2 sticky top-0 bg-background/80 backdrop-blur-sm z-10">
+          <div className="text-[12px] font-medium text-muted-foreground/80 uppercase tracking-wide py-1 px-2 h-8 sticky top-0 bg-background/80 backdrop-blur-sm z-10 flex items-center mb-1">
             {group.label}
           </div>
         )}

@@ -181,7 +181,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             
             <Badge 
               variant="secondary" 
-              className="absolute top-1.5 left-1.5 bg-white/25 backdrop-blur-sm border border-white/40 text-[11.5px] px-2 py-0.5"
+              className="absolute top-1.5 left-1.5 bg-white/25 backdrop-blur-sm border border-white/40 text-[11px] px-2 py-0.5 h-5"
             >
               {category.icon} {category.label}
             </Badge>
@@ -193,19 +193,24 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             )}
           </div>
 
-          <div className="flex-1 px-4 py-2.5 flex flex-col justify-center space-y-0.5">
-            <div className="flex items-baseline gap-2">
-              <h3 className="text-[15px] font-semibold leading-5 tracking-tight line-clamp-1" dir={isRTL ? 'rtl' : 'ltr'}>
+          <div className="flex-1 px-4 py-2 flex flex-col justify-center space-y-0.5">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h3 className="text-[15px] font-semibold leading-tight tracking-tight truncate" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {privacyBadge && (
-                <Badge variant="outline" className={cn("text-[11.5px] font-medium px-2 py-0.5", privacyBadge.color)}>
+                <Badge variant="outline" className={cn("text-[11px] font-medium px-2 py-0.5 h-5", privacyBadge.color)}>
                   🔒 {privacyBadge.label}
                 </Badge>
               )}
+              {timestamp && (
+                <span className="text-[12px] text-muted-foreground/70 ml-auto">
+                  {formatTimestamp()}
+                </span>
+              )}
             </div>
             
-            <p className="text-[13.5px] leading-5 text-white/90 line-clamp-1" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[13.5px] leading-snug text-white/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             
@@ -216,29 +221,26 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             )}
             
             {metadata && (
-              <div className="flex items-center gap-3 text-[12px] text-muted-foreground">
+              <div className="flex items-center gap-2 text-[12px] text-muted-foreground/75">
                 {metadata.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-1">
-                    {item.icon}
-                    <span>{item.text}</span>
-                  </div>
+                  <React.Fragment key={idx}>
+                    {idx > 0 && <span className="text-muted-foreground/40">•</span>}
+                    <div className="flex items-center gap-1">
+                      {item.icon}
+                      <span>{item.text}</span>
+                    </div>
+                  </React.Fragment>
                 ))}
               </div>
             )}
           </div>
 
-          <div className="flex flex-col items-center justify-between p-2 bg-muted/20">
+          <div className="flex flex-col items-center justify-center p-2 bg-muted/20 gap-2">
             {statusBadge && (
-              <Badge variant={statusBadge.variant} className="flex items-center gap-1 text-[11.5px] font-medium px-2 py-0.5">
+              <Badge variant={statusBadge.variant} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 h-5">
                 {statusBadge.icon}
                 <span>{statusBadge.label}</span>
               </Badge>
-            )}
-            
-            {timestamp && (
-              <span className="text-[12.5px] text-center text-muted-foreground">
-                {formatTimestamp()}
-              </span>
             )}
             
             {statusDot && (
@@ -253,6 +255,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             aria-label="Expanded card content"
             aria-live="polite"
             className="px-4 pb-3 pt-2 border-t border-white/10 overflow-hidden transition-all duration-200 ease-out"
+            style={{ padding: '12px 16px' }}
           >
             {expandedContent}
           </div>

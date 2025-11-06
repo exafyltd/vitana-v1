@@ -68,12 +68,12 @@ export function MemoryTimelineTab() {
       },
       ...(item.memoryType ? [{ label: item.memoryType, variant: 'outline' as const }] : [])
     ],
-    metadata: [
-      ...(item.confidenceScore ? [{ 
-        icon: <Sparkles className="w-3 h-3 text-amber-500" />, 
-        text: `${Math.round(item.confidenceScore * 100)}% confidence` 
-      }] : [])
-    ],
+    metadata: item.confidenceScore ? [
+      {
+        icon: <Sparkles className="w-3.5 h-3.5 text-amber-500" />,
+        text: `${Math.round(item.confidenceScore * 100)}% confidence`
+      }
+    ] : undefined,
     timestamp: new Date(item.createdAt),
     primaryAction: {
       label: 'Open',
@@ -94,27 +94,16 @@ export function MemoryTimelineTab() {
       }
     ],
     expandedContent: item.tags && item.tags.length > 0 ? (
-      <div className="space-y-2 animate-in fade-in duration-150">
-        <div className="flex items-center gap-1 text-[12px] text-muted-foreground mb-2">
-          {item.confidenceScore && (
-            <>
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span className="font-medium">{Math.round(item.confidenceScore * 100)}% confidence</span>
-            </>
-          )}
-        </div>
-        
-        <div className="border-t border-white/10 pt-2">
-          <div className="flex flex-wrap gap-2">
-            {item.tags.map((tag) => (
-              <span 
-                key={tag} 
-                className="rounded-full bg-white/5 hover:bg-white/10 px-3 py-1 text-[11.5px] font-medium transition-colors"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+      <div className="space-y-2 transition-opacity duration-150">
+        <div className="flex flex-wrap gap-1.5">
+          {item.tags.map((tag) => (
+            <span 
+              key={tag} 
+              className="inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-xs text-white/80 hover:bg-white/10 transition-colors"
+            >
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
     ) : undefined,
@@ -158,6 +147,7 @@ export function MemoryTimelineTab() {
           hasMore={hasNextPage}
           isLoading={isFetchingNextPage}
           gap="sm"
+          className="pb-4"
           emptyState={
             <Card className="border-dashed">
               <CardContent className="p-12 text-center">

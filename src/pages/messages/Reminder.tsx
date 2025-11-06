@@ -134,9 +134,9 @@ export default function Reminder() {
         }
       ],
     expandedContent: (
-      <div className="space-y-2 animate-in fade-in duration-150" aria-label="Quick Replies">
-        <p className="text-[12px] text-muted-foreground mb-1">Quick Replies:</p>
-        <div className="flex flex-wrap gap-2">
+      <div className="space-y-1.5 transition-opacity duration-150" aria-label="Quick Replies">
+        <p className="text-[12px] text-muted-foreground/80 font-medium">Quick Replies</p>
+        <div className="flex flex-wrap gap-1.5">
           {msg.quickReplies.map((reply, idx) => (
             <Button
               key={idx}
@@ -271,6 +271,7 @@ export default function Reminder() {
         screenId={SCREEN_IDS.INBOX_REMINDER}
         listId="reminder-unanswered"
         gap="sm"
+        className="pb-4"
                     emptyState={
                       <Card className="border-dashed">
                         <CardContent className="p-12 text-center">
