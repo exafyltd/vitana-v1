@@ -10,27 +10,21 @@ import { BiomarkersMasterActionPopup } from "@/components/BiomarkersMasterAction
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { HorizontalCardList } from '@/components/ui/horizontal-card-list';
+import { StandardHorizontalCardProps } from '@/components/ui/standard-horizontal-card';
 import { 
   FileText, 
-  ChevronDown, 
-  ChevronUp, 
-  Download, 
-  Share2, 
-  Calendar,
-  Building2,
-  CheckCircle,
-  AlertTriangle,
-  TrendingDown,
-  Clock,
-  Plus,
+  Upload, 
   Dna,
   TestTube,
   Pill,
-  Upload,
   Activity,
-  Filter
+  Filter,
+  CheckCircle,
+  AlertTriangle,
+  TrendingDown,
+  Plus
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
@@ -81,7 +75,6 @@ interface OmicsResult {
 
 export default function MyBiology() {
   const [results, setResults] = useState<TestResult[]>([]);
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const [biomarkerActionsOpen, setBiomarkerActionsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("medical");
@@ -254,22 +247,6 @@ export default function MyBiology() {
     }
   ];
 
-  const toggleExpandRow = (resultId: string) => {
-    const newExpanded = new Set(expandedRows);
-    if (newExpanded.has(resultId)) {
-      newExpanded.delete(resultId);
-    } else {
-      newExpanded.add(resultId);
-      // Log biomarker view when expanding
-      const result = results.find(r => r.id === resultId);
-      if (result) {
-        const biomarkers = getMockBiomarkers(result.lab_test.name);
-        logBiomarkerView(result.lab_test.name, biomarkers.length);
-      }
-    }
-    setExpandedRows(newExpanded);
-  };
-
   const getMockBiomarkers = (testName: string): BiomarkerItem[] => {
     const baseMarkers = [
       { name: 'Cholesterol', value: 190, unit: 'mg/dL', referenceMin: 125, referenceMax: 200, status: 'normal' as const },
@@ -344,6 +321,49 @@ export default function MyBiology() {
   }, {} as Record<string, number>);
 
   const medicalResults = results.filter(r => r.lab_test.category === 'medical');
+
+  // Transform medical results to StandardHorizontalCard format
+  const transformedMedicalCards: StandardHorizontalCardProps[] = medicalResults.map((result) => {
+    const mockBiomarkers = getMockBiomarkers(result.lab_test.name);
+    const overallStatus = getOverallStatus(mockBiomarkers);
+    
+    return {
+      id: result.id,
+      screenId: 'my-biology-medical',
+      icon: <TestTube className="w-5 h-5" />,
+      title: result.lab_test.name,
+      description: result.lab_test.provider_name,
+      badges: [
+        {
+          label: overallStatus.status,
+          variant: overallStatus.status === 'Critical' ? 'destructive' : 
+                   overallStatus.status === 'Needs Attention' ? 'outline' : 'secondary' as const,
+        }
+      ],
+      timestamp: format(new Date(result.completed_at), 'MMM dd, yyyy'),
+      expandedContent: (
+        <div className="grid gap-2 py-2">
+          {mockBiomarkers.map((biomarker) => (
+            <div key={biomarker.name} className="flex items-center justify-between p-3 bg-background rounded-lg">
+              <div className="flex items-center gap-2">
+                {getStatusIcon(biomarker.status)}
+                <div>
+                  <div className="font-medium text-sm">{biomarker.name}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {biomarker.referenceMin} - {biomarker.referenceMax} {biomarker.unit}
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="font-semibold text-sm">{biomarker.value} {biomarker.unit}</div>
+                <div className="text-xs capitalize text-muted-foreground">{biomarker.status}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    };
+  });
 
   return (
     <AppLayout>
@@ -437,71 +457,19 @@ export default function MyBiology() {
                       </Button>
                     </div>
 
-                    <div className="space-y-3">
-                      {medicalResults.length > 0 ? (
-                        medicalResults.map((result) => {
-                          const mockBiomarkers = getMockBiomarkers(result.lab_test.name);
-                          const overallStatus = getOverallStatus(mockBiomarkers);
-                          const isExpanded = expandedRows.has(result.id);
-
-                          return (
-                            <Card key={result.id} className="overflow-hidden">
-                              <CardContent className="p-0">
-                                <div className="flex items-center gap-4 p-4 hover:bg-muted/30 transition-colors">
-                                  <div className="flex-1">
-                                    <h3 className="font-semibold">{result.lab_test.name}</h3>
-                                    <p className="text-sm text-muted-foreground">{result.lab_test.provider_name}</p>
-                                  </div>
-                                  <div className="text-sm text-muted-foreground">
-                                    {format(new Date(result.completed_at), 'MMM dd, yyyy')}
-                                  </div>
-                                  <Badge className={overallStatus.color}>{overallStatus.status}</Badge>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => toggleExpandRow(result.id)}
-                                  >
-                                    {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                                  </Button>
-                                </div>
-
-                                {isExpanded && (
-                                  <>
-                                    <Separator />
-                                    <div className="p-4 bg-muted/20">
-                                      <div className="grid gap-2">
-                                        {mockBiomarkers.map((biomarker) => (
-                                          <div key={biomarker.name} className="flex items-center justify-between p-3 bg-background rounded-lg">
-                                            <div className="flex items-center gap-2">
-                                              {getStatusIcon(biomarker.status)}
-                                              <div>
-                                                <div className="font-medium">{biomarker.name}</div>
-                                                <div className="text-xs text-muted-foreground">
-                                                  {biomarker.referenceMin} - {biomarker.referenceMax} {biomarker.unit}
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div className="text-right">
-                                              <div className="font-semibold">{biomarker.value} {biomarker.unit}</div>
-                                              <div className="text-xs capitalize">{biomarker.status}</div>
-                                            </div>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
-                              </CardContent>
-                            </Card>
-                          );
-                        })
-                      ) : (
+                    <HorizontalCardList
+                      items={transformedMedicalCards}
+                      variant="standard"
+                      screenId="my-biology-medical"
+                      groupBy="none"
+                      gap="md"
+                      emptyState={
                         <div className="text-center py-12 text-muted-foreground">
                           <TestTube className="w-12 h-12 mx-auto mb-4 opacity-50" />
                           <p>No medical biomarker data yet. Add your first results above.</p>
                         </div>
-                      )}
-                    </div>
+                      }
+                    />
                   </CardContent>
                 </Card>
               </div>
