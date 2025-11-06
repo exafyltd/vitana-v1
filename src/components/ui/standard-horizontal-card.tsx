@@ -177,29 +177,26 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         ref={ref || cardRef}
         className={cn(
           "group relative overflow-hidden",
-          "rounded-xl border border-white/20",
-          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]",
+          "rounded-xl border border-white/10",
+          "hover:border-[hsl(var(--accent))]/30 hover:shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
           "transition-all duration-200 ease-out",
-          "min-h-[76px]",
+          "min-h-[72px]",
+          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-transparent",
+          "before:transition-colors before:duration-200",
+          accentColor && "hover:before:bg-current focus-visible:before:bg-current",
           className
         )}
         role="article"
         style={{
-          background: 'rgba(255,255,255,0.5)',
-          backdropFilter: 'blur(4px)'
+          background: 'rgba(255,255,255,0.4)',
+          backdropFilter: 'blur(6px)',
+          color: accentColor || undefined
         }}
       >
-        {accentColor && (
-          <div className={cn(
-            "absolute top-0 bottom-0 w-0.5 rounded-l-xl opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200",
-            `bg-${accentColor}`,
-            isRTL ? 'right-0 rounded-l-none rounded-r-xl' : 'left-0'
-          )} />
-        )}
 
         <div 
           className={cn(
-            "grid items-center gap-2 px-4 py-2 cursor-pointer min-h-[76px]",
+            "grid items-center gap-2 px-4 py-2 cursor-pointer min-h-[72px]",
             "grid-cols-[36px_1fr_auto]",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/45 focus-visible:ring-offset-2"
           )}
@@ -219,28 +216,28 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           </div>
 
           <div className="flex-1 min-w-0 space-y-1">
-            <div className="flex items-center gap-1.5 flex-nowrap">
-              <h3 className="text-[15px] font-semibold leading-tight tracking-tight truncate flex-shrink min-w-0" dir={isRTL ? 'rtl' : 'ltr'}>
+            <div className="flex items-baseline gap-2 flex-nowrap">
+              <h3 className="text-[15px] font-semibold leading-tight tracking-tight truncate flex-shrink min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {badges?.map((badge, idx) => (
-                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 h-5 flex-shrink-0">
+                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 h-5 flex-shrink-0 opacity-80">
                   {badge.icon}
                   <span>{badge.label}</span>
                 </Badge>
               ))}
               {privacyBadge && (
-                <Badge variant="outline" className={cn("text-[11px] font-medium px-2 py-0.5 h-5 flex-shrink-0", privacyBadge.color)}>
+                <Badge variant="outline" className={cn("text-[11px] font-medium px-2 py-0.5 h-5 flex-shrink-0 opacity-80", privacyBadge.color)}>
                   🔒 {privacyBadge.label}
                 </Badge>
               )}
               {timestamp && (
-                <span className="text-[12px] text-muted-foreground/70 ml-auto flex-shrink-0">
+                <span className="text-[12px] text-muted-foreground/60 ml-auto flex-shrink-0">
                   {formatTimestamp()}
                 </span>
               )}
             </div>
-            <p className="text-[13.5px] leading-snug text-white/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[13.5px] leading-snug text-foreground/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             {metadata && (
@@ -262,10 +259,10 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             {primaryAction && (
               <Button
                 size="sm"
-                variant="outline"
+                variant="ghost"
                 onClick={handlePrimaryAction}
                 disabled={primaryAction.disabled}
-                className="h-8 px-3 text-[13px] font-medium hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+                className="h-8 px-3 text-[13px] font-medium opacity-70 hover:opacity-100 hover:bg-accent hover:text-accent-foreground group-hover:opacity-100 transition-all duration-200"
               >
                 {primaryAction.icon}
                 {primaryAction.label}
@@ -315,11 +312,10 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             role="region"
             aria-label="Expanded card content"
             aria-live="polite"
-            className="px-4 pb-2 pt-1.5 border-t border-white/10 animate-accordion-down"
+            className="px-4 pb-3 pt-2 border-t border-white/10"
             style={{ 
               animation: 'accordion-down 200ms ease-out',
-              paddingLeft: '16px',
-              paddingRight: '16px'
+              padding: '8px 16px 12px'
             }}
           >
             {expandedContent}

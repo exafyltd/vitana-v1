@@ -131,11 +131,14 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         ref={ref || cardRef}
         className={cn(
           "group relative overflow-hidden",
-          "rounded-xl border border-white/20",
-          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]",
+          "rounded-xl border border-white/10",
+          "hover:border-[hsl(var(--accent))]/30 hover:shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
           "transition-all duration-200 ease-out",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/45 focus-visible:ring-offset-2",
           "min-h-[84px]",
+          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-transparent",
+          "before:transition-colors before:duration-200",
+          "hover:before:bg-current focus-visible:before:bg-current",
           className
         )}
         onClick={onClick}
@@ -150,8 +153,9 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           }
         }}
         style={{
-          background: 'rgba(255,255,255,0.5)',
-          backdropFilter: 'blur(4px)'
+          background: 'rgba(255,255,255,0.4)',
+          backdropFilter: 'blur(6px)',
+          color: category.color || undefined
         }}
       >
         <div className="grid items-stretch grid-cols-[35%_1fr_72px]">
@@ -193,23 +197,23 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           </div>
 
           <div className="flex-1 px-4 py-2 flex flex-col justify-center gap-1.5">
-            <div className="flex items-center gap-1.5 flex-nowrap">
-              <h3 className="text-[15px] font-semibold leading-tight tracking-tight truncate flex-shrink min-w-0" dir={isRTL ? 'rtl' : 'ltr'}>
+            <div className="flex items-baseline gap-2 flex-nowrap">
+              <h3 className="text-[15px] font-semibold leading-tight tracking-tight truncate flex-shrink min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {privacyBadge && (
-                <Badge variant="outline" className={cn("text-[11px] font-medium px-2 py-0.5 h-5 flex-shrink-0", privacyBadge.color)}>
+                <Badge variant="outline" className={cn("text-[11px] font-medium px-2 py-0.5 h-5 flex-shrink-0 opacity-80", privacyBadge.color)}>
                   🔒 {privacyBadge.label}
                 </Badge>
               )}
               {timestamp && (
-                <span className="text-[12px] text-muted-foreground/70 ml-auto flex-shrink-0">
+                <span className="text-[12px] text-muted-foreground/60 ml-auto flex-shrink-0">
                   {formatTimestamp()}
                 </span>
               )}
             </div>
             
-            <p className="text-[13.5px] leading-snug text-white/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[13.5px] leading-snug text-foreground/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             
@@ -242,7 +246,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
 
           <div className="flex flex-col items-center justify-center p-2 bg-muted/20 gap-2">
             {statusBadge && (
-              <Badge variant={statusBadge.variant} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 h-5">
+              <Badge variant={statusBadge.variant} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 h-5 opacity-80">
                 {statusBadge.icon}
                 <span>{statusBadge.label}</span>
               </Badge>
@@ -259,7 +263,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             role="region"
             aria-label="Expanded card content"
             aria-live="polite"
-            className="px-4 pb-2 pt-1.5 border-t border-white/10 animate-accordion-down"
+            className="px-4 pb-2 pt-1.5 border-t border-white/10"
             style={{ 
               animation: 'accordion-down 200ms ease-out',
               paddingLeft: '16px',
