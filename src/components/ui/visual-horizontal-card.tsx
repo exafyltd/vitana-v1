@@ -128,8 +128,6 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       return timestamp.toLocaleDateString();
     };
 
-    const aspectPadding = mediaAspect === '4:3' ? '75%' : '56.25%'; // 4:3 or 16:9
-
     return (
       <article
         ref={ref || cardRef}
@@ -138,7 +136,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           "rounded-xl border border-white/10",
           "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
-          "min-h-[160px]",
+          "min-h-[100px]",
           "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[2px] before:rounded-l-xl",
           "before:bg-transparent before:transition-all before:duration-200",
           "hover:before:bg-current",
@@ -154,8 +152,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       >
         <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_1fr_80px]">
           <div 
-            className="relative overflow-hidden min-h-[160px] lg:min-h-0 rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none"
-            style={{ paddingBottom: aspectPadding }}
+            className="relative overflow-hidden h-[100px] rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none"
           >
             {!imageError ? (
               <>

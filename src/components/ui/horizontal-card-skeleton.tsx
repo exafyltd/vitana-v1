@@ -19,7 +19,7 @@ export function HorizontalCardSkeleton({
           key={index} 
           className={cn(
             "relative overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm",
-            variant === 'standard' ? 'min-h-[88px]' : 'min-h-[160px]',
+            variant === 'standard' ? 'min-h-[88px]' : 'min-h-[100px]',
             "px-4 py-3",
             className
           )}
@@ -31,11 +31,8 @@ export function HorizontalCardSkeleton({
           {variant === 'visual' ? (
             <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_1fr_80px] gap-3">
               {/* Image skeleton with reserved height */}
-              <div className="relative min-h-[160px] lg:min-h-0 rounded-xl overflow-hidden">
-                <div 
-                  className="absolute inset-0 bg-muted/40"
-                  style={{ paddingBottom: '56.25%' }} // 16:9 aspect ratio reserved space
-                />
+              <div className="relative h-[100px] rounded-xl overflow-hidden">
+                <div className="absolute inset-0 bg-muted/40" />
                 <Skeleton className="absolute top-1.5 left-1.5 h-5 w-20" />
               </div>
               

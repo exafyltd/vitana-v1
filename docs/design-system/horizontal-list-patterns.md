@@ -49,16 +49,16 @@ Does the list item need an image?
 **Image-heavy horizontal card** with visual content, category badge, and status indicators.
 
 **Dimensions (LOCKED):**
-- `min-h-[160px]` - Fixed minimum height
+- `min-h-[100px]` - Fixed minimum height (unified with endless scroll impression)
 - `px-4 py-3` - Internal padding (16px horizontal, 12px vertical)
 - `gap-3` - Spacing between cards (12px)
 - `rounded-xl` - Corner radius (12px)
 
 **Layout:**
 - Image: 36% width (≥1024px), stacked on smaller screens
-- Image aspect: 16:9 default (56.25% padding), 4:3 option (75% padding) via `mediaAspect` prop
+- Image height: Fixed `h-[100px]` with centered `object-cover` (no aspect-ratio padding)
 - Image treatment: `object-cover`, `rounded-t-xl lg:rounded-l-xl`, `lazy` loading
-- Reserved height via padding-bottom trick to prevent CLS
+- Fixed height prevents CLS while maintaining endless scroll impression
 - Category badge: overlays top-left inside media (z-10)
 - Title: 15px/semibold (2-line clamp)
 - Description: 13.5px (2-line clamp)
@@ -89,7 +89,7 @@ Does the list item need an image?
 **Container** with virtualization (≥30 items, disabled when any card expanded), infinite scroll (600px rootMargin), grouping, and single-open expansion.
 
 ### HorizontalCardSkeleton
-**Loading state** for both patterns with shimmer animation, matching dimensions (Standard=88px, Visual=160px), same paddings (px-4 py-3), and gap-3. Shows 3-5 skeleton rows while loading. Reserved media height for Visual variant to prevent CLS.
+**Loading state** for both patterns with shimmer animation, matching dimensions (Standard=88px, Visual=100px), same paddings (px-4 py-3), and gap-3. Shows 3-5 skeleton rows while loading. Fixed media height for Visual variant to prevent CLS.
 
 ## Analytics
 
@@ -173,7 +173,6 @@ const items: VisualHorizontalCardProps[] = activities.map(activity => ({
   screenId: 'AI_FEED_ACTIVITY',
   imageUrl: activity.image,
   imageAlt: activity.title,
-  mediaAspect: '16:9', // or '4:3'
   category: {
     icon: '💧',
     label: 'Health',
