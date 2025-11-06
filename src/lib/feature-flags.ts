@@ -1,3 +1,6 @@
+import { runHorizontalCardsA11yTests } from '@/tests/horizontal-cards-a11y.test';
+import { runHorizontalCardsRTLTests } from '@/tests/horizontal-cards-rtl.test';
+
 interface FeatureFlags {
   enableHorizontalCardsV2: boolean;
   enableHorizontalCardsReminder: boolean;
@@ -8,16 +11,36 @@ interface FeatureFlags {
 
 export const FEATURE_FLAGS: FeatureFlags = {
   enableHorizontalCardsV2: true, // Master flag
-  enableHorizontalCardsReminder: true, // Pilot 1 - enabled for testing
-  enableHorizontalCardsTimeline: true, // Pilot 2 - enabled for testing
+  enableHorizontalCardsReminder: import.meta.env.VITE_FEATURE_HORIZONTAL_CARDS_ENABLED === 'true' || import.meta.env.DEV, // Pilot 1
+  enableHorizontalCardsTimeline: import.meta.env.VITE_FEATURE_HORIZONTAL_CARDS_ENABLED === 'true' || import.meta.env.DEV, // Pilot 2
   enableHorizontalCardsAIFeed: false, // Wave 2
   enableHorizontalCardsSharing: false, // Wave 2
 };
 
 let testsPassed = true; // Default true for development
 
+// Run tests before allowing feature flags
+export async function validateHorizontalCardsTests(): Promise<boolean> {
+  if (testsPassed) return true;
+
+  console.log('[Feature Gate] Running acceptance tests...');
+
+  const a11yPassed = await runHorizontalCardsA11yTests();
+  const rtlPassed = await runHorizontalCardsRTLTests();
+
+  testsPassed = a11yPassed && rtlPassed;
+
+  if (testsPassed) {
+    console.log('[Feature Gate] ✓ All tests passed. Feature flags can be enabled.');
+  } else {
+    console.error('[Feature Gate] ✗ Tests failed. Feature flags BLOCKED.');
+  }
+
+  return testsPassed;
+}
+
 export function isFeatureEnabled(flag: keyof FeatureFlags): boolean {
-  if (!testsPassed && process.env.NODE_ENV === 'production') {
+  if (!testsPassed && import.meta.env.PROD) {
     console.warn(`[Feature Gate] ${flag} blocked - tests not passed`);
     return false;
   }
@@ -27,7 +50,7 @@ export function isFeatureEnabled(flag: keyof FeatureFlags): boolean {
 
 // Force enable for development (bypasses tests)
 export function forceEnableForDev(flag: keyof FeatureFlags) {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     console.warn(`[DEV ONLY] Force enabling ${flag}`);
     FEATURE_FLAGS[flag] = true;
     testsPassed = true;

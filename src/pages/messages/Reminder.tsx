@@ -8,12 +8,19 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { ReminderMasterActionPopup } from "@/components/messages/ReminderMasterActionPopup";
-import { Clock, Send, Plus, MessageCircle, BarChart3, AlertCircle } from "lucide-react";
+import { Clock, Send, Plus, MessageCircle, BarChart3, AlertCircle, CheckCircle, Edit, Trash2, Shield, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { messagesNavigation } from "@/config/navigation";
+import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
+import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { HealthConsentGate } from "@/components/ui/health-consent-gate";
+import { horizontalCardsSLO } from "@/lib/horizontal-cards-slo";
+import { isFeatureEnabled } from "@/lib/feature-flags";
+import { SCREEN_IDS } from "@/lib/screen-id";
+import { toast } from "sonner";
 
 const unansweredMessages = [
   { 
@@ -53,6 +60,158 @@ const unansweredMessages = [
 export default function Reminder() {
   const [reminderActionOpen, setReminderActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("unanswered");
+  const [consentOpen, setConsentOpen] = useState(false);
+  const [consentAction, setConsentAction] = useState<() => void>(() => {});
+
+  const useNewCards = isFeatureEnabled('enableHorizontalCardsReminder');
+
+  // SLO Tracking
+  useEffect(() => {
+    if (useNewCards) {
+      horizontalCardsSLO.startTTI();
+    }
+  }, [useNewCards]);
+
+  useEffect(() => {
+    if (useNewCards) {
+      horizontalCardsSLO.endTTI();
+    }
+  }, [useNewCards]);
+
+  // Action Handlers
+  const handleMarkDone = (messageId: number) => {
+    console.log('[Reminder] Marking message as done:', messageId);
+    toast.success('Message marked as done');
+  };
+
+  const handleSnooze = (messageId: number) => {
+    console.log('[Reminder] Snoozing message:', messageId);
+    toast.info('Message snoozed for 1 hour');
+  };
+
+  const handleEdit = (messageId: number) => {
+    console.log('[Reminder] Editing message:', messageId);
+    toast.info('Edit dialog would open here');
+  };
+
+  const handleDelete = (messageId: number) => {
+    console.log('[Reminder] Deleting message:', messageId);
+    toast.success('Message deleted');
+  };
+
+  const handleReply = (messageId: number, reply: string) => {
+    console.log('[Reminder] Sending reply:', reply);
+    toast.success('Reply sent!');
+  };
+
+  // Transform messages to StandardHorizontalCardProps
+  const transformedMessages: StandardHorizontalCardProps[] = [
+    ...unansweredMessages.map(msg => ({
+      id: msg.id.toString(),
+      screenId: SCREEN_IDS.INBOX_REMINDER,
+      icon: (
+        <Avatar className="w-12 h-12">
+          <AvatarImage src={msg.avatar} alt={msg.name} />
+          <AvatarFallback>{msg.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+        </Avatar>
+      ),
+      title: msg.name,
+      description: msg.message,
+      badges: [
+        { label: 'Unanswered', variant: 'secondary' as const, icon: <Clock className="w-3 h-3" /> }
+      ],
+      metadata: [
+        { icon: <Clock className="w-3 h-3" />, text: msg.time }
+      ],
+      timestamp: msg.time,
+      primaryAction: {
+        label: 'Mark Done',
+        onClick: () => handleMarkDone(msg.id),
+        variant: 'default' as const,
+        icon: <CheckCircle className="w-4 h-4 mr-1" />
+      },
+      secondaryActions: [
+        { 
+          label: 'Snooze', 
+          onClick: () => handleSnooze(msg.id), 
+          icon: <Clock className="w-3 h-3 mr-1" /> 
+        },
+        { 
+          label: 'Edit', 
+          onClick: () => handleEdit(msg.id), 
+          icon: <Edit className="w-3 h-3 mr-1" /> 
+        },
+        { 
+          label: 'Delete', 
+          onClick: () => handleDelete(msg.id), 
+          icon: <Trash2 className="w-3 h-3 mr-1" /> 
+        }
+      ],
+      expandedContent: (
+        <div className="pt-4 space-y-3 border-t border-white/10">
+          <div className="text-sm font-medium text-muted-foreground">Quick Replies:</div>
+          <div className="flex flex-wrap gap-2">
+            {msg.quickReplies.map((reply, idx) => (
+              <Button
+                key={idx}
+                variant="outline"
+                size="sm"
+                onClick={() => handleReply(msg.id, reply)}
+              >
+                <Send className="w-3 h-3 mr-1" />
+                {reply}
+              </Button>
+            ))}
+          </div>
+        </div>
+      ),
+      density: 'comfy' as const,
+      accentColor: 'hsl(var(--domain-messages-accent))'
+    })),
+    // TEST ITEM with consent requirement
+    {
+      id: 'consent-test-001',
+      screenId: SCREEN_IDS.INBOX_REMINDER,
+      icon: <Avatar className="w-12 h-12"><AvatarFallback>🔒</AvatarFallback></Avatar>,
+      title: 'Health Data Share Request',
+      description: 'Dr. Smith requested access to your recent lab results',
+      badges: [
+        { label: 'Requires Consent', variant: 'destructive' as const, icon: <Shield className="w-3 h-3" /> }
+      ],
+      privacyBadge: {
+        label: 'HIPAA Protected',
+        color: 'text-amber-600'
+      },
+      metadata: [
+        { icon: <Clock className="w-3 h-3" />, text: '5m ago' }
+      ],
+      timestamp: '5m ago',
+      primaryAction: {
+        label: 'Share Data',
+        onClick: () => {
+          setConsentAction(() => () => {
+            console.log('[HIPAA Audit] Data shared with provider');
+            toast.success('Health data shared with Dr. Smith');
+          });
+          setConsentOpen(true);
+        },
+        variant: 'default' as const,
+        icon: <Share2 className="w-4 h-4 mr-1" />,
+        requiresConsent: true
+      },
+      requiresConsent: true,
+      onConsentRequired: () => {
+        setConsentAction(() => () => {
+          console.log('[HIPAA Audit] Data shared with provider');
+          toast.success('Health data shared with Dr. Smith');
+        });
+        setConsentOpen(true);
+      },
+      density: 'comfy' as const,
+      accentColor: 'hsl(var(--pill-health-accent))'
+    }
+  ];
+
   return (
     <AppLayout>
       <SEO 
@@ -99,48 +258,76 @@ export default function Reminder() {
             </SplitBarList>
 
             <SplitBarContent value="unanswered">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-blue-500" />
-                    Unanswered Messages
-                    <Badge variant="secondary">{unansweredMessages.length}</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {unansweredMessages.map((message) => (
-                    <div key={message.id} className="border rounded-lg p-4 space-y-3">
-                      <div className="flex items-start gap-3">
-                        <Avatar className="w-10 h-10">
-                          <AvatarImage src={message.avatar} alt={message.name} />
-                          <AvatarFallback>{message.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-medium text-sm">{message.name}</h4>
-                            <span className="text-xs text-muted-foreground">{message.time}</span>
+              {useNewCards ? (
+                <>
+                  <HorizontalCardList
+                    items={transformedMessages}
+                    variant="standard"
+                    groupBy="date"
+                    screenId={SCREEN_IDS.INBOX_REMINDER}
+                    listId="reminder-unanswered"
+                    gap="md"
+                    emptyState={
+                      <Card className="border-dashed">
+                        <CardContent className="p-12 text-center">
+                          <MessageCircle className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
+                          <p className="text-muted-foreground">All caught up! No unanswered messages.</p>
+                        </CardContent>
+                      </Card>
+                    }
+                  />
+                  
+                  <HealthConsentGate
+                    open={consentOpen}
+                    onOpenChange={setConsentOpen}
+                    actionDescription="share your health data with Dr. Smith"
+                    onConsent={consentAction}
+                  />
+                </>
+              ) : (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-blue-500" />
+                      Unanswered Messages
+                      <Badge variant="secondary">{unansweredMessages.length}</Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {unansweredMessages.map((message) => (
+                      <div key={message.id} className="border rounded-lg p-4 space-y-3">
+                        <div className="flex items-start gap-3">
+                          <Avatar className="w-10 h-10">
+                            <AvatarImage src={message.avatar} alt={message.name} />
+                            <AvatarFallback>{message.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-medium text-sm">{message.name}</h4>
+                              <span className="text-xs text-muted-foreground">{message.time}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-1">{message.message}</p>
                           </div>
-                          <p className="text-sm text-muted-foreground mt-1">{message.message}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2 ml-13">
+                          {message.quickReplies.map((reply, idx) => (
+                            <Button
+                              key={idx}
+                              variant="outline"
+                              size="sm"
+                              className="text-xs"
+                              onClick={() => console.log(`Sending: ${reply}`)}
+                            >
+                              <Send className="w-3 h-3 mr-1" />
+                              {reply}
+                            </Button>
+                          ))}
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-2 ml-13">
-                        {message.quickReplies.map((reply, idx) => (
-                          <Button
-                            key={idx}
-                            variant="outline"
-                            size="sm"
-                            className="text-xs"
-                            onClick={() => console.log(`Sending: ${reply}`)}
-                          >
-                            <Send className="w-3 h-3 mr-1" />
-                            {reply}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
             </SplitBarContent>
 
             <SplitBarContent value="recent">

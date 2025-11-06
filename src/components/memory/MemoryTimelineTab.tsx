@@ -1,12 +1,113 @@
 import { formatDistanceToNow } from "date-fns";
-import { FileText, Brain, Calendar, Tag } from "lucide-react";
+import { FileText, Brain, Calendar, Tag, Maximize2, Sparkles, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { Skeleton } from "@/components/ui/skeleton";
+import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
+import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { horizontalCardsSLO } from "@/lib/horizontal-cards-slo";
+import { isFeatureEnabled } from "@/lib/feature-flags";
+import { SCREEN_IDS } from "@/lib/screen-id";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 export function MemoryTimelineTab() {
   const { knowledgeItems, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useKnowledgeBase("all");
+  
+  const useNewCards = isFeatureEnabled('enableHorizontalCardsTimeline');
+
+  // SLO Tracking
+  useEffect(() => {
+    if (useNewCards) {
+      horizontalCardsSLO.startTTI();
+    }
+  }, [useNewCards]);
+
+  useEffect(() => {
+    if (useNewCards && !isLoading) {
+      horizontalCardsSLO.endTTI();
+    }
+  }, [isLoading, useNewCards]);
+
+  // Action Handlers
+  const handlePromoteToKnowledge = (itemId: string) => {
+    console.log('[Memory] Promoting to knowledge:', itemId);
+    toast.success('Saved to knowledge base');
+  };
+
+  const handleDeleteActivity = (itemId: string) => {
+    console.log('[Memory] Deleting activity:', itemId);
+    toast.success('Activity deleted');
+  };
+
+  const getAccentForSource = (source: string): string => {
+    return source === 'ai' ? 'hsl(var(--sys-ai-accent))' : 'hsl(var(--pill-memory-accent))';
+  };
+
+  // Transform knowledge items to StandardHorizontalCardProps
+  const transformedItems: StandardHorizontalCardProps[] = knowledgeItems.map(item => ({
+    id: item.id,
+    screenId: SCREEN_IDS.MEMORY_TIMELINE,
+    icon: item.source === "ai" ? (
+      <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center">
+        <Brain className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+      </div>
+    ) : (
+      <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
+        <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+      </div>
+    ),
+    title: item.source === "ai" ? "AI Insight" : "Diary Entry",
+    description: item.content,
+    badges: [
+      { 
+        label: item.source === "ai" ? "AI Insight" : "Diary Entry", 
+        variant: item.source === "ai" ? 'default' as const : 'secondary' as const 
+      },
+      ...(item.memoryType ? [{ label: item.memoryType, variant: 'outline' as const }] : [])
+    ],
+    metadata: [
+      ...(item.confidenceScore ? [{ 
+        icon: <Sparkles className="w-3 h-3" />, 
+        text: `${Math.round(item.confidenceScore * 100)}% confidence` 
+      }] : [])
+    ],
+    timestamp: new Date(item.createdAt),
+    primaryAction: {
+      label: 'Open',
+      onClick: () => console.log('Opening item:', item.id),
+      variant: 'outline' as const,
+      icon: <Maximize2 className="w-4 h-4 mr-1" />
+    },
+    secondaryActions: [
+      ...(item.source === 'ai' ? [{
+        label: 'Save as Knowledge',
+        onClick: () => handlePromoteToKnowledge(item.id),
+        icon: <Sparkles className="w-3 h-3 mr-1" />
+      }] : []),
+      { 
+        label: 'Delete', 
+        onClick: () => handleDeleteActivity(item.id), 
+        icon: <Trash2 className="w-3 h-3 mr-1" /> 
+      }
+    ],
+    expandedContent: item.tags && item.tags.length > 0 ? (
+      <div className="pt-4 border-t border-white/10">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Tag className="w-3 h-3 text-muted-foreground" />
+          {item.tags.map((tag) => (
+            <Badge key={tag} variant="outline" className="text-xs">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </div>
+    ) : undefined,
+    density: 'comfy' as const,
+    accentColor: getAccentForSource(item.source)
+  }));
 
   if (isLoading) {
     return (
@@ -32,6 +133,32 @@ export function MemoryTimelineTab() {
             <p className="text-sm mt-1">Start adding memories to see them here</p>
           </CardContent>
         </Card>
+      ) : useNewCards ? (
+        <HorizontalCardList
+          items={transformedItems}
+          variant="standard"
+          groupBy="date"
+          screenId={SCREEN_IDS.MEMORY_TIMELINE}
+          listId="timeline-all"
+          infiniteScroll={true}
+          onLoadMore={fetchNextPage}
+          hasMore={hasNextPage}
+          isLoading={isFetchingNextPage}
+          gap="md"
+          emptyState={
+            <Card className="border-dashed">
+              <CardContent className="p-12 text-center">
+                <Calendar className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
+                <p className="text-muted-foreground mb-3">
+                  No activity history yet. Start using the system to see your activity!
+                </p>
+                <Button variant="outline" size="sm">
+                  Add Memory
+                </Button>
+              </CardContent>
+            </Card>
+          }
+        />
       ) : (
         <>
           {knowledgeItems.map((item) => (
