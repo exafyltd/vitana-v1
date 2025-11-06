@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Zap, TrendingUp, Calendar, Sparkles } from "lucide-react";
+import { Zap, TrendingUp, Calendar, Sparkles, Trophy } from "lucide-react";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
+import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
+import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 
 interface ShareableMoment {
   id: string;
@@ -46,12 +47,80 @@ export function SocialShareAutopilot() {
     }
   ];
 
-  const handleAutoShare = (moment: ShareableMoment) => {
+  const handleAutoShare = (momentId: string) => {
+    const moment = shareableMoments.find(m => m.id === momentId);
+    if (moment) {
+      toast({
+        title: "Auto-Share Scheduled!",
+        description: `Your post will be shared to ${moment.suggestedPlatforms.length} platforms at ${moment.optimalTime}`,
+      });
+    }
+  };
+
+  const handleEditPost = (momentId: string) => {
     toast({
-      title: "Auto-Share Scheduled!",
-      description: `Your post will be shared to ${moment.suggestedPlatforms.length} platforms at ${moment.optimalTime}`,
+      title: "Edit Post",
+      description: "Post editor coming soon!",
     });
   };
+
+  // Transform ShareableMoment to StandardHorizontalCardProps
+  const transformedMoments = useMemo((): StandardHorizontalCardProps[] => {
+    return shareableMoments.map((moment) => {
+      // Map type to icon
+      const iconMap = {
+        milestone: Calendar,
+        achievement: Trophy,
+        event: Sparkles,
+        insight: TrendingUp,
+      };
+      
+      const IconComponent = iconMap[moment.type];
+
+      return {
+        id: moment.id,
+        screenId: '/sharing',
+        icon: <IconComponent className="h-5 w-5" />,
+        title: moment.title,
+        description: moment.description,
+        badges: [{
+          label: moment.type,
+          variant: 'secondary' as const,
+        }],
+        metadata: [
+          {
+            icon: '📊',
+            text: `Est. Reach: ${moment.estimatedReach}+`,
+          },
+          {
+            icon: '⏰',
+            text: `Best Time: ${moment.optimalTime}`,
+          },
+          {
+            icon: '🌐',
+            text: `Platforms: ${moment.suggestedPlatforms.join(', ')}`,
+          },
+        ],
+        expandedContent: (
+          <div className="p-3 rounded-lg bg-muted/50 text-sm">
+            {moment.generated_post}
+          </div>
+        ),
+        primaryAction: {
+          label: 'Auto-Share',
+          onClick: () => handleAutoShare(moment.id),
+          icon: <Zap className="h-4 w-4" />,
+          disabled: connectedPlatforms.length === 0,
+        },
+        secondaryActions: [
+          {
+            label: 'Edit Post',
+            onClick: () => handleEditPost(moment.id),
+          },
+        ],
+      };
+    });
+  }, [shareableMoments, connectedPlatforms.length]);
 
   const toggleAutopilot = () => {
     setAutoShareEnabled(!autoShareEnabled);
@@ -116,45 +185,13 @@ export function SocialShareAutopilot() {
             Ready to Share
           </h4>
           
-          {shareableMoments.map((moment) => (
-            <div key={moment.id} className="p-4 rounded-lg border bg-card space-y-3">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <Badge variant="secondary" className="mb-2">
-                    {moment.type}
-                  </Badge>
-                  <h5 className="font-medium mb-1">{moment.title}</h5>
-                  <p className="text-xs text-muted-foreground">{moment.description}</p>
-                </div>
-              </div>
-
-              <div className="p-3 rounded bg-muted/50 text-sm">
-                {moment.generated_post}
-              </div>
-
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <div className="flex items-center gap-4">
-                  <span>📊 Est. Reach: <strong>{moment.estimatedReach}+</strong></span>
-                  <span>⏰ Best Time: <strong>{moment.optimalTime}</strong></span>
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => handleAutoShare(moment)}
-                  className="gap-2"
-                  disabled={connectedPlatforms.length === 0}
-                >
-                  <Zap className="h-4 w-4" />
-                  Auto-Share
-                </Button>
-                <Button size="sm" variant="outline">
-                  Edit Post
-                </Button>
-              </div>
-            </div>
-          ))}
+          <HorizontalCardList
+            items={transformedMoments}
+            variant="standard"
+            allowMultipleExpanded={true}
+            listId="social-share-autopilot"
+            screenId="/sharing"
+          />
         </div>
 
         {/* Growth stats */}
