@@ -24,7 +24,8 @@ import {
   CheckCircle,
   AlertTriangle,
   TrendingDown,
-  Plus
+  Plus,
+  Building2
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
@@ -365,6 +366,29 @@ export default function MyBiology() {
     };
   });
 
+  // Transform omics results to StandardHorizontalCard format
+  const transformedOmicsCards: StandardHorizontalCardProps[] = mockOmicsResults.map((result) => ({
+    id: result.id,
+    screenId: 'my-biology-omics',
+    icon: <Dna className="w-5 h-5" />,
+    title: result.name,
+    description: result.description,
+    badges: [
+      {
+        label: result.category,
+        variant: 'outline' as const,
+      }
+    ],
+    metadata: [
+      {
+        icon: <Building2 className="w-3.5 h-3.5" />,
+        text: result.provider,
+      }
+    ],
+    timestamp: format(new Date(result.date), 'MMM dd, yyyy'),
+    onClick: () => logOmicsView(result.category, result.name),
+  }));
+
   return (
     <AppLayout>
       <SEO 
@@ -508,33 +532,13 @@ export default function MyBiology() {
                       </Button>
                     </div>
 
-                    <div className="space-y-3">
-                      {mockOmicsResults.map((result) => (
-                        <Card 
-                          key={result.id}
-                          className="cursor-pointer hover:bg-muted/30 transition-colors"
-                          onClick={() => logOmicsView(result.category, result.name)}
-                        >
-                          <CardContent className="p-4">
-                            <div className="flex items-center justify-between">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <h3 className="font-semibold">{result.name}</h3>
-                                  <Badge variant="outline" className="capitalize">
-                                    {result.category}
-                                  </Badge>
-                                </div>
-                                <p className="text-sm text-muted-foreground mb-1">{result.provider}</p>
-                                <p className="text-xs text-muted-foreground">{result.description}</p>
-                              </div>
-                              <div className="text-sm text-muted-foreground">
-                                {format(new Date(result.date), 'MMM dd, yyyy')}
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
+                    <HorizontalCardList
+                      items={transformedOmicsCards}
+                      variant="standard"
+                      screenId="my-biology-omics"
+                      groupBy="none"
+                      gap="md"
+                    />
                   </CardContent>
                 </Card>
               </div>
