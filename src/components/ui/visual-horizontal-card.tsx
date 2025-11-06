@@ -130,15 +130,18 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         ref={ref || cardRef}
         className={cn(
           "group relative overflow-hidden",
-          "bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg",
-          "hover:shadow-xl transition-all duration-200",
-          "focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2",
+          "rounded-2xl border border-white/20",
+          "shadow-[0_2px_12px_rgba(0,0,0,0.15)]",
+          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_0_12px_rgba(255,255,255,0.1)]",
+          "transition-all duration-200 ease-out",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/60",
           density === 'compact' ? 'min-h-[120px]' : 'min-h-[140px]',
           className
         )}
         onClick={onClick}
         role="article"
         aria-expanded={isExpanded}
+        aria-label={`${title} - ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}`}
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -147,7 +150,8 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           }
         }}
         style={{
-          backgroundImage: `linear-gradient(to right, ${category.color}10, transparent)`
+          background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%), linear-gradient(to right, ${category.color}10, transparent)`,
+          backdropFilter: 'blur(8px)'
         }}
       >
         <div className="grid items-stretch grid-cols-[40%_1fr_80px]">
@@ -188,7 +192,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             )}
           </div>
 
-          <div className="flex-1 p-4 flex flex-col justify-center space-y-2">
+          <div className="flex-1 px-5 py-4 flex flex-col justify-center space-y-2">
             <div className="flex items-start gap-2">
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-base line-clamp-2 mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -245,7 +249,12 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         </div>
 
         {isExpanded && expandedContent && (
-          <div className="px-4 pb-4 pt-2 border-t border-white/20 animate-in fade-in slide-in-from-top-2">
+          <div 
+            role="region"
+            aria-label="Expanded card content"
+            aria-live="polite"
+            className="px-5 pb-5 pt-3 border-t border-white/10 animate-in fade-in-up duration-150"
+          >
             {expandedContent}
           </div>
         )}

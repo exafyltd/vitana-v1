@@ -96,7 +96,7 @@ export default function Reminder() {
       id: msg.id.toString(),
       screenId: SCREEN_IDS.INBOX_REMINDER,
       icon: (
-        <Avatar className="w-12 h-12">
+        <Avatar className="w-8 h-8">
           <AvatarImage src={msg.avatar} alt={msg.name} />
           <AvatarFallback>{msg.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
         </Avatar>
@@ -133,24 +133,25 @@ export default function Reminder() {
           icon: <Trash2 className="w-3 h-3 mr-1" /> 
         }
       ],
-      expandedContent: (
-        <div className="pt-4 space-y-3 border-t border-white/10">
-          <div className="text-sm font-medium text-muted-foreground">Quick Replies:</div>
-          <div className="flex flex-wrap gap-2">
-            {msg.quickReplies.map((reply, idx) => (
-              <Button
-                key={idx}
-                variant="outline"
-                size="sm"
-                onClick={() => handleReply(msg.id, reply)}
-              >
-                <Send className="w-3 h-3 mr-1" />
-                {reply}
-              </Button>
-            ))}
-          </div>
+    expandedContent: (
+      <div className="space-y-3">
+        <div className="text-sm font-medium text-muted-foreground" aria-label="Quick Replies">Quick Replies:</div>
+        <div className="flex flex-wrap gap-2 animate-in fade-in-up duration-150">
+          {msg.quickReplies.map((reply, idx) => (
+            <Button
+              key={idx}
+              variant="outline"
+              size="sm"
+              onClick={() => handleReply(msg.id, reply)}
+              className="transition-all hover:scale-105"
+            >
+              <Send className="w-3 h-3 mr-1" />
+              {reply}
+            </Button>
+          ))}
         </div>
-      ),
+      </div>
+    ),
       density: 'comfy' as const,
       accentColor: 'hsl(var(--domain-messages-accent))'
     }));
@@ -159,16 +160,16 @@ export default function Reminder() {
   const consentTestItem: StandardHorizontalCardProps = {
       id: 'consent-test-001',
       screenId: SCREEN_IDS.INBOX_REMINDER,
-      icon: <Avatar className="w-12 h-12"><AvatarFallback>🔒</AvatarFallback></Avatar>,
+      icon: <Avatar className="w-8 h-8"><AvatarFallback>🔒</AvatarFallback></Avatar>,
       title: 'Health Data Share Request',
       description: 'Dr. Smith requested access to your recent lab results',
       badges: [
         { label: 'Requires Consent', variant: 'destructive' as const, icon: <Shield className="w-3 h-3" /> }
       ],
-      privacyBadge: {
-        label: 'HIPAA Protected',
-        color: 'text-amber-600'
-      },
+    privacyBadge: {
+      label: 'HIPAA Protected',
+      color: 'text-amber-700 dark:text-amber-500 bg-amber-900/30 border-white/15 opacity-90'
+    },
       metadata: [
         { icon: <Clock className="w-3 h-3" />, text: '5m ago' }
       ],

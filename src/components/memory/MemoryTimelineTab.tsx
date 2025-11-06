@@ -51,12 +51,12 @@ export function MemoryTimelineTab() {
     id: item.id,
     screenId: SCREEN_IDS.MEMORY_TIMELINE,
     icon: item.source === "ai" ? (
-      <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center">
-        <Brain className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+      <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center">
+        <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
       </div>
     ) : (
-      <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
-        <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+      <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
+        <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
       </div>
     ),
     title: item.source === "ai" ? "AI Insight" : "Diary Entry",
@@ -70,8 +70,8 @@ export function MemoryTimelineTab() {
     ],
     metadata: [
       ...(item.confidenceScore ? [{ 
-        icon: <Sparkles className="w-3 h-3" />, 
-        text: `${Math.round(item.confidenceScore * 100)}% confidence` 
+        icon: <Sparkles className="w-3 h-3 text-amber-500" />, 
+        text: `⚡ ${Math.round(item.confidenceScore * 100)}% confidence` 
       }] : [])
     ],
     timestamp: new Date(item.createdAt),
@@ -94,11 +94,15 @@ export function MemoryTimelineTab() {
       }
     ],
     expandedContent: item.tags && item.tags.length > 0 ? (
-      <div className="pt-4 border-t border-white/10">
+      <div className="space-y-2 animate-in fade-in-up duration-150">
         <div className="flex items-center gap-2 flex-wrap">
           <Tag className="w-3 h-3 text-muted-foreground" />
           {item.tags.map((tag) => (
-            <Badge key={tag} variant="outline" className="text-xs">
+            <Badge 
+              key={tag} 
+              variant="outline" 
+              className="rounded-full bg-white/5 px-3 py-1 text-xs transition-all hover:bg-white/10"
+            >
               {tag}
             </Badge>
           ))}
