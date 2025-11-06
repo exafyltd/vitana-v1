@@ -125,7 +125,8 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       primaryAction?.onClick();
     };
 
-    const handleExpand = () => {
+    const handleExpand = (e?: React.MouseEvent | React.KeyboardEvent) => {
+      e?.stopPropagation();
       const newExpanded = !isExpanded;
       onToggleExpand?.(id);
       
@@ -137,15 +138,26 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       });
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleExpand(e);
+      } else if (e.key === 'Escape' && isExpanded) {
+        e.preventDefault();
+        handleExpand(e);
+      }
+    };
+
     const renderIcon = () => {
       if (typeof icon === 'string') {
+        // Wrap emoji in span with proper attributes
         return (
           <div className={cn(
             "flex items-center justify-center rounded-full",
             density === 'compact' ? 'w-10 h-10 text-xl' : 'w-12 h-12 text-2xl',
             accentColor ? `bg-${accentColor}/10` : 'bg-muted'
           )}>
-            {icon}
+            <span role="img" aria-label="icon">{icon}</span>
           </div>
         );
       }
@@ -158,6 +170,8 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       return timestamp.toLocaleDateString();
     };
 
+    const panelId = `card-panel-${id}`;
+
     return (
       <article
         ref={ref || cardRef}
@@ -169,16 +183,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           density === 'compact' ? 'min-h-[64px]' : 'min-h-[80px]',
           className
         )}
-        onClick={onClick}
         role="article"
-        aria-expanded={isExpanded}
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleExpand();
-          }
-        }}
       >
         {accentColor && (
           <div className={cn(
@@ -188,10 +193,21 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           )} />
         )}
 
-        <div className={cn(
-          "grid items-center gap-4 px-4 py-3",
-          "grid-cols-[48px_1fr_auto]"
-        )}>
+        <div 
+          className={cn(
+            "grid items-center gap-4 px-4 py-3 cursor-pointer",
+            "grid-cols-[48px_1fr_auto]"
+          )}
+          role="button"
+          tabIndex={0}
+          aria-expanded={isExpanded}
+          aria-controls={panelId}
+          onClick={(e) => {
+            onClick?.();
+            if (expandedContent) handleExpand(e);
+          }}
+          onKeyDown={handleKeyDown}
+        >
           <div className="flex items-center justify-center">
             {renderIcon()}
           </div>
@@ -286,7 +302,12 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         </div>
 
         {isExpanded && expandedContent && (
-          <div className="px-4 pb-4 pt-2 border-t border-white/20 animate-in fade-in slide-in-from-top-2">
+          <div 
+            id={panelId}
+            role="region"
+            aria-label="Expanded card content"
+            className="px-4 pb-4 pt-2 border-t border-white/20 animate-in fade-in slide-in-from-top-2"
+          >
             {expandedContent}
           </div>
         )}

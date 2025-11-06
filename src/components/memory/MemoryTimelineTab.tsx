@@ -26,10 +26,10 @@ export function MemoryTimelineTab() {
   }, [useNewCards]);
 
   useEffect(() => {
-    if (useNewCards && !isLoading) {
+    if (useNewCards && !isLoading && knowledgeItems.length > 0) {
       horizontalCardsSLO.endTTI();
     }
-  }, [isLoading, useNewCards]);
+  }, [isLoading, useNewCards, knowledgeItems.length]);
 
   // Action Handlers
   const handlePromoteToKnowledge = (itemId: string) => {

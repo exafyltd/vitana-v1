@@ -60,27 +60,39 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
 
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const hasLoggedView = useRef(false);
   
-  const shouldVirtualize = enableVirtualization ?? items.length >= 30;
+  // Disable virtualization when any card is expanded
+  const shouldVirtualize = expandedCards.size === 0 && (enableVirtualization ?? items.length >= 30);
   
   const actualItemHeight = itemHeight || (variant === 'standard' ? 80 : 140);
   const actualContainerHeight = containerHeight || 
     (typeof window !== 'undefined' ? window.innerHeight - 200 : 600);
 
+  // Fire list view event on mount
   useEffect(() => {
-    horizontalCardAnalytics.listLoadMore({
-      screenId,
-      listId: listId || `${screenId}_list`,
-      newItemCount: items.length
-    });
-  }, []);
+    if (!hasLoggedView.current && items.length > 0) {
+      horizontalCardAnalytics.listView({
+        screenId,
+        listId: listId || `${screenId}_list`,
+        itemCount: items.length
+      });
+      hasLoggedView.current = true;
+    }
+  }, [items.length, screenId, listId]);
 
+  // Infinite scroll observer - fires load_more analytics
   useEffect(() => {
     if (!infiniteScroll || !sentinelRef.current || !onLoadMore || !hasMore || isLoading) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
+          horizontalCardAnalytics.listLoadMore({
+            screenId,
+            listId: listId || `${screenId}_list`,
+            newItemCount: items.length
+          });
           onLoadMore();
         }
       },
@@ -89,7 +101,7 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
 
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
-  }, [infiniteScroll, onLoadMore, hasMore, isLoading, loadMoreThreshold]);
+  }, [infiniteScroll, onLoadMore, hasMore, isLoading, loadMoreThreshold, screenId, listId, items.length]);
 
   const handleToggleExpand = (cardId: string) => {
     setExpandedCards(prev => {

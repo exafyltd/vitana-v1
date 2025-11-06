@@ -15,7 +15,23 @@ export function HealthConsentGate({ open, onOpenChange, actionDescription, onCon
   const [accepted, setAccepted] = useState(false);
 
   const handleConsent = () => {
-    console.log('[HIPAA Audit] User consented to:', actionDescription);
+    // Log to audit trail (not analytics) with structured data
+    const auditEntry = {
+      consent_id: crypto.randomUUID(),
+      action_id: `consent_${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      scope: actionDescription,
+      user_accepted: true
+    };
+    
+    // Store in separate audit log (not g1_analytics_events)
+    const auditLogs = JSON.parse(localStorage.getItem('vitana_consent_audit') || '[]');
+    auditLogs.push(auditEntry);
+    localStorage.setItem('vitana_consent_audit', JSON.stringify(auditLogs));
+    
+    if (import.meta.env.DEV) {
+      console.log('[Consent Audit]', auditEntry);
+    }
     
     onConsent();
     onOpenChange(false);
@@ -28,7 +44,7 @@ export function HealthConsentGate({ open, onOpenChange, actionDescription, onCon
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-amber-500" />
-            Health Data Consent Required
+            Data Access Consent Required
           </DialogTitle>
           <DialogDescription>
             You're about to {actionDescription}. This action requires your explicit consent.
@@ -38,7 +54,7 @@ export function HealthConsentGate({ open, onOpenChange, actionDescription, onCon
         <Alert>
           <Shield className="w-4 h-4" />
           <AlertDescription>
-            Your health data is protected under HIPAA. By proceeding, you consent to this specific action only.
+            Your personal data is protected by privacy regulations (GDPR, HIPAA, PDPA). By proceeding, you consent to this specific action only.
           </AlertDescription>
         </Alert>
 

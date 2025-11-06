@@ -55,7 +55,7 @@ class HorizontalCardAnalytics {
     };
 
     // Console logging for development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log('[Horizontal Cards Analytics]', eventName, eventPayload);
     }
 
@@ -68,6 +68,13 @@ class HorizontalCardAnalytics {
     }
     
     localStorage.setItem('g1_analytics_events', JSON.stringify(events));
+  }
+
+  listView(payload: { screenId: string; listId: string; itemCount: number }) {
+    this.storeEvent('horizontal_list_view', {
+      screenId: payload.screenId,
+      value: payload.itemCount.toString()
+    });
   }
 
   cardView(payload: Omit<HorizontalCardAnalyticsPayload, 'actionType' | 'timestamp'>) {
@@ -102,12 +109,23 @@ class HorizontalCardAnalytics {
   }
 
   private getBasePayload(): Pick<G1AnalyticsPayload, 'tenant' | 'role' | 'userId' | 'timestamp'> {
+    // Try to pull from session/store, fallback to defaults
+    const sessionData = this.getSessionData();
     return {
-      tenant: 'maxina',
-      role: 'community',
+      tenant: sessionData.tenant || 'unknown',
+      role: sessionData.role || 'user',
       userId: this.getUserId(),
       timestamp: Date.now()
     };
+  }
+
+  private getSessionData(): { tenant?: string; role?: string } {
+    try {
+      const stored = localStorage.getItem('vitana_session_context');
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
   }
 
   private getUserId(): string {

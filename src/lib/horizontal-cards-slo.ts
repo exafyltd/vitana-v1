@@ -35,10 +35,12 @@ class HorizontalCardsSLO {
   endTTI() {
     this.metrics.tti = performance.now() - this.startTime;
     
-    if (this.metrics.tti > 2000) {
-      console.warn(`[SLO Violation] TTI: ${this.metrics.tti}ms (target: <2000ms)`);
-    } else {
-      console.log(`[SLO Met] TTI: ${this.metrics.tti}ms ✓`);
+    if (import.meta.env.DEV) {
+      if (this.metrics.tti > 2000) {
+        console.warn(`[SLO Violation] TTI: ${this.metrics.tti}ms (target: <2000ms)`);
+      } else {
+        console.log(`[SLO Met] TTI: ${this.metrics.tti}ms ✓`);
+      }
     }
   }
 
@@ -49,7 +51,7 @@ class HorizontalCardsSLO {
     
     this.metrics.cardInteractionLatency = duration;
     
-    if (duration > 200) {
+    if (import.meta.env.DEV && duration > 200) {
       console.warn(`[SLO Violation] Interaction latency: ${duration}ms (target: <200ms)`);
     }
   }
@@ -61,7 +63,7 @@ class HorizontalCardsSLO {
     
     this.metrics.infiniteScrollLatency = duration;
     
-    if (duration > 500) {
+    if (import.meta.env.DEV && duration > 500) {
       console.warn(`[SLO Violation] Infinite scroll latency: ${duration}ms (target: <500ms)`);
     }
   }
@@ -70,12 +72,14 @@ class HorizontalCardsSLO {
     this.metrics.a11yScore = score;
     this.metrics.criticalViolations = criticalCount;
     
-    if (score < 95) {
-      console.error(`[SLO Violation] A11y score: ${score}% (target: ≥95%)`);
-    }
-    
-    if (criticalCount > 0) {
-      console.error(`[SLO Violation] Critical A11y violations: ${criticalCount} (target: 0)`);
+    if (import.meta.env.DEV) {
+      if (score < 95) {
+        console.error(`[SLO Violation] A11y score: ${score}% (target: ≥95%)`);
+      }
+      
+      if (criticalCount > 0) {
+        console.error(`[SLO Violation] Critical A11y violations: ${criticalCount} (target: 0)`);
+      }
     }
   }
 

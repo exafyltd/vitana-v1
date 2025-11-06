@@ -65,19 +65,6 @@ export default function Reminder() {
 
   const useNewCards = isFeatureEnabled('enableHorizontalCardsReminder');
 
-  // SLO Tracking
-  useEffect(() => {
-    if (useNewCards) {
-      horizontalCardsSLO.startTTI();
-    }
-  }, [useNewCards]);
-
-  useEffect(() => {
-    if (useNewCards) {
-      horizontalCardsSLO.endTTI();
-    }
-  }, [useNewCards]);
-
   // Action Handlers
   const handleMarkDone = (messageId: number) => {
     console.log('[Reminder] Marking message as done:', messageId);
@@ -105,8 +92,7 @@ export default function Reminder() {
   };
 
   // Transform messages to StandardHorizontalCardProps
-  const transformedMessages: StandardHorizontalCardProps[] = [
-    ...unansweredMessages.map(msg => ({
+  const baseMessages: StandardHorizontalCardProps[] = unansweredMessages.map(msg => ({
       id: msg.id.toString(),
       screenId: SCREEN_IDS.INBOX_REMINDER,
       icon: (
@@ -167,9 +153,10 @@ export default function Reminder() {
       ),
       density: 'comfy' as const,
       accentColor: 'hsl(var(--domain-messages-accent))'
-    })),
-    // TEST ITEM with consent requirement
-    {
+    }));
+
+  // Add consent test item only in dev builds
+  const consentTestItem: StandardHorizontalCardProps = {
       id: 'consent-test-001',
       screenId: SCREEN_IDS.INBOX_REMINDER,
       icon: <Avatar className="w-12 h-12"><AvatarFallback>🔒</AvatarFallback></Avatar>,
@@ -209,8 +196,24 @@ export default function Reminder() {
       },
       density: 'comfy' as const,
       accentColor: 'hsl(var(--pill-health-accent))'
+    };
+
+  const transformedMessages: StandardHorizontalCardProps[] = import.meta.env.DEV 
+    ? [...baseMessages, consentTestItem]
+    : baseMessages;
+
+  // SLO Tracking
+  useEffect(() => {
+    if (useNewCards) {
+      horizontalCardsSLO.startTTI();
     }
-  ];
+  }, [useNewCards]);
+
+  useEffect(() => {
+    if (useNewCards && transformedMessages.length > 0) {
+      horizontalCardsSLO.endTTI();
+    }
+  }, [useNewCards, transformedMessages.length]);
 
   return (
     <AppLayout>
