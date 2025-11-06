@@ -132,12 +132,12 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         className={cn(
           "group relative overflow-hidden",
           "rounded-xl border border-white/10",
-          "hover:border-[hsl(var(--accent))]/30 hover:shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
+          "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/45 focus-visible:ring-offset-2",
-          "min-h-[84px]",
-          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-transparent",
-          "before:transition-colors before:duration-200",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/60 focus-visible:ring-offset-2",
+          "min-h-[160px]",
+          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[2px] before:rounded-l-xl",
+          "before:bg-transparent before:transition-all before:duration-200",
           "hover:before:bg-current focus-visible:before:bg-current",
           className
         )}
@@ -158,8 +158,8 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           color: category.color || undefined
         }}
       >
-        <div className="grid items-stretch grid-cols-[35%_1fr_72px]">
-          <div className="relative overflow-hidden">
+        <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_1fr_80px]">
+          <div className="relative overflow-hidden min-h-[160px] lg:min-h-0">
             {!imageError ? (
               <>
                 <img
@@ -169,7 +169,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
                   onLoad={() => setImageLoaded(true)}
                   onError={() => setImageError(true)}
                   className={cn(
-                    "w-full h-full object-cover transition-transform duration-300",
+                    "w-full h-full object-cover transition-transform duration-300 rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none",
                     "group-hover:scale-105",
                     imageLoaded ? 'opacity-100' : 'opacity-0'
                   )}
@@ -196,9 +196,9 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             )}
           </div>
 
-          <div className="flex-1 px-4 py-2 flex flex-col justify-center gap-1.5">
+          <div className="flex-1 px-4 py-3 flex flex-col justify-center gap-1.5">
             <div className="flex items-baseline gap-2 flex-nowrap">
-              <h3 className="text-[15px] font-semibold leading-tight tracking-tight truncate flex-shrink min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
+              <h3 className="text-[15px] font-semibold leading-tight tracking-tight line-clamp-2 flex-1 min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {privacyBadge && (

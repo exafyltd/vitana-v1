@@ -178,11 +178,11 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         className={cn(
           "group relative overflow-hidden",
           "rounded-xl border border-white/10",
-          "hover:border-[hsl(var(--accent))]/30 hover:shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
+          "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
-          "min-h-[72px]",
-          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-transparent",
-          "before:transition-colors before:duration-200",
+          "min-h-[88px]",
+          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[2px] before:rounded-l-xl",
+          "before:bg-transparent before:transition-all before:duration-200",
           accentColor && "hover:before:bg-current focus-visible:before:bg-current",
           className
         )}
@@ -196,9 +196,9 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
         <div 
           className={cn(
-            "grid items-center gap-2 px-4 py-2 cursor-pointer min-h-[72px]",
+            "grid items-center gap-3 px-4 py-3 cursor-pointer min-h-[88px]",
             "grid-cols-[36px_1fr_auto]",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/45 focus-visible:ring-offset-2"
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]/60 focus-visible:ring-offset-2"
           )}
           role="button"
           tabIndex={0}

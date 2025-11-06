@@ -7,6 +7,7 @@ interface FeatureFlags {
   enableHorizontalCardsTimeline: boolean;
   enableHorizontalCardsAIFeed: boolean;
   enableHorizontalCardsSharing: boolean;
+  enableUnifiedHorizontalLists: boolean; // Unified list patterns for AI Feed
 }
 
 export const FEATURE_FLAGS: FeatureFlags = {
@@ -15,6 +16,7 @@ export const FEATURE_FLAGS: FeatureFlags = {
   enableHorizontalCardsTimeline: import.meta.env.VITE_FEATURE_HORIZONTAL_CARDS_ENABLED === 'true' || import.meta.env.DEV, // Pilot 2
   enableHorizontalCardsAIFeed: false, // Wave 2
   enableHorizontalCardsSharing: false, // Wave 2
+  enableUnifiedHorizontalLists: import.meta.env.DEV, // Unified patterns (dev only for now)
 };
 
 let testsPassed = true; // Default true for development

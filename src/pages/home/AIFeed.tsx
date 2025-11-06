@@ -27,6 +27,12 @@ import { GlowingSuggestionsGrid } from "@/components/ai-feed/GlowingSuggestionsG
 import { VisualHistoryTimeline } from "@/components/ai-feed/VisualHistoryTimeline";
 import { MotivationalBanner } from "@/components/ai-feed/MotivationalBanner";
 
+// Import unified horizontal list components
+import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
+import { transformActivityToVisualCard, transformRoutineToVisualCard } from "@/lib/ai-feed-transformers";
+import { isFeatureEnabled } from "@/lib/feature-flags";
+import { VisualHorizontalCardProps } from "@/components/ui/visual-horizontal-card";
+
 export default function AIFeed() {
   const navigate = useNavigate();
   const { state, executeActions } = useAutopilot();
@@ -74,6 +80,10 @@ export default function AIFeed() {
   const filteredFeed = selectedFilter === "autopilot-history" 
     ? activityFeed.filter(item => item.type === "action" && item.status === "completed")
     : activityFeed;
+
+  // Transform activities to visual cards if unified lists are enabled
+  const transformedActivities: VisualHorizontalCardProps[] = filteredFeed.map(transformActivityToVisualCard);
+  const useUnifiedLists = isFeatureEnabled('enableUnifiedHorizontalLists');
 
   return (
     <AppLayout>
@@ -143,7 +153,19 @@ export default function AIFeed() {
                     </div>
                   </div>
 
-                  <VisualActivityFeed activities={filteredFeed} />
+                  {useUnifiedLists ? (
+                    <HorizontalCardList
+                      items={transformedActivities}
+                      variant="visual"
+                      groupBy="date"
+                      screenId="AI_FEED_ACTIVITY"
+                      listId="ai-feed-activity"
+                      gap="sm"
+                      className="pb-4"
+                    />
+                  ) : (
+                    <VisualActivityFeed activities={filteredFeed} />
+                  )}
                 </div>
               </div>
             </SplitBarContent>
@@ -181,9 +203,26 @@ export default function AIFeed() {
                     </div>
                   </div>
 
-                  <VisualRoutinesGrid 
-                    onToggleRoutine={(routineId) => console.log('Toggle routine:', routineId)}
-                  />
+                  {useUnifiedLists ? (
+                    <HorizontalCardList
+                      items={[]} // Will be populated with routine data
+                      variant="visual"
+                      groupBy="none"
+                      screenId="AI_FEED_ROUTINES"
+                      listId="ai-feed-routines"
+                      gap="sm"
+                      className="pb-4"
+                      emptyState={
+                        <div className="text-center py-8 text-muted-foreground">
+                          No routines yet. Create your first routine to get started!
+                        </div>
+                      }
+                    />
+                  ) : (
+                    <VisualRoutinesGrid 
+                      onToggleRoutine={(routineId) => console.log('Toggle routine:', routineId)}
+                    />
+                  )}
                 </div>
               </div>
             </SplitBarContent>
