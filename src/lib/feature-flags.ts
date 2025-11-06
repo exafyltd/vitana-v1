@@ -12,8 +12,8 @@ interface FeatureFlags {
 
 export const FEATURE_FLAGS: FeatureFlags = {
   enableHorizontalCardsV2: true, // Master flag
-  enableHorizontalCardsReminder: import.meta.env.VITE_FEATURE_HORIZONTAL_CARDS_ENABLED === 'true' || import.meta.env.DEV, // Pilot 1
-  enableHorizontalCardsTimeline: import.meta.env.VITE_FEATURE_HORIZONTAL_CARDS_ENABLED === 'true' || import.meta.env.DEV, // Pilot 2
+  enableHorizontalCardsReminder: true, // Pilot 1 - Permanently enabled
+  enableHorizontalCardsTimeline: true, // Pilot 2 - Permanently enabled
   enableHorizontalCardsAIFeed: false, // Wave 2
   enableHorizontalCardsSharing: false, // Wave 2
   enableUnifiedHorizontalLists: import.meta.env.DEV, // Unified patterns (dev only for now)
