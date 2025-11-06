@@ -1,8 +1,10 @@
 import { StandardHorizontalCardProps } from '@/components/ui/standard-horizontal-card';
 import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
-import { Award, TrendingUp, CheckCircle, AlertTriangle, Zap, Activity, Brain, Droplets } from 'lucide-react';
+import { Award, TrendingUp, CheckCircle, AlertTriangle, Zap, Activity, Brain, Droplets, EyeOff } from 'lucide-react';
 import { AutopilotActionStatus } from '@/types/autopilot';
 import { createElement } from 'react';
+import { getCtaForScreen } from './cta-taxonomy';
+import { toast } from 'sonner';
 
 // Import images for routines (Visual pattern)
 import sunriseRoutineImg from '@/assets/ai-feed/sunrise-routine.jpg';
@@ -126,6 +128,7 @@ const getCategoryIcon = (category: string, emoji: string) => {
 
 export function transformActivityToVisualCard(activity: ActivityItem): StandardHorizontalCardProps {
   const secondaryInfo = getSecondaryInfo(activity.category, activity.title);
+  const ctaConfig = getCtaForScreen('AI_FEED_ACTIVITY');
   
   return {
     id: activity.id,
@@ -151,6 +154,54 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
       minute: '2-digit',
     }),
     accentColor: getCategoryColor(activity.category),
+    primaryAction: {
+      label: ctaConfig.primary.label,
+      onClick: () => {
+        console.log('[AI Feed] Saving activity to memory:', activity.id);
+        toast.success('Activity saved to Memory');
+      },
+      variant: ctaConfig.primary.variant,
+      icon: ctaConfig.primary.icon
+    },
+    secondaryActions: [
+      {
+        label: 'Improve',
+        onClick: () => {
+          console.log('[AI Feed] Requesting improvement:', activity.id);
+          toast.info('Improvement request sent to AI');
+        },
+        icon: createElement(TrendingUp, { className: 'w-3 h-3 mr-1' })
+      },
+      {
+        label: 'Hide',
+        onClick: () => {
+          console.log('[AI Feed] Hiding activity:', activity.id);
+          toast.success('Activity hidden');
+        },
+        icon: createElement(EyeOff, { className: 'w-3 h-3 mr-1' })
+      }
+    ],
+    expandedContent: createElement(
+      'div',
+      { className: 'space-y-2' },
+      createElement('p', { className: 'text-[12px] text-muted-foreground/80 font-medium' }, 'Activity Details'),
+      createElement(
+        'div',
+        { className: 'text-[13px] space-y-1' },
+        createElement('p', null, [
+          createElement('strong', { key: 'status-label' }, 'Status: '),
+          activity.status
+        ]),
+        createElement('p', null, [
+          createElement('strong', { key: 'category-label' }, 'Category: '),
+          activity.category
+        ]),
+        activity.reason && createElement('p', null, [
+          createElement('strong', { key: 'reason-label' }, 'Reason: '),
+          activity.reason
+        ])
+      )
+    ),
     density: 'compact',
   };
 }
