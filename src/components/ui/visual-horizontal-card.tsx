@@ -192,7 +192,13 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
 
           <button
             className="flex-1 px-4 py-3 flex flex-col justify-center gap-1.5 text-left focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/60 focus:ring-inset"
-            onClick={onClick}
+            onClick={() => {
+              if (expandedContent) {
+                handleExpand();
+              } else if (onClick) {
+                onClick();
+              }
+            }}
             tabIndex={0}
           >
             <div className="flex items-baseline gap-2 flex-nowrap">
